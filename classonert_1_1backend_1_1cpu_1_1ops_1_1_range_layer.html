@@ -123,7 +123,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_range_layer_8h_source.html#l00032">32</a> of file <a class="el" href="_range_layer_8h_source.html">RangeLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_range_layer_8h_source.html#l00026">26</a> of file <a class="el" href="_range_layer_8h_source.html">RangeLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac558682b95d9d5f97f0cae02ee473689" name="ac558682b95d9d5f97f0cae02ee473689"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac558682b95d9d5f97f0cae02ee473689">&#9670;&#160;</a></span>RangeLayer()</h2>
@@ -140,11 +140,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_range_layer_8cc_source.html#l00031">31</a> of file <a class="el" href="_range_layer_8cc_source.html">RangeLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>                       : _start(<span class="keyword">nullptr</span>), _limit(<span class="keyword">nullptr</span>), _delta(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   34</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_range_layer_8cc_source.html#l00025">25</a> of file <a class="el" href="_range_layer_8cc_source.html">RangeLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>                       : _start(<span class="keyword">nullptr</span>), _limit(<span class="keyword">nullptr</span>), _delta(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   26</span>{</div>
+<div class="line"><span class="lineno">   27</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   28</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -187,13 +187,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_range_layer_8cc_source.html#l00036">36</a> of file <a class="el" href="_range_layer_8cc_source.html">RangeLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
-<div class="line"><span class="lineno">   39</span>  _start = start;</div>
-<div class="line"><span class="lineno">   40</span>  _limit = limit;</div>
-<div class="line"><span class="lineno">   41</span>  _delta = delta;</div>
-<div class="line"><span class="lineno">   42</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   43</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_range_layer_8cc_source.html#l00030">30</a> of file <a class="el" href="_range_layer_8cc_source.html">RangeLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
+<div class="line"><span class="lineno">   33</span>  _start = start;</div>
+<div class="line"><span class="lineno">   34</span>  _limit = limit;</div>
+<div class="line"><span class="lineno">   35</span>  _delta = delta;</div>
+<div class="line"><span class="lineno">   36</span>  _output = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">   37</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -223,26 +223,26 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_range_layer_8cc_source.html#l00045">45</a> of file <a class="el" href="_range_layer_8cc_source.html">RangeLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">switch</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>())</div>
-<div class="line"><span class="lineno">   48</span>  {</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
-<div class="line"><span class="lineno">   50</span>      nnfw::cker::Range&lt;float&gt;(getBuffer&lt;float&gt;(_start), getBuffer&lt;float&gt;(_limit),</div>
-<div class="line"><span class="lineno">   51</span>                               getBuffer&lt;float&gt;(_delta), getBuffer&lt;float&gt;(_output));</div>
-<div class="line"><span class="lineno">   52</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
-<div class="line"><span class="lineno">   54</span>      nnfw::cker::Range&lt;int32_t&gt;(getBuffer&lt;int32_t&gt;(_start), getBuffer&lt;int32_t&gt;(_limit),</div>
-<div class="line"><span class="lineno">   55</span>                                 getBuffer&lt;int32_t&gt;(_delta), getBuffer&lt;int32_t&gt;(_output));</div>
-<div class="line"><span class="lineno">   56</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   58</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Range: unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">   59</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   60</span>  }</div>
-<div class="line"><span class="lineno">   61</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00056">IPortableTensor.h:56</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_range_layer_8cc_source.html#l00039">39</a> of file <a class="el" href="_range_layer_8cc_source.html">RangeLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span>{</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">switch</span> (_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>())</div>
+<div class="line"><span class="lineno">   42</span>  {</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
+<div class="line"><span class="lineno">   44</span>      nnfw::cker::Range&lt;float&gt;(getBuffer&lt;float&gt;(_start), getBuffer&lt;float&gt;(_limit),</div>
+<div class="line"><span class="lineno">   45</span>                               getBuffer&lt;float&gt;(_delta), getBuffer&lt;float&gt;(_output));</div>
+<div class="line"><span class="lineno">   46</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
+<div class="line"><span class="lineno">   48</span>      nnfw::cker::Range&lt;int32_t&gt;(getBuffer&lt;int32_t&gt;(_start), getBuffer&lt;int32_t&gt;(_limit),</div>
+<div class="line"><span class="lineno">   49</span>                                 getBuffer&lt;int32_t&gt;(_delta), getBuffer&lt;int32_t&gt;(_output));</div>
+<div class="line"><span class="lineno">   50</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   52</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Range: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   54</span>  }</div>
+<div class="line"><span class="lineno">   55</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00056">onert::backend::IPortableTensor::data_type()</a>.</p>
+<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
 
 </div>
 </div>

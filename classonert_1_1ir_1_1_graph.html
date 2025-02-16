@@ -168,7 +168,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00033">33</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00031">31</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad173dff817c3115ab318377f5b953e61" name="ad173dff817c3115ab318377f5b953e61"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad173dff817c3115ab318377f5b953e61">&#9670;&#160;</a></span>Graph() <span class="overload">[1/2]</span></h2>
@@ -275,19 +275,19 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00123">123</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  124</span>{</div>
-<div class="line"><span class="lineno">  125</span>  <span class="keywordflow">if</span> (!name.empty())</div>
-<div class="line"><span class="lineno">  126</span>    _name_to_input.emplace(name, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">IOIndex</a>{_inputs.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">size</a>()});</div>
-<div class="line"><span class="lineno">  127</span>  _inputs.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a9e8f537f480cdb2cc219452180ca3036">append</a>(ind);</div>
-<div class="line"><span class="lineno">  128</span>}</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_index_sequence_html_a21198772782368109e672c63800268e1"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">onert::ir::OperandIndexSequence::size</a></div><div class="ttdeci">uint32_t size() const</div><div class="ttdef"><b>Definition</b> <a href="_operand_index_sequence_8h_source.html#l00049">OperandIndexSequence.h:49</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_index_sequence_html_a9e8f537f480cdb2cc219452180ca3036"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_index_sequence.html#a9e8f537f480cdb2cc219452180ca3036">onert::ir::OperandIndexSequence::append</a></div><div class="ttdeci">void append(const OperandIndex &amp;index)</div><div class="ttdef"><b>Definition</b> <a href="_operand_index_sequence_8h_source.html#l00045">OperandIndexSequence.h:45</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_a4c948b78203567852dfbc65ee63ec940"><div class="ttname"><a href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">onert::ir::IOIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, IOIndexTag &gt; IOIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00038">Index.h:38</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00121">121</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  122</span>{</div>
+<div class="line"><span class="lineno">  123</span>  <span class="keywordflow">if</span> (!name.empty())</div>
+<div class="line"><span class="lineno">  124</span>    _name_to_input.emplace(name, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">IOIndex</a>{_inputs.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">size</a>()});</div>
+<div class="line"><span class="lineno">  125</span>  _inputs.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a9e8f537f480cdb2cc219452180ca3036">append</a>(ind);</div>
+<div class="line"><span class="lineno">  126</span>}</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_index_sequence_html_a21198772782368109e672c63800268e1"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">onert::ir::OperandIndexSequence::size</a></div><div class="ttdeci">uint32_t size() const</div><div class="ttdef"><b>Definition</b> <a href="_operand_index_sequence_8h_source.html#l00047">OperandIndexSequence.h:47</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_index_sequence_html_a9e8f537f480cdb2cc219452180ca3036"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_index_sequence.html#a9e8f537f480cdb2cc219452180ca3036">onert::ir::OperandIndexSequence::append</a></div><div class="ttdeci">void append(const OperandIndex &amp;index)</div><div class="ttdef"><b>Definition</b> <a href="_operand_index_sequence_8h_source.html#l00043">OperandIndexSequence.h:43</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_a4c948b78203567852dfbc65ee63ec940"><div class="ttname"><a href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">onert::ir::IOIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, IOIndexTag &gt; IOIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00036">Index.h:36</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00045">onert::ir::OperandIndexSequence::append()</a>, and <a class="el" href="_operand_index_sequence_8h_source.html#l00049">onert::ir::OperandIndexSequence::size()</a>.</p>
+<p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00043">onert::ir::OperandIndexSequence::append()</a>, and <a class="el" href="_operand_index_sequence_8h_source.html#l00047">onert::ir::OperandIndexSequence::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00144">onert::ir::train::TrainableGraph::addInput()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00140">onert::ir::train::TrainableGraph::addInput()</a>.</p>
 
 </div>
 </div>
@@ -317,15 +317,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00035">35</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">return</span> _operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#a6e5688273dce5e6f65e205df6db079ed">emplace</a>(shape, type);</div>
-<div class="line"><span class="lineno">   38</span>}</div>
-<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_a6e5688273dce5e6f65e205df6db079ed"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#a6e5688273dce5e6f65e205df6db079ed">onert::util::ObjectManager::emplace</a></div><div class="ttdeci">Index emplace(Args &amp;&amp;...args)</div><div class="ttdoc">Create an object with args and put it in the container with a newly assigned Index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00049">ObjectManager.h:49</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00033">33</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">return</span> _operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#a6e5688273dce5e6f65e205df6db079ed">emplace</a>(shape, type);</div>
+<div class="line"><span class="lineno">   36</span>}</div>
+<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_a6e5688273dce5e6f65e205df6db079ed"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#a6e5688273dce5e6f65e205df6db079ed">onert::util::ObjectManager::emplace</a></div><div class="ttdeci">Index emplace(Args &amp;&amp;...args)</div><div class="ttdoc">Create an object with args and put it in the container with a newly assigned Index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00047">ObjectManager.h:47</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00049">onert::util::ObjectManager&lt; Index, Object &gt;::emplace()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00047">onert::util::ObjectManager&lt; Index, Object &gt;::emplace()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00096">onert::ir::train::TrainableGraph::addOperand()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00101">onert::ir::train::TrainableGraph::addOperand()</a>, <a class="el" href="_constant_output_pass_8cc_source.html#l00030">onert::compiler::pass::ConstantOutputPass::callback()</a>, and <a class="el" href="_base_loader_8h_source.html#l00363">onert::loader::BaseLoader&lt; LoaderDomain &gt;::loadOperand()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00092">onert::ir::train::TrainableGraph::addOperand()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00097">onert::ir::train::TrainableGraph::addOperand()</a>, <a class="el" href="_constant_output_pass_8cc_source.html#l00026">onert::compiler::pass::ConstantOutputPass::callback()</a>, and <a class="el" href="_base_loader_8h_source.html#l00361">onert::loader::BaseLoader&lt; LoaderDomain &gt;::loadOperand()</a>.</p>
 
 </div>
 </div>
@@ -366,13 +366,13 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>OperandIndex <code>index</code> if successful, Undefined otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00040">40</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
-<div class="line"><span class="lineno">   42</span>  <span class="keywordflow">return</span> _operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#a974562c1e8e645e11b5cbb320dd7b6bf">push</a>(std::move(operand), index);</div>
-<div class="line"><span class="lineno">   43</span>}</div>
-<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_a974562c1e8e645e11b5cbb320dd7b6bf"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#a974562c1e8e645e11b5cbb320dd7b6bf">onert::util::ObjectManager::push</a></div><div class="ttdeci">Index push(std::unique_ptr&lt; Object &gt; &amp;&amp;object, Index index)</div><div class="ttdoc">Put the object in the container with given index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00067">ObjectManager.h:67</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00038">38</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">return</span> _operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#a974562c1e8e645e11b5cbb320dd7b6bf">push</a>(std::move(operand), index);</div>
+<div class="line"><span class="lineno">   41</span>}</div>
+<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_a974562c1e8e645e11b5cbb320dd7b6bf"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#a974562c1e8e645e11b5cbb320dd7b6bf">onert::util::ObjectManager::push</a></div><div class="ttdeci">Index push(std::unique_ptr&lt; Object &gt; &amp;&amp;object, Index index)</div><div class="ttdoc">Put the object in the container with given index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00065">ObjectManager.h:65</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00067">onert::util::ObjectManager&lt; Index, Object &gt;::push()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00065">onert::util::ObjectManager&lt; Index, Object &gt;::push()</a>.</p>
 
 </div>
 </div>
@@ -413,23 +413,23 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>OperandIndex <code>index</code> if successful, Undefined otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00080">80</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   81</span>{</div>
-<div class="line"><span class="lineno">   82</span>  <span class="keyword">const</span> IOperation &amp;op_ref = *operation;</div>
-<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">if</span> (!checkOperandsForOperation(op_ref))</div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">OperationIndex</a>{};</div>
-<div class="line"><span class="lineno">   85</span>  <span class="keyword">auto</span> ind_gen = _operations.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#a974562c1e8e645e11b5cbb320dd7b6bf">push</a>(std::move(operation), index);</div>
-<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">if</span> (ind_gen.valid())</div>
-<div class="line"><span class="lineno">   87</span>  {</div>
-<div class="line"><span class="lineno">   88</span>    assert(ind_gen == index);</div>
-<div class="line"><span class="lineno">   89</span>    linkOperandToOperation(index, op_ref);</div>
-<div class="line"><span class="lineno">   90</span>  }</div>
-<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>;</div>
-<div class="line"><span class="lineno">   92</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00078">78</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   79</span>{</div>
+<div class="line"><span class="lineno">   80</span>  <span class="keyword">const</span> IOperation &amp;op_ref = *operation;</div>
+<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">if</span> (!checkOperandsForOperation(op_ref))</div>
+<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">OperationIndex</a>{};</div>
+<div class="line"><span class="lineno">   83</span>  <span class="keyword">auto</span> ind_gen = _operations.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#a974562c1e8e645e11b5cbb320dd7b6bf">push</a>(std::move(operation), index);</div>
+<div class="line"><span class="lineno">   84</span>  <span class="keywordflow">if</span> (ind_gen.valid())</div>
+<div class="line"><span class="lineno">   85</span>  {</div>
+<div class="line"><span class="lineno">   86</span>    assert(ind_gen == index);</div>
+<div class="line"><span class="lineno">   87</span>    linkOperandToOperation(index, op_ref);</div>
+<div class="line"><span class="lineno">   88</span>  }</div>
+<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>;</div>
+<div class="line"><span class="lineno">   90</span>}</div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_a96178eda8f56c7ef3d89961856ace347"><div class="ttname"><a href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">onert::ir::OperationIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperationIndexTag &gt; OperationIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00032">Index.h:32</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_a96178eda8f56c7ef3d89961856ace347"><div class="ttname"><a href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">onert::ir::OperationIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperationIndexTag &gt; OperationIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00030">Index.h:30</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00067">onert::util::ObjectManager&lt; Index, Object &gt;::push()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00065">onert::util::ObjectManager&lt; Index, Object &gt;::push()</a>.</p>
 
 </div>
 </div>
@@ -449,20 +449,20 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00069">69</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
-<div class="line"><span class="lineno">   71</span>  <span class="keyword">const</span> IOperation &amp;op_ref = *operation;</div>
-<div class="line"><span class="lineno">   72</span>  <span class="keywordflow">if</span> (!checkOperandsForOperation(op_ref))</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">OperationIndex</a>{};</div>
-<div class="line"><span class="lineno">   74</span>  <span class="keyword">auto</span> ind = _operations.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#a974562c1e8e645e11b5cbb320dd7b6bf">push</a>(std::move(operation));</div>
-<div class="line"><span class="lineno">   75</span>  <span class="keywordflow">if</span> (ind.valid())</div>
-<div class="line"><span class="lineno">   76</span>    linkOperandToOperation(ind, op_ref);</div>
-<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">return</span> ind;</div>
-<div class="line"><span class="lineno">   78</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00067">67</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>{</div>
+<div class="line"><span class="lineno">   69</span>  <span class="keyword">const</span> IOperation &amp;op_ref = *operation;</div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">if</span> (!checkOperandsForOperation(op_ref))</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">OperationIndex</a>{};</div>
+<div class="line"><span class="lineno">   72</span>  <span class="keyword">auto</span> ind = _operations.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#a974562c1e8e645e11b5cbb320dd7b6bf">push</a>(std::move(operation));</div>
+<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">if</span> (ind.valid())</div>
+<div class="line"><span class="lineno">   74</span>    linkOperandToOperation(ind, op_ref);</div>
+<div class="line"><span class="lineno">   75</span>  <span class="keywordflow">return</span> ind;</div>
+<div class="line"><span class="lineno">   76</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00067">onert::util::ObjectManager&lt; Index, Object &gt;::push()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00065">onert::util::ObjectManager&lt; Index, Object &gt;::push()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00106">onert::ir::train::TrainableGraph::addOperation()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00102">onert::ir::train::TrainableGraph::addOperation()</a>.</p>
 
 </div>
 </div>
@@ -492,16 +492,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00130">130</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  131</span>{</div>
-<div class="line"><span class="lineno">  132</span>  <span class="keywordflow">if</span> (!name.empty())</div>
-<div class="line"><span class="lineno">  133</span>    _name_to_output.emplace(name, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">IOIndex</a>{_outputs.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">size</a>()});</div>
-<div class="line"><span class="lineno">  134</span>  _outputs.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a9e8f537f480cdb2cc219452180ca3036">append</a>(ind);</div>
-<div class="line"><span class="lineno">  135</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00128">128</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  129</span>{</div>
+<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">if</span> (!name.empty())</div>
+<div class="line"><span class="lineno">  131</span>    _name_to_output.emplace(name, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">IOIndex</a>{_outputs.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">size</a>()});</div>
+<div class="line"><span class="lineno">  132</span>  _outputs.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a9e8f537f480cdb2cc219452180ca3036">append</a>(ind);</div>
+<div class="line"><span class="lineno">  133</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00045">onert::ir::OperandIndexSequence::append()</a>, and <a class="el" href="_operand_index_sequence_8h_source.html#l00049">onert::ir::OperandIndexSequence::size()</a>.</p>
+<p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00043">onert::ir::OperandIndexSequence::append()</a>, and <a class="el" href="_operand_index_sequence_8h_source.html#l00047">onert::ir::OperandIndexSequence::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00149">onert::ir::train::TrainableGraph::addOutput()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00145">onert::ir::train::TrainableGraph::addOutput()</a>.</p>
 
 </div>
 </div>
@@ -541,17 +541,17 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1ir_1_1_i_graph.html#aae95310c5c32d8ccd03835ca6c9fbebd">onert::ir::IGraph</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00117">117</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  118</span>{</div>
-<div class="line"><span class="lineno">  119</span>  assert(_operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#afbdb465f211df41f9c367d611036244e">exist</a>(ind));</div>
-<div class="line"><span class="lineno">  120</span>  _operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind).info().shape(new_shape);</div>
-<div class="line"><span class="lineno">  121</span>}</div>
-<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_adb269e5affe5040bceb6a80b457a01be"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">onert::util::ObjectManager::at</a></div><div class="ttdeci">const Object &amp; at(const Index &amp;index) const</div><div class="ttdoc">Get the object that is associated with the given index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">ObjectManager.h:121</a></div></div>
-<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_afbdb465f211df41f9c367d611036244e"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#afbdb465f211df41f9c367d611036244e">onert::util::ObjectManager::exist</a></div><div class="ttdeci">bool exist(const Index &amp;index) const</div><div class="ttdoc">Get the object that is associated with the given index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00169">ObjectManager.h:169</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00115">115</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  116</span>{</div>
+<div class="line"><span class="lineno">  117</span>  assert(_operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#afbdb465f211df41f9c367d611036244e">exist</a>(ind));</div>
+<div class="line"><span class="lineno">  118</span>  _operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind).info().shape(new_shape);</div>
+<div class="line"><span class="lineno">  119</span>}</div>
+<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_adb269e5affe5040bceb6a80b457a01be"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">onert::util::ObjectManager::at</a></div><div class="ttdeci">const Object &amp; at(const Index &amp;index) const</div><div class="ttdoc">Get the object that is associated with the given index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00119">ObjectManager.h:119</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_afbdb465f211df41f9c367d611036244e"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#afbdb465f211df41f9c367d611036244e">onert::util::ObjectManager::exist</a></div><div class="ttdeci">bool exist(const Index &amp;index) const</div><div class="ttdoc">Get the object that is associated with the given index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00167">ObjectManager.h:167</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00169">onert::util::ObjectManager&lt; Index, Object &gt;::exist()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00119">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00167">onert::util::ObjectManager&lt; Index, Object &gt;::exist()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00133">onert::ir::train::TrainableGraph::changeShape()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00129">onert::ir::train::TrainableGraph::changeShape()</a>.</p>
 
 </div>
 </div>
@@ -581,13 +581,13 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1ir_1_1_i_graph.html#a65449fc1260064ec621d12001878d02e">onert::ir::IGraph</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00137">137</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  138</span>{</div>
-<div class="line"><span class="lineno">  139</span>  <span class="keyword">auto</span> itr = _name_to_input.find(name);</div>
-<div class="line"><span class="lineno">  140</span>  <span class="keywordflow">return</span> (itr == _name_to_input.end()) ? <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">IOIndex</a>{} : itr-&gt;second;</div>
-<div class="line"><span class="lineno">  141</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00135">135</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  136</span>{</div>
+<div class="line"><span class="lineno">  137</span>  <span class="keyword">auto</span> itr = _name_to_input.find(name);</div>
+<div class="line"><span class="lineno">  138</span>  <span class="keywordflow">return</span> (itr == _name_to_input.end()) ? <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">IOIndex</a>{} : itr-&gt;second;</div>
+<div class="line"><span class="lineno">  139</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00123">onert::ir::train::TrainableGraph::getInputIndex()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00119">onert::ir::train::TrainableGraph::getInputIndex()</a>.</p>
 
 </div>
 </div>
@@ -614,8 +614,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00107">107</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  107</span>{ <span class="keywordflow">return</span> _inputs; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00105">105</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  105</span>{ <span class="keywordflow">return</span> _inputs; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -644,10 +644,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1ir_1_1_i_graph.html#ac6565060abd9968c17f843b2526a0a2d">onert::ir::IGraph</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00106">106</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  106</span>{ <span class="keywordflow">return</span> _inputs; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00104">104</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span>{ <span class="keywordflow">return</span> _inputs; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_executor_base_8cc_source.html#l00048">onert::exec::ExecutorBase::execute()</a>, <a class="el" href="_executor_base_8cc_source.html#l00027">onert::exec::ExecutorBase::ExecutorBase()</a>, <a class="el" href="_trainable_graph_8h_source.html#l00119">onert::ir::train::TrainableGraph::getInputs()</a>, <a class="el" href="_min_max_recorder_8cc_source.html#l00111">onert::exec::MinMaxRecorder::handleSubgraphBegin()</a>, <a class="el" href="_unused_operand_elimination_pass_8cc_source.html#l00036">onert::compiler::pass::UnusedOperandEliminationPass::run()</a>, <a class="el" href="_odd_output_pass_8cc_source.html#l00030">onert::compiler::pass::OddOutputPass::run()</a>, and <a class="el" href="_acl_sub_tensor_analyzer_8h_source.html#l00050">onert::backend::acl_common::AclSubTensorAnalyzer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_executor_base_8cc_source.html#l00046">onert::exec::ExecutorBase::execute()</a>, <a class="el" href="_executor_base_8cc_source.html#l00025">onert::exec::ExecutorBase::ExecutorBase()</a>, <a class="el" href="_trainable_graph_8h_source.html#l00115">onert::ir::train::TrainableGraph::getInputs()</a>, <a class="el" href="_min_max_recorder_8cc_source.html#l00109">onert::exec::MinMaxRecorder::handleSubgraphBegin()</a>, <a class="el" href="_unused_operand_elimination_pass_8cc_source.html#l00032">onert::compiler::pass::UnusedOperandEliminationPass::run()</a>, <a class="el" href="_odd_output_pass_8cc_source.html#l00026">onert::compiler::pass::OddOutputPass::run()</a>, and <a class="el" href="_acl_sub_tensor_analyzer_8h_source.html#l00046">onert::backend::acl_common::AclSubTensorAnalyzer::visit()</a>.</p>
 
 </div>
 </div>
@@ -677,13 +677,13 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1ir_1_1_i_graph.html#af5889f2e0a7f1fd143f5dbca04ed9aa8">onert::ir::IGraph</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00143">143</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  144</span>{</div>
-<div class="line"><span class="lineno">  145</span>  <span class="keyword">auto</span> itr = _name_to_output.find(name);</div>
-<div class="line"><span class="lineno">  146</span>  <span class="keywordflow">return</span> (itr == _name_to_output.end()) ? <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">IOIndex</a>{} : itr-&gt;second;</div>
-<div class="line"><span class="lineno">  147</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00141">141</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>{</div>
+<div class="line"><span class="lineno">  143</span>  <span class="keyword">auto</span> itr = _name_to_output.find(name);</div>
+<div class="line"><span class="lineno">  144</span>  <span class="keywordflow">return</span> (itr == _name_to_output.end()) ? <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">IOIndex</a>{} : itr-&gt;second;</div>
+<div class="line"><span class="lineno">  145</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00128">onert::ir::train::TrainableGraph::getOutputIndex()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00124">onert::ir::train::TrainableGraph::getOutputIndex()</a>.</p>
 
 </div>
 </div>
@@ -710,8 +710,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00109">109</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  109</span>{ <span class="keywordflow">return</span> _outputs; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00107">107</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  107</span>{ <span class="keywordflow">return</span> _outputs; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -740,10 +740,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1ir_1_1_i_graph.html#a5c8bf7e479a717993faec4e1c85afbd1">onert::ir::IGraph</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00108">108</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  108</span>{ <span class="keywordflow">return</span> _outputs; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00106">106</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span>{ <span class="keywordflow">return</span> _outputs; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_constant_output_pass_8cc_source.html#l00030">onert::compiler::pass::ConstantOutputPass::callback()</a>, <a class="el" href="_executor_base_8cc_source.html#l00048">onert::exec::ExecutorBase::execute()</a>, <a class="el" href="_executor_base_8cc_source.html#l00027">onert::exec::ExecutorBase::ExecutorBase()</a>, <a class="el" href="_trainable_graph_8h_source.html#l00120">onert::ir::train::TrainableGraph::getOutputs()</a>, <a class="el" href="_unused_operand_elimination_pass_8cc_source.html#l00036">onert::compiler::pass::UnusedOperandEliminationPass::run()</a>, and <a class="el" href="_odd_output_pass_8cc_source.html#l00030">onert::compiler::pass::OddOutputPass::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_constant_output_pass_8cc_source.html#l00026">onert::compiler::pass::ConstantOutputPass::callback()</a>, <a class="el" href="_executor_base_8cc_source.html#l00046">onert::exec::ExecutorBase::execute()</a>, <a class="el" href="_executor_base_8cc_source.html#l00025">onert::exec::ExecutorBase::ExecutorBase()</a>, <a class="el" href="_trainable_graph_8h_source.html#l00116">onert::ir::train::TrainableGraph::getOutputs()</a>, <a class="el" href="_unused_operand_elimination_pass_8cc_source.html#l00032">onert::compiler::pass::UnusedOperandEliminationPass::run()</a>, and <a class="el" href="_odd_output_pass_8cc_source.html#l00026">onert::compiler::pass::OddOutputPass::run()</a>.</p>
 
 </div>
 </div>
@@ -770,8 +770,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00113">113</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  113</span>{ <span class="keywordflow">return</span> _operands; } <span class="comment">// TODO Remove this non-const accessor</span></div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00111">111</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  111</span>{ <span class="keywordflow">return</span> _operands; } <span class="comment">// TODO Remove this non-const accessor</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -800,10 +800,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1ir_1_1_i_graph.html#a4c9ed162e75ed7761fea2d091b0401ed">onert::ir::IGraph</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00112">112</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  112</span>{ <span class="keywordflow">return</span> _operands; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00110">110</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  110</span>{ <span class="keywordflow">return</span> _operands; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_constant_output_pass_8cc_source.html#l00030">onert::compiler::pass::ConstantOutputPass::callback()</a>, <a class="el" href="_permutation_insertion_pass_8cc_source.html#l00037">onert::compiler::pass::PermutationInsertionPass::callback()</a>, <a class="el" href="_constant_insertion_pass_8cc_source.html#l00029">onert::compiler::pass::ConstantInsertionPass::callback()</a>, <a class="el" href="_constant_lowering_pass_8cc_source.html#l00031">onert::compiler::pass::ConstantLoweringPass::callback()</a>, <a class="el" href="_trainable_constant_insertion_pass_8cc_source.html#l00031">onert::compiler::train::pass::TrainableConstantInsertionPass::callback()</a>, <a class="el" href="_static_shape_inferer_8cc_source.html#l00169">onert::compiler::StaticShapeInferer::dump()</a>, <a class="el" href="_acl_backend_context_8h_source.html#l00055">onert::backend::acl_common::AclBackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator, T_Optimizer &gt;::genTensors()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00085">onert::exec::ProfileObserver::handleJobEnd()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00081">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::initConsts()</a>, <a class="el" href="_backend_context_helpers_8h_source.html#l00300">onert::backend::basic::initConsts()</a>, <a class="el" href="_base_loader_8h_source.html#l00363">onert::loader::BaseLoader&lt; LoaderDomain &gt;::loadOperand()</a>, <a class="el" href="_trainable_graph_8h_source.html#l00124">onert::ir::train::TrainableGraph::operands()</a>, <a class="el" href="_trainable_graph_8h_source.html#l00123">onert::ir::train::TrainableGraph::operands()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00102">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>, <a class="el" href="_unused_operand_elimination_pass_8cc_source.html#l00036">onert::compiler::pass::UnusedOperandEliminationPass::run()</a>, <a class="el" href="_odd_output_pass_8cc_source.html#l00030">onert::compiler::pass::OddOutputPass::run()</a>, <a class="el" href="_operand_pass_8cc_source.html#l00028">onert::compiler::pass::OperandPass::run()</a>, <a class="el" href="_graph_8cc_source.html#l00184">topolSortOperations()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00057">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00073">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00106">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00138">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_acl_sub_tensor_analyzer_8h_source.html#l00050">onert::backend::acl_common::AclSubTensorAnalyzer::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00163">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00573">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00185">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00437">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00449">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00484">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00202">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00554">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00494">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00230">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00877">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01112">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00622">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01093">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00600">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00913">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00259">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00247">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01076">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00271">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00981">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00995">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01124">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00337">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01145">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00970">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00218">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00381">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00409">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00951">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01017">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00939">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01060">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00318">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00522">onert::compiler::ShapeValidator::visit()</a>, and <a class="el" href="_shape_validator_8cc_source.html#l00897">onert::compiler::ShapeValidator::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_constant_output_pass_8cc_source.html#l00026">onert::compiler::pass::ConstantOutputPass::callback()</a>, <a class="el" href="_permutation_insertion_pass_8cc_source.html#l00033">onert::compiler::pass::PermutationInsertionPass::callback()</a>, <a class="el" href="_constant_insertion_pass_8cc_source.html#l00025">onert::compiler::pass::ConstantInsertionPass::callback()</a>, <a class="el" href="_constant_lowering_pass_8cc_source.html#l00027">onert::compiler::pass::ConstantLoweringPass::callback()</a>, <a class="el" href="_trainable_constant_insertion_pass_8cc_source.html#l00025">onert::compiler::train::pass::TrainableConstantInsertionPass::callback()</a>, <a class="el" href="_static_shape_inferer_8cc_source.html#l00167">onert::compiler::StaticShapeInferer::dump()</a>, <a class="el" href="_acl_backend_context_8h_source.html#l00051">onert::backend::acl_common::AclBackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator, T_Optimizer &gt;::genTensors()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00085">onert::exec::ProfileObserver::handleJobEnd()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00077">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::initConsts()</a>, <a class="el" href="_backend_context_helpers_8h_source.html#l00296">onert::backend::basic::initConsts()</a>, <a class="el" href="_base_loader_8h_source.html#l00361">onert::loader::BaseLoader&lt; LoaderDomain &gt;::loadOperand()</a>, <a class="el" href="_trainable_graph_8h_source.html#l00120">onert::ir::train::TrainableGraph::operands()</a>, <a class="el" href="_trainable_graph_8h_source.html#l00119">onert::ir::train::TrainableGraph::operands()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00098">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>, <a class="el" href="_unused_operand_elimination_pass_8cc_source.html#l00032">onert::compiler::pass::UnusedOperandEliminationPass::run()</a>, <a class="el" href="_odd_output_pass_8cc_source.html#l00026">onert::compiler::pass::OddOutputPass::run()</a>, <a class="el" href="_operand_pass_8cc_source.html#l00024">onert::compiler::pass::OperandPass::run()</a>, <a class="el" href="_graph_8cc_source.html#l00182">topolSortOperations()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00055">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00071">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00104">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00136">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_acl_sub_tensor_analyzer_8h_source.html#l00046">onert::backend::acl_common::AclSubTensorAnalyzer::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00161">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00571">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00183">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00435">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00447">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00482">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00200">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00552">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00492">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00228">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00875">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01110">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00620">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01091">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00598">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00911">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00257">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00245">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01074">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00269">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00979">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00993">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01122">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00335">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01143">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00968">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00216">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00379">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00407">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00949">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01015">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00937">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l01058">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00316">onert::compiler::ShapeValidator::visit()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00520">onert::compiler::ShapeValidator::visit()</a>, and <a class="el" href="_shape_validator_8cc_source.html#l00895">onert::compiler::ShapeValidator::visit()</a>.</p>
 
 </div>
 </div>
@@ -830,8 +830,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00115">115</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  115</span>{ <span class="keywordflow">return</span> _operations; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00113">113</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  113</span>{ <span class="keywordflow">return</span> _operations; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -860,10 +860,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1ir_1_1_i_graph.html#a8445bf5aebb94de2ac9ed56cae8baf2d">onert::ir::IGraph</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00114">114</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  114</span>{ <span class="keywordflow">return</span> _operations; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00112">112</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  112</span>{ <span class="keywordflow">return</span> _operations; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_dataflow_executor_8cc_source.html#l00028">onert::exec::DataflowExecutor::calculateRank()</a>, <a class="el" href="_constant_output_pass_8cc_source.html#l00030">onert::compiler::pass::ConstantOutputPass::callback()</a>, <a class="el" href="_permutation_insertion_pass_8cc_source.html#l00037">onert::compiler::pass::PermutationInsertionPass::callback()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00188">onert::ir::train::TrainableGraph::disableBackward()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00181">onert::ir::train::TrainableGraph::enableBackward()</a>, <a class="el" href="backend_2acl__cl_2_kernel_generator_8cc_source.html#l00055">onert::backend::acl_cl::KernelGenerator::generate()</a>, <a class="el" href="backend_2acl__neon_2_kernel_generator_8cc_source.html#l00054">onert::backend::acl_neon::KernelGenerator::generate()</a>, <a class="el" href="backend_2ruy_2_kernel_generator_8cc_source.html#l00038">onert::backend::ruy::KernelGenerator::generate()</a>, <a class="el" href="core_2src_2backend_2builtin_2_kernel_generator_8cc_source.html#l00042">onert::backend::builtin::KernelGenerator::generate()</a>, <a class="el" href="backend_2trix_2_kernel_generator_8cc_source.html#l00047">onert::backend::trix::KernelGenerator::generate()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00150">onert::exec::TracingObserver::handleJobBegin()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00085">onert::exec::ProfileObserver::handleJobEnd()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00163">onert::exec::TracingObserver::handleJobEnd()</a>, <a class="el" href="_min_max_recorder_8cc_source.html#l00069">onert::exec::MinMaxRecorder::handleJobEnd()</a>, <a class="el" href="_static_shape_inferer_8cc_source.html#l00058">onert::compiler::StaticShapeInferer::infer()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00175">onert::ir::train::TrainableGraph::operation()</a>, <a class="el" href="_trainable_graph_8h_source.html#l00125">onert::ir::train::TrainableGraph::operations()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00051">onert::compiler::ShapeValidator::operator()()</a>, <a class="el" href="acl__cl_2_optimizer_8cc_source.html#l00040">onert::backend::acl_cl::Optimizer::optimize()</a>, <a class="el" href="acl__neon_2_optimizer_8cc_source.html#l00040">onert::backend::acl_neon::Optimizer::optimize()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00102">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>, <a class="el" href="_operation_pass_8cc_source.html#l00030">onert::compiler::pass::OperationPass::run()</a>, <a class="el" href="_unused_operand_elimination_pass_8cc_source.html#l00036">onert::compiler::pass::UnusedOperandEliminationPass::run()</a>, <a class="el" href="_h_e_scheduler_8cc_source.html#l00183">onert::compiler::HEScheduler::schedule()</a>, and <a class="el" href="_graph_8cc_source.html#l00184">topolSortOperations()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_dataflow_executor_8cc_source.html#l00026">onert::exec::DataflowExecutor::calculateRank()</a>, <a class="el" href="_constant_output_pass_8cc_source.html#l00026">onert::compiler::pass::ConstantOutputPass::callback()</a>, <a class="el" href="_permutation_insertion_pass_8cc_source.html#l00033">onert::compiler::pass::PermutationInsertionPass::callback()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00184">onert::ir::train::TrainableGraph::disableBackward()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00177">onert::ir::train::TrainableGraph::enableBackward()</a>, <a class="el" href="backend_2acl__cl_2_kernel_generator_8cc_source.html#l00051">onert::backend::acl_cl::KernelGenerator::generate()</a>, <a class="el" href="backend_2acl__neon_2_kernel_generator_8cc_source.html#l00050">onert::backend::acl_neon::KernelGenerator::generate()</a>, <a class="el" href="backend_2ruy_2_kernel_generator_8cc_source.html#l00034">onert::backend::ruy::KernelGenerator::generate()</a>, <a class="el" href="core_2src_2backend_2builtin_2_kernel_generator_8cc_source.html#l00038">onert::backend::builtin::KernelGenerator::generate()</a>, <a class="el" href="backend_2trix_2_kernel_generator_8cc_source.html#l00043">onert::backend::trix::KernelGenerator::generate()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00150">onert::exec::TracingObserver::handleJobBegin()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00085">onert::exec::ProfileObserver::handleJobEnd()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00163">onert::exec::TracingObserver::handleJobEnd()</a>, <a class="el" href="_min_max_recorder_8cc_source.html#l00067">onert::exec::MinMaxRecorder::handleJobEnd()</a>, <a class="el" href="_static_shape_inferer_8cc_source.html#l00056">onert::compiler::StaticShapeInferer::infer()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00171">onert::ir::train::TrainableGraph::operation()</a>, <a class="el" href="_trainable_graph_8h_source.html#l00121">onert::ir::train::TrainableGraph::operations()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00049">onert::compiler::ShapeValidator::operator()()</a>, <a class="el" href="acl__cl_2_optimizer_8cc_source.html#l00036">onert::backend::acl_cl::Optimizer::optimize()</a>, <a class="el" href="acl__neon_2_optimizer_8cc_source.html#l00036">onert::backend::acl_neon::Optimizer::optimize()</a>, <a class="el" href="backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html#l00098">onert::backend::cl_common::BackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator &gt;::planTensors()</a>, <a class="el" href="_operation_pass_8cc_source.html#l00026">onert::compiler::pass::OperationPass::run()</a>, <a class="el" href="_unused_operand_elimination_pass_8cc_source.html#l00032">onert::compiler::pass::UnusedOperandEliminationPass::run()</a>, <a class="el" href="_h_e_scheduler_8cc_source.html#l00183">onert::compiler::HEScheduler::schedule()</a>, and <a class="el" href="_graph_8cc_source.html#l00182">topolSortOperations()</a>.</p>
 
 </div>
 </div>
@@ -891,13 +891,13 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00094">94</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>{ _operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#a7cd6f8b68a4a42859754a7924ffd6a4c">remove</a>(ind); }</div>
-<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_a7cd6f8b68a4a42859754a7924ffd6a4c"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#a7cd6f8b68a4a42859754a7924ffd6a4c">onert::util::ObjectManager::remove</a></div><div class="ttdeci">void remove(const Index &amp;index)</div><div class="ttdoc">Remove the object that is associated with the given index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00111">ObjectManager.h:111</a></div></div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00092">92</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html">Graph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   92</span>{ _operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#a7cd6f8b68a4a42859754a7924ffd6a4c">remove</a>(ind); }</div>
+<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_a7cd6f8b68a4a42859754a7924ffd6a4c"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#a7cd6f8b68a4a42859754a7924ffd6a4c">onert::util::ObjectManager::remove</a></div><div class="ttdeci">void remove(const Index &amp;index)</div><div class="ttdoc">Remove the object that is associated with the given index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00109">ObjectManager.h:109</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00111">onert::util::ObjectManager&lt; Index, Object &gt;::remove()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00109">onert::util::ObjectManager&lt; Index, Object &gt;::remove()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00173">onert::ir::train::TrainableGraph::removeOperand()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00169">onert::ir::train::TrainableGraph::removeOperand()</a>.</p>
 
 </div>
 </div>
@@ -938,26 +938,26 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>OperationIndex <code>index</code> if successful, UNDEFINED otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00094">94</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   96</span>{</div>
-<div class="line"><span class="lineno">   97</span>  <span class="keyword">const</span> IOperation &amp;op_ref = *operation;</div>
-<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">if</span> (!checkOperandsForOperation(op_ref) || !_operations.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#afbdb465f211df41f9c367d611036244e">exist</a>(index))</div>
-<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">OperationIndex</a>{};</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>  <span class="comment">// Check the new operation has the same inputs/outputs as the existing operation</span></div>
-<div class="line"><span class="lineno">  102</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;old_op = _operations.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(index);</div>
-<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">if</span> (!(old_op.getInputs() == op_ref.getInputs() &amp;&amp; old_op.getOutputs() == op_ref.getOutputs()))</div>
-<div class="line"><span class="lineno">  104</span>  {</div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">OperationIndex</a>{};</div>
-<div class="line"><span class="lineno">  106</span>  }</div>
-<div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span>  <span class="keywordflow">return</span> _operations.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#a2e133024c9c6ac53309f2b5ba7ebb8b7">set</a>(index, std::move(operation));</div>
-<div class="line"><span class="lineno">  109</span>}</div>
-<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_a2e133024c9c6ac53309f2b5ba7ebb8b7"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#a2e133024c9c6ac53309f2b5ba7ebb8b7">onert::util::ObjectManager::set</a></div><div class="ttdeci">Index set(Index index, std::unique_ptr&lt; Object &gt; &amp;&amp;object)</div><div class="ttdoc">Set the object in the container with given index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00099">ObjectManager.h:99</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00092">92</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>{</div>
+<div class="line"><span class="lineno">   95</span>  <span class="keyword">const</span> IOperation &amp;op_ref = *operation;</div>
+<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">if</span> (!checkOperandsForOperation(op_ref) || !_operations.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#afbdb465f211df41f9c367d611036244e">exist</a>(index))</div>
+<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">OperationIndex</a>{};</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span>  <span class="comment">// Check the new operation has the same inputs/outputs as the existing operation</span></div>
+<div class="line"><span class="lineno">  100</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;old_op = _operations.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(index);</div>
+<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">if</span> (!(old_op.getInputs() == op_ref.getInputs() &amp;&amp; old_op.getOutputs() == op_ref.getOutputs()))</div>
+<div class="line"><span class="lineno">  102</span>  {</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">return</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">OperationIndex</a>{};</div>
+<div class="line"><span class="lineno">  104</span>  }</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">return</span> _operations.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#a2e133024c9c6ac53309f2b5ba7ebb8b7">set</a>(index, std::move(operation));</div>
+<div class="line"><span class="lineno">  107</span>}</div>
+<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_a2e133024c9c6ac53309f2b5ba7ebb8b7"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#a2e133024c9c6ac53309f2b5ba7ebb8b7">onert::util::ObjectManager::set</a></div><div class="ttdeci">Index set(Index index, std::unique_ptr&lt; Object &gt; &amp;&amp;object)</div><div class="ttdoc">Set the object in the container with given index.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00097">ObjectManager.h:97</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00169">onert::util::ObjectManager&lt; Index, Object &gt;::exist()</a>, <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a1914a6d903aa2908f6eafe804fd681a5">onert::ir::IOperation::getInputs()</a>, <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a982c1c71e3dac0179ca8abf812d6986f">onert::ir::IOperation::getOutputs()</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00099">onert::util::ObjectManager&lt; Index, Object &gt;::set()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00119">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00167">onert::util::ObjectManager&lt; Index, Object &gt;::exist()</a>, <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a1914a6d903aa2908f6eafe804fd681a5">onert::ir::IOperation::getInputs()</a>, <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a982c1c71e3dac0179ca8abf812d6986f">onert::ir::IOperation::getOutputs()</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00097">onert::util::ObjectManager&lt; Index, Object &gt;::set()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00111">onert::ir::train::TrainableGraph::replaceOperation()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00107">onert::ir::train::TrainableGraph::replaceOperation()</a>.</p>
 
 </div>
 </div>
@@ -987,15 +987,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00111">111</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  112</span>{</div>
-<div class="line"><span class="lineno">  113</span>  assert(_operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#afbdb465f211df41f9c367d611036244e">exist</a>(ind));</div>
-<div class="line"><span class="lineno">  114</span>  _operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind).data(std::move(data));</div>
-<div class="line"><span class="lineno">  115</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00109">109</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  110</span>{</div>
+<div class="line"><span class="lineno">  111</span>  assert(_operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#afbdb465f211df41f9c367d611036244e">exist</a>(ind));</div>
+<div class="line"><span class="lineno">  112</span>  _operands.<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(ind).data(std::move(data));</div>
+<div class="line"><span class="lineno">  113</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00169">onert::util::ObjectManager&lt; Index, Object &gt;::exist()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00119">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00167">onert::util::ObjectManager&lt; Index, Object &gt;::exist()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_base_loader_8h_source.html#l00363">onert::loader::BaseLoader&lt; LoaderDomain &gt;::loadOperand()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_base_loader_8h_source.html#l00361">onert::loader::BaseLoader&lt; LoaderDomain &gt;::loadOperand()</a>.</p>
 
 </div>
 </div>
@@ -1014,47 +1014,47 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00184">184</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  185</span>{</div>
-<div class="line"><span class="lineno">  186</span>  std::vector&lt;ir::OperationIndex&gt; ret;</div>
-<div class="line"><span class="lineno">  187</span>  util::Set&lt;ir::OperationIndex&gt; unvisited;</div>
-<div class="line"><span class="lineno">  188</span>  <a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">iterate</a>(</div>
-<div class="line"><span class="lineno">  189</span>    [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;index, <span class="keyword">const</span> ir::IOperation &amp;) { unvisited.add(index); });</div>
-<div class="line"><span class="lineno">  190</span> </div>
-<div class="line"><span class="lineno">  191</span>  std::function&lt;void(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;, <span class="keyword">const</span> ir::IOperation &amp;)&gt; dfs =</div>
-<div class="line"><span class="lineno">  192</span>    [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>, <span class="keyword">const</span> ir::IOperation &amp;op) -&gt; <span class="keywordtype">void</span> {</div>
-<div class="line"><span class="lineno">  193</span>    <span class="keywordflow">if</span> (!unvisited.contains(index))</div>
-<div class="line"><span class="lineno">  194</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  195</span>    unvisited.remove(index);</div>
-<div class="line"><span class="lineno">  196</span> </div>
-<div class="line"><span class="lineno">  197</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output : op.<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aee0bb9854c45b39799f6a9d317f8b140">getOutputs</a>() | ir::<a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54">Remove</a>::<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">DUPLICATED</a> | ir::<a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54">Remove</a>::<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">UNDEFINED</a>)</div>
-<div class="line"><span class="lineno">  198</span>    {</div>
-<div class="line"><span class="lineno">  199</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;operand = <a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aa6d6d361a7ebe1452e55d8789d6f36f7">operands</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(output);</div>
-<div class="line"><span class="lineno">  200</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;use : operand.getUses())</div>
-<div class="line"><span class="lineno">  201</span>      {</div>
-<div class="line"><span class="lineno">  202</span>        dfs(use, <a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().at(use));</div>
-<div class="line"><span class="lineno">  203</span>      }</div>
-<div class="line"><span class="lineno">  204</span>    }</div>
-<div class="line"><span class="lineno">  205</span>    ret.push_back(index);</div>
-<div class="line"><span class="lineno">  206</span>  };</div>
-<div class="line"><span class="lineno">  207</span>  <a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">iterate</a>(dfs);</div>
-<div class="line"><span class="lineno">  208</span> </div>
-<div class="line"><span class="lineno">  209</span>  assert(unvisited.empty()); <span class="comment">// All of the nodes must have been visited</span></div>
-<div class="line"><span class="lineno">  210</span>  <span class="comment">// Reversing Postorder DFS result to make it sorted in topoligical order</span></div>
-<div class="line"><span class="lineno">  211</span>  std::reverse(ret.begin(), ret.end());</div>
-<div class="line"><span class="lineno">  212</span>  <span class="keywordflow">return</span> ret;</div>
-<div class="line"><span class="lineno">  213</span>}</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_aa6d6d361a7ebe1452e55d8789d6f36f7"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#aa6d6d361a7ebe1452e55d8789d6f36f7">onert::ir::Graph::operands</a></div><div class="ttdeci">const Operands &amp; operands() const override</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00112">Graph.h:112</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_aceed2b4dccf1af8b94980a4df615338a"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">onert::ir::Graph::operations</a></div><div class="ttdeci">const Operations &amp; operations() const override</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00114">Graph.h:114</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_aee0bb9854c45b39799f6a9d317f8b140"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#aee0bb9854c45b39799f6a9d317f8b140">onert::ir::Graph::getOutputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getOutputs() const override</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00108">Graph.h:108</a></div></div>
-<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_ac73c1ef157e3bbe47709a786ebc6aae2"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">onert::util::ObjectManager::iterate</a></div><div class="ttdeci">void iterate(const std::function&lt; void(const Index &amp;, const Object &amp;)&gt; &amp;fn) const</div><div class="ttdoc">Iterate over the container with given function.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00186">ObjectManager.h:186</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_a5e8296b1d63c853b1ea62276ed809e54"><div class="ttname"><a href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54">onert::ir::Remove</a></div><div class="ttdeci">Remove</div><div class="ttdef"><b>Definition</b> <a href="_operand_index_sequence_8h_source.html#l00030">OperandIndexSequence.h:31</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00182">182</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  183</span>{</div>
+<div class="line"><span class="lineno">  184</span>  std::vector&lt;ir::OperationIndex&gt; ret;</div>
+<div class="line"><span class="lineno">  185</span>  util::Set&lt;ir::OperationIndex&gt; unvisited;</div>
+<div class="line"><span class="lineno">  186</span>  <a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">iterate</a>(</div>
+<div class="line"><span class="lineno">  187</span>    [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;index, <span class="keyword">const</span> ir::IOperation &amp;) { unvisited.add(index); });</div>
+<div class="line"><span class="lineno">  188</span> </div>
+<div class="line"><span class="lineno">  189</span>  std::function&lt;void(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;, <span class="keyword">const</span> ir::IOperation &amp;)&gt; dfs =</div>
+<div class="line"><span class="lineno">  190</span>    [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>, <span class="keyword">const</span> ir::IOperation &amp;op) -&gt; <span class="keywordtype">void</span> {</div>
+<div class="line"><span class="lineno">  191</span>    <span class="keywordflow">if</span> (!unvisited.contains(index))</div>
+<div class="line"><span class="lineno">  192</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  193</span>    unvisited.remove(index);</div>
+<div class="line"><span class="lineno">  194</span> </div>
+<div class="line"><span class="lineno">  195</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output : op.<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aee0bb9854c45b39799f6a9d317f8b140">getOutputs</a>() | ir::<a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54">Remove</a>::<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">DUPLICATED</a> | ir::<a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54">Remove</a>::<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">UNDEFINED</a>)</div>
+<div class="line"><span class="lineno">  196</span>    {</div>
+<div class="line"><span class="lineno">  197</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;operand = <a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aa6d6d361a7ebe1452e55d8789d6f36f7">operands</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#adb269e5affe5040bceb6a80b457a01be">at</a>(output);</div>
+<div class="line"><span class="lineno">  198</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;use : operand.getUses())</div>
+<div class="line"><span class="lineno">  199</span>      {</div>
+<div class="line"><span class="lineno">  200</span>        dfs(use, <a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().at(use));</div>
+<div class="line"><span class="lineno">  201</span>      }</div>
+<div class="line"><span class="lineno">  202</span>    }</div>
+<div class="line"><span class="lineno">  203</span>    ret.push_back(index);</div>
+<div class="line"><span class="lineno">  204</span>  };</div>
+<div class="line"><span class="lineno">  205</span>  <a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">iterate</a>(dfs);</div>
+<div class="line"><span class="lineno">  206</span> </div>
+<div class="line"><span class="lineno">  207</span>  assert(unvisited.empty()); <span class="comment">// All of the nodes must have been visited</span></div>
+<div class="line"><span class="lineno">  208</span>  <span class="comment">// Reversing Postorder DFS result to make it sorted in topoligical order</span></div>
+<div class="line"><span class="lineno">  209</span>  std::reverse(ret.begin(), ret.end());</div>
+<div class="line"><span class="lineno">  210</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><span class="lineno">  211</span>}</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_aa6d6d361a7ebe1452e55d8789d6f36f7"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#aa6d6d361a7ebe1452e55d8789d6f36f7">onert::ir::Graph::operands</a></div><div class="ttdeci">const Operands &amp; operands() const override</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00110">Graph.h:110</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_aceed2b4dccf1af8b94980a4df615338a"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">onert::ir::Graph::operations</a></div><div class="ttdeci">const Operations &amp; operations() const override</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00112">Graph.h:112</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_aee0bb9854c45b39799f6a9d317f8b140"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#aee0bb9854c45b39799f6a9d317f8b140">onert::ir::Graph::getOutputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getOutputs() const override</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00106">Graph.h:106</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_ac73c1ef157e3bbe47709a786ebc6aae2"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">onert::util::ObjectManager::iterate</a></div><div class="ttdeci">void iterate(const std::function&lt; void(const Index &amp;, const Object &amp;)&gt; &amp;fn) const</div><div class="ttdoc">Iterate over the container with given function.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00184">ObjectManager.h:184</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_a5e8296b1d63c853b1ea62276ed809e54"><div class="ttname"><a href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54">onert::ir::Remove</a></div><div class="ttdeci">Remove</div><div class="ttdef"><b>Definition</b> <a href="_operand_index_sequence_8h_source.html#l00028">OperandIndexSequence.h:29</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3"><div class="ttname"><a href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">onert::ir::Remove::UNDEFINED</a></div><div class="ttdeci">@ UNDEFINED</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8"><div class="ttname"><a href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">onert::ir::Remove::DUPLICATED</a></div><div class="ttdeci">@ DUPLICATED</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_set_8h_source.html#l00070">onert::util::Set&lt; Element &gt;::add()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00121">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, <a class="el" href="_set_8h_source.html#l00096">onert::util::Set&lt; Element &gt;::contains()</a>, <a class="el" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">onert::ir::DUPLICATED</a>, <a class="el" href="_set_8h_source.html#l00088">onert::util::Set&lt; Element &gt;::empty()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00186">onert::util::ObjectManager&lt; Index, Object &gt;::iterate()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00112">operands()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00114">operations()</a>, <a class="el" href="_set_8h_source.html#l00076">onert::util::Set&lt; Element &gt;::remove()</a>, and <a class="el" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">onert::ir::UNDEFINED</a>.</p>
+<p class="reference">References <a class="el" href="_set_8h_source.html#l00068">onert::util::Set&lt; Element &gt;::add()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00119">onert::util::ObjectManager&lt; Index, Object &gt;::at()</a>, <a class="el" href="_set_8h_source.html#l00094">onert::util::Set&lt; Element &gt;::contains()</a>, <a class="el" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a1d840e66127ec54a19244f29a07fb8b8">onert::ir::DUPLICATED</a>, <a class="el" href="_set_8h_source.html#l00086">onert::util::Set&lt; Element &gt;::empty()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00184">onert::util::ObjectManager&lt; Index, Object &gt;::iterate()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00110">operands()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00112">operations()</a>, <a class="el" href="_set_8h_source.html#l00074">onert::util::Set&lt; Element &gt;::remove()</a>, and <a class="el" href="namespaceonert_1_1ir.html#a5e8296b1d63c853b1ea62276ed809e54a0db45d2a4141101bdfe48e3314cfbca3">onert::ir::UNDEFINED</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_static_shape_inferer_8cc_source.html#l00058">onert::compiler::StaticShapeInferer::infer()</a>, <a class="el" href="_static_backward_shape_inferer_8cc_source.html#l00033">onert::compiler::train::StaticBackwardShapeInferer::infer()</a>, <a class="el" href="_linear_8cc_source.html#l00031">onert::compiler::Linear::linearize()</a>, and <a class="el" href="_trainable_graph_8cc_source.html#l00267">onert::ir::train::TrainableGraph::topolSortOperations()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_static_shape_inferer_8cc_source.html#l00056">onert::compiler::StaticShapeInferer::infer()</a>, <a class="el" href="_static_backward_shape_inferer_8cc_source.html#l00029">onert::compiler::train::StaticBackwardShapeInferer::infer()</a>, <a class="el" href="_linear_8cc_source.html#l00029">onert::compiler::Linear::linearize()</a>, and <a class="el" href="_trainable_graph_8cc_source.html#l00263">onert::ir::train::TrainableGraph::topolSortOperations()</a>.</p>
 
 </div>
 </div>
@@ -1074,29 +1074,29 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00149">149</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  150</span>{</div>
-<div class="line"><span class="lineno">  151</span>  <span class="comment">// Call graph verifications for the MODEL phase</span></div>
-<div class="line"><span class="lineno">  152</span>  {</div>
-<div class="line"><span class="lineno">  153</span>    <span class="comment">// Except for edge consistency, the user might have been given a bad model</span></div>
-<div class="line"><span class="lineno">  154</span>    <span class="comment">// so here it throws an execption rather than assertion.</span></div>
-<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">if</span> (!verifier::InputOutputChecker().<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a8a0fcc158f55f3f19f459f2ba380b165">verify</a>(*<span class="keyword">this</span>))</div>
-<div class="line"><span class="lineno">  156</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;One of model input and output operands does not exist.&quot;</span>};</div>
-<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">if</span> (!verifier::DAGChecker().<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a8a0fcc158f55f3f19f459f2ba380b165">verify</a>(*<span class="keyword">this</span>))</div>
-<div class="line"><span class="lineno">  158</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;The graph is cyclic.&quot;</span>};</div>
-<div class="line"><span class="lineno">  159</span>    assert(verifier::EdgeChecker().<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a8a0fcc158f55f3f19f459f2ba380b165">verify</a>(*<span class="keyword">this</span>));</div>
-<div class="line"><span class="lineno">  160</span>  }</div>
-<div class="line"><span class="lineno">  161</span> </div>
-<div class="line"><span class="lineno">  162</span>  <span class="comment">// Check shape independent operation feature</span></div>
-<div class="line"><span class="lineno">  163</span>  <span class="comment">// - Operand type</span></div>
-<div class="line"><span class="lineno">  164</span>  <span class="comment">// - Shape independent parameter</span></div>
-<div class="line"><span class="lineno">  165</span>  OperationValidator{*<span class="keyword">this</span>}();</div>
-<div class="line"><span class="lineno">  166</span>}</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_a8a0fcc158f55f3f19f459f2ba380b165"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#a8a0fcc158f55f3f19f459f2ba380b165">onert::ir::Graph::verify</a></div><div class="ttdeci">void verify(void) const</div><div class="ttdef"><b>Definition</b> <a href="_graph_8cc_source.html#l00149">Graph.cc:149</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00147">147</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  148</span>{</div>
+<div class="line"><span class="lineno">  149</span>  <span class="comment">// Call graph verifications for the MODEL phase</span></div>
+<div class="line"><span class="lineno">  150</span>  {</div>
+<div class="line"><span class="lineno">  151</span>    <span class="comment">// Except for edge consistency, the user might have been given a bad model</span></div>
+<div class="line"><span class="lineno">  152</span>    <span class="comment">// so here it throws an execption rather than assertion.</span></div>
+<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">if</span> (!verifier::InputOutputChecker().<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a8a0fcc158f55f3f19f459f2ba380b165">verify</a>(*<span class="keyword">this</span>))</div>
+<div class="line"><span class="lineno">  154</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;One of model input and output operands does not exist.&quot;</span>};</div>
+<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">if</span> (!verifier::DAGChecker().<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a8a0fcc158f55f3f19f459f2ba380b165">verify</a>(*<span class="keyword">this</span>))</div>
+<div class="line"><span class="lineno">  156</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;The graph is cyclic.&quot;</span>};</div>
+<div class="line"><span class="lineno">  157</span>    assert(verifier::EdgeChecker().<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#a8a0fcc158f55f3f19f459f2ba380b165">verify</a>(*<span class="keyword">this</span>));</div>
+<div class="line"><span class="lineno">  158</span>  }</div>
+<div class="line"><span class="lineno">  159</span> </div>
+<div class="line"><span class="lineno">  160</span>  <span class="comment">// Check shape independent operation feature</span></div>
+<div class="line"><span class="lineno">  161</span>  <span class="comment">// - Operand type</span></div>
+<div class="line"><span class="lineno">  162</span>  <span class="comment">// - Shape independent parameter</span></div>
+<div class="line"><span class="lineno">  163</span>  OperationValidator{*<span class="keyword">this</span>}();</div>
+<div class="line"><span class="lineno">  164</span>}</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_a8a0fcc158f55f3f19f459f2ba380b165"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#a8a0fcc158f55f3f19f459f2ba380b165">onert::ir::Graph::verify</a></div><div class="ttdeci">void verify(void) const</div><div class="ttdef"><b>Definition</b> <a href="_graph_8cc_source.html#l00147">Graph.cc:147</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_graph_8cc_source.html#l00149">verify()</a>.</p>
+<p class="reference">References <a class="el" href="_graph_8cc_source.html#l00147">verify()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00380">onert::ir::train::TrainableGraph::updateGraphDependency()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00154">onert::ir::train::TrainableGraph::verify()</a>, and <a class="el" href="_graph_8cc_source.html#l00149">verify()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_graph_8cc_source.html#l00376">onert::ir::train::TrainableGraph::updateGraphDependency()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00150">onert::ir::train::TrainableGraph::verify()</a>, and <a class="el" href="_graph_8cc_source.html#l00147">verify()</a>.</p>
 
 </div>
 </div>

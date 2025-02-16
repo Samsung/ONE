@@ -140,7 +140,7 @@ Static Public Attributes</h2></td></tr>
 <div class="textblock"><p>Class to represent position(offset) of tensor.<br  />
  Assume that the front is higher dimensional. i.g. N: 0, C: 1, H: 2, W: 3 for NCHW layout. </p>
 
-<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00036">36</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00034">34</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="adf1138d86e305931f48202a2634bdddd" name="adf1138d86e305931f48202a2634bdddd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adf1138d86e305931f48202a2634bdddd">&#9670;&#160;</a></span>Coordinates() <span class="overload">[1/4]</span></h2>
@@ -203,14 +203,14 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00052">52</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>                                                 : _coordinates{init}</div>
-<div class="line"><span class="lineno">   53</span>  {</div>
-<div class="line"><span class="lineno">   54</span>    assert(init.size() &lt;= <a class="code hl_variable" href="classonert_1_1ir_1_1_coordinates.html#a2ee28b60c189954f7b648d10a8a23f96">num_max_dimensions</a>);</div>
-<div class="line"><span class="lineno">   55</span>  }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_coordinates_html_a2ee28b60c189954f7b648d10a8a23f96"><div class="ttname"><a href="classonert_1_1ir_1_1_coordinates.html#a2ee28b60c189954f7b648d10a8a23f96">onert::ir::Coordinates::num_max_dimensions</a></div><div class="ttdeci">static constexpr size_t num_max_dimensions</div><div class="ttdef"><b>Definition</b> <a href="_coordinates_8h_source.html#l00039">Coordinates.h:39</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00050">50</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>                                                 : _coordinates{init}</div>
+<div class="line"><span class="lineno">   51</span>  {</div>
+<div class="line"><span class="lineno">   52</span>    assert(init.size() &lt;= <a class="code hl_variable" href="classonert_1_1ir_1_1_coordinates.html#a2ee28b60c189954f7b648d10a8a23f96">num_max_dimensions</a>);</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_coordinates_html_a2ee28b60c189954f7b648d10a8a23f96"><div class="ttname"><a href="classonert_1_1ir_1_1_coordinates.html#a2ee28b60c189954f7b648d10a8a23f96">onert::ir::Coordinates::num_max_dimensions</a></div><div class="ttdeci">static constexpr size_t num_max_dimensions</div><div class="ttdef"><b>Definition</b> <a href="_coordinates_8h_source.html#l00037">Coordinates.h:37</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_coordinates_8h_source.html#l00039">num_max_dimensions</a>.</p>
+<p class="reference">References <a class="el" href="_coordinates_8h_source.html#l00037">num_max_dimensions</a>.</p>
 
 </div>
 </div>
@@ -247,13 +247,13 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00061">61</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>                                                  : _coordinates{init.begin(), init.end()}</div>
-<div class="line"><span class="lineno">   62</span>  {</div>
-<div class="line"><span class="lineno">   63</span>    assert(init.size() &lt;= <a class="code hl_variable" href="classonert_1_1ir_1_1_coordinates.html#a2ee28b60c189954f7b648d10a8a23f96">num_max_dimensions</a>);</div>
-<div class="line"><span class="lineno">   64</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00059">59</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>                                                  : _coordinates{init.begin(), init.end()}</div>
+<div class="line"><span class="lineno">   60</span>  {</div>
+<div class="line"><span class="lineno">   61</span>    assert(init.size() &lt;= <a class="code hl_variable" href="classonert_1_1ir_1_1_coordinates.html#a2ee28b60c189954f7b648d10a8a23f96">num_max_dimensions</a>);</div>
+<div class="line"><span class="lineno">   62</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_coordinates_8h_source.html#l00039">num_max_dimensions</a>.</p>
+<p class="reference">References <a class="el" href="_coordinates_8h_source.html#l00037">num_max_dimensions</a>.</p>
 
 </div>
 </div>
@@ -290,8 +290,8 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00070">70</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>: _coordinates(rank, 0) {}</div>
+<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00068">68</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>: _coordinates(rank, 0) {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -322,8 +322,8 @@ Static Public Attributes</h2></td></tr>
 <p>begin() of const_iterator for this class </p>
 <dl class="section return"><dt>Returns</dt><dd>The first iterator of the coordinates </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00110">110</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  110</span>{ <span class="keywordflow">return</span> _coordinates.begin(); }</div>
+<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00108">108</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  108</span>{ <span class="keywordflow">return</span> _coordinates.begin(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -353,8 +353,8 @@ Static Public Attributes</h2></td></tr>
 <p>end() of const_iterator for this class </p>
 <dl class="section return"><dt>Returns</dt><dd>The last iterator of the coordinates </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00116">116</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  116</span>{ <span class="keywordflow">return</span> _coordinates.end(); }</div>
+<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00114">114</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  114</span>{ <span class="keywordflow">return</span> _coordinates.end(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -382,11 +382,11 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00098">98</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   99</span>  {</div>
-<div class="line"><span class="lineno">  100</span>    assert(dimension &lt; _coordinates.size());</div>
-<div class="line"><span class="lineno">  101</span>    <span class="keywordflow">return</span> _coordinates[dimension];</div>
-<div class="line"><span class="lineno">  102</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00096">96</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   97</span>  {</div>
+<div class="line"><span class="lineno">   98</span>    assert(dimension &lt; _coordinates.size());</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">return</span> _coordinates[dimension];</div>
+<div class="line"><span class="lineno">  100</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -433,19 +433,19 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00079">79</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>  {</div>
-<div class="line"><span class="lineno">   81</span>    assert(dimension &lt; <a class="code hl_variable" href="classonert_1_1ir_1_1_coordinates.html#a2ee28b60c189954f7b648d10a8a23f96">num_max_dimensions</a>);</div>
-<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">if</span> (dimension &gt;= _coordinates.size())</div>
-<div class="line"><span class="lineno">   83</span>    {</div>
-<div class="line"><span class="lineno">   84</span>      _coordinates.resize(dimension + 1, 0);</div>
-<div class="line"><span class="lineno">   85</span>    }</div>
-<div class="line"><span class="lineno">   86</span>    _coordinates[dimension] = coordinate;</div>
-<div class="line"><span class="lineno">   87</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00077">77</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   78</span>  {</div>
+<div class="line"><span class="lineno">   79</span>    assert(dimension &lt; <a class="code hl_variable" href="classonert_1_1ir_1_1_coordinates.html#a2ee28b60c189954f7b648d10a8a23f96">num_max_dimensions</a>);</div>
+<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">if</span> (dimension &gt;= _coordinates.size())</div>
+<div class="line"><span class="lineno">   81</span>    {</div>
+<div class="line"><span class="lineno">   82</span>      _coordinates.resize(dimension + 1, 0);</div>
+<div class="line"><span class="lineno">   83</span>    }</div>
+<div class="line"><span class="lineno">   84</span>    _coordinates[dimension] = coordinate;</div>
+<div class="line"><span class="lineno">   85</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_coordinates_8h_source.html#l00039">num_max_dimensions</a>.</p>
+<p class="reference">References <a class="el" href="_coordinates_8h_source.html#l00037">num_max_dimensions</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_coordinates_8cc_source.html#l00026">onert::ir::convertCoordinates()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00060">ShapeLoop()</a>, and <a class="el" href="_acl_sub_tensor_analyzer_8h_source.html#l00050">onert::backend::acl_common::AclSubTensorAnalyzer::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_coordinates_8cc_source.html#l00024">onert::ir::convertCoordinates()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_utils_8h_source.html#l00060">ShapeLoop()</a>, and <a class="el" href="_acl_sub_tensor_analyzer_8h_source.html#l00046">onert::backend::acl_common::AclSubTensorAnalyzer::visit()</a>.</p>
 
 </div>
 </div>
@@ -475,10 +475,10 @@ Static Public Attributes</h2></td></tr>
 <p>Return size of coordinates. </p>
 <dl class="section return"><dt>Returns</dt><dd>size of coordinates </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00095">95</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   95</span>{ <span class="keywordflow">return</span> _coordinates.size(); }</div>
+<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00093">93</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   93</span>{ <span class="keywordflow">return</span> _coordinates.size(); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="acl__common_2_convert_8cc_source.html#l00059">onert::backend::acl_common::asTensorCoordinate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="acl__common_2_convert_8cc_source.html#l00055">onert::backend::acl_common::asTensorCoordinate()</a>.</p>
 
 </div>
 </div>
@@ -503,9 +503,9 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00039">39</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_coordinates_8h_source.html#l00037">37</a> of file <a class="el" href="_coordinates_8h_source.html">Coordinates.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_coordinates_8h_source.html#l00052">Coordinates()</a>, <a class="el" href="_coordinates_8h_source.html#l00061">Coordinates()</a>, and <a class="el" href="_coordinates_8h_source.html#l00079">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_coordinates_8h_source.html#l00050">Coordinates()</a>, <a class="el" href="_coordinates_8h_source.html#l00059">Coordinates()</a>, and <a class="el" href="_coordinates_8h_source.html#l00077">set()</a>.</p>
 
 </div>
 </div>

@@ -121,42 +121,36 @@ $(document).ready(function(){initNavTree('_odd_output_pass_8h_source.html',''); 
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="runtime_2onert_2core_2src_2compiler_2train_2pass_2_pass_8h.html">Pass.h</a>&quot;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;ir/Index.h&quot;</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1compiler_1_1pass.html">onert::compiler::pass</a></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span>compiler</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span>pass</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="foldopen" id="foldopen00070" data-start="{" data-end="};">
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html">   70</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html">OddOutputPass</a> : <span class="keyword">public</span> <a class="code hl_class" href="classonert_1_1compiler_1_1pass_1_1_pass.html">Pass</a></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>{</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">using </span><a class="code hl_function" href="classonert_1_1compiler_1_1pass_1_1_pass.html#a96bd4e4fd3a287125ec0229abd0eaf97">Pass::Pass</a>;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html#a611d3c5d9fcaa014680a15f24a00ec65">   76</a></span>  std::string <a class="code hl_function" href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html#a611d3c5d9fcaa014680a15f24a00ec65">id</a>() final { <span class="keywordflow">return</span> <span class="stringliteral">&quot;OddOutputPass&quot;</span>; }</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html#a34e3bf2da1a076c9aaa05701c5440eab">run</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> insertPermute(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> input);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>};</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="};">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html">   66</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html">OddOutputPass</a> : <span class="keyword">public</span> <a class="code hl_class" href="classonert_1_1compiler_1_1pass_1_1_pass.html">Pass</a></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>{</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">using </span><a class="code hl_function" href="classonert_1_1compiler_1_1pass_1_1_pass.html#a96bd4e4fd3a287125ec0229abd0eaf97">Pass::Pass</a>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html#a611d3c5d9fcaa014680a15f24a00ec65">   72</a></span>  std::string <a class="code hl_function" href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html#a611d3c5d9fcaa014680a15f24a00ec65">id</a>() final { <span class="keywordflow">return</span> <span class="stringliteral">&quot;OddOutputPass&quot;</span>; }</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html#a34e3bf2da1a076c9aaa05701c5440eab">run</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> insertPermute(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> input);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
 </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>} <span class="comment">// namespace pass</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>} <span class="comment">// namespace compiler</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_COMPILER_PASS_ODD_OUTPUT_PASS_H__</span></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_odd_output_pass_html"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html">onert::compiler::pass::OddOutputPass</a></div><div class="ttdoc">Pass to specially handle odd outputs in a subgraph.</div><div class="ttdef"><b>Definition</b> <a href="_odd_output_pass_8h_source.html#l00070">OddOutputPass.h:71</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_odd_output_pass_html_a34e3bf2da1a076c9aaa05701c5440eab"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html#a34e3bf2da1a076c9aaa05701c5440eab">onert::compiler::pass::OddOutputPass::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="_odd_output_pass_8cc_source.html#l00030">OddOutputPass.cc:30</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_odd_output_pass_html_a611d3c5d9fcaa014680a15f24a00ec65"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html#a611d3c5d9fcaa014680a15f24a00ec65">onert::compiler::pass::OddOutputPass::id</a></div><div class="ttdeci">std::string id() final</div><div class="ttdef"><b>Definition</b> <a href="_odd_output_pass_8h_source.html#l00076">OddOutputPass.h:76</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_pass_html"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_pass.html">onert::compiler::pass::Pass</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2src_2compiler_2pass_2_pass_8h_source.html#l00039">Pass.h:40</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_pass_html_a96bd4e4fd3a287125ec0229abd0eaf97"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_pass.html#a96bd4e4fd3a287125ec0229abd0eaf97">onert::compiler::pass::Pass::Pass</a></div><div class="ttdeci">Pass(ir::Graph &amp;graph)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2src_2compiler_2pass_2_pass_8h_source.html#l00042">Pass.h:42</a></div></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>} <span class="comment">// namespace onert::compiler::pass</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_COMPILER_PASS_ODD_OUTPUT_PASS_H__</span></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_odd_output_pass_html"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html">onert::compiler::pass::OddOutputPass</a></div><div class="ttdoc">Pass to specially handle odd outputs in a subgraph.</div><div class="ttdef"><b>Definition</b> <a href="_odd_output_pass_8h_source.html#l00066">OddOutputPass.h:67</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_odd_output_pass_html_a34e3bf2da1a076c9aaa05701c5440eab"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html#a34e3bf2da1a076c9aaa05701c5440eab">onert::compiler::pass::OddOutputPass::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="_odd_output_pass_8cc_source.html#l00026">OddOutputPass.cc:26</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_odd_output_pass_html_a611d3c5d9fcaa014680a15f24a00ec65"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html#a611d3c5d9fcaa014680a15f24a00ec65">onert::compiler::pass::OddOutputPass::id</a></div><div class="ttdeci">std::string id() final</div><div class="ttdef"><b>Definition</b> <a href="_odd_output_pass_8h_source.html#l00072">OddOutputPass.h:72</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_pass_html"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_pass.html">onert::compiler::pass::Pass</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2src_2compiler_2pass_2_pass_8h_source.html#l00032">Pass.h:33</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1pass_1_1_pass_html_a96bd4e4fd3a287125ec0229abd0eaf97"><div class="ttname"><a href="classonert_1_1compiler_1_1pass_1_1_pass.html#a96bd4e4fd3a287125ec0229abd0eaf97">onert::compiler::pass::Pass::Pass</a></div><div class="ttdeci">Pass(ir::Graph &amp;graph)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2src_2compiler_2pass_2_pass_8h_source.html#l00035">Pass.h:35</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html"><div class="ttname"><a href="classonert_1_1util_1_1_index.html">onert::util::Index&lt; uint32_t, OperandIndexTag &gt;</a></div></div>
-<div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1compiler_1_1pass_html"><div class="ttname"><a href="namespaceonert_1_1compiler_1_1pass.html">onert::compiler::pass</a></div><div class="ttdef"><b>Definition</b> <a href="_constant_insertion_pass_8cc_source.html#l00022">ConstantInsertionPass.cc:23</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2src_2compiler_2train_2pass_2_pass_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2src_2compiler_2train_2pass_2_pass_8h.html">Pass.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

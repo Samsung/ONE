@@ -721,6 +721,20 @@ var namespaces_dup =
     [ "tflite2circle", "namespacetflite2circle.html", "namespacetflite2circle" ],
     [ "tflread", "namespacetflread.html", "namespacetflread" ],
     [ "TopologicalSortHelper", "namespace_topological_sort_helper.html", "namespace_topological_sort_helper" ],
+    [ "train_step_with_dataset", "namespacetrain__step__with__dataset.html", [
+      [ "createLoss", "namespacetrain__step__with__dataset.html#aefcb9c2f5944eb3ac40666b1c4b8360a", null ],
+      [ "createOptimizer", "namespacetrain__step__with__dataset.html#abf188699edc4821c5dd57593049af4d0", null ],
+      [ "initParse", "namespacetrain__step__with__dataset.html#ae2d33e586e050684ec975710bb72f370", null ],
+      [ "train_steps", "namespacetrain__step__with__dataset.html#aee9ce640192f62c65d7f064f69d7e6a2", null ],
+      [ "args", "namespacetrain__step__with__dataset.html#abad0eb8ea52c4d6f668ec639733403d8", null ]
+    ] ],
+    [ "train_with_dataset", "namespacetrain__with__dataset.html", [
+      [ "createLoss", "namespacetrain__with__dataset.html#a108acf2df482b0f0f08e970923f0416d", null ],
+      [ "createOptimizer", "namespacetrain__with__dataset.html#a55351efbf992774c44565059c828ff64", null ],
+      [ "initParse", "namespacetrain__with__dataset.html#afdf0a665deea3c4bceae85d863295a50", null ],
+      [ "train", "namespacetrain__with__dataset.html#a5aec5fb19360f057e82122316a7cdea0", null ],
+      [ "args", "namespacetrain__with__dataset.html#af9735dd9ae0eb5e72b192724ad108122", null ]
+    ] ],
     [ "training_configure_tool", "namespacetraining__configure__tool.html", "namespacetraining__configure__tool" ],
     [ "Util", "namespace_util.html", [
       [ "pretty_float", "namespace_util.html#a08554e25a1c8167355292fb68a90e914", null ],

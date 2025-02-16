@@ -134,40 +134,43 @@ $(document).ready(function(){initNavTree('runtime_2compute_2cker_2include_2cker_
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Range: invalid input values&quot;</span>);</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  }</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = (std::is_integral&lt;T&gt;::value</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                ? ((std::abs(limit - start) + std::abs(delta) - 1) / std::abs(delta))</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                : std::ceil(std::abs((limit - start) / delta)));</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>}</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_integral_v&lt;T&gt;)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">return</span> ((std::abs(limit - start) + std::abs(delta) - 1) / std::abs(delta));</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  }</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::ceil(std::abs((limit - start) / delta)));</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
 </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#a3936b12b0f6234b96375317f17841660">   44</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a3936b12b0f6234b96375317f17841660">Range</a>(<span class="keyword">const</span> T *start_data, <span class="keyword">const</span> T *limit_data, <span class="keyword">const</span> T *delta_data, T *output_data)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>{</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">const</span> T start_value = *start_data;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keyword">const</span> T delta_value = *delta_data;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keyword">const</span> T limit_value = *limit_data;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_elements = GetSize&lt;T&gt;(start_value, limit_value, delta_value);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  T value = start_value;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_elements; ++i)</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  {</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    output_data[i] = value;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    value += delta_value;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  }</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00048" data-start="{" data-end="}">
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespacennfw_1_1cker.html#a3936b12b0f6234b96375317f17841660">   48</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a3936b12b0f6234b96375317f17841660">Range</a>(<span class="keyword">const</span> T *start_data, <span class="keyword">const</span> T *limit_data, <span class="keyword">const</span> T *delta_data, T *output_data)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>{</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">const</span> T start_value = *start_data;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">const</span> T delta_value = *delta_data;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">const</span> T limit_value = *limit_data;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_elements = GetSize&lt;T&gt;(start_value, limit_value, delta_value);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  T value = start_value;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_elements; ++i)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    output_data[i] = value;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    value += delta_value;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}</div>
 </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>} <span class="comment">// namespace cker</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>} <span class="comment">// namespace nnfw</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#endif </span><span class="comment">// __NNFW_CKER_RANGE_H__</span></div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a3936b12b0f6234b96375317f17841660"><div class="ttname"><a href="namespacennfw_1_1cker.html#a3936b12b0f6234b96375317f17841660">nnfw::cker::Range</a></div><div class="ttdeci">void Range(const T *start_data, const T *limit_data, const T *delta_data, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_range_8h_source.html#l00044">Range.h:44</a></div></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>} <span class="comment">// namespace cker</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>} <span class="comment">// namespace nnfw</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#endif </span><span class="comment">// __NNFW_CKER_RANGE_H__</span></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a3936b12b0f6234b96375317f17841660"><div class="ttname"><a href="namespacennfw_1_1cker.html#a3936b12b0f6234b96375317f17841660">nnfw::cker::Range</a></div><div class="ttdeci">void Range(const T *start_data, const T *limit_data, const T *delta_data, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_range_8h_source.html#l00048">Range.h:48</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_aa70784168c1d95c479e6f0e228f0982f"><div class="ttname"><a href="namespacennfw_1_1cker.html#aa70784168c1d95c479e6f0e228f0982f">nnfw::cker::GetSize</a></div><div class="ttdeci">int GetSize(T start, T limit, T delta)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_range_8h_source.html#l00030">Range.h:30</a></div></div>
 <div class="ttc" id="anamespacennfw_html"><div class="ttname"><a href="namespacennfw.html">nnfw</a></div><div class="ttdef"><b>Definition</b> <a href="topk__v2_8h_source.html#l00029">topk_v2.h:30</a></div></div>
-<div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 <div class="ttc" id="aruntime_2compute_2cker_2include_2cker_2_shape_8h_html"><div class="ttname"><a href="runtime_2compute_2cker_2include_2cker_2_shape_8h.html">Shape.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

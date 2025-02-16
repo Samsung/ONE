@@ -185,7 +185,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00034">34</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00030">30</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a9f45e1d8b0822c1c9fceb6182e579bd0" name="a9f45e1d8b0822c1c9fceb6182e579bd0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9f45e1d8b0822c1c9fceb6182e579bd0">&#9670;&#160;</a></span>disposable_back_prop_tensors()</h2>
@@ -210,10 +210,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00060">60</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>  {</div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">return</span> _disposable_back_prop;</div>
-<div class="line"><span class="lineno">   63</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00056">56</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>  {</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">return</span> _disposable_back_prop;</div>
+<div class="line"><span class="lineno">   59</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -241,14 +241,14 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00038">38</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>  {</div>
-<div class="line"><span class="lineno">   40</span>    <span class="keyword">auto</span> itr = _disposable_back_prop.find(index);</div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> (itr != _disposable_back_prop.end())</div>
-<div class="line"><span class="lineno">   42</span>      <span class="keywordflow">return</span> itr-&gt;second.get();</div>
-<div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   45</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00034">34</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>  {</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keyword">auto</span> itr = _disposable_back_prop.find(index);</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">if</span> (itr != _disposable_back_prop.end())</div>
+<div class="line"><span class="lineno">   38</span>      <span class="keywordflow">return</span> itr-&gt;second.get();</div>
+<div class="line"><span class="lineno">   39</span> </div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   41</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -276,14 +276,14 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00065">65</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span>  {</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keyword">auto</span> itr = _layer_scope.find(index);</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">if</span> (itr != _layer_scope.end())</div>
-<div class="line"><span class="lineno">   69</span>      <span class="keywordflow">return</span> itr-&gt;second;</div>
-<div class="line"><span class="lineno">   70</span> </div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   72</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00061">61</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>  {</div>
+<div class="line"><span class="lineno">   63</span>    <span class="keyword">auto</span> itr = _layer_scope.find(index);</div>
+<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">if</span> (itr != _layer_scope.end())</div>
+<div class="line"><span class="lineno">   65</span>      <span class="keywordflow">return</span> itr-&gt;second;</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   68</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -310,10 +310,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00087">87</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   88</span>  {</div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">return</span> _layer_scope;</div>
-<div class="line"><span class="lineno">   90</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00083">83</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>  {</div>
+<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">return</span> _layer_scope;</div>
+<div class="line"><span class="lineno">   86</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -351,16 +351,16 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00047">47</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>  {</div>
-<div class="line"><span class="lineno">   50</span>    assert(tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keyword">auto</span> itr = _disposable_back_prop.find(index);</div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> (itr != _disposable_back_prop.end())</div>
-<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">throw</span> std::runtime_error{</div>
-<div class="line"><span class="lineno">   54</span>        <span class="stringliteral">&quot;Tried to set a disposable tensor but another disposable tensor already exists.&quot;</span>};</div>
-<div class="line"><span class="lineno">   55</span> </div>
-<div class="line"><span class="lineno">   56</span>    _disposable_back_prop[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] = std::move(tensor);</div>
-<div class="line"><span class="lineno">   57</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00043">43</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>  {</div>
+<div class="line"><span class="lineno">   46</span>    assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keyword">auto</span> itr = _disposable_back_prop.find(index);</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">if</span> (itr != _disposable_back_prop.end())</div>
+<div class="line"><span class="lineno">   49</span>      <span class="keywordflow">throw</span> std::runtime_error{</div>
+<div class="line"><span class="lineno">   50</span>        <span class="stringliteral">&quot;Tried to set a disposable tensor but another disposable tensor already exists.&quot;</span>};</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>    _disposable_back_prop[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] = std::move(tensor);</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -399,16 +399,16 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00074">74</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   76</span>  {</div>
-<div class="line"><span class="lineno">   77</span>    assert(tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keyword">auto</span> itr = _layer_scope.find(index);</div>
-<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">if</span> (itr != _layer_scope.end())</div>
-<div class="line"><span class="lineno">   80</span>      <span class="keywordflow">throw</span> std::runtime_error{</div>
-<div class="line"><span class="lineno">   81</span>        <span class="stringliteral">&quot;Tried to set a layer scope tensor but another layer scope tensor already exists.&quot;</span>};</div>
-<div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>    _layer_scope[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>;</div>
-<div class="line"><span class="lineno">   84</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_tensor_registry_8h_source.html#l00070">70</a> of file <a class="el" href="backend_2train_2_tensor_registry_8h_source.html">TensorRegistry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>  {</div>
+<div class="line"><span class="lineno">   73</span>    assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keyword">auto</span> itr = _layer_scope.find(index);</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">if</span> (itr != _layer_scope.end())</div>
+<div class="line"><span class="lineno">   76</span>      <span class="keywordflow">throw</span> std::runtime_error{</div>
+<div class="line"><span class="lineno">   77</span>        <span class="stringliteral">&quot;Tried to set a layer scope tensor but another layer scope tensor already exists.&quot;</span>};</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>    _layer_scope[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>;</div>
+<div class="line"><span class="lineno">   80</span>  }</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
 </div><!-- fragment -->
 </div>

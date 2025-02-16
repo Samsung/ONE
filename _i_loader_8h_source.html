@@ -121,30 +121,27 @@ $(document).ready(function(){initNavTree('_i_loader_8h_source.html',''); initRes
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1loader.html">onert::loader</a></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span>loader</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="foldopen" id="foldopen00030" data-start="{" data-end="};">
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classonert_1_1loader_1_1_i_loader.html">   30</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1loader_1_1_i_loader.html">ILoader</a></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classonert_1_1loader_1_1_i_loader.html#a7998cbb9538f34cd2a60ec26e893978c">   33</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="classonert_1_1loader_1_1_i_loader.html#a7998cbb9538f34cd2a60ec26e893978c">~ILoader</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classonert_1_1loader_1_1_i_loader.html#a7d66d772c30a7542a08efef3701e3534">   41</a></span>  <span class="keyword">virtual</span> std::unique_ptr&lt;ir::Model&gt; <a class="code hl_function" href="classonert_1_1loader_1_1_i_loader.html#a7d66d772c30a7542a08efef3701e3534">loadFromFile</a>(<span class="keyword">const</span> std::string &amp;file_path) = 0;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>};</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classonert_1_1loader_1_1_i_loader.html">   28</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1loader_1_1_i_loader.html">ILoader</a></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classonert_1_1loader_1_1_i_loader.html#a7998cbb9538f34cd2a60ec26e893978c">   31</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="classonert_1_1loader_1_1_i_loader.html#a7998cbb9538f34cd2a60ec26e893978c">~ILoader</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classonert_1_1loader_1_1_i_loader.html#a7d66d772c30a7542a08efef3701e3534">   39</a></span>  <span class="keyword">virtual</span> std::unique_ptr&lt;ir::Model&gt; <a class="code hl_function" href="classonert_1_1loader_1_1_i_loader.html#a7d66d772c30a7542a08efef3701e3534">loadFromFile</a>(<span class="keyword">const</span> std::string &amp;file_path) = 0;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>};</div>
 </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>} <span class="comment">// namespace onert::loader</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>} <span class="comment">// namespace loader</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_LOADER_ILOADER_H__</span></div>
-<div class="ttc" id="aclassonert_1_1loader_1_1_i_loader_html"><div class="ttname"><a href="classonert_1_1loader_1_1_i_loader.html">onert::loader::ILoader</a></div><div class="ttdef"><b>Definition</b> <a href="_i_loader_8h_source.html#l00030">ILoader.h:31</a></div></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_LOADER_ILOADER_H__</span></div>
+<div class="ttc" id="aclassonert_1_1loader_1_1_i_loader_html"><div class="ttname"><a href="classonert_1_1loader_1_1_i_loader.html">onert::loader::ILoader</a></div><div class="ttdef"><b>Definition</b> <a href="_i_loader_8h_source.html#l00028">ILoader.h:29</a></div></div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_i_loader_html_a7998cbb9538f34cd2a60ec26e893978c"><div class="ttname"><a href="classonert_1_1loader_1_1_i_loader.html#a7998cbb9538f34cd2a60ec26e893978c">onert::loader::ILoader::~ILoader</a></div><div class="ttdeci">virtual ~ILoader()=default</div></div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_i_loader_html_a7d66d772c30a7542a08efef3701e3534"><div class="ttname"><a href="classonert_1_1loader_1_1_i_loader.html#a7d66d772c30a7542a08efef3701e3534">onert::loader::ILoader::loadFromFile</a></div><div class="ttdeci">virtual std::unique_ptr&lt; ir::Model &gt; loadFromFile(const std::string &amp;file_path)=0</div><div class="ttdoc">Load model from file.</div></div>
-<div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1loader_html"><div class="ttname"><a href="namespaceonert_1_1loader.html">onert::loader</a></div><div class="ttdef"><b>Definition</b> <a href="_circle_loader_8h_source.html#l00024">CircleLoader.h:25</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2include_2ir_2_model_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2include_2ir_2_model_8h.html">Model.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

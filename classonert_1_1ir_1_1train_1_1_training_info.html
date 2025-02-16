@@ -140,7 +140,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00035">35</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00031">31</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a61fd3950b1f9778eb978f992b57b0b47" name="a61fd3950b1f9778eb978f992b57b0b47"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a61fd3950b1f9778eb978f992b57b0b47">&#9670;&#160;</a></span>TrainingInfo() <span class="overload">[1/3]</span></h2>
@@ -165,11 +165,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00038">38</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>    : _version{0}, _loss_info(), _optimizer_info(), _batch_size(0), _training_step{0},</div>
-<div class="line"><span class="lineno">   40</span>      _trainable_ops{}</div>
-<div class="line"><span class="lineno">   41</span>  {</div>
-<div class="line"><span class="lineno">   42</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00034">34</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>    : _version{0}, _loss_info(), _optimizer_info(), _batch_size(0), _training_step{0},</div>
+<div class="line"><span class="lineno">   36</span>      _trainable_ops{}</div>
+<div class="line"><span class="lineno">   37</span>  {</div>
+<div class="line"><span class="lineno">   38</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -274,10 +274,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00053">53</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>{ <span class="keywordflow">return</span> _batch_size; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00049">49</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> _batch_size; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_training_compiler_8cc_source.html#l00059">onert::compiler::train::TrainingCompiler::compile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_training_compiler_8cc_source.html#l00055">onert::compiler::train::TrainingCompiler::compile()</a>.</p>
 
 </div>
 </div>
@@ -304,10 +304,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00055">55</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <span class="keywordflow">return</span> _trainable_ops; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00051">51</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>{ <span class="keywordflow">return</span> _trainable_ops; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_training_compiler_8cc_source.html#l00059">onert::compiler::train::TrainingCompiler::compile()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_training_compiler_8cc_source.html#l00055">onert::compiler::train::TrainingCompiler::compile()</a>.</p>
 
 </div>
 </div>
@@ -326,35 +326,35 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8cc_source.html#l00026">26</a> of file <a class="el" href="_training_info_8cc_source.html">TrainingInfo.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">if</span> (_batch_size == 0)</div>
-<div class="line"><span class="lineno">   29</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   30</span> </div>
-<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">if</span> (_optimizer_info.<a class="code hl_variable" href="structonert_1_1ir_1_1train_1_1_optimizer_info.html#a6377fbd08cd4ee45195086ccc4cbee32">optim_code</a> == <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2aec0fc0100c4fc1ce4eea230c3dc10360">OptimizerCode::Undefined</a>)</div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   33</span> </div>
-<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">if</span> (_optimizer_info.<a class="code hl_variable" href="structonert_1_1ir_1_1train_1_1_optimizer_info.html#ad1b98a9a4dc1a27aaa99a2cf8c88b94a">learning_rate</a> &lt;= 0.0f)</div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (_loss_info.<a class="code hl_variable" href="structonert_1_1ir_1_1train_1_1_loss_info.html#a4bd1e6f14248781f51834d22b7f12f6f">loss_code</a> == <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52aec0fc0100c4fc1ce4eea230c3dc10360">LossCode::Undefined</a>)</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">if</span> (_loss_info.<a class="code hl_variable" href="structonert_1_1ir_1_1train_1_1_loss_info.html#a556b7f82e06213c28641a78a7b04cca9">reduction_type</a> == <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226daec0fc0100c4fc1ce4eea230c3dc10360">LossReductionType::Undefined</a>)</div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>  <span class="comment">// If there are invalid combination, add more condition-check here</span></div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   45</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8cc_source.html#l00022">22</a> of file <a class="el" href="_training_info_8cc_source.html">TrainingInfo.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   23</span>{</div>
+<div class="line"><span class="lineno">   24</span>  <span class="keywordflow">if</span> (_batch_size == 0)</div>
+<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   26</span> </div>
+<div class="line"><span class="lineno">   27</span>  <span class="keywordflow">if</span> (_optimizer_info.<a class="code hl_variable" href="structonert_1_1ir_1_1train_1_1_optimizer_info.html#a6377fbd08cd4ee45195086ccc4cbee32">optim_code</a> == <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2aec0fc0100c4fc1ce4eea230c3dc10360">OptimizerCode::Undefined</a>)</div>
+<div class="line"><span class="lineno">   28</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   29</span> </div>
+<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">if</span> (_optimizer_info.<a class="code hl_variable" href="structonert_1_1ir_1_1train_1_1_optimizer_info.html#ad1b98a9a4dc1a27aaa99a2cf8c88b94a">learning_rate</a> &lt;= 0.0f)</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">if</span> (_loss_info.<a class="code hl_variable" href="structonert_1_1ir_1_1train_1_1_loss_info.html#a4bd1e6f14248781f51834d22b7f12f6f">loss_code</a> == <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52aec0fc0100c4fc1ce4eea230c3dc10360">LossCode::Undefined</a>)</div>
+<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   35</span> </div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (_loss_info.<a class="code hl_variable" href="structonert_1_1ir_1_1train_1_1_loss_info.html#a556b7f82e06213c28641a78a7b04cca9">reduction_type</a> == <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226daec0fc0100c4fc1ce4eea230c3dc10360">LossReductionType::Undefined</a>)</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>  <span class="comment">// If there are invalid combination, add more condition-check here</span></div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   41</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a2cdc7e5960a14869ceeefc3320b35e52aec0fc0100c4fc1ce4eea230c3dc10360"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52aec0fc0100c4fc1ce4eea230c3dc10360">onert::ir::train::LossCode::Undefined</a></div><div class="ttdeci">@ Undefined</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a3a291a79d5fd8c967c49fab6af712bb2aec0fc0100c4fc1ce4eea230c3dc10360"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2aec0fc0100c4fc1ce4eea230c3dc10360">onert::ir::train::OptimizerCode::Undefined</a></div><div class="ttdeci">@ Undefined</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a6f49cb07ede6d9ac557f51419c43226daec0fc0100c4fc1ce4eea230c3dc10360"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226daec0fc0100c4fc1ce4eea230c3dc10360">onert::ir::train::LossReductionType::Undefined</a></div><div class="ttdeci">@ Undefined</div></div>
-<div class="ttc" id="astructonert_1_1ir_1_1train_1_1_loss_info_html_a4bd1e6f14248781f51834d22b7f12f6f"><div class="ttname"><a href="structonert_1_1ir_1_1train_1_1_loss_info.html#a4bd1e6f14248781f51834d22b7f12f6f">onert::ir::train::LossInfo::loss_code</a></div><div class="ttdeci">LossCode loss_code</div><div class="ttdef"><b>Definition</b> <a href="_loss_info_8h_source.html#l00044">LossInfo.h:44</a></div></div>
-<div class="ttc" id="astructonert_1_1ir_1_1train_1_1_loss_info_html_a556b7f82e06213c28641a78a7b04cca9"><div class="ttname"><a href="structonert_1_1ir_1_1train_1_1_loss_info.html#a556b7f82e06213c28641a78a7b04cca9">onert::ir::train::LossInfo::reduction_type</a></div><div class="ttdeci">LossReductionType reduction_type</div><div class="ttdef"><b>Definition</b> <a href="_loss_info_8h_source.html#l00045">LossInfo.h:45</a></div></div>
-<div class="ttc" id="astructonert_1_1ir_1_1train_1_1_optimizer_info_html_a6377fbd08cd4ee45195086ccc4cbee32"><div class="ttname"><a href="structonert_1_1ir_1_1train_1_1_optimizer_info.html#a6377fbd08cd4ee45195086ccc4cbee32">onert::ir::train::OptimizerInfo::optim_code</a></div><div class="ttdeci">OptimizerCode optim_code</div><div class="ttdef"><b>Definition</b> <a href="_optimizer_info_8h_source.html#l00031">OptimizerInfo.h:31</a></div></div>
-<div class="ttc" id="astructonert_1_1ir_1_1train_1_1_optimizer_info_html_ad1b98a9a4dc1a27aaa99a2cf8c88b94a"><div class="ttname"><a href="structonert_1_1ir_1_1train_1_1_optimizer_info.html#ad1b98a9a4dc1a27aaa99a2cf8c88b94a">onert::ir::train::OptimizerInfo::learning_rate</a></div><div class="ttdeci">float learning_rate</div><div class="ttdef"><b>Definition</b> <a href="_optimizer_info_8h_source.html#l00032">OptimizerInfo.h:32</a></div></div>
+<div class="ttc" id="astructonert_1_1ir_1_1train_1_1_loss_info_html_a4bd1e6f14248781f51834d22b7f12f6f"><div class="ttname"><a href="structonert_1_1ir_1_1train_1_1_loss_info.html#a4bd1e6f14248781f51834d22b7f12f6f">onert::ir::train::LossInfo::loss_code</a></div><div class="ttdeci">LossCode loss_code</div><div class="ttdef"><b>Definition</b> <a href="_loss_info_8h_source.html#l00040">LossInfo.h:40</a></div></div>
+<div class="ttc" id="astructonert_1_1ir_1_1train_1_1_loss_info_html_a556b7f82e06213c28641a78a7b04cca9"><div class="ttname"><a href="structonert_1_1ir_1_1train_1_1_loss_info.html#a556b7f82e06213c28641a78a7b04cca9">onert::ir::train::LossInfo::reduction_type</a></div><div class="ttdeci">LossReductionType reduction_type</div><div class="ttdef"><b>Definition</b> <a href="_loss_info_8h_source.html#l00041">LossInfo.h:41</a></div></div>
+<div class="ttc" id="astructonert_1_1ir_1_1train_1_1_optimizer_info_html_a6377fbd08cd4ee45195086ccc4cbee32"><div class="ttname"><a href="structonert_1_1ir_1_1train_1_1_optimizer_info.html#a6377fbd08cd4ee45195086ccc4cbee32">onert::ir::train::OptimizerInfo::optim_code</a></div><div class="ttdeci">OptimizerCode optim_code</div><div class="ttdef"><b>Definition</b> <a href="_optimizer_info_8h_source.html#l00027">OptimizerInfo.h:27</a></div></div>
+<div class="ttc" id="astructonert_1_1ir_1_1train_1_1_optimizer_info_html_ad1b98a9a4dc1a27aaa99a2cf8c88b94a"><div class="ttname"><a href="structonert_1_1ir_1_1train_1_1_optimizer_info.html#ad1b98a9a4dc1a27aaa99a2cf8c88b94a">onert::ir::train::OptimizerInfo::learning_rate</a></div><div class="ttdeci">float learning_rate</div><div class="ttdef"><b>Definition</b> <a href="_optimizer_info_8h_source.html#l00028">OptimizerInfo.h:28</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_optimizer_info_8h_source.html#l00032">onert::ir::train::OptimizerInfo::learning_rate</a>, <a class="el" href="_loss_info_8h_source.html#l00044">onert::ir::train::LossInfo::loss_code</a>, <a class="el" href="_optimizer_info_8h_source.html#l00031">onert::ir::train::OptimizerInfo::optim_code</a>, <a class="el" href="_loss_info_8h_source.html#l00045">onert::ir::train::LossInfo::reduction_type</a>, and <a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2aec0fc0100c4fc1ce4eea230c3dc10360">onert::ir::train::Undefined</a>.</p>
+<p class="reference">References <a class="el" href="_optimizer_info_8h_source.html#l00028">onert::ir::train::OptimizerInfo::learning_rate</a>, <a class="el" href="_loss_info_8h_source.html#l00040">onert::ir::train::LossInfo::loss_code</a>, <a class="el" href="_optimizer_info_8h_source.html#l00027">onert::ir::train::OptimizerInfo::optim_code</a>, <a class="el" href="_loss_info_8h_source.html#l00041">onert::ir::train::LossInfo::reduction_type</a>, and <a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2aec0fc0100c4fc1ce4eea230c3dc10360">onert::ir::train::Undefined</a>.</p>
 
 </div>
 </div>
@@ -381,10 +381,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00051">51</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>{ <span class="keywordflow">return</span> _loss_info; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00047">47</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> _loss_info; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_loss_insertion_pass_8cc_source.html#l00032">onert::compiler::train::pass::LossInsertionPass::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_loss_insertion_pass_8cc_source.html#l00026">onert::compiler::train::pass::LossInsertionPass::run()</a>.</p>
 
 </div>
 </div>
@@ -463,8 +463,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00052">52</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>{ <span class="keywordflow">return</span> _optimizer_info; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00048">48</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> _optimizer_info; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -492,8 +492,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00059">59</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{ _batch_size = batch_size; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00055">55</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>{ _batch_size = batch_size; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -521,8 +521,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00060">60</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>{ _loss_info = loss_info; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00056">56</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>{ _loss_info = loss_info; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -550,8 +550,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00061">61</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>{ _optimizer_info = optimizer_info; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00057">57</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>{ _optimizer_info = optimizer_info; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -579,10 +579,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00063">63</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   64</span>  {</div>
-<div class="line"><span class="lineno">   65</span>    _trainable_ops = trainable_ops;</div>
-<div class="line"><span class="lineno">   66</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00059">59</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>  {</div>
+<div class="line"><span class="lineno">   61</span>    _trainable_ops = trainable_ops;</div>
+<div class="line"><span class="lineno">   62</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -610,11 +610,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00058">58</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>{ _version = <a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_training_info.html#a0d5d0283f4688f95f22647f80d5ebc44">version</a>; }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_training_info_html_a0d5d0283f4688f95f22647f80d5ebc44"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_training_info.html#a0d5d0283f4688f95f22647f80d5ebc44">onert::ir::train::TrainingInfo::version</a></div><div class="ttdeci">uint32_t version() const</div><div class="ttdef"><b>Definition</b> <a href="_training_info_8h_source.html#l00050">TrainingInfo.h:50</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00054">54</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{ _version = <a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_training_info.html#a0d5d0283f4688f95f22647f80d5ebc44">version</a>; }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_training_info_html_a0d5d0283f4688f95f22647f80d5ebc44"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_training_info.html#a0d5d0283f4688f95f22647f80d5ebc44">onert::ir::train::TrainingInfo::version</a></div><div class="ttdeci">uint32_t version() const</div><div class="ttdef"><b>Definition</b> <a href="_training_info_8h_source.html#l00046">TrainingInfo.h:46</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_training_info_8h_source.html#l00050">version()</a>.</p>
+<p class="reference">References <a class="el" href="_training_info_8h_source.html#l00046">version()</a>.</p>
 
 </div>
 </div>
@@ -641,8 +641,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00062">62</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span>{ <span class="keywordflow">return</span> _training_step; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00058">58</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>{ <span class="keywordflow">return</span> _training_step; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -669,8 +669,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00054">54</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span>{ <span class="keywordflow">return</span> _training_step; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00050">50</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>{ <span class="keywordflow">return</span> _training_step; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -697,10 +697,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00050">50</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{ <span class="keywordflow">return</span> _version; }</div>
+<p class="definition">Definition at line <a class="el" href="_training_info_8h_source.html#l00046">46</a> of file <a class="el" href="_training_info_8h_source.html">TrainingInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> _version; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_training_info_8h_source.html#l00058">setVersion()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_training_info_8h_source.html#l00054">setVersion()</a>.</p>
 
 </div>
 </div>

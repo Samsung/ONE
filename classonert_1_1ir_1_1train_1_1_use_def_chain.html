@@ -132,7 +132,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00032">32</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00028">28</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a809bae26bc652eae9d2035ffd6762cec" name="a809bae26bc652eae9d2035ffd6762cec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a809bae26bc652eae9d2035ffd6762cec">&#9670;&#160;</a></span>UseDefChain() <span class="overload">[1/3]</span></h2>
@@ -158,12 +158,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00035">35</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>                                               : _operand{<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_use_def_chain.html#ab13f28d40ef8f57a73b8700ca480c03e">operand</a>}</div>
-<div class="line"><span class="lineno">   36</span>  {</div>
-<div class="line"><span class="lineno">   37</span>    <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   38</span>  }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_use_def_chain_html_ab13f28d40ef8f57a73b8700ca480c03e"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_use_def_chain.html#ab13f28d40ef8f57a73b8700ca480c03e">onert::ir::train::UseDefChain::operand</a></div><div class="ttdeci">const Operand &amp; operand() const</div><div class="ttdef"><b>Definition</b> <a href="_use_def_chain_8h_source.html#l00068">UseDefChain.h:68</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00031">31</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>                                               : _operand{<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_use_def_chain.html#ab13f28d40ef8f57a73b8700ca480c03e">operand</a>}</div>
+<div class="line"><span class="lineno">   32</span>  {</div>
+<div class="line"><span class="lineno">   33</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   34</span>  }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_use_def_chain_html_ab13f28d40ef8f57a73b8700ca480c03e"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_use_def_chain.html#ab13f28d40ef8f57a73b8700ca480c03e">onert::ir::train::UseDefChain::operand</a></div><div class="ttdeci">const Operand &amp; operand() const</div><div class="ttdef"><b>Definition</b> <a href="_use_def_chain_8h_source.html#l00064">UseDefChain.h:64</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -191,11 +191,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00039">39</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>    : _operand{other._operand}, _uses{other._uses}, _defs{other._defs}</div>
-<div class="line"><span class="lineno">   41</span>  {</div>
-<div class="line"><span class="lineno">   42</span>    <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   43</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00035">35</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>    : _operand{other._operand}, _uses{other._uses}, _defs{other._defs}</div>
+<div class="line"><span class="lineno">   37</span>  {</div>
+<div class="line"><span class="lineno">   38</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   39</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -223,11 +223,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00044">44</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>    : _operand{other._operand}, _uses{std::move(other._uses)}, _defs{std::move(other._defs)}</div>
-<div class="line"><span class="lineno">   46</span>  {</div>
-<div class="line"><span class="lineno">   47</span>    <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   48</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00040">40</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>    : _operand{other._operand}, _uses{std::move(other._uses)}, _defs{std::move(other._defs)}</div>
+<div class="line"><span class="lineno">   42</span>  {</div>
+<div class="line"><span class="lineno">   43</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   44</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -272,11 +272,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_chain_8cc_source.html#l00039">39</a> of file <a class="el" href="_use_def_chain_8cc_source.html">UseDefChain.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{</div>
-<div class="line"><span class="lineno">   41</span>  _uses.clear();</div>
-<div class="line"><span class="lineno">   42</span>  _defs.clear();</div>
-<div class="line"><span class="lineno">   43</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_chain_8cc_source.html#l00035">35</a> of file <a class="el" href="_use_def_chain_8cc_source.html">UseDefChain.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
+<div class="line"><span class="lineno">   37</span>  _uses.clear();</div>
+<div class="line"><span class="lineno">   38</span>  _defs.clear();</div>
+<div class="line"><span class="lineno">   39</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -303,8 +303,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00060">60</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>{ <span class="keywordflow">return</span> _defs; }</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00056">56</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>{ <span class="keywordflow">return</span> _defs; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -331,8 +331,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00059">59</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{ <span class="keywordflow">return</span> _uses; }</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00055">55</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <span class="keywordflow">return</span> _uses; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -352,14 +352,14 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_chain_8cc_source.html#l00030">30</a> of file <a class="el" href="_use_def_chain_8cc_source.html">UseDefChain.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>  <span class="comment">// defs must be valid</span></div>
-<div class="line"><span class="lineno">   33</span>  assert(idx.valid());</div>
-<div class="line"><span class="lineno">   34</span>  _defs.insert(idx);</div>
-<div class="line"><span class="lineno">   35</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_chain_8cc_source.html#l00026">26</a> of file <a class="el" href="_use_def_chain_8cc_source.html">UseDefChain.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
+<div class="line"><span class="lineno">   28</span>  <span class="comment">// defs must be valid</span></div>
+<div class="line"><span class="lineno">   29</span>  assert(idx.valid());</div>
+<div class="line"><span class="lineno">   30</span>  _defs.insert(idx);</div>
+<div class="line"><span class="lineno">   31</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00081">onert::ir::train::TrainingIndex&lt; T &gt;::valid()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00077">onert::ir::train::TrainingIndex&lt; T &gt;::valid()</a>.</p>
 
 </div>
 </div>
@@ -379,8 +379,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_chain_8cc_source.html#l00026">26</a> of file <a class="el" href="_use_def_chain_8cc_source.html">UseDefChain.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>{ _uses.insert(idx); }</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_chain_8cc_source.html#l00022">22</a> of file <a class="el" href="_use_def_chain_8cc_source.html">UseDefChain.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   22</span>{ _uses.insert(idx); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -407,8 +407,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00068">68</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   68</span>{ <span class="keywordflow">return</span> _operand; };</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_chain_8h_source.html#l00064">64</a> of file <a class="el" href="_use_def_chain_8h_source.html">UseDefChain.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>{ <span class="keywordflow">return</span> _operand; };</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -480,10 +480,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_chain_8cc_source.html#l00045">45</a> of file <a class="el" href="_use_def_chain_8cc_source.html">UseDefChain.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> &amp;_operand == &amp;other._operand &amp;&amp; _uses == other._uses &amp;&amp; _defs == other._defs;</div>
-<div class="line"><span class="lineno">   48</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_chain_8cc_source.html#l00041">41</a> of file <a class="el" href="_use_def_chain_8cc_source.html">UseDefChain.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
+<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> &amp;_operand == &amp;other._operand &amp;&amp; _uses == other._uses &amp;&amp; _defs == other._defs;</div>
+<div class="line"><span class="lineno">   44</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -503,8 +503,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_chain_8cc_source.html#l00037">37</a> of file <a class="el" href="_use_def_chain_8cc_source.html">UseDefChain.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{ _defs.erase(idx); }</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_chain_8cc_source.html#l00033">33</a> of file <a class="el" href="_use_def_chain_8cc_source.html">UseDefChain.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>{ _defs.erase(idx); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -524,8 +524,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_use_def_chain_8cc_source.html#l00028">28</a> of file <a class="el" href="_use_def_chain_8cc_source.html">UseDefChain.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   28</span>{ _uses.erase(idx); }</div>
+<p class="definition">Definition at line <a class="el" href="_use_def_chain_8cc_source.html#l00024">24</a> of file <a class="el" href="_use_def_chain_8cc_source.html">UseDefChain.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>{ _uses.erase(idx); }</div>
 </div><!-- fragment -->
 </div>
 </div>

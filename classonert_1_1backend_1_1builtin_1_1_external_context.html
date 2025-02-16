@@ -108,7 +108,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00037">37</a> of file <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html">ExternalContext.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00033">33</a> of file <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html">ExternalContext.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a70776ac3b439e83ea3b32064918b1842" name="a70776ac3b439e83ea3b32064918b1842"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a70776ac3b439e83ea3b32064918b1842">&#9670;&#160;</a></span>ExternalContext()</h2>
@@ -133,16 +133,16 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00043">43</a> of file <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html">ExternalContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>                    : _ruy_context(std::make_unique&lt;ruy::Context&gt;())</div>
-<div class="line"><span class="lineno">   44</span>  {</div>
-<div class="line"><span class="lineno">   45</span>    <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_external_context.html#ae2f51e4ae793bf06ca86d2866ed559e0">setMaxNumThreads</a>(<a class="code hl_function" href="namespaceonert_1_1util.html#abf338eb19fe688b7a0619ad5560716d0">onert::util::getConfigInt</a>(onert::util::config::NUM_THREADS));</div>
-<div class="line"><span class="lineno">   46</span>    initPerThreadState();</div>
-<div class="line"><span class="lineno">   47</span>  }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_external_context_html_ae2f51e4ae793bf06ca86d2866ed559e0"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_external_context.html#ae2f51e4ae793bf06ca86d2866ed559e0">onert::backend::builtin::ExternalContext::setMaxNumThreads</a></div><div class="ttdeci">void setMaxNumThreads(int max_num_threads)</div><div class="ttdef"><b>Definition</b> <a href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00049">ExternalContext.h:49</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1util_html_abf338eb19fe688b7a0619ad5560716d0"><div class="ttname"><a href="namespaceonert_1_1util.html#abf338eb19fe688b7a0619ad5560716d0">onert::util::getConfigInt</a></div><div class="ttdeci">int getConfigInt(const std::string &amp;key)</div><div class="ttdef"><b>Definition</b> <a href="_config_source_8cc_source.html#l00124">ConfigSource.cc:124</a></div></div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00039">39</a> of file <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html">ExternalContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>                    : _ruy_context(std::make_unique&lt;ruy::Context&gt;())</div>
+<div class="line"><span class="lineno">   40</span>  {</div>
+<div class="line"><span class="lineno">   41</span>    <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_external_context.html#ae2f51e4ae793bf06ca86d2866ed559e0">setMaxNumThreads</a>(<a class="code hl_function" href="namespaceonert_1_1util.html#abf338eb19fe688b7a0619ad5560716d0">onert::util::getConfigInt</a>(onert::util::config::NUM_THREADS));</div>
+<div class="line"><span class="lineno">   42</span>    initPerThreadState();</div>
+<div class="line"><span class="lineno">   43</span>  }</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_external_context_html_ae2f51e4ae793bf06ca86d2866ed559e0"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_external_context.html#ae2f51e4ae793bf06ca86d2866ed559e0">onert::backend::builtin::ExternalContext::setMaxNumThreads</a></div><div class="ttdeci">void setMaxNumThreads(int max_num_threads)</div><div class="ttdef"><b>Definition</b> <a href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00045">ExternalContext.h:45</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1util_html_abf338eb19fe688b7a0619ad5560716d0"><div class="ttname"><a href="namespaceonert_1_1util.html#abf338eb19fe688b7a0619ad5560716d0">onert::util::getConfigInt</a></div><div class="ttdeci">int getConfigInt(const std::string &amp;key)</div><div class="ttdef"><b>Definition</b> <a href="_config_source_8cc_source.html#l00122">ConfigSource.cc:122</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_config_source_8cc_source.html#l00124">onert::util::getConfigInt()</a>, and <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00049">setMaxNumThreads()</a>.</p>
+<p class="reference">References <a class="el" href="_config_source_8cc_source.html#l00122">onert::util::getConfigInt()</a>, and <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00045">setMaxNumThreads()</a>.</p>
 
 </div>
 </div>
@@ -170,8 +170,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00056">56</a> of file <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html">ExternalContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{ <span class="keywordflow">return</span> _ruy_context.get(); }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00052">52</a> of file <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html">ExternalContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>{ <span class="keywordflow">return</span> _ruy_context.get(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -199,16 +199,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00049">49</a> of file <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html">ExternalContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>  {</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> target_num_threads =</div>
-<div class="line"><span class="lineno">   52</span>      max_num_threads &gt; -1 ? max_num_threads : kDefaultNumThreadpoolThreads;</div>
-<div class="line"><span class="lineno">   53</span>    _ruy_context-&gt;set_max_num_threads(target_num_threads);</div>
-<div class="line"><span class="lineno">   54</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00045">45</a> of file <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html">ExternalContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>  {</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> target_num_threads =</div>
+<div class="line"><span class="lineno">   48</span>      max_num_threads &gt; -1 ? max_num_threads : kDefaultNumThreadpoolThreads;</div>
+<div class="line"><span class="lineno">   49</span>    _ruy_context-&gt;set_max_num_threads(target_num_threads);</div>
+<div class="line"><span class="lineno">   50</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="backend_2xnnpack_2_backend_context_8h_source.html#l00026">kDefaultNumThreadpoolThreads</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00043">ExternalContext()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00039">ExternalContext()</a>.</p>
 
 </div>
 </div>

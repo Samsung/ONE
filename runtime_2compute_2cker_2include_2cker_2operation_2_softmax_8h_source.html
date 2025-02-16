@@ -409,146 +409,145 @@ $(document).ready(function(){initNavTree('runtime_2compute_2cker_2include_2cker_
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  <span class="comment">// Offset is used to interpret the input data &quot;correctly&quot;.</span></div>
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>  <span class="comment">// If the input is uint8, the data will be unchanged.</span></div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>  <span class="comment">// If the input is int8, since it will be reinterpret as uint8.</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  <span class="comment">// e.g.,</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>  <span class="comment">// int8 127 will be applied &quot;offset&quot; to become 255 in uint8.</span></div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>  uint8_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0;</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  <span class="keywordflow">if</span> (std::is_same&lt;In, int8_t&gt;::value)</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>  {</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0x80;</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  }</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span> </div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  <span class="keyword">const</span> uint8_t *input_data_uint = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">input_data</a>);</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  <span class="comment">// This code uses ARM64-only instructions.</span></div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="comment">// TODO(b/143709993): Port to ARMv7</span></div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  <span class="comment">// Load the tables into registers. (4*4 128-bit registers)</span></div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  uint8x16x4_t table1[4];</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  table1[0] = vld1q_u8_x4(params.uint8_table1 + 16 * 4 * 0);</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>  table1[1] = vld1q_u8_x4(params.uint8_table1 + 16 * 4 * 1);</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  table1[2] = vld1q_u8_x4(params.uint8_table1 + 16 * 4 * 2);</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  table1[3] = vld1q_u8_x4(params.uint8_table1 + 16 * 4 * 3);</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span> </div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  uint8x16x4_t table2[4];</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  table2[0] = vld1q_u8_x4(params.uint8_table2 + 16 * 4 * 0);</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  table2[1] = vld1q_u8_x4(params.uint8_table2 + 16 * 4 * 1);</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  table2[2] = vld1q_u8_x4(params.uint8_table2 + 16 * 4 * 2);</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  table2[3] = vld1q_u8_x4(params.uint8_table2 + 16 * 4 * 3);</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; excluding_last_dim; ++i)</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  {</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    <span class="comment">// Find max quantized value.</span></div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    int32_t max_val = FindMaxValue(last_dim, input_data_uint, <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    int32_t sum_exp = 0;</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    <span class="keyword">const</span> int32_t max_uint8 = std::numeric_limits&lt;uint8_t&gt;::max();</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>    <span class="keyword">const</span> uint8_t table_offset = max_uint8 - max_val;</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    <span class="comment">// Calculate normalizer sum(exp(x)).</span></div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    <span class="keywordtype">int</span> sum_j = 0;</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    uint8x16_t table_offset_dup = vdupq_n_u8(table_offset);</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    uint8x16_t offset_dup = vdupq_n_u8(<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>    uint32x4_t sum_4 = vdupq_n_u32(0);</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> multiplier_shift = 8;</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    <span class="keywordflow">for</span> (; sum_j &lt;= last_dim - 16; sum_j += 16)</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>    {</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>      uint8x16_t input_value = vld1q_u8(input_data_uint + sum_j);</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>      input_value = veorq_u8(input_value, offset_dup);</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>      input_value = vaddq_u8(input_value, table_offset_dup);</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>      <span class="keyword">const</span> uint8x16_t output1 = aarch64_lookup_vector(table1, input_value);</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>      <span class="keyword">const</span> uint8x16_t output2 = aarch64_lookup_vector(table2, input_value);</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>      uint16x8_t exp_value1 = vshll_n_u8(vget_high_u8(output1), multiplier_shift);</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>      uint16x8_t exp_value2 = vshll_n_u8(vget_low_u8(output1), multiplier_shift);</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span> </div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>      exp_value1 = vaddw_u8(exp_value1, vget_high_u8(output2));</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>      exp_value2 = vaddw_u8(exp_value2, vget_low_u8(output2));</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span> </div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>      sum_4 = vpadalq_u16(sum_4, exp_value1);</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>      sum_4 = vpadalq_u16(sum_4, exp_value2);</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    }</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    <span class="keywordtype">int</span> temp = vgetq_lane_u32(sum_4, 0) + vgetq_lane_u32(sum_4, 1) + vgetq_lane_u32(sum_4, 2) +</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>               vgetq_lane_u32(sum_4, 3);</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    sum_exp += temp;</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    <span class="keywordflow">for</span> (; sum_j &lt; last_dim; ++sum_j)</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>    {</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>      <span class="keyword">const</span> uint8_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = (input_data_uint[sum_j] ^ <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>) + table_offset;</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span> </div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>      uint8_t part1 = params.uint8_table1[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>      uint8_t part2 = params.uint8_table2[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>      sum_exp += ((part1 &lt;&lt; 8) + part2);</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    }</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span> </div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> inv_sum_exp = 1.0f / (sum_exp * params.scale);</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span> </div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    int32_t multiplier, <a class="code hl_function" href="namespacemir__interpreter.html#a13c4b27ccfa519a60f9852f5858e4c5d">shift</a>;</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    <a class="code hl_function" href="namespacennfw_1_1cker.html#ac3eca060f6576cf61526caa7d3746f9f">QuantizeMultiplier</a>(inv_sum_exp, &amp;multiplier, &amp;shift);</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span> </div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    <span class="comment">// Normalize and quantize probabilities.</span></div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>    <span class="keywordtype">int</span> j = 0;</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    <span class="keyword">const</span> int32x4_t output_zp_dup = vdupq_n_s32(params.zero_point);</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    <span class="keyword">const</span> int32x4_t max_val_dup = vdupq_n_s32(clamp_max);</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    <span class="keyword">const</span> int32x4_t min_val_dup = vdupq_n_s32(clamp_min);</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span> </div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    <span class="keywordflow">for</span> (; j &lt;= last_dim - 16; j += 16)</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    {</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>      uint8x16_t input_value = vld1q_u8(input_data_uint + j);</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>      input_value = veorq_u8(input_value, offset_dup);</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>      input_value = vaddq_u8(input_value, table_offset_dup);</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span> </div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>      <span class="keyword">const</span> uint8x16_t output1 = aarch64_lookup_vector(table1, input_value);</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>      <span class="keyword">const</span> uint8x16_t output2 = aarch64_lookup_vector(table2, input_value);</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span> </div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>      uint16x8_t exp_value1 = vshll_n_u8(vget_high_u8(output1), multiplier_shift);</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>      uint16x8_t exp_value2 = vshll_n_u8(vget_low_u8(output1), multiplier_shift);</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span> </div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>      exp_value1 = vaddw_u8(exp_value1, vget_high_u8(output2));</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>      exp_value2 = vaddw_u8(exp_value2, vget_low_u8(output2));</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span> </div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>      int32x4x4_t output_value;</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>      output_value.val[0] = vreinterpretq_s32_u32(vmovl_u16(vget_high_u16(exp_value1)));</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>      output_value.val[1] = vreinterpretq_s32_u32(vmovl_u16(vget_low_u16(exp_value1)));</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>      output_value.val[2] = vreinterpretq_s32_u32(vmovl_u16(vget_high_u16(exp_value2)));</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>      output_value.val[3] = vreinterpretq_s32_u32(vmovl_u16(vget_low_u16(exp_value2)));</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span> </div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>      int32x4x4_t temp_val = MultiplyByQuantizedMultiplier4Rows(output_value, multiplier, shift);</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span> </div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>      temp_val.val[0] = vaddq_s32(temp_val.val[0], output_zp_dup);</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>      temp_val.val[1] = vaddq_s32(temp_val.val[1], output_zp_dup);</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>      temp_val.val[2] = vaddq_s32(temp_val.val[2], output_zp_dup);</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>      temp_val.val[3] = vaddq_s32(temp_val.val[3], output_zp_dup);</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span> </div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>      temp_val.val[0] = vmaxq_s32(vminq_s32(temp_val.val[0], max_val_dup), min_val_dup);</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>      temp_val.val[1] = vmaxq_s32(vminq_s32(temp_val.val[1], max_val_dup), min_val_dup);</div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>      temp_val.val[2] = vmaxq_s32(vminq_s32(temp_val.val[2], max_val_dup), min_val_dup);</div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>      temp_val.val[3] = vmaxq_s32(vminq_s32(temp_val.val[3], max_val_dup), min_val_dup);</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span> </div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>      StoreValue(temp_val, output_data + j);</div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    }</div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>    <span class="keywordflow">for</span> (; j &lt; last_dim; ++j)</div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>    {</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>      <span class="keyword">const</span> uint8_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = (input_data_uint[j] ^ <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>) + table_offset;</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>      <span class="keyword">const</span> uint8_t part1 = params.uint8_table1[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>      <span class="keyword">const</span> uint8_t part2 = params.uint8_table2[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>      <span class="keyword">const</span> int32_t exp_value = (part1 &lt;&lt; 8) + part2;</div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>      <span class="keyword">const</span> int32_t output_value = <a class="code hl_function" href="namespacennfw_1_1cker.html#af6b33a8f0c1d60e578337bdb8dcb3673">MultiplyByQuantizedMultiplier</a>(exp_value, multiplier, shift);</div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span> </div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>      <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[j] = <span class="keyword">static_cast&lt;</span>Out<span class="keyword">&gt;</span>(</div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>        std::max(std::min(clamp_max, output_value + params.zero_point), clamp_min));</div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>    }</div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>    input_data_uint += last_dim;</div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a> += last_dim;</div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>  }</div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>}</div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span> </div>
-<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>} <span class="comment">// namespace cker</span></div>
-<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>} <span class="comment">// namespace nnfw</span></div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span> </div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span><span class="preprocessor">#endif </span><span class="comment">// __NNFW_CKER_SOFTMAX_H__</span></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>  <span class="comment">// If the input is int8, since it will be reinterpreted as uint8.</span></div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  <span class="comment">// e.g., int8 127 will be offset to become 255 in uint8.</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>  uint8_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0;</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>  <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;In, int8_t&gt;)</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>  {</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0x80;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  }</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  <span class="keyword">const</span> uint8_t *input_data_uint = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">input_data</a>);</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  <span class="comment">// This code uses ARM64-only instructions.</span></div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  <span class="comment">// TODO(b/143709993): Port to ARMv7</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  <span class="comment">// Load the tables into registers. (4*4 128-bit registers)</span></div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  uint8x16x4_t table1[4];</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  table1[0] = vld1q_u8_x4(params.uint8_table1 + 16 * 4 * 0);</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  table1[1] = vld1q_u8_x4(params.uint8_table1 + 16 * 4 * 1);</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>  table1[2] = vld1q_u8_x4(params.uint8_table1 + 16 * 4 * 2);</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>  table1[3] = vld1q_u8_x4(params.uint8_table1 + 16 * 4 * 3);</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span> </div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  uint8x16x4_t table2[4];</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  table2[0] = vld1q_u8_x4(params.uint8_table2 + 16 * 4 * 0);</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>  table2[1] = vld1q_u8_x4(params.uint8_table2 + 16 * 4 * 1);</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  table2[2] = vld1q_u8_x4(params.uint8_table2 + 16 * 4 * 2);</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  table2[3] = vld1q_u8_x4(params.uint8_table2 + 16 * 4 * 3);</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; excluding_last_dim; ++i)</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  {</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>    <span class="comment">// Find max quantized value.</span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    int32_t max_val = FindMaxValue(last_dim, input_data_uint, <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    int32_t sum_exp = 0;</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <span class="keyword">const</span> int32_t max_uint8 = std::numeric_limits&lt;uint8_t&gt;::max();</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    <span class="keyword">const</span> uint8_t table_offset = max_uint8 - max_val;</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> </div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>    <span class="comment">// Calculate normalizer sum(exp(x)).</span></div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>    <span class="keywordtype">int</span> sum_j = 0;</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>    uint8x16_t table_offset_dup = vdupq_n_u8(table_offset);</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>    uint8x16_t offset_dup = vdupq_n_u8(<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>    uint32x4_t sum_4 = vdupq_n_u32(0);</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> multiplier_shift = 8;</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>    <span class="keywordflow">for</span> (; sum_j &lt;= last_dim - 16; sum_j += 16)</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    {</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>      uint8x16_t input_value = vld1q_u8(input_data_uint + sum_j);</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>      input_value = veorq_u8(input_value, offset_dup);</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>      input_value = vaddq_u8(input_value, table_offset_dup);</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span> </div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>      <span class="keyword">const</span> uint8x16_t output1 = aarch64_lookup_vector(table1, input_value);</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>      <span class="keyword">const</span> uint8x16_t output2 = aarch64_lookup_vector(table2, input_value);</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>      uint16x8_t exp_value1 = vshll_n_u8(vget_high_u8(output1), multiplier_shift);</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>      uint16x8_t exp_value2 = vshll_n_u8(vget_low_u8(output1), multiplier_shift);</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>      exp_value1 = vaddw_u8(exp_value1, vget_high_u8(output2));</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>      exp_value2 = vaddw_u8(exp_value2, vget_low_u8(output2));</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>      sum_4 = vpadalq_u16(sum_4, exp_value1);</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>      sum_4 = vpadalq_u16(sum_4, exp_value2);</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    }</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    <span class="keywordtype">int</span> temp = vgetq_lane_u32(sum_4, 0) + vgetq_lane_u32(sum_4, 1) + vgetq_lane_u32(sum_4, 2) +</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>               vgetq_lane_u32(sum_4, 3);</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    sum_exp += temp;</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span> </div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    <span class="keywordflow">for</span> (; sum_j &lt; last_dim; ++sum_j)</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    {</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>      <span class="keyword">const</span> uint8_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = (input_data_uint[sum_j] ^ <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>) + table_offset;</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span> </div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>      uint8_t part1 = params.uint8_table1[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>      uint8_t part2 = params.uint8_table2[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>      sum_exp += ((part1 &lt;&lt; 8) + part2);</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    }</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> inv_sum_exp = 1.0f / (sum_exp * params.scale);</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span> </div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    int32_t multiplier, <a class="code hl_function" href="namespacemir__interpreter.html#a13c4b27ccfa519a60f9852f5858e4c5d">shift</a>;</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    <a class="code hl_function" href="namespacennfw_1_1cker.html#ac3eca060f6576cf61526caa7d3746f9f">QuantizeMultiplier</a>(inv_sum_exp, &amp;multiplier, &amp;shift);</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span> </div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <span class="comment">// Normalize and quantize probabilities.</span></div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    <span class="keywordtype">int</span> j = 0;</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>    <span class="keyword">const</span> int32x4_t output_zp_dup = vdupq_n_s32(params.zero_point);</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    <span class="keyword">const</span> int32x4_t max_val_dup = vdupq_n_s32(clamp_max);</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    <span class="keyword">const</span> int32x4_t min_val_dup = vdupq_n_s32(clamp_min);</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span> </div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>    <span class="keywordflow">for</span> (; j &lt;= last_dim - 16; j += 16)</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    {</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>      uint8x16_t input_value = vld1q_u8(input_data_uint + j);</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>      input_value = veorq_u8(input_value, offset_dup);</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>      input_value = vaddq_u8(input_value, table_offset_dup);</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span> </div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>      <span class="keyword">const</span> uint8x16_t output1 = aarch64_lookup_vector(table1, input_value);</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>      <span class="keyword">const</span> uint8x16_t output2 = aarch64_lookup_vector(table2, input_value);</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span> </div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>      uint16x8_t exp_value1 = vshll_n_u8(vget_high_u8(output1), multiplier_shift);</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>      uint16x8_t exp_value2 = vshll_n_u8(vget_low_u8(output1), multiplier_shift);</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span> </div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>      exp_value1 = vaddw_u8(exp_value1, vget_high_u8(output2));</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>      exp_value2 = vaddw_u8(exp_value2, vget_low_u8(output2));</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span> </div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>      int32x4x4_t output_value;</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>      output_value.val[0] = vreinterpretq_s32_u32(vmovl_u16(vget_high_u16(exp_value1)));</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>      output_value.val[1] = vreinterpretq_s32_u32(vmovl_u16(vget_low_u16(exp_value1)));</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>      output_value.val[2] = vreinterpretq_s32_u32(vmovl_u16(vget_high_u16(exp_value2)));</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>      output_value.val[3] = vreinterpretq_s32_u32(vmovl_u16(vget_low_u16(exp_value2)));</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span> </div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>      int32x4x4_t temp_val = MultiplyByQuantizedMultiplier4Rows(output_value, multiplier, shift);</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span> </div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>      temp_val.val[0] = vaddq_s32(temp_val.val[0], output_zp_dup);</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>      temp_val.val[1] = vaddq_s32(temp_val.val[1], output_zp_dup);</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>      temp_val.val[2] = vaddq_s32(temp_val.val[2], output_zp_dup);</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>      temp_val.val[3] = vaddq_s32(temp_val.val[3], output_zp_dup);</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span> </div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>      temp_val.val[0] = vmaxq_s32(vminq_s32(temp_val.val[0], max_val_dup), min_val_dup);</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>      temp_val.val[1] = vmaxq_s32(vminq_s32(temp_val.val[1], max_val_dup), min_val_dup);</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>      temp_val.val[2] = vmaxq_s32(vminq_s32(temp_val.val[2], max_val_dup), min_val_dup);</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>      temp_val.val[3] = vmaxq_s32(vminq_s32(temp_val.val[3], max_val_dup), min_val_dup);</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span> </div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>      StoreValue(temp_val, output_data + j);</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>    }</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    <span class="keywordflow">for</span> (; j &lt; last_dim; ++j)</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>    {</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>      <span class="keyword">const</span> uint8_t <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = (input_data_uint[j] ^ <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>) + table_offset;</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>      <span class="keyword">const</span> uint8_t part1 = params.uint8_table1[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>      <span class="keyword">const</span> uint8_t part2 = params.uint8_table2[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>      <span class="keyword">const</span> int32_t exp_value = (part1 &lt;&lt; 8) + part2;</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>      <span class="keyword">const</span> int32_t output_value = <a class="code hl_function" href="namespacennfw_1_1cker.html#af6b33a8f0c1d60e578337bdb8dcb3673">MultiplyByQuantizedMultiplier</a>(exp_value, multiplier, shift);</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span> </div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>      <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[j] = <span class="keyword">static_cast&lt;</span>Out<span class="keyword">&gt;</span>(</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>        std::max(std::min(clamp_max, output_value + params.zero_point), clamp_min));</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>    }</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>    input_data_uint += last_dim;</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a> += last_dim;</div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>  }</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>}</div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span> </div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>} <span class="comment">// namespace cker</span></div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>} <span class="comment">// namespace nnfw</span></div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span> </div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="preprocessor">#endif </span><span class="comment">// __NNFW_CKER_SOFTMAX_H__</span></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html">nnfw::cker::Shape</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00031">Shape.h:32</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_shape_html_a01c6b5dc4b24d5c2567c47cb15318839"><div class="ttname"><a href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">nnfw::cker::Shape::DimensionsCount</a></div><div class="ttdeci">int32_t DimensionsCount() const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">Shape.h:91</a></div></div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>

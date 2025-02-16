@@ -124,7 +124,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_gradient_applier_8h_source.html#l00033">33</a> of file <a class="el" href="_gradient_applier_8h_source.html">GradientApplier.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_gradient_applier_8h_source.html#l00027">27</a> of file <a class="el" href="_gradient_applier_8h_source.html">GradientApplier.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a819fae3db65310753cb6934cd584bacc" name="a819fae3db65310753cb6934cd584bacc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a819fae3db65310753cb6934cd584bacc">&#9670;&#160;</a></span>GradientApplier()</h2>
@@ -141,11 +141,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gradient_applier_8cc_source.html#l00030">30</a> of file <a class="el" href="_gradient_applier_8cc_source.html">GradientApplier.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>                                 : _optimizer{<span class="keyword">nullptr</span>}, _gradient_tensor{}, _trainable_tensor{}</div>
-<div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   33</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_gradient_applier_8cc_source.html#l00024">24</a> of file <a class="el" href="_gradient_applier_8cc_source.html">GradientApplier.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>                                 : _optimizer{<span class="keyword">nullptr</span>}, _gradient_tensor{}, _trainable_tensor{}</div>
+<div class="line"><span class="lineno">   25</span>{</div>
+<div class="line"><span class="lineno">   26</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   27</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -209,11 +209,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_gradient_applier.html#a3d50130c961fdcca0cf81d5471c25908">onert::exec::train::IGradientApplier</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_gradient_applier_8cc_source.html#l00043">43</a> of file <a class="el" href="_gradient_applier_8cc_source.html">GradientApplier.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>{</div>
-<div class="line"><span class="lineno">   45</span>  _optimizer-&gt;<a class="code hl_function" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#aeef6393a96d49d19b0d83070e0bbe077">applyGradient</a>(</div>
-<div class="line"><span class="lineno">   46</span>    std::forward_as_tuple(*_gradient_tensor, *_trainable_tensor, training_step));</div>
-<div class="line"><span class="lineno">   47</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_gradient_applier_8cc_source.html#l00037">37</a> of file <a class="el" href="_gradient_applier_8cc_source.html">GradientApplier.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
+<div class="line"><span class="lineno">   39</span>  _optimizer-&gt;<a class="code hl_function" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#aeef6393a96d49d19b0d83070e0bbe077">applyGradient</a>(</div>
+<div class="line"><span class="lineno">   40</span>    std::forward_as_tuple(*_gradient_tensor, *_trainable_tensor, training_step));</div>
+<div class="line"><span class="lineno">   41</span>}</div>
 <div class="ttc" id="aclassonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer_html_aeef6393a96d49d19b0d83070e0bbe077"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#aeef6393a96d49d19b0d83070e0bbe077">onert::exec::train::optimizer::Optimizer::applyGradient</a></div><div class="ttdeci">virtual void applyGradient(const UpdateFactors &amp;factors) const =0</div><div class="ttdoc">Apply gradient to a trainable tensor.</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1exec_1_1train_1_1optimizer_1_1_optimizer.html#aeef6393a96d49d19b0d83070e0bbe077">onert::exec::train::optimizer::Optimizer::applyGradient()</a>.</p>
@@ -252,12 +252,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_gradient_applier_8cc_source.html#l00035">35</a> of file <a class="el" href="_gradient_applier_8cc_source.html">GradientApplier.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  _optimizer = <a class="code hl_namespace" href="namespaceoptimizer.html">optimizer</a>;</div>
-<div class="line"><span class="lineno">   39</span>  _gradient_tensor = gradient;</div>
-<div class="line"><span class="lineno">   40</span>  _trainable_tensor = trainable;</div>
-<div class="line"><span class="lineno">   41</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_gradient_applier_8cc_source.html#l00029">29</a> of file <a class="el" href="_gradient_applier_8cc_source.html">GradientApplier.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
+<div class="line"><span class="lineno">   32</span>  _optimizer = <a class="code hl_namespace" href="namespaceoptimizer.html">optimizer</a>;</div>
+<div class="line"><span class="lineno">   33</span>  _gradient_tensor = gradient;</div>
+<div class="line"><span class="lineno">   34</span>  _trainable_tensor = trainable;</div>
+<div class="line"><span class="lineno">   35</span>}</div>
 <div class="ttc" id="anamespaceoptimizer_html"><div class="ttname"><a href="namespaceoptimizer.html">optimizer</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2api_2python_2package_2experimental_2train_2optimizer_2____init_____8py_source.html#l00001">__init__.py:1</a></div></div>
 </div><!-- fragment -->
 </div>

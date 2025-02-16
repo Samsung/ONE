@@ -107,7 +107,7 @@ var searchData=
   ['exportcontext_104',['ExportContext',['../structluci_1_1_export_context.html',1,'luci']]],
   ['expression_105',['Expression',['../structluci_1_1pass_1_1_expression.html',1,'luci::pass']]],
   ['expressioncache_106',['ExpressionCache',['../classluci_1_1pass_1_1_expression_cache.html',1,'luci::pass']]],
-  ['externalcontext_107',['externalcontext',['../classonert_1_1backend_1_1builtin_1_1_external_context.html',1,'onert::backend::builtin::ExternalContext'],['../classonert_1_1backend_1_1cpu_1_1_external_context.html',1,'onert::backend::cpu::ExternalContext'],['../classonert_1_1backend_1_1ruy_1_1_external_context.html',1,'onert::backend::ruy::ExternalContext'],['../classonert_1_1backend_1_1xnnpack_1_1_external_context.html',1,'onert::backend::xnnpack::ExternalContext']]],
+  ['externalcontext_107',['externalcontext',['../classonert_1_1backend_1_1builtin_1_1_external_context.html',1,'onert::backend::builtin::ExternalContext'],['../classonert_1_1backend_1_1cpu_1_1_external_context.html',1,'onert::backend::cpu::ExternalContext'],['../classonert_1_1backend_1_1ruy_1_1_external_context.html',1,'onert::backend::ruy::ExternalContext']]],
   ['externaldata_108',['ExternalData',['../classonert_1_1ir_1_1_external_data.html',1,'onert::ir']]],
   ['externalregion_109',['ExternalRegion',['../classmir_1_1_external_region.html',1,'mir']]],
   ['externaltensor_110',['ExternalTensor',['../classonert_1_1backend_1_1basic_1_1_external_tensor.html',1,'onert::backend::basic']]]

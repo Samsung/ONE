@@ -110,7 +110,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8h_source.html#l00032">32</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8h_source.html">MemoryPlannerFactory.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8h_source.html#l00028">28</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8h_source.html">MemoryPlannerFactory.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a44f84d4fd1b9ecddeb613a8cd2059eb7" name="a44f84d4fd1b9ecddeb613a8cd2059eb7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a44f84d4fd1b9ecddeb613a8cd2059eb7">&#9670;&#160;</a></span>create()</h2>
@@ -128,22 +128,22 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html#l00034">34</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html">MemoryPlannerFactory.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
-<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (key == <span class="stringliteral">&quot;FirstFit&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html#l00030">30</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html">MemoryPlannerFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
+<div class="line"><span class="lineno">   32</span>  <span class="keywordflow">if</span> (key == <span class="stringliteral">&quot;FirstFit&quot;</span>)</div>
+<div class="line"><span class="lineno">   33</span>  {</div>
+<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> FirstFitPlanner;</div>
+<div class="line"><span class="lineno">   35</span>  }</div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (key == <span class="stringliteral">&quot;Bump&quot;</span>)</div>
 <div class="line"><span class="lineno">   37</span>  {</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> FirstFitPlanner;</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> BumpPlanner;</div>
 <div class="line"><span class="lineno">   39</span>  }</div>
-<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (key == <span class="stringliteral">&quot;Bump&quot;</span>)</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (key == <span class="stringliteral">&quot;WIC&quot;</span>)</div>
 <div class="line"><span class="lineno">   41</span>  {</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> BumpPlanner;</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> WICPlanner;</div>
 <div class="line"><span class="lineno">   43</span>  }</div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (key == <span class="stringliteral">&quot;WIC&quot;</span>)</div>
-<div class="line"><span class="lineno">   45</span>  {</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> WICPlanner;</div>
-<div class="line"><span class="lineno">   47</span>  }</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> <span class="keyword">new</span> FirstFitPlanner; <span class="comment">// Default Planner</span></div>
-<div class="line"><span class="lineno">   49</span>}</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">return</span> <span class="keyword">new</span> FirstFitPlanner; <span class="comment">// Default Planner</span></div>
+<div class="line"><span class="lineno">   45</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -170,11 +170,11 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html#l00028">28</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html">MemoryPlannerFactory.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
-<div class="line"><span class="lineno">   30</span>  <span class="keyword">static</span> MemoryPlannerFactory instance;</div>
-<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">return</span> instance;</div>
-<div class="line"><span class="lineno">   32</span>}</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html#l00024">24</a> of file <a class="el" href="core_2src_2backend_2basic_2_memory_planner_factory_8cc_source.html">MemoryPlannerFactory.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>{</div>
+<div class="line"><span class="lineno">   26</span>  <span class="keyword">static</span> MemoryPlannerFactory instance;</div>
+<div class="line"><span class="lineno">   27</span>  <span class="keywordflow">return</span> instance;</div>
+<div class="line"><span class="lineno">   28</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

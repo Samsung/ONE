@@ -210,7 +210,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_n_e_tensor_8h_source.html#l00034">34</a> of file <a class="el" href="_n_e_tensor_8h_source.html">NETensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_n_e_tensor_8h_source.html#l00028">28</a> of file <a class="el" href="_n_e_tensor_8h_source.html">NETensor.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a59df47906dab86c4e8a5d43ced6fa995" name="a59df47906dab86c4e8a5d43ced6fa995"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a59df47906dab86c4e8a5d43ced6fa995">&#9670;&#160;</a></span>NETensor() <span class="overload">[1/2]</span></h2>
@@ -269,17 +269,17 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_n_e_tensor_8cc_source.html#l00030">30</a> of file <a class="el" href="_n_e_tensor_8cc_source.html">NETensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>  : <a class="code hl_function" href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_i_n_e_tensor.html#ab351b7d85ec2bc4e31d041cea8a60cef">INETensor</a>{rank}, _ne_tensor(std::make_shared&lt;arm_compute::Tensor&gt;()), _num_uses{<a class="code hl_function" href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor.html#a8ba36b8bf2e456955b755e28067aaa34">num_uses</a>}</div>
-<div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <a class="code hl_function" href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor.html#a608d3488b9e17cdbf233b67f5e495f9e">allocator</a>()-&gt;init(<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#afede75037ae586728ec1512b812d48bb">info</a>);</div>
-<div class="line"><span class="lineno">   34</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor_html_afede75037ae586728ec1512b812d48bb"><div class="ttname"><a href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#afede75037ae586728ec1512b812d48bb">onert::backend::acl_common::IACLTensor::info</a></div><div class="ttdeci">const arm_compute::ITensorInfo * info() const</div><div class="ttdef"><b>Definition</b> <a href="_i_a_c_l_tensor_8h_source.html#l00071">IACLTensor.h:71</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1acl__neon_1_1operand_1_1_i_n_e_tensor_html_ab351b7d85ec2bc4e31d041cea8a60cef"><div class="ttname"><a href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_i_n_e_tensor.html#ab351b7d85ec2bc4e31d041cea8a60cef">onert::backend::acl_neon::operand::INETensor::INETensor</a></div><div class="ttdeci">INETensor(size_t rank)</div><div class="ttdef"><b>Definition</b> <a href="_i_n_e_tensor_8h_source.html#l00036">INETensor.h:36</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor_html_a608d3488b9e17cdbf233b67f5e495f9e"><div class="ttname"><a href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor.html#a608d3488b9e17cdbf233b67f5e495f9e">onert::backend::acl_neon::operand::NETensor::allocator</a></div><div class="ttdeci">arm_compute::TensorAllocator * allocator()</div><div class="ttdef"><b>Definition</b> <a href="_n_e_tensor_8cc_source.html#l00040">NETensor.cc:40</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor_html_a8ba36b8bf2e456955b755e28067aaa34"><div class="ttname"><a href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor.html#a8ba36b8bf2e456955b755e28067aaa34">onert::backend::acl_neon::operand::NETensor::num_uses</a></div><div class="ttdeci">size_t num_uses() const</div><div class="ttdef"><b>Definition</b> <a href="_n_e_tensor_8h_source.html#l00045">NETensor.h:45</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_n_e_tensor_8cc_source.html#l00024">24</a> of file <a class="el" href="_n_e_tensor_8cc_source.html">NETensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>  : <a class="code hl_function" href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_i_n_e_tensor.html#ab351b7d85ec2bc4e31d041cea8a60cef">INETensor</a>{rank}, _ne_tensor(std::make_shared&lt;arm_compute::Tensor&gt;()), _num_uses{<a class="code hl_function" href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor.html#a8ba36b8bf2e456955b755e28067aaa34">num_uses</a>}</div>
+<div class="line"><span class="lineno">   26</span>{</div>
+<div class="line"><span class="lineno">   27</span>  <a class="code hl_function" href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor.html#a608d3488b9e17cdbf233b67f5e495f9e">allocator</a>()-&gt;init(<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#afede75037ae586728ec1512b812d48bb">info</a>);</div>
+<div class="line"><span class="lineno">   28</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor_html_afede75037ae586728ec1512b812d48bb"><div class="ttname"><a href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#afede75037ae586728ec1512b812d48bb">onert::backend::acl_common::IACLTensor::info</a></div><div class="ttdeci">const arm_compute::ITensorInfo * info() const</div><div class="ttdef"><b>Definition</b> <a href="_i_a_c_l_tensor_8h_source.html#l00067">IACLTensor.h:67</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1acl__neon_1_1operand_1_1_i_n_e_tensor_html_ab351b7d85ec2bc4e31d041cea8a60cef"><div class="ttname"><a href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_i_n_e_tensor.html#ab351b7d85ec2bc4e31d041cea8a60cef">onert::backend::acl_neon::operand::INETensor::INETensor</a></div><div class="ttdeci">INETensor(size_t rank)</div><div class="ttdef"><b>Definition</b> <a href="_i_n_e_tensor_8h_source.html#l00030">INETensor.h:30</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor_html_a608d3488b9e17cdbf233b67f5e495f9e"><div class="ttname"><a href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor.html#a608d3488b9e17cdbf233b67f5e495f9e">onert::backend::acl_neon::operand::NETensor::allocator</a></div><div class="ttdeci">arm_compute::TensorAllocator * allocator()</div><div class="ttdef"><b>Definition</b> <a href="_n_e_tensor_8cc_source.html#l00034">NETensor.cc:34</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor_html_a8ba36b8bf2e456955b755e28067aaa34"><div class="ttname"><a href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_n_e_tensor.html#a8ba36b8bf2e456955b755e28067aaa34">onert::backend::acl_neon::operand::NETensor::num_uses</a></div><div class="ttdeci">size_t num_uses() const</div><div class="ttdef"><b>Definition</b> <a href="_n_e_tensor_8h_source.html#l00039">NETensor.h:39</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_n_e_tensor_8cc_source.html#l00040">allocator()</a>, and <a class="el" href="_i_a_c_l_tensor_8h_source.html#l00071">onert::backend::acl_common::IACLTensor::info()</a>.</p>
+<p class="reference">References <a class="el" href="_n_e_tensor_8cc_source.html#l00034">allocator()</a>, and <a class="el" href="_i_a_c_l_tensor_8h_source.html#l00067">onert::backend::acl_common::IACLTensor::info()</a>.</p>
 
 </div>
 </div>
@@ -299,10 +299,10 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_n_e_tensor_8cc_source.html#l00040">40</a> of file <a class="el" href="_n_e_tensor_8cc_source.html">NETensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{ <span class="keywordflow">return</span> _ne_tensor-&gt;allocator(); }</div>
+<p class="definition">Definition at line <a class="el" href="_n_e_tensor_8cc_source.html#l00034">34</a> of file <a class="el" href="_n_e_tensor_8cc_source.html">NETensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{ <span class="keywordflow">return</span> _ne_tensor-&gt;allocator(); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_n_e_tensor_8cc_source.html#l00030">NETensor()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_n_e_tensor_8cc_source.html#l00024">NETensor()</a>.</p>
 
 </div>
 </div>
@@ -331,8 +331,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_i_n_e_tensor.html#a43e8b629ff9f27ff24803678b59566d9">onert::backend::acl_neon::operand::INETensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_n_e_tensor_8cc_source.html#l00036">36</a> of file <a class="el" href="_n_e_tensor_8cc_source.html">NETensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{ <span class="keywordflow">return</span> _ne_tensor.get(); }</div>
+<p class="definition">Definition at line <a class="el" href="_n_e_tensor_8cc_source.html#l00030">30</a> of file <a class="el" href="_n_e_tensor_8cc_source.html">NETensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{ <span class="keywordflow">return</span> _ne_tensor.get(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -361,8 +361,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1acl__neon_1_1operand_1_1_i_n_e_tensor.html#a3ee03ea2acca521b5bad82ad54f4da96">onert::backend::acl_neon::operand::INETensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_n_e_tensor_8cc_source.html#l00038">38</a> of file <a class="el" href="_n_e_tensor_8cc_source.html">NETensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{ <span class="keywordflow">return</span> _ne_tensor.get(); }</div>
+<p class="definition">Definition at line <a class="el" href="_n_e_tensor_8cc_source.html#l00032">32</a> of file <a class="el" href="_n_e_tensor_8cc_source.html">NETensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>{ <span class="keywordflow">return</span> _ne_tensor.get(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -389,8 +389,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_n_e_tensor_8h_source.html#l00045">45</a> of file <a class="el" href="_n_e_tensor_8h_source.html">NETensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> _num_uses; }</div>
+<p class="definition">Definition at line <a class="el" href="_n_e_tensor_8h_source.html#l00039">39</a> of file <a class="el" href="_n_e_tensor_8h_source.html">NETensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{ <span class="keywordflow">return</span> _num_uses; }</div>
 </div><!-- fragment -->
 </div>
 </div>

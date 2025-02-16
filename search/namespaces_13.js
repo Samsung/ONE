@@ -22,5 +22,7 @@ var searchData=
   ['tflite_3a_3areference_5fops_19',['reference_ops',['../namespacetflite_1_1reference__ops.html',1,'tflite']]],
   ['tflread_20',['tflread',['../namespacetflread.html',1,'']]],
   ['topologicalsorthelper_21',['TopologicalSortHelper',['../namespace_topological_sort_helper.html',1,'']]],
-  ['training_5fconfigure_5ftool_22',['training_configure_tool',['../namespacetraining__configure__tool.html',1,'']]]
+  ['train_5fstep_5fwith_5fdataset_22',['train_step_with_dataset',['../namespacetrain__step__with__dataset.html',1,'']]],
+  ['train_5fwith_5fdataset_23',['train_with_dataset',['../namespacetrain__with__dataset.html',1,'']]],
+  ['training_5fconfigure_5ftool_24',['training_configure_tool',['../namespacetraining__configure__tool.html',1,'']]]
 ];

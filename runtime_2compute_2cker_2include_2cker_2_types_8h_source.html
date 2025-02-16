@@ -725,23 +725,23 @@ $(document).ready(function(){initNavTree('runtime_2compute_2cker_2include_2cker_
 <div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>  [[maybe_unused]] <span class="keyword">const</span> <a class="code hl_struct" href="structnnfw_1_1cker_1_1_gemm_params.html">GemmParams&lt;AccumScalar, DstScalar, quantization_flavor&gt;</a> &amp;params)</div>
 <div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>{</div>
 <div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>  <span class="comment">// Guard consistency of the quantized multiplier fields.</span></div>
-<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>  <span class="keywordflow">if</span> (quantization_flavor == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#a170594ea56727c9ec1c37d082b0ad083a6b5725464f6e8ab0a2cdf49a29a0f4a9">QuantizationFlavor::kFloatingPoint</a>)</div>
+<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>  <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (quantization_flavor == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#a170594ea56727c9ec1c37d082b0ad083a6b5725464f6e8ab0a2cdf49a29a0f4a9">QuantizationFlavor::kFloatingPoint</a>)</div>
 <div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>  {</div>
 <div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>    assert(!params.multiplier_fixedpoint);</div>
 <div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>    assert(!params.multiplier_exponent);</div>
 <div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>    assert(!params.multiplier_fixedpoint_perchannel);</div>
 <div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>    assert(!params.multiplier_exponent_perchannel);</div>
 <div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>  }</div>
-<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (quantization_flavor == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#a170594ea56727c9ec1c37d082b0ad083ac11557b4d4fc196c43b4fa7eab201144">QuantizationFlavor::kIntegerWithUniformMultiplier</a> &amp;&amp;</div>
-<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>           !std::is_same&lt;DstScalar, int32_t&gt;::value)</div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (quantization_flavor == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#a170594ea56727c9ec1c37d082b0ad083ac11557b4d4fc196c43b4fa7eab201144">QuantizationFlavor::kIntegerWithUniformMultiplier</a> &amp;&amp;</div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>                     !std::is_same_v&lt;DstScalar, int32_t&gt;)</div>
 <div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>  {</div>
 <div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>    assert(params.multiplier_fixedpoint);</div>
 <div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>    <span class="comment">// Nothing to check about multiplier_exponent</span></div>
 <div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>    assert(!params.multiplier_fixedpoint_perchannel);</div>
 <div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>    assert(!params.multiplier_exponent_perchannel);</div>
 <div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>  }</div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (quantization_flavor == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#a170594ea56727c9ec1c37d082b0ad083a227d5cf4d9445848d0940bb4dd05ee37">QuantizationFlavor::kIntegerWithPerRowMultiplier</a> &amp;&amp;</div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>           !std::is_same&lt;DstScalar, int32_t&gt;::value)</div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (quantization_flavor == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#a170594ea56727c9ec1c37d082b0ad083a227d5cf4d9445848d0940bb4dd05ee37">QuantizationFlavor::kIntegerWithPerRowMultiplier</a> &amp;&amp;</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>                     !std::is_same_v&lt;DstScalar, int32_t&gt;)</div>
 <div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>  {</div>
 <div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>    assert(!params.multiplier_fixedpoint);</div>
 <div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>    assert(!params.multiplier_exponent);</div>

@@ -185,7 +185,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_fully_connected_layer_8h_source.html#l00035">35</a> of file <a class="el" href="train_2ops_2_fully_connected_layer_8h_source.html">FullyConnectedLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_fully_connected_layer_8h_source.html#l00029">29</a> of file <a class="el" href="train_2ops_2_fully_connected_layer_8h_source.html">FullyConnectedLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0784d539b5d213d69cbcb397957573e2" name="a0784d539b5d213d69cbcb397957573e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0784d539b5d213d69cbcb397957573e2">&#9670;&#160;</a></span>FullyConnectedLayer()</h2>
@@ -202,14 +202,14 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html#l00055">55</a> of file <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html">FullyConnectedLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>  : cpu::ops::FullyConnectedLayer{}, _grad_weights{<span class="keyword">nullptr</span>}, _grad_bias{<span class="keyword">nullptr</span>},</div>
-<div class="line"><span class="lineno">   57</span>    _back_prop_input{<span class="keyword">nullptr</span>}, _back_prop_output{<span class="keyword">nullptr</span>}, _transposed_weights{<span class="keyword">nullptr</span>},</div>
-<div class="line"><span class="lineno">   58</span>    _transposed_input{<span class="keyword">nullptr</span>}, _transposed_back_prop_output{<span class="keyword">nullptr</span>},</div>
-<div class="line"><span class="lineno">   59</span>    _act_back_prop_output{<span class="keyword">nullptr</span>}</div>
-<div class="line"><span class="lineno">   60</span>{</div>
-<div class="line"><span class="lineno">   61</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   62</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html#l00049">49</a> of file <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html">FullyConnectedLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>  : cpu::ops::FullyConnectedLayer{}, _grad_weights{<span class="keyword">nullptr</span>}, _grad_bias{<span class="keyword">nullptr</span>},</div>
+<div class="line"><span class="lineno">   51</span>    _back_prop_input{<span class="keyword">nullptr</span>}, _back_prop_output{<span class="keyword">nullptr</span>}, _transposed_weights{<span class="keyword">nullptr</span>},</div>
+<div class="line"><span class="lineno">   52</span>    _transposed_input{<span class="keyword">nullptr</span>}, _transposed_back_prop_output{<span class="keyword">nullptr</span>},</div>
+<div class="line"><span class="lineno">   53</span>    _act_back_prop_output{<span class="keyword">nullptr</span>}</div>
+<div class="line"><span class="lineno">   54</span>{</div>
+<div class="line"><span class="lineno">   55</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   56</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -264,27 +264,27 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html#l00108">108</a> of file <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html">FullyConnectedLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  109</span>{</div>
-<div class="line"><span class="lineno">  110</span>  <span class="keyword">const</span> <span class="keyword">auto</span> data_type = _back_prop_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>();</div>
-<div class="line"><span class="lineno">  111</span>  assert(data_type == <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#ad20b91c5fd9f048ca2b7b650b4e9d95e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>());</div>
-<div class="line"><span class="lineno">  112</span>  <span class="keywordflow">switch</span> (data_type)</div>
-<div class="line"><span class="lineno">  113</span>  {</div>
-<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
-<div class="line"><span class="lineno">  115</span>    {</div>
-<div class="line"><span class="lineno">  116</span>      assert(data_type == _grad_weights-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>());</div>
-<div class="line"><span class="lineno">  117</span>      assert(_grad_bias == <span class="keyword">nullptr</span> || data_type == _grad_bias-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>());</div>
-<div class="line"><span class="lineno">  118</span>      backwardFloat32();</div>
-<div class="line"><span class="lineno">  119</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  120</span>    }</div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  122</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;train FullyConnectedLayer: unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">  123</span>  }</div>
-<div class="line"><span class="lineno">  124</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00056">IPortableTensor.h:56</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer_html_ad20b91c5fd9f048ca2b7b650b4e9d95e"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#ad20b91c5fd9f048ca2b7b650b4e9d95e">onert::backend::cpu::ops::FullyConnectedLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_fully_connected_layer_8h_source.html#l00072">FullyConnectedLayer.h:72</a></div></div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html#l00102">102</a> of file <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html">FullyConnectedLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  103</span>{</div>
+<div class="line"><span class="lineno">  104</span>  <span class="keyword">const</span> <span class="keyword">auto</span> data_type = _back_prop_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>();</div>
+<div class="line"><span class="lineno">  105</span>  assert(data_type == <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#ad20b91c5fd9f048ca2b7b650b4e9d95e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>());</div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">switch</span> (data_type)</div>
+<div class="line"><span class="lineno">  107</span>  {</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">case</span> OperandType::FLOAT32:</div>
+<div class="line"><span class="lineno">  109</span>    {</div>
+<div class="line"><span class="lineno">  110</span>      assert(data_type == _grad_weights-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>());</div>
+<div class="line"><span class="lineno">  111</span>      assert(_grad_bias == <span class="keyword">nullptr</span> || data_type == _grad_bias-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>());</div>
+<div class="line"><span class="lineno">  112</span>      backwardFloat32();</div>
+<div class="line"><span class="lineno">  113</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  114</span>    }</div>
+<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  116</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;train FullyConnectedLayer: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">  117</span>  }</div>
+<div class="line"><span class="lineno">  118</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer_html_ad20b91c5fd9f048ca2b7b650b4e9d95e"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#ad20b91c5fd9f048ca2b7b650b4e9d95e">onert::backend::cpu::ops::FullyConnectedLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_fully_connected_layer_8h_source.html#l00063">FullyConnectedLayer.h:63</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_fully_connected_layer_8h_source.html#l00072">onert::backend::cpu::ops::FullyConnectedLayer::_input</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00056">onert::backend::IPortableTensor::data_type()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_fully_connected_layer_8h_source.html#l00063">onert::backend::cpu::ops::FullyConnectedLayer::_input</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
 
 </div>
 </div>
@@ -356,49 +356,49 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html#l00066">66</a> of file <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html">FullyConnectedLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span>{</div>
-<div class="line"><span class="lineno">   72</span>  _back_prop_input = back_prop_input;</div>
-<div class="line"><span class="lineno">   73</span>  _grad_weights = grad_weights;</div>
-<div class="line"><span class="lineno">   74</span>  _grad_bias = grad_bias;</div>
-<div class="line"><span class="lineno">   75</span>  _back_prop_output = back_prop_output;</div>
-<div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">if</span> (weights_format != <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a4dc82d1ced0dff0fcabe7e74d6c76c19a7a1920d61156abc05a60135aefe8bc67">ir::FullyConnectedWeightsFormat::Default</a>)</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">throw</span> std::runtime_error{</div>
-<div class="line"><span class="lineno">   79</span>      <span class="stringliteral">&quot;train FullyConnectedLayer: Weight formats other than default are not supported.&quot;</span>};</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;get_info().shape().rank() != 2 || weights-&gt;get_info().shape().rank() != 2 ||</div>
-<div class="line"><span class="lineno">   82</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;get_info().shape().rank() != 2 || back_prop_input-&gt;get_info().shape().rank() != 2 ||</div>
-<div class="line"><span class="lineno">   83</span>      grad_weights-&gt;get_info().shape().rank() != 2 ||</div>
-<div class="line"><span class="lineno">   84</span>      back_prop_output-&gt;get_info().shape().rank() != 2)</div>
-<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">throw</span> std::runtime_error{</div>
-<div class="line"><span class="lineno">   86</span>      <span class="stringliteral">&quot;train FullyConnectedLayer: Input other ranks than 2 are not supported.&quot;</span>};</div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html#l00060">60</a> of file <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html">FullyConnectedLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>{</div>
+<div class="line"><span class="lineno">   66</span>  _back_prop_input = back_prop_input;</div>
+<div class="line"><span class="lineno">   67</span>  _grad_weights = grad_weights;</div>
+<div class="line"><span class="lineno">   68</span>  _grad_bias = grad_bias;</div>
+<div class="line"><span class="lineno">   69</span>  _back_prop_output = back_prop_output;</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>  <span class="keywordflow">if</span> (weights_format != <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a4dc82d1ced0dff0fcabe7e74d6c76c19a7a1920d61156abc05a60135aefe8bc67">ir::FullyConnectedWeightsFormat::Default</a>)</div>
+<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">throw</span> std::runtime_error{</div>
+<div class="line"><span class="lineno">   73</span>      <span class="stringliteral">&quot;train FullyConnectedLayer: Weight formats other than default are not supported.&quot;</span>};</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>  <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;get_info().shape().rank() != 2 || weights-&gt;get_info().shape().rank() != 2 ||</div>
+<div class="line"><span class="lineno">   76</span>      <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;get_info().shape().rank() != 2 || back_prop_input-&gt;get_info().shape().rank() != 2 ||</div>
+<div class="line"><span class="lineno">   77</span>      grad_weights-&gt;get_info().shape().rank() != 2 ||</div>
+<div class="line"><span class="lineno">   78</span>      back_prop_output-&gt;get_info().shape().rank() != 2)</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">throw</span> std::runtime_error{</div>
+<div class="line"><span class="lineno">   80</span>      <span class="stringliteral">&quot;train FullyConnectedLayer: Input other ranks than 2 are not supported.&quot;</span>};</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>  _transposed_weights = createTransposedTensor(weights);</div>
+<div class="line"><span class="lineno">   83</span>  _transposed_weights-&gt;setBuffer(std::make_shared&lt;basic::Allocator&gt;(weights-&gt;total_size()));</div>
+<div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span>  _transposed_input = createTransposedTensor(input);</div>
+<div class="line"><span class="lineno">   86</span>  _transposed_input-&gt;setBuffer(std::make_shared&lt;basic::Allocator&gt;(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;total_size()));</div>
 <div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>  _transposed_weights = createTransposedTensor(weights);</div>
-<div class="line"><span class="lineno">   89</span>  _transposed_weights-&gt;setBuffer(std::make_shared&lt;basic::Allocator&gt;(weights-&gt;total_size()));</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>  _transposed_input = createTransposedTensor(input);</div>
-<div class="line"><span class="lineno">   92</span>  _transposed_input-&gt;setBuffer(std::make_shared&lt;basic::Allocator&gt;(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;total_size()));</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>  _transposed_back_prop_output = createTransposedTensor(back_prop_output);</div>
-<div class="line"><span class="lineno">   95</span>  _transposed_back_prop_output-&gt;setBuffer(</div>
-<div class="line"><span class="lineno">   96</span>    std::make_shared&lt;basic::Allocator&gt;(back_prop_output-&gt;total_size()));</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">if</span> (activation != <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>)</div>
-<div class="line"><span class="lineno">   99</span>  {</div>
-<div class="line"><span class="lineno">  100</span>    _act_back_prop_output = std::make_unique&lt;Tensor&gt;(_back_prop_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5aa2cfeb527066e9bee0316f67f67b1d">get_info</a>());</div>
-<div class="line"><span class="lineno">  101</span>    _act_back_prop_output-&gt;setBuffer(</div>
-<div class="line"><span class="lineno">  102</span>      std::make_shared&lt;basic::Allocator&gt;(_back_prop_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a52fa5a71552928aebcb47eafa1a7b182">total_size</a>()));</div>
-<div class="line"><span class="lineno">  103</span>  }</div>
-<div class="line"><span class="lineno">  104</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a52fa5a71552928aebcb47eafa1a7b182"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a52fa5a71552928aebcb47eafa1a7b182">onert::backend::IPortableTensor::total_size</a></div><div class="ttdeci">size_t total_size() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a5aa2cfeb527066e9bee0316f67f67b1d"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a5aa2cfeb527066e9bee0316f67f67b1d">onert::backend::IPortableTensor::get_info</a></div><div class="ttdeci">const ir::OperandInfo &amp; get_info() const</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00050">IPortableTensor.h:50</a></div></div>
+<div class="line"><span class="lineno">   88</span>  _transposed_back_prop_output = createTransposedTensor(back_prop_output);</div>
+<div class="line"><span class="lineno">   89</span>  _transposed_back_prop_output-&gt;setBuffer(</div>
+<div class="line"><span class="lineno">   90</span>    std::make_shared&lt;basic::Allocator&gt;(back_prop_output-&gt;total_size()));</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">if</span> (activation != <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>)</div>
+<div class="line"><span class="lineno">   93</span>  {</div>
+<div class="line"><span class="lineno">   94</span>    _act_back_prop_output = std::make_unique&lt;Tensor&gt;(_back_prop_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5aa2cfeb527066e9bee0316f67f67b1d">get_info</a>());</div>
+<div class="line"><span class="lineno">   95</span>    _act_back_prop_output-&gt;setBuffer(</div>
+<div class="line"><span class="lineno">   96</span>      std::make_shared&lt;basic::Allocator&gt;(_back_prop_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a52fa5a71552928aebcb47eafa1a7b182">total_size</a>()));</div>
+<div class="line"><span class="lineno">   97</span>  }</div>
+<div class="line"><span class="lineno">   98</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a52fa5a71552928aebcb47eafa1a7b182"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a52fa5a71552928aebcb47eafa1a7b182">onert::backend::IPortableTensor::total_size</a></div><div class="ttdeci">size_t total_size() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00052">IPortableTensor.h:52</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a5aa2cfeb527066e9bee0316f67f67b1d"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a5aa2cfeb527066e9bee0316f67f67b1d">onert::backend::IPortableTensor::get_info</a></div><div class="ttdeci">const ir::OperandInfo &amp; get_info() const</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00048">IPortableTensor.h:48</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a4dc82d1ced0dff0fcabe7e74d6c76c19a7a1920d61156abc05a60135aefe8bc67"><div class="ttname"><a href="namespaceonert_1_1ir.html#a4dc82d1ced0dff0fcabe7e74d6c76c19a7a1920d61156abc05a60135aefe8bc67">onert::ir::FullyConnectedWeightsFormat::Default</a></div><div class="ttdeci">@ Default</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::Activation::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#a4dc82d1ced0dff0fcabe7e74d6c76c19a7a1920d61156abc05a60135aefe8bc67">onert::ir::Default</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00050">onert::backend::IPortableTensor::get_info()</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>, <a class="el" href="_operand_info_8h_source.html#l00095">onert::ir::OperandInfo::shape()</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::total_size()</a>.</p>
+<p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#a4dc82d1ced0dff0fcabe7e74d6c76c19a7a1920d61156abc05a60135aefe8bc67">onert::ir::Default</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00048">onert::backend::IPortableTensor::get_info()</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>, <a class="el" href="_operand_info_8h_source.html#l00093">onert::ir::OperandInfo::shape()</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00052">onert::backend::IPortableTensor::total_size()</a>.</p>
 
 </div>
 </div>
@@ -428,11 +428,11 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html#l00106">106</a> of file <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html">FullyConnectedLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  106</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#aff0e02437f1e864effa060ca8ea19bc1">cpu::ops::FullyConnectedLayer::run</a>(); }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer_html_aff0e02437f1e864effa060ca8ea19bc1"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#aff0e02437f1e864effa060ca8ea19bc1">onert::backend::cpu::ops::FullyConnectedLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00261">FullyConnectedLayer.cc:261</a></div></div>
+<p class="definition">Definition at line <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html#l00100">100</a> of file <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html">FullyConnectedLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#aff0e02437f1e864effa060ca8ea19bc1">cpu::ops::FullyConnectedLayer::run</a>(); }</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer_html_aff0e02437f1e864effa060ca8ea19bc1"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_fully_connected_layer.html#aff0e02437f1e864effa060ca8ea19bc1">onert::backend::cpu::ops::FullyConnectedLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00255">FullyConnectedLayer.cc:255</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00261">onert::backend::cpu::ops::FullyConnectedLayer::run()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00255">onert::backend::cpu::ops::FullyConnectedLayer::run()</a>.</p>
 
 </div>
 </div>

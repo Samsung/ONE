@@ -11,5 +11,5 @@ var namespaceonert_1_1loader =
     [ "loadModel", "namespaceonert_1_1loader.html#aa3e212d74367c0eed3cbe983e1fe7421", null ],
     [ "loadTFLiteModel", "namespaceonert_1_1loader.html#a9d6b2ed77c6876e0f8c276da50bf2a73", null ],
     [ "loadTrainingInfo", "namespaceonert_1_1loader.html#a2378958fd4f3320e32e141eb326e452a", null ],
-    [ "TRAININFO_METADATA_NAME", "namespaceonert_1_1loader.html#a60a156f09ae1950d87b3998a500fd502", null ]
+    [ "TRAININFO_METADATA_NAME", "namespaceonert_1_1loader.html#a91223507faa877aba38f06a3eb7405ef", null ]
 ];

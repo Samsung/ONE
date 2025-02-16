@@ -166,7 +166,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_config_source_8h_source.html#l00028">28</a> of file <a class="el" href="_config_source_8h_source.html">ConfigSource.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_config_source_8h_source.html#l00026">26</a> of file <a class="el" href="_config_source_8h_source.html">ConfigSource.h</a>.</p>
 
 </div>
 </div>
@@ -205,42 +205,42 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_calculate_activation_range_8h_source.html#l00030">30</a> of file <a class="el" href="_calculate_activation_range_8h_source.html">CalculateActivationRange.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>  <span class="keywordflow">if</span> (activation == ir::Activation::RELU)</div>
-<div class="line"><span class="lineno">   33</span>  {</div>
-<div class="line"><span class="lineno">   34</span>    *activation_min = 0;</div>
-<div class="line"><span class="lineno">   35</span>    *activation_max = std::numeric_limits&lt;T&gt;::max();</div>
-<div class="line"><span class="lineno">   36</span>  }</div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (activation == ir::Activation::RELU6)</div>
-<div class="line"><span class="lineno">   38</span>  {</div>
-<div class="line"><span class="lineno">   39</span>    *activation_min = 0;</div>
-<div class="line"><span class="lineno">   40</span>    *activation_max = 6;</div>
-<div class="line"><span class="lineno">   41</span>  }</div>
-<div class="line"><span class="lineno">   42</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (activation == ir::Activation::RELU1)</div>
-<div class="line"><span class="lineno">   43</span>  {</div>
-<div class="line"><span class="lineno">   44</span>    *activation_min = -1;</div>
-<div class="line"><span class="lineno">   45</span>    *activation_max = 1;</div>
-<div class="line"><span class="lineno">   46</span>  }</div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (activation == ir::Activation::SIGMOID)</div>
-<div class="line"><span class="lineno">   48</span>  {</div>
-<div class="line"><span class="lineno">   49</span>    *activation_min = 0;</div>
-<div class="line"><span class="lineno">   50</span>    *activation_max = 1;</div>
-<div class="line"><span class="lineno">   51</span>  }</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (activation == ir::Activation::NONE)</div>
-<div class="line"><span class="lineno">   53</span>  {</div>
-<div class="line"><span class="lineno">   54</span>    *activation_min = std::numeric_limits&lt;T&gt;::lowest();</div>
-<div class="line"><span class="lineno">   55</span>    *activation_max = std::numeric_limits&lt;T&gt;::max();</div>
-<div class="line"><span class="lineno">   56</span>  }</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   58</span>  {</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unsupported fused activation function.&quot;</span>};</div>
-<div class="line"><span class="lineno">   60</span>  }</div>
-<div class="line"><span class="lineno">   61</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_calculate_activation_range_8h_source.html#l00028">28</a> of file <a class="el" href="_calculate_activation_range_8h_source.html">CalculateActivationRange.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">if</span> (activation == ir::Activation::RELU)</div>
+<div class="line"><span class="lineno">   31</span>  {</div>
+<div class="line"><span class="lineno">   32</span>    *activation_min = 0;</div>
+<div class="line"><span class="lineno">   33</span>    *activation_max = std::numeric_limits&lt;T&gt;::max();</div>
+<div class="line"><span class="lineno">   34</span>  }</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (activation == ir::Activation::RELU6)</div>
+<div class="line"><span class="lineno">   36</span>  {</div>
+<div class="line"><span class="lineno">   37</span>    *activation_min = 0;</div>
+<div class="line"><span class="lineno">   38</span>    *activation_max = 6;</div>
+<div class="line"><span class="lineno">   39</span>  }</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (activation == ir::Activation::RELU1)</div>
+<div class="line"><span class="lineno">   41</span>  {</div>
+<div class="line"><span class="lineno">   42</span>    *activation_min = -1;</div>
+<div class="line"><span class="lineno">   43</span>    *activation_max = 1;</div>
+<div class="line"><span class="lineno">   44</span>  }</div>
+<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (activation == ir::Activation::SIGMOID)</div>
+<div class="line"><span class="lineno">   46</span>  {</div>
+<div class="line"><span class="lineno">   47</span>    *activation_min = 0;</div>
+<div class="line"><span class="lineno">   48</span>    *activation_max = 1;</div>
+<div class="line"><span class="lineno">   49</span>  }</div>
+<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (activation == ir::Activation::NONE)</div>
+<div class="line"><span class="lineno">   51</span>  {</div>
+<div class="line"><span class="lineno">   52</span>    *activation_min = std::numeric_limits&lt;T&gt;::lowest();</div>
+<div class="line"><span class="lineno">   53</span>    *activation_max = std::numeric_limits&lt;T&gt;::max();</div>
+<div class="line"><span class="lineno">   54</span>  }</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   56</span>  {</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unsupported fused activation function.&quot;</span>};</div>
+<div class="line"><span class="lineno">   58</span>  }</div>
+<div class="line"><span class="lineno">   59</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">onert::ir::RELU</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4a235769ca556a132313d564d3c57098f9">onert::ir::RELU1</a>, <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">onert::ir::RELU6</a>, and <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab299f45b5de2a8f7c45192590290742b">onert::ir::SIGMOID</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_back_prop_accumulator_8cc_source.html#l00033">onert::backend::train::ops::BackPropAccumulator::BackPropAccumulator()</a>, <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00068">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convFloat32()</a>, <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00042">onert::backend::ruy::ops::ConvolutionLayer::convFloat32()</a>, <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00201">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8iHybridPerChannel()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00215">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnected16x1Float32()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00045">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedFloat32()</a>, <a class="el" href="ruy_2ops_2_fully_connected_layer_8cc_source.html#l00041">onert::backend::ruy::ops::FullyConnectedLayer::fullyConnectedFloat32()</a>, and <a class="el" href="_pow_layer_8cc_source.html#l00031">onert::backend::cpu::ops::PowLayer::powFloat32()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_back_prop_accumulator_8cc_source.html#l00027">onert::backend::train::ops::BackPropAccumulator::BackPropAccumulator()</a>, <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00062">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convFloat32()</a>, <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00036">onert::backend::ruy::ops::ConvolutionLayer::convFloat32()</a>, <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00195">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8iHybridPerChannel()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00209">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnected16x1Float32()</a>, <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00039">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedFloat32()</a>, <a class="el" href="ruy_2ops_2_fully_connected_layer_8cc_source.html#l00035">onert::backend::ruy::ops::FullyConnectedLayer::fullyConnectedFloat32()</a>, and <a class="el" href="_pow_layer_8cc_source.html#l00025">onert::backend::cpu::ops::PowLayer::powFloat32()</a>.</p>
 
 </div>
 </div>
@@ -260,12 +260,12 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00039">39</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{ _source = std::move(source); }</div>
+<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00037">37</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{ _source = std::move(source); }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_config_source_8cc_source.html#l00039">config_source()</a>.</p>
+<p class="reference">References <a class="el" href="_config_source_8cc_source.html#l00037">config_source()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_config_source_8cc_source.html#l00039">config_source()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_config_source_8cc_source.html#l00037">config_source()</a>.</p>
 
 </div>
 </div>
@@ -285,10 +285,10 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00040">40</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{ _source_ext = std::move(source); }</div>
+<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00038">38</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>{ _source_ext = std::move(source); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_config_source_8cc_source.html#l00042">setConfigKeyValues()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_config_source_8cc_source.html#l00040">setConfigKeyValues()</a>.</p>
 
 </div>
 </div>
@@ -308,16 +308,16 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00118">118</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  119</span>{</div>
-<div class="line"><span class="lineno">  120</span>  <span class="keyword">auto</span> raw = getConfigOrDefault(key);</div>
-<div class="line"><span class="lineno">  121</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1util.html#a51da3edc734010fdce0f59a9e8812ccd">toBool</a>(raw);</div>
-<div class="line"><span class="lineno">  122</span>}</div>
-<div class="ttc" id="anamespaceonert_1_1util_html_a51da3edc734010fdce0f59a9e8812ccd"><div class="ttname"><a href="namespaceonert_1_1util.html#a51da3edc734010fdce0f59a9e8812ccd">onert::util::toBool</a></div><div class="ttdeci">bool toBool(const std::string &amp;val)</div><div class="ttdef"><b>Definition</b> <a href="_config_source_8cc_source.html#l00109">ConfigSource.cc:109</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00116">116</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  117</span>{</div>
+<div class="line"><span class="lineno">  118</span>  <span class="keyword">auto</span> raw = getConfigOrDefault(key);</div>
+<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1util.html#a51da3edc734010fdce0f59a9e8812ccd">toBool</a>(raw);</div>
+<div class="line"><span class="lineno">  120</span>}</div>
+<div class="ttc" id="anamespaceonert_1_1util_html_a51da3edc734010fdce0f59a9e8812ccd"><div class="ttname"><a href="namespaceonert_1_1util.html#a51da3edc734010fdce0f59a9e8812ccd">onert::util::toBool</a></div><div class="ttdeci">bool toBool(const std::string &amp;val)</div><div class="ttdef"><b>Definition</b> <a href="_config_source_8cc_source.html#l00107">ConfigSource.cc:107</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_config_source_8cc_source.html#l00109">toBool()</a>.</p>
+<p class="reference">References <a class="el" href="_config_source_8cc_source.html#l00107">toBool()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_base_loader_8h_source.html#l00071">onert::loader::BaseLoader&lt; LoaderDomain &gt;::BaseLoader()</a>, <a class="el" href="_compiler_options_8cc_source.html#l00077">onert::compiler::CompilerOptions::fromGlobalConfig()</a>, and <a class="el" href="_execution_context_8cc_source.html#l00026">onert::exec::ExecutionOptions::fromGlobalConfig()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_base_loader_8h_source.html#l00069">onert::loader::BaseLoader&lt; LoaderDomain &gt;::BaseLoader()</a>, <a class="el" href="_compiler_options_8cc_source.html#l00075">onert::compiler::CompilerOptions::fromGlobalConfig()</a>, and <a class="el" href="_execution_context_8cc_source.html#l00024">onert::exec::ExecutionOptions::fromGlobalConfig()</a>.</p>
 
 </div>
 </div>
@@ -337,16 +337,16 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00124">124</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  125</span>{</div>
-<div class="line"><span class="lineno">  126</span>  <span class="keyword">auto</span> raw = getConfigOrDefault(key);</div>
-<div class="line"><span class="lineno">  127</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1util.html#a1f772352fb1129126666b3d06ce74f80">toInt</a>(raw);</div>
-<div class="line"><span class="lineno">  128</span>}</div>
-<div class="ttc" id="anamespaceonert_1_1util_html_a1f772352fb1129126666b3d06ce74f80"><div class="ttname"><a href="namespaceonert_1_1util.html#a1f772352fb1129126666b3d06ce74f80">onert::util::toInt</a></div><div class="ttdeci">int toInt(const std::string &amp;val)</div><div class="ttdef"><b>Definition</b> <a href="_config_source_8cc_source.html#l00116">ConfigSource.cc:116</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00122">122</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  123</span>{</div>
+<div class="line"><span class="lineno">  124</span>  <span class="keyword">auto</span> raw = getConfigOrDefault(key);</div>
+<div class="line"><span class="lineno">  125</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert_1_1util.html#a1f772352fb1129126666b3d06ce74f80">toInt</a>(raw);</div>
+<div class="line"><span class="lineno">  126</span>}</div>
+<div class="ttc" id="anamespaceonert_1_1util_html_a1f772352fb1129126666b3d06ce74f80"><div class="ttname"><a href="namespaceonert_1_1util.html#a1f772352fb1129126666b3d06ce74f80">onert::util::toInt</a></div><div class="ttdeci">int toInt(const std::string &amp;val)</div><div class="ttdef"><b>Definition</b> <a href="_config_source_8cc_source.html#l00114">ConfigSource.cc:114</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_config_source_8cc_source.html#l00116">toInt()</a>.</p>
+<p class="reference">References <a class="el" href="_config_source_8cc_source.html#l00114">toInt()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="backend_2xnnpack_2_backend_context_8h_source.html#l00038">onert::backend::xnnpack::BackendContext::BackendContext()</a>, <a class="el" href="cpu_2_external_context_8cc_source.html#l00066">onert::backend::cpu::ExternalContext::ExternalContext()</a>, <a class="el" href="backend_2ruy_2_external_context_8h_source.html#l00038">onert::backend::ruy::ExternalContext::ExternalContext()</a>, <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00043">onert::backend::builtin::ExternalContext::ExternalContext()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00077">onert::compiler::CompilerOptions::fromGlobalConfig()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_external_context_8cc_source.html#l00062">onert::backend::cpu::ExternalContext::ExternalContext()</a>, <a class="el" href="backend_2ruy_2_external_context_8h_source.html#l00034">onert::backend::ruy::ExternalContext::ExternalContext()</a>, <a class="el" href="core_2src_2backend_2builtin_2_external_context_8h_source.html#l00039">onert::backend::builtin::ExternalContext::ExternalContext()</a>, and <a class="el" href="_compiler_options_8cc_source.html#l00075">onert::compiler::CompilerOptions::fromGlobalConfig()</a>.</p>
 
 </div>
 </div>
@@ -366,10 +366,10 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00130">130</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  130</span>{ <span class="keywordflow">return</span> getConfigOrDefault(key); }</div>
+<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00128">128</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  128</span>{ <span class="keywordflow">return</span> getConfigOrDefault(key); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_compiler_options_8cc_source.html#l00077">onert::compiler::CompilerOptions::fromGlobalConfig()</a>, <a class="el" href="_acl_backend_context_8h_source.html#l00055">onert::backend::acl_common::AclBackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator, T_Optimizer &gt;::genTensors()</a>, and <a class="el" href="_backend_context_helpers_8h_source.html#l00201">onert::backend::basic::genTensors()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_compiler_options_8cc_source.html#l00075">onert::compiler::CompilerOptions::fromGlobalConfig()</a>, <a class="el" href="_acl_backend_context_8h_source.html#l00051">onert::backend::acl_common::AclBackendContext&lt; T_TensorBuilder, T_ConstantInitializer, T_KernelGenerator, T_Optimizer &gt;::genTensors()</a>, and <a class="el" href="_backend_context_helpers_8h_source.html#l00197">onert::backend::basic::genTensors()</a>.</p>
 
 </div>
 </div>
@@ -389,22 +389,22 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00042">42</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
-<div class="line"><span class="lineno">   44</span>  <span class="keyword">auto</span> configsrc = std::make_unique&lt;GeneralConfigSource&gt;();</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[key, val] : keyValues)</div>
-<div class="line"><span class="lineno">   47</span>  {</div>
-<div class="line"><span class="lineno">   48</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(NNPKG_CONFIGS) &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; key &lt;&lt; <span class="stringliteral">&quot;) = (&quot;</span> &lt;&lt; val &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   49</span>    configsrc-&gt;set(key, val);</div>
-<div class="line"><span class="lineno">   50</span>  }</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>  <a class="code hl_function" href="namespaceonert_1_1util.html#a6f59f44f1a1032cc96ed81219ae01f57">onert::util::config_source_ext</a>(std::move(configsrc));</div>
-<div class="line"><span class="lineno">   53</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00040">40</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
+<div class="line"><span class="lineno">   42</span>  <span class="keyword">auto</span> configsrc = std::make_unique&lt;GeneralConfigSource&gt;();</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[key, val] : keyValues)</div>
+<div class="line"><span class="lineno">   45</span>  {</div>
+<div class="line"><span class="lineno">   46</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(NNPKG_CONFIGS) &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; key &lt;&lt; <span class="stringliteral">&quot;) = (&quot;</span> &lt;&lt; val &lt;&lt; <span class="stringliteral">&quot;)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   47</span>    configsrc-&gt;set(key, val);</div>
+<div class="line"><span class="lineno">   48</span>  }</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>  <a class="code hl_function" href="namespaceonert_1_1util.html#a6f59f44f1a1032cc96ed81219ae01f57">onert::util::config_source_ext</a>(std::move(configsrc));</div>
+<div class="line"><span class="lineno">   51</span>}</div>
 <div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a212d71bce44cd84d4fe678058cd5eccd"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a></div><div class="ttdeci">#define VERBOSE(name, lv)</div><div class="ttdef"><b>Definition</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">Log.h:71</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1util_html_a6f59f44f1a1032cc96ed81219ae01f57"><div class="ttname"><a href="namespaceonert_1_1util.html#a6f59f44f1a1032cc96ed81219ae01f57">onert::util::config_source_ext</a></div><div class="ttdeci">void config_source_ext(std::unique_ptr&lt; IConfigSource &gt; &amp;&amp;source)</div><div class="ttdef"><b>Definition</b> <a href="_config_source_8cc_source.html#l00040">ConfigSource.cc:40</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1util_html_a6f59f44f1a1032cc96ed81219ae01f57"><div class="ttname"><a href="namespaceonert_1_1util.html#a6f59f44f1a1032cc96ed81219ae01f57">onert::util::config_source_ext</a></div><div class="ttdeci">void config_source_ext(std::unique_ptr&lt; IConfigSource &gt; &amp;&amp;source)</div><div class="ttdef"><b>Definition</b> <a href="_config_source_8cc_source.html#l00038">ConfigSource.cc:38</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_config_source_8cc_source.html#l00040">config_source_ext()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
+<p class="reference">References <a class="el" href="_config_source_8cc_source.html#l00038">config_source_ext()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__session_8cc_source.html#l00304">nnfw_session::load_model_from_path()</a>.</p>
 
@@ -426,14 +426,14 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00109">109</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  110</span>{</div>
-<div class="line"><span class="lineno">  111</span>  <span class="keyword">static</span> <span class="keyword">const</span> std::array&lt;std::string, 5&gt; false_list{<span class="stringliteral">&quot;0&quot;</span>, <span class="stringliteral">&quot;OFF&quot;</span>, <span class="stringliteral">&quot;FALSE&quot;</span>, <span class="stringliteral">&quot;N&quot;</span>, <span class="stringliteral">&quot;NO&quot;</span>};</div>
-<div class="line"><span class="lineno">  112</span>  <span class="keyword">auto</span> false_found = std::find(false_list.begin(), false_list.end(), val);</div>
-<div class="line"><span class="lineno">  113</span>  <span class="keywordflow">return</span> false_found == false_list.end();</div>
-<div class="line"><span class="lineno">  114</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00107">107</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  108</span>{</div>
+<div class="line"><span class="lineno">  109</span>  <span class="keyword">static</span> <span class="keyword">const</span> std::array&lt;std::string, 5&gt; false_list{<span class="stringliteral">&quot;0&quot;</span>, <span class="stringliteral">&quot;OFF&quot;</span>, <span class="stringliteral">&quot;FALSE&quot;</span>, <span class="stringliteral">&quot;N&quot;</span>, <span class="stringliteral">&quot;NO&quot;</span>};</div>
+<div class="line"><span class="lineno">  110</span>  <span class="keyword">auto</span> false_found = std::find(false_list.begin(), false_list.end(), val);</div>
+<div class="line"><span class="lineno">  111</span>  <span class="keywordflow">return</span> false_found == false_list.end();</div>
+<div class="line"><span class="lineno">  112</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_config_source_8cc_source.html#l00118">getConfigBool()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_config_source_8cc_source.html#l00116">getConfigBool()</a>.</p>
 
 </div>
 </div>
@@ -453,10 +453,10 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00116">116</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  116</span>{ <span class="keywordflow">return</span> std::stoi(val); }</div>
+<p class="definition">Definition at line <a class="el" href="_config_source_8cc_source.html#l00114">114</a> of file <a class="el" href="_config_source_8cc_source.html">ConfigSource.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  114</span>{ <span class="keywordflow">return</span> std::stoi(val); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_config_source_8cc_source.html#l00124">getConfigInt()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_config_source_8cc_source.html#l00122">getConfigInt()</a>.</p>
 
 </div>
 </div>

@@ -123,91 +123,85 @@ $(document).ready(function(){initNavTree('_c_l_timer_8h_source.html',''); initRe
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;list&gt;</span></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;sstream&gt;</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1backend_1_1acl__cl.html">onert::backend::acl_cl</a></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span>backend</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">namespace </span>acl_cl</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="foldopen" id="foldopen00037" data-start="{" data-end="};">
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html">   37</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html">CLTimer</a> : <span class="keyword">public</span> <a class="code hl_class" href="classonert_1_1util_1_1_i_timer.html">util::ITimer</a></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html#a10927bec68d86bac6a8c650dc219d085">   44</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html#a10927bec68d86bac6a8c650dc219d085">handleBegin</a>()<span class="keyword"> override</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    _measured_events.clear();</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    _origin_enqueue_function = arm_compute::CLSymbols::get().clEnqueueNDRangeKernel_ptr;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keyword">auto</span> _timer_enqueue_function = [<span class="keyword">this</span>](cl_command_queue command_queue, cl_kernel kernel,</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                                          cl_uint work_dim, <span class="keyword">const</span> <span class="keywordtype">size_t</span> *gwo, <span class="keyword">const</span> <span class="keywordtype">size_t</span> *gws,</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                                          <span class="keyword">const</span> <span class="keywordtype">size_t</span> *lws, cl_uint num_events_in_wait_list,</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                                          <span class="keyword">const</span> cl_event *event_wait_list, cl_event *usr_event) {</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      cl_event event;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      cl_int enqueue_res =</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        this-&gt;_origin_enqueue_function(command_queue, kernel, work_dim, gwo, gws, lws,</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                                       num_events_in_wait_list, event_wait_list, &amp;event);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      this-&gt;_measured_events.emplace_back(event);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      <span class="comment">// According to spec, if NULL was provided in usr_event - event shouldn&#39;t be returned</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      <span class="keywordflow">if</span> (usr_event != <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      {</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        clRetainEvent(event);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        *usr_event = event;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      }</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      <span class="keywordflow">return</span> enqueue_res;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    };</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    arm_compute::CLSymbols::get().clEnqueueNDRangeKernel_ptr = _timer_enqueue_function;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="comment">// Set CL_QUEUE_PROFILING_ENABLE flag for the CL command-queue, if it isn&#39;t already set</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keyword">auto</span> &amp;cl_scheduler = arm_compute::CLScheduler::get();</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keyword">auto</span> props = cl_scheduler.queue().getInfo&lt;CL_QUEUE_PROPERTIES&gt;();</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">if</span> ((props &amp; CL_QUEUE_PROFILING_ENABLE) == 0)</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    {</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>      cl_scheduler.set_queue(</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        cl::CommandQueue(cl_scheduler.context(), props | CL_QUEUE_PROFILING_ENABLE));</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    }</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  };</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="};">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html">   33</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html">CLTimer</a> : <span class="keyword">public</span> <a class="code hl_class" href="classonert_1_1util_1_1_i_timer.html">util::ITimer</a></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html#a10927bec68d86bac6a8c650dc219d085">   40</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html#a10927bec68d86bac6a8c650dc219d085">handleBegin</a>()<span class="keyword"> override</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    _measured_events.clear();</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    _origin_enqueue_function = arm_compute::CLSymbols::get().clEnqueueNDRangeKernel_ptr;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">auto</span> _timer_enqueue_function = [<span class="keyword">this</span>](cl_command_queue command_queue, cl_kernel kernel,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                                          cl_uint work_dim, <span class="keyword">const</span> <span class="keywordtype">size_t</span> *gwo, <span class="keyword">const</span> <span class="keywordtype">size_t</span> *gws,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                                          <span class="keyword">const</span> <span class="keywordtype">size_t</span> *lws, cl_uint num_events_in_wait_list,</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                                          <span class="keyword">const</span> cl_event *event_wait_list, cl_event *usr_event) {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      cl_event event;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      cl_int enqueue_res =</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        this-&gt;_origin_enqueue_function(command_queue, kernel, work_dim, gwo, gws, lws,</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                                       num_events_in_wait_list, event_wait_list, &amp;event);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      this-&gt;_measured_events.emplace_back(event);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <span class="comment">// According to spec, if NULL was provided in usr_event - event shouldn&#39;t be returned</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      <span class="keywordflow">if</span> (usr_event != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        clRetainEvent(event);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        *usr_event = event;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <span class="keywordflow">return</span> enqueue_res;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    };</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    arm_compute::CLSymbols::get().clEnqueueNDRangeKernel_ptr = _timer_enqueue_function;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="comment">// Set CL_QUEUE_PROFILING_ENABLE flag for the CL command-queue, if it isn&#39;t already set</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keyword">auto</span> &amp;cl_scheduler = arm_compute::CLScheduler::get();</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">auto</span> props = cl_scheduler.queue().getInfo&lt;CL_QUEUE_PROPERTIES&gt;();</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">if</span> ((props &amp; CL_QUEUE_PROFILING_ENABLE) == 0)</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      cl_scheduler.set_queue(</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        cl::CommandQueue(cl_scheduler.context(), props | CL_QUEUE_PROFILING_ENABLE));</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  };</div>
 </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="foldopen" id="foldopen00083" data-start="{" data-end="}">
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html#a7b52ba5d815682ac9f85ebeef52b7594">   83</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html#a7b52ba5d815682ac9f85ebeef52b7594">handleEnd</a>()<span class="keyword"> override</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <a class="code hl_variable" href="classonert_1_1util_1_1_i_timer.html#ac87ea2ada18f0b9b005f98a5ecc81b7b">_timer_res</a> = 0;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span> &amp;event : _measured_events)</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    {</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      cl_ulong start;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      cl_ulong end;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>      <span class="keyword">event</span>.getProfilingInfo(CL_PROFILING_COMMAND_START, &amp;start);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>      <span class="keyword">event</span>.getProfilingInfo(CL_PROFILING_COMMAND_END, &amp;end);</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      <a class="code hl_variable" href="classonert_1_1util_1_1_i_timer.html#ac87ea2ada18f0b9b005f98a5ecc81b7b">_timer_res</a> += (end - start) / 1000.f; <span class="comment">// nanoseconds -&gt; microseconds</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    }</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html#a7b52ba5d815682ac9f85ebeef52b7594">   79</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html#a7b52ba5d815682ac9f85ebeef52b7594">handleEnd</a>()<span class="keyword"> override</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <a class="code hl_variable" href="classonert_1_1util_1_1_i_timer.html#ac87ea2ada18f0b9b005f98a5ecc81b7b">_timer_res</a> = 0;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> <span class="keyword">const</span> &amp;event : _measured_events)</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>      cl_ulong start;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      cl_ulong end;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>      <span class="keyword">event</span>.getProfilingInfo(CL_PROFILING_COMMAND_START, &amp;start);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      <span class="keyword">event</span>.getProfilingInfo(CL_PROFILING_COMMAND_END, &amp;end);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      <a class="code hl_variable" href="classonert_1_1util_1_1_i_timer.html#ac87ea2ada18f0b9b005f98a5ecc81b7b">_timer_res</a> += (end - start) / 1000.f; <span class="comment">// nanoseconds -&gt; microseconds</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    }</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="comment">// Restore origin CL enqueue function</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    arm_compute::CLSymbols::get().clEnqueueNDRangeKernel_ptr = _origin_enqueue_function;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  };</div>
+</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="comment">// Restore origin CL enqueue function</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    arm_compute::CLSymbols::get().clEnqueueNDRangeKernel_ptr = _origin_enqueue_function;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  };</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  std::function&lt;<span class="keyword">decltype</span>(clEnqueueNDRangeKernel)&gt; _origin_enqueue_function;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  std::list&lt;::cl::Event&gt; _measured_events;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>};</div>
 </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  std::function&lt;<span class="keyword">decltype</span>(clEnqueueNDRangeKernel)&gt; _origin_enqueue_function;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  std::list&lt;::cl::Event&gt; _measured_events;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>};</div>
-</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>} <span class="comment">// namespace acl_cl</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_BACKEND_ACL_CL_CLTIMER_H__</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>} <span class="comment">// namespace onert::backend::acl_cl</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_BACKEND_ACL_CL_CLTIMER_H__</span></div>
 <div class="ttc" id="a_i_timer_8h_html"><div class="ttname"><a href="_i_timer_8h.html">ITimer.h</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1acl__cl_1_1_c_l_timer_html"><div class="ttname"><a href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html">onert::backend::acl_cl::CLTimer</a></div><div class="ttdoc">Class to measure CL kernels execution time.</div><div class="ttdef"><b>Definition</b> <a href="_c_l_timer_8h_source.html#l00037">CLTimer.h:38</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1acl__cl_1_1_c_l_timer_html_a10927bec68d86bac6a8c650dc219d085"><div class="ttname"><a href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html#a10927bec68d86bac6a8c650dc219d085">onert::backend::acl_cl::CLTimer::handleBegin</a></div><div class="ttdeci">void handleBegin() override</div><div class="ttdoc">This function replaces CL function, which enqueues a command to execute a kernel with a wrapper which...</div><div class="ttdef"><b>Definition</b> <a href="_c_l_timer_8h_source.html#l00044">CLTimer.h:44</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1acl__cl_1_1_c_l_timer_html_a7b52ba5d815682ac9f85ebeef52b7594"><div class="ttname"><a href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html#a7b52ba5d815682ac9f85ebeef52b7594">onert::backend::acl_cl::CLTimer::handleEnd</a></div><div class="ttdeci">void handleEnd() override</div><div class="ttdoc">Get timer result by addition executed CL kernels durations.</div><div class="ttdef"><b>Definition</b> <a href="_c_l_timer_8h_source.html#l00083">CLTimer.h:83</a></div></div>
-<div class="ttc" id="aclassonert_1_1util_1_1_i_timer_html"><div class="ttname"><a href="classonert_1_1util_1_1_i_timer.html">onert::util::ITimer</a></div><div class="ttdef"><b>Definition</b> <a href="_i_timer_8h_source.html#l00027">ITimer.h:28</a></div></div>
-<div class="ttc" id="aclassonert_1_1util_1_1_i_timer_html_ac87ea2ada18f0b9b005f98a5ecc81b7b"><div class="ttname"><a href="classonert_1_1util_1_1_i_timer.html#ac87ea2ada18f0b9b005f98a5ecc81b7b">onert::util::ITimer::_timer_res</a></div><div class="ttdeci">int _timer_res</div><div class="ttdef"><b>Definition</b> <a href="_i_timer_8h_source.html#l00037">ITimer.h:37</a></div></div>
-<div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1acl__cl_1_1_c_l_timer_html"><div class="ttname"><a href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html">onert::backend::acl_cl::CLTimer</a></div><div class="ttdoc">Class to measure CL kernels execution time.</div><div class="ttdef"><b>Definition</b> <a href="_c_l_timer_8h_source.html#l00033">CLTimer.h:34</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1acl__cl_1_1_c_l_timer_html_a10927bec68d86bac6a8c650dc219d085"><div class="ttname"><a href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html#a10927bec68d86bac6a8c650dc219d085">onert::backend::acl_cl::CLTimer::handleBegin</a></div><div class="ttdeci">void handleBegin() override</div><div class="ttdoc">This function replaces CL function, which enqueues a command to execute a kernel with a wrapper which...</div><div class="ttdef"><b>Definition</b> <a href="_c_l_timer_8h_source.html#l00040">CLTimer.h:40</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1acl__cl_1_1_c_l_timer_html_a7b52ba5d815682ac9f85ebeef52b7594"><div class="ttname"><a href="classonert_1_1backend_1_1acl__cl_1_1_c_l_timer.html#a7b52ba5d815682ac9f85ebeef52b7594">onert::backend::acl_cl::CLTimer::handleEnd</a></div><div class="ttdeci">void handleEnd() override</div><div class="ttdoc">Get timer result by addition executed CL kernels durations.</div><div class="ttdef"><b>Definition</b> <a href="_c_l_timer_8h_source.html#l00079">CLTimer.h:79</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1_i_timer_html"><div class="ttname"><a href="classonert_1_1util_1_1_i_timer.html">onert::util::ITimer</a></div><div class="ttdef"><b>Definition</b> <a href="_i_timer_8h_source.html#l00025">ITimer.h:26</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1_i_timer_html_ac87ea2ada18f0b9b005f98a5ecc81b7b"><div class="ttname"><a href="classonert_1_1util_1_1_i_timer.html#ac87ea2ada18f0b9b005f98a5ecc81b7b">onert::util::ITimer::_timer_res</a></div><div class="ttdeci">int _timer_res</div><div class="ttdef"><b>Definition</b> <a href="_i_timer_8h_source.html#l00035">ITimer.h:35</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1acl__cl_html"><div class="ttname"><a href="namespaceonert_1_1backend_1_1acl__cl.html">onert::backend::acl_cl</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2backend_2acl__cl_2_backend_8h_source.html#l00031">Backend.h:32</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

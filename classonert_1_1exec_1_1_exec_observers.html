@@ -106,7 +106,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00062">62</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00060">60</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a975688d45e95f50589a193473c4cd6e6" name="a975688d45e95f50589a193473c4cd6e6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a975688d45e95f50589a193473c4cd6e6">&#9670;&#160;</a></span>add()</h2>
@@ -132,12 +132,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00065">65</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span>  {</div>
-<div class="line"><span class="lineno">   67</span>    _observers.emplace(observer-&gt;type(), std::move(observer));</div>
-<div class="line"><span class="lineno">   68</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00063">63</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>  {</div>
+<div class="line"><span class="lineno">   65</span>    _observers.emplace(observer-&gt;type(), std::move(observer));</div>
+<div class="line"><span class="lineno">   66</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_executor_base_8h_source.html#l00089">onert::exec::ExecutorBase::addObserver()</a>, and <a class="el" href="_trainable_executor_8h_source.html#l00098">onert::exec::train::TrainableExecutor::addObserver()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_executor_base_8h_source.html#l00087">onert::exec::ExecutorBase::addObserver()</a>, and <a class="el" href="_trainable_executor_8h_source.html#l00094">onert::exec::train::TrainableExecutor::addObserver()</a>.</p>
 
 </div>
 </div>
@@ -165,15 +165,15 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00070">70</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span>  {</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">if</span> (_observers.find(type) != _observers.end())</div>
-<div class="line"><span class="lineno">   73</span>      <span class="keywordflow">return</span> _observers.at(type).get();</div>
-<div class="line"><span class="lineno">   74</span> </div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   76</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_execution_observers_8h_source.html#l00068">68</a> of file <a class="el" href="_execution_observers_8h_source.html">ExecutionObservers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span>  {</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">if</span> (_observers.find(type) != _observers.end())</div>
+<div class="line"><span class="lineno">   71</span>      <span class="keywordflow">return</span> _observers.at(type).get();</div>
+<div class="line"><span class="lineno">   72</span> </div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   74</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_execution_observee_8cc_source.html#l00024">onert::exec::ExecutionObservee::ExecutionObservee()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_execution_observee_8cc_source.html#l00022">onert::exec::ExecutionObservee::ExecutionObservee()</a>.</p>
 
 </div>
 </div>

@@ -3181,11 +3181,11 @@ template&lt;<a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace92755
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_binary_arithmetic_ops_8h_source.html#l00213">213</a> of file <a class="el" href="_binary_arithmetic_ops_8h_source.html">BinaryArithmeticOps.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  216</span>{</div>
-<div class="line"><span class="lineno">  217</span>  reference::BinaryArithmeticOp(params, input1_shape, input1_data, input2_shape, input2_data,</div>
-<div class="line"><span class="lineno">  218</span>                                <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, GetBinaryArtithmeticFn&lt;op_type, T&gt;());</div>
-<div class="line"><span class="lineno">  219</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_binary_arithmetic_ops_8h_source.html#l00211">211</a> of file <a class="el" href="_binary_arithmetic_ops_8h_source.html">BinaryArithmeticOps.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  214</span>{</div>
+<div class="line"><span class="lineno">  215</span>  reference::BinaryArithmeticOp(params, input1_shape, input1_data, input2_shape, input2_data,</div>
+<div class="line"><span class="lineno">  216</span>                                <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, GetBinaryArtithmeticFn&lt;op_type, T&gt;());</div>
+<div class="line"><span class="lineno">  217</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00035">nnfw::cker::reference::BinaryArithmeticOp()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
@@ -3257,11 +3257,11 @@ template&lt;<a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace92755
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_binary_arithmetic_ops_8h_source.html#l00223">223</a> of file <a class="el" href="_binary_arithmetic_ops_8h_source.html">BinaryArithmeticOps.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  226</span>{</div>
-<div class="line"><span class="lineno">  227</span>  reference::BinaryArithmeticOp(params, input1_shape, input1_data, input2_shape, input2_data,</div>
-<div class="line"><span class="lineno">  228</span>                                <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, GetBinaryArtithmeticFn&lt;op_type, T&gt;());</div>
-<div class="line"><span class="lineno">  229</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_binary_arithmetic_ops_8h_source.html#l00221">221</a> of file <a class="el" href="_binary_arithmetic_ops_8h_source.html">BinaryArithmeticOps.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  224</span>{</div>
+<div class="line"><span class="lineno">  225</span>  reference::BinaryArithmeticOp(params, input1_shape, input1_data, input2_shape, input2_data,</div>
+<div class="line"><span class="lineno">  226</span>                                <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, GetBinaryArtithmeticFn&lt;op_type, T&gt;());</div>
+<div class="line"><span class="lineno">  227</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00035">nnfw::cker::reference::BinaryArithmeticOp()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
@@ -3333,24 +3333,26 @@ template&lt;<a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace92755
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_binary_arithmetic_ops_8h_source.html#l00233">233</a> of file <a class="el" href="_binary_arithmetic_ops_8h_source.html">BinaryArithmeticOps.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  236</span>{</div>
-<div class="line"><span class="lineno">  237</span>  <span class="keywordflow">switch</span> (op_type)</div>
-<div class="line"><span class="lineno">  238</span>  {</div>
-<div class="line"><span class="lineno">  239</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a9eeb52badb613229884838847294b90d">nnfw::cker::BinaryArithmeticOpType::ADD</a>:</div>
-<div class="line"><span class="lineno">  240</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a241dd841abade20fcb27b8a9f494e1eb">nnfw::cker::BinaryArithmeticOpType::SUB</a>:</div>
-<div class="line"><span class="lineno">  241</span>      optimized::Add(params, input1_shape, input1_data, input2_shape, input2_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
-<div class="line"><span class="lineno">  242</span>                     output_data);</div>
-<div class="line"><span class="lineno">  243</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  244</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a2cdf52a55876063ec93b7d18bc741f6c">nnfw::cker::BinaryArithmeticOpType::MUL</a>:</div>
-<div class="line"><span class="lineno">  245</span>      optimized::Mul(params, input1_shape, input1_data, input2_shape, input2_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
-<div class="line"><span class="lineno">  246</span>                     output_data);</div>
-<div class="line"><span class="lineno">  247</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  248</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a29bbf66f7f8529ec47e394fb5a36c646">nnfw::cker::BinaryArithmeticOpType::DIV</a>:</div>
-<div class="line"><span class="lineno">  249</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Quant8 Asymm NYI&quot;</span>};</div>
-<div class="line"><span class="lineno">  250</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  251</span>      assert(<span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">  252</span>      <span class="keywordflow">break</span>;</div>
+<p class="definition">Definition at line <a class="el" href="_binary_arithmetic_ops_8h_source.html#l00231">231</a> of file <a class="el" href="_binary_arithmetic_ops_8h_source.html">BinaryArithmeticOps.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  234</span>{</div>
+<div class="line"><span class="lineno">  235</span>  <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (op_type == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a9eeb52badb613229884838847294b90d">nnfw::cker::BinaryArithmeticOpType::ADD</a> ||</div>
+<div class="line"><span class="lineno">  236</span>                op_type == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a241dd841abade20fcb27b8a9f494e1eb">nnfw::cker::BinaryArithmeticOpType::SUB</a>)</div>
+<div class="line"><span class="lineno">  237</span>  {</div>
+<div class="line"><span class="lineno">  238</span>    optimized::Add(params, input1_shape, input1_data, input2_shape, input2_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
+<div class="line"><span class="lineno">  239</span>                   output_data);</div>
+<div class="line"><span class="lineno">  240</span>  }</div>
+<div class="line"><span class="lineno">  241</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (op_type == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a2cdf52a55876063ec93b7d18bc741f6c">nnfw::cker::BinaryArithmeticOpType::MUL</a>)</div>
+<div class="line"><span class="lineno">  242</span>  {</div>
+<div class="line"><span class="lineno">  243</span>    optimized::Mul(params, input1_shape, input1_data, input2_shape, input2_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
+<div class="line"><span class="lineno">  244</span>                   output_data);</div>
+<div class="line"><span class="lineno">  245</span>  }</div>
+<div class="line"><span class="lineno">  246</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (op_type == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a29bbf66f7f8529ec47e394fb5a36c646">nnfw::cker::BinaryArithmeticOpType::DIV</a>)</div>
+<div class="line"><span class="lineno">  247</span>  {</div>
+<div class="line"><span class="lineno">  248</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Quant8 Asymm NYI&quot;</span>};</div>
+<div class="line"><span class="lineno">  249</span>  }</div>
+<div class="line"><span class="lineno">  250</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  251</span>  {</div>
+<div class="line"><span class="lineno">  252</span>    assert(<span class="keyword">false</span>);</div>
 <div class="line"><span class="lineno">  253</span>  }</div>
 <div class="line"><span class="lineno">  254</span>}</div>
 </div><!-- fragment -->
@@ -3424,42 +3426,42 @@ template&lt;<a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace92755
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_binary_arithmetic_ops_8h_source.html#l00325">325</a> of file <a class="el" href="_binary_arithmetic_ops_8h_source.html">BinaryArithmeticOps.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  329</span>{</div>
-<div class="line"><span class="lineno">  330</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount() &gt; 4)</div>
-<div class="line"><span class="lineno">  331</span>    <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><span class="lineno">  332</span>      std::string(<span class="stringliteral">&quot;cker::BroadcastBinaryArithmeticOp: Unsupported rank size : &quot;</span>) +</div>
-<div class="line"><span class="lineno">  333</span>      std::to_string(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount()));</div>
-<div class="line"><span class="lineno">  334</span> </div>
-<div class="line"><span class="lineno">  335</span>  <span class="comment">// Supported type is only float now</span></div>
-<div class="line"><span class="lineno">  336</span>  <span class="keywordflow">switch</span> (op_type)</div>
-<div class="line"><span class="lineno">  337</span>  {</div>
-<div class="line"><span class="lineno">  338</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a9eeb52badb613229884838847294b90d">nnfw::cker::BinaryArithmeticOpType::ADD</a>:</div>
-<div class="line"><span class="lineno">  339</span>      optimized::BroadcastAddDispatch(params, input1_shape, input1_data, input2_shape, input2_data,</div>
-<div class="line"><span class="lineno">  340</span>                                      <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
-<div class="line"><span class="lineno">  341</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  342</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a2cdf52a55876063ec93b7d18bc741f6c">nnfw::cker::BinaryArithmeticOpType::MUL</a>:</div>
-<div class="line"><span class="lineno">  343</span>      optimized::BroadcastMulDispatch(params, input1_shape, input1_data, input2_shape, input2_data,</div>
-<div class="line"><span class="lineno">  344</span>                                      <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
-<div class="line"><span class="lineno">  345</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  346</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a241dd841abade20fcb27b8a9f494e1eb">nnfw::cker::BinaryArithmeticOpType::SUB</a>:</div>
-<div class="line"><span class="lineno">  347</span>      optimized::BroadcastSubDispatch(params, input1_shape, input1_data, input2_shape, input2_data,</div>
-<div class="line"><span class="lineno">  348</span>                                      <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
-<div class="line"><span class="lineno">  349</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  350</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a29bbf66f7f8529ec47e394fb5a36c646">nnfw::cker::BinaryArithmeticOpType::DIV</a>:</div>
-<div class="line"><span class="lineno">  351</span>      optimized::BroadcastDivDispatch(params, input1_shape, input1_data, input2_shape, input2_data,</div>
-<div class="line"><span class="lineno">  352</span>                                      <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
-<div class="line"><span class="lineno">  353</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  354</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a17faf4e999b8cee4c36915c1f54ccffe">nnfw::cker::BinaryArithmeticOpType::POW</a>:</div>
-<div class="line"><span class="lineno">  355</span>      reference::BroadcastBinaryArithmeticOpSlow&lt;float&gt;(</div>
-<div class="line"><span class="lineno">  356</span>        params, input1_shape, input1_data, input2_shape, input2_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data,</div>
-<div class="line"><span class="lineno">  357</span>        GetBinaryArtithmeticFn&lt;op_type, float&gt;());</div>
-<div class="line"><span class="lineno">  358</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  359</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  360</span>      assert(<span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">  361</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  362</span>  }</div>
-<div class="line"><span class="lineno">  363</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_binary_arithmetic_ops_8h_source.html#l00327">327</a> of file <a class="el" href="_binary_arithmetic_ops_8h_source.html">BinaryArithmeticOps.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  331</span>{</div>
+<div class="line"><span class="lineno">  332</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount() &gt; 4)</div>
+<div class="line"><span class="lineno">  333</span>    <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><span class="lineno">  334</span>      std::string(<span class="stringliteral">&quot;cker::BroadcastBinaryArithmeticOp: Unsupported rank size : &quot;</span>) +</div>
+<div class="line"><span class="lineno">  335</span>      std::to_string(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount()));</div>
+<div class="line"><span class="lineno">  336</span> </div>
+<div class="line"><span class="lineno">  337</span>  <span class="comment">// Supported type is only float now</span></div>
+<div class="line"><span class="lineno">  338</span>  <span class="keywordflow">switch</span> (op_type)</div>
+<div class="line"><span class="lineno">  339</span>  {</div>
+<div class="line"><span class="lineno">  340</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a9eeb52badb613229884838847294b90d">nnfw::cker::BinaryArithmeticOpType::ADD</a>:</div>
+<div class="line"><span class="lineno">  341</span>      optimized::BroadcastAddDispatch(params, input1_shape, input1_data, input2_shape, input2_data,</div>
+<div class="line"><span class="lineno">  342</span>                                      <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
+<div class="line"><span class="lineno">  343</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  344</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a2cdf52a55876063ec93b7d18bc741f6c">nnfw::cker::BinaryArithmeticOpType::MUL</a>:</div>
+<div class="line"><span class="lineno">  345</span>      optimized::BroadcastMulDispatch(params, input1_shape, input1_data, input2_shape, input2_data,</div>
+<div class="line"><span class="lineno">  346</span>                                      <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
+<div class="line"><span class="lineno">  347</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  348</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a241dd841abade20fcb27b8a9f494e1eb">nnfw::cker::BinaryArithmeticOpType::SUB</a>:</div>
+<div class="line"><span class="lineno">  349</span>      optimized::BroadcastSubDispatch(params, input1_shape, input1_data, input2_shape, input2_data,</div>
+<div class="line"><span class="lineno">  350</span>                                      <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
+<div class="line"><span class="lineno">  351</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  352</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a29bbf66f7f8529ec47e394fb5a36c646">nnfw::cker::BinaryArithmeticOpType::DIV</a>:</div>
+<div class="line"><span class="lineno">  353</span>      optimized::BroadcastDivDispatch(params, input1_shape, input1_data, input2_shape, input2_data,</div>
+<div class="line"><span class="lineno">  354</span>                                      <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
+<div class="line"><span class="lineno">  355</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  356</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a17faf4e999b8cee4c36915c1f54ccffe">nnfw::cker::BinaryArithmeticOpType::POW</a>:</div>
+<div class="line"><span class="lineno">  357</span>      reference::BroadcastBinaryArithmeticOpSlow&lt;float&gt;(</div>
+<div class="line"><span class="lineno">  358</span>        params, input1_shape, input1_data, input2_shape, input2_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data,</div>
+<div class="line"><span class="lineno">  359</span>        GetBinaryArtithmeticFn&lt;op_type, float&gt;());</div>
+<div class="line"><span class="lineno">  360</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  361</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  362</span>      assert(<span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">  363</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  364</span>  }</div>
+<div class="line"><span class="lineno">  365</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a9eeb52badb613229884838847294b90d">ADD</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l00812">nnfw::cker::optimized::BroadcastAddDispatch()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l01234">nnfw::cker::optimized::BroadcastDivDispatch()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l01177">nnfw::cker::optimized::BroadcastMulDispatch()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l00867">nnfw::cker::optimized::BroadcastSubDispatch()</a>, <a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a29bbf66f7f8529ec47e394fb5a36c646">DIV</a>, <a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a2cdf52a55876063ec93b7d18bc741f6c">MUL</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a17faf4e999b8cee4c36915c1f54ccffe">POW</a>, and <a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a241dd841abade20fcb27b8a9f494e1eb">SUB</a>.</p>
 
@@ -3610,25 +3612,27 @@ template&lt;<a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace92755
 
 <p class="definition">Definition at line <a class="el" href="_binary_arithmetic_ops_8h_source.html#l00300">300</a> of file <a class="el" href="_binary_arithmetic_ops_8h_source.html">BinaryArithmeticOps.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  303</span>{</div>
-<div class="line"><span class="lineno">  304</span>  <span class="keywordflow">switch</span> (op_type)</div>
-<div class="line"><span class="lineno">  305</span>  {</div>
-<div class="line"><span class="lineno">  306</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a9eeb52badb613229884838847294b90d">nnfw::cker::BinaryArithmeticOpType::ADD</a>:</div>
-<div class="line"><span class="lineno">  307</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a241dd841abade20fcb27b8a9f494e1eb">nnfw::cker::BinaryArithmeticOpType::SUB</a>:</div>
-<div class="line"><span class="lineno">  308</span>      optimized::BroadcastAddDispatch(params, input1_shape, input1_data, input2_shape, input2_data,</div>
-<div class="line"><span class="lineno">  309</span>                                      <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
-<div class="line"><span class="lineno">  310</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  311</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a2cdf52a55876063ec93b7d18bc741f6c">nnfw::cker::BinaryArithmeticOpType::MUL</a>:</div>
-<div class="line"><span class="lineno">  312</span>      optimized::BroadcastMulDispatch(params, input1_shape, input1_data, input2_shape, input2_data,</div>
-<div class="line"><span class="lineno">  313</span>                                      <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
-<div class="line"><span class="lineno">  314</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  315</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a29bbf66f7f8529ec47e394fb5a36c646">nnfw::cker::BinaryArithmeticOpType::DIV</a>:</div>
-<div class="line"><span class="lineno">  316</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a17faf4e999b8cee4c36915c1f54ccffe">nnfw::cker::BinaryArithmeticOpType::POW</a>:</div>
-<div class="line"><span class="lineno">  317</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Quant8 Asymm NYI&quot;</span>};</div>
-<div class="line"><span class="lineno">  318</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  319</span>      assert(<span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">  320</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  321</span>  }</div>
-<div class="line"><span class="lineno">  322</span>}</div>
+<div class="line"><span class="lineno">  304</span>  <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (op_type == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a9eeb52badb613229884838847294b90d">nnfw::cker::BinaryArithmeticOpType::ADD</a> ||</div>
+<div class="line"><span class="lineno">  305</span>                op_type == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a241dd841abade20fcb27b8a9f494e1eb">nnfw::cker::BinaryArithmeticOpType::SUB</a>)</div>
+<div class="line"><span class="lineno">  306</span>  {</div>
+<div class="line"><span class="lineno">  307</span>    optimized::BroadcastAddDispatch(params, input1_shape, input1_data, input2_shape, input2_data,</div>
+<div class="line"><span class="lineno">  308</span>                                    <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
+<div class="line"><span class="lineno">  309</span>  }</div>
+<div class="line"><span class="lineno">  310</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (op_type == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a2cdf52a55876063ec93b7d18bc741f6c">nnfw::cker::BinaryArithmeticOpType::MUL</a>)</div>
+<div class="line"><span class="lineno">  311</span>  {</div>
+<div class="line"><span class="lineno">  312</span>    optimized::BroadcastMulDispatch(params, input1_shape, input1_data, input2_shape, input2_data,</div>
+<div class="line"><span class="lineno">  313</span>                                    <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
+<div class="line"><span class="lineno">  314</span>  }</div>
+<div class="line"><span class="lineno">  315</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (op_type == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a29bbf66f7f8529ec47e394fb5a36c646">nnfw::cker::BinaryArithmeticOpType::DIV</a> ||</div>
+<div class="line"><span class="lineno">  316</span>                     op_type == <a class="code hl_enumvalue" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a17faf4e999b8cee4c36915c1f54ccffe">nnfw::cker::BinaryArithmeticOpType::POW</a>)</div>
+<div class="line"><span class="lineno">  317</span>  {</div>
+<div class="line"><span class="lineno">  318</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Quant8 Asymm NYI&quot;</span>};</div>
+<div class="line"><span class="lineno">  319</span>  }</div>
+<div class="line"><span class="lineno">  320</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  321</span>  {</div>
+<div class="line"><span class="lineno">  322</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">  323</span>  }</div>
+<div class="line"><span class="lineno">  324</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a9eeb52badb613229884838847294b90d">ADD</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l00812">nnfw::cker::optimized::BroadcastAddDispatch()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l01177">nnfw::cker::optimized::BroadcastMulDispatch()</a>, <a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a29bbf66f7f8529ec47e394fb5a36c646">DIV</a>, <a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a2cdf52a55876063ec93b7d18bc741f6c">MUL</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a17faf4e999b8cee4c36915c1f54ccffe">POW</a>, and <a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a241dd841abade20fcb27b8a9f494e1eb">SUB</a>.</p>
 
@@ -5476,7 +5480,7 @@ template&lt;typename Scalar &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00223">nnfw::cker::ConcatenationParams::axis</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00225">nnfw::cker::ConcatenationParams::input_scale</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00224">nnfw::cker::ConcatenationParams::input_zeropoint</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00226">nnfw::cker::ConcatenationParams::inputs_count</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00228">nnfw::cker::ConcatenationParams::output_scale</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00227">nnfw::cker::ConcatenationParams::output_zeropoint</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_concat_layer_8cc_source.html#l00066">onert::backend::cpu::ops::ConcatLayer::concatenationQuant8()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_concat_layer_8cc_source.html#l00060">onert::backend::cpu::ops::ConcatLayer::concatenationQuant8()</a>.</p>
 
 </div>
 </div>
@@ -5933,7 +5937,7 @@ template&lt;typename T , typename TS &gt; </div>
 <div class="line"><span class="lineno">  139</span>  thread_count = std::max(1, std::min(thread_count, max_threads));</div>
 <div class="line"><span class="lineno">  140</span>  <span class="comment">// Cap the number of threads to 2 for float path to avoid regression in</span></div>
 <div class="line"><span class="lineno">  141</span>  <span class="comment">// performance (b/132294857).</span></div>
-<div class="line"><span class="lineno">  142</span>  <span class="keywordflow">if</span> (std::is_floating_point&lt;T&gt;::value)</div>
+<div class="line"><span class="lineno">  142</span>  <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_floating_point&lt;T&gt;::value)</div>
 <div class="line"><span class="lineno">  143</span>  {</div>
 <div class="line"><span class="lineno">  144</span>    thread_count = std::min(thread_count, 2);</div>
 <div class="line"><span class="lineno">  145</span>  }</div>
@@ -6113,7 +6117,7 @@ template&lt;typename T , typename TS &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00239">nnfw::cker::DepthwiseConvParams::depth_multiplier</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00238">nnfw::cker::DepthwiseConvParams::dilation_height_factor</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00237">nnfw::cker::DepthwiseConvParams::dilation_width_factor</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00252">nnfw::cker::DepthwiseConvParams::float_activation_max</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00251">nnfw::cker::DepthwiseConvParams::float_activation_min</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00075">nnfw::cker::PaddingValues::height</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00220">MatchingDim()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00234">nnfw::cker::DepthwiseConvParams::padding_values</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00236">nnfw::cker::DepthwiseConvParams::stride_height</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00235">nnfw::cker::DepthwiseConvParams::stride_width</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00074">nnfw::cker::PaddingValues::width</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00068">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convFloat32()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00062">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convFloat32()</a>.</p>
 
 </div>
 </div>
@@ -6459,7 +6463,7 @@ template&lt;typename T , typename TS &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00297">MatchingFlatSize()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00081">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>.</p>
 
 </div>
 </div>
@@ -7093,43 +7097,47 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   40</span>    <span class="keywordtype">float</span> operator()(<span class="keyword">const</span> <span class="keywordtype">float</span> lhs, <span class="keyword">const</span> <span class="keywordtype">float</span> rhs)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> std::fmod(lhs, rhs); }</div>
 <div class="line"><span class="lineno">   41</span>  };</div>
 <div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>  <span class="keyword">using </span>ModFunc =</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keyword">typename</span> std::conditional&lt;std::is_integral&lt;T&gt;::value, std::modulus&lt;T&gt;, FloatMod&gt;::type;</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">if</span> (unextended_output_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() &gt; 4)</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">throw</span> std::runtime_error(std::string(<span class="stringliteral">&quot;cker::FloorModBroadcast: Unsupported rank size : &quot;</span>) +</div>
-<div class="line"><span class="lineno">   48</span>                             std::to_string(unextended_output_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>()));</div>
-<div class="line"><span class="lineno">   49</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = Shape::ExtendedShape(4, unextended_output_shape);</div>
-<div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>  <a class="code hl_struct" href="struct_nd_array_desc.html">NdArrayDesc&lt;4&gt;</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a>;</div>
-<div class="line"><span class="lineno">   52</span>  <a class="code hl_struct" href="struct_nd_array_desc.html">NdArrayDesc&lt;4&gt;</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a>;</div>
-<div class="line"><span class="lineno">   53</span>  <a class="code hl_function" href="_n_d_array_8h.html#a256945a34650c9e1803de88c828ef724">NdArrayDescsForElementwiseBroadcast</a>(unextended_input1_shape, unextended_input2_shape, &amp;<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a>,</div>
-<div class="line"><span class="lineno">   54</span>                                      &amp;<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a>);</div>
-<div class="line"><span class="lineno">   55</span> </div>
-<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; b &lt; <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(0); ++b)</div>
-<div class="line"><span class="lineno">   57</span>  {</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(1); ++y)</div>
-<div class="line"><span class="lineno">   59</span>    {</div>
-<div class="line"><span class="lineno">   60</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(2); ++x)</div>
-<div class="line"><span class="lineno">   61</span>      {</div>
-<div class="line"><span class="lineno">   62</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(3); ++c)</div>
-<div class="line"><span class="lineno">   63</span>        {</div>
-<div class="line"><span class="lineno">   64</span>          <span class="keyword">auto</span> out_idx = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, b, y, x, c);</div>
-<div class="line"><span class="lineno">   65</span>          <span class="keyword">auto</span> in1_idx = <a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a>, b, y, x, c);</div>
-<div class="line"><span class="lineno">   66</span>          <span class="keyword">auto</span> in2_idx = <a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a>, b, y, x, c);</div>
-<div class="line"><span class="lineno">   67</span>          <span class="keyword">auto</span> in1_val = input1_data[in1_idx];</div>
-<div class="line"><span class="lineno">   68</span>          <span class="keyword">auto</span> in2_val = input2_data[in2_idx];</div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>          ModFunc mod_func;</div>
-<div class="line"><span class="lineno">   71</span>          T trunc_mod = mod_func(in1_val, in2_val);</div>
-<div class="line"><span class="lineno">   72</span>          output_data[out_idx] = (trunc_mod != 0) &amp;&amp; ((in2_val &lt; 0) != (trunc_mod &lt; 0))</div>
-<div class="line"><span class="lineno">   73</span>                                   ? (trunc_mod + in2_val)</div>
-<div class="line"><span class="lineno">   74</span>                                   : trunc_mod;</div>
-<div class="line"><span class="lineno">   75</span>        }</div>
-<div class="line"><span class="lineno">   76</span>      }</div>
-<div class="line"><span class="lineno">   77</span>    }</div>
-<div class="line"><span class="lineno">   78</span>  }</div>
-<div class="line"><span class="lineno">   79</span>}</div>
+<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">if</span> (unextended_output_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() &gt; 4)</div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">throw</span> std::runtime_error(std::string(<span class="stringliteral">&quot;cker::FloorModBroadcast: Unsupported rank size : &quot;</span>) +</div>
+<div class="line"><span class="lineno">   45</span>                             std::to_string(unextended_output_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>()));</div>
+<div class="line"><span class="lineno">   46</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = Shape::ExtendedShape(4, unextended_output_shape);</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  <a class="code hl_struct" href="struct_nd_array_desc.html">NdArrayDesc&lt;4&gt;</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a>;</div>
+<div class="line"><span class="lineno">   49</span>  <a class="code hl_struct" href="struct_nd_array_desc.html">NdArrayDesc&lt;4&gt;</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a>;</div>
+<div class="line"><span class="lineno">   50</span>  <a class="code hl_function" href="_n_d_array_8h.html#a256945a34650c9e1803de88c828ef724">NdArrayDescsForElementwiseBroadcast</a>(unextended_input1_shape, unextended_input2_shape, &amp;<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a>,</div>
+<div class="line"><span class="lineno">   51</span>                                      &amp;<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a>);</div>
+<div class="line"><span class="lineno">   52</span> </div>
+<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> b = 0; b &lt; <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(0); ++b)</div>
+<div class="line"><span class="lineno">   54</span>  {</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(1); ++y)</div>
+<div class="line"><span class="lineno">   56</span>    {</div>
+<div class="line"><span class="lineno">   57</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(2); ++x)</div>
+<div class="line"><span class="lineno">   58</span>      {</div>
+<div class="line"><span class="lineno">   59</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> c = 0; c &lt; <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.Dims(3); ++c)</div>
+<div class="line"><span class="lineno">   60</span>        {</div>
+<div class="line"><span class="lineno">   61</span>          <span class="keyword">auto</span> out_idx = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a1c037ff89c0da8b5cd52088b914b9c1d">Offset</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, b, y, x, c);</div>
+<div class="line"><span class="lineno">   62</span>          <span class="keyword">auto</span> in1_idx = <a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a2ed85231fb21100351c9f68895eaba4b">desc1</a>, b, y, x, c);</div>
+<div class="line"><span class="lineno">   63</span>          <span class="keyword">auto</span> in2_idx = <a class="code hl_function" href="_n_d_array_8h.html#a635d76912989ba020d1eeada22742b0d">SubscriptToIndex</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a>, b, y, x, c);</div>
+<div class="line"><span class="lineno">   64</span>          <span class="keyword">auto</span> in1_val = input1_data[in1_idx];</div>
+<div class="line"><span class="lineno">   65</span>          <span class="keyword">auto</span> in2_val = input2_data[in2_idx];</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>          T trunc_mod;</div>
+<div class="line"><span class="lineno">   68</span>          <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_integral_v&lt;T&gt;)</div>
+<div class="line"><span class="lineno">   69</span>          {</div>
+<div class="line"><span class="lineno">   70</span>            trunc_mod = std::modulus&lt;T&gt;()(in1_val, in2_val);</div>
+<div class="line"><span class="lineno">   71</span>          }</div>
+<div class="line"><span class="lineno">   72</span>          <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   73</span>          {</div>
+<div class="line"><span class="lineno">   74</span>            trunc_mod = FloatMod{}(in1_val, in2_val);</div>
+<div class="line"><span class="lineno">   75</span>          }</div>
+<div class="line"><span class="lineno">   76</span>          <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[out_idx] = (trunc_mod != 0) &amp;&amp; ((in2_val &lt; 0) != (trunc_mod &lt; 0))</div>
+<div class="line"><span class="lineno">   77</span>                                   ? (trunc_mod + in2_val)</div>
+<div class="line"><span class="lineno">   78</span>                                   : trunc_mod;</div>
+<div class="line"><span class="lineno">   79</span>        }</div>
+<div class="line"><span class="lineno">   80</span>      }</div>
+<div class="line"><span class="lineno">   81</span>    }</div>
+<div class="line"><span class="lineno">   82</span>  }</div>
+<div class="line"><span class="lineno">   83</span>}</div>
 <div class="ttc" id="astruct_nd_array_desc_html"><div class="ttname"><a href="struct_nd_array_desc.html">NdArrayDesc</a></div><div class="ttdef"><b>Definition</b> <a href="_n_d_array_8h_source.html#l00037">NDArray.h:38</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00290">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00237">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
@@ -7184,27 +7192,26 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_mod_8h_source.html#l00082">82</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_mod_8h_source.html">FloorMod.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   84</span>{</div>
-<div class="line"><span class="lineno">   85</span>  <span class="keyword">struct </span>FloatMod</div>
-<div class="line"><span class="lineno">   86</span>  {</div>
-<div class="line"><span class="lineno">   87</span>    <span class="keywordtype">float</span> operator()(<span class="keyword">const</span> <span class="keywordtype">float</span> lhs, <span class="keyword">const</span> <span class="keywordtype">float</span> rhs)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> std::fmod(lhs, rhs); }</div>
-<div class="line"><span class="lineno">   88</span>  };</div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>  <span class="keyword">using </span>ModFunc =</div>
-<div class="line"><span class="lineno">   91</span>    <span class="keyword">typename</span> std::conditional&lt;std::is_integral&lt;T&gt;::value, std::modulus&lt;T&gt;, FloatMod&gt;::type;</div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span>  <span class="keywordtype">int</span> num_elements = shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">FlatSize</a>();</div>
-<div class="line"><span class="lineno">   94</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> t = 0; t &lt; num_elements; t++)</div>
-<div class="line"><span class="lineno">   95</span>  {</div>
-<div class="line"><span class="lineno">   96</span>    ModFunc mod_func;</div>
-<div class="line"><span class="lineno">   97</span>    <span class="keyword">auto</span> in1_val = input1_data[t];</div>
-<div class="line"><span class="lineno">   98</span>    <span class="keyword">auto</span> in2_val = input2_data[t];</div>
-<div class="line"><span class="lineno">   99</span>    T trunc_mod = mod_func(in1_val, in2_val);</div>
-<div class="line"><span class="lineno">  100</span>    output_data[t] =</div>
-<div class="line"><span class="lineno">  101</span>      (trunc_mod != 0) &amp;&amp; ((in2_val &lt; 0) != (trunc_mod &lt; 0)) ? (trunc_mod + in2_val) : trunc_mod;</div>
-<div class="line"><span class="lineno">  102</span>  }</div>
-<div class="line"><span class="lineno">  103</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_mod_8h_source.html#l00086">86</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_mod_8h_source.html">FloorMod.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   88</span>{</div>
+<div class="line"><span class="lineno">   89</span>  <span class="keywordtype">int</span> num_elements = shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#ac7e29fd510111992fbd44906e2080f12">FlatSize</a>();</div>
+<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> t = 0; t &lt; num_elements; t++)</div>
+<div class="line"><span class="lineno">   91</span>  {</div>
+<div class="line"><span class="lineno">   92</span>    T in1_val = input1_data[t];</div>
+<div class="line"><span class="lineno">   93</span>    T in2_val = input2_data[t];</div>
+<div class="line"><span class="lineno">   94</span>    T trunc_mod;</div>
+<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_integral_v&lt;T&gt;)</div>
+<div class="line"><span class="lineno">   96</span>    {</div>
+<div class="line"><span class="lineno">   97</span>      trunc_mod = std::modulus&lt;T&gt;()(in1_val, in2_val);</div>
+<div class="line"><span class="lineno">   98</span>    }</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  100</span>    {</div>
+<div class="line"><span class="lineno">  101</span>      trunc_mod = std::fmod(in1_val, in2_val);</div>
+<div class="line"><span class="lineno">  102</span>    }</div>
+<div class="line"><span class="lineno">  103</span>    output_data[t] =</div>
+<div class="line"><span class="lineno">  104</span>      (trunc_mod != 0) &amp;&amp; ((in2_val &lt; 0) != (trunc_mod &lt; 0)) ? (trunc_mod + in2_val) : trunc_mod;</div>
+<div class="line"><span class="lineno">  105</span>  }</div>
+<div class="line"><span class="lineno">  106</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00181">nnfw::cker::Shape::FlatSize()</a>.</p>
 
@@ -7317,7 +7324,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00257">nnfw::cker::FullyConnectedParams::activation</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00109">ApplyActivationToVector()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00181">nnfw::cker::Shape::FlatSize()</a>, <a class="el" href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2a35c3ace1970663a16e5c65baa5941b13">kNone</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00127">MatrixBatchVectorMultiplyAccumulate()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00044">VectorBatchVectorAssign()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00160">ZeroVector()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00045">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedFloat32()</a>, and <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00067">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedQuant8()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00039">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedFloat32()</a>, and <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00061">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedQuant8()</a>.</p>
 
 </div>
 </div>
@@ -7616,7 +7623,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_fully_connected_8h_source.html#l00059">nnfw::cker::FCTempArena::accum_scratch</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00257">nnfw::cker::FullyConnectedParams::activation</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00109">ApplyActivationToVector()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00181">nnfw::cker::Shape::FlatSize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_fully_connected_8h_source.html#l00057">nnfw::cker::FCTempArena::input_quantized</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00104">IsZeroVector()</a>, <a class="el" href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2a35c3ace1970663a16e5c65baa5941b13">kNone</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00127">MatrixBatchVectorMultiplyAccumulate()</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_fully_connected_8h_source.html#l00058">nnfw::cker::FCTempArena::scaling_factors</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00120">SymmetricQuantizeFloats()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00044">VectorBatchVectorAssign()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00262">nnfw::cker::FullyConnectedParams::weights_scale</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00160">ZeroVector()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00094">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedHybrid()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00088">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedHybrid()</a>.</p>
 
 </div>
 </div>
@@ -7803,7 +7810,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00257">nnfw::cker::FullyConnectedParams::activation</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00109">ApplyActivationToVector()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00253">FlatSizeSkipDim()</a>, <a class="el" href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2a35c3ace1970663a16e5c65baa5941b13">kNone</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00220">MatchingDim()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00044">VectorBatchVectorAssign()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00160">ZeroVector()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00155">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedSparseWeight()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00149">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedSparseWeight()</a>.</p>
 
 </div>
 </div>
@@ -7937,7 +7944,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00257">nnfw::cker::FullyConnectedParams::activation</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00109">ApplyActivationToVector()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00253">FlatSizeSkipDim()</a>, <a class="el" href="namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2a35c3ace1970663a16e5c65baa5941b13">kNone</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00220">MatchingDim()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00044">VectorBatchVectorAssign()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00160">ZeroVector()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00155">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedSparseWeight()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00149">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedSparseWeight()</a>.</p>
 
 </div>
 </div>
@@ -8378,15 +8385,16 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   34</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Range: invalid input values&quot;</span>);</div>
 <div class="line"><span class="lineno">   35</span>  }</div>
 <div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = (std::is_integral&lt;T&gt;::value</div>
-<div class="line"><span class="lineno">   38</span>                ? ((std::abs(limit - start) + std::abs(delta) - 1) / std::abs(delta))</div>
-<div class="line"><span class="lineno">   39</span>                : <a class="code hl_namespace" href="namespacestd.html">std</a>::ceil(<a class="code hl_namespace" href="namespacestd.html">std</a>::abs((limit - start) / delta)));</div>
-<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
-<div class="line"><span class="lineno">   41</span>}</div>
-<div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_circle_2_circle_exporter_utils_8h_source.html#l00052">CircleExporterUtils.h:53</a></div></div>
+<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_integral_v&lt;T&gt;)</div>
+<div class="line"><span class="lineno">   38</span>  {</div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">return</span> ((std::abs(limit - start) + std::abs(delta) - 1) / std::abs(delta));</div>
+<div class="line"><span class="lineno">   40</span>  }</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   42</span>  {</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(std::ceil(std::abs((limit - start) / delta)));</div>
+<div class="line"><span class="lineno">   44</span>  }</div>
+<div class="line"><span class="lineno">   45</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
-
 </div>
 </div>
 <a id="a7b817ab21069a45c26f2b7a4cd8fc62e" name="a7b817ab21069a45c26f2b7a4cd8fc62e"></a>
@@ -8772,7 +8780,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00104">IsZeroVector()</a>, and <a class="el" href="cker_2include_2cker_2neon_2neon__check_8h_source.html#l00047">NEON_OR_PORTABLE</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00094">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedHybrid()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_fully_connected_8h_source.html#l00183">FullyConnectedHybrid()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00104">IsZeroVector()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_l_s_t_m_8h_source.html#l00285">LstmStepFloat()</a>, and <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00290">onert::backend::cpu::ops::FullyConnectedLayer::prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00088">onert::backend::cpu::ops::FullyConnectedLayer::fullyConnectedHybrid()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_fully_connected_8h_source.html#l00183">FullyConnectedHybrid()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_tensor_utils_8h_source.html#l00104">IsZeroVector()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_l_s_t_m_8h_source.html#l00285">LstmStepFloat()</a>, and <a class="el" href="cpu_2ops_2_fully_connected_layer_8cc_source.html#l00284">onert::backend::cpu::ops::FullyConnectedLayer::prepare()</a>.</p>
 
 </div>
 </div>
@@ -8842,7 +8850,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00220">MatchingDim()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00304">MatchingFlatSizeSkipDim()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_l2_norm_layer_8cc_source.html#l00042">onert::backend::cpu::ops::L2NormLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_l2_norm_layer_8cc_source.html#l00036">onert::backend::cpu::ops::L2NormLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -8927,7 +8935,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00164">GetInvSqrtQuantizedMultiplierExp()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00281">nnfw::cker::L2NormParams::input_zero_point</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00220">MatchingDim()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00304">MatchingFlatSizeSkipDim()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00111">MultiplyByQuantizedMultiplierSmallerThanOneExp()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_l2_norm_layer_8cc_source.html#l00042">onert::backend::cpu::ops::L2NormLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_l2_norm_layer_8cc_source.html#l00036">onert::backend::cpu::ops::L2NormLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -8983,7 +8991,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h_source.html#l00031">31</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h_source.html">LeakyReLU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_leaky_relu_8h_source.html#l00031">31</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_leaky_relu_8h_source.html">LeakyReLU.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
 <div class="line"><span class="lineno">   34</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> flat_size = <a class="code hl_function" href="ann-ref_2src_2ops_2internal_2_dims_8h.html#a93604338a7a3801ed30692282ff124ce">MatchingFlatSize</a>(input_shape, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
 <div class="line"><span class="lineno">   35</span> </div>
@@ -8998,7 +9006,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00410">nnfw::cker::LeakyReluParams::alpha</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00297">MatchingFlatSize()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00081">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>.</p>
 
 </div>
 </div>
@@ -9576,7 +9584,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00043">MapAsVector()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00081">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>.</p>
 
 </div>
 </div>
@@ -9682,7 +9690,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00107">nnfw::cker::SoftmaxParams::axis</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00106">nnfw::cker::SoftmaxParams::beta</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00220">MatchingDim()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_log_soft_max_layer_8cc_source.html#l00047">onert::backend::cpu::ops::LogSoftMaxLayer::logsoftmaxFloat32()</a>, and <a class="el" href="_log_soft_max_layer_8cc_source.html#l00056">onert::backend::cpu::ops::LogSoftMaxLayer::logsoftmaxQuant8()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_log_soft_max_layer_8cc_source.html#l00041">onert::backend::cpu::ops::LogSoftMaxLayer::logsoftmaxFloat32()</a>, and <a class="el" href="_log_soft_max_layer_8cc_source.html#l00050">onert::backend::cpu::ops::LogSoftMaxLayer::logsoftmaxQuant8()</a>.</p>
 
 </div>
 </div>
@@ -10279,7 +10287,7 @@ template&lt;typename Scalar &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00181">nnfw::cker::Shape::FlatSize()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00051">Abs()</a>, <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_binary_arithmetic_8h_source.html#l00039">nnfw::cker::train::BinaryArithmeticGrad()</a>, <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00103">nnfw::cker::train::CategoricalCrossEntropy()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logistic_8h_source.html#l00032">Logistic()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_re_l_u_8h_source.html#l00032">ReLU()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_re_l_u6_8h_source.html#l00032">ReLU6()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h_source.html#l00031">nnfw::cker::train::ReLU6Grad()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2train_2operation_2_re_l_u_8h_source.html#l00032">nnfw::cker::train::ReLUGrad()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_tanh_8h_source.html#l00031">Tanh()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00051">Abs()</a>, <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_binary_arithmetic_8h_source.html#l00039">nnfw::cker::train::BinaryArithmeticGrad()</a>, <a class="el" href="compute_2cker_2include_2cker_2train_2operation_2_loss_8h_source.html#l00103">nnfw::cker::train::CategoricalCrossEntropy()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logistic_8h_source.html#l00032">Logistic()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_relu_8h_source.html#l00032">ReLU()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_relu6_8h_source.html#l00032">ReLU6()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2train_2operation_2_relu6_8h_source.html#l00031">nnfw::cker::train::ReLU6Grad()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2train_2operation_2_relu_8h_source.html#l00032">nnfw::cker::train::ReLUGrad()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_tanh_8h_source.html#l00031">Tanh()</a>.</p>
 
 </div>
 </div>
@@ -10499,7 +10507,7 @@ template&lt;typename... Ts&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00268">checkMatching()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00181">nnfw::cker::Shape::FlatSize()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00040">ComparisonImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00062">ComparisonWithScaling()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00041">Cos()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_dequantize_8h_source.html#l00115">Dequantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_dequantize_8h_source.html#l00080">Dequantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_dequantize_8h_source.html#l00044">Dequantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_e_l_u_8h_source.html#l00030">ELU()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_erf_8h_source.html#l00029">Erf()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_exp_8h_source.html#l00030">Exp()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00090">Floor()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h_source.html#l00031">LeakyReLU()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00080">Log()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_not_8h_source.html#l00028">LogicalNot()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00070">Neg()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_pow_8h_source.html#l00031">powImpl()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00156">Quantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00050">Quantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00103">Quantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00034">Quantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00065">Round()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00059">Rsqrt()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_select_8h_source.html#l00032">Select()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00031">Sin()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_softmax_8h_source.html#l00116">Softmax()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2train_2operation_2_softmax_8h_source.html#l00030">nnfw::cker::train::SoftMaxGrad()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00101">Sqrt()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00112">Square()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00040">ComparisonImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00062">ComparisonWithScaling()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00041">Cos()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_dequantize_8h_source.html#l00115">Dequantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_dequantize_8h_source.html#l00080">Dequantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_dequantize_8h_source.html#l00044">Dequantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_e_l_u_8h_source.html#l00030">ELU()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_erf_8h_source.html#l00029">Erf()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_exp_8h_source.html#l00030">Exp()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00090">Floor()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_leaky_relu_8h_source.html#l00031">LeakyReLU()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00080">Log()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_not_8h_source.html#l00028">LogicalNot()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00070">Neg()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_pow_8h_source.html#l00031">powImpl()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00156">Quantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00050">Quantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00103">Quantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_quantize_8h_source.html#l00034">Quantize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_round_8h_source.html#l00065">Round()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00059">Rsqrt()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_select_8h_source.html#l00032">Select()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00031">Sin()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_softmax_8h_source.html#l00116">Softmax()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2train_2operation_2_softmax_8h_source.html#l00030">nnfw::cker::train::SoftMaxGrad()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00101">Sqrt()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h_source.html#l00112">Square()</a>.</p>
 
 </div>
 </div>
@@ -11521,7 +11529,7 @@ template&lt;typename In , typename Out &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00041">mean_reducer()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00152">nnfw::cker::ReduceMean::ReduceOp()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00037">onert::backend::cpu::ops::MeanLayer::MeanFloat32()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00031">onert::backend::cpu::ops::MeanLayer::MeanFloat32()</a>.</p>
 
 </div>
 </div>
@@ -11638,7 +11646,7 @@ template&lt;typename In , typename Out &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00237">Offset()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00037">onert::backend::cpu::ops::MeanLayer::MeanFloat32()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00031">onert::backend::cpu::ops::MeanLayer::MeanFloat32()</a>.</p>
 
 </div>
 </div>
@@ -11723,7 +11731,7 @@ template&lt;typename In , typename Out &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00152">nnfw::cker::ReduceMean::ReduceOp()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00046">sum_reducer()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00057">onert::backend::cpu::ops::MeanLayer::MeanQuant8()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00051">onert::backend::cpu::ops::MeanLayer::MeanQuant8()</a>.</p>
 
 </div>
 </div>
@@ -13217,7 +13225,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  155</span>  }</div>
 <div class="line"><span class="lineno">  156</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_soft_max_layer_8cc_source.html#l00088">onert::backend::cpu::ops::SoftMaxLayer::configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_soft_max_layer_8cc_source.html#l00082">onert::backend::cpu::ops::SoftMaxLayer::configure()</a>.</p>
 
 </div>
 </div>
@@ -13387,7 +13395,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00201">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8iHybridPerChannel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00195">onert::backend::cpu::ops::DepthwiseConvolutionLayer::convQ8iHybridPerChannel()</a>.</p>
 
 </div>
 </div>
@@ -14205,7 +14213,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00297">MatchingFlatSize()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_pow_layer_8cc_source.html#l00031">onert::backend::cpu::ops::PowLayer::powFloat32()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_pow_layer_8cc_source.html#l00025">onert::backend::cpu::ops::PowLayer::powFloat32()</a>.</p>
 
 </div>
 </div>
@@ -14249,106 +14257,106 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_binary_arithmetic_ops_8h_source.html#l00109">109</a> of file <a class="el" href="_binary_arithmetic_ops_8h_source.html">BinaryArithmeticOps.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  111</span>{</div>
-<div class="line"><span class="lineno">  112</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> dims_count = std::max(shape0.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>(), shape1.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>());</div>
-<div class="line"><span class="lineno">  113</span> </div>
-<div class="line"><span class="lineno">  114</span>  params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> = BroadcastableOpCategory::kGenericBroadcast;</div>
-<div class="line"><span class="lineno">  115</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> scalar_shape(dims_count, 1);</div>
-<div class="line"><span class="lineno">  116</span> </div>
-<div class="line"><span class="lineno">  117</span>  <span class="keyword">auto</span> extended_shape0 = Shape::ExtendedShape(dims_count, shape0);</div>
-<div class="line"><span class="lineno">  118</span>  <span class="keyword">auto</span> extended_shape1 = Shape::ExtendedShape(dims_count, shape1);</div>
-<div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span>  <span class="comment">// Check for &quot;exact&quot; match, implicitly accepting any scalar shapes.</span></div>
-<div class="line"><span class="lineno">  121</span>  <span class="keywordflow">if</span> (extended_shape0 == extended_shape1)</div>
-<div class="line"><span class="lineno">  122</span>  {</div>
-<div class="line"><span class="lineno">  123</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> = BroadcastableOpCategory::kNonBroadcast;</div>
-<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  125</span>  }</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = dims_count - 1; i &gt;= 0; --i)</div>
-<div class="line"><span class="lineno">  128</span>  {</div>
-<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">if</span> (extended_shape0.Dims(i) == extended_shape1.Dims(i))</div>
-<div class="line"><span class="lineno">  130</span>    {</div>
-<div class="line"><span class="lineno">  131</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  132</span>    }</div>
-<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (extended_shape0.Dims(i) == 1)</div>
-<div class="line"><span class="lineno">  134</span>    {</div>
-<div class="line"><span class="lineno">  135</span>      params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> = BroadcastableOpCategory::kFirstInputBroadcastsFast;</div>
-<div class="line"><span class="lineno">  136</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  137</span>    }</div>
-<div class="line"><span class="lineno">  138</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (extended_shape1.Dims(i) == 1)</div>
-<div class="line"><span class="lineno">  139</span>    {</div>
-<div class="line"><span class="lineno">  140</span>      params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> = BroadcastableOpCategory::kSecondInputBroadcastsFast;</div>
-<div class="line"><span class="lineno">  141</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  142</span>    }</div>
-<div class="line"><span class="lineno">  143</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  144</span>    {</div>
-<div class="line"><span class="lineno">  145</span>      <span class="comment">// This case is erroneous: there is a dimension that does not match and</span></div>
-<div class="line"><span class="lineno">  146</span>      <span class="comment">// is not a broadcast from one shape to the other.</span></div>
-<div class="line"><span class="lineno">  147</span>      params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> = BroadcastableOpCategory::kGenericBroadcast;</div>
-<div class="line"><span class="lineno">  148</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  149</span>    }</div>
-<div class="line"><span class="lineno">  150</span>  }</div>
-<div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>  <span class="keywordflow">if</span> (params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> != BroadcastableOpCategory::kFirstInputBroadcastsFast &amp;&amp;</div>
-<div class="line"><span class="lineno">  153</span>      params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> != BroadcastableOpCategory::kSecondInputBroadcastsFast)</div>
-<div class="line"><span class="lineno">  154</span>  {</div>
-<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  156</span>  }</div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>  <span class="comment">// From this point it is assumed contractually that corresponding dimensions</span></div>
-<div class="line"><span class="lineno">  159</span>  <span class="comment">// in shape0 and shape1 are either (a) equal or (b) one or other equals 1.</span></div>
-<div class="line"><span class="lineno">  160</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> swap_inputs =</div>
-<div class="line"><span class="lineno">  161</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> == BroadcastableOpCategory::kSecondInputBroadcastsFast;</div>
-<div class="line"><span class="lineno">  162</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> *shape_a = swap_inputs ? &amp;extended_shape1 : &amp;extended_shape0;</div>
-<div class="line"><span class="lineno">  163</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> *shape_b = swap_inputs ? &amp;extended_shape0 : &amp;extended_shape1;</div>
-<div class="line"><span class="lineno">  164</span> </div>
-<div class="line"><span class="lineno">  165</span>  <span class="keywordtype">int</span> i = dims_count - 1;</div>
-<div class="line"><span class="lineno">  166</span>  params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[0] = 1;</div>
-<div class="line"><span class="lineno">  167</span>  params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[1] = 1;</div>
-<div class="line"><span class="lineno">  168</span>  params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[2] = 1;</div>
-<div class="line"><span class="lineno">  169</span>  params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[3] = 1;</div>
-<div class="line"><span class="lineno">  170</span>  params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[4] = 1;</div>
-<div class="line"><span class="lineno">  171</span>  <span class="comment">// y_0 is greedy: include dims if both or neither equal 1: in other words,</span></div>
-<div class="line"><span class="lineno">  172</span>  <span class="comment">// test for equality rather than (shape_a-&gt;Dims(i) != 1).</span></div>
-<div class="line"><span class="lineno">  173</span>  <span class="keywordflow">while</span> (i &gt;= 0 &amp;&amp; shape_a-&gt;Dims(i) == shape_b-&gt;Dims(i))</div>
-<div class="line"><span class="lineno">  174</span>  {</div>
-<div class="line"><span class="lineno">  175</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[4] *= shape_b-&gt;Dims(i);</div>
-<div class="line"><span class="lineno">  176</span>    --i;</div>
-<div class="line"><span class="lineno">  177</span>  }</div>
-<div class="line"><span class="lineno">  178</span>  <span class="comment">// Here either input_a or input_b has dim of 1 (if i &gt;= 0).  If it is input_b</span></div>
-<div class="line"><span class="lineno">  179</span>  <span class="comment">// that has the unit dimension, the next two loops are not entered.</span></div>
-<div class="line"><span class="lineno">  180</span>  <span class="keywordflow">while</span> (i &gt;= 0 &amp;&amp; shape_a-&gt;Dims(i) == 1)</div>
-<div class="line"><span class="lineno">  181</span>  {</div>
-<div class="line"><span class="lineno">  182</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[3] *= shape_b-&gt;Dims(i);</div>
-<div class="line"><span class="lineno">  183</span>    --i;</div>
-<div class="line"><span class="lineno">  184</span>  }</div>
-<div class="line"><span class="lineno">  185</span>  <span class="keywordflow">while</span> (i &gt;= 0 &amp;&amp; shape_a-&gt;Dims(i) == shape_b-&gt;Dims(i))</div>
-<div class="line"><span class="lineno">  186</span>  {</div>
-<div class="line"><span class="lineno">  187</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[2] *= shape_a-&gt;Dims(i);</div>
-<div class="line"><span class="lineno">  188</span>    --i;</div>
-<div class="line"><span class="lineno">  189</span>  }</div>
-<div class="line"><span class="lineno">  190</span>  <span class="comment">// Here either input_a or input_b has dim of 1 (if i &gt;= 0).</span></div>
-<div class="line"><span class="lineno">  191</span>  <span class="keywordflow">while</span> (i &gt;= 0 &amp;&amp; shape_b-&gt;Dims(i) == 1)</div>
-<div class="line"><span class="lineno">  192</span>  {</div>
-<div class="line"><span class="lineno">  193</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[1] *= shape_a-&gt;Dims(i);</div>
-<div class="line"><span class="lineno">  194</span>    --i;</div>
-<div class="line"><span class="lineno">  195</span>  }</div>
-<div class="line"><span class="lineno">  196</span>  <span class="keywordflow">while</span> (i &gt;= 0 &amp;&amp; shape_a-&gt;Dims(i) == shape_b-&gt;Dims(i))</div>
-<div class="line"><span class="lineno">  197</span>  {</div>
-<div class="line"><span class="lineno">  198</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[0] *= shape_b-&gt;Dims(i);</div>
-<div class="line"><span class="lineno">  199</span>    --i;</div>
-<div class="line"><span class="lineno">  200</span>  }</div>
-<div class="line"><span class="lineno">  201</span> </div>
-<div class="line"><span class="lineno">  202</span>  <span class="comment">// Rarer case is when the broadcast dimensions cannot be handled by a fivefold</span></div>
-<div class="line"><span class="lineno">  203</span>  <span class="comment">// loop.</span></div>
-<div class="line"><span class="lineno">  204</span>  <span class="keywordflow">if</span> (i &gt;= 0)</div>
-<div class="line"><span class="lineno">  205</span>  {</div>
-<div class="line"><span class="lineno">  206</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> = BroadcastableOpCategory::kGenericBroadcast;</div>
-<div class="line"><span class="lineno">  207</span>  }</div>
-<div class="line"><span class="lineno">  208</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  209</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_binary_arithmetic_ops_8h_source.html#l00107">107</a> of file <a class="el" href="_binary_arithmetic_ops_8h_source.html">BinaryArithmeticOps.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  109</span>{</div>
+<div class="line"><span class="lineno">  110</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> dims_count = std::max(shape0.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>(), shape1.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>());</div>
+<div class="line"><span class="lineno">  111</span> </div>
+<div class="line"><span class="lineno">  112</span>  params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> = BroadcastableOpCategory::kGenericBroadcast;</div>
+<div class="line"><span class="lineno">  113</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> scalar_shape(dims_count, 1);</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>  <span class="keyword">auto</span> extended_shape0 = Shape::ExtendedShape(dims_count, shape0);</div>
+<div class="line"><span class="lineno">  116</span>  <span class="keyword">auto</span> extended_shape1 = Shape::ExtendedShape(dims_count, shape1);</div>
+<div class="line"><span class="lineno">  117</span> </div>
+<div class="line"><span class="lineno">  118</span>  <span class="comment">// Check for &quot;exact&quot; match, implicitly accepting any scalar shapes.</span></div>
+<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">if</span> (extended_shape0 == extended_shape1)</div>
+<div class="line"><span class="lineno">  120</span>  {</div>
+<div class="line"><span class="lineno">  121</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> = BroadcastableOpCategory::kNonBroadcast;</div>
+<div class="line"><span class="lineno">  122</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  123</span>  }</div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = dims_count - 1; i &gt;= 0; --i)</div>
+<div class="line"><span class="lineno">  126</span>  {</div>
+<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">if</span> (extended_shape0.Dims(i) == extended_shape1.Dims(i))</div>
+<div class="line"><span class="lineno">  128</span>    {</div>
+<div class="line"><span class="lineno">  129</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  130</span>    }</div>
+<div class="line"><span class="lineno">  131</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (extended_shape0.Dims(i) == 1)</div>
+<div class="line"><span class="lineno">  132</span>    {</div>
+<div class="line"><span class="lineno">  133</span>      params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> = BroadcastableOpCategory::kFirstInputBroadcastsFast;</div>
+<div class="line"><span class="lineno">  134</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  135</span>    }</div>
+<div class="line"><span class="lineno">  136</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (extended_shape1.Dims(i) == 1)</div>
+<div class="line"><span class="lineno">  137</span>    {</div>
+<div class="line"><span class="lineno">  138</span>      params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> = BroadcastableOpCategory::kSecondInputBroadcastsFast;</div>
+<div class="line"><span class="lineno">  139</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  140</span>    }</div>
+<div class="line"><span class="lineno">  141</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  142</span>    {</div>
+<div class="line"><span class="lineno">  143</span>      <span class="comment">// This case is erroneous: there is a dimension that does not match and</span></div>
+<div class="line"><span class="lineno">  144</span>      <span class="comment">// is not a broadcast from one shape to the other.</span></div>
+<div class="line"><span class="lineno">  145</span>      params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> = BroadcastableOpCategory::kGenericBroadcast;</div>
+<div class="line"><span class="lineno">  146</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  147</span>    }</div>
+<div class="line"><span class="lineno">  148</span>  }</div>
+<div class="line"><span class="lineno">  149</span> </div>
+<div class="line"><span class="lineno">  150</span>  <span class="keywordflow">if</span> (params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> != BroadcastableOpCategory::kFirstInputBroadcastsFast &amp;&amp;</div>
+<div class="line"><span class="lineno">  151</span>      params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> != BroadcastableOpCategory::kSecondInputBroadcastsFast)</div>
+<div class="line"><span class="lineno">  152</span>  {</div>
+<div class="line"><span class="lineno">  153</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  154</span>  }</div>
+<div class="line"><span class="lineno">  155</span> </div>
+<div class="line"><span class="lineno">  156</span>  <span class="comment">// From this point it is assumed contractually that corresponding dimensions</span></div>
+<div class="line"><span class="lineno">  157</span>  <span class="comment">// in shape0 and shape1 are either (a) equal or (b) one or other equals 1.</span></div>
+<div class="line"><span class="lineno">  158</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> swap_inputs =</div>
+<div class="line"><span class="lineno">  159</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> == BroadcastableOpCategory::kSecondInputBroadcastsFast;</div>
+<div class="line"><span class="lineno">  160</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> *shape_a = swap_inputs ? &amp;extended_shape1 : &amp;extended_shape0;</div>
+<div class="line"><span class="lineno">  161</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> *shape_b = swap_inputs ? &amp;extended_shape0 : &amp;extended_shape1;</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span>  <span class="keywordtype">int</span> i = dims_count - 1;</div>
+<div class="line"><span class="lineno">  164</span>  params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[0] = 1;</div>
+<div class="line"><span class="lineno">  165</span>  params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[1] = 1;</div>
+<div class="line"><span class="lineno">  166</span>  params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[2] = 1;</div>
+<div class="line"><span class="lineno">  167</span>  params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[3] = 1;</div>
+<div class="line"><span class="lineno">  168</span>  params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[4] = 1;</div>
+<div class="line"><span class="lineno">  169</span>  <span class="comment">// y_0 is greedy: include dims if both or neither equal 1: in other words,</span></div>
+<div class="line"><span class="lineno">  170</span>  <span class="comment">// test for equality rather than (shape_a-&gt;Dims(i) != 1).</span></div>
+<div class="line"><span class="lineno">  171</span>  <span class="keywordflow">while</span> (i &gt;= 0 &amp;&amp; shape_a-&gt;Dims(i) == shape_b-&gt;Dims(i))</div>
+<div class="line"><span class="lineno">  172</span>  {</div>
+<div class="line"><span class="lineno">  173</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[4] *= shape_b-&gt;Dims(i);</div>
+<div class="line"><span class="lineno">  174</span>    --i;</div>
+<div class="line"><span class="lineno">  175</span>  }</div>
+<div class="line"><span class="lineno">  176</span>  <span class="comment">// Here either input_a or input_b has dim of 1 (if i &gt;= 0).  If it is input_b</span></div>
+<div class="line"><span class="lineno">  177</span>  <span class="comment">// that has the unit dimension, the next two loops are not entered.</span></div>
+<div class="line"><span class="lineno">  178</span>  <span class="keywordflow">while</span> (i &gt;= 0 &amp;&amp; shape_a-&gt;Dims(i) == 1)</div>
+<div class="line"><span class="lineno">  179</span>  {</div>
+<div class="line"><span class="lineno">  180</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[3] *= shape_b-&gt;Dims(i);</div>
+<div class="line"><span class="lineno">  181</span>    --i;</div>
+<div class="line"><span class="lineno">  182</span>  }</div>
+<div class="line"><span class="lineno">  183</span>  <span class="keywordflow">while</span> (i &gt;= 0 &amp;&amp; shape_a-&gt;Dims(i) == shape_b-&gt;Dims(i))</div>
+<div class="line"><span class="lineno">  184</span>  {</div>
+<div class="line"><span class="lineno">  185</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[2] *= shape_a-&gt;Dims(i);</div>
+<div class="line"><span class="lineno">  186</span>    --i;</div>
+<div class="line"><span class="lineno">  187</span>  }</div>
+<div class="line"><span class="lineno">  188</span>  <span class="comment">// Here either input_a or input_b has dim of 1 (if i &gt;= 0).</span></div>
+<div class="line"><span class="lineno">  189</span>  <span class="keywordflow">while</span> (i &gt;= 0 &amp;&amp; shape_b-&gt;Dims(i) == 1)</div>
+<div class="line"><span class="lineno">  190</span>  {</div>
+<div class="line"><span class="lineno">  191</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[1] *= shape_a-&gt;Dims(i);</div>
+<div class="line"><span class="lineno">  192</span>    --i;</div>
+<div class="line"><span class="lineno">  193</span>  }</div>
+<div class="line"><span class="lineno">  194</span>  <span class="keywordflow">while</span> (i &gt;= 0 &amp;&amp; shape_a-&gt;Dims(i) == shape_b-&gt;Dims(i))</div>
+<div class="line"><span class="lineno">  195</span>  {</div>
+<div class="line"><span class="lineno">  196</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">broadcast_shape</a>[0] *= shape_b-&gt;Dims(i);</div>
+<div class="line"><span class="lineno">  197</span>    --i;</div>
+<div class="line"><span class="lineno">  198</span>  }</div>
+<div class="line"><span class="lineno">  199</span> </div>
+<div class="line"><span class="lineno">  200</span>  <span class="comment">// Rarer case is when the broadcast dimensions cannot be handled by a fivefold</span></div>
+<div class="line"><span class="lineno">  201</span>  <span class="comment">// loop.</span></div>
+<div class="line"><span class="lineno">  202</span>  <span class="keywordflow">if</span> (i &gt;= 0)</div>
+<div class="line"><span class="lineno">  203</span>  {</div>
+<div class="line"><span class="lineno">  204</span>    params-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">broadcast_category</a> = BroadcastableOpCategory::kGenericBroadcast;</div>
+<div class="line"><span class="lineno">  205</span>  }</div>
+<div class="line"><span class="lineno">  206</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  207</span>}</div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_binary_arithmetic_op_param_html_aa40d8c9eb2a4cea35596c77395fae910"><div class="ttname"><a href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#aa40d8c9eb2a4cea35596c77395fae910">nnfw::cker::BinaryArithmeticOpParam::broadcast_category</a></div><div class="ttdeci">BroadcastableOpCategory broadcast_category</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00181">Types.h:181</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_binary_arithmetic_op_param_html_af5001901a39c73ed102fd42b617e8955"><div class="ttname"><a href="structnnfw_1_1cker_1_1_binary_arithmetic_op_param.html#af5001901a39c73ed102fd42b617e8955">nnfw::cker::BinaryArithmeticOpParam::broadcast_shape</a></div><div class="ttdeci">int broadcast_shape[5]</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00212">Types.h:212</a></div></div>
 </div><!-- fragment -->
@@ -14947,7 +14955,7 @@ template&lt;typename InputT , typename OutputT &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00297">MatchingFlatSize()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_quantize_layer_8cc_source.html#l00036">onert::backend::cpu::ops::affineQuantize()</a>, and <a class="el" href="_depthwise_conv_int8_8h_source.html#l01739">nnfw::cker::optimized_integer_ops::depthwise_conv::DepthwiseConvGeneral()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantize_layer_8cc_source.html#l00030">onert::backend::cpu::ops::affineQuantize()</a>, and <a class="el" href="_depthwise_conv_int8_8h_source.html#l01739">nnfw::cker::optimized_integer_ops::depthwise_conv::DepthwiseConvGeneral()</a>.</p>
 
 </div>
 </div>
@@ -15221,21 +15229,21 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_range_8h_source.html#l00044">44</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_range_8h_source.html">Range.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{</div>
-<div class="line"><span class="lineno">   46</span>  <span class="keyword">const</span> T start_value = *start_data;</div>
-<div class="line"><span class="lineno">   47</span>  <span class="keyword">const</span> T delta_value = *delta_data;</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keyword">const</span> T limit_value = *limit_data;</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_elements = GetSize&lt;T&gt;(start_value, limit_value, delta_value);</div>
-<div class="line"><span class="lineno">   51</span>  T value = start_value;</div>
-<div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_elements; ++i)</div>
-<div class="line"><span class="lineno">   54</span>  {</div>
-<div class="line"><span class="lineno">   55</span>    output_data[i] = value;</div>
-<div class="line"><span class="lineno">   56</span>    value += delta_value;</div>
-<div class="line"><span class="lineno">   57</span>  }</div>
-<div class="line"><span class="lineno">   58</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_range_8h_source.html#l00048">48</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_range_8h_source.html">Range.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
+<div class="line"><span class="lineno">   50</span>  <span class="keyword">const</span> T start_value = *start_data;</div>
+<div class="line"><span class="lineno">   51</span>  <span class="keyword">const</span> T delta_value = *delta_data;</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keyword">const</span> T limit_value = *limit_data;</div>
+<div class="line"><span class="lineno">   53</span> </div>
+<div class="line"><span class="lineno">   54</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_elements = GetSize&lt;T&gt;(start_value, limit_value, delta_value);</div>
+<div class="line"><span class="lineno">   55</span>  T value = start_value;</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_elements; ++i)</div>
+<div class="line"><span class="lineno">   58</span>  {</div>
+<div class="line"><span class="lineno">   59</span>    output_data[i] = value;</div>
+<div class="line"><span class="lineno">   60</span>    value += delta_value;</div>
+<div class="line"><span class="lineno">   61</span>  }</div>
+<div class="line"><span class="lineno">   62</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -15779,7 +15787,7 @@ template&lt;typename In &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_re_l_u_8h_source.html#l00032">32</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_re_l_u_8h_source.html">ReLU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_relu_8h_source.html#l00032">32</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_relu_8h_source.html">ReLU.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
 <div class="line"><span class="lineno">   35</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_map = <a class="code hl_function" href="_matrix_8h.html#a4dbf05dabea32cf4bc0693e0cc32d984">MapAsVector</a>(input_data, input_shape);</div>
 <div class="line"><span class="lineno">   36</span>  <span class="keyword">auto</span> output_map = <a class="code hl_function" href="_matrix_8h.html#a4dbf05dabea32cf4bc0693e0cc32d984">MapAsVector</a>(output_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
@@ -15788,7 +15796,7 @@ template&lt;typename In &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00043">MapAsVector()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00081">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>.</p>
 
 </div>
 </div>
@@ -15838,7 +15846,7 @@ template&lt;typename In &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_re_l_u6_8h_source.html#l00032">32</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_re_l_u6_8h_source.html">ReLU6.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_relu6_8h_source.html#l00032">32</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_relu6_8h_source.html">ReLU6.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
 <div class="line"><span class="lineno">   35</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_map = <a class="code hl_function" href="_matrix_8h.html#a4dbf05dabea32cf4bc0693e0cc32d984">MapAsVector</a>(input_data, input_shape);</div>
 <div class="line"><span class="lineno">   36</span>  <span class="keyword">auto</span> output_map = <a class="code hl_function" href="_matrix_8h.html#a4dbf05dabea32cf4bc0693e0cc32d984">MapAsVector</a>(output_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
@@ -15851,7 +15859,7 @@ template&lt;typename In &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00043">MapAsVector()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00081">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>.</p>
 
 </div>
 </div>
@@ -16069,7 +16077,7 @@ template&lt;&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00096">MultiplyByQuantizedMultiplier()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_quantize_layer_8cc_source.html#l00069">onert::backend::cpu::ops::QuantizeLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantize_layer_8cc_source.html#l00063">onert::backend::cpu::ops::QuantizeLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -16205,7 +16213,7 @@ template&lt;&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00096">MultiplyByQuantizedMultiplier()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_quantize_layer_8cc_source.html#l00069">onert::backend::cpu::ops::QuantizeLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantize_layer_8cc_source.html#l00063">onert::backend::cpu::ops::QuantizeLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -16415,7 +16423,7 @@ template&lt;&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00321">nnfw::cker::ResizeBilinearParams::align_corners</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00322">nnfw::cker::ResizeBilinearParams::half_pixel_centers</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00220">MatchingDim()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00319">nnfw::cker::ResizeBilinearParams::output_height</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00320">nnfw::cker::ResizeBilinearParams::output_width</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00069">ResizeBilinear2x2()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00118">ResizeBilinearGeneric()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_resize_bilinear_layer_8cc_source.html#l00072">onert::backend::cpu::ops::ResizeBilinearLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_resize_bilinear_layer_8cc_source.html#l00066">onert::backend::cpu::ops::ResizeBilinearLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -17377,7 +17385,7 @@ template&lt;typename Scalar &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00092">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00327">nnfw::cker::RmsNormParams::epsilon</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00220">MatchingDim()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00237">Offset()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_rms_norm_layer_8cc_source.html#l00045">onert::backend::cpu::ops::RmsNormLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_rms_norm_layer_8cc_source.html#l00039">onert::backend::cpu::ops::RmsNormLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -18081,7 +18089,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  113</span>  }</div>
 <div class="line"><span class="lineno">  114</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_soft_max_layer_8cc_source.html#l00037">onert::backend::cpu::ops::SoftMaxLayer::softmaxFloat32()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_soft_max_layer_8cc_source.html#l00031">onert::backend::cpu::ops::SoftMaxLayer::softmaxFloat32()</a>.</p>
 
 </div>
 </div>
@@ -18753,7 +18761,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_sq_diff_8h_source.html#l00029">SQDIFF</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_squared_diff_layer_8cc_source.html#l00037">onert::backend::cpu::ops::SqDiffLayer::SqDiffFloat32()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_squared_diff_layer_8cc_source.html#l00031">onert::backend::cpu::ops::SqDiffLayer::SqDiffFloat32()</a>.</p>
 
 </div>
 </div>
@@ -19147,7 +19155,7 @@ template&lt;typename T , int N&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_helper_2_tensor_8h_source.html#l00097">nnfw::cker::Tensor::buffer</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00112">nnfw::cker::Shape::DimsData()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_stateless_random_uniform_8h_source.html#l00037">GenerateKey()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00130">nnfw::cker::Shape::ReplaceWith()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_helper_2_tensor_8h_source.html#l00096">nnfw::cker::Tensor::shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_stateless_random_uniform_layer_8cc_source.html#l00044">onert::backend::cpu::ops::StatelessRandomUniformLayer::StatelessRandomUniformFloat32()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_stateless_random_uniform_layer_8cc_source.html#l00038">onert::backend::cpu::ops::StatelessRandomUniformLayer::StatelessRandomUniformFloat32()</a>.</p>
 
 </div>
 </div>
@@ -19811,7 +19819,7 @@ template&lt;typename In &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2eigen_2_utils_8h_source.html#l00043">MapAsVector()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00087">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_elementwise_activation_layer_8cc_source.html#l00081">onert::backend::cpu::ops::ElementwiseActivationLayer::configure()</a>.</p>
 
 </div>
 </div>
@@ -20186,7 +20194,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00091">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00181">nnfw::cker::Shape::FlatSize()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00218">nnfw::cker::TransposeParams::perm</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00217">nnfw::cker::TransposeParams::perm_count</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_transpose_8h_source.html#l00475">TransposeImpl()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_transpose_layer_8cc_source.html#l00038">onert::backend::cpu::ops::TransposeLayer::transpose()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_transpose_layer_8cc_source.html#l00032">onert::backend::cpu::ops::TransposeLayer::transpose()</a>.</p>
 
 </div>
 </div>
@@ -20909,23 +20917,23 @@ template&lt;typename AccumScalar , typename DstScalar , <a class="el" href="name
 <p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00544">544</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html">Types.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  546</span>{</div>
 <div class="line"><span class="lineno">  547</span>  <span class="comment">// Guard consistency of the quantized multiplier fields.</span></div>
-<div class="line"><span class="lineno">  548</span>  <span class="keywordflow">if</span> (quantization_flavor == QuantizationFlavor::kFloatingPoint)</div>
+<div class="line"><span class="lineno">  548</span>  <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (quantization_flavor == QuantizationFlavor::kFloatingPoint)</div>
 <div class="line"><span class="lineno">  549</span>  {</div>
 <div class="line"><span class="lineno">  550</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_gemm_params.html#aaa0cafe77e4532234fc09ff7367dbd0f">multiplier_fixedpoint</a>);</div>
 <div class="line"><span class="lineno">  551</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_gemm_params.html#ad6a6f9f6ab14fa6582c6d843945df4b0">multiplier_exponent</a>);</div>
 <div class="line"><span class="lineno">  552</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_gemm_params.html#aec9b4d926a291a13eb1e8360277c8be9">multiplier_fixedpoint_perchannel</a>);</div>
 <div class="line"><span class="lineno">  553</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_gemm_params.html#acbb9292022c55ce478e64fc4dad9e77d">multiplier_exponent_perchannel</a>);</div>
 <div class="line"><span class="lineno">  554</span>  }</div>
-<div class="line"><span class="lineno">  555</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (quantization_flavor == QuantizationFlavor::kIntegerWithUniformMultiplier &amp;&amp;</div>
-<div class="line"><span class="lineno">  556</span>           !std::is_same&lt;DstScalar, int32_t&gt;::value)</div>
+<div class="line"><span class="lineno">  555</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (quantization_flavor == QuantizationFlavor::kIntegerWithUniformMultiplier &amp;&amp;</div>
+<div class="line"><span class="lineno">  556</span>                     !std::is_same_v&lt;DstScalar, int32_t&gt;)</div>
 <div class="line"><span class="lineno">  557</span>  {</div>
 <div class="line"><span class="lineno">  558</span>    assert(params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_gemm_params.html#aaa0cafe77e4532234fc09ff7367dbd0f">multiplier_fixedpoint</a>);</div>
 <div class="line"><span class="lineno">  559</span>    <span class="comment">// Nothing to check about multiplier_exponent</span></div>
 <div class="line"><span class="lineno">  560</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_gemm_params.html#aec9b4d926a291a13eb1e8360277c8be9">multiplier_fixedpoint_perchannel</a>);</div>
 <div class="line"><span class="lineno">  561</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_gemm_params.html#acbb9292022c55ce478e64fc4dad9e77d">multiplier_exponent_perchannel</a>);</div>
 <div class="line"><span class="lineno">  562</span>  }</div>
-<div class="line"><span class="lineno">  563</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (quantization_flavor == QuantizationFlavor::kIntegerWithPerRowMultiplier &amp;&amp;</div>
-<div class="line"><span class="lineno">  564</span>           !std::is_same&lt;DstScalar, int32_t&gt;::value)</div>
+<div class="line"><span class="lineno">  563</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (quantization_flavor == QuantizationFlavor::kIntegerWithPerRowMultiplier &amp;&amp;</div>
+<div class="line"><span class="lineno">  564</span>                     !std::is_same_v&lt;DstScalar, int32_t&gt;)</div>
 <div class="line"><span class="lineno">  565</span>  {</div>
 <div class="line"><span class="lineno">  566</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_gemm_params.html#aaa0cafe77e4532234fc09ff7367dbd0f">multiplier_fixedpoint</a>);</div>
 <div class="line"><span class="lineno">  567</span>    assert(!params.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_gemm_params.html#ad6a6f9f6ab14fa6582c6d843945df4b0">multiplier_exponent</a>);</div>

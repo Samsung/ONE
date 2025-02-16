@@ -138,16 +138,18 @@ $(document).ready(function(){initNavTree('_event_writer_8cc_source.html',''); in
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  flush(<a class="code hl_enumvalue" href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a583cfb2f834be66542bd018e47f9a955">WriteFormat::SNPE_BENCHMARK</a>);</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  flush(<a class="code hl_enumvalue" href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a9bf89a7807a6e238002e86905a2d11cf">WriteFormat::CHROME_TRACING</a>);</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  flush(<a class="code hl_enumvalue" href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a209ea334cebb51b058e837a8bf9db295">WriteFormat::MD_TABLE</a>);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>}</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  _recorders.clear();</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
 </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keywordtype">void</span> EventWriter::flush(WriteFormat write_format)</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>{</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">auto</span> *writer = _actual_writers[write_format].get();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  assert(writer);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  writer-&gt;flush(_recorders);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keywordtype">void</span> EventWriter::flush(WriteFormat write_format)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>{</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keyword">auto</span> *writer = _actual_writers[write_format].get();</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  assert(writer);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  writer-&gt;flush(_recorders);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>}</div>
 <div class="ttc" id="a_event_writer_8h_html"><div class="ttname"><a href="_event_writer_8h.html">EventWriter.h</a></div></div>
 <div class="ttc" id="aclass_event_writer_html_a110ef66311e955a4d04ee3b4f03ac1d8a209ea334cebb51b058e837a8bf9db295"><div class="ttname"><a href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a209ea334cebb51b058e837a8bf9db295">EventWriter::WriteFormat::MD_TABLE</a></div><div class="ttdeci">@ MD_TABLE</div></div>
 <div class="ttc" id="aclass_event_writer_html_a110ef66311e955a4d04ee3b4f03ac1d8a583cfb2f834be66542bd018e47f9a955"><div class="ttname"><a href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a583cfb2f834be66542bd018e47f9a955">EventWriter::WriteFormat::SNPE_BENCHMARK</a></div><div class="ttdeci">@ SNPE_BENCHMARK</div></div>

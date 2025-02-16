@@ -149,7 +149,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html#l00035">35</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html#l00029">29</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae3f085bb356b8506e2868aa48d8e42ee" name="ae3f085bb356b8506e2868aa48d8e42ee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae3f085bb356b8506e2868aa48d8e42ee">&#9670;&#160;</a></span>BackendContext()</h2>
@@ -203,16 +203,16 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html#l00038">38</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   43</span>    : backend::train::TrainableBackendContext(<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a4a44dc60d9e2166587dc7805d168a690">backend</a>, std::move(<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a747ef4b231bb43c9c0aac77708fe4cac">data</a>), <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a1a672125c2bc9cb3a2bba4d745d6aadb">tensor_registry</a>),</div>
-<div class="line"><span class="lineno">   44</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context.html#af70ea4b77285f8a58b2e4b5f96a47d25">kernel_gen</a>{<a class="code hl_variable" href="classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context.html#af70ea4b77285f8a58b2e4b5f96a47d25">kernel_gen</a>}, _external_context(<span class="keyword">new</span> ExternalContext),</div>
-<div class="line"><span class="lineno">   45</span>      _tensor_builder{tensor_builder}</div>
-<div class="line"><span class="lineno">   46</span>  {</div>
-<div class="line"><span class="lineno">   47</span>  }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1train_1_1_backend_context_html_af70ea4b77285f8a58b2e4b5f96a47d25"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context.html#af70ea4b77285f8a58b2e4b5f96a47d25">onert::backend::builtin::train::BackendContext::kernel_gen</a></div><div class="ttdeci">std::shared_ptr&lt; KernelGenerator &gt; kernel_gen</div><div class="ttdef"><b>Definition</b> <a href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html#l00056">BackendContext.h:56</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a1a672125c2bc9cb3a2bba4d745d6aadb"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a1a672125c2bc9cb3a2bba4d745d6aadb">onert::backend::train::TrainableBackendContext::tensor_registry</a></div><div class="ttdeci">std::shared_ptr&lt; ITensorRegistry &gt; tensor_registry()</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00077">TrainableBackendContext.h:77</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a4a44dc60d9e2166587dc7805d168a690"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a4a44dc60d9e2166587dc7805d168a690">onert::backend::train::TrainableBackendContext::backend</a></div><div class="ttdeci">const ITrainableBackend * backend() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00073">TrainableBackendContext.h:73</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a747ef4b231bb43c9c0aac77708fe4cac"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a747ef4b231bb43c9c0aac77708fe4cac">onert::backend::train::TrainableBackendContext::data</a></div><div class="ttdeci">const TrainableContextData * data() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00071">TrainableBackendContext.h:71</a></div></div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html#l00032">32</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>    : backend::train::TrainableBackendContext(<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a4a44dc60d9e2166587dc7805d168a690">backend</a>, std::move(<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a747ef4b231bb43c9c0aac77708fe4cac">data</a>), <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a1a672125c2bc9cb3a2bba4d745d6aadb">tensor_registry</a>),</div>
+<div class="line"><span class="lineno">   38</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context.html#af70ea4b77285f8a58b2e4b5f96a47d25">kernel_gen</a>{<a class="code hl_variable" href="classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context.html#af70ea4b77285f8a58b2e4b5f96a47d25">kernel_gen</a>}, _external_context(<span class="keyword">new</span> ExternalContext),</div>
+<div class="line"><span class="lineno">   39</span>      _tensor_builder{tensor_builder}</div>
+<div class="line"><span class="lineno">   40</span>  {</div>
+<div class="line"><span class="lineno">   41</span>  }</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1train_1_1_backend_context_html_af70ea4b77285f8a58b2e4b5f96a47d25"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context.html#af70ea4b77285f8a58b2e4b5f96a47d25">onert::backend::builtin::train::BackendContext::kernel_gen</a></div><div class="ttdeci">std::shared_ptr&lt; KernelGenerator &gt; kernel_gen</div><div class="ttdef"><b>Definition</b> <a href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html#l00050">BackendContext.h:50</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a1a672125c2bc9cb3a2bba4d745d6aadb"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a1a672125c2bc9cb3a2bba4d745d6aadb">onert::backend::train::TrainableBackendContext::tensor_registry</a></div><div class="ttdeci">std::shared_ptr&lt; ITensorRegistry &gt; tensor_registry()</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00073">TrainableBackendContext.h:73</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a4a44dc60d9e2166587dc7805d168a690"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a4a44dc60d9e2166587dc7805d168a690">onert::backend::train::TrainableBackendContext::backend</a></div><div class="ttdeci">const ITrainableBackend * backend() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00069">TrainableBackendContext.h:69</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a747ef4b231bb43c9c0aac77708fe4cac"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a747ef4b231bb43c9c0aac77708fe4cac">onert::backend::train::TrainableBackendContext::data</a></div><div class="ttdeci">const TrainableContextData * data() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00067">TrainableBackendContext.h:67</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -240,8 +240,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html#l00052">52</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>{ <span class="keywordflow">return</span> _external_context; }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html#l00046">46</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> _external_context; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -270,48 +270,48 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a5a912b8335c9ecefc262f0bc43dbd54d">onert::backend::train::TrainableBackendContext</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8cc_source.html#l00031">31</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8cc_source.html">BackendContext.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <span class="comment">// For now, there is no need to generate tensors for forwarding and backwarding.</span></div>
-<div class="line"><span class="lineno">   34</span>  <span class="comment">// builtin train backend handles 3 operators: `Permute`, `IF`, `WHILE`.</span></div>
-<div class="line"><span class="lineno">   35</span>  <span class="comment">// `Permute`: Tensor generation is not required.</span></div>
-<div class="line"><span class="lineno">   36</span>  <span class="comment">// `IF`, `WHILE`: Not supported yet</span></div>
-<div class="line"><span class="lineno">   37</span> </div>
-<div class="line"><span class="lineno">   38</span>  <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1train.html#adfca2674d6ad05cee6fc454ca4791f67">backend::train::FunctionMap</a> fn_map;</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8cc_source.html#l00025">25</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8cc_source.html">BackendContext.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
+<div class="line"><span class="lineno">   27</span>  <span class="comment">// For now, there is no need to generate tensors for forwarding and backwarding.</span></div>
+<div class="line"><span class="lineno">   28</span>  <span class="comment">// builtin train backend handles 3 operators: `Permute`, `IF`, `WHILE`.</span></div>
+<div class="line"><span class="lineno">   29</span>  <span class="comment">// `Permute`: Tensor generation is not required.</span></div>
+<div class="line"><span class="lineno">   30</span>  <span class="comment">// `IF`, `WHILE`: Not supported yet</span></div>
+<div class="line"><span class="lineno">   31</span> </div>
+<div class="line"><span class="lineno">   32</span>  <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1train.html#adfca2674d6ad05cee6fc454ca4791f67">backend::train::FunctionMap</a> fn_map;</div>
+<div class="line"><span class="lineno">   33</span> </div>
+<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;op_ind : <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>-&gt;op_order)</div>
+<div class="line"><span class="lineno">   35</span>  {</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keyword">auto</span> tn_seq = <a class="code hl_variable" href="classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context.html#af70ea4b77285f8a58b2e4b5f96a47d25">kernel_gen</a>-&gt;generate(op_ind);</div>
+<div class="line"><span class="lineno">   37</span>    fn_map.emplace(op_ind, std::move(tn_seq));</div>
+<div class="line"><span class="lineno">   38</span>  }</div>
 <div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;op_ind : <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>-&gt;op_order)</div>
-<div class="line"><span class="lineno">   41</span>  {</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keyword">auto</span> tn_seq = <a class="code hl_variable" href="classonert_1_1backend_1_1builtin_1_1train_1_1_backend_context.html#af70ea4b77285f8a58b2e4b5f96a47d25">kernel_gen</a>-&gt;generate(op_ind);</div>
-<div class="line"><span class="lineno">   43</span>    fn_map.emplace(op_ind, std::move(tn_seq));</div>
-<div class="line"><span class="lineno">   44</span>  }</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>  <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a92232674fa94aeefb5d16ebeafb42245">trainable_graph</a>()-&gt;<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#aae91b113137f3e376bc71c8b13199bf6">operands</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">iterate</a>(</div>
-<div class="line"><span class="lineno">   47</span>    [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind, <span class="keyword">const</span> ir::Operand &amp;operand) {</div>
-<div class="line"><span class="lineno">   48</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#accaf48ec5c466b5cb26f2adb0e762944">external_operands</a>().contains(ind) &amp;&amp; operand.isConstant())</div>
-<div class="line"><span class="lineno">   49</span>      {</div>
-<div class="line"><span class="lineno">   50</span>        throw std::runtime_error(</div>
-<div class="line"><span class="lineno">   51</span>          <span class="stringliteral">&quot;BackendContext: builtin backend does not support updatable weights yet&quot;</span>);</div>
-<div class="line"><span class="lineno">   52</span>      }</div>
-<div class="line"><span class="lineno">   53</span>    });</div>
-<div class="line"><span class="lineno">   54</span> </div>
-<div class="line"><span class="lineno">   55</span>  <span class="comment">// TODO Enable prepare()</span></div>
-<div class="line"><span class="lineno">   56</span>  <span class="comment">// for (auto &amp;&amp;it : fn_map)</span></div>
-<div class="line"><span class="lineno">   57</span>  <span class="comment">// {</span></div>
-<div class="line"><span class="lineno">   58</span>  <span class="comment">//   auto &amp;fn_seq = it.second;</span></div>
-<div class="line"><span class="lineno">   59</span>  <span class="comment">//   fn_seq-&gt;iterate([&amp;](exec::IFunction &amp;ifunc) { ifunc.prepare(); });</span></div>
-<div class="line"><span class="lineno">   60</span>  <span class="comment">// }</span></div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">return</span> fn_map;</div>
-<div class="line"><span class="lineno">   63</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a92232674fa94aeefb5d16ebeafb42245"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a92232674fa94aeefb5d16ebeafb42245">onert::backend::train::TrainableBackendContext::trainable_graph</a></div><div class="ttdeci">const ir::train::TrainableGraph * trainable_graph() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00069">TrainableBackendContext.h:69</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_accaf48ec5c466b5cb26f2adb0e762944"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#accaf48ec5c466b5cb26f2adb0e762944">onert::backend::train::TrainableBackendContext::external_operands</a></div><div class="ttdeci">const util::Set&lt; ir::OperandIndex &gt; &amp; external_operands() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00074">TrainableBackendContext.h:74</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_af9763aac9ded9e19bbbf748986227264"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">onert::backend::train::TrainableBackendContext::_tdata</a></div><div class="ttdeci">std::unique_ptr&lt; TrainableContextData &gt; _tdata</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00085">TrainableBackendContext.h:85</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_aae91b113137f3e376bc71c8b13199bf6"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#aae91b113137f3e376bc71c8b13199bf6">onert::ir::train::TrainableGraph::operands</a></div><div class="ttdeci">const Operands &amp; operands() const override</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00123">TrainableGraph.h:123</a></div></div>
-<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_ac73c1ef157e3bbe47709a786ebc6aae2"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">onert::util::ObjectManager::iterate</a></div><div class="ttdeci">void iterate(const std::function&lt; void(const Index &amp;, const Object &amp;)&gt; &amp;fn) const</div><div class="ttdoc">Iterate over the container with given function.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00186">ObjectManager.h:186</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1train_html_adfca2674d6ad05cee6fc454ca4791f67"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train.html#adfca2674d6ad05cee6fc454ca4791f67">onert::backend::train::FunctionMap</a></div><div class="ttdeci">std::unordered_map&lt; ir::OperationIndex, std::unique_ptr&lt; exec::train::TrainableFnSequence &gt; &gt; FunctionMap</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00036">TrainableBackendContext.h:37</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae9d6514c748e05f0254717f688bc458f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">onert::ir::OperandIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperandIndexTag &gt; OperandIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00035">Index.h:35</a></div></div>
+<div class="line"><span class="lineno">   40</span>  <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a92232674fa94aeefb5d16ebeafb42245">trainable_graph</a>()-&gt;<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#aae91b113137f3e376bc71c8b13199bf6">operands</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">iterate</a>(</div>
+<div class="line"><span class="lineno">   41</span>    [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &amp;ind, <span class="keyword">const</span> ir::Operand &amp;operand) {</div>
+<div class="line"><span class="lineno">   42</span>      <span class="keywordflow">if</span> (!<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#accaf48ec5c466b5cb26f2adb0e762944">external_operands</a>().contains(ind) &amp;&amp; operand.isConstant())</div>
+<div class="line"><span class="lineno">   43</span>      {</div>
+<div class="line"><span class="lineno">   44</span>        throw std::runtime_error(</div>
+<div class="line"><span class="lineno">   45</span>          <span class="stringliteral">&quot;BackendContext: builtin backend does not support updatable weights yet&quot;</span>);</div>
+<div class="line"><span class="lineno">   46</span>      }</div>
+<div class="line"><span class="lineno">   47</span>    });</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>  <span class="comment">// TODO Enable prepare()</span></div>
+<div class="line"><span class="lineno">   50</span>  <span class="comment">// for (auto &amp;&amp;it : fn_map)</span></div>
+<div class="line"><span class="lineno">   51</span>  <span class="comment">// {</span></div>
+<div class="line"><span class="lineno">   52</span>  <span class="comment">//   auto &amp;fn_seq = it.second;</span></div>
+<div class="line"><span class="lineno">   53</span>  <span class="comment">//   fn_seq-&gt;iterate([&amp;](exec::IFunction &amp;ifunc) { ifunc.prepare(); });</span></div>
+<div class="line"><span class="lineno">   54</span>  <span class="comment">// }</span></div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">return</span> fn_map;</div>
+<div class="line"><span class="lineno">   57</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a92232674fa94aeefb5d16ebeafb42245"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a92232674fa94aeefb5d16ebeafb42245">onert::backend::train::TrainableBackendContext::trainable_graph</a></div><div class="ttdeci">const ir::train::TrainableGraph * trainable_graph() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00065">TrainableBackendContext.h:65</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_accaf48ec5c466b5cb26f2adb0e762944"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#accaf48ec5c466b5cb26f2adb0e762944">onert::backend::train::TrainableBackendContext::external_operands</a></div><div class="ttdeci">const util::Set&lt; ir::OperandIndex &gt; &amp; external_operands() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00070">TrainableBackendContext.h:70</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_af9763aac9ded9e19bbbf748986227264"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">onert::backend::train::TrainableBackendContext::_tdata</a></div><div class="ttdeci">std::unique_ptr&lt; TrainableContextData &gt; _tdata</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00081">TrainableBackendContext.h:81</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_aae91b113137f3e376bc71c8b13199bf6"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#aae91b113137f3e376bc71c8b13199bf6">onert::ir::train::TrainableGraph::operands</a></div><div class="ttdeci">const Operands &amp; operands() const override</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00119">TrainableGraph.h:119</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_ac73c1ef157e3bbe47709a786ebc6aae2"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">onert::util::ObjectManager::iterate</a></div><div class="ttdeci">void iterate(const std::function&lt; void(const Index &amp;, const Object &amp;)&gt; &amp;fn) const</div><div class="ttdoc">Iterate over the container with given function.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00184">ObjectManager.h:184</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1train_html_adfca2674d6ad05cee6fc454ca4791f67"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train.html#adfca2674d6ad05cee6fc454ca4791f67">onert::backend::train::FunctionMap</a></div><div class="ttdeci">std::unordered_map&lt; ir::OperationIndex, std::unique_ptr&lt; exec::train::TrainableFnSequence &gt; &gt; FunctionMap</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00032">TrainableBackendContext.h:33</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_ae9d6514c748e05f0254717f688bc458f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">onert::ir::OperandIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperandIndexTag &gt; OperandIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00033">Index.h:33</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_backend_context_8h_source.html#l00085">onert::backend::train::TrainableBackendContext::_tdata</a>, <a class="el" href="_trainable_backend_context_8h_source.html#l00074">onert::backend::train::TrainableBackendContext::external_operands()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00079">onert::ir::Operand::isConstant()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00186">onert::util::ObjectManager&lt; Index, Object &gt;::iterate()</a>, <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html#l00056">kernel_gen</a>, <a class="el" href="_trainable_graph_8h_source.html#l00123">onert::ir::train::TrainableGraph::operands()</a>, and <a class="el" href="_trainable_backend_context_8h_source.html#l00069">onert::backend::train::TrainableBackendContext::trainable_graph()</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_backend_context_8h_source.html#l00081">onert::backend::train::TrainableBackendContext::_tdata</a>, <a class="el" href="_trainable_backend_context_8h_source.html#l00070">onert::backend::train::TrainableBackendContext::external_operands()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00077">onert::ir::Operand::isConstant()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00184">onert::util::ObjectManager&lt; Index, Object &gt;::iterate()</a>, <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html#l00050">kernel_gen</a>, <a class="el" href="_trainable_graph_8h_source.html#l00119">onert::ir::train::TrainableGraph::operands()</a>, and <a class="el" href="_trainable_backend_context_8h_source.html#l00065">onert::backend::train::TrainableBackendContext::trainable_graph()</a>.</p>
 
 </div>
 </div>
@@ -328,9 +328,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html#l00056">56</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html#l00050">50</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8h_source.html">BackendContext.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8cc_source.html#l00031">gen()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8cc_source.html#l00025">gen()</a>.</p>
 
 </div>
 </div>

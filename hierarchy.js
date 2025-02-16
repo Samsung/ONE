@@ -1290,8 +1290,7 @@ var hierarchy =
       [ "onert::backend::cpu::Backend", "classonert_1_1backend_1_1cpu_1_1_backend.html", null ],
       [ "onert::backend::ruy::Backend", "classonert_1_1backend_1_1ruy_1_1_backend.html", null ],
       [ "onert::backend::train::Backend", "classonert_1_1backend_1_1train_1_1_backend.html", null ],
-      [ "onert::backend::trix::Backend", "classonert_1_1backend_1_1trix_1_1_backend.html", null ],
-      [ "onert::backend::xnnpack::Backend", "classonert_1_1backend_1_1xnnpack_1_1_backend.html", null ]
+      [ "onert::backend::trix::Backend", "classonert_1_1backend_1_1trix_1_1_backend.html", null ]
     ] ],
     [ "onert::backend::BackendContext", "classonert_1_1backend_1_1_backend_context.html", [
       [ "onert::backend::builtin::BackendContext", "classonert_1_1backend_1_1builtin_1_1_backend_context.html", null ],
@@ -1301,8 +1300,7 @@ var hierarchy =
       [ "onert::backend::cpu::BackendContext", "classonert_1_1backend_1_1cpu_1_1_backend_context.html", null ],
       [ "onert::backend::ruy::BackendContext", "classonert_1_1backend_1_1ruy_1_1_backend_context.html", null ],
       [ "onert::backend::train::DummyBackendContext", "classonert_1_1backend_1_1train_1_1_dummy_backend_context.html", null ],
-      [ "onert::backend::trix::BackendContext", "classonert_1_1backend_1_1trix_1_1_backend_context.html", null ],
-      [ "onert::backend::xnnpack::BackendContext", "classonert_1_1backend_1_1xnnpack_1_1_backend_context.html", null ]
+      [ "onert::backend::trix::BackendContext", "classonert_1_1backend_1_1trix_1_1_backend_context.html", null ]
     ] ],
     [ "onert::compiler::BackendManager", "classonert_1_1compiler_1_1_backend_manager.html", null ],
     [ "nnkit::BackendPlugin", "classnnkit_1_1_backend_plugin.html", null ],
@@ -1951,7 +1949,6 @@ var hierarchy =
     [ "onert::backend::builtin::ExternalContext", "classonert_1_1backend_1_1builtin_1_1_external_context.html", null ],
     [ "onert::backend::cpu::ExternalContext", "classonert_1_1backend_1_1cpu_1_1_external_context.html", null ],
     [ "onert::backend::ruy::ExternalContext", "classonert_1_1backend_1_1ruy_1_1_external_context.html", null ],
-    [ "onert::backend::xnnpack::ExternalContext", "classonert_1_1backend_1_1xnnpack_1_1_external_context.html", null ],
     [ "std::false_type", null, [
       [ "is_VariadicArity< T >", "structis___variadic_arity.html", null ],
       [ "is_VariadicOut< T >", "structis___variadic_out.html", null ]
@@ -2356,8 +2353,7 @@ var hierarchy =
       [ "onert::backend::cpu::Config", "classonert_1_1backend_1_1cpu_1_1_config.html", null ],
       [ "onert::backend::ruy::Config", "classonert_1_1backend_1_1ruy_1_1_config.html", null ],
       [ "onert::backend::train::Config", "classonert_1_1backend_1_1train_1_1_config.html", null ],
-      [ "onert::backend::trix::Config", "classonert_1_1backend_1_1trix_1_1_config.html", null ],
-      [ "onert::backend::xnnpack::Config", "classonert_1_1backend_1_1xnnpack_1_1_config.html", null ]
+      [ "onert::backend::trix::Config", "classonert_1_1backend_1_1trix_1_1_config.html", null ]
     ] ],
     [ "nnfw::misc::IConfigSource", "structnnfw_1_1misc_1_1_i_config_source.html", [
       [ "nnfw::misc::GeneralConfigSource", "classnnfw_1_1misc_1_1_general_config_source.html", [
@@ -2491,11 +2487,6 @@ var hierarchy =
       [ "onert::backend::ruy::ops::ConvolutionLayer", "classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html", null ],
       [ "onert::backend::ruy::ops::FullyConnectedLayer", "classonert_1_1backend_1_1ruy_1_1ops_1_1_fully_connected_layer.html", null ],
       [ "onert::backend::trix::ops::BulkLayer", "classonert_1_1backend_1_1trix_1_1ops_1_1_bulk_layer.html", null ],
-      [ "onert::backend::xnnpack::ops::Layer", "classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html", [
-        [ "onert::backend::xnnpack::ops::ConvolutionLayer", "classonert_1_1backend_1_1xnnpack_1_1ops_1_1_convolution_layer.html", null ],
-        [ "onert::backend::xnnpack::ops::DepthwiseConvolutionLayer", "classonert_1_1backend_1_1xnnpack_1_1ops_1_1_depthwise_convolution_layer.html", null ],
-        [ "onert::backend::xnnpack::ops::FullyConnectedLayer", "classonert_1_1backend_1_1xnnpack_1_1ops_1_1_fully_connected_layer.html", null ]
-      ] ],
       [ "onert::exec::FunctionSequence", "classonert_1_1exec_1_1_function_sequence.html", null ],
       [ "onert::exec::HookFunction", "classonert_1_1exec_1_1_hook_function.html", null ],
       [ "onert::exec::IPermuteFunction", "classonert_1_1exec_1_1_i_permute_function.html", [
@@ -4148,8 +4139,7 @@ var hierarchy =
         [ "onert::backend::builtin::KernelGenerator", "classonert_1_1backend_1_1builtin_1_1_kernel_generator.html", null ],
         [ "onert::backend::cpu::KernelGenerator", "classonert_1_1backend_1_1cpu_1_1_kernel_generator.html", null ],
         [ "onert::backend::ruy::KernelGenerator", "classonert_1_1backend_1_1ruy_1_1_kernel_generator.html", null ],
-        [ "onert::backend::trix::KernelGenerator", "classonert_1_1backend_1_1trix_1_1_kernel_generator.html", null ],
-        [ "onert::backend::xnnpack::KernelGenerator", "classonert_1_1backend_1_1xnnpack_1_1_kernel_generator.html", null ]
+        [ "onert::backend::trix::KernelGenerator", "classonert_1_1backend_1_1trix_1_1_kernel_generator.html", null ]
       ] ],
       [ "onert::compiler::ShapeValidator", "classonert_1_1compiler_1_1_shape_validator.html", null ],
       [ "onert::compiler::StaticShapeInferer", "classonert_1_1compiler_1_1_static_shape_inferer.html", null ],

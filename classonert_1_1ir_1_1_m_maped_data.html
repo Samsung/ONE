@@ -128,7 +128,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html#l00073">73</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html">Data.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html#l00071">71</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html">Data.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a15ccef48c4ebc889c48727e17a7dcc33" name="a15ccef48c4ebc889c48727e17a7dcc33"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a15ccef48c4ebc889c48727e17a7dcc33">&#9670;&#160;</a></span>MMapedData()</h2>
@@ -182,15 +182,15 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html#l00076">76</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html">Data.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   78</span>    : <a class="code hl_function" href="classonert_1_1ir_1_1_external_data.html#adbd5ca821a127844b5b59d741199258e">ExternalData</a>(<span class="keyword">nullptr</span>, data_size),</div>
-<div class="line"><span class="lineno">   79</span>      _mmap_base(</div>
-<div class="line"><span class="lineno">   80</span>        <span class="keyword">static_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, fd, mmap_offset))),</div>
-<div class="line"><span class="lineno">   81</span>      _mmap_size(mmap_size), _offset(data_offset - mmap_offset)</div>
-<div class="line"><span class="lineno">   82</span>  {</div>
-<div class="line"><span class="lineno">   83</span>    <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   84</span>  }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_external_data_html_adbd5ca821a127844b5b59d741199258e"><div class="ttname"><a href="classonert_1_1ir_1_1_external_data.html#adbd5ca821a127844b5b59d741199258e">onert::ir::ExternalData::ExternalData</a></div><div class="ttdeci">ExternalData(const uint8_t *base, size_t size)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html#l00059">Data.h:59</a></div></div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html#l00074">74</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html">Data.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>    : <a class="code hl_function" href="classonert_1_1ir_1_1_external_data.html#adbd5ca821a127844b5b59d741199258e">ExternalData</a>(<span class="keyword">nullptr</span>, data_size),</div>
+<div class="line"><span class="lineno">   77</span>      _mmap_base(</div>
+<div class="line"><span class="lineno">   78</span>        <span class="keyword">static_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(mmap(NULL, mmap_size, PROT_READ, MAP_PRIVATE, fd, mmap_offset))),</div>
+<div class="line"><span class="lineno">   79</span>      _mmap_size(mmap_size), _offset(data_offset - mmap_offset)</div>
+<div class="line"><span class="lineno">   80</span>  {</div>
+<div class="line"><span class="lineno">   81</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   82</span>  }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_external_data_html_adbd5ca821a127844b5b59d741199258e"><div class="ttname"><a href="classonert_1_1ir_1_1_external_data.html#adbd5ca821a127844b5b59d741199258e">onert::ir::ExternalData::ExternalData</a></div><div class="ttdeci">ExternalData(const uint8_t *base, size_t size)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html#l00057">Data.h:57</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -217,13 +217,13 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html#l00087">87</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html">Data.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   88</span>  {</div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">if</span> (_mmap_size &gt; 0)</div>
-<div class="line"><span class="lineno">   90</span>    {</div>
-<div class="line"><span class="lineno">   91</span>      munmap(<span class="keyword">const_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(_mmap_base), _mmap_size);</div>
-<div class="line"><span class="lineno">   92</span>    }</div>
-<div class="line"><span class="lineno">   93</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html#l00085">85</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html">Data.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>  {</div>
+<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">if</span> (_mmap_size &gt; 0)</div>
+<div class="line"><span class="lineno">   88</span>    {</div>
+<div class="line"><span class="lineno">   89</span>      munmap(<span class="keyword">const_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(_mmap_base), _mmap_size);</div>
+<div class="line"><span class="lineno">   90</span>    }</div>
+<div class="line"><span class="lineno">   91</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -254,8 +254,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1ir_1_1_external_data.html#a362c4b8a1e07557f179399fd43520801">onert::ir::ExternalData</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html#l00096">96</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html">Data.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   96</span>{ <span class="keywordflow">return</span> _mmap_base + _offset; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html#l00094">94</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_data_8h_source.html">Data.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>{ <span class="keywordflow">return</span> _mmap_base + _offset; }</div>
 </div><!-- fragment -->
 </div>
 </div>

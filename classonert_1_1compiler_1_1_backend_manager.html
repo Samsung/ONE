@@ -131,7 +131,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_backend_manager_8h_source.html#l00031">31</a> of file <a class="el" href="_backend_manager_8h_source.html">BackendManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_backend_manager_8h_source.html#l00029">29</a> of file <a class="el" href="_backend_manager_8h_source.html">BackendManager.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ac5b492b17961b9b80317e117e1d39a21" name="ac5b492b17961b9b80317e117e1d39a21"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac5b492b17961b9b80317e117e1d39a21">&#9670;&#160;</a></span>backend_create_t</h2>
@@ -145,7 +145,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_backend_manager_8h_source.html#l00034">34</a> of file <a class="el" href="_backend_manager_8h_source.html">BackendManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_backend_manager_8h_source.html#l00032">32</a> of file <a class="el" href="_backend_manager_8h_source.html">BackendManager.h</a>.</p>
 
 </div>
 </div>
@@ -161,7 +161,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_backend_manager_8h_source.html#l00035">35</a> of file <a class="el" href="_backend_manager_8h_source.html">BackendManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_backend_manager_8h_source.html#l00033">33</a> of file <a class="el" href="_backend_manager_8h_source.html">BackendManager.h</a>.</p>
 
 </div>
 </div>
@@ -177,7 +177,7 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_backend_manager_8h_source.html#l00036">36</a> of file <a class="el" href="_backend_manager_8h_source.html">BackendManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_backend_manager_8h_source.html#l00034">34</a> of file <a class="el" href="_backend_manager_8h_source.html">BackendManager.h</a>.</p>
 
 </div>
 </div>
@@ -205,13 +205,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_backend_manager_8cc_source.html#l00037">37</a> of file <a class="el" href="_backend_manager_8cc_source.html">BackendManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
-<div class="line"><span class="lineno">   39</span>  <span class="keyword">static</span> BackendManager object;</div>
-<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">return</span> object;</div>
-<div class="line"><span class="lineno">   41</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_backend_manager_8cc_source.html#l00035">35</a> of file <a class="el" href="_backend_manager_8cc_source.html">BackendManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
+<div class="line"><span class="lineno">   37</span>  <span class="keyword">static</span> BackendManager object;</div>
+<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">return</span> object;</div>
+<div class="line"><span class="lineno">   39</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_backend_manager_8cc_source.html#l00060">loadBackend()</a>, and <a class="el" href="_manual_scheduler_8cc_source.html#l00038">onert::compiler::ManualScheduler::schedule()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_backend_manager_8cc_source.html#l00058">loadBackend()</a>, and <a class="el" href="_manual_scheduler_8cc_source.html#l00036">onert::compiler::ManualScheduler::schedule()</a>.</p>
 
 </div>
 </div>
@@ -231,15 +231,15 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_backend_manager_8cc_source.html#l00130">130</a> of file <a class="el" href="_backend_manager_8cc_source.html">BackendManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  131</span>{</div>
-<div class="line"><span class="lineno">  132</span>  <span class="keywordflow">if</span> (_gen_map.find(key) != _gen_map.end())</div>
-<div class="line"><span class="lineno">  133</span>  {</div>
-<div class="line"><span class="lineno">  134</span>    <span class="keywordflow">return</span> _gen_map.at(key).get();</div>
-<div class="line"><span class="lineno">  135</span>  }</div>
-<div class="line"><span class="lineno">  136</span> </div>
-<div class="line"><span class="lineno">  137</span>  <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  138</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_backend_manager_8cc_source.html#l00128">128</a> of file <a class="el" href="_backend_manager_8cc_source.html">BackendManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  129</span>{</div>
+<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">if</span> (_gen_map.find(key) != _gen_map.end())</div>
+<div class="line"><span class="lineno">  131</span>  {</div>
+<div class="line"><span class="lineno">  132</span>    <span class="keywordflow">return</span> _gen_map.at(key).get();</div>
+<div class="line"><span class="lineno">  133</span>  }</div>
+<div class="line"><span class="lineno">  134</span> </div>
+<div class="line"><span class="lineno">  135</span>  <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  136</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -259,15 +259,15 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_backend_manager_8cc_source.html#l00140">140</a> of file <a class="el" href="_backend_manager_8cc_source.html">BackendManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  141</span>{</div>
-<div class="line"><span class="lineno">  142</span>  <span class="keywordflow">if</span> (_gen_map.find(key) != _gen_map.end())</div>
-<div class="line"><span class="lineno">  143</span>  {</div>
-<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">return</span> _gen_map.at(key).get();</div>
-<div class="line"><span class="lineno">  145</span>  }</div>
-<div class="line"><span class="lineno">  146</span> </div>
-<div class="line"><span class="lineno">  147</span>  <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  148</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_backend_manager_8cc_source.html#l00138">138</a> of file <a class="el" href="_backend_manager_8cc_source.html">BackendManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  139</span>{</div>
+<div class="line"><span class="lineno">  140</span>  <span class="keywordflow">if</span> (_gen_map.find(key) != _gen_map.end())</div>
+<div class="line"><span class="lineno">  141</span>  {</div>
+<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">return</span> _gen_map.at(key).get();</div>
+<div class="line"><span class="lineno">  143</span>  }</div>
+<div class="line"><span class="lineno">  144</span> </div>
+<div class="line"><span class="lineno">  145</span>  <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  146</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -294,14 +294,14 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_backend_manager_8h_source.html#l00044">44</a> of file <a class="el" href="_backend_manager_8h_source.html">BackendManager.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>  {</div>
-<div class="line"><span class="lineno">   46</span>    std::vector&lt;const backend::Backend *&gt; v;</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> : _gen_map)</div>
-<div class="line"><span class="lineno">   48</span>      v.emplace_back(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.second.<a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">get</a>());</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> v;</div>
-<div class="line"><span class="lineno">   50</span>  }</div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_backend_manager_html_a0f5a2ae30e62f791d145fa80e7f6be36"><div class="ttname"><a href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">onert::compiler::BackendManager::get</a></div><div class="ttdeci">static BackendManager &amp; get()</div><div class="ttdef"><b>Definition</b> <a href="_backend_manager_8cc_source.html#l00037">BackendManager.cc:37</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_backend_manager_8h_source.html#l00042">42</a> of file <a class="el" href="_backend_manager_8h_source.html">BackendManager.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>  {</div>
+<div class="line"><span class="lineno">   44</span>    std::vector&lt;const backend::Backend *&gt; v;</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> : _gen_map)</div>
+<div class="line"><span class="lineno">   46</span>      v.emplace_back(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.second.<a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">get</a>());</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> v;</div>
+<div class="line"><span class="lineno">   48</span>  }</div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_backend_manager_html_a0f5a2ae30e62f791d145fa80e7f6be36"><div class="ttname"><a href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">onert::compiler::BackendManager::get</a></div><div class="ttdeci">static BackendManager &amp; get()</div><div class="ttdef"><b>Definition</b> <a href="_backend_manager_8cc_source.html#l00035">BackendManager.cc:35</a></div></div>
 <div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
@@ -323,8 +323,8 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_backend_manager_8cc_source.html#l00150">150</a> of file <a class="el" href="_backend_manager_8cc_source.html">BackendManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  150</span>{ <span class="keywordflow">return</span> _builtin; }</div>
+<p class="definition">Definition at line <a class="el" href="_backend_manager_8cc_source.html#l00148">148</a> of file <a class="el" href="_backend_manager_8cc_source.html">BackendManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  148</span>{ <span class="keywordflow">return</span> _builtin; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -353,81 +353,81 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_backend_manager_8cc_source.html#l00060">60</a> of file <a class="el" href="_backend_manager_8cc_source.html">BackendManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   61</span>{</div>
-<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">get</a>(backend) != <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   63</span>  {</div>
-<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   65</span>  }</div>
-<div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>  <span class="keyword">const</span> std::string backend_so = <span class="stringliteral">&quot;libbackend_&quot;</span> + backend + SHARED_LIB_EXT;</div>
-<div class="line"><span class="lineno">   68</span>  <span class="keywordtype">void</span> *handle = dlopen(backend_so.c_str(), RTLD_LAZY | RTLD_LOCAL);</div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">if</span> (handle == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   71</span>  {</div>
-<div class="line"><span class="lineno">   72</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(BackendManager) &lt;&lt; <span class="stringliteral">&quot;Failed to load backend &#39;&quot;</span> &lt;&lt; backend &lt;&lt; <span class="stringliteral">&quot;&#39; - &quot;</span> &lt;&lt; dlerror() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   74</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_backend_manager_8cc_source.html#l00058">58</a> of file <a class="el" href="_backend_manager_8cc_source.html">BackendManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>{</div>
+<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">get</a>(backend) != <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   61</span>  {</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   63</span>  }</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>  <span class="keyword">const</span> std::string backend_so = <span class="stringliteral">&quot;libbackend_&quot;</span> + backend + SHARED_LIB_EXT;</div>
+<div class="line"><span class="lineno">   66</span>  <span class="keywordtype">void</span> *handle = dlopen(backend_so.c_str(), RTLD_LAZY | RTLD_LOCAL);</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>  <span class="keywordflow">if</span> (handle == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   69</span>  {</div>
+<div class="line"><span class="lineno">   70</span>    <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(BackendManager) &lt;&lt; <span class="stringliteral">&quot;Failed to load backend &#39;&quot;</span> &lt;&lt; backend &lt;&lt; <span class="stringliteral">&quot;&#39; - &quot;</span> &lt;&lt; dlerror() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   72</span>  }</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(BackendManager) &lt;&lt; <span class="stringliteral">&quot;Successfully loaded &#39;&quot;</span> &lt;&lt; backend &lt;&lt; <span class="stringliteral">&quot;&#39;(&quot;</span> &lt;&lt; backend_so &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span>;</div>
 <div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(BackendManager) &lt;&lt; <span class="stringliteral">&quot;Successfully loaded &#39;&quot;</span> &lt;&lt; backend &lt;&lt; <span class="stringliteral">&quot;&#39;(&quot;</span> &lt;&lt; backend_so &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span>;</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>  {</div>
-<div class="line"><span class="lineno">   79</span>    <span class="comment">// load object creator function</span></div>
-<div class="line"><span class="lineno">   80</span>    <span class="keyword">auto</span> backend_create = (<a class="code hl_typedef" href="classonert_1_1compiler_1_1_backend_manager.html#ac5b492b17961b9b80317e117e1d39a21">backend_create_t</a>)dlsym(handle, <span class="stringliteral">&quot;onert_backend_create&quot;</span>);</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">if</span> (backend_create == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   82</span>    {</div>
-<div class="line"><span class="lineno">   83</span>      <span class="comment">// TODO replace `fprintf` with `VERBOSE`</span></div>
-<div class="line"><span class="lineno">   84</span>      fprintf(stderr, <span class="stringliteral">&quot;BackendManager: unable to find function `onert_backend_create` : %s\n&quot;</span>,</div>
-<div class="line"><span class="lineno">   85</span>              dlerror());</div>
-<div class="line"><span class="lineno">   86</span>      dlclose(handle);</div>
-<div class="line"><span class="lineno">   87</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   88</span>    }</div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>    <span class="comment">// load object creator function</span></div>
-<div class="line"><span class="lineno">   91</span>    <span class="keyword">auto</span> backend_destroy = (<a class="code hl_typedef" href="classonert_1_1compiler_1_1_backend_manager.html#a3a0be2e6523767990a9b6e1d9cfbe9b6">backend_destroy_t</a>)dlsym(handle, <span class="stringliteral">&quot;onert_backend_destroy&quot;</span>);</div>
-<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">if</span> (backend_destroy == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   93</span>    {</div>
-<div class="line"><span class="lineno">   94</span>      <span class="comment">// TODO replace `fprintf` with `VERBOSE`</span></div>
-<div class="line"><span class="lineno">   95</span>      fprintf(stderr, <span class="stringliteral">&quot;BackendManager: unable to find `function onert_backend_destroy` : %s\n&quot;</span>,</div>
-<div class="line"><span class="lineno">   96</span>              dlerror());</div>
-<div class="line"><span class="lineno">   97</span>      dlclose(handle);</div>
-<div class="line"><span class="lineno">   98</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   99</span>    }</div>
-<div class="line"><span class="lineno">  100</span> </div>
-<div class="line"><span class="lineno">  101</span>    <span class="keyword">auto</span> backend_object =</div>
-<div class="line"><span class="lineno">  102</span>      std::unique_ptr&lt;backend::Backend, backend_destroy_t&gt;(backend_create(), backend_destroy);</div>
-<div class="line"><span class="lineno">  103</span>    <span class="keywordtype">bool</span> initialized = backend_object-&gt;config()-&gt;initialize(); <span class="comment">// Call initialize here?</span></div>
-<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">if</span> (!initialized)</div>
-<div class="line"><span class="lineno">  105</span>    {</div>
-<div class="line"><span class="lineno">  106</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(BackendManager) &lt;&lt; backend.c_str()</div>
-<div class="line"><span class="lineno">  107</span>                              &lt;&lt; <span class="stringliteral">&quot; backend initialization failed. Don&#39;t use this backend&quot;</span></div>
-<div class="line"><span class="lineno">  108</span>                              &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  109</span>      dlclose(handle);</div>
-<div class="line"><span class="lineno">  110</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  111</span>    }</div>
-<div class="line"><span class="lineno">  112</span>    _gen_map.emplace(backend_object-&gt;config()-&gt;id(), std::move(backend_object));</div>
-<div class="line"><span class="lineno">  113</span>  }</div>
-<div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span>  <span class="comment">// Save backend handle (avoid warning by handle lost without dlclose())</span></div>
-<div class="line"><span class="lineno">  116</span>  <span class="keyword">auto</span> u_handle = std::unique_ptr&lt;void, dlhandle_destroy_t&gt;{</div>
-<div class="line"><span class="lineno">  117</span>    handle, [<span class="keywordtype">id</span> = backend, filename = backend_so](<span class="keywordtype">void</span> *<a class="code hl_variable" href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">h</a>) {</div>
-<div class="line"><span class="lineno">  118</span>      <span class="keywordflow">if</span> (dlclose(h) == 0)</div>
-<div class="line"><span class="lineno">  119</span>      {</div>
-<div class="line"><span class="lineno">  120</span>        <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(BackendManager) &lt;&lt; <span class="stringliteral">&quot;Successfully unloaded &#39;&quot;</span> &lt;&lt; <span class="keywordtype">id</span> &lt;&lt; <span class="stringliteral">&quot;&#39;(&quot;</span> &lt;&lt; filename &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  121</span>      }</div>
-<div class="line"><span class="lineno">  122</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  123</span>      {</div>
-<div class="line"><span class="lineno">  124</span>        <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(BackendManager) &lt;&lt; <span class="stringliteral">&quot;Failed to unload backend &#39;&quot;</span> &lt;&lt; <span class="keywordtype">id</span> &lt;&lt; <span class="stringliteral">&quot;&#39;- &quot;</span> &lt;&lt; dlerror() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><span class="lineno">  125</span>      }</div>
-<div class="line"><span class="lineno">  126</span>    }};</div>
-<div class="line"><span class="lineno">  127</span>  _handle_map.emplace(backend, std::move(u_handle));</div>
-<div class="line"><span class="lineno">  128</span>}</div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_backend_manager_html_a3a0be2e6523767990a9b6e1d9cfbe9b6"><div class="ttname"><a href="classonert_1_1compiler_1_1_backend_manager.html#a3a0be2e6523767990a9b6e1d9cfbe9b6">onert::compiler::BackendManager::backend_destroy_t</a></div><div class="ttdeci">void(*)(backend::Backend *) backend_destroy_t</div><div class="ttdef"><b>Definition</b> <a href="_backend_manager_8h_source.html#l00035">BackendManager.h:35</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_backend_manager_html_ac5b492b17961b9b80317e117e1d39a21"><div class="ttname"><a href="classonert_1_1compiler_1_1_backend_manager.html#ac5b492b17961b9b80317e117e1d39a21">onert::compiler::BackendManager::backend_create_t</a></div><div class="ttdeci">backend::Backend *(*)() backend_create_t</div><div class="ttdef"><b>Definition</b> <a href="_backend_manager_8h_source.html#l00034">BackendManager.h:34</a></div></div>
+<div class="line"><span class="lineno">   76</span>  {</div>
+<div class="line"><span class="lineno">   77</span>    <span class="comment">// load object creator function</span></div>
+<div class="line"><span class="lineno">   78</span>    <span class="keyword">auto</span> backend_create = (<a class="code hl_typedef" href="classonert_1_1compiler_1_1_backend_manager.html#ac5b492b17961b9b80317e117e1d39a21">backend_create_t</a>)dlsym(handle, <span class="stringliteral">&quot;onert_backend_create&quot;</span>);</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">if</span> (backend_create == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   80</span>    {</div>
+<div class="line"><span class="lineno">   81</span>      <span class="comment">// TODO replace `fprintf` with `VERBOSE`</span></div>
+<div class="line"><span class="lineno">   82</span>      fprintf(stderr, <span class="stringliteral">&quot;BackendManager: unable to find function `onert_backend_create` : %s\n&quot;</span>,</div>
+<div class="line"><span class="lineno">   83</span>              dlerror());</div>
+<div class="line"><span class="lineno">   84</span>      dlclose(handle);</div>
+<div class="line"><span class="lineno">   85</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   86</span>    }</div>
+<div class="line"><span class="lineno">   87</span> </div>
+<div class="line"><span class="lineno">   88</span>    <span class="comment">// load object creator function</span></div>
+<div class="line"><span class="lineno">   89</span>    <span class="keyword">auto</span> backend_destroy = (<a class="code hl_typedef" href="classonert_1_1compiler_1_1_backend_manager.html#a3a0be2e6523767990a9b6e1d9cfbe9b6">backend_destroy_t</a>)dlsym(handle, <span class="stringliteral">&quot;onert_backend_destroy&quot;</span>);</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">if</span> (backend_destroy == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   91</span>    {</div>
+<div class="line"><span class="lineno">   92</span>      <span class="comment">// TODO replace `fprintf` with `VERBOSE`</span></div>
+<div class="line"><span class="lineno">   93</span>      fprintf(stderr, <span class="stringliteral">&quot;BackendManager: unable to find `function onert_backend_destroy` : %s\n&quot;</span>,</div>
+<div class="line"><span class="lineno">   94</span>              dlerror());</div>
+<div class="line"><span class="lineno">   95</span>      dlclose(handle);</div>
+<div class="line"><span class="lineno">   96</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   97</span>    }</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span>    <span class="keyword">auto</span> backend_object =</div>
+<div class="line"><span class="lineno">  100</span>      std::unique_ptr&lt;backend::Backend, backend_destroy_t&gt;(backend_create(), backend_destroy);</div>
+<div class="line"><span class="lineno">  101</span>    <span class="keywordtype">bool</span> initialized = backend_object-&gt;config()-&gt;initialize(); <span class="comment">// Call initialize here?</span></div>
+<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">if</span> (!initialized)</div>
+<div class="line"><span class="lineno">  103</span>    {</div>
+<div class="line"><span class="lineno">  104</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(BackendManager) &lt;&lt; backend.c_str()</div>
+<div class="line"><span class="lineno">  105</span>                              &lt;&lt; <span class="stringliteral">&quot; backend initialization failed. Don&#39;t use this backend&quot;</span></div>
+<div class="line"><span class="lineno">  106</span>                              &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  107</span>      dlclose(handle);</div>
+<div class="line"><span class="lineno">  108</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">  109</span>    }</div>
+<div class="line"><span class="lineno">  110</span>    _gen_map.emplace(backend_object-&gt;config()-&gt;id(), std::move(backend_object));</div>
+<div class="line"><span class="lineno">  111</span>  }</div>
+<div class="line"><span class="lineno">  112</span> </div>
+<div class="line"><span class="lineno">  113</span>  <span class="comment">// Save backend handle (avoid warning by handle lost without dlclose())</span></div>
+<div class="line"><span class="lineno">  114</span>  <span class="keyword">auto</span> u_handle = std::unique_ptr&lt;void, dlhandle_destroy_t&gt;{</div>
+<div class="line"><span class="lineno">  115</span>    handle, [<span class="keywordtype">id</span> = backend, filename = backend_so](<span class="keywordtype">void</span> *<a class="code hl_variable" href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">h</a>) {</div>
+<div class="line"><span class="lineno">  116</span>      <span class="keywordflow">if</span> (dlclose(h) == 0)</div>
+<div class="line"><span class="lineno">  117</span>      {</div>
+<div class="line"><span class="lineno">  118</span>        <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(BackendManager) &lt;&lt; <span class="stringliteral">&quot;Successfully unloaded &#39;&quot;</span> &lt;&lt; <span class="keywordtype">id</span> &lt;&lt; <span class="stringliteral">&quot;&#39;(&quot;</span> &lt;&lt; filename &lt;&lt; <span class="stringliteral">&quot;)\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  119</span>      }</div>
+<div class="line"><span class="lineno">  120</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  121</span>      {</div>
+<div class="line"><span class="lineno">  122</span>        <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(BackendManager) &lt;&lt; <span class="stringliteral">&quot;Failed to unload backend &#39;&quot;</span> &lt;&lt; <span class="keywordtype">id</span> &lt;&lt; <span class="stringliteral">&quot;&#39;- &quot;</span> &lt;&lt; dlerror() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><span class="lineno">  123</span>      }</div>
+<div class="line"><span class="lineno">  124</span>    }};</div>
+<div class="line"><span class="lineno">  125</span>  _handle_map.emplace(backend, std::move(u_handle));</div>
+<div class="line"><span class="lineno">  126</span>}</div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_backend_manager_html_a3a0be2e6523767990a9b6e1d9cfbe9b6"><div class="ttname"><a href="classonert_1_1compiler_1_1_backend_manager.html#a3a0be2e6523767990a9b6e1d9cfbe9b6">onert::compiler::BackendManager::backend_destroy_t</a></div><div class="ttdeci">void(*)(backend::Backend *) backend_destroy_t</div><div class="ttdef"><b>Definition</b> <a href="_backend_manager_8h_source.html#l00033">BackendManager.h:33</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_backend_manager_html_ac5b492b17961b9b80317e117e1d39a21"><div class="ttname"><a href="classonert_1_1compiler_1_1_backend_manager.html#ac5b492b17961b9b80317e117e1d39a21">onert::compiler::BackendManager::backend_create_t</a></div><div class="ttdeci">backend::Backend *(*)() backend_create_t</div><div class="ttdef"><b>Definition</b> <a href="_backend_manager_8h_source.html#l00032">BackendManager.h:32</a></div></div>
 <div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a212d71bce44cd84d4fe678058cd5eccd"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a></div><div class="ttdeci">#define VERBOSE(name, lv)</div><div class="ttdef"><b>Definition</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">Log.h:71</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a01a00f16b6bc56ca12c4a42576612bd8"><div class="ttname"><a href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">jpeg2hdf5.h</a></div><div class="ttdeci">h</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00101">jpeg2hdf5.py:101</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_backend_manager_8cc_source.html#l00037">get()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
+<p class="reference">References <a class="el" href="_backend_manager_8cc_source.html#l00035">get()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
 
 </div>
 </div>
@@ -454,8 +454,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_backend_manager_8h_source.html#l00051">51</a> of file <a class="el" href="_backend_manager_8h_source.html">BackendManager.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>{ <span class="keywordflow">return</span> _gen_map.size(); }</div>
+<p class="definition">Definition at line <a class="el" href="_backend_manager_8h_source.html#l00049">49</a> of file <a class="el" href="_backend_manager_8h_source.html">BackendManager.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> _gen_map.size(); }</div>
 </div><!-- fragment -->
 </div>
 </div>

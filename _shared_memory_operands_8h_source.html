@@ -119,27 +119,21 @@ $(document).ready(function(){initNavTree('_shared_memory_operands_8h_source.html
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="_i_graph_8h.html">ir/IGraph.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="_operand_index_map_8h.html">ir/OperandIndexMap.h</a>&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1backend_1_1cpu.html">onert::backend::cpu</a></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span>backend</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span>cpu</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"> * Find indexed of operands assigned to tensors which can share memory (indicate the same buffer).</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"> * Note that it&#39;s applicable for operations that do NOT change data but only shape like Reshape.</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>ir::OperandIndexMap&lt;ir::OperandIndex&gt; <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu.html#ab1e4fdaddf812c27be8b729fd87ccdf7">findSharedMemoryOperandIndexes</a>(<span class="keyword">const</span> ir::IGraph &amp;graph);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>} <span class="comment">// namespace cpu</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_BACKEND_CPU_SHARED_MEMORY_OPERANDS_H__</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"> * Find indexed of operands assigned to tensors which can share memory (indicate the same buffer).</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"> * Note that it&#39;s applicable for operations that do NOT change data but only shape like Reshape.</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>ir::OperandIndexMap&lt;ir::OperandIndex&gt; <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu.html#ab1e4fdaddf812c27be8b729fd87ccdf7">findSharedMemoryOperandIndexes</a>(<span class="keyword">const</span> ir::IGraph &amp;graph);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>} <span class="comment">// namespace onert::backend::cpu</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_BACKEND_CPU_SHARED_MEMORY_OPERANDS_H__</span></div>
 <div class="ttc" id="a_i_graph_8h_html"><div class="ttname"><a href="_i_graph_8h.html">IGraph.h</a></div></div>
 <div class="ttc" id="a_operand_index_map_8h_html"><div class="ttname"><a href="_operand_index_map_8h.html">OperandIndexMap.h</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_html_ab1e4fdaddf812c27be8b729fd87ccdf7"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu.html#ab1e4fdaddf812c27be8b729fd87ccdf7">onert::backend::cpu::findSharedMemoryOperandIndexes</a></div><div class="ttdeci">ir::OperandIndexMap&lt; ir::OperandIndex &gt; findSharedMemoryOperandIndexes(const ir::IGraph &amp;graph)</div><div class="ttdef"><b>Definition</b> <a href="_shared_memory_operands_8cc_source.html#l00077">SharedMemoryOperands.cc:77</a></div></div>
-<div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_html"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu.html">onert::backend::cpu</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2backend_2cpu_2_backend_8h_source.html#l00029">Backend.h:30</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_html_ab1e4fdaddf812c27be8b729fd87ccdf7"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu.html#ab1e4fdaddf812c27be8b729fd87ccdf7">onert::backend::cpu::findSharedMemoryOperandIndexes</a></div><div class="ttdeci">ir::OperandIndexMap&lt; ir::OperandIndex &gt; findSharedMemoryOperandIndexes(const ir::IGraph &amp;graph)</div><div class="ttdef"><b>Definition</b> <a href="_shared_memory_operands_8cc_source.html#l00073">SharedMemoryOperands.cc:73</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

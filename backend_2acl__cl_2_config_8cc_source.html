@@ -124,39 +124,33 @@ $(document).ready(function(){initNavTree('backend_2acl__cl_2_config_8cc_source.h
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;<a class="code" href="runtime_2onert_2core_2src_2backend_2builtin_2_config_8h.html">Config.h</a>&quot;</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1backend_1_1acl__cl.html">onert::backend::acl_cl</a></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">namespace </span>backend</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">namespace </span>acl_cl</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1acl__cl_1_1_config.html#ac3f4ceef8cbff338f87cf38cbe9f1477">   35</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classonert_1_1backend_1_1acl__cl_1_1_config.html#ac3f4ceef8cbff338f87cf38cbe9f1477">Config::initialize</a>()</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">if</span> (!arm_compute::opencl_is_available())</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  }</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  arm_compute::CLScheduler::get().default_init();</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// NOTE CLKernelLibraryEx must use the same context as CLScheduler</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="comment">// It did not check whether another device is available.</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a5f40c1c5ed75d0f2f31d2e795a8d8dd7">arm_compute::CLKernelLibraryEx::get</a>().<a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a533e610e6f8d86645e97287bc7d64f40">init</a>(</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="stringliteral">&quot;./cl_kernels/&quot;</span>, arm_compute::CLScheduler::get().context(), cl::Device::getDefault());</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>}</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classonert_1_1backend_1_1acl__cl_1_1_config.html#ac3f4ceef8cbff338f87cf38cbe9f1477">   31</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classonert_1_1backend_1_1acl__cl_1_1_config.html#ac3f4ceef8cbff338f87cf38cbe9f1477">Config::initialize</a>()</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordflow">if</span> (!arm_compute::opencl_is_available())</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  }</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  arm_compute::CLScheduler::get().default_init();</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="comment">// NOTE CLKernelLibraryEx must use the same context as CLScheduler</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="comment">// It did not check whether another device is available.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a5f40c1c5ed75d0f2f31d2e795a8d8dd7">arm_compute::CLKernelLibraryEx::get</a>().<a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a533e610e6f8d86645e97287bc7d64f40">init</a>(</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="stringliteral">&quot;./cl_kernels/&quot;</span>, arm_compute::CLScheduler::get().context(), cl::Device::getDefault());</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}</div>
 </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>} <span class="comment">// namespace acl_cl</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>} <span class="comment">// namespace onert::backend::acl_cl</span></div>
 <div class="ttc" id="a_c_l_kernel_library_ex_8h_html"><div class="ttname"><a href="_c_l_kernel_library_ex_8h.html">CLKernelLibraryEx.h</a></div><div class="ttdoc">This file is a cloned version of CLKernelLibrary.h in ACL. This file defines an interface for CLKerne...</div></div>
 <div class="ttc" id="a_config_source_8h_html"><div class="ttname"><a href="_config_source_8h.html">ConfigSource.h</a></div></div>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_kernel_library_ex_html_a533e610e6f8d86645e97287bc7d64f40"><div class="ttname"><a href="classarm__compute_1_1_c_l_kernel_library_ex.html#a533e610e6f8d86645e97287bc7d64f40">arm_compute::CLKernelLibraryEx::init</a></div><div class="ttdeci">void init(std::string kernel_path, cl::Context context, cl::Device device)</div><div class="ttdoc">Initialise the kernel library.</div><div class="ttdef"><b>Definition</b> <a href="_c_l_kernel_library_ex_8h_source.html#l00098">CLKernelLibraryEx.h:98</a></div></div>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_kernel_library_ex_html_a5f40c1c5ed75d0f2f31d2e795a8d8dd7"><div class="ttname"><a href="classarm__compute_1_1_c_l_kernel_library_ex.html#a5f40c1c5ed75d0f2f31d2e795a8d8dd7">arm_compute::CLKernelLibraryEx::get</a></div><div class="ttdeci">static CLKernelLibraryEx &amp; get()</div><div class="ttdoc">Get the KernelLibrary singleton.</div><div class="ttdef"><b>Definition</b> <a href="_c_l_kernel_library_8cpp_source.html#l00195">CLKernelLibrary.cpp:195</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1acl__cl_1_1_config_html_ac3f4ceef8cbff338f87cf38cbe9f1477"><div class="ttname"><a href="classonert_1_1backend_1_1acl__cl_1_1_config.html#ac3f4ceef8cbff338f87cf38cbe9f1477">onert::backend::acl_cl::Config::initialize</a></div><div class="ttdeci">bool initialize() override</div><div class="ttdoc">Initialize the backend. This is called as soon as the backend is loaded.</div><div class="ttdef"><b>Definition</b> <a href="backend_2acl__cl_2_config_8cc_source.html#l00035">Config.cc:35</a></div></div>
-<div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1acl__cl_1_1_config_html_ac3f4ceef8cbff338f87cf38cbe9f1477"><div class="ttname"><a href="classonert_1_1backend_1_1acl__cl_1_1_config.html#ac3f4ceef8cbff338f87cf38cbe9f1477">onert::backend::acl_cl::Config::initialize</a></div><div class="ttdeci">bool initialize() override</div><div class="ttdoc">Initialize the backend. This is called as soon as the backend is loaded.</div><div class="ttdef"><b>Definition</b> <a href="backend_2acl__cl_2_config_8cc_source.html#l00031">Config.cc:31</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1acl__cl_html"><div class="ttname"><a href="namespaceonert_1_1backend_1_1acl__cl.html">onert::backend::acl_cl</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2backend_2acl__cl_2_backend_8h_source.html#l00031">Backend.h:32</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2src_2backend_2builtin_2_config_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2src_2backend_2builtin_2_config_8h.html">Config.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

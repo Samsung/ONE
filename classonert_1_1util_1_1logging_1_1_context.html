@@ -112,7 +112,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00032">32</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00028">28</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2d78e1a6fc741398b12830422131af08" name="a2d78e1a6fc741398b12830422131af08"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2d78e1a6fc741398b12830422131af08">&#9670;&#160;</a></span>Context()</h2>
@@ -137,17 +137,17 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00035">35</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>                     : _enabled{<span class="keyword">false</span>}</div>
-<div class="line"><span class="lineno">   36</span>  {</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keyword">const</span> <span class="keyword">auto</span> env = <a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::ONERT_LOG_ENABLE);</div>
-<div class="line"><span class="lineno">   38</span> </div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">if</span> (env)</div>
-<div class="line"><span class="lineno">   40</span>    {</div>
-<div class="line"><span class="lineno">   41</span>      _enabled = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   42</span>    }</div>
-<div class="line"><span class="lineno">   43</span>  }</div>
-<div class="ttc" id="anamespaceonert_1_1util_html_a31f86c6ba380a60f458c85e621e0f953"><div class="ttname"><a href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">onert::util::getConfigBool</a></div><div class="ttdeci">bool getConfigBool(const std::string &amp;key)</div><div class="ttdef"><b>Definition</b> <a href="_config_source_8cc_source.html#l00118">ConfigSource.cc:118</a></div></div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00031">31</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>                     : _enabled{<span class="keyword">false</span>}</div>
+<div class="line"><span class="lineno">   32</span>  {</div>
+<div class="line"><span class="lineno">   33</span>    <span class="keyword">const</span> <span class="keyword">auto</span> env = <a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::ONERT_LOG_ENABLE);</div>
+<div class="line"><span class="lineno">   34</span> </div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">if</span> (env)</div>
+<div class="line"><span class="lineno">   36</span>    {</div>
+<div class="line"><span class="lineno">   37</span>      _enabled = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   38</span>    }</div>
+<div class="line"><span class="lineno">   39</span>  }</div>
+<div class="ttc" id="anamespaceonert_1_1util_html_a31f86c6ba380a60f458c85e621e0f953"><div class="ttname"><a href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">onert::util::getConfigBool</a></div><div class="ttdeci">bool getConfigBool(const std::string &amp;key)</div><div class="ttdef"><b>Definition</b> <a href="_config_source_8cc_source.html#l00116">ConfigSource.cc:116</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -176,8 +176,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00048">48</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> _enabled; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00044">44</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> _enabled; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -209,7 +209,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   21</span>  <span class="keyword">static</span> <a class="code hl_function" href="classonert_1_1util_1_1logging_1_1_context.html#a2d78e1a6fc741398b12830422131af08">Context</a> ctx;</div>
 <div class="line"><span class="lineno">   22</span>  <span class="keywordflow">return</span> ctx;</div>
 <div class="line"><span class="lineno">   23</span>}</div>
-<div class="ttc" id="aclassonert_1_1util_1_1logging_1_1_context_html_a2d78e1a6fc741398b12830422131af08"><div class="ttname"><a href="classonert_1_1util_1_1logging_1_1_context.html#a2d78e1a6fc741398b12830422131af08">onert::util::logging::Context::Context</a></div><div class="ttdeci">Context() noexcept</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00035">logging.h:35</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1logging_1_1_context_html_a2d78e1a6fc741398b12830422131af08"><div class="ttname"><a href="classonert_1_1util_1_1logging_1_1_context.html#a2d78e1a6fc741398b12830422131af08">onert::util::logging::Context::Context</a></div><div class="ttdeci">Context() noexcept</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00031">logging.h:31</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

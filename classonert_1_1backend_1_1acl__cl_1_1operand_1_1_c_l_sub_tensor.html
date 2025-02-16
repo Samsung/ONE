@@ -208,7 +208,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_c_l_sub_tensor_8h_source.html#l00032">32</a> of file <a class="el" href="_c_l_sub_tensor_8h_source.html">CLSubTensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_c_l_sub_tensor_8h_source.html#l00026">26</a> of file <a class="el" href="_c_l_sub_tensor_8h_source.html">CLSubTensor.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a58c525b8a71a42b2a4c3d97058c80e46" name="a58c525b8a71a42b2a4c3d97058c80e46"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a58c525b8a71a42b2a4c3d97058c80e46">&#9670;&#160;</a></span>CLSubTensor() <span class="overload">[1/2]</span></h2>
@@ -279,14 +279,14 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_c_l_sub_tensor_8cc_source.html#l00028">28</a> of file <a class="el" href="_c_l_sub_tensor_8cc_source.html">CLSubTensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>  : <a class="code hl_function" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#ab5a7d9594870a1b9948b6837f1e7c30b">ICLTensor</a>{rank}, _cl_sub_tensor(std::make_shared&lt;arm_compute::CLSubTensor&gt;(</div>
-<div class="line"><span class="lineno">   31</span>                       parent-&gt;handle(), tensor_shape, <a class="code hl_variable" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>, extend_parent))</div>
-<div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   34</span>}</div>
-<div class="ttc" id="a_detection_post_process_layer_8cc_html_a56ac4a0f8f593e61e643fc044dd3a61a"><div class="ttname"><a href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a></div><div class="ttdeci">Array&lt; CornerBox &gt; coords</div><div class="ttdef"><b>Definition</b> <a href="_detection_post_process_layer_8cc_source.html#l00054">DetectionPostProcessLayer.cc:54</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor_html_ab5a7d9594870a1b9948b6837f1e7c30b"><div class="ttname"><a href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#ab5a7d9594870a1b9948b6837f1e7c30b">onert::backend::acl_cl::operand::ICLTensor::ICLTensor</a></div><div class="ttdeci">ICLTensor(size_t rank)</div><div class="ttdef"><b>Definition</b> <a href="_i_c_l_tensor_8h_source.html#l00036">ICLTensor.h:36</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_c_l_sub_tensor_8cc_source.html#l00022">22</a> of file <a class="el" href="_c_l_sub_tensor_8cc_source.html">CLSubTensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>  : <a class="code hl_function" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#ab5a7d9594870a1b9948b6837f1e7c30b">ICLTensor</a>{rank}, _cl_sub_tensor(std::make_shared&lt;arm_compute::CLSubTensor&gt;(</div>
+<div class="line"><span class="lineno">   25</span>                       parent-&gt;handle(), tensor_shape, <a class="code hl_variable" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>, extend_parent))</div>
+<div class="line"><span class="lineno">   26</span>{</div>
+<div class="line"><span class="lineno">   27</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   28</span>}</div>
+<div class="ttc" id="a_detection_post_process_layer_8cc_html_a56ac4a0f8f593e61e643fc044dd3a61a"><div class="ttname"><a href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a></div><div class="ttdeci">Array&lt; CornerBox &gt; coords</div><div class="ttdef"><b>Definition</b> <a href="_detection_post_process_layer_8cc_source.html#l00048">DetectionPostProcessLayer.cc:48</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor_html_ab5a7d9594870a1b9948b6837f1e7c30b"><div class="ttname"><a href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#ab5a7d9594870a1b9948b6837f1e7c30b">onert::backend::acl_cl::operand::ICLTensor::ICLTensor</a></div><div class="ttdeci">ICLTensor(size_t rank)</div><div class="ttdef"><b>Definition</b> <a href="_i_c_l_tensor_8h_source.html#l00030">ICLTensor.h:30</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -316,8 +316,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#a13ad5994c986586a51fa17ef5907622b">onert::backend::acl_cl::operand::ICLTensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_sub_tensor_8cc_source.html#l00036">36</a> of file <a class="el" href="_c_l_sub_tensor_8cc_source.html">CLSubTensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{ <span class="keywordflow">return</span> _cl_sub_tensor.get(); }</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_sub_tensor_8cc_source.html#l00030">30</a> of file <a class="el" href="_c_l_sub_tensor_8cc_source.html">CLSubTensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{ <span class="keywordflow">return</span> _cl_sub_tensor.get(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -346,8 +346,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#acf7ad1c55880b8d1ade9209ea12cd5ee">onert::backend::acl_cl::operand::ICLTensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_sub_tensor_8cc_source.html#l00038">38</a> of file <a class="el" href="_c_l_sub_tensor_8cc_source.html">CLSubTensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{ <span class="keywordflow">return</span> _cl_sub_tensor.get(); }</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_sub_tensor_8cc_source.html#l00032">32</a> of file <a class="el" href="_c_l_sub_tensor_8cc_source.html">CLSubTensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>{ <span class="keywordflow">return</span> _cl_sub_tensor.get(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -376,8 +376,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a884840a84c0d452fbf9aa5f6997b7ff3">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_sub_tensor_8h_source.html#l00047">47</a> of file <a class="el" href="_c_l_sub_tensor_8h_source.html">CLSubTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_sub_tensor_8h_source.html#l00041">41</a> of file <a class="el" href="_c_l_sub_tensor_8h_source.html">CLSubTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -406,8 +406,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a628b99f37143b61adfbcb70d637788c3">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_sub_tensor_8h_source.html#l00048">48</a> of file <a class="el" href="_c_l_sub_tensor_8h_source.html">CLSubTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_sub_tensor_8h_source.html#l00042">42</a> of file <a class="el" href="_c_l_sub_tensor_8h_source.html">CLSubTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>

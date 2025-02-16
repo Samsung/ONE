@@ -11,7 +11,6 @@ var namespaceonert_1_1backend =
     [ "ruy", "namespaceonert_1_1backend_1_1ruy.html", "namespaceonert_1_1backend_1_1ruy" ],
     [ "train", "namespaceonert_1_1backend_1_1train.html", "namespaceonert_1_1backend_1_1train" ],
     [ "trix", "namespaceonert_1_1backend_1_1trix.html", "namespaceonert_1_1backend_1_1trix" ],
-    [ "xnnpack", "namespaceonert_1_1backend_1_1xnnpack.html", "namespaceonert_1_1backend_1_1xnnpack" ],
     [ "Backend", "classonert_1_1backend_1_1_backend.html", "classonert_1_1backend_1_1_backend" ],
     [ "BackendContext", "classonert_1_1backend_1_1_backend_context.html", "classonert_1_1backend_1_1_backend_context" ],
     [ "ContextData", "structonert_1_1backend_1_1_context_data.html", "structonert_1_1backend_1_1_context_data" ],

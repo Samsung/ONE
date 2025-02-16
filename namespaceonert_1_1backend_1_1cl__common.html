@@ -138,7 +138,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lifetime_map_8h_source.html#l00042">42</a> of file <a class="el" href="_lifetime_map_8h_source.html">LifetimeMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_lifetime_map_8h_source.html#l00038">38</a> of file <a class="el" href="_lifetime_map_8h_source.html">LifetimeMap.h</a>.</p>
 
 </div>
 </div>
@@ -154,7 +154,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lifetime_map_8h_source.html#l00043">43</a> of file <a class="el" href="_lifetime_map_8h_source.html">LifetimeMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_lifetime_map_8h_source.html#l00039">39</a> of file <a class="el" href="_lifetime_map_8h_source.html">LifetimeMap.h</a>.</p>
 
 </div>
 </div>
@@ -183,11 +183,11 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a935646e64701cb94ccff2c89c171e51eaf447f5c03508de4d88e340390ba7c78f" name="a935646e64701cb94ccff2c89c171e51eaf447f5c03508de4d88e340390ba7c78f"></a>LAST&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_lifetime_map_8h_source.html#l00035">35</a> of file <a class="el" href="_lifetime_map_8h_source.html">LifetimeMap.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
-<div class="line"><span class="lineno">   37</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51ea2c2624a5059934a947d6e25fe8332ade">FIRST</a>,</div>
-<div class="line"><span class="lineno">   38</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51eaf447f5c03508de4d88e340390ba7c78f">LAST</a></div>
-<div class="line"><span class="lineno">   39</span>};</div>
+<p class="definition">Definition at line <a class="el" href="_lifetime_map_8h_source.html#l00031">31</a> of file <a class="el" href="_lifetime_map_8h_source.html">LifetimeMap.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
+<div class="line"><span class="lineno">   33</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51ea2c2624a5059934a947d6e25fe8332ade">FIRST</a>,</div>
+<div class="line"><span class="lineno">   34</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51eaf447f5c03508de4d88e340390ba7c78f">LAST</a></div>
+<div class="line"><span class="lineno">   35</span>};</div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cl__common_html_a935646e64701cb94ccff2c89c171e51ea2c2624a5059934a947d6e25fe8332ade"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51ea2c2624a5059934a947d6e25fe8332ade">onert::backend::cl_common::UsesType::FIRST</a></div><div class="ttdeci">@ FIRST</div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cl__common_html_a935646e64701cb94ccff2c89c171e51eaf447f5c03508de4d88e340390ba7c78f"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51eaf447f5c03508de4d88e340390ba7c78f">onert::backend::cl_common::UsesType::LAST</a></div><div class="ttdeci">@ LAST</div></div>
 </div><!-- fragment -->
@@ -220,65 +220,65 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lifetime_map_8cc_source.html#l00028">28</a> of file <a class="el" href="_lifetime_map_8cc_source.html">LifetimeMap.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  <span class="comment">// Update lifetime sequence to apply subtensor optimization</span></div>
-<div class="line"><span class="lineno">   32</span>  std::unordered_map&lt;ir::OperandIndex, ir::OperandIndex&gt; root_map;</div>
-<div class="line"><span class="lineno">   33</span>  std::function&lt;<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a>)&gt; find_root =</div>
-<div class="line"><span class="lineno">   34</span>    [&amp;](<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> ind) -&gt; <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp; {</div>
-<div class="line"><span class="lineno">   35</span>    <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;ret = root_map[ind];</div>
+<p class="definition">Definition at line <a class="el" href="_lifetime_map_8cc_source.html#l00024">24</a> of file <a class="el" href="_lifetime_map_8cc_source.html">LifetimeMap.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
+<div class="line"><span class="lineno">   27</span>  <span class="comment">// Update lifetime sequence to apply subtensor optimization</span></div>
+<div class="line"><span class="lineno">   28</span>  std::unordered_map&lt;ir::OperandIndex, ir::OperandIndex&gt; root_map;</div>
+<div class="line"><span class="lineno">   29</span>  std::function&lt;<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a>)&gt; find_root =</div>
+<div class="line"><span class="lineno">   30</span>    [&amp;](<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> ind) -&gt; <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp; {</div>
+<div class="line"><span class="lineno">   31</span>    <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::OperandIndex</a> &amp;ret = root_map[ind];</div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span>    <span class="comment">// We know the root parent value already</span></div>
+<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">if</span> (ret.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a3337c49628abf54b36b4d81594b15565">valid</a>())</div>
+<div class="line"><span class="lineno">   35</span>      <span class="keywordflow">return</span> ret;</div>
 <div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>    <span class="comment">// We know the root parent value already</span></div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> (ret.<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a3337c49628abf54b36b4d81594b15565">valid</a>())</div>
-<div class="line"><span class="lineno">   39</span>      <span class="keywordflow">return</span> ret;</div>
-<div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span>    <span class="keyword">auto</span> itr = parent_map.find(ind);</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> (itr == parent_map.end())</div>
-<div class="line"><span class="lineno">   43</span>    {</div>
-<div class="line"><span class="lineno">   44</span>      <span class="comment">// If there is no parent, let&#39;s store the value of itself</span></div>
-<div class="line"><span class="lineno">   45</span>      <span class="keywordflow">return</span> ret = ind;</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keyword">auto</span> itr = parent_map.find(ind);</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> (itr == parent_map.end())</div>
+<div class="line"><span class="lineno">   39</span>    {</div>
+<div class="line"><span class="lineno">   40</span>      <span class="comment">// If there is no parent, let&#39;s store the value of itself</span></div>
+<div class="line"><span class="lineno">   41</span>      <span class="keywordflow">return</span> ret = ind;</div>
+<div class="line"><span class="lineno">   42</span>    }</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   44</span>    {</div>
+<div class="line"><span class="lineno">   45</span>      <span class="keywordflow">return</span> ret = find_root(itr-&gt;second.parent);</div>
 <div class="line"><span class="lineno">   46</span>    }</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   48</span>    {</div>
-<div class="line"><span class="lineno">   49</span>      <span class="keywordflow">return</span> ret = find_root(itr-&gt;second.parent);</div>
-<div class="line"><span class="lineno">   50</span>    }</div>
-<div class="line"><span class="lineno">   51</span>  };</div>
-<div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span>  ir::OperandIndexMap&lt;bool&gt; first_use_check;</div>
-<div class="line"><span class="lineno">   54</span>  ir::OperandIndexMap&lt;bool&gt; last_use_check;</div>
-<div class="line"><span class="lineno">   55</span>  LifetimeMap lifetime_map;</div>
-<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; lifetime_seq.size(); i++)</div>
-<div class="line"><span class="lineno">   57</span>  {</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;[entry_uses_type, entry_idx] = lifetime_seq[i];</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">if</span> (entry_uses_type != UsesType::FIRST)</div>
-<div class="line"><span class="lineno">   60</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keyword">auto</span> root_ind = find_root(entry_idx);</div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">if</span> (first_use_check[root_ind])</div>
-<div class="line"><span class="lineno">   63</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">   64</span>    first_use_check[root_ind] = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   65</span>    lifetime_map[i] = {UsesType::FIRST, root_ind};</div>
-<div class="line"><span class="lineno">   66</span>  }</div>
-<div class="line"><span class="lineno">   67</span> </div>
-<div class="line"><span class="lineno">   68</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = lifetime_seq.size() - 1; i &gt;= 0; i--)</div>
-<div class="line"><span class="lineno">   69</span>  {</div>
-<div class="line"><span class="lineno">   70</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;[entry_uses_type, entry_idx] = lifetime_seq[i];</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">if</span> (entry_uses_type != UsesType::LAST)</div>
-<div class="line"><span class="lineno">   72</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keyword">auto</span> root_ind = find_root(entry_idx);</div>
-<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> (last_use_check[root_ind])</div>
-<div class="line"><span class="lineno">   75</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">   76</span>    last_use_check[root_ind] = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   77</span>    lifetime_map[i] = {UsesType::LAST, root_ind};</div>
-<div class="line"><span class="lineno">   78</span>  }</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>  <span class="keywordflow">return</span> lifetime_map;</div>
-<div class="line"><span class="lineno">   81</span>}</div>
+<div class="line"><span class="lineno">   47</span>  };</div>
+<div class="line"><span class="lineno">   48</span> </div>
+<div class="line"><span class="lineno">   49</span>  ir::OperandIndexMap&lt;bool&gt; first_use_check;</div>
+<div class="line"><span class="lineno">   50</span>  ir::OperandIndexMap&lt;bool&gt; last_use_check;</div>
+<div class="line"><span class="lineno">   51</span>  LifetimeMap lifetime_map;</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; lifetime_seq.size(); i++)</div>
+<div class="line"><span class="lineno">   53</span>  {</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;[entry_uses_type, entry_idx] = lifetime_seq[i];</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> (entry_uses_type != UsesType::FIRST)</div>
+<div class="line"><span class="lineno">   56</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keyword">auto</span> root_ind = find_root(entry_idx);</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> (first_use_check[root_ind])</div>
+<div class="line"><span class="lineno">   59</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   60</span>    first_use_check[root_ind] = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   61</span>    lifetime_map[i] = {UsesType::FIRST, root_ind};</div>
+<div class="line"><span class="lineno">   62</span>  }</div>
+<div class="line"><span class="lineno">   63</span> </div>
+<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = lifetime_seq.size() - 1; i &gt;= 0; i--)</div>
+<div class="line"><span class="lineno">   65</span>  {</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;[entry_uses_type, entry_idx] = lifetime_seq[i];</div>
+<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">if</span> (entry_uses_type != UsesType::LAST)</div>
+<div class="line"><span class="lineno">   68</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keyword">auto</span> root_ind = find_root(entry_idx);</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">if</span> (last_use_check[root_ind])</div>
+<div class="line"><span class="lineno">   71</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   72</span>    last_use_check[root_ind] = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   73</span>    lifetime_map[i] = {UsesType::LAST, root_ind};</div>
+<div class="line"><span class="lineno">   74</span>  }</div>
+<div class="line"><span class="lineno">   75</span> </div>
+<div class="line"><span class="lineno">   76</span>  <span class="keywordflow">return</span> lifetime_map;</div>
+<div class="line"><span class="lineno">   77</span>}</div>
 <div class="ttc" id="aclassonert_1_1util_1_1_index_html"><div class="ttname"><a href="classonert_1_1util_1_1_index.html">onert::util::Index&lt; uint32_t, OperandIndexTag &gt;</a></div></div>
-<div class="ttc" id="aclassonert_1_1util_1_1_index_html_a3337c49628abf54b36b4d81594b15565"><div class="ttname"><a href="classonert_1_1util_1_1_index.html#a3337c49628abf54b36b4d81594b15565">onert::util::Index::valid</a></div><div class="ttdeci">bool valid() const</div><div class="ttdoc">Check whether the value is valid or not.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00127">Index.h:127</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1_index_html_a3337c49628abf54b36b4d81594b15565"><div class="ttname"><a href="classonert_1_1util_1_1_index.html#a3337c49628abf54b36b4d81594b15565">onert::util::Index::valid</a></div><div class="ttdeci">bool valid() const</div><div class="ttdoc">Check whether the value is valid or not.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00125">Index.h:125</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51ea2c2624a5059934a947d6e25fe8332ade">FIRST</a>, <a class="el" href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51eaf447f5c03508de4d88e340390ba7c78f">LAST</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00127">onert::util::Index&lt; T, DummyTag &gt;::valid()</a>.</p>
+<p class="reference">References <a class="el" href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51ea2c2624a5059934a947d6e25fe8332ade">FIRST</a>, <a class="el" href="namespaceonert_1_1backend_1_1cl__common.html#a935646e64701cb94ccff2c89c171e51eaf447f5c03508de4d88e340390ba7c78f">LAST</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00125">onert::util::Index&lt; T, DummyTag &gt;::valid()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_acl_tensor_builder_8h_source.html#l00178">onert::backend::acl_common::AclTensorBuilder&lt; T_ITensor, T_Tensor, T_SubTensor &gt;::allocate()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_acl_tensor_builder_8h_source.html#l00168">onert::backend::acl_common::AclTensorBuilder&lt; T_ITensor, T_Tensor, T_SubTensor &gt;::allocate()</a>.</p>
 
 </div>
 </div>

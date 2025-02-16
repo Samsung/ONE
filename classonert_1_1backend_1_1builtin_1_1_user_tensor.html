@@ -192,7 +192,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Tensor object that is for Input and Output tensors from the user. </p>
 <p>This class is a wrapped buffer that is allocated by the user. So it does not have resposibility on allocation nor deallocation. All the model input/output tensors are wrapped with this class for execution. </p>
 
-<p class="definition">Definition at line <a class="el" href="_user_tensor_8h_source.html#l00038">38</a> of file <a class="el" href="_user_tensor_8h_source.html">UserTensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_user_tensor_8h_source.html#l00034">34</a> of file <a class="el" href="_user_tensor_8h_source.html">UserTensor.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5b9ece204b79ba17f34ec0db9df8f208" name="a5b9ece204b79ba17f34ec0db9df8f208"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5b9ece204b79ba17f34ec0db9df8f208">&#9670;&#160;</a></span>UserTensor()</h2>
@@ -240,13 +240,13 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_user_tensor_8h_source.html#l00041">41</a> of file <a class="el" href="_user_tensor_8h_source.html">UserTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>    : <a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a9697cc6ef0eba77d6604c2d21d4f07ca">IPortableTensor</a>{<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>}, _layout{<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#a9fb006c756f244a31027d7019744cd22">layout</a>}, _buffer{<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#ad510aff517bf4bb7237a811259c3a4bd">buffer</a>}, _size{<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>}</div>
-<div class="line"><span class="lineno">   43</span>  {</div>
-<div class="line"><span class="lineno">   44</span>  }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a9697cc6ef0eba77d6604c2d21d4f07ca"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a9697cc6ef0eba77d6604c2d21d4f07ca">onert::backend::IPortableTensor::IPortableTensor</a></div><div class="ttdeci">IPortableTensor(const ir::OperandInfo &amp;info)</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00041">IPortableTensor.h:41</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_user_tensor_html_a9fb006c756f244a31027d7019744cd22"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#a9fb006c756f244a31027d7019744cd22">onert::backend::builtin::UserTensor::layout</a></div><div class="ttdeci">ir::Layout layout() const</div><div class="ttdef"><b>Definition</b> <a href="_user_tensor_8h_source.html#l00048">UserTensor.h:48</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_user_tensor_html_ad510aff517bf4bb7237a811259c3a4bd"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#ad510aff517bf4bb7237a811259c3a4bd">onert::backend::builtin::UserTensor::buffer</a></div><div class="ttdeci">uint8_t * buffer() const override</div><div class="ttdef"><b>Definition</b> <a href="_user_tensor_8h_source.html#l00047">UserTensor.h:47</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_user_tensor_8h_source.html#l00037">37</a> of file <a class="el" href="_user_tensor_8h_source.html">UserTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>    : <a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a9697cc6ef0eba77d6604c2d21d4f07ca">IPortableTensor</a>{<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>}, _layout{<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#a9fb006c756f244a31027d7019744cd22">layout</a>}, _buffer{<a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#ad510aff517bf4bb7237a811259c3a4bd">buffer</a>}, _size{<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>}</div>
+<div class="line"><span class="lineno">   39</span>  {</div>
+<div class="line"><span class="lineno">   40</span>  }</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a9697cc6ef0eba77d6604c2d21d4f07ca"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a9697cc6ef0eba77d6604c2d21d4f07ca">onert::backend::IPortableTensor::IPortableTensor</a></div><div class="ttdeci">IPortableTensor(const ir::OperandInfo &amp;info)</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00039">IPortableTensor.h:39</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_user_tensor_html_a9fb006c756f244a31027d7019744cd22"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#a9fb006c756f244a31027d7019744cd22">onert::backend::builtin::UserTensor::layout</a></div><div class="ttdeci">ir::Layout layout() const</div><div class="ttdef"><b>Definition</b> <a href="_user_tensor_8h_source.html#l00044">UserTensor.h:44</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_user_tensor_html_ad510aff517bf4bb7237a811259c3a4bd"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#ad510aff517bf4bb7237a811259c3a4bd">onert::backend::builtin::UserTensor::buffer</a></div><div class="ttdeci">uint8_t * buffer() const override</div><div class="ttdef"><b>Definition</b> <a href="_user_tensor_8h_source.html#l00043">UserTensor.h:43</a></div></div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
@@ -291,20 +291,20 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented from <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#abde8d4d97e9220821e44c5fb8028b19d">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_user_tensor_8cc_source.html#l00029">29</a> of file <a class="el" href="_user_tensor_8cc_source.html">UserTensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  <span class="comment">// User tensors cannot be reallocated.</span></div>
-<div class="line"><span class="lineno">   32</span>  <span class="keyword">auto</span> new_size = new_shape.num_elements() * <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">ir::sizeOfDataType</a>(<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>());</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">if</span> (_size &lt; new_size)</div>
-<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">throw</span> InsufficientBufferSizeException{<span class="stringliteral">&quot;User given buffer size is too small.&quot;</span>};</div>
-<div class="line"><span class="lineno">   35</span>  <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#a2212b2dd1452a2d5e867ae9418d74782">setShape</a>(new_shape);</div>
-<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   37</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00056">IPortableTensor.h:56</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_user_tensor_html_a2212b2dd1452a2d5e867ae9418d74782"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#a2212b2dd1452a2d5e867ae9418d74782">onert::backend::builtin::UserTensor::setShape</a></div><div class="ttdeci">void setShape(const ir::Shape &amp;new_shape) override</div><div class="ttdoc">Set the shape of tenser to new_shape.</div><div class="ttdef"><b>Definition</b> <a href="_user_tensor_8h_source.html#l00050">UserTensor.h:50</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_a306303df14f9f20079574f5a9cc37f26"><div class="ttname"><a href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">onert::ir::sizeOfDataType</a></div><div class="ttdeci">size_t sizeOfDataType(DataType data_type)</div><div class="ttdef"><b>Definition</b> <a href="_data_type_8cc_source.html#l00029">DataType.cc:29</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_user_tensor_8cc_source.html#l00025">25</a> of file <a class="el" href="_user_tensor_8cc_source.html">UserTensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
+<div class="line"><span class="lineno">   27</span>  <span class="comment">// User tensors cannot be reallocated.</span></div>
+<div class="line"><span class="lineno">   28</span>  <span class="keyword">auto</span> new_size = new_shape.num_elements() * <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">ir::sizeOfDataType</a>(<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>());</div>
+<div class="line"><span class="lineno">   29</span>  <span class="keywordflow">if</span> (_size &lt; new_size)</div>
+<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">throw</span> InsufficientBufferSizeException{<span class="stringliteral">&quot;User given buffer size is too small.&quot;</span>};</div>
+<div class="line"><span class="lineno">   31</span>  <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#a2212b2dd1452a2d5e867ae9418d74782">setShape</a>(new_shape);</div>
+<div class="line"><span class="lineno">   32</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   33</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_user_tensor_html_a2212b2dd1452a2d5e867ae9418d74782"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_user_tensor.html#a2212b2dd1452a2d5e867ae9418d74782">onert::backend::builtin::UserTensor::setShape</a></div><div class="ttdeci">void setShape(const ir::Shape &amp;new_shape) override</div><div class="ttdoc">Set the shape of tenser to new_shape.</div><div class="ttdef"><b>Definition</b> <a href="_user_tensor_8h_source.html#l00046">UserTensor.h:46</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_a306303df14f9f20079574f5a9cc37f26"><div class="ttname"><a href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">onert::ir::sizeOfDataType</a></div><div class="ttdeci">size_t sizeOfDataType(DataType data_type)</div><div class="ttdef"><b>Definition</b> <a href="_data_type_8cc_source.html#l00027">DataType.cc:27</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00056">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_user_tensor_8h_source.html#l00050">setShape()</a>, and <a class="el" href="_data_type_8cc_source.html#l00029">onert::ir::sizeOfDataType()</a>.</p>
+<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_user_tensor_8h_source.html#l00046">setShape()</a>, and <a class="el" href="_data_type_8cc_source.html#l00027">onert::ir::sizeOfDataType()</a>.</p>
 
 </div>
 </div>
@@ -333,8 +333,8 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_user_tensor_8h_source.html#l00047">47</a> of file <a class="el" href="_user_tensor_8h_source.html">UserTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> _buffer; }</div>
+<p class="definition">Definition at line <a class="el" href="_user_tensor_8h_source.html#l00043">43</a> of file <a class="el" href="_user_tensor_8h_source.html">UserTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>{ <span class="keywordflow">return</span> _buffer; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -361,8 +361,8 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_user_tensor_8h_source.html#l00048">48</a> of file <a class="el" href="_user_tensor_8h_source.html">UserTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> _layout; }</div>
+<p class="definition">Definition at line <a class="el" href="_user_tensor_8h_source.html#l00044">44</a> of file <a class="el" href="_user_tensor_8h_source.html">UserTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> _layout; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -393,12 +393,12 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented from <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a23e5584d459f5e94117ca757ff33f9e4">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_user_tensor_8h_source.html#l00049">49</a> of file <a class="el" href="_user_tensor_8h_source.html">UserTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a2ef46e5a2c628c22771e2050796bcec8">setDynamic</a>(); }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_adae3cd8adf8bdf21ac3e24709f5218ae"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">onert::backend::IPortableTensor::_info</a></div><div class="ttdeci">ir::OperandInfo _info</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00073">IPortableTensor.h:73</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a2ef46e5a2c628c22771e2050796bcec8"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a2ef46e5a2c628c22771e2050796bcec8">onert::ir::OperandInfo::setDynamic</a></div><div class="ttdeci">void setDynamic()</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00143">OperandInfo.h:143</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_user_tensor_8h_source.html#l00045">45</a> of file <a class="el" href="_user_tensor_8h_source.html">UserTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a2ef46e5a2c628c22771e2050796bcec8">setDynamic</a>(); }</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_adae3cd8adf8bdf21ac3e24709f5218ae"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">onert::backend::IPortableTensor::_info</a></div><div class="ttdeci">ir::OperandInfo _info</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00071">IPortableTensor.h:71</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a2ef46e5a2c628c22771e2050796bcec8"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a2ef46e5a2c628c22771e2050796bcec8">onert::ir::OperandInfo::setDynamic</a></div><div class="ttdeci">void setDynamic()</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00141">OperandInfo.h:141</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00073">onert::backend::IPortableTensor::_info</a>, and <a class="el" href="_operand_info_8h_source.html#l00143">onert::ir::OperandInfo::setDynamic()</a>.</p>
+<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00071">onert::backend::IPortableTensor::_info</a>, and <a class="el" href="_operand_info_8h_source.html#l00141">onert::ir::OperandInfo::setDynamic()</a>.</p>
 
 </div>
 </div>
@@ -431,13 +431,13 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented from <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#aef9058984013de799aa8e181009f89bf">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_user_tensor_8h_source.html#l00050">50</a> of file <a class="el" href="_user_tensor_8h_source.html">UserTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{ <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>(new_shape); }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_aed6ade449a1b0e5d296c66a99b1725d4"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">onert::ir::OperandInfo::shape</a></div><div class="ttdeci">const Shape &amp; shape() const</div><div class="ttdoc">Return tensor shape.</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00095">OperandInfo.h:95</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_user_tensor_8h_source.html#l00046">46</a> of file <a class="el" href="_user_tensor_8h_source.html">UserTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>(new_shape); }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_aed6ade449a1b0e5d296c66a99b1725d4"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">onert::ir::OperandInfo::shape</a></div><div class="ttdeci">const Shape &amp; shape() const</div><div class="ttdoc">Return tensor shape.</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00093">OperandInfo.h:93</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00073">onert::backend::IPortableTensor::_info</a>, and <a class="el" href="_operand_info_8h_source.html#l00095">onert::ir::OperandInfo::shape()</a>.</p>
+<p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00071">onert::backend::IPortableTensor::_info</a>, and <a class="el" href="_operand_info_8h_source.html#l00093">onert::ir::OperandInfo::shape()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_user_tensor_8cc_source.html#l00029">applyShape()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_user_tensor_8cc_source.html#l00025">applyShape()</a>.</p>
 
 </div>
 </div>

@@ -116,7 +116,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_memory_manager_8h_source.html#l00048">48</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_memory_manager_8h_source.html">MemoryManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_memory_manager_8h_source.html#l00044">44</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_memory_manager_8h_source.html">MemoryManager.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a18b0f8b83d46f68fdfd62adadd27f025" name="a18b0f8b83d46f68fdfd62adadd27f025"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a18b0f8b83d46f68fdfd62adadd27f025">&#9670;&#160;</a></span>DisposableMemoryManager()</h2>
@@ -133,11 +133,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_memory_manager_8cc_source.html#l00056">56</a> of file <a class="el" href="backend_2train_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>                                                 : _mem_planner{createMemoryPlanner()}</div>
-<div class="line"><span class="lineno">   57</span>{</div>
-<div class="line"><span class="lineno">   58</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   59</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_memory_manager_8cc_source.html#l00052">52</a> of file <a class="el" href="backend_2train_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>                                                 : _mem_planner{createMemoryPlanner()}</div>
+<div class="line"><span class="lineno">   53</span>{</div>
+<div class="line"><span class="lineno">   54</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   55</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -158,11 +158,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_memory_manager_8cc_source.html#l00083">83</a> of file <a class="el" href="backend_2train_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   84</span>{</div>
-<div class="line"><span class="lineno">   85</span>  _mem_alloc = std::make_shared&lt;basic::Allocator&gt;(_mem_planner-&gt;capacity());</div>
-<div class="line"><span class="lineno">   86</span>  assert(_mem_alloc-&gt;base());</div>
-<div class="line"><span class="lineno">   87</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_memory_manager_8cc_source.html#l00079">79</a> of file <a class="el" href="backend_2train_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span>{</div>
+<div class="line"><span class="lineno">   81</span>  _mem_alloc = std::make_shared&lt;basic::Allocator&gt;(_mem_planner-&gt;capacity());</div>
+<div class="line"><span class="lineno">   82</span>  assert(_mem_alloc-&gt;base());</div>
+<div class="line"><span class="lineno">   83</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -192,10 +192,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_memory_manager_8cc_source.html#l00073">73</a> of file <a class="el" href="backend_2train_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span>{</div>
-<div class="line"><span class="lineno">   75</span>  _mem_planner-&gt;claim(ind, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">   76</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_memory_manager_8cc_source.html#l00069">69</a> of file <a class="el" href="backend_2train_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
+<div class="line"><span class="lineno">   71</span>  _mem_planner-&gt;claim(ind, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">   72</span>}</div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
@@ -226,8 +226,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_memory_manager_8h_source.html#l00055">55</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_memory_manager_8h_source.html">MemoryManager.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>{ _mem_alloc-&gt;release(); }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_memory_manager_8h_source.html#l00051">51</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_memory_manager_8h_source.html">MemoryManager.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>{ _mem_alloc-&gt;release(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -247,12 +247,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_memory_manager_8cc_source.html#l00089">89</a> of file <a class="el" href="backend_2train_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   90</span>{</div>
-<div class="line"><span class="lineno">   91</span>  assert(_mem_planner-&gt;memory_plans().find(ind) != _mem_planner-&gt;memory_plans().end());</div>
-<div class="line"><span class="lineno">   92</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;mem_blk = _mem_planner-&gt;memory_plans().at(ind);</div>
-<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">return</span> _mem_alloc-&gt;base() + mem_blk.offset;</div>
-<div class="line"><span class="lineno">   94</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_memory_manager_8cc_source.html#l00085">85</a> of file <a class="el" href="backend_2train_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>{</div>
+<div class="line"><span class="lineno">   87</span>  assert(_mem_planner-&gt;memory_plans().find(ind) != _mem_planner-&gt;memory_plans().end());</div>
+<div class="line"><span class="lineno">   88</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;mem_blk = _mem_planner-&gt;memory_plans().at(ind);</div>
+<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">return</span> _mem_alloc-&gt;base() + mem_blk.offset;</div>
+<div class="line"><span class="lineno">   90</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -279,8 +279,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_memory_manager_8h_source.html#l00060">60</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_memory_manager_8h_source.html">MemoryManager.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>{ <span class="keywordflow">return</span> _mem_alloc; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_memory_manager_8h_source.html#l00056">56</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_memory_manager_8h_source.html">MemoryManager.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>{ <span class="keywordflow">return</span> _mem_alloc; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -300,10 +300,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2train_2_memory_manager_8cc_source.html#l00078">78</a> of file <a class="el" href="backend_2train_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   79</span>{</div>
-<div class="line"><span class="lineno">   80</span>  _mem_planner-&gt;release(ind);</div>
-<div class="line"><span class="lineno">   81</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2train_2_memory_manager_8cc_source.html#l00074">74</a> of file <a class="el" href="backend_2train_2_memory_manager_8cc_source.html">MemoryManager.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span>{</div>
+<div class="line"><span class="lineno">   76</span>  _mem_planner-&gt;release(ind);</div>
+<div class="line"><span class="lineno">   77</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

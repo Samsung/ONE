@@ -133,7 +133,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T_MemoryManager, typename T_PoolManager, typename T_LifetimeManager, typename T_Allocator&gt;<br />
 class onert::backend::acl_common::AclInternalBufferManager&lt; T_MemoryManager, T_PoolManager, T_LifetimeManager, T_Allocator &gt;</div><p>class for InternalBufferManager which has arm_compute::IMemoryManager pointer </p>
 
-<p class="definition">Definition at line <a class="el" href="_acl_internal_buffer_manager_8h_source.html#l00054">54</a> of file <a class="el" href="_acl_internal_buffer_manager_8h_source.html">AclInternalBufferManager.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_acl_internal_buffer_manager_8h_source.html#l00050">50</a> of file <a class="el" href="_acl_internal_buffer_manager_8h_source.html">AclInternalBufferManager.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aaaa9d4898e9882b07e5d7bf2e61d98f1" name="aaaa9d4898e9882b07e5d7bf2e61d98f1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaaa9d4898e9882b07e5d7bf2e61d98f1">&#9670;&#160;</a></span>AclInternalBufferManager()</h2>
@@ -160,15 +160,15 @@ template&lt;typename T_MemoryManager , typename T_PoolManager , typename T_Lifet
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_acl_internal_buffer_manager_8h_source.html#l00057">57</a> of file <a class="el" href="_acl_internal_buffer_manager_8h_source.html">AclInternalBufferManager.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   57</span>                             : _allocator{<span class="keyword">nullptr</span>}</div>
-<div class="line"><span class="lineno">   58</span>  {</div>
-<div class="line"><span class="lineno">   59</span>    std::shared_ptr&lt;T_LifetimeManager&gt; lifetime_mgr = std::make_shared&lt;T_LifetimeManager&gt;();</div>
-<div class="line"><span class="lineno">   60</span>    std::shared_ptr&lt;T_PoolManager&gt; pool_mgr = std::make_shared&lt;T_PoolManager&gt;();</div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>    _internal_manager = std::make_shared&lt;T_MemoryManager&gt;(lifetime_mgr, pool_mgr);</div>
-<div class="line"><span class="lineno">   63</span>    assert(_internal_manager);</div>
-<div class="line"><span class="lineno">   64</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_acl_internal_buffer_manager_8h_source.html#l00053">53</a> of file <a class="el" href="_acl_internal_buffer_manager_8h_source.html">AclInternalBufferManager.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>                             : _allocator{<span class="keyword">nullptr</span>}</div>
+<div class="line"><span class="lineno">   54</span>  {</div>
+<div class="line"><span class="lineno">   55</span>    std::shared_ptr&lt;T_LifetimeManager&gt; lifetime_mgr = std::make_shared&lt;T_LifetimeManager&gt;();</div>
+<div class="line"><span class="lineno">   56</span>    std::shared_ptr&lt;T_PoolManager&gt; pool_mgr = std::make_shared&lt;T_PoolManager&gt;();</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>    _internal_manager = std::make_shared&lt;T_MemoryManager&gt;(lifetime_mgr, pool_mgr);</div>
+<div class="line"><span class="lineno">   59</span>    assert(_internal_manager);</div>
+<div class="line"><span class="lineno">   60</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -230,11 +230,11 @@ template&lt;typename T_MemoryManager , typename T_PoolManager , typename T_Lifet
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1acl__common_1_1_i_internal_buffer_manager.html#a2db185ec9aafa17095ad6b4f2ad04193">onert::backend::acl_common::IInternalBufferManager</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_acl_internal_buffer_manager_8h_source.html#l00071">71</a> of file <a class="el" href="_acl_internal_buffer_manager_8h_source.html">AclInternalBufferManager.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   72</span>  {</div>
-<div class="line"><span class="lineno">   73</span>    _allocator = std::make_shared&lt;T_Allocator&gt;();</div>
-<div class="line"><span class="lineno">   74</span>    _internal_manager-&gt;populate(*_allocator, 1);</div>
-<div class="line"><span class="lineno">   75</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_acl_internal_buffer_manager_8h_source.html#l00067">67</a> of file <a class="el" href="_acl_internal_buffer_manager_8h_source.html">AclInternalBufferManager.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>  {</div>
+<div class="line"><span class="lineno">   69</span>    _allocator = std::make_shared&lt;T_Allocator&gt;();</div>
+<div class="line"><span class="lineno">   70</span>    _internal_manager-&gt;populate(*_allocator, 1);</div>
+<div class="line"><span class="lineno">   71</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -268,8 +268,8 @@ template&lt;typename T_MemoryManager , typename T_PoolManager , typename T_Lifet
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1acl__common_1_1_i_internal_buffer_manager.html#a281f88669c61826e0e48ab717623345d">onert::backend::acl_common::IInternalBufferManager</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_acl_internal_buffer_manager_8h_source.html#l00080">80</a> of file <a class="el" href="_acl_internal_buffer_manager_8h_source.html">AclInternalBufferManager.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>{ _internal_manager-&gt;clear(); }</div>
+<p class="definition">Definition at line <a class="el" href="_acl_internal_buffer_manager_8h_source.html#l00076">76</a> of file <a class="el" href="_acl_internal_buffer_manager_8h_source.html">AclInternalBufferManager.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>{ _internal_manager-&gt;clear(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -303,10 +303,10 @@ template&lt;typename T_MemoryManager , typename T_PoolManager , typename T_Lifet
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1acl__common_1_1_i_internal_buffer_manager.html#ab5b8040c93a3ef11bdf7eb1272fc4493">onert::backend::acl_common::IInternalBufferManager</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_acl_internal_buffer_manager_8h_source.html#l00085">85</a> of file <a class="el" href="_acl_internal_buffer_manager_8h_source.html">AclInternalBufferManager.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>  {</div>
-<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">return</span> _internal_manager;</div>
-<div class="line"><span class="lineno">   88</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_acl_internal_buffer_manager_8h_source.html#l00081">81</a> of file <a class="el" href="_acl_internal_buffer_manager_8h_source.html">AclInternalBufferManager.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>  {</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">return</span> _internal_manager;</div>
+<div class="line"><span class="lineno">   84</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

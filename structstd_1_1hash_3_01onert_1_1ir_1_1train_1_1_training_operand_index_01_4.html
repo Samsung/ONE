@@ -108,7 +108,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure that provides hash value of TrainingOperandIndex. </p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00180">180</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html">Index.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00174">174</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html">Index.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aea338739e1b45da421daf542f03c74a0" name="aea338739e1b45da421daf542f03c74a0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aea338739e1b45da421daf542f03c74a0">&#9670;&#160;</a></span>operator()()</h2>
@@ -134,19 +134,19 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00182">182</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html">Index.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  183</span>  {</div>
-<div class="line"><span class="lineno">  184</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;operand_index = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.index();</div>
-<div class="line"><span class="lineno">  185</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> &amp;is_forward = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.is_forward();</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html#l00176">176</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2train_2_index_8h_source.html">Index.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  177</span>  {</div>
+<div class="line"><span class="lineno">  178</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;operand_index = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.index();</div>
+<div class="line"><span class="lineno">  179</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> &amp;is_forward = <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.is_forward();</div>
+<div class="line"><span class="lineno">  180</span> </div>
+<div class="line"><span class="lineno">  181</span>    assert(<span class="keyword">sizeof</span>(operand_index) &lt;= 4);</div>
+<div class="line"><span class="lineno">  182</span>    assert((operand_index.undefined() || operand_index.value() &lt; (1 &lt;&lt; 16)) &amp;&amp;</div>
+<div class="line"><span class="lineno">  183</span>           <span class="stringliteral">&quot;TrainingOperandIndex&#39;s hash creation error, operand_index is too big&quot;</span>);</div>
+<div class="line"><span class="lineno">  184</span>    <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(size_t) &gt;= <span class="keyword">sizeof</span>(uint32_t),</div>
+<div class="line"><span class="lineno">  185</span>                  <span class="stringliteral">&quot;TrainingOperandIndex&#39;s hash creation error, size_t size is less than uint32_t&quot;</span>);</div>
 <div class="line"><span class="lineno">  186</span> </div>
-<div class="line"><span class="lineno">  187</span>    assert(<span class="keyword">sizeof</span>(operand_index) &lt;= 4);</div>
-<div class="line"><span class="lineno">  188</span>    assert((operand_index.undefined() || operand_index.value() &lt; (1 &lt;&lt; 16)) &amp;&amp;</div>
-<div class="line"><span class="lineno">  189</span>           <span class="stringliteral">&quot;TrainingOperandIndex&#39;s hash creation error, operand_index is too big&quot;</span>);</div>
-<div class="line"><span class="lineno">  190</span>    <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(size_t) &gt;= <span class="keyword">sizeof</span>(uint32_t),</div>
-<div class="line"><span class="lineno">  191</span>                  <span class="stringliteral">&quot;TrainingOperandIndex&#39;s hash creation error, size_t size is less than uint32_t&quot;</span>);</div>
-<div class="line"><span class="lineno">  192</span> </div>
-<div class="line"><span class="lineno">  193</span>    <span class="keywordflow">return</span> (<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(operand_index.value())) &lt;&lt; 16 | <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(is_forward);</div>
-<div class="line"><span class="lineno">  194</span>  }</div>
+<div class="line"><span class="lineno">  187</span>    <span class="keywordflow">return</span> (<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(operand_index.value())) &lt;&lt; 16 | <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(is_forward);</div>
+<div class="line"><span class="lineno">  188</span>  }</div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 </div><!-- fragment -->
 </div>

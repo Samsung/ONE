@@ -119,23 +119,17 @@ $(document).ready(function(){initNavTree('core_2include_2backend_2basic_2_tensor
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="_i_tensor_registry_8h.html">backend/ITensorRegistry.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="runtime_2onert_2core_2src_2backend_2builtin_2train_2_tensor_8h.html">Tensor.h</a>&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1backend_1_1basic.html">onert::backend::basic</a></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span>backend</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span>basic</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1basic.html#a50c36d28c81cb8c597b3b3b694ed28b4">   26</a></span><span class="keyword">using </span><a class="code hl_class" href="classonert_1_1backend_1_1_portable_tensor_registry_template.html">TensorRegistry</a> = <a class="code hl_class" href="classonert_1_1backend_1_1_portable_tensor_registry_template.html">PortableTensorRegistryTemplate&lt;basic::Tensor&gt;</a>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>} <span class="comment">// namespace onert::backend::basic</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1basic.html#a50c36d28c81cb8c597b3b3b694ed28b4">   30</a></span><span class="keyword">using </span><a class="code hl_class" href="classonert_1_1backend_1_1_portable_tensor_registry_template.html">TensorRegistry</a> = <a class="code hl_class" href="classonert_1_1backend_1_1_portable_tensor_registry_template.html">PortableTensorRegistryTemplate&lt;basic::Tensor&gt;</a>;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>} <span class="comment">// namespace basic</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>} <span class="comment">// namespace backend</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_BACKEND_BASIC_TENSOR_REGISTRY__</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_BACKEND_BASIC_TENSOR_REGISTRY__</span></div>
 <div class="ttc" id="a_i_tensor_registry_8h_html"><div class="ttname"><a href="_i_tensor_registry_8h.html">ITensorRegistry.h</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_portable_tensor_registry_template_html"><div class="ttname"><a href="classonert_1_1backend_1_1_portable_tensor_registry_template.html">onert::backend::PortableTensorRegistryTemplate</a></div><div class="ttdoc">TensorRegistry template class for the convenience of backend implementations.</div><div class="ttdef"><b>Definition</b> <a href="_i_tensor_registry_8h_source.html#l00082">ITensorRegistry.h:83</a></div></div>
-<div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_portable_tensor_registry_template_html"><div class="ttname"><a href="classonert_1_1backend_1_1_portable_tensor_registry_template.html">onert::backend::PortableTensorRegistryTemplate</a></div><div class="ttdoc">TensorRegistry template class for the convenience of backend implementations.</div><div class="ttdef"><b>Definition</b> <a href="_i_tensor_registry_8h_source.html#l00077">ITensorRegistry.h:78</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1basic_html"><div class="ttname"><a href="namespaceonert_1_1backend_1_1basic.html">onert::backend::basic</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2backend_2basic_2_allocator_8h_source.html#l00027">Allocator.h:28</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2src_2backend_2builtin_2train_2_tensor_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2src_2backend_2builtin_2train_2_tensor_8h.html">Tensor.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

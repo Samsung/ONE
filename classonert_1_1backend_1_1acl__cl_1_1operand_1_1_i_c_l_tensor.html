@@ -199,7 +199,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_i_c_l_tensor_8h_source.html#l00033">33</a> of file <a class="el" href="_i_c_l_tensor_8h_source.html">ICLTensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_c_l_tensor_8h_source.html#l00027">27</a> of file <a class="el" href="_i_c_l_tensor_8h_source.html">ICLTensor.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab5a7d9594870a1b9948b6837f1e7c30b" name="ab5a7d9594870a1b9948b6837f1e7c30b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab5a7d9594870a1b9948b6837f1e7c30b">&#9670;&#160;</a></span>ICLTensor()</h2>
@@ -225,8 +225,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i_c_l_tensor_8h_source.html#l00036">36</a> of file <a class="el" href="_i_c_l_tensor_8h_source.html">ICLTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>: <a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#aeec0887851d6ab9de8f2549679f51390">IACLTensor</a>{rank} {}</div>
+<p class="definition">Definition at line <a class="el" href="_i_c_l_tensor_8h_source.html#l00030">30</a> of file <a class="el" href="_i_c_l_tensor_8h_source.html">ICLTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>: <a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#aeec0887851d6ab9de8f2549679f51390">IACLTensor</a>{rank} {}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor_html_aeec0887851d6ab9de8f2549679f51390"><div class="ttname"><a href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#aeec0887851d6ab9de8f2549679f51390">onert::backend::acl_common::IACLTensor::IACLTensor</a></div><div class="ttdeci">IACLTensor()=default</div></div>
 </div><!-- fragment -->
 </div>
@@ -258,21 +258,21 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#adb2aebdb3f72acfda09376bf15a901ae">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_c_l_tensor_8cc_source.html#l00031">31</a> of file <a class="el" href="_i_c_l_tensor_8cc_source.html">ICLTensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keyword">auto</span> &amp;queue = ::arm_compute::CLScheduler::get().queue();</div>
-<div class="line"><span class="lineno">   34</span> </div>
-<div class="line"><span class="lineno">   35</span>  <span class="comment">// This is an optional input</span></div>
-<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a5e39554f7e345aa4702829577f666458">total_size</a>() == 0)</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   38</span> </div>
-<div class="line"><span class="lineno">   39</span>  map(queue);</div>
-<div class="line"><span class="lineno">   40</span>  fn(*<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">   41</span>  unmap(queue);</div>
-<div class="line"><span class="lineno">   42</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor_html_a5e39554f7e345aa4702829577f666458"><div class="ttname"><a href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a5e39554f7e345aa4702829577f666458">onert::backend::acl_common::IACLTensor::total_size</a></div><div class="ttdeci">size_t total_size() const final</div><div class="ttdef"><b>Definition</b> <a href="_i_a_c_l_tensor_8h_source.html#l00050">IACLTensor.h:50</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_i_c_l_tensor_8cc_source.html#l00025">25</a> of file <a class="el" href="_i_c_l_tensor_8cc_source.html">ICLTensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
+<div class="line"><span class="lineno">   27</span>  <span class="keyword">auto</span> &amp;queue = ::arm_compute::CLScheduler::get().queue();</div>
+<div class="line"><span class="lineno">   28</span> </div>
+<div class="line"><span class="lineno">   29</span>  <span class="comment">// This is an optional input</span></div>
+<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a5e39554f7e345aa4702829577f666458">total_size</a>() == 0)</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span>  map(queue);</div>
+<div class="line"><span class="lineno">   34</span>  fn(*<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">   35</span>  unmap(queue);</div>
+<div class="line"><span class="lineno">   36</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor_html_a5e39554f7e345aa4702829577f666458"><div class="ttname"><a href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a5e39554f7e345aa4702829577f666458">onert::backend::acl_common::IACLTensor::total_size</a></div><div class="ttdeci">size_t total_size() const final</div><div class="ttdef"><b>Definition</b> <a href="_i_a_c_l_tensor_8h_source.html#l00046">IACLTensor.h:46</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_a_c_l_tensor_8h_source.html#l00050">onert::backend::acl_common::IACLTensor::total_size()</a>.</p>
+<p class="reference">References <a class="el" href="_i_a_c_l_tensor_8h_source.html#l00046">onert::backend::acl_common::IACLTensor::total_size()</a>.</p>
 
 </div>
 </div>
@@ -312,16 +312,16 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a62ba3bba38814d101849aabdd0adcb4c">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_c_l_tensor_8cc_source.html#l00051">51</a> of file <a class="el" href="_i_c_l_tensor_8cc_source.html">ICLTensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
-<div class="line"><span class="lineno">   53</span>  <span class="keyword">auto</span> &amp;queue = ::arm_compute::CLScheduler::get().queue();</div>
-<div class="line"><span class="lineno">   54</span>  queue.enqueueReadBuffer(<a class="code hl_function" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#a13ad5994c986586a51fa17ef5907622b">handle</a>()-&gt;cl_buffer(), blocking ? CL_TRUE : CL_FALSE, 0,</div>
-<div class="line"><span class="lineno">   55</span>                          <a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#afede75037ae586728ec1512b812d48bb">info</a>()-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a5e39554f7e345aa4702829577f666458">total_size</a>(), ptr);</div>
-<div class="line"><span class="lineno">   56</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_i_c_l_tensor_8cc_source.html#l00045">45</a> of file <a class="el" href="_i_c_l_tensor_8cc_source.html">ICLTensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keyword">auto</span> &amp;queue = ::arm_compute::CLScheduler::get().queue();</div>
+<div class="line"><span class="lineno">   48</span>  queue.enqueueReadBuffer(<a class="code hl_function" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#a13ad5994c986586a51fa17ef5907622b">handle</a>()-&gt;cl_buffer(), blocking ? CL_TRUE : CL_FALSE, 0,</div>
+<div class="line"><span class="lineno">   49</span>                          <a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#afede75037ae586728ec1512b812d48bb">info</a>()-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a5e39554f7e345aa4702829577f666458">total_size</a>(), ptr);</div>
+<div class="line"><span class="lineno">   50</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor_html_a13ad5994c986586a51fa17ef5907622b"><div class="ttname"><a href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#a13ad5994c986586a51fa17ef5907622b">onert::backend::acl_cl::operand::ICLTensor::handle</a></div><div class="ttdeci">const arm_compute::ICLTensor * handle() const override=0</div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor_html_afede75037ae586728ec1512b812d48bb"><div class="ttname"><a href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#afede75037ae586728ec1512b812d48bb">onert::backend::acl_common::IACLTensor::info</a></div><div class="ttdeci">const arm_compute::ITensorInfo * info() const</div><div class="ttdef"><b>Definition</b> <a href="_i_a_c_l_tensor_8h_source.html#l00071">IACLTensor.h:71</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor_html_afede75037ae586728ec1512b812d48bb"><div class="ttname"><a href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#afede75037ae586728ec1512b812d48bb">onert::backend::acl_common::IACLTensor::info</a></div><div class="ttdeci">const arm_compute::ITensorInfo * info() const</div><div class="ttdef"><b>Definition</b> <a href="_i_a_c_l_tensor_8h_source.html#l00067">IACLTensor.h:67</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#a13ad5994c986586a51fa17ef5907622b">handle()</a>, and <a class="el" href="_i_a_c_l_tensor_8h_source.html#l00071">onert::backend::acl_common::IACLTensor::info()</a>.</p>
+<p class="reference">References <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#a13ad5994c986586a51fa17ef5907622b">handle()</a>, and <a class="el" href="_i_a_c_l_tensor_8h_source.html#l00067">onert::backend::acl_common::IACLTensor::info()</a>.</p>
 
 </div>
 </div>
@@ -361,14 +361,14 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#ae3e96b563c5cd378f7862408d3fbdff9">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_c_l_tensor_8cc_source.html#l00044">44</a> of file <a class="el" href="_i_c_l_tensor_8cc_source.html">ICLTensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{</div>
-<div class="line"><span class="lineno">   46</span>  <span class="keyword">auto</span> &amp;queue = ::arm_compute::CLScheduler::get().queue();</div>
-<div class="line"><span class="lineno">   47</span>  queue.enqueueWriteBuffer(<a class="code hl_function" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#a13ad5994c986586a51fa17ef5907622b">handle</a>()-&gt;cl_buffer(), blocking ? CL_TRUE : CL_FALSE, 0,</div>
-<div class="line"><span class="lineno">   48</span>                           <a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#afede75037ae586728ec1512b812d48bb">info</a>()-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a5e39554f7e345aa4702829577f666458">total_size</a>(), ptr);</div>
-<div class="line"><span class="lineno">   49</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_i_c_l_tensor_8cc_source.html#l00038">38</a> of file <a class="el" href="_i_c_l_tensor_8cc_source.html">ICLTensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keyword">auto</span> &amp;queue = ::arm_compute::CLScheduler::get().queue();</div>
+<div class="line"><span class="lineno">   41</span>  queue.enqueueWriteBuffer(<a class="code hl_function" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#a13ad5994c986586a51fa17ef5907622b">handle</a>()-&gt;cl_buffer(), blocking ? CL_TRUE : CL_FALSE, 0,</div>
+<div class="line"><span class="lineno">   42</span>                           <a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#afede75037ae586728ec1512b812d48bb">info</a>()-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_i_a_c_l_tensor.html#a5e39554f7e345aa4702829577f666458">total_size</a>(), ptr);</div>
+<div class="line"><span class="lineno">   43</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#a13ad5994c986586a51fa17ef5907622b">handle()</a>, and <a class="el" href="_i_a_c_l_tensor_8h_source.html#l00071">onert::backend::acl_common::IACLTensor::info()</a>.</p>
+<p class="reference">References <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_i_c_l_tensor.html#a13ad5994c986586a51fa17ef5907622b">handle()</a>, and <a class="el" href="_i_a_c_l_tensor_8h_source.html#l00067">onert::backend::acl_common::IACLTensor::info()</a>.</p>
 
 </div>
 </div>
@@ -399,7 +399,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_c_l_sub_tensor.html#a757bc3951e1464a43f5d16fcfcfe10df">onert::backend::acl_cl::operand::CLSubTensor</a>, and <a class="el" href="classonert_1_1backend_1_1acl__cl_1_1operand_1_1_c_l_tensor.html#a68274f5cfc305366f90c5952c6cd54bc">onert::backend::acl_cl::operand::CLTensor</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_i_c_l_tensor_8cc_source.html#l00051">enqueueReadBuffer()</a>, and <a class="el" href="_i_c_l_tensor_8cc_source.html#l00044">enqueueWriteBuffer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_i_c_l_tensor_8cc_source.html#l00045">enqueueReadBuffer()</a>, and <a class="el" href="_i_c_l_tensor_8cc_source.html#l00038">enqueueWriteBuffer()</a>.</p>
 
 </div>
 </div>
@@ -457,8 +457,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a25d45dee8318a268826bc6ae1e882c83">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_c_l_tensor_8h_source.html#l00042">42</a> of file <a class="el" href="_i_c_l_tensor_8h_source.html">ICLTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_i_c_l_tensor_8h_source.html#l00036">36</a> of file <a class="el" href="_i_c_l_tensor_8h_source.html">ICLTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>

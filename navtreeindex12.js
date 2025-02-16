@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"_fuse_pre_activation_batch_norm_pass_internal_8h.html#aa86d64f893f58edeff3a15b2e82ae9e8":[41,0,0,58,7,1,51,2],
+"_fuse_pre_activation_batch_norm_pass_internal_8h.html#ab46996da8c5c407bc43ef70e0ae4e955":[41,0,0,58,7,1,51,3],
 "_fuse_pre_activation_batch_norm_pass_internal_8h.html#ac0e231ce93ce072850190c6787d5c3ee":[41,0,0,58,7,1,51,1],
 "_fuse_pre_activation_batch_norm_pass_internal_8h_source.html":[41,0,0,58,7,1,51],
 "_fuse_pre_scale_pass_8cpp.html":[41,0,0,44,1,0,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "_graph_helper_8h_source.html":[41,0,0,82,0,0,0,1],
 "_graph_input_index_8cpp.html":[41,0,0,51,1,1,16],
 "_graph_input_index_8cpp_source.html":[41,0,0,51,1,1,16],
-"_graph_input_index_8h.html":[41,0,0,51,0,0,1,30],
-"_graph_input_index_8h.html#a0a85ef117579d8b3a89d9a0178c4d201":[41,0,0,51,0,0,1,30,0],
-"_graph_input_index_8h_source.html":[41,0,0,51,0,0,1,30]
+"_graph_input_index_8h.html":[41,0,0,51,0,0,1,30]
 };

@@ -151,7 +151,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00070">70</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00068">68</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abf59c2bf0a016d4f806dfa93f65f4489" name="abf59c2bf0a016d4f806dfa93f65f4489"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abf59c2bf0a016d4f806dfa93f65f4489">&#9670;&#160;</a></span>Shape() <span class="overload">[1/3]</span></h2>
@@ -202,8 +202,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00078">78</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   78</span>: _dimensions(rank) {}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00076">76</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>: _dimensions(rank) {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -231,8 +231,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00080">80</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>: _dimensions(dimensions) {}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00078">78</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   78</span>: _dimensions(dimensions) {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -269,8 +269,8 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00113">113</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  113</span>{ _dimensions.emplace_back(d); }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00111">111</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  111</span>{ _dimensions.emplace_back(d); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -289,24 +289,24 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shape_8cc_source.html#l00034">34</a> of file <a class="el" href="_shape_8cc_source.html">Shape.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
-<div class="line"><span class="lineno">   36</span>  assert(<a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() == 4);</div>
-<div class="line"><span class="lineno">   37</span> </div>
-<div class="line"><span class="lineno">   38</span>  <span class="comment">// Feature Map in NHWC layout</span></div>
-<div class="line"><span class="lineno">   39</span>  <span class="comment">//  - Dimension(0) -&gt; Batch</span></div>
-<div class="line"><span class="lineno">   40</span>  <span class="comment">//  - Dimension(1) -&gt; Height</span></div>
-<div class="line"><span class="lineno">   41</span>  <span class="comment">//  - Dimension(2) -&gt; Width</span></div>
-<div class="line"><span class="lineno">   42</span>  <span class="comment">//  - Dimension(3) -&gt; Depth</span></div>
-<div class="line"><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keyword">auto</span> batch = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(0);</div>
-<div class="line"><span class="lineno">   44</span>  <span class="keyword">const</span> <span class="keyword">auto</span> depth = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(3);</div>
-<div class="line"><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keyword">auto</span> height = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(1);</div>
-<div class="line"><span class="lineno">   46</span>  <span class="keyword">const</span> <span class="keyword">auto</span> width = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(2);</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> {batch, depth, height, width};</div>
-<div class="line"><span class="lineno">   49</span>}</div>
-<div class="ttc" id="astructonert_1_1ir_1_1_shape_html_a3c78b1b9d3b66da28ddacb66cd1ea305"><div class="ttname"><a href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">onert::ir::Shape::dim</a></div><div class="ttdeci">int32_t dim(int i) const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00086">Shape.h:86</a></div></div>
-<div class="ttc" id="astructonert_1_1ir_1_1_shape_html_a530b621694e26ce618cb936985d9e4de"><div class="ttname"><a href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">onert::ir::Shape::rank</a></div><div class="ttdeci">int rank() const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00082">Shape.h:82</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_shape_8cc_source.html#l00032">32</a> of file <a class="el" href="_shape_8cc_source.html">Shape.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
+<div class="line"><span class="lineno">   34</span>  assert(<a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() == 4);</div>
+<div class="line"><span class="lineno">   35</span> </div>
+<div class="line"><span class="lineno">   36</span>  <span class="comment">// Feature Map in NHWC layout</span></div>
+<div class="line"><span class="lineno">   37</span>  <span class="comment">//  - Dimension(0) -&gt; Batch</span></div>
+<div class="line"><span class="lineno">   38</span>  <span class="comment">//  - Dimension(1) -&gt; Height</span></div>
+<div class="line"><span class="lineno">   39</span>  <span class="comment">//  - Dimension(2) -&gt; Width</span></div>
+<div class="line"><span class="lineno">   40</span>  <span class="comment">//  - Dimension(3) -&gt; Depth</span></div>
+<div class="line"><span class="lineno">   41</span>  <span class="keyword">const</span> <span class="keyword">auto</span> batch = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(0);</div>
+<div class="line"><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keyword">auto</span> depth = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(3);</div>
+<div class="line"><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keyword">auto</span> height = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(1);</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keyword">const</span> <span class="keyword">auto</span> width = <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a>(2);</div>
+<div class="line"><span class="lineno">   45</span> </div>
+<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">return</span> {batch, depth, height, width};</div>
+<div class="line"><span class="lineno">   47</span>}</div>
+<div class="ttc" id="astructonert_1_1ir_1_1_shape_html_a3c78b1b9d3b66da28ddacb66cd1ea305"><div class="ttname"><a href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">onert::ir::Shape::dim</a></div><div class="ttdeci">int32_t dim(int i) const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00084">Shape.h:84</a></div></div>
+<div class="ttc" id="astructonert_1_1ir_1_1_shape_html_a530b621694e26ce618cb936985d9e4de"><div class="ttname"><a href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">onert::ir::Shape::rank</a></div><div class="ttdeci">int rank() const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00080">Shape.h:80</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -334,8 +334,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00093">93</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   93</span>{ <span class="keywordflow">return</span> _dimensions.at(i); }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00091">91</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span>{ <span class="keywordflow">return</span> _dimensions.at(i); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -363,13 +363,13 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00086">86</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   87</span>  {</div>
-<div class="line"><span class="lineno">   88</span>    assert(<a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() != 0 || i == 0);</div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() == 0 ? 1 : _dimensions.at(i);</div>
-<div class="line"><span class="lineno">   90</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00084">84</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>  {</div>
+<div class="line"><span class="lineno">   86</span>    assert(<a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() != 0 || i == 0);</div>
+<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() == 0 ? 1 : _dimensions.at(i);</div>
+<div class="line"><span class="lineno">   88</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00082">rank()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00080">rank()</a>.</p>
 
 </div>
 </div>
@@ -396,8 +396,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00084">84</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   84</span>{ <span class="keywordflow">return</span> _dimensions; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00082">82</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>{ <span class="keywordflow">return</span> _dimensions; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -425,11 +425,11 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8cc_source.html#l00052">52</a> of file <a class="el" href="_shape_8cc_source.html">Shape.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
-<div class="line"><span class="lineno">   54</span>  assert(to_rank - <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() &gt;= 0);</div>
-<div class="line"><span class="lineno">   55</span>  _dimensions.insert(_dimensions.cbegin(), to_rank - <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>(), 1);</div>
-<div class="line"><span class="lineno">   56</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_8cc_source.html#l00050">50</a> of file <a class="el" href="_shape_8cc_source.html">Shape.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>{</div>
+<div class="line"><span class="lineno">   52</span>  assert(to_rank - <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() &gt;= 0);</div>
+<div class="line"><span class="lineno">   53</span>  _dimensions.insert(_dimensions.cbegin(), to_rank - <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>(), 1);</div>
+<div class="line"><span class="lineno">   54</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -460,11 +460,11 @@ Static Public Attributes</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a href="https://developer.android.com/ndk/reference/struct/a-neural-networks-operand-type">https://developer.android.com/ndk/reference/struct/a-neural-networks-operand-type</a> </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>base_loader set dim to -1 when there is unknown dim in input tensor </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00127">127</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  128</span>  {</div>
-<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">return</span> (std::find(_dimensions.begin(), _dimensions.end(), kUnspecifiedDim) !=</div>
-<div class="line"><span class="lineno">  130</span>            _dimensions.end());</div>
-<div class="line"><span class="lineno">  131</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00125">125</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  126</span>  {</div>
+<div class="line"><span class="lineno">  127</span>    <span class="keywordflow">return</span> (std::find(_dimensions.begin(), _dimensions.end(), kUnspecifiedDim) !=</div>
+<div class="line"><span class="lineno">  128</span>            _dimensions.end());</div>
+<div class="line"><span class="lineno">  129</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -485,16 +485,16 @@ Static Public Attributes</h2></td></tr>
 
 <p>Returns number of elements when rank or dim is specified. </p>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8cc_source.html#l00058">58</a> of file <a class="el" href="_shape_8cc_source.html">Shape.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{</div>
-<div class="line"><span class="lineno">   60</span>  <span class="comment">// if dimension is 0, it means unspecified and cannot calculate the total number of elements</span></div>
-<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">if</span> (std::any_of(_dimensions.begin(), _dimensions.end(),</div>
-<div class="line"><span class="lineno">   62</span>                  [](<span class="keyword">const</span> int32_t &amp;v) { return v == kUnspecifiedDim; }))</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;num_elements() cannot calculate when any dimension is unspecified&quot;</span>);</div>
-<div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">return</span> std::accumulate(_dimensions.cbegin(), _dimensions.cend(), UINT64_C(1),</div>
-<div class="line"><span class="lineno">   66</span>                         std::multiplies&lt;uint64_t&gt;());</div>
-<div class="line"><span class="lineno">   67</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_shape_8cc_source.html#l00056">56</a> of file <a class="el" href="_shape_8cc_source.html">Shape.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>{</div>
+<div class="line"><span class="lineno">   58</span>  <span class="comment">// if dimension is 0, it means unspecified and cannot calculate the total number of elements</span></div>
+<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">if</span> (std::any_of(_dimensions.begin(), _dimensions.end(),</div>
+<div class="line"><span class="lineno">   60</span>                  [](<span class="keyword">const</span> int32_t &amp;v) { return v == kUnspecifiedDim; }))</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;num_elements() cannot calculate when any dimension is unspecified&quot;</span>);</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">return</span> std::accumulate(_dimensions.cbegin(), _dimensions.cend(), UINT64_C(1),</div>
+<div class="line"><span class="lineno">   64</span>                         std::multiplies&lt;uint64_t&gt;());</div>
+<div class="line"><span class="lineno">   65</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -530,8 +530,8 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00107">107</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  107</span>{ _dimensions.insert(_dimensions.cbegin(), d); }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00105">105</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  105</span>{ _dimensions.insert(_dimensions.cbegin(), d); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -558,10 +558,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00082">82</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   82</span>{ <span class="keywordflow">return</span> _dimensions.size(); }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00080">80</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span>{ <span class="keywordflow">return</span> _dimensions.size(); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00086">dim()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00084">dim()</a>.</p>
 
 </div>
 </div>
@@ -586,7 +586,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00074">74</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00072">72</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
 
 </div>
 </div>
@@ -610,7 +610,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00073">73</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00071">71</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
 
 </div>
 </div>

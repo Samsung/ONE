@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that has a threadpool for batch-by-batch multi-threading. </p>
 
-<p class="definition">Definition at line <a class="el" href="_batch_thread_pool_8h_source.html#l00040">40</a> of file <a class="el" href="_batch_thread_pool_8h_source.html">BatchThreadPool.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_batch_thread_pool_8h_source.html#l00036">36</a> of file <a class="el" href="_batch_thread_pool_8h_source.html">BatchThreadPool.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2fff37165b9304fc15e9bcaa053d5fa5" name="a2fff37165b9304fc15e9bcaa053d5fa5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2fff37165b9304fc15e9bcaa053d5fa5">&#9670;&#160;</a></span>BatchThreadPool()</h2>
@@ -131,15 +131,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_batch_thread_pool_8cc_source.html#l00026">26</a> of file <a class="el" href="_batch_thread_pool_8cc_source.html">BatchThreadPool.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>                                                   : _num_threads(num_threads), _stop_all(<span class="keyword">false</span>)</div>
-<div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  _worker_threads.reserve(_num_threads);</div>
-<div class="line"><span class="lineno">   29</span>  <span class="keywordflow">for</span> (uint32_t thread_num = 0; thread_num &lt; _num_threads; ++thread_num)</div>
-<div class="line"><span class="lineno">   30</span>  {</div>
-<div class="line"><span class="lineno">   31</span>    _worker_threads.emplace_back([<span class="keyword">this</span>, thread_num]() { this-&gt;worker(thread_num); });</div>
-<div class="line"><span class="lineno">   32</span>  }</div>
-<div class="line"><span class="lineno">   33</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_batch_thread_pool_8cc_source.html#l00022">22</a> of file <a class="el" href="_batch_thread_pool_8cc_source.html">BatchThreadPool.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   22</span>                                                   : _num_threads(num_threads), _stop_all(<span class="keyword">false</span>)</div>
+<div class="line"><span class="lineno">   23</span>{</div>
+<div class="line"><span class="lineno">   24</span>  _worker_threads.reserve(_num_threads);</div>
+<div class="line"><span class="lineno">   25</span>  <span class="keywordflow">for</span> (uint32_t thread_num = 0; thread_num &lt; _num_threads; ++thread_num)</div>
+<div class="line"><span class="lineno">   26</span>  {</div>
+<div class="line"><span class="lineno">   27</span>    _worker_threads.emplace_back([<span class="keyword">this</span>, thread_num]() { this-&gt;worker(thread_num); });</div>
+<div class="line"><span class="lineno">   28</span>  }</div>
+<div class="line"><span class="lineno">   29</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -158,16 +158,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_batch_thread_pool_8cc_source.html#l00056">56</a> of file <a class="el" href="_batch_thread_pool_8cc_source.html">BatchThreadPool.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   57</span>{</div>
-<div class="line"><span class="lineno">   58</span>  _stop_all = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   59</span>  _cv_job_queue.notify_all();</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;t : _worker_threads)</div>
-<div class="line"><span class="lineno">   62</span>  {</div>
-<div class="line"><span class="lineno">   63</span>    t.join();</div>
-<div class="line"><span class="lineno">   64</span>  }</div>
-<div class="line"><span class="lineno">   65</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_batch_thread_pool_8cc_source.html#l00052">52</a> of file <a class="el" href="_batch_thread_pool_8cc_source.html">BatchThreadPool.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
+<div class="line"><span class="lineno">   54</span>  _stop_all = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   55</span>  _cv_job_queue.notify_all();</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;t : _worker_threads)</div>
+<div class="line"><span class="lineno">   58</span>  {</div>
+<div class="line"><span class="lineno">   59</span>    t.join();</div>
+<div class="line"><span class="lineno">   60</span>  }</div>
+<div class="line"><span class="lineno">   61</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -223,28 +223,28 @@ template&lt;class F , class... Args&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::future&lt;typename std::result_of&lt;F(uint32_t, Args...)&gt;::type&gt; </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_batch_thread_pool_8h_source.html#l00056">56</a> of file <a class="el" href="_batch_thread_pool_8h_source.html">BatchThreadPool.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   57</span>  {</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> (_stop_all)</div>
-<div class="line"><span class="lineno">   59</span>    {</div>
-<div class="line"><span class="lineno">   60</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Stop all threads in BatchThreadPool&quot;</span>);</div>
-<div class="line"><span class="lineno">   61</span>    }</div>
-<div class="line"><span class="lineno">   62</span> </div>
-<div class="line"><span class="lineno">   63</span>    <span class="keyword">using </span>return_type = <span class="keyword">typename</span> std::result_of&lt;F(uint32_t, Args...)&gt;::type;</div>
-<div class="line"><span class="lineno">   64</span>    <span class="keyword">auto</span> job = std::make_shared&lt;std::packaged_task&lt;return_type(uint32_t)&gt;&gt;(</div>
-<div class="line"><span class="lineno">   65</span>      std::bind(std::forward&lt;F&gt;(f), std::placeholders::_1, std::forward&lt;Args&gt;(args)...));</div>
-<div class="line"><span class="lineno">   66</span>    std::future&lt;return_type&gt; job_result_future = job-&gt;get_future();</div>
-<div class="line"><span class="lineno">   67</span>    {</div>
-<div class="line"><span class="lineno">   68</span>      <span class="comment">// Push job in the assigned queue</span></div>
-<div class="line"><span class="lineno">   69</span>      std::lock_guard&lt;std::mutex&gt; lock(_m_job_queue);</div>
-<div class="line"><span class="lineno">   70</span> </div>
-<div class="line"><span class="lineno">   71</span>      <span class="comment">// Push job</span></div>
-<div class="line"><span class="lineno">   72</span>      _job_queue.push([job](uint32_t thread_num) { (*job)(thread_num); });</div>
-<div class="line"><span class="lineno">   73</span>    }</div>
-<div class="line"><span class="lineno">   74</span>    _cv_job_queue.notify_one();</div>
-<div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">return</span> job_result_future;</div>
-<div class="line"><span class="lineno">   77</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_batch_thread_pool_8h_source.html#l00052">52</a> of file <a class="el" href="_batch_thread_pool_8h_source.html">BatchThreadPool.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>  {</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">if</span> (_stop_all)</div>
+<div class="line"><span class="lineno">   55</span>    {</div>
+<div class="line"><span class="lineno">   56</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Stop all threads in BatchThreadPool&quot;</span>);</div>
+<div class="line"><span class="lineno">   57</span>    }</div>
+<div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   59</span>    <span class="keyword">using </span>return_type = <span class="keyword">typename</span> std::result_of&lt;F(uint32_t, Args...)&gt;::type;</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keyword">auto</span> job = std::make_shared&lt;std::packaged_task&lt;return_type(uint32_t)&gt;&gt;(</div>
+<div class="line"><span class="lineno">   61</span>      std::bind(std::forward&lt;F&gt;(f), std::placeholders::_1, std::forward&lt;Args&gt;(args)...));</div>
+<div class="line"><span class="lineno">   62</span>    std::future&lt;return_type&gt; job_result_future = job-&gt;get_future();</div>
+<div class="line"><span class="lineno">   63</span>    {</div>
+<div class="line"><span class="lineno">   64</span>      <span class="comment">// Push job in the assigned queue</span></div>
+<div class="line"><span class="lineno">   65</span>      std::lock_guard&lt;std::mutex&gt; lock(_m_job_queue);</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>      <span class="comment">// Push job</span></div>
+<div class="line"><span class="lineno">   68</span>      _job_queue.push([job](uint32_t thread_num) { (*job)(thread_num); });</div>
+<div class="line"><span class="lineno">   69</span>    }</div>
+<div class="line"><span class="lineno">   70</span>    _cv_job_queue.notify_one();</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">return</span> job_result_future;</div>
+<div class="line"><span class="lineno">   73</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -163,7 +163,7 @@ Static Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to save tensor's shape and type. </p>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00055">55</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00053">53</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afe2399c665af7e1370ac2c883d864144" name="afe2399c665af7e1370ac2c883d864144"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afe2399c665af7e1370ac2c883d864144">&#9670;&#160;</a></span>OperandInfo() <span class="overload">[1/3]</span></h2>
@@ -190,7 +190,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Construct a new OperandInfo object (deleted) </p>
 
-<p class="reference">Referenced by <a class="el" href="_operand_info_8h_source.html#l00085">createStaticInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_operand_info_8h_source.html#l00083">createStaticInfo()</a>.</p>
 
 </div>
 </div>
@@ -262,14 +262,14 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00069">69</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span>    : _shape(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>), _typeInfo(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036">typeInfo</a>), _alloc_type(alloc_type), _const(is_const),</div>
-<div class="line"><span class="lineno">   72</span>      _variable(is_variable), _origin(origin)</div>
-<div class="line"><span class="lineno">   73</span>  {</div>
-<div class="line"><span class="lineno">   74</span>    <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   75</span>  }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a40f2daaa24d4855d98b2bb2cd7f42036"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036">onert::ir::OperandInfo::typeInfo</a></div><div class="ttdeci">const TypeInfo &amp; typeInfo() const</div><div class="ttdoc">Return tensor data type info.</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00109">OperandInfo.h:109</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_aed6ade449a1b0e5d296c66a99b1725d4"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">onert::ir::OperandInfo::shape</a></div><div class="ttdeci">const Shape &amp; shape() const</div><div class="ttdoc">Return tensor shape.</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00095">OperandInfo.h:95</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00067">67</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span>    : _shape(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>), _typeInfo(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036">typeInfo</a>), _alloc_type(alloc_type), _const(is_const),</div>
+<div class="line"><span class="lineno">   70</span>      _variable(is_variable), _origin(origin)</div>
+<div class="line"><span class="lineno">   71</span>  {</div>
+<div class="line"><span class="lineno">   72</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   73</span>  }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a40f2daaa24d4855d98b2bb2cd7f42036"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036">onert::ir::OperandInfo::typeInfo</a></div><div class="ttdeci">const TypeInfo &amp; typeInfo() const</div><div class="ttdoc">Return tensor data type info.</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00107">OperandInfo.h:107</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_aed6ade449a1b0e5d296c66a99b1725d4"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">onert::ir::OperandInfo::shape</a></div><div class="ttdeci">const Shape &amp; shape() const</div><div class="ttdoc">Return tensor shape.</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00093">OperandInfo.h:93</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -344,14 +344,14 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Create a static OperandInfo object. </p>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00085">85</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>  {</div>
-<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#afe2399c665af7e1370ac2c883d864144">OperandInfo</a>(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>, <a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036">typeInfo</a>, <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc">MemAllocType::STATIC</a>);</div>
-<div class="line"><span class="lineno">   88</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00083">83</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>  {</div>
+<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#afe2399c665af7e1370ac2c883d864144">OperandInfo</a>(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>, <a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036">typeInfo</a>, <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc">MemAllocType::STATIC</a>);</div>
+<div class="line"><span class="lineno">   86</span>  }</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_afe2399c665af7e1370ac2c883d864144"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#afe2399c665af7e1370ac2c883d864144">onert::ir::OperandInfo::OperandInfo</a></div><div class="ttdeci">OperandInfo()=delete</div><div class="ttdoc">Construct a new OperandInfo object (deleted)</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc"><div class="ttname"><a href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc">onert::ir::MemAllocType::STATIC</a></div><div class="ttdeci">@ STATIC</div><div class="ttdoc">At compile time, shape for a tensor is known, thus requried memory capacity can be calculated.</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classonert_1_1ir_1_1_operand_info.html#afe2399c665af7e1370ac2c883d864144">OperandInfo()</a>, <a class="el" href="_operand_info_8h_source.html#l00095">shape()</a>, <a class="el" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc">onert::ir::STATIC</a>, and <a class="el" href="_operand_info_8h_source.html#l00109">typeInfo()</a>.</p>
+<p class="reference">References <a class="el" href="classonert_1_1ir_1_1_operand_info.html#afe2399c665af7e1370ac2c883d864144">OperandInfo()</a>, <a class="el" href="_operand_info_8h_source.html#l00093">shape()</a>, <a class="el" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18eafe6f99ef1ec99efbdc19a9786cf1facc">onert::ir::STATIC</a>, and <a class="el" href="_operand_info_8h_source.html#l00107">typeInfo()</a>.</p>
 
 </div>
 </div>
@@ -378,17 +378,17 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00128">128</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  129</span>  {</div>
-<div class="line"><span class="lineno">  130</span>    <span class="comment">// Impossible case: constant and dynamic operand</span></div>
-<div class="line"><span class="lineno">  131</span>    assert(!(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">isDynamic</a>() &amp;&amp; _const));</div>
-<div class="line"><span class="lineno">  132</span>    <span class="keywordflow">return</span> _const;</div>
-<div class="line"><span class="lineno">  133</span>  }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_ad75de795fb1ede24b7bfb38aa9d478b6"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">onert::ir::OperandInfo::isDynamic</a></div><div class="ttdeci">bool isDynamic() const</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00142">OperandInfo.h:142</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00126">126</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  127</span>  {</div>
+<div class="line"><span class="lineno">  128</span>    <span class="comment">// Impossible case: constant and dynamic operand</span></div>
+<div class="line"><span class="lineno">  129</span>    assert(!(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">isDynamic</a>() &amp;&amp; _const));</div>
+<div class="line"><span class="lineno">  130</span>    <span class="keywordflow">return</span> _const;</div>
+<div class="line"><span class="lineno">  131</span>  }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_ad75de795fb1ede24b7bfb38aa9d478b6"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">onert::ir::OperandInfo::isDynamic</a></div><div class="ttdeci">bool isDynamic() const</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00140">OperandInfo.h:140</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00142">isDynamic()</a>.</p>
+<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00140">isDynamic()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00158">onert::backend::basic::ExternalTensor::ExternalTensor()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00064">onert::backend::IPortableTensor::is_constant()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00079">onert::ir::Operand::isConstant()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00154">onert::backend::basic::ExternalTensor::ExternalTensor()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00062">onert::backend::IPortableTensor::is_constant()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00077">onert::ir::Operand::isConstant()</a>.</p>
 
 </div>
 </div>
@@ -415,13 +415,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00142">142</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  142</span>{ <span class="keywordflow">return</span> _alloc_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">MemAllocType::DYNAMIC</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00140">140</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  140</span>{ <span class="keywordflow">return</span> _alloc_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">MemAllocType::DYNAMIC</a>; }</div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9"><div class="ttname"><a href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">onert::ir::MemAllocType::DYNAMIC</a></div><div class="ttdeci">@ DYNAMIC</div><div class="ttdoc">At kernel execution time, shape for a tensor is known, thus requried memory capacity can be calculate...</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">onert::ir::DYNAMIC</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_static_shape_inferer_8cc_source.html#l00169">onert::compiler::StaticShapeInferer::dump()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00158">onert::backend::basic::ExternalTensor::ExternalTensor()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00065">onert::backend::IPortableTensor::is_dynamic()</a>, <a class="el" href="_operand_info_8h_source.html#l00128">isConstant()</a>, and <a class="el" href="_operand_info_8h_source.html#l00134">setAsVariable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_static_shape_inferer_8cc_source.html#l00167">onert::compiler::StaticShapeInferer::dump()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00154">onert::backend::basic::ExternalTensor::ExternalTensor()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00063">onert::backend::IPortableTensor::is_dynamic()</a>, <a class="el" href="_operand_info_8h_source.html#l00126">isConstant()</a>, and <a class="el" href="_operand_info_8h_source.html#l00132">setAsVariable()</a>.</p>
 
 </div>
 </div>
@@ -448,8 +448,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00141">141</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  141</span>{ <span class="keywordflow">return</span> _variable; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00139">139</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  139</span>{ <span class="keywordflow">return</span> _variable; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -476,8 +476,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00125">125</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  125</span>{ <span class="keywordflow">return</span> _alloc_type; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00123">123</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  123</span>{ <span class="keywordflow">return</span> _alloc_type; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -504,10 +504,10 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00144">144</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  144</span>{ <span class="keywordflow">return</span> _origin; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00142">142</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>{ <span class="keywordflow">return</span> _origin; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00108">onert::ir::Operand::originIndex()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00106">onert::ir::Operand::originIndex()</a>.</p>
 
 </div>
 </div>
@@ -534,10 +534,10 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00126">126</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  126</span>{ _const = <span class="keyword">true</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00124">124</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  124</span>{ _const = <span class="keyword">true</span>; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00064">onert::ir::Operand::data()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00062">onert::ir::Operand::data()</a>.</p>
 
 </div>
 </div>
@@ -564,8 +564,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00127">127</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  127</span>{ _const = <span class="keyword">false</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00125">125</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  125</span>{ _const = <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -592,15 +592,15 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00134">134</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  135</span>  {</div>
-<div class="line"><span class="lineno">  136</span>    <span class="comment">// Impossible case: constant or dynamic operand</span></div>
-<div class="line"><span class="lineno">  137</span>    <span class="comment">// The variable operand with buffer is not supported yet</span></div>
-<div class="line"><span class="lineno">  138</span>    assert(!(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">isDynamic</a>() || _const));</div>
-<div class="line"><span class="lineno">  139</span>    _variable = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  140</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00132">132</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  133</span>  {</div>
+<div class="line"><span class="lineno">  134</span>    <span class="comment">// Impossible case: constant or dynamic operand</span></div>
+<div class="line"><span class="lineno">  135</span>    <span class="comment">// The variable operand with buffer is not supported yet</span></div>
+<div class="line"><span class="lineno">  136</span>    assert(!(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6">isDynamic</a>() || _const));</div>
+<div class="line"><span class="lineno">  137</span>    _variable = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  138</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00142">isDynamic()</a>.</p>
+<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00140">isDynamic()</a>.</p>
 
 </div>
 </div>
@@ -627,12 +627,12 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00143">143</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  143</span>{ _alloc_type = <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">MemAllocType::DYNAMIC</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00141">141</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  141</span>{ _alloc_type = <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">MemAllocType::DYNAMIC</a>; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#af862512a289794dc81b59605ee79a18ea0fcc90da4811c877ba9f9c12f7d60bc9">onert::ir::DYNAMIC</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_i_o_tensor_8h_source.html#l00091">onert::backend::builtin::IOTensor::applyShape()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00074">onert::backend::basic::Tensor::set_dynamic()</a>, <a class="el" href="_i_o_tensor_8h_source.html#l00061">onert::backend::builtin::IOTensor::set_dynamic()</a>, <a class="el" href="_user_tensor_8h_source.html#l00049">onert::backend::builtin::UserTensor::set_dynamic()</a>, <a class="el" href="_edge_tensor_8h_source.html#l00040">onert::exec::EdgeTensor::set_dynamic()</a>, and <a class="el" href="_i_o_tensor_8cc_source.html#l00039">onert::backend::builtin::IOTensor::setTensor()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_i_o_tensor_8h_source.html#l00087">onert::backend::builtin::IOTensor::applyShape()</a>, <a class="el" href="runtime_2onert_2core_2include_2backend_2basic_2_tensor_8h_source.html#l00070">onert::backend::basic::Tensor::set_dynamic()</a>, <a class="el" href="_i_o_tensor_8h_source.html#l00057">onert::backend::builtin::IOTensor::set_dynamic()</a>, <a class="el" href="_user_tensor_8h_source.html#l00045">onert::backend::builtin::UserTensor::set_dynamic()</a>, <a class="el" href="_edge_tensor_8h_source.html#l00038">onert::exec::EdgeTensor::set_dynamic()</a>, and <a class="el" href="_i_o_tensor_8cc_source.html#l00035">onert::backend::builtin::IOTensor::setTensor()</a>.</p>
 
 </div>
 </div>
@@ -660,10 +660,10 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00145">145</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  145</span>{ _origin = origin; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00143">143</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  143</span>{ _origin = origin; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00107">onert::ir::Operand::setOriginIndex()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00105">onert::ir::Operand::setOriginIndex()</a>.</p>
 
 </div>
 </div>
@@ -693,8 +693,8 @@ Static Public Member Functions</h2></td></tr>
 <p>Return mutable tensor shape. </p>
 <dl class="section return"><dt>Returns</dt><dd>Tensor shape </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00100">100</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  100</span>{ <span class="keywordflow">return</span> _shape; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00098">98</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   98</span>{ <span class="keywordflow">return</span> _shape; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_random_data_generator_8py_source.html#l00035">RandomDataGenerator.RandomDataGenerator::_gen_float32()</a>, <a class="el" href="_random_data_generator_8py_source.html#l00032">RandomDataGenerator.RandomDataGenerator::_gen_int16()</a>, and <a class="el" href="_random_data_generator_8py_source.html#l00029">RandomDataGenerator.RandomDataGenerator::_gen_uint8()</a>.</p>
 
@@ -726,10 +726,10 @@ Static Public Member Functions</h2></td></tr>
 <p>Return tensor shape. </p>
 <dl class="section return"><dt>Returns</dt><dd>Tensor shape </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00095">95</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   95</span>{ <span class="keywordflow">return</span> _shape; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00093">93</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   93</span>{ <span class="keywordflow">return</span> _shape; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_random_data_generator_8py_source.html#l00035">RandomDataGenerator.RandomDataGenerator::_gen_float32()</a>, <a class="el" href="_random_data_generator_8py_source.html#l00032">RandomDataGenerator.RandomDataGenerator::_gen_int16()</a>, <a class="el" href="_random_data_generator_8py_source.html#l00029">RandomDataGenerator.RandomDataGenerator::_gen_uint8()</a>, <a class="el" href="_tensor_8cc_source.html#l00033">onert::backend::basic::Tensor::applyShape()</a>, <a class="el" href="_i_o_tensor_8h_source.html#l00091">onert::backend::builtin::IOTensor::applyShape()</a>, <a class="el" href="_i_portable_tensor_8cc_source.html#l00028">onert::backend::IPortableTensor::calcOffset()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00138">onert::ir::train::TrainableGraph::changeBackwardShape()</a>, <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html#l00066">onert::backend::train::ops::FullyConnectedLayer::configureBackward()</a>, <a class="el" href="_operand_info_8h_source.html#l00085">createStaticInfo()</a>, <a class="el" href="_static_shape_inferer_8cc_source.html#l00169">onert::compiler::StaticShapeInferer::dump()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00066">onert::backend::IPortableTensor::getShape()</a>, <a class="el" href="_tensor_8cc_source.html#l00031">onert::backend::basic::Tensor::setShape()</a>, <a class="el" href="_user_tensor_8h_source.html#l00050">onert::backend::builtin::UserTensor::setShape()</a>, <a class="el" href="_edge_tensor_8h_source.html#l00042">onert::exec::EdgeTensor::setShape()</a>, <a class="el" href="_i_o_tensor_8h_source.html#l00066">onert::backend::builtin::IOTensor::setShape()</a>, <a class="el" href="_i_o_tensor_8cc_source.html#l00039">onert::backend::builtin::IOTensor::setTensor()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00046">onert::ir::Operand::shape()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_random_data_generator_8py_source.html#l00035">RandomDataGenerator.RandomDataGenerator::_gen_float32()</a>, <a class="el" href="_random_data_generator_8py_source.html#l00032">RandomDataGenerator.RandomDataGenerator::_gen_int16()</a>, <a class="el" href="_random_data_generator_8py_source.html#l00029">RandomDataGenerator.RandomDataGenerator::_gen_uint8()</a>, <a class="el" href="_tensor_8cc_source.html#l00029">onert::backend::basic::Tensor::applyShape()</a>, <a class="el" href="_i_o_tensor_8h_source.html#l00087">onert::backend::builtin::IOTensor::applyShape()</a>, <a class="el" href="_i_portable_tensor_8cc_source.html#l00026">onert::backend::IPortableTensor::calcOffset()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00134">onert::ir::train::TrainableGraph::changeBackwardShape()</a>, <a class="el" href="train_2ops_2_fully_connected_layer_8cc_source.html#l00060">onert::backend::train::ops::FullyConnectedLayer::configureBackward()</a>, <a class="el" href="_operand_info_8h_source.html#l00083">createStaticInfo()</a>, <a class="el" href="_static_shape_inferer_8cc_source.html#l00167">onert::compiler::StaticShapeInferer::dump()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00064">onert::backend::IPortableTensor::getShape()</a>, <a class="el" href="_tensor_8cc_source.html#l00027">onert::backend::basic::Tensor::setShape()</a>, <a class="el" href="_user_tensor_8h_source.html#l00046">onert::backend::builtin::UserTensor::setShape()</a>, <a class="el" href="_edge_tensor_8h_source.html#l00040">onert::exec::EdgeTensor::setShape()</a>, <a class="el" href="_i_o_tensor_8h_source.html#l00062">onert::backend::builtin::IOTensor::setShape()</a>, <a class="el" href="_i_o_tensor_8cc_source.html#l00035">onert::backend::builtin::IOTensor::setTensor()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00044">onert::ir::Operand::shape()</a>.</p>
 
 </div>
 </div>
@@ -759,8 +759,8 @@ Static Public Member Functions</h2></td></tr>
 
 <p>set shape </p>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00104">104</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span>{ _shape = new_shape; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00102">102</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span>{ _shape = new_shape; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_random_data_generator_8py_source.html#l00035">RandomDataGenerator.RandomDataGenerator::_gen_float32()</a>, <a class="el" href="_random_data_generator_8py_source.html#l00032">RandomDataGenerator.RandomDataGenerator::_gen_int16()</a>, and <a class="el" href="_random_data_generator_8py_source.html#l00029">RandomDataGenerator.RandomDataGenerator::_gen_uint8()</a>.</p>
 
@@ -784,37 +784,37 @@ Static Public Member Functions</h2></td></tr>
 <p>Return size of tensor (bytes) </p>
 <dl class="section return"><dt>Returns</dt><dd>Tensor size </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8cc_source.html#l00024">24</a> of file <a class="el" href="_operand_info_8cc_source.html">OperandInfo.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   25</span>{</div>
-<div class="line"><span class="lineno">   26</span>  <span class="keyword">const</span> <span class="keyword">auto</span> data_type = _typeInfo.<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>();</div>
-<div class="line"><span class="lineno">   27</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno">   28</span>  {</div>
-<div class="line"><span class="lineno">   29</span>    <span class="keywordflow">return</span> _shape.num_elements() * <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">sizeOfDataType</a>(data_type);</div>
-<div class="line"><span class="lineno">   30</span>  }</div>
-<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error &amp;e)</div>
-<div class="line"><span class="lineno">   32</span>  {</div>
-<div class="line"><span class="lineno">   33</span>    <span class="comment">// Calculate total size for ggml block quantization type on exception handling</span></div>
-<div class="line"><span class="lineno">   34</span>    <span class="comment">// because it is rare case and we should care about performance on non-block case.</span></div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">if</span> (data_type != DataType::QUANT_GGML_Q4_0 &amp;&amp; data_type != DataType::QUANT_GGML_Q8_0)</div>
-<div class="line"><span class="lineno">   36</span>      <span class="keywordflow">throw</span> e;</div>
-<div class="line"><span class="lineno">   37</span> </div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">if</span> (_shape.dim(_shape.rank() - 1) % 32 != 0)</div>
-<div class="line"><span class="lineno">   39</span>      <span class="keywordflow">throw</span> std::runtime_error{</div>
-<div class="line"><span class="lineno">   40</span>        <span class="stringliteral">&quot;Block quantization requires the last dimension to be a multiple of 32&quot;</span>};</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>    <span class="keyword">const</span> <span class="keyword">auto</span> num_blocks = _shape.num_elements() / 32;</div>
-<div class="line"><span class="lineno">   43</span>    <span class="keyword">const</span> <span class="keyword">auto</span> block_size = data_type == DataType::QUANT_GGML_Q4_0</div>
-<div class="line"><span class="lineno">   44</span>                              ? (<span class="keyword">sizeof</span>(uint8_t) * 32 / 2 + <span class="keyword">sizeof</span>(uint16_t))</div>
-<div class="line"><span class="lineno">   45</span>                              : (sizeof(uint8_t) * 32 + sizeof(uint16_t));</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">return</span> num_blocks * block_size;</div>
-<div class="line"><span class="lineno">   47</span>  }</div>
-<div class="line"><span class="lineno">   48</span>}</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_type_info_html_ac59d0c3025a812eba13a113a7c7c85a5"><div class="ttname"><a href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">onert::ir::TypeInfo::type</a></div><div class="ttdeci">DataType type() const</div><div class="ttdef"><b>Definition</b> <a href="_type_info_8h_source.html#l00052">TypeInfo.h:52</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_a306303df14f9f20079574f5a9cc37f26"><div class="ttname"><a href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">onert::ir::sizeOfDataType</a></div><div class="ttdeci">size_t sizeOfDataType(DataType data_type)</div><div class="ttdef"><b>Definition</b> <a href="_data_type_8cc_source.html#l00029">DataType.cc:29</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8cc_source.html#l00022">22</a> of file <a class="el" href="_operand_info_8cc_source.html">OperandInfo.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   23</span>{</div>
+<div class="line"><span class="lineno">   24</span>  <span class="keyword">const</span> <span class="keyword">auto</span> data_type = _typeInfo.<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>();</div>
+<div class="line"><span class="lineno">   25</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno">   26</span>  {</div>
+<div class="line"><span class="lineno">   27</span>    <span class="keywordflow">return</span> _shape.num_elements() * <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">sizeOfDataType</a>(data_type);</div>
+<div class="line"><span class="lineno">   28</span>  }</div>
+<div class="line"><span class="lineno">   29</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error &amp;e)</div>
+<div class="line"><span class="lineno">   30</span>  {</div>
+<div class="line"><span class="lineno">   31</span>    <span class="comment">// Calculate total size for ggml block quantization type on exception handling</span></div>
+<div class="line"><span class="lineno">   32</span>    <span class="comment">// because it is rare case and we should care about performance on non-block case.</span></div>
+<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">if</span> (data_type != DataType::QUANT_GGML_Q4_0 &amp;&amp; data_type != DataType::QUANT_GGML_Q8_0)</div>
+<div class="line"><span class="lineno">   34</span>      <span class="keywordflow">throw</span> e;</div>
+<div class="line"><span class="lineno">   35</span> </div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">if</span> (_shape.dim(_shape.rank() - 1) % 32 != 0)</div>
+<div class="line"><span class="lineno">   37</span>      <span class="keywordflow">throw</span> std::runtime_error{</div>
+<div class="line"><span class="lineno">   38</span>        <span class="stringliteral">&quot;Block quantization requires the last dimension to be a multiple of 32&quot;</span>};</div>
+<div class="line"><span class="lineno">   39</span> </div>
+<div class="line"><span class="lineno">   40</span>    <span class="keyword">const</span> <span class="keyword">auto</span> num_blocks = _shape.num_elements() / 32;</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keyword">const</span> <span class="keyword">auto</span> block_size = data_type == DataType::QUANT_GGML_Q4_0</div>
+<div class="line"><span class="lineno">   42</span>                              ? (<span class="keyword">sizeof</span>(uint8_t) * 32 / 2 + <span class="keyword">sizeof</span>(uint16_t))</div>
+<div class="line"><span class="lineno">   43</span>                              : (sizeof(uint8_t) * 32 + sizeof(uint16_t));</div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">return</span> num_blocks * block_size;</div>
+<div class="line"><span class="lineno">   45</span>  }</div>
+<div class="line"><span class="lineno">   46</span>}</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_type_info_html_ac59d0c3025a812eba13a113a7c7c85a5"><div class="ttname"><a href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">onert::ir::TypeInfo::type</a></div><div class="ttdeci">DataType type() const</div><div class="ttdef"><b>Definition</b> <a href="_type_info_8h_source.html#l00050">TypeInfo.h:50</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_a306303df14f9f20079574f5a9cc37f26"><div class="ttname"><a href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">onert::ir::sizeOfDataType</a></div><div class="ttdeci">size_t sizeOfDataType(DataType data_type)</div><div class="ttdef"><b>Definition</b> <a href="_data_type_8cc_source.html#l00027">DataType.cc:27</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_data_type_8cc_source.html#l00029">onert::ir::sizeOfDataType()</a>, and <a class="el" href="_type_info_8h_source.html#l00052">onert::ir::TypeInfo::type()</a>.</p>
+<p class="reference">References <a class="el" href="_data_type_8cc_source.html#l00027">onert::ir::sizeOfDataType()</a>, and <a class="el" href="_type_info_8h_source.html#l00050">onert::ir::TypeInfo::type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_edge_tensor_8h_source.html#l00044">onert::exec::EdgeTensor::allocate_buffer()</a>, <a class="el" href="_tensor_8cc_source.html#l00033">onert::backend::basic::Tensor::applyShape()</a>, <a class="el" href="_edge_tensor_8cc_source.html#l00024">onert::exec::EdgeTensor::applyShape()</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::total_size()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_edge_tensor_8h_source.html#l00042">onert::exec::EdgeTensor::allocate_buffer()</a>, <a class="el" href="_tensor_8cc_source.html#l00029">onert::backend::basic::Tensor::applyShape()</a>, <a class="el" href="_edge_tensor_8cc_source.html#l00022">onert::exec::EdgeTensor::applyShape()</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00052">onert::backend::IPortableTensor::total_size()</a>.</p>
 
 </div>
 </div>
@@ -844,13 +844,13 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Set tensor data type. </p>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00118">118</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  118</span>{ _typeInfo.<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">type</a>); }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a8ac489517a0b5a4999fe63cb94ace5fa"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">onert::ir::OperandInfo::type</a></div><div class="ttdeci">void type(const DataType type)</div><div class="ttdoc">Set tensor data type.</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00118">OperandInfo.h:118</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00116">116</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  116</span>{ _typeInfo.<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>(<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">type</a>); }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a8ac489517a0b5a4999fe63cb94ace5fa"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a8ac489517a0b5a4999fe63cb94ace5fa">onert::ir::OperandInfo::type</a></div><div class="ttdeci">void type(const DataType type)</div><div class="ttdoc">Set tensor data type.</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00116">OperandInfo.h:116</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_type_info_8h_source.html#l00052">onert::ir::TypeInfo::type()</a>, and <a class="el" href="_operand_info_8h_source.html#l00118">type()</a>.</p>
+<p class="reference">References <a class="el" href="_type_info_8h_source.html#l00050">onert::ir::TypeInfo::type()</a>, and <a class="el" href="_operand_info_8h_source.html#l00116">type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00061">onert::ir::Operand::type()</a>, and <a class="el" href="_operand_info_8h_source.html#l00118">type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00059">onert::ir::Operand::type()</a>, and <a class="el" href="_operand_info_8h_source.html#l00116">type()</a>.</p>
 
 </div>
 </div>
@@ -880,10 +880,10 @@ Static Public Member Functions</h2></td></tr>
 <p>Return tensor data type info. </p>
 <dl class="section return"><dt>Returns</dt><dd>Tensor data type </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00109">109</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  109</span>{ <span class="keywordflow">return</span> _typeInfo; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00107">107</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  107</span>{ <span class="keywordflow">return</span> _typeInfo; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_operand_info_8h_source.html#l00085">createStaticInfo()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00057">onert::backend::IPortableTensor::data_scale()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00059">onert::backend::IPortableTensor::data_scales()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00056">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00058">onert::backend::IPortableTensor::data_zero_point()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00060">onert::backend::IPortableTensor::data_zero_points()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00054">onert::exec::SingleModelExecutors::execute()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00051">onert::backend::IPortableTensor::sparsity()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00047">onert::ir::Operand::typeInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_operand_info_8h_source.html#l00083">createStaticInfo()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00055">onert::backend::IPortableTensor::data_scale()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00057">onert::backend::IPortableTensor::data_scales()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00056">onert::backend::IPortableTensor::data_zero_point()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00058">onert::backend::IPortableTensor::data_zero_points()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00052">onert::exec::SingleModelExecutors::execute()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00049">onert::backend::IPortableTensor::sparsity()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00045">onert::ir::Operand::typeInfo()</a>.</p>
 
 </div>
 </div>
@@ -919,12 +919,12 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00114">114</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  114</span>{ _typeInfo = <a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036">typeInfo</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="_operand_info_8h_source.html#l00112">112</a> of file <a class="el" href="_operand_info_8h_source.html">OperandInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  112</span>{ _typeInfo = <a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a40f2daaa24d4855d98b2bb2cd7f42036">typeInfo</a>; }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00114">typeInfo()</a>.</p>
+<p class="reference">References <a class="el" href="_operand_info_8h_source.html#l00112">typeInfo()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_operand_info_8h_source.html#l00114">typeInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_operand_info_8h_source.html#l00112">typeInfo()</a>.</p>
 
 </div>
 </div>

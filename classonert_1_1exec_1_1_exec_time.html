@@ -132,7 +132,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_exec_time_8h_source.html#l00033">33</a> of file <a class="el" href="_exec_time_8h_source.html">ExecTime.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_exec_time_8h_source.html#l00031">31</a> of file <a class="el" href="_exec_time_8h_source.html">ExecTime.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a13312d8a6fae441fdc2c74eb99860ef1" name="a13312d8a6fae441fdc2c74eb99860ef1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a13312d8a6fae441fdc2c74eb99860ef1">&#9670;&#160;</a></span>ExecTime()</h2>
@@ -158,10 +158,10 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_exec_time_8h_source.html#l00036">36</a> of file <a class="el" href="_exec_time_8h_source.html">ExecTime.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>    : _json(<a class="code hl_namespace" href="namespacebackends.html">backends</a>, _measurements)</div>
-<div class="line"><span class="lineno">   38</span>  {</div>
-<div class="line"><span class="lineno">   39</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_exec_time_8h_source.html#l00034">34</a> of file <a class="el" href="_exec_time_8h_source.html">ExecTime.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>    : _json(<a class="code hl_namespace" href="namespacebackends.html">backends</a>, _measurements)</div>
+<div class="line"><span class="lineno">   36</span>  {</div>
+<div class="line"><span class="lineno">   37</span>  }</div>
 <div class="ttc" id="anamespacebackends_html"><div class="ttname"><a href="namespacebackends.html">backends</a></div><div class="ttdef"><b>Definition</b> <a href="backends_8py_source.html#l00001">backends.py:1</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -193,10 +193,10 @@ Static Public Attributes</h2></td></tr>
 <p>Get the max value of int32_t in int64_t. </p>
 <dl class="section return"><dt>Returns</dt><dd>max value </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_exec_time_8h_source.html#l00093">93</a> of file <a class="el" href="_exec_time_8h_source.html">ExecTime.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   93</span>{ <span class="keywordflow">return</span> _MAX; }</div>
+<p class="definition">Definition at line <a class="el" href="_exec_time_8h_source.html#l00091">91</a> of file <a class="el" href="_exec_time_8h_source.html">ExecTime.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span>{ <span class="keywordflow">return</span> _MAX; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_exec_time_8cc_source.html#l00095">updateOperationExecTime()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_exec_time_8cc_source.html#l00093">updateOperationExecTime()</a>.</p>
 
 </div>
 </div>
@@ -250,76 +250,76 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>execution time for given input sizes -1 if there are no records for given parameters (backend, op, quantization). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_exec_time_8cc_source.html#l00027">27</a> of file <a class="el" href="_exec_time_8cc_source.html">ExecTime.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  <span class="keyword">auto</span> found_backend = _measurements.find(backend);</div>
-<div class="line"><span class="lineno">   32</span>  <span class="keywordflow">if</span> (found_backend == _measurements.end())</div>
-<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1exec_1_1_exec_time.html#a56471c3278b94d919ebb84b38ac53f77">NOT_FOUND</a>; <span class="comment">// no execution time for this backend</span></div>
-<div class="line"><span class="lineno">   34</span> </div>
-<div class="line"><span class="lineno">   35</span>  <span class="keyword">auto</span> found_operation_with_type = found_backend-&gt;second.find(operation);</div>
-<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (found_operation_with_type == found_backend-&gt;second.end())</div>
-<div class="line"><span class="lineno">   37</span>    <span class="comment">// no execution time for this operation</span></div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1exec_1_1_exec_time.html#a56471c3278b94d919ebb84b38ac53f77">NOT_FOUND</a>;</div>
-<div class="line"><span class="lineno">   39</span> </div>
-<div class="line"><span class="lineno">   40</span>  <span class="keyword">auto</span> found_operation = found_operation_with_type-&gt;second.find(quant);</div>
-<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">if</span> (found_operation == found_operation_with_type-&gt;second.end())</div>
-<div class="line"><span class="lineno">   42</span>    <span class="comment">// no execution time for this operation</span></div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1exec_1_1_exec_time.html#a56471c3278b94d919ebb84b38ac53f77">NOT_FOUND</a>;</div>
-<div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>  <span class="keyword">auto</span> found_size = found_operation-&gt;second.find(op_size);</div>
-<div class="line"><span class="lineno">   46</span>  <span class="keywordflow">if</span> (found_size != found_operation-&gt;second.end())</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> found_size-&gt;second; <span class="comment">// found execution time</span></div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>  <span class="comment">// Try to interpolate</span></div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">if</span> (found_operation-&gt;second.size() &lt; 2)</div>
-<div class="line"><span class="lineno">   51</span>    <span class="comment">// not possible to do linear interpolation</span></div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> found_operation-&gt;second.begin()-&gt;second;</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>  <span class="comment">// if we reach here, then this means, that there is no record, that is equal to op_size</span></div>
-<div class="line"><span class="lineno">   55</span>  <span class="keyword">auto</span> upper_bound = found_operation-&gt;second.upper_bound(op_size); <span class="comment">// &gt; op_size</span></div>
-<div class="line"><span class="lineno">   56</span>  <span class="keyword">auto</span> lower_bound = upper_bound;</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">if</span> (upper_bound == found_operation-&gt;second.end()) <span class="comment">// all values &lt;= op_size</span></div>
-<div class="line"><span class="lineno">   59</span>  {</div>
-<div class="line"><span class="lineno">   60</span>    upper_bound--;</div>
-<div class="line"><span class="lineno">   61</span>    lower_bound = upper_bound;</div>
-<div class="line"><span class="lineno">   62</span>    lower_bound--;</div>
-<div class="line"><span class="lineno">   63</span>  }</div>
-<div class="line"><span class="lineno">   64</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (upper_bound == found_operation-&gt;second.begin()) <span class="comment">// all values &gt; op_size</span></div>
-<div class="line"><span class="lineno">   65</span>  {</div>
-<div class="line"><span class="lineno">   66</span>    upper_bound++;</div>
-<div class="line"><span class="lineno">   67</span>  }</div>
-<div class="line"><span class="lineno">   68</span>  <span class="keywordflow">else</span> <span class="comment">// op_size between</span></div>
-<div class="line"><span class="lineno">   69</span>  {</div>
-<div class="line"><span class="lineno">   70</span>    lower_bound--;</div>
-<div class="line"><span class="lineno">   71</span>  }</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>  <span class="comment">// Linear interpolation</span></div>
-<div class="line"><span class="lineno">   74</span>  <span class="keyword">const</span> <span class="keyword">auto</span> x0 = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(lower_bound-&gt;first); <span class="comment">// size</span></div>
-<div class="line"><span class="lineno">   75</span>  <span class="keyword">const</span> <span class="keyword">auto</span> x1 = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(upper_bound-&gt;first); <span class="comment">// size</span></div>
-<div class="line"><span class="lineno">   76</span>  <span class="keyword">const</span> int64_t y0 = lower_bound-&gt;second;                   <span class="comment">// time</span></div>
-<div class="line"><span class="lineno">   77</span>  <span class="keyword">const</span> int64_t y1 = upper_bound-&gt;second;                   <span class="comment">// time</span></div>
-<div class="line"><span class="lineno">   78</span>  <span class="keyword">const</span> <span class="keyword">auto</span> x = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(op_size);</div>
+<p class="definition">Definition at line <a class="el" href="_exec_time_8cc_source.html#l00025">25</a> of file <a class="el" href="_exec_time_8cc_source.html">ExecTime.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   28</span>{</div>
+<div class="line"><span class="lineno">   29</span>  <span class="keyword">auto</span> found_backend = _measurements.find(backend);</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">if</span> (found_backend == _measurements.end())</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1exec_1_1_exec_time.html#a56471c3278b94d919ebb84b38ac53f77">NOT_FOUND</a>; <span class="comment">// no execution time for this backend</span></div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span>  <span class="keyword">auto</span> found_operation_with_type = found_backend-&gt;second.find(operation);</div>
+<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">if</span> (found_operation_with_type == found_backend-&gt;second.end())</div>
+<div class="line"><span class="lineno">   35</span>    <span class="comment">// no execution time for this operation</span></div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1exec_1_1_exec_time.html#a56471c3278b94d919ebb84b38ac53f77">NOT_FOUND</a>;</div>
+<div class="line"><span class="lineno">   37</span> </div>
+<div class="line"><span class="lineno">   38</span>  <span class="keyword">auto</span> found_operation = found_operation_with_type-&gt;second.find(quant);</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">if</span> (found_operation == found_operation_with_type-&gt;second.end())</div>
+<div class="line"><span class="lineno">   40</span>    <span class="comment">// no execution time for this operation</span></div>
+<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1exec_1_1_exec_time.html#a56471c3278b94d919ebb84b38ac53f77">NOT_FOUND</a>;</div>
+<div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span>  <span class="keyword">auto</span> found_size = found_operation-&gt;second.find(op_size);</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">if</span> (found_size != found_operation-&gt;second.end())</div>
+<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">return</span> found_size-&gt;second; <span class="comment">// found execution time</span></div>
+<div class="line"><span class="lineno">   46</span> </div>
+<div class="line"><span class="lineno">   47</span>  <span class="comment">// Try to interpolate</span></div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">if</span> (found_operation-&gt;second.size() &lt; 2)</div>
+<div class="line"><span class="lineno">   49</span>    <span class="comment">// not possible to do linear interpolation</span></div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> found_operation-&gt;second.begin()-&gt;second;</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>  <span class="comment">// if we reach here, then this means, that there is no record, that is equal to op_size</span></div>
+<div class="line"><span class="lineno">   53</span>  <span class="keyword">auto</span> upper_bound = found_operation-&gt;second.upper_bound(op_size); <span class="comment">// &gt; op_size</span></div>
+<div class="line"><span class="lineno">   54</span>  <span class="keyword">auto</span> lower_bound = upper_bound;</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">if</span> (upper_bound == found_operation-&gt;second.end()) <span class="comment">// all values &lt;= op_size</span></div>
+<div class="line"><span class="lineno">   57</span>  {</div>
+<div class="line"><span class="lineno">   58</span>    upper_bound--;</div>
+<div class="line"><span class="lineno">   59</span>    lower_bound = upper_bound;</div>
+<div class="line"><span class="lineno">   60</span>    lower_bound--;</div>
+<div class="line"><span class="lineno">   61</span>  }</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (upper_bound == found_operation-&gt;second.begin()) <span class="comment">// all values &gt; op_size</span></div>
+<div class="line"><span class="lineno">   63</span>  {</div>
+<div class="line"><span class="lineno">   64</span>    upper_bound++;</div>
+<div class="line"><span class="lineno">   65</span>  }</div>
+<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">else</span> <span class="comment">// op_size between</span></div>
+<div class="line"><span class="lineno">   67</span>  {</div>
+<div class="line"><span class="lineno">   68</span>    lower_bound--;</div>
+<div class="line"><span class="lineno">   69</span>  }</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>  <span class="comment">// Linear interpolation</span></div>
+<div class="line"><span class="lineno">   72</span>  <span class="keyword">const</span> <span class="keyword">auto</span> x0 = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(lower_bound-&gt;first); <span class="comment">// size</span></div>
+<div class="line"><span class="lineno">   73</span>  <span class="keyword">const</span> <span class="keyword">auto</span> x1 = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(upper_bound-&gt;first); <span class="comment">// size</span></div>
+<div class="line"><span class="lineno">   74</span>  <span class="keyword">const</span> int64_t y0 = lower_bound-&gt;second;                   <span class="comment">// time</span></div>
+<div class="line"><span class="lineno">   75</span>  <span class="keyword">const</span> int64_t y1 = upper_bound-&gt;second;                   <span class="comment">// time</span></div>
+<div class="line"><span class="lineno">   76</span>  <span class="keyword">const</span> <span class="keyword">auto</span> x = <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(op_size);</div>
+<div class="line"><span class="lineno">   77</span> </div>
+<div class="line"><span class="lineno">   78</span>  int64_t interpolated_value = y0 + (x - x0) * (y1 - y0) / (x1 - x0);</div>
 <div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>  int64_t interpolated_value = y0 + (x - x0) * (y1 - y0) / (x1 - x0);</div>
-<div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>  <span class="comment">// In some cases ops with smaller inputs is executed slower than the one</span></div>
-<div class="line"><span class="lineno">   83</span>  <span class="comment">// with larger inputs, more likely because of a backend&#39;s load difference</span></div>
-<div class="line"><span class="lineno">   84</span>  <span class="keywordflow">if</span> (interpolated_value &lt; 0 &amp;&amp; x &gt; x1)</div>
-<div class="line"><span class="lineno">   85</span>  {</div>
-<div class="line"><span class="lineno">   86</span>    <span class="keywordflow">return</span> y0;</div>
-<div class="line"><span class="lineno">   87</span>  }</div>
-<div class="line"><span class="lineno">   88</span>  <span class="comment">// It must be non-positive ONLY if it&#39;s lesser than both of them</span></div>
-<div class="line"><span class="lineno">   89</span>  assert(interpolated_value &gt; 0 || x &lt; x0);</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>  <span class="comment">// execution time must be non-negative</span></div>
-<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">return</span> std::max&lt;int64_t&gt;(interpolated_value, 1);</div>
-<div class="line"><span class="lineno">   93</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_exec_time_html_a56471c3278b94d919ebb84b38ac53f77"><div class="ttname"><a href="classonert_1_1exec_1_1_exec_time.html#a56471c3278b94d919ebb84b38ac53f77">onert::exec::ExecTime::NOT_FOUND</a></div><div class="ttdeci">static const int64_t NOT_FOUND</div><div class="ttdef"><b>Definition</b> <a href="_exec_time_8h_source.html#l00098">ExecTime.h:98</a></div></div>
+<div class="line"><span class="lineno">   80</span>  <span class="comment">// In some cases ops with smaller inputs is executed slower than the one</span></div>
+<div class="line"><span class="lineno">   81</span>  <span class="comment">// with larger inputs, more likely because of a backend&#39;s load difference</span></div>
+<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">if</span> (interpolated_value &lt; 0 &amp;&amp; x &gt; x1)</div>
+<div class="line"><span class="lineno">   83</span>  {</div>
+<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">return</span> y0;</div>
+<div class="line"><span class="lineno">   85</span>  }</div>
+<div class="line"><span class="lineno">   86</span>  <span class="comment">// It must be non-positive ONLY if it&#39;s lesser than both of them</span></div>
+<div class="line"><span class="lineno">   87</span>  assert(interpolated_value &gt; 0 || x &lt; x0);</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>  <span class="comment">// execution time must be non-negative</span></div>
+<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">return</span> std::max&lt;int64_t&gt;(interpolated_value, 1);</div>
+<div class="line"><span class="lineno">   91</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_exec_time_html_a56471c3278b94d919ebb84b38ac53f77"><div class="ttname"><a href="classonert_1_1exec_1_1_exec_time.html#a56471c3278b94d919ebb84b38ac53f77">onert::exec::ExecTime::NOT_FOUND</a></div><div class="ttdeci">static const int64_t NOT_FOUND</div><div class="ttdef"><b>Definition</b> <a href="_exec_time_8h_source.html#l00096">ExecTime.h:96</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_exec_time_8h_source.html#l00098">NOT_FOUND</a>.</p>
+<p class="reference">References <a class="el" href="_exec_time_8h_source.html#l00096">NOT_FOUND</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_exec_time_8cc_source.html#l00127">getPermuteTime()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_exec_time_8cc_source.html#l00125">getPermuteTime()</a>.</p>
 
 </div>
 </div>
@@ -373,13 +373,13 @@ Static Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>permutation time for operation size </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_exec_time_8cc_source.html#l00127">127</a> of file <a class="el" href="_exec_time_8cc_source.html">ExecTime.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  130</span>{</div>
-<div class="line"><span class="lineno">  131</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1_exec_time.html#a6f35d39d906268638b4401a72d188d89">getOperationExecTime</a>(from_backend, to_backend-&gt;config()-&gt;id(), quant, op_size);</div>
-<div class="line"><span class="lineno">  132</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_exec_time_html_a6f35d39d906268638b4401a72d188d89"><div class="ttname"><a href="classonert_1_1exec_1_1_exec_time.html#a6f35d39d906268638b4401a72d188d89">onert::exec::ExecTime::getOperationExecTime</a></div><div class="ttdeci">int64_t getOperationExecTime(const backend::Backend *backend, const std::string &amp;operation, bool quant, uint32_t op_size) const</div><div class="ttdoc">Get exec time of an operation with input size or linearly interpolated value based on size if there i...</div><div class="ttdef"><b>Definition</b> <a href="_exec_time_8cc_source.html#l00027">ExecTime.cc:27</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_exec_time_8cc_source.html#l00125">125</a> of file <a class="el" href="_exec_time_8cc_source.html">ExecTime.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  128</span>{</div>
+<div class="line"><span class="lineno">  129</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1_exec_time.html#a6f35d39d906268638b4401a72d188d89">getOperationExecTime</a>(from_backend, to_backend-&gt;config()-&gt;id(), quant, op_size);</div>
+<div class="line"><span class="lineno">  130</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_exec_time_html_a6f35d39d906268638b4401a72d188d89"><div class="ttname"><a href="classonert_1_1exec_1_1_exec_time.html#a6f35d39d906268638b4401a72d188d89">onert::exec::ExecTime::getOperationExecTime</a></div><div class="ttdeci">int64_t getOperationExecTime(const backend::Backend *backend, const std::string &amp;operation, bool quant, uint32_t op_size) const</div><div class="ttdoc">Get exec time of an operation with input size or linearly interpolated value based on size if there i...</div><div class="ttdef"><b>Definition</b> <a href="_exec_time_8cc_source.html#l00025">ExecTime.cc:25</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_backend.html#a9343acbed3795da963e506c2f47b6086">onert::backend::Backend::config()</a>, and <a class="el" href="_exec_time_8cc_source.html#l00027">getOperationExecTime()</a>.</p>
+<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_backend.html#a9343acbed3795da963e506c2f47b6086">onert::backend::Backend::config()</a>, and <a class="el" href="_exec_time_8cc_source.html#l00025">getOperationExecTime()</a>.</p>
 
 </div>
 </div>
@@ -408,11 +408,11 @@ Static Public Attributes</h2></td></tr>
 
 <p>Update metrics file with new data. </p>
 
-<p class="definition">Definition at line <a class="el" href="_exec_time_8h_source.html#l00097">97</a> of file <a class="el" href="_exec_time_8h_source.html">ExecTime.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>{ _json.<a class="code hl_function" href="classonert_1_1exec_1_1_j_s_o_n.html#a6081b6b9d6a84627a0c8e7adda06bba0">storeOperationsExecTime</a>(); }</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_j_s_o_n_html_a6081b6b9d6a84627a0c8e7adda06bba0"><div class="ttname"><a href="classonert_1_1exec_1_1_j_s_o_n.html#a6081b6b9d6a84627a0c8e7adda06bba0">onert::exec::JSON::storeOperationsExecTime</a></div><div class="ttdeci">void storeOperationsExecTime() const</div><div class="ttdoc">Update _measurement_file with new data.</div><div class="ttdef"><b>Definition</b> <a href="_j_s_o_n_exec_time_8cc_source.html#l00139">JSONExecTime.cc:139</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_exec_time_8h_source.html#l00095">95</a> of file <a class="el" href="_exec_time_8h_source.html">ExecTime.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>{ _json.<a class="code hl_function" href="classonert_1_1exec_1_1_j_s_o_n.html#a6081b6b9d6a84627a0c8e7adda06bba0">storeOperationsExecTime</a>(); }</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_j_s_o_n_html_a6081b6b9d6a84627a0c8e7adda06bba0"><div class="ttname"><a href="classonert_1_1exec_1_1_j_s_o_n.html#a6081b6b9d6a84627a0c8e7adda06bba0">onert::exec::JSON::storeOperationsExecTime</a></div><div class="ttdeci">void storeOperationsExecTime() const</div><div class="ttdoc">Update _measurement_file with new data.</div><div class="ttdef"><b>Definition</b> <a href="_j_s_o_n_exec_time_8cc_source.html#l00137">JSONExecTime.cc:137</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_j_s_o_n_exec_time_8cc_source.html#l00139">onert::exec::JSON::storeOperationsExecTime()</a>.</p>
+<p class="reference">References <a class="el" href="_j_s_o_n_exec_time_8cc_source.html#l00137">onert::exec::JSON::storeOperationsExecTime()</a>.</p>
 
 </div>
 </div>
@@ -472,34 +472,34 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_exec_time_8cc_source.html#l00095">95</a> of file <a class="el" href="_exec_time_8cc_source.html">ExecTime.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   98</span>{</div>
-<div class="line"><span class="lineno">   99</span>  <span class="comment">// If the op is not implemented for some input, it should not be scheduled</span></div>
-<div class="line"><span class="lineno">  100</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;recs = _measurements[backend][operation][quant];</div>
-<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">if</span> (time == <a class="code hl_function" href="classonert_1_1exec_1_1_exec_time.html#a0d780c5c6bf95e3b4cd47aae36489fd6">getMax</a>() ||</div>
-<div class="line"><span class="lineno">  102</span>      std::any_of(recs.begin(), recs.end(),</div>
-<div class="line"><span class="lineno">  103</span>                  [](std::pair&lt;const uint32_t, const int64_t&gt; <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>) { return p.second == getMax(); }))</div>
-<div class="line"><span class="lineno">  104</span>  {</div>
-<div class="line"><span class="lineno">  105</span>    _measurements[backend][operation][quant].clear();</div>
-<div class="line"><span class="lineno">  106</span>    _measurements[backend][operation][quant].emplace(op_size, <a class="code hl_function" href="classonert_1_1exec_1_1_exec_time.html#a0d780c5c6bf95e3b4cd47aae36489fd6">getMax</a>());</div>
-<div class="line"><span class="lineno">  107</span>  }</div>
-<div class="line"><span class="lineno">  108</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  109</span>  {</div>
-<div class="line"><span class="lineno">  110</span>    <span class="keyword">auto</span> it = _measurements[backend][operation][quant].emplace(op_size, time);</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">if</span> (!it.second)</div>
-<div class="line"><span class="lineno">  112</span>    {</div>
-<div class="line"><span class="lineno">  113</span>      <span class="comment">// affect of the last measurement is bigger than the previous ones:</span></div>
-<div class="line"><span class="lineno">  114</span>      <span class="comment">//   this prefers new metrics than older once, so will adapt backend changes</span></div>
-<div class="line"><span class="lineno">  115</span>      it.first-&gt;second = (it.first-&gt;second + time) / 2;</div>
-<div class="line"><span class="lineno">  116</span>    }</div>
-<div class="line"><span class="lineno">  117</span>  }</div>
-<div class="line"><span class="lineno">  118</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_exec_time_html_a0d780c5c6bf95e3b4cd47aae36489fd6"><div class="ttname"><a href="classonert_1_1exec_1_1_exec_time.html#a0d780c5c6bf95e3b4cd47aae36489fd6">onert::exec::ExecTime::getMax</a></div><div class="ttdeci">static int64_t getMax()</div><div class="ttdoc">Get the max value of int32_t in int64_t.</div><div class="ttdef"><b>Definition</b> <a href="_exec_time_8h_source.html#l00093">ExecTime.h:93</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_exec_time_8cc_source.html#l00093">93</a> of file <a class="el" href="_exec_time_8cc_source.html">ExecTime.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   96</span>{</div>
+<div class="line"><span class="lineno">   97</span>  <span class="comment">// If the op is not implemented for some input, it should not be scheduled</span></div>
+<div class="line"><span class="lineno">   98</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;recs = _measurements[backend][operation][quant];</div>
+<div class="line"><span class="lineno">   99</span>  <span class="keywordflow">if</span> (time == <a class="code hl_function" href="classonert_1_1exec_1_1_exec_time.html#a0d780c5c6bf95e3b4cd47aae36489fd6">getMax</a>() ||</div>
+<div class="line"><span class="lineno">  100</span>      std::any_of(recs.begin(), recs.end(),</div>
+<div class="line"><span class="lineno">  101</span>                  [](std::pair&lt;const uint32_t, const int64_t&gt; <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>) { return p.second == getMax(); }))</div>
+<div class="line"><span class="lineno">  102</span>  {</div>
+<div class="line"><span class="lineno">  103</span>    _measurements[backend][operation][quant].clear();</div>
+<div class="line"><span class="lineno">  104</span>    _measurements[backend][operation][quant].emplace(op_size, <a class="code hl_function" href="classonert_1_1exec_1_1_exec_time.html#a0d780c5c6bf95e3b4cd47aae36489fd6">getMax</a>());</div>
+<div class="line"><span class="lineno">  105</span>  }</div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  107</span>  {</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keyword">auto</span> it = _measurements[backend][operation][quant].emplace(op_size, time);</div>
+<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">if</span> (!it.second)</div>
+<div class="line"><span class="lineno">  110</span>    {</div>
+<div class="line"><span class="lineno">  111</span>      <span class="comment">// affect of the last measurement is bigger than the previous ones:</span></div>
+<div class="line"><span class="lineno">  112</span>      <span class="comment">//   this prefers new metrics than older once, so will adapt backend changes</span></div>
+<div class="line"><span class="lineno">  113</span>      it.first-&gt;second = (it.first-&gt;second + time) / 2;</div>
+<div class="line"><span class="lineno">  114</span>    }</div>
+<div class="line"><span class="lineno">  115</span>  }</div>
+<div class="line"><span class="lineno">  116</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_exec_time_html_a0d780c5c6bf95e3b4cd47aae36489fd6"><div class="ttname"><a href="classonert_1_1exec_1_1_exec_time.html#a0d780c5c6bf95e3b4cd47aae36489fd6">onert::exec::ExecTime::getMax</a></div><div class="ttdeci">static int64_t getMax()</div><div class="ttdoc">Get the max value of int32_t in int64_t.</div><div class="ttdef"><b>Definition</b> <a href="_exec_time_8h_source.html#l00091">ExecTime.h:91</a></div></div>
 <div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_exec_time_8h_source.html#l00093">getMax()</a>, and <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
+<p class="reference">References <a class="el" href="_exec_time_8h_source.html#l00091">getMax()</a>, and <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_exec_time_8cc_source.html#l00120">updatePermuteTime()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_exec_time_8cc_source.html#l00118">updatePermuteTime()</a>.</p>
 
 </div>
 </div>
@@ -559,13 +559,13 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_exec_time_8cc_source.html#l00120">120</a> of file <a class="el" href="_exec_time_8cc_source.html">ExecTime.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  123</span>{</div>
-<div class="line"><span class="lineno">  124</span>  <a class="code hl_function" href="classonert_1_1exec_1_1_exec_time.html#ac40af441b111d0fdba7264eeaa7915c9">updateOperationExecTime</a>(from_backend, to_backend-&gt;config()-&gt;id(), quant, op_size, time);</div>
-<div class="line"><span class="lineno">  125</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_exec_time_html_ac40af441b111d0fdba7264eeaa7915c9"><div class="ttname"><a href="classonert_1_1exec_1_1_exec_time.html#ac40af441b111d0fdba7264eeaa7915c9">onert::exec::ExecTime::updateOperationExecTime</a></div><div class="ttdeci">void updateOperationExecTime(const backend::Backend *backend, const std::string &amp;operation, bool quant, uint32_t op_size, int64_t time)</div><div class="ttdoc">Update exec time of the operation on a backend with given input size or add new entity if there is no...</div><div class="ttdef"><b>Definition</b> <a href="_exec_time_8cc_source.html#l00095">ExecTime.cc:95</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_exec_time_8cc_source.html#l00118">118</a> of file <a class="el" href="_exec_time_8cc_source.html">ExecTime.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  121</span>{</div>
+<div class="line"><span class="lineno">  122</span>  <a class="code hl_function" href="classonert_1_1exec_1_1_exec_time.html#ac40af441b111d0fdba7264eeaa7915c9">updateOperationExecTime</a>(from_backend, to_backend-&gt;config()-&gt;id(), quant, op_size, time);</div>
+<div class="line"><span class="lineno">  123</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_exec_time_html_ac40af441b111d0fdba7264eeaa7915c9"><div class="ttname"><a href="classonert_1_1exec_1_1_exec_time.html#ac40af441b111d0fdba7264eeaa7915c9">onert::exec::ExecTime::updateOperationExecTime</a></div><div class="ttdeci">void updateOperationExecTime(const backend::Backend *backend, const std::string &amp;operation, bool quant, uint32_t op_size, int64_t time)</div><div class="ttdoc">Update exec time of the operation on a backend with given input size or add new entity if there is no...</div><div class="ttdef"><b>Definition</b> <a href="_exec_time_8cc_source.html#l00093">ExecTime.cc:93</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_backend.html#a9343acbed3795da963e506c2f47b6086">onert::backend::Backend::config()</a>, and <a class="el" href="_exec_time_8cc_source.html#l00095">updateOperationExecTime()</a>.</p>
+<p class="reference">References <a class="el" href="classonert_1_1backend_1_1_backend.html#a9343acbed3795da963e506c2f47b6086">onert::backend::Backend::config()</a>, and <a class="el" href="_exec_time_8cc_source.html#l00093">updateOperationExecTime()</a>.</p>
 
 </div>
 </div>
@@ -585,14 +585,14 @@ Static Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_exec_time_8h_source.html#l00098">98</a> of file <a class="el" href="_exec_time_8h_source.html">ExecTime.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_exec_time_8h_source.html#l00096">96</a> of file <a class="el" href="_exec_time_8h_source.html">ExecTime.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_exec_time_8cc_source.html#l00027">getOperationExecTime()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_exec_time_8cc_source.html#l00025">getOperationExecTime()</a>.</p>
 
 </div>
 </div>

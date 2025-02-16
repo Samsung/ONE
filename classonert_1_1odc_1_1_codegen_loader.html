@@ -139,7 +139,7 @@ Static Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to manage loading and unloading of dynamic library containing implementation of ICodegen interface. </p>
 
-<p class="definition">Definition at line <a class="el" href="_codegen_loader_8h_source.html#l00034">34</a> of file <a class="el" href="_codegen_loader_8h_source.html">CodegenLoader.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_codegen_loader_8h_source.html#l00032">32</a> of file <a class="el" href="_codegen_loader_8h_source.html">CodegenLoader.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a37134fe76467a6880c5958cfec2097f0" name="a37134fe76467a6880c5958cfec2097f0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a37134fe76467a6880c5958cfec2097f0">&#9670;&#160;</a></span>codegen_destory_t</h2>
@@ -155,7 +155,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Typedef for function pointer to destroy instance of ICodegen. </p>
 
-<p class="definition">Definition at line <a class="el" href="_codegen_loader_8h_source.html#l00048">48</a> of file <a class="el" href="_codegen_loader_8h_source.html">CodegenLoader.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_codegen_loader_8h_source.html#l00046">46</a> of file <a class="el" href="_codegen_loader_8h_source.html">CodegenLoader.h</a>.</p>
 
 </div>
 </div>
@@ -173,7 +173,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Typedef for function pointer to destroy loaded library handle. </p>
 
-<p class="definition">Definition at line <a class="el" href="_codegen_loader_8h_source.html#l00040">40</a> of file <a class="el" href="_codegen_loader_8h_source.html">CodegenLoader.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_codegen_loader_8h_source.html#l00038">38</a> of file <a class="el" href="_codegen_loader_8h_source.html">CodegenLoader.h</a>.</p>
 
 </div>
 </div>
@@ -191,7 +191,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Typedef for function pointer to create instance of ICodegen. </p>
 
-<p class="definition">Definition at line <a class="el" href="_codegen_loader_8h_source.html#l00044">44</a> of file <a class="el" href="_codegen_loader_8h_source.html">CodegenLoader.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_codegen_loader_8h_source.html#l00042">42</a> of file <a class="el" href="_codegen_loader_8h_source.html">CodegenLoader.h</a>.</p>
 
 </div>
 </div>
@@ -249,10 +249,10 @@ Static Public Member Functions</h2></td></tr>
 <p>Get instance of ICodegen created through factory method. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to instance of ICodegen </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_codegen_loader_8h_source.html#l00085">85</a> of file <a class="el" href="_codegen_loader_8h_source.html">CodegenLoader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>{ <span class="keywordflow">return</span> _codegen.get(); }</div>
+<p class="definition">Definition at line <a class="el" href="_codegen_loader_8h_source.html#l00083">83</a> of file <a class="el" href="_codegen_loader_8h_source.html">CodegenLoader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   83</span>{ <span class="keywordflow">return</span> _codegen.get(); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_codegen_loader_8cc_source.html#l00041">loadLibrary()</a>, and <a class="el" href="_codegen_loader_8cc_source.html#l00081">unloadLibrary()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_codegen_loader_8cc_source.html#l00039">loadLibrary()</a>, and <a class="el" href="_codegen_loader_8cc_source.html#l00079">unloadLibrary()</a>.</p>
 
 </div>
 </div>
@@ -282,14 +282,14 @@ Static Public Member Functions</h2></td></tr>
 <p>Get singleton instance of CodegenLoader. </p>
 <dl class="section return"><dt>Returns</dt><dd>Reference to singleton instance of CodegenLoader </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_codegen_loader_8cc_source.html#l00035">35</a> of file <a class="el" href="_codegen_loader_8cc_source.html">CodegenLoader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
-<div class="line"><span class="lineno">   37</span>  <span class="keyword">static</span> <a class="code hl_function" href="classonert_1_1odc_1_1_codegen_loader.html#a06f42411fa6e7a7ae802b7ebc162ebfa">CodegenLoader</a> singleton;</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">return</span> singleton;</div>
-<div class="line"><span class="lineno">   39</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_codegen_loader_8cc_source.html#l00033">33</a> of file <a class="el" href="_codegen_loader_8cc_source.html">CodegenLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keyword">static</span> <a class="code hl_function" href="classonert_1_1odc_1_1_codegen_loader.html#a06f42411fa6e7a7ae802b7ebc162ebfa">CodegenLoader</a> singleton;</div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> singleton;</div>
+<div class="line"><span class="lineno">   37</span>}</div>
 <div class="ttc" id="aclassonert_1_1odc_1_1_codegen_loader_html_a06f42411fa6e7a7ae802b7ebc162ebfa"><div class="ttname"><a href="classonert_1_1odc_1_1_codegen_loader.html#a06f42411fa6e7a7ae802b7ebc162ebfa">onert::odc::CodegenLoader::CodegenLoader</a></div><div class="ttdeci">CodegenLoader(CodegenLoader const &amp;)=delete</div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_codegen_manager_8cc_source.html#l00029">onert::odc::CodegenManager::codegen()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_codegen_manager_8cc_source.html#l00027">onert::odc::CodegenManager::codegen()</a>.</p>
 
 </div>
 </div>
@@ -317,52 +317,52 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_codegen_loader_8cc_source.html#l00041">41</a> of file <a class="el" href="_codegen_loader_8cc_source.html">CodegenLoader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1odc_1_1_codegen_loader.html#a4e503125665b388ca89482d499dff853">get</a>() != <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>  <span class="keyword">const</span> std::string codegen_so = <span class="stringliteral">&quot;lib&quot;</span> + std::string{<a class="code hl_variable" href="namespacennc_1_1cli.html#afac06e8b64babc482ad2c033ba9b1e0c">target</a>} + SHARED_LIB_EXT;</div>
-<div class="line"><span class="lineno">   47</span><span class="preprocessor">#ifdef __ANDROID__</span></div>
-<div class="line"><span class="lineno">   48</span>  <span class="keywordtype">void</span> *handle = dlopen(codegen_so.c_str(), RTLD_LAZY | RTLD_LOCAL);</div>
-<div class="line"><span class="lineno">   49</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordtype">void</span> *handle = dlmopen(LM_ID_NEWLM, codegen_so.c_str(), RTLD_LAZY | RTLD_LOCAL);</div>
-<div class="line"><span class="lineno">   51</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (handle == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   53</span>  {</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;CodegenLoader: &quot;</span> + std::string{dlerror()});</div>
-<div class="line"><span class="lineno">   55</span>  }</div>
-<div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span>  <span class="keyword">const</span> <span class="keyword">auto</span> factory = (<a class="code hl_typedef" href="classonert_1_1odc_1_1_codegen_loader.html#aabef4a3d025cb4b400d6d8eda4172b68">factory_t</a>)dlsym(handle, <span class="stringliteral">&quot;create_codegen&quot;</span>);</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">if</span> (factory == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   59</span>  {</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keyword">const</span> std::string dlerror_msg = dlerror();</div>
-<div class="line"><span class="lineno">   61</span>    dlclose(handle);</div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;CodegenLoader: &quot;</span> + dlerror_msg);</div>
-<div class="line"><span class="lineno">   63</span>  }</div>
-<div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>  <span class="keyword">const</span> <span class="keyword">auto</span> destroyer = (<a class="code hl_typedef" href="classonert_1_1odc_1_1_codegen_loader.html#a37134fe76467a6880c5958cfec2097f0">codegen_destory_t</a>)dlsym(handle, <span class="stringliteral">&quot;destroy_codegen&quot;</span>);</div>
-<div class="line"><span class="lineno">   66</span>  _codegen = std::unique_ptr&lt;ICodegen, codegen_destory_t&gt;(factory(), destroyer);</div>
-<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">if</span> (_codegen == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   68</span>  {</div>
-<div class="line"><span class="lineno">   69</span>    dlclose(handle);</div>
-<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;CodegenLoader: unable to create codegen&quot;</span>);</div>
-<div class="line"><span class="lineno">   71</span>  }</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>  <span class="comment">// Save backend handle (avoid warning by handle lost without dlclose())</span></div>
-<div class="line"><span class="lineno">   74</span>  _dlhandle = std::unique_ptr&lt;void, dlhandle_destroy_t&gt;{</div>
-<div class="line"><span class="lineno">   75</span>    handle, [filename = codegen_so](<span class="keywordtype">void</span> *<a class="code hl_variable" href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">h</a>) {</div>
-<div class="line"><span class="lineno">   76</span>      <span class="keywordflow">if</span> (dlclose(h))</div>
-<div class="line"><span class="lineno">   77</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;CodegenLoader: Failed to unload backend &quot;</span> + filename);</div>
-<div class="line"><span class="lineno">   78</span>    }};</div>
-<div class="line"><span class="lineno">   79</span>}</div>
-<div class="ttc" id="aclassonert_1_1odc_1_1_codegen_loader_html_a37134fe76467a6880c5958cfec2097f0"><div class="ttname"><a href="classonert_1_1odc_1_1_codegen_loader.html#a37134fe76467a6880c5958cfec2097f0">onert::odc::CodegenLoader::codegen_destory_t</a></div><div class="ttdeci">void(*)(ICodegen *) codegen_destory_t</div><div class="ttdoc">Typedef for function pointer to destroy instance of ICodegen.</div><div class="ttdef"><b>Definition</b> <a href="_codegen_loader_8h_source.html#l00048">CodegenLoader.h:48</a></div></div>
-<div class="ttc" id="aclassonert_1_1odc_1_1_codegen_loader_html_a4e503125665b388ca89482d499dff853"><div class="ttname"><a href="classonert_1_1odc_1_1_codegen_loader.html#a4e503125665b388ca89482d499dff853">onert::odc::CodegenLoader::get</a></div><div class="ttdeci">const ICodegen * get() const</div><div class="ttdoc">Get instance of ICodegen created through factory method.</div><div class="ttdef"><b>Definition</b> <a href="_codegen_loader_8h_source.html#l00085">CodegenLoader.h:85</a></div></div>
-<div class="ttc" id="aclassonert_1_1odc_1_1_codegen_loader_html_aabef4a3d025cb4b400d6d8eda4172b68"><div class="ttname"><a href="classonert_1_1odc_1_1_codegen_loader.html#aabef4a3d025cb4b400d6d8eda4172b68">onert::odc::CodegenLoader::factory_t</a></div><div class="ttdeci">ICodegen *(*)() factory_t</div><div class="ttdoc">Typedef for function pointer to create instance of ICodegen.</div><div class="ttdef"><b>Definition</b> <a href="_codegen_loader_8h_source.html#l00044">CodegenLoader.h:44</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_codegen_loader_8cc_source.html#l00039">39</a> of file <a class="el" href="_codegen_loader_8cc_source.html">CodegenLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span>{</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1odc_1_1_codegen_loader.html#a4e503125665b388ca89482d499dff853">get</a>() != <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>  <span class="keyword">const</span> std::string codegen_so = <span class="stringliteral">&quot;lib&quot;</span> + std::string{<a class="code hl_variable" href="namespacennc_1_1cli.html#afac06e8b64babc482ad2c033ba9b1e0c">target</a>} + SHARED_LIB_EXT;</div>
+<div class="line"><span class="lineno">   45</span><span class="preprocessor">#ifdef __ANDROID__</span></div>
+<div class="line"><span class="lineno">   46</span>  <span class="keywordtype">void</span> *handle = dlopen(codegen_so.c_str(), RTLD_LAZY | RTLD_LOCAL);</div>
+<div class="line"><span class="lineno">   47</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordtype">void</span> *handle = dlmopen(LM_ID_NEWLM, codegen_so.c_str(), RTLD_LAZY | RTLD_LOCAL);</div>
+<div class="line"><span class="lineno">   49</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">if</span> (handle == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   51</span>  {</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;CodegenLoader: &quot;</span> + std::string{dlerror()});</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>  <span class="keyword">const</span> <span class="keyword">auto</span> factory = (<a class="code hl_typedef" href="classonert_1_1odc_1_1_codegen_loader.html#aabef4a3d025cb4b400d6d8eda4172b68">factory_t</a>)dlsym(handle, <span class="stringliteral">&quot;create_codegen&quot;</span>);</div>
+<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">if</span> (factory == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   57</span>  {</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keyword">const</span> std::string dlerror_msg = dlerror();</div>
+<div class="line"><span class="lineno">   59</span>    dlclose(handle);</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;CodegenLoader: &quot;</span> + dlerror_msg);</div>
+<div class="line"><span class="lineno">   61</span>  }</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>  <span class="keyword">const</span> <span class="keyword">auto</span> destroyer = (<a class="code hl_typedef" href="classonert_1_1odc_1_1_codegen_loader.html#a37134fe76467a6880c5958cfec2097f0">codegen_destory_t</a>)dlsym(handle, <span class="stringliteral">&quot;destroy_codegen&quot;</span>);</div>
+<div class="line"><span class="lineno">   64</span>  _codegen = std::unique_ptr&lt;ICodegen, codegen_destory_t&gt;(factory(), destroyer);</div>
+<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">if</span> (_codegen == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   66</span>  {</div>
+<div class="line"><span class="lineno">   67</span>    dlclose(handle);</div>
+<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;CodegenLoader: unable to create codegen&quot;</span>);</div>
+<div class="line"><span class="lineno">   69</span>  }</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>  <span class="comment">// Save backend handle (avoid warning by handle lost without dlclose())</span></div>
+<div class="line"><span class="lineno">   72</span>  _dlhandle = std::unique_ptr&lt;void, dlhandle_destroy_t&gt;{</div>
+<div class="line"><span class="lineno">   73</span>    handle, [filename = codegen_so](<span class="keywordtype">void</span> *<a class="code hl_variable" href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">h</a>) {</div>
+<div class="line"><span class="lineno">   74</span>      <span class="keywordflow">if</span> (dlclose(h))</div>
+<div class="line"><span class="lineno">   75</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;CodegenLoader: Failed to unload backend &quot;</span> + filename);</div>
+<div class="line"><span class="lineno">   76</span>    }};</div>
+<div class="line"><span class="lineno">   77</span>}</div>
+<div class="ttc" id="aclassonert_1_1odc_1_1_codegen_loader_html_a37134fe76467a6880c5958cfec2097f0"><div class="ttname"><a href="classonert_1_1odc_1_1_codegen_loader.html#a37134fe76467a6880c5958cfec2097f0">onert::odc::CodegenLoader::codegen_destory_t</a></div><div class="ttdeci">void(*)(ICodegen *) codegen_destory_t</div><div class="ttdoc">Typedef for function pointer to destroy instance of ICodegen.</div><div class="ttdef"><b>Definition</b> <a href="_codegen_loader_8h_source.html#l00046">CodegenLoader.h:46</a></div></div>
+<div class="ttc" id="aclassonert_1_1odc_1_1_codegen_loader_html_a4e503125665b388ca89482d499dff853"><div class="ttname"><a href="classonert_1_1odc_1_1_codegen_loader.html#a4e503125665b388ca89482d499dff853">onert::odc::CodegenLoader::get</a></div><div class="ttdeci">const ICodegen * get() const</div><div class="ttdoc">Get instance of ICodegen created through factory method.</div><div class="ttdef"><b>Definition</b> <a href="_codegen_loader_8h_source.html#l00083">CodegenLoader.h:83</a></div></div>
+<div class="ttc" id="aclassonert_1_1odc_1_1_codegen_loader_html_aabef4a3d025cb4b400d6d8eda4172b68"><div class="ttname"><a href="classonert_1_1odc_1_1_codegen_loader.html#aabef4a3d025cb4b400d6d8eda4172b68">onert::odc::CodegenLoader::factory_t</a></div><div class="ttdeci">ICodegen *(*)() factory_t</div><div class="ttdoc">Typedef for function pointer to create instance of ICodegen.</div><div class="ttdef"><b>Definition</b> <a href="_codegen_loader_8h_source.html#l00042">CodegenLoader.h:42</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a01a00f16b6bc56ca12c4a42576612bd8"><div class="ttname"><a href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">jpeg2hdf5.h</a></div><div class="ttdeci">h</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00101">jpeg2hdf5.py:101</a></div></div>
 <div class="ttc" id="anamespacennc_1_1cli_html_afac06e8b64babc482ad2c033ba9b1e0c"><div class="ttname"><a href="namespacennc_1_1cli.html#afac06e8b64babc482ad2c033ba9b1e0c">nnc::cli::target</a></div><div class="ttdeci">Option&lt; std::string &gt; target(optname(&quot;--target&quot;), overview(&quot;select target language to emit for given architecture.&quot; &quot;Valid values are '&quot; NNC_TARGET_ARM_CPP &quot;', '&quot; NNC_TARGET_X86_CPP &quot;', '&quot; NNC_TARGET_ARM_GPU_CPP &quot;', '&quot; NNC_TARGET_INTERPRETER &quot;'&quot;), std::string(), optional(false), optvalues(NNC_TARGET_ARM_CPP &quot;,&quot; NNC_TARGET_X86_CPP &quot;,&quot; NNC_TARGET_ARM_GPU_CPP &quot;,&quot; NNC_TARGET_INTERPRETER), nullptr, separators(&quot;=&quot;))</div><div class="ttdef"><b>Definition</b> <a href="_options_8h_source.html#l00047">Options.h:47</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_codegen_loader_8h_source.html#l00085">get()</a>.</p>
+<p class="reference">References <a class="el" href="_codegen_loader_8h_source.html#l00083">get()</a>.</p>
 
 </div>
 </div>
@@ -409,16 +409,16 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Unload dynamic library containing implementation of ICodegen. </p>
 
-<p class="definition">Definition at line <a class="el" href="_codegen_loader_8cc_source.html#l00081">81</a> of file <a class="el" href="_codegen_loader_8cc_source.html">CodegenLoader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   82</span>{</div>
-<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1odc_1_1_codegen_loader.html#a4e503125665b388ca89482d499dff853">get</a>() == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>  _codegen.reset(<span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   87</span>  _dlhandle.reset(<span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   88</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_codegen_loader_8cc_source.html#l00079">79</a> of file <a class="el" href="_codegen_loader_8cc_source.html">CodegenLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span>{</div>
+<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1odc_1_1_codegen_loader.html#a4e503125665b388ca89482d499dff853">get</a>() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>  _codegen.reset(<span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   85</span>  _dlhandle.reset(<span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   86</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_codegen_loader_8h_source.html#l00085">get()</a>.</p>
+<p class="reference">References <a class="el" href="_codegen_loader_8h_source.html#l00083">get()</a>.</p>
 
 </div>
 </div>

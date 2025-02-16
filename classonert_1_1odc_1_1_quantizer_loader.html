@@ -135,7 +135,7 @@ Static Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to manage loading and unloading of dynamic library containing implementation of IQuantizer interface. </p>
 
-<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8h_source.html#l00034">34</a> of file <a class="el" href="_quantizer_loader_8h_source.html">QuantizerLoader.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8h_source.html#l00032">32</a> of file <a class="el" href="_quantizer_loader_8h_source.html">QuantizerLoader.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a607a22d82042c81cc76173939256c8a6" name="a607a22d82042c81cc76173939256c8a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a607a22d82042c81cc76173939256c8a6">&#9670;&#160;</a></span>dlhandle_destroy_t</h2>
@@ -151,7 +151,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Typedef for function pointer to destroy loaded library handle. </p>
 
-<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8h_source.html#l00040">40</a> of file <a class="el" href="_quantizer_loader_8h_source.html">QuantizerLoader.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8h_source.html#l00038">38</a> of file <a class="el" href="_quantizer_loader_8h_source.html">QuantizerLoader.h</a>.</p>
 
 </div>
 </div>
@@ -169,7 +169,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Typedef for function pointer to create instance of IQuantizer. </p>
 
-<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8h_source.html#l00044">44</a> of file <a class="el" href="_quantizer_loader_8h_source.html">QuantizerLoader.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8h_source.html#l00042">42</a> of file <a class="el" href="_quantizer_loader_8h_source.html">QuantizerLoader.h</a>.</p>
 
 </div>
 </div>
@@ -187,7 +187,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Typedef for function pointer to destroy instance of IQuantizer. </p>
 
-<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8h_source.html#l00048">48</a> of file <a class="el" href="_quantizer_loader_8h_source.html">QuantizerLoader.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8h_source.html#l00046">46</a> of file <a class="el" href="_quantizer_loader_8h_source.html">QuantizerLoader.h</a>.</p>
 
 </div>
 </div>
@@ -218,10 +218,10 @@ Static Public Member Functions</h2></td></tr>
 <p>Get instance of IQuantizer created through factory method. </p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to instance of IQuantizer </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8h_source.html#l00078">78</a> of file <a class="el" href="_quantizer_loader_8h_source.html">QuantizerLoader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   78</span>{ <span class="keywordflow">return</span> _quantizer.get(); }</div>
+<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8h_source.html#l00076">76</a> of file <a class="el" href="_quantizer_loader_8h_source.html">QuantizerLoader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>{ <span class="keywordflow">return</span> _quantizer.get(); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_quantizer_loader_8cc_source.html#l00041">loadLibrary()</a>, and <a class="el" href="_quantizer_loader_8cc_source.html#l00092">unloadLibrary()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantizer_loader_8cc_source.html#l00039">loadLibrary()</a>, and <a class="el" href="_quantizer_loader_8cc_source.html#l00090">unloadLibrary()</a>.</p>
 
 </div>
 </div>
@@ -251,13 +251,13 @@ Static Public Member Functions</h2></td></tr>
 <p>Get singleton instance of QuantizerLoader. </p>
 <dl class="section return"><dt>Returns</dt><dd>Reference to singleton instance of QuantizerLoader </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8cc_source.html#l00035">35</a> of file <a class="el" href="_quantizer_loader_8cc_source.html">QuantizerLoader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
-<div class="line"><span class="lineno">   37</span>  <span class="keyword">static</span> QuantizerLoader singleton;</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">return</span> singleton;</div>
-<div class="line"><span class="lineno">   39</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8cc_source.html#l00033">33</a> of file <a class="el" href="_quantizer_loader_8cc_source.html">QuantizerLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
+<div class="line"><span class="lineno">   35</span>  <span class="keyword">static</span> QuantizerLoader singleton;</div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> singleton;</div>
+<div class="line"><span class="lineno">   37</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_quantize_manager_8cc_source.html#l00073">onert::odc::QuantizeManager::deleteMinMaxFile()</a>, <a class="el" href="_quantize_manager_8cc_source.html#l00028">onert::odc::QuantizeManager::quantize()</a>, <a class="el" href="_quantize_manager_8cc_source.html#l00061">onert::odc::QuantizeManager::readyForQuantize()</a>, and <a class="el" href="_quantize_manager_8cc_source.html#l00049">onert::odc::QuantizeManager::setMinMaxRecordsThreshold()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantize_manager_8cc_source.html#l00071">onert::odc::QuantizeManager::deleteMinMaxFile()</a>, <a class="el" href="_quantize_manager_8cc_source.html#l00026">onert::odc::QuantizeManager::quantize()</a>, <a class="el" href="_quantize_manager_8cc_source.html#l00059">onert::odc::QuantizeManager::readyForQuantize()</a>, and <a class="el" href="_quantize_manager_8cc_source.html#l00047">onert::odc::QuantizeManager::setMinMaxRecordsThreshold()</a>.</p>
 
 </div>
 </div>
@@ -279,62 +279,62 @@ Static Public Member Functions</h2></td></tr>
 <p>Load dynamic library containing implementation of IQuantizer. </p>
 <dl class="section return"><dt>Returns</dt><dd>0 if success, otherwise errno value </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8cc_source.html#l00041">41</a> of file <a class="el" href="_quantizer_loader_8cc_source.html">QuantizerLoader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1odc_1_1_quantizer_loader.html#a61b3dbaa9bcd9342fd834715ba79f1a8">get</a>() != <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>  <span class="keyword">const</span> std::string quantize_so = std::string(<span class="stringliteral">&quot;libonert_odc&quot;</span>) + SHARED_LIB_EXT;</div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordtype">void</span> *handle = dlopen(quantize_so.c_str(), RTLD_LAZY | RTLD_LOCAL);</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keyword">auto</span> dlerror_msg = dlerror();</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">if</span> (handle == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   51</span>  {</div>
-<div class="line"><span class="lineno">   52</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to load &quot;</span> &lt;&lt; quantize_so &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   53</span>    std::cerr &lt;&lt; dlerror_msg &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">return</span> 1;</div>
-<div class="line"><span class="lineno">   55</span>  }</div>
-<div class="line"><span class="lineno">   56</span> </div>
-<div class="line"><span class="lineno">   57</span>  {</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> *factory_name = <span class="stringliteral">&quot;create_quantizer&quot;</span>;</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keyword">auto</span> factory = (<a class="code hl_typedef" href="classonert_1_1odc_1_1_quantizer_loader.html#a1e9b3388a47453c055ad9430697499ea">factory_t</a>)dlsym(handle, factory_name);</div>
-<div class="line"><span class="lineno">   60</span>    dlerror_msg = dlerror();</div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">if</span> (factory == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   63</span>    {</div>
-<div class="line"><span class="lineno">   64</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;QuantizerLoader: unable to find function &quot;</span> &lt;&lt; factory_name &lt;&lt; dlerror_msg</div>
-<div class="line"><span class="lineno">   65</span>                &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   66</span>      dlclose(handle);</div>
-<div class="line"><span class="lineno">   67</span>      <span class="keywordflow">return</span> 1;</div>
-<div class="line"><span class="lineno">   68</span>    }</div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>    <span class="keyword">auto</span> destroyer = (<a class="code hl_typedef" href="classonert_1_1odc_1_1_quantizer_loader.html#ac1d416b08032fd122664a0e0d4fee20f">quantizer_destory_t</a>)dlsym(handle, <span class="stringliteral">&quot;destroy_quantizer&quot;</span>);</div>
-<div class="line"><span class="lineno">   71</span>    _quantizer = std::unique_ptr&lt;IQuantizer, quantizer_destory_t&gt;(factory(), destroyer);</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">if</span> (_quantizer == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   74</span>    {</div>
-<div class="line"><span class="lineno">   75</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;QuantizerLoader: unable to create quantizer&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   76</span>      dlclose(handle);</div>
-<div class="line"><span class="lineno">   77</span>      <span class="keywordflow">return</span> 1;</div>
-<div class="line"><span class="lineno">   78</span>    }</div>
-<div class="line"><span class="lineno">   79</span>  }</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span>  <span class="comment">// Save quantize library handle (avoid warning by handle lost without dlclose())</span></div>
-<div class="line"><span class="lineno">   82</span>  <span class="comment">// clang-format off</span></div>
-<div class="line"><span class="lineno">   83</span>  _dlhandle = std::unique_ptr&lt;void, dlhandle_destroy_t&gt;{handle, [filename = quantize_so](<span class="keywordtype">void</span> *<a class="code hl_variable" href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">h</a>) {</div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">if</span> (dlclose(h) != 0)</div>
-<div class="line"><span class="lineno">   85</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to unload backend &quot;</span> &lt;&lt; filename &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   86</span>  }};</div>
-<div class="line"><span class="lineno">   87</span>  <span class="comment">// clang-format on</span></div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>  <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">   90</span>}</div>
-<div class="ttc" id="aclassonert_1_1odc_1_1_quantizer_loader_html_a1e9b3388a47453c055ad9430697499ea"><div class="ttname"><a href="classonert_1_1odc_1_1_quantizer_loader.html#a1e9b3388a47453c055ad9430697499ea">onert::odc::QuantizerLoader::factory_t</a></div><div class="ttdeci">IQuantizer *(*)() factory_t</div><div class="ttdoc">Typedef for function pointer to create instance of IQuantizer.</div><div class="ttdef"><b>Definition</b> <a href="_quantizer_loader_8h_source.html#l00044">QuantizerLoader.h:44</a></div></div>
-<div class="ttc" id="aclassonert_1_1odc_1_1_quantizer_loader_html_a61b3dbaa9bcd9342fd834715ba79f1a8"><div class="ttname"><a href="classonert_1_1odc_1_1_quantizer_loader.html#a61b3dbaa9bcd9342fd834715ba79f1a8">onert::odc::QuantizerLoader::get</a></div><div class="ttdeci">IQuantizer * get() const</div><div class="ttdoc">Get instance of IQuantizer created through factory method.</div><div class="ttdef"><b>Definition</b> <a href="_quantizer_loader_8h_source.html#l00078">QuantizerLoader.h:78</a></div></div>
-<div class="ttc" id="aclassonert_1_1odc_1_1_quantizer_loader_html_ac1d416b08032fd122664a0e0d4fee20f"><div class="ttname"><a href="classonert_1_1odc_1_1_quantizer_loader.html#ac1d416b08032fd122664a0e0d4fee20f">onert::odc::QuantizerLoader::quantizer_destory_t</a></div><div class="ttdeci">void(*)(IQuantizer *) quantizer_destory_t</div><div class="ttdoc">Typedef for function pointer to destroy instance of IQuantizer.</div><div class="ttdef"><b>Definition</b> <a href="_quantizer_loader_8h_source.html#l00048">QuantizerLoader.h:48</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8cc_source.html#l00039">39</a> of file <a class="el" href="_quantizer_loader_8cc_source.html">QuantizerLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span>{</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1odc_1_1_quantizer_loader.html#a61b3dbaa9bcd9342fd834715ba79f1a8">get</a>() != <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>  <span class="keyword">const</span> std::string quantize_so = std::string(<span class="stringliteral">&quot;libonert_odc&quot;</span>) + SHARED_LIB_EXT;</div>
+<div class="line"><span class="lineno">   45</span>  <span class="keywordtype">void</span> *handle = dlopen(quantize_so.c_str(), RTLD_LAZY | RTLD_LOCAL);</div>
+<div class="line"><span class="lineno">   46</span>  <span class="keyword">auto</span> dlerror_msg = dlerror();</div>
+<div class="line"><span class="lineno">   47</span> </div>
+<div class="line"><span class="lineno">   48</span>  <span class="keywordflow">if</span> (handle == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   49</span>  {</div>
+<div class="line"><span class="lineno">   50</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to load &quot;</span> &lt;&lt; quantize_so &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   51</span>    std::cerr &lt;&lt; dlerror_msg &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> 1;</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>  {</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> *factory_name = <span class="stringliteral">&quot;create_quantizer&quot;</span>;</div>
+<div class="line"><span class="lineno">   57</span>    <span class="keyword">auto</span> factory = (<a class="code hl_typedef" href="classonert_1_1odc_1_1_quantizer_loader.html#a1e9b3388a47453c055ad9430697499ea">factory_t</a>)dlsym(handle, factory_name);</div>
+<div class="line"><span class="lineno">   58</span>    dlerror_msg = dlerror();</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">if</span> (factory == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   61</span>    {</div>
+<div class="line"><span class="lineno">   62</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;QuantizerLoader: unable to find function &quot;</span> &lt;&lt; factory_name &lt;&lt; dlerror_msg</div>
+<div class="line"><span class="lineno">   63</span>                &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   64</span>      dlclose(handle);</div>
+<div class="line"><span class="lineno">   65</span>      <span class="keywordflow">return</span> 1;</div>
+<div class="line"><span class="lineno">   66</span>    }</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>    <span class="keyword">auto</span> destroyer = (<a class="code hl_typedef" href="classonert_1_1odc_1_1_quantizer_loader.html#ac1d416b08032fd122664a0e0d4fee20f">quantizer_destory_t</a>)dlsym(handle, <span class="stringliteral">&quot;destroy_quantizer&quot;</span>);</div>
+<div class="line"><span class="lineno">   69</span>    _quantizer = std::unique_ptr&lt;IQuantizer, quantizer_destory_t&gt;(factory(), destroyer);</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">if</span> (_quantizer == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   72</span>    {</div>
+<div class="line"><span class="lineno">   73</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;QuantizerLoader: unable to create quantizer&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   74</span>      dlclose(handle);</div>
+<div class="line"><span class="lineno">   75</span>      <span class="keywordflow">return</span> 1;</div>
+<div class="line"><span class="lineno">   76</span>    }</div>
+<div class="line"><span class="lineno">   77</span>  }</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>  <span class="comment">// Save quantize library handle (avoid warning by handle lost without dlclose())</span></div>
+<div class="line"><span class="lineno">   80</span>  <span class="comment">// clang-format off</span></div>
+<div class="line"><span class="lineno">   81</span>  _dlhandle = std::unique_ptr&lt;void, dlhandle_destroy_t&gt;{handle, [filename = quantize_so](<span class="keywordtype">void</span> *<a class="code hl_variable" href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">h</a>) {</div>
+<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">if</span> (dlclose(h) != 0)</div>
+<div class="line"><span class="lineno">   83</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Failed to unload backend &quot;</span> &lt;&lt; filename &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   84</span>  }};</div>
+<div class="line"><span class="lineno">   85</span>  <span class="comment">// clang-format on</span></div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>  <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">   88</span>}</div>
+<div class="ttc" id="aclassonert_1_1odc_1_1_quantizer_loader_html_a1e9b3388a47453c055ad9430697499ea"><div class="ttname"><a href="classonert_1_1odc_1_1_quantizer_loader.html#a1e9b3388a47453c055ad9430697499ea">onert::odc::QuantizerLoader::factory_t</a></div><div class="ttdeci">IQuantizer *(*)() factory_t</div><div class="ttdoc">Typedef for function pointer to create instance of IQuantizer.</div><div class="ttdef"><b>Definition</b> <a href="_quantizer_loader_8h_source.html#l00042">QuantizerLoader.h:42</a></div></div>
+<div class="ttc" id="aclassonert_1_1odc_1_1_quantizer_loader_html_a61b3dbaa9bcd9342fd834715ba79f1a8"><div class="ttname"><a href="classonert_1_1odc_1_1_quantizer_loader.html#a61b3dbaa9bcd9342fd834715ba79f1a8">onert::odc::QuantizerLoader::get</a></div><div class="ttdeci">IQuantizer * get() const</div><div class="ttdoc">Get instance of IQuantizer created through factory method.</div><div class="ttdef"><b>Definition</b> <a href="_quantizer_loader_8h_source.html#l00076">QuantizerLoader.h:76</a></div></div>
+<div class="ttc" id="aclassonert_1_1odc_1_1_quantizer_loader_html_ac1d416b08032fd122664a0e0d4fee20f"><div class="ttname"><a href="classonert_1_1odc_1_1_quantizer_loader.html#ac1d416b08032fd122664a0e0d4fee20f">onert::odc::QuantizerLoader::quantizer_destory_t</a></div><div class="ttdeci">void(*)(IQuantizer *) quantizer_destory_t</div><div class="ttdoc">Typedef for function pointer to destroy instance of IQuantizer.</div><div class="ttdef"><b>Definition</b> <a href="_quantizer_loader_8h_source.html#l00046">QuantizerLoader.h:46</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a01a00f16b6bc56ca12c4a42576612bd8"><div class="ttname"><a href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">jpeg2hdf5.h</a></div><div class="ttdeci">h</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00101">jpeg2hdf5.py:101</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_quantizer_loader_8h_source.html#l00078">get()</a>.</p>
+<p class="reference">References <a class="el" href="_quantizer_loader_8h_source.html#l00076">get()</a>.</p>
 
 </div>
 </div>
@@ -356,18 +356,18 @@ Static Public Member Functions</h2></td></tr>
 <p>Unload dynamic library containing implementation of IQuantizer. </p>
 <dl class="section return"><dt>Returns</dt><dd>0 if success, otherwise errno value </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8cc_source.html#l00092">92</a> of file <a class="el" href="_quantizer_loader_8cc_source.html">QuantizerLoader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   93</span>{</div>
-<div class="line"><span class="lineno">   94</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1odc_1_1_quantizer_loader.html#a61b3dbaa9bcd9342fd834715ba79f1a8">get</a>() == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>  _quantizer.reset(<span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   98</span>  _dlhandle.reset(<span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  101</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_quantizer_loader_8cc_source.html#l00090">90</a> of file <a class="el" href="_quantizer_loader_8cc_source.html">QuantizerLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span>{</div>
+<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1odc_1_1_quantizer_loader.html#a61b3dbaa9bcd9342fd834715ba79f1a8">get</a>() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>  _quantizer.reset(<span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   96</span>  _dlhandle.reset(<span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   97</span> </div>
+<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">   99</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_quantizer_loader_8h_source.html#l00078">get()</a>.</p>
+<p class="reference">References <a class="el" href="_quantizer_loader_8h_source.html#l00076">get()</a>.</p>
 
 </div>
 </div>

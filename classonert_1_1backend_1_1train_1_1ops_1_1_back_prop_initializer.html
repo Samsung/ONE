@@ -123,7 +123,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_back_prop_initializer_8h_source.html#l00035">35</a> of file <a class="el" href="_back_prop_initializer_8h_source.html">BackPropInitializer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_back_prop_initializer_8h_source.html#l00029">29</a> of file <a class="el" href="_back_prop_initializer_8h_source.html">BackPropInitializer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4cc9fd8e0124c6d14584dfee6b072745" name="a4cc9fd8e0124c6d14584dfee6b072745"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4cc9fd8e0124c6d14584dfee6b072745">&#9670;&#160;</a></span>BackPropInitializer()</h2>
@@ -141,13 +141,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_back_prop_initializer_8cc_source.html#l00028">28</a> of file <a class="el" href="_back_prop_initializer_8cc_source.html">BackPropInitializer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>  : _back_props{back_props}</div>
-<div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  assert(std::all_of(back_props.cbegin(), back_props.cend(),</div>
-<div class="line"><span class="lineno">   32</span>                     [](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1train.html#a051e8733a27d6ab456181dec51e9a745">BackPropTensor</a> *back_prop) { return back_prop != nullptr; }));</div>
-<div class="line"><span class="lineno">   33</span>}</div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1train_html_a051e8733a27d6ab456181dec51e9a745"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train.html#a051e8733a27d6ab456181dec51e9a745">onert::backend::train::BackPropTensor</a></div><div class="ttdeci">Tensor BackPropTensor</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2backend_2train_2_tensor_8h_source.html#l00047">Tensor.h:47</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_back_prop_initializer_8cc_source.html#l00022">22</a> of file <a class="el" href="_back_prop_initializer_8cc_source.html">BackPropInitializer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   23</span>  : _back_props{back_props}</div>
+<div class="line"><span class="lineno">   24</span>{</div>
+<div class="line"><span class="lineno">   25</span>  assert(std::all_of(back_props.cbegin(), back_props.cend(),</div>
+<div class="line"><span class="lineno">   26</span>                     [](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1backend_1_1train.html#a051e8733a27d6ab456181dec51e9a745">BackPropTensor</a> *back_prop) { return back_prop != nullptr; }));</div>
+<div class="line"><span class="lineno">   27</span>}</div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1train_html_a051e8733a27d6ab456181dec51e9a745"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train.html#a051e8733a27d6ab456181dec51e9a745">onert::backend::train::BackPropTensor</a></div><div class="ttdeci">Tensor BackPropTensor</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2backend_2train_2_tensor_8h_source.html#l00043">Tensor.h:43</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -177,14 +177,14 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_back_prop_initializer_8cc_source.html#l00040">40</a> of file <a class="el" href="_back_prop_initializer_8cc_source.html">BackPropInitializer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
-<div class="line"><span class="lineno">   42</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;back_prop_tensor : _back_props)</div>
-<div class="line"><span class="lineno">   43</span>  {</div>
-<div class="line"><span class="lineno">   44</span>    assert(back_prop_tensor-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   45</span>    memset(back_prop_tensor-&gt;buffer(), 0, back_prop_tensor-&gt;total_size());</div>
-<div class="line"><span class="lineno">   46</span>  }</div>
-<div class="line"><span class="lineno">   47</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_back_prop_initializer_8cc_source.html#l00034">34</a> of file <a class="el" href="_back_prop_initializer_8cc_source.html">BackPropInitializer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;back_prop_tensor : _back_props)</div>
+<div class="line"><span class="lineno">   37</span>  {</div>
+<div class="line"><span class="lineno">   38</span>    assert(back_prop_tensor-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   39</span>    memset(back_prop_tensor-&gt;buffer(), 0, back_prop_tensor-&gt;total_size());</div>
+<div class="line"><span class="lineno">   40</span>  }</div>
+<div class="line"><span class="lineno">   41</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -214,10 +214,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_back_prop_initializer_8cc_source.html#l00035">35</a> of file <a class="el" href="_back_prop_initializer_8cc_source.html">BackPropInitializer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
-<div class="line"><span class="lineno">   37</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   38</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_back_prop_initializer_8cc_source.html#l00029">29</a> of file <a class="el" href="_back_prop_initializer_8cc_source.html">BackPropInitializer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
+<div class="line"><span class="lineno">   31</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   32</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

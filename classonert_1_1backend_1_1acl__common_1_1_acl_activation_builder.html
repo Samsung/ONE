@@ -105,7 +105,7 @@ Static Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T_Tensor, typename T_ActivationLayer, typename T_ExecFunction&gt;<br />
 class onert::backend::acl_common::AclActivationBuilder&lt; T_Tensor, T_ActivationLayer, T_ExecFunction &gt;</div>
-<p class="definition">Definition at line <a class="el" href="_acl_activation_builder_8h_source.html#l00036">36</a> of file <a class="el" href="_acl_activation_builder_8h_source.html">AclActivationBuilder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_acl_activation_builder_8h_source.html#l00032">32</a> of file <a class="el" href="_acl_activation_builder_8h_source.html">AclActivationBuilder.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a37eff9d711089392e09a4313927c77c8" name="a37eff9d711089392e09a4313927c77c8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a37eff9d711089392e09a4313927c77c8">&#9670;&#160;</a></span>generate()</h2>
@@ -143,32 +143,32 @@ template&lt;typename T_Tensor , typename T_ActivationLayer , typename T_ExecFunc
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_acl_activation_builder_8h_source.html#l00093">93</a> of file <a class="el" href="_acl_activation_builder_8h_source.html">AclActivationBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   95</span>{</div>
-<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">switch</span> (code)</div>
-<div class="line"><span class="lineno">   97</span>  {</div>
-<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>:</div>
+<p class="definition">Definition at line <a class="el" href="_acl_activation_builder_8h_source.html#l00089">89</a> of file <a class="el" href="_acl_activation_builder_8h_source.html">AclActivationBuilder.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span>{</div>
+<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">switch</span> (code)</div>
+<div class="line"><span class="lineno">   93</span>  {</div>
+<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">ir::Activation::NONE</a>:</div>
+<div class="line"><span class="lineno">   95</span>    {</div>
+<div class="line"><span class="lineno">   96</span>      <span class="keywordflow">return</span> std::make_unique&lt;exec::NopFunction&gt;();</div>
+<div class="line"><span class="lineno">   97</span>    }</div>
+<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">ir::Activation::RELU</a>:</div>
 <div class="line"><span class="lineno">   99</span>    {</div>
-<div class="line"><span class="lineno">  100</span>      <span class="keywordflow">return</span> std::make_unique&lt;exec::NopFunction&gt;();</div>
+<div class="line"><span class="lineno">  100</span>      <span class="keywordflow">return</span> generateReLU(ifm_alloc);</div>
 <div class="line"><span class="lineno">  101</span>    }</div>
-<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ad346bb4679d29be241279f15d7795c1c">ir::Activation::RELU</a>:</div>
+<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4a235769ca556a132313d564d3c57098f9">ir::Activation::RELU1</a>:</div>
 <div class="line"><span class="lineno">  103</span>    {</div>
-<div class="line"><span class="lineno">  104</span>      <span class="keywordflow">return</span> generateReLU(ifm_alloc);</div>
+<div class="line"><span class="lineno">  104</span>      <span class="keywordflow">return</span> generateReLU1(ifm_alloc);</div>
 <div class="line"><span class="lineno">  105</span>    }</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4a235769ca556a132313d564d3c57098f9">ir::Activation::RELU1</a>:</div>
+<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">ir::Activation::RELU6</a>:</div>
 <div class="line"><span class="lineno">  107</span>    {</div>
-<div class="line"><span class="lineno">  108</span>      <span class="keywordflow">return</span> generateReLU1(ifm_alloc);</div>
+<div class="line"><span class="lineno">  108</span>      <span class="keywordflow">return</span> generateReLU6(ifm_alloc);</div>
 <div class="line"><span class="lineno">  109</span>    }</div>
-<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">ir::Activation::RELU6</a>:</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">default</span>:</div>
 <div class="line"><span class="lineno">  111</span>    {</div>
-<div class="line"><span class="lineno">  112</span>      <span class="keywordflow">return</span> generateReLU6(ifm_alloc);</div>
+<div class="line"><span class="lineno">  112</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Not supported, yet&quot;</span>);</div>
 <div class="line"><span class="lineno">  113</span>    }</div>
-<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  115</span>    {</div>
-<div class="line"><span class="lineno">  116</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Not supported, yet&quot;</span>);</div>
-<div class="line"><span class="lineno">  117</span>    }</div>
-<div class="line"><span class="lineno">  118</span>  }</div>
-<div class="line"><span class="lineno">  119</span>}</div>
+<div class="line"><span class="lineno">  114</span>  }</div>
+<div class="line"><span class="lineno">  115</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4a235769ca556a132313d564d3c57098f9"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4a235769ca556a132313d564d3c57098f9">onert::ir::Activation::RELU1</a></div><div class="ttdeci">@ RELU1</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::Activation::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ac014a3d2b85dcb087a709b9b2a3b8e6b">onert::ir::Activation::RELU6</a></div><div class="ttdeci">@ RELU6</div></div>

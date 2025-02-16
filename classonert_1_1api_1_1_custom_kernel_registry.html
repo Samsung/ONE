@@ -126,18 +126,18 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_custom_kernel_registry_8cc_source.html#l00055">55</a> of file <a class="el" href="_custom_kernel_registry_8cc_source.html">CustomKernelRegistry.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keyword">auto</span> it = _storage.find(<span class="keywordtype">id</span>);</div>
-<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">if</span> (it == _storage.end())</div>
-<div class="line"><span class="lineno">   59</span>  {</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unable to find associated kernel for op&quot;</span>);</div>
-<div class="line"><span class="lineno">   61</span>  }</div>
-<div class="line"><span class="lineno">   62</span> </div>
-<div class="line"><span class="lineno">   63</span>  <span class="keywordflow">return</span> std::make_unique&lt;CustomKernel&gt;(it-&gt;second);</div>
-<div class="line"><span class="lineno">   64</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_custom_kernel_registry_8cc_source.html#l00053">53</a> of file <a class="el" href="_custom_kernel_registry_8cc_source.html">CustomKernelRegistry.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keyword">auto</span> it = _storage.find(<span class="keywordtype">id</span>);</div>
+<div class="line"><span class="lineno">   56</span>  <span class="keywordflow">if</span> (it == _storage.end())</div>
+<div class="line"><span class="lineno">   57</span>  {</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unable to find associated kernel for op&quot;</span>);</div>
+<div class="line"><span class="lineno">   59</span>  }</div>
+<div class="line"><span class="lineno">   60</span> </div>
+<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">return</span> std::make_unique&lt;CustomKernel&gt;(it-&gt;second);</div>
+<div class="line"><span class="lineno">   62</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_custom_kernel_registry_8cc_source.html#l00032">onert::api::KernelBuilder::buildKernel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_custom_kernel_registry_8cc_source.html#l00030">onert::api::KernelBuilder::buildKernel()</a>.</p>
 
 </div>
 </div>
@@ -156,10 +156,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_custom_kernel_registry_8cc_source.html#l00050">50</a> of file <a class="el" href="_custom_kernel_registry_8cc_source.html">CustomKernelRegistry.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>{</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">return</span> std::make_unique&lt;KernelBuilder&gt;(<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">   53</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_custom_kernel_registry_8cc_source.html#l00048">48</a> of file <a class="el" href="_custom_kernel_registry_8cc_source.html">CustomKernelRegistry.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
+<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">return</span> std::make_unique&lt;KernelBuilder&gt;(<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">   51</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -189,10 +189,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_custom_kernel_registry_8cc_source.html#l00045">45</a> of file <a class="el" href="_custom_kernel_registry_8cc_source.html">CustomKernelRegistry.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span>  _storage.emplace(<span class="keywordtype">id</span>, evalFunction);</div>
-<div class="line"><span class="lineno">   48</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_custom_kernel_registry_8cc_source.html#l00043">43</a> of file <a class="el" href="_custom_kernel_registry_8cc_source.html">CustomKernelRegistry.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{</div>
+<div class="line"><span class="lineno">   45</span>  _storage.emplace(<span class="keywordtype">id</span>, evalFunction);</div>
+<div class="line"><span class="lineno">   46</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

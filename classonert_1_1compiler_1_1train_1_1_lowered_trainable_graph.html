@@ -139,7 +139,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that contains lowering information on graph. In addition, after lowering, operands in graph will be set to "dynamic" if the shape of output of an operation cannot be decided at compilation time. </p>
 
-<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00039">39</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00035">35</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abdca82b849194784cf0a8982c1ffd037" name="abdca82b849194784cf0a8982c1ffd037"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abdca82b849194784cf0a8982c1ffd037">&#9670;&#160;</a></span>LoweredTrainableGraph()</h2>
@@ -167,12 +167,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8cc_source.html#l00046">46</a> of file <a class="el" href="_lowered_trainable_graph_8cc_source.html">LoweredTrainableGraph.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>  : _trainable_graph{<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a73cfb7d0caf2754f5b14c9a33d500b60">graph</a>}</div>
-<div class="line"><span class="lineno">   49</span>{</div>
-<div class="line"><span class="lineno">   50</span>  lowerGraph(options);</div>
-<div class="line"><span class="lineno">   51</span>}</div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1train_1_1_lowered_trainable_graph_html_a73cfb7d0caf2754f5b14c9a33d500b60"><div class="ttname"><a href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a73cfb7d0caf2754f5b14c9a33d500b60">onert::compiler::train::LoweredTrainableGraph::graph</a></div><div class="ttdeci">ir::Graph &amp; graph() override</div><div class="ttdef"><b>Definition</b> <a href="_lowered_trainable_graph_8h_source.html#l00045">LoweredTrainableGraph.h:45</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8cc_source.html#l00042">42</a> of file <a class="el" href="_lowered_trainable_graph_8cc_source.html">LoweredTrainableGraph.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>  : _trainable_graph{<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a73cfb7d0caf2754f5b14c9a33d500b60">graph</a>}</div>
+<div class="line"><span class="lineno">   45</span>{</div>
+<div class="line"><span class="lineno">   46</span>  lowerGraph(options);</div>
+<div class="line"><span class="lineno">   47</span>}</div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1train_1_1_lowered_trainable_graph_html_a73cfb7d0caf2754f5b14c9a33d500b60"><div class="ttname"><a href="classonert_1_1compiler_1_1train_1_1_lowered_trainable_graph.html#a73cfb7d0caf2754f5b14c9a33d500b60">onert::compiler::train::LoweredTrainableGraph::graph</a></div><div class="ttdeci">ir::Graph &amp; graph() override</div><div class="ttdef"><b>Definition</b> <a href="_lowered_trainable_graph_8h_source.html#l00041">LoweredTrainableGraph.h:41</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -203,8 +203,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#abde68b12383ceb2bcd321be052649b11">onert::compiler::ILoweredGraph</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00058">58</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00054">54</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -233,11 +233,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#aef68655ef72f08d170d005fb9a6decfa">onert::compiler::ILoweredGraph</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00046">46</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> _trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae0f4348cfa95e2722c1e721e6324e9a1">graph</a>(); }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_ae0f4348cfa95e2722c1e721e6324e9a1"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae0f4348cfa95e2722c1e721e6324e9a1">onert::ir::train::TrainableGraph::graph</a></div><div class="ttdeci">const Graph &amp; graph() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00128">TrainableGraph.h:128</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00042">42</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>{ <span class="keywordflow">return</span> _trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae0f4348cfa95e2722c1e721e6324e9a1">graph</a>(); }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_ae0f4348cfa95e2722c1e721e6324e9a1"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae0f4348cfa95e2722c1e721e6324e9a1">onert::ir::train::TrainableGraph::graph</a></div><div class="ttdeci">const Graph &amp; graph() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00124">TrainableGraph.h:124</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_graph_8h_source.html#l00128">onert::ir::train::TrainableGraph::graph()</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_graph_8h_source.html#l00124">onert::ir::train::TrainableGraph::graph()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_topological_sort_helper_8py_source.html#l00025">TopologicalSortHelper.TopologicalSortHelper::add_edge()</a>, and <a class="el" href="_topological_sort_helper_8py_source.html#l00028">TopologicalSortHelper.TopologicalSortHelper::sort_util()</a>.</p>
 
@@ -268,12 +268,12 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#a077d568714f72d299c11a423f16aa8a1">onert::compiler::ILoweredGraph</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00045">45</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> <span class="keyword">const_cast&lt;</span>ir::Graph &amp;<span class="keyword">&gt;</span>(_trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae0f4348cfa95e2722c1e721e6324e9a1">graph</a>()); }</div>
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00041">41</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{ <span class="keywordflow">return</span> <span class="keyword">const_cast&lt;</span>ir::Graph &amp;<span class="keyword">&gt;</span>(_trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae0f4348cfa95e2722c1e721e6324e9a1">graph</a>()); }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_graph_8h_source.html#l00128">onert::ir::train::TrainableGraph::graph()</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_graph_8h_source.html#l00124">onert::ir::train::TrainableGraph::graph()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_topological_sort_helper_8py_source.html#l00025">TopologicalSortHelper.TopologicalSortHelper::add_edge()</a>, <a class="el" href="_graph_dumper_8cc_source.html#l00100">onert::dumper::text::dumpLoweredGraph()</a>, <a class="el" href="_static_backward_shape_inferer_8cc_source.html#l00033">onert::compiler::train::StaticBackwardShapeInferer::infer()</a>, and <a class="el" href="_topological_sort_helper_8py_source.html#l00028">TopologicalSortHelper.TopologicalSortHelper::sort_util()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_topological_sort_helper_8py_source.html#l00025">TopologicalSortHelper.TopologicalSortHelper::add_edge()</a>, <a class="el" href="_graph_dumper_8cc_source.html#l00096">onert::dumper::text::dumpLoweredGraph()</a>, <a class="el" href="_static_backward_shape_inferer_8cc_source.html#l00029">onert::compiler::train::StaticBackwardShapeInferer::infer()</a>, and <a class="el" href="_topological_sort_helper_8py_source.html#l00028">TopologicalSortHelper.TopologicalSortHelper::sort_util()</a>.</p>
 
 </div>
 </div>
@@ -300,8 +300,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00051">51</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>{ <span class="keywordflow">return</span> _indexed_ranks; }</div>
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00047">47</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> _indexed_ranks; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -330,8 +330,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#a009fa65e7f106b931537171cdf14352c">onert::compiler::ILoweredGraph</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00049">49</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> _lower_info_map; }</div>
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00045">45</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> _lower_info_map; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -360,8 +360,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#aab62c2148c74b2dc10750e829eb27b40">onert::compiler::ILoweredGraph</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00050">50</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{ <span class="keywordflow">return</span> _lower_info_map; }</div>
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00046">46</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{ <span class="keywordflow">return</span> _lower_info_map; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -401,11 +401,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1compiler_1_1_i_lowered_graph.html#aed06f313709241fb12b0733fa1c76367">onert::compiler::ILoweredGraph</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00053">53</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span>  {</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keywordflow">if</span> (has_dynamic)</div>
-<div class="line"><span class="lineno">   56</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;LoweredTrainableGraph does not support dynamic tensors yet&quot;</span>);</div>
-<div class="line"><span class="lineno">   57</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00049">49</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>  {</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> (has_dynamic)</div>
+<div class="line"><span class="lineno">   52</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;LoweredTrainableGraph does not support dynamic tensors yet&quot;</span>);</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -432,10 +432,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00047">47</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> _trainable_graph; }</div>
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00043">43</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>{ <span class="keywordflow">return</span> _trainable_graph; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_static_backward_shape_inferer_8cc_source.html#l00033">onert::compiler::train::StaticBackwardShapeInferer::infer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_static_backward_shape_inferer_8cc_source.html#l00029">onert::compiler::train::StaticBackwardShapeInferer::infer()</a>.</p>
 
 </div>
 </div>
@@ -462,8 +462,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00048">48</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> _trainable_graph; }</div>
+<p class="definition">Definition at line <a class="el" href="_lowered_trainable_graph_8h_source.html#l00044">44</a> of file <a class="el" href="_lowered_trainable_graph_8h_source.html">LoweredTrainableGraph.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   44</span>{ <span class="keywordflow">return</span> _trainable_graph; }</div>
 </div><!-- fragment -->
 </div>
 </div>

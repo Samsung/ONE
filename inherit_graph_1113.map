@@ -1,19 +1,17 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structonert_1_1backend_1_1_i_config.html" title=" " alt="" coords="5,242,157,268"/>
-<area shape="rect" id="Node000001" href="$classonert_1_1backend_1_1acl__cl_1_1_config.html" title=" " alt="" coords="220,5,349,46"/>
-<area shape="poly" id="edge2375_Node000000_Node000001" title=" " alt="" coords="91,227,108,189,132,144,164,98,203,57,221,44,224,49,206,61,168,101,137,147,112,192,95,229"/>
-<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1acl__neon_1_1_config.html" title=" " alt="" coords="220,71,349,111"/>
-<area shape="poly" id="edge2376_Node000000_Node000002" title=" " alt="" coords="99,228,143,176,172,147,203,122,225,110,227,114,206,127,175,151,147,179,103,231"/>
-<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1builtin_1_1_config.html" title=" " alt="" coords="212,136,357,177"/>
-<area shape="poly" id="edge2377_Node000000_Node000003" title=" " alt="" coords="118,232,203,187,231,175,233,180,206,192,120,237"/>
-<area shape="rect" id="Node000004" href="$classonert_1_1backend_1_1cpu_1_1_config.html" title=" " alt="" coords="218,201,351,242"/>
-<area shape="poly" id="edge2378_Node000000_Node000004" title=" " alt="" coords="171,238,218,230,219,235,172,243"/>
-<area shape="rect" id="Node000005" href="$classonert_1_1backend_1_1ruy_1_1_config.html" title=" " alt="" coords="220,267,349,307"/>
-<area shape="poly" id="edge2379_Node000000_Node000005" title=" " alt="" coords="172,267,220,274,220,280,171,272"/>
-<area shape="rect" id="Node000006" href="$classonert_1_1backend_1_1train_1_1_config.html" title=" " alt="" coords="216,332,353,373"/>
-<area shape="poly" id="edge2380_Node000000_Node000006" title=" " alt="" coords="121,273,206,317,233,329,231,334,204,321,119,278"/>
-<area shape="rect" id="Node000007" href="$classonert_1_1backend_1_1trix_1_1_config.html" title=" " alt="" coords="220,397,349,438"/>
-<area shape="poly" id="edge2381_Node000000_Node000007" title=" " alt="" coords="103,279,147,330,176,358,206,382,227,394,225,399,203,387,172,362,143,334,99,282"/>
-<area shape="rect" id="Node000008" href="$classonert_1_1backend_1_1xnnpack_1_1_config.html" title=" " alt="" coords="205,463,364,503"/>
-<area shape="poly" id="edge2382_Node000000_Node000008" title=" " alt="" coords="95,281,112,318,137,362,168,408,206,448,224,460,221,464,203,452,164,411,132,365,108,320,91,283"/>
+<area shape="rect" id="Node000000" href="$structonert_1_1backend_1_1_i_config.html" title=" " alt="" coords="5,209,157,235"/>
+<area shape="rect" id="Node000001" href="$classonert_1_1backend_1_1acl__cl_1_1_config.html" title=" " alt="" coords="213,5,342,46"/>
+<area shape="poly" id="edge2373_Node000000_Node000001" title=" " alt="" coords="94,194,138,127,168,90,203,57,222,44,225,49,206,61,172,94,142,130,99,197"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1backend_1_1acl__neon_1_1_config.html" title=" " alt="" coords="213,71,342,111"/>
+<area shape="poly" id="edge2374_Node000000_Node000002" title=" " alt="" coords="106,196,150,160,203,122,226,110,229,114,206,127,153,164,109,201"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1backend_1_1builtin_1_1_config.html" title=" " alt="" coords="205,136,350,177"/>
+<area shape="poly" id="edge2375_Node000000_Node000003" title=" " alt="" coords="135,201,213,175,215,180,137,206"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1backend_1_1cpu_1_1_config.html" title=" " alt="" coords="211,201,344,242"/>
+<area shape="poly" id="edge2376_Node000000_Node000004" title=" " alt="" coords="172,219,211,219,211,224,172,224"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1backend_1_1ruy_1_1_config.html" title=" " alt="" coords="213,267,342,307"/>
+<area shape="poly" id="edge2377_Node000000_Node000005" title=" " alt="" coords="137,237,215,264,213,269,135,242"/>
+<area shape="rect" id="Node000006" href="$classonert_1_1backend_1_1train_1_1_config.html" title=" " alt="" coords="209,332,346,373"/>
+<area shape="poly" id="edge2378_Node000000_Node000006" title=" " alt="" coords="109,243,153,279,206,317,229,329,226,334,203,321,150,284,106,247"/>
+<area shape="rect" id="Node000007" href="$classonert_1_1backend_1_1trix_1_1_config.html" title=" " alt="" coords="213,397,342,438"/>
+<area shape="poly" id="edge2379_Node000000_Node000007" title=" " alt="" coords="99,247,142,313,172,350,206,382,225,395,222,399,203,386,168,353,138,316,94,249"/>
 </map>

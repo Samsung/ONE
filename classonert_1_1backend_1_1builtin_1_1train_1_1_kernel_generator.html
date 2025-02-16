@@ -142,7 +142,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html#l00037">37</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html">KernelGenerator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html#l00031">31</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html">KernelGenerator.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a01f325c8d7c1abb064238435bbbb4a65" name="a01f325c8d7c1abb064238435bbbb4a65"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a01f325c8d7c1abb064238435bbbb4a65">&#9670;&#160;</a></span>KernelGenerator()</h2>
@@ -176,11 +176,11 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html#l00030">30</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   33</span>  : <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace64f6933ecae51a608c4a2e25d7097e">KernelGeneratorBase</a>{tgraph}, _tensor_reg{tensor_reg}, _external_context(external_context)</div>
-<div class="line"><span class="lineno">   34</span>{</div>
-<div class="line"><span class="lineno">   35</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_kernel_generator_base_html_ace64f6933ecae51a608c4a2e25d7097e"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace64f6933ecae51a608c4a2e25d7097e">onert::backend::train::KernelGeneratorBase::KernelGeneratorBase</a></div><div class="ttdeci">KernelGeneratorBase(const ir::train::TrainableGraph &amp;tgraph)</div><div class="ttdef"><b>Definition</b> <a href="train_2_kernel_generator_base_8h_source.html#l00038">KernelGeneratorBase.h:38</a></div></div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html#l00024">24</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   27</span>  : <a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace64f6933ecae51a608c4a2e25d7097e">KernelGeneratorBase</a>{tgraph}, _tensor_reg{tensor_reg}, _external_context(external_context)</div>
+<div class="line"><span class="lineno">   28</span>{</div>
+<div class="line"><span class="lineno">   29</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_kernel_generator_base_html_ace64f6933ecae51a608c4a2e25d7097e"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace64f6933ecae51a608c4a2e25d7097e">onert::backend::train::KernelGeneratorBase::KernelGeneratorBase</a></div><div class="ttdeci">KernelGeneratorBase(const ir::train::TrainableGraph &amp;tgraph)</div><div class="ttdef"><b>Definition</b> <a href="train_2_kernel_generator_base_8h_source.html#l00034">KernelGeneratorBase.h:34</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -211,27 +211,27 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ab2519a847a9b5cf654daac57d5ae6096">onert::backend::train::KernelGeneratorBase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html#l00037">37</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{</div>
-<div class="line"><span class="lineno">   39</span>  <span class="keyword">auto</span> ret = std::make_unique&lt;exec::train::TrainableFnSequence&gt;();</div>
-<div class="line"><span class="lineno">   40</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op = <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#af4cfc3d23cd44e15c60a83331675e1b2">_tgraph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a0efe89ac2a129ae975957af5ba0ae525">operation</a>(ind);</div>
-<div class="line"><span class="lineno">   41</span>  op.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a8a8338d2a43a2fbb7a0aeff63a0e17ea">accept</a>(*<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">   42</span>  <span class="comment">// _return_fn must have been generated</span></div>
-<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   44</span>  {</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">throw</span> std::runtime_error(op.name() + <span class="stringliteral">&quot; op does not supported trainable kernel yet&quot;</span>);</div>
-<div class="line"><span class="lineno">   46</span>  }</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>  ret-&gt;_functions.emplace_back(std::move(<a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a>));</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">return</span> ret;</div>
-<div class="line"><span class="lineno">   51</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_kernel_generator_base_html_ace46c76d914d0d7915a3749c442694b4"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">onert::backend::train::KernelGeneratorBase::_return_fn</a></div><div class="ttdeci">std::unique_ptr&lt; exec::train::ITrainableFunction &gt; _return_fn</div><div class="ttdef"><b>Definition</b> <a href="train_2_kernel_generator_base_8h_source.html#l00053">KernelGeneratorBase.h:53</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_kernel_generator_base_html_af4cfc3d23cd44e15c60a83331675e1b2"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#af4cfc3d23cd44e15c60a83331675e1b2">onert::backend::train::KernelGeneratorBase::_tgraph</a></div><div class="ttdeci">const ir::train::TrainableGraph &amp; _tgraph</div><div class="ttdef"><b>Definition</b> <a href="train_2_kernel_generator_base_8h_source.html#l00052">KernelGeneratorBase.h:52</a></div></div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html#l00031">31</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8cc_source.html">KernelGenerator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
+<div class="line"><span class="lineno">   33</span>  <span class="keyword">auto</span> ret = std::make_unique&lt;exec::train::TrainableFnSequence&gt;();</div>
+<div class="line"><span class="lineno">   34</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;op = <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#af4cfc3d23cd44e15c60a83331675e1b2">_tgraph</a>.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a0efe89ac2a129ae975957af5ba0ae525">operation</a>(ind);</div>
+<div class="line"><span class="lineno">   35</span>  op.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a8a8338d2a43a2fbb7a0aeff63a0e17ea">accept</a>(*<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">   36</span>  <span class="comment">// _return_fn must have been generated</span></div>
+<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a> == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   38</span>  {</div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">throw</span> std::runtime_error(op.name() + <span class="stringliteral">&quot; op does not supported trainable kernel yet&quot;</span>);</div>
+<div class="line"><span class="lineno">   40</span>  }</div>
+<div class="line"><span class="lineno">   41</span> </div>
+<div class="line"><span class="lineno">   42</span>  ret-&gt;_functions.emplace_back(std::move(<a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">_return_fn</a>));</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">return</span> ret;</div>
+<div class="line"><span class="lineno">   45</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_kernel_generator_base_html_ace46c76d914d0d7915a3749c442694b4"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#ace46c76d914d0d7915a3749c442694b4">onert::backend::train::KernelGeneratorBase::_return_fn</a></div><div class="ttdeci">std::unique_ptr&lt; exec::train::ITrainableFunction &gt; _return_fn</div><div class="ttdef"><b>Definition</b> <a href="train_2_kernel_generator_base_8h_source.html#l00049">KernelGeneratorBase.h:49</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_kernel_generator_base_html_af4cfc3d23cd44e15c60a83331675e1b2"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_kernel_generator_base.html#af4cfc3d23cd44e15c60a83331675e1b2">onert::backend::train::KernelGeneratorBase::_tgraph</a></div><div class="ttdeci">const ir::train::TrainableGraph &amp; _tgraph</div><div class="ttdef"><b>Definition</b> <a href="train_2_kernel_generator_base_8h_source.html#l00048">KernelGeneratorBase.h:48</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_i_trainable_operation_html_a8a8338d2a43a2fbb7a0aeff63a0e17ea"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a8a8338d2a43a2fbb7a0aeff63a0e17ea">onert::ir::train::ITrainableOperation::accept</a></div><div class="ttdeci">virtual void accept(OperationVisitor &amp;v) const override=0</div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a0efe89ac2a129ae975957af5ba0ae525"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a0efe89ac2a129ae975957af5ba0ae525">onert::ir::train::TrainableGraph::operation</a></div><div class="ttdeci">const ITrainableOperation &amp; operation(OperationIndex index) const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8cc_source.html#l00175">TrainableGraph.cc:175</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a0efe89ac2a129ae975957af5ba0ae525"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a0efe89ac2a129ae975957af5ba0ae525">onert::ir::train::TrainableGraph::operation</a></div><div class="ttdeci">const ITrainableOperation &amp; operation(OperationIndex index) const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8cc_source.html#l00171">TrainableGraph.cc:171</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00053">onert::backend::train::KernelGeneratorBase::_return_fn</a>, <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00052">onert::backend::train::KernelGeneratorBase::_tgraph</a>, <a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a8a8338d2a43a2fbb7a0aeff63a0e17ea">onert::ir::train::ITrainableOperation::accept()</a>, and <a class="el" href="_trainable_graph_8cc_source.html#l00175">onert::ir::train::TrainableGraph::operation()</a>.</p>
+<p class="reference">References <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00049">onert::backend::train::KernelGeneratorBase::_return_fn</a>, <a class="el" href="train_2_kernel_generator_base_8h_source.html#l00048">onert::backend::train::KernelGeneratorBase::_tgraph</a>, <a class="el" href="classonert_1_1ir_1_1train_1_1_i_trainable_operation.html#a8a8338d2a43a2fbb7a0aeff63a0e17ea">onert::ir::train::ITrainableOperation::accept()</a>, and <a class="el" href="_trainable_graph_8cc_source.html#l00171">onert::ir::train::TrainableGraph::operation()</a>.</p>
 
 </div>
 </div>
@@ -259,10 +259,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html#l00046">46</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html">KernelGenerator.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>  {</div>
-<div class="line"><span class="lineno">   48</span>    _tensor_registries = tensor_registries;</div>
-<div class="line"><span class="lineno">   49</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html#l00040">40</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html">KernelGenerator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>  {</div>
+<div class="line"><span class="lineno">   42</span>    _tensor_registries = tensor_registries;</div>
+<div class="line"><span class="lineno">   43</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -290,10 +290,10 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html#l00051">51</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html">KernelGenerator.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>  {</div>
-<div class="line"><span class="lineno">   53</span>    _whole_graph_outputs = outputs;</div>
-<div class="line"><span class="lineno">   54</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html#l00045">45</a> of file <a class="el" href="core_2src_2backend_2builtin_2train_2_kernel_generator_8h_source.html">KernelGenerator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>  {</div>
+<div class="line"><span class="lineno">   47</span>    _whole_graph_outputs = outputs;</div>
+<div class="line"><span class="lineno">   48</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

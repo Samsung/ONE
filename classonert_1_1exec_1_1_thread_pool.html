@@ -117,7 +117,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_thread_pool_8h_source.html#l00031">31</a> of file <a class="el" href="_thread_pool_8h_source.html">ThreadPool.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_thread_pool_8h_source.html#l00029">29</a> of file <a class="el" href="_thread_pool_8h_source.html">ThreadPool.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6ad611c41f5b9ee98121319e90b753e6" name="a6ad611c41f5b9ee98121319e90b753e6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6ad611c41f5b9ee98121319e90b753e6">&#9670;&#160;</a></span>ThreadPool()</h2>
@@ -143,15 +143,15 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_thread_pool_8cc_source.html#l00026">26</a> of file <a class="el" href="_thread_pool_8cc_source.html">ThreadPool.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  assert(num_threads &gt;= 1);</div>
-<div class="line"><span class="lineno">   29</span> </div>
-<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_threads; i++)</div>
-<div class="line"><span class="lineno">   31</span>  {</div>
-<div class="line"><span class="lineno">   32</span>    _threads.emplace_back(std::ref(_worker));</div>
-<div class="line"><span class="lineno">   33</span>  }</div>
-<div class="line"><span class="lineno">   34</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_thread_pool_8cc_source.html#l00024">24</a> of file <a class="el" href="_thread_pool_8cc_source.html">ThreadPool.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   25</span>{</div>
+<div class="line"><span class="lineno">   26</span>  assert(num_threads &gt;= 1);</div>
+<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; num_threads; i++)</div>
+<div class="line"><span class="lineno">   29</span>  {</div>
+<div class="line"><span class="lineno">   30</span>    _threads.emplace_back(std::ref(_worker));</div>
+<div class="line"><span class="lineno">   31</span>  }</div>
+<div class="line"><span class="lineno">   32</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -172,17 +172,17 @@ Public Member Functions</h2></td></tr>
 
 <p>Destroy ThreadPool object. </p>
 
-<p class="definition">Definition at line <a class="el" href="_thread_pool_8cc_source.html#l00036">36</a> of file <a class="el" href="_thread_pool_8cc_source.html">ThreadPool.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (!_threads.empty())</div>
-<div class="line"><span class="lineno">   39</span>  {</div>
-<div class="line"><span class="lineno">   40</span>    _worker.<a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#aa5a6508dc9ede82fb8430eeb644cb80a">terminate</a>();</div>
-<div class="line"><span class="lineno">   41</span>    join();</div>
-<div class="line"><span class="lineno">   42</span>  }</div>
-<div class="line"><span class="lineno">   43</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_aa5a6508dc9ede82fb8430eeb644cb80a"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#aa5a6508dc9ede82fb8430eeb644cb80a">onert::exec::WorkQueue::terminate</a></div><div class="ttdeci">void terminate()</div><div class="ttdoc">Flag as terminating so all the worker threads can terminate.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00079">WorkQueue.cc:79</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_thread_pool_8cc_source.html#l00034">34</a> of file <a class="el" href="_thread_pool_8cc_source.html">ThreadPool.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
+<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (!_threads.empty())</div>
+<div class="line"><span class="lineno">   37</span>  {</div>
+<div class="line"><span class="lineno">   38</span>    _worker.<a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#aa5a6508dc9ede82fb8430eeb644cb80a">terminate</a>();</div>
+<div class="line"><span class="lineno">   39</span>    join();</div>
+<div class="line"><span class="lineno">   40</span>  }</div>
+<div class="line"><span class="lineno">   41</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_aa5a6508dc9ede82fb8430eeb644cb80a"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#aa5a6508dc9ede82fb8430eeb644cb80a">onert::exec::WorkQueue::terminate</a></div><div class="ttdeci">void terminate()</div><div class="ttdoc">Flag as terminating so all the worker threads can terminate.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00077">WorkQueue.cc:77</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_work_queue_8cc_source.html#l00079">onert::exec::WorkQueue::terminate()</a>.</p>
+<p class="reference">References <a class="el" href="_work_queue_8cc_source.html#l00077">onert::exec::WorkQueue::terminate()</a>.</p>
 
 </div>
 </div>
@@ -211,11 +211,11 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_thread_pool_8cc_source.html#l00045">45</a> of file <a class="el" href="_thread_pool_8cc_source.html">ThreadPool.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{ _worker.<a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#a3c1c39bdedb325fecfea80a9a2113654">enqueue</a>(std::move(fn)); }</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_a3c1c39bdedb325fecfea80a9a2113654"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#a3c1c39bdedb325fecfea80a9a2113654">onert::exec::WorkQueue::enqueue</a></div><div class="ttdeci">void enqueue(std::unique_ptr&lt; IFunction &gt; &amp;&amp;fn)</div><div class="ttdoc">Push the given Task to the job queue.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00070">WorkQueue.cc:70</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_thread_pool_8cc_source.html#l00043">43</a> of file <a class="el" href="_thread_pool_8cc_source.html">ThreadPool.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>{ _worker.<a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#a3c1c39bdedb325fecfea80a9a2113654">enqueue</a>(std::move(fn)); }</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_a3c1c39bdedb325fecfea80a9a2113654"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#a3c1c39bdedb325fecfea80a9a2113654">onert::exec::WorkQueue::enqueue</a></div><div class="ttdeci">void enqueue(std::unique_ptr&lt; IFunction &gt; &amp;&amp;fn)</div><div class="ttdoc">Push the given Task to the job queue.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00068">WorkQueue.cc:68</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_work_queue_8cc_source.html#l00070">onert::exec::WorkQueue::enqueue()</a>.</p>
+<p class="reference">References <a class="el" href="_work_queue_8cc_source.html#l00068">onert::exec::WorkQueue::enqueue()</a>.</p>
 
 </div>
 </div>
@@ -236,14 +236,14 @@ Public Member Functions</h2></td></tr>
 
 <p>Block until all jobs are finished. </p>
 
-<p class="definition">Definition at line <a class="el" href="_thread_pool_8cc_source.html#l00058">58</a> of file <a class="el" href="_thread_pool_8cc_source.html">ThreadPool.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{</div>
-<div class="line"><span class="lineno">   60</span>  _worker.<a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#aa525d9c546761503e2b3ac0b2fcbdf48">finish</a>();</div>
-<div class="line"><span class="lineno">   61</span>  join();</div>
-<div class="line"><span class="lineno">   62</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_aa525d9c546761503e2b3ac0b2fcbdf48"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#aa525d9c546761503e2b3ac0b2fcbdf48">onert::exec::WorkQueue::finish</a></div><div class="ttdeci">void finish()</div><div class="ttdoc">Flag as terminating so all the worker threads can terminate.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00088">WorkQueue.cc:88</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_thread_pool_8cc_source.html#l00056">56</a> of file <a class="el" href="_thread_pool_8cc_source.html">ThreadPool.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>{</div>
+<div class="line"><span class="lineno">   58</span>  _worker.<a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#aa525d9c546761503e2b3ac0b2fcbdf48">finish</a>();</div>
+<div class="line"><span class="lineno">   59</span>  join();</div>
+<div class="line"><span class="lineno">   60</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_aa525d9c546761503e2b3ac0b2fcbdf48"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#aa525d9c546761503e2b3ac0b2fcbdf48">onert::exec::WorkQueue::finish</a></div><div class="ttdeci">void finish()</div><div class="ttdoc">Flag as terminating so all the worker threads can terminate.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00086">WorkQueue.cc:86</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_work_queue_8cc_source.html#l00088">onert::exec::WorkQueue::finish()</a>.</p>
+<p class="reference">References <a class="el" href="_work_queue_8cc_source.html#l00086">onert::exec::WorkQueue::finish()</a>.</p>
 
 </div>
 </div>
@@ -265,11 +265,11 @@ Public Member Functions</h2></td></tr>
 <p>Get number of jobs in worker's queue. </p>
 <dl class="section return"><dt>Returns</dt><dd>Number of jobs </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_thread_pool_8cc_source.html#l00047">47</a> of file <a class="el" href="_thread_pool_8cc_source.html">ThreadPool.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> _worker.<a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#af9cf7e093f8b57c7aac86bb1895be355">numJobsInQueue</a>(); }</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_af9cf7e093f8b57c7aac86bb1895be355"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#af9cf7e093f8b57c7aac86bb1895be355">onert::exec::WorkQueue::numJobsInQueue</a></div><div class="ttdeci">uint32_t numJobsInQueue()</div><div class="ttdoc">Check if it has pending jobs. Even if this returns fals, WorkQueue threads may be still running.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00097">WorkQueue.cc:97</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_thread_pool_8cc_source.html#l00045">45</a> of file <a class="el" href="_thread_pool_8cc_source.html">ThreadPool.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>{ <span class="keywordflow">return</span> _worker.<a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#af9cf7e093f8b57c7aac86bb1895be355">numJobsInQueue</a>(); }</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_af9cf7e093f8b57c7aac86bb1895be355"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#af9cf7e093f8b57c7aac86bb1895be355">onert::exec::WorkQueue::numJobsInQueue</a></div><div class="ttdeci">uint32_t numJobsInQueue()</div><div class="ttdoc">Check if it has pending jobs. Even if this returns fals, WorkQueue threads may be still running.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00095">WorkQueue.cc:95</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_work_queue_8cc_source.html#l00097">onert::exec::WorkQueue::numJobsInQueue()</a>.</p>
+<p class="reference">References <a class="el" href="_work_queue_8cc_source.html#l00095">onert::exec::WorkQueue::numJobsInQueue()</a>.</p>
 
 </div>
 </div>

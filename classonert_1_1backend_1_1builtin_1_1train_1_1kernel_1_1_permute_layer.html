@@ -163,7 +163,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8h_source.html#l00035">35</a> of file <a class="el" href="train_2kernel_2_permute_layer_8h_source.html">PermuteLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8h_source.html#l00027">27</a> of file <a class="el" href="train_2kernel_2_permute_layer_8h_source.html">PermuteLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac54e347a7e4e1d46ed42e55f694ea003" name="ac54e347a7e4e1d46ed42e55f694ea003"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac54e347a7e4e1d46ed42e55f694ea003">&#9670;&#160;</a></span>PermuteLayer()</h2>
@@ -221,15 +221,15 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00032">32</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>  : builtin::kernel::PermuteLayer{src_tensors, dst_tensors, types, external_context},</div>
-<div class="line"><span class="lineno">   40</span>    _input_back_prop_tensors{input_back_prop_tensors},</div>
-<div class="line"><span class="lineno">   41</span>    _output_back_prop_tensors{output_back_prop_tensors},</div>
-<div class="line"><span class="lineno">   42</span>    _ignore_forward_in_training{ignore_forward_in_training}</div>
-<div class="line"><span class="lineno">   43</span>{</div>
-<div class="line"><span class="lineno">   44</span>  assert(input_back_prop_tensors.size() == output_back_prop_tensors.size());</div>
-<div class="line"><span class="lineno">   45</span>  assert(src_tensors.size() == dst_tensors.size());</div>
-<div class="line"><span class="lineno">   46</span>}</div>
+<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00024">24</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>  : builtin::kernel::PermuteLayer{src_tensors, dst_tensors, types, external_context},</div>
+<div class="line"><span class="lineno">   32</span>    _input_back_prop_tensors{input_back_prop_tensors},</div>
+<div class="line"><span class="lineno">   33</span>    _output_back_prop_tensors{output_back_prop_tensors},</div>
+<div class="line"><span class="lineno">   34</span>    _ignore_forward_in_training{ignore_forward_in_training}</div>
+<div class="line"><span class="lineno">   35</span>{</div>
+<div class="line"><span class="lineno">   36</span>  assert(input_back_prop_tensors.size() == output_back_prop_tensors.size());</div>
+<div class="line"><span class="lineno">   37</span>  assert(src_tensors.size() == dst_tensors.size());</div>
+<div class="line"><span class="lineno">   38</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -259,33 +259,33 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00063">63</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   64</span>{</div>
-<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _output_back_prop_tensors.size(); ++i)</div>
-<div class="line"><span class="lineno">   66</span>  {</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keyword">auto</span> src_back_prop = _output_back_prop_tensors.at(i);</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keyword">auto</span> dst_back_prop = _input_back_prop_tensors.at(i);</div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>    <span class="comment">// NOTE The back propagation tensors corresponding to inputs/outputs of model are nullptr</span></div>
-<div class="line"><span class="lineno">   71</span>    <span class="comment">//      because permuting those tensors is meaningless</span></div>
-<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">if</span> (src_back_prop &amp;&amp; dst_back_prop)</div>
-<div class="line"><span class="lineno">   73</span>    {</div>
-<div class="line"><span class="lineno">   74</span>      <span class="keyword">const</span> <span class="keyword">auto</span> rank = src_back_prop-&gt;getShape().rank();</div>
-<div class="line"><span class="lineno">   75</span>      <span class="keyword">auto</span> output_offsets = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a067528d61e5b9e112aeb10e63af884a9">_dst_tensors_offsets</a>.at(i);</div>
-<div class="line"><span class="lineno">   76</span>      <span class="keyword">auto</span> input_offsets = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a8705a1ceb48f7d535d321e6bab6081c7">_src_tensors_offsets</a>.at(i);</div>
-<div class="line"><span class="lineno">   77</span>      <span class="keyword">auto</span> permute_type = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a43516f4c839df2fe816b9c8531866ad4">_permute_types</a>.at(i);</div>
-<div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>      <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a4dd7a12f901f6e35d530e9a71f592e28">exec::IPermuteFunction::permute</a>(src_back_prop, dst_back_prop, rank, output_offsets,</div>
-<div class="line"><span class="lineno">   80</span>                                      input_offsets, permute_type);</div>
-<div class="line"><span class="lineno">   81</span>    }</div>
-<div class="line"><span class="lineno">   82</span>  }</div>
-<div class="line"><span class="lineno">   83</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a067528d61e5b9e112aeb10e63af884a9"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a067528d61e5b9e112aeb10e63af884a9">onert::exec::IPermuteFunction::_dst_tensors_offsets</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; size_t &gt; &gt; _dst_tensors_offsets</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8h_source.html#l00245">IPermuteFunction.h:245</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a43516f4c839df2fe816b9c8531866ad4"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a43516f4c839df2fe816b9c8531866ad4">onert::exec::IPermuteFunction::_permute_types</a></div><div class="ttdeci">std::vector&lt; ir::PermuteType &gt; _permute_types</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8h_source.html#l00246">IPermuteFunction.h:246</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a4dd7a12f901f6e35d530e9a71f592e28"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a4dd7a12f901f6e35d530e9a71f592e28">onert::exec::IPermuteFunction::permute</a></div><div class="ttdeci">void permute(backend::ITensor *src_tensor, backend::ITensor *dst_tensor, size_t rank, std::vector&lt; size_t &gt; &amp;src_offsets, std::vector&lt; size_t &gt; &amp;dst_offsets, const ir::PermuteType &amp;permute_type)</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8cc_source.html#l00240">IPermuteFunction.cc:240</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a8705a1ceb48f7d535d321e6bab6081c7"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a8705a1ceb48f7d535d321e6bab6081c7">onert::exec::IPermuteFunction::_src_tensors_offsets</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; size_t &gt; &gt; _src_tensors_offsets</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8h_source.html#l00244">IPermuteFunction.h:244</a></div></div>
+<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00055">55</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _output_back_prop_tensors.size(); ++i)</div>
+<div class="line"><span class="lineno">   58</span>  {</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keyword">auto</span> src_back_prop = _output_back_prop_tensors.at(i);</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keyword">auto</span> dst_back_prop = _input_back_prop_tensors.at(i);</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>    <span class="comment">// NOTE The back propagation tensors corresponding to inputs/outputs of model are nullptr</span></div>
+<div class="line"><span class="lineno">   63</span>    <span class="comment">//      because permuting those tensors is meaningless</span></div>
+<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">if</span> (src_back_prop &amp;&amp; dst_back_prop)</div>
+<div class="line"><span class="lineno">   65</span>    {</div>
+<div class="line"><span class="lineno">   66</span>      <span class="keyword">const</span> <span class="keyword">auto</span> rank = src_back_prop-&gt;getShape().rank();</div>
+<div class="line"><span class="lineno">   67</span>      <span class="keyword">auto</span> output_offsets = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a067528d61e5b9e112aeb10e63af884a9">_dst_tensors_offsets</a>.at(i);</div>
+<div class="line"><span class="lineno">   68</span>      <span class="keyword">auto</span> input_offsets = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a8705a1ceb48f7d535d321e6bab6081c7">_src_tensors_offsets</a>.at(i);</div>
+<div class="line"><span class="lineno">   69</span>      <span class="keyword">auto</span> permute_type = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a43516f4c839df2fe816b9c8531866ad4">_permute_types</a>.at(i);</div>
+<div class="line"><span class="lineno">   70</span> </div>
+<div class="line"><span class="lineno">   71</span>      <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a4dd7a12f901f6e35d530e9a71f592e28">exec::IPermuteFunction::permute</a>(src_back_prop, dst_back_prop, rank, output_offsets,</div>
+<div class="line"><span class="lineno">   72</span>                                      input_offsets, permute_type);</div>
+<div class="line"><span class="lineno">   73</span>    }</div>
+<div class="line"><span class="lineno">   74</span>  }</div>
+<div class="line"><span class="lineno">   75</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a067528d61e5b9e112aeb10e63af884a9"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a067528d61e5b9e112aeb10e63af884a9">onert::exec::IPermuteFunction::_dst_tensors_offsets</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; size_t &gt; &gt; _dst_tensors_offsets</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8h_source.html#l00243">IPermuteFunction.h:243</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a43516f4c839df2fe816b9c8531866ad4"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a43516f4c839df2fe816b9c8531866ad4">onert::exec::IPermuteFunction::_permute_types</a></div><div class="ttdeci">std::vector&lt; ir::PermuteType &gt; _permute_types</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8h_source.html#l00244">IPermuteFunction.h:244</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a4dd7a12f901f6e35d530e9a71f592e28"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a4dd7a12f901f6e35d530e9a71f592e28">onert::exec::IPermuteFunction::permute</a></div><div class="ttdeci">void permute(backend::ITensor *src_tensor, backend::ITensor *dst_tensor, size_t rank, std::vector&lt; size_t &gt; &amp;src_offsets, std::vector&lt; size_t &gt; &amp;dst_offsets, const ir::PermuteType &amp;permute_type)</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8cc_source.html#l00238">IPermuteFunction.cc:238</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a8705a1ceb48f7d535d321e6bab6081c7"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a8705a1ceb48f7d535d321e6bab6081c7">onert::exec::IPermuteFunction::_src_tensors_offsets</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; size_t &gt; &gt; _src_tensors_offsets</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8h_source.html#l00242">IPermuteFunction.h:242</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_permute_function_8h_source.html#l00245">onert::exec::IPermuteFunction::_dst_tensors_offsets</a>, <a class="el" href="_i_permute_function_8h_source.html#l00246">onert::exec::IPermuteFunction::_permute_types</a>, <a class="el" href="_i_permute_function_8h_source.html#l00244">onert::exec::IPermuteFunction::_src_tensors_offsets</a>, and <a class="el" href="_i_permute_function_8cc_source.html#l00240">onert::exec::IPermuteFunction::permute()</a>.</p>
+<p class="reference">References <a class="el" href="_i_permute_function_8h_source.html#l00243">onert::exec::IPermuteFunction::_dst_tensors_offsets</a>, <a class="el" href="_i_permute_function_8h_source.html#l00244">onert::exec::IPermuteFunction::_permute_types</a>, <a class="el" href="_i_permute_function_8h_source.html#l00242">onert::exec::IPermuteFunction::_src_tensors_offsets</a>, and <a class="el" href="_i_permute_function_8cc_source.html#l00238">onert::exec::IPermuteFunction::permute()</a>.</p>
 
 </div>
 </div>
@@ -315,16 +315,16 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00055">55</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">if</span> (_ignore_forward_in_training)</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>  <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a7a21f92baa527b4faef4585998f789ad">builtin::kernel::PermuteLayer::run</a>();</div>
-<div class="line"><span class="lineno">   61</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer_html_a7a21f92baa527b4faef4585998f789ad"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a7a21f92baa527b4faef4585998f789ad">onert::backend::builtin::kernel::PermuteLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="kernel_2_permute_layer_8cc_source.html#l00188">PermuteLayer.cc:188</a></div></div>
+<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00047">47</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>{</div>
+<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">if</span> (_ignore_forward_in_training)</div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>  <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a7a21f92baa527b4faef4585998f789ad">builtin::kernel::PermuteLayer::run</a>();</div>
+<div class="line"><span class="lineno">   53</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer_html_a7a21f92baa527b4faef4585998f789ad"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a7a21f92baa527b4faef4585998f789ad">onert::backend::builtin::kernel::PermuteLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="kernel_2_permute_layer_8cc_source.html#l00182">PermuteLayer.cc:182</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00188">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+<p class="reference">References <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00182">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -353,15 +353,15 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a263ea2e9b334f8b0aa3322905b3cfa04">onert::backend::builtin::kernel::PermuteLayer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00048">48</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
-<div class="line"><span class="lineno">   50</span>  <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a263ea2e9b334f8b0aa3322905b3cfa04">builtin::kernel::PermuteLayer::optimize</a>();</div>
-<div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>  <span class="comment">// TODO Calculate offsets of back propagation tensors if necessary</span></div>
-<div class="line"><span class="lineno">   53</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer_html_a263ea2e9b334f8b0aa3322905b3cfa04"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a263ea2e9b334f8b0aa3322905b3cfa04">onert::backend::builtin::kernel::PermuteLayer::optimize</a></div><div class="ttdeci">void optimize() override</div><div class="ttdef"><b>Definition</b> <a href="kernel_2_permute_layer_8cc_source.html#l00046">PermuteLayer.cc:46</a></div></div>
+<p class="definition">Definition at line <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00040">40</a> of file <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
+<div class="line"><span class="lineno">   42</span>  <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a263ea2e9b334f8b0aa3322905b3cfa04">builtin::kernel::PermuteLayer::optimize</a>();</div>
+<div class="line"><span class="lineno">   43</span> </div>
+<div class="line"><span class="lineno">   44</span>  <span class="comment">// TODO Calculate offsets of back propagation tensors if necessary</span></div>
+<div class="line"><span class="lineno">   45</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer_html_a263ea2e9b334f8b0aa3322905b3cfa04"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html#a263ea2e9b334f8b0aa3322905b3cfa04">onert::backend::builtin::kernel::PermuteLayer::optimize</a></div><div class="ttdeci">void optimize() override</div><div class="ttdef"><b>Definition</b> <a href="kernel_2_permute_layer_8cc_source.html#l00040">PermuteLayer.cc:40</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00046">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>.</p>
+<p class="reference">References <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00040">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>.</p>
 
 </div>
 </div>

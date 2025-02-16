@@ -115,68 +115,60 @@ $(document).ready(function(){initNavTree('_dot_builder_8cc_source.html',''); ini
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="_dot_builder_8h.html">DotBuilder.h</a>&quot;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="}">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="namespaceonert_1_1dumper.html">   19</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1dumper_1_1dot.html">onert::dumper::dot</a></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>{</div>
-<div class="foldopen" id="foldopen00021" data-start="{" data-end="}">
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="namespaceonert_1_1dumper.html">   21</a></span><span class="keyword">namespace </span>dumper</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
-<div class="foldopen" id="foldopen00023" data-start="{" data-end="}">
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="namespaceonert_1_1dumper_1_1dot.html">   23</a></span><span class="keyword">namespace </span>dot</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">// DotDumper</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a36b1c3c8e0ce05e9aaf596b423dca53f">   27</a></span><a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a36b1c3c8e0ce05e9aaf596b423dca53f">DotBuilder::DotBuilder</a>() {}</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a53702ad2e71d2295b3e603a954541098">   29</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a53702ad2e71d2295b3e603a954541098">DotBuilder::update</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1dumper_1_1dot_1_1_node.html">Node</a> &amp;node_info)</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  add(node_info);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;edge : node_info.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_node.html#a099da3c70c37d6fac0110979e97ee1bf">out_edges</a>())</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  {</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    addEdge(node_info, *edge);</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  }</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// DotDumper</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a36b1c3c8e0ce05e9aaf596b423dca53f">   23</a></span><a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a36b1c3c8e0ce05e9aaf596b423dca53f">DotBuilder::DotBuilder</a>() {}</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a53702ad2e71d2295b3e603a954541098">   25</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a53702ad2e71d2295b3e603a954541098">DotBuilder::update</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1dumper_1_1dot_1_1_node.html">Node</a> &amp;node_info)</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  add(node_info);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;edge : node_info.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_node.html#a099da3c70c37d6fac0110979e97ee1bf">out_edges</a>())</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    addEdge(node_info, *edge);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  }</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>}</div>
 </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#ab7010f712db697edb5cf1eb2596bc77c">   38</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#ab7010f712db697edb5cf1eb2596bc77c">DotBuilder::writeDot</a>(std::ostream &amp;os)</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>{</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  os &lt;&lt; <span class="stringliteral">&quot;digraph D {\n&quot;</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>     &lt;&lt; _dot.str() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>     &lt;&lt; <span class="stringliteral">&quot;}\n&quot;</span>;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#ab7010f712db697edb5cf1eb2596bc77c">   34</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#ab7010f712db697edb5cf1eb2596bc77c">DotBuilder::writeDot</a>(std::ostream &amp;os)</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  os &lt;&lt; <span class="stringliteral">&quot;digraph D {\n&quot;</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>     &lt;&lt; _dot.str() &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>     &lt;&lt; <span class="stringliteral">&quot;}\n&quot;</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>}</div>
 </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keywordtype">void</span> DotBuilder::add(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1dumper_1_1dot_1_1_node.html">Node</a> &amp;node)</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>{</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  _dot &lt;&lt; node.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_node.html#a3a9c5547f5d84471d87d8400961d7ff1">id</a>();</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  std::stringstream ss;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  _dot &lt;&lt; <span class="stringliteral">&quot;[&quot;</span>;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;[attr_key, attr_val] : node.attributes())</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  {</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    _dot &lt;&lt; attr_key &lt;&lt; <span class="stringliteral">&quot;=\&quot;&quot;</span> &lt;&lt; attr_val &lt;&lt; <span class="stringliteral">&quot;\&quot; &quot;</span>;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  _dot &lt;&lt; <span class="stringliteral">&quot;];\n&quot;</span>;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keywordtype">void</span> DotBuilder::addEdge(<span class="keyword">const</span> Node &amp;node1, <span class="keyword">const</span> Node &amp;node2)</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>{</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  _dot &lt;&lt; node1.id() &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; node2.id() &lt;&lt; <span class="stringliteral">&quot;;\n&quot;</span>;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>}</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>} <span class="comment">// namespace dot</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keywordtype">void</span> DotBuilder::add(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1dumper_1_1dot_1_1_node.html">Node</a> &amp;node)</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  _dot &lt;&lt; node.<a class="code hl_function" href="classonert_1_1dumper_1_1dot_1_1_node.html#a3a9c5547f5d84471d87d8400961d7ff1">id</a>();</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  std::stringstream ss;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  _dot &lt;&lt; <span class="stringliteral">&quot;[&quot;</span>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;[attr_key, attr_val] : node.attributes())</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    _dot &lt;&lt; attr_key &lt;&lt; <span class="stringliteral">&quot;=\&quot;&quot;</span> &lt;&lt; attr_val &lt;&lt; <span class="stringliteral">&quot;\&quot; &quot;</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  _dot &lt;&lt; <span class="stringliteral">&quot;];\n&quot;</span>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>}</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keywordtype">void</span> DotBuilder::addEdge(<span class="keyword">const</span> Node &amp;node1, <span class="keyword">const</span> Node &amp;node2)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>{</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  _dot &lt;&lt; node1.id() &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; node2.id() &lt;&lt; <span class="stringliteral">&quot;;\n&quot;</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>}</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>} <span class="comment">// namespace onert::dumper::dot</span></div>
 </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>} <span class="comment">// namespace dumper</span></div>
-</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>} <span class="comment">// namespace onert</span></div>
 <div class="ttc" id="a_dot_builder_8h_html"><div class="ttname"><a href="_dot_builder_8h.html">DotBuilder.h</a></div></div>
-<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_builder_html_a36b1c3c8e0ce05e9aaf596b423dca53f"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a36b1c3c8e0ce05e9aaf596b423dca53f">onert::dumper::dot::DotBuilder::DotBuilder</a></div><div class="ttdeci">DotBuilder()</div><div class="ttdef"><b>Definition</b> <a href="_dot_builder_8cc_source.html#l00027">DotBuilder.cc:27</a></div></div>
-<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_builder_html_a53702ad2e71d2295b3e603a954541098"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a53702ad2e71d2295b3e603a954541098">onert::dumper::dot::DotBuilder::update</a></div><div class="ttdeci">void update(const Node &amp;dotinfo)</div><div class="ttdef"><b>Definition</b> <a href="_dot_builder_8cc_source.html#l00029">DotBuilder.cc:29</a></div></div>
-<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_builder_html_ab7010f712db697edb5cf1eb2596bc77c"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#ab7010f712db697edb5cf1eb2596bc77c">onert::dumper::dot::DotBuilder::writeDot</a></div><div class="ttdeci">void writeDot(std::ostream &amp;os)</div><div class="ttdef"><b>Definition</b> <a href="_dot_builder_8cc_source.html#l00038">DotBuilder.cc:38</a></div></div>
-<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_node_html"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_node.html">onert::dumper::dot::Node</a></div><div class="ttdoc">Class that represents a Node in &quot;dot&quot; format.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2src_2dumper_2dot_2_node_8h_source.html#l00055">Node.h:56</a></div></div>
-<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_node_html_a099da3c70c37d6fac0110979e97ee1bf"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_node.html#a099da3c70c37d6fac0110979e97ee1bf">onert::dumper::dot::Node::out_edges</a></div><div class="ttdeci">const std::vector&lt; Node * &gt; &amp; out_edges() const</div><div class="ttdoc">Return list of out edges.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2src_2dumper_2dot_2_node_8h_source.html#l00115">Node.h:115</a></div></div>
-<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_node_html_a3a9c5547f5d84471d87d8400961d7ff1"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_node.html#a3a9c5547f5d84471d87d8400961d7ff1">onert::dumper::dot::Node::id</a></div><div class="ttdeci">std::string id() const</div><div class="ttdoc">return id</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2src_2dumper_2dot_2_node_8h_source.html#l00081">Node.h:81</a></div></div>
-<div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
+<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_builder_html_a36b1c3c8e0ce05e9aaf596b423dca53f"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a36b1c3c8e0ce05e9aaf596b423dca53f">onert::dumper::dot::DotBuilder::DotBuilder</a></div><div class="ttdeci">DotBuilder()</div><div class="ttdef"><b>Definition</b> <a href="_dot_builder_8cc_source.html#l00023">DotBuilder.cc:23</a></div></div>
+<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_builder_html_a53702ad2e71d2295b3e603a954541098"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#a53702ad2e71d2295b3e603a954541098">onert::dumper::dot::DotBuilder::update</a></div><div class="ttdeci">void update(const Node &amp;dotinfo)</div><div class="ttdef"><b>Definition</b> <a href="_dot_builder_8cc_source.html#l00025">DotBuilder.cc:25</a></div></div>
+<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_builder_html_ab7010f712db697edb5cf1eb2596bc77c"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_builder.html#ab7010f712db697edb5cf1eb2596bc77c">onert::dumper::dot::DotBuilder::writeDot</a></div><div class="ttdeci">void writeDot(std::ostream &amp;os)</div><div class="ttdef"><b>Definition</b> <a href="_dot_builder_8cc_source.html#l00034">DotBuilder.cc:34</a></div></div>
+<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_node_html"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_node.html">onert::dumper::dot::Node</a></div><div class="ttdoc">Class that represents a Node in &quot;dot&quot; format.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2src_2dumper_2dot_2_node_8h_source.html#l00051">Node.h:52</a></div></div>
+<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_node_html_a099da3c70c37d6fac0110979e97ee1bf"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_node.html#a099da3c70c37d6fac0110979e97ee1bf">onert::dumper::dot::Node::out_edges</a></div><div class="ttdeci">const std::vector&lt; Node * &gt; &amp; out_edges() const</div><div class="ttdoc">Return list of out edges.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2src_2dumper_2dot_2_node_8h_source.html#l00112">Node.h:112</a></div></div>
+<div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_node_html_a3a9c5547f5d84471d87d8400961d7ff1"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_node.html#a3a9c5547f5d84471d87d8400961d7ff1">onert::dumper::dot::Node::id</a></div><div class="ttdeci">std::string id() const</div><div class="ttdoc">return id</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2src_2dumper_2dot_2_node_8h_source.html#l00078">Node.h:78</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1dumper_1_1dot_html"><div class="ttname"><a href="namespaceonert_1_1dumper_1_1dot.html">onert::dumper::dot</a></div><div class="ttdef"><b>Definition</b> <a href="_dot_builder_8cc_source.html#l00019">DotBuilder.cc:20</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

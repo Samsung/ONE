@@ -164,7 +164,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00039">39</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00035">35</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a679302ca1cbaa5278fc4b3325e1a0222" name="a679302ca1cbaa5278fc4b3325e1a0222"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a679302ca1cbaa5278fc4b3325e1a0222">&#9670;&#160;</a></span>TrainableExecutor()</h2>
@@ -238,32 +238,32 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8cc_source.html#l00031">31</a> of file <a class="el" href="_trainable_executor_8cc_source.html">TrainableExecutor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>  : _code_map{std::move(code_map)}, _forward_order{std::move(forward_order)},</div>
-<div class="line"><span class="lineno">   40</span>    _backward_order{std::move(backward_order)}, _lowered_graph{std::move(lowered_graph)},</div>
-<div class="line"><span class="lineno">   41</span>    _backend_contexts{std::move(backend_contexts)},</div>
-<div class="line"><span class="lineno">   42</span>    _trainable_graph{_lowered_graph-&gt;trainable_graph()}, _tensor_regs{std::move(tensor_regs)},</div>
-<div class="line"><span class="lineno">   43</span>    _mutex(), _tracing_ctx(tracing_ctx), _loss_info(loss_info)</div>
-<div class="line"><span class="lineno">   44</span>{</div>
-<div class="line"><span class="lineno">   45</span>  <span class="keyword">auto</span> build_tensor_list = [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind_seq, <span class="keyword">auto</span> &amp;tensors) {</div>
-<div class="line"><span class="lineno">   46</span>    assert(tensors.empty());</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;ind : ind_seq)</div>
-<div class="line"><span class="lineno">   48</span>    {</div>
-<div class="line"><span class="lineno">   49</span>      backend::ITensor *<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensor_regs.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a5684a01f365ba9cfe32a0767f2cb8d93">getITensor</a>(ind);</div>
-<div class="line"><span class="lineno">   50</span>      assert(tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   51</span>      <span class="keyword">auto</span> io_tensor = nnfw::misc::polymorphic_downcast&lt;backend::builtin::IOTensor *&gt;(tensor);</div>
-<div class="line"><span class="lineno">   52</span>      tensors.push_back(io_tensor);</div>
-<div class="line"><span class="lineno">   53</span>    }</div>
-<div class="line"><span class="lineno">   54</span>  };</div>
-<div class="line"><span class="lineno">   55</span>  build_tensor_list(_trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a3e00dbf94cf91e49c3c3c76437ec01bc">getInputs</a>(), _input_tensors);</div>
-<div class="line"><span class="lineno">   56</span>  build_tensor_list(_trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2e175fcdbe7beb275cd2b8a06e690c9f">getOutputs</a>(), _output_tensors);</div>
-<div class="line"><span class="lineno">   57</span>}</div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1train_1_1_tensor_registries_html_a5684a01f365ba9cfe32a0767f2cb8d93"><div class="ttname"><a href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a5684a01f365ba9cfe32a0767f2cb8d93">onert::compiler::train::TensorRegistries::getITensor</a></div><div class="ttdeci">backend::ITensor * getITensor(ir::OperandIndex index) const</div><div class="ttdef"><b>Definition</b> <a href="train_2_tensor_registries_8h_source.html#l00075">TensorRegistries.h:75</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a2e175fcdbe7beb275cd2b8a06e690c9f"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2e175fcdbe7beb275cd2b8a06e690c9f">onert::ir::train::TrainableGraph::getOutputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getOutputs() const override</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00120">TrainableGraph.h:120</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a3e00dbf94cf91e49c3c3c76437ec01bc"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a3e00dbf94cf91e49c3c3c76437ec01bc">onert::ir::train::TrainableGraph::getInputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getInputs() const override</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00119">TrainableGraph.h:119</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8cc_source.html#l00027">27</a> of file <a class="el" href="_trainable_executor_8cc_source.html">TrainableExecutor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>  : _code_map{std::move(code_map)}, _forward_order{std::move(forward_order)},</div>
+<div class="line"><span class="lineno">   36</span>    _backward_order{std::move(backward_order)}, _lowered_graph{std::move(lowered_graph)},</div>
+<div class="line"><span class="lineno">   37</span>    _backend_contexts{std::move(backend_contexts)},</div>
+<div class="line"><span class="lineno">   38</span>    _trainable_graph{_lowered_graph-&gt;trainable_graph()}, _tensor_regs{std::move(tensor_regs)},</div>
+<div class="line"><span class="lineno">   39</span>    _mutex(), _tracing_ctx(tracing_ctx), _loss_info(loss_info)</div>
+<div class="line"><span class="lineno">   40</span>{</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keyword">auto</span> build_tensor_list = [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ind_seq, <span class="keyword">auto</span> &amp;tensors) {</div>
+<div class="line"><span class="lineno">   42</span>    assert(tensors.empty());</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;ind : ind_seq)</div>
+<div class="line"><span class="lineno">   44</span>    {</div>
+<div class="line"><span class="lineno">   45</span>      backend::ITensor *<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensor_regs.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a5684a01f365ba9cfe32a0767f2cb8d93">getITensor</a>(ind);</div>
+<div class="line"><span class="lineno">   46</span>      assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   47</span>      <span class="keyword">auto</span> io_tensor = nnfw::misc::polymorphic_downcast&lt;backend::builtin::IOTensor *&gt;(tensor);</div>
+<div class="line"><span class="lineno">   48</span>      tensors.push_back(io_tensor);</div>
+<div class="line"><span class="lineno">   49</span>    }</div>
+<div class="line"><span class="lineno">   50</span>  };</div>
+<div class="line"><span class="lineno">   51</span>  build_tensor_list(_trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a3e00dbf94cf91e49c3c3c76437ec01bc">getInputs</a>(), _input_tensors);</div>
+<div class="line"><span class="lineno">   52</span>  build_tensor_list(_trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2e175fcdbe7beb275cd2b8a06e690c9f">getOutputs</a>(), _output_tensors);</div>
+<div class="line"><span class="lineno">   53</span>}</div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1train_1_1_tensor_registries_html_a5684a01f365ba9cfe32a0767f2cb8d93"><div class="ttname"><a href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a5684a01f365ba9cfe32a0767f2cb8d93">onert::compiler::train::TensorRegistries::getITensor</a></div><div class="ttdeci">backend::ITensor * getITensor(ir::OperandIndex index) const</div><div class="ttdef"><b>Definition</b> <a href="train_2_tensor_registries_8h_source.html#l00071">TensorRegistries.h:71</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a2e175fcdbe7beb275cd2b8a06e690c9f"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2e175fcdbe7beb275cd2b8a06e690c9f">onert::ir::train::TrainableGraph::getOutputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getOutputs() const override</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00116">TrainableGraph.h:116</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a3e00dbf94cf91e49c3c3c76437ec01bc"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a3e00dbf94cf91e49c3c3c76437ec01bc">onert::ir::train::TrainableGraph::getInputs</a></div><div class="ttdeci">const OperandIndexSequence &amp; getInputs() const override</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00115">TrainableGraph.h:115</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_graph_8h_source.html#l00119">onert::ir::train::TrainableGraph::getInputs()</a>, <a class="el" href="train_2_tensor_registries_8h_source.html#l00075">onert::compiler::train::TensorRegistries::getITensor()</a>, and <a class="el" href="_trainable_graph_8h_source.html#l00120">onert::ir::train::TrainableGraph::getOutputs()</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_graph_8h_source.html#l00115">onert::ir::train::TrainableGraph::getInputs()</a>, <a class="el" href="train_2_tensor_registries_8h_source.html#l00071">onert::compiler::train::TensorRegistries::getITensor()</a>, and <a class="el" href="_trainable_graph_8h_source.html#l00116">onert::ir::train::TrainableGraph::getOutputs()</a>.</p>
 
 </div>
 </div>
@@ -292,11 +292,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00098">98</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   98</span>{ _observers.<a class="code hl_function" href="classonert_1_1exec_1_1_exec_observers.html#a975688d45e95f50589a193473c4cd6e6">add</a>(std::move(ref)); };</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_exec_observers_html_a975688d45e95f50589a193473c4cd6e6"><div class="ttname"><a href="classonert_1_1exec_1_1_exec_observers.html#a975688d45e95f50589a193473c4cd6e6">onert::exec::ExecObservers::add</a></div><div class="ttdeci">void add(std::unique_ptr&lt; IExecutionObserver &gt; &amp;&amp;observer)</div><div class="ttdef"><b>Definition</b> <a href="_execution_observers_8h_source.html#l00065">ExecutionObservers.h:65</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00094">94</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>{ _observers.<a class="code hl_function" href="classonert_1_1exec_1_1_exec_observers.html#a975688d45e95f50589a193473c4cd6e6">add</a>(std::move(ref)); };</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_exec_observers_html_a975688d45e95f50589a193473c4cd6e6"><div class="ttname"><a href="classonert_1_1exec_1_1_exec_observers.html#a975688d45e95f50589a193473c4cd6e6">onert::exec::ExecObservers::add</a></div><div class="ttdeci">void add(std::unique_ptr&lt; IExecutionObserver &gt; &amp;&amp;observer)</div><div class="ttdef"><b>Definition</b> <a href="_execution_observers_8h_source.html#l00063">ExecutionObservers.h:63</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_execution_observers_8h_source.html#l00065">onert::exec::ExecObservers::add()</a>.</p>
+<p class="reference">References <a class="el" href="_execution_observers_8h_source.html#l00063">onert::exec::ExecObservers::add()</a>.</p>
 
 </div>
 </div>
@@ -326,22 +326,22 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8cc_source.html#l00137">137</a> of file <a class="el" href="_trainable_executor_8cc_source.html">TrainableExecutor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  138</span>{</div>
-<div class="line"><span class="lineno">  139</span>  <span class="comment">// For thread-safe, use mutex</span></div>
-<div class="line"><span class="lineno">  140</span>  <span class="comment">// TODO: if all used backends on this executor are thread-safe,</span></div>
-<div class="line"><span class="lineno">  141</span>  <span class="comment">//       do not need to use mutex (otherwise, use mutex)</span></div>
-<div class="line"><span class="lineno">  142</span>  std::lock_guard&lt;std::mutex&gt; lock(_mutex);</div>
-<div class="line"><span class="lineno">  143</span>  _current_options = <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>;</div>
-<div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span>  <span class="comment">// Create observee</span></div>
-<div class="line"><span class="lineno">  146</span>  ExecutionObservee subject(_observers, options);</div>
-<div class="line"><span class="lineno">  147</span> </div>
-<div class="line"><span class="lineno">  148</span>  backwardImpl(subject, training_step);</div>
-<div class="line"><span class="lineno">  149</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8cc_source.html#l00133">133</a> of file <a class="el" href="_trainable_executor_8cc_source.html">TrainableExecutor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  134</span>{</div>
+<div class="line"><span class="lineno">  135</span>  <span class="comment">// For thread-safe, use mutex</span></div>
+<div class="line"><span class="lineno">  136</span>  <span class="comment">// TODO: if all used backends on this executor are thread-safe,</span></div>
+<div class="line"><span class="lineno">  137</span>  <span class="comment">//       do not need to use mutex (otherwise, use mutex)</span></div>
+<div class="line"><span class="lineno">  138</span>  std::lock_guard&lt;std::mutex&gt; lock(_mutex);</div>
+<div class="line"><span class="lineno">  139</span>  _current_options = <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>;</div>
+<div class="line"><span class="lineno">  140</span> </div>
+<div class="line"><span class="lineno">  141</span>  <span class="comment">// Create observee</span></div>
+<div class="line"><span class="lineno">  142</span>  ExecutionObservee subject(_observers, options);</div>
+<div class="line"><span class="lineno">  143</span> </div>
+<div class="line"><span class="lineno">  144</span>  backwardImpl(subject, training_step);</div>
+<div class="line"><span class="lineno">  145</span>}</div>
 <div class="ttc" id="anamespaceonnx__legalizer_html_a5f63ff6f9c0c3e7103c2b9b88021555e"><div class="ttname"><a href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">onnx_legalizer.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition</b> <a href="onnx__legalizer_8py_source.html#l01070">onnx_legalizer.py:1070</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00072">onert::exec::train::TrainableExecutors::train()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00068">onert::exec::train::TrainableExecutors::train()</a>.</p>
 
 </div>
 </div>
@@ -373,8 +373,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#af912a0ab9cb71c557f167442ebd5c7d4">onert::exec::IExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00108">108</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  108</span>{ <span class="keywordflow">return</span> _current_options; }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00104">104</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span>{ <span class="keywordflow">return</span> _current_options; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -431,13 +431,13 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a21de67cdbf0c1492734cd8ca941d2114">onert::exec::IExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00059">59</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span>  {</div>
-<div class="line"><span class="lineno">   63</span>    <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a1619e2a671523a2561245ff3a7b98ec0">forward</a>(inputs, outputs, options, <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">   64</span>  }</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_trainable_executor_html_a1619e2a671523a2561245ff3a7b98ec0"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a1619e2a671523a2561245ff3a7b98ec0">onert::exec::train::TrainableExecutor::forward</a></div><div class="ttdeci">void forward(const std::vector&lt; backend::IPortableTensor * &gt; &amp;inputs, const std::vector&lt; backend::IPortableTensor * &gt; &amp;outputs, const ExecutionOptions &amp;options, bool training)</div><div class="ttdef"><b>Definition</b> <a href="_trainable_executor_8cc_source.html#l00059">TrainableExecutor.cc:59</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00055">55</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>  {</div>
+<div class="line"><span class="lineno">   59</span>    <a class="code hl_function" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a1619e2a671523a2561245ff3a7b98ec0">forward</a>(inputs, outputs, options, <span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">   60</span>  }</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1train_1_1_trainable_executor_html_a1619e2a671523a2561245ff3a7b98ec0"><div class="ttname"><a href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a1619e2a671523a2561245ff3a7b98ec0">onert::exec::train::TrainableExecutor::forward</a></div><div class="ttdeci">void forward(const std::vector&lt; backend::IPortableTensor * &gt; &amp;inputs, const std::vector&lt; backend::IPortableTensor * &gt; &amp;outputs, const ExecutionOptions &amp;options, bool training)</div><div class="ttdef"><b>Definition</b> <a href="_trainable_executor_8cc_source.html#l00055">TrainableExecutor.cc:55</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_executor_8cc_source.html#l00059">forward()</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_executor_8cc_source.html#l00055">forward()</a>.</p>
 
 </div>
 </div>
@@ -479,47 +479,47 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8cc_source.html#l00059">59</a> of file <a class="el" href="_trainable_executor_8cc_source.html">TrainableExecutor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
-<div class="line"><span class="lineno">   63</span>  <span class="comment">// For thread-safe, use mutex</span></div>
-<div class="line"><span class="lineno">   64</span>  <span class="comment">// TODO: if all used backends on this executor are thread-safe,</span></div>
-<div class="line"><span class="lineno">   65</span>  <span class="comment">//       do not need to use mutex (otherwise, use mutex)</span></div>
-<div class="line"><span class="lineno">   66</span>  std::lock_guard&lt;std::mutex&gt; lock(_mutex);</div>
-<div class="line"><span class="lineno">   67</span>  _current_options = <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>;</div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>  assert(_input_tensors.size() == <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.size());</div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _input_tensors.size(); ++i)</div>
-<div class="line"><span class="lineno">   71</span>  {</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _input_tensors[i];</div>
-<div class="line"><span class="lineno">   73</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>[i];</div>
-<div class="line"><span class="lineno">   74</span>    assert(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;buffer() != <span class="keyword">nullptr</span> || <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;get_info().total_size() == 0);</div>
-<div class="line"><span class="lineno">   75</span>    assert(tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   76</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;setTensor(input);</div>
-<div class="line"><span class="lineno">   77</span>  }</div>
-<div class="line"><span class="lineno">   78</span> </div>
-<div class="line"><span class="lineno">   79</span>  <span class="comment">// Set output(s)</span></div>
-<div class="line"><span class="lineno">   80</span>  assert(_output_tensors.size() == outputs.size());</div>
-<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _output_tensors.size(); ++i)</div>
-<div class="line"><span class="lineno">   82</span>  {</div>
-<div class="line"><span class="lineno">   83</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _output_tensors[i];</div>
-<div class="line"><span class="lineno">   84</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = outputs[i];</div>
-<div class="line"><span class="lineno">   85</span>    <span class="comment">// Output may not be used on training, so don&#39;t check optional</span></div>
-<div class="line"><span class="lineno">   86</span>    assert(tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   87</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;setTensor(output);</div>
-<div class="line"><span class="lineno">   88</span>  }</div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>  <span class="comment">// Create observee</span></div>
-<div class="line"><span class="lineno">   91</span>  ExecutionObservee subject(_observers, options);</div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span>  forwardImpl(subject, training);</div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>  <span class="comment">// TODO Update output(s) desc if desc has dynamic input</span></div>
-<div class="line"><span class="lineno">   96</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8cc_source.html#l00055">55</a> of file <a class="el" href="_trainable_executor_8cc_source.html">TrainableExecutor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>{</div>
+<div class="line"><span class="lineno">   59</span>  <span class="comment">// For thread-safe, use mutex</span></div>
+<div class="line"><span class="lineno">   60</span>  <span class="comment">// TODO: if all used backends on this executor are thread-safe,</span></div>
+<div class="line"><span class="lineno">   61</span>  <span class="comment">//       do not need to use mutex (otherwise, use mutex)</span></div>
+<div class="line"><span class="lineno">   62</span>  std::lock_guard&lt;std::mutex&gt; lock(_mutex);</div>
+<div class="line"><span class="lineno">   63</span>  _current_options = <a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>;</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>  assert(_input_tensors.size() == <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>.size());</div>
+<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _input_tensors.size(); ++i)</div>
+<div class="line"><span class="lineno">   67</span>  {</div>
+<div class="line"><span class="lineno">   68</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _input_tensors[i];</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>[i];</div>
+<div class="line"><span class="lineno">   70</span>    assert(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;buffer() != <span class="keyword">nullptr</span> || <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;get_info().total_size() == 0);</div>
+<div class="line"><span class="lineno">   71</span>    assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   72</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;setTensor(input);</div>
+<div class="line"><span class="lineno">   73</span>  }</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>  <span class="comment">// Set output(s)</span></div>
+<div class="line"><span class="lineno">   76</span>  assert(_output_tensors.size() == outputs.size());</div>
+<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _output_tensors.size(); ++i)</div>
+<div class="line"><span class="lineno">   78</span>  {</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _output_tensors[i];</div>
+<div class="line"><span class="lineno">   80</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = outputs[i];</div>
+<div class="line"><span class="lineno">   81</span>    <span class="comment">// Output may not be used on training, so don&#39;t check optional</span></div>
+<div class="line"><span class="lineno">   82</span>    assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   83</span>    <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;setTensor(output);</div>
+<div class="line"><span class="lineno">   84</span>  }</div>
+<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   86</span>  <span class="comment">// Create observee</span></div>
+<div class="line"><span class="lineno">   87</span>  ExecutionObservee subject(_observers, options);</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>  forwardImpl(subject, training);</div>
+<div class="line"><span class="lineno">   90</span> </div>
+<div class="line"><span class="lineno">   91</span>  <span class="comment">// TODO Update output(s) desc if desc has dynamic input</span></div>
+<div class="line"><span class="lineno">   92</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_abcab13752e1826b70991e56f8e9a834d"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">GenH5RandomInputs.inputs</a></div><div class="ttdeci">inputs</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00049">GenH5RandomInputs.py:49</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_trainable_executor_8h_source.html#l00059">execute()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_executor_8h_source.html#l00055">execute()</a>.</p>
 
 </div>
 </div>
@@ -546,8 +546,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00106">106</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  106</span>{ <span class="keywordflow">return</span> _backend_contexts; }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00102">102</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span>{ <span class="keywordflow">return</span> _backend_contexts; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -567,32 +567,32 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8cc_source.html#l00198">198</a> of file <a class="el" href="_trainable_executor_8cc_source.html">TrainableExecutor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  199</span>{</div>
-<div class="line"><span class="lineno">  200</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;loss_ind = _trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2c486d88036d4c6b8e0e4a20fbc514c9">getLossIndex</a>(pred_io_ind);</div>
-<div class="line"><span class="lineno">  201</span>  <span class="keywordflow">if</span> (loss_ind.undefined())</div>
-<div class="line"><span class="lineno">  202</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Loss &quot;</span> + std::to_string(loss_ind.value()) + <span class="stringliteral">&quot; is not defined.&quot;</span>};</div>
-<div class="line"><span class="lineno">  203</span>  backend::ITensor *<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensor_regs.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a5684a01f365ba9cfe32a0767f2cb8d93">getITensor</a>(loss_ind);</div>
-<div class="line"><span class="lineno">  204</span>  <span class="keywordtype">long</span> <span class="keywordtype">double</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">sum</a> = 0;</div>
-<div class="line"><span class="lineno">  205</span>  <span class="keywordflow">for</span> (uint64_t i = 0; i &lt; <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;getShape().<a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a>(); ++i)</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8cc_source.html#l00194">194</a> of file <a class="el" href="_trainable_executor_8cc_source.html">TrainableExecutor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  195</span>{</div>
+<div class="line"><span class="lineno">  196</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;loss_ind = _trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2c486d88036d4c6b8e0e4a20fbc514c9">getLossIndex</a>(pred_io_ind);</div>
+<div class="line"><span class="lineno">  197</span>  <span class="keywordflow">if</span> (loss_ind.undefined())</div>
+<div class="line"><span class="lineno">  198</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Loss &quot;</span> + std::to_string(loss_ind.value()) + <span class="stringliteral">&quot; is not defined.&quot;</span>};</div>
+<div class="line"><span class="lineno">  199</span>  backend::ITensor *<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a> = _tensor_regs.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#a5684a01f365ba9cfe32a0767f2cb8d93">getITensor</a>(loss_ind);</div>
+<div class="line"><span class="lineno">  200</span>  <span class="keywordtype">long</span> <span class="keywordtype">double</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">sum</a> = 0;</div>
+<div class="line"><span class="lineno">  201</span>  <span class="keywordflow">for</span> (uint64_t i = 0; i &lt; <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;getShape().<a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a>(); ++i)</div>
+<div class="line"><span class="lineno">  202</span>  {</div>
+<div class="line"><span class="lineno">  203</span>    <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">sum</a> += <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;buffer())[i];</div>
+<div class="line"><span class="lineno">  204</span>  }</div>
+<div class="line"><span class="lineno">  205</span>  <span class="keywordflow">if</span> (_loss_info.<a class="code hl_variable" href="structonert_1_1ir_1_1train_1_1_loss_info.html#a556b7f82e06213c28641a78a7b04cca9">reduction_type</a> == <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc">ir::train::LossReductionType::SumOverBatchSize</a>)</div>
 <div class="line"><span class="lineno">  206</span>  {</div>
-<div class="line"><span class="lineno">  207</span>    <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">sum</a> += <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;buffer())[i];</div>
+<div class="line"><span class="lineno">  207</span>    <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">sum</a> /= <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;getShape().num_elements();</div>
 <div class="line"><span class="lineno">  208</span>  }</div>
-<div class="line"><span class="lineno">  209</span>  <span class="keywordflow">if</span> (_loss_info.<a class="code hl_variable" href="structonert_1_1ir_1_1train_1_1_loss_info.html#a556b7f82e06213c28641a78a7b04cca9">reduction_type</a> == <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc">ir::train::LossReductionType::SumOverBatchSize</a>)</div>
-<div class="line"><span class="lineno">  210</span>  {</div>
-<div class="line"><span class="lineno">  211</span>    <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">sum</a> /= <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;getShape().num_elements();</div>
-<div class="line"><span class="lineno">  212</span>  }</div>
-<div class="line"><span class="lineno">  213</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">sum</a>);</div>
-<div class="line"><span class="lineno">  214</span>}</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a2c486d88036d4c6b8e0e4a20fbc514c9"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2c486d88036d4c6b8e0e4a20fbc514c9">onert::ir::train::TrainableGraph::getLossIndex</a></div><div class="ttdeci">OperandIndex getLossIndex(const IOIndex &amp;pred_io_ind) const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8cc_source.html#l00374">TrainableGraph.cc:374</a></div></div>
+<div class="line"><span class="lineno">  209</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">sum</a>);</div>
+<div class="line"><span class="lineno">  210</span>}</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_a2c486d88036d4c6b8e0e4a20fbc514c9"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#a2c486d88036d4c6b8e0e4a20fbc514c9">onert::ir::train::TrainableGraph::getLossIndex</a></div><div class="ttdeci">OperandIndex getLossIndex(const IOIndex &amp;pred_io_ind) const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8cc_source.html#l00370">TrainableGraph.cc:370</a></div></div>
 <div class="ttc" id="anamespacemir__caffe2_html_ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416"><div class="ttname"><a href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a1d623b89683f9ce4e074de1676d12416">mir_caffe2::SupportedCaffe2OpType::sum</a></div><div class="ttdeci">@ sum</div></div>
 <div class="ttc" id="anamespacenncc_1_1core_1_1_a_d_t_1_1feature_html_a1780a62ce2f7897524ee6a9c8967158d"><div class="ttname"><a href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">nncc::core::ADT::feature::num_elements</a></div><div class="ttdeci">uint32_t num_elements(const Shape &amp;shape)</div><div class="ttdoc">The number of elements of a feature map of a given shape.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2angkor_2include_2nncc_2core_2_a_d_t_2feature_2_shape_8h_source.html#l00059">Shape.h:59</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc">onert::ir::train::LossReductionType::SumOverBatchSize</a></div><div class="ttdeci">@ SumOverBatchSize</div></div>
-<div class="ttc" id="astructonert_1_1ir_1_1train_1_1_loss_info_html_a556b7f82e06213c28641a78a7b04cca9"><div class="ttname"><a href="structonert_1_1ir_1_1train_1_1_loss_info.html#a556b7f82e06213c28641a78a7b04cca9">onert::ir::train::LossInfo::reduction_type</a></div><div class="ttdeci">LossReductionType reduction_type</div><div class="ttdef"><b>Definition</b> <a href="_loss_info_8h_source.html#l00045">LossInfo.h:45</a></div></div>
+<div class="ttc" id="astructonert_1_1ir_1_1train_1_1_loss_info_html_a556b7f82e06213c28641a78a7b04cca9"><div class="ttname"><a href="structonert_1_1ir_1_1train_1_1_loss_info.html#a556b7f82e06213c28641a78a7b04cca9">onert::ir::train::LossInfo::reduction_type</a></div><div class="ttdeci">LossReductionType reduction_type</div><div class="ttdef"><b>Definition</b> <a href="_loss_info_8h_source.html#l00041">LossInfo.h:41</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="train_2_tensor_registries_8h_source.html#l00075">onert::compiler::train::TensorRegistries::getITensor()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00374">onert::ir::train::TrainableGraph::getLossIndex()</a>, <a class="el" href="_loss_info_8h_source.html#l00045">onert::ir::train::LossInfo::reduction_type</a>, and <a class="el" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc">onert::ir::train::SumOverBatchSize</a>.</p>
+<p class="reference">References <a class="el" href="train_2_tensor_registries_8h_source.html#l00071">onert::compiler::train::TensorRegistries::getITensor()</a>, <a class="el" href="_trainable_graph_8cc_source.html#l00370">onert::ir::train::TrainableGraph::getLossIndex()</a>, <a class="el" href="_loss_info_8h_source.html#l00041">onert::ir::train::LossInfo::reduction_type</a>, and <a class="el" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc">onert::ir::train::SumOverBatchSize</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00126">onert::exec::train::TrainableExecutors::getLoss()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00122">onert::exec::train::TrainableExecutors::getLoss()</a>.</p>
 
 </div>
 </div>
@@ -624,11 +624,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a7126c492a92520efacb7bc800474cce1">onert::exec::IExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00057">57</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   57</span>{ <span class="keywordflow">return</span> _trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae0f4348cfa95e2722c1e721e6324e9a1">graph</a>(); }</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_ae0f4348cfa95e2722c1e721e6324e9a1"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae0f4348cfa95e2722c1e721e6324e9a1">onert::ir::train::TrainableGraph::graph</a></div><div class="ttdeci">const Graph &amp; graph() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00128">TrainableGraph.h:128</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00053">53</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{ <span class="keywordflow">return</span> _trainable_graph.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae0f4348cfa95e2722c1e721e6324e9a1">graph</a>(); }</div>
+<div class="ttc" id="aclassonert_1_1ir_1_1train_1_1_trainable_graph_html_ae0f4348cfa95e2722c1e721e6324e9a1"><div class="ttname"><a href="classonert_1_1ir_1_1train_1_1_trainable_graph.html#ae0f4348cfa95e2722c1e721e6324e9a1">onert::ir::train::TrainableGraph::graph</a></div><div class="ttdeci">const Graph &amp; graph() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_graph_8h_source.html#l00124">TrainableGraph.h:124</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_graph_8h_source.html#l00128">onert::ir::train::TrainableGraph::graph()</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_graph_8h_source.html#l00124">onert::ir::train::TrainableGraph::graph()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_topological_sort_helper_8py_source.html#l00025">TopologicalSortHelper.TopologicalSortHelper::add_edge()</a>, and <a class="el" href="_topological_sort_helper_8py_source.html#l00028">TopologicalSortHelper.TopologicalSortHelper::sort_util()</a>.</p>
 
@@ -669,13 +669,13 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#aaff181d1cdbf93d8b438aee19ddca2b9">onert::exec::IExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00070">70</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span>  {</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">return</span> _input_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>]-&gt;get_info();</div>
-<div class="line"><span class="lineno">   73</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00066">66</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>  {</div>
+<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">return</span> _input_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>]-&gt;get_info();</div>
+<div class="line"><span class="lineno">   69</span>  }</div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00048">onert::exec::train::TrainableExecutors::inputInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00044">onert::exec::train::TrainableExecutors::inputInfo()</a>.</p>
 
 </div>
 </div>
@@ -714,8 +714,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#aceb434c8093fd462c9ddbc3dcb5720df">onert::exec::IExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00080">80</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>{ <span class="keywordflow">return</span> _input_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>]-&gt;layout(); }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00076">76</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   76</span>{ <span class="keywordflow">return</span> _input_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>]-&gt;layout(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -747,10 +747,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a41d1e10f96e8569c1473aeb3ea1d86e6">onert::exec::IExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00066">66</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span>{ <span class="keywordflow">return</span> _input_tensors.size(); }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00062">62</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>{ <span class="keywordflow">return</span> _input_tensors.size(); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00044">onert::exec::train::TrainableExecutors::inputSize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00040">onert::exec::train::TrainableExecutors::inputSize()</a>.</p>
 
 </div>
 </div>
@@ -770,15 +770,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8cc_source.html#l00216">216</a> of file <a class="el" href="_trainable_executor_8cc_source.html">TrainableExecutor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  219</span>{</div>
-<div class="line"><span class="lineno">  220</span>  _tensor_regs.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#ada7e510de61bac72f49902902eca8c46">iterateTrainableTensors</a>(fn);</div>
-<div class="line"><span class="lineno">  221</span>}</div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1train_1_1_tensor_registries_html_ada7e510de61bac72f49902902eca8c46"><div class="ttname"><a href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#ada7e510de61bac72f49902902eca8c46">onert::compiler::train::TensorRegistries::iterateTrainableTensors</a></div><div class="ttdeci">void iterateTrainableTensors(const std::function&lt; void(const ir::OperandIndex &amp;, const backend::train::ITrainableTensor *)&gt; &amp;fn) const</div><div class="ttdef"><b>Definition</b> <a href="train_2_tensor_registries_8h_source.html#l00097">TensorRegistries.h:97</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8cc_source.html#l00212">212</a> of file <a class="el" href="_trainable_executor_8cc_source.html">TrainableExecutor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  215</span>{</div>
+<div class="line"><span class="lineno">  216</span>  _tensor_regs.<a class="code hl_function" href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#ada7e510de61bac72f49902902eca8c46">iterateTrainableTensors</a>(fn);</div>
+<div class="line"><span class="lineno">  217</span>}</div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1train_1_1_tensor_registries_html_ada7e510de61bac72f49902902eca8c46"><div class="ttname"><a href="classonert_1_1compiler_1_1train_1_1_tensor_registries.html#ada7e510de61bac72f49902902eca8c46">onert::compiler::train::TensorRegistries::iterateTrainableTensors</a></div><div class="ttdeci">void iterateTrainableTensors(const std::function&lt; void(const ir::OperandIndex &amp;, const backend::train::ITrainableTensor *)&gt; &amp;fn) const</div><div class="ttdef"><b>Definition</b> <a href="train_2_tensor_registries_8h_source.html#l00093">TensorRegistries.h:93</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="train_2_tensor_registries_8h_source.html#l00097">onert::compiler::train::TensorRegistries::iterateTrainableTensors()</a>.</p>
+<p class="reference">References <a class="el" href="train_2_tensor_registries_8h_source.html#l00093">onert::compiler::train::TensorRegistries::iterateTrainableTensors()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00133">onert::exec::train::TrainableExecutors::iterateTrainableTensors()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00129">onert::exec::train::TrainableExecutors::iterateTrainableTensors()</a>.</p>
 
 </div>
 </div>
@@ -817,12 +817,12 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#ae2c9811157634b2162ee924a1c362163">onert::exec::IExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00075">75</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   76</span>  {</div>
-<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">return</span> _output_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>]-&gt;get_info();</div>
-<div class="line"><span class="lineno">   78</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00071">71</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   72</span>  {</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">return</span> _output_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>]-&gt;get_info();</div>
+<div class="line"><span class="lineno">   74</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00053">onert::exec::train::TrainableExecutors::outputInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00049">onert::exec::train::TrainableExecutors::outputInfo()</a>.</p>
 
 </div>
 </div>
@@ -861,10 +861,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a13e17083ea3b634f693d634803e0b270">onert::exec::IExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00082">82</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span>  {</div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">return</span> _output_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>]-&gt;layout();</div>
-<div class="line"><span class="lineno">   85</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00078">78</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   79</span>  {</div>
+<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">return</span> _output_tensors[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>]-&gt;layout();</div>
+<div class="line"><span class="lineno">   81</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -896,10 +896,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a704945d64b8e0e1918388824f8fad409">onert::exec::IExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00068">68</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   68</span>{ <span class="keywordflow">return</span> _output_tensors.size(); }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00064">64</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   64</span>{ <span class="keywordflow">return</span> _output_tensors.size(); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00046">onert::exec::train::TrainableExecutors::outputSize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_executors_8cc_source.html#l00042">onert::exec::train::TrainableExecutors::outputSize()</a>.</p>
 
 </div>
 </div>
@@ -937,10 +937,10 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1exec_1_1_i_executor.html#a1f5655e4ad7317c32e3ce6fad3ec9d72">onert::exec::IExecutor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00093">93</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>  {</div>
-<div class="line"><span class="lineno">   95</span>    _indexed_ranks = std::move(ranks);</div>
-<div class="line"><span class="lineno">   96</span>  };</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_executor_8h_source.html#l00089">89</a> of file <a class="el" href="_trainable_executor_8h_source.html">TrainableExecutor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span>  {</div>
+<div class="line"><span class="lineno">   91</span>    _indexed_ranks = std::move(ranks);</div>
+<div class="line"><span class="lineno">   92</span>  };</div>
 </div><!-- fragment -->
 </div>
 </div>

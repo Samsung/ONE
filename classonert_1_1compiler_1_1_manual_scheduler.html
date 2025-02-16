@@ -119,7 +119,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_manual_scheduler_8h_source.html#l00028">28</a> of file <a class="el" href="_manual_scheduler_8h_source.html">ManualScheduler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_manual_scheduler_8h_source.html#l00026">26</a> of file <a class="el" href="_manual_scheduler_8h_source.html">ManualScheduler.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7b197c37ee8264d0d129cc9249908980" name="a7b197c37ee8264d0d129cc9249908980"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b197c37ee8264d0d129cc9249908980">&#9670;&#160;</a></span>ManualScheduler()</h2>
@@ -147,10 +147,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_manual_scheduler_8cc_source.html#l00032">32</a> of file <a class="el" href="_manual_scheduler_8cc_source.html">ManualScheduler.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>  : _backends{<a class="code hl_namespace" href="namespacebackends.html">backends</a>}, _options{<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>}</div>
-<div class="line"><span class="lineno">   35</span>{</div>
-<div class="line"><span class="lineno">   36</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_manual_scheduler_8cc_source.html#l00030">30</a> of file <a class="el" href="_manual_scheduler_8cc_source.html">ManualScheduler.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>  : _backends{<a class="code hl_namespace" href="namespacebackends.html">backends</a>}, _options{<a class="code hl_variable" href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">options</a>}</div>
+<div class="line"><span class="lineno">   33</span>{</div>
+<div class="line"><span class="lineno">   34</span>}</div>
 <div class="ttc" id="anamespacebackends_html"><div class="ttname"><a href="namespacebackends.html">backends</a></div><div class="ttdef"><b>Definition</b> <a href="backends_8py_source.html#l00001">backends.py:1</a></div></div>
 <div class="ttc" id="anamespaceonnx__legalizer_html_a5f63ff6f9c0c3e7103c2b9b88021555e"><div class="ttname"><a href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">onnx_legalizer.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition</b> <a href="onnx__legalizer_8py_source.html#l01070">onnx_legalizer.py:1070</a></div></div>
 </div><!-- fragment -->
@@ -183,83 +183,83 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1compiler_1_1_i_scheduler.html#aa734073a01d65c46f54fc940aa8f0820">onert::compiler::IScheduler</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_manual_scheduler_8cc_source.html#l00038">38</a> of file <a class="el" href="_manual_scheduler_8cc_source.html">ManualScheduler.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
-<div class="line"><span class="lineno">   40</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;manual_options = _options.<a class="code hl_variable" href="structonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>;</div>
-<div class="line"><span class="lineno">   41</span>  <span class="keyword">auto</span> backend_resolver = std::make_unique&lt;compiler::BackendResolver&gt;();</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>  <span class="comment">// This fallback will be used in case that `backend_for_all` is unavailable</span></div>
-<div class="line"><span class="lineno">   44</span>  <span class="keyword">auto</span> fallback = [&amp;]() -&gt; <span class="keyword">const</span> backend::Backend * {</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;backend_id : _options.backend_list)</div>
-<div class="line"><span class="lineno">   46</span>    {</div>
-<div class="line"><span class="lineno">   47</span>      <span class="keyword">auto</span> backend = resolveBackend(backend_id);</div>
-<div class="line"><span class="lineno">   48</span>      <span class="keywordflow">if</span> (backend)</div>
-<div class="line"><span class="lineno">   49</span>        <span class="keywordflow">return</span> backend;</div>
-<div class="line"><span class="lineno">   50</span>    }</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   52</span>  }();</div>
-<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">if</span> (fallback == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;No loaded backends available.&quot;</span>};</div>
-<div class="line"><span class="lineno">   55</span> </div>
-<div class="line"><span class="lineno">   56</span>  <span class="comment">// 1. Backend for All operations</span></div>
-<div class="line"><span class="lineno">   57</span>  <span class="keyword">const</span> backend::Backend *backend_all = resolveBackend(manual_options.backend_for_all, fallback);</div>
-<div class="line"><span class="lineno">   58</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(ManualScheduler) &lt;&lt; <span class="stringliteral">&quot;Default backend for all ops: &quot;</span> &lt;&lt; backend_all-&gt;config()-&gt;id()</div>
-<div class="line"><span class="lineno">   59</span>                           &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>  <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.operations().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;index, <span class="keyword">const</span> ir::IOperation &amp;) {</div>
-<div class="line"><span class="lineno">   62</span>    backend_resolver-&gt;setBackend(index, backend_all);</div>
-<div class="line"><span class="lineno">   63</span>  });</div>
-<div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>  <span class="comment">// 2. Backend per operation type</span></div>
-<div class="line"><span class="lineno">   66</span>  std::unordered_map&lt;ir::OpCode, backend::Backend *&gt; op_type_map;</div>
-<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[op_code, backend_name] : manual_options.opcode_to_backend)</div>
-<div class="line"><span class="lineno">   68</span>  {</div>
-<div class="line"><span class="lineno">   69</span>    op_type_map.emplace(op_code, <a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">BackendManager::get</a>().<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>(backend_name));</div>
-<div class="line"><span class="lineno">   70</span>  }</div>
-<div class="line"><span class="lineno">   71</span>  <span class="comment">// By default, Custom uses cpu backend</span></div>
-<div class="line"><span class="lineno">   72</span>  op_type_map[ir::OpCode::Custom] = <a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">BackendManager::get</a>().<a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">get</a>(<span class="stringliteral">&quot;cpu&quot;</span>);</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>  <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.operations().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;index, <span class="keyword">const</span> ir::IOperation &amp;operation) {</div>
-<div class="line"><span class="lineno">   75</span>    <span class="keyword">auto</span> itr = op_type_map.find(operation.opcode());</div>
-<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">if</span> (itr != op_type_map.end())</div>
-<div class="line"><span class="lineno">   77</span>    {</div>
-<div class="line"><span class="lineno">   78</span>      backend_resolver-&gt;setBackend(index, itr-&gt;second);</div>
-<div class="line"><span class="lineno">   79</span>    }</div>
-<div class="line"><span class="lineno">   80</span>  });</div>
-<div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>  <span class="comment">// 3. Backend per operation</span></div>
-<div class="line"><span class="lineno">   83</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[key, val] : manual_options.index_to_backend)</div>
-<div class="line"><span class="lineno">   84</span>  {</div>
-<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno">   86</span>    {</div>
-<div class="line"><span class="lineno">   87</span>      <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.operations().at(key); <span class="comment">// Check if exist, or this will throw</span></div>
-<div class="line"><span class="lineno">   88</span>      backend_resolver-&gt;setBackend(key, <a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">BackendManager::get</a>().<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>(val));</div>
-<div class="line"><span class="lineno">   89</span>    }</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">catch</span> (...)</div>
-<div class="line"><span class="lineno">   91</span>    {</div>
-<div class="line"><span class="lineno">   92</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(ManualScheduler) &lt;&lt; <span class="stringliteral">&quot;Invalid value while OperationIndex to Backend mapping : @&quot;</span> &lt;&lt; key</div>
-<div class="line"><span class="lineno">   93</span>                               &lt;&lt; <span class="stringliteral">&quot; -&gt; \&quot;&quot;</span> &lt;&lt; val &lt;&lt; <span class="stringliteral">&quot;\&quot;&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">   94</span>    }</div>
-<div class="line"><span class="lineno">   95</span>  }</div>
-<div class="line"><span class="lineno">   96</span> </div>
-<div class="line"><span class="lineno">   97</span>  <span class="comment">// Dump final assignment</span></div>
-<div class="line"><span class="lineno">   98</span>  <a class="code hl_define" href="runtime_2onert_2core_2include_2util_2_logging_8h.html#aed861bfa370db79dd4bd632479cb515f">WHEN_LOG_ENABLED</a>(backend_resolver-&gt;iterate(</div>
-<div class="line"><span class="lineno">   99</span>    [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;index, <span class="keyword">const</span> backend::Backend &amp;backend) {</div>
-<div class="line"><span class="lineno">  100</span>      VERBOSE(ManualScheduler) &lt;&lt; <span class="stringliteral">&quot;backend for &quot;</span> &lt;&lt; index &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; backend.config()-&gt;id()</div>
-<div class="line"><span class="lineno">  101</span>                               &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  102</span>    }));</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>  <span class="keywordflow">return</span> backend_resolver;</div>
-<div class="line"><span class="lineno">  105</span>}</div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_backend_manager_html_a0f5a2ae30e62f791d145fa80e7f6be36"><div class="ttname"><a href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">onert::compiler::BackendManager::get</a></div><div class="ttdeci">static BackendManager &amp; get()</div><div class="ttdef"><b>Definition</b> <a href="_backend_manager_8cc_source.html#l00037">BackendManager.cc:37</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_manual_scheduler_8cc_source.html#l00036">36</a> of file <a class="el" href="_manual_scheduler_8cc_source.html">ManualScheduler.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
+<div class="line"><span class="lineno">   38</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;manual_options = _options.<a class="code hl_variable" href="structonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">manual_scheduler_options</a>;</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keyword">auto</span> backend_resolver = std::make_unique&lt;compiler::BackendResolver&gt;();</div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>  <span class="comment">// This fallback will be used in case that `backend_for_all` is unavailable</span></div>
+<div class="line"><span class="lineno">   42</span>  <span class="keyword">auto</span> fallback = [&amp;]() -&gt; <span class="keyword">const</span> backend::Backend * {</div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;backend_id : _options.backend_list)</div>
+<div class="line"><span class="lineno">   44</span>    {</div>
+<div class="line"><span class="lineno">   45</span>      <span class="keyword">auto</span> backend = resolveBackend(backend_id);</div>
+<div class="line"><span class="lineno">   46</span>      <span class="keywordflow">if</span> (backend)</div>
+<div class="line"><span class="lineno">   47</span>        <span class="keywordflow">return</span> backend;</div>
+<div class="line"><span class="lineno">   48</span>    }</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   50</span>  }();</div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">if</span> (fallback == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;No loaded backends available.&quot;</span>};</div>
+<div class="line"><span class="lineno">   53</span> </div>
+<div class="line"><span class="lineno">   54</span>  <span class="comment">// 1. Backend for All operations</span></div>
+<div class="line"><span class="lineno">   55</span>  <span class="keyword">const</span> backend::Backend *backend_all = resolveBackend(manual_options.backend_for_all, fallback);</div>
+<div class="line"><span class="lineno">   56</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(ManualScheduler) &lt;&lt; <span class="stringliteral">&quot;Default backend for all ops: &quot;</span> &lt;&lt; backend_all-&gt;config()-&gt;id()</div>
+<div class="line"><span class="lineno">   57</span>                           &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   59</span>  <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.operations().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;index, <span class="keyword">const</span> ir::IOperation &amp;) {</div>
+<div class="line"><span class="lineno">   60</span>    backend_resolver-&gt;setBackend(index, backend_all);</div>
+<div class="line"><span class="lineno">   61</span>  });</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>  <span class="comment">// 2. Backend per operation type</span></div>
+<div class="line"><span class="lineno">   64</span>  std::unordered_map&lt;ir::OpCode, backend::Backend *&gt; op_type_map;</div>
+<div class="line"><span class="lineno">   65</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[op_code, backend_name] : manual_options.opcode_to_backend)</div>
+<div class="line"><span class="lineno">   66</span>  {</div>
+<div class="line"><span class="lineno">   67</span>    op_type_map.emplace(op_code, <a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">BackendManager::get</a>().<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>(backend_name));</div>
+<div class="line"><span class="lineno">   68</span>  }</div>
+<div class="line"><span class="lineno">   69</span>  <span class="comment">// By default, Custom uses cpu backend</span></div>
+<div class="line"><span class="lineno">   70</span>  op_type_map[ir::OpCode::Custom] = <a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">BackendManager::get</a>().<a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">get</a>(<span class="stringliteral">&quot;cpu&quot;</span>);</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>  <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.operations().iterate([&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;index, <span class="keyword">const</span> ir::IOperation &amp;operation) {</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keyword">auto</span> itr = op_type_map.find(operation.opcode());</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> (itr != op_type_map.end())</div>
+<div class="line"><span class="lineno">   75</span>    {</div>
+<div class="line"><span class="lineno">   76</span>      backend_resolver-&gt;setBackend(index, itr-&gt;second);</div>
+<div class="line"><span class="lineno">   77</span>    }</div>
+<div class="line"><span class="lineno">   78</span>  });</div>
+<div class="line"><span class="lineno">   79</span> </div>
+<div class="line"><span class="lineno">   80</span>  <span class="comment">// 3. Backend per operation</span></div>
+<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[key, val] : manual_options.index_to_backend)</div>
+<div class="line"><span class="lineno">   82</span>  {</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno">   84</span>    {</div>
+<div class="line"><span class="lineno">   85</span>      <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.operations().at(key); <span class="comment">// Check if exist, or this will throw</span></div>
+<div class="line"><span class="lineno">   86</span>      backend_resolver-&gt;setBackend(key, <a class="code hl_function" href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">BackendManager::get</a>().<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>(val));</div>
+<div class="line"><span class="lineno">   87</span>    }</div>
+<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">catch</span> (...)</div>
+<div class="line"><span class="lineno">   89</span>    {</div>
+<div class="line"><span class="lineno">   90</span>      <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(ManualScheduler) &lt;&lt; <span class="stringliteral">&quot;Invalid value while OperationIndex to Backend mapping : @&quot;</span> &lt;&lt; key</div>
+<div class="line"><span class="lineno">   91</span>                               &lt;&lt; <span class="stringliteral">&quot; -&gt; \&quot;&quot;</span> &lt;&lt; val &lt;&lt; <span class="stringliteral">&quot;\&quot;&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   92</span>    }</div>
+<div class="line"><span class="lineno">   93</span>  }</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>  <span class="comment">// Dump final assignment</span></div>
+<div class="line"><span class="lineno">   96</span>  <a class="code hl_define" href="runtime_2onert_2core_2include_2util_2_logging_8h.html#aed861bfa370db79dd4bd632479cb515f">WHEN_LOG_ENABLED</a>(backend_resolver-&gt;iterate(</div>
+<div class="line"><span class="lineno">   97</span>    [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;index, <span class="keyword">const</span> backend::Backend &amp;backend) {</div>
+<div class="line"><span class="lineno">   98</span>      VERBOSE(ManualScheduler) &lt;&lt; <span class="stringliteral">&quot;backend for &quot;</span> &lt;&lt; index &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; backend.config()-&gt;id()</div>
+<div class="line"><span class="lineno">   99</span>                               &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  100</span>    }));</div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>  <span class="keywordflow">return</span> backend_resolver;</div>
+<div class="line"><span class="lineno">  103</span>}</div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_backend_manager_html_a0f5a2ae30e62f791d145fa80e7f6be36"><div class="ttname"><a href="classonert_1_1compiler_1_1_backend_manager.html#a0f5a2ae30e62f791d145fa80e7f6be36">onert::compiler::BackendManager::get</a></div><div class="ttdeci">static BackendManager &amp; get()</div><div class="ttdef"><b>Definition</b> <a href="_backend_manager_8cc_source.html#l00035">BackendManager.cc:35</a></div></div>
 <div class="ttc" id="aluci_2log_2include_2luci_2_log_8h_html_a212d71bce44cd84d4fe678058cd5eccd"><div class="ttname"><a href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a></div><div class="ttdeci">#define VERBOSE(name, lv)</div><div class="ttdef"><b>Definition</b> <a href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">Log.h:71</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ac7f0f74f10011f31ef450dc70f8918af"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">GenH5RandomInputs.graph</a></div><div class="ttdeci">graph</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00048">GenH5RandomInputs.py:48</a></div></div>
 <div class="ttc" id="anamespaceexo_html_aff46e62f58bb005a0fc63b6bed6f8698"><div class="ttname"><a href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">exo::get</a></div><div class="ttdeci">KnobTrait&lt; K &gt;::ValueType get(void)</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_a96178eda8f56c7ef3d89961856ace347"><div class="ttname"><a href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">onert::ir::OperationIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperationIndexTag &gt; OperationIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00032">Index.h:32</a></div></div>
-<div class="ttc" id="aruntime_2onert_2core_2include_2util_2_logging_8h_html_aed861bfa370db79dd4bd632479cb515f"><div class="ttname"><a href="runtime_2onert_2core_2include_2util_2_logging_8h.html#aed861bfa370db79dd4bd632479cb515f">WHEN_LOG_ENABLED</a></div><div class="ttdeci">#define WHEN_LOG_ENABLED(METHOD)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00079">logging.h:79</a></div></div>
-<div class="ttc" id="astructonert_1_1compiler_1_1_compiler_options_html_a5e47be4c12200fbd54157a0912e2a661"><div class="ttname"><a href="structonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">onert::compiler::CompilerOptions::manual_scheduler_options</a></div><div class="ttdeci">ManualSchedulerOptions manual_scheduler_options</div><div class="ttdef"><b>Definition</b> <a href="_compiler_options_8h_source.html#l00072">CompilerOptions.h:72</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_a96178eda8f56c7ef3d89961856ace347"><div class="ttname"><a href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">onert::ir::OperationIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperationIndexTag &gt; OperationIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00030">Index.h:30</a></div></div>
+<div class="ttc" id="aruntime_2onert_2core_2include_2util_2_logging_8h_html_aed861bfa370db79dd4bd632479cb515f"><div class="ttname"><a href="runtime_2onert_2core_2include_2util_2_logging_8h.html#aed861bfa370db79dd4bd632479cb515f">WHEN_LOG_ENABLED</a></div><div class="ttdeci">#define WHEN_LOG_ENABLED(METHOD)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00073">logging.h:73</a></div></div>
+<div class="ttc" id="astructonert_1_1compiler_1_1_compiler_options_html_a5e47be4c12200fbd54157a0912e2a661"><div class="ttname"><a href="structonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661">onert::compiler::CompilerOptions::manual_scheduler_options</a></div><div class="ttdeci">ManualSchedulerOptions manual_scheduler_options</div><div class="ttdef"><b>Definition</b> <a href="_compiler_options_8h_source.html#l00070">CompilerOptions.h:70</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_compiler_options_8h_source.html#l00067">onert::compiler::CompilerOptions::backend_list</a>, <a class="el" href="classonert_1_1backend_1_1_backend.html#a9343acbed3795da963e506c2f47b6086">onert::backend::Backend::config()</a>, <a class="el" href="_backend_manager_8cc_source.html#l00037">onert::compiler::BackendManager::get()</a>, <a class="el" href="_compiler_options_8h_source.html#l00072">onert::compiler::CompilerOptions::manual_scheduler_options</a>, <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a62422c08e7b5ae69f18a73584d7174a3">onert::ir::IOperation::opcode()</a>, <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00079">WHEN_LOG_ENABLED</a>.</p>
+<p class="reference">References <a class="el" href="_compiler_options_8h_source.html#l00065">onert::compiler::CompilerOptions::backend_list</a>, <a class="el" href="classonert_1_1backend_1_1_backend.html#a9343acbed3795da963e506c2f47b6086">onert::backend::Backend::config()</a>, <a class="el" href="_backend_manager_8cc_source.html#l00035">onert::compiler::BackendManager::get()</a>, <a class="el" href="_compiler_options_8h_source.html#l00070">onert::compiler::CompilerOptions::manual_scheduler_options</a>, <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a62422c08e7b5ae69f18a73584d7174a3">onert::ir::IOperation::opcode()</a>, <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00073">WHEN_LOG_ENABLED</a>.</p>
 
 </div>
 </div>

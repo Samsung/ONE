@@ -133,7 +133,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00032">32</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00028">28</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a33c7eb4e324a7f0b80ac0f2fecfffc6f" name="a33c7eb4e324a7f0b80ac0f2fecfffc6f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a33c7eb4e324a7f0b80ac0f2fecfffc6f">&#9670;&#160;</a></span>id()</h2>
@@ -163,8 +163,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1_i_config.html#a45b7f5b74180b453016627b23a3c888f">onert::backend::IConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00035">35</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;acl_cl&quot;</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00031">31</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;acl_cl&quot;</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -198,20 +198,20 @@ false Initialization failed, so it cannot use this backend </dd></dl>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1_i_config.html#a9bb4e402d3b8b548fd62eb43b05e6d69">onert::backend::IConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="backend_2acl__cl_2_config_8cc_source.html#l00035">35</a> of file <a class="el" href="backend_2acl__cl_2_config_8cc_source.html">Config.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
-<div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (!arm_compute::opencl_is_available())</div>
-<div class="line"><span class="lineno">   38</span>  {</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   40</span>  }</div>
-<div class="line"><span class="lineno">   41</span>  arm_compute::CLScheduler::get().default_init();</div>
-<div class="line"><span class="lineno">   42</span>  <span class="comment">// NOTE CLKernelLibraryEx must use the same context as CLScheduler</span></div>
-<div class="line"><span class="lineno">   43</span>  <span class="comment">// It did not check whether another device is available.</span></div>
-<div class="line"><span class="lineno">   44</span>  <a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a5f40c1c5ed75d0f2f31d2e795a8d8dd7">arm_compute::CLKernelLibraryEx::get</a>().<a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a533e610e6f8d86645e97287bc7d64f40">init</a>(</div>
-<div class="line"><span class="lineno">   45</span>    <span class="stringliteral">&quot;./cl_kernels/&quot;</span>, arm_compute::CLScheduler::get().context(), cl::Device::getDefault());</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   48</span>}</div>
+<p class="definition">Definition at line <a class="el" href="backend_2acl__cl_2_config_8cc_source.html#l00031">31</a> of file <a class="el" href="backend_2acl__cl_2_config_8cc_source.html">Config.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
+<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">if</span> (!arm_compute::opencl_is_available())</div>
+<div class="line"><span class="lineno">   34</span>  {</div>
+<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   36</span>  }</div>
+<div class="line"><span class="lineno">   37</span>  arm_compute::CLScheduler::get().default_init();</div>
+<div class="line"><span class="lineno">   38</span>  <span class="comment">// NOTE CLKernelLibraryEx must use the same context as CLScheduler</span></div>
+<div class="line"><span class="lineno">   39</span>  <span class="comment">// It did not check whether another device is available.</span></div>
+<div class="line"><span class="lineno">   40</span>  <a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a5f40c1c5ed75d0f2f31d2e795a8d8dd7">arm_compute::CLKernelLibraryEx::get</a>().<a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a533e610e6f8d86645e97287bc7d64f40">init</a>(</div>
+<div class="line"><span class="lineno">   41</span>    <span class="stringliteral">&quot;./cl_kernels/&quot;</span>, arm_compute::CLScheduler::get().context(), cl::Device::getDefault());</div>
+<div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   44</span>}</div>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_kernel_library_ex_html_a533e610e6f8d86645e97287bc7d64f40"><div class="ttname"><a href="classarm__compute_1_1_c_l_kernel_library_ex.html#a533e610e6f8d86645e97287bc7d64f40">arm_compute::CLKernelLibraryEx::init</a></div><div class="ttdeci">void init(std::string kernel_path, cl::Context context, cl::Device device)</div><div class="ttdoc">Initialise the kernel library.</div><div class="ttdef"><b>Definition</b> <a href="_c_l_kernel_library_ex_8h_source.html#l00098">CLKernelLibraryEx.h:98</a></div></div>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_kernel_library_ex_html_a5f40c1c5ed75d0f2f31d2e795a8d8dd7"><div class="ttname"><a href="classarm__compute_1_1_c_l_kernel_library_ex.html#a5f40c1c5ed75d0f2f31d2e795a8d8dd7">arm_compute::CLKernelLibraryEx::get</a></div><div class="ttdeci">static CLKernelLibraryEx &amp; get()</div><div class="ttdoc">Get the KernelLibrary singleton.</div><div class="ttdef"><b>Definition</b> <a href="_c_l_kernel_library_8cpp_source.html#l00195">CLKernelLibrary.cpp:195</a></div></div>
 </div><!-- fragment -->
@@ -244,8 +244,8 @@ false Initialization failed, so it cannot use this backend </dd></dl>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1_i_config.html#a73be9cb51bb0da4ef5f718350a78e282">onert::backend::IConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00038">38</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00034">34</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -274,8 +274,8 @@ false Initialization failed, so it cannot use this backend </dd></dl>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1_i_config.html#afaf8c9c1f8488338e8488b92ca595114">onert::backend::IConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00039">39</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00035">35</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -304,8 +304,8 @@ false Initialization failed, so it cannot use this backend </dd></dl>
 
 <p>Implements <a class="el" href="structonert_1_1backend_1_1_i_config.html#a95139ee87b80374d2667c679667f9e54">onert::backend::IConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00037">37</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00033">33</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>{ <span class="keywordflow">return</span> <span class="keyword">true</span>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -336,8 +336,8 @@ false Initialization failed, so it cannot use this backend </dd></dl>
 
 <p>Reimplemented from <a class="el" href="structonert_1_1backend_1_1_i_config.html#a9832d23dcabcd4ea15575f80d0ecb24a">onert::backend::IConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00040">40</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{ arm_compute::CLScheduler::get().sync(); }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00036">36</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{ arm_compute::CLScheduler::get().sync(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -369,8 +369,8 @@ false Initialization failed, so it cannot use this backend </dd></dl>
 
 <p>Reimplemented from <a class="el" href="structonert_1_1backend_1_1_i_config.html#aa0428b6ed9418fc378917f911f5835f4">onert::backend::IConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00042">42</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{ <span class="keywordflow">return</span> std::make_unique&lt;CLTimer&gt;(); }</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html#l00038">38</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_config_8h_source.html">Config.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>{ <span class="keywordflow">return</span> std::make_unique&lt;CLTimer&gt;(); }</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -112,7 +112,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename N, typename Hash = std::hash&lt;N&gt;&gt;<br />
 class onert::util::MinMaxMap&lt; N, Hash &gt;</div>
-<p class="definition">Definition at line <a class="el" href="util_2_min_max_map_8h_source.html#l00028">28</a> of file <a class="el" href="util_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_2_min_max_map_8h_source.html#l00026">26</a> of file <a class="el" href="util_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a5092165820baf57f2b1892d671d4b814" name="a5092165820baf57f2b1892d671d4b814"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5092165820baf57f2b1892d671d4b814">&#9670;&#160;</a></span>append()</h2>
@@ -156,10 +156,10 @@ template&lt;typename N , typename Hash  = std::hash&lt;N&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_2_min_max_map_8h_source.html#l00036">36</a> of file <a class="el" href="util_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{ _minmax_map[node] = {min, max}; }</div>
+<p class="definition">Definition at line <a class="el" href="util_2_min_max_map_8h_source.html#l00034">34</a> of file <a class="el" href="util_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   34</span>{ _minmax_map[node] = {min, max}; }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_min_max_recorder_8cc_source.html#l00069">onert::exec::MinMaxRecorder::handleJobEnd()</a>, and <a class="el" href="_min_max_recorder_8cc_source.html#l00111">onert::exec::MinMaxRecorder::handleSubgraphBegin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_min_max_recorder_8cc_source.html#l00067">onert::exec::MinMaxRecorder::handleJobEnd()</a>, and <a class="el" href="_min_max_recorder_8cc_source.html#l00109">onert::exec::MinMaxRecorder::handleSubgraphBegin()</a>.</p>
 
 </div>
 </div>
@@ -188,8 +188,8 @@ template&lt;typename N , typename Hash  = std::hash&lt;N&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_2_min_max_map_8h_source.html#l00037">37</a> of file <a class="el" href="util_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{ <span class="keywordflow">return</span> _minmax_map.begin(); }</div>
+<p class="definition">Definition at line <a class="el" href="util_2_min_max_map_8h_source.html#l00035">35</a> of file <a class="el" href="util_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   35</span>{ <span class="keywordflow">return</span> _minmax_map.begin(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -218,8 +218,8 @@ template&lt;typename N , typename Hash  = std::hash&lt;N&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_2_min_max_map_8h_source.html#l00038">38</a> of file <a class="el" href="util_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{ <span class="keywordflow">return</span> _minmax_map.end(); }</div>
+<p class="definition">Definition at line <a class="el" href="util_2_min_max_map_8h_source.html#l00036">36</a> of file <a class="el" href="util_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{ <span class="keywordflow">return</span> _minmax_map.end(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -248,10 +248,10 @@ template&lt;typename N , typename Hash  = std::hash&lt;N&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_2_min_max_map_8h_source.html#l00039">39</a> of file <a class="el" href="util_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{ <span class="keywordflow">return</span> _minmax_map.size(); }</div>
+<p class="definition">Definition at line <a class="el" href="util_2_min_max_map_8h_source.html#l00037">37</a> of file <a class="el" href="util_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{ <span class="keywordflow">return</span> _minmax_map.size(); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_min_max_data_8cc_source.html#l00028">onert::exec::RawMinMaxDumper::dump()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_min_max_data_8cc_source.html#l00026">onert::exec::RawMinMaxDumper::dump()</a>.</p>
 
 </div>
 </div>

@@ -117,113 +117,110 @@ $(document).ready(function(){initNavTree('_work_queue_8cc_source.html',''); init
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1exec.html">onert::exec</a></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace </span>exec</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_work_queue.html#a1cfc4bb41584f56f831eaa23fbc8ae64">   26</a></span><a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#a1cfc4bb41584f56f831eaa23fbc8ae64">WorkQueue::~WorkQueue</a>()</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  {</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    std::unique_lock&lt;std::mutex&gt; lock(_mu);</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    _state = <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a70c2edd78fb7e88588a954c4f81100">State::FORCE_FINISHING</a>;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  }</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  _cv.notify_all();</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_work_queue.html#a1cfc4bb41584f56f831eaa23fbc8ae64">   24</a></span><a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#a1cfc4bb41584f56f831eaa23fbc8ae64">WorkQueue::~WorkQueue</a>()</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    std::unique_lock&lt;std::mutex&gt; lock(_mu);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    _state = <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a70c2edd78fb7e88588a954c4f81100">State::FORCE_FINISHING</a>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  _cv.notify_all();</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}</div>
 </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_work_queue.html#a7a1466d8f73c75ca7c64d4919ac8d8a3">   35</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#a7a1466d8f73c75ca7c64d4919ac8d8a3">WorkQueue::operator()</a>()</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    std::unique_ptr&lt;IFunction&gt; fn = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    {</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      std::unique_lock&lt;std::mutex&gt; lock{_mu};</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>      _cv.wait(lock, [<span class="keyword">this</span>] {</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">return</span> (_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a70c2edd78fb7e88588a954c4f81100">State::FORCE_FINISHING</a>) || (_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a36ce282aeac424b9187eb19cf635c0">State::FINISHING</a>) ||</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>               (_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a86d1debf3f3aa9b77c0d976a4fa33862">State::ONLINE</a> &amp;&amp; !_functions.empty());</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      });</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <span class="keywordflow">if</span> (_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a70c2edd78fb7e88588a954c4f81100">State::FORCE_FINISHING</a>)</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        assert(_functions.empty() &amp;&amp; <span class="stringliteral">&quot;Terminating with unfinished jobs&quot;</span>);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      }</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a36ce282aeac424b9187eb19cf635c0">State::FINISHING</a> &amp;&amp; _functions.empty())</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      {</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      }</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        assert(((_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a36ce282aeac424b9187eb19cf635c0">State::FINISHING</a>) || (_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a86d1debf3f3aa9b77c0d976a4fa33862">State::ONLINE</a>)) &amp;&amp; !_functions.empty());</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        fn = std::move(_functions.front());</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        _functions.pop();</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      }</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    assert(fn);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    fn-&gt;run();</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  }</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_work_queue.html#a7a1466d8f73c75ca7c64d4919ac8d8a3">   33</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#a7a1466d8f73c75ca7c64d4919ac8d8a3">WorkQueue::operator()</a>()</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordflow">while</span> (<span class="keyword">true</span>)</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    std::unique_ptr&lt;IFunction&gt; fn = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    {</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>      std::unique_lock&lt;std::mutex&gt; lock{_mu};</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      _cv.wait(lock, [<span class="keyword">this</span>] {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keywordflow">return</span> (_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a70c2edd78fb7e88588a954c4f81100">State::FORCE_FINISHING</a>) || (_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a36ce282aeac424b9187eb19cf635c0">State::FINISHING</a>) ||</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>               (_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a86d1debf3f3aa9b77c0d976a4fa33862">State::ONLINE</a> &amp;&amp; !_functions.empty());</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      });</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <span class="keywordflow">if</span> (_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a70c2edd78fb7e88588a954c4f81100">State::FORCE_FINISHING</a>)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        assert(_functions.empty() &amp;&amp; <span class="stringliteral">&quot;Terminating with unfinished jobs&quot;</span>);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a36ce282aeac424b9187eb19cf635c0">State::FINISHING</a> &amp;&amp; _functions.empty())</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        assert(((_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a36ce282aeac424b9187eb19cf635c0">State::FINISHING</a>) || (_state == <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a86d1debf3f3aa9b77c0d976a4fa33862">State::ONLINE</a>)) &amp;&amp; !_functions.empty());</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        fn = std::move(_functions.front());</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        _functions.pop();</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>      }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    assert(fn);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    fn-&gt;run();</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  }</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
 </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_work_queue.html#a3c1c39bdedb325fecfea80a9a2113654">   70</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#a3c1c39bdedb325fecfea80a9a2113654">WorkQueue::enqueue</a>(std::unique_ptr&lt;IFunction&gt; &amp;&amp;fn)</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>{</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  {</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    std::unique_lock&lt;std::mutex&gt; lock{_mu};</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    _functions.emplace(std::move(fn));</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  }</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  _cv.notify_one();</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>}</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_work_queue.html#a3c1c39bdedb325fecfea80a9a2113654">   68</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#a3c1c39bdedb325fecfea80a9a2113654">WorkQueue::enqueue</a>(std::unique_ptr&lt;IFunction&gt; &amp;&amp;fn)</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>{</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    std::unique_lock&lt;std::mutex&gt; lock{_mu};</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    _functions.emplace(std::move(fn));</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  _cv.notify_one();</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
 </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_work_queue.html#aa5a6508dc9ede82fb8430eeb644cb80a">   79</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#aa5a6508dc9ede82fb8430eeb644cb80a">WorkQueue::terminate</a>()</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>{</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    std::unique_lock&lt;std::mutex&gt; lock{_mu};</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    _state = <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a70c2edd78fb7e88588a954c4f81100">State::FORCE_FINISHING</a>;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  }</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  _cv.notify_all();</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>}</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="}">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_work_queue.html#aa5a6508dc9ede82fb8430eeb644cb80a">   77</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#aa5a6508dc9ede82fb8430eeb644cb80a">WorkQueue::terminate</a>()</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>{</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    std::unique_lock&lt;std::mutex&gt; lock{_mu};</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    _state = <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a70c2edd78fb7e88588a954c4f81100">State::FORCE_FINISHING</a>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  }</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  _cv.notify_all();</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>}</div>
 </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="foldopen" id="foldopen00088" data-start="{" data-end="}">
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_work_queue.html#aa525d9c546761503e2b3ac0b2fcbdf48">   88</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#aa525d9c546761503e2b3ac0b2fcbdf48">WorkQueue::finish</a>()</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>{</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  {</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    std::unique_lock&lt;std::mutex&gt; lock{_mu};</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    _state = <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a36ce282aeac424b9187eb19cf635c0">State::FINISHING</a>;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  }</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  _cv.notify_all();</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>}</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="foldopen" id="foldopen00086" data-start="{" data-end="}">
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_work_queue.html#aa525d9c546761503e2b3ac0b2fcbdf48">   86</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#aa525d9c546761503e2b3ac0b2fcbdf48">WorkQueue::finish</a>()</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>{</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    std::unique_lock&lt;std::mutex&gt; lock{_mu};</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    _state = <a class="code hl_enumvalue" href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a36ce282aeac424b9187eb19cf635c0">State::FINISHING</a>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  _cv.notify_all();</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>}</div>
 </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="foldopen" id="foldopen00097" data-start="{" data-end="}">
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_work_queue.html#af9cf7e093f8b57c7aac86bb1895be355">   97</a></span>uint32_t <a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#af9cf7e093f8b57c7aac86bb1895be355">WorkQueue::numJobsInQueue</a>()</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>{</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  std::unique_lock&lt;std::mutex&gt; lock{_mu};</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keywordflow">return</span> _functions.size();</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>}</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="foldopen" id="foldopen00095" data-start="{" data-end="}">
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classonert_1_1exec_1_1_work_queue.html#af9cf7e093f8b57c7aac86bb1895be355">   95</a></span>uint32_t <a class="code hl_function" href="classonert_1_1exec_1_1_work_queue.html#af9cf7e093f8b57c7aac86bb1895be355">WorkQueue::numJobsInQueue</a>()</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>{</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  std::unique_lock&lt;std::mutex&gt; lock{_mu};</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordflow">return</span> _functions.size();</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
 </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>} <span class="comment">// namespace exec</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>} <span class="comment">// namespace onert::exec</span></div>
 <div class="ttc" id="a_work_queue_8h_html"><div class="ttname"><a href="_work_queue_8h.html">WorkQueue.h</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_a1cfc4bb41584f56f831eaa23fbc8ae64"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#a1cfc4bb41584f56f831eaa23fbc8ae64">onert::exec::WorkQueue::~WorkQueue</a></div><div class="ttdeci">~WorkQueue()</div><div class="ttdoc">Destroy WorkQueue object.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00026">WorkQueue.cc:26</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_a3c1c39bdedb325fecfea80a9a2113654"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#a3c1c39bdedb325fecfea80a9a2113654">onert::exec::WorkQueue::enqueue</a></div><div class="ttdeci">void enqueue(std::unique_ptr&lt; IFunction &gt; &amp;&amp;fn)</div><div class="ttdoc">Push the given Task to the job queue.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00070">WorkQueue.cc:70</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_a1cfc4bb41584f56f831eaa23fbc8ae64"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#a1cfc4bb41584f56f831eaa23fbc8ae64">onert::exec::WorkQueue::~WorkQueue</a></div><div class="ttdeci">~WorkQueue()</div><div class="ttdoc">Destroy WorkQueue object.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00024">WorkQueue.cc:24</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_a3c1c39bdedb325fecfea80a9a2113654"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#a3c1c39bdedb325fecfea80a9a2113654">onert::exec::WorkQueue::enqueue</a></div><div class="ttdeci">void enqueue(std::unique_ptr&lt; IFunction &gt; &amp;&amp;fn)</div><div class="ttdoc">Push the given Task to the job queue.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00068">WorkQueue.cc:68</a></div></div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_a4deabc970678c91e093899d7a4e33e25a7a36ce282aeac424b9187eb19cf635c0"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a36ce282aeac424b9187eb19cf635c0">onert::exec::WorkQueue::State::FINISHING</a></div><div class="ttdeci">@ FINISHING</div></div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_a4deabc970678c91e093899d7a4e33e25a7a70c2edd78fb7e88588a954c4f81100"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a7a70c2edd78fb7e88588a954c4f81100">onert::exec::WorkQueue::State::FORCE_FINISHING</a></div><div class="ttdeci">@ FORCE_FINISHING</div></div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_a4deabc970678c91e093899d7a4e33e25a86d1debf3f3aa9b77c0d976a4fa33862"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#a4deabc970678c91e093899d7a4e33e25a86d1debf3f3aa9b77c0d976a4fa33862">onert::exec::WorkQueue::State::ONLINE</a></div><div class="ttdeci">@ ONLINE</div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_a7a1466d8f73c75ca7c64d4919ac8d8a3"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#a7a1466d8f73c75ca7c64d4919ac8d8a3">onert::exec::WorkQueue::operator()</a></div><div class="ttdeci">void operator()()</div><div class="ttdoc">Thread entry function.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00035">WorkQueue.cc:35</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_aa525d9c546761503e2b3ac0b2fcbdf48"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#aa525d9c546761503e2b3ac0b2fcbdf48">onert::exec::WorkQueue::finish</a></div><div class="ttdeci">void finish()</div><div class="ttdoc">Flag as terminating so all the worker threads can terminate.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00088">WorkQueue.cc:88</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_aa5a6508dc9ede82fb8430eeb644cb80a"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#aa5a6508dc9ede82fb8430eeb644cb80a">onert::exec::WorkQueue::terminate</a></div><div class="ttdeci">void terminate()</div><div class="ttdoc">Flag as terminating so all the worker threads can terminate.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00079">WorkQueue.cc:79</a></div></div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_af9cf7e093f8b57c7aac86bb1895be355"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#af9cf7e093f8b57c7aac86bb1895be355">onert::exec::WorkQueue::numJobsInQueue</a></div><div class="ttdeci">uint32_t numJobsInQueue()</div><div class="ttdoc">Check if it has pending jobs. Even if this returns fals, WorkQueue threads may be still running.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00097">WorkQueue.cc:97</a></div></div>
-<div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_a7a1466d8f73c75ca7c64d4919ac8d8a3"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#a7a1466d8f73c75ca7c64d4919ac8d8a3">onert::exec::WorkQueue::operator()</a></div><div class="ttdeci">void operator()()</div><div class="ttdoc">Thread entry function.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00033">WorkQueue.cc:33</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_aa525d9c546761503e2b3ac0b2fcbdf48"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#aa525d9c546761503e2b3ac0b2fcbdf48">onert::exec::WorkQueue::finish</a></div><div class="ttdeci">void finish()</div><div class="ttdoc">Flag as terminating so all the worker threads can terminate.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00086">WorkQueue.cc:86</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_aa5a6508dc9ede82fb8430eeb644cb80a"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#aa5a6508dc9ede82fb8430eeb644cb80a">onert::exec::WorkQueue::terminate</a></div><div class="ttdeci">void terminate()</div><div class="ttdoc">Flag as terminating so all the worker threads can terminate.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00077">WorkQueue.cc:77</a></div></div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_work_queue_html_af9cf7e093f8b57c7aac86bb1895be355"><div class="ttname"><a href="classonert_1_1exec_1_1_work_queue.html#af9cf7e093f8b57c7aac86bb1895be355">onert::exec::WorkQueue::numJobsInQueue</a></div><div class="ttdeci">uint32_t numJobsInQueue()</div><div class="ttdoc">Check if it has pending jobs. Even if this returns fals, WorkQueue threads may be still running.</div><div class="ttdef"><b>Definition</b> <a href="_work_queue_8cc_source.html#l00095">WorkQueue.cc:95</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1exec_html"><div class="ttname"><a href="namespaceonert_1_1exec.html">onert::exec</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_builder_8h_source.html#l00027">CustomKernelBuilder.h:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

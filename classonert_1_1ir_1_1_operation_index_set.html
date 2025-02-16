@@ -124,7 +124,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00032">32</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00030">30</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a93d5b30a3028102aae24d906c1fbe33b" name="a93d5b30a3028102aae24d906c1fbe33b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a93d5b30a3028102aae24d906c1fbe33b">&#9670;&#160;</a></span>OperationIndexSet() <span class="overload">[1/2]</span></h2>
@@ -168,11 +168,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_index_set_8cc_source.html#l00026">26</a> of file <a class="el" href="_operation_index_set_8cc_source.html">OperationIndexSet.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>                                                                             : _set(list)</div>
-<div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   29</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_index_set_8cc_source.html#l00024">24</a> of file <a class="el" href="_operation_index_set_8cc_source.html">OperationIndexSet.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   24</span>                                                                             : _set(list)</div>
+<div class="line"><span class="lineno">   25</span>{</div>
+<div class="line"><span class="lineno">   26</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">   27</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -201,8 +201,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00053">53</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>{ <span class="keywordflow">return</span> _set.begin(); }</div>
+<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00051">51</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   51</span>{ <span class="keywordflow">return</span> _set.begin(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -230,8 +230,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00055">55</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>{ <span class="keywordflow">return</span> _set.begin(); }</div>
+<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00053">53</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{ <span class="keywordflow">return</span> _set.begin(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -259,10 +259,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00040">40</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   40</span>{ _set.clear(); }</div>
+<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00038">38</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   38</span>{ _set.clear(); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_operand_8cc_source.html#l00049">onert::ir::Operand::clearDefUse()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_operand_8cc_source.html#l00047">onert::ir::Operand::clearDefUse()</a>.</p>
 
 </div>
 </div>
@@ -282,10 +282,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_index_set_8cc_source.html#l00031">31</a> of file <a class="el" href="_operation_index_set_8cc_source.html">OperationIndexSet.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">return</span> std::find(_set.begin(), _set.end(), index) != _set.end();</div>
-<div class="line"><span class="lineno">   34</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_index_set_8cc_source.html#l00029">29</a> of file <a class="el" href="_operation_index_set_8cc_source.html">OperationIndexSet.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
+<div class="line"><span class="lineno">   31</span>  <span class="keywordflow">return</span> std::find(_set.begin(), _set.end(), index) != _set.end();</div>
+<div class="line"><span class="lineno">   32</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -313,8 +313,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00054">54</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   54</span>{ <span class="keywordflow">return</span> _set.end(); }</div>
+<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00052">52</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>{ <span class="keywordflow">return</span> _set.end(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -342,8 +342,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00056">56</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{ <span class="keywordflow">return</span> _set.end(); }</div>
+<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00054">54</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{ <span class="keywordflow">return</span> _set.end(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -371,10 +371,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00039">39</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{ _set.insert(index); }</div>
+<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00037">37</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{ _set.insert(index); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_operand_8cc_source.html#l00041">onert::ir::Operand::insertUse()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_operand_8cc_source.html#l00039">onert::ir::Operand::insertUse()</a>.</p>
 
 </div>
 </div>
@@ -402,14 +402,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00041">41</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>  {</div>
-<div class="line"><span class="lineno">   43</span>    <span class="keyword">auto</span> itr = std::find(_set.begin(), _set.end(), index);</div>
-<div class="line"><span class="lineno">   44</span>    assert(itr != _set.end());</div>
-<div class="line"><span class="lineno">   45</span>    _set.erase(itr);</div>
-<div class="line"><span class="lineno">   46</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00039">39</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   40</span>  {</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keyword">auto</span> itr = std::find(_set.begin(), _set.end(), index);</div>
+<div class="line"><span class="lineno">   42</span>    assert(itr != _set.end());</div>
+<div class="line"><span class="lineno">   43</span>    _set.erase(itr);</div>
+<div class="line"><span class="lineno">   44</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_operand_8cc_source.html#l00043">onert::ir::Operand::removeUse()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_operand_8cc_source.html#l00041">onert::ir::Operand::removeUse()</a>.</p>
 
 </div>
 </div>
@@ -436,8 +436,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00049">49</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(_set.size()); }</div>
+<p class="definition">Definition at line <a class="el" href="_operation_index_set_8h_source.html#l00047">47</a> of file <a class="el" href="_operation_index_set_8h_source.html">OperationIndexSet.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{ <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(_set.size()); }</div>
 </div><!-- fragment -->
 </div>
 </div>

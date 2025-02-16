@@ -106,7 +106,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_optimizer_8h_source.html#l00030">30</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_optimizer_8h_source.html">Optimizer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2acl__cl_2_optimizer_8h_source.html#l00026">26</a> of file <a class="el" href="runtime_2onert_2backend_2acl__cl_2_optimizer_8h_source.html">Optimizer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4d0dffdb67155f115274bb236910db52" name="a4d0dffdb67155f115274bb236910db52"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4d0dffdb67155f115274bb236910db52">&#9670;&#160;</a></span>Optimizer()</h2>
@@ -124,12 +124,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="acl__cl_2_optimizer_8cc_source.html#l00033">33</a> of file <a class="el" href="acl__cl_2_optimizer_8cc_source.html">Optimizer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   34</span>  : _context{context},</div>
-<div class="line"><span class="lineno">   35</span>    _tensor_builder{std::dynamic_pointer_cast&lt;TensorBuilder&gt;(context-&gt;tensor_builder)}</div>
-<div class="line"><span class="lineno">   36</span>{</div>
-<div class="line"><span class="lineno">   37</span>  assert(context);</div>
-<div class="line"><span class="lineno">   38</span>}</div>
+<p class="definition">Definition at line <a class="el" href="acl__cl_2_optimizer_8cc_source.html#l00029">29</a> of file <a class="el" href="acl__cl_2_optimizer_8cc_source.html">Optimizer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   30</span>  : _context{context},</div>
+<div class="line"><span class="lineno">   31</span>    _tensor_builder{std::dynamic_pointer_cast&lt;TensorBuilder&gt;(context-&gt;tensor_builder)}</div>
+<div class="line"><span class="lineno">   32</span>{</div>
+<div class="line"><span class="lineno">   33</span>  assert(context);</div>
+<div class="line"><span class="lineno">   34</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -149,24 +149,24 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="acl__cl_2_optimizer_8cc_source.html#l00040">40</a> of file <a class="el" href="acl__cl_2_optimizer_8cc_source.html">Optimizer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
-<div class="line"><span class="lineno">   42</span>  <span class="comment">// Concat elimination (build subtensor info)</span></div>
-<div class="line"><span class="lineno">   43</span>  {</div>
-<div class="line"><span class="lineno">   44</span>    acl_common::AclSubTensorAnalyzer sa{*_context-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_backend_context.html#aa46736f718462405643dd0e37cca0568">graph</a>()};</div>
-<div class="line"><span class="lineno">   45</span>    sa.setUsePadding();</div>
-<div class="line"><span class="lineno">   46</span>    _context-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_backend_context.html#aa46736f718462405643dd0e37cca0568">graph</a>()-&gt;<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">iterate</a>(</div>
-<div class="line"><span class="lineno">   47</span>      [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;, <span class="keyword">const</span> ir::IOperation &amp;op) { op.accept(sa); });</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>    _tensor_builder-&gt;parent_map(sa.releaseParentMap());</div>
-<div class="line"><span class="lineno">   50</span>  }</div>
-<div class="line"><span class="lineno">   51</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1_backend_context_html_aa46736f718462405643dd0e37cca0568"><div class="ttname"><a href="classonert_1_1backend_1_1_backend_context.html#aa46736f718462405643dd0e37cca0568">onert::backend::BackendContext::graph</a></div><div class="ttdeci">const ir::Graph * graph() const</div><div class="ttdef"><b>Definition</b> <a href="core_2include_2backend_2_backend_context_8h_source.html#l00063">BackendContext.h:63</a></div></div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_aceed2b4dccf1af8b94980a4df615338a"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">onert::ir::Graph::operations</a></div><div class="ttdeci">const Operations &amp; operations() const override</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00114">Graph.h:114</a></div></div>
-<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_ac73c1ef157e3bbe47709a786ebc6aae2"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">onert::util::ObjectManager::iterate</a></div><div class="ttdeci">void iterate(const std::function&lt; void(const Index &amp;, const Object &amp;)&gt; &amp;fn) const</div><div class="ttdoc">Iterate over the container with given function.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00186">ObjectManager.h:186</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_a96178eda8f56c7ef3d89961856ace347"><div class="ttname"><a href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">onert::ir::OperationIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperationIndexTag &gt; OperationIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00032">Index.h:32</a></div></div>
+<p class="definition">Definition at line <a class="el" href="acl__cl_2_optimizer_8cc_source.html#l00036">36</a> of file <a class="el" href="acl__cl_2_optimizer_8cc_source.html">Optimizer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
+<div class="line"><span class="lineno">   38</span>  <span class="comment">// Concat elimination (build subtensor info)</span></div>
+<div class="line"><span class="lineno">   39</span>  {</div>
+<div class="line"><span class="lineno">   40</span>    acl_common::AclSubTensorAnalyzer sa{*_context-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_backend_context.html#aa46736f718462405643dd0e37cca0568">graph</a>()};</div>
+<div class="line"><span class="lineno">   41</span>    sa.setUsePadding();</div>
+<div class="line"><span class="lineno">   42</span>    _context-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_backend_context.html#aa46736f718462405643dd0e37cca0568">graph</a>()-&gt;<a class="code hl_function" href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">operations</a>().<a class="code hl_function" href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">iterate</a>(</div>
+<div class="line"><span class="lineno">   43</span>      [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;, <span class="keyword">const</span> ir::IOperation &amp;op) { op.accept(sa); });</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>    _tensor_builder-&gt;parent_map(sa.releaseParentMap());</div>
+<div class="line"><span class="lineno">   46</span>  }</div>
+<div class="line"><span class="lineno">   47</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1_backend_context_html_aa46736f718462405643dd0e37cca0568"><div class="ttname"><a href="classonert_1_1backend_1_1_backend_context.html#aa46736f718462405643dd0e37cca0568">onert::backend::BackendContext::graph</a></div><div class="ttdeci">const ir::Graph * graph() const</div><div class="ttdef"><b>Definition</b> <a href="core_2include_2backend_2_backend_context_8h_source.html#l00061">BackendContext.h:61</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_graph_html_aceed2b4dccf1af8b94980a4df615338a"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html#aceed2b4dccf1af8b94980a4df615338a">onert::ir::Graph::operations</a></div><div class="ttdeci">const Operations &amp; operations() const override</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00112">Graph.h:112</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1_object_manager_html_ac73c1ef157e3bbe47709a786ebc6aae2"><div class="ttname"><a href="classonert_1_1util_1_1_object_manager.html#ac73c1ef157e3bbe47709a786ebc6aae2">onert::util::ObjectManager::iterate</a></div><div class="ttdeci">void iterate(const std::function&lt; void(const Index &amp;, const Object &amp;)&gt; &amp;fn) const</div><div class="ttdoc">Iterate over the container with given function.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00184">ObjectManager.h:184</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_a96178eda8f56c7ef3d89961856ace347"><div class="ttname"><a href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">onert::ir::OperationIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, OperationIndexTag &gt; OperationIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00030">Index.h:30</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a3857064a895e09d7b486a594c9a8496f">onert::ir::IOperation::accept()</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00063">onert::backend::BackendContext::graph()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00186">onert::util::ObjectManager&lt; Index, Object &gt;::iterate()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00114">onert::ir::Graph::operations()</a>.</p>
+<p class="reference">References <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a3857064a895e09d7b486a594c9a8496f">onert::ir::IOperation::accept()</a>, <a class="el" href="core_2include_2backend_2_backend_context_8h_source.html#l00061">onert::backend::BackendContext::graph()</a>, <a class="el" href="runtime_2onert_2core_2include_2util_2_object_manager_8h_source.html#l00184">onert::util::ObjectManager&lt; Index, Object &gt;::iterate()</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00112">onert::ir::Graph::operations()</a>.</p>
 
 </div>
 </div>

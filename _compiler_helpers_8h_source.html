@@ -123,33 +123,30 @@ $(document).ready(function(){initNavTree('_compiler_helpers_8h_source.html','');
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert.html">onert</a></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert_1_1compiler.html">onert::compiler</a></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span>compiler</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> LoweredGraphType,</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>          <span class="keyword">typename</span> = std::enable_if_t&lt;std::is_base_of&lt;ILoweredGraph, LoweredGraphType&gt;::value&gt;&gt;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">static</span> std::unordered_map&lt;ir::SubgraphIndex, std::unique_ptr&lt;StaticShapeInferer&gt;&gt;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>createStaticShapeInferers(</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keyword">const</span> std::unordered_map&lt;<a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, std::unique_ptr&lt;LoweredGraphType&gt;&gt; &amp;lowered_subgs)</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  std::unordered_map&lt;ir::SubgraphIndex, ILoweredGraph *&gt; lsubgs;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;[subg_index, lowered_subg] : lowered_subgs)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    lsubgs[subg_index] = lowered_subg.<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1compiler_1_1_static_shape_inferer.html#a8ad5e5e37fe1b6b3857686525b0e1470">StaticShapeInferer::createStaticShapeInferers</a>(lsubgs);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> LoweredGraphType,</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>          <span class="keyword">typename</span> = std::enable_if_t&lt;std::is_base_of&lt;ILoweredGraph, LoweredGraphType&gt;::value&gt;&gt;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">static</span> std::unordered_map&lt;ir::SubgraphIndex, std::unique_ptr&lt;StaticShapeInferer&gt;&gt;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>createStaticShapeInferers(</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">const</span> std::unordered_map&lt;<a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, std::unique_ptr&lt;LoweredGraphType&gt;&gt; &amp;lowered_subgs)</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>{</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  std::unordered_map&lt;ir::SubgraphIndex, ILoweredGraph *&gt; lsubgs;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;[subg_index, lowered_subg] : lowered_subgs)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    lsubgs[subg_index] = lowered_subg.<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>();</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1compiler_1_1_static_shape_inferer.html#a8ad5e5e37fe1b6b3857686525b0e1470">StaticShapeInferer::createStaticShapeInferers</a>(lsubgs);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>} <span class="comment">// namespace onert::compiler</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>} <span class="comment">// namespace compiler</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_COMPILER_COMPILER_HELPERS_H__</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_COMPILER_COMPILER_HELPERS_H__</span></div>
 <div class="ttc" id="a_i_lowered_graph_8h_html"><div class="ttname"><a href="_i_lowered_graph_8h.html">ILoweredGraph.h</a></div></div>
 <div class="ttc" id="a_static_shape_inferer_8h_html"><div class="ttname"><a href="_static_shape_inferer_8h.html">StaticShapeInferer.h</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_static_shape_inferer_html_a8ad5e5e37fe1b6b3857686525b0e1470"><div class="ttname"><a href="classonert_1_1compiler_1_1_static_shape_inferer.html#a8ad5e5e37fe1b6b3857686525b0e1470">onert::compiler::StaticShapeInferer::createStaticShapeInferers</a></div><div class="ttdeci">static std::unordered_map&lt; ir::SubgraphIndex, std::unique_ptr&lt; StaticShapeInferer &gt; &gt; createStaticShapeInferers(const std::unordered_map&lt; ir::SubgraphIndex, ILoweredGraph * &gt; &amp;lowered_subgs)</div><div class="ttdoc">Create a shape inferer map for a lowered model.</div><div class="ttdef"><b>Definition</b> <a href="_static_shape_inferer_8cc_source.html#l00194">StaticShapeInferer.cc:194</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_static_shape_inferer_html_a8ad5e5e37fe1b6b3857686525b0e1470"><div class="ttname"><a href="classonert_1_1compiler_1_1_static_shape_inferer.html#a8ad5e5e37fe1b6b3857686525b0e1470">onert::compiler::StaticShapeInferer::createStaticShapeInferers</a></div><div class="ttdeci">static std::unordered_map&lt; ir::SubgraphIndex, std::unique_ptr&lt; StaticShapeInferer &gt; &gt; createStaticShapeInferers(const std::unordered_map&lt; ir::SubgraphIndex, ILoweredGraph * &gt; &amp;lowered_subgs)</div><div class="ttdoc">Create a shape inferer map for a lowered model.</div><div class="ttdef"><b>Definition</b> <a href="_static_shape_inferer_8cc_source.html#l00192">StaticShapeInferer.cc:192</a></div></div>
 <div class="ttc" id="anamespaceexo_html_aff46e62f58bb005a0fc63b6bed6f8698"><div class="ttname"><a href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">exo::get</a></div><div class="ttdeci">KnobTrait&lt; K &gt;::ValueType get(void)</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_afff9e77cac191f4fcc8c447e4bea053c"><div class="ttname"><a href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">onert::ir::SubgraphIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint16_t, SubgraphIndexTag &gt; SubgraphIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00041">Index.h:41</a></div></div>
-<div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1compiler_html"><div class="ttname"><a href="namespaceonert_1_1compiler.html">onert::compiler</a></div><div class="ttdef"><b>Definition</b> <a href="_backend_manager_8h_source.html#l00026">BackendManager.h:27</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_afff9e77cac191f4fcc8c447e4bea053c"><div class="ttname"><a href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">onert::ir::SubgraphIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint16_t, SubgraphIndexTag &gt; SubgraphIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00039">Index.h:39</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

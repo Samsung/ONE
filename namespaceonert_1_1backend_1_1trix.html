@@ -158,7 +158,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2trix_2_tensor_8h_source.html#l00031">31</a> of file <a class="el" href="runtime_2onert_2backend_2trix_2_tensor_8h_source.html">Tensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2trix_2_tensor_8h_source.html#l00027">27</a> of file <a class="el" href="runtime_2onert_2backend_2trix_2_tensor_8h_source.html">Tensor.h</a>.</p>
 
 </div>
 </div>
@@ -174,7 +174,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_dev_context_8h_source.html#l00034">34</a> of file <a class="el" href="_dev_context_8h_source.html">DevContext.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_dev_context_8h_source.html#l00030">30</a> of file <a class="el" href="_dev_context_8h_source.html">DevContext.h</a>.</p>
 
 </div>
 </div>
@@ -190,7 +190,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2trix_2_tensor_8h_source.html#l00030">30</a> of file <a class="el" href="runtime_2onert_2backend_2trix_2_tensor_8h_source.html">Tensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2trix_2_tensor_8h_source.html#l00026">26</a> of file <a class="el" href="runtime_2onert_2backend_2trix_2_tensor_8h_source.html">Tensor.h</a>.</p>
 
 </div>
 </div>
@@ -206,7 +206,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="backend_2trix_2_tensor_builder_8h_source.html#l00029">29</a> of file <a class="el" href="backend_2trix_2_tensor_builder_8h_source.html">TensorBuilder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="backend_2trix_2_tensor_builder_8h_source.html#l00025">25</a> of file <a class="el" href="backend_2trix_2_tensor_builder_8h_source.html">TensorBuilder.h</a>.</p>
 
 </div>
 </div>
@@ -236,20 +236,20 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>data_type Data type in npu </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="trix_2_convert_8cc_source.html#l00026">26</a> of file <a class="el" href="trix_2_convert_8cc_source.html">Convert.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">switch</span> (type)</div>
-<div class="line"><span class="lineno">   29</span>  {</div>
-<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_UINT8_ASYMM:</div>
-<div class="line"><span class="lineno">   31</span>      <span class="keywordflow">return</span> DATA_TYPE_QASYMM8;</div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT16_SYMM:</div>
-<div class="line"><span class="lineno">   33</span>      <span class="keywordflow">return</span> DATA_TYPE_QSYMM16;</div>
-<div class="line"><span class="lineno">   34</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   35</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
-<div class="line"><span class="lineno">   36</span>  }</div>
-<div class="line"><span class="lineno">   37</span>}</div>
+<p class="definition">Definition at line <a class="el" href="trix_2_convert_8cc_source.html#l00022">22</a> of file <a class="el" href="trix_2_convert_8cc_source.html">Convert.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   23</span>{</div>
+<div class="line"><span class="lineno">   24</span>  <span class="keywordflow">switch</span> (type)</div>
+<div class="line"><span class="lineno">   25</span>  {</div>
+<div class="line"><span class="lineno">   26</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_UINT8_ASYMM:</div>
+<div class="line"><span class="lineno">   27</span>      <span class="keywordflow">return</span> DATA_TYPE_QASYMM8;</div>
+<div class="line"><span class="lineno">   28</span>    <span class="keywordflow">case</span> ir::DataType::QUANT_INT16_SYMM:</div>
+<div class="line"><span class="lineno">   29</span>      <span class="keywordflow">return</span> DATA_TYPE_QSYMM16;</div>
+<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   31</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported data type&quot;</span>);</div>
+<div class="line"><span class="lineno">   32</span>  }</div>
+<div class="line"><span class="lineno">   33</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="runtime_2onert_2backend_2trix_2_convert_8h_source.html#l00050">setDataInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2onert_2backend_2trix_2_convert_8h_source.html#l00046">setDataInfo()</a>.</p>
 
 </div>
 </div>
@@ -296,19 +296,19 @@ template&lt;typename T , std::enable_if_t&lt; std::is_base_of&lt; <a class="el" 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2trix_2_convert_8h_source.html#l00069">69</a> of file <a class="el" href="runtime_2onert_2backend_2trix_2_convert_8h_source.html">Convert.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
-<div class="line"><span class="lineno">   71</span>  buf-&gt;num_buffers = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(tensors.size());</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">for</span> (uint32_t idx = 0; idx &lt; buf-&gt;num_buffers; ++idx)</div>
-<div class="line"><span class="lineno">   74</span>  {</div>
-<div class="line"><span class="lineno">   75</span>    buf-&gt;bufs[idx].addr = tensors[idx]-&gt;buffer();</div>
-<div class="line"><span class="lineno">   76</span>    buf-&gt;bufs[idx].size = <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(tensors[idx]-&gt;total_size());</div>
-<div class="line"><span class="lineno">   77</span>    buf-&gt;bufs[idx].type = BUFFER_MAPPED;</div>
-<div class="line"><span class="lineno">   78</span>  }</div>
-<div class="line"><span class="lineno">   79</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2trix_2_convert_8h_source.html#l00065">65</a> of file <a class="el" href="runtime_2onert_2backend_2trix_2_convert_8h_source.html">Convert.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   66</span>{</div>
+<div class="line"><span class="lineno">   67</span>  buf-&gt;num_buffers = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(tensors.size());</div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">for</span> (uint32_t idx = 0; idx &lt; buf-&gt;num_buffers; ++idx)</div>
+<div class="line"><span class="lineno">   70</span>  {</div>
+<div class="line"><span class="lineno">   71</span>    buf-&gt;bufs[idx].addr = tensors[idx]-&gt;buffer();</div>
+<div class="line"><span class="lineno">   72</span>    buf-&gt;bufs[idx].size = <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(tensors[idx]-&gt;total_size());</div>
+<div class="line"><span class="lineno">   73</span>    buf-&gt;bufs[idx].type = BUFFER_MAPPED;</div>
+<div class="line"><span class="lineno">   74</span>  }</div>
+<div class="line"><span class="lineno">   75</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_bulk_layer_8cc_source.html#l00047">onert::backend::trix::ops::BulkLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_bulk_layer_8cc_source.html#l00041">onert::backend::trix::ops::BulkLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -355,22 +355,22 @@ template&lt;typename T , std::enable_if_t&lt; std::is_base_of&lt; <a class="el" 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2trix_2_convert_8h_source.html#l00050">50</a> of file <a class="el" href="runtime_2onert_2backend_2trix_2_convert_8h_source.html">Convert.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>{</div>
-<div class="line"><span class="lineno">   52</span>  <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>-&gt;num_info = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(tensors.size());</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>  <span class="keywordflow">for</span> (uint32_t idx = 0; idx &lt; <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>-&gt;num_info; ++idx)</div>
-<div class="line"><span class="lineno">   55</span>  {</div>
-<div class="line"><span class="lineno">   56</span>    <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>-&gt;info[idx].layout = DATA_LAYOUT_NHWC;</div>
-<div class="line"><span class="lineno">   57</span>    <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>-&gt;info[idx].type = <a class="code hl_function" href="namespaceonert_1_1backend_1_1trix.html#af093836fb3cc989d2d9ee6984a56c887">convertDataType</a>(tensors[idx]-&gt;data_type());</div>
-<div class="line"><span class="lineno">   58</span>  }</div>
-<div class="line"><span class="lineno">   59</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2trix_2_convert_8h_source.html#l00046">46</a> of file <a class="el" href="runtime_2onert_2backend_2trix_2_convert_8h_source.html">Convert.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{</div>
+<div class="line"><span class="lineno">   48</span>  <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>-&gt;num_info = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(tensors.size());</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">for</span> (uint32_t idx = 0; idx &lt; <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>-&gt;num_info; ++idx)</div>
+<div class="line"><span class="lineno">   51</span>  {</div>
+<div class="line"><span class="lineno">   52</span>    <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>-&gt;info[idx].layout = DATA_LAYOUT_NHWC;</div>
+<div class="line"><span class="lineno">   53</span>    <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>-&gt;info[idx].type = <a class="code hl_function" href="namespaceonert_1_1backend_1_1trix.html#af093836fb3cc989d2d9ee6984a56c887">convertDataType</a>(tensors[idx]-&gt;data_type());</div>
+<div class="line"><span class="lineno">   54</span>  }</div>
+<div class="line"><span class="lineno">   55</span>}</div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1backend_1_1trix_html_af093836fb3cc989d2d9ee6984a56c887"><div class="ttname"><a href="namespaceonert_1_1backend_1_1trix.html#af093836fb3cc989d2d9ee6984a56c887">onert::backend::trix::convertDataType</a></div><div class="ttdeci">data_type convertDataType(const ir::DataType type)</div><div class="ttdoc">Convert type of data from onert type to npu type.</div><div class="ttdef"><b>Definition</b> <a href="trix_2_convert_8cc_source.html#l00026">Convert.cc:26</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1trix_html_af093836fb3cc989d2d9ee6984a56c887"><div class="ttname"><a href="namespaceonert_1_1backend_1_1trix.html#af093836fb3cc989d2d9ee6984a56c887">onert::backend::trix::convertDataType</a></div><div class="ttdeci">data_type convertDataType(const ir::DataType type)</div><div class="ttdoc">Convert type of data from onert type to npu type.</div><div class="ttdef"><b>Definition</b> <a href="trix_2_convert_8cc_source.html#l00022">Convert.cc:22</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="trix_2_convert_8cc_source.html#l00026">convertDataType()</a>, and <a class="el" href="library__info_8cc_source.html#l00017">info</a>.</p>
+<p class="reference">References <a class="el" href="trix_2_convert_8cc_source.html#l00022">convertDataType()</a>, and <a class="el" href="library__info_8cc_source.html#l00017">info</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_bulk_layer_8cc_source.html#l00047">onert::backend::trix::ops::BulkLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_bulk_layer_8cc_source.html#l00041">onert::backend::trix::ops::BulkLayer::run()</a>.</p>
 
 </div>
 </div>

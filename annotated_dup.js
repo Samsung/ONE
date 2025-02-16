@@ -3071,19 +3071,6 @@ var annotated_dup =
           [ "DevContext", "classonert_1_1backend_1_1trix_1_1_dev_context.html", "classonert_1_1backend_1_1trix_1_1_dev_context" ],
           [ "KernelGenerator", "classonert_1_1backend_1_1trix_1_1_kernel_generator.html", "classonert_1_1backend_1_1trix_1_1_kernel_generator" ]
         ] ],
-        [ "xnnpack", "namespaceonert_1_1backend_1_1xnnpack.html", [
-          [ "ops", "namespaceonert_1_1backend_1_1xnnpack_1_1ops.html", [
-            [ "ConvolutionLayer", "classonert_1_1backend_1_1xnnpack_1_1ops_1_1_convolution_layer.html", "classonert_1_1backend_1_1xnnpack_1_1ops_1_1_convolution_layer" ],
-            [ "DepthwiseConvolutionLayer", "classonert_1_1backend_1_1xnnpack_1_1ops_1_1_depthwise_convolution_layer.html", "classonert_1_1backend_1_1xnnpack_1_1ops_1_1_depthwise_convolution_layer" ],
-            [ "FullyConnectedLayer", "classonert_1_1backend_1_1xnnpack_1_1ops_1_1_fully_connected_layer.html", "classonert_1_1backend_1_1xnnpack_1_1ops_1_1_fully_connected_layer" ],
-            [ "Layer", "classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer.html", "classonert_1_1backend_1_1xnnpack_1_1ops_1_1_layer" ]
-          ] ],
-          [ "Backend", "classonert_1_1backend_1_1xnnpack_1_1_backend.html", "classonert_1_1backend_1_1xnnpack_1_1_backend" ],
-          [ "BackendContext", "classonert_1_1backend_1_1xnnpack_1_1_backend_context.html", "classonert_1_1backend_1_1xnnpack_1_1_backend_context" ],
-          [ "Config", "classonert_1_1backend_1_1xnnpack_1_1_config.html", "classonert_1_1backend_1_1xnnpack_1_1_config" ],
-          [ "ExternalContext", "classonert_1_1backend_1_1xnnpack_1_1_external_context.html", "classonert_1_1backend_1_1xnnpack_1_1_external_context" ],
-          [ "KernelGenerator", "classonert_1_1backend_1_1xnnpack_1_1_kernel_generator.html", "classonert_1_1backend_1_1xnnpack_1_1_kernel_generator" ]
-        ] ],
         [ "Backend", "classonert_1_1backend_1_1_backend.html", "classonert_1_1backend_1_1_backend" ],
         [ "BackendContext", "classonert_1_1backend_1_1_backend_context.html", "classonert_1_1backend_1_1_backend_context" ],
         [ "ContextData", "structonert_1_1backend_1_1_context_data.html", "structonert_1_1backend_1_1_context_data" ],
