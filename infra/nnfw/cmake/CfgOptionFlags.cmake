@@ -48,6 +48,7 @@ option(BUILD_TENSORFLOW_LITE_GPU "Build TensorFlow Lite GPU delegate from the do
 option(BUILD_NPUD "Build NPU daemon" OFF)
 option(ENVVAR_NPUD_CONFIG "Use environment variable for npud configuration" OFF)
 option(BUILD_LOGGING "Build logging runtime" OFF)
+option(BUILD_XNNPACK_BACKEND "Build XNNPack backend" OFF)
 
 #
 # Default build configuration for tools
