@@ -77,12 +77,7 @@ function check_newline() {
   #   .svg: xml type ML for vector graphic
   FILES_TO_CHECK_EOF=`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep -v '((\.caffemodel)|(\.png)|(\.pdf)|(\.h5)|(\.pdf)|(\.tar.gz)|(\.tflite)|(\.pdf)|(\.bmp)|(\.svg))$'`
 
-  for f in ${FILES_TO_CHECK_EOF[@]}; do
-    # Check no new line at end of file
-    if diff /dev/null "$f" | tail -1 | grep '^\\ No newline' > /dev/null; then
-      echo >> "$f"
-    fi
-  done
+  echo "${FILES_TO_CHECK_EOF[@]}" | xargs -P $(nproc) -I {} bash -c "if diff /dev/null '{}' | tail -1 | grep -q '\\ No newline'; then echo >> '{}'; fi"
 }
 
 function check_permission() {
@@ -159,7 +154,7 @@ function check_python_files() {
   FILES_TO_CHECK_PYTHON+=(`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '^compiler/fm-equalize/fm-equalize$'`)
 
   if [[ ${#FILES_TO_CHECK_PYTHON} -ne 0 ]]; then
-    yapf -i ${FILES_TO_CHECK_PYTHON[@]}
+    yapf -p -i ${FILES_TO_CHECK_PYTHON[@]}
     EXIT_CODE=$?
     if [[ ${EXIT_CODE} -ne 0 ]]; then
       INVALID_EXIT=${EXIT_CODE}
