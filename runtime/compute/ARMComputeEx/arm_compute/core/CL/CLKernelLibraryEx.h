@@ -107,7 +107,7 @@ public:
    * @param[in] kernel_path Path of the directory from which kernel sources are loaded.
    * @return N/A
    */
-  void set_kernel_path(const std::string &kernel_path) { _kernel_path = kernel_path; };
+  void set_kernel_path(std::string_view kernel_path) { _kernel_path = kernel_path; };
 
   /**
    * @brief Get the path that the kernels reside in.
@@ -120,7 +120,7 @@ public:
    * @param[in] program_name Program name.
    * @return Source of the selected program.
    */
-  std::string get_program_source(const std::string &program_name);
+  std::string get_program_source(std::string_view program_name);
 
   /**
    * @brief Set the CL context used to create programs.
@@ -224,7 +224,7 @@ public:
    * @param[in] program            Built program to add to the cache
    * @return N/A
    */
-  void add_built_program(const std::string &built_program_name, cl::Program program);
+  void add_built_program(std::string_view built_program_name, cl::Program program);
 
   /**
    * @brief Returns true if FP16 is supported by the CL device
@@ -254,13 +254,13 @@ private:
   cl::Context _context;     /**< Underlying CL context. */
   cl::Device _device;       /**< Underlying CL device. */
   std::string _kernel_path; /**< Path to the kernels folder. */
-  mutable std::map<std::string, const Program>
+  mutable std::map<std::string, const Program, std::less<>>
     _programs_map; /**< Map with all already loaded program data. */
-  mutable std::map<std::string, cl::Program>
+  mutable std::map<std::string, cl::Program, std::less<>>
     _built_programs_map; /**< Map with all already built program data. */
-  static const std::map<std::string, std::string>
+  static const std::map<std::string, std::string, std::less<>>
     _kernel_program_map; /**< Map that associates kernel names with programs. */
-  static const std::map<std::string, std::string>
+  static const std::map<std::string, std::string, std::less<>>
     _program_source_map; /**< Contains sources for all programs.
                            Used for compile-time kernel inclusion. >*/
 };

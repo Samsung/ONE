@@ -87,7 +87,7 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
   {"scale_factor_symm8", "scale_factor.cl"},
 };
 
-const std::map<std::string, std::string> CLKernelLibraryEx::_program_source_map = {
+const std::map<std::string, std::string, std::less<>> CLKernelLibraryEx::_program_source_map = {
 #ifdef EMBEDDED_KERNELS
   {
     "activation_float_helpers.h",
@@ -258,8 +258,7 @@ Kernel CLKernelLibraryEx::create_kernel(const std::string &kernel_name,
   return Kernel(kernel_name, cl_program);
 }
 
-void CLKernelLibraryEx::add_built_program(const std::string &built_program_name,
-                                          cl::Program program)
+void CLKernelLibraryEx::add_built_program(std::string_view built_program_name, cl::Program program)
 {
   _built_programs_map.emplace(built_program_name, program);
 }
@@ -335,13 +334,13 @@ std::string CLKernelLibraryEx::stringify_set(const StringSet &s) const
   return concat_set;
 }
 
-std::string CLKernelLibraryEx::get_program_source(const std::string &program_name)
+std::string CLKernelLibraryEx::get_program_source(std::string_view program_name)
 {
   const auto program_source_it = _program_source_map.find(program_name);
 
   if (program_source_it == _program_source_map.end())
   {
-    ARM_COMPUTE_ERROR_VAR("Embedded program for %s does not exist.", program_name.c_str());
+    ARM_COMPUTE_ERROR_VAR("Embedded program for %s does not exist.", program_name.data());
   }
 
   return program_source_it->second;

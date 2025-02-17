@@ -138,7 +138,7 @@ namespace
 
 constexpr int kEllipsisLabel = -1;
 
-std::vector<std::string> strSplit(const std::string &text, const std::string delimiter)
+std::vector<std::string> strSplit(std::string_view text, std::string_view delimiter)
 {
   std::vector<std::string> result;
 
@@ -150,11 +150,11 @@ std::vector<std::string> strSplit(const std::string &text, const std::string del
     pos = text.find(delimiter, start);
     if (pos == std::string::npos)
     {
-      result.push_back(text.substr(start, text.size() - start));
+      result.push_back(std::string(text.substr(start, text.size() - start)));
       break;
     }
 
-    result.push_back(text.substr(start, pos - start));
+    result.push_back(std::string(text.substr(start, pos - start)));
     start = pos + delimiter.size();
   } while (pos != std::string::npos);
 
@@ -187,7 +187,7 @@ public:
     // DO NOTHING
   }
 
-  void prepare(std::string &equation)
+  void prepare(std::string_view equation)
   {
     if (_prepared)
     {
@@ -199,7 +199,7 @@ public:
     _prepared = true;
   }
 
-  void operator()(std::string &equation, const std::vector<Shape> &input_shapes,
+  void operator()(std::string_view equation, const std::vector<Shape> &input_shapes,
                   const std::vector<const float *> &input_data, const Shape &output_shape,
                   float *output_data)
   {
@@ -345,7 +345,7 @@ public:
   }
 
 private:
-  void parseEquation(std::string &equation)
+  void parseEquation(std::string_view equation)
   {
     std::vector<std::string> input_str;
     std::string output_str;
@@ -400,14 +400,14 @@ private:
     }
   }
 
-  void parseEinsumEquation(const std::string &equation, std::vector<std::string> &input_subscripts,
+  void parseEinsumEquation(std::string_view &equation, std::vector<std::string> &input_subscripts,
                            std::string &output_subscript)
   {
     std::vector<std::string> inputs_and_output_subscripts = strSplit(equation, "->");
     if (inputs_and_output_subscripts.size() != 2)
     {
       throw std::runtime_error{"Einsum: Expecting exactly one '->' in einsum equation: " +
-                               equation};
+                               std::string(equation)};
     }
 
     output_subscript = inputs_and_output_subscripts[1];
@@ -415,12 +415,13 @@ private:
     if (input_subscripts.size() != 1 && input_subscripts.size() != 2)
     {
       throw std::runtime_error{"Einsum: Expecting 1 or 2 input subscripts in equation '" +
-                               equation + "' but got: " + std::to_string(input_subscripts.size())};
+                               std::string(equation) +
+                               "' but got: " + std::to_string(input_subscripts.size())};
     }
   }
 
   // Maps the character labels to consecutive integers.
-  void mapToLabels(const std::string &subscript, Labels &labels, std::map<char, int> &label_mapping)
+  void mapToLabels(std::string_view subscript, Labels &labels, std::map<char, int> &label_mapping)
   {
     for (size_t i = 0; i < subscript.size(); ++i)
     {
