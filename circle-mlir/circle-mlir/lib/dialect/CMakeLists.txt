@@ -2,6 +2,7 @@ include(mlir/TableGen.cmake)
 
 set(SRC
   utils/DynamicShapeUtils.cpp
+  utils/Errors.cpp
 )
 
 add_library(cirmlir_dialect STATIC ${SRC})
