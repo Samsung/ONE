@@ -19,4 +19,12 @@ mlir_tablegen(mlir/CircleOpsEnums.cc.inc -gen-enum-defs)
 mlir_tablegen(mlir/CircleOpsAttrdefs.h.inc -gen-attrdef-decls)
 mlir_tablegen(mlir/CircleOpsAttrdefs.cc.inc -gen-attrdef-defs)
 
+set(LLVM_TARGET_DEFINITIONS mlir/CircleOps.td)
+mlir_tablegen(mlir/CircleOps.h.inc -gen-op-decls)
+mlir_tablegen(mlir/CircleOps.cc.inc -gen-op-defs)
+
+set(LLVM_TARGET_DEFINITIONS mlir/CircleOps.td)
+cir_convertergen(mlir/OperatorConverters.inc --gen-operator-converters)
+cir_convertergen(mlir/RuntimeVerifiers.inc --gen-runtime-verifiers)
+
 add_public_tablegen_target(circle_mlir_gen_inc)
