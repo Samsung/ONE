@@ -8,3 +8,5 @@ mlir_tablegen(mlir/CircleOpInterface.h.inc -gen-op-interface-decls)
 mlir_tablegen(mlir/CircleOpInterface.cc.inc -gen-op-interface-defs)
 mlir_tablegen(mlir/CircleOpsDialect.h.inc -gen-dialect-decls)
 mlir_tablegen(mlir/CircleOpsDialect.cc.inc -gen-dialect-defs)
+
+add_public_tablegen_target(circle_mlir_gen_inc)
