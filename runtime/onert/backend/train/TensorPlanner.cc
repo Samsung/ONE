@@ -214,10 +214,8 @@ void TensorPlanner::planTrainableTensors(TensorBuilder *tensor_builder)
   std::vector<ir::train::TrainingOperandIndex> constants;
 
   // Prepare scanning
-  for (const auto &pair : training_usedefs)
+  for (const auto &[operand_index, operand_usedefs] : training_usedefs)
   {
-    const auto &operand_index = pair.first;
-    const auto &operand_usedefs = pair.second;
     const auto &operand = operand_usedefs.operand();
 
     if (!operand_index.valid())

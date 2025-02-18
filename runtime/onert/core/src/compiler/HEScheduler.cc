@@ -424,12 +424,12 @@ bool HEScheduler::schedule(const ir::OperationIndex &index, const backend::Backe
   for (const auto *backend : _all_backends)
   {
     std::multimap<int64_t, int64_t> transfer_st_exec_time;
-    const auto est_and_et = ESTAndExecTime(backend, index, transfer_st_exec_time);
+    const auto [avail_time, exec_time] = ESTAndExecTime(backend, index, transfer_st_exec_time);
 
-    if (eft > est_and_et.first + est_and_et.second)
+    if (eft > avail_time + exec_time)
     {
-      eft = est_and_et.first + est_and_et.second;
-      selected_exec_time = est_and_et.second;
+      eft = avail_time + exec_time;
+      selected_exec_time = exec_time;
       chosen_backend = backend;
       selected_transfer_st_exec_time = transfer_st_exec_time;
     }

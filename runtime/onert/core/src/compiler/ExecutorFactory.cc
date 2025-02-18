@@ -661,9 +661,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     createBackendContexts(*lowered_graph, true, custom_kernel_builder);
 
   // Replace BackendContext with TrainbleBackendContext
-  for (auto &&pair : base_backend_contexts)
+  for (auto &&[backend, ctx] : base_backend_contexts)
   {
-    auto ctx = pair.second.get();
     const auto &data = ctx->data();
 
     // Create partial and trainable graphs
@@ -695,7 +694,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
         external_operands.remove(index);
     }
 
-    const auto backend = pair.first;
     // NOTE The builtin backend does not yet support initializing UseDefs for training
     //      because it's graph does not have loss operation
     //      Without loss opeartion, we cannot call btopolSortOperations() or
