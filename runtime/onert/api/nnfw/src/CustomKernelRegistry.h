@@ -39,6 +39,8 @@ public:
   std::unique_ptr<CustomKernel> buildKernelForOp(const std::string &id);
 
 private:
+  // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+  //       to use `std::string_view` with lookup functions in unordered containers
   std::unordered_map<std::string, nnfw_custom_eval> _storage;
 };
 

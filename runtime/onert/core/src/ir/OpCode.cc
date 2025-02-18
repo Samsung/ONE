@@ -33,6 +33,8 @@ const char *toString(OpCode opcode)
 
 OpCode toOpCode(const std::string str)
 {
+  // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+  //       to use `std::string_view` with lookup functions in unordered containers
   static const std::unordered_map<std::string, OpCode> map{
 #define OP(Name) {#Name, OpCode::Name},
 #include "ir/Operations.lst"
