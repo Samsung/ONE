@@ -13,4 +13,10 @@ set(LLVM_TARGET_DEFINITIONS mlir/CircleShapeInferenceInterfaces.td)
 mlir_tablegen(mlir/CircleShapeInferenceOpInterfaces.h.inc -gen-op-interface-decls)
 mlir_tablegen(mlir/CircleShapeInferenceOpInterfaces.cc.inc -gen-op-interface-defs)
 
+set(LLVM_TARGET_DEFINITIONS mlir/CircleOpEnums.td)
+mlir_tablegen(mlir/CircleOpsEnums.h.inc -gen-enum-decls)
+mlir_tablegen(mlir/CircleOpsEnums.cc.inc -gen-enum-defs)
+mlir_tablegen(mlir/CircleOpsAttrdefs.h.inc -gen-attrdef-decls)
+mlir_tablegen(mlir/CircleOpsAttrdefs.cc.inc -gen-attrdef-defs)
+
 add_public_tablegen_target(circle_mlir_gen_inc)
