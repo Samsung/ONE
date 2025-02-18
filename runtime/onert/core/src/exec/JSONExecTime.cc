@@ -53,7 +53,7 @@ void readBool(bool &quant, std::ifstream &stream)
   stream.get(buf);
 }
 
-void printString(const std::string &str, std::ofstream &stream) { stream << "\"" << str << "\""; }
+void printString(std::string_view str, std::ofstream &stream) { stream << "\"" << str << "\""; }
 
 void printBool(bool quant, std::ofstream &stream) { stream << "\"" << quant << "\""; }
 

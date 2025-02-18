@@ -102,7 +102,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   return backend_resolver;
 }
 
-const backend::Backend *ManualScheduler::resolveBackend(const std::string &id,
+const backend::Backend *ManualScheduler::resolveBackend(std::string_view id,
                                                         const backend::Backend *fallback)
 {
   // Ensure if the backend is available in the current backend context
