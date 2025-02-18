@@ -9,3 +9,5 @@ cir_mlir_static_flags(cirmlir_dialect)
 target_include_directories(cirmlir_dialect PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_include_directories(cirmlir_dialect PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(cirmlir_dialect PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+# use generated files
+add_dependencies(cirmlir_dialect circle_mlir_gen_inc)
