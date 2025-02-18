@@ -14,28 +14,25 @@ find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${Python3_INCLUDE_DIRS})
 
-set(ONNX_SUGRAPH_FILES                                                          
+set(ONNX_SUBGRAPH_FILES                                                 
     test_model_download.sh
- )                                                                            
-                                                                              
- foreach(ONNX_SUGRAPH IN ITEMS ${ONNX_SUGRAPH_FILES})                                                                                                        
-   set(ONNX_SUGRAPH_FILE ${ONNX_SUGRAPH})                                           
-   set(ONNX_SUGRAPH_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${ONNX_SUGRAPH_FILE}")         
-   set(ONNX_SUGRAPH_BIN "${CMAKE_CURRENT_BINARY_DIR}/scripts/${ONNX_SUGRAPH_FILE}")         
-   set(ONNX_SUGRAPH_TARGET "${ONNX_SUGRAPH}_target")                                
-                                                                              
-   add_custom_command(OUTPUT ${ONNX_SUGRAPH_BIN}                                 
-     COMMAND ${CMAKE_COMMAND} -E copy "${ONNX_SUGRAPH_SRC}" "${ONNX_SUGRAPH_BIN}"   
-     DEPENDS ${ONNX_SUGRAPH_SRC}                                                 
-     COMMENT "Generate ${ONNX_SUGRAPH_BIN}"                                      
-   )                                                                          
-                                                                              
-   add_custom_target(${ONNX_SUGRAPH_TARGET} ALL DEPENDS ${ONNX_SUGRAPH_BIN})        
-                                                                              
-   install(FILES ${ONNX_SUGRAPH_BIN}                                             
-           PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE                   
-                       GROUP_READ GROUP_EXECUTE                               
-                       WORLD_READ WORLD_EXECUTE                               
-           DESTINATION bin)                                                   
-                                                                              
- endforeach(ONNX_SUGRAPH) 
+)
+foreach(ONNX_SUBGRAPH IN ITEMS ${ONNX_SUBGRAPH_FILES})
+    set(ONNX_SUBGRAPH_FILE ${ONNX_SUBGRAPH})
+    set(ONNX_SUBGRAPH_SRC "${CMAKE_CURRENT_SOURCE_DIR}/${ONNX_SUBGRAPH_FILE}")
+    set(ONNX_SUBGRAPH_BIN "${CMAKE_CURRENT_BINARY_DIR}/scripts/${ONNX_SUBGRAPH_FILE}")
+    set(ONNX_SUBGRAPH_TARGET "${ONNX_SUBGRAPH}_target")
+
+    add_custom_command(OUTPUT ${ONNX_SUBGRAPH_BIN}
+        COMMAND ${CMAKE_COMMAND} -E copy "${ONNX_SUBGRAPH_SRC}" "${ONNX_SUBGRAPH_BIN}"
+        DEPENDS ${ONNX_SUBGRAPH_SRC}
+        COMMENT "Generate ${ONNX_SUBGRAPH_BIN}"
+    )
+    add_custom_target(${ONNX_SUBGRAPH_TARGET} ALL DEPENDS ${ONNX_SUBGRAPH_BIN})
+    install(FILES ${ONNX_SUBGRAPH_BIN}
+        PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+            GROUP_READ GROUP_EXECUTE
+            WORLD_READ WORLD_EXECUTE
+        DESTINATION bin
+    )
+endforeach(ONNX_SUBGRAPH)
