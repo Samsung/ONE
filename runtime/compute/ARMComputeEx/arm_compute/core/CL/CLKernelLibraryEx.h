@@ -224,7 +224,7 @@ public:
    * @param[in] program            Built program to add to the cache
    * @return N/A
    */
-  void add_built_program(std::string_view built_program_name, cl::Program program);
+  void add_built_program(const std::string &built_program_name, cl::Program program);
 
   /**
    * @brief Returns true if FP16 is supported by the CL device
@@ -254,11 +254,11 @@ private:
   cl::Context _context;     /**< Underlying CL context. */
   cl::Device _device;       /**< Underlying CL device. */
   std::string _kernel_path; /**< Path to the kernels folder. */
-  mutable std::map<std::string, const Program, std::less<>>
+  mutable std::map<std::string, const Program>
     _programs_map; /**< Map with all already loaded program data. */
-  mutable std::map<std::string, cl::Program, std::less<>>
+  mutable std::map<std::string, cl::Program>
     _built_programs_map; /**< Map with all already built program data. */
-  static const std::map<std::string, std::string, std::less<>>
+  static const std::map<std::string, std::string>
     _kernel_program_map; /**< Map that associates kernel names with programs. */
   static const std::map<std::string, std::string, std::less<>>
     _program_source_map; /**< Contains sources for all programs.

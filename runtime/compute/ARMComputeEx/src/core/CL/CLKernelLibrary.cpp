@@ -258,7 +258,8 @@ Kernel CLKernelLibraryEx::create_kernel(const std::string &kernel_name,
   return Kernel(kernel_name, cl_program);
 }
 
-void CLKernelLibraryEx::add_built_program(std::string_view built_program_name, cl::Program program)
+void CLKernelLibraryEx::add_built_program(const std::string &built_program_name,
+                                          cl::Program program)
 {
   _built_programs_map.emplace(built_program_name, program);
 }
