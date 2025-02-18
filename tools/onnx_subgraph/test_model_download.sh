@@ -1,7 +1,5 @@
 #!/bin/bash
 
-pip install --user onnx onnxsim
-
 mkdir -p models
 
 cd ./models
