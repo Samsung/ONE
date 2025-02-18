@@ -9,4 +9,8 @@ mlir_tablegen(mlir/CircleOpInterface.cc.inc -gen-op-interface-defs)
 mlir_tablegen(mlir/CircleOpsDialect.h.inc -gen-dialect-decls)
 mlir_tablegen(mlir/CircleOpsDialect.cc.inc -gen-dialect-defs)
 
+set(LLVM_TARGET_DEFINITIONS mlir/CircleShapeInferenceInterfaces.td)
+mlir_tablegen(mlir/CircleShapeInferenceOpInterfaces.h.inc -gen-op-interface-decls)
+mlir_tablegen(mlir/CircleShapeInferenceOpInterfaces.cc.inc -gen-op-interface-defs)
+
 add_public_tablegen_target(circle_mlir_gen_inc)
