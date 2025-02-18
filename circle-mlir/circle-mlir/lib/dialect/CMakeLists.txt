@@ -1,0 +1,1 @@
+include(mlir/TableGen.cmake)
