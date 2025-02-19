@@ -379,6 +379,8 @@ inline bool IsI64ShapedType(Type t)
 } // namespace Circle
 } // namespace mlir
 
+#include "ConstFold.inc.cpp"
+
 namespace mlir
 {
 namespace Circle
