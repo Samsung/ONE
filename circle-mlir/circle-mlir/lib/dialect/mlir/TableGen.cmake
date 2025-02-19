@@ -27,4 +27,7 @@ set(LLVM_TARGET_DEFINITIONS mlir/CircleOps.td)
 cir_convertergen(mlir/OperatorConverters.inc --gen-operator-converters)
 cir_convertergen(mlir/RuntimeVerifiers.inc --gen-runtime-verifiers)
 
+set(LLVM_TARGET_DEFINITIONS mlir/CircleRewrite.td)
+mlir_tablegen(mlir/CircleRewrite.cc.inc -gen-rewriters)
+
 add_public_tablegen_target(circle_mlir_gen_inc)
