@@ -18,6 +18,7 @@ target_include_directories(cirmlir_dialect PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/in
 add_dependencies(cirmlir_dialect circle_mlir_gen_inc)
 target_include_directories(cirmlir_dialect PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries(cirmlir_dialect PUBLIC circle_schema)
+target_link_libraries(cirmlir_dialect PUBLIC cirmlir_coverage)
 
 if(NOT ENABLE_TEST)
   return()
