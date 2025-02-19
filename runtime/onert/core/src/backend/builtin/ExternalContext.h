@@ -33,7 +33,7 @@ namespace onert::backend::builtin
 class ExternalContext
 {
 private:
-  static const int kDefaultNumThreadpoolThreads = 1;
+  static inline const int kDefaultNumThreadpoolThreads = 1;
 
 public:
   ExternalContext() : _ruy_context(std::make_unique<ruy::Context>())

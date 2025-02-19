@@ -27,7 +27,7 @@ namespace onert::ir
 class OperandConstraint
 {
 private:
-  static const uint32_t INF = std::numeric_limits<uint32_t>::max();
+  static inline const uint32_t INF = std::numeric_limits<uint32_t>::max();
 
 public:
   static OperandConstraint createAny() { return OperandConstraint{0u, INF}; }

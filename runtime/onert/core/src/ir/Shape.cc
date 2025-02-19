@@ -24,11 +24,6 @@
 namespace onert::ir
 {
 
-int32_t const Shape::kUnspecifiedDim = -1;
-
-// NNFW_MAX_RANK is 6
-int32_t const Shape::kMaxRank = 6;
-
 FeatureShape Shape::asFeature() const
 {
   assert(rank() == 4);

@@ -19,8 +19,6 @@
 namespace onert::backend::builtin
 {
 
-std::string Config::ID = "builtin";
-
 bool Config::initialize() { return true; }
 
 } // namespace onert::backend::builtin
