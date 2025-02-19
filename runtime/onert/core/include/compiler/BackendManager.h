@@ -36,8 +36,8 @@ public:
   static BackendManager &get();
 
 public:
-  backend::Backend *get(const std::string &key);
-  const backend::Backend *get(const std::string &key) const;
+  backend::Backend *get(std::string_view key);
+  const backend::Backend *get(std::string_view key) const;
   const backend::Backend *getBuiltin() const;
   const std::vector<const backend::Backend *> getAll() const
   {
@@ -61,7 +61,7 @@ private:
 
 private:
   std::map<std::string, std::unique_ptr<void, dlhandle_destroy_t>> _handle_map;
-  std::map<std::string, std::unique_ptr<backend::Backend, backend_destroy_t>> _gen_map;
+  std::map<std::string, std::unique_ptr<backend::Backend, backend_destroy_t>, std::less<>> _gen_map;
   backend::Backend *_builtin{nullptr};
   /**
    * @brief load builtin backend
