@@ -4,6 +4,7 @@ set(SRC
   src/NameUtils.cpp
   utils/DynamicShapeUtils.cpp
   utils/Errors.cpp
+  utils/KernelShapeUtil.cpp
   utils/Padding.cpp
 )
 
@@ -20,6 +21,7 @@ if(NOT ENABLE_TEST)
 endif()
 
 set(SRC_TEST
+  utils/KernelShapeUtil.test.cpp
   utils/Padding.test.cpp
 )
 
