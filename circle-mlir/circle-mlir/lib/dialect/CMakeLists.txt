@@ -3,6 +3,7 @@ include(mlir/TableGen.cmake)
 set(SRC
   src/CircleDialect.cpp
   src/NameUtils.cpp
+  src/ShapeInference.cpp
   utils/DynamicShapeUtils.cpp
   utils/Errors.cpp
   utils/KernelShapeUtil.cpp
