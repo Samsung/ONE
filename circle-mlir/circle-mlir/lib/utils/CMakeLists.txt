@@ -1,5 +1,6 @@
 set(SRC
   src/ConvertType.cpp
+  src/SizeUtils.cpp
 )
 
 add_library(cirmlir_utils STATIC ${SRC})
@@ -16,6 +17,7 @@ endif()
 
 set(SRC_TEST
   src/ConvertType.test.cpp
+  src/SizeUtils.test.cpp
 )
 
 GTest_AddTest(cirmlir_utils_test ${SRC_TEST})
