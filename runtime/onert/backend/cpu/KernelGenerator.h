@@ -38,7 +38,8 @@ public:
                   const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
                   const std::shared_ptr<ExternalContext> &external_context);
 
-  std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex op_ind) override;
+  [[nodiscard]] std::unique_ptr<exec::FunctionSequence>
+  generate(ir::OperationIndex op_ind) override;
 
   void visit(const ir::operation::AddN &) override;
   void visit(const ir::operation::ArgMinMax &) override;

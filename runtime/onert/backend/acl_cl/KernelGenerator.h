@@ -32,7 +32,7 @@ public:
   KernelGenerator(const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
                   const std::shared_ptr<acl_common::AclTensorRegistry<TensorManager>> &_tensor_reg);
 
-  std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
+  [[nodiscard]] std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
 
 private:
   void visit(const ir::operation::ArgMinMax &) override;

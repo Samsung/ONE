@@ -35,7 +35,8 @@ public:
                   const std::shared_ptr<TensorRegistry> &tensor_reg,
                   const std::shared_ptr<ExternalContext> &external_context);
 
-  std::unique_ptr<exec::train::TrainableFnSequence> generate(ir::OperationIndex ind) override;
+  [[nodiscard]] std::unique_ptr<exec::train::TrainableFnSequence>
+  generate(ir::OperationIndex ind) override;
 
   void setTensorRegistries(const compiler::train::TensorRegistries &tensor_registries)
   {

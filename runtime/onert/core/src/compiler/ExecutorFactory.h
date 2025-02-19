@@ -47,15 +47,15 @@ public:
   static ExecutorFactory &get();
 
 public:
-  exec::IExecutor *create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
-                          const std::shared_ptr<exec::IExecutors> &executors,
-                          const ExecutorFactoryArgs &args);
+  [[nodiscard]] exec::IExecutor *create(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
+                                        const std::shared_ptr<exec::IExecutors> &executors,
+                                        const ExecutorFactoryArgs &args);
 
   // TODO Unify create()
-  exec::IExecutor *create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
-                          const std::shared_ptr<exec::IExecutors> &executors,
-                          const ExecutorFactoryArgs &args,
-                          const ir::train::TrainingInfo &training_info);
+  [[nodiscard]] exec::IExecutor *
+  create(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
+         const std::shared_ptr<exec::IExecutors> &executors, const ExecutorFactoryArgs &args,
+         const ir::train::TrainingInfo &training_info);
 
 private:
   ExecutorFactory();
@@ -70,11 +70,11 @@ private:
   static std::deque<std::pair<const backend::Backend *, backend::BackendContext *>>
   orderBackendContext(const backend::BackendContexts &backend_contexts);
 
-  static exec::IExecutor *
+  [[nodiscard]] static exec::IExecutor *
   createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                        const std::shared_ptr<exec::IExecutors> &executors,
                        const ExecutorFactoryArgs &args);
-  static exec::IExecutor *
+  [[nodiscard]] static exec::IExecutor *
   createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> lowered_graph,
                          const std::shared_ptr<exec::IExecutors> &executors,
                          const ExecutorFactoryArgs &args, bool parallel);
@@ -82,7 +82,7 @@ private:
   static void
   prepareMigrantTensors(compiler::ILoweredGraph &lowered_graph,
                         const backend::train::TrainableBackendContexts &backend_contexts);
-  static exec::IExecutor *
+  [[nodiscard]] static exec::IExecutor *
   createTrainableExecutor(std::unique_ptr<compiler::train::LoweredTrainableGraph> lowered_graph,
                           const std::shared_ptr<exec::IExecutors> &executors,
                           const ExecutorFactoryArgs &args,

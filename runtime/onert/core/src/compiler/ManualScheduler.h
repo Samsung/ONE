@@ -28,7 +28,7 @@ class ManualScheduler : public IScheduler
 public:
   ManualScheduler(const std::vector<const backend::Backend *> &backends,
                   const compiler::CompilerOptions &options);
-  std::unique_ptr<BackendResolver> schedule(const ir::Graph &graph) override;
+  [[nodiscard]] std::unique_ptr<BackendResolver> schedule(const ir::Graph &graph) override;
 
 private:
   const backend::Backend *resolveBackend(const std::string &id,

@@ -180,7 +180,7 @@ public:
   }
 
   // NOTE The corresponding metadata is deleted from the model and returned
-  std::unique_ptr<const ir::Data> extract_metadata(const std::string name)
+  [[nodiscard]] std::unique_ptr<const ir::Data> extract_metadata(const std::string name)
   {
     auto m = _metadatas.find(name);
 

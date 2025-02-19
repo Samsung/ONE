@@ -98,102 +98,106 @@ public:
    *
    * @note  Use factory instead of constructor to get status
    */
-  static NNFW_STATUS create(nnfw_session **session);
+  [[nodiscard]] static NNFW_STATUS create(nnfw_session **session);
 
 private:
   nnfw_session();
 
 public:
   ~nnfw_session();
-  NNFW_STATUS load_model_from_path(const char *path);
-  NNFW_STATUS prepare();
-  NNFW_STATUS run();
+  [[nodiscard]] NNFW_STATUS load_model_from_path(const char *path);
+  [[nodiscard]] NNFW_STATUS prepare();
+  [[nodiscard]] NNFW_STATUS run();
 
-  NNFW_STATUS run_async();
-  NNFW_STATUS await();
+  [[nodiscard]] NNFW_STATUS run_async();
+  [[nodiscard]] NNFW_STATUS await();
 
-  NNFW_STATUS set_input(uint32_t index, NNFW_TYPE type, const void *buffer, size_t length);
-  NNFW_STATUS set_output(uint32_t index, NNFW_TYPE type, void *buffer, size_t length);
+  [[nodiscard]] NNFW_STATUS set_input(uint32_t index, NNFW_TYPE type, const void *buffer,
+                                      size_t length);
+  [[nodiscard]] NNFW_STATUS set_output(uint32_t index, NNFW_TYPE type, void *buffer, size_t length);
 
-  NNFW_STATUS input_size(uint32_t *number);
-  NNFW_STATUS output_size(uint32_t *number);
+  [[nodiscard]] NNFW_STATUS input_size(uint32_t *number);
+  [[nodiscard]] NNFW_STATUS output_size(uint32_t *number);
 
-  NNFW_STATUS set_input_layout(uint32_t index, NNFW_LAYOUT layout);
-  NNFW_STATUS set_output_layout(uint32_t index, NNFW_LAYOUT layout);
+  [[nodiscard]] NNFW_STATUS set_input_layout(uint32_t index, NNFW_LAYOUT layout);
+  [[nodiscard]] NNFW_STATUS set_output_layout(uint32_t index, NNFW_LAYOUT layout);
 
-  NNFW_STATUS set_input_tensorinfo(uint32_t index, const nnfw_tensorinfo *ti);
+  [[nodiscard]] NNFW_STATUS set_input_tensorinfo(uint32_t index, const nnfw_tensorinfo *ti);
 
-  NNFW_STATUS input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
-  NNFW_STATUS output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
+  [[nodiscard]] NNFW_STATUS input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
+  [[nodiscard]] NNFW_STATUS output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
 
-  NNFW_STATUS set_available_backends(const char *backends);
+  [[nodiscard]] NNFW_STATUS set_available_backends(const char *backends);
 
-  NNFW_STATUS set_workspace(const char *dir);
+  [[nodiscard]] NNFW_STATUS set_workspace(const char *dir);
 
-  static NNFW_STATUS deprecated(const char *msg);
+  [[nodiscard]] static NNFW_STATUS deprecated(const char *msg);
 
   //
   // Internal-only API
   //
 
-  NNFW_STATUS set_config(const char *key, const char *value);
-  NNFW_STATUS get_config(const char *key, char *value, size_t value_size);
-  NNFW_STATUS load_circle_from_buffer(uint8_t *buffer, size_t size);
+  [[nodiscard]] NNFW_STATUS set_config(const char *key, const char *value);
+  [[nodiscard]] NNFW_STATUS get_config(const char *key, char *value, size_t value_size);
+  [[nodiscard]] NNFW_STATUS load_circle_from_buffer(uint8_t *buffer, size_t size);
 
   //
   // Experimental API
   //
-  NNFW_STATUS register_custom_operation(const std::string &id, nnfw_custom_eval eval_func);
-  NNFW_STATUS input_tensorindex(const char *tensorname, uint32_t *index);
-  NNFW_STATUS output_tensorindex(const char *tensorname, uint32_t *index);
+  [[nodiscard]] NNFW_STATUS register_custom_operation(const std::string &id,
+                                                      nnfw_custom_eval eval_func);
+  [[nodiscard]] NNFW_STATUS input_tensorindex(const char *tensorname, uint32_t *index);
+  [[nodiscard]] NNFW_STATUS output_tensorindex(const char *tensorname, uint32_t *index);
 
   // Run inference with auto compilation
-  NNFW_STATUS run_with_auto_compilation(const char *target, NNFW_CODEGEN_PREF pref);
+  [[nodiscard]] NNFW_STATUS run_with_auto_compilation(const char *target, NNFW_CODEGEN_PREF pref);
   // Set odc parameter: minmax_records_count for quantization in auto compilation mode
-  NNFW_STATUS set_odc_param_minmax_records_count(int minmax_records_count);
+  [[nodiscard]] NNFW_STATUS set_odc_param_minmax_records_count(int minmax_records_count);
   // delete MinMax File of on-device compiler
-  NNFW_STATUS delete_odc_minmax_file();
+  [[nodiscard]] NNFW_STATUS delete_odc_minmax_file();
 
   /**
    * @brief   Set backends with string-encoded mapping from operation index to backend type
    *          (cpu, acl_cl)
    */
-  NNFW_STATUS set_backends_per_operation(const char *backend_settings);
+  [[nodiscard]] NNFW_STATUS set_backends_per_operation(const char *backend_settings);
 
-  NNFW_STATUS train_get_traininfo(nnfw_train_info *info);
-  NNFW_STATUS train_set_traininfo(const nnfw_train_info *info);
-  NNFW_STATUS train_prepare();
-  NNFW_STATUS train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
-  NNFW_STATUS train_expected_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
-  NNFW_STATUS train_set_input(uint32_t index, const void *input,
-                              const nnfw_tensorinfo *input_tensorinfo);
-  NNFW_STATUS train_set_expected(uint32_t index, const void *expected,
-                                 const nnfw_tensorinfo *expected_tensorinfo);
-  NNFW_STATUS train_set_output(uint32_t index, NNFW_TYPE type, void *buffer, size_t length);
-  NNFW_STATUS train_run(bool update_weights);
-  NNFW_STATUS train_get_loss(uint32_t index, float *loss);
-  NNFW_STATUS train_export_circle(const char *path);
-  NNFW_STATUS train_export_circleplus(const char *path);
-  NNFW_STATUS train_import_checkpoint(const char *path);
-  NNFW_STATUS train_export_checkpoint(const char *path);
+  [[nodiscard]] NNFW_STATUS train_get_traininfo(nnfw_train_info *info);
+  [[nodiscard]] NNFW_STATUS train_set_traininfo(const nnfw_train_info *info);
+  [[nodiscard]] NNFW_STATUS train_prepare();
+  [[nodiscard]] NNFW_STATUS train_input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
+  [[nodiscard]] NNFW_STATUS train_expected_tensorinfo(uint32_t index, nnfw_tensorinfo *ti);
+  [[nodiscard]] NNFW_STATUS train_set_input(uint32_t index, const void *input,
+                                            const nnfw_tensorinfo *input_tensorinfo);
+  [[nodiscard]] NNFW_STATUS train_set_expected(uint32_t index, const void *expected,
+                                               const nnfw_tensorinfo *expected_tensorinfo);
+  [[nodiscard]] NNFW_STATUS train_set_output(uint32_t index, NNFW_TYPE type, void *buffer,
+                                             size_t length);
+  [[nodiscard]] NNFW_STATUS train_run(bool update_weights);
+  [[nodiscard]] NNFW_STATUS train_get_loss(uint32_t index, float *loss);
+  [[nodiscard]] NNFW_STATUS train_export_circle(const char *path);
+  [[nodiscard]] NNFW_STATUS train_export_circleplus(const char *path);
+  [[nodiscard]] NNFW_STATUS train_import_checkpoint(const char *path);
+  [[nodiscard]] NNFW_STATUS train_export_checkpoint(const char *path);
 
-  NNFW_STATUS set_quantization_type(NNFW_QUANTIZE_TYPE qtype);
-  NNFW_STATUS set_quantized_model_path(const char *path);
-  NNFW_STATUS quantize();
+  [[nodiscard]] NNFW_STATUS set_quantization_type(NNFW_QUANTIZE_TYPE qtype);
+  [[nodiscard]] NNFW_STATUS set_quantized_model_path(const char *path);
+  [[nodiscard]] NNFW_STATUS quantize();
 
-  NNFW_STATUS set_codegen_model_path(const char *path);
-  NNFW_STATUS codegen(const char *target, NNFW_CODEGEN_PREF pref);
+  [[nodiscard]] NNFW_STATUS set_codegen_model_path(const char *path);
+  [[nodiscard]] NNFW_STATUS codegen(const char *target, NNFW_CODEGEN_PREF pref);
 
-  NNFW_STATUS set_prepare_config(const NNFW_PREPARE_CONFIG key, const char *value);
-  NNFW_STATUS reset_prepare_config();
-  NNFW_STATUS set_execute_config(const NNFW_RUN_CONFIG key, const char *value);
-  NNFW_STATUS reset_execute_config();
+  [[nodiscard]] NNFW_STATUS set_prepare_config(const NNFW_PREPARE_CONFIG key, const char *value);
+  [[nodiscard]] NNFW_STATUS reset_prepare_config();
+  [[nodiscard]] NNFW_STATUS set_execute_config(const NNFW_RUN_CONFIG key, const char *value);
+  [[nodiscard]] NNFW_STATUS reset_execute_config();
 
 private:
   const onert::ir::IGraph *primary_subgraph();
   uint32_t getInputSize();
   uint32_t getOutputSize();
-  NNFW_STATUS loadModelFile(const std::string &model_file_path, const std::string &model_type);
+  [[nodiscard]] NNFW_STATUS loadModelFile(const std::string &model_file_path,
+                                          const std::string &model_type);
 
   bool isStateInitialized();
   bool isStateModelLoaded();

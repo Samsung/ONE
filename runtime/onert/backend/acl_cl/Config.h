@@ -35,7 +35,10 @@ public:
   bool supportFP16() override { return true; }
   void sync() const override { arm_compute::CLScheduler::get().sync(); }
 
-  std::unique_ptr<util::ITimer> timer() override { return std::make_unique<CLTimer>(); }
+  [[nodiscard]] std::unique_ptr<util::ITimer> timer() override
+  {
+    return std::make_unique<CLTimer>();
+  }
 };
 
 } // namespace onert::backend::acl_cl

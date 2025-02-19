@@ -38,7 +38,7 @@ public:
   virtual ~UntrainableOperation() = default;
 
 public:
-  std::unique_ptr<ITrainableOperation> clone() const override
+  [[nodiscard]] std::unique_ptr<ITrainableOperation> clone() const override
   {
     return std::make_unique<UntrainableOperation<OperationType>>(*this);
   }
