@@ -338,7 +338,7 @@ def CIR_NoValueOp : Op<CIR_Dialect, "no_value", [ConstantLike, Pure]> {
   let summary = "constant representing no value.";
 
   let description = [{
-No value constant op.
+    No value constant op.
   }];
 
   let arguments = (ins UnitAttr:$value);
