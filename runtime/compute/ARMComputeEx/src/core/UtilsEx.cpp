@@ -49,8 +49,7 @@ arm_compute::transposeconv_output_dimensions(unsigned int in_width, unsigned int
                                              const PadStrideInfo &info, unsigned int invalid_right,
                                              unsigned int invalid_bottom)
 {
-  const unsigned int stride_x = info.stride().first;
-  const unsigned int stride_y = info.stride().second;
+  const auto [stride_x, stride_y] = info.stride();
   const unsigned int padx = info.pad_left() + info.pad_right();
   const unsigned int pady = info.pad_top() + info.pad_bottom();
 

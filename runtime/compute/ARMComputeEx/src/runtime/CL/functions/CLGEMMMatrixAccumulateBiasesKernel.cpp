@@ -120,10 +120,10 @@ void CLGEMMMatrixAccumulateBiasesKernel::configure(const CLCompileContext &compi
   unsigned int vector_size = 0;
 
   // Configure kernel window
-  auto win_config =
+  auto [error, window] =
     validate_and_configure_window(accum->info(), biases->info(), gpu_target, vector_size);
-  ARM_COMPUTE_ERROR_THROW_ON(win_config.first);
-  ICLKernel::configure_internal(win_config.second);
+  ARM_COMPUTE_ERROR_THROW_ON(error);
+  ICLKernel::configure_internal(window);
 
   // Add build options
   CLBuildOptions build_opts;

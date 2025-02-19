@@ -117,9 +117,9 @@ void NEGEMMMatrixAccumulateBiasesKernel::configure(ITensor *accum, const ITensor
   _accum = accum;
 
   // Configure kernel window
-  auto win_config = validate_and_configure_window(accum->info(), biases->info());
-  ARM_COMPUTE_ERROR_THROW_ON(win_config.first);
-  INEKernel::configure(win_config.second);
+  auto [error, window] = validate_and_configure_window(accum->info(), biases->info());
+  ARM_COMPUTE_ERROR_THROW_ON(error);
+  INEKernel::configure(window);
 }
 
 Status NEGEMMMatrixAccumulateBiasesKernel::validate(const ITensorInfo *accum,
