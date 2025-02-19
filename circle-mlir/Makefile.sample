@@ -1,0 +1,114 @@
+#
+# This is a sample Makefile to configure and build circle-mlir
+# How to use:
+#   ln -s Makefile.sample Makefile
+#   make overlay
+#   make prep
+#   make cfg debug test
+#
+
+# find python3 from overlay or else from PATH
+PYTHON3_CMD:=./infra/overlay/venv/bin/python3
+ifeq ($(wildcard $(PYTHON3_CMD)),)
+	PYTHON3_CMD:=$(shell which python3)
+endif
+# TODO error handle if not found
+PYTHON3_PATH=$(shell dirname $(PYTHON3_CMD))
+
+CIRCLEMLIR_BUILD_DEBUG?=build/debug
+CIRCLEMLIR_BUILD_REL?=build/release
+
+CIRCLEMLIR_PY3_ROOT?=$(PYTHON3_PATH)
+CIRCLEMLIR_BUILD_JOBS?=4
+
+.PHONY: help all overlay \
+	prep cfg debug test clean \
+	prepr cfgr rel testr cleanr \
+	_mkbuild _mkbuildr
+
+.DEFAULT_GOAL: help
+
+help:
+	@echo "make overlay  : prepare overlay (needed only once)"
+	@echo "make prep     : prepare externals for debug (needed only once)"
+	@echo "make cfg      : configure circle-mlir for debug build"
+	@echo "make debug    : build for debug"
+	@echo "make test     : test for debug"
+	@echo "make clean    : clean debug build"
+	@echo "make prepr    : prepare externals for release (needed only once)"
+	@echo "make cfgr     : configure circle-mlir for release build"
+	@echo "make rel      : build for release"
+	@echo "make testr    : test for release"
+	@echo "make cleanr   : clean release build"
+	@echo "make cleanall : clean all build including overlay, externals"
+
+all: cfg debug
+
+#===============================================================================
+# targets for internal usage
+#
+_mkbuild:
+	mkdir -p $(CIRCLEMLIR_BUILD_DEBUG)
+
+_mkbuildr:
+	mkdir -p $(CIRCLEMLIR_BUILD_REL)
+
+#===============================================================================
+# targets for users
+
+overlay:
+	bash infra/overlay/prepare-venv
+
+#-------------------------------------------------------------------------------
+# for debug
+
+prep: _mkbuild
+	Python3_ROOT_DIR=$(CIRCLEMLIR_PY3_ROOT) \
+	cmake -B $(CIRCLEMLIR_BUILD_DEBUG)/externals -S ./externals -DCMAKE_BUILD_TYPE=Debug
+	cmake --build $(CIRCLEMLIR_BUILD_DEBUG)/externals -j$(CIRCLEMLIR_BUILD_JOBS)
+
+cfg: _mkbuild
+	cmake -B $(CIRCLEMLIR_BUILD_DEBUG) -S ./ \
+	-DONNX2CIRCLE_TEST_MODELS_SINGLE=ON
+
+debug:
+	CM_PASS_DUMP=1 \
+	cmake --build $(CIRCLEMLIR_BUILD_DEBUG) -j$(CIRCLEMLIR_BUILD_JOBS)
+
+test:
+	CTEST_OUTPUT_ON_FAILURE=1 \
+	cmake --build $(CIRCLEMLIR_BUILD_DEBUG) --verbose -- test
+
+clean:
+	rm -f $(CIRCLEMLIR_BUILD_DEBUG)/CMakeCache.txt
+	rm -rf $(CIRCLEMLIR_BUILD_DEBUG)/circle-mlir/
+
+#-------------------------------------------------------------------------------
+# for release
+
+prepr: _mkbuildr
+	Python3_ROOT_DIR=$(CIRCLEMLIR_PY3_ROOT) \
+	cmake -B $(CIRCLEMLIR_BUILD_REL)/externals -S ./externals -DCMAKE_BUILD_TYPE=Release
+	cmake --build $(CIRCLEMLIR_BUILD_REL)/externals -j$(CIRCLEMLIR_BUILD_JOBS)
+
+cfgr: _mkbuildr
+	cmake -B $(CIRCLEMLIR_BUILD_REL) -S ./ -DCMAKE_BUILD_TYPE=Release
+
+rel:
+	cmake --build $(CIRCLEMLIR_BUILD_REL) -j$(CIRCLEMLIR_BUILD_JOBS)
+
+testr:
+	CTEST_OUTPUT_ON_FAILURE=1 \
+	cmake --build $(CIRCLEMLIR_BUILD_REL) --verbose -- test
+
+cleanr:
+	rm -f $(CIRCLEMLIR_BUILD_REL)/CMakeCache.txt
+	rm -rf $(CIRCLEMLIR_BUILD_REL)/circle-mlir/
+
+
+#-------------------------------------------------------------------------------
+
+cleanall:
+	rm -rf $(CIRCLEMLIR_BUILD_DEBUG)
+	rm -rf $(CIRCLEMLIR_BUILD_REL)
+	rm -rf infra/overlay/venv
