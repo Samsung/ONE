@@ -1,6 +1,7 @@
 include(mlir/TableGen.cmake)
 
 set(SRC
+  src/NameUtils.cpp
   utils/DynamicShapeUtils.cpp
   utils/Errors.cpp
 )
