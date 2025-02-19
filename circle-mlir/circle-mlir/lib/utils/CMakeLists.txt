@@ -1,5 +1,6 @@
 set(SRC
   src/ConvertType.cpp
+  src/FlatbufferOperator.cpp
   src/SizeUtils.cpp
 )
 
