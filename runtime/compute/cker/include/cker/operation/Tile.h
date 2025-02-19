@@ -53,8 +53,7 @@ std::pair<int, int> TileOneDimension(const Shape &in_dimensions, const T *in_dat
   T *copy_to_data = out_data;
   for (int i = 0; i < dimension_size; ++i)
   {
-    int stride_size = 0, tiled_stride_size = 0;
-    std::tie(stride_size, tiled_stride_size) =
+    auto [stride_size, tiled_stride_size] =
       TileOneDimension(in_dimensions, copy_from_data, multipliers, copy_to_data, dimension + 1);
     copy_from_data += stride_size;
     copy_to_data += tiled_stride_size;
