@@ -1,6 +1,7 @@
 include(mlir/TableGen.cmake)
 
 set(SRC
+  src/CircleDialect.cpp
   src/NameUtils.cpp
   utils/DynamicShapeUtils.cpp
   utils/Errors.cpp
@@ -14,6 +15,8 @@ target_include_directories(cirmlir_dialect PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(cirmlir_dialect PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 # use generated files
 add_dependencies(cirmlir_dialect circle_mlir_gen_inc)
+target_include_directories(cirmlir_dialect PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+target_link_libraries(cirmlir_dialect PUBLIC circle_schema)
 
 if(NOT ENABLE_TEST)
   return()
