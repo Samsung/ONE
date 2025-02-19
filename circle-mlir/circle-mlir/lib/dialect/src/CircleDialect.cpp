@@ -51,6 +51,10 @@ namespace mlir
 namespace Circle
 {
 
+// NOTE This generated header should be included in this namespace to prevent multiple definition
+// error with 'populateWithGenerated(mlir::RewritePatternSet&)' in the library.
+#include "mlir/CircleRewrite.cc.inc"
+
 namespace
 {
 
