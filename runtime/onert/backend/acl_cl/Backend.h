@@ -38,7 +38,8 @@ public:
 
   std::shared_ptr<IConfig> config() const override { return _config; }
 
-  std::unique_ptr<backend::BackendContext> newContext(ContextData &&data) const override
+  [[nodiscard]] std::unique_ptr<backend::BackendContext>
+  newContext(ContextData &&data) const override
   {
     const auto &graph = *data.graph;
     const auto &operands = data.graph->operands();

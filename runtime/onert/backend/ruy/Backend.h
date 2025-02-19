@@ -35,7 +35,8 @@ public:
 
   std::shared_ptr<IConfig> config() const override { return _config; }
 
-  std::unique_ptr<onert::backend::BackendContext> newContext(ContextData &&data) const override
+  [[nodiscard]] std::unique_ptr<onert::backend::BackendContext>
+  newContext(ContextData &&data) const override
   {
     auto custom_kernel_builder = data.custom_kernel_builder;
     auto &graph = *data.graph;

@@ -33,7 +33,10 @@ public:
   bool supportDynamicTensor() override { return true; }
   bool supportFP16() override { return false; }
 
-  std::unique_ptr<util::ITimer> timer() override { return std::make_unique<util::CPUTimer>(); }
+  [[nodiscard]] std::unique_ptr<util::ITimer> timer() override
+  {
+    return std::make_unique<util::CPUTimer>();
+  }
 };
 
 } // namespace onert::backend::cpu

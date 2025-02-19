@@ -84,8 +84,11 @@ public:
    * @note    The main idea is taken from HSIP algo:
    *          https://www.hindawi.com/journals/sp/2016/3676149/
    */
-  std::unique_ptr<compiler::BackendResolver> schedule(const ir::Graph &graph) final;
-  std::shared_ptr<ir::OperationIndexMap<int64_t>> getIndexedRanks() { return _op_to_rank; }
+  [[nodiscard]] std::unique_ptr<compiler::BackendResolver> schedule(const ir::Graph &graph) final;
+  [[nodiscard]] std::shared_ptr<ir::OperationIndexMap<int64_t>> getIndexedRanks()
+  {
+    return _op_to_rank;
+  }
 
 private:
   bool isNodeProfiled(const ir::IOperation &);
