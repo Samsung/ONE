@@ -193,6 +193,8 @@ public:
   }
 
 private:
+  // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+  //       to use `std::string_view` with lookup functions in unordered containers
   std::unordered_map<std::string, std::unique_ptr<const ir::Data>> _metadatas;
 };
 } // namespace onert::ir

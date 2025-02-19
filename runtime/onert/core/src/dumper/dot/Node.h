@@ -113,6 +113,8 @@ public:
 
 private:
   std::string _id;
+  // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+  //       to use `std::string_view` with lookup functions in unordered containers
   std::unordered_map<std::string, std::string> _attributes;
   std::vector<Node *> _out_edges;
 };

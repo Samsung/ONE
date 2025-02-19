@@ -23,6 +23,8 @@
 namespace onert::util
 {
 
+// TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+//       to use `std::string_view` with lookup functions in unordered containers
 using CfgKeyValues = std::unordered_map<std::string, std::string>;
 
 void setConfigKeyValues(const CfgKeyValues &keyValues);
