@@ -27,6 +27,8 @@
 #include "circle-mlir/dialect/CircleDialect.h"
 #include "circle-mlir/dialect/NameUtils.h"
 #include "utils/DynamicShapeUtils.h"
+#include "utils/KernelShapeUtil.h"
+#include "utils/Padding.h"
 
 #include <llvm/ADT/TypeSwitch.h>
 #include <llvm/Support/FormatVariadic.h>
