@@ -293,4 +293,65 @@ class CIR_ConvOp<string mnemonic, string opSummary,
   let hasOptions = 0b1;
 }
 
+//===----------------------------------------------------------------------===//
+// CIR op definitions.
+//===----------------------------------------------------------------------===//
+
+def CIR_ConstOp : Op<CIR_Dialect, "pseudo_const", [ConstantLike, Pure,
+    FirstAttrDerivedResultType,
+    // TODO enable QuantizableResult,
+    DeclareOpInterfaceMethods<CIR_RuntimeVerification>]> {
+  let summary = "Constant pseudo op.";
+
+  let description = [{
+    Represents a constant value in Circle dialect. This is not an
+    actual operation and it will be lowered to buffer instead.
+
+    The op is allowed to have all the same type of attributes as tf.Const does
+    (e.g., opaque TF attributes are allowed).
+  }];
+
+  let arguments = (ins ElementsAttr:$value);
+
+  let results = (outs AnyTensor:$output);
+
+  let hasFolder = 1;
+  let hasCanonicalizer = 1;
+
+  let builders = [
+    OpBuilder<(ins "TypedAttr":$value),
+    [{
+      $_state.addAttribute("value", value);
+      $_state.addTypes(value.getType());
+    }]>
+  ];
+
+  let extraClassDeclaration = [{
+    static bool isCompatibleReturnTypes(TypeRange l, TypeRange r);
+    /// Returns true if a constant operation can be built with the given value
+    /// and result type.
+    static bool isBuildableWith(Attribute value, Type type);
+  }];
+}
+
+def CIR_NoValueOp : Op<CIR_Dialect, "no_value", [ConstantLike, Pure]> {
+  let summary = "constant representing no value.";
+
+  let description = [{
+    No value constant op.
+  }];
+
+  let arguments = (ins UnitAttr:$value);
+
+  let results = (outs NoneType:$none_val);
+
+  let hasFolder = 1;
+
+  let extraClassDeclaration = [{
+    /// Returns true if a constant operation can be built with the given value
+    /// and result type.
+    static bool isBuildableWith(Attribute value, Type type);
+  }];
+}
+
 #endif // CIRCLE_OPS
