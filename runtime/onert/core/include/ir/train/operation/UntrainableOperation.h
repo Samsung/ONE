@@ -30,7 +30,7 @@ namespace onert::ir::train::operation
 // `UntrainableOperation` wraps operations that are not yet supported for training.
 // This class can be removed if all operations are supported for training.
 template <typename OperationType,
-          typename = std::enable_if_t<std::is_base_of<Operation, OperationType>::value>>
+          std::enable_if_t<std::is_base_of_v<Operation, OperationType>, bool> = true>
 class UntrainableOperation : public OperationType, public TrainableOperation
 {
 public:

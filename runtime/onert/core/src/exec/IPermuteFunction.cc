@@ -139,8 +139,8 @@ void dequantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor
 }
 
 template <typename SRC_T, typename DST_T,
-          std::enable_if_t<std::is_base_of<backend::ITensor, SRC_T>::value &&
-                             std::is_base_of<backend::ITensor, DST_T>::value,
+          std::enable_if_t<std::is_base_of_v<backend::ITensor, SRC_T> &&
+                             std::is_base_of_v<backend::ITensor, DST_T>,
                            bool> = true>
 void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor, const ir::PermuteType &type)
 {

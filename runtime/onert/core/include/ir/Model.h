@@ -138,7 +138,7 @@ public:
    *
    * @return true if the model has only typename Graph, otherwise false
    */
-  template <typename Graph, std::enable_if_t<std::is_base_of<IGraph, Graph>::value, bool> = true>
+  template <typename Graph, std::enable_if_t<std::is_base_of_v<IGraph, Graph>, bool> = true>
   bool hasOnly()
   {
     for (const auto &e : _subgraphs)
@@ -193,8 +193,6 @@ public:
   }
 
 private:
-  // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
-  //       to use `std::string_view` with lookup functions in unordered containers
   std::unordered_map<std::string, std::unique_ptr<const ir::Data>> _metadatas;
 };
 } // namespace onert::ir
