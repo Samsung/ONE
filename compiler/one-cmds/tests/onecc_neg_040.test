@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Valid option with command schema
+# Have invalid options in the [one-codegen]
 
 : '
 This test assumes below directories.
@@ -22,8 +22,8 @@ This test assumes below directories.
 [one hierarchy]
     one
     ├── backends
-    │   └── command
-    │       └── codegen
+    │   └── command
+    │       └── codegen
     ├── bin
     ├── doc
     ├── include
@@ -44,9 +44,9 @@ filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
 driver_name="dummy-compiler"
-configfile="onecc_066.cfg"
-outputfile="onecc_066.tvn"
-targetfile="onecc_066.ini"
+configfile="onecc_neg_040.cfg"
+outputfile="onecc_neg_040.tvn"
+targetfile="onecc_neg_040.ini"
 
 clean_envir()
 {
@@ -69,6 +69,12 @@ clean_envir()
 
 trap_err_onexit()
 {
+  if grep -q "Invalid option in \[one-codegen\] section" "${filename}.log"; then
+    echo "${filename_ext} SUCCESS"
+    clean_envir
+    exit 0
+  fi
+
   echo "${filename_ext} FAILED"
   clean_envir
   exit 255
@@ -99,18 +105,11 @@ fi
 # copy dummy tools to bin folder
 cp ${driver_name} ../bin/
 cp ${targetfile} ../target/
-cp onecc_066.py "../backends/command/${BACKEND_NAME}/codegen.py"
+cp onecc_neg_040.py "../backends/command/${BACKEND_NAME}/codegen.py"
 
 # run test
 onecc -C ${configfile} > ${filename}.log 2>&1
 
+echo "${filename_ext} FAILED"
 clean_envir
-
-if grep -q "${driver_name} with onecc_066 target" "${outputfile}"; then
-  if ! grep -q "HELP MESSAGE!!" "${filename}.log"; then
-    echo "${filename_ext} SUCCESS"
-    exit 0
-  fi
-fi
-
-trap_err_onexit
+exit 255
