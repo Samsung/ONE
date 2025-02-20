@@ -15,6 +15,7 @@
 import onnx
 import re
 import os
+import argparse
 
 
 def split_subgraph_ios(iofile):
@@ -26,25 +27,24 @@ def split_subgraph_ios(iofile):
     return in_, out_, type
 
 
-def split_onnx_ios(instrfile,
-                   input_path='net/generation_model_simplify.onnx',
-                   out_folder='subgraphs/'):
-    if not os.path.exists(input_path):
-        print(input_path + " not exist")
-        return
+def split_onnx_ios(instrfile, input_path, out_folder='subgraphs/'):
+    os.makedirs(out_folder, exist_ok=True)
 
     model = onnx.load(input_path)
     onnx.checker.check_model(input_path)
     for output in model.graph.output:
         model.graph.value_info.append(output)
     onnx.save(model, input_path)
+
     f1 = open(instrfile, "r")
     lines = f1.readlines()
     cpu_count = 0
     npu_count = 0
     count = 0
+
     if not os.path.exists(out_folder):
         os.makedirs(out_folder)
+
     for line in lines:
         input_names, output_names, type = split_subgraph_ios(line)
         if (type == 'CPU'):
@@ -53,16 +53,30 @@ def split_onnx_ios(instrfile,
         else:
             count = npu_count
             npu_count = npu_count + 1
+
         output_path_folder = out_folder
         if not os.path.exists(output_path_folder):
             os.makedirs(output_path_folder)
         output_path = output_path_folder + type + 'subgraph' + str(count) + '.onnx'
+
         if ((input_names != ['']) and (output_names != [''])):
             onnx.utils.extract_model(input_path, output_path, input_names, output_names)
             print("succeed", count)
             count = count + 1
+
     f1.close()
 
 
 if __name__ == "__main__":
-    split_onnx_ios('./scripts/subgraphs_ios.txt', './resnet-test.onnx')
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument('-s',
+                            '--subio',
+                            default='./scripts/subgraphs_ios.txt',
+                            help="set subgraphs input/output node information")
+    arg_parser.add_argument('-m',
+                            '--model',
+                            default='./resnet-test.onnx',
+                            help="set onnx model path")
+    args = arg_parser.parse_args()
+
+    split_onnx_ios(args.subio, args.model)
