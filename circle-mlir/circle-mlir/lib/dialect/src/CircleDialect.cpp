@@ -443,6 +443,7 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 } // namespace mlir
 
 // TODO add AddOp
+#include "ops/CustomOp.h"
 
 #include "mlir/CircleOpsDialect.cc.inc"
 #include "mlir/CircleOpsEnums.cc.inc"
