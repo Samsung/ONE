@@ -68,8 +68,7 @@ void build_arser(arser::Arser &arser)
 std::unique_ptr<luci::Module> load_model(const std::string &input_path)
 {
   // Import from input Circle file
-  luci::ImporterEx importerex;
-  return importerex.importVerifyModule(input_path);
+  return luci::importVerifyModule(input_path);
 }
 
 } // namespace

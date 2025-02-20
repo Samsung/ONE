@@ -76,8 +76,7 @@ void RecordMinMax::initialize(const std::string &input_model_path)
 {
   assert(_threads_size > 0);
 
-  luci::ImporterEx importer;
-  _module = importer.importVerifyModule(input_model_path);
+  _module = luci::importVerifyModule(input_model_path);
 
   if (_module == nullptr)
   {

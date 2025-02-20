@@ -487,8 +487,7 @@ int entry(int argc, char **argv)
     settings->set(luci::UserSettings::Key::ProfilingDataGen, true);
 
   // Load model from the file
-  luci::ImporterEx importerex;
-  auto module = importerex.importVerifyModule(input_path);
+  auto module = luci::importVerifyModule(input_path);
   if (module.get() == nullptr)
     return EXIT_FAILURE;
 

@@ -48,8 +48,7 @@ void write_file(const std::string &filename, const char *data, size_t data_size)
 
 std::unique_ptr<luci::Module> import_circle(const std::string &filename)
 {
-  luci::ImporterEx importer;
-  auto module = importer.importVerifyModule(filename);
+  auto module = luci::importVerifyModule(filename);
   if (module == nullptr)
     throw std::runtime_error("Cannot open model file \"" + filename + "\".\n");
   return module;

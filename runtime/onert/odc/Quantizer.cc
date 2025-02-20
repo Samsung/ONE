@@ -92,8 +92,8 @@ int Quantizer::quantize(const char *in, const char *out, QuantizeType qtype)
     full_quantize = true;
 
   // Load model from the file
-  luci::ImporterEx importerex;
-  auto module = importerex.importVerifyModule(std::string(in));
+
+  auto module = luci::importVerifyModule(std::string(in));
   if (module.get() == nullptr)
     return 1;
 

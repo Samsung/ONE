@@ -77,8 +77,7 @@ int entry(int argc, char **argv)
   }
   EqualizePatternFinder finder(ctx);
 
-  luci::ImporterEx importerex;
-  auto module = importerex.importVerifyModule(input_path);
+  auto module = luci::importVerifyModule(input_path);
   assert(module != nullptr); // FIX_ME_UNLESS
 
   std::vector<EqualizePattern> patterns;

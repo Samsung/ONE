@@ -56,6 +56,8 @@ private:
   const GraphBuilderSource *_source = nullptr;
 };
 
+std::unique_ptr<Module> importVerifyModule(const std::string &input_path);
+
 } // namespace luci
 
 #endif // __LUCI_IMPORTER_EX_H__

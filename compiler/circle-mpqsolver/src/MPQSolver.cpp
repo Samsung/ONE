@@ -33,8 +33,8 @@ void MPQSolver::setSaveIntermediate(const std::string &save_path)
 
 std::unique_ptr<luci::Module> MPQSolver::readModule(const std::string &path)
 {
-  luci::ImporterEx importerex;
-  auto module = importerex.importVerifyModule(path);
+
+  auto module = luci::importVerifyModule(path);
   if (module.get() == nullptr)
   {
     throw std::runtime_error("Failed to load model");

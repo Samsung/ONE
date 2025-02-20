@@ -429,8 +429,7 @@ int entry(int argc, char **argv)
   }
 
   // Import from input Circle file
-  luci::ImporterEx importerex;
-  auto module = importerex.importVerifyModule(input_path);
+  auto module = luci::importVerifyModule(input_path);
   if (module.get() == nullptr)
     return EXIT_FAILURE;
 
