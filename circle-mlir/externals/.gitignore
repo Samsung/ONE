@@ -1,3 +1,5 @@
 abseil-cpp
 flatbuffers
 llvm-project
+protobuf
+onnx-mlir
