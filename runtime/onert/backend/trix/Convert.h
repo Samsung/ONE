@@ -42,7 +42,7 @@ data_type convertDataType(const ir::DataType type);
  * @param tensors Tensors that have data information
  * @param info    tensors_data_info to be set
  */
-template <typename T, std::enable_if_t<std::is_base_of<IPortableTensor, T>::value, bool> = true>
+template <typename T, std::enable_if_t<std::is_base_of_v<IPortableTensor, T>, bool> = true>
 void setDataInfo(const std::vector<T *> &tensors, tensors_data_info *info)
 {
   info->num_info = static_cast<uint32_t>(tensors.size());
@@ -61,7 +61,7 @@ void setDataInfo(const std::vector<T *> &tensors, tensors_data_info *info)
  * @param tensors Tensors that have buffer information
  * @param buf     generic_buffers to be set
  */
-template <typename T, std::enable_if_t<std::is_base_of<IPortableTensor, T>::value, bool> = true>
+template <typename T, std::enable_if_t<std::is_base_of_v<IPortableTensor, T>, bool> = true>
 void setBuffers(const std::vector<T *> &tensors, generic_buffers *buf)
 {
   buf->num_buffers = static_cast<uint32_t>(tensors.size());

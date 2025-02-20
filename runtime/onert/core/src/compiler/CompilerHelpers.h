@@ -33,7 +33,7 @@ namespace onert::compiler
  * @return    Shape inferer map
  */
 template <typename LoweredGraphType,
-          typename = std::enable_if_t<std::is_base_of<ILoweredGraph, LoweredGraphType>::value>>
+          std::enable_if_t<std::is_base_of_v<ILoweredGraph, LoweredGraphType>, bool> = true>
 static std::unordered_map<ir::SubgraphIndex, std::unique_ptr<StaticShapeInferer>>
 createStaticShapeInferers(
   const std::unordered_map<ir::SubgraphIndex, std::unique_ptr<LoweredGraphType>> &lowered_subgs)
