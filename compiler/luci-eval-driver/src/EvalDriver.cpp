@@ -79,8 +79,8 @@ int entry(int argc, char **argv)
   const char *output_file = argv[4];
 
   // Load model from the file
-  luci::ImporterEx importer;
-  std::unique_ptr<luci::Module> module = importer.importVerifyModule(filename);
+
+  std::unique_ptr<luci::Module> module = luci::importVerifyModule(filename);
   if (module == nullptr)
   {
     std::cerr << "ERROR: Failed to load '" << filename << "'" << std::endl;

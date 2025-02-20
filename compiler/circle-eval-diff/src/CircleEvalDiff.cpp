@@ -48,8 +48,7 @@ bool same_dtype(const luci::CircleNode *a, const luci::CircleNode *b)
 
 std::unique_ptr<luci::Module> import(const std::string &model_path)
 {
-  luci::ImporterEx importer;
-  auto module = importer.importVerifyModule(model_path);
+  auto module = luci::importVerifyModule(model_path);
 
   if (not module)
     throw std::runtime_error("Failed to load '" + model_path + "'");

@@ -55,8 +55,8 @@ H5FileDataProvider::H5FileDataProvider(const std::string &h5file, const std::str
   _importer.importGroup("value");
   _is_raw_data = _importer.isRawData();
 
-  luci::ImporterEx importerex;
-  _module = importerex.importVerifyModule(module_path);
+
+  _module = luci::importVerifyModule(module_path);
   if (_module.get() != nullptr)
   {
     _input_nodes = loco::input_nodes(_module.get()->graph());

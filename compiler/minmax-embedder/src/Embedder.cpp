@@ -78,8 +78,8 @@ void Embedder::embed(const std::string &output_path, const std::string &input_pa
                      const std::string &minmax_path, const EmbedderOptions &opt)
 {
   // Load model from the file
-  luci::ImporterEx importerex;
-  auto module = importerex.importVerifyModule(input_path);
+
+  auto module = luci::importVerifyModule(input_path);
   if (module.get() == nullptr)
     throw std::runtime_error{"Input circle is invalid"};
 

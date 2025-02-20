@@ -78,8 +78,7 @@ int entry(int argc, char **argv)
   }
 
   // Import original circle file.
-  luci::ImporterEx importerex;
-  auto module = importerex.importVerifyModule(input_path);
+  auto module = luci::importVerifyModule(input_path);
 
   // TODO support two or more subgraphs
   if (module.get()->size() > 1)

@@ -63,8 +63,8 @@ int entry(int argc, char **argv)
   const std::string output_path = arser.get<std::string>("output");
 
   // Load model from the file
-  luci::ImporterEx importerex;
-  auto module = importerex.importVerifyModule(input_path);
+
+  auto module = luci::importVerifyModule(input_path);
   if (module.get() == nullptr)
     return EXIT_FAILURE;
 
