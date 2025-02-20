@@ -65,13 +65,17 @@ std::unique_ptr<Module> ImporterEx::importModule(const std::vector<char> &model_
   return importer.importModule(data_data, data_size);
 }
 
-std::unique_ptr<Module> importVerifyModule(const std::string &input_path) {
+std::unique_ptr<Module> importVerifyModule(const std::string &input_path)
+{
   ImporterEx importer;
   std::unique_ptr<Module> model;
-  
-  try {
+
+  try
+  {
     model = importer.importVerifyModule(input_path);
-  } catch(const std::runtime_error& err) {
+  }
+  catch (const std::runtime_error &err)
+  {
     std::cerr << err.what() << std::endl;
   }
 

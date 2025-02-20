@@ -77,7 +77,6 @@ int entry(int argc, char **argv)
   }
   EqualizePatternFinder finder(ctx);
 
-
   auto module = luci::importVerifyModule(input_path);
   assert(module != nullptr); // FIX_ME_UNLESS
 

@@ -55,7 +55,6 @@ H5FileDataProvider::H5FileDataProvider(const std::string &h5file, const std::str
   _importer.importGroup("value");
   _is_raw_data = _importer.isRawData();
 
-
   _module = luci::importVerifyModule(module_path);
   if (_module.get() != nullptr)
   {
