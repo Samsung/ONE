@@ -334,6 +334,32 @@ def CIR_ConstOp : Op<CIR_Dialect, "pseudo_const", [ConstantLike, Pure,
   }];
 }
 
+def CIR_CustomOp : Op<CIR_Dialect, "custom", [
+  DeclareOpInterfaceMethods<CIR_RuntimeVerification>,
+  DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>
+  ]> {
+  let summary = "Custom op";
+
+  let description = [{
+    A generic op for any Circle custom operation.
+
+    input: A list of inputs in the original op.
+    custom_code: A string used to identify which exactly this op is, which
+                 corresponds to operator_codes.custom_code in the flatbuffer.
+    custom_option: a holder to save the op attributes in bytes fashion.
+    output: A list of outputs in the original op.
+  }];
+
+  let arguments = (ins
+    Variadic<CIR_TensorOfOrNone<[AnyType]>>:$input,
+    StrAttr:$custom_code,
+    CIR_ConstBytesAttr:$custom_option
+  );
+  let results = (outs Variadic<AnyTensor>:$output);
+
+  let hasVerifier = 1;
+}
+
 def CIR_NoValueOp : Op<CIR_Dialect, "no_value", [ConstantLike, Pure]> {
   let summary = "constant representing no value.";
 
