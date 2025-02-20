@@ -23,6 +23,8 @@ set(FB_BUILD_DIR   "${EXTERNALS_BUILD_INST_DIR}/flatbuffers-build")
 set(FB_INSTALL_DIR "${EXTERNALS_BUILD_INST_DIR}/flatbuffers-install")
 set(AC_BUILD_DIR   "${EXTERNALS_BUILD_INST_DIR}/abseil-cpp-build")
 set(AC_INSTALL_DIR "${EXTERNALS_BUILD_INST_DIR}/abseil-cpp-install")
+set(LP_BUILD_DIR   "${EXTERNALS_BUILD_INST_DIR}/llvm-project-build")
+set(LP_INSTALL_DIR "${EXTERNALS_BUILD_INST_DIR}/llvm-project-install")
 
 # build flatbuffers
 ExternalProject_Add(externals-flatbuffers
@@ -47,4 +49,24 @@ ExternalProject_Add(externals-abseil-cpp
                  -DCMAKE_POSITION_INDEPENDENT_CODE=ON
                  -DCMAKE_CXX_STANDARD=17
                  -DCMAKE_CXX_STANDARD_REQUIRED=ON
+)
+
+# build MLIR of LLVM
+# from https://github.com/onnx/onnx-mlir/blob/main/docs/BuildOnLinuxOSX.md
+ExternalProject_Add(externals-llvm-project
+  GIT_REPOSITORY "https://github.com/llvm/llvm-project.git"
+  GIT_TAG        "91088978d712cd7b33610c59f69d87d5a39e3113"
+  SOURCE_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/llvm-project"
+  SOURCE_SUBDIR  "llvm"
+  BINARY_DIR     "${LP_BUILD_DIR}"
+  INSTALL_DIR    "${LP_INSTALL_DIR}"
+  CMAKE_ARGS     -DLLVM_ENABLE_PROJECTS=mlir
+                 -DLLVM_TARGETS_TO_BUILD=host
+                 -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+                 -DCMAKE_INSTALL_PREFIX='${LP_INSTALL_DIR}'
+                 -DLLVM_ENABLE_ASSERTIONS=ON
+                 -DLLVM_ENABLE_RTTI=ON
+  # NOTE externals-flatbuffers externals-abseil-cpp are added to DEPENDS only
+  #      to build in sequence and actually do not dependent on build.
+  DEPENDS        externals-flatbuffers externals-abseil-cpp
 )
