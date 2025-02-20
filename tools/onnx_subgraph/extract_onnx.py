@@ -42,9 +42,6 @@ def split_onnx_ios(instrfile, input_path, out_folder='subgraphs/'):
     npu_count = 0
     count = 0
 
-    if not os.path.exists(out_folder):
-        os.makedirs(out_folder)
-
     for line in lines:
         input_names, output_names, type = split_subgraph_ios(line)
         if (type == 'CPU'):
