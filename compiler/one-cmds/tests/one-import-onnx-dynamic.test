@@ -1,0 +1,217 @@
+#!/bin/bash
+
+# Copyright (c) 2024 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+filename_ext="$(basename -- $0)"
+filename="${filename_ext%.*}"
+
+trap_err_onexit()
+{
+  echo "${filename_ext} FAILED"
+  exit 255
+}
+
+trap trap_err_onexit ERR
+
+# ---- Positive tests ----
+
+# dynamic batch
+input="abs_dynamic_batch.onnx"
+output="abs_dynamic_batch.one-import-onnx-dynamic.circle"
+input_shapes="[1,5,5]"
+
+rm -rf ${output}
+rm -rf ${output}.log
+
+one-import-onnx \
+--input_path ${input} \
+--output_path ${output} \
+--input_shapes ${input_shapes} > /dev/null 2>&1
+
+circle-operator --code --shapes ${output} > ${output}.log 2>&1
+
+if ! grep -q "ABS,\[1,5,5\]" "${output}.log"; then
+  trap_err_onexit
+fi
+
+rm -rf ${output}
+rm -rf ${output}.log
+
+# the same as before but name of input tensor explicitly defined
+input_shapes="input[1,5,5]"
+
+one-import-onnx \
+--input_path ${input} \
+--output_path ${output} \
+--input_shapes ${input_shapes} > /dev/null 2>&1
+
+circle-operator --code --shapes ${output} > ${output}.log 2>&1
+
+if ! grep -q "ABS,\[1,5,5\]" "${output}.log"; then
+  trap_err_onexit
+fi
+
+rm -rf ${output}
+rm -rf ${output}.log
+
+# dynamic batch and other dims
+input="abs_dynamic_input.onnx"
+output="abs_dynamic_input.one-import-onnx-dynamic.circle"
+input_shapes="[1,5,5]"
+
+one-import-onnx \
+--input_path ${input} \
+--output_path ${output} \
+--input_shapes ${input_shapes} > /dev/null 2>&1
+
+circle-operator --code --shapes ${output} > ${output}.log 2>&1
+
+if ! grep -q "ABS,\[1,5,5\]" "${output}.log"; then
+  trap_err_onexit
+fi
+
+rm -rf ${output}
+rm -rf ${output}.log
+
+# dynamic only output shape (which cannot be calculated via shape inference)
+input="reshape_static_inputs_dynamic_output.onnx"
+output="reshape_static_inputs_dynamic_output.one-import-onnx-dynamic.circle"
+output_shapes="[4,5,6]"
+
+one-import-onnx \
+--input_path ${input} \
+--output_path ${output} \
+--output_shapes ${output_shapes} > /dev/null 2>&1
+
+circle-operator --code --shapes ${output} > ${output}.log 2>&1
+
+if ! grep -q "RESHAPE,\[4,5,6\]" "${output}.log"; then
+  trap_err_onexit
+fi
+
+rm -rf ${output}
+rm -rf ${output}.log
+
+# dynamic input and output shape
+input="abs_reshape_dynamic_inputs_and_output.onnx"
+output="abs_reshape_dynamic_inputs_and_output.one-import-onnx-dynamic.circle"
+input_shapes="input[2,10,6],shape[3]"
+output_shapes="[4,5,6]"
+
+one-import-onnx \
+--input_path ${input} \
+--output_path ${output} \
+--input_shapes ${input_shapes} \
+--output_shapes ${output_shapes} > /dev/null 2>&1
+
+circle-operator --code --shapes ${output} > ${output}.log 2>&1
+
+if ! grep -q "ABS,\[2,10,6\]" "${output}.log"; then
+  trap_err_onexit
+fi
+
+if ! grep -q "RESHAPE,\[4,5,6\]" "${output}.log"; then
+  trap_err_onexit
+fi
+
+rm -rf ${output}
+rm -rf ${output}.log
+
+# dynamic input and output shape - 3 inputs and 2 outputs
+input="abs_concat_dynamic_inputs_and_outputs.onnx"
+output="abs_concat_dynamic_inputs_and_outputs.one-import-onnx-dynamic.circle"
+input_shapes="abs_in[1,2,5],con_1_in[1,1,5],con_2_in[1,1,5]"
+output_shapes="abs_out[1,2,5],con_out[1,4,5]"
+
+one-import-onnx \
+--input_path ${input} \
+--output_path ${output} \
+--input_shapes ${input_shapes} \
+--output_shapes ${output_shapes} > /dev/null 2>&1
+
+circle-operator --code --shapes ${output} > ${output}.log 2>&1
+
+if ! grep -q "ABS,\[1,2,5\]" "${output}.log"; then
+  trap_err_onexit
+fi
+
+if ! grep -q "CONCATENATION,\[1,4,5\]" "${output}.log"; then
+  trap_err_onexit
+fi
+
+rm -rf ${output}
+rm -rf ${output}.log
+
+# ---- Negative tests ----
+trap '' ERR # Stop catching signals
+
+# Rank of input tensor is not known (the feature not supported by onnx.tools.update_model_dims yet)
+input="shape_not_provided_abs.onnx"
+output="shape_not_provided_abs.one-import-onnx-dynamic.circle"
+input_shapes="[1,5,5]"
+
+one-import-onnx \
+--input_path ${input} \
+--output_path ${output} \
+--input_shapes ${input_shapes} > ${output}.log 2>&1
+
+if ! grep -q "Rank of provided shape must be compatible with the origin tensor=input from the model" "${output}.log"; then
+  trap_err_onexit
+fi
+
+rm -rf ${output}
+rm -rf ${output}.log
+
+# incorrent input tensor name passed by the useer
+input="abs_dynamic_batch.onnx"
+output="abs_dynamic_batch.one-import-onnx-dynamic.circle"
+input_shapes="incorrent_input_name[1,5,5]"
+
+rm -rf ${output}
+rm -rf ${output}.log
+
+one-import-onnx \
+--input_path ${input} \
+--output_path ${output} \
+--input_shapes ${input_shapes} > ${output}.log 2>&1
+
+if ! grep -q "Tensor with name=incorrent_input_name do NOT match any input/output of the model" "${output}.log"; then
+  trap_err_onexit
+fi
+
+rm -rf ${output}
+rm -rf ${output}.log
+
+# incorrent output tensor name passed by the useer
+input="abs_concat_dynamic_inputs_and_outputs.onnx"
+output="abs_concat_dynamic_inputs_and_outputs.one-import-onnx-dynamic.circle"
+input_shapes="abs_in[1,2,5],con_1_in[1,1,5],con_2_in[1,1,5]"
+output_shapes="elu_ot[1,2,5],con_out[1,4,5]"
+
+one-import-onnx \
+--input_path ${input} \
+--output_path ${output} \
+--input_shapes ${input_shapes} \
+--output_shapes ${output_shapes} > ${output}.log 2>&1
+
+if ! grep -q "Tensor with name=elu_ot do NOT match any input/output of the model" "${output}.log"; then
+  trap_err_onexit
+fi
+
+rm -rf ${output}
+rm -rf ${output}.log
+
+echo "${filename_ext} SUCCESS"
+exit 0
