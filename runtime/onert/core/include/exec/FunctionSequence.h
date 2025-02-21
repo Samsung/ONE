@@ -33,18 +33,9 @@ namespace onert::exec
 class FunctionSequence : public IFunction
 {
 public:
-  template <typename... Args> FunctionSequence(Args &&...args) { initialize(std::move(args)...); }
-
-private:
-  void initialize()
+  template <typename... Args> FunctionSequence(Args &&...args)
   {
-    // Template base case : do nothing
-  }
-
-  template <typename T, typename... Args> void initialize(std::unique_ptr<T> &&fn, Args &&...args)
-  {
-    _functions.emplace_back(std::move(fn));
-    initialize(std::move(args)...);
+    (_functions.emplace_back(std::move(args)), ...);
   }
 
 public:
