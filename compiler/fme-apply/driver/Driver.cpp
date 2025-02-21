@@ -65,8 +65,7 @@ int entry(int argc, char **argv)
   const std::string fme_patterns_path = arser.get<std::string>("--fme_patterns");
   const std::string output_path = arser.get<std::string>("--output");
 
-  luci::ImporterEx importerex;
-  auto module = importerex.importVerifyModule(input_path);
+  auto module = luci::importVerifyModule(input_path);
   assert(module != nullptr); // FIX_ME_UNLESS
 
   auto patterns = fme_apply::read(fme_patterns_path);

@@ -165,8 +165,7 @@ int entry(int argc, char **argv)
   }
 
   // Import from input Circle file
-  luci::ImporterEx importer;
-  auto module = importer.importVerifyModule(input_path);
+  auto module = luci::importVerifyModule(input_path);
   if (module == nullptr)
   {
     std::cerr << "ERROR: Failed to load circle '" << input_path << "'" << std::endl;

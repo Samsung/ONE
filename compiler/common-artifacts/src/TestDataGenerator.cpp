@@ -169,8 +169,7 @@ int entry(int argc, char **argv)
 
   std::string circle_file = arser.get<std::string>("circle");
 
-  luci::ImporterEx importer;
-  auto module = importer.importVerifyModule(circle_file);
+  auto module = luci::importVerifyModule(circle_file);
   if (module == nullptr)
   {
     std::cerr << "ERROR: Failed to load circle '" << circle_file << "'" << std::endl;

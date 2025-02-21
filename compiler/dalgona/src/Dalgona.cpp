@@ -98,8 +98,8 @@ namespace dalgona
 
 void Dalgona::initialize(const std::string &input_model_path)
 {
-  luci::ImporterEx importer;
-  _module = importer.importVerifyModule(input_model_path);
+
+  _module = luci::importVerifyModule(input_model_path);
 
   if (not _module)
     throw std::runtime_error("ERROR: Failed to load '" + input_model_path + "'");
