@@ -25,7 +25,7 @@
 #include <luci/Pass/CircleShapeInferencePass.h>
 #include <luci/Pass/CircleTypeInferencePass.h>
 #include <logo/RemoveDeadNodeWithQueryPass.h>
-#include "luci/Import/GraphBuilderRegistry.h"
+#include <luci/Import/GraphBuilderRegistry.h>
 
 #include <luci/Log.h>
 
@@ -67,6 +67,23 @@ void replace_tensor_shape(::flatbuffers::Vector<int32_t>* tensor_shape, const Sh
   }
 }
 
+template<typename NodeType>
+std::vector<Shape> extract_shapes(const std::vector<loco::Node *>& nodes)
+{
+  std::vector<Shape> shapes;
+  for(const auto& loco_node : nodes)
+  {
+    shapes.push_back(Shape{});
+    const auto circle_node = loco::must_cast<const NodeType *>(loco_node);
+    for (uint32_t dim_idx = 0; dim_idx < circle_node->rank(); dim_idx++)
+    {
+      const int32_t dim_val = circle_node->dim(dim_idx).value();
+      shapes.back().push_back(Dim{dim_val});
+    }
+  }
+  return shapes;
+}
+
 } // namespace
 
 CircleResizer::CircleResizer(const std::string& model_path)
@@ -100,12 +117,6 @@ void CircleResizer::resize_model(const std::vector<Shape>& shapes)
     replace_tensor_shape(input_shape, shapes[in_idx]);
   }
 
-  logo::Phase phase;
-
-  phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
-  phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
-  phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
-
   flatbuffers::Verifier verifier{model_buffer.data(), model_buffer.size()};
   if (!circle::VerifyModelBuffer(verifier))
   {
@@ -115,6 +126,11 @@ void CircleResizer::resize_model(const std::vector<Shape>& shapes)
   const luci::GraphBuilderSource *source_ptr = &luci::GraphBuilderRegistry::get();
   luci::Importer importer(source_ptr);
   _module = importer.importModule(model_buffer.data(), model_buffer.size());
+
+  logo::Phase phase;
+  phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
+  phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+  phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
   auto graph = _module->graph();
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{graph};
@@ -132,5 +148,14 @@ void CircleResizer::save_model(const std::string& output_path) const
   }
 }
 
-CircleResizer::~CircleResizer() = default;
+std::vector<Shape> CircleResizer::input_shapes() const
+{
+  return extract_shapes<luci::CircleInput>(loco::input_nodes(_module->graph()));
+}
 
+std::vector<Shape> CircleResizer::output_shapes() const
+{
+  return extract_shapes<luci::CircleOutput>(loco::output_nodes(_module->graph()));
+}
+
+CircleResizer::~CircleResizer() = default;

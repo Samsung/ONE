@@ -38,7 +38,10 @@ namespace circle_resizer
         public:
         void resize_model(const std::vector<Shape>& shapes);
         void save_model(const std::string& output_path) const;
-        std::vector<uint8_t> model_buffer() const;
+
+        public:
+        std::vector<Shape> input_shapes() const;
+        std::vector<Shape> output_shapes() const;
 
         private:
         std::string _model_path;
