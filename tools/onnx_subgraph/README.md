@@ -22,41 +22,41 @@ sub models.
     tqdm
     
 ## building the onnx-subgraph
-    '''
+    ```
     cd onnx-subgraph
     mkdir build & cd build
     cmake .. & make
-    '''
+    ```
     we can get following output at './build'
-        '''
-        scripts
-        ├── extract_onnx.py
-        └── test_model_download.sh
-        └── subgraphs_ios.txt
-        '''
+    ```
+    scripts
+    ├── extract_onnx.py
+    └── test_model_download.sh
+    └── subgraphs_ios.txt
+    ```
 
 # How to use the onnx-subgraph
 ## Pre-steps
 ### Download the test AI models
     1. 'bash scripts/test_model_download.sh', then "resnet-test.onnx" will be got in './build'
-    2. you can change to any other onnx files as your needs, or edit the download link in 
-	   "scripts/test_model_download.sh"
+    2. you can change to any other onnx files as your needs, or edit the download link in
+       "scripts/test_model_download.sh"
   
 ## Parse the onnx model
-    note: 'subgraphs_ios.txt' will be generated in future code, suppose we already have it as 
+    note: 'subgraphs_ios.txt' will be generated in future code, suppose we already have it as
     the example file now.
        
 ## Split the onnx model to subgraphs
-    '''
+    ```
     python scripts/extract_onnx.py \
               -s ./scripts/subgraphs_ios.txt \
               -m ./resnet-test.onnx
-    '''
-       after extraction done, the subgraphs will be saved at './subgraphs'
-    '''
-       subgraphs
-       ├── CPUsubgraph0.onnx
-       └── CPUsubgraph1.onnx
-       ├── NPUsubgraph0.onnx
-       └── NPUsubgraph1.onnx
-    '''
+    ```
+    after extraction done, the subgraphs will be saved at './subgraphs'
+    ```
+    subgraphs
+    ├── CPUsubgraph0.onnx
+    └── CPUsubgraph1.onnx
+    ├── NPUsubgraph0.onnx
+    └── NPUsubgraph1.onnx
+    ```
