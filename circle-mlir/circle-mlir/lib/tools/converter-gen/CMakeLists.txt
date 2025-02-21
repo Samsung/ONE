@@ -3,7 +3,6 @@ set(SRC
 )
 
 add_executable(converter-gen ${SRC})
-llvm_update_compile_flags(converter-gen)
 cir_mlir_tablegen_flags(converter-gen)
 
 # below function is from llvm-project/llvm/cmake/modules/TableGen.cmake
