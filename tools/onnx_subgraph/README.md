@@ -22,18 +22,18 @@ sub models.
     tqdm
     
 ## building the onnx-subgraph
-    ```
+```bash
     cd onnx-subgraph
     mkdir build & cd build
     cmake .. & make
-    ```
+```
     we can get following output at './build'
-    ```
+```bash
     scripts
     ├── extract_onnx.py
     └── test_model_download.sh
     └── subgraphs_ios.txt
-    ```
+```
 
 # How to use the onnx-subgraph
 ## Pre-steps
@@ -47,16 +47,16 @@ sub models.
     the example file now.
        
 ## Split the onnx model to subgraphs
-    ```
+```bash
     python scripts/extract_onnx.py \
               -s ./scripts/subgraphs_ios.txt \
               -m ./resnet-test.onnx
-    ```
+```
     after extraction done, the subgraphs will be saved at './subgraphs'
-    ```
+```bash
     subgraphs
     ├── CPUsubgraph0.onnx
     └── CPUsubgraph1.onnx
     ├── NPUsubgraph0.onnx
     └── NPUsubgraph1.onnx
-    ```
+```
