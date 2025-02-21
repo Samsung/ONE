@@ -67,10 +67,10 @@ OMStatus configure_kernel_CircleDequantize(const OMConfigureArgs &config_args)
 
   // Check input quantization params
   const auto *input_quantization = input->quantization();
-  status = utils::checkCondition(input->type() != circle::TensorType_FLOAT32 or
-                                 input_quantization != nullptr and
-                                   input_quantization->scale() != nullptr and
-                                   input_quantization->scale()->size() == 1);
+  status = utils::checkCondition(
+    input->type() != circle::TensorType_FLOAT32 or input->type() != circle::TensorType_FLOAT16 or
+    input_quantization != nullptr and input_quantization->scale() != nullptr and
+      input_quantization->scale()->size() == 1);
   if (status != Ok)
     return status;
 
