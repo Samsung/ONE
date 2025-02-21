@@ -36,13 +36,8 @@ def split_onnx_ios(instrfile, input_path, out_folder='subgraphs/'):
         model.graph.value_info.append(output)
     onnx.save(model, input_path)
 
-    try:
-        with open(instrfile, "r") as f1:
-            lines = f1.readlines()
-    except Exception as e:
-        print(e)
-        raise
-
+    f1 = open(instrfile, "r")
+    lines = f1.readlines()
     cpu_count = 0
     npu_count = 0
     count = 0
@@ -65,6 +60,8 @@ def split_onnx_ios(instrfile, input_path, out_folder='subgraphs/'):
             onnx.utils.extract_model(input_path, output_path, input_names, output_names)
             print("succeed", count)
             count = count + 1
+
+    f1.close()
 
 
 if __name__ == "__main__":
