@@ -35,12 +35,11 @@ namespace onert::shape_inference
 namespace
 {
 
-template <typename T, typename U>
-typename std::enable_if<std::is_integral<T>::value && std::is_integral<U>::value,
-                        typename std::common_type<T, U>::type>::type
-ceil_div(T dividend, U divisor)
+template <typename T, typename U,
+          std::enable_if_t<std::is_integral_v<T> && std::is_integral_v<U>, bool> = true>
+std::common_type_t<T, U> ceil_div(T dividend, U divisor)
 {
-  assert(dividend > 0 && divisor > 0 && "this implementations is for positive numbers only");
+  assert(dividend > 0 && divisor > 0 && "this implementation is for positive numbers only");
   return (dividend + divisor - 1) / divisor;
 }
 

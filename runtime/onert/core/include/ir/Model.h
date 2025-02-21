@@ -138,7 +138,7 @@ public:
    *
    * @return true if the model has only typename Graph, otherwise false
    */
-  template <typename Graph, std::enable_if_t<std::is_base_of<IGraph, Graph>::value, bool> = true>
+  template <typename Graph, std::enable_if_t<std::is_base_of_v<IGraph, Graph>, bool> = true>
   bool hasOnly()
   {
     for (const auto &e : _subgraphs)
