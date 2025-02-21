@@ -1,6 +1,6 @@
 # onnx_autosubgraph
-onnx-subgraph tool provides model auto partitionioning of onnx model to several sub models by 
-operator, performance and model size limitations, with the order and input / output names of 
+onnx-subgraph tool provides model auto partitionioning of onnx model to several sub models by
+operator, performance and model size limitations, with the order and input / output names of
 sub models.
 
 # How to build the onnx-subgraph
