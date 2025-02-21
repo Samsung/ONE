@@ -24,16 +24,7 @@ namespace luci
 
 namespace sinf
 {
-namespace {
-void print_shape(const loco::TensorShape &shape)
-{
-  for(int i=0;i<shape.rank();++i)
-  {
-    std::cout << shape.dim(i).value() << ",";
-  }
-  std::cout << std::endl;
-}
-}
+
 
 loco::TensorShape Algorithm::visit(const luci::CircleOutput *node)
 {
@@ -44,4 +35,3 @@ loco::TensorShape Algorithm::visit(const luci::CircleOutput *node)
 } // namespace sinf
 
 } // namespace luci
-

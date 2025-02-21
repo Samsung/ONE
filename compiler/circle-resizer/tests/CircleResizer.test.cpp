@@ -24,18 +24,22 @@
 
 using namespace circle_resizer;
 
-namespace {
+namespace
+{
 
 // TODO: Remove, just for debug
-void print_shapes(const std::vector<Shape>& shapes) {
-    for (const auto& shape : shapes) {
-      std::cout << "[";
-        for (const auto& dim : shape) {
-            std::cout << dim.value() << ",";
-        }
-        std::cout << "],";
+void print_shapes(const std::vector<Shape> &shapes)
+{
+  for (const auto &shape : shapes)
+  {
+    std::cout << "[";
+    for (const auto &dim : shape)
+    {
+      std::cout << dim.value() << ",";
     }
-    std::cout << std::endl;
+    std::cout << "],";
+  }
+  std::cout << std::endl;
 }
 
 } // namespace
@@ -48,15 +52,17 @@ protected:
     _test_models_dir = std::getenv("ARTIFACTS_PATH");
     assert(!_test_models_dir.empty());
   }
+
 protected:
-    std::string _test_models_dir;
+  std::string _test_models_dir;
 };
 
 TEST_F(CircleResizerTest, basic_test)
 {
-    CircleResizer resizer(_test_models_dir + "/DynInputs_Add_001.circle");
-    const auto new_input_shapes = std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{1}}, Shape{Dim{1}, Dim{5}, Dim{1}}};
-    resizer.resize_model(new_input_shapes);
-    ASSERT_EQ(resizer.input_shapes(), new_input_shapes);
-    ASSERT_EQ(resizer.output_shapes(), (std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{1}}}));
+  CircleResizer resizer(_test_models_dir + "/DynInputs_Add_001.circle");
+  const auto new_input_shapes =
+    std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{1}}, Shape{Dim{1}, Dim{5}, Dim{1}}};
+  resizer.resize_model(new_input_shapes);
+  ASSERT_EQ(resizer.input_shapes(), new_input_shapes);
+  ASSERT_EQ(resizer.output_shapes(), (std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{1}}}));
 }

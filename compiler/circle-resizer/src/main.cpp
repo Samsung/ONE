@@ -19,7 +19,8 @@
 
 using namespace circle_resizer;
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
   CircleResizer resizer(argv[1]);
   resizer.resize_model({Shape{Dim{1}, Dim{3}}}); // experiment
   resizer.save_model(argv[2]);

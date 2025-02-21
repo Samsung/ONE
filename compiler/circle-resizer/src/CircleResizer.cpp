@@ -36,30 +36,35 @@
 
 using namespace circle_resizer;
 
-namespace {
-std::vector<uint8_t> read_model(const std::string& model_path) {
-    std::ifstream file_stream(model_path, std::ios::in | std::ios::binary | std::ifstream::ate);
-    if (!file_stream.is_open()) {
-        throw std::runtime_error("Failed to open file: " + model_path);
-    }
+namespace
+{
+std::vector<uint8_t> read_model(const std::string &model_path)
+{
+  std::ifstream file_stream(model_path, std::ios::in | std::ios::binary | std::ifstream::ate);
+  if (!file_stream.is_open())
+  {
+    throw std::runtime_error("Failed to open file: " + model_path);
+  }
 
-    std::streamsize size = file_stream.tellg();
-    file_stream.seekg(0, std::ios::beg);
+  std::streamsize size = file_stream.tellg();
+  file_stream.seekg(0, std::ios::beg);
 
-    std::vector<uint8_t> buffer(size);
-    if (!file_stream.read(reinterpret_cast<char*>(buffer.data()), size)) {
-        throw std::runtime_error("Failed to read file: " + model_path);
-    }
+  std::vector<uint8_t> buffer(size);
+  if (!file_stream.read(reinterpret_cast<char *>(buffer.data()), size))
+  {
+    throw std::runtime_error("Failed to read file: " + model_path);
+  }
 
-    return buffer;
+  return buffer;
 }
 
-void replace_tensor_shape(::flatbuffers::Vector<int32_t>* tensor_shape, const Shape& new_shape)
+void replace_tensor_shape(::flatbuffers::Vector<int32_t> *tensor_shape, const Shape &new_shape)
 {
   const auto shape_size = tensor_shape->size();
-  if(shape_size != new_shape.size())
+  if (shape_size != new_shape.size())
   {
-    throw std::runtime_error("Provided shape size: " + std::to_string(new_shape.size()) + " is different from expected: " + std::to_string(shape_size));
+    throw std::runtime_error("Provided shape size: " + std::to_string(new_shape.size()) +
+                             " is different from expected: " + std::to_string(shape_size));
   }
   for (uint32_t dim_idx = 0; dim_idx < shape_size; ++dim_idx)
   {
@@ -67,11 +72,11 @@ void replace_tensor_shape(::flatbuffers::Vector<int32_t>* tensor_shape, const Sh
   }
 }
 
-template<typename NodeType>
-std::vector<Shape> extract_shapes(const std::vector<loco::Node *>& nodes)
+template <typename NodeType>
+std::vector<Shape> extract_shapes(const std::vector<loco::Node *> &nodes)
 {
   std::vector<Shape> shapes;
-  for(const auto& loco_node : nodes)
+  for (const auto &loco_node : nodes)
   {
     shapes.push_back(Shape{});
     const auto circle_node = loco::must_cast<const NodeType *>(loco_node);
@@ -86,34 +91,33 @@ std::vector<Shape> extract_shapes(const std::vector<loco::Node *>& nodes)
 
 } // namespace
 
-CircleResizer::CircleResizer(const std::string& model_path)
-: _model_path{model_path}
-{
-}
+CircleResizer::CircleResizer(const std::string &model_path) : _model_path{model_path} {}
 
-void CircleResizer::resize_model(const std::vector<Shape>& shapes)
+void CircleResizer::resize_model(const std::vector<Shape> &shapes)
 {
   auto model_buffer = read_model(_model_path);
   auto model = circle::GetMutableModel(model_buffer.data());
   if (!model)
   {
-      throw std::runtime_error("Incorrect model format");
+    throw std::runtime_error("Incorrect model format");
   }
   auto subgraphs = model->mutable_subgraphs();
   if (!subgraphs || subgraphs->size() != 1)
   {
-      throw std::runtime_error("Many subgraphs are not supported");
+    throw std::runtime_error("Many subgraphs are not supported");
   }
   auto subgraph = subgraphs->GetMutableObject(0);
   const auto inputs_number = subgraph->inputs()->size();
-  if(!inputs_number == shapes.size())
+  if (!inputs_number == shapes.size())
   {
-    throw std::runtime_error("Expected input shapes: " + std::to_string(inputs_number) + " while provided: " + std::to_string(shapes.size()));
+    throw std::runtime_error("Expected input shapes: " + std::to_string(inputs_number) +
+                             " while provided: " + std::to_string(shapes.size()));
   }
-  for(int in_idx = 0; in_idx < inputs_number; ++in_idx)
+  for (int in_idx = 0; in_idx < inputs_number; ++in_idx)
   {
     const auto in_tensor_idx = subgraph->inputs()->Get(in_idx);
-    auto input_shape = subgraph->mutable_tensors()->GetMutableObject(in_tensor_idx)->mutable_shape();
+    auto input_shape =
+      subgraph->mutable_tensors()->GetMutableObject(in_tensor_idx)->mutable_shape();
     replace_tensor_shape(input_shape, shapes[in_idx]);
   }
 
@@ -137,7 +141,7 @@ void CircleResizer::resize_model(const std::vector<Shape>& shapes)
   phase_runner.run(phase);
 }
 
-void CircleResizer::save_model(const std::string& output_path) const
+void CircleResizer::save_model(const std::string &output_path) const
 {
   luci::CircleExporter exporter;
   luci::CircleFileExpContract contract(_module.get(), output_path);

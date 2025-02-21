@@ -23,21 +23,22 @@
 
 namespace circle_resizer
 {
-    class Dim {
-        public:
-            explicit Dim(int32_t dim);
+class Dim
+{
+public:
+  explicit Dim(int32_t dim);
 
-        public:
-            bool is_dynamic();
-            int32_t value() const;
-            bool operator==(const Dim& rhs) const;
+public:
+  bool is_dynamic();
+  int32_t value() const;
+  bool operator==(const Dim &rhs) const;
 
-        private:
-        // Note that in the future, we might need to support dimension with lower and upper bounds
-        int32_t _dim_value;
-    };
+private:
+  // Note that in the future, we might need to support dimension with lower and upper bounds
+  int32_t _dim_value;
+};
 
-    using Shape = std::vector<Dim>;
+using Shape = std::vector<Dim>;
 } // namespace circle_resizer
 
 #endif // __CIRCLE_RESIZER_SHAPE_H__

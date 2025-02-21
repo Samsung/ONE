@@ -23,30 +23,32 @@
 #include <memory>
 #include <vector>
 
-namespace luci {
+namespace luci
+{
 class Module;
 }
 
 namespace circle_resizer
 {
-    class CircleResizer {
-        public:
-        explicit CircleResizer(const std::string& model_path);
-        // to satisfy forward declaration + unique_ptr
-        ~CircleResizer();
+class CircleResizer
+{
+public:
+  explicit CircleResizer(const std::string &model_path);
+  // to satisfy forward declaration + unique_ptr
+  ~CircleResizer();
 
-        public:
-        void resize_model(const std::vector<Shape>& shapes);
-        void save_model(const std::string& output_path) const;
+public:
+  void resize_model(const std::vector<Shape> &shapes);
+  void save_model(const std::string &output_path) const;
 
-        public:
-        std::vector<Shape> input_shapes() const;
-        std::vector<Shape> output_shapes() const;
+public:
+  std::vector<Shape> input_shapes() const;
+  std::vector<Shape> output_shapes() const;
 
-        private:
-        std::string _model_path;
-        std::unique_ptr<luci::Module> _module;
-    };
+private:
+  std::string _model_path;
+  std::unique_ptr<luci::Module> _module;
+};
 } // namespace circle_resizer
 
 #endif // __CIRCLE_RESIZER_H__
