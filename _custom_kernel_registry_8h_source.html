@@ -139,14 +139,16 @@ $(document).ready(function(){initNavTree('_custom_kernel_registry_8h_source.html
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  std::unique_ptr&lt;CustomKernel&gt; <a class="code hl_function" href="classonert_1_1api_1_1_custom_kernel_registry.html#a4309ab36d5dc4325f2f97c5a5cfd0e7c">buildKernelForOp</a>(<span class="keyword">const</span> std::string &amp;<span class="keywordtype">id</span>);</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  std::unordered_map&lt;std::string, nnfw_custom_eval&gt; _storage;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>};</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="comment">//       to use `std::string_view` with lookup functions in unordered containers</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  std::unordered_map&lt;std::string, nnfw_custom_eval&gt; _storage;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>};</div>
 </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>} <span class="comment">// namespace api</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>} <span class="comment">// namespace onert</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_API_CUSTOM_KERNEL_REGISTRY_H__</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>} <span class="comment">// namespace api</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_API_CUSTOM_KERNEL_REGISTRY_H__</span></div>
 <div class="ttc" id="a_custom_kernel_8h_html"><div class="ttname"><a href="_custom_kernel_8h.html">CustomKernel.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1api_1_1_custom_kernel_registry_html"><div class="ttname"><a href="classonert_1_1api_1_1_custom_kernel_registry.html">onert::api::CustomKernelRegistry</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_registry_8h_source.html#l00033">CustomKernelRegistry.h:34</a></div></div>
 <div class="ttc" id="aclassonert_1_1api_1_1_custom_kernel_registry_html_a4309ab36d5dc4325f2f97c5a5cfd0e7c"><div class="ttname"><a href="classonert_1_1api_1_1_custom_kernel_registry.html#a4309ab36d5dc4325f2f97c5a5cfd0e7c">onert::api::CustomKernelRegistry::buildKernelForOp</a></div><div class="ttdeci">std::unique_ptr&lt; CustomKernel &gt; buildKernelForOp(const std::string &amp;id)</div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_registry_8cc_source.html#l00053">CustomKernelRegistry.cc:53</a></div></div>

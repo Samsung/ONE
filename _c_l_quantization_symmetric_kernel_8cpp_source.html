@@ -227,9 +227,9 @@ $(document).ready(function(){initNavTree('_c_l_quantization_symmetric_kernel_8cp
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keyword">const</span> <span class="keywordtype">bool</span> multi_access_x = (input_width_x / vec_size_x &gt; 0);</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="comment">// Configure kernel window</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="keyword">auto</span> win_config = validate_and_configure_window(input-&gt;info(), output-&gt;info());</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  ARM_COMPUTE_ERROR_THROW_ON(win_config.first);</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  ICLKernel::configure_internal(win_config.second);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="keyword">auto</span> [error, window] = validate_and_configure_window(input-&gt;info(), output-&gt;info());</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  ARM_COMPUTE_ERROR_THROW_ON(error);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  ICLKernel::configure_internal(window);</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  <span class="comment">// Create kernel</span></div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  CLBuildOptions build_opts;</div>

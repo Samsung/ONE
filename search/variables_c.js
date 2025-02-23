@@ -37,7 +37,7 @@ var searchData=
   ['loss_34',['loss',['../classsession_1_1_train_session.html#acc7a7036d5ade54b59a99bb206ad83ec',1,'session.TrainSession.loss'],['../structnnfw__loss__info.html#ad33ff992b9964810caeacd8c40a940f1',1,'nnfw_loss_info::loss'],['../structonert__micro_1_1_o_m_training_context.html#aef2a1913f57cf39369355cbcd552d1db',1,'onert_micro::OMTrainingContext::loss']]],
   ['loss_5fcode_35',['loss_code',['../structonert_1_1ir_1_1train_1_1_loss_info.html#a4bd1e6f14248781f51834d22b7f12f6f',1,'onert::ir::train::LossInfo']]],
   ['loss_5finfo_36',['loss_info',['../structnnfw__train__info.html#a292f84b0055374d3dc80e7c88b500d06',1,'nnfw_train_info']]],
-  ['loss_5fparam_37',['loss_param',['../structonert_1_1ir_1_1train_1_1_loss_info.html#a125a2704f0cfbe2dd7cd1affd10da341',1,'onert::ir::train::LossInfo']]],
+  ['loss_5fparam_37',['loss_param',['../structonert_1_1ir_1_1train_1_1_loss_info.html#a7657ce7e3d0f52418c6728532b1577e9',1,'onert::ir::train::LossInfo']]],
   ['luci_5foutput_5fdata_38',['luci_output_data',['../namespacepart__eval__one.html#a5347d3efbb157147509ce5124161846c',1,'part_eval_one.luci_output_data'],['../namespaceeval__result__verifier.html#a21ffb109f9dc69de30accce51dddb797',1,'eval_result_verifier.luci_output_data'],['../namespaceluci__eval__verifier.html#aa53198eefe93c2762e32380aff7f972b',1,'luci_eval_verifier.luci_output_data'],['../namespaceluci__eval__verifier__ref.html#ab94085a519ad998efa10c233e9aac1d2',1,'luci_eval_verifier_ref.luci_output_data'],['../namespacevalidate__onnx2circle.html#ac51b891fa6979e84b0d4dba6ada85423',1,'validate_onnx2circle.luci_output_data']]],
   ['luci_5foutput_5fdata_5fref_39',['luci_output_data_ref',['../namespaceluci__eval__verifier__ref.html#acb1fa2923ea34df299fdacc9207f93ca',1,'luci_eval_verifier_ref']]]
 ];

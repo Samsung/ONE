@@ -248,6 +248,6 @@ var NAVTREEINDEX80 =
 "classluci_1_1_clone_node.html#ab1241195c897510c4d6b74c607eabb51":[40,0,61,310,18],
 "classluci_1_1_clone_node.html#ab69699df7f37e103e72cb5537279bc98":[39,0,82,310,14],
 "classluci_1_1_clone_node.html#ab69699df7f37e103e72cb5537279bc98":[40,0,61,310,14],
-"classluci_1_1_clone_node.html#aba697299677f256af69f229055e20216":[39,0,82,310,10],
-"classluci_1_1_clone_node.html#aba697299677f256af69f229055e20216":[40,0,61,310,10]
+"classluci_1_1_clone_node.html#aba697299677f256af69f229055e20216":[40,0,61,310,10],
+"classluci_1_1_clone_node.html#aba697299677f256af69f229055e20216":[39,0,82,310,10]
 };

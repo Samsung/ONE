@@ -219,9 +219,9 @@ $(document).ready(function(){initNavTree('_n_e_g_e_m_m_matrix_accumulate_biases_
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  _accum = accum;</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="comment">// Configure kernel window</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keyword">auto</span> win_config = validate_and_configure_window(accum-&gt;info(), biases-&gt;info());</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  ARM_COMPUTE_ERROR_THROW_ON(win_config.first);</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  INEKernel::configure(win_config.second);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keyword">auto</span> [error, window] = validate_and_configure_window(accum-&gt;info(), biases-&gt;info());</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  ARM_COMPUTE_ERROR_THROW_ON(error);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  INEKernel::configure(window);</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>}</div>
 </div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>

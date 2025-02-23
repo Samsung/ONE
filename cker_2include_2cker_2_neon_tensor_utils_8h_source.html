@@ -766,9 +766,9 @@ $(document).ready(function(){initNavTree('cker_2include_2cker_2_neon_tensor_util
 <div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>                                        <span class="keywordtype">float</span> *scaling_factor)</div>
 <div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>{</div>
 <div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>  <span class="comment">// TODO(raziel): vectorize min/max calculation.</span></div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>  <span class="keyword">auto</span> minmax = std::minmax_element(values, values + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>  *min = *minmax.first;</div>
-<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>  *max = *minmax.second;</div>
+<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>  <span class="keyword">auto</span> [min_ptr, max_ptr] = std::minmax_element(values, values + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>  *min = *min_ptr;</div>
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>  *max = *max_ptr;</div>
 <div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> kScale = 127;</div>
 <div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> range = std::max(std::abs(*min), std::abs(*max));</div>
 <div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>  <span class="keywordflow">if</span> (range == 0)</div>

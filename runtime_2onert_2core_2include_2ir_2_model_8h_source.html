@@ -253,12 +253,14 @@ $(document).ready(function(){initNavTree('runtime_2onert_2core_2include_2ir_2_mo
 </div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  std::unordered_map&lt;std::string, std::unique_ptr&lt;const ir::Data&gt;&gt; _metadatas;</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>};</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  <span class="comment">// TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  <span class="comment">//       to use `std::string_view` with lookup functions in unordered containers</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  std::unordered_map&lt;std::string, std::unique_ptr&lt;const ir::Data&gt;&gt; _metadatas;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>};</div>
 </div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>} <span class="comment">// namespace onert::ir</span></div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_IR_MODEL_H__</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>} <span class="comment">// namespace onert::ir</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_IR_MODEL_H__</span></div>
 <div class="ttc" id="a_i_graph_8h_html"><div class="ttname"><a href="_i_graph_8h.html">IGraph.h</a></div></div>
 <div class="ttc" id="a_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_html_aa73e018b04368e7afaded77ef0ac69db"><div class="ttname"><a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a></div><div class="ttdeci">std::mutex m</div><div class="ttdef"><b>Definition</b> <a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">NEGEMMMatrixAccumulateBiasesKernel.cpp:135</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_model_html"><div class="ttname"><a href="classonert_1_1ir_1_1_model.html">onert::ir::Model</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_model_8h_source.html#l00035">Model.h:36</a></div></div>

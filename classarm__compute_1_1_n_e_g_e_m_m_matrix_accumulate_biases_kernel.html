@@ -290,10 +290,11 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  117</span>  _accum = accum;</div>
 <div class="line"><span class="lineno">  118</span> </div>
 <div class="line"><span class="lineno">  119</span>  <span class="comment">// Configure kernel window</span></div>
-<div class="line"><span class="lineno">  120</span>  <span class="keyword">auto</span> win_config = validate_and_configure_window(accum-&gt;info(), biases-&gt;info());</div>
-<div class="line"><span class="lineno">  121</span>  ARM_COMPUTE_ERROR_THROW_ON(win_config.first);</div>
-<div class="line"><span class="lineno">  122</span>  INEKernel::configure(win_config.second);</div>
+<div class="line"><span class="lineno">  120</span>  <span class="keyword">auto</span> [<a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a>, window] = validate_and_configure_window(accum-&gt;info(), biases-&gt;info());</div>
+<div class="line"><span class="lineno">  121</span>  ARM_COMPUTE_ERROR_THROW_ON(error);</div>
+<div class="line"><span class="lineno">  122</span>  INEKernel::configure(window);</div>
 <div class="line"><span class="lineno">  123</span>}</div>
+<div class="ttc" id="anamespacehermes_html_a19175e20ab4f2e8c15810424b0611b46"><div class="ttname"><a href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">hermes::error</a></div><div class="ttdeci">Severity error(void)</div><div class="ttdef"><b>Definition</b> <a href="_severity_8h_source.html#l00076">Severity.h:76</a></div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_n_e_fully_connected_hybrid_layer_8cpp_source.html#l00085">arm_compute::NEFullyConnectedHybridLayer::configure()</a>.</p>
 

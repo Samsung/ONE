@@ -449,9 +449,9 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  142</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> idx_w = get_data_layout_dimension_index(data_layout, DataLayoutDimension::WIDTH);</div>
 <div class="line"><span class="lineno">  143</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> idx_h = get_data_layout_dimension_index(data_layout, DataLayoutDimension::HEIGHT);</div>
 <div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span>  <span class="keywordflow">if</span> (weights-&gt;dimension(idx_w) != deconv_info.stride().first ||</div>
-<div class="line"><span class="lineno">  146</span>      weights-&gt;dimension(idx_h) != deconv_info.stride().second || invalid_right != 0 ||</div>
-<div class="line"><span class="lineno">  147</span>      invalid_bottom != 0)</div>
+<div class="line"><span class="lineno">  145</span>  <span class="keyword">auto</span> [stride_w, stride_h] = deconv_info.stride();</div>
+<div class="line"><span class="lineno">  146</span>  <span class="keywordflow">if</span> (weights-&gt;dimension(idx_w) != stride_w || weights-&gt;dimension(idx_h) != stride_h ||</div>
+<div class="line"><span class="lineno">  147</span>      invalid_right != 0 || invalid_bottom != 0)</div>
 <div class="line"><span class="lineno">  148</span>  {</div>
 <div class="line"><span class="lineno">  149</span>    <span class="keywordflow">return</span> DeconvolutionMethod::DIRECT;</div>
 <div class="line"><span class="lineno">  150</span>  }</div>

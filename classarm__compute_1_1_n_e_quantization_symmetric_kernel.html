@@ -428,26 +428,26 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_n_e_quantization_symmetric_kernel_8cpp_source.html#l00220">220</a> of file <a class="el" href="_n_e_quantization_symmetric_kernel_8cpp_source.html">NEQuantizationSymmetricKernel.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  221</span>{</div>
-<div class="line"><span class="lineno">  222</span>  ARM_COMPUTE_UNUSED(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
-<div class="line"><span class="lineno">  223</span>  ARM_COMPUTE_ERROR_ON_UNCONFIGURED_KERNEL(<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">  224</span>  ARM_COMPUTE_ERROR_ON_INVALID_SUBWINDOW(INEKernel::window(), window);</div>
-<div class="line"><span class="lineno">  225</span> </div>
-<div class="line"><span class="lineno">  226</span>  <span class="keywordflow">switch</span> (_input-&gt;info()-&gt;data_type())</div>
-<div class="line"><span class="lineno">  227</span>  {</div>
-<div class="line"><span class="lineno">  228</span>    <span class="keywordflow">case</span> DataType::F32:</div>
-<div class="line"><span class="lineno">  229</span>      NEQuantizationSymmetricKernel::quantize&lt;float&gt;(window);</div>
-<div class="line"><span class="lineno">  230</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  231</span><span class="preprocessor">#ifdef __ARM_FEATURE_FP16_VECTOR_ARITHMETIC</span></div>
-<div class="line"><span class="lineno">  232</span>    <span class="keywordflow">case</span> DataType::F16:</div>
-<div class="line"><span class="lineno">  233</span>      NEQuantizationSymmetricKernel::quantize&lt;float16_t&gt;(window);</div>
-<div class="line"><span class="lineno">  234</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  235</span><span class="preprocessor">#endif </span><span class="comment">// __ARM_FEATURE_FP16_VECTOR_ARITHMETIC</span></div>
-<div class="line"><span class="lineno">  236</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  237</span>      ARM_COMPUTE_ERROR(<span class="stringliteral">&quot;Unsupported data type.&quot;</span>);</div>
-<div class="line"><span class="lineno">  238</span>  }</div>
-<div class="line"><span class="lineno">  239</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_n_e_quantization_symmetric_kernel_8cpp_source.html#l00221">221</a> of file <a class="el" href="_n_e_quantization_symmetric_kernel_8cpp_source.html">NEQuantizationSymmetricKernel.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  222</span>{</div>
+<div class="line"><span class="lineno">  223</span>  ARM_COMPUTE_UNUSED(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  224</span>  ARM_COMPUTE_ERROR_ON_UNCONFIGURED_KERNEL(<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">  225</span>  ARM_COMPUTE_ERROR_ON_INVALID_SUBWINDOW(INEKernel::window(), window);</div>
+<div class="line"><span class="lineno">  226</span> </div>
+<div class="line"><span class="lineno">  227</span>  <span class="keywordflow">switch</span> (_input-&gt;info()-&gt;data_type())</div>
+<div class="line"><span class="lineno">  228</span>  {</div>
+<div class="line"><span class="lineno">  229</span>    <span class="keywordflow">case</span> DataType::F32:</div>
+<div class="line"><span class="lineno">  230</span>      NEQuantizationSymmetricKernel::quantize&lt;float&gt;(window);</div>
+<div class="line"><span class="lineno">  231</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  232</span><span class="preprocessor">#ifdef __ARM_FEATURE_FP16_VECTOR_ARITHMETIC</span></div>
+<div class="line"><span class="lineno">  233</span>    <span class="keywordflow">case</span> DataType::F16:</div>
+<div class="line"><span class="lineno">  234</span>      NEQuantizationSymmetricKernel::quantize&lt;float16_t&gt;(window);</div>
+<div class="line"><span class="lineno">  235</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  236</span><span class="preprocessor">#endif </span><span class="comment">// __ARM_FEATURE_FP16_VECTOR_ARITHMETIC</span></div>
+<div class="line"><span class="lineno">  237</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  238</span>      ARM_COMPUTE_ERROR(<span class="stringliteral">&quot;Unsupported data type.&quot;</span>);</div>
+<div class="line"><span class="lineno">  239</span>  }</div>
+<div class="line"><span class="lineno">  240</span>}</div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>.</p>

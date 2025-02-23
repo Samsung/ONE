@@ -204,28 +204,30 @@ $(document).ready(function(){initNavTree('_h_e_scheduler_8h_source.html',''); in
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="comment">// whether it should assign these backends to these nodes:</span></div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="comment">// * It stores false for unsupported nodes</span></div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <span class="comment">// * During rank calculation with enabled profiling mode it stores true for supported nodes</span></div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  std::unordered_map&lt;const backend::Backend *, std::unordered_map&lt;std::string, bool&gt;&gt; _is_supported;</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="comment">// Finishing and starting time of each backend</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  std::unordered_map&lt;const backend::Backend *, std::map&lt;int64_t, int64_t&gt;&gt; _backends_avail_time;</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a9edc133ca328c864d5a28e75c21d285f">ir::OperationIndexMap&lt;int64_t&gt;</a> _ops_eft;</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  std::multimap&lt;int64_t, ir::OperationIndex, std::greater&lt;int64_t&gt;&gt; _rank_to_op;</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  std::shared_ptr&lt;ir::OperationIndexMap&lt;int64_t&gt;&gt; _op_to_rank;</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  std::unique_ptr&lt;compiler::BackendResolver&gt; _backend_resolver;</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  std::unique_ptr&lt;exec::ExecTime&gt; _exec_time;</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> *_graph{<span class="keyword">nullptr</span>};</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  std::vector&lt;const backend::Backend *&gt; _all_backends;</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *_cpu_backend{<span class="keyword">nullptr</span>}; <span class="comment">// TODO Change this to _builtin_backend</span></div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  <span class="keywordtype">bool</span> _is_profiling_mode;</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <span class="keywordtype">bool</span> _is_linear_exec;</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <span class="keywordtype">bool</span> _is_parallel_exec;</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>};</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  <span class="comment">// TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="comment">//       to use `std::string_view` with lookup functions in unordered containers</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  std::unordered_map&lt;const backend::Backend *, std::unordered_map&lt;std::string, bool&gt;&gt; _is_supported;</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  <span class="comment">// Finishing and starting time of each backend</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  std::unordered_map&lt;const backend::Backend *, std::map&lt;int64_t, int64_t&gt;&gt; _backends_avail_time;</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a9edc133ca328c864d5a28e75c21d285f">ir::OperationIndexMap&lt;int64_t&gt;</a> _ops_eft;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>  std::multimap&lt;int64_t, ir::OperationIndex, std::greater&lt;int64_t&gt;&gt; _rank_to_op;</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  std::shared_ptr&lt;ir::OperationIndexMap&lt;int64_t&gt;&gt; _op_to_rank;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  std::unique_ptr&lt;compiler::BackendResolver&gt; _backend_resolver;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>  std::unique_ptr&lt;exec::ExecTime&gt; _exec_time;</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> *_graph{<span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  std::vector&lt;const backend::Backend *&gt; _all_backends;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1backend_1_1_backend.html">backend::Backend</a> *_cpu_backend{<span class="keyword">nullptr</span>}; <span class="comment">// TODO Change this to _builtin_backend</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>  <span class="keywordtype">bool</span> _is_profiling_mode;</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>  <span class="keywordtype">bool</span> _is_linear_exec;</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>  <span class="keywordtype">bool</span> _is_parallel_exec;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>};</div>
 </div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>} <span class="comment">// namespace compiler</span></div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>} <span class="comment">// namespace compiler</span></div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_COMPILER_H_E_SCHEDULER_H_</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>} <span class="comment">// namespace onert</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_COMPILER_H_E_SCHEDULER_H_</span></div>
 <div class="ttc" id="a_backend_manager_8h_html"><div class="ttname"><a href="_backend_manager_8h.html">BackendManager.h</a></div></div>
 <div class="ttc" id="a_compiler_8h_html"><div class="ttname"><a href="_compiler_8h.html">Compiler.h</a></div><div class="ttdoc">This file contains Compiler class to define and run compilation phase.</div></div>
 <div class="ttc" id="a_i_scheduler_8h_html"><div class="ttname"><a href="_i_scheduler_8h.html">IScheduler.h</a></div></div>

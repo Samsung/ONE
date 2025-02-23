@@ -224,10 +224,10 @@ $(document).ready(function(){initNavTree('_c_l_g_e_m_m_matrix_accumulate_biases_
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> vector_size = 0;</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="comment">// Configure kernel window</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keyword">auto</span> win_config =</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keyword">auto</span> [error, window] =</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    validate_and_configure_window(accum-&gt;info(), biases-&gt;info(), gpu_target, vector_size);</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  ARM_COMPUTE_ERROR_THROW_ON(win_config.first);</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  ICLKernel::configure_internal(win_config.second);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  ARM_COMPUTE_ERROR_THROW_ON(error);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  ICLKernel::configure_internal(window);</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="comment">// Add build options</span></div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  CLBuildOptions build_opts;</div>

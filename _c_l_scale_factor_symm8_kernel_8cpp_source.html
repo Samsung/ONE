@@ -221,11 +221,11 @@ $(document).ready(function(){initNavTree('_c_l_scale_factor_symm8_kernel_8cpp_so
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  _kernel = <span class="keyword">static_cast&lt;</span>cl::Kernel<span class="keyword">&gt;</span>(</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a5f40c1c5ed75d0f2f31d2e795a8d8dd7">CLKernelLibraryEx::get</a>().<a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a7a19617d6cd8a71b065ed077a4943d4f">create_kernel</a>(<span class="stringliteral">&quot;scale_factor_symm8&quot;</span>, build_opts));</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keyword">auto</span> win_config = validate_and_configure_window(input-&gt;info(), output-&gt;info());</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keyword">auto</span> [error, window] = validate_and_configure_window(input-&gt;info(), output-&gt;info());</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  ARM_COMPUTE_ERROR_THROW_ON(std::get&lt;0&gt;(win_config));</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  ARM_COMPUTE_ERROR_THROW_ON(error);</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  ICLKernel::configure_internal(std::get&lt;1&gt;(win_config));</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  ICLKernel::configure_internal(window);</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>}</div>
 </div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>

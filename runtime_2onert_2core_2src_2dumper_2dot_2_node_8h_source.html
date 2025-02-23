@@ -163,14 +163,16 @@ $(document).ready(function(){initNavTree('runtime_2onert_2core_2src_2dumper_2dot
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  std::string _id;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  std::unordered_map&lt;std::string, std::string&gt; _attributes;</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  std::vector&lt;Node *&gt; _out_edges;</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>};</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="comment">// TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="comment">//       to use `std::string_view` with lookup functions in unordered containers</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  std::unordered_map&lt;std::string, std::string&gt; _attributes;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  std::vector&lt;Node *&gt; _out_edges;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>};</div>
 </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>} <span class="comment">// namespace onert::dumper::dot</span></div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_DUMPER_DOT_NODE_H__</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>} <span class="comment">// namespace onert::dumper::dot</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_DUMPER_DOT_NODE_H__</span></div>
 <div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_node_html"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_node.html">onert::dumper::dot::Node</a></div><div class="ttdoc">Class that represents a Node in &quot;dot&quot; format.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2src_2dumper_2dot_2_node_8h_source.html#l00051">Node.h:52</a></div></div>
 <div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_node_html_a099da3c70c37d6fac0110979e97ee1bf"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_node.html#a099da3c70c37d6fac0110979e97ee1bf">onert::dumper::dot::Node::out_edges</a></div><div class="ttdeci">const std::vector&lt; Node * &gt; &amp; out_edges() const</div><div class="ttdoc">Return list of out edges.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2src_2dumper_2dot_2_node_8h_source.html#l00112">Node.h:112</a></div></div>
 <div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_node_html_a25f6c93c74d351bf7b78a0ccdbf47bc3"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_node.html#a25f6c93c74d351bf7b78a0ccdbf47bc3">onert::dumper::dot::Node::addOutEdge</a></div><div class="ttdeci">void addOutEdge(Node *dotinfo)</div><div class="ttdoc">Add an edge in the graph, which is an outgoing edge.</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2src_2dumper_2dot_2_node_8h_source.html#l00106">Node.h:106</a></div></div>

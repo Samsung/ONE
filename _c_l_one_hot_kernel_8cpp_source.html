@@ -225,13 +225,13 @@ $(document).ready(function(){initNavTree('_c_l_one_hot_kernel_8cpp_source.html',
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  ARM_COMPUTE_ERROR_THROW_ON(</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    validate_arguments(indices-&gt;info(), on_value-&gt;info(), output-&gt;info(), depth, axis));</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="comment">// Configure kernel window</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keyword">auto</span> win_config =</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keyword">auto</span> [error, window] =</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    validate_and_configure_window(indices-&gt;info(), on_value-&gt;info(), output-&gt;info(), depth, axis);</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  ARM_COMPUTE_ERROR_THROW_ON(win_config.first);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  ARM_COMPUTE_ERROR_THROW_ON(error);</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="keywordflow">if</span> (_is_off_value_memset)</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  {</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="comment">// Replace window with calculated by infices info</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    win_config.second = calculate_max_window(*indices-&gt;info(), Steps());</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    window = calculate_max_window(*indices-&gt;info(), Steps());</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  }</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  _indices = indices;</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  _on_value = on_value;</div>
@@ -249,7 +249,7 @@ $(document).ready(function(){initNavTree('_c_l_one_hot_kernel_8cpp_source.html',
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="keyword">const</span> std::string kernel_name = _is_off_value_memset ? <span class="stringliteral">&quot;one_hot_only_on_value&quot;</span> : <span class="stringliteral">&quot;one_hot&quot;</span>;</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  _kernel = <span class="keyword">static_cast&lt;</span>cl::Kernel<span class="keyword">&gt;</span>(</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a5f40c1c5ed75d0f2f31d2e795a8d8dd7">CLKernelLibraryEx::get</a>().<a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a7a19617d6cd8a71b065ed077a4943d4f">create_kernel</a>(kernel_name, build_opts.options()));</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  ICLKernel::configure_internal(win_config.second);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  ICLKernel::configure_internal(window);</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>}</div>
 <div class="foldopen" id="foldopen00149" data-start="{" data-end="}">
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="classarm__compute_1_1_c_l_one_hot_kernel.html#a2b0c7e8a47a30be44f9d0217e9acd5a1">  149</a></span>Status <a class="code hl_function" href="classarm__compute_1_1_c_l_one_hot_kernel.html#a2b0c7e8a47a30be44f9d0217e9acd5a1">CLOneHotKernel::validate</a>(<span class="keyword">const</span> ITensorInfo *indices, <span class="keyword">const</span> ITensorInfo *on_value,</div>

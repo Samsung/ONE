@@ -323,94 +323,89 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  135</span> </div>
 <div class="line"><span class="lineno">  136</span>  _nnpkg.reset();</div>
 <div class="line"><span class="lineno">  137</span> </div>
-<div class="line"><span class="lineno">  138</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : lowered_subgs)</div>
+<div class="line"><span class="lineno">  138</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[model_index, model_lsubg] : lowered_subgs)</div>
 <div class="line"><span class="lineno">  139</span>  {</div>
-<div class="line"><span class="lineno">  140</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;model_index = pair.first;</div>
-<div class="line"><span class="lineno">  141</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;model_lsubg = pair.second;</div>
-<div class="line"><span class="lineno">  142</span> </div>
-<div class="line"><span class="lineno">  143</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair_inner : model_lsubg)</div>
-<div class="line"><span class="lineno">  144</span>    {</div>
-<div class="line"><span class="lineno">  145</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;subg_index = pair_inner.first;</div>
-<div class="line"><span class="lineno">  146</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;lowered_subg = pair_inner.second;</div>
-<div class="line"><span class="lineno">  147</span>      dot_dumper.dump(*lowered_subg, <a class="code hl_function" href="namespacennfw_1_1misc.html#a89f8c5b0515884b5971d433e4f184f29">nnfw::misc::str</a>(<span class="stringliteral">&quot;after_lower_model-&quot;</span>, model_index.value(),</div>
-<div class="line"><span class="lineno">  148</span>                                                     <span class="stringliteral">&quot;-subg-&quot;</span>, subg_index.value()));</div>
-<div class="line"><span class="lineno">  149</span>    }</div>
-<div class="line"><span class="lineno">  150</span>  }</div>
-<div class="line"><span class="lineno">  151</span> </div>
-<div class="line"><span class="lineno">  152</span>  <span class="comment">// Shape inference.</span></div>
-<div class="line"><span class="lineno">  153</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
-<div class="line"><span class="lineno">  154</span>  {</div>
-<div class="line"><span class="lineno">  155</span>    <span class="keyword">auto</span> &amp;model_lsubgs = pair.second;</div>
-<div class="line"><span class="lineno">  156</span>    <span class="comment">// Run the StaticShapeInfer of primary subg. All child StaticShapeInferers are called</span></div>
-<div class="line"><span class="lineno">  157</span>    <span class="comment">// recursively</span></div>
-<div class="line"><span class="lineno">  158</span>    std::unordered_map&lt;ir::SubgraphIndex, std::unique_ptr&lt;StaticShapeInferer&gt;&gt; inferers =</div>
-<div class="line"><span class="lineno">  159</span>      createStaticShapeInferers(model_lsubgs);</div>
-<div class="line"><span class="lineno">  160</span> </div>
-<div class="line"><span class="lineno">  161</span>    <span class="keyword">const</span> <span class="keyword">auto</span> primary_subg_idx = <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0};</div>
-<div class="line"><span class="lineno">  162</span>    inferers.at(primary_subg_idx)-&gt;infer();</div>
-<div class="line"><span class="lineno">  163</span> </div>
-<div class="line"><span class="lineno">  164</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair_inferer : inferers)</div>
-<div class="line"><span class="lineno">  165</span>    {</div>
-<div class="line"><span class="lineno">  166</span>      <span class="keyword">const</span> <span class="keyword">auto</span> inferer = pair_inferer.second.get();</div>
-<div class="line"><span class="lineno">  167</span>      inferer-&gt;dump();</div>
-<div class="line"><span class="lineno">  168</span>    }</div>
-<div class="line"><span class="lineno">  169</span>  }</div>
-<div class="line"><span class="lineno">  170</span> </div>
-<div class="line"><span class="lineno">  171</span>  <span class="comment">// Shape validation</span></div>
-<div class="line"><span class="lineno">  172</span>  <span class="comment">// TODO Move shape independent feature check from ShapeValidator to OperationValidator</span></div>
-<div class="line"><span class="lineno">  173</span>  <span class="comment">// TODO Move ShapeValidator into shape inference</span></div>
-<div class="line"><span class="lineno">  174</span>  <span class="comment">//      - Check input tensor shape validation</span></div>
-<div class="line"><span class="lineno">  175</span>  <span class="comment">//      - Check parameter value validation which valid value is depend on input tensor shape</span></div>
-<div class="line"><span class="lineno">  176</span>  <span class="comment">//      - Output tensor shape validation check is needless because</span></div>
-<div class="line"><span class="lineno">  177</span>  <span class="comment">//        static/dynamic shape inferer will make valid output shape</span></div>
-<div class="line"><span class="lineno">  178</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : lowered_subgs)</div>
-<div class="line"><span class="lineno">  179</span>  {</div>
-<div class="line"><span class="lineno">  180</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;model_lsubgs = pair.second;</div>
-<div class="line"><span class="lineno">  181</span> </div>
-<div class="line"><span class="lineno">  182</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair_inner : model_lsubgs)</div>
-<div class="line"><span class="lineno">  183</span>    {</div>
-<div class="line"><span class="lineno">  184</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;lowered_subg = pair_inner.second;</div>
-<div class="line"><span class="lineno">  185</span>      compiler::ShapeValidator{lowered_subg-&gt;graph()}();</div>
-<div class="line"><span class="lineno">  186</span>    }</div>
-<div class="line"><span class="lineno">  187</span>  }</div>
-<div class="line"><span class="lineno">  188</span> </div>
-<div class="line"><span class="lineno">  189</span><span class="comment">  /*************************************************************</span></div>
-<div class="line"><span class="lineno">  190</span><span class="comment">   *  Backend independent analysis &amp; optimization phase finished</span></div>
-<div class="line"><span class="lineno">  191</span><span class="comment">   *************************************************************/</span></div>
-<div class="line"><span class="lineno">  192</span>  <span class="keyword">auto</span> executors = std::make_shared&lt;exec::MultiModelExecutors&gt;(std::move(model_edges));</div>
-<div class="line"><span class="lineno">  193</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
-<div class="line"><span class="lineno">  194</span>  {</div>
-<div class="line"><span class="lineno">  195</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;model_index = pair.first;</div>
-<div class="line"><span class="lineno">  196</span>    <span class="keyword">auto</span> &amp;model_lsubgs = pair.second;</div>
-<div class="line"><span class="lineno">  197</span> </div>
-<div class="line"><span class="lineno">  198</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair_inner : model_lsubgs)</div>
-<div class="line"><span class="lineno">  199</span>    {</div>
-<div class="line"><span class="lineno">  200</span>      <span class="keyword">auto</span> <span class="keyword">const</span> subg_index = pair_inner.first;</div>
-<div class="line"><span class="lineno">  201</span>      <span class="keyword">auto</span> &amp;lowered_subg = pair_inner.second;</div>
-<div class="line"><span class="lineno">  202</span>      <span class="keyword">auto</span> <span class="keyword">const</span> indexed_ranks = lowered_subg-&gt;indexed_ranks();</div>
+<div class="line"><span class="lineno">  140</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[subg_index, lowered_subg] : model_lsubg)</div>
+<div class="line"><span class="lineno">  141</span>    {</div>
+<div class="line"><span class="lineno">  142</span>      dot_dumper.dump(*lowered_subg, <a class="code hl_function" href="namespacennfw_1_1misc.html#a89f8c5b0515884b5971d433e4f184f29">nnfw::misc::str</a>(<span class="stringliteral">&quot;after_lower_model-&quot;</span>, model_index.value(),</div>
+<div class="line"><span class="lineno">  143</span>                                                     <span class="stringliteral">&quot;-subg-&quot;</span>, subg_index.value()));</div>
+<div class="line"><span class="lineno">  144</span>    }</div>
+<div class="line"><span class="lineno">  145</span>  }</div>
+<div class="line"><span class="lineno">  146</span> </div>
+<div class="line"><span class="lineno">  147</span>  <span class="comment">// Shape inference.</span></div>
+<div class="line"><span class="lineno">  148</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
+<div class="line"><span class="lineno">  149</span>  {</div>
+<div class="line"><span class="lineno">  150</span>    <span class="keyword">auto</span> &amp;model_lsubgs = pair.second;</div>
+<div class="line"><span class="lineno">  151</span>    <span class="comment">// Run the StaticShapeInfer of primary subg. All child StaticShapeInferers are called</span></div>
+<div class="line"><span class="lineno">  152</span>    <span class="comment">// recursively</span></div>
+<div class="line"><span class="lineno">  153</span>    std::unordered_map&lt;ir::SubgraphIndex, std::unique_ptr&lt;StaticShapeInferer&gt;&gt; inferers =</div>
+<div class="line"><span class="lineno">  154</span>      createStaticShapeInferers(model_lsubgs);</div>
+<div class="line"><span class="lineno">  155</span> </div>
+<div class="line"><span class="lineno">  156</span>    <span class="keyword">const</span> <span class="keyword">auto</span> primary_subg_idx = <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0};</div>
+<div class="line"><span class="lineno">  157</span>    inferers.at(primary_subg_idx)-&gt;infer();</div>
+<div class="line"><span class="lineno">  158</span> </div>
+<div class="line"><span class="lineno">  159</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair_inferer : inferers)</div>
+<div class="line"><span class="lineno">  160</span>    {</div>
+<div class="line"><span class="lineno">  161</span>      <span class="keyword">const</span> <span class="keyword">auto</span> inferer = pair_inferer.second.get();</div>
+<div class="line"><span class="lineno">  162</span>      inferer-&gt;dump();</div>
+<div class="line"><span class="lineno">  163</span>    }</div>
+<div class="line"><span class="lineno">  164</span>  }</div>
+<div class="line"><span class="lineno">  165</span> </div>
+<div class="line"><span class="lineno">  166</span>  <span class="comment">// Shape validation</span></div>
+<div class="line"><span class="lineno">  167</span>  <span class="comment">// TODO Move shape independent feature check from ShapeValidator to OperationValidator</span></div>
+<div class="line"><span class="lineno">  168</span>  <span class="comment">// TODO Move ShapeValidator into shape inference</span></div>
+<div class="line"><span class="lineno">  169</span>  <span class="comment">//      - Check input tensor shape validation</span></div>
+<div class="line"><span class="lineno">  170</span>  <span class="comment">//      - Check parameter value validation which valid value is depend on input tensor shape</span></div>
+<div class="line"><span class="lineno">  171</span>  <span class="comment">//      - Output tensor shape validation check is needless because</span></div>
+<div class="line"><span class="lineno">  172</span>  <span class="comment">//        static/dynamic shape inferer will make valid output shape</span></div>
+<div class="line"><span class="lineno">  173</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair : lowered_subgs)</div>
+<div class="line"><span class="lineno">  174</span>  {</div>
+<div class="line"><span class="lineno">  175</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;model_lsubgs = pair.second;</div>
+<div class="line"><span class="lineno">  176</span> </div>
+<div class="line"><span class="lineno">  177</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;pair_inner : model_lsubgs)</div>
+<div class="line"><span class="lineno">  178</span>    {</div>
+<div class="line"><span class="lineno">  179</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;lowered_subg = pair_inner.second;</div>
+<div class="line"><span class="lineno">  180</span>      compiler::ShapeValidator{lowered_subg-&gt;graph()}();</div>
+<div class="line"><span class="lineno">  181</span>    }</div>
+<div class="line"><span class="lineno">  182</span>  }</div>
+<div class="line"><span class="lineno">  183</span> </div>
+<div class="line"><span class="lineno">  184</span><span class="comment">  /*************************************************************</span></div>
+<div class="line"><span class="lineno">  185</span><span class="comment">   *  Backend independent analysis &amp; optimization phase finished</span></div>
+<div class="line"><span class="lineno">  186</span><span class="comment">   *************************************************************/</span></div>
+<div class="line"><span class="lineno">  187</span>  <span class="keyword">auto</span> executors = std::make_shared&lt;exec::MultiModelExecutors&gt;(std::move(model_edges));</div>
+<div class="line"><span class="lineno">  188</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair : lowered_subgs)</div>
+<div class="line"><span class="lineno">  189</span>  {</div>
+<div class="line"><span class="lineno">  190</span>    <span class="keyword">auto</span> <span class="keyword">const</span> &amp;model_index = pair.first;</div>
+<div class="line"><span class="lineno">  191</span>    <span class="keyword">auto</span> &amp;model_lsubgs = pair.second;</div>
+<div class="line"><span class="lineno">  192</span> </div>
+<div class="line"><span class="lineno">  193</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;pair_inner : model_lsubgs)</div>
+<div class="line"><span class="lineno">  194</span>    {</div>
+<div class="line"><span class="lineno">  195</span>      <span class="keyword">auto</span> <span class="keyword">const</span> subg_index = pair_inner.first;</div>
+<div class="line"><span class="lineno">  196</span>      <span class="keyword">auto</span> &amp;lowered_subg = pair_inner.second;</div>
+<div class="line"><span class="lineno">  197</span>      <span class="keyword">auto</span> <span class="keyword">const</span> indexed_ranks = lowered_subg-&gt;indexed_ranks();</div>
+<div class="line"><span class="lineno">  198</span> </div>
+<div class="line"><span class="lineno">  199</span>      ir::OperationDumper dumper(<span class="stringliteral">&quot;Executor generation of Subgraph &quot;</span> +</div>
+<div class="line"><span class="lineno">  200</span>                                 std::to_string(subg_index.value()));</div>
+<div class="line"><span class="lineno">  201</span>      lowered_subg-&gt;graph().operations().iterate(</div>
+<div class="line"><span class="lineno">  202</span>        [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;, <span class="keyword">const</span> ir::IOperation &amp;op) { op.accept(dumper); });</div>
 <div class="line"><span class="lineno">  203</span> </div>
-<div class="line"><span class="lineno">  204</span>      ir::OperationDumper dumper(<span class="stringliteral">&quot;Executor generation of Subgraph &quot;</span> +</div>
-<div class="line"><span class="lineno">  205</span>                                 std::to_string(subg_index.value()));</div>
-<div class="line"><span class="lineno">  206</span>      lowered_subg-&gt;graph().operations().iterate(</div>
-<div class="line"><span class="lineno">  207</span>        [&amp;](<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a96178eda8f56c7ef3d89961856ace347">ir::OperationIndex</a> &amp;, <span class="keyword">const</span> ir::IOperation &amp;op) { op.accept(dumper); });</div>
-<div class="line"><span class="lineno">  208</span> </div>
-<div class="line"><span class="lineno">  209</span>      ExecutorFactoryArgs <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>;</div>
-<div class="line"><span class="lineno">  210</span>      <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>.tracing_ctx = tracing_ctx.get();</div>
-<div class="line"><span class="lineno">  211</span>      <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>.options = _options;</div>
-<div class="line"><span class="lineno">  212</span>      <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>.model_index = model_index;</div>
-<div class="line"><span class="lineno">  213</span>      <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>.custom_kernel_builder = custom_kernel_builders[model_index];</div>
-<div class="line"><span class="lineno">  214</span>      <span class="keyword">auto</span> executor = std::unique_ptr&lt;exec::IExecutor&gt;{</div>
-<div class="line"><span class="lineno">  215</span>        <a class="code hl_function" href="classonert_1_1compiler_1_1_executor_factory.html#af12fec093001b1c415ca1e86b4e55663">ExecutorFactory::get</a>().<a class="code hl_function" href="classonert_1_1compiler_1_1_executor_factory.html#a3330cf1fb069dc076abb3f6232833522">create</a>(std::move(lowered_subg), executors, args)};</div>
-<div class="line"><span class="lineno">  216</span>      executor-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a1f5655e4ad7317c32e3ce6fad3ec9d72">setIndexedRanks</a>(indexed_ranks);</div>
-<div class="line"><span class="lineno">  217</span>      executors-&gt;emplace(model_index, subg_index, std::move(executor));</div>
-<div class="line"><span class="lineno">  218</span>    }</div>
-<div class="line"><span class="lineno">  219</span>  }</div>
-<div class="line"><span class="lineno">  220</span> </div>
-<div class="line"><span class="lineno">  221</span><span class="comment">  /********************************</span></div>
-<div class="line"><span class="lineno">  222</span><span class="comment">   * Code generation phase finished</span></div>
-<div class="line"><span class="lineno">  223</span><span class="comment">   ********************************/</span></div>
-<div class="line"><span class="lineno">  224</span>  <span class="keywordflow">return</span> std::make_shared&lt;CompilerArtifact&gt;(executors, std::move(tracing_ctx));</div>
-<div class="line"><span class="lineno">  225</span>}</div>
+<div class="line"><span class="lineno">  204</span>      ExecutorFactoryArgs <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>;</div>
+<div class="line"><span class="lineno">  205</span>      <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>.tracing_ctx = tracing_ctx.get();</div>
+<div class="line"><span class="lineno">  206</span>      <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>.options = _options;</div>
+<div class="line"><span class="lineno">  207</span>      <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>.model_index = model_index;</div>
+<div class="line"><span class="lineno">  208</span>      <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>.custom_kernel_builder = custom_kernel_builders[model_index];</div>
+<div class="line"><span class="lineno">  209</span>      <span class="keyword">auto</span> executor = std::unique_ptr&lt;exec::IExecutor&gt;{</div>
+<div class="line"><span class="lineno">  210</span>        <a class="code hl_function" href="classonert_1_1compiler_1_1_executor_factory.html#af12fec093001b1c415ca1e86b4e55663">ExecutorFactory::get</a>().<a class="code hl_function" href="classonert_1_1compiler_1_1_executor_factory.html#a3330cf1fb069dc076abb3f6232833522">create</a>(std::move(lowered_subg), executors, args)};</div>
+<div class="line"><span class="lineno">  211</span>      executor-&gt;<a class="code hl_function" href="structonert_1_1exec_1_1_i_executor.html#a1f5655e4ad7317c32e3ce6fad3ec9d72">setIndexedRanks</a>(indexed_ranks);</div>
+<div class="line"><span class="lineno">  212</span>      executors-&gt;emplace(model_index, subg_index, std::move(executor));</div>
+<div class="line"><span class="lineno">  213</span>    }</div>
+<div class="line"><span class="lineno">  214</span>  }</div>
+<div class="line"><span class="lineno">  215</span> </div>
+<div class="line"><span class="lineno">  216</span><span class="comment">  /********************************</span></div>
+<div class="line"><span class="lineno">  217</span><span class="comment">   * Code generation phase finished</span></div>
+<div class="line"><span class="lineno">  218</span><span class="comment">   ********************************/</span></div>
+<div class="line"><span class="lineno">  219</span>  <span class="keywordflow">return</span> std::make_shared&lt;CompilerArtifact&gt;(executors, std::move(tracing_ctx));</div>
+<div class="line"><span class="lineno">  220</span>}</div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1_executor_factory_html_a3330cf1fb069dc076abb3f6232833522"><div class="ttname"><a href="classonert_1_1compiler_1_1_executor_factory.html#a3330cf1fb069dc076abb3f6232833522">onert::compiler::ExecutorFactory::create</a></div><div class="ttdeci">exec::IExecutor * create(std::unique_ptr&lt; compiler::LoweredGraph &gt; lowered_graph, const std::shared_ptr&lt; exec::IExecutors &gt; &amp;executors, const ExecutorFactoryArgs &amp;args)</div><div class="ttdef"><b>Definition</b> <a href="_executor_factory_8cc_source.html#l00306">ExecutorFactory.cc:306</a></div></div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1_executor_factory_html_af12fec093001b1c415ca1e86b4e55663"><div class="ttname"><a href="classonert_1_1compiler_1_1_executor_factory.html#af12fec093001b1c415ca1e86b4e55663">onert::compiler::ExecutorFactory::get</a></div><div class="ttdeci">static ExecutorFactory &amp; get()</div><div class="ttdef"><b>Definition</b> <a href="_executor_factory_8cc_source.html#l00291">ExecutorFactory.cc:291</a></div></div>
 <div class="ttc" id="aclassonert_1_1dumper_1_1dot_1_1_dot_dumper_html"><div class="ttname"><a href="classonert_1_1dumper_1_1dot_1_1_dot_dumper.html">onert::dumper::dot::DotDumper</a></div><div class="ttdef"><b>Definition</b> <a href="_dot_dumper_8h_source.html#l00027">DotDumper.h:28</a></div></div>

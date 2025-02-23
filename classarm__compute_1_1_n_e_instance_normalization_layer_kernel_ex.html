@@ -241,7 +241,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Default destructor </p>
 
-<p class="reference">References <a class="el" href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html#l00283">validate()</a>.</p>
+<p class="reference">References <a class="el" href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html#l00282">validate()</a>.</p>
 
 </div>
 </div>
@@ -330,12 +330,12 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  274</span>  }</div>
 <div class="line"><span class="lineno">  275</span> </div>
 <div class="line"><span class="lineno">  276</span>  <span class="comment">// Configure kernel window</span></div>
-<div class="line"><span class="lineno">  277</span>  <span class="keyword">auto</span> win_config = validate_and_configure_window(_input-&gt;info(), _output-&gt;info());</div>
-<div class="line"><span class="lineno">  278</span>  ARM_COMPUTE_ERROR_THROW_ON(std::get&lt;0&gt;(win_config));</div>
-<div class="line"><span class="lineno">  279</span> </div>
-<div class="line"><span class="lineno">  280</span>  INEKernel::configure(std::get&lt;1&gt;(win_config));</div>
-<div class="line"><span class="lineno">  281</span>}</div>
+<div class="line"><span class="lineno">  277</span>  <span class="keyword">auto</span> [<a class="code hl_function" href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">error</a>, window] = validate_and_configure_window(_input-&gt;info(), _output-&gt;info());</div>
+<div class="line"><span class="lineno">  278</span>  ARM_COMPUTE_ERROR_THROW_ON(error);</div>
+<div class="line"><span class="lineno">  279</span>  INEKernel::configure(window);</div>
+<div class="line"><span class="lineno">  280</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
+<div class="ttc" id="anamespacehermes_html_a19175e20ab4f2e8c15810424b0611b46"><div class="ttname"><a href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">hermes::error</a></div><div class="ttdeci">Severity error(void)</div><div class="ttdef"><b>Definition</b> <a href="_severity_8h_source.html#l00076">Severity.h:76</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_n_e_instance_normalization_layer_ex_8cpp_source.html#l00055">arm_compute::NEInstanceNormalizationLayerEx::configure()</a>.</p>
@@ -458,13 +458,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html#l00294">294</a> of file <a class="el" href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html">NEInstanceNormalizationLayerKernelEx.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  295</span>{</div>
-<div class="line"><span class="lineno">  296</span>  ARM_COMPUTE_UNUSED(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
-<div class="line"><span class="lineno">  297</span>  ARM_COMPUTE_ERROR_ON_UNCONFIGURED_KERNEL(<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">  298</span>  ARM_COMPUTE_ERROR_ON_INVALID_SUBWINDOW(INEKernel::window(), window);</div>
-<div class="line"><span class="lineno">  299</span>  (*_func)(_input, _output, _gamma, _beta, _epsilon, window);</div>
-<div class="line"><span class="lineno">  300</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html#l00293">293</a> of file <a class="el" href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html">NEInstanceNormalizationLayerKernelEx.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  294</span>{</div>
+<div class="line"><span class="lineno">  295</span>  ARM_COMPUTE_UNUSED(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  296</span>  ARM_COMPUTE_ERROR_ON_UNCONFIGURED_KERNEL(<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">  297</span>  ARM_COMPUTE_ERROR_ON_INVALID_SUBWINDOW(INEKernel::window(), window);</div>
+<div class="line"><span class="lineno">  298</span>  (*_func)(_input, _output, _gamma, _beta, _epsilon, window);</div>
+<div class="line"><span class="lineno">  299</span>}</div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="library__info_8cc_source.html#l00017">info</a>.</p>
@@ -535,13 +535,13 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a status </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html#l00283">283</a> of file <a class="el" href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html">NEInstanceNormalizationLayerKernelEx.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  287</span>{</div>
-<div class="line"><span class="lineno">  288</span>  ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(input, output, gamma, beta, epsilon));</div>
-<div class="line"><span class="lineno">  289</span>  ARM_COMPUTE_RETURN_ON_ERROR(std::get&lt;0&gt;(validate_and_configure_window(</div>
-<div class="line"><span class="lineno">  290</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;clone().get(), (output == <span class="keyword">nullptr</span> ? <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;clone().get() : <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;<a class="code hl_function" href="namespaceluci.html#a8984ba83d6f0e6d0dc99b25ee3b5d04b">clone</a>().<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>()))));</div>
-<div class="line"><span class="lineno">  291</span>  <span class="keywordflow">return</span> Status{};</div>
-<div class="line"><span class="lineno">  292</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html#l00282">282</a> of file <a class="el" href="_n_e_instance_normalization_layer_kernel_ex_8cpp_source.html">NEInstanceNormalizationLayerKernelEx.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  286</span>{</div>
+<div class="line"><span class="lineno">  287</span>  ARM_COMPUTE_RETURN_ON_ERROR(validate_arguments(input, output, gamma, beta, epsilon));</div>
+<div class="line"><span class="lineno">  288</span>  ARM_COMPUTE_RETURN_ON_ERROR(std::get&lt;0&gt;(validate_and_configure_window(</div>
+<div class="line"><span class="lineno">  289</span>    <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;clone().get(), (output == <span class="keyword">nullptr</span> ? <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;clone().get() : <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;<a class="code hl_function" href="namespaceluci.html#a8984ba83d6f0e6d0dc99b25ee3b5d04b">clone</a>().<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>()))));</div>
+<div class="line"><span class="lineno">  290</span>  <span class="keywordflow">return</span> Status{};</div>
+<div class="line"><span class="lineno">  291</span>}</div>
 <div class="ttc" id="anamespaceexo_html_aff46e62f58bb005a0fc63b6bed6f8698"><div class="ttname"><a href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">exo::get</a></div><div class="ttdeci">KnobTrait&lt; K &gt;::ValueType get(void)</div></div>
 <div class="ttc" id="anamespaceluci_html_a8984ba83d6f0e6d0dc99b25ee3b5d04b"><div class="ttname"><a href="namespaceluci.html#a8984ba83d6f0e6d0dc99b25ee3b5d04b">luci::clone</a></div><div class="ttdeci">luci::CircleConst * clone(luci::CircleConst *node)</div><div class="ttdoc">Return cloned object of CircleConst node.</div><div class="ttdef"><b>Definition</b> <a href="service_2src_2_nodes_2_circle_const_8cpp_source.html#l00106">CircleConst.cpp:106</a></div></div>
 </div><!-- fragment -->

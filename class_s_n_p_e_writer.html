@@ -268,57 +268,59 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  127</span>  {</div>
 <div class="line"><span class="lineno">  128</span>    <span class="comment">// NOTE This assumes _duration_events is sorted by &quot;ts&quot; ascending</span></div>
 <div class="line"><span class="lineno">  129</span> </div>
-<div class="line"><span class="lineno">  130</span>    <span class="comment">// 2D keys : stats[tid][name]</span></div>
-<div class="line"><span class="lineno">  131</span>    std::unordered_map&lt;std::string, std::unordered_map&lt;std::string, Stat&gt;&gt; stats;</div>
-<div class="line"><span class="lineno">  132</span>    std::unordered_map&lt;std::string, std::unordered_map&lt;std::string, uint64_t&gt;&gt; begin_timestamps;</div>
-<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;recorder : recorders)</div>
-<div class="line"><span class="lineno">  134</span>    {</div>
-<div class="line"><span class="lineno">  135</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;evt : recorder-&gt;duration_events())</div>
-<div class="line"><span class="lineno">  136</span>      {</div>
-<div class="line"><span class="lineno">  137</span>        std::string evt_name = getLabel(*evt);</div>
-<div class="line"><span class="lineno">  138</span>        std::string evt_tid = getBackend(*evt);</div>
-<div class="line"><span class="lineno">  139</span> </div>
-<div class="line"><span class="lineno">  140</span>        <span class="keyword">auto</span> &amp;stat = stats[evt_tid][evt_name];</div>
-<div class="line"><span class="lineno">  141</span>        <span class="keyword">auto</span> &amp;begin_ts = begin_timestamps[evt_tid][evt_name];</div>
-<div class="line"><span class="lineno">  142</span>        uint64_t timestamp = std::stoull(evt-&gt;ts);</div>
-<div class="line"><span class="lineno">  143</span>        <span class="keywordflow">if</span> (evt-&gt;ph == <span class="stringliteral">&quot;B&quot;</span>)</div>
-<div class="line"><span class="lineno">  144</span>        {</div>
-<div class="line"><span class="lineno">  145</span>          <span class="keywordflow">if</span> (begin_ts != 0)</div>
-<div class="line"><span class="lineno">  146</span>            <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Invalid Data&quot;</span>};</div>
-<div class="line"><span class="lineno">  147</span>          begin_ts = timestamp;</div>
-<div class="line"><span class="lineno">  148</span>        }</div>
-<div class="line"><span class="lineno">  149</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (evt-&gt;ph == <span class="stringliteral">&quot;E&quot;</span>)</div>
-<div class="line"><span class="lineno">  150</span>        {</div>
-<div class="line"><span class="lineno">  151</span>          <span class="keywordflow">if</span> (begin_ts == 0 || timestamp &lt; begin_ts)</div>
-<div class="line"><span class="lineno">  152</span>            <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Invalid Data&quot;</span>};</div>
-<div class="line"><span class="lineno">  153</span>          stat.accumulate(timestamp - begin_ts);</div>
-<div class="line"><span class="lineno">  154</span>          begin_ts = 0;</div>
-<div class="line"><span class="lineno">  155</span>        }</div>
-<div class="line"><span class="lineno">  156</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  157</span>          <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Invalid Data - invalid value for \&quot;ph\&quot; : \&quot;&quot;</span> + evt-&gt;ph + <span class="stringliteral">&quot;\&quot;&quot;</span>};</div>
-<div class="line"><span class="lineno">  158</span>      }</div>
-<div class="line"><span class="lineno">  159</span>    }</div>
-<div class="line"><span class="lineno">  160</span> </div>
-<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;kv : begin_timestamps)</div>
-<div class="line"><span class="lineno">  162</span>      for (const auto &amp;kv2 : kv.second)</div>
-<div class="line"><span class="lineno">  163</span>        if (kv2.second != 0)</div>
-<div class="line"><span class="lineno">  164</span>          throw <a class="code hl_namespace" href="namespacestd.html">std</a>::runtime_error{<span class="stringliteral">&quot;Invalid Data - B and E pair does not match.&quot;</span>};</div>
-<div class="line"><span class="lineno">  165</span> </div>
-<div class="line"><span class="lineno">  166</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[tid, stat_map] : stats)</div>
-<div class="line"><span class="lineno">  167</span>    {</div>
-<div class="line"><span class="lineno">  168</span>      <span class="keyword">auto</span> &amp;json_tid = exec_data[tid] = Json::Value{Json::objectValue};</div>
-<div class="line"><span class="lineno">  169</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[name, val] : stat_map)</div>
-<div class="line"><span class="lineno">  170</span>      {</div>
-<div class="line"><span class="lineno">  171</span>        json_tid[name][<span class="stringliteral">&quot;Avg_Time&quot;</span>] = val.sum / val.count;</div>
-<div class="line"><span class="lineno">  172</span>        json_tid[name][<span class="stringliteral">&quot;Max_Time&quot;</span>] = val.max;</div>
-<div class="line"><span class="lineno">  173</span>        json_tid[name][<span class="stringliteral">&quot;Min_Time&quot;</span>] = val.min;</div>
-<div class="line"><span class="lineno">  174</span>        json_tid[name][<span class="stringliteral">&quot;Runtime&quot;</span>] = tid;</div>
-<div class="line"><span class="lineno">  175</span>      }</div>
-<div class="line"><span class="lineno">  176</span>    }</div>
-<div class="line"><span class="lineno">  177</span>  }</div>
-<div class="line"><span class="lineno">  178</span> </div>
-<div class="line"><span class="lineno">  179</span>  <a class="code hl_variable" href="class_event_format_writer.html#a034b381f3d9a3acc8370a17e808b7bf2">_os</a> &lt;&lt; <a class="code hl_function" href="namespacecoco.html#a4ee17d3cfd5da67014063855016d56c2">root</a>;</div>
-<div class="line"><span class="lineno">  180</span>}</div>
+<div class="line"><span class="lineno">  130</span>    <span class="comment">// TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20</span></div>
+<div class="line"><span class="lineno">  131</span>    <span class="comment">//       to use `std::string_view` with lookup functions in unordered containers</span></div>
+<div class="line"><span class="lineno">  132</span>    <span class="comment">// 2D keys : stats[tid][name]</span></div>
+<div class="line"><span class="lineno">  133</span>    std::unordered_map&lt;std::string, std::unordered_map&lt;std::string, Stat&gt;&gt; stats;</div>
+<div class="line"><span class="lineno">  134</span>    std::unordered_map&lt;std::string, std::unordered_map&lt;std::string, uint64_t&gt;&gt; begin_timestamps;</div>
+<div class="line"><span class="lineno">  135</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;recorder : recorders)</div>
+<div class="line"><span class="lineno">  136</span>    {</div>
+<div class="line"><span class="lineno">  137</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;evt : recorder-&gt;duration_events())</div>
+<div class="line"><span class="lineno">  138</span>      {</div>
+<div class="line"><span class="lineno">  139</span>        std::string evt_name = getLabel(*evt);</div>
+<div class="line"><span class="lineno">  140</span>        std::string evt_tid = getBackend(*evt);</div>
+<div class="line"><span class="lineno">  141</span> </div>
+<div class="line"><span class="lineno">  142</span>        <span class="keyword">auto</span> &amp;stat = stats[evt_tid][evt_name];</div>
+<div class="line"><span class="lineno">  143</span>        <span class="keyword">auto</span> &amp;begin_ts = begin_timestamps[evt_tid][evt_name];</div>
+<div class="line"><span class="lineno">  144</span>        uint64_t timestamp = std::stoull(evt-&gt;ts);</div>
+<div class="line"><span class="lineno">  145</span>        <span class="keywordflow">if</span> (evt-&gt;ph == <span class="stringliteral">&quot;B&quot;</span>)</div>
+<div class="line"><span class="lineno">  146</span>        {</div>
+<div class="line"><span class="lineno">  147</span>          <span class="keywordflow">if</span> (begin_ts != 0)</div>
+<div class="line"><span class="lineno">  148</span>            <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Invalid Data&quot;</span>};</div>
+<div class="line"><span class="lineno">  149</span>          begin_ts = timestamp;</div>
+<div class="line"><span class="lineno">  150</span>        }</div>
+<div class="line"><span class="lineno">  151</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (evt-&gt;ph == <span class="stringliteral">&quot;E&quot;</span>)</div>
+<div class="line"><span class="lineno">  152</span>        {</div>
+<div class="line"><span class="lineno">  153</span>          <span class="keywordflow">if</span> (begin_ts == 0 || timestamp &lt; begin_ts)</div>
+<div class="line"><span class="lineno">  154</span>            <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Invalid Data&quot;</span>};</div>
+<div class="line"><span class="lineno">  155</span>          stat.accumulate(timestamp - begin_ts);</div>
+<div class="line"><span class="lineno">  156</span>          begin_ts = 0;</div>
+<div class="line"><span class="lineno">  157</span>        }</div>
+<div class="line"><span class="lineno">  158</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  159</span>          <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Invalid Data - invalid value for \&quot;ph\&quot; : \&quot;&quot;</span> + evt-&gt;ph + <span class="stringliteral">&quot;\&quot;&quot;</span>};</div>
+<div class="line"><span class="lineno">  160</span>      }</div>
+<div class="line"><span class="lineno">  161</span>    }</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;kv : begin_timestamps)</div>
+<div class="line"><span class="lineno">  164</span>      for (const auto &amp;kv2 : kv.second)</div>
+<div class="line"><span class="lineno">  165</span>        if (kv2.second != 0)</div>
+<div class="line"><span class="lineno">  166</span>          throw <a class="code hl_namespace" href="namespacestd.html">std</a>::runtime_error{<span class="stringliteral">&quot;Invalid Data - B and E pair does not match.&quot;</span>};</div>
+<div class="line"><span class="lineno">  167</span> </div>
+<div class="line"><span class="lineno">  168</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[tid, stat_map] : stats)</div>
+<div class="line"><span class="lineno">  169</span>    {</div>
+<div class="line"><span class="lineno">  170</span>      <span class="keyword">auto</span> &amp;json_tid = exec_data[tid] = Json::Value{Json::objectValue};</div>
+<div class="line"><span class="lineno">  171</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[name, val] : stat_map)</div>
+<div class="line"><span class="lineno">  172</span>      {</div>
+<div class="line"><span class="lineno">  173</span>        json_tid[name][<span class="stringliteral">&quot;Avg_Time&quot;</span>] = val.sum / val.count;</div>
+<div class="line"><span class="lineno">  174</span>        json_tid[name][<span class="stringliteral">&quot;Max_Time&quot;</span>] = val.max;</div>
+<div class="line"><span class="lineno">  175</span>        json_tid[name][<span class="stringliteral">&quot;Min_Time&quot;</span>] = val.min;</div>
+<div class="line"><span class="lineno">  176</span>        json_tid[name][<span class="stringliteral">&quot;Runtime&quot;</span>] = tid;</div>
+<div class="line"><span class="lineno">  177</span>      }</div>
+<div class="line"><span class="lineno">  178</span>    }</div>
+<div class="line"><span class="lineno">  179</span>  }</div>
+<div class="line"><span class="lineno">  180</span> </div>
+<div class="line"><span class="lineno">  181</span>  <a class="code hl_variable" href="class_event_format_writer.html#a034b381f3d9a3acc8370a17e808b7bf2">_os</a> &lt;&lt; <a class="code hl_function" href="namespacecoco.html#a4ee17d3cfd5da67014063855016d56c2">root</a>;</div>
+<div class="line"><span class="lineno">  182</span>}</div>
 <div class="ttc" id="a_s_n_p_e_event_writer_8cc_html_a2dcddc727d3f868402d8e9140399f3d0"><div class="ttname"><a href="_s_n_p_e_event_writer_8cc.html#a2dcddc727d3f868402d8e9140399f3d0">SNPE_JSON_SCHEMA_VERSION</a></div><div class="ttdeci">#define SNPE_JSON_SCHEMA_VERSION</div><div class="ttdoc">Version of SNPE format In version 1.</div><div class="ttdef"><b>Definition</b> <a href="_s_n_p_e_event_writer_8cc_source.html#l00041">SNPEEventWriter.cc:41</a></div></div>
 <div class="ttc" id="aclass_event_format_writer_html_a034b381f3d9a3acc8370a17e808b7bf2"><div class="ttname"><a href="class_event_format_writer.html#a034b381f3d9a3acc8370a17e808b7bf2">EventFormatWriter::_os</a></div><div class="ttdeci">std::ofstream _os</div><div class="ttdef"><b>Definition</b> <a href="_event_writer_8h_source.html#l00039">EventWriter.h:39</a></div></div>
 <div class="ttc" id="anamespacecoco_html_a4ee17d3cfd5da67014063855016d56c2"><div class="ttname"><a href="namespacecoco.html#a4ee17d3cfd5da67014063855016d56c2">coco::root</a></div><div class="ttdeci">Op * root(Op *)</div><div class="ttdoc">Return the root Op from a given Op node.</div><div class="ttdef"><b>Definition</b> <a href="_op_8cpp_source.html#l00144">Op.cpp:144</a></div></div>

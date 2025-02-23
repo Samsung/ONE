@@ -3174,7 +3174,6 @@ var hierarchy =
       [ "losses.mse.MeanSquaredError", "classlosses_1_1mse_1_1_mean_squared_error.html", null ]
     ] ],
     [ "onert::ir::train::LossInfo", "structonert_1_1ir_1_1train_1_1_loss_info.html", null ],
-    [ "onert::ir::train::LossInfo::LossParam", "uniononert_1_1ir_1_1train_1_1_loss_info_1_1_loss_param.html", null ],
     [ "losses.registry.LossRegistry", "classlosses_1_1registry_1_1_loss_registry.html", null ],
     [ "luci_interpreter::lstm::LSTMParameters", "structluci__interpreter_1_1lstm_1_1_l_s_t_m_parameters.html", null ],
     [ "nnfw::cker::LSTMParams", "structnnfw_1_1cker_1_1_l_s_t_m_params.html", null ],
