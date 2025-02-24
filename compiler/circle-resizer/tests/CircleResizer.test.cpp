@@ -57,12 +57,47 @@ protected:
   std::string _test_models_dir;
 };
 
-TEST_F(CircleResizerTest, basic_test)
+
+TEST_F(CircleResizerTest, single_input_single_output)
 {
-  CircleResizer resizer(_test_models_dir + "/DynInputs_Add_001.circle");
-  const auto new_input_shapes =
-    std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{1}}, Shape{Dim{1}, Dim{5}, Dim{1}}};
+  CircleResizer resizer(_test_models_dir + "/ExpandDims_000.circle");
+  const auto new_input_shapes = std::vector<Shape>{Shape{Dim{4}, Dim{6}}};
   resizer.resize_model(new_input_shapes);
-  ASSERT_EQ(resizer.input_shapes(), new_input_shapes);
-  ASSERT_EQ(resizer.output_shapes(), (std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{1}}}));
+  EXPECT_EQ(resizer.input_shapes(), new_input_shapes);
+  EXPECT_EQ(resizer.output_shapes(), (std::vector<Shape>{Shape{Dim{4}, Dim{1}, Dim{6}}}));
 }
+
+TEST_F(CircleResizerTest, single_input_two_outputs)
+{
+  CircleResizer resizer(_test_models_dir + "/CSE_Quantize_000.circle");
+  const auto new_input_shapes = std::vector<Shape>{Shape{Dim{1}, Dim{6}, Dim{6}, Dim{4}}};
+  resizer.resize_model(new_input_shapes);
+  EXPECT_EQ(resizer.input_shapes(), new_input_shapes);
+  EXPECT_EQ(resizer.output_shapes(), (std::vector<Shape>{Shape{Dim{1}, Dim{6}, Dim{6}, Dim{4}}, Shape{Dim{1}, Dim{6}, Dim{6}, Dim{4}}}));
+}
+
+TEST_F(CircleResizerTest, two_inputs_single_output)
+{
+  CircleResizer resizer(_test_models_dir + "/Add_000.circle");
+  const auto new_input_shapes =
+    std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{3}}, Shape{Dim{1}, Dim{5}, Dim{5}, Dim{3}}};
+  resizer.resize_model(new_input_shapes);
+  EXPECT_EQ(resizer.input_shapes(), new_input_shapes);
+  EXPECT_EQ(resizer.output_shapes(), (std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{3}}}));
+}
+
+TEST_F(CircleResizerTest, two_inputs_two_outputs)
+{
+  CircleResizer resizer(_test_models_dir + "/Part_Add_Sqrt_Rsqrt_000.circle");
+  const auto new_input_shapes =
+    std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}}, Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}}};
+  resizer.resize_model(new_input_shapes);
+  EXPECT_EQ(resizer.input_shapes(), new_input_shapes);
+  EXPECT_EQ(resizer.output_shapes(), (std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}}, Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}}}));
+}
+
+// TEST_F(CircleResizerTest, neg_model_file_not_exist)
+// {
+//   CircleResizer resizer(_test_models_dir + "/not_existed.circle");
+//   EXPECT_THROW()
+// }
