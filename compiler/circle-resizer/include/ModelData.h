@@ -14,35 +14,39 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_RESIZER_H__
-#define __CIRCLE_RESIZER_H__
-
-#include "Shape.h"
-#include "ModelData.h"
+#ifndef __CIRCLE_RESIZER_MODEL_H__
+#define __CIRCLE_RESIZER_MODEL_H__
 
 #include <string>
+#include <memory>
 #include <vector>
+
+namespace luci
+{
+class Module;
+}
 
 namespace circle_resizer
 {
-class CircleResizer
+// DESIGN NOTE: The purpose of the class is to keep buffer and module synchronized
+class ModelData
 {
-public:
-  explicit CircleResizer(const std::vector<uint8_t> &model_buffer);
-  explicit CircleResizer(const std::string &model_path);
 
 public:
-  void resize_model(const std::vector<Shape> &shapes);
-  void save_model(const std::string &output_path);
+  explicit ModelData(const std::vector<uint8_t> &buffer);
+  void invalidate(const std::vector<uint8_t> &buffer);
+  // to satisfy forward declaration + unique_ptr
+  ~ModelData();
 
 public:
-  // cannot be const because of loco::Graph limitations
-  std::vector<Shape> input_shapes();
-  std::vector<Shape> output_shapes();
+  std::vector<uint8_t> &buffer();
+  luci::Module *module();
 
 private:
-  ModelData _model_data;
+  std::vector<uint8_t> _buffer;
+  std::unique_ptr<luci::Module> _module;
 };
+
 } // namespace circle_resizer
 
 #endif // __CIRCLE_RESIZER_H__

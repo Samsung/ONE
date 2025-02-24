@@ -1,5 +1,6 @@
 list(APPEND CIRCLE_RESIZER_SOURCES src/Shape.cpp)
 list(APPEND CIRCLE_RESIZER_SOURCES src/ShapeParser.cpp)
+list(APPEND CIRCLE_RESIZER_SOURCES src/ModelData.cpp)
 list(APPEND CIRCLE_RESIZER_SOURCES src/CircleResizer.cpp)
 
 add_library(circle_resizer_core STATIC "${CIRCLE_RESIZER_SOURCES}")
@@ -34,6 +35,7 @@ list(APPEND CIRCLE_RESIZER_TEST_SOURCES tests/CircleResizer.test.cpp)
 nnas_find_package(GTest REQUIRED)
 GTest_AddTest(circle_resizer_unit_test ${CIRCLE_RESIZER_TEST_SOURCES})
 target_link_libraries(circle_resizer_unit_test circle_resizer_core)
+target_link_libraries(circle_resizer_unit_test oops)
 
 get_target_property(ARTIFACTS_PATH testDataGenerator BINARY_DIR)
 set_tests_properties(circle_resizer_unit_test

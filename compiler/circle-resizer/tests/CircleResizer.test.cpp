@@ -15,14 +15,18 @@
  */
 
 #include "CircleResizer.h"
+#include "oops/UserExn.h"
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
 #include <vector>
 
 using namespace circle_resizer;
+using ::testing::HasSubstr;
 
 namespace
 {
@@ -49,14 +53,14 @@ class CircleResizerTest : public ::testing::Test
 protected:
   virtual void SetUp()
   {
-    _test_models_dir = std::getenv("ARTIFACTS_PATH");
+    // _test_models_dir = std::getenv("ARTIFACTS_PATH");
+    _test_models_dir = "/home/m.bencer/workspace/ONE_fork/build/compiler/common-artifacts";
     assert(!_test_models_dir.empty());
   }
 
 protected:
   std::string _test_models_dir;
 };
-
 
 TEST_F(CircleResizerTest, single_input_single_output)
 {
@@ -73,14 +77,15 @@ TEST_F(CircleResizerTest, single_input_two_outputs)
   const auto new_input_shapes = std::vector<Shape>{Shape{Dim{1}, Dim{6}, Dim{6}, Dim{4}}};
   resizer.resize_model(new_input_shapes);
   EXPECT_EQ(resizer.input_shapes(), new_input_shapes);
-  EXPECT_EQ(resizer.output_shapes(), (std::vector<Shape>{Shape{Dim{1}, Dim{6}, Dim{6}, Dim{4}}, Shape{Dim{1}, Dim{6}, Dim{6}, Dim{4}}}));
+  EXPECT_EQ(resizer.output_shapes(), (std::vector<Shape>{Shape{Dim{1}, Dim{6}, Dim{6}, Dim{4}},
+                                                         Shape{Dim{1}, Dim{6}, Dim{6}, Dim{4}}}));
 }
 
 TEST_F(CircleResizerTest, two_inputs_single_output)
 {
   CircleResizer resizer(_test_models_dir + "/Add_000.circle");
-  const auto new_input_shapes =
-    std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{3}}, Shape{Dim{1}, Dim{5}, Dim{5}, Dim{3}}};
+  const auto new_input_shapes = std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{3}},
+                                                   Shape{Dim{1}, Dim{5}, Dim{5}, Dim{3}}};
   resizer.resize_model(new_input_shapes);
   EXPECT_EQ(resizer.input_shapes(), new_input_shapes);
   EXPECT_EQ(resizer.output_shapes(), (std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{3}}}));
@@ -89,15 +94,91 @@ TEST_F(CircleResizerTest, two_inputs_single_output)
 TEST_F(CircleResizerTest, two_inputs_two_outputs)
 {
   CircleResizer resizer(_test_models_dir + "/Part_Add_Sqrt_Rsqrt_000.circle");
-  const auto new_input_shapes =
-    std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}}, Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}}};
+  const auto new_input_shapes = std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}},
+                                                   Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}}};
   resizer.resize_model(new_input_shapes);
   EXPECT_EQ(resizer.input_shapes(), new_input_shapes);
-  EXPECT_EQ(resizer.output_shapes(), (std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}}, Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}}}));
+  EXPECT_EQ(resizer.output_shapes(), (std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}},
+                                                         Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}}}));
 }
 
-// TEST_F(CircleResizerTest, neg_model_file_not_exist)
-// {
-//   CircleResizer resizer(_test_models_dir + "/not_existed.circle");
-//   EXPECT_THROW()
-// }
+TEST_F(CircleResizerTest, neg_model_file_not_exist)
+{
+  auto file_name = "/not_existed.circle";
+  try
+  {
+    CircleResizer(_test_models_dir + file_name);
+    FAIL() << "Expected std::runtime_error";
+  }
+  catch (const std::runtime_error &err)
+  {
+    EXPECT_THAT(err.what(), HasSubstr("Failed to open file"));
+    EXPECT_THAT(err.what(), HasSubstr(file_name));
+  }
+  catch (...)
+  {
+    FAIL() << "Expected std::runtime_error, other exception thrown";
+  }
+}
+
+TEST_F(CircleResizerTest, neg_invalid_model)
+{
+  try
+  {
+    CircleResizer(std::vector<uint8_t>{1, 2, 3, 4, 5});
+    FAIL() << "Expected std::runtime_error";
+  }
+  catch (const std::runtime_error &err)
+  {
+    EXPECT_THAT(err.what(), HasSubstr("Verification of the model failed"));
+  }
+  catch (...)
+  {
+    FAIL() << "Expected std::runtime_error, other exception thrown";
+  }
+}
+
+TEST_F(CircleResizerTest, neg_not_all_input_shapes_provided)
+{
+  CircleResizer resizer(_test_models_dir + "/Add_000.circle");
+  try
+  {
+    resizer.resize_model(std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{3}}});
+  }
+  catch (const std::runtime_error &err)
+  {
+    EXPECT_THAT(err.what(), HasSubstr("Expected input shapes: 2 while provided: 1"));
+  }
+  catch (...)
+  {
+    FAIL() << "Expected std::runtime_error, other exception thrown";
+  }
+}
+
+TEST_F(CircleResizerTest, neg_incorrect_rank_of_new_shape)
+{
+  CircleResizer resizer(_test_models_dir + "/ExpandDims_000.circle");
+  try
+  {
+    resizer.resize_model(std::vector<Shape>{Shape{Dim{3}}});
+  }
+  catch (const std::runtime_error &err)
+  {
+    EXPECT_THAT(err.what(), HasSubstr("Provided shape rank: 1 is different from expected: 2"));
+  }
+  catch (...)
+  {
+    FAIL() << "Expected std::runtime_error, other exception thrown";
+  }
+}
+
+// /home/m.bencer/workspace/ONE_fork/res/TensorFlowLiteRecipes/DepthwiseConv2D_000/test.recipe
+TEST_F(CircleResizerTest, neg_shape_inference_failed)
+{
+  CircleResizer resizer(_test_models_dir + "/DepthwiseConv2D_000.circle");
+  // dim: 1 dim: 64 dim: 64 dim: 8
+  // dim: 1 dim: 3 dim: 3 dim: 8
+  EXPECT_THROW(resizer.resize_model(std::vector<Shape>{Shape{Dim{1}, Dim{64}, Dim{64}, Dim{8}},
+                                                       Shape{Dim{1}, Dim{2}, Dim{2}, Dim{3}}}),
+               oops::UserExn);
+}

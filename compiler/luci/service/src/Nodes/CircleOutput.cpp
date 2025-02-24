@@ -25,7 +25,6 @@ namespace luci
 namespace sinf
 {
 
-
 loco::TensorShape Algorithm::visit(const luci::CircleOutput *node)
 {
   const auto from_shape = loco::must_cast<luci::CircleNode *>(node->from());

@@ -21,7 +21,6 @@
 #include <logo/Phase.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
-#include <luci/Importer.h>
 #include <luci/Pass/CircleShapeInferencePass.h>
 #include <luci/Pass/CircleTypeInferencePass.h>
 #include <logo/RemoveDeadNodeWithQueryPass.h>
@@ -63,7 +62,7 @@ void replace_tensor_shape(::flatbuffers::Vector<int32_t> *tensor_shape, const Sh
   const auto shape_size = tensor_shape->size();
   if (shape_size != new_shape.size())
   {
-    throw std::runtime_error("Provided shape size: " + std::to_string(new_shape.size()) +
+    throw std::runtime_error("Provided shape rank: " + std::to_string(new_shape.size()) +
                              " is different from expected: " + std::to_string(shape_size));
   }
   for (uint32_t dim_idx = 0; dim_idx < shape_size; ++dim_idx)
@@ -91,12 +90,18 @@ std::vector<Shape> extract_shapes(const std::vector<loco::Node *> &nodes)
 
 } // namespace
 
-CircleResizer::CircleResizer(const std::string &model_path) : _model_path{model_path} {}
+CircleResizer::CircleResizer(const std::vector<uint8_t> &model_buffer)
+  : _model_data{ModelData(model_buffer)}
+{
+}
+
+CircleResizer::CircleResizer(const std::string &model_path) : CircleResizer(read_model(model_path))
+{
+}
 
 void CircleResizer::resize_model(const std::vector<Shape> &shapes)
 {
-  auto model_buffer = read_model(_model_path);
-  auto model = circle::GetMutableModel(model_buffer.data());
+  auto model = circle::GetMutableModel(_model_data.buffer().data());
   if (!model)
   {
     throw std::runtime_error("Incorrect model format");
@@ -108,7 +113,7 @@ void CircleResizer::resize_model(const std::vector<Shape> &shapes)
   }
   auto subgraph = subgraphs->GetMutableObject(0);
   const auto inputs_number = subgraph->inputs()->size();
-  if (!inputs_number == shapes.size())
+  if (inputs_number != shapes.size())
   {
     throw std::runtime_error("Expected input shapes: " + std::to_string(inputs_number) +
                              " while provided: " + std::to_string(shapes.size()));
@@ -121,30 +126,23 @@ void CircleResizer::resize_model(const std::vector<Shape> &shapes)
     replace_tensor_shape(input_shape, shapes[in_idx]);
   }
 
-  flatbuffers::Verifier verifier{model_buffer.data(), model_buffer.size()};
-  if (!circle::VerifyModelBuffer(verifier))
-  {
-    throw std::runtime_error("Verification of the model failed");
-  }
-
-  const luci::GraphBuilderSource *source_ptr = &luci::GraphBuilderRegistry::get();
-  luci::Importer importer(source_ptr);
-  _module = importer.importModule(model_buffer.data(), model_buffer.size());
+  // invalidate after changing input shape
+  _model_data.invalidate(_model_data.buffer());
 
   logo::Phase phase;
   phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
-  auto graph = _module->graph();
+  auto graph = _model_data.module()->graph();
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{graph};
   phase_runner.run(phase);
 }
 
-void CircleResizer::save_model(const std::string &output_path) const
+void CircleResizer::save_model(const std::string &output_path)
 {
   luci::CircleExporter exporter;
-  luci::CircleFileExpContract contract(_module.get(), output_path);
+  luci::CircleFileExpContract contract(_model_data.module(), output_path);
 
   if (!exporter.invoke(&contract))
   {
@@ -152,14 +150,12 @@ void CircleResizer::save_model(const std::string &output_path) const
   }
 }
 
-std::vector<Shape> CircleResizer::input_shapes() const
+std::vector<Shape> CircleResizer::input_shapes()
 {
-  return extract_shapes<luci::CircleInput>(loco::input_nodes(_module->graph()));
+  return extract_shapes<luci::CircleInput>(loco::input_nodes(_model_data.module()->graph()));
 }
 
-std::vector<Shape> CircleResizer::output_shapes() const
+std::vector<Shape> CircleResizer::output_shapes()
 {
-  return extract_shapes<luci::CircleOutput>(loco::output_nodes(_module->graph()));
+  return extract_shapes<luci::CircleOutput>(loco::output_nodes(_model_data.module()->graph()));
 }
-
-CircleResizer::~CircleResizer() = default;
