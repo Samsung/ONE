@@ -36,7 +36,6 @@ class ModelInference:
         self.model_path = model_path
         self.subgraphsiostxt_path = subgraphsiostxt_path
 
-
     def infer_single_onnx_model(model_file, input_data):
         session = ort.InferenceSession(model_file)
         outputs = session.run(None, input_data)
@@ -70,5 +69,6 @@ if __name__ == "__main__":
     }
 
     # Perform inference using a single ONNX model
-    output_single = ModelInference.infer_single_onnx_model(args.single, default_input_data)
+    output_single = ModelInference.infer_single_onnx_model(args.single,
+                                                           default_input_data)
     print("Single model inference completed!")
