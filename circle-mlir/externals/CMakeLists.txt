@@ -25,6 +25,10 @@ set(AC_BUILD_DIR   "${EXTERNALS_BUILD_INST_DIR}/abseil-cpp-build")
 set(AC_INSTALL_DIR "${EXTERNALS_BUILD_INST_DIR}/abseil-cpp-install")
 set(LP_BUILD_DIR   "${EXTERNALS_BUILD_INST_DIR}/llvm-project-build")
 set(LP_INSTALL_DIR "${EXTERNALS_BUILD_INST_DIR}/llvm-project-install")
+set(PB_BUILD_DIR   "${EXTERNALS_BUILD_INST_DIR}/protobuf-build")
+set(PB_INSTALL_DIR "${EXTERNALS_BUILD_INST_DIR}/protobuf-install")
+set(OM_BUILD_DIR   "${EXTERNALS_BUILD_INST_DIR}/onnx-mlir-build")
+set(OM_INSTALL_DIR "${EXTERNALS_BUILD_INST_DIR}/onnx-mlir-install")
 
 # build flatbuffers
 ExternalProject_Add(externals-flatbuffers
