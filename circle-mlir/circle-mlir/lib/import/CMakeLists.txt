@@ -1,4 +1,5 @@
 set(SRC
+  src/CircleImport.cpp
   src/CircleOperator.cpp
 )
 
