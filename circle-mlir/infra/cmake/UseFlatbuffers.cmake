@@ -1,6 +1,6 @@
 if(NOT CIRCLE_MLIR_WORKDIR)
   if(NOT CIRCLE_MLIR_LOCALINST)
-    set(FLATBUFFERS_INS "${CMAKE_BINARY_DIR}/submodules/flatbuffers-install")
+    set(FLATBUFFERS_INS "${EXTERNALS_BIN_DIR}/flatbuffers-install")
   else()
     set(FLATBUFFERS_INS "${CIRCLE_MLIR_LOCALINST}/flatbuffers-install")
   endif()

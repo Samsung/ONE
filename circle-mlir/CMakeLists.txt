@@ -43,5 +43,10 @@ if(CIRCLE_MLIR_LOCALINST)
 endif()
 
 set(RES_CIRCLE_SCHEMA "${CMAKE_SOURCE_DIR}/../res/CircleSchema")
+if(NOT CIRCLE_MLIR_EXTERNALS)
+  set(EXTERNALS_BIN_DIR "${CMAKE_BINARY_DIR}/externals")
+else()
+  set(EXTERNALS_BIN_DIR "${CMAKE_SOURCE_DIR}/${CIRCLE_MLIR_EXTERNALS}")
+endif()
 
 add_subdirectory(circle-mlir)

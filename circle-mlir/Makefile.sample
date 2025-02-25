@@ -17,6 +17,8 @@ PYTHON3_PATH=$(shell dirname $(PYTHON3_CMD))
 
 CIRCLEMLIR_BUILD_DEBUG?=build/debug
 CIRCLEMLIR_BUILD_REL?=build/release
+CIRCLEMLIR_EXTS_DEBUG?=build/externals/debug
+CIRCLEMLIR_EXTS_REL?=build/externals/release
 
 CIRCLEMLIR_PY3_ROOT?=$(PYTHON3_PATH)
 CIRCLEMLIR_BUILD_JOBS?=4
@@ -64,11 +66,12 @@ overlay:
 
 prep: _mkbuild
 	Python3_ROOT_DIR=$(CIRCLEMLIR_PY3_ROOT) \
-	cmake -B $(CIRCLEMLIR_BUILD_DEBUG)/externals -S ./externals -DCMAKE_BUILD_TYPE=Debug
-	cmake --build $(CIRCLEMLIR_BUILD_DEBUG)/externals -j$(CIRCLEMLIR_BUILD_JOBS)
+	cmake -B $(CIRCLEMLIR_EXTS_DEBUG) -S ./externals -DCMAKE_BUILD_TYPE=Debug
+	cmake --build $(CIRCLEMLIR_EXTS_DEBUG) -j$(CIRCLEMLIR_BUILD_JOBS)
 
 cfg: _mkbuild
 	cmake -B $(CIRCLEMLIR_BUILD_DEBUG) -S ./ \
+	-DCIRCLE_MLIR_EXTERNALS=$(CIRCLEMLIR_EXTS_DEBUG) \
 	-DONNX2CIRCLE_TEST_MODELS_SINGLE=ON
 
 debug:
@@ -88,11 +91,12 @@ clean:
 
 prepr: _mkbuildr
 	Python3_ROOT_DIR=$(CIRCLEMLIR_PY3_ROOT) \
-	cmake -B $(CIRCLEMLIR_BUILD_REL)/externals -S ./externals -DCMAKE_BUILD_TYPE=Release
-	cmake --build $(CIRCLEMLIR_BUILD_REL)/externals -j$(CIRCLEMLIR_BUILD_JOBS)
+	cmake -B $(CIRCLEMLIR_EXTS_REL) -S ./externals -DCMAKE_BUILD_TYPE=Release
+	cmake --build $(CIRCLEMLIR_EXTS_REL) -j$(CIRCLEMLIR_BUILD_JOBS)
 
 cfgr: _mkbuildr
-	cmake -B $(CIRCLEMLIR_BUILD_REL) -S ./ -DCMAKE_BUILD_TYPE=Release
+	cmake -B $(CIRCLEMLIR_BUILD_REL) -S ./ -DCMAKE_BUILD_TYPE=Release \
+	-DCIRCLE_MLIR_EXTERNALS=$(CIRCLEMLIR_EXTS_REL)
 
 rel:
 	cmake --build $(CIRCLEMLIR_BUILD_REL) -j$(CIRCLEMLIR_BUILD_JOBS)
