@@ -28,33 +28,12 @@
 using namespace circle_resizer;
 using ::testing::HasSubstr;
 
-namespace
-{
-
-// TODO: Remove, just for debug
-void print_shapes(const std::vector<Shape> &shapes)
-{
-  for (const auto &shape : shapes)
-  {
-    std::cout << "[";
-    for (const auto &dim : shape)
-    {
-      std::cout << dim.value() << ",";
-    }
-    std::cout << "],";
-  }
-  std::cout << std::endl;
-}
-
-} // namespace
-
 class CircleResizerTest : public ::testing::Test
 {
 protected:
   virtual void SetUp()
   {
-    // _test_models_dir = std::getenv("ARTIFACTS_PATH");
-    _test_models_dir = "/home/m.bencer/workspace/ONE_fork/build/compiler/common-artifacts";
+    _test_models_dir = std::getenv("ARTIFACTS_PATH");
     assert(!_test_models_dir.empty());
   }
 
@@ -172,13 +151,56 @@ TEST_F(CircleResizerTest, neg_incorrect_rank_of_new_shape)
   }
 }
 
-// /home/m.bencer/workspace/ONE_fork/res/TensorFlowLiteRecipes/DepthwiseConv2D_000/test.recipe
 TEST_F(CircleResizerTest, neg_shape_inference_failed)
 {
   CircleResizer resizer(_test_models_dir + "/DepthwiseConv2D_000.circle");
-  // dim: 1 dim: 64 dim: 64 dim: 8
-  // dim: 1 dim: 3 dim: 3 dim: 8
   EXPECT_THROW(resizer.resize_model(std::vector<Shape>{Shape{Dim{1}, Dim{64}, Dim{64}, Dim{8}},
                                                        Shape{Dim{1}, Dim{2}, Dim{2}, Dim{3}}}),
                oops::UserExn);
+}
+
+TEST_F(CircleResizerTest, save_model_without_change)
+{
+  CircleResizer resizer(_test_models_dir + "/ExpandDims_000.circle");
+  std::stringstream out_stream;
+  resizer.save_model(out_stream);
+  const std::string &model_buf_str = out_stream.str();
+  std::vector<uint8_t> model_buffer(std::begin(model_buf_str), std::end(model_buf_str));
+  model_buffer.insert(std::end(model_buffer), std::begin(model_buf_str), std::end(model_buf_str));
+  CircleResizer resizer2(model_buffer);
+  EXPECT_EQ(resizer2.input_shapes(), (std::vector<Shape>{Shape{Dim{3}, Dim{3}}}));
+  EXPECT_EQ(resizer2.output_shapes(), (std::vector<Shape>{Shape{Dim{3}, Dim{1}, Dim{3}}}));
+}
+
+TEST_F(CircleResizerTest, save_model_after_resizing)
+{
+  CircleResizer resizer(_test_models_dir + "/ExpandDims_000.circle");
+  std::stringstream out_stream;
+  const auto new_input_shapes = std::vector<Shape>{Shape{Dim{4}, Dim{6}}};
+  resizer.resize_model(new_input_shapes);
+  resizer.save_model(out_stream);
+  const std::string &model_buf_str = out_stream.str();
+  std::vector<uint8_t> model_buffer(std::begin(model_buf_str), std::end(model_buf_str));
+  model_buffer.insert(std::end(model_buffer), std::begin(model_buf_str), std::end(model_buf_str));
+  CircleResizer resizer2(model_buffer);
+  EXPECT_EQ(resizer2.input_shapes(), new_input_shapes);
+  EXPECT_EQ(resizer2.output_shapes(), (std::vector<Shape>{Shape{Dim{4}, Dim{1}, Dim{6}}}));
+}
+
+TEST_F(CircleResizerTest, neg_incorrect_output_stream)
+{
+  CircleResizer resizer(_test_models_dir + "/Add_000.circle");
+  std::ofstream out_stream;
+  try
+  {
+    resizer.save_model(out_stream);
+  }
+  catch (const std::runtime_error &err)
+  {
+    EXPECT_THAT(err.what(), HasSubstr("Failed to write to output stream"));
+  }
+  catch (...)
+  {
+    FAIL() << "Expected std::runtime_error, other exception thrown";
+  }
 }

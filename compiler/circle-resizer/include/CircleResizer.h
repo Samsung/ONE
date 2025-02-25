@@ -33,6 +33,7 @@ public:
 
 public:
   void resize_model(const std::vector<Shape> &shapes);
+  void save_model(std::ostream &stream);
   void save_model(const std::string &output_path);
 
 public:

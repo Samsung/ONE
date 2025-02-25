@@ -19,14 +19,10 @@
 #include <mio/circle/schema_generated.h>
 
 #include <logo/Phase.h>
-#include <luci/CircleExporter.h>
-#include <luci/CircleFileExpContract.h>
 #include <luci/Pass/CircleShapeInferencePass.h>
 #include <luci/Pass/CircleTypeInferencePass.h>
 #include <logo/RemoveDeadNodeWithQueryPass.h>
 #include <luci/Import/GraphBuilderRegistry.h>
-
-#include <luci/Log.h>
 
 #include <iostream>
 #include <fstream>
@@ -127,7 +123,7 @@ void CircleResizer::resize_model(const std::vector<Shape> &shapes)
   }
 
   // invalidate after changing input shape
-  _model_data.invalidate(_model_data.buffer());
+  _model_data.invalidate_module();
 
   logo::Phase phase;
   phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
@@ -137,17 +133,25 @@ void CircleResizer::resize_model(const std::vector<Shape> &shapes)
   auto graph = _model_data.module()->graph();
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{graph};
   phase_runner.run(phase);
+
+  // invalidate after shape inference
+  _model_data.invalidate_buffer();
+}
+
+void CircleResizer::save_model(std::ostream &stream)
+{
+  stream.write(reinterpret_cast<const char *>(_model_data.buffer().data()),
+               _model_data.buffer().size());
+  if (!stream.good())
+  {
+    throw std::runtime_error("Failed to write to output stream");
+  }
 }
 
 void CircleResizer::save_model(const std::string &output_path)
 {
-  luci::CircleExporter exporter;
-  luci::CircleFileExpContract contract(_model_data.module(), output_path);
-
-  if (!exporter.invoke(&contract))
-  {
-    throw std::runtime_error("Saving model failed");
-  }
+  std::ofstream out_stream(output_path, std::ios::out | std::ios::binary);
+  save_model(out_stream);
 }
 
 std::vector<Shape> CircleResizer::input_shapes()

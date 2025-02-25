@@ -17,7 +17,10 @@
 #include "ModelData.h"
 
 #include <mio/circle/schema_generated.h>
+
 #include <luci/Importer.h>
+#include <luci/CircleExporter.h>
+#include <luci/CircleFileExpContract.h>
 
 using namespace circle_resizer;
 
@@ -35,18 +38,66 @@ std::unique_ptr<luci::Module> load_module(const std::vector<uint8_t> &model_buff
   luci::Importer importer(source_ptr);
   return importer.importModule(model_buffer.data(), model_buffer.size());
 }
+class BufferModelContract : public luci::CircleExporter::Contract
+{
+public:
+  BufferModelContract(luci::Module *module)
+    : _module(module), _buffer{std::make_unique<std::vector<uint8_t>>()}
+  {
+  }
+
+  luci::Module *module() const override { return _module; }
+
+  bool store(const char *ptr, const size_t size) const override
+  {
+    _buffer->resize(size);
+    std::copy(ptr, ptr + size, _buffer->begin());
+    return true;
+  }
+
+  std::vector<uint8_t> get_buffer() { return *_buffer; }
+
+private:
+  luci::Module *_module;
+  std::unique_ptr<std::vector<uint8_t>> _buffer;
+};
+
 } // namespace
 
-ModelData::ModelData(const std::vector<uint8_t> &buffer) { invalidate(buffer); }
-
-void ModelData::invalidate(const std::vector<uint8_t> &buffer)
+ModelData::ModelData(const std::vector<uint8_t> &buffer)
+  : _buffer{buffer}, _module{load_module(buffer)}
 {
-  _buffer = buffer;
-  _module = load_module(buffer);
 }
 
-std::vector<uint8_t> &ModelData::buffer() { return _buffer; }
+void ModelData::invalidate_module() { _module_invalidated = true; }
 
-luci::Module *ModelData::module() { return _module.get(); }
+void ModelData::invalidate_buffer() { _buffer_invalidated = true; }
+
+std::vector<uint8_t> &ModelData::buffer()
+{
+  if (_buffer_invalidated)
+  {
+    luci::CircleExporter exporter;
+    BufferModelContract contract(module());
+
+    if (!exporter.invoke(&contract))
+    {
+      throw std::runtime_error("Exporting buffer from the model failed");
+    }
+    _buffer = contract.get_buffer();
+    _buffer_invalidated = false;
+  }
+  return _buffer;
+}
+
+luci::Module *ModelData::module()
+{
+  if (_module_invalidated)
+  {
+    _module = load_module(_buffer);
+    _module_invalidated = false;
+  }
+  return _module.get();
+}
 
 ModelData::~ModelData() = default;

@@ -34,7 +34,8 @@ class ModelData
 
 public:
   explicit ModelData(const std::vector<uint8_t> &buffer);
-  void invalidate(const std::vector<uint8_t> &buffer);
+  void invalidate_module();
+  void invalidate_buffer();
   // to satisfy forward declaration + unique_ptr
   ~ModelData();
 
@@ -43,6 +44,7 @@ public:
   luci::Module *module();
 
 private:
+  bool _module_invalidated = false, _buffer_invalidated = false;
   std::vector<uint8_t> _buffer;
   std::unique_ptr<luci::Module> _module;
 };
