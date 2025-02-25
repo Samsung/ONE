@@ -1,4 +1,5 @@
 set(SRC
+  src/CircleExport.cpp
   src/OpOrArgNameMapper.cpp
 )
 
