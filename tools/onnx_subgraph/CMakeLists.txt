@@ -14,7 +14,7 @@ find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${Python3_INCLUDE_DIRS})
 
-set(ONNX_SUBGRAPH_FILES
+set(ONNX_SUBGRAPH_FILES                                                 
     test_model_download.sh
     extract_onnx.py
     subgraphs_ios.txt
