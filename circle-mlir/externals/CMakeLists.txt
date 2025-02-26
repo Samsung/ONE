@@ -15,10 +15,47 @@ if(NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
+# NOTE: ld.gold has some problem with pybind11
+option(CIRCLE_MLIR_USE_GOLD "Use ld.gold linker for llvm-project" OFF)
+option(CIRCLE_MLIR_USE_CLANG "Use clang and lld for llvm-project and onnx-mlir" OFF)
+
 include(ExternalProject)
 
 if(DEFINED ENV{CIRCLE_MLIR_LOCALINST})
   set(CIRCLE_MLIR_LOCALINST $ENV{CIRCLE_MLIR_LOCALINST})
+endif()
+
+if(DEFINED ENV{CIRCLE_MLIR_USE_GOLD})
+  set(CIRCLE_MLIR_USE_GOLD ON)
+endif()
+
+if(DEFINED ENV{CIRCLE_MLIR_USE_CLANG})
+  set(CIRCLE_MLIR_USE_CLANG ON)
+endif()
+
+if(CIRCLE_MLIR_USE_GOLD AND CIRCLE_MLIR_USE_CLANG)
+  message(FATAL_ERROR "CIRCLE_MLIR_USE_GOLD and CIRCLE_MLIR_USE_CLANG are exclusive option.")
+endif()
+
+# Use gcc + gold
+if(CIRCLE_MLIR_USE_GOLD)
+  set(CIRCLE_MLIR_GOLD_OPTION -DCMAKE_EXE_LINKER_FLAGS='-Wl,-no-keep-memory,-fuse-ld=gold' -DLLVM_USE_LINKER=gold)
+  message(STATUS "Use linker ld.gold: ${CIRCLE_MLIR_GOLD_OPTION}")
+endif()
+
+# Use clang + lld
+if(CIRCLE_MLIR_USE_CLANG)
+  find_program(CLANG_COMPILER clang)
+  if(NOT EXISTS ${CLANG_COMPILER})
+    message(FATAL_ERROR "Clang is not available.")
+  endif()
+  find_program(LLD_LINKER lld)
+  if(NOT EXISTS ${LLD_LINKER})
+    message(FATAL_ERROR "LLD is not available.")
+  endif()
+  set(CIRCLE_MLIR_CLANG_OPTION -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++)
+  set(CIRCLE_MLIR_CLANG_OPTION ${CIRCLE_MLIR_CLANG_OPTION} -DLLVM_ENABLE_LLD=ON)
+  message(STATUS "Use Clang and LLD linker: ${CIRCLE_MLIR_CLANG_OPTION}")
 endif()
 
 if(CIRCLE_MLIR_LOCALINST)
@@ -77,6 +114,8 @@ ExternalProject_Add(externals-llvm-project
                  -DLLVM_TARGETS_TO_BUILD=host
                  -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                  -DCMAKE_INSTALL_PREFIX='${LP_INSTALL_DIR}'
+                 ${CIRCLE_MLIR_GOLD_OPTION}
+                 ${CIRCLE_MLIR_CLANG_OPTION}
                  -DLLVM_ENABLE_ASSERTIONS=ON
                  -DLLVM_ENABLE_RTTI=ON
   # NOTE externals-flatbuffers externals-abseil-cpp are added to DEPENDS only
@@ -114,6 +153,7 @@ ExternalProject_Add(externals-onnx-mlir
   CMAKE_ARGS     -DCMAKE_BUILD_TYPE=Release
                  -DCMAKE_PREFIX_PATH='${CMAKE_PREFIX_PATH}'
                  -DCMAKE_INSTALL_PREFIX='${OM_INSTALL_DIR}'
+                 ${CIRCLE_MLIR_CLANG_OPTION}
                  -DMLIR_DIR='${LP_BUILD_DIR}/lib/cmake/mlir'
                  -DPython3_ROOT_DIR='$ENV{Python3_ROOT_DIR}'
                  -DONNX_MLIR_BUILD_TESTS=OFF
