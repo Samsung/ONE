@@ -94,7 +94,22 @@ template <typename BINOP> bool inferBinShapes(BINOP &op, SmallVector<int64_t, 4>
 
 } // namespace
 
-// TODO add AddOp
+//===----------------------------------------------------------------------===//
+// AddOp
+//===----------------------------------------------------------------------===//
+
+void AddOp::inferShapes()
+{
+  AddOp op = *this;
+  SmallVector<int64_t, 4> inferred;
+  if (!inferBinShapes<AddOp>(op, inferred))
+    return;
+
+  auto input0_op = getOperand(0);
+  auto input0_type = input0_op.getType().cast<TensorType>();
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input0_type.getElementType());
+  getResult().setType(inferred_type);
+}
 
 //===----------------------------------------------------------------------===//
 // CustomOp
