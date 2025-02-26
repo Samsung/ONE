@@ -1,3 +1,5 @@
+require("arser")
+require("safemain")
 require("mio-circle08")
 require("logo-core")
 require("luci")

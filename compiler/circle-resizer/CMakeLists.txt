@@ -16,8 +16,10 @@ target_link_libraries(circle_resizer_core PRIVATE luci_import)
 target_link_libraries(circle_resizer_core PRIVATE logo)
 target_link_libraries(circle_resizer_core PRIVATE luci_log)
 
-add_executable(circle_resizer src/main.cpp)
+add_executable(circle_resizer src/Driver.cpp)
 target_link_libraries(circle_resizer PRIVATE circle_resizer_core)
+target_link_libraries(circle_resizer PRIVATE arser)
+target_link_libraries(circle_resizer PRIVATE safemain)
 
 set_target_properties(circle_resizer PROPERTIES 
   OUTPUT_NAME "circle-resizer" 
