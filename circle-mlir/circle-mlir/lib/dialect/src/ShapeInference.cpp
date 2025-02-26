@@ -96,5 +96,43 @@ template <typename BINOP> bool inferBinShapes(BINOP &op, SmallVector<int64_t, 4>
 
 // TODO add AddOp
 
+//===----------------------------------------------------------------------===//
+// CustomOp
+//===----------------------------------------------------------------------===//
+
+void CustomOp::inferShapes()
+{
+  CustomOp op = *this;
+  auto outputs = op.getOutput();
+  bool all_static = true;
+  for (auto output : outputs)
+  {
+    auto output_type = output.getType().cast<ShapedType>();
+    if (not output_type.hasStaticShape())
+    {
+      all_static = false;
+      break;
+    }
+  }
+  if (all_static)
+    return;
+
+  if (op.getCustomCode() == "Erf")
+  {
+    assert(op.getInput().size() == 1);
+    assert(op.getOutput().size() == 1);
+
+    auto input_op = getOperand(0);
+    auto input_type = input_op.getType().cast<TensorType>();
+    auto input_shape = input_type.getShape();
+    llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
+
+    dumpShape<CustomOp>(op, inferred);
+
+    RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+    getResult(0).setType(inferred_type);
+  }
+}
+
 } // namespace Circle
 } // namespace mlir
