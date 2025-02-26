@@ -296,6 +296,44 @@ class CIR_ConvOp<string mnemonic, string opSummary,
 //===----------------------------------------------------------------------===//
 // CIR op definitions.
 //===----------------------------------------------------------------------===//
+def CIR_AddOp : CIR_Op<"add", [
+    CIR_RuntimePredOpTrait<"Operands do not have valid shapes",
+      CPred<"Circle::VerifyAddOpShapeConstraints(llvm::cast<AddOp>($_op))">>,
+    ResultsBroadcastableShape,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    Pure,
+    Commutative,
+    // TODO enable QuantizableResult,
+    ]> {
+  let summary = "Addition operator";
+
+  let description = [{
+    Element-wise addition operation.
+  }];
+
+  let arguments = (
+    // TODO add more dtypes
+    ins CIR_TensorOf<[F32, I32, I64]>:$lhs,
+    CIR_TensorOf<[F32, I32, I64]>:$rhs,
+    CIR_AFAttr:$fused_activation_function);
+
+  let results = (outs CIR_TensorOf<[F32, I32, I64]>:$output);
+
+  let hasFolder = 1;
+
+  let hasCustomAssemblyFormat = 1;
+
+  let extraClassDefinition = [{
+    ParseResult $cppClass::parse(OpAsmParser &parser, OperationState &result) {
+      return parseOneResultSameOperandTypeOp(parser, result);
+    }
+    void $cppClass::print(OpAsmPrinter &p) {
+      return printOneResultOp(getOperation(), p);
+    }
+  }];
+
+  let hasOptions = 1;
+}
 
 def CIR_ConstOp : Op<CIR_Dialect, "pseudo_const", [ConstantLike, Pure,
     FirstAttrDerivedResultType,
