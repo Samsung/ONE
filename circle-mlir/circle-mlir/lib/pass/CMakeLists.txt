@@ -1,5 +1,6 @@
 set(SRC
   src/CirclePass.cpp
+  src/ConvertHelper.cpp
 )
 
 add_library(cirmlir_pass STATIC ${SRC})
