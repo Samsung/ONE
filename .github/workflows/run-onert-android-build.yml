@@ -14,6 +14,7 @@ on:
       - 'infra/nncc/**'
       - 'infra/nnfw/**'
       - 'runtime/**'
+      - '!runtime/contrib/**'
       - '!**/*.md'
   pull_request:
     branches:
@@ -28,6 +29,7 @@ on:
       - 'infra/nncc/**'
       - 'infra/nnfw/**'
       - 'runtime/**'
+      - '!runtime/contrib/**'
       - '!**/*.md'
 
 defaults:
