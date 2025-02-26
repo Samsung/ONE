@@ -35,6 +35,11 @@
 #include <mlir/Tools/ParseUtilities.h>
 #include <llvm/Support/Path.h>
 
+// ONNX-MLIR
+#include <src/Dialect/ONNX/ONNXDialect.hpp>
+#include <src/Builder/FrontendDialectTransformer.hpp>
+#include <src/Compiler/CompilerOptions.hpp>
+
 #include <iostream>
 #include <string>
 
@@ -42,9 +47,19 @@ namespace onnx2circle
 {
 
 // from ONNX-MLIR src/Compiler/CompilerUtils.cpp
+std::string dirName(llvm::StringRef inputFilename)
+{
+  llvm::SmallVector<char> path(inputFilename.begin(), inputFilename.end());
+  llvm::sys::path::remove_filename(path);
+  return std::string(path.data(), path.size());
+}
+
+// from ONNX-MLIR src/Compiler/CompilerUtils.cpp
 void registerDialects(mlir::MLIRContext &context)
 {
   context.getOrLoadDialect<mlir::func::FuncDialect>();
+
+  context.getOrLoadDialect<mlir::ONNXDialect>();
 }
 
 int loadONNX(const std::string &onnx_path, mlir::MLIRContext &context,
@@ -54,11 +69,44 @@ int loadONNX(const std::string &onnx_path, mlir::MLIRContext &context,
   std::string errorMessage;
   if (inputFilename.endswith(".mlir"))
   {
-    // TODO implement
+    auto input = mlir::openInputFile(inputFilename, &errorMessage);
+    if (!input)
+    {
+      llvm::errs() << errorMessage << "\n";
+      llvm::errs().flush();
+      return -1;
+    }
+
+    // Parse the input mlir.
+    llvm::SourceMgr sourceMgr;
+    mlir::SourceMgrDiagnosticHandler sourceMgrHandler(sourceMgr, &context);
+    sourceMgr.AddNewSourceBuffer(std::move(input), llvm::SMLoc());
+    module = mlir::parseSourceFile<mlir::ModuleOp>(sourceMgr, &context);
+    if (!module)
+    {
+      llvm::errs() << "Error can't load file " << inputFilename << "\n";
+      llvm::errs().flush();
+      return -1;
+    }
   }
   else if (inputFilename.endswith(".onnx"))
   {
-    // TODO implement
+    onnx_mlir::ImportOptions options;
+    options.useOnnxModelTypes = onnx_mlir::useOnnxModelTypes;
+    options.invokeOnnxVersionConverter = onnx_mlir::invokeOnnxVersionConverter;
+    options.shapeInformation = onnx_mlir::shapeInformation;
+    options.allowSorting = onnx_mlir::allowSorting;
+    options.externalDataDir = dirName(inputFilename);
+
+    int rc =
+      onnx_mlir::ImportFrontendModelFile(inputFilename, context, module, &errorMessage, options);
+    if (rc != onnx_mlir::CompilerSuccess)
+    {
+      llvm::errs() << "Error can't load file " << inputFilename << "\n";
+      llvm::errs() << errorMessage << "\n";
+      llvm::errs().flush();
+      return -1;
+    }
   }
   else
   {
