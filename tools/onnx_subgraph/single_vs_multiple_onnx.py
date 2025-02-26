@@ -114,8 +114,8 @@ if __name__ == "__main__":
     default_input_data = {
         "x": np.random.rand(1, 3, 256, 256).astype(np.float32),
     }
-    initial_input_data = prepare_initial_input_data(single_onnx_model_path, 
-                                                      default_input_data)
+    initial_input_data = prepare_initial_input_data(single_onnx_model_path,
+                                                    default_input_data)
     # Perform inference using a single ONNX model
     output_single = ModelInference.infer_single_onnx_model(args.single,
                                                            default_input_data)
