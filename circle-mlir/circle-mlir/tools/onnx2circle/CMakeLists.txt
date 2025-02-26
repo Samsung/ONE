@@ -18,5 +18,8 @@ target_link_libraries(onnx2circle PUBLIC cirmlir_dialect)
 target_link_libraries(onnx2circle PUBLIC cirmlir_pass)
 target_link_libraries(onnx2circle PUBLIC cirmlir_export)
 target_link_libraries(onnx2circle PUBLIC cirmlir_coverage)
+if(RELEASE_BUILD)
+  target_link_libraries(onnx2circle PUBLIC arser)
+endif()
 
 install(TARGETS onnx2circle DESTINATION bin)

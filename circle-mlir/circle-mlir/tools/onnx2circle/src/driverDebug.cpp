@@ -15,6 +15,7 @@
  */
 
 #include "onnx2circle.h"
+#include "cmdOptions.h"
 
 #include <llvm/Support/InitLLVM.h>
 #include <llvm/Support/CommandLine.h>
@@ -26,9 +27,76 @@
 #include <cstdlib>
 #include <iostream>
 
+namespace opts
+{
+
+llvm::cl::OptionCategory O2CirCat("onnx2circle options");
+llvm::cl::OptionCategory O2CObsol("obsolete options");
+
+static llvm::cl::opt<std::string> InputFilename(llvm::cl::Positional, llvm::cl::desc("<onnx>"),
+                                                llvm::cl::Required, llvm::cl::cat(O2CirCat));
+
+static llvm::cl::opt<std::string> OutputFilename(llvm::cl::Positional, llvm::cl::desc("<circle>"),
+                                                 llvm::cl::Required, llvm::cl::cat(O2CirCat));
+
+// Note: If you look at the help desctription in this debug version program,
+// it is configured to accept <input file> as the third Positional argument
+// which is set from the `onnx-mlir`, but this is not used in actual work.
+
+static llvm::cl::opt<bool> OptSaveOPS("save_ops", llvm::cl::desc(__opt_save_ops),
+                                      llvm::cl::init(false), llvm::cl::cat(O2CirCat));
+
+static llvm::cl::opt<bool> OptUnrollRNN("unroll_rnn", llvm::cl::desc(__opt_unroll_rnn_d),
+                                        llvm::cl::init(false), llvm::cl::cat(O2CirCat));
+
+static llvm::cl::opt<bool> OptUnrollLSTM("unroll_lstm", llvm::cl::desc(__opt_unroll_lstm_d),
+                                         llvm::cl::init(false), llvm::cl::cat(O2CirCat));
+
+static llvm::cl::opt<bool> OptExpDisBMMUnfold("experimental_disable_batchmatmul_unfold",
+                                              llvm::cl::desc(__opt_edbuf_d), llvm::cl::init(false),
+                                              llvm::cl::cat(O2CirCat));
+
+static llvm::cl::opt<bool> OptKeepIOOrder("keep_io_order", llvm::cl::desc(__opt_keep_io_order_d),
+                                          llvm::cl::init(false), llvm::cl::cat(O2CObsol));
+
+static llvm::cl::opt<bool> OptSaveIntermediate("save_intermediate",
+                                               llvm::cl::desc(__opt_save_int_d),
+                                               llvm::cl::init(false), llvm::cl::cat(O2CObsol));
+
+// shape inference validation
+static llvm::cl::opt<bool> OptCheckShapeInf("check_shapeinf", llvm::cl::desc(__opt_check_shapeinf),
+                                            llvm::cl::init(false), llvm::cl::cat(O2CirCat));
+static llvm::cl::opt<bool> OptCheckDynShapeInf("check_dynshapeinf",
+                                               llvm::cl::desc(__opt_check_dynshapeinf),
+                                               llvm::cl::init(false), llvm::cl::cat(O2CirCat));
+
+} // namespace opts
+
 int main(int argc, char *argv[])
 {
+  llvm::cl::ParseCommandLineOptions(argc, argv, "");
+
+  LLVM_DEBUG({
+    llvm::dbgs() << "onnx2circle debug enter\n";
+    llvm::dbgs() << "Source model: " << opts::InputFilename << "\n";
+    llvm::dbgs() << "Target model: " << opts::OutputFilename << "\n";
+  });
+
+  if (!llvm::sys::fs::exists(opts::InputFilename))
+  {
+    std::cerr << "Source model: " << opts::InputFilename << " not found." << std::endl;
+    return -1;
+  }
+
   O2Cparam param;
+  param.sourcefile = opts::InputFilename;
+  param.targetfile = opts::OutputFilename;
+  param.save_ops = opts::OptSaveOPS;
+  param.unroll_rnn = opts::OptUnrollRNN;
+  param.unroll_lstm = opts::OptUnrollLSTM;
+  param.unfold_batchmatmul = !opts::OptExpDisBMMUnfold;
+  param.check_shapeinf = opts::OptCheckShapeInf;
+  param.check_dynshapeinf = opts::OptCheckDynShapeInf;
 
   auto result = entry(param);
   LLVM_DEBUG({ llvm::dbgs() << "Conversion done: " << result << "\n"; });
