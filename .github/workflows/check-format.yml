@@ -18,6 +18,9 @@ jobs:
   check-format:
     name: Check format
     runs-on: one-x64-linux
+    container:
+      image: nnfw/one-devtools:jammy
+      options: --user root
     if: github.repository_owner == 'Samsung'
 
     steps:
