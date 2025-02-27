@@ -17,10 +17,7 @@ defaults:
 jobs:
   check-format:
     name: Check format
-    runs-on: one-x64-linux
-    container:
-      image: nnfw/one-devtools:jammy
-      options: --user root
+    runs-on: ubuntu-24.04
     if: github.repository_owner == 'Samsung'
 
     steps:
@@ -52,7 +49,7 @@ jobs:
 
   check-copyright:
     name: Check copyright
-    runs-on: one-x64-linux
+    runs-on: ubuntu-24.04
     if: github.repository_owner == 'Samsung'
 
     steps:
