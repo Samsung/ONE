@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+# Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,42 +14,24 @@
 
 FROM ubuntu:jammy
 
-ARG UBUNTU_MIRROR
-
-# Install 'add-apt-repository'
-RUN apt-get update && apt-get -qqy install software-properties-common
+# Install tzdata without user input
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -qqy install tzdata
 
 # Build tool
-RUN apt-get update && apt-get -qqy install build-essential cmake scons git lcov g++-arm-linux-gnueabihf
+RUN apt-get update && apt-get -qqy install build-essential cmake scons git lcov g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
 
 # Debian build tool
 RUN apt-get update && apt-get -qqy install fakeroot devscripts debhelper python3-all dh-python
 
-# Install extra dependencies (Caffe, nnkit)
+# Install extra dependencies
 RUN apt-get update && apt-get -qqy install libboost-all-dev libgflags-dev libgoogle-glog-dev libatlas-base-dev libhdf5-dev
 
-# Install protocol buffer
-RUN apt-get update && apt-get -qqy install libprotobuf-dev protobuf-compiler
-
 # Additonal tools
-# TODO install clang-format (No official clang-format-8 package for ubuntu jammy)
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
-    apt-get -qqy install doxygen graphviz wget zip unzip python3 python3-pip python3-venv python3-dev hdf5-tools pylint curl
+    apt-get -qqy install wget zip unzip python3 python3-pip python3-venv python3-dev curl
 RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install yapf==0.40.2 numpy flatbuffers
-
-# Install clang-format
-RUN apt-get install -qqy gnupg2
-RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
-RUN add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
-RUN apt-get update && apt-get install -qqy clang-format-16
-
-# Install google test (source)
-RUN apt-get update && apt-get -qqy install libgtest-dev
-
-# TODO: Install gbs & sdb
-# gbs & sdb are not support ubuntu jammy yet
+RUN python3 -m pip install numpy flatbuffers
 
 # Setup user to match host user, and give superuser permissions
 ARG USER_ID=1000
