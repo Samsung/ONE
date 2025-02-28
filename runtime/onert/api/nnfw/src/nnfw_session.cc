@@ -101,16 +101,16 @@ NNFW_STATUS getTensorIndexImpl(const onert::ir::IGraph &graph, const char *tenso
   }
 }
 
-std::string trim(const std::string &value)
+std::string trim(std::string_view value)
 {
-  std::string whitespace = " \t";
+  constexpr std::string_view whitespace = " \t";
+
   auto begin = value.find_first_not_of(whitespace);
-  if (begin == std::string::npos)
+  if (begin == std::string_view::npos)
     return ""; // no content
 
   auto end = value.find_last_not_of(whitespace);
-  auto range = end - begin + 1;
-  return value.substr(begin, range);
+  return std::string(value.substr(begin, end - begin + 1));
 }
 
 bool loadConfigure(const std::string cfgfile, onert::util::CfgKeyValues &keyValues)

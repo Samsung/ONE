@@ -29,7 +29,7 @@ template <typename Index> MemoryPlannerFactory<Index> &MemoryPlannerFactory<Inde
 }
 
 template <typename Index>
-basic::IMemoryPlanner<Index> *MemoryPlannerFactory<Index>::create(const std::string &key)
+basic::IMemoryPlanner<Index> *MemoryPlannerFactory<Index>::create(std::string_view key)
 {
   if (key == "FirstFit")
   {
