@@ -319,7 +319,7 @@ var NAVTREEINDEX =
 "luci-interpreter_2include_2luci__interpreter_2test__models_2select__v2_2_float_select_v2_kernel_8h.html#aba57ab4692c812860d1a2b9fedc71c8c",
 "luci-interpreter_2pal_2common_2_p_a_l_cos_common_8h_source.html",
 "luci-interpreter_2src_2kernels_2_select_8cpp_source.html",
-"luci_2partition_2src_2_circle_opcode_8h.html#a3ecf4be562fa9dde5bbc387ea5a26e0a",
+"luci_2partition_2src_2_circle_op_code_8h.html#a3ecf4be562fa9dde5bbc387ea5a26e0a",
 "mbed__config_8h.html#a534d67d6bd537f2834b9283caf97a94e",
 "mbed__config_8h.html#aedee32659759d400c819494cfb46f5f7",
 "mio-circle08_2src_2_helper_8cpp.html#a0b3c17ce2e43636c2722c2a203fbd866",

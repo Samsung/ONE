@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('_compiler_helpers_8h_source.html','');
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> LoweredGraphType,</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>          <span class="keyword">typename</span> = std::enable_if_t&lt;std::is_base_of&lt;ILoweredGraph, LoweredGraphType&gt;::value&gt;&gt;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>          std::enable_if_t&lt;std::is_base_of_v&lt;ILoweredGraph, LoweredGraphType&gt;, <span class="keywordtype">bool</span>&gt; = <span class="keyword">true</span>&gt;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">static</span> std::unordered_map&lt;ir::SubgraphIndex, std::unique_ptr&lt;StaticShapeInferer&gt;&gt;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>createStaticShapeInferers(</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">const</span> std::unordered_map&lt;<a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, std::unique_ptr&lt;LoweredGraphType&gt;&gt; &amp;lowered_subgs)</div>

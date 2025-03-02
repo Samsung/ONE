@@ -187,11 +187,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  146</span>    stream &lt;&lt; <span class="stringliteral">&quot;{&quot;</span>;</div>
 <div class="line"><span class="lineno">  147</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[backend, op_map] : _measurements)</div>
 <div class="line"><span class="lineno">  148</span>    {</div>
-<div class="line"><span class="lineno">  149</span>      <a class="code hl_function" href="namespaceonert_1_1exec.html#a14a655293f9accc0f0966ab888a92cb1">printString</a>(backend-&gt;config()-&gt;id(), stream);</div>
+<div class="line"><span class="lineno">  149</span>      <a class="code hl_function" href="namespaceonert_1_1exec.html#ac9808f852f2796a2fe095703ce021cd0">printString</a>(backend-&gt;config()-&gt;id(), stream);</div>
 <div class="line"><span class="lineno">  150</span>      stream &lt;&lt; <span class="stringliteral">&quot;: {&quot;</span>;</div>
 <div class="line"><span class="lineno">  151</span>      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[op_name, quant_map] : op_map)</div>
 <div class="line"><span class="lineno">  152</span>      {</div>
-<div class="line"><span class="lineno">  153</span>        <a class="code hl_function" href="namespaceonert_1_1exec.html#a14a655293f9accc0f0966ab888a92cb1">printString</a>(op_name, stream);</div>
+<div class="line"><span class="lineno">  153</span>        <a class="code hl_function" href="namespaceonert_1_1exec.html#ac9808f852f2796a2fe095703ce021cd0">printString</a>(op_name, stream);</div>
 <div class="line"><span class="lineno">  154</span>        stream &lt;&lt; <span class="stringliteral">&quot;: {&quot;</span>;</div>
 <div class="line"><span class="lineno">  155</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;[is_quant, op_time_info_map] : quant_map)</div>
 <div class="line"><span class="lineno">  156</span>        {</div>
@@ -211,8 +211,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  170</span>    stream.close();</div>
 <div class="line"><span class="lineno">  171</span>  }</div>
 <div class="line"><span class="lineno">  172</span>}</div>
-<div class="ttc" id="anamespaceonert_1_1exec_html_a14a655293f9accc0f0966ab888a92cb1"><div class="ttname"><a href="namespaceonert_1_1exec.html#a14a655293f9accc0f0966ab888a92cb1">onert::exec::printString</a></div><div class="ttdeci">void printString(const std::string &amp;str, std::ofstream &amp;stream)</div><div class="ttdef"><b>Definition</b> <a href="_j_s_o_n_exec_time_8cc_source.html#l00056">JSONExecTime.cc:56</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1exec_html_a161536c9b334322ad15b54644f18fd23"><div class="ttname"><a href="namespaceonert_1_1exec.html#a161536c9b334322ad15b54644f18fd23">onert::exec::printBool</a></div><div class="ttdeci">void printBool(bool quant, std::ofstream &amp;stream)</div><div class="ttdef"><b>Definition</b> <a href="_j_s_o_n_exec_time_8cc_source.html#l00058">JSONExecTime.cc:58</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1exec_html_ac9808f852f2796a2fe095703ce021cd0"><div class="ttname"><a href="namespaceonert_1_1exec.html#ac9808f852f2796a2fe095703ce021cd0">onert::exec::printString</a></div><div class="ttdeci">void printString(std::string_view str, std::ofstream &amp;stream)</div><div class="ttdef"><b>Definition</b> <a href="_j_s_o_n_exec_time_8cc_source.html#l00056">JSONExecTime.cc:56</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_j_s_o_n_exec_time_8cc_source.html#l00058">onert::exec::printBool()</a>, and <a class="el" href="_j_s_o_n_exec_time_8cc_source.html#l00056">onert::exec::printString()</a>.</p>
 

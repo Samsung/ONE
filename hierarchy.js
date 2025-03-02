@@ -2733,7 +2733,7 @@ var hierarchy =
           [ "onert::ir::train::operation::Reduce", "classonert_1_1ir_1_1train_1_1operation_1_1_reduce.html", null ],
           [ "onert::ir::train::operation::Reshape", "classonert_1_1ir_1_1train_1_1operation_1_1_reshape.html", null ],
           [ "onert::ir::train::operation::Softmax", "classonert_1_1ir_1_1train_1_1operation_1_1_softmax.html", null ],
-          [ "onert::ir::train::operation::UntrainableOperation< OperationType, typename >", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html", null ]
+          [ "onert::ir::train::operation::UntrainableOperation< OperationType, >", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html", null ]
         ] ]
       ] ]
     ] ],
@@ -4124,7 +4124,7 @@ var hierarchy =
     [ "ann::OperationInventory", "classann_1_1_operation_inventory.html", null ],
     [ "kbenchmark::OperationLoader", "classkbenchmark_1_1_operation_loader.html", null ],
     [ "OperationType", null, [
-      [ "onert::ir::train::operation::UntrainableOperation< OperationType, typename >", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html", null ]
+      [ "onert::ir::train::operation::UntrainableOperation< OperationType, >", "classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html", null ]
     ] ],
     [ "onert::ir::OperationVisitor", "structonert_1_1ir_1_1_operation_visitor.html", [
       [ "onert::backend::acl_common::AclConstantInitializer", "classonert_1_1backend_1_1acl__common_1_1_acl_constant_initializer.html", [

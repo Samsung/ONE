@@ -1,5 +1,5 @@
-<map id="onert::ir::train::operation::UntrainableOperation&lt; OperationType, typename &gt;" name="onert::ir::train::operation::UntrainableOperation&lt; OperationType, typename &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="43,256,225,312"/>
+<map id="onert::ir::train::operation::UntrainableOperation&lt; OperationType, &gt;" name="onert::ir::train::operation::UntrainableOperation&lt; OperationType, &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="55,256,213,312"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,175,111,201"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,211,114,254,110,257,75,215"/>
 <area shape="rect" id="Node000003" href="$classonert_1_1ir_1_1train_1_1_trainable_operation.html" title=" " alt="" coords="135,168,288,208"/>

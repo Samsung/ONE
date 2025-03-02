@@ -188,8 +188,13 @@ template&lt;typename... Args&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00036">36</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{ initialize(std::move(args)...); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   37</span>  {</div>
+<div class="line"><span class="lineno">   38</span>    (<a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>.emplace_back(std::move(args)), ...);</div>
+<div class="line"><span class="lineno">   39</span>  }</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_function_sequence_html_a833ed662463a02a5868a396ffb92b8de"><div class="ttname"><a href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">onert::exec::FunctionSequence::_functions</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; IFunction &gt; &gt; _functions</div><div class="ttdef"><b>Definition</b> <a href="_function_sequence_8h_source.html#l00107">FunctionSequence.h:107</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00107">_functions</a>.</p>
+
 </div>
 </div>
 <a id="a5340f8cc71c0a66ad3304aeb2eb46488" name="a5340f8cc71c0a66ad3304aeb2eb46488"></a>
@@ -246,9 +251,8 @@ template&lt;typename... Args&gt; </div>
 <div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
 <div class="line"><span class="lineno">   70</span>  <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>.push_back(std::move(function));</div>
 <div class="line"><span class="lineno">   71</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_function_sequence_html_a833ed662463a02a5868a396ffb92b8de"><div class="ttname"><a href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">onert::exec::FunctionSequence::_functions</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; IFunction &gt; &gt; _functions</div><div class="ttdef"><b>Definition</b> <a href="_function_sequence_8h_source.html#l00116">FunctionSequence.h:116</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00116">_functions</a>.</p>
+<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00107">_functions</a>.</p>
 
 </div>
 </div>
@@ -275,13 +279,13 @@ template&lt;typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00090">90</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   90</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a60a997fecc351f52845f81caca22c2a2">_dynamic_tensor_ctx</a>; }</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_function_sequence_html_a60a997fecc351f52845f81caca22c2a2"><div class="ttname"><a href="classonert_1_1exec_1_1_function_sequence.html#a60a997fecc351f52845f81caca22c2a2">onert::exec::FunctionSequence::_dynamic_tensor_ctx</a></div><div class="ttdeci">std::shared_ptr&lt; DynamicTensorCtx &gt; _dynamic_tensor_ctx</div><div class="ttdef"><b>Definition</b> <a href="_function_sequence_8h_source.html#l00121">FunctionSequence.h:121</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00081">81</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   81</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a60a997fecc351f52845f81caca22c2a2">_dynamic_tensor_ctx</a>; }</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_function_sequence_html_a60a997fecc351f52845f81caca22c2a2"><div class="ttname"><a href="classonert_1_1exec_1_1_function_sequence.html#a60a997fecc351f52845f81caca22c2a2">onert::exec::FunctionSequence::_dynamic_tensor_ctx</a></div><div class="ttdeci">std::shared_ptr&lt; DynamicTensorCtx &gt; _dynamic_tensor_ctx</div><div class="ttdef"><b>Definition</b> <a href="_function_sequence_8h_source.html#l00112">FunctionSequence.h:112</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00121">_dynamic_tensor_ctx</a>.</p>
+<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00112">_dynamic_tensor_ctx</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_function_sequence_8h_source.html#l00085">dynamic_tensor_ctx()</a>, and <a class="el" href="_function_sequence_8cc_source.html#l00025">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_function_sequence_8h_source.html#l00076">dynamic_tensor_ctx()</a>, and <a class="el" href="_function_sequence_8cc_source.html#l00025">run()</a>.</p>
 
 </div>
 </div>
@@ -312,13 +316,13 @@ template&lt;typename... Args&gt; </div>
 <p>Prepare to run FunctionSequence which "might" handle dynamic tensor. </p>
 <dl class="section note"><dt>Note</dt><dd>Calling this does not mean that run() will handle dynamic tensor. enableDynamicShapeInferer(true) will make run() will handle dynamic tensor. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00085">85</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   86</span>  {</div>
-<div class="line"><span class="lineno">   87</span>    <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a60a997fecc351f52845f81caca22c2a2">_dynamic_tensor_ctx</a> = <a class="code hl_function" href="classonert_1_1exec_1_1_function_sequence.html#aca95d15331d2ca117a9404f21411ec2a">dynamic_tensor_ctx</a>;</div>
-<div class="line"><span class="lineno">   88</span>  }</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_function_sequence_html_aca95d15331d2ca117a9404f21411ec2a"><div class="ttname"><a href="classonert_1_1exec_1_1_function_sequence.html#aca95d15331d2ca117a9404f21411ec2a">onert::exec::FunctionSequence::dynamic_tensor_ctx</a></div><div class="ttdeci">std::shared_ptr&lt; DynamicTensorCtx &gt; &amp; dynamic_tensor_ctx()</div><div class="ttdef"><b>Definition</b> <a href="_function_sequence_8h_source.html#l00090">FunctionSequence.h:90</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00076">76</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>  {</div>
+<div class="line"><span class="lineno">   78</span>    <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a60a997fecc351f52845f81caca22c2a2">_dynamic_tensor_ctx</a> = <a class="code hl_function" href="classonert_1_1exec_1_1_function_sequence.html#aca95d15331d2ca117a9404f21411ec2a">dynamic_tensor_ctx</a>;</div>
+<div class="line"><span class="lineno">   79</span>  }</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_function_sequence_html_aca95d15331d2ca117a9404f21411ec2a"><div class="ttname"><a href="classonert_1_1exec_1_1_function_sequence.html#aca95d15331d2ca117a9404f21411ec2a">onert::exec::FunctionSequence::dynamic_tensor_ctx</a></div><div class="ttdeci">std::shared_ptr&lt; DynamicTensorCtx &gt; &amp; dynamic_tensor_ctx()</div><div class="ttdef"><b>Definition</b> <a href="_function_sequence_8h_source.html#l00081">FunctionSequence.h:81</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00121">_dynamic_tensor_ctx</a>, and <a class="el" href="_function_sequence_8h_source.html#l00090">dynamic_tensor_ctx()</a>.</p>
+<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00112">_dynamic_tensor_ctx</a>, and <a class="el" href="_function_sequence_8h_source.html#l00081">dynamic_tensor_ctx()</a>.</p>
 
 </div>
 </div>
@@ -349,13 +353,13 @@ template&lt;typename... Args&gt; </div>
 <p>Call this function by passing <code>true</code> if this FunctionSequence handles dynamic tensors and should run DynamicShapeInferer. This function can be called multiple times and if <code>false</code> is passed during multiple calls, DynamicShapeInfere will not be run. </p>
 <dl class="section note"><dt>Note</dt><dd>This must be called before run(). If not called, run() assumes that all tensors are dynamic and DynamicShapeInferer will be run. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00099">99</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  100</span>  {</div>
-<div class="line"><span class="lineno">  101</span>    <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#acb072df0987fa1256f76adcf5b930cb5">_enable_dynamic_shape_inferer</a> = <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#acb072df0987fa1256f76adcf5b930cb5">_enable_dynamic_shape_inferer</a> || enable;</div>
-<div class="line"><span class="lineno">  102</span>  }</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_function_sequence_html_acb072df0987fa1256f76adcf5b930cb5"><div class="ttname"><a href="classonert_1_1exec_1_1_function_sequence.html#acb072df0987fa1256f76adcf5b930cb5">onert::exec::FunctionSequence::_enable_dynamic_shape_inferer</a></div><div class="ttdeci">bool _enable_dynamic_shape_inferer</div><div class="ttdef"><b>Definition</b> <a href="_function_sequence_8h_source.html#l00119">FunctionSequence.h:119</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00090">90</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   91</span>  {</div>
+<div class="line"><span class="lineno">   92</span>    <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#acb072df0987fa1256f76adcf5b930cb5">_enable_dynamic_shape_inferer</a> = <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#acb072df0987fa1256f76adcf5b930cb5">_enable_dynamic_shape_inferer</a> || enable;</div>
+<div class="line"><span class="lineno">   93</span>  }</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_function_sequence_html_acb072df0987fa1256f76adcf5b930cb5"><div class="ttname"><a href="classonert_1_1exec_1_1_function_sequence.html#acb072df0987fa1256f76adcf5b930cb5">onert::exec::FunctionSequence::_enable_dynamic_shape_inferer</a></div><div class="ttdeci">bool _enable_dynamic_shape_inferer</div><div class="ttdef"><b>Definition</b> <a href="_function_sequence_8h_source.html#l00110">FunctionSequence.h:110</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00119">_enable_dynamic_shape_inferer</a>.</p>
+<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00110">_enable_dynamic_shape_inferer</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_function_sequence_8cc_source.html#l00025">run()</a>.</p>
 
@@ -387,10 +391,10 @@ template&lt;typename... Args&gt; </div>
 <p>Call this function to initialize vars before running. </p>
 <dl class="section note"><dt>Note</dt><dd>When we run a model with static tensor input and then run with dynamic tensor input, _enable_dynamic_shape_inferer is set to <code>false</code> at first run. Once _enable_dynamic_shape_inferer is set to <code>true</code> it cannot be changed to <code>false</code> only with calling enableDynamicShapeInferer(). So initializing it to <code>false</code> is necessary. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00113">113</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  113</span>{ <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#acb072df0987fa1256f76adcf5b930cb5">_enable_dynamic_shape_inferer</a> = <span class="keyword">false</span>; }</div>
+<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00104">104</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span>{ <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#acb072df0987fa1256f76adcf5b930cb5">_enable_dynamic_shape_inferer</a> = <span class="keyword">false</span>; }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00119">_enable_dynamic_shape_inferer</a>.</p>
+<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00110">_enable_dynamic_shape_inferer</a>.</p>
 
 </div>
 </div>
@@ -418,7 +422,7 @@ template&lt;typename... Args&gt; </div>
 <div class="line"><span class="lineno">   78</span>  }</div>
 <div class="line"><span class="lineno">   79</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00116">_functions</a>.</p>
+<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00107">_functions</a>.</p>
 
 </div>
 </div>
@@ -455,7 +459,7 @@ template&lt;typename... Args&gt; </div>
 <div class="line"><span class="lineno">   65</span>  }</div>
 <div class="line"><span class="lineno">   66</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00116">_functions</a>.</p>
+<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00107">_functions</a>.</p>
 
 </div>
 </div>
@@ -520,7 +524,7 @@ template&lt;typename... Args&gt; </div>
 <div class="line"><span class="lineno">   58</span>}</div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_function_sequence_html_a586a7da56472cab28dd1364da273ca5e"><div class="ttname"><a href="classonert_1_1exec_1_1_function_sequence.html#a586a7da56472cab28dd1364da273ca5e">onert::exec::FunctionSequence::FunctionSequence</a></div><div class="ttdeci">FunctionSequence(Args &amp;&amp;...args)</div><div class="ttdef"><b>Definition</b> <a href="_function_sequence_8h_source.html#l00036">FunctionSequence.h:36</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00121">_dynamic_tensor_ctx</a>, <a class="el" href="_function_sequence_8h_source.html#l00119">_enable_dynamic_shape_inferer</a>, <a class="el" href="_function_sequence_8h_source.html#l00116">_functions</a>, <a class="el" href="_function_sequence_8h_source.html#l00090">dynamic_tensor_ctx()</a>, and <a class="el" href="_function_sequence_8h_source.html#l00099">enableDynamicShapeInferer()</a>.</p>
+<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00112">_dynamic_tensor_ctx</a>, <a class="el" href="_function_sequence_8h_source.html#l00110">_enable_dynamic_shape_inferer</a>, <a class="el" href="_function_sequence_8h_source.html#l00107">_functions</a>, <a class="el" href="_function_sequence_8h_source.html#l00081">dynamic_tensor_ctx()</a>, and <a class="el" href="_function_sequence_8h_source.html#l00090">enableDynamicShapeInferer()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_job_8cc_source.html#l00028">onert::exec::Job::run()</a>.</p>
 
@@ -552,16 +556,16 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00065">65</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span>  {</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;function : <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>)</div>
-<div class="line"><span class="lineno">   68</span>    {</div>
-<div class="line"><span class="lineno">   69</span>      function = std::make_unique&lt;T&gt;(std::move(function), <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>...);</div>
-<div class="line"><span class="lineno">   70</span>    }</div>
-<div class="line"><span class="lineno">   71</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00056">56</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>  {</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;function : <a class="code hl_variable" href="classonert_1_1exec_1_1_function_sequence.html#a833ed662463a02a5868a396ffb92b8de">_functions</a>)</div>
+<div class="line"><span class="lineno">   59</span>    {</div>
+<div class="line"><span class="lineno">   60</span>      function = std::make_unique&lt;T&gt;(std::move(function), <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>...);</div>
+<div class="line"><span class="lineno">   61</span>    }</div>
+<div class="line"><span class="lineno">   62</span>  }</div>
 <div class="ttc" id="anamespaceinfer_html_a30b5ffd23ed16bed88d525da72f2e73f"><div class="ttname"><a href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">infer.args</a></div><div class="ttdeci">args</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00021">infer.py:21</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00116">_functions</a>.</p>
+<p class="reference">References <a class="el" href="_function_sequence_8h_source.html#l00107">_functions</a>.</p>
 
 </div>
 </div>
@@ -586,9 +590,9 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00121">121</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00112">112</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_function_sequence_8h_source.html#l00090">dynamic_tensor_ctx()</a>, <a class="el" href="_function_sequence_8h_source.html#l00085">dynamic_tensor_ctx()</a>, and <a class="el" href="_function_sequence_8cc_source.html#l00025">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_function_sequence_8h_source.html#l00081">dynamic_tensor_ctx()</a>, <a class="el" href="_function_sequence_8h_source.html#l00076">dynamic_tensor_ctx()</a>, and <a class="el" href="_function_sequence_8cc_source.html#l00025">run()</a>.</p>
 
 </div>
 </div>
@@ -612,9 +616,9 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00119">119</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00110">110</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_function_sequence_8h_source.html#l00099">enableDynamicShapeInferer()</a>, <a class="el" href="_function_sequence_8h_source.html#l00113">initRunning()</a>, and <a class="el" href="_function_sequence_8cc_source.html#l00025">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_function_sequence_8h_source.html#l00090">enableDynamicShapeInferer()</a>, <a class="el" href="_function_sequence_8h_source.html#l00104">initRunning()</a>, and <a class="el" href="_function_sequence_8cc_source.html#l00025">run()</a>.</p>
 
 </div>
 </div>
@@ -638,9 +642,9 @@ template&lt;typename T , typename... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00116">116</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_function_sequence_8h_source.html#l00107">107</a> of file <a class="el" href="_function_sequence_8h_source.html">FunctionSequence.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_function_sequence_8cc_source.html#l00068">append()</a>, <a class="el" href="_function_sequence_8cc_source.html#l00073">iterate()</a>, <a class="el" href="_function_sequence_8cc_source.html#l00060">prepare()</a>, <a class="el" href="_function_sequence_8cc_source.html#l00025">run()</a>, and <a class="el" href="_function_sequence_8h_source.html#l00065">wrap()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_function_sequence_8cc_source.html#l00068">append()</a>, <a class="el" href="_function_sequence_8h_source.html#l00036">FunctionSequence()</a>, <a class="el" href="_function_sequence_8cc_source.html#l00073">iterate()</a>, <a class="el" href="_function_sequence_8cc_source.html#l00060">prepare()</a>, <a class="el" href="_function_sequence_8cc_source.html#l00025">run()</a>, and <a class="el" href="_function_sequence_8h_source.html#l00056">wrap()</a>.</p>
 
 </div>
 </div>

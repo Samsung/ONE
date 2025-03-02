@@ -1,7 +1,7 @@
 var NAVTREEINDEX212 =
 {
-"luci_2partition_2src_2_circle_opcode_8h.html#a3ecf4be562fa9dde5bbc387ea5a26e0a":[41,0,0,58,6,1,2,0],
-"luci_2partition_2src_2_circle_opcode_8h_source.html":[41,0,0,58,6,1,2],
+"luci_2partition_2src_2_circle_op_code_8h.html#a3ecf4be562fa9dde5bbc387ea5a26e0a":[41,0,0,58,6,1,2,0],
+"luci_2partition_2src_2_circle_op_code_8h_source.html":[41,0,0,58,6,1,2],
 "luci_2pass_2include_2luci_2_pass_2_fuse_instance_norm_pass_8h.html":[41,0,0,58,7,0,0,0,37],
 "luci_2pass_2include_2luci_2_pass_2_fuse_instance_norm_pass_8h_source.html":[41,0,0,58,7,0,0,0,37],
 "luci_2pass_2include_2luci_2_pass_2_fuse_rsqrt_pass_8h.html":[41,0,0,58,7,0,0,0,47],

@@ -31,7 +31,7 @@ var searchData=
   ['unroll_28',['unroll',['../struct_for_each_dimension_3_010_01_4.html#a2653403b91bb1f740762b92cc4ea551a',1,'ForEachDimension&lt; 0 &gt;::unroll()'],['../struct_for_each_dimension.html#a41fbd47f2de691e30876f7f347d5d0b9',1,'ForEachDimension::unroll()']]],
   ['unset_29',['unset',['../classloco_1_1_dimension.html#a23104bb3737a6f03b0d3105a512ab251',1,'loco::Dimension']]],
   ['unsetdef_30',['unsetDef',['../classonert_1_1ir_1_1_operand.html#a33d6efda31a34f0e23fd0f5c67cae5f6',1,'onert::ir::Operand']]],
-  ['untrainableoperation_31',['UntrainableOperation',['../classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html#abc0583cc6eff3f99c9869101e1f9a8cd',1,'onert::ir::train::operation::UntrainableOperation']]],
+  ['untrainableoperation_31',['UntrainableOperation',['../classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html#ae68b1adf90442c338ba5c51606194d1b',1,'onert::ir::train::operation::UntrainableOperation']]],
   ['untrainableoperationconverter_32',['UntrainableOperationConverter',['../classonert_1_1compiler_1_1train_1_1_untrainable_operation_converter.html#a00a066d55e939376a266b3ec163f046c',1,'onert::compiler::train::UntrainableOperationConverter']]],
   ['unused_5fall_33',['unused_all',['../structnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l.html#a1833e24c230c583aba2a7d1f58e9f88f',1,'nnfw::cker::UNUSED_ALL::UNUSED_ALL()'],['../structnnfw_1_1ruy_1_1_u_n_u_s_e_d___a_l_l.html#a339815b25301dc6cfcb8d20dc046f77f',1,'nnfw::ruy::UNUSED_ALL::UNUSED_ALL()']]],
   ['up_34',['up',['../structcoco_1_1_op.html#a88de0060d37cc263b51aa9f3c6f05328',1,'coco::Op']]],

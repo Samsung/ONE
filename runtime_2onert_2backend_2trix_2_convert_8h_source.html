@@ -128,7 +128,7 @@ $(document).ready(function(){initNavTree('runtime_2onert_2backend_2trix_2_conver
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>data_type <a class="code hl_function" href="namespaceonert_1_1backend_1_1trix.html#af093836fb3cc989d2d9ee6984a56c887">convertDataType</a>(<span class="keyword">const</span> <a class="code hl_enumeration" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331">ir::DataType</a> type);</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>template &lt;typename T, std::enable_if_t&lt;std::is_base_of&lt;IPortableTensor, T&gt;::value, <span class="keywordtype">bool</span>&gt; = <span class="keyword">true</span>&gt;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, std::enable_if_t&lt;std::is_base_of_v&lt;IPortableTensor, T&gt;, <span class="keywordtype">bool</span>&gt; = true&gt;</div>
 <div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1trix.html#afa1aae7d72debd8521204d20c149d8c6">   46</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceonert_1_1backend_1_1trix.html#afa1aae7d72debd8521204d20c149d8c6">setDataInfo</a>(<span class="keyword">const</span> std::vector&lt;T *&gt; &amp;tensors, tensors_data_info *<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>)</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>{</div>
@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('runtime_2onert_2backend_2trix_2_conver
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
 </div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>template &lt;typename T, std::enable_if_t&lt;std::is_base_of&lt;IPortableTensor, T&gt;::value, <span class="keywordtype">bool</span>&gt; = <span class="keyword">true</span>&gt;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, std::enable_if_t&lt;std::is_base_of_v&lt;IPortableTensor, T&gt;, <span class="keywordtype">bool</span>&gt; = true&gt;</div>
 <div class="foldopen" id="foldopen00065" data-start="{" data-end="}">
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="namespaceonert_1_1backend_1_1trix.html#a8fd40669f0be41766be62342fd8a6a8c">   65</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceonert_1_1backend_1_1trix.html#a8fd40669f0be41766be62342fd8a6a8c">setBuffers</a>(<span class="keyword">const</span> std::vector&lt;T *&gt; &amp;tensors, generic_buffers *buf)</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>{</div>

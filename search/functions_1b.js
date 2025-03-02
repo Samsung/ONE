@@ -632,7 +632,7 @@ var searchData=
   ['_7etypeinferencerule_629',['~TypeInferenceRule',['../structloco_1_1_type_inference_rule.html#ae53478e618eeb9429fbbb7550182e04b',1,'loco::TypeInferenceRule']]],
   ['_7eunaryfunc_630',['~UnaryFunc',['../structlocomotiv_1_1_unary_func.html#accc86c714489f3a269868a511c3f1fab',1,'locomotiv::UnaryFunc']]],
   ['_7eunaryop_631',['~UnaryOp',['../classcoco_1_1_unary_op.html#abebc7b2df0395bec28516a1b43a90cad',1,'coco::UnaryOp']]],
-  ['_7euntrainableoperation_632',['~UntrainableOperation',['../classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html#a8354fbd38fe95b1ff6a7200570b3b561',1,'onert::ir::train::operation::UntrainableOperation']]],
+  ['_7euntrainableoperation_632',['~UntrainableOperation',['../classonert_1_1ir_1_1train_1_1operation_1_1_untrainable_operation.html#a1cb07856e57b77e6357362365204cf9c',1,'onert::ir::train::operation::UntrainableOperation']]],
   ['_7eupdate_633',['~Update',['../classcoco_1_1_update.html#a210368fc6015991d29d3571e386004e5',1,'coco::Update']]],
   ['_7eupdater_634',['~Updater',['../structcoco_1_1_bag_1_1_updater.html#aca62369435185fe355067786fe8193fe',1,'coco::Bag::Updater']]],
   ['_7euse_635',['~use',['../classcoco_1_1_use.html#a06c7f33b414737ed91eef16d84398c3b',1,'coco::Use::~Use()'],['../classloco_1_1_use.html#a7c606e219516f27781df249c9c419fda',1,'loco::Use::~Use()']]],
