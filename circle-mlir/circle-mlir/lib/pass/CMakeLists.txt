@@ -1,5 +1,6 @@
 set(SRC
   src/CirclePass.cpp
+  src/ConvertONNXToCirclePass.cpp
   src/ConvertHelper.cpp
 )
 
