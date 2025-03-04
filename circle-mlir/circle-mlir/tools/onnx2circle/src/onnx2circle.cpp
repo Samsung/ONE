@@ -40,6 +40,11 @@
 #include <src/Builder/FrontendDialectTransformer.hpp>
 #include <src/Compiler/CompilerOptions.hpp>
 
+// CIRCLE-MLIR
+#include <circle-mlir/dialect/CircleDialect.h>
+#include <circle-mlir/pass/CirclePass.h>
+#include <circle-mlir/export/CircleExport.h>
+
 #include <iostream>
 #include <string>
 
@@ -60,6 +65,7 @@ void registerDialects(mlir::MLIRContext &context)
   context.getOrLoadDialect<mlir::func::FuncDialect>();
 
   context.getOrLoadDialect<mlir::ONNXDialect>();
+  context.getOrLoadDialect<mlir::Circle::CIRDialect>();
 }
 
 int loadONNX(const std::string &onnx_path, mlir::MLIRContext &context,
