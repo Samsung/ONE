@@ -30,7 +30,7 @@ class ModelInference:
     Description:
         Subgraphsiostxt_path is a txt file that describes the structure of the model graph and
         is used to get input/output node names.The model_path contains paths to multiple onnx files.
-        The load_sessions function will sort the onnx models in the model_path according to the
+        The load_sessions function will sort the onnx models in the model_path according to the 
         order specified in subgraphsiostxt_path.
     """
     def __init__(self, model_path, subgraphsiostxt_path):
@@ -62,10 +62,12 @@ def prepare_initial_input_data(onnx_model_path, default_input_data):
 
     for input_name, shape in input_info.items():
         custom_shape_str = input(
-            f"Enter new shape for input '{input_name}' (comma-separated integers), or press Enter to use default: "
+            f"Enter new shape for input '{input_name}' (comma-separated integers), 
+            or press Enter to use default: "
         )
         custom_dtype_str = input(
-            f"Enter data type for input '{input_name}' ('f' for float32, 'i' for int64), or press Enter to use default: "
+            f"Enter data type for input '{input_name}' ('f' for float32, 'i' for int64), 
+            or press Enter to use default: "
         )
 
         if not custom_shape_str:
@@ -82,7 +84,8 @@ def prepare_initial_input_data(onnx_model_path, default_input_data):
         else:
             dtype = dtype_map.get(custom_dtype_str.strip(), None)
             if dtype is None:
-                print("Invalid data type, please enter 'f' or 'i'.")
+                print("Invalid data type, set as default, please enter 'f' or 'i'.")
+                dtype = default_input_data[input_name].dtype
                 continue
 
         input_data = np.random.rand(*new_shape).astype(dtype)
