@@ -62,13 +62,11 @@ def prepare_initial_input_data(onnx_model_path, default_input_data):
 
     for input_name, shape in input_info.items():
         custom_shape_str = input(
-            f"Enter new shape for input '{input_name}' (comma-separated integers), 
-            or press Enter to use default: "
-        )
+            f"Enter new shape for input '{input_name}' (comma-separated integers),\
+            or press Enter to use default: ")
         custom_dtype_str = input(
-            f"Enter data type for input '{input_name}' ('f' for float32, 'i' for int64), 
-            or press Enter to use default: "
-        )
+            f"Enter data type for input '{input_name}' ('f' for float32, 'i' for int64),\
+            or press Enter to use default: ")
 
         if not custom_shape_str:
             new_shape = default_input_data[input_name].shape
