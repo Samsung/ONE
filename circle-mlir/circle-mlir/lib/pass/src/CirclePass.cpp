@@ -42,6 +42,48 @@ template <> int safecast<int>(const char *s, const int &value)
 
 } // namespace
 
+int preprocessONNX(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module)
+{
+  mlir::PassManager pm(module.get()->getName(), mlir::OpPassManager::Nesting::Implicit);
+
+  int dump = safecast<int>(std::getenv("CM_ONNX_DUMP"), 0);
+  std::function<bool(mlir::Pass *, mlir::Operation *)> shouldPrintBeforePass;
+  std::function<bool(mlir::Pass *, mlir::Operation *)> shouldPrintAfterPass;
+  shouldPrintBeforePass = [&](mlir::Pass *, mlir::Operation *) { return dump ? true : false; };
+  shouldPrintAfterPass = [&](mlir::Pass *, mlir::Operation *) { return dump ? true : false; };
+  pm.enableIRPrinting(shouldPrintBeforePass, shouldPrintAfterPass, false, false, false,
+                      llvm::errs());
+
+  int result = 0;
+  pm.addNestedPass<func::FuncOp>(onnx_mlir::createDecomposeONNXToONNXPass());
+  // Replace ONNXReturnOp with func::ReturnOp.
+  pm.addPass(onnx_mlir::createStandardFuncReturnPass());
+  auto runres = pm.run(*module);
+  if (mlir::failed(runres))
+  {
+    // TODO show error message if needed
+    result = -1;
+  }
+
+  return result;
+}
+
+int shapeInferenceONNX(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module)
+{
+  mlir::PassManager pm(module.get()->getName(), mlir::OpPassManager::Nesting::Implicit);
+
+  int result = 0;
+  pm.addPass(onnx_mlir::createShapeInferencePass());
+  auto runres = pm.run(*module);
+  if (mlir::failed(runres))
+  {
+    // TODO show error message if needed
+    result = -1;
+  }
+
+  return result;
+}
+
 int convertToCircle(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module)
 {
   mlir::PassManager pm(module.get()->getName(), mlir::OpPassManager::Nesting::Implicit);

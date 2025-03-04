@@ -136,6 +136,14 @@ int convertToCircle(const O2Cparam &param)
   if (result != 0)
     return result;
 
+  result = mlir::Circle::preprocessONNX(context, module);
+  if (result != 0)
+    return result;
+
+  result = mlir::Circle::shapeInferenceONNX(context, module);
+  if (result != 0)
+    return result;
+
   // TODO add processing
 
   return 0;
