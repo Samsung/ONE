@@ -127,6 +127,7 @@ int loadONNX(const std::string &onnx_path, mlir::MLIRContext &context,
 int convertToCircle(const O2Cparam &param)
 {
   const std::string &sourcefile = param.sourcefile;
+  const std::string &targetfile = param.targetfile;
 
   mlir::MLIRContext context;
   registerDialects(context);
@@ -143,6 +144,23 @@ int convertToCircle(const O2Cparam &param)
   result = mlir::Circle::shapeInferenceONNX(context, module);
   if (result != 0)
     return result;
+
+  std::string error_msg;
+  if (param.save_ops)
+  {
+    std::string output_filename = targetfile + ".ops";
+    auto output = mlir::openOutputFile(output_filename, &error_msg);
+    if (!error_msg.empty())
+    {
+      llvm::errs() << "Failed: " << error_msg << "\n";
+      return -1;
+    }
+    result = mlir::Circle::dumpCircleOps(output->os(), context, module);
+    if (result == 0)
+      output->keep();
+
+    return result;
+  }
 
   // TODO add processing
 
