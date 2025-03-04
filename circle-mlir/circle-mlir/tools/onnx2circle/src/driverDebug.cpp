@@ -27,6 +27,10 @@
 #include <cstdlib>
 #include <iostream>
 
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/file.h>
+
 namespace opts
 {
 
@@ -45,6 +49,9 @@ static llvm::cl::opt<std::string> OutputFilename(llvm::cl::Positional, llvm::cl:
 
 static llvm::cl::opt<bool> OptSaveOPS("save_ops", llvm::cl::desc(__opt_save_ops),
                                       llvm::cl::init(false), llvm::cl::cat(O2CirCat));
+
+static llvm::cl::opt<bool> RunSingleInstance("o2c-single", llvm::cl::desc("run single instance"),
+                                             llvm::cl::init(false), llvm::cl::cat(O2CirCat));
 
 static llvm::cl::opt<bool> OptUnrollRNN("unroll_rnn", llvm::cl::desc(__opt_unroll_rnn_d),
                                         llvm::cl::init(false), llvm::cl::cat(O2CirCat));
@@ -72,8 +79,63 @@ static llvm::cl::opt<bool> OptCheckDynShapeInf("check_dynshapeinf",
 
 } // namespace opts
 
+class SingleRun
+{
+public:
+  static void Ensure(void)
+  {
+    SingleRun::_lock_fd = -1;
+    int rc = -1;
+    int retry = 100; // retry for 10 seconds
+
+    do
+    {
+      rc = -1;
+      SingleRun::_lock_fd = open(_lock_file, O_CREAT | O_RDWR, 0660);
+      if (_lock_fd >= 0)
+      {
+        rc = flock(SingleRun::_lock_fd, LOCK_EX | LOCK_NB);
+        if (rc == 0)
+          break;
+        close(SingleRun::_lock_fd);
+        SingleRun::_lock_fd = -1;
+      }
+      usleep(100 * 1000); // wait for 100 msecs
+      if (--retry < 0)
+      {
+        std::cerr << "Failed to SingleRun::Ensure." << std::endl;
+        break;
+      }
+    } while (rc != 0);
+  }
+
+  static void Release(void)
+  {
+    if (SingleRun::_lock_fd >= 0)
+    {
+      close(_lock_fd);
+      _lock_fd = -1;
+    }
+    if (_lock_file)
+    {
+      unlink(_lock_file);
+    }
+  }
+
+private:
+  static int _lock_fd;
+  static const char *const _lock_file;
+};
+
+int SingleRun::_lock_fd = -1;
+const char *const SingleRun::_lock_file = "/tmp/onnx2cirlce_run_single.lock";
+
+void onexit() { SingleRun::Release(); }
+
 int main(int argc, char *argv[])
 {
+  std::atexit(onexit);
+
   llvm::cl::ParseCommandLineOptions(argc, argv, "");
 
   LLVM_DEBUG({
@@ -87,6 +149,9 @@ int main(int argc, char *argv[])
     std::cerr << "Source model: " << opts::InputFilename << " not found." << std::endl;
     return -1;
   }
+
+  if (opts::RunSingleInstance)
+    SingleRun::Ensure();
 
   O2Cparam param;
   param.sourcefile = opts::InputFilename;
