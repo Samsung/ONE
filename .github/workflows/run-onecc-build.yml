@@ -51,10 +51,7 @@ jobs:
             ubuntu_ver: 20.04
           - ubuntu_code: jammy
             ubuntu_ver: 22.04
-    runs-on: one-x64-linux
-    container:
-      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
-      options: --user root
+    runs-on: ubuntu-${{ matrix.ubuntu_ver }}
     env:
       NNCC_WORKSPACE : build
       NNCC_INSTALL_PREFIX : install
