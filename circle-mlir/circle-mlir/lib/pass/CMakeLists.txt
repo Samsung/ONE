@@ -4,6 +4,7 @@ set(SRC
   src/ConvertHelper.cpp
   src/RewriteONNXPass.cpp
   src/DumpCircleOpsPass.cpp
+  src/RuntimeVerifyPass.cpp
 )
 
 add_library(cirmlir_pass STATIC ${SRC})
