@@ -123,12 +123,9 @@ public:
   }
 
 private:
-  static int _lock_fd;
-  static const char *const _lock_file;
+  inline static int _lock_fd = -1;
+  inline static const char *const _lock_file = "/tmp/onnx2cirlce_run_single.lock";
 };
-
-int SingleRun::_lock_fd = -1;
-const char *const SingleRun::_lock_file = "/tmp/onnx2cirlce_run_single.lock";
 
 void onexit() { SingleRun::Release(); }
 
