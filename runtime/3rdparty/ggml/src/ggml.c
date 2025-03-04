@@ -36,11 +36,15 @@
 
 #define _CRT_SECURE_NO_DEPRECATE // Disables ridiculous "unsafe" warnings on Windows
 #define _USE_MATH_DEFINES // For M_PI on MSVC
+#define GGML_WORKER
 
 #include "ggml-impl.h"
 #include "ggml-quants.h"
 #include "ggml.h"
 #include "ggml-aarch64.h"
+#ifdef GGML_WORKER
+#include "ggml-worker.h"
+#endif
 
 #if defined(_MSC_VER) || defined(__MINGW32__)
 #include <malloc.h> // using malloc.h with MSC/MINGW
@@ -3593,6 +3597,10 @@ struct ggml_context * ggml_init(struct ggml_init_params params) {
             GGML_PRINT_DEBUG("%s: g_state initialized in %f ms\n", __func__, (t_end - t_start)/1000.0f);
         }
 
+#ifdef GGML_WORKER
+        ggml_worker_init();
+#endif
+
         is_first_call = false;
     }
 
@@ -3683,6 +3691,10 @@ void ggml_free(struct ggml_context * ctx) {
     if (!found) {
         GGML_PRINT_DEBUG("%s: context not found\n", __func__);
     }
+
+#ifdef GGML_WORKER
+    ggml_worker_finalize();
+#endif
 
     ggml_critical_section_end();
 }
@@ -18788,6 +18800,9 @@ static int ggml_get_n_tasks(struct ggml_tensor * node, int n_threads) {
     return n_tasks;
 }
 
+#ifdef GGML_WORKER
+static atomic_int completed_threads = 0;
+#endif
 struct ggml_cplan ggml_graph_plan(const struct ggml_cgraph * cgraph, int n_threads) {
     if (n_threads <= 0) {
         n_threads = GGML_DEFAULT_N_THREADS;
@@ -18981,12 +18996,18 @@ static thread_ret_t ggml_graph_compute_thread(void * data) {
             state->shared->ec = GGML_STATUS_ABORTED;
         }
 
+#ifndef GGML_WORKER
         ggml_barrier(state->shared);
+#endif
 
         if (state->shared->ec != GGML_STATUS_SUCCESS) {
             break;
         }
     }
+
+#ifdef GGML_WORKER
+    atomic_fetch_add(&completed_threads, 1);
+#endif
 
     return 0;
 }
@@ -19009,6 +19030,10 @@ enum ggml_status ggml_graph_compute(struct ggml_cgraph * cgraph, struct ggml_cpl
         /*.current_chunk           =*/ 0,
         /*.ec                      =*/ GGML_STATUS_SUCCESS,
     };
+
+#ifdef GGML_WORKER
+    completed_threads = 0;
+#endif
 
 #ifdef GGML_USE_OPENMP
     if (n_threads > 1) {
@@ -19049,14 +19074,21 @@ enum ggml_status ggml_graph_compute(struct ggml_cgraph * cgraph, struct ggml_cpl
 
     // create thread pool
     for (int j = 1; j < n_threads; ++j) {
+#ifdef GGML_WORKER
+        ggml_worker_submit((void (*)(void *)) ggml_graph_compute_thread, &workers[j]);
+#else
         const int rc = ggml_thread_create(&workers[j].thrd, NULL, ggml_graph_compute_thread, &workers[j]);
         GGML_ASSERT(rc == 0);
         UNUSED(rc);
+#endif
     }
 
     // this is a work thread too
     ggml_graph_compute_thread(&workers[0]);
 
+#ifdef GGML_WORKER
+    while(completed_threads < n_threads);
+#else
     // join or kill thread pool
     if (n_threads > 1) {
         for (int j = 1; j < n_threads; j++) {
@@ -19065,6 +19097,7 @@ enum ggml_status ggml_graph_compute(struct ggml_cgraph * cgraph, struct ggml_cpl
             UNUSED(rc);
         }
     }
+#endif
 #endif
 
     // don't leave affinity set on the main thread
