@@ -17,6 +17,7 @@
 #include "circle-mlir/pass/CirclePass.h"
 
 #include "ConvertONNXToCirclePass.h"
+#include "RewriteONNXPass.h"
 #include "DumpCircleOpsPass.h"
 
 #include <mlir/Pass/PassManager.h>
@@ -58,6 +59,7 @@ int preprocessONNX(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp>
   pm.addNestedPass<func::FuncOp>(onnx_mlir::createDecomposeONNXToONNXPass());
   // Replace ONNXReturnOp with func::ReturnOp.
   pm.addPass(onnx_mlir::createStandardFuncReturnPass());
+  pm.addPass(createRewriteONNXPass());
   auto runres = pm.run(*module);
   if (mlir::failed(runres))
   {
