@@ -17,6 +17,7 @@
 #include "circle-mlir/pass/CirclePass.h"
 
 #include "ConvertONNXToCirclePass.h"
+#include "DumpCircleOpsPass.h"
 
 #include <mlir/Pass/PassManager.h>
 #include <mlir/Transforms/Passes.h>
@@ -56,6 +57,24 @@ int convertToCircle(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp
   int result = 0;
   pm.addPass(createConvertONNXToCirclePass());
   pm.addPass(mlir::createCanonicalizerPass());
+  auto runres = pm.run(*module);
+  if (mlir::failed(runres))
+    result = -1;
+
+  return result;
+}
+
+int dumpCircleOps(llvm::raw_fd_ostream &os, mlir::MLIRContext &context,
+                  mlir::OwningOpRef<mlir::ModuleOp> &module)
+{
+  mlir::PassManager pm(module.get()->getName(), mlir::OpPassManager::Nesting::Implicit);
+
+  DumpCircleOpsPass::GetOStream_t gos = [&](void) -> llvm::raw_fd_ostream & { return os; };
+
+  int result = 0;
+  auto pass = std::make_unique<mlir::Circle::DumpCircleOpsPass>();
+  pass->ostream(gos);
+  pm.addPass(std::move(pass));
   auto runres = pm.run(*module);
   if (mlir::failed(runres))
     result = -1;

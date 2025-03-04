@@ -14,23 +14,35 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_MLIR_PASS_CIRCLE_PASS_H__
-#define __CIRCLE_MLIR_PASS_CIRCLE_PASS_H__
+#include "DumpCircleOpsPass.h"
 
-#include <mlir/IR/BuiltinOps.h>
-#include <mlir/IR/Dialect.h>
-#include <mlir/IR/MLIRContext.h>
+#include <circle-mlir/dialect/CircleDialect.h>
+
+#include <mlir/IR/Operation.h>
+#include <mlir/IR/PatternMatch.h>
 
 namespace mlir
 {
 namespace Circle
 {
 
-int convertToCircle(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module);
-int dumpCircleOps(llvm::raw_fd_ostream &os, mlir::MLIRContext &context,
-                  mlir::OwningOpRef<mlir::ModuleOp> &module);
+void DumpCircleOpsPass::runOnOperation()
+{
+  mlir::func::FuncOp func = getOperation();
+
+  for (auto &region : func->getRegions())
+    dumpRegion(region);
+}
+
+void DumpCircleOpsPass::dumpRegion(mlir::Region &region)
+{
+  region.walk([&](mlir::Operation *op) { ostream() << op->getName() << "\n"; });
+
+  region.walk([&](mlir::Operation *op) {
+    for (auto &region : op->getRegions())
+      dumpRegion(region);
+  });
+}
 
 } // namespace Circle
 } // namespace mlir
-
-#endif // __CIRCLE_MLIR_PASS_CIRCLE_PASS_H__

@@ -2,6 +2,7 @@ set(SRC
   src/CirclePass.cpp
   src/ConvertONNXToCirclePass.cpp
   src/ConvertHelper.cpp
+  src/DumpCircleOpsPass.cpp
 )
 
 add_library(cirmlir_pass STATIC ${SRC})
