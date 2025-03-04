@@ -107,7 +107,7 @@ public:
    * @param[in] kernel_path Path of the directory from which kernel sources are loaded.
    * @return N/A
    */
-  void set_kernel_path(const std::string &kernel_path) { _kernel_path = kernel_path; };
+  void set_kernel_path(std::string_view kernel_path) { _kernel_path = kernel_path; };
 
   /**
    * @brief Get the path that the kernels reside in.
@@ -120,7 +120,7 @@ public:
    * @param[in] program_name Program name.
    * @return Source of the selected program.
    */
-  std::string get_program_source(const std::string &program_name);
+  std::string get_program_source(std::string_view program_name);
 
   /**
    * @brief Set the CL context used to create programs.
@@ -260,7 +260,7 @@ private:
     _built_programs_map; /**< Map with all already built program data. */
   static const std::map<std::string, std::string>
     _kernel_program_map; /**< Map that associates kernel names with programs. */
-  static const std::map<std::string, std::string>
+  static const std::map<std::string, std::string, std::less<>>
     _program_source_map; /**< Contains sources for all programs.
                            Used for compile-time kernel inclusion. >*/
 };
