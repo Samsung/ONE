@@ -28,6 +28,8 @@ if(NOT ENABLE_TEST)
   return()
 endif()
 
+include(TestModels.cmake)
+
 set(SRC_TEST
   src/onnx2circle.cpp
   src/onnx2circle.test.cpp
