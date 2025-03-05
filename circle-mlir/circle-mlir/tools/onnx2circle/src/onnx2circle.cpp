@@ -153,6 +153,20 @@ int convertToCircle(const O2Cparam &param)
   if (result != 0)
     return result;
 
+  if (param.check_shapeinf)
+  {
+    result = mlir::Circle::shapeValidateCircle(context, module);
+    if (result != 0)
+      return result;
+  }
+  if (param.check_dynshapeinf)
+  {
+    // output should have any static shape from dynamic input
+    result = mlir::Circle::dynaShapeValidateCircle(context, module);
+    if (result != 0)
+      return result;
+  }
+
   std::string error_msg;
   if (param.save_ops)
   {

@@ -175,12 +175,99 @@ struct ShapeInferencePass
   int64_t *_dynacount = nullptr;
 };
 
+struct ShapeValidatePass
+  : public mlir::PassWrapper<ShapeValidatePass, mlir::OperationPass<mlir::func::FuncOp>>
+{
+  MLIR_DEFINE_EXPLICIT_INTERNAL_INLINE_TYPE_ID(ShapeValidatePass)
+  void runOnOperation() override
+  {
+    auto f = getOperation();
+
+    llvm::SmallPtrSet<mlir::Operation *, 16> opWorklist;
+    f.walk([&](mlir::Operation *op) {
+      if (returnsDynamicShape(op))
+        opWorklist.insert(op);
+    });
+
+    if (!opWorklist.empty())
+    {
+      f.emitError("Shape validation found node with unknown shape.\n");
+      // TODO dump ops when necessary
+      signalPassFailure();
+    }
+  }
+
+  static bool returnsDynamicShape(Operation *op)
+  {
+    return llvm::any_of(op->getResultTypes(), [](Type resultType) {
+      if (ShapedType shapedType = resultType.dyn_cast<ShapedType>())
+      {
+        int rank = shapedType.getRank();
+        for (int i = 0; i < rank; ++i)
+          if (shapedType.isDynamicDim(i))
+            return true;
+      }
+      return false;
+    });
+  }
+};
+
+struct AnyShapeValidatePass
+  : public mlir::PassWrapper<AnyShapeValidatePass, mlir::OperationPass<mlir::func::FuncOp>>
+{
+  MLIR_DEFINE_EXPLICIT_INTERNAL_INLINE_TYPE_ID(AnyShapeValidatePass)
+  void runOnOperation() override
+  {
+    auto f = getOperation();
+
+    llvm::SmallPtrSet<mlir::Operation *, 16> opWorklist;
+    f.walk([&](mlir::Operation *op) {
+      if (returnsFullDynamicShape(op))
+        opWorklist.insert(op);
+    });
+
+    if (!opWorklist.empty())
+    {
+      f.emitError("Shape validation found node with full dynamic shape.\n");
+      // TODO dump ops when necessary
+      signalPassFailure();
+    }
+  }
+
+  static bool returnsFullDynamicShape(Operation *op)
+  {
+    return llvm::any_of(op->getResultTypes(), [](Type resultType) {
+      if (ShapedType shapedType = resultType.dyn_cast<ShapedType>())
+      {
+        int rank = shapedType.getRank();
+        for (int i = 0; i < rank; ++i)
+          if (not shapedType.isDynamicDim(i))
+            return false;
+        return true;
+      }
+      return false;
+    });
+  }
+};
+
 // Create a Shape Inference pass.
 std::unique_ptr<mlir::Pass> CreateShapeInferencePass(int64_t &dynaCount)
 {
   auto inst = std::make_unique<ShapeInferencePass>();
   inst->_dynacount = &dynaCount;
   return inst;
+}
+
+std::unique_ptr<mlir::Pass> CreateShapeValidatePass(void)
+{
+  return std::make_unique<ShapeValidatePass>();
+}
+
+// test helper to check input model having output with all dynamic dim
+// if output has any static dim, it is success
+std::unique_ptr<mlir::Pass> CreateDynaShapeValidatePass(void)
+{
+  return std::make_unique<AnyShapeValidatePass>();
 }
 
 } // namespace Circle

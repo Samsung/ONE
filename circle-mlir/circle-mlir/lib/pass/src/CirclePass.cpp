@@ -160,6 +160,32 @@ int postProcessCircle(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::Module
   return result;
 }
 
+int shapeValidateCircle(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module)
+{
+  mlir::PassManager pm(module.get()->getName(), mlir::OpPassManager::Nesting::Implicit);
+
+  int result = 0;
+  pm.addPass(CreateShapeValidatePass());
+  auto runres = pm.run(*module);
+  if (mlir::failed(runres))
+    result = -1;
+
+  return result;
+}
+
+int dynaShapeValidateCircle(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module)
+{
+  mlir::PassManager pm(module.get()->getName(), mlir::OpPassManager::Nesting::Implicit);
+
+  int result = 0;
+  pm.addPass(CreateDynaShapeValidatePass());
+  auto runres = pm.run(*module);
+  if (mlir::failed(runres))
+    result = -1;
+
+  return result;
+}
+
 int dumpCircleOps(llvm::raw_fd_ostream &os, mlir::MLIRContext &context,
                   mlir::OwningOpRef<mlir::ModuleOp> &module)
 {
