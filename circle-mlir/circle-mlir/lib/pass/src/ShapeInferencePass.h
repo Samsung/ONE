@@ -28,6 +28,8 @@ namespace Circle
 {
 
 std::unique_ptr<mlir::Pass> CreateShapeInferencePass(int64_t &dynaCount);
+std::unique_ptr<mlir::Pass> CreateShapeValidatePass(void);
+std::unique_ptr<mlir::Pass> CreateDynaShapeValidatePass(void);
 
 } // namespace Circle
 } // namespace mlir
