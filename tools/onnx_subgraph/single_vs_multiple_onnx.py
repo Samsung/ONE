@@ -74,7 +74,9 @@ class ModelInference:
             model_input_data = {name: input_data[name] for name in input_names}
             outputs = session.run(None, model_input_data)
             current_model_outputs = dict(zip(output_names, outputs))
-            if output_names_to_collect is not None:
+            if output_names_to_collect is None:
+                return {}
+            else:
                 for output_name in output_names_to_collect:
                     if output_name in current_model_outputs:
                         collected_outputs[output_name] = current_model_outputs[
@@ -163,7 +165,6 @@ if __name__ == "__main__":
         "x": np.random.rand(1, 3, 256, 256).astype(np.float32),
     }
     initial_input_data = prepare_initial_input_data(args.single, default_input_data)
-
     # Perform inference using a single ONNX model
     output_single = ModelInference.infer_single_onnx_model(args.single,
                                                            initial_input_data)
