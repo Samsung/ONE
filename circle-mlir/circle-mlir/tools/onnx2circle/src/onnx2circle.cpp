@@ -149,6 +149,10 @@ int convertToCircle(const O2Cparam &param)
   if (result != 0)
     return result;
 
+  result = mlir::Circle::postProcessCircle(context, module);
+  if (result != 0)
+    return result;
+
   std::string error_msg;
   if (param.save_ops)
   {

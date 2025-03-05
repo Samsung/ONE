@@ -4,3 +4,7 @@
 #
 
 ConvertUnitModel(Add_F32.onnx.mlir)
+
+# shape inference validation
+
+ValidateShapeInf(Add_F32_us.circle.mlir)
