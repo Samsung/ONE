@@ -47,7 +47,7 @@ private:
   bool _enabled;
 };
 
-static Context &ctx = Context::get();
+static inline Context &ctx = Context::get();
 
 inline std::string decorated_name(const char *input)
 {
