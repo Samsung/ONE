@@ -1,0 +1,6 @@
+## EXAMPLE
+#
+# ConvertUnitModel(test_mode.mlir)
+#
+
+ConvertUnitModel(Add_F32.onnx.mlir)

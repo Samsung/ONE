@@ -145,6 +145,10 @@ int convertToCircle(const O2Cparam &param)
   if (result != 0)
     return result;
 
+  result = mlir::Circle::convertToCircle(context, module);
+  if (result != 0)
+    return result;
+
   std::string error_msg;
   if (param.save_ops)
   {
@@ -162,7 +166,13 @@ int convertToCircle(const O2Cparam &param)
     return result;
   }
 
-  // TODO add processing
+  std::string serialized_flatbuffer;
+  if (!mlir::Circle::MlirToFlatBufferTranslateFunction(module.get(), &serialized_flatbuffer))
+    return -1;
+  auto output = mlir::openOutputFile(targetfile, &error_msg);
+  // TODO error handle
+  output->os() << serialized_flatbuffer;
+  output->keep();
 
   return 0;
 }
