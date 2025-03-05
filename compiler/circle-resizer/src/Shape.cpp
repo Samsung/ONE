@@ -16,6 +16,8 @@
 
 #include "Shape.h"
 
+#include <stdexcept>
+
 using namespace circle_resizer;
 
 Dim::Dim(int32_t dim) : _dim_value{dim}

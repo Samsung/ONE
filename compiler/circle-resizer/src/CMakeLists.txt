@@ -3,7 +3,7 @@ list(APPEND CIRCLE_RESIZER_SOURCES ShapeParser.cpp)
 list(APPEND CIRCLE_RESIZER_SOURCES ModelData.cpp)
 list(APPEND CIRCLE_RESIZER_SOURCES CircleResizer.cpp)
 
-add_library(circle_resizer_core STATIC "${CIRCLE_RESIZER_SOURCES}")
+add_library(circle_resizer_core SHARED "${CIRCLE_RESIZER_SOURCES}")
 
 target_include_directories(circle_resizer_core PUBLIC ../include)
 
@@ -15,3 +15,5 @@ target_link_libraries(circle_resizer_core PRIVATE luci_export)
 target_link_libraries(circle_resizer_core PRIVATE luci_import)
 target_link_libraries(circle_resizer_core PRIVATE logo)
 target_link_libraries(circle_resizer_core PRIVATE luci_log)
+
+install(TARGETS circle_resizer_core DESTINATION lib)
