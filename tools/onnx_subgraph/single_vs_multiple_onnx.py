@@ -64,6 +64,8 @@ class ModelInference:
     def infer_multiple_onnx_models(self,
                                    initial_input_data,
                                    output_names_to_collect=None):
+        if output_names_to_collect is None:
+            return {}
         input_data = initial_input_data
         collected_outputs = {}
 
@@ -74,13 +76,10 @@ class ModelInference:
             model_input_data = {name: input_data[name] for name in input_names}
             outputs = session.run(None, model_input_data)
             current_model_outputs = dict(zip(output_names, outputs))
-            if output_names_to_collect is None:
-                return {}
-            else:
-                for output_name in output_names_to_collect:
-                    if output_name in current_model_outputs:
-                        collected_outputs[output_name] = current_model_outputs[
-                            output_name]
+
+            for output_name in output_names_to_collect:
+                if output_name in current_model_outputs:
+                    collected_outputs[output_name] = current_model_outputs[output_name]
 
             if i < len(self.sessions) - 1:
                 input_data.update(current_model_outputs)
