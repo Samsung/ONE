@@ -19,6 +19,7 @@
 #include "ConvertONNXToCirclePass.h"
 #include "RewriteONNXPass.h"
 #include "DumpCircleOpsPass.h"
+#include "RuntimeVerifyPass.h"
 
 #include <mlir/Pass/PassManager.h>
 #include <mlir/Transforms/Passes.h>
@@ -100,6 +101,7 @@ int convertToCircle(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp
 
   int result = 0;
   pm.addPass(createConvertONNXToCirclePass());
+  pm.addPass(CreateRuntimeVerifyPass());
   pm.addPass(mlir::createCanonicalizerPass());
   auto runres = pm.run(*module);
   if (mlir::failed(runres))
