@@ -29,6 +29,7 @@ namespace Circle
 int preprocessONNX(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module);
 int shapeInferenceONNX(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module);
 int convertToCircle(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module);
+int postProcessCircle(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module);
 int dumpCircleOps(llvm::raw_fd_ostream &os, mlir::MLIRContext &context,
                   mlir::OwningOpRef<mlir::ModuleOp> &module);
 

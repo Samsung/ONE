@@ -2,9 +2,11 @@ set(SRC
   src/CirclePass.cpp
   src/ConvertONNXToCirclePass.cpp
   src/ConvertHelper.cpp
+  src/RewriteCirclePass.cpp
   src/RewriteONNXPass.cpp
   src/DumpCircleOpsPass.cpp
   src/RuntimeVerifyPass.cpp
+  src/ShapeInferencePass.cpp
 )
 
 add_library(cirmlir_pass STATIC ${SRC})
