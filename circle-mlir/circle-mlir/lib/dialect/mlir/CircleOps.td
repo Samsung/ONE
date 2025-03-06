@@ -418,4 +418,41 @@ def CIR_NoValueOp : Op<CIR_Dialect, "no_value", [ConstantLike, Pure]> {
   }];
 }
 
+def CIR_TransposeOp : CIR_Op<"transpose", [
+    Pure,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    CIR_OperandHasRankAtMost<0, 5>,
+    CIR_OperandHasRank<1, 1>,
+    PredOpTrait<"input and output must have same element type", CIR_TCresVTEtIsSameAsOp<0, 0>>/*,
+    SameOperandsAndResultsScale*/]> {
+  let summary = "Transpose operator";
+
+  let description = [{
+    Returns the Transpose of x
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[I32, F32, I8, UI8, /*QI8, QUI8, CIR_Quint8,*/ I1, I64/*, QI16*/]>:$input,
+    CIR_TensorOf<[I32]>:$perm
+  );
+
+  let results = (outs
+    CIR_TensorOf<[I32, F32, I8, UI8, /*QI8, QUI8, CIR_Quint8,*/ I1, I64/*, QI16*/]>:$output
+  );
+
+  let hasVerifier = 1;
+
+  let hasFolder = 1;
+
+  let builders = [
+    OpBuilder<(ins "Value":$input, "Value":$perm),
+    [{ BuildTransposeOp(&$_builder, $_state, input, perm); }]>
+  ];
+
+  let extraClassDeclaration = [{
+    // Quantized axes are verified in the Verify function.
+    bool RequiredSameQuantizedAxes() { return false; }
+  }];
+}
+
 #endif // CIRCLE_OPS

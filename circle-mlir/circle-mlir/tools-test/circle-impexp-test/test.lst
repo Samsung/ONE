@@ -1,0 +1,8 @@
+## EXAMPLE
+#
+# AddModel(test_model)
+# ImportModel(test_model)
+#
+
+AddModel(Add_F32_R4)
+AddModel(Add_F32_R4_C1)
