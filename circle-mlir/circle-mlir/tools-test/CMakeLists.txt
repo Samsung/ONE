@@ -4,3 +4,5 @@ add_subdirectory(check-gtest)
 add_subdirectory(gen-onnx)
 # model conversion with onnx2circle
 add_subdirectory(onnx2circle-models)
+# value test of source onnx vs circle
+add_subdirectory(onnx2circle-value-test)
