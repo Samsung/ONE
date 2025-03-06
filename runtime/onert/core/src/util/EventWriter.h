@@ -128,7 +128,7 @@ private:
   void flush(WriteFormat write_format);
 
 private:
-  static std::mutex _mutex;
+  static inline std::mutex _mutex;
 
   // number of observer of an executor that want to write profiling data
   int32_t _ref_count;
