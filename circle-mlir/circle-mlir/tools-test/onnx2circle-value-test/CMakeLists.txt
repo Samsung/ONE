@@ -61,6 +61,8 @@ endmacro(AddModel)
 
 # Read "test.lst"
 include("test.lst")
+# Read "test.local.lst" if exists
+include("test.local.lst" OPTIONAL)
 
 add_custom_target(
   onnx2circle_value_test_target ALL
