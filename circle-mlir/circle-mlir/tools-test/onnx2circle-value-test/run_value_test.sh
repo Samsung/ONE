@@ -20,6 +20,12 @@ MODEL_NAME="$1"; shift
 RTOL_VALUE="${1:-1e-04}"
 ATOL_VALUE="${2:-1e-04}"
 
+EXEC_ONNX_SCRIPT=${TEST_PATH}/exec_onnx.py
+EXEC_CIRCLE_SCRIPT=${TEST_PATH}/exec_circle.py
+
+MAKE_CIRCLE_INPUT_SCRIPT=${TEST_PATH}/make_circle_input.py
+COMP_ONNX_CIRCLE_SCRIPT=${TEST_PATH}/comp_onnx_circle.py
+
 ONNX_FILE="${MODEL_NAME}.onnx"
 CIRCLE_FILE="${MODEL_NAME}.circle"
 
@@ -30,9 +36,21 @@ if [[ -f ${VENV_PATH}/bin/activate ]]; then
   source ${VENV_PATH}/bin/activate
 fi
 
-# TODO execute and compare
+# Execute ONNX model and generate input/output files
+echo "Run ${EXEC_ONNX_SCRIPT} ${ONNX_FILE}"
+python3 ${EXEC_ONNX_SCRIPT} ${ONNX_FILE}
 
-COMP_RESULT=0
+# Convert input/output H5 files to binary file for luci_eval_driver
+echo "Run ${MAKE_CIRCLE_INPUT_SCRIPT} ${ONNX_FILE} ${CIRCLE_FILE}"
+python3 ${MAKE_CIRCLE_INPUT_SCRIPT} ${ONNX_FILE} ${CIRCLE_FILE}
+
+# Execute Circle model and generate output files
+echo "Run ${EXEC_CIRCLE_SCRIPT} ${CIRCLE_FILE}"
+python3 ${EXEC_CIRCLE_SCRIPT} ${CIRCLE_FILE}
+
+echo "Run ${COMP_ONNX_CIRCLE_SCRIPT} ${ONNX_FILE} ${CIRCLE_FILE} ${RTOL_VALUE} ${ATOL_VALUE}"
+python3 ${COMP_ONNX_CIRCLE_SCRIPT} ${ONNX_FILE} ${CIRCLE_FILE} ${RTOL_VALUE} ${ATOL_VALUE}
+COMP_RESULT=$?
 
 if [[ -f ${VENV_PATH}/bin/activate ]]; then
   deactivate
