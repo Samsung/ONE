@@ -35,6 +35,8 @@ endmacro(AddModel)
 
 # Read "test.lst"
 include("test.lst")
+# Read "test.local.lst" if exists
+include("test.local.lst" OPTIONAL)
 
 # onnx2circle_models_target depends on onnx2circle tool and gen_onnx_target for onnx files
 add_custom_target(
