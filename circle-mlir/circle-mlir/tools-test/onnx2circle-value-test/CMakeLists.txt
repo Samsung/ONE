@@ -18,6 +18,8 @@ endmacro(COPY_SCRIPT)
 # copy test scripts
 COPY_SCRIPT(run_value_test.sh)
 COPY_SCRIPT(exec_onnx.py)
+COPY_SCRIPT(exec_circle.py)
+COPY_SCRIPT(make_circle_input.py)
 COPY_SCRIPT(util_h5_file.py)
 
 add_custom_target(
