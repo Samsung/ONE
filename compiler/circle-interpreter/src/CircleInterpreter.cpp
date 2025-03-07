@@ -104,6 +104,11 @@ int entry(int argc, char **argv)
   const auto output_prefix = arser.get<std::string>("output_prefix");
 
   // Load model from the file
+  // EXAMPLE 1: the default error handler which internally logs the information about exceptions 
+  // thrown during the importVerifyModule() call
+  //
+  // Using this default does not require any changes in the ONE's code except for the changes
+  // in the ImporterEx class
   luci::ImporterEx importer;
   std::unique_ptr<luci::Module> module = importer.importVerifyModule(filename);
   if (module == nullptr)
