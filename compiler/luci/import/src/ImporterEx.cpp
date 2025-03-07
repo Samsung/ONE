@@ -38,15 +38,7 @@ std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_
   foder::FileLoader file_loader{input_path};
   std::vector<char> model_data;
 
-  try
-  {
-    model_data = file_loader.load();
-  }
-  catch (const std::runtime_error &err)
-  {
-    std::cerr << err.what() << std::endl;
-    return nullptr;
-  }
+  model_data = file_loader.load();
 
   auto data_data = reinterpret_cast<uint8_t *>(model_data.data());
   auto data_size = model_data.size();
@@ -72,6 +64,21 @@ std::unique_ptr<Module> ImporterEx::importModule(const std::vector<char> &model_
 
   Importer importer(_source);
   return importer.importModule(data_data, data_size);
+}
+
+std::unique_ptr<Module> importVerifyModule(const std::string &input_path)
+{
+  ImporterEx importer;
+  std::unique_ptr<Module> model;
+  try
+  {
+    model = importer.importVerifyModule(input_path);
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cerr << err.what() << std::endl;
+  }
+  return model;
 }
 
 } // namespace luci

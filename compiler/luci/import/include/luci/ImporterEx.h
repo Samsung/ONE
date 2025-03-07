@@ -56,6 +56,10 @@ private:
   const GraphBuilderSource *_source = nullptr;
 };
 
+// Imports a model from a given file. In case of an error this function logs to std::cerr
+// and returns a nullptr as a result.
+std::unique_ptr<Module> importVerifyModule(const std::string &input_path);
+
 } // namespace luci
 
 #endif // __LUCI_IMPORTER_EX_H__
