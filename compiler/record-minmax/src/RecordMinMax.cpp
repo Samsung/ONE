@@ -72,11 +72,17 @@ void verifyTypeShape(const luci::CircleInput *input_node, const DataType &dtype,
 namespace record_minmax
 {
 
+void RecordMinMax::import_error_handler(const std::exception &e)
+{
+  std::cerr << e.what() << std::endl;
+}
+
 void RecordMinMax::initialize(const std::string &input_model_path)
 {
   assert(_threads_size > 0);
 
-  luci::ImporterEx importer;
+  // EXAMPLE 4: using the RecordMinMax's member function as an error handler
+  luci::ImporterEx importer{std::bind(&RecordMinMax::import_error_handler, this, std::placeholders::_1)};
   _module = importer.importVerifyModule(input_model_path);
 
   if (_module == nullptr)

@@ -55,7 +55,16 @@ H5FileDataProvider::H5FileDataProvider(const std::string &h5file, const std::str
   _importer.importGroup("value");
   _is_raw_data = _importer.isRawData();
 
-  luci::ImporterEx importerex;
+  //EXAMPLE 3: a dedicated hook-like structure handling the exceptions
+  struct SilentHook {
+    void operator()(const std::exception&) {
+      //ignore the exceptions
+    }
+  };
+
+  SilentHook silent_hook;
+
+  luci::ImporterEx importerex{silent_hook};
   _module = importerex.importVerifyModule(module_path);
   if (_module.get() != nullptr)
   {
