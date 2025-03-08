@@ -30,7 +30,7 @@ class ModelInference:
     Description:
         Subgraphsiostxt_path is a txt file that describes the structure of the model graph and
         is used to get input/output node names.The model_path contains paths to multiple onnx files.
-        The load_sessions function will sort the onnx models in the model_path according to the 
+        The load_sessions function will sort the onnx models in the model_path according to the
         order specified in subgraphsiostxt_path.
     """
     def __init__(self, model_path, subgraphsiostxt_path):
@@ -139,9 +139,10 @@ def prepare_initial_input_data(onnx_model_path, default_input_data):
 
     return initial_input_data
 
+
 def compare_results(output_single, output_multiple):
     """
-    Compares the Mean Squared Error (MSE) between identically named outputs from 
+    Compares the Mean Squared Error (MSE) between identically named outputs from
     two inference result dictionaries.Ensures each output name is processed only once.
     """
     all_keys = set(output_single.keys()).union(set(output_multiple.keys()))
@@ -153,6 +154,7 @@ def compare_results(output_single, output_multiple):
             print(f"Output '{key}' MSE: {mse}")
         else:
             print(f"Output '{key}' is missing in one of the result sets.")
+
 
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser()
@@ -191,5 +193,6 @@ if __name__ == "__main__":
         initial_input_data, output_names_list)
     print("Multiple subgraph inference completed!")
 
-    print("Comparing inference results between single ONNX model and multiple subgraphs...")
+    print("Comparing inference results between single ONNX model \
+          and multiple subgraphs...")
     compare_results(output_single, output_multiple)
