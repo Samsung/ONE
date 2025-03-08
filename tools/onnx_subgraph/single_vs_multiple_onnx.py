@@ -139,6 +139,20 @@ def prepare_initial_input_data(onnx_model_path, default_input_data):
 
     return initial_input_data
 
+def compare_results(output_single, output_multiple):
+    """
+    Compares the Mean Squared Error (MSE) between identically named outputs from 
+    two inference result dictionaries.Ensures each output name is processed only once.
+    """
+    all_keys = set(output_single.keys()).union(set(output_multiple.keys()))
+    for key in sorted(all_keys):
+        if key in output_single and key in output_multiple:
+            single_output = np.array(output_single[key])
+            multiple_output = np.array(output_multiple[key])
+            mse = np.mean((single_output - multiple_output)**2)
+            print(f"Output '{key}' MSE: {mse}")
+        else:
+            print(f"Output '{key}' is missing in one of the result sets.")
 
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser()
@@ -176,3 +190,6 @@ if __name__ == "__main__":
     output_multiple = model_inference.infer_multiple_onnx_models(
         initial_input_data, output_names_list)
     print("Multiple subgraph inference completed!")
+
+    print("Comparing inference results between single ONNX model and multiple subgraphs...")
+    compare_results(output_single, output_multiple)
