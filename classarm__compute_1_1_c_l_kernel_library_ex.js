@@ -11,12 +11,12 @@ var classarm__compute_1_1_c_l_kernel_library_ex =
     [ "get_device", "classarm__compute_1_1_c_l_kernel_library_ex.html#af5c64f97e20b47a7412b6a90195ffc91", null ],
     [ "get_device_version", "classarm__compute_1_1_c_l_kernel_library_ex.html#a0f072f8c934970a1bef8c3b64f6e8fc2", null ],
     [ "get_kernel_path", "classarm__compute_1_1_c_l_kernel_library_ex.html#ab9752debdcf6f74b329c92cfdf0985cf", null ],
-    [ "get_program_source", "classarm__compute_1_1_c_l_kernel_library_ex.html#a6c4bf19fe671dd19e054ac30164bd9b3", null ],
+    [ "get_program_source", "classarm__compute_1_1_c_l_kernel_library_ex.html#a537293805bc76aaa8167cd5dc83a90d9", null ],
     [ "init", "classarm__compute_1_1_c_l_kernel_library_ex.html#a533e610e6f8d86645e97287bc7d64f40", null ],
     [ "int64_base_atomics_supported", "classarm__compute_1_1_c_l_kernel_library_ex.html#a40515fb85d82222a1783c32ffbf03f00", null ],
     [ "max_local_workgroup_size", "classarm__compute_1_1_c_l_kernel_library_ex.html#a7c03b6485efcc71bf47222ca7eb7c5d4", null ],
     [ "operator=", "classarm__compute_1_1_c_l_kernel_library_ex.html#a408a6dea019ce80095e4b635faa15787", null ],
     [ "set_context", "classarm__compute_1_1_c_l_kernel_library_ex.html#a00e8f620d0869e037153d79480e63b91", null ],
     [ "set_device", "classarm__compute_1_1_c_l_kernel_library_ex.html#ac5e925f2802a1cc7d38c9114925bec1a", null ],
-    [ "set_kernel_path", "classarm__compute_1_1_c_l_kernel_library_ex.html#a902262f93b075658bd31d310fa3568a7", null ]
+    [ "set_kernel_path", "classarm__compute_1_1_c_l_kernel_library_ex.html#ab846419a9caf06fe045a362e10bb60c2", null ]
 ];

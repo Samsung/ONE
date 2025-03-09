@@ -221,26 +221,26 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Call this when observer which use EventWriter finishes. After multiple observers calls this method, the reference count will eventually be 0. Then, EventWriter will write profiling result file. </p>
 
-<p class="definition">Definition at line <a class="el" href="_event_writer_8cc_source.html#l00024">24</a> of file <a class="el" href="_event_writer_8cc_source.html">EventWriter.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   25</span>{</div>
-<div class="line"><span class="lineno">   26</span>  {</div>
-<div class="line"><span class="lineno">   27</span>    std::unique_lock&lt;std::mutex&gt; lock{_mutex};</div>
-<div class="line"><span class="lineno">   28</span> </div>
-<div class="line"><span class="lineno">   29</span>    _recorders.emplace_back(std::move(recorder));</div>
-<div class="line"><span class="lineno">   30</span> </div>
-<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">if</span> (--_ref_count &gt; 0)</div>
-<div class="line"><span class="lineno">   32</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   33</span>  }</div>
-<div class="line"><span class="lineno">   34</span>  <span class="comment">// The caller of this method is the last instance that uses EventWriter.</span></div>
-<div class="line"><span class="lineno">   35</span>  <span class="comment">// Let&#39;s write log files.</span></div>
-<div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>  <span class="comment">// Note. According to an internal issue, let snpe json as just file name not &#39;.snpe.json&#39;</span></div>
-<div class="line"><span class="lineno">   38</span>  flush(<a class="code hl_enumvalue" href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a583cfb2f834be66542bd018e47f9a955">WriteFormat::SNPE_BENCHMARK</a>);</div>
-<div class="line"><span class="lineno">   39</span>  flush(<a class="code hl_enumvalue" href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a9bf89a7807a6e238002e86905a2d11cf">WriteFormat::CHROME_TRACING</a>);</div>
-<div class="line"><span class="lineno">   40</span>  flush(<a class="code hl_enumvalue" href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a209ea334cebb51b058e837a8bf9db295">WriteFormat::MD_TABLE</a>);</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>  _recorders.clear();</div>
-<div class="line"><span class="lineno">   43</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_event_writer_8cc_source.html#l00021">21</a> of file <a class="el" href="_event_writer_8cc_source.html">EventWriter.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   22</span>{</div>
+<div class="line"><span class="lineno">   23</span>  {</div>
+<div class="line"><span class="lineno">   24</span>    std::unique_lock&lt;std::mutex&gt; lock{_mutex};</div>
+<div class="line"><span class="lineno">   25</span> </div>
+<div class="line"><span class="lineno">   26</span>    _recorders.emplace_back(std::move(recorder));</div>
+<div class="line"><span class="lineno">   27</span> </div>
+<div class="line"><span class="lineno">   28</span>    <span class="keywordflow">if</span> (--_ref_count &gt; 0)</div>
+<div class="line"><span class="lineno">   29</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   30</span>  }</div>
+<div class="line"><span class="lineno">   31</span>  <span class="comment">// The caller of this method is the last instance that uses EventWriter.</span></div>
+<div class="line"><span class="lineno">   32</span>  <span class="comment">// Let&#39;s write log files.</span></div>
+<div class="line"><span class="lineno">   33</span> </div>
+<div class="line"><span class="lineno">   34</span>  <span class="comment">// Note. According to an internal issue, let snpe json as just file name not &#39;.snpe.json&#39;</span></div>
+<div class="line"><span class="lineno">   35</span>  flush(<a class="code hl_enumvalue" href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a583cfb2f834be66542bd018e47f9a955">WriteFormat::SNPE_BENCHMARK</a>);</div>
+<div class="line"><span class="lineno">   36</span>  flush(<a class="code hl_enumvalue" href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a9bf89a7807a6e238002e86905a2d11cf">WriteFormat::CHROME_TRACING</a>);</div>
+<div class="line"><span class="lineno">   37</span>  flush(<a class="code hl_enumvalue" href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a209ea334cebb51b058e837a8bf9db295">WriteFormat::MD_TABLE</a>);</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>  _recorders.clear();</div>
+<div class="line"><span class="lineno">   40</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a9bf89a7807a6e238002e86905a2d11cf">CHROME_TRACING</a>, <a class="el" href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a209ea334cebb51b058e837a8bf9db295">MD_TABLE</a>, and <a class="el" href="class_event_writer.html#a110ef66311e955a4d04ee3b4f03ac1d8a583cfb2f834be66542bd018e47f9a955">SNPE_BENCHMARK</a>.</p>
 

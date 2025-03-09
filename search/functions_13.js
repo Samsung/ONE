@@ -82,7 +82,7 @@ var searchData=
   ['set_5finputs_79',['set_inputs',['../namespacecirclechef.html#abae68eb48ac9b58d1276fc6e84c179cb',1,'circlechef::set_inputs()'],['../namespacetflchef.html#a669d3c63f63cc2752f4794b99411a2d2',1,'tflchef::set_inputs()'],['../classpackage_1_1common_1_1basesession_1_1_base_session.html#a02142f2ab0332b3df4dc6eaf9471b17c',1,'package.common.basesession.BaseSession.set_inputs()']]],
   ['set_5finsert_5fid_80',['set_insert_id',['../classonnx__legalizer_1_1___model_transformer_helper.html#a973071c79d96b699065f32222d5353ea',1,'onnx_legalizer::_ModelTransformerHelper']]],
   ['set_5fint_5fscale_81',['set_int_scale',['../namespaceluci.html#a778ba1acea30cadd3985b4023df5b2f2',1,'luci']]],
-  ['set_5fkernel_5fpath_82',['set_kernel_path',['../classarm__compute_1_1_c_l_kernel_library_ex.html#a902262f93b075658bd31d310fa3568a7',1,'arm_compute::CLKernelLibraryEx']]],
+  ['set_5fkernel_5fpath_82',['set_kernel_path',['../classarm__compute_1_1_c_l_kernel_library_ex.html#ab846419a9caf06fe045a362e10bb60c2',1,'arm_compute::CLKernelLibraryEx']]],
   ['set_5fmodule_5finputs_83',['set_module_inputs',['../namespacetflimport.html#a9700861180902ba42fa35029140ebd14',1,'tflimport']]],
   ['set_5fmodule_5foutputs_84',['set_module_outputs',['../namespacetflimport.html#a10f9fd29034cbbd53f58107fa784a821',1,'tflimport']]],
   ['set_5fnew_5fshape_85',['set_new_shape',['../namespacelocoex.html#a40878dd8815889c0de48205370bec743',1,'locoex']]],

@@ -1,7 +1,5 @@
 var NAVTREEINDEX214 =
 {
-"mbed__config_8h.html#aedee32659759d400c819494cfb46f5f7":[41,0,2,1,0,0,0,1,65],
-"mbed__config_8h.html#aee562f46f1f8bae57463a4c4b6dd26e0":[41,0,2,1,0,0,0,1,15],
 "mbed__config_8h.html#aeeb6a63578c2be1bec402bbe63bd00a5":[41,0,2,1,0,0,0,1,353],
 "mbed__config_8h.html#aef65051d23b4dc336969014bee212760":[41,0,2,1,0,0,0,1,224],
 "mbed__config_8h.html#af0e585d27a8c00f2116c1e1c3bf8d106":[41,0,2,1,0,0,0,1,359],
@@ -249,5 +247,7 @@ var NAVTREEINDEX214 =
 "mio-circle08_2include_2mio__circle_2_helper_8h.html#ac4941377cebadf44ad88df3a1d78e47e":[41,0,0,74,0,0,0,3],
 "mio-circle08_2include_2mio__circle_2_helper_8h.html#ae833fa8c55869bac78dd55fab7d14415":[41,0,0,74,0,0,0,1],
 "mio-circle08_2include_2mio__circle_2_helper_8h_source.html":[41,0,0,74,0,0,0],
-"mio-circle08_2src_2_helper_8cpp.html":[41,0,0,74,1,0]
+"mio-circle08_2src_2_helper_8cpp.html":[41,0,0,74,1,0],
+"mio-circle08_2src_2_helper_8cpp.html#a0b3c17ce2e43636c2722c2a203fbd866":[41,0,0,74,1,0,4],
+"mio-circle08_2src_2_helper_8cpp.html#a6bb8a9fd1ddde814312d5582f25b9260":[41,0,0,74,1,0,3]
 };

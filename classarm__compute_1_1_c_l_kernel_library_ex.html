@@ -112,15 +112,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a533e610e6f8d86645e97287bc7d64f40" id="r_a533e610e6f8d86645e97287bc7d64f40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a533e610e6f8d86645e97287bc7d64f40">init</a> (std::string kernel_path, cl::Context <a class="el" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a40f5982daea4b84ee09f7ad81fe4ef42">context</a>, cl::Device device)</td></tr>
 <tr class="memdesc:a533e610e6f8d86645e97287bc7d64f40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise the kernel library.  <br /></td></tr>
 <tr class="separator:a533e610e6f8d86645e97287bc7d64f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a902262f93b075658bd31d310fa3568a7" id="r_a902262f93b075658bd31d310fa3568a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a902262f93b075658bd31d310fa3568a7">set_kernel_path</a> (const std::string &amp;kernel_path)</td></tr>
-<tr class="memdesc:a902262f93b075658bd31d310fa3568a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the path that the kernels reside in.  <br /></td></tr>
-<tr class="separator:a902262f93b075658bd31d310fa3568a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab846419a9caf06fe045a362e10bb60c2" id="r_ab846419a9caf06fe045a362e10bb60c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarm__compute_1_1_c_l_kernel_library_ex.html#ab846419a9caf06fe045a362e10bb60c2">set_kernel_path</a> (std::string_view kernel_path)</td></tr>
+<tr class="memdesc:ab846419a9caf06fe045a362e10bb60c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the path that the kernels reside in.  <br /></td></tr>
+<tr class="separator:ab846419a9caf06fe045a362e10bb60c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9752debdcf6f74b329c92cfdf0985cf" id="r_ab9752debdcf6f74b329c92cfdf0985cf"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarm__compute_1_1_c_l_kernel_library_ex.html#ab9752debdcf6f74b329c92cfdf0985cf">get_kernel_path</a> ()</td></tr>
 <tr class="memdesc:ab9752debdcf6f74b329c92cfdf0985cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the path that the kernels reside in.  <br /></td></tr>
 <tr class="separator:ab9752debdcf6f74b329c92cfdf0985cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c4bf19fe671dd19e054ac30164bd9b3" id="r_a6c4bf19fe671dd19e054ac30164bd9b3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a6c4bf19fe671dd19e054ac30164bd9b3">get_program_source</a> (const std::string &amp;program_name)</td></tr>
-<tr class="memdesc:a6c4bf19fe671dd19e054ac30164bd9b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the source of the selected program.  <br /></td></tr>
-<tr class="separator:a6c4bf19fe671dd19e054ac30164bd9b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a537293805bc76aaa8167cd5dc83a90d9" id="r_a537293805bc76aaa8167cd5dc83a90d9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a537293805bc76aaa8167cd5dc83a90d9">get_program_source</a> (std::string_view program_name)</td></tr>
+<tr class="memdesc:a537293805bc76aaa8167cd5dc83a90d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the source of the selected program.  <br /></td></tr>
+<tr class="separator:a537293805bc76aaa8167cd5dc83a90d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00e8f620d0869e037153d79480e63b91" id="r_a00e8f620d0869e037153d79480e63b91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a00e8f620d0869e037153d79480e63b91">set_context</a> (cl::Context <a class="el" href="classarm__compute_1_1_c_l_kernel_library_ex.html#a40f5982daea4b84ee09f7ad81fe4ef42">context</a>)</td></tr>
 <tr class="memdesc:a00e8f620d0869e037153d79480e63b91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the CL context used to create programs.  <br /></td></tr>
 <tr class="separator:a00e8f620d0869e037153d79480e63b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -635,8 +635,8 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a6c4bf19fe671dd19e054ac30164bd9b3" name="a6c4bf19fe671dd19e054ac30164bd9b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c4bf19fe671dd19e054ac30164bd9b3">&#9670;&#160;</a></span>get_program_source()</h2>
+<a id="a537293805bc76aaa8167cd5dc83a90d9" name="a537293805bc76aaa8167cd5dc83a90d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a537293805bc76aaa8167cd5dc83a90d9">&#9670;&#160;</a></span>get_program_source()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -644,7 +644,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">std::string CLKernelLibraryEx::get_program_source </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>program_name</em></td><td>)</td>
           <td></td>
         </tr>
@@ -666,7 +666,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  341</span> </div>
 <div class="line"><span class="lineno">  342</span>  <span class="keywordflow">if</span> (program_source_it == _program_source_map.end())</div>
 <div class="line"><span class="lineno">  343</span>  {</div>
-<div class="line"><span class="lineno">  344</span>    ARM_COMPUTE_ERROR_VAR(<span class="stringliteral">&quot;Embedded program for %s does not exist.&quot;</span>, program_name.c_str());</div>
+<div class="line"><span class="lineno">  344</span>    ARM_COMPUTE_ERROR_VAR(<span class="stringliteral">&quot;Embedded program for %s does not exist.&quot;</span>, program_name.data());</div>
 <div class="line"><span class="lineno">  345</span>  }</div>
 <div class="line"><span class="lineno">  346</span> </div>
 <div class="line"><span class="lineno">  347</span>  <span class="keywordflow">return</span> program_source_it-&gt;second;</div>
@@ -930,8 +930,8 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a902262f93b075658bd31d310fa3568a7" name="a902262f93b075658bd31d310fa3568a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a902262f93b075658bd31d310fa3568a7">&#9670;&#160;</a></span>set_kernel_path()</h2>
+<a id="ab846419a9caf06fe045a362e10bb60c2" name="ab846419a9caf06fe045a362e10bb60c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab846419a9caf06fe045a362e10bb60c2">&#9670;&#160;</a></span>set_kernel_path()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -942,7 +942,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void arm_compute::CLKernelLibraryEx::set_kernel_path </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>kernel_path</em></td><td>)</td>
           <td></td>
         </tr>

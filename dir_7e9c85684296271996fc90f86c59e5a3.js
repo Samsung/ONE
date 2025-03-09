@@ -11,6 +11,5 @@ var dir_7e9c85684296271996fc90f86c59e5a3 =
     [ "logging.cc", "logging_8cc.html", null ],
     [ "MDTableEventWriter.cc", "_m_d_table_event_writer_8cc.html", null ],
     [ "ShapeInference.cc", "_shape_inference_8cc.html", "_shape_inference_8cc" ],
-    [ "SNPEEventWriter.cc", "_s_n_p_e_event_writer_8cc.html", "_s_n_p_e_event_writer_8cc" ],
-    [ "TracingCtx.cc", "_tracing_ctx_8cc.html", null ]
+    [ "SNPEEventWriter.cc", "_s_n_p_e_event_writer_8cc.html", "_s_n_p_e_event_writer_8cc" ]
 ];

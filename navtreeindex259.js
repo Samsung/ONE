@@ -1,7 +1,5 @@
 var NAVTREEINDEX259 =
 {
-"runtime_2compute_2cker_2include_2cker_2train_2operation_2_average_pool_8h.html":[41,0,3,0,1,0,0,5,0,0],
-"runtime_2compute_2cker_2include_2cker_2train_2operation_2_average_pool_8h.html#a2e2cc358f0ad7b12d5c8c7dc062b486b":[41,0,3,0,1,0,0,5,0,0,0],
 "runtime_2compute_2cker_2include_2cker_2train_2operation_2_average_pool_8h_source.html":[41,0,3,0,1,0,0,5,0,0],
 "runtime_2compute_2cker_2include_2cker_2train_2operation_2_conv_8h.html":[41,0,3,0,1,0,0,5,0,2],
 "runtime_2compute_2cker_2include_2cker_2train_2operation_2_conv_8h.html#ade6d9df3c503c8a24c1994e73bced227":[41,0,3,0,1,0,0,5,0,2,5],
@@ -249,5 +247,7 @@ var NAVTREEINDEX259 =
 "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331a4e866b275c85fbb439f6484251cfb31c":[41,0,3,2,2,0,4,4,0,8],
 "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331a6495adba09844fac8eeb0aba86e6f1bf":[41,0,3,2,2,0,4,4,0,1],
 "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331a7874c580051c95dc64b33be2dbada5c0":[41,0,3,2,2,0,4,4,0,11],
-"runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331a8aedb3aef4124c9215ec9cfe08df84a9":[41,0,3,2,2,0,4,4,0,13]
+"runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331a8aedb3aef4124c9215ec9cfe08df84a9":[41,0,3,2,2,0,4,4,0,13],
+"runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331a967d280b5c16d95f2947647dd2ca6cc2":[41,0,3,2,2,0,4,4,0,0],
+"runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331a9aa185ccbba2c158bd867b0442c3c9aa":[41,0,3,2,2,0,4,4,0,12]
 };

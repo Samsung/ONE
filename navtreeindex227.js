@@ -1,7 +1,5 @@
 var NAVTREEINDEX227 =
 {
-"namespaceluci__interpreter_1_1test__kernel_1_1neg__less__uint8__with__no__broadcasting.html#a464a78b899e6c2c9c2482a459c5cd547":[39,0,85,2,150,3],
-"namespaceluci__interpreter_1_1test__kernel_1_1neg__less__uint8__with__no__broadcasting.html#a51a7362d2ac6ba07a223d01a4c1fa88a":[39,0,85,2,150,2],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__less__uint8__with__no__broadcasting.html#adbe96fa8ae4420d10784ba04981e95ff":[39,0,85,2,150,0],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__logical__and__inputs__type__mismatch.html":[39,0,85,2,151],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__logical__and__inputs__type__mismatch.html#adea8be1dea5193f4b998fd2239ba2b89":[39,0,85,2,151,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX227 =
 "namespaceluci__interpreter_1_1test__kernel_1_1sum__float.html#a69d8faa8fc02717c2f5a78e3fc558049":[39,0,85,2,219,1],
 "namespaceluci__interpreter_1_1test__kernel_1_1sum__float.html#aee143d2d8b6a3f3c412b1f5c061a3fbc":[39,0,85,2,219,0],
 "namespaceluci__interpreter_1_1test__kernel_1_1svdf__float.html":[39,0,85,2,220],
-"namespaceluci__interpreter_1_1test__kernel_1_1svdf__float.html#a471158595363f6583eb2e9485fd8b843":[39,0,85,2,220,1]
+"namespaceluci__interpreter_1_1test__kernel_1_1svdf__float.html#a471158595363f6583eb2e9485fd8b843":[39,0,85,2,220,1],
+"namespaceluci__interpreter_1_1test__kernel_1_1svdf__float.html#a58309fa482000052638b2ecc6c7b2e69":[39,0,85,2,220,2],
+"namespaceluci__interpreter_1_1test__kernel_1_1svdf__float.html#a5d1edf73387d05fb7159e461b11d062c":[39,0,85,2,220,0]
 };

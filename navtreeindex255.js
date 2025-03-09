@@ -1,7 +1,5 @@
 var NAVTREEINDEX255 =
 {
-"onnxkit_2src_2_encode_command_8cpp_source.html":[41,0,0,104,0,2],
-"onnxkit_2src_2_encode_command_8hpp.html":[41,0,0,104,0,3],
 "onnxkit_2src_2_encode_command_8hpp_source.html":[41,0,0,104,0,3],
 "onnxkit_2src_2_support_8cpp.html":[41,0,0,104,0,5],
 "onnxkit_2src_2_support_8cpp.html#aa70dff44442daf31437418c2d5223fb6":[41,0,0,104,0,5,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX255 =
 "partition_2src_2_nodes_2_circle_logical_not_8cpp_source.html":[41,0,0,58,6,1,0,53],
 "partition_2src_2_nodes_2_circle_logical_or_8cpp.html":[41,0,0,58,6,1,0,54],
 "partition_2src_2_nodes_2_circle_logical_or_8cpp_source.html":[41,0,0,58,6,1,0,54],
-"partition_2src_2_nodes_2_circle_logistic_8cpp.html":[41,0,0,58,6,1,0,55]
+"partition_2src_2_nodes_2_circle_logistic_8cpp.html":[41,0,0,58,6,1,0,55],
+"partition_2src_2_nodes_2_circle_logistic_8cpp_source.html":[41,0,0,58,6,1,0,55],
+"partition_2src_2_nodes_2_circle_matrix_diag_8cpp.html":[41,0,0,58,6,1,0,57]
 };

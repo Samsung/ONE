@@ -151,8 +151,8 @@ $(document).ready(function(){initNavTree('_tracing_ctx_8h_source.html',''); init
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  std::unordered_map&lt;const ir::Graph *, ir::SubgraphIndex&gt; _subgraph_indices;</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  uint32_t _session_id;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">static</span> std::mutex _session_id_mutex;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">static</span> uint32_t _next_session_id;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">static</span> <span class="keyword">inline</span> std::mutex _session_id_mutex;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">static</span> <span class="keyword">inline</span> uint32_t _next_session_id = 0;</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>};</div>
 </div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>

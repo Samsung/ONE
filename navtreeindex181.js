@@ -1,7 +1,5 @@
 var NAVTREEINDEX181 =
 {
-"compiler_2exo_2src_2_log_8cpp_source.html":[41,0,0,40,1,19],
-"compiler_2exo_2src_2_shape_inference_8h.html":[41,0,0,40,1,29],
 "compiler_2exo_2src_2_shape_inference_8h_source.html":[41,0,0,40,1,29],
 "compiler_2fm-equalize_2fmelib_2____init_____8py.html":[41,0,0,42,0,0],
 "compiler_2fm-equalize_2fmelib_2____init_____8py_source.html":[41,0,0,42,0,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX181 =
 "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_depthwise_conv2d_8h.html#a6f98040ce5b2f996abbfdc80fb1d5cfd":[41,0,0,61,1,2,5,0],
 "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_depthwise_conv2d_8h_source.html":[41,0,0,61,1,2,5],
 "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_dequantize_8h.html":[41,0,0,61,1,2,6],
-"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_dequantize_8h_source.html":[41,0,0,61,1,2,6]
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_dequantize_8h_source.html":[41,0,0,61,1,2,6],
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_elu_8h.html":[41,0,0,61,1,2,7],
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_elu_8h_source.html":[41,0,0,61,1,2,7]
 };
