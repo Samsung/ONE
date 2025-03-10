@@ -21,6 +21,7 @@ endmacro(COPY_SCRIPT)
 
 # copy test scripts
 COPY_SCRIPT(run_value_test.sh)
+COPY_SCRIPT(run_import_test.sh)
 
 get_target_property(ONNX_ARTIFACTS_BIN_PATH gen_onnx_target BINARY_DIR)
 get_target_property(CIRCLE_ARTIFACTS_BIN_PATH onnx2circle_models_target BINARY_DIR)
@@ -75,5 +76,18 @@ foreach(MODEL IN ITEMS ${UNIT_TEST_MODELS})
   add_test(
     NAME circle_impexp_value_test_${MODEL}
     COMMAND bash run_value_test.sh ${VENV_PATH} ${TEST_MODEL_BASE}
+  )
+endforeach()
+
+add_custom_target(
+  circle_impexp_import_test_target ALL
+  DEPENDS ${FILE_DEPS_IMP}
+)
+
+foreach(MODEL IN ITEMS ${UNIT_TEST_MODELS_IMPORT})
+  set(TEST_MODEL_BASE "${CMAKE_CURRENT_BINARY_DIR}/${MODEL}")
+  add_test(
+    NAME circle_impexp_import_test_${MODEL}
+    COMMAND bash run_import_test.sh ${TEST_MODEL_BASE}
   )
 endforeach()
