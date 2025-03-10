@@ -32,16 +32,16 @@ template <typename T_Tensor, typename T_ActivationLayer, typename T_ExecFunction
 class AclActivationBuilder
 {
 private:
-  static std::unique_ptr<exec::IFunction> generateReLU(T_Tensor *ifm_alloc);
-  static std::unique_ptr<exec::IFunction> generateReLU1(T_Tensor *ifm_alloc);
-  static std::unique_ptr<exec::IFunction> generateReLU6(T_Tensor *ifm_alloc);
+  [[nodiscard]] static std::unique_ptr<exec::IFunction> generateReLU(T_Tensor *ifm_alloc);
+  [[nodiscard]] static std::unique_ptr<exec::IFunction> generateReLU1(T_Tensor *ifm_alloc);
+  [[nodiscard]] static std::unique_ptr<exec::IFunction> generateReLU6(T_Tensor *ifm_alloc);
 
 public:
   static std::unique_ptr<exec::IFunction> generate(ir::Activation code, T_Tensor *ifm_alloc);
 };
 
 template <typename T_Tensor, typename T_ActivationLayer, typename T_ExecFunction>
-std::unique_ptr<exec::IFunction>
+[[nodiscard]] std::unique_ptr<exec::IFunction>
 AclActivationBuilder<T_Tensor, T_ActivationLayer, T_ExecFunction>::generateReLU(T_Tensor *ifm_alloc)
 {
   const ::arm_compute::ActivationLayerInfo act_info{
@@ -55,7 +55,7 @@ AclActivationBuilder<T_Tensor, T_ActivationLayer, T_ExecFunction>::generateReLU(
 }
 
 template <typename T_Tensor, typename T_ActivationLayer, typename T_ExecFunction>
-std::unique_ptr<exec::IFunction>
+[[nodiscard]] std::unique_ptr<exec::IFunction>
 AclActivationBuilder<T_Tensor, T_ActivationLayer, T_ExecFunction>::generateReLU1(
   T_Tensor *ifm_alloc)
 {
@@ -70,7 +70,7 @@ AclActivationBuilder<T_Tensor, T_ActivationLayer, T_ExecFunction>::generateReLU1
 }
 
 template <typename T_Tensor, typename T_ActivationLayer, typename T_ExecFunction>
-std::unique_ptr<exec::IFunction>
+[[nodiscard]] std::unique_ptr<exec::IFunction>
 AclActivationBuilder<T_Tensor, T_ActivationLayer, T_ExecFunction>::generateReLU6(
   T_Tensor *ifm_alloc)
 {
@@ -85,7 +85,7 @@ AclActivationBuilder<T_Tensor, T_ActivationLayer, T_ExecFunction>::generateReLU6
 }
 
 template <typename T_Tensor, typename T_ActivationLayer, typename T_ExecFunction>
-std::unique_ptr<exec::IFunction>
+[[nodiscard]] std::unique_ptr<exec::IFunction>
 AclActivationBuilder<T_Tensor, T_ActivationLayer, T_ExecFunction>::generate(ir::Activation code,
                                                                             T_Tensor *ifm_alloc)
 {

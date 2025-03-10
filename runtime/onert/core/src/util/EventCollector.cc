@@ -38,8 +38,8 @@ class DurationEventBuilder : public EventCollector::EventVisitor
 public:
   DurationEventBuilder(const std::string &ts) : _ts{ts} {}
 
-  std::unique_ptr<SubgDurationEvent> build(const EventCollector::SubgEvent &evt_collected,
-                                           const std::string &ph) const
+  [[nodiscard]] std::unique_ptr<SubgDurationEvent>
+  build(const EventCollector::SubgEvent &evt_collected, const std::string &ph) const
   {
     auto dur_evt = std::make_unique<SubgDurationEvent>();
 
@@ -61,8 +61,8 @@ public:
     return dur_evt;
   }
 
-  std::unique_ptr<OpSeqDurationEvent> build(const EventCollector::OpSeqEvent &evt_collected,
-                                            const std::string &ph) const
+  [[nodiscard]] std::unique_ptr<OpSeqDurationEvent>
+  build(const EventCollector::OpSeqEvent &evt_collected, const std::string &ph) const
   {
     auto dur_evt = std::make_unique<OpSeqDurationEvent>();
 
