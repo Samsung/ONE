@@ -19,7 +19,6 @@
 
 #include <foder/FileLoader.h>
 
-#include <memory>
 #include <iostream>
 
 namespace luci
@@ -33,6 +32,22 @@ inline constexpr uint64_t FLATBUFFERS_SIZE_MAX = 2147483648UL; // 2GB
 
 } // namespace
 
+ImporterEx::ImporterEx()
+  : _error_handler{[](const std::exception &e) { std::cerr << e.what() << std::endl; }}
+{
+}
+
+ImporterEx::ImporterEx(const std::function<void(const std::exception &)> &error_handler)
+  : _error_handler{error_handler}
+{
+  if (!error_handler)
+  {
+    throw std::runtime_error{"The error handler passed to ImporterEx is invalid"};
+  }
+}
+
+ImporterEx::ImporterEx(const GraphBuilderSource *source) : ImporterEx{} { _source = source; }
+
 std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_path) const
 {
   foder::FileLoader file_loader{input_path};
@@ -44,7 +59,7 @@ std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_
   }
   catch (const std::runtime_error &err)
   {
-    std::cerr << err.what() << std::endl;
+    _error_handler(err);
     return nullptr;
   }
 
@@ -56,7 +71,7 @@ std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_
     flatbuffers::Verifier verifier{data_data, data_size};
     if (!circle::VerifyModelBuffer(verifier))
     {
-      std::cerr << "ERROR: Invalid input file '" << input_path << "'" << std::endl;
+      _error_handler(std::runtime_error{"ERROR: Invalid input file '" + input_path + "'"});
       return nullptr;
     }
   }
