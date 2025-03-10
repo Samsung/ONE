@@ -51,7 +51,6 @@ endif()
 list(APPEND CIRCLE_RESIZER_PYTHON_API src/Shape.cpp)
 
 add_library(circle_resizer_python_api SHARED ${CIRCLE_RESIZER_PYTHON_API})
-target_link_libraries(circle_resizer_python_api INTERFACE pybind11::module)
 target_link_libraries(circle_resizer_python_api PRIVATE circle_resizer_core)
 
 set_target_properties(circle_resizer_python_api PROPERTIES CXX_VISIBILITY_PRESET "hidden"
