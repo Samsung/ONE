@@ -100,6 +100,9 @@ macro(ImportModel MODEL_NAME)
 
 endmacro(ImportModel)
 
+# Read "test.lst"
+include("test.lst")
+
 add_custom_target(
   circle_impexp_value_test_target ALL
   DEPENDS onnx2circle_value_test_target ${FILE_DEPS_VALCHK}
