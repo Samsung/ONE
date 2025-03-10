@@ -36,7 +36,7 @@ public:
   void registerKernel(const std::string &id, nnfw_custom_eval evalFunction);
 
   std::shared_ptr<backend::custom::IKernelBuilder> getBuilder();
-  std::unique_ptr<CustomKernel> buildKernelForOp(const std::string &id);
+  [[nodiscard]] std::unique_ptr<CustomKernel> buildKernelForOp(const std::string &id);
 
 private:
   // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20

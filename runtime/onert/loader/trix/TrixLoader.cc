@@ -84,7 +84,7 @@ public:
    * @brief Load a model from file
    * @param file_path
    */
-  std::unique_ptr<ir::Model> loadFromFile(const std::string &file_path) override;
+  [[nodiscard]] std::unique_ptr<ir::Model> loadFromFile(const std::string &file_path) override;
 
 private:
   /*
@@ -92,7 +92,7 @@ private:
    * @throw runtime_error when tvn path is wrong or tvn is invalid
    */
   void loadModel(std::unique_ptr<ir::Model> &model);
-  std::unique_ptr<ir::Graph> loadSubgraph();
+  [[nodiscard]] std::unique_ptr<ir::Graph> loadSubgraph();
   void loadOperands(ir::Graph &subg);
   ir::OperandIndex loadOperandFromInput(uint32_t i, ir::Graph &subg);
   ir::OperandIndex loadOperandFromOutput(uint32_t i, ir::Graph &subg);

@@ -48,7 +48,7 @@ public:
 
   void setModelIndex(const ir::ModelIndex &index) { _model_index = index; }
 
-  std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
+  [[nodiscard]] std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
 
 private:
   void visit(const ir::operation::If &) override;
