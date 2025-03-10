@@ -23,15 +23,9 @@ RUN apt-get update && apt-get -qqy install build-essential cmake scons git
 # Additonal tools
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
-    apt-get -qqy install doxygen graphviz wget zip unzip python3 python3-pip python3-venv python3-dev hdf5-tools pylint curl
+    apt-get -qqy install doxygen graphviz wget zip unzip python3 python3-pip python3-venv python3-dev hdf5-tools curl
 RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install yapf==0.40.2 numpy flatbuffers
-
-# Install clang-format
-RUN apt-get install -qqy gnupg2
-RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
-RUN add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
-RUN apt-get update && apt-get install -qqy clang-format-16
+RUN python3 -m pip install numpy flatbuffers
 
 # Install java for gradle and android sdk (and file for NDK internally used)
 ARG OPENJDK_VERSION=11
