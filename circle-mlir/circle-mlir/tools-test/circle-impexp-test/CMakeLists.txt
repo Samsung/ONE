@@ -102,6 +102,8 @@ endmacro(ImportModel)
 
 # Read "test.lst"
 include("test.lst")
+# Read "test.local.lst" if exists
+include("test.local.lst" OPTIONAL)
 
 add_custom_target(
   circle_impexp_value_test_target ALL
