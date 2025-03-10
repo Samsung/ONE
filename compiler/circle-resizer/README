@@ -1,0 +1,3 @@
+```py
+CMAKE_INSTALL_PREFIX=~/workspace/one_install_nncc python setup.py bdist_wheel
+```
