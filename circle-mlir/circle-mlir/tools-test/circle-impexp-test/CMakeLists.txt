@@ -28,6 +28,8 @@ get_target_property(CIRCLE_ARTIFACTS_BIN_PATH onnx2circle_models_target BINARY_D
 
 # AddModel used in test.lst
 set(UNIT_TEST_MODELS )
+# ImportModel used in test.lst
+set(UNIT_TEST_MODELS_IMPORT )
 
 macro(AddModel MODEL_NAME)
   # copy ONNX to test folder for generation of I/O data
@@ -65,6 +67,32 @@ macro(AddModel MODEL_NAME)
   list(APPEND FILE_DEPS_VALCHK "${TEST_CIRCLE_MODEL_DST2}")
 
 endmacro(AddModel)
+
+macro(ImportModel MODEL_NAME)
+  # copy circle to test folder from value test folder as first circle model
+  set(TEST_CIRCLE_MODEL_SRC "${CIRCLE_ARTIFACTS_BIN_PATH}/${MODEL_NAME}.circle")
+  set(TEST_CIRCLE_MODEL_DST "${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}.circle")
+  add_custom_command(
+    OUTPUT ${TEST_CIRCLE_MODEL_DST}
+    COMMAND ${CMAKE_COMMAND} -E copy "${TEST_CIRCLE_MODEL_SRC}" "${TEST_CIRCLE_MODEL_DST}"
+    DEPENDS ${TEST_CIRCLE_MODEL_SRC} onnx2circle_models_target
+    COMMENT "circle-impexp-test: copy ${MODEL_NAME}.circle"
+  )
+
+  # run circle_impexp tool to generate second circle file
+  set(TEST_CIRCLE_MODEL_DST2 "${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}.2.circle")
+  add_custom_command(
+    OUTPUT ${TEST_CIRCLE_MODEL_DST2}
+    COMMAND "$<TARGET_FILE:circle_impexp>" "${TEST_CIRCLE_MODEL_DST}" "${TEST_CIRCLE_MODEL_DST2}"
+    DEPENDS circle_impexp ${TEST_CIRCLE_MODEL_DST}
+    COMMENT "circle-impexp-test: generate ${MODEL_NAME}.2.circle"
+  )
+
+  list(APPEND UNIT_TEST_MODELS_IMPORT "${MODEL_NAME}")
+  list(APPEND FILE_DEPS_IMP "${TEST_CIRCLE_MODEL_DST}")
+  list(APPEND FILE_DEPS_IMP "${TEST_CIRCLE_MODEL_DST2}")
+
+endmacro(ImportModel)
 
 add_custom_target(
   circle_impexp_value_test_target ALL
