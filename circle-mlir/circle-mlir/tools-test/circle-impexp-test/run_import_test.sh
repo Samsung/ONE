@@ -1,11 +1,12 @@
 #!/bin/bash
 
-# This script ...
+# This script is to check import module by running import and then export
+# with circle-impexp tool, that should run without any problem.
 #
 # HOW TO USE
 #
-# ./run_imp_test.sh <model>
-# model    : model base name
+# ./run_import_test.sh <model>
+# model    : circle model base name
 
 set -e
 
