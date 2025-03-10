@@ -104,8 +104,7 @@ int entry(int argc, char **argv)
   const auto output_prefix = arser.get<std::string>("output_prefix");
 
   // Load model from the file
-  luci::ImporterEx importer;
-  std::unique_ptr<luci::Module> module = importer.importVerifyModule(filename);
+  std::unique_ptr<luci::Module> module = luci::importVerifyModule(filename);
   if (module == nullptr)
   {
     std::cerr << "ERROR: Failed to load '" << filename << "'" << std::endl;
