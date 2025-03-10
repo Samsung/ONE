@@ -6,3 +6,5 @@ add_subdirectory(gen-onnx)
 add_subdirectory(onnx2circle-models)
 # value test of source onnx vs circle
 add_subdirectory(onnx2circle-value-test)
+# circle import/export test
+add_subdirectory(circle-impexp-test)
