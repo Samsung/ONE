@@ -26,6 +26,7 @@ COPY_SCRIPT(run_import_test.sh)
 COPY_SCRIPT(exec_onnx.py)
 COPY_SCRIPT(exec_circle.py)
 COPY_SCRIPT(make_circle_input.py)
+COPY_SCRIPT(comp_circle_circle.py)
 COPY_SCRIPT(util_h5_file.py)
 
 get_target_property(ONNX_ARTIFACTS_BIN_PATH gen_onnx_target BINARY_DIR)
