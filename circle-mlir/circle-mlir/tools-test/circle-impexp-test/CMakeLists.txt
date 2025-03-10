@@ -22,6 +22,7 @@ endmacro(COPY_SCRIPT)
 # copy test scripts
 COPY_SCRIPT(run_value_test.sh)
 COPY_SCRIPT(run_import_test.sh)
+COPY_SCRIPT(exec_onnx.py)
 
 get_target_property(ONNX_ARTIFACTS_BIN_PATH gen_onnx_target BINARY_DIR)
 get_target_property(CIRCLE_ARTIFACTS_BIN_PATH onnx2circle_models_target BINARY_DIR)
