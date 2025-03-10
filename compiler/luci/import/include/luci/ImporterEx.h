@@ -25,6 +25,7 @@
 // #include "luci/Import/GraphBuilderRegistry.h"
 struct GraphBuilderSource;
 
+#include <functional>
 #include <memory>
 #include <string>
 
@@ -34,7 +35,11 @@ namespace luci
 class ImporterEx final
 {
 public:
-  ImporterEx() = default;
+  ImporterEx();
+  ImporterEx(const std::function<void(const std::exception&)>& error_handler);
+
+  // OPTIONAL setter for the error handler
+  // void set_error_handler(const std::function<void(const std::exception&)>& error_handler);
 
 public:
   // TODO remove this after embedded-import-value-test has moved to onert-micro
@@ -54,6 +59,7 @@ public:
 
 private:
   const GraphBuilderSource *_source = nullptr;
+  std::function<void(const std::exception&)> _error_handler;
 };
 
 } // namespace luci

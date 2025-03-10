@@ -48,7 +48,10 @@ bool same_dtype(const luci::CircleNode *a, const luci::CircleNode *b)
 
 std::unique_ptr<luci::Module> import(const std::string &model_path)
 {
-  luci::ImporterEx importer;
+  // EXAMPLE 2: a dedicated error handler passed as a lambda to the ImporterEx's constructor
+  luci::ImporterEx importer{[](const std::exception& e) {
+    throw std::runtime_error{std::string{"Model import failed. Details: "} + e.what()};
+  }};
   auto module = importer.importVerifyModule(model_path);
 
   if (not module)

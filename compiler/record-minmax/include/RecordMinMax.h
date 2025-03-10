@@ -99,6 +99,8 @@ private:
 
   DataSetFormat _data_set_format = UNKNOWN;
   std::string _input_data_path;
+
+  void import_error_handler(const std::exception& e);
 };
 
 } // namespace record_minmax
