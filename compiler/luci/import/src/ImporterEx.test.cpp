@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 #include <gtest/gtest.h>
 #include <sstream>
 
-TEST(ImporterEx, logs_to_stderr)
+TEST(ImporterEx, uses_default_error_handler_NEG)
 {
   std::ostringstream cerr_substitute;
 
@@ -34,7 +34,7 @@ TEST(ImporterEx, logs_to_stderr)
   ASSERT_GT(cerr_substitute.str().length(), 0);
 }
 
-TEST(ImporterEx, calls_external_error_handler)
+TEST(ImporterEx, calls_external_error_handler_NEG)
 {
 
   struct ErrorHandler
@@ -55,7 +55,7 @@ TEST(ImporterEx, calls_external_error_handler)
   ASSERT_TRUE(error_handler_called);
 }
 
-TEST(ImporterEx, throws_with_empty_handler_N)
+TEST(ImporterEx, throws_with_empty_handler_NEG)
 {
   std::function<void(const std::exception &)> empty_handler; // this doesn't contain any callable
   ASSERT_THROW(luci::ImporterEx{empty_handler}, std::runtime_error);
