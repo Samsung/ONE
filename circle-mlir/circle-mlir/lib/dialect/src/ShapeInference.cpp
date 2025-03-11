@@ -149,5 +149,57 @@ void CustomOp::inferShapes()
   }
 }
 
+//===----------------------------------------------------------------------===//
+// TransposeOp
+//===----------------------------------------------------------------------===//
+
+void TransposeOp::inferShapes()
+{
+  TransposeOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  auto input_type = op.getInput().getType().cast<ShapedType>();
+  auto perm_type = op.getPerm().getType().cast<ShapedType>();
+
+  if (input_type.hasStaticShape() && perm_type.hasStaticShape())
+  {
+    if (perm_type.getNumElements() != input_type.getRank())
+    {
+      return;
+    }
+  }
+
+  mlir::DenseIntElementsAttr perm;
+  if (!matchPattern(op.getPerm(), m_Constant(&perm)))
+  {
+    return;
+  }
+
+  llvm::SmallVector<int64_t, 4> perm_list;
+  for (const auto &perm_element : perm.getValues<APInt>())
+  {
+    const int64_t val = perm_element.getSExtValue();
+    perm_list.push_back(val);
+  }
+
+  // Get transposed shape and set it to the output type
+  if (input_type.hasStaticShape() && !output_type.hasStaticShape())
+  {
+    llvm::SmallVector<int64_t, 4> transposed_shape;
+    for (int64_t axis : perm_list)
+    {
+      transposed_shape.push_back(input_type.getDimSize(axis));
+    }
+
+    dumpShape<TransposeOp>(op, transposed_shape);
+
+    auto inferred_type =
+      mlir::Circle::GetTypeFromTensorShape(transposed_shape, input_type.getElementType());
+    getResult().setType(inferred_type);
+  }
+}
+
 } // namespace Circle
 } // namespace mlir
