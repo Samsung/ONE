@@ -418,6 +418,56 @@ def CIR_NoValueOp : Op<CIR_Dialect, "no_value", [ConstantLike, Pure]> {
   }];
 }
 
+def CIR_PadOp : CIR_Op<"pad", [
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    Pure,
+    /*SameOperandsAndResultsScale,*/
+    CIR_OperandHasRankAtMost<0, 5>,
+    CIR_OperandHasRank<1, 2>,
+    CIR_OperandRankEquals1DimOfOperand<0, 1>,
+    /*QuantizableResult,*/
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    PredOpTrait<"the first dim size of the padding argument must be at most 5",
+      Or<[CIR_OperandIsUnrankedPred<1>,
+          CIR_OperandDimIsAtMost<1, 0, 5>]>>]> {
+  let summary = "Padding operator";
+
+  let description = [{
+    This operation pads a `input` with zeros according to the `paddings` you
+    specify. `paddings` is an integer tensor with shape `[Dn, 2]`, where n is
+    the rank of `input`. For each dimension D of `input`, `paddings[D, 0]`
+    indicates how many zeros to add before the contents of `input` in that
+    dimension, and `paddings[D, 1]` indicates how many zeros to add after the
+    contents of `input` in that dimension.
+
+    The padded size of each dimension D of the output is:
+
+      `paddings(D, 0) + input.dim_size(D) + paddings(D, 1)`
+
+    For example:
+
+    ```
+    # 't' is [[1, 1], [2, 2]]
+    # 'paddings' is [[1, 1], [2, 2]]
+    # rank of 't' is 2
+    pad(t, paddings) ==> [[0, 0, 0, 0, 0, 0]
+                          [0, 0, 1, 1, 0, 0]
+                          [0, 0, 2, 2, 0, 0]
+                          [0, 0, 0, 0, 0, 0]]
+    ```
+  }];
+
+  let arguments = (ins CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$input,
+    CIR_I32OrI64Tensor:$padding);
+
+  let results = (outs CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$output);
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+}
+
 def CIR_ReshapeOp: CIR_Op<"reshape", [
     /*QuantizableResult,*/
     Pure,
