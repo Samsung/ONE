@@ -27,10 +27,13 @@ TEST(ImporterEx, uses_default_error_handler_NEG)
   std::cerr.rdbuf(cerr_substitute.rdbuf());
 
   luci::ImporterEx importer;
-  importer.importVerifyModule("/non/existent.path");
+  const auto model = importer.importVerifyModule("/non/existent.path");
 
   std::cerr.rdbuf(cerr_original_buffer);
 
+  // the test is supposed to fail for a model path that doesn't exist
+  ASSERT_EQ(model, nullptr);
+  // the default constructed importer is expected to log to std::cerr
   ASSERT_GT(cerr_substitute.str().length(), 0);
 }
 
@@ -50,13 +53,17 @@ TEST(ImporterEx, calls_external_error_handler_NEG)
   ErrorHandler handler{error_handler_called};
 
   luci::ImporterEx importer{handler};
-  importer.importVerifyModule("/non/existent.path");
+  const auto model = importer.importVerifyModule("/non/existent.path");
 
+  // the test is supposed to fail for a model path that doesn't exist
+  ASSERT_EQ(model, nullptr);
+  // this importer is expected to call an externally defined error handler
   ASSERT_TRUE(error_handler_called);
 }
 
-TEST(ImporterEx, throws_with_empty_handler_NEG)
+TEST(ImporterEx, constructor_throws_with_empty_handler_NEG)
 {
   std::function<void(const std::exception &)> empty_handler; // this doesn't contain any callable
+  // the constructor should throw to avoid segmentation faults with an empty handler
   ASSERT_THROW(luci::ImporterEx{empty_handler}, std::runtime_error);
 }
