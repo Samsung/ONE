@@ -22,27 +22,20 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace circle_resizer
 {
-class CircleResizer
+class ModelEditor
 {
 public:
-  explicit CircleResizer(const std::vector<uint8_t> &model_buffer);
-  explicit CircleResizer(const std::string &model_path);
+  explicit ModelEditor(std::shared_ptr<ModelData> model_data);
 
 public:
-  void resize_model(const std::vector<Shape> &shapes);
-  void save_model(std::ostream &stream);
-  void save_model(const std::string &output_path);
-
-public:
-  // cannot be const because of loco::Graph limitations
-  std::vector<Shape> input_shapes();
-  std::vector<Shape> output_shapes();
+  ModelEditor &resize_inputs(const std::vector<Shape> &shapes);
 
 private:
-  ModelData _model_data;
+  std::shared_ptr<ModelData> _model_data;
 };
 } // namespace circle_resizer
 

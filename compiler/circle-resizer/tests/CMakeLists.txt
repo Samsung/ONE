@@ -3,7 +3,8 @@ if(NOT ENABLE_TEST)
 endif(NOT ENABLE_TEST)
 
 list(APPEND CIRCLE_RESIZER_TEST_SOURCES ShapeParser.test.cpp)
-list(APPEND CIRCLE_RESIZER_TEST_SOURCES CircleResizer.test.cpp)
+list(APPEND CIRCLE_RESIZER_TEST_SOURCES ModelData.test.cpp)
+list(APPEND CIRCLE_RESIZER_TEST_SOURCES ModelEditor.test.cpp)
 
 nnas_find_package(GTest REQUIRED)
 GTest_AddTest(circle_resizer_unit_test ${CIRCLE_RESIZER_TEST_SOURCES})

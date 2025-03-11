@@ -22,10 +22,33 @@
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
 
+#include <fstream>
+#include <vector>
+
 using namespace circle_resizer;
 
 namespace
 {
+std::vector<uint8_t> read_model(const std::string &model_path)
+{
+  std::ifstream file_stream(model_path, std::ios::in | std::ios::binary | std::ifstream::ate);
+  if (!file_stream.is_open())
+  {
+    throw std::runtime_error("Failed to open file: " + model_path);
+  }
+
+  std::streamsize size = file_stream.tellg();
+  file_stream.seekg(0, std::ios::beg);
+
+  std::vector<uint8_t> buffer(size);
+  if (!file_stream.read(reinterpret_cast<char *>(buffer.data()), size))
+  {
+    throw std::runtime_error("Failed to read file: " + model_path);
+  }
+
+  return buffer;
+}
+
 std::unique_ptr<luci::Module> load_module(const std::vector<uint8_t> &model_buffer)
 {
   flatbuffers::Verifier verifier{model_buffer.data(), model_buffer.size()};
@@ -38,6 +61,7 @@ std::unique_ptr<luci::Module> load_module(const std::vector<uint8_t> &model_buff
   luci::Importer importer(source_ptr);
   return importer.importModule(model_buffer.data(), model_buffer.size());
 }
+
 class BufferModelContract : public luci::CircleExporter::Contract
 {
 public:
@@ -62,12 +86,31 @@ private:
   std::unique_ptr<std::vector<uint8_t>> _buffer;
 };
 
+template <typename NodeType>
+std::vector<Shape> extract_shapes(const std::vector<loco::Node *> &nodes)
+{
+  std::vector<Shape> shapes;
+  for (const auto &loco_node : nodes)
+  {
+    shapes.push_back(Shape{});
+    const auto circle_node = loco::must_cast<const NodeType *>(loco_node);
+    for (uint32_t dim_idx = 0; dim_idx < circle_node->rank(); dim_idx++)
+    {
+      const int32_t dim_val = circle_node->dim(dim_idx).value();
+      shapes.back().push_back(Dim{dim_val});
+    }
+  }
+  return shapes;
+}
+
 } // namespace
 
 ModelData::ModelData(const std::vector<uint8_t> &buffer)
   : _buffer{buffer}, _module{load_module(buffer)}
 {
 }
+
+ModelData::ModelData(const std::string &model_path) : ModelData(read_model(model_path)) {}
 
 void ModelData::invalidate_module() { _module_invalidated = true; }
 
@@ -98,6 +141,31 @@ luci::Module *ModelData::module()
     _module_invalidated = false;
   }
   return _module.get();
+}
+
+void ModelData::save(std::ostream &stream)
+{
+  stream.write(reinterpret_cast<const char *>(buffer().data()), buffer().size());
+  if (!stream.good())
+  {
+    throw std::runtime_error("Failed to write to output stream");
+  }
+}
+
+void ModelData::save(const std::string &output_path)
+{
+  std::ofstream out_stream(output_path, std::ios::out | std::ios::binary);
+  save(out_stream);
+}
+
+std::vector<Shape> ModelData::input_shapes()
+{
+  return extract_shapes<luci::CircleInput>(loco::input_nodes(module()->graph()));
+}
+
+std::vector<Shape> ModelData::output_shapes()
+{
+  return extract_shapes<luci::CircleOutput>(loco::output_nodes(module()->graph()));
 }
 
 ModelData::~ModelData() = default;

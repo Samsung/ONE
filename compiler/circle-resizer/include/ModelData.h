@@ -17,6 +17,8 @@
 #ifndef __CIRCLE_RESIZER_MODEL_H__
 #define __CIRCLE_RESIZER_MODEL_H__
 
+#include "Shape.h"
+
 #include <string>
 #include <memory>
 #include <vector>
@@ -31,24 +33,29 @@ namespace circle_resizer
 // DESIGN NOTE: The purpose of the class is to keep buffer and module synchronized
 class ModelData
 {
-
 public:
   explicit ModelData(const std::vector<uint8_t> &buffer);
-  void invalidate_module();
-  void invalidate_buffer();
+  explicit ModelData(const std::string &model_path);
   // to satisfy forward declaration + unique_ptr
   ~ModelData();
 
-public:
+  void invalidate_module();
+  void invalidate_buffer();
+
   std::vector<uint8_t> &buffer();
   luci::Module *module();
+
+  std::vector<Shape> input_shapes();
+  std::vector<Shape> output_shapes();
+
+  void save(std::ostream &stream);
+  void save(const std::string &output_path);
 
 private:
   bool _module_invalidated = false, _buffer_invalidated = false;
   std::vector<uint8_t> _buffer;
   std::unique_ptr<luci::Module> _module;
 };
-
 } // namespace circle_resizer
 
 #endif // __CIRCLE_RESIZER_H__

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "CircleResizer.h"
+#include "ModelEditor.h"
 
 #include <mio/circle/schema_generated.h>
 
@@ -25,34 +25,12 @@
 #include <luci/Import/GraphBuilderRegistry.h>
 
 #include <iostream>
-#include <fstream>
 #include <string>
-#include <vector>
 
 using namespace circle_resizer;
 
 namespace
 {
-std::vector<uint8_t> read_model(const std::string &model_path)
-{
-  std::ifstream file_stream(model_path, std::ios::in | std::ios::binary | std::ifstream::ate);
-  if (!file_stream.is_open())
-  {
-    throw std::runtime_error("Failed to open file: " + model_path);
-  }
-
-  std::streamsize size = file_stream.tellg();
-  file_stream.seekg(0, std::ios::beg);
-
-  std::vector<uint8_t> buffer(size);
-  if (!file_stream.read(reinterpret_cast<char *>(buffer.data()), size))
-  {
-    throw std::runtime_error("Failed to read file: " + model_path);
-  }
-
-  return buffer;
-}
-
 void replace_tensor_shape(::flatbuffers::Vector<int32_t> *tensor_shape, const Shape &new_shape)
 {
   const auto shape_size = tensor_shape->size();
@@ -67,37 +45,13 @@ void replace_tensor_shape(::flatbuffers::Vector<int32_t> *tensor_shape, const Sh
   }
 }
 
-template <typename NodeType>
-std::vector<Shape> extract_shapes(const std::vector<loco::Node *> &nodes)
-{
-  std::vector<Shape> shapes;
-  for (const auto &loco_node : nodes)
-  {
-    shapes.push_back(Shape{});
-    const auto circle_node = loco::must_cast<const NodeType *>(loco_node);
-    for (uint32_t dim_idx = 0; dim_idx < circle_node->rank(); dim_idx++)
-    {
-      const int32_t dim_val = circle_node->dim(dim_idx).value();
-      shapes.back().push_back(Dim{dim_val});
-    }
-  }
-  return shapes;
-}
-
 } // namespace
 
-CircleResizer::CircleResizer(const std::vector<uint8_t> &model_buffer)
-  : _model_data{ModelData(model_buffer)}
-{
-}
+ModelEditor::ModelEditor(std::shared_ptr<ModelData> model_data) : _model_data{model_data} {}
 
-CircleResizer::CircleResizer(const std::string &model_path) : CircleResizer(read_model(model_path))
+ModelEditor &ModelEditor::resize_inputs(const std::vector<Shape> &shapes)
 {
-}
-
-void CircleResizer::resize_model(const std::vector<Shape> &shapes)
-{
-  auto model = circle::GetMutableModel(_model_data.buffer().data());
+  auto model = circle::GetMutableModel(_model_data->buffer().data());
   if (!model)
   {
     throw std::runtime_error("Incorrect model format");
@@ -123,43 +77,19 @@ void CircleResizer::resize_model(const std::vector<Shape> &shapes)
   }
 
   // invalidate after changing input shape
-  _model_data.invalidate_module();
+  _model_data->invalidate_module();
 
   logo::Phase phase;
   phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
-  auto graph = _model_data.module()->graph();
+  auto graph = _model_data->module()->graph();
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{graph};
   phase_runner.run(phase);
 
   // invalidate after shape inference
-  _model_data.invalidate_buffer();
-}
+  _model_data->invalidate_buffer();
 
-void CircleResizer::save_model(std::ostream &stream)
-{
-  stream.write(reinterpret_cast<const char *>(_model_data.buffer().data()),
-               _model_data.buffer().size());
-  if (!stream.good())
-  {
-    throw std::runtime_error("Failed to write to output stream");
-  }
-}
-
-void CircleResizer::save_model(const std::string &output_path)
-{
-  std::ofstream out_stream(output_path, std::ios::out | std::ios::binary);
-  save_model(out_stream);
-}
-
-std::vector<Shape> CircleResizer::input_shapes()
-{
-  return extract_shapes<luci::CircleInput>(loco::input_nodes(_model_data.module()->graph()));
-}
-
-std::vector<Shape> CircleResizer::output_shapes()
-{
-  return extract_shapes<luci::CircleOutput>(loco::output_nodes(_model_data.module()->graph()));
+  return *this;
 }

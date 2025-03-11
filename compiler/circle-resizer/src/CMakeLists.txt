@@ -1,7 +1,7 @@
 list(APPEND CIRCLE_RESIZER_SOURCES Shape.cpp)
 list(APPEND CIRCLE_RESIZER_SOURCES ShapeParser.cpp)
 list(APPEND CIRCLE_RESIZER_SOURCES ModelData.cpp)
-list(APPEND CIRCLE_RESIZER_SOURCES CircleResizer.cpp)
+list(APPEND CIRCLE_RESIZER_SOURCES ModelEditor.cpp)
 
 add_library(circle_resizer_core SHARED "${CIRCLE_RESIZER_SOURCES}")
 

@@ -34,11 +34,7 @@ PYBIND11_MODULE(circle_resizer_python_api, m)
   dim.def(py::init<int32_t>());
   dim.def("is_dynamic", &Dim::is_dynamic);
   dim.def("value", &Dim::value);
-  dim.def(
-      "__eq__",
-      [](const Shape& rhs, const Shape& lhs) {
-          return rhs == lhs;
-      });
+  dim.def("__eq__", [](const Shape &rhs, const Shape &lhs) { return rhs == lhs; });
 
   auto shape = py::bind_vector<Shape>(m, "Shape");
   shape.doc() = "circle_resizer::Shape";
