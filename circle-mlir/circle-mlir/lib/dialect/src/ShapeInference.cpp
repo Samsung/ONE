@@ -150,6 +150,153 @@ void CustomOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// ReshapeOp
+//===----------------------------------------------------------------------===//
+
+bool GetReshapeOutputType(const Value input, const Value shape, RankedTensorType &output_ty)
+{
+  auto input_ty = input.getType().cast<TensorType>();
+  auto element_ty = input_ty.getElementType();
+  auto shape_ty = shape.getType().dyn_cast<RankedTensorType>();
+  if (!shape_ty)
+    return false;
+
+  if (shape_ty.getRank() != 1)
+  {
+    assert(false);
+    return false;
+  }
+
+  mlir::DenseIntElementsAttr shape_attr;
+  if (!matchPattern(shape, m_Constant(&shape_attr)))
+  {
+    // If only shape of `shape` is known, return ranked but dynamic output shape.
+    if (shape_ty.hasStaticShape())
+    {
+      llvm::SmallVector<int64_t, 8> dynamic_shape(shape_ty.getDimSize(0), ShapedType::kDynamic);
+      output_ty = GetTypeFromTensorShape(dynamic_shape, element_ty);
+      return true;
+    }
+    return false;
+  }
+
+  auto input_shape = input_ty.getShape();
+  llvm::SmallVector<int64_t, 4> input_sh_vals(input_shape.begin(), input_shape.end());
+
+  // Detect if reshape output shape is folded.
+  int unknown_index = -1;
+  // The product of constant shape argument excluding unknown dimension.
+  int64_t shape_ty_size = 1;
+  llvm::SmallVector<int64_t, 8> output_ty_shape;
+  output_ty_shape.reserve(shape_attr.getNumElements());
+  int64_t dim_index = 0;
+  for (const auto &dim : llvm::enumerate(shape_attr.getValues<APInt>()))
+  {
+    int64_t size = dim.value().getSExtValue();
+    if (size == kDynamicSize || size == ShapedType::kDynamic)
+    {
+      if (unknown_index != -1)
+      {
+        LLVM_DEBUG({
+          llvm::dbgs() << "Got two or more unknown: ";
+          llvm::dbgs() << unknown_index << " and " << dim.index();
+          llvm::dbgs() << "\n";
+        });
+        return false;
+      }
+      unknown_index = dim.index();
+    }
+    else if (size == 0)
+    {
+      if (dim_index < input_sh_vals.size())
+        size = input_sh_vals[dim_index];
+      else
+      {
+        // stop for debug version to find a mdoel with this case
+        assert(false);
+        size = 1;
+      }
+      shape_ty_size *= size;
+    }
+    else if (size > 0)
+    {
+      shape_ty_size *= size;
+    }
+    else
+    {
+      LLVM_DEBUG({
+        llvm::dbgs() << "Got invalid size ";
+        llvm::dbgs() << size << " at " << dim.index();
+        llvm::dbgs() << "\n";
+      });
+      return false;
+    }
+    output_ty_shape.push_back(size);
+    dim_index++;
+  }
+
+  if (!input_ty.hasStaticShape())
+  {
+    output_ty = GetTypeFromTensorShape(output_ty_shape, element_ty);
+    return true;
+  }
+
+  // Compute the value of the unknown dimension.
+  if (unknown_index != -1)
+  {
+    // Compute number of elements in tensor shape.
+    int64_t input_ty_size = 1;
+    for (const auto &dim : input_ty.getShape())
+    {
+      // stop for debug version to find this case
+      assert(dim > 0);
+      if (dim > 0)
+      {
+        input_ty_size *= dim;
+      }
+    }
+
+    const int64_t missing_dim = input_ty_size / shape_ty_size;
+    if (shape_ty_size * missing_dim != input_ty_size)
+    {
+      LLVM_DEBUG({
+        llvm::dbgs() << "requires 'input' number of elements be a multiple of ";
+        llvm::dbgs() << shape_ty_size << ", but got " << input_ty_size;
+        llvm::dbgs() << "\n";
+      });
+      return false;
+    }
+
+    // Set the unknown dimension such that total number of elements remain
+    // constant.
+    output_ty_shape[unknown_index] = missing_dim;
+  }
+
+  output_ty = GetTypeFromTensorShape(output_ty_shape, element_ty);
+  return true;
+}
+
+void ReshapeOp::inferShapes()
+{
+  ReshapeOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  const Value input = op.getInput();
+  const Value shape = op.getShape();
+
+  RankedTensorType inferred_type;
+  if (GetReshapeOutputType(input, shape, inferred_type))
+  {
+    auto output_shape = inferred_type.getShape();
+    dumpShape<ReshapeOp>(op, output_shape);
+
+    getResult().setType(inferred_type);
+  }
+}
+
+//===----------------------------------------------------------------------===//
 // TransposeOp
 //===----------------------------------------------------------------------===//
 
