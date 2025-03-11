@@ -19,8 +19,8 @@
 
 #include <foder/FileLoader.h>
 
-#include <iostream>
 #include <memory>
+#include <iostream>
 #include <stdexcept>
 
 namespace luci
