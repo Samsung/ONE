@@ -418,6 +418,55 @@ def CIR_NoValueOp : Op<CIR_Dialect, "no_value", [ConstantLike, Pure]> {
   }];
 }
 
+def CIR_ReshapeOp: CIR_Op<"reshape", [
+    /*QuantizableResult,*/
+    Pure,
+    /*SameOperandsAndResultsScale,*/
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    DeclareOpInterfaceMethods<InferTypeOpInterface>]> {
+  let summary = "Reshape operator";
+
+  let description = [{
+    Produces a tensor with the same values but different static shape defined
+    by the output type.
+  }];
+
+  let arguments = (
+    ins AnyTensor:$input,
+    CIR_I32Tensor:$shape);
+
+  let results = (outs AnyTensor:$output);
+  let hasCanonicalizer = 0b1;
+  let hasFolder = 1;
+  let hasVerifier = 1;
+
+  let extraClassDeclaration = [{
+    static bool isCompatibleReturnTypes(TypeRange l, TypeRange r);
+  }];
+}
+
+def CIR_ShapeOp: CIR_Op<"shape", [
+    /*QuantizableResult,*/
+    Pure]> {
+  let summary = "Shape operator";
+
+  let description = [{
+    Returns the shape of a tensor.
+  }];
+
+  let arguments = (ins AnyTensor:$input);
+
+  let results = (outs CIR_TensorOf<[I32, I64]>:$output);
+
+  DerivedTypeAttr out_type = DerivedTypeAttr<[{
+    return getResult().getType().cast<TensorType>().getElementType();
+  }]>;
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+}
+
 def CIR_TransposeOp : CIR_Op<"transpose", [
     Pure,
     DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
