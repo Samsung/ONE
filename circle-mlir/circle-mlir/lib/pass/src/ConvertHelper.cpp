@@ -177,6 +177,77 @@ mlir::Value CreateNoValue(mlir::ConversionPatternRewriter &rewriter)
                                     rewriter.getUnitAttr());
 }
 
+mlir::Value CreatePreTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Location &opLoc,
+                               mlir::Value &input)
+{
+  llvm::SmallVector<int32_t, 4> pre_vals{0, 2, 3, 1};
+  mlir::Value pre_perm = rewriter.create<ConstOp>(opLoc, GetI32ElementsAttr(pre_vals, &rewriter));
+  mlir::Value pre_tran = rewriter.create<TransposeOp>(opLoc, input, pre_perm);
+  return pre_tran;
+}
+
+mlir::Value CreatePreTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Value &input,
+                               std::string &name)
+{
+  mlir::Location constLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/pre_tr/perm"));
+  mlir::Location transLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/pre_tr"));
+  llvm::SmallVector<int32_t, 4> pre_vals{0, 2, 3, 1};
+  mlir::Value pre_perm =
+    rewriter.create<ConstOp>(constLoc, GetI32ElementsAttr(pre_vals, &rewriter));
+  return rewriter.create<TransposeOp>(transLoc, input, pre_perm);
+}
+
+mlir::Value CreateTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Location &opLoc,
+                            mlir::Value &input, llvm::SmallVector<int32_t, 4> &perm)
+{
+  mlir::Value perm_val = rewriter.create<ConstOp>(opLoc, GetI32ElementsAttr(perm, &rewriter));
+  mlir::Value tran_val = rewriter.create<TransposeOp>(opLoc, input, perm_val);
+  return tran_val;
+}
+
+mlir::Value CreateTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Value &input,
+                            llvm::SmallVector<int32_t, 4> &perm, std::string &name)
+{
+  mlir::Location constLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/tr/perm"));
+  mlir::Location transLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/tr"));
+  mlir::Value perm_val = rewriter.create<ConstOp>(constLoc, GetI32ElementsAttr(perm, &rewriter));
+  return rewriter.create<TransposeOp>(transLoc, input, perm_val);
+}
+
+void ReplaceOpWithPostTranspose(mlir::ConversionPatternRewriter &rewriter, Operation *op,
+                                mlir::Location &opLoc, mlir::Value &input, mlir::TypeRange type)
+{
+  llvm::SmallVector<int32_t, 4> post_vals{0, 3, 1, 2};
+  mlir::Value post_perm = rewriter.create<ConstOp>(opLoc, GetI32ElementsAttr(post_vals, &rewriter));
+  rewriter.replaceOpWithNewOp<TransposeOp>(op, type, input, post_perm);
+}
+
+mlir::Value ReplaceOpWithPostTranspose(mlir::ConversionPatternRewriter &rewriter, Operation *op,
+                                       mlir::Value &input, mlir::TypeRange type, std::string &name)
+{
+  mlir::Location constLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/post_tr/perm"));
+  mlir::Location transLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/post_tr"));
+  llvm::SmallVector<int32_t, 4> post_vals{0, 3, 1, 2};
+  mlir::Value post_perm =
+    rewriter.create<ConstOp>(constLoc, GetI32ElementsAttr(post_vals, &rewriter));
+  mlir::Value post_tr = rewriter.create<TransposeOp>(transLoc, input, post_perm);
+  rewriter.replaceOp(op, {post_tr});
+  return post_tr;
+}
+
+mlir::Value ReplaceOpWithPostTranspose(mlir::PatternRewriter &rewriter, Operation *op,
+                                       mlir::Value &input, mlir::TypeRange type, std::string &name)
+{
+  mlir::Location constLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/post_tr/perm"));
+  mlir::Location transLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/post_tr"));
+  llvm::SmallVector<int32_t, 4> post_vals{0, 3, 1, 2};
+  mlir::Value post_perm =
+    rewriter.create<ConstOp>(constLoc, GetI32ElementsAttr(post_vals, &rewriter));
+  mlir::Value post_tr = rewriter.create<TransposeOp>(transLoc, input, post_perm);
+  rewriter.replaceOp(op, {post_tr});
+  return post_tr;
+}
+
 mlir::RankedTensorType GetChnLastType(mlir::RankedTensorType tensor_type)
 {
   auto tensor_shape = tensor_type.getShape();
