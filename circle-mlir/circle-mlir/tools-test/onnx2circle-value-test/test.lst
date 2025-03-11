@@ -5,3 +5,5 @@
 
 AddModel(Add_F32_R4)
 AddModel(Add_F32_R4_C1)
+AddModel(Transpose_F32_R4)
+AddModel(Transpose_F32_R4_pm)
