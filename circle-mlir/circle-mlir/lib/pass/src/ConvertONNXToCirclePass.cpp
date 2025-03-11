@@ -25,6 +25,7 @@
 //   class: ConvAbcd
 //    file: AbcdOp.h
 #include "ops/ConstantOp.h"
+#include "ops/TransposeOp.h"
 
 #include <circle-mlir/dialect/CircleDialect.h>
 
@@ -144,6 +145,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvBinaryT<mlir::ONNXAddOp, mlir::Circle::AddOp>>(typeConverter, context);
 
   patterns.insert<ConvConstant>(typeConverter, context);
+  patterns.insert<ConvTranspose>(typeConverter, context);
 
   auto res = mlir::applyFullConversion(function, target, std::move(patterns));
   if (mlir::failed(res))
