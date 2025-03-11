@@ -18,13 +18,28 @@
 #include "Shape.h"
 
 #include <pybind11.h>
+#include <stl_bind.h>
 
 namespace py = pybind11;
 using namespace circle_resizer;
 
+PYBIND11_MAKE_OPAQUE(Shape);
+
 PYBIND11_MODULE(circle_resizer_python_api, m)
 {
-  m.doc() = "circle_resizer::Shape";
+  m.doc() = "circle-resizer module";
 
-  py::class_<Dim>(m, "Dim").def(py::init<int32_t>()).def("value", &Dim::value);
+  py::class_<Dim> dim(m, "Dim");
+  dim.doc() = "circle_resizer::Dim";
+  dim.def(py::init<int32_t>());
+  dim.def("is_dynamic", &Dim::is_dynamic);
+  dim.def("value", &Dim::value);
+  dim.def(
+      "__eq__",
+      [](const Shape& rhs, const Shape& lhs) {
+          return rhs == lhs;
+      });
+
+  auto shape = py::bind_vector<Shape>(m, "Shape");
+  shape.doc() = "circle_resizer::Shape";
 }
