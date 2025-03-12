@@ -41,6 +41,9 @@ void Abs::execute() const
     case DataType::FLOAT32:
       eval<float>();
       break;
+    case DataType::S32:
+      eval<int32_t>();
+      break;
     default:
       throw std::runtime_error("luci-intp Abs Unsupported type.");
   }

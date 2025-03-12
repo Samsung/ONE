@@ -65,6 +65,24 @@ TEST(AbsTest, FloatSimple)
   SUCCEED();
 }
 
+TEST(AbsTest, S32Simple)
+{
+  Check<int32_t>(/*input_shape=*/{2, 3},
+                 /*output_shape=*/{2, 3},
+                 /*input_data=*/
+                 {
+                   0, -1, 3,  // Row 1
+                   1, -1, -2, // Row 2
+                 },
+                 /*output_data=*/
+                 {
+                   0, 1, 3, // Row 1
+                   1, 1, 2, // Row 2
+                 });
+
+  SUCCEED();
+}
+
 TEST(AbsTest, Type_Mismatch_NEG)
 {
   std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
