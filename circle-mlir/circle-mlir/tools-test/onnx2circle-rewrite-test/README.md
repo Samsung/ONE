@@ -1,6 +1,6 @@
 ## onnx2circle-rewrite-test
 
-This test is to validate "RewriteCirclePass" is working as expected.
+This test validates whether the "RewriteCirclePass" works as expected.
 
 Expectation is validated with expected operators should exist and non-expected
 operators should not exist.
