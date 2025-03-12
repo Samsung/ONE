@@ -68,8 +68,10 @@ compare the MSE of original inference result and subgraphs inference result
            -m ./subgraphs/ \
            -n scripts/subgraphs_ios.txt
 ```
-output: \
-Single model inference completed! \
-Multiple subgraph inference completed! \
-Comparing inference results between single ONNX model and multiple subgraphs... \
-Output '316' MSE: 5.125894080395578e-14
+output:
+```bash
+    Single model inference completed!
+    Multiple subgraph inference completed!
+    Comparing inference results between single ONNX model and multiple subgraphs...
+    Output '316' MSE: 5.125894080395578e-14
+```
