@@ -35,9 +35,28 @@ if [[ -f ${VENV_PATH}/bin/activate ]]; then
   source ${VENV_PATH}/bin/activate
 fi
 
-# TODO execute scripts
+# Execute ONNX model and generate input/output files
+echo "Run ${EXEC_ONNX_SCRIPT} ${ONNX_FILE}"
+python3 ${EXEC_ONNX_SCRIPT} ${ONNX_FILE}
 
-COMP_RESULT=0
+# Convert input H5 files to binary files for circle-interpreter
+echo "Run ${MAKE_CIRCLE_INPUT_SCRIPT} ${ONNX_FILE} ${CIRCLE_SOURCE_FILE}"
+python3 ${MAKE_CIRCLE_INPUT_SCRIPT} ${ONNX_FILE} ${CIRCLE_SOURCE_FILE}
+
+echo "Run ${MAKE_CIRCLE_INPUT_SCRIPT} ${ONNX_FILE} ${CIRCLE_TARGET_FILE}"
+python3 ${MAKE_CIRCLE_INPUT_SCRIPT} ${ONNX_FILE} ${CIRCLE_TARGET_FILE}
+
+# Execute circle models and generate output files
+echo "Run ${EXEC_CIRCLE_SCRIPT} ${CIRCLE_SOURCE_FILE}"
+python3 ${EXEC_CIRCLE_SCRIPT} ${CIRCLE_SOURCE_FILE}
+
+echo "Run ${EXEC_CIRCLE_SCRIPT} ${CIRCLE_TARGET_FILE}"
+python3 ${EXEC_CIRCLE_SCRIPT} ${CIRCLE_TARGET_FILE}
+
+# Compare two circle output files
+echo "Run ${COMP_CIRCLE_CIRCLE_SCRIPT} ${MODEL_NAME}"
+python3 ${COMP_CIRCLE_CIRCLE_SCRIPT} ${MODEL_NAME}
+COMP_RESULT=$?
 
 if [[ -f ${VENV_PATH}/bin/activate ]]; then
   deactivate

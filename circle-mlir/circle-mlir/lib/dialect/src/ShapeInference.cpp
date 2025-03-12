@@ -112,6 +112,93 @@ void AddOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// Conv2DOp
+//===----------------------------------------------------------------------===//
+
+void Conv2DOp::inferShapes()
+{
+  Conv2DOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // if input is dynamic, skip shape infer
+  auto input_op = getOperand(0);
+  auto input_ty = input_op.getType().dyn_cast_or_null<RankedTensorType>();
+  if (!input_ty.hasStaticShape())
+    return;
+
+  auto filter_op = getOperand(1);
+  auto filter_ty = filter_op.getType().dyn_cast_or_null<RankedTensorType>();
+  // If indeed both input type & filter type are ranked type and have ranks.
+  // We will need to check their ranks are valid.
+  if ((input_ty && input_ty.hasRank() && input_ty.getRank() != 4) ||
+      (filter_ty && filter_ty.hasRank() && filter_ty.getRank() != 4))
+  {
+    return;
+  }
+
+  // If either input or filter is unranked, we will just return unranked output shape.
+  if (!input_ty || !filter_ty || !input_ty.hasRank() || !filter_ty.hasRank())
+  {
+    return;
+  }
+
+  auto stride_h = op.getStrideHAttr().getInt();
+  auto stride_w = op.getStrideWAttr().getInt();
+  auto dilation_h = op.getDilationHFactorAttr().getInt();
+  auto dilation_w = op.getDilationWFactorAttr().getInt();
+
+  // We don't have EXPLICIT PADDING in Circle.
+  auto paddings = op.getPadding();
+  mlir::Circle::Padding padding;
+  auto padding_is_valid = GetPaddingFromString(paddings.str(), &padding);
+  if (!padding_is_valid.ok())
+  {
+    return;
+  }
+
+  // Output always have rank 4. All dimensions are initialized to
+  // dynamic size and can be partially inferred.
+  // TFL's conv2d is always NHWC format & the filter is OHWI.
+  SmallVector<int64_t, 4> return_shape(4, ShapedType::kDynamic);
+  return_shape[0] = input_ty.getDimSize(0);
+  return_shape[3] = filter_ty.getDimSize(0);
+
+  // Spatial dimensions can be inferred only when both input and filter are
+  // ranked because we need to get their spatial dimensions.
+
+  // Height.
+  if (!input_ty.isDynamicDim(1) && !filter_ty.isDynamicDim(1))
+  {
+    int64_t output_height;
+    if (failed(ComputeConvWindowedOutputSize(input_ty.getDimSize(1), filter_ty.getDimSize(1),
+                                             dilation_h, stride_h, padding, &output_height)))
+    {
+      return;
+    }
+    return_shape[1] = output_height;
+  }
+
+  // Width.
+  if (!input_ty.isDynamicDim(2) && !filter_ty.isDynamicDim(2))
+  {
+    int64_t output_width;
+    if (failed(ComputeConvWindowedOutputSize(input_ty.getDimSize(2), filter_ty.getDimSize(2),
+                                             dilation_w, stride_w, padding, &output_width)))
+    {
+      return;
+    }
+    return_shape[2] = output_width;
+  }
+
+  dumpShape<Conv2DOp>(op, return_shape);
+
+  RankedTensorType inferred_type = RankedTensorType::get(return_shape, input_ty.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // CustomOp
 //===----------------------------------------------------------------------===//
 
@@ -146,6 +233,249 @@ void CustomOp::inferShapes()
 
     RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
     getResult(0).setType(inferred_type);
+  }
+}
+
+//===----------------------------------------------------------------------===//
+// PadOp
+//===----------------------------------------------------------------------===//
+
+void PadOp::inferShapes()
+{
+  PadOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // if input is dynamic, skip shape infer
+  auto input_op = getOperand(0);
+  auto input_type = input_op.getType().cast<TensorType>();
+  if (!input_type.hasStaticShape())
+    return;
+
+  // skip if size input is not constant
+  mlir::Operation *is_const = getOperand(1).getDefiningOp();
+  if (!mlir::isa_and_nonnull<ConstOp>(is_const))
+    return;
+  auto const_op = cast<ConstOp>(is_const);
+  std::vector<int64_t> padding_values;
+  if (!extractElements(const_op, padding_values))
+    return;
+
+  auto input_shape = input_type.getShape();
+  llvm::SmallVector<int64_t, 4> inferred;
+  int64_t num_dims = input_type.getRank();
+  for (int64_t i = 0; i < num_dims; ++i)
+  {
+    const int64_t padding_before = padding_values[i * 2];
+    const int64_t padding_after = padding_values[i * 2 + 1];
+    assert(padding_before >= 0 && padding_after >= 0);
+    int64_t output_val = input_shape[i] + padding_before + padding_after;
+    inferred.push_back(output_val);
+  }
+
+  dumpShape<PadOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
+// ReshapeOp
+//===----------------------------------------------------------------------===//
+
+bool GetReshapeOutputType(const Value input, const Value shape, RankedTensorType &output_ty)
+{
+  auto input_ty = input.getType().cast<TensorType>();
+  auto element_ty = input_ty.getElementType();
+  auto shape_ty = shape.getType().dyn_cast<RankedTensorType>();
+  if (!shape_ty)
+    return false;
+
+  if (shape_ty.getRank() != 1)
+  {
+    assert(false);
+    return false;
+  }
+
+  mlir::DenseIntElementsAttr shape_attr;
+  if (!matchPattern(shape, m_Constant(&shape_attr)))
+  {
+    // If only shape of `shape` is known, return ranked but dynamic output shape.
+    if (shape_ty.hasStaticShape())
+    {
+      llvm::SmallVector<int64_t, 8> dynamic_shape(shape_ty.getDimSize(0), ShapedType::kDynamic);
+      output_ty = GetTypeFromTensorShape(dynamic_shape, element_ty);
+      return true;
+    }
+    return false;
+  }
+
+  auto input_shape = input_ty.getShape();
+  llvm::SmallVector<int64_t, 4> input_sh_vals(input_shape.begin(), input_shape.end());
+
+  // Detect if reshape output shape is folded.
+  int unknown_index = -1;
+  // The product of constant shape argument excluding unknown dimension.
+  int64_t shape_ty_size = 1;
+  llvm::SmallVector<int64_t, 8> output_ty_shape;
+  output_ty_shape.reserve(shape_attr.getNumElements());
+  int64_t dim_index = 0;
+  for (const auto &dim : llvm::enumerate(shape_attr.getValues<APInt>()))
+  {
+    int64_t size = dim.value().getSExtValue();
+    if (size == kDynamicSize || size == ShapedType::kDynamic)
+    {
+      if (unknown_index != -1)
+      {
+        LLVM_DEBUG({
+          llvm::dbgs() << "Got two or more unknown: ";
+          llvm::dbgs() << unknown_index << " and " << dim.index();
+          llvm::dbgs() << "\n";
+        });
+        return false;
+      }
+      unknown_index = dim.index();
+    }
+    else if (size == 0)
+    {
+      if (dim_index < input_sh_vals.size())
+        size = input_sh_vals[dim_index];
+      else
+      {
+        // stop for debug version to find a mdoel with this case
+        assert(false);
+        size = 1;
+      }
+      shape_ty_size *= size;
+    }
+    else if (size > 0)
+    {
+      shape_ty_size *= size;
+    }
+    else
+    {
+      LLVM_DEBUG({
+        llvm::dbgs() << "Got invalid size ";
+        llvm::dbgs() << size << " at " << dim.index();
+        llvm::dbgs() << "\n";
+      });
+      return false;
+    }
+    output_ty_shape.push_back(size);
+    dim_index++;
+  }
+
+  if (!input_ty.hasStaticShape())
+  {
+    output_ty = GetTypeFromTensorShape(output_ty_shape, element_ty);
+    return true;
+  }
+
+  // Compute the value of the unknown dimension.
+  if (unknown_index != -1)
+  {
+    // Compute number of elements in tensor shape.
+    int64_t input_ty_size = 1;
+    for (const auto &dim : input_ty.getShape())
+    {
+      // stop for debug version to find this case
+      assert(dim > 0);
+      if (dim > 0)
+      {
+        input_ty_size *= dim;
+      }
+    }
+
+    const int64_t missing_dim = input_ty_size / shape_ty_size;
+    if (shape_ty_size * missing_dim != input_ty_size)
+    {
+      LLVM_DEBUG({
+        llvm::dbgs() << "requires 'input' number of elements be a multiple of ";
+        llvm::dbgs() << shape_ty_size << ", but got " << input_ty_size;
+        llvm::dbgs() << "\n";
+      });
+      return false;
+    }
+
+    // Set the unknown dimension such that total number of elements remain
+    // constant.
+    output_ty_shape[unknown_index] = missing_dim;
+  }
+
+  output_ty = GetTypeFromTensorShape(output_ty_shape, element_ty);
+  return true;
+}
+
+void ReshapeOp::inferShapes()
+{
+  ReshapeOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  const Value input = op.getInput();
+  const Value shape = op.getShape();
+
+  RankedTensorType inferred_type;
+  if (GetReshapeOutputType(input, shape, inferred_type))
+  {
+    auto output_shape = inferred_type.getShape();
+    dumpShape<ReshapeOp>(op, output_shape);
+
+    getResult().setType(inferred_type);
+  }
+}
+
+//===----------------------------------------------------------------------===//
+// TransposeOp
+//===----------------------------------------------------------------------===//
+
+void TransposeOp::inferShapes()
+{
+  TransposeOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  auto input_type = op.getInput().getType().cast<ShapedType>();
+  auto perm_type = op.getPerm().getType().cast<ShapedType>();
+
+  if (input_type.hasStaticShape() && perm_type.hasStaticShape())
+  {
+    if (perm_type.getNumElements() != input_type.getRank())
+    {
+      return;
+    }
+  }
+
+  mlir::DenseIntElementsAttr perm;
+  if (!matchPattern(op.getPerm(), m_Constant(&perm)))
+  {
+    return;
+  }
+
+  llvm::SmallVector<int64_t, 4> perm_list;
+  for (const auto &perm_element : perm.getValues<APInt>())
+  {
+    const int64_t val = perm_element.getSExtValue();
+    perm_list.push_back(val);
+  }
+
+  // Get transposed shape and set it to the output type
+  if (input_type.hasStaticShape() && !output_type.hasStaticShape())
+  {
+    llvm::SmallVector<int64_t, 4> transposed_shape;
+    for (int64_t axis : perm_list)
+    {
+      transposed_shape.push_back(input_type.getDimSize(axis));
+    }
+
+    dumpShape<TransposeOp>(op, transposed_shape);
+
+    auto inferred_type =
+      mlir::Circle::GetTypeFromTensorShape(transposed_shape, input_type.getElementType());
+    getResult().setType(inferred_type);
   }
 }
 

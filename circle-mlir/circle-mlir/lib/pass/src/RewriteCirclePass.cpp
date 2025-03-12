@@ -28,6 +28,9 @@
 #include <mlir/IR/PatternMatch.h>
 #include <mlir/Transforms/GreedyPatternRewriteDriver.h>
 
+// Optimizations
+#include "opt/ConvertReshapeShape32.h"
+
 namespace mlir
 {
 namespace Circle
@@ -87,6 +90,8 @@ void RewriteCirclePass::applyActivationFusion()
 
   // TODO enable Tanh after circle-interpreter works
   // patterns.add<FuseConv2DRelu<TanhOp, ACT_TANH>>(context);
+
+  patterns.add<ConvertReshapeShape32>(context);
 
   // TODO add more patterns
 
