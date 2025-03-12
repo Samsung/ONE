@@ -40,7 +40,7 @@ void Gather::configure()
   {
     LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::FLOAT32);
   }
-  else if(params()->element_type() == DataType::S32)
+  else if (params()->element_type() == DataType::S32)
   {
     LUCI_INTERPRETER_CHECK(output()->element_type() == DataType::S32);
   }
@@ -113,8 +113,7 @@ void Gather::execute() const
   }
 }
 
-template<typename T>
-void Gather::eval() const
+template <typename T> void Gather::eval() const
 {
   assert(indices()->element_type() == DataType::S32 || indices()->element_type() == DataType::S64);
 
@@ -130,16 +129,16 @@ void Gather::eval() const
     const auto indices_data = getTensorData<int32_t>(indices());
 
     luci_interpreter_pal::Gather<T, int32_t>(tparams, getTensorShape(params()), params_data,
-                                                 getTensorShape(indices()), indices_data,
-                                                 getTensorShape(output()), output_data);
+                                             getTensorShape(indices()), indices_data,
+                                             getTensorShape(output()), output_data);
   }
   else
   {
     const auto indices_data = getTensorData<int64_t>(indices());
 
     luci_interpreter_pal::Gather<T, int64_t>(tparams, getTensorShape(params()), params_data,
-                                                 getTensorShape(indices()), indices_data,
-                                                 getTensorShape(output()), output_data);
+                                             getTensorShape(indices()), indices_data,
+                                             getTensorShape(output()), output_data);
   }
 }
 

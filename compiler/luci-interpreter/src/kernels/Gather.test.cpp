@@ -97,8 +97,7 @@ TEST_F(GatherTest, S32ParamsDataType)
   std::vector<int32_t> indices_data{1, 0, 1, 5};
   std::vector<float> ref_output_data{2, 1, 2, 6};
 
-  Tensor params_tensor =
-    makeInputTensor<DataType::S32>({1, 6}, params_data, _memory_manager.get());
+  Tensor params_tensor = makeInputTensor<DataType::S32>({1, 6}, params_data, _memory_manager.get());
   Tensor indices_tensor = makeInputTensor<DataType::S32>({4}, indices_data, _memory_manager.get());
   Tensor output_tensor = makeOutputTensor(DataType::S32);
   GatherParams gparams;
