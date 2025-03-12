@@ -112,6 +112,93 @@ void AddOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// Conv2DOp
+//===----------------------------------------------------------------------===//
+
+void Conv2DOp::inferShapes()
+{
+  Conv2DOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // if input is dynamic, skip shape infer
+  auto input_op = getOperand(0);
+  auto input_ty = input_op.getType().dyn_cast_or_null<RankedTensorType>();
+  if (!input_ty.hasStaticShape())
+    return;
+
+  auto filter_op = getOperand(1);
+  auto filter_ty = filter_op.getType().dyn_cast_or_null<RankedTensorType>();
+  // If indeed both input type & filter type are ranked type and have ranks.
+  // We will need to check their ranks are valid.
+  if ((input_ty && input_ty.hasRank() && input_ty.getRank() != 4) ||
+      (filter_ty && filter_ty.hasRank() && filter_ty.getRank() != 4))
+  {
+    return;
+  }
+
+  // If either input or filter is unranked, we will just return unranked output shape.
+  if (!input_ty || !filter_ty || !input_ty.hasRank() || !filter_ty.hasRank())
+  {
+    return;
+  }
+
+  auto stride_h = op.getStrideHAttr().getInt();
+  auto stride_w = op.getStrideWAttr().getInt();
+  auto dilation_h = op.getDilationHFactorAttr().getInt();
+  auto dilation_w = op.getDilationWFactorAttr().getInt();
+
+  // We don't have EXPLICIT PADDING in Circle.
+  auto paddings = op.getPadding();
+  mlir::Circle::Padding padding;
+  auto padding_is_valid = GetPaddingFromString(paddings.str(), &padding);
+  if (!padding_is_valid.ok())
+  {
+    return;
+  }
+
+  // Output always have rank 4. All dimensions are initialized to
+  // dynamic size and can be partially inferred.
+  // TFL's conv2d is always NHWC format & the filter is OHWI.
+  SmallVector<int64_t, 4> return_shape(4, ShapedType::kDynamic);
+  return_shape[0] = input_ty.getDimSize(0);
+  return_shape[3] = filter_ty.getDimSize(0);
+
+  // Spatial dimensions can be inferred only when both input and filter are
+  // ranked because we need to get their spatial dimensions.
+
+  // Height.
+  if (!input_ty.isDynamicDim(1) && !filter_ty.isDynamicDim(1))
+  {
+    int64_t output_height;
+    if (failed(ComputeConvWindowedOutputSize(input_ty.getDimSize(1), filter_ty.getDimSize(1),
+                                             dilation_h, stride_h, padding, &output_height)))
+    {
+      return;
+    }
+    return_shape[1] = output_height;
+  }
+
+  // Width.
+  if (!input_ty.isDynamicDim(2) && !filter_ty.isDynamicDim(2))
+  {
+    int64_t output_width;
+    if (failed(ComputeConvWindowedOutputSize(input_ty.getDimSize(2), filter_ty.getDimSize(2),
+                                             dilation_w, stride_w, padding, &output_width)))
+    {
+      return;
+    }
+    return_shape[2] = output_width;
+  }
+
+  dumpShape<Conv2DOp>(op, return_shape);
+
+  RankedTensorType inferred_type = RankedTensorType::get(return_shape, input_ty.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // CustomOp
 //===----------------------------------------------------------------------===//
 
