@@ -372,6 +372,43 @@ def CIR_ConstOp : Op<CIR_Dialect, "pseudo_const", [ConstantLike, Pure,
   }];
 }
 
+def CIR_Conv2DOp : CIR_ConvOp<"conv_2d", "Convolution", /*TODO enable 0,*/
+      [DeclareOpInterfaceMethods<InferTypeOpInterface>,
+       DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+       /*TODO enable,
+       DynamicRangeQuantizedOpInterface*/]> {
+  let arguments = (
+    ins CIR_TensorOf<[F32/*TODO enable, QI8, QUI8, QI16*/]>:$input,
+    CIR_TensorOf<[F32/*TODO enable QI4, QI8, QUI8*/]>:$filter,
+    CIR_1DTensorOfOrNone<[F32, I32, I64]>:$bias,
+    I32Attr:$dilation_h_factor,
+    I32Attr:$dilation_w_factor,
+    CIR_AFAttr:$fused_activation_function,
+    CIR_PaddingAttr:$padding,
+    I32Attr:$stride_h,
+    I32Attr:$stride_w
+  );
+
+  let hasCanonicalizer = 1;
+
+  let extraClassDeclaration = [{
+    // AffineQuantizedOpInterface:
+    int GetChannelDimIndex() { return 0; }
+    int GetQuantizationDimIndex() { return 0; }
+    // SparseOpInterface:
+    std::vector<int> GetSparseOperands() { return {1}; }
+    std::vector<std::vector<int>> GetFloatBlockSize() { return {}; }
+    std::vector<std::vector<int>> GetQuantizedBlockSize() { return {}; }
+
+    // Returns whether the return types are compatible.
+    static bool isCompatibleReturnTypes(TypeRange l, TypeRange r);
+
+    // DynamicRangeQuantizedOpInterface:
+    bool GetDynamicRangeQuantKernelSupport() { return true; }
+    std::vector<int> GetQuantizableOperandIndices() { return {1}; }
+  }];
+}
+
 def CIR_CustomOp : Op<CIR_Dialect, "custom", [
   DeclareOpInterfaceMethods<CIR_RuntimeVerification>,
   DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>
