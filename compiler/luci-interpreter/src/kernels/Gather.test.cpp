@@ -18,6 +18,8 @@
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
 
+#include <numeric>
+
 namespace luci_interpreter
 {
 namespace kernels
@@ -86,6 +88,32 @@ TEST_F(GatherTest, Simple_Batch)
   EXPECT_THAT(extractTensorData<float>(output_tensor),
               ::testing::ElementsAreArray(ref_output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({3, 2}));
+}
+
+TEST_F(GatherTest, S32ParamsDataType)
+{
+  std::vector<int32_t> params_data(6);
+  std::iota(std::begin(params_data), std::end(params_data), 1);
+  std::vector<int32_t> indices_data{1, 0, 1, 5};
+  std::vector<float> ref_output_data{2, 1, 2, 6};
+
+  Tensor params_tensor =
+    makeInputTensor<DataType::S32>({1, 6}, params_data, _memory_manager.get());
+  Tensor indices_tensor = makeInputTensor<DataType::S32>({4}, indices_data, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::S32);
+  GatherParams gparams;
+
+  gparams.axis = 1;
+  gparams.batch_dims = 0;
+
+  Gather kernel(&params_tensor, &indices_tensor, &output_tensor, gparams);
+  kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<int32_t>(output_tensor),
+              ::testing::ElementsAreArray(ref_output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 4}));
 }
 
 TEST_F(GatherTest, Simple_NEG)
