@@ -39,7 +39,6 @@ TEST(ImporterEx, uses_default_error_handler_NEG)
 
 TEST(ImporterEx, calls_external_error_handler_NEG)
 {
-
   struct ErrorHandler
   {
     ErrorHandler(bool &flag) : _flag{flag} {}
