@@ -2,8 +2,9 @@
 
 This test validates whether the "RewriteCirclePass" works as expected.
 
-Expectation is validated with expected operators should exist and non-expected
-operators should not exist.
+The test checks:
+- Expected operators exist in the output.
+- Non-expected operators do not exist.
 
 Procedure are like follows.
 - load models used only from 'models/net' folder
