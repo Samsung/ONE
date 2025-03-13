@@ -74,8 +74,7 @@ def compare_outputs(onnx_model,
             diff_val = np.subtract(onnx_output, circle_output)
             print('ONNX Result', onnx_output)
             print('Diff', diff_val)
-            print('Diff Max', np.ndarray.max(diff_val), 'in tolerance', rtolerance,
-                  atolerance)
+            print('Diff Max', np.max(diff_val), 'in tolerance', rtolerance, atolerance)
 
         result_compare = result_compare and result_compare_one
 
