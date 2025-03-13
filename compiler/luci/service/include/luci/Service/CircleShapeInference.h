@@ -173,7 +173,7 @@ public:
   // loco::TensorShape visit(const luci::CircleInput *node) final;
   // loco::TensorShape visit(const luci::CircleNonMaxSuppressionV4Out *node) final;
   // loco::TensorShape visit(const luci::CircleNonMaxSuppressionV5Out *node) final;
-  // loco::TensorShape visit(const luci::CircleOutput *node) final;
+  loco::TensorShape visit(const luci::CircleOutput *node) final;
   // loco::TensorShape visit(const luci::CircleOutputDummy *node) final;
   // loco::TensorShape visit(const luci::CircleOutputExclude *node) final;
   // loco::TensorShape visit(const luci::CircleSplitOut *node) final;
