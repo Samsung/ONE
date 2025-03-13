@@ -97,3 +97,10 @@ Test build
 ```
 make testr
 ```
+
+## TensorFlow source code
+
+Some source codes are referenced from TensorFlow and the file path is added to
+inside our source.
+
+Current codes are from `v2.12.1` tag.
