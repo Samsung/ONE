@@ -5,6 +5,11 @@
 
 AddModel(Add_F32_R4)
 AddModel(Add_F32_R4_C1)
+AddModel(Pad_Constant2d_F32_R4)
+# TODO AddModel(Pad_Constant2d_F32_R4_v14)
+AddModel(Pad_Constant2d_F32_R4_1)
+AddModel(Pad_Constant2d_F32_R4_t4)
+AddModel(Pad_Constant2d_F32_R4_t8)
 AddModel(Reshape_F32_R4_1)
 AddModel(Reshape_F32_R4_2)
 AddModel(Reshape_F32_R4_3)
