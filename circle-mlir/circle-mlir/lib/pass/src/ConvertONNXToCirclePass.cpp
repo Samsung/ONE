@@ -25,6 +25,7 @@
 //   class: ConvAbcd
 //    file: AbcdOp.h
 #include "ops/ConstantOp.h"
+#include "ops/ConvOp.h"
 #include "ops/NoneOp.h"
 #include "ops/PadOp.h"
 #include "ops/ReshapeOp.h"
@@ -149,6 +150,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvBinaryT<mlir::ONNXAddOp, mlir::Circle::AddOp>>(typeConverter, context);
 
   patterns.insert<ConvConstant>(typeConverter, context);
+  patterns.insert<ConvConv>(typeConverter, context);
   patterns.insert<ConvNone>(typeConverter, context);
   patterns.insert<ConvPad>(typeConverter, context);
   patterns.insert<ConvReshape>(typeConverter, context);
