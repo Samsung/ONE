@@ -16,8 +16,16 @@
  */
 
 #include "Shape.h"
+#include "ModelData.h"
+#include "ModelEditor.h"
+
+#include <vector>
+#include <string>
+#include <memory>
+#include <sstream>
 
 #include <pybind11.h>
+#include <stl.h>
 #include <stl_bind.h>
 
 namespace py = pybind11;
@@ -34,8 +42,49 @@ PYBIND11_MODULE(circle_resizer_python_api, m)
   dim.def(py::init<int32_t>());
   dim.def("is_dynamic", &Dim::is_dynamic);
   dim.def("value", &Dim::value);
-  dim.def("__eq__", [](const Shape &rhs, const Shape &lhs) { return rhs == lhs; });
+  dim.def("__eq__", [](const Dim &rhs, const Dim &lhs) { return rhs.value() == lhs.value(); });
+  dim.def("__str__", [](const Dim &self) { return std::to_string(self.value()); });
 
   auto shape = py::bind_vector<Shape>(m, "Shape");
   shape.doc() = "circle_resizer::Shape";
+  shape.def("__eq__", [](const Shape &rhs, const Shape &lhs) {
+    if (rhs.size() != lhs.size())
+    {
+      return false;
+    }
+    for (int i = 0; i < rhs.size(); ++i)
+    {
+      if (!(rhs[i] == lhs[i]))
+      {
+        return false;
+      }
+    }
+    return true;
+  });
+  shape.def("__str__", [](const Shape &shape) {
+    std::stringstream ss;
+    ss << "[";
+    for (int i = 0; i < shape.size() - 1; ++i)
+    {
+      ss << shape[i].value() << ", ";
+    }
+    ss << shape.back().value() << "]";
+    return ss.str();
+  });
+
+  py::class_<ModelData> model_data(m, "ModelData");
+  model_data.doc() = "circle_resizer::ModelData";
+  model_data.def(py::init<const std::vector<uint8_t> &>(), py::arg("buffer"));
+  model_data.def(py::init<const std::string &>(), py::arg("model_path"));
+  model_data.def("buffer", &ModelData::buffer);
+  model_data.def("input_shapes", &ModelData::input_shapes);
+  model_data.def("output_shapes", &ModelData::output_shapes);
+  model_data.def("save", py::overload_cast<std::ostream &>(&ModelData::save), py::arg("stream"));
+  model_data.def("save", py::overload_cast<const std::string &>(&ModelData::save),
+                 py::arg("output_path"));
+
+  py::class_<ModelEditor> model_editor(m, "ModelEditor");
+  model_editor.doc() = "circle_resizer::ModelEditor";
+  model_editor.def(py::init<std::shared_ptr<ModelData>>(), py::arg("model_data"));
+  model_editor.def("resize_inputs", &ModelEditor::resize_inputs, py::arg("shapes"));
 }
