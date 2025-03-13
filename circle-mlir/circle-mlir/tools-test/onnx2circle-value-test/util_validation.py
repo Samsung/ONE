@@ -19,7 +19,11 @@ def get_peir_from(baseline_output, target_output):
         PEIR = 0
     else:
         INTERVAL = baseline_max - baseline_min
-        PEIR = PEAK_ERROR / INTERVAL
+        if INTERVAL == 0:
+            # Set to infinity because INTERVAL is zero
+            PEIR = np.inf
+        else:
+            PEIR = PEAK_ERROR / INTERVAL
 
     PEIR_res = '{:.4f}'.format(PEIR) if PEIR <= 1.0 else '> 1'
 
