@@ -2,10 +2,10 @@
 
 Circle MLIR dialect and tools
 
-## Tools provided
+## Provided Tools
 
 _onnx2circle_
-- conversion tool of ONNX to Circle model for `compiler`
+- a tool that converts ONNX models to Circle format, used by `compiler`
 
 ## How to build
 
@@ -29,7 +29,8 @@ Install `one-compiler` package;
 - download and install latest `ONE Release` from https://github.com/Samsung/ONE/releases
 - actually we only need `circle-interperter` tool for validation, but not ready yet
 
-Or use local build/install version of `ONE/compiler` and set environment variable;
+Alternatively, if you have a locally built version of `ONE/compiler`,
+set the environment variable as follows;
 ```
 export ONE_COMPILER_ROOT=/home/user/one/build/install
 ```
@@ -51,9 +52,9 @@ Build externals;
 make prep
 ```
 
-NOTE `llvm-project` is built as `Debug` which may require 32G or more RAM.
-- if build fails for some reason, please change to `-DCMAKE_BUILD_TYPE=Release`
-  `prep` target in `Makefile.sample` file.
+NOTE `llvm-project` builds in `Debug` mode, which may require 32GB or more RAM.
+- if the build fails, try changing the build type to `-DCMAKE_BUILD_TYPE=Release`
+  in the `prep` target of `Makefile.sample` file.
 
 NOTE `prep` build is needed only once.
 
