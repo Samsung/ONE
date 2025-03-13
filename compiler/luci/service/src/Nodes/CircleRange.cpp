@@ -84,5 +84,4 @@ loco::TensorShape Algorithm::visit(const luci::CircleRange *node)
 }
 
 } // namespace sinf
-
 } // namespace luci

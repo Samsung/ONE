@@ -37,5 +37,4 @@ loco::TensorShape Algorithm::visit(const luci::CircleNeg *node)
 }
 
 } // namespace sinf
-
 } // namespace luci

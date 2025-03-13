@@ -122,5 +122,4 @@ loco::TensorShape Algorithm::visit(const luci::CircleFullyConnected *node)
 }
 
 } // namespace sinf
-
 } // namespace luci

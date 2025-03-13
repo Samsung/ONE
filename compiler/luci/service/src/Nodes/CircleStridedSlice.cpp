@@ -471,5 +471,4 @@ loco::TensorShape Algorithm::visit(const luci::CircleStridedSlice *node)
 }
 
 } // namespace sinf
-
 } // namespace luci
