@@ -8,6 +8,8 @@ ConvertUnitModel(Add_F32.onnx.mlir)
 # shape inference validation
 
 ValidateShapeInf(Add_F32_us.circle.mlir)
+ValidateShapeInf(Conv2d_F32_R4_us.circle.mlir)
+ValidateShapeInf(Pad_F32_R4_us.circle.mlir)
 ValidateShapeInf(Reshape_F32_R4_us.circle.mlir)
 ValidateShapeInf(Transpose_F32_R4_us.circle.mlir)
 
