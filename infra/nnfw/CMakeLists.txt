@@ -41,7 +41,7 @@ endmacro(nnas_include)
 #    - this may drop warnings like "-- Could NOT find Eigen (missing: Eigen_DIR)
 #  nnfw_find_package(Eigen QUIET): Load settings silently, without warnings
 #  nnfw_find_package(Eigen REQUIRED): Load settings but stop with error when failed
-macro(nnfw_find_package PREFIX) #
+macro(nnfw_find_package PREFIX)
   find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
     PATHS ${CMAKE_SOURCE_DIR}/cmake/packages
     ${ARGN}
@@ -49,7 +49,7 @@ macro(nnfw_find_package PREFIX) #
 endmacro(nnfw_find_package)
 
 # Common 'find_package()' wrapper to find in infra/cmake/packages folder
-macro(nnas_find_package PREFIX) #
+macro(nnas_find_package PREFIX)
   find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
     PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages
     ${ARGN}
