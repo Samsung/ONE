@@ -17,6 +17,7 @@ PYTHON3_PATH=$(shell dirname $(PYTHON3_CMD))
 
 CIRCLEMLIR_BUILD_DEBUG?=build/debug
 CIRCLEMLIR_BUILD_REL?=build/release
+CIRCLEMLIR_BUILD_COV?=build/coverage
 CIRCLEMLIR_EXTS_DEBUG?=build/externals/debug
 CIRCLEMLIR_EXTS_REL?=build/externals/release
 
@@ -40,6 +41,12 @@ help:
 	@echo "make prepr    : prepare externals for release (needed only once)"
 	@echo "make cfgr     : configure circle-mlir for release build"
 	@echo "make rel      : build for release"
+	@echo "make prepcov  : prepare submodules for coverage test (needed only once)"
+	@echo "make cfgcov   : configure circle-mlir for debug build with coverage test"
+	@echo "make debugcov : build for test coverage"
+	@echo "make testcov  : run coverage test"
+	@echo "make gencov   : generate test coverage report"
+	@echo "make cleancov : clean test coverage build"
 	@echo "make testr    : test for release"
 	@echo "make cleanr   : clean release build"
 	@echo "make cleanall : clean all build including overlay, externals"
@@ -51,6 +58,9 @@ all: cfg debug
 #
 _mkbuild:
 	mkdir -p $(CIRCLEMLIR_BUILD_DEBUG)
+
+_mkbuildcov:
+	mkdir -p $(CIRCLEMLIR_BUILD_COV)
 
 _mkbuildr:
 	mkdir -p $(CIRCLEMLIR_BUILD_REL)
@@ -85,6 +95,36 @@ test:
 clean:
 	rm -f $(CIRCLEMLIR_BUILD_DEBUG)/CMakeCache.txt
 	rm -rf $(CIRCLEMLIR_BUILD_DEBUG)/circle-mlir/
+
+#-------------------------------------------------------------------------------
+# for debug test coverage
+
+prepcov: _mkbuildcov
+	Python3_ROOT_DIR=$(CIRCLEMLIR_PY3_ROOT) \
+	cmake -B $(CIRCLEMLIR_EXTS_DEBUG) -S ./externals -DCMAKE_BUILD_TYPE=Release
+	cmake --build $(CIRCLEMLIR_EXTS_DEBUG) -j$(CIRCLEMLIR_BUILD_JOBS)
+
+cfgcov: _mkbuildcov
+	cmake -B $(CIRCLEMLIR_BUILD_COV) -S ./ \
+	-DCIRCLE_MLIR_EXTERNALS=$(CIRCLEMLIR_EXTS_DEBUG) \
+	-DONNX2CIRCLE_TEST_MODELS_SINGLE=ON \
+	-DENABLE_COVERAGE=ON
+
+debugcov:
+	CM_PASS_DUMP=2 \
+	cmake --build $(CIRCLEMLIR_BUILD_COV) -j$(CIRCLEMLIR_BUILD_JOBS)
+
+testcov:
+	CM_PASS_DUMP=2 \
+	CTEST_OUTPUT_ON_FAILURE=1 \
+	cmake --build $(CIRCLEMLIR_BUILD_COV) --verbose -- test
+
+gencov:
+	bash infra/tools/gen-coverage-report circle-mlir
+
+cleancov:
+	rm -f $(CIRCLEMLIR_BUILD_COV)/CMakeCache.txt
+	rm -rf $(CIRCLEMLIR_BUILD_COV)/circle-mlir/
 
 #-------------------------------------------------------------------------------
 # for release
