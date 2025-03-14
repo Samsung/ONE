@@ -39,12 +39,13 @@ public:
 
   std::shared_ptr<IConfig> config() const override { return _config; }
 
-  std::unique_ptr<onert::backend::BackendContext> newContext(ContextData &&data) const override
+  [[nodiscard]] std::unique_ptr<onert::backend::BackendContext>
+  newContext(ContextData &&data) const override
   {
     return std::make_unique<DummyBackendContext>(this, std::move(data));
   }
 
-  std::unique_ptr<backend::train::TrainableBackendContext>
+  [[nodiscard]] std::unique_ptr<backend::train::TrainableBackendContext>
   newContext(backend::train::TrainableContextData &&tdata) const override
   {
     const auto &tgraph = *tdata.tgraph;

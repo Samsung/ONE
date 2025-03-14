@@ -36,7 +36,8 @@ public:
                   const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
                   const std::shared_ptr<DevContext> &dev_context);
 
-  std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex op_ind) override;
+  [[nodiscard]] std::unique_ptr<exec::FunctionSequence>
+  generate(ir::OperationIndex op_ind) override;
 
 private:
   void visit(const ir::operation::Bulk &node) override;
