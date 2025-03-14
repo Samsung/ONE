@@ -33,7 +33,7 @@ include(CTest)
 include(GTestHelper)
 include(GoogleTest)
 
-# to override submodules install
+# to override externals install
 if(DEFINED ENV{CIRCLE_MLIR_LOCALINST})
   set(CIRCLE_MLIR_LOCALINST $ENV{CIRCLE_MLIR_LOCALINST})
 endif()
