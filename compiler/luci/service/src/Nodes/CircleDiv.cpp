@@ -50,5 +50,4 @@ loco::TensorShape Algorithm::visit(const luci::CircleDiv *node)
 }
 
 } // namespace sinf
-
 } // namespace luci

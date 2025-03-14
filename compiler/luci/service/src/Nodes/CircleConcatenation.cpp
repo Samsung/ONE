@@ -104,5 +104,4 @@ loco::TensorShape Algorithm::visit(const luci::CircleConcatenation *node)
 }
 
 } // namespace sinf
-
 } // namespace luci
