@@ -15,11 +15,11 @@
  */
 
 #include "luci/Service/CircleShapeInference.h"
+
 #include "CircleShapeInferenceHelper.h"
 
 namespace luci
 {
-
 namespace sinf
 {
 
@@ -30,5 +30,4 @@ loco::TensorShape Algorithm::visit(const luci::CircleOutput *node)
 }
 
 } // namespace sinf
-
 } // namespace luci
