@@ -48,6 +48,9 @@ help:
 	@echo "make gencov   : generate test coverage report"
 	@echo "make cleancov : clean test coverage build"
 	@echo "make testr    : test for release"
+	@echo "make cfgdi    : configure circle-mlir for debug build in Docker image"
+	@echo "make cfgcovdi : configure circle-mlir for debug build with coverage test in Docker image"
+	@echo "make cfgri    : configure circle-mlir for release build in Docker image"
 	@echo "make cleanr   : clean release build"
 	@echo "make cleanall : clean all build including overlay, externals"
 
@@ -114,6 +117,8 @@ debugcov:
 	CM_PASS_DUMP=2 \
 	cmake --build $(CIRCLEMLIR_BUILD_COV) -j$(CIRCLEMLIR_BUILD_JOBS)
 
+# NOTE to configure in Docker, use "make cfgcovdi"
+
 testcov:
 	CM_PASS_DUMP=2 \
 	CTEST_OUTPUT_ON_FAILURE=1 \
@@ -149,6 +154,33 @@ cleanr:
 	rm -f $(CIRCLEMLIR_BUILD_REL)/CMakeCache.txt
 	rm -rf $(CIRCLEMLIR_BUILD_REL)/circle-mlir/
 
+#-------------------------------------------------------------------------------
+# for debug build in Docker
+#
+# no need to make for overlay, prep as prepared in Docker image
+# run make for 'cfgdi'
+# then make for 'debug', 'test'
+
+cfgdi: _mkbuild
+	cmake -B $(CIRCLEMLIR_BUILD_DEBUG) -S ./ \
+	-DONNX2CIRCLE_TEST_MODELS_SINGLE=ON \
+	-DCMAKE_BUILD_TYPE=Debug \
+	-DCIRCLE_MLIR_WORKDIR=/workdir
+
+# for test converage build in Docker
+cfgcovdi: _mkbuildcov
+	cmake -B $(CIRCLEMLIR_BUILD_COV) -S ./ \
+	-DONNX2CIRCLE_TEST_MODELS_SINGLE=ON \
+	-DCIRCLE_MLIR_WORKDIR=/workdir \
+	-DENABLE_COVERAGE=ON
+
+# for release build in Docker
+
+cfgri: _mkbuild
+	cmake -B $(CIRCLEMLIR_BUILD_REL) -S ./ \
+	-DONNX2CIRCLE_TEST_MODELS_SINGLE=ON \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DCIRCLE_MLIR_WORKDIR=/workdir
 
 #-------------------------------------------------------------------------------
 
