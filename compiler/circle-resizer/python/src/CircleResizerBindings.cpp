@@ -31,7 +31,27 @@
 namespace py = pybind11;
 using namespace circle_resizer;
 
+namespace
+{
+std::string print_shape(const Shape &shape)
+{
+  if (shape.empty())
+  {
+    return "";
+  }
+  std::stringstream ss;
+  ss << "[";
+  for (int i = 0; i < shape.size() - 1; ++i)
+  {
+    ss << shape[i].value() << ", ";
+  }
+  ss << shape.back().value() << "]";
+  return ss.str();
+}
+} // namespace
+
 PYBIND11_MAKE_OPAQUE(Shape);
+PYBIND11_MAKE_OPAQUE(Shapes);
 
 PYBIND11_MODULE(circle_resizer_python_api, m)
 {
@@ -61,18 +81,25 @@ PYBIND11_MODULE(circle_resizer_python_api, m)
     }
     return true;
   });
-  shape.def("__str__", [](const Shape &shape) {
-    std::stringstream ss;
-    ss << "[";
-    for (int i = 0; i < shape.size() - 1; ++i)
+  shape.def("__str__", [](const Shape &shape) -> std::string { return print_shape(shape); });
+
+  auto shapes = py::bind_vector<Shapes>(m, "Shapes");
+  shapes.doc() = "circle_resizer::Shapes";
+  shapes.def("__str__", [](const Shapes &shapes) -> std::string {
+    if (shapes.empty())
     {
-      ss << shape[i].value() << ", ";
+      return "";
     }
-    ss << shape.back().value() << "]";
+    std::stringstream ss;
+    for (int i = 0; i < shapes.size() - 1; ++i)
+    {
+      ss << print_shape(shapes[i]) << ", ";
+    }
+    ss << print_shape(shapes.back());
     return ss.str();
   });
 
-  py::class_<ModelData> model_data(m, "ModelData");
+  py::class_<ModelData, std::shared_ptr<ModelData>> model_data(m, "ModelData");
   model_data.doc() = "circle_resizer::ModelData";
   model_data.def(py::init<const std::vector<uint8_t> &>(), py::arg("buffer"));
   model_data.def(py::init<const std::string &>(), py::arg("model_path"));

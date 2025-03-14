@@ -24,7 +24,7 @@
 
 namespace circle_resizer
 {
-std::vector<Shape> parse_shapes(std::string shapes_str);
+Shapes parse_shapes(std::string shapes_str);
 } // namespace circle_resizer
 
 #endif // __CIRCLE_RESIZER_SHAPE_PARSER_H__

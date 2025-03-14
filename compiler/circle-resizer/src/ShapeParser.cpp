@@ -54,9 +54,9 @@ Shape parse_shape(std::string shape_str)
 }
 } // namespace
 
-std::vector<Shape> circle_resizer::parse_shapes(std::string shapes_str)
+Shapes circle_resizer::parse_shapes(std::string shapes_str)
 {
-  std::vector<Shape> result_shapes;
+  Shapes result_shapes;
   std::stringstream shapes_stream(shapes_str);
   std::string token;
   size_t begin_pos = 0, end_pos = 0;

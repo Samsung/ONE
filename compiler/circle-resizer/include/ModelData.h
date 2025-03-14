@@ -45,8 +45,8 @@ public:
   std::vector<uint8_t> &buffer();
   luci::Module *module();
 
-  std::vector<Shape> input_shapes();
-  std::vector<Shape> output_shapes();
+  Shapes input_shapes();
+  Shapes output_shapes();
 
   void save(std::ostream &stream);
   void save(const std::string &output_path);

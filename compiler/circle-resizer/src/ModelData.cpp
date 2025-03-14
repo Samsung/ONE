@@ -86,10 +86,9 @@ private:
   std::unique_ptr<std::vector<uint8_t>> _buffer;
 };
 
-template <typename NodeType>
-std::vector<Shape> extract_shapes(const std::vector<loco::Node *> &nodes)
+template <typename NodeType> Shapes extract_shapes(const std::vector<loco::Node *> &nodes)
 {
-  std::vector<Shape> shapes;
+  Shapes shapes;
   for (const auto &loco_node : nodes)
   {
     shapes.push_back(Shape{});
@@ -158,12 +157,12 @@ void ModelData::save(const std::string &output_path)
   save(out_stream);
 }
 
-std::vector<Shape> ModelData::input_shapes()
+Shapes ModelData::input_shapes()
 {
   return extract_shapes<luci::CircleInput>(loco::input_nodes(module()->graph()));
 }
 
-std::vector<Shape> ModelData::output_shapes()
+Shapes ModelData::output_shapes()
 {
   return extract_shapes<luci::CircleOutput>(loco::output_nodes(module()->graph()));
 }

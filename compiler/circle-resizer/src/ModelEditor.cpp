@@ -49,7 +49,7 @@ void replace_tensor_shape(::flatbuffers::Vector<int32_t> *tensor_shape, const Sh
 
 ModelEditor::ModelEditor(std::shared_ptr<ModelData> model_data) : _model_data{model_data} {}
 
-ModelEditor &ModelEditor::resize_inputs(const std::vector<Shape> &shapes)
+ModelEditor &ModelEditor::resize_inputs(const Shapes &shapes)
 {
   auto model = circle::GetMutableModel(_model_data->buffer().data());
   if (!model)

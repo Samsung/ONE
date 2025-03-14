@@ -39,6 +39,7 @@ private:
 };
 
 using Shape = std::vector<Dim>;
+using Shapes = std::vector<Shape>;
 } // namespace circle_resizer
 
 #endif // __CIRCLE_RESIZER_SHAPE_H__
