@@ -99,6 +99,28 @@ Test build
 make testr
 ```
 
+### Test coverage
+
+To get test coverage report, run as following commands.
+- assume you already have done `make overlay` and `make prepcov`
+- you can skip `make prepcov` step if you are using local installation with `CIRCLE_MLIR_LOCALINST`
+```
+make cfgcov
+
+make debugcov
+make testcov
+make gencov
+```
+
+Open `converage/html/index.html` file in web browser to see the reports.
+
+To generate from second run and so on in your local machine, you need to
+remove existing files before running `gencov`
+```
+rm -rf coverage
+make gencov
+```
+
 ## TensorFlow source code
 
 Some source codes are referenced from TensorFlow and the file path is added to
