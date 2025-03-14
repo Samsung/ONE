@@ -29,7 +29,7 @@ Install `one-compiler` package;
 - download and install latest `ONE Release` from https://github.com/Samsung/ONE/releases
 - actually we only need `circle-interperter` tool for validation, but not ready yet
 
-Alternatively, if you have a locally built version of `ONE/compiler`,
+Alternatively, if you have a locally built version of `compiler`,
 set the environment variable as follows;
 ```
 export ONE_COMPILER_ROOT=/home/user/one/build/install
