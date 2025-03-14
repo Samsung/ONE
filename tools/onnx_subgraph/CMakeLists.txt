@@ -19,6 +19,7 @@ set(ONNX_SUBGRAPH_FILES
     extract_onnx.py
     subgraphs_ios.txt
     single_vs_multiple_onnx.py
+    config.json
 )
 foreach(ONNX_SUBGRAPH IN ITEMS ${ONNX_SUBGRAPH_FILES})
     set(ONNX_SUBGRAPH_FILE ${ONNX_SUBGRAPH})
