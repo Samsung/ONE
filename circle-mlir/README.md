@@ -99,6 +99,46 @@ Test build
 make testr
 ```
 
+### Docker build
+
+You can build within Docker image, with pre-built `externals`.
+
+Pull Docker image
+```
+docker pull nnfw/circle-mlir-build-u2204
+```
+NOTE there is only Ubuntu22.04 version, as of writing this.
+
+Enter shell
+```
+docker run \
+--rm \
+-u $(id -u):$(id -g) \
+-it \
+-v $HOME:/home/circlemlir \
+-w /home/circlemlir \
+nnfw/circle-mlir-build-u2204
+```
+
+Inside the Docker image shell, cd to `circle-mlir`
+```
+cd circle-mlir
+```
+
+For debug build
+```
+make cfgdi
+make debug
+make test
+```
+
+For Release build
+```
+make cfgri
+make rel
+make testr
+```
+
 ### Test coverage
 
 To get test coverage report, run as following commands.
@@ -118,6 +158,14 @@ To generate from second run and so on in your local machine, you need to
 remove existing files before running `gencov`
 ```
 rm -rf coverage
+make gencov
+```
+
+To run this with Docker image, use `cfgcovdi` target instead of `cfgcov`.
+```
+make cfgcovdi
+make debugcov
+make testcov
 make gencov
 ```
 
