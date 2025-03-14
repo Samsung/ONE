@@ -66,6 +66,27 @@ luci::CircleNode *CloneNodeLet<CN::OPQR>::visit(const luci::CircleReshape *node)
 namespace sinf
 {
 
+namespace
+{
+loco::TensorShape merge_shapes(const loco::TensorShape &base_shape,
+                               const loco::TensorShape &merged_shape)
+{
+  loco::TensorShape result_shape = base_shape;
+  if (base_shape.rank() == merged_shape.rank())
+  {
+    for (uint32_t axis = 0; axis < base_shape.rank(); ++axis)
+    {
+      if (!base_shape.dim(axis).known() && merged_shape.dim(axis).known())
+      {
+        result_shape.dim(axis) = merged_shape.dim(axis);
+      }
+    }
+  }
+  return result_shape;
+}
+
+} // namespace
+
 loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
 {
   LOGGER(l);
@@ -154,7 +175,14 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
 
     for (uint32_t axis = 0; axis < shape_by_attr.rank(); ++axis)
     {
-      shape_by_attr.dim(axis) = node->newShape()->dim(axis);
+      if (node->newShape()->dim(axis) > 0)
+      {
+        shape_by_attr.dim(axis) = node->newShape()->dim(axis);
+      }
+      else
+      {
+        shape_by_attr.dim(axis).unset(); // unset means unknown dimension
+      }
     }
   }
 
@@ -165,7 +193,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
     INFO(l) << "   shape_by_attr : " << shape_by_attr << std::endl;
   }
 
-  loco::TensorShape output_shape = shape_by_input;
+  loco::TensorShape output_shape = merge_shapes(shape_by_input, shape_by_attr);
 
   // One of the dimensions can have special value -1, meaning its actual value should be inferred.
   const auto input = loco::must_cast<luci::CircleNode *>(node->tensor());
@@ -210,6 +238,10 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
     }
     if (unknown_dim_index != UINT32_MAX)
     {
+      if (input_element_count % output_element_count != 0)
+      {
+        INTERNAL_EXN("Unknown output dimension cannot be calculated for inputs");
+      }
       output_shape.dim(unknown_dim_index) = input_element_count / output_element_count;
     }
   }
