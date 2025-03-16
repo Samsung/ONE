@@ -169,6 +169,23 @@ make testcov
 make gencov
 ```
 
+## Dump debug logs
+
+To see logs during conversion with `onnx2circle` tool, set `CM_PASS_DUMP=1` for
+preprocessing ONNX and ONNX to circle conversion, or set `CM_PASS_DUMP=2` to see
+additional logs for circle rewrite.
+
+```
+CM_PASS_DUMP=2 onnx2circle input.onnx output.circle
+```
+
+You can give `-debug` option to see all general MLIR logs or `-debug-only=o2c`
+option to see only logs from onnx2circle.
+
+```
+onnx2circle -debug-only=o2c input.onnx output.circle
+```
+
 ## TensorFlow source code
 
 Some source codes are referenced from TensorFlow and the file path is added to
