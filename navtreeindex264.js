@@ -1,5 +1,7 @@
 var NAVTREEINDEX264 =
 {
+"struct_less_chef_factory.html#ad09c30288fb097368a6e69c9f8305ffd":[40,0,311,0],
+"struct_less_equal_chef_factory.html":[40,0,313],
 "struct_less_equal_chef_factory.html#a1d3bd9ec4c0bcb158ebb2e2ccfa3bc71":[40,0,313,0],
 "struct_local_response_normalization_chef_factory.html":[40,0,315],
 "struct_local_response_normalization_chef_factory.html#a95928a7a0121231fe02b5976beab0b2f":[40,0,315,0],
@@ -81,13 +83,13 @@ var NAVTREEINDEX264 =
 "struct_op_chef.html#a741fb1e34c5c32757638f20139eae6cc":[40,0,378,9],
 "struct_op_chef.html#a826d49bed868605eded3b8474a1d2e16":[40,0,378,2],
 "struct_op_chef.html#aa60293dfb6304252fe3723700739b7e1":[40,0,378,6],
-"struct_op_chef.html#ac1f4f54559a8f3aff8aa17775f0db2bc":[40,0,378,4],
 "struct_op_chef.html#ac1f4f54559a8f3aff8aa17775f0db2bc":[40,0,378,5],
+"struct_op_chef.html#ac1f4f54559a8f3aff8aa17775f0db2bc":[40,0,378,4],
 "struct_op_chef.html#aeb92d15a21ac54d4d37d90c1a773ebf2":[40,0,378,0],
 "struct_op_chef.html#aeb92d15a21ac54d4d37d90c1a773ebf2":[40,0,378,1],
 "struct_op_chef_factory.html":[40,0,379],
-"struct_op_chef_factory.html#a15478222773e6f86990c5a935ed302d5":[40,0,379,0],
 "struct_op_chef_factory.html#a15478222773e6f86990c5a935ed302d5":[40,0,379,1],
+"struct_op_chef_factory.html#a15478222773e6f86990c5a935ed302d5":[40,0,379,0],
 "struct_op_chef_factory.html#a8a07d138773d51f6785b84c2f2f92865":[40,0,379,2],
 "struct_op_chef_factory.html#ae985b3ee49d967db1dd8d40801714bcd":[40,0,379,3],
 "struct_op_printer.html":[40,0,382],
@@ -247,7 +249,5 @@ var NAVTREEINDEX264 =
 "struct_squared_difference_chef_factory.html":[40,0,486],
 "struct_squared_difference_chef_factory.html#aeda9c0d5d70b8b55ea718eee5ab43ef3":[40,0,486,0],
 "struct_squeeze_chef_factory.html":[40,0,488],
-"struct_squeeze_chef_factory.html#ab5419804a3046d99bcb0d6f0337c2b4e":[40,0,488,0],
-"struct_strided_slice_chef_factory.html":[40,0,490],
-"struct_strided_slice_chef_factory.html#a789938f94182549c9feb2615abe1bf97":[40,0,490,0]
+"struct_squeeze_chef_factory.html#ab5419804a3046d99bcb0d6f0337c2b4e":[40,0,488,0]
 };

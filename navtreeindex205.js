@@ -1,5 +1,7 @@
 var NAVTREEINDEX205 =
 {
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_matrix_diag_8h.html":[41,0,0,58,3,0,0,0,0,60],
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_matrix_diag_8h_source.html":[41,0,0,58,3,0,0,0,0,60],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_matrix_set_diag_8h.html":[41,0,0,58,3,0,0,0,0,61],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_matrix_set_diag_8h_source.html":[41,0,0,58,3,0,0,0,0,61],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_max_pool2_d_8h.html":[41,0,0,58,3,0,0,0,0,63],
@@ -247,7 +249,5 @@ var NAVTREEINDEX205 =
 "locoex-customop_2include_2locoex_2_c_op_call_8h.html":[41,0,0,52,0,0,2],
 "locoex-customop_2include_2locoex_2_c_op_call_8h_source.html":[41,0,0,52,0,0,2],
 "locoex-customop_2include_2locoex_2_variadic_arity_node_8h.html":[41,0,0,52,0,0,5],
-"locoex-customop_2include_2locoex_2_variadic_arity_node_8h_source.html":[41,0,0,52,0,0,5],
-"locoex-customop_2src_2_c_op_call_8cpp.html":[41,0,0,52,1,1],
-"locoex-customop_2src_2_c_op_call_8cpp.html#a006d7251f8a1034cc7c9250104475d0f":[41,0,0,52,1,1,0]
+"locoex-customop_2include_2locoex_2_variadic_arity_node_8h_source.html":[41,0,0,52,0,0,5]
 };

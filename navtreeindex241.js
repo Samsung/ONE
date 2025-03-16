@@ -1,5 +1,7 @@
 var NAVTREEINDEX241 =
 {
+"namespaceonert__micro_1_1train_1_1optimizers.html":[39,0,122,5,2],
+"namespaceonert__micro_1_1train_1_1pal.html":[39,0,122,5,3],
 "namespaceonert__micro_1_1train_1_1pal.html#a3b95c071f13296cd0dbd46bcc0cd57cb":[39,0,122,5,3,7],
 "namespaceonert__micro_1_1train_1_1pal.html#a3e13cc500824cda9d974985e240e7329":[39,0,122,5,3,3],
 "namespaceonert__micro_1_1train_1_1pal.html#a4c2a2472f64f222662aae7c68f826f37":[39,0,122,5,3,6],
@@ -237,17 +239,15 @@ var NAVTREEINDEX241 =
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78":[39,0,157,9],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,8,1],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,8,3],
-"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,9,1],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,9,3],
+"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,9,1],
+"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,8,2],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,8,0],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,9,2],
-"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,8,2],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,9,0],
-"namespacesparsity.html#aebaa280a7d40b78a0e10bdff92358480":[39,0,157,5],
 "namespacesparsity.html#aebaa280a7d40b78a0e10bdff92358480":[39,0,157,8],
+"namespacesparsity.html#aebaa280a7d40b78a0e10bdff92358480":[39,0,157,5],
 "namespacestd.html":[39,0,158],
 "namespacetest__circle__part__value.html":[39,0,160],
-"namespacetest__circle__part__value.html#a1990c4eeb7448a9f2c934e626e53d915":[39,0,160,0],
-"namespacetest__circle__part__value.html#afd7b9cb962f4a7110c210e3b56c5bece":[39,0,160,1],
-"namespacetest__luci__eval.html":[39,0,161]
+"namespacetest__circle__part__value.html#a1990c4eeb7448a9f2c934e626e53d915":[39,0,160,0]
 };

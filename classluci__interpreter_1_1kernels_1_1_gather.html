@@ -244,59 +244,63 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   40</span>  {</div>
 <div class="line"><span class="lineno">   41</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#a323e9a167699fdefa172daea802f7c98">output</a>()-&gt;element_type() == DataType::FLOAT32);</div>
 <div class="line"><span class="lineno">   42</span>  }</div>
-<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#adb3495fc2bb10db6b2bccf66ae2fa646">params</a>()-&gt;element_type() == DataType::S32)</div>
 <div class="line"><span class="lineno">   44</span>  {</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp Gather(1) Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">   45</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#a323e9a167699fdefa172daea802f7c98">output</a>()-&gt;element_type() == DataType::S32);</div>
 <div class="line"><span class="lineno">   46</span>  }</div>
-<div class="line"><span class="lineno">   47</span> </div>
-<div class="line"><span class="lineno">   48</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#a28007588d93216de2bfd9c6592d167eb">indices</a>()-&gt;element_type() == DataType::S32 ||</div>
-<div class="line"><span class="lineno">   49</span>                         <a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#a28007588d93216de2bfd9c6592d167eb">indices</a>()-&gt;element_type() == DataType::S64);</div>
-<div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>  <span class="comment">// refer tensorflow/lite/kernels/gather.cc</span></div>
-<div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;params_shape = <a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#adb3495fc2bb10db6b2bccf66ae2fa646">params</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#a5ea62328ce6d801a3aef30b903b95d69">shape</a>();</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;indices_shape = <a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#a28007588d93216de2bfd9c6592d167eb">indices</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#a5ea62328ce6d801a3aef30b903b95d69">shape</a>();</div>
-<div class="line"><span class="lineno">   55</span> </div>
-<div class="line"><span class="lineno">   56</span>  <span class="keywordtype">int</span> axis = <a class="code hl_variable" href="classluci__interpreter_1_1_kernel_with_params.html#a71ab3b8af612572de1f65e87fcbd91b7">_params</a>.<a class="code hl_variable" href="structluci__interpreter_1_1_gather_params.html#a5b4b5fdae734c60cd7a850391c4363ba">axis</a>;</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">if</span> (axis &lt; 0)</div>
-<div class="line"><span class="lineno">   58</span>  {</div>
-<div class="line"><span class="lineno">   59</span>    axis += params_shape.num_dims();</div>
-<div class="line"><span class="lineno">   60</span>  }</div>
-<div class="line"><span class="lineno">   61</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(0 &lt;= axis &amp;&amp; axis &lt; params_shape.num_dims());</div>
-<div class="line"><span class="lineno">   62</span> </div>
-<div class="line"><span class="lineno">   63</span>  <span class="keywordtype">int</span> batch_dims = <a class="code hl_variable" href="classluci__interpreter_1_1_kernel_with_params.html#a71ab3b8af612572de1f65e87fcbd91b7">_params</a>.<a class="code hl_variable" href="structluci__interpreter_1_1_gather_params.html#a9b4a0a40d101a95c673992684497a46b">batch_dims</a>;</div>
-<div class="line"><span class="lineno">   64</span>  <span class="comment">// batch_dims should be in range: [-rank(indices), rank(indices)].</span></div>
-<div class="line"><span class="lineno">   65</span>  <span class="comment">// Negative batch_dims is added with rank of positions.</span></div>
-<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">if</span> (batch_dims &lt; 0)</div>
-<div class="line"><span class="lineno">   67</span>  {</div>
-<div class="line"><span class="lineno">   68</span>    batch_dims += indices_shape.num_dims();</div>
-<div class="line"><span class="lineno">   69</span>  }</div>
-<div class="line"><span class="lineno">   70</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(batch_dims &lt;= axis);</div>
-<div class="line"><span class="lineno">   71</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(0 &lt;= batch_dims &amp;&amp; batch_dims &lt; params_shape.num_dims());</div>
-<div class="line"><span class="lineno">   72</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(batch_dims &lt;= indices_shape.num_dims());</div>
-<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; batch_dims; ++i)</div>
-<div class="line"><span class="lineno">   74</span>  {</div>
-<div class="line"><span class="lineno">   75</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(params_shape.dim(i) == indices_shape.dim(i));</div>
-<div class="line"><span class="lineno">   76</span>  }</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_dimensions = params_shape.num_dims() + indices_shape.num_dims() - 1 - batch_dims;</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>(num_dimensions);</div>
-<div class="line"><span class="lineno">   81</span>  <span class="keywordtype">int</span> output_index = 0;</div>
-<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; axis; ++i)</div>
-<div class="line"><span class="lineno">   83</span>  {</div>
-<div class="line"><span class="lineno">   84</span>    <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.dim(output_index++) = params_shape.dim(i);</div>
-<div class="line"><span class="lineno">   85</span>  }</div>
-<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = batch_dims; i &lt; indices_shape.num_dims(); ++i)</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   48</span>  {</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp Gather(1) Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">   50</span>  }</div>
+<div class="line"><span class="lineno">   51</span> </div>
+<div class="line"><span class="lineno">   52</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#a28007588d93216de2bfd9c6592d167eb">indices</a>()-&gt;element_type() == DataType::S32 ||</div>
+<div class="line"><span class="lineno">   53</span>                         <a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#a28007588d93216de2bfd9c6592d167eb">indices</a>()-&gt;element_type() == DataType::S64);</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>  <span class="comment">// refer tensorflow/lite/kernels/gather.cc</span></div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;params_shape = <a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#adb3495fc2bb10db6b2bccf66ae2fa646">params</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#a5ea62328ce6d801a3aef30b903b95d69">shape</a>();</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keyword">const</span> <a class="code hl_struct" href="struct_shape.html">Shape</a> &amp;indices_shape = <a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#a28007588d93216de2bfd9c6592d167eb">indices</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#a5ea62328ce6d801a3aef30b903b95d69">shape</a>();</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span>  <span class="keywordtype">int</span> axis = <a class="code hl_variable" href="classluci__interpreter_1_1_kernel_with_params.html#a71ab3b8af612572de1f65e87fcbd91b7">_params</a>.<a class="code hl_variable" href="structluci__interpreter_1_1_gather_params.html#a5b4b5fdae734c60cd7a850391c4363ba">axis</a>;</div>
+<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">if</span> (axis &lt; 0)</div>
+<div class="line"><span class="lineno">   62</span>  {</div>
+<div class="line"><span class="lineno">   63</span>    axis += params_shape.num_dims();</div>
+<div class="line"><span class="lineno">   64</span>  }</div>
+<div class="line"><span class="lineno">   65</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(0 &lt;= axis &amp;&amp; axis &lt; params_shape.num_dims());</div>
+<div class="line"><span class="lineno">   66</span> </div>
+<div class="line"><span class="lineno">   67</span>  <span class="keywordtype">int</span> batch_dims = <a class="code hl_variable" href="classluci__interpreter_1_1_kernel_with_params.html#a71ab3b8af612572de1f65e87fcbd91b7">_params</a>.<a class="code hl_variable" href="structluci__interpreter_1_1_gather_params.html#a9b4a0a40d101a95c673992684497a46b">batch_dims</a>;</div>
+<div class="line"><span class="lineno">   68</span>  <span class="comment">// batch_dims should be in range: [-rank(indices), rank(indices)].</span></div>
+<div class="line"><span class="lineno">   69</span>  <span class="comment">// Negative batch_dims is added with rank of positions.</span></div>
+<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">if</span> (batch_dims &lt; 0)</div>
+<div class="line"><span class="lineno">   71</span>  {</div>
+<div class="line"><span class="lineno">   72</span>    batch_dims += indices_shape.num_dims();</div>
+<div class="line"><span class="lineno">   73</span>  }</div>
+<div class="line"><span class="lineno">   74</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(batch_dims &lt;= axis);</div>
+<div class="line"><span class="lineno">   75</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(0 &lt;= batch_dims &amp;&amp; batch_dims &lt; params_shape.num_dims());</div>
+<div class="line"><span class="lineno">   76</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(batch_dims &lt;= indices_shape.num_dims());</div>
+<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; batch_dims; ++i)</div>
+<div class="line"><span class="lineno">   78</span>  {</div>
+<div class="line"><span class="lineno">   79</span>    <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(params_shape.dim(i) == indices_shape.dim(i));</div>
+<div class="line"><span class="lineno">   80</span>  }</div>
+<div class="line"><span class="lineno">   81</span> </div>
+<div class="line"><span class="lineno">   82</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> num_dimensions = params_shape.num_dims() + indices_shape.num_dims() - 1 - batch_dims;</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>  <a class="code hl_struct" href="struct_shape.html">Shape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>(num_dimensions);</div>
+<div class="line"><span class="lineno">   85</span>  <span class="keywordtype">int</span> output_index = 0;</div>
+<div class="line"><span class="lineno">   86</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; axis; ++i)</div>
 <div class="line"><span class="lineno">   87</span>  {</div>
-<div class="line"><span class="lineno">   88</span>    <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.dim(output_index++) = indices_shape.dim(i);</div>
+<div class="line"><span class="lineno">   88</span>    <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.dim(output_index++) = params_shape.dim(i);</div>
 <div class="line"><span class="lineno">   89</span>  }</div>
-<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = axis + 1; i &lt; params_shape.num_dims(); ++i)</div>
+<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = batch_dims; i &lt; indices_shape.num_dims(); ++i)</div>
 <div class="line"><span class="lineno">   91</span>  {</div>
-<div class="line"><span class="lineno">   92</span>    <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.dim(output_index++) = params_shape.dim(i);</div>
+<div class="line"><span class="lineno">   92</span>    <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.dim(output_index++) = indices_shape.dim(i);</div>
 <div class="line"><span class="lineno">   93</span>  }</div>
-<div class="line"><span class="lineno">   94</span>  <a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#a323e9a167699fdefa172daea802f7c98">output</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#a5a5d9ace436c2139796941f94aac63af">resize</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
-<div class="line"><span class="lineno">   95</span>}</div>
+<div class="line"><span class="lineno">   94</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = axis + 1; i &lt; params_shape.num_dims(); ++i)</div>
+<div class="line"><span class="lineno">   95</span>  {</div>
+<div class="line"><span class="lineno">   96</span>    <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.dim(output_index++) = params_shape.dim(i);</div>
+<div class="line"><span class="lineno">   97</span>  }</div>
+<div class="line"><span class="lineno">   98</span>  <a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#a323e9a167699fdefa172daea802f7c98">output</a>()-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_tensor.html#a5a5d9ace436c2139796941f94aac63af">resize</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>);</div>
+<div class="line"><span class="lineno">   99</span>}</div>
 <div class="ttc" id="aclassluci__interpreter_1_1_kernel_with_params_html_a71ab3b8af612572de1f65e87fcbd91b7"><div class="ttname"><a href="classluci__interpreter_1_1_kernel_with_params.html#a71ab3b8af612572de1f65e87fcbd91b7">luci_interpreter::KernelWithParams&lt; GatherParams &gt;::_params</a></div><div class="ttdeci">const GatherParams _params</div><div class="ttdef"><b>Definition</b> <a href="_kernel_8h_source.html#l00070">Kernel.h:70</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_tensor_html_a5a5d9ace436c2139796941f94aac63af"><div class="ttname"><a href="classluci__interpreter_1_1_tensor.html#a5a5d9ace436c2139796941f94aac63af">luci_interpreter::Tensor::resize</a></div><div class="ttdeci">void resize(const Shape &amp;new_shape)</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2src_2core_2_tensor_8cpp_source.html#l00056">Tensor.cpp:56</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_tensor_html_a5ea62328ce6d801a3aef30b903b95d69"><div class="ttname"><a href="classluci__interpreter_1_1_tensor.html#a5ea62328ce6d801a3aef30b903b95d69">luci_interpreter::Tensor::shape</a></div><div class="ttdeci">const Shape &amp; shape() const</div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00107">Tensor.h:107</a></div></div>
@@ -335,17 +339,20 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classluci__interpreter_1_1_kernel.html#aed203bb36ee44f736811d1fc3471437e">luci_interpreter::Kernel</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_gather_8cpp_source.html#l00097">97</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_gather_8cpp_source.html">Gather.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   98</span>{</div>
-<div class="line"><span class="lineno">   99</span>  <span class="keywordflow">switch</span> (<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#adb3495fc2bb10db6b2bccf66ae2fa646">params</a>()-&gt;element_type())</div>
-<div class="line"><span class="lineno">  100</span>  {</div>
-<div class="line"><span class="lineno">  101</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
-<div class="line"><span class="lineno">  102</span>      evalFloat();</div>
-<div class="line"><span class="lineno">  103</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  105</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp Gather(2) Unsupported type.&quot;</span>);</div>
-<div class="line"><span class="lineno">  106</span>  }</div>
-<div class="line"><span class="lineno">  107</span>}</div>
+<p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_gather_8cpp_source.html#l00101">101</a> of file <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_gather_8cpp_source.html">Gather.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span>{</div>
+<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">switch</span> (<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_gather.html#adb3495fc2bb10db6b2bccf66ae2fa646">params</a>()-&gt;element_type())</div>
+<div class="line"><span class="lineno">  104</span>  {</div>
+<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">case</span> DataType::FLOAT32:</div>
+<div class="line"><span class="lineno">  106</span>      eval&lt;float&gt;();</div>
+<div class="line"><span class="lineno">  107</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">case</span> DataType::S32:</div>
+<div class="line"><span class="lineno">  109</span>      eval&lt;int32_t&gt;();</div>
+<div class="line"><span class="lineno">  110</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  112</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;luci-intp Gather(2) Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">  113</span>  }</div>
+<div class="line"><span class="lineno">  114</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_gather_8h_source.html#l00033">params()</a>.</p>
 
@@ -445,7 +452,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_kernel_8h_source.html#l00052">luci_interpreter::Kernel::_inputs</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_gather_8cpp_source.html#l00037">configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_gather_8cpp_source.html#l00097">execute()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_gather_8cpp_source.html#l00031">Gather()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_gather_8cpp_source.html#l00037">configure()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_gather_8cpp_source.html#l00101">execute()</a>, and <a class="el" href="compiler_2luci-interpreter_2src_2kernels_2_gather_8cpp_source.html#l00031">Gather()</a>.</p>
 
 </div>
 </div>

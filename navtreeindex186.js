@@ -1,5 +1,7 @@
 var NAVTREEINDEX186 =
 {
+"compiler_2mir_2src_2mir__onnx__importer_2_op_2_tanh_8h.html#a24e0fd1650aee2e95cac31c4bf28b376":[41,0,0,79,1,2,0,69,1],
+"compiler_2mir_2src_2mir__onnx__importer_2_op_2_tanh_8h.html#a333be08f6e38662ffb60314277c514dd":[41,0,0,79,1,2,0,69,0],
 "compiler_2mir_2src_2mir__onnx__importer_2_op_2_tanh_8h_source.html":[41,0,0,79,1,2,0,69],
 "compiler_2mir_2src_2mir__onnx__importer_2_op_2_transpose_8cpp.html":[41,0,0,79,1,2,0,70],
 "compiler_2mir_2src_2mir__onnx__importer_2_op_2_transpose_8cpp.html#a2d5f6a0e8ef0c9f92e6bb4d5e3d10a00":[41,0,0,79,1,2,0,70,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX186 =
 "compiler_2q-implant-qparam-test_2qparam_2_reshape__000_2____init_____8py.html#a8a290e3ca413509eb93bb0bb45d297d7":[41,0,0,115,0,20,0,2],
 "compiler_2q-implant-qparam-test_2qparam_2_reshape__000_2____init_____8py_source.html":[41,0,0,115,0,20,0],
 "compiler_2q-implant-qparam-test_2qparam_2_softmax__000_2____init_____8py.html":[41,0,0,115,0,21,0],
-"compiler_2q-implant-qparam-test_2qparam_2_softmax__000_2____init_____8py.html#a2f8a97a6e45e4e1495798ac59e14cedb":[41,0,0,115,0,21,0,2],
-"compiler_2q-implant-qparam-test_2qparam_2_softmax__000_2____init_____8py.html#ae2eb56ec6fe201d8e4e0f44cd8ca025a":[41,0,0,115,0,21,0,1],
-"compiler_2q-implant-qparam-test_2qparam_2_softmax__000_2____init_____8py_source.html":[41,0,0,115,0,21,0]
+"compiler_2q-implant-qparam-test_2qparam_2_softmax__000_2____init_____8py.html#a2f8a97a6e45e4e1495798ac59e14cedb":[41,0,0,115,0,21,0,2]
 };

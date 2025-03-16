@@ -1,5 +1,7 @@
 var NAVTREEINDEX252 =
 {
+"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a8716c9bd4dca4aea5d2ae3bc7f26a509":[41,0,2,4,2,1,118,23],
+"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a8a9a24193bc38fd68fa6267c807bd354":[41,0,2,4,2,1,118,8],
 "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a91a8777c4f1154f256a768b6bbf54477":[41,0,2,4,2,1,118,29],
 "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a98a3bc29bb49235d704aea9373bdb866":[41,0,2,4,2,1,118,7],
 "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#aa927fdc0b589de75449d8d5cf991e398":[41,0,2,4,2,1,118,10],
@@ -247,7 +249,5 @@ var NAVTREEINDEX252 =
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_log_8cpp_source.html":[41,0,2,5,1,2,0,36],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_log_softmax_8cpp.html":[41,0,2,5,1,2,0,38],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_log_softmax_8cpp.html#a24a7b797d5c684c49d5e096aabf614c7":[41,0,2,5,1,2,0,38,0],
-"onert-micro_2onert-micro_2src_2execute_2kernels_2_log_softmax_8cpp_source.html":[41,0,2,5,1,2,0,38],
-"onert-micro_2onert-micro_2src_2execute_2kernels_2_logistic_8cpp.html":[41,0,2,5,1,2,0,37],
-"onert-micro_2onert-micro_2src_2execute_2kernels_2_logistic_8cpp.html#a58abe0d092d00bdbbe4922bc63c2aa1c":[41,0,2,5,1,2,0,37,0]
+"onert-micro_2onert-micro_2src_2execute_2kernels_2_log_softmax_8cpp_source.html":[41,0,2,5,1,2,0,38]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX187 =
 {
+"compiler_2q-implant-qparam-test_2qparam_2_softmax__000_2____init_____8py.html#ae2eb56ec6fe201d8e4e0f44cd8ca025a":[41,0,0,115,0,21,0,1],
+"compiler_2q-implant-qparam-test_2qparam_2_softmax__000_2____init_____8py_source.html":[41,0,0,115,0,21,0],
 "compiler_2q-implant_2driver_2_driver_8cpp.html":[41,0,0,114,0,0],
 "compiler_2q-implant_2driver_2_driver_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198":[41,0,0,114,0,0,0],
 "compiler_2q-implant_2driver_2_driver_8cpp_source.html":[41,0,0,114,0,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX187 =
 "compiler_2tflchef_2core_2src_2_op_2_range_8h_source.html":[41,0,0,131,0,1,1,139],
 "compiler_2tflchef_2core_2src_2_op_2_rank_8h.html":[41,0,0,131,0,1,1,141],
 "compiler_2tflchef_2core_2src_2_op_2_rank_8h_source.html":[41,0,0,131,0,1,1,141],
-"compiler_2tflchef_2core_2src_2_op_2_reduce_max_8cpp.html":[41,0,0,131,0,1,1,144],
-"compiler_2tflchef_2core_2src_2_op_2_reduce_max_8cpp_source.html":[41,0,0,131,0,1,1,144],
-"compiler_2tflchef_2core_2src_2_op_2_reduce_prod_8cpp.html":[41,0,0,131,0,1,1,148]
+"compiler_2tflchef_2core_2src_2_op_2_reduce_max_8cpp.html":[41,0,0,131,0,1,1,144]
 };

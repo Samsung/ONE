@@ -1,5 +1,7 @@
 var NAVTREEINDEX245 =
 {
+"onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html":[41,0,2,1,0,0,0,0],
+"onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html#a06128a124529d50e492c34d1d1af4883":[41,0,2,1,0,0,0,0,0],
 "onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html#ae263043922f2154fed0757f8c9af61bb":[41,0,2,1,0,0,0,0,2],
 "onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4":[41,0,2,1,0,0,0,0,1],
 "onert-micro_2examples_2speech__recognition_2_d_i_s_c_o___f746_2mbed-os_2_main_8cpp_source.html":[41,0,2,1,0,0,0,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX245 =
 "onert-micro_2include_2pal_2mcu_2_p_a_l_exp_8h.html":[41,0,2,5,0,4,2,10],
 "onert-micro_2include_2pal_2mcu_2_p_a_l_exp_8h_source.html":[41,0,2,5,0,4,2,10],
 "onert-micro_2include_2pal_2mcu_2_p_a_l_floor_8h.html":[41,0,2,5,0,4,2,11],
-"onert-micro_2include_2pal_2mcu_2_p_a_l_floor_8h_source.html":[41,0,2,5,0,4,2,11],
-"onert-micro_2include_2pal_2mcu_2_p_a_l_floor_div_8h.html":[41,0,2,5,0,4,2,12],
-"onert-micro_2include_2pal_2mcu_2_p_a_l_floor_div_8h_source.html":[41,0,2,5,0,4,2,12]
+"onert-micro_2include_2pal_2mcu_2_p_a_l_floor_8h_source.html":[41,0,2,5,0,4,2,11]
 };

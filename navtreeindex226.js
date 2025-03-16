@@ -1,5 +1,7 @@
 var NAVTREEINDEX226 =
 {
+"namespaceluci__interpreter_1_1test__kernel_1_1logical__and__bool.html#a2cd959bbb1f3ed9f04c8fb33835d98fc":[39,0,85,2,63,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1logical__and__bool.html#a4b78630b202bb1ddf6209cb3eed7266f":[39,0,85,2,63,1],
 "namespaceluci__interpreter_1_1test__kernel_1_1logical__and__bool.html#aca413af7e27beb23f69e3c81dda7dd2a":[39,0,85,2,63,3],
 "namespaceluci__interpreter_1_1test__kernel_1_1logical__and__bool.html#adc70276fc546908b1336f8a4a0e0b809":[39,0,85,2,63,2],
 "namespaceluci__interpreter_1_1test__kernel_1_1logical__not__bool.html":[39,0,85,2,64],
@@ -247,7 +249,5 @@ var NAVTREEINDEX226 =
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__less__kernel__wrong__output.html":[39,0,85,2,149],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__less__kernel__wrong__output.html#ab16e25e2e6a2871747bc552c3230efda":[39,0,85,2,149,0],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__less__uint8__with__no__broadcasting.html":[39,0,85,2,150],
-"namespaceluci__interpreter_1_1test__kernel_1_1neg__less__uint8__with__no__broadcasting.html#a0071dfced3a26c4a4e90c1d6d76532bf":[39,0,85,2,150,1],
-"namespaceluci__interpreter_1_1test__kernel_1_1neg__less__uint8__with__no__broadcasting.html#a464a78b899e6c2c9c2482a459c5cd547":[39,0,85,2,150,3],
-"namespaceluci__interpreter_1_1test__kernel_1_1neg__less__uint8__with__no__broadcasting.html#a51a7362d2ac6ba07a223d01a4c1fa88a":[39,0,85,2,150,2]
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__less__uint8__with__no__broadcasting.html#a0071dfced3a26c4a4e90c1d6d76532bf":[39,0,85,2,150,1]
 };

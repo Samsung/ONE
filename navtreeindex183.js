@@ -1,5 +1,7 @@
 var NAVTREEINDEX183 =
 {
+"compiler_2luci-interpreter_2src_2kernels_2_resize_nearest_neighbor_8h.html":[41,0,0,61,2,2,136],
+"compiler_2luci-interpreter_2src_2kernels_2_resize_nearest_neighbor_8h_source.html":[41,0,0,61,2,2,136],
 "compiler_2luci-interpreter_2src_2kernels_2_reverse_v2_8cpp.html":[41,0,0,61,2,2,137],
 "compiler_2luci-interpreter_2src_2kernels_2_reverse_v2_8cpp_source.html":[41,0,0,61,2,2,137],
 "compiler_2luci-interpreter_2src_2kernels_2_reverse_v2_8h.html":[41,0,0,61,2,2,138],
@@ -247,7 +249,5 @@ var NAVTREEINDEX183 =
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_floor_mod_8cpp_source.html":[41,0,0,61,2,3,0,24],
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_fully_connected_8cpp.html":[41,0,0,61,2,3,0,25],
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_fully_connected_8cpp.html#a86b0ef433247afa2ccdb291657cd2c2a":[41,0,0,61,2,3,0,25,0],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_fully_connected_8cpp_source.html":[41,0,0,61,2,3,0,25],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_g_r_u_8cpp.html":[41,0,0,61,2,3,0,30],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_g_r_u_8cpp.html#af561187dce9bd55e5c16fc5ce7bf7366":[41,0,0,61,2,3,0,30,0]
+"compiler_2luci-interpreter_2src_2loader_2nodes_2_fully_connected_8cpp_source.html":[41,0,0,61,2,3,0,25]
 };
