@@ -40,5 +40,4 @@ loco::TensorShape Algorithm::visit(const luci::CircleSoftmax *node)
 }
 
 } // namespace sinf
-
 } // namespace luci

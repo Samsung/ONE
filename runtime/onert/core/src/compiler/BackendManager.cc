@@ -125,21 +125,21 @@ void BackendManager::loadBackend(const std::string &backend)
   _handle_map.emplace(backend, std::move(u_handle));
 }
 
-backend::Backend *BackendManager::get(const std::string &key)
+backend::Backend *BackendManager::get(std::string_view key)
 {
-  if (_gen_map.find(key) != _gen_map.end())
+  if (auto it = _gen_map.find(key); it != _gen_map.end())
   {
-    return _gen_map.at(key).get();
+    return it->second.get();
   }
 
   return nullptr;
 }
 
-const backend::Backend *BackendManager::get(const std::string &key) const
+const backend::Backend *BackendManager::get(std::string_view key) const
 {
-  if (_gen_map.find(key) != _gen_map.end())
+  if (auto it = _gen_map.find(key); it != _gen_map.end())
   {
-    return _gen_map.at(key).get();
+    return it->second.get();
   }
 
   return nullptr;

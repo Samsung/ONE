@@ -68,8 +68,9 @@ struct FeatureShape
 struct Shape
 {
 public:
-  static int32_t const kUnspecifiedDim;
-  static int32_t const kMaxRank;
+  static inline int32_t const kUnspecifiedDim = -1;
+  // NNFW_MAX_RANK is 6
+  static inline int32_t const kMaxRank = 6;
 
   Shape() = default;
 

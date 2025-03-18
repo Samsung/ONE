@@ -34,7 +34,7 @@ private:
 
 public:
   // Currently, only the memory planner for DisposableTensor is supported
-  basic::IMemoryPlanner<Index> *create(const std::string &key);
+  basic::IMemoryPlanner<Index> *create(std::string_view key);
 };
 
 } // namespace onert::backend::train

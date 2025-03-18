@@ -17,6 +17,9 @@ PYTHON3_PATH=$(shell dirname $(PYTHON3_CMD))
 
 CIRCLEMLIR_BUILD_DEBUG?=build/debug
 CIRCLEMLIR_BUILD_REL?=build/release
+CIRCLEMLIR_BUILD_COV?=build/coverage
+CIRCLEMLIR_EXTS_DEBUG?=build/externals/debug
+CIRCLEMLIR_EXTS_REL?=build/externals/release
 
 CIRCLEMLIR_PY3_ROOT?=$(PYTHON3_PATH)
 CIRCLEMLIR_BUILD_JOBS?=4
@@ -38,7 +41,16 @@ help:
 	@echo "make prepr    : prepare externals for release (needed only once)"
 	@echo "make cfgr     : configure circle-mlir for release build"
 	@echo "make rel      : build for release"
+	@echo "make prepcov  : prepare submodules for coverage test (needed only once)"
+	@echo "make cfgcov   : configure circle-mlir for debug build with coverage test"
+	@echo "make debugcov : build for test coverage"
+	@echo "make testcov  : run coverage test"
+	@echo "make gencov   : generate test coverage report"
+	@echo "make cleancov : clean test coverage build"
 	@echo "make testr    : test for release"
+	@echo "make cfgdi    : configure circle-mlir for debug build in Docker image"
+	@echo "make cfgcovdi : configure circle-mlir for debug build with coverage test in Docker image"
+	@echo "make cfgri    : configure circle-mlir for release build in Docker image"
 	@echo "make cleanr   : clean release build"
 	@echo "make cleanall : clean all build including overlay, externals"
 
@@ -49,6 +61,9 @@ all: cfg debug
 #
 _mkbuild:
 	mkdir -p $(CIRCLEMLIR_BUILD_DEBUG)
+
+_mkbuildcov:
+	mkdir -p $(CIRCLEMLIR_BUILD_COV)
 
 _mkbuildr:
 	mkdir -p $(CIRCLEMLIR_BUILD_REL)
@@ -64,11 +79,12 @@ overlay:
 
 prep: _mkbuild
 	Python3_ROOT_DIR=$(CIRCLEMLIR_PY3_ROOT) \
-	cmake -B $(CIRCLEMLIR_BUILD_DEBUG)/externals -S ./externals -DCMAKE_BUILD_TYPE=Debug
-	cmake --build $(CIRCLEMLIR_BUILD_DEBUG)/externals -j$(CIRCLEMLIR_BUILD_JOBS)
+	cmake -B $(CIRCLEMLIR_EXTS_DEBUG) -S ./externals -DCMAKE_BUILD_TYPE=Debug
+	cmake --build $(CIRCLEMLIR_EXTS_DEBUG) -j$(CIRCLEMLIR_BUILD_JOBS)
 
 cfg: _mkbuild
 	cmake -B $(CIRCLEMLIR_BUILD_DEBUG) -S ./ \
+	-DCIRCLE_MLIR_EXTERNALS=$(CIRCLEMLIR_EXTS_DEBUG) \
 	-DONNX2CIRCLE_TEST_MODELS_SINGLE=ON
 
 debug:
@@ -84,15 +100,48 @@ clean:
 	rm -rf $(CIRCLEMLIR_BUILD_DEBUG)/circle-mlir/
 
 #-------------------------------------------------------------------------------
+# for debug test coverage
+
+prepcov: _mkbuildcov
+	Python3_ROOT_DIR=$(CIRCLEMLIR_PY3_ROOT) \
+	cmake -B $(CIRCLEMLIR_EXTS_DEBUG) -S ./externals -DCMAKE_BUILD_TYPE=Release
+	cmake --build $(CIRCLEMLIR_EXTS_DEBUG) -j$(CIRCLEMLIR_BUILD_JOBS)
+
+cfgcov: _mkbuildcov
+	cmake -B $(CIRCLEMLIR_BUILD_COV) -S ./ \
+	-DCIRCLE_MLIR_EXTERNALS=$(CIRCLEMLIR_EXTS_DEBUG) \
+	-DONNX2CIRCLE_TEST_MODELS_SINGLE=ON \
+	-DENABLE_COVERAGE=ON
+
+debugcov:
+	CM_PASS_DUMP=2 \
+	cmake --build $(CIRCLEMLIR_BUILD_COV) -j$(CIRCLEMLIR_BUILD_JOBS)
+
+# NOTE to configure in Docker, use "make cfgcovdi"
+
+testcov:
+	CM_PASS_DUMP=2 \
+	CTEST_OUTPUT_ON_FAILURE=1 \
+	cmake --build $(CIRCLEMLIR_BUILD_COV) --verbose -- test
+
+gencov:
+	bash infra/tools/gen-coverage-report circle-mlir
+
+cleancov:
+	rm -f $(CIRCLEMLIR_BUILD_COV)/CMakeCache.txt
+	rm -rf $(CIRCLEMLIR_BUILD_COV)/circle-mlir/
+
+#-------------------------------------------------------------------------------
 # for release
 
 prepr: _mkbuildr
 	Python3_ROOT_DIR=$(CIRCLEMLIR_PY3_ROOT) \
-	cmake -B $(CIRCLEMLIR_BUILD_REL)/externals -S ./externals -DCMAKE_BUILD_TYPE=Release
-	cmake --build $(CIRCLEMLIR_BUILD_REL)/externals -j$(CIRCLEMLIR_BUILD_JOBS)
+	cmake -B $(CIRCLEMLIR_EXTS_REL) -S ./externals -DCMAKE_BUILD_TYPE=Release
+	cmake --build $(CIRCLEMLIR_EXTS_REL) -j$(CIRCLEMLIR_BUILD_JOBS)
 
 cfgr: _mkbuildr
-	cmake -B $(CIRCLEMLIR_BUILD_REL) -S ./ -DCMAKE_BUILD_TYPE=Release
+	cmake -B $(CIRCLEMLIR_BUILD_REL) -S ./ -DCMAKE_BUILD_TYPE=Release \
+	-DCIRCLE_MLIR_EXTERNALS=$(CIRCLEMLIR_EXTS_REL)
 
 rel:
 	cmake --build $(CIRCLEMLIR_BUILD_REL) -j$(CIRCLEMLIR_BUILD_JOBS)
@@ -105,6 +154,33 @@ cleanr:
 	rm -f $(CIRCLEMLIR_BUILD_REL)/CMakeCache.txt
 	rm -rf $(CIRCLEMLIR_BUILD_REL)/circle-mlir/
 
+#-------------------------------------------------------------------------------
+# for debug build in Docker
+#
+# no need to make for overlay, prep as prepared in Docker image
+# run make for 'cfgdi'
+# then make for 'debug', 'test'
+
+cfgdi: _mkbuild
+	cmake -B $(CIRCLEMLIR_BUILD_DEBUG) -S ./ \
+	-DONNX2CIRCLE_TEST_MODELS_SINGLE=ON \
+	-DCMAKE_BUILD_TYPE=Debug \
+	-DCIRCLE_MLIR_WORKDIR=/workdir
+
+# for test converage build in Docker
+cfgcovdi: _mkbuildcov
+	cmake -B $(CIRCLEMLIR_BUILD_COV) -S ./ \
+	-DONNX2CIRCLE_TEST_MODELS_SINGLE=ON \
+	-DCIRCLE_MLIR_WORKDIR=/workdir \
+	-DENABLE_COVERAGE=ON
+
+# for release build in Docker
+
+cfgri: _mkbuild
+	cmake -B $(CIRCLEMLIR_BUILD_REL) -S ./ \
+	-DONNX2CIRCLE_TEST_MODELS_SINGLE=ON \
+	-DCMAKE_BUILD_TYPE=Release \
+	-DCIRCLE_MLIR_WORKDIR=/workdir
 
 #-------------------------------------------------------------------------------
 

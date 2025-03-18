@@ -442,8 +442,15 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 } // namespace Circle
 } // namespace mlir
 
-// TODO add AddOp
+#include "ops/AddOp.h"
+#include "ops/ConstOp.h"
+#include "ops/Conv2DOp.h"
 #include "ops/CustomOp.h"
+#include "ops/NoValueOp.h"
+#include "ops/PadOp.h"
+#include "ops/ReshapeOp.h"
+#include "ops/ShapeOp.h"
+#include "ops/TransposeOp.h"
 
 #include "mlir/CircleOpsDialect.cc.inc"
 #include "mlir/CircleOpsEnums.cc.inc"

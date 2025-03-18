@@ -1,7 +1,7 @@
 if(NOT CIRCLE_MLIR_WORKDIR)
   if(NOT CIRCLE_MLIR_LOCALINST)
     # for local build
-    set(ABSEIL_INST_DIR "${CMAKE_BINARY_DIR}/submodules/abseil-cpp-install")
+    set(ABSEIL_INST_DIR "${EXTERNALS_BIN_DIR}/abseil-cpp-install")
   else()
     set(ABSEIL_INST_DIR "${CIRCLE_MLIR_LOCALINST}/abseil-cpp-install")
   endif()

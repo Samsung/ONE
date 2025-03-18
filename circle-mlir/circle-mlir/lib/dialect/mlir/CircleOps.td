@@ -296,6 +296,44 @@ class CIR_ConvOp<string mnemonic, string opSummary,
 //===----------------------------------------------------------------------===//
 // CIR op definitions.
 //===----------------------------------------------------------------------===//
+def CIR_AddOp : CIR_Op<"add", [
+    CIR_RuntimePredOpTrait<"Operands do not have valid shapes",
+      CPred<"Circle::VerifyAddOpShapeConstraints(llvm::cast<AddOp>($_op))">>,
+    ResultsBroadcastableShape,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    Pure,
+    Commutative,
+    // TODO enable QuantizableResult,
+    ]> {
+  let summary = "Addition operator";
+
+  let description = [{
+    Element-wise addition operation.
+  }];
+
+  let arguments = (
+    // TODO add more dtypes
+    ins CIR_TensorOf<[F32, I32, I64]>:$lhs,
+    CIR_TensorOf<[F32, I32, I64]>:$rhs,
+    CIR_AFAttr:$fused_activation_function);
+
+  let results = (outs CIR_TensorOf<[F32, I32, I64]>:$output);
+
+  let hasFolder = 1;
+
+  let hasCustomAssemblyFormat = 1;
+
+  let extraClassDefinition = [{
+    ParseResult $cppClass::parse(OpAsmParser &parser, OperationState &result) {
+      return parseOneResultSameOperandTypeOp(parser, result);
+    }
+    void $cppClass::print(OpAsmPrinter &p) {
+      return printOneResultOp(getOperation(), p);
+    }
+  }];
+
+  let hasOptions = 1;
+}
 
 def CIR_ConstOp : Op<CIR_Dialect, "pseudo_const", [ConstantLike, Pure,
     FirstAttrDerivedResultType,
@@ -331,6 +369,43 @@ def CIR_ConstOp : Op<CIR_Dialect, "pseudo_const", [ConstantLike, Pure,
     /// Returns true if a constant operation can be built with the given value
     /// and result type.
     static bool isBuildableWith(Attribute value, Type type);
+  }];
+}
+
+def CIR_Conv2DOp : CIR_ConvOp<"conv_2d", "Convolution", /*TODO enable 0,*/
+      [DeclareOpInterfaceMethods<InferTypeOpInterface>,
+       DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+       /*TODO enable,
+       DynamicRangeQuantizedOpInterface*/]> {
+  let arguments = (
+    ins CIR_TensorOf<[F32/*TODO enable, QI8, QUI8, QI16*/]>:$input,
+    CIR_TensorOf<[F32/*TODO enable QI4, QI8, QUI8*/]>:$filter,
+    CIR_1DTensorOfOrNone<[F32, I32, I64]>:$bias,
+    I32Attr:$dilation_h_factor,
+    I32Attr:$dilation_w_factor,
+    CIR_AFAttr:$fused_activation_function,
+    CIR_PaddingAttr:$padding,
+    I32Attr:$stride_h,
+    I32Attr:$stride_w
+  );
+
+  let hasCanonicalizer = 1;
+
+  let extraClassDeclaration = [{
+    // AffineQuantizedOpInterface:
+    int GetChannelDimIndex() { return 0; }
+    int GetQuantizationDimIndex() { return 0; }
+    // SparseOpInterface:
+    std::vector<int> GetSparseOperands() { return {1}; }
+    std::vector<std::vector<int>> GetFloatBlockSize() { return {}; }
+    std::vector<std::vector<int>> GetQuantizedBlockSize() { return {}; }
+
+    // Returns whether the return types are compatible.
+    static bool isCompatibleReturnTypes(TypeRange l, TypeRange r);
+
+    // DynamicRangeQuantizedOpInterface:
+    bool GetDynamicRangeQuantKernelSupport() { return true; }
+    std::vector<int> GetQuantizableOperandIndices() { return {1}; }
   }];
 }
 
@@ -377,6 +452,142 @@ def CIR_NoValueOp : Op<CIR_Dialect, "no_value", [ConstantLike, Pure]> {
     /// Returns true if a constant operation can be built with the given value
     /// and result type.
     static bool isBuildableWith(Attribute value, Type type);
+  }];
+}
+
+def CIR_PadOp : CIR_Op<"pad", [
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    Pure,
+    /*SameOperandsAndResultsScale,*/
+    CIR_OperandHasRankAtMost<0, 5>,
+    CIR_OperandHasRank<1, 2>,
+    CIR_OperandRankEquals1DimOfOperand<0, 1>,
+    /*QuantizableResult,*/
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    PredOpTrait<"the first dim size of the padding argument must be at most 5",
+      Or<[CIR_OperandIsUnrankedPred<1>,
+          CIR_OperandDimIsAtMost<1, 0, 5>]>>]> {
+  let summary = "Padding operator";
+
+  let description = [{
+    This operation pads a `input` with zeros according to the `paddings` you
+    specify. `paddings` is an integer tensor with shape `[Dn, 2]`, where n is
+    the rank of `input`. For each dimension D of `input`, `paddings[D, 0]`
+    indicates how many zeros to add before the contents of `input` in that
+    dimension, and `paddings[D, 1]` indicates how many zeros to add after the
+    contents of `input` in that dimension.
+
+    The padded size of each dimension D of the output is:
+
+      `paddings(D, 0) + input.dim_size(D) + paddings(D, 1)`
+
+    For example:
+
+    ```
+    # 't' is [[1, 1], [2, 2]]
+    # 'paddings' is [[1, 1], [2, 2]]
+    # rank of 't' is 2
+    pad(t, paddings) ==> [[0, 0, 0, 0, 0, 0]
+                          [0, 0, 1, 1, 0, 0]
+                          [0, 0, 2, 2, 0, 0]
+                          [0, 0, 0, 0, 0, 0]]
+    ```
+  }];
+
+  let arguments = (ins CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$input,
+    CIR_I32OrI64Tensor:$padding);
+
+  let results = (outs CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$output);
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+}
+
+def CIR_ReshapeOp: CIR_Op<"reshape", [
+    /*QuantizableResult,*/
+    Pure,
+    /*SameOperandsAndResultsScale,*/
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    DeclareOpInterfaceMethods<InferTypeOpInterface>]> {
+  let summary = "Reshape operator";
+
+  let description = [{
+    Produces a tensor with the same values but different static shape defined
+    by the output type.
+  }];
+
+  let arguments = (
+    ins AnyTensor:$input,
+    CIR_I32Tensor:$shape);
+
+  let results = (outs AnyTensor:$output);
+  let hasCanonicalizer = 0b1;
+  let hasFolder = 1;
+  let hasVerifier = 1;
+
+  let extraClassDeclaration = [{
+    static bool isCompatibleReturnTypes(TypeRange l, TypeRange r);
+  }];
+}
+
+def CIR_ShapeOp: CIR_Op<"shape", [
+    /*QuantizableResult,*/
+    Pure]> {
+  let summary = "Shape operator";
+
+  let description = [{
+    Returns the shape of a tensor.
+  }];
+
+  let arguments = (ins AnyTensor:$input);
+
+  let results = (outs CIR_TensorOf<[I32, I64]>:$output);
+
+  DerivedTypeAttr out_type = DerivedTypeAttr<[{
+    return getResult().getType().cast<TensorType>().getElementType();
+  }]>;
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+}
+
+def CIR_TransposeOp : CIR_Op<"transpose", [
+    Pure,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    CIR_OperandHasRankAtMost<0, 5>,
+    CIR_OperandHasRank<1, 1>,
+    PredOpTrait<"input and output must have same element type", CIR_TCresVTEtIsSameAsOp<0, 0>>/*,
+    SameOperandsAndResultsScale*/]> {
+  let summary = "Transpose operator";
+
+  let description = [{
+    Returns the Transpose of x
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[I32, F32, I8, UI8, /*QI8, QUI8, CIR_Quint8,*/ I1, I64/*, QI16*/]>:$input,
+    CIR_TensorOf<[I32]>:$perm
+  );
+
+  let results = (outs
+    CIR_TensorOf<[I32, F32, I8, UI8, /*QI8, QUI8, CIR_Quint8,*/ I1, I64/*, QI16*/]>:$output
+  );
+
+  let hasVerifier = 1;
+
+  let hasFolder = 1;
+
+  let builders = [
+    OpBuilder<(ins "Value":$input, "Value":$perm),
+    [{ BuildTransposeOp(&$_builder, $_state, input, perm); }]>
+  ];
+
+  let extraClassDeclaration = [{
+    // Quantized axes are verified in the Verify function.
+    bool RequiredSameQuantizedAxes() { return false; }
   }];
 }
 

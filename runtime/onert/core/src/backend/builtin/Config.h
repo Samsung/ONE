@@ -27,7 +27,7 @@ namespace onert::backend::builtin
 class Config : public IConfig
 {
 public:
-  static std::string ID;
+  static inline std::string ID = "builtin";
   std::string id() override { return ID; }
   bool initialize() override;
   bool supportPermutation() override { return false; }

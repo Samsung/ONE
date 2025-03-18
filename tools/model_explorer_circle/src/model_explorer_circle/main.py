@@ -109,7 +109,7 @@ class CircleAdapter(Adapter):
                 scale = format(scale, '.6g')
                 zp = tensor.quantization.zeroPoint[i]
                 # If the type is larger than INT8, exponential notation will be used
-                quantparam += f'{scale} * (q + {zp})'
+                quantparam += f'{scale} * (q - {zp})'
             quantparam += ']'
             metadata.attrs.append(
                 graph_builder.KeyValue(key='quantization', value=quantparam))

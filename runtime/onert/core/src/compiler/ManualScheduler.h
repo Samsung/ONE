@@ -31,7 +31,7 @@ public:
   std::unique_ptr<BackendResolver> schedule(const ir::Graph &graph) override;
 
 private:
-  const backend::Backend *resolveBackend(const std::string &id,
+  const backend::Backend *resolveBackend(std::string_view id,
                                          const backend::Backend *fallback = nullptr);
 
 private:

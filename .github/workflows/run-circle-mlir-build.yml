@@ -35,6 +35,7 @@ jobs:
         include:
           - ubuntu_code: jammy
             ubuntu_vstr: u2204
+            one_comp_ver: 1.29.0
 
     runs-on: ubuntu-latest
 
@@ -45,10 +46,20 @@ jobs:
     name: circle-mlir ${{ matrix.ubuntu_vstr }} ${{ matrix.type }} test
 
     steps:
+      # NOTE we only need small circle-interpreter Debian package, but
+      #      as it's not ready yet, install whole one_compiler for now.
+      # TODO prepare circle-interpreter Debian package and install it.
+      - name: Install one-compiler
+        run: |
+          cd /var/tmp
+          ONE_COMPILER=one-compiler-${{ matrix.ubuntu_code }}_${{ matrix.one_comp_ver }}_amd64.deb
+          wget https://github.com/Samsung/ONE/releases/download/${{ matrix.one_comp_ver }}/${ONE_COMPILER}
+          ls -al .
+          dpkg -i ${ONE_COMPILER}
+          ls -al /usr/share/one/bin
+
       - name: Checkout
         uses: actions/checkout@v4
-
-      # TODO download circle-interpreter
 
       # NOTE Docker image has pre-installed submodules in /workdir
       # NOTE Docker image has pre-installed python packages
