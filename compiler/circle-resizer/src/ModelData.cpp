@@ -95,8 +95,15 @@ template <typename NodeType> Shapes extract_shapes(const std::vector<loco::Node 
     const auto circle_node = loco::must_cast<const NodeType *>(loco_node);
     for (uint32_t dim_idx = 0; dim_idx < circle_node->rank(); dim_idx++)
     {
-      const int32_t dim_val = circle_node->dim(dim_idx).value();
-      shapes.back().push_back(Dim{dim_val});
+      if (circle_node->dim(dim_idx).known())
+      {
+        const int32_t dim_val = circle_node->dim(dim_idx).value();
+        shapes.back().push_back(Dim{dim_val});
+      }
+      else
+      {
+        shapes.back().push_back(Dim{-1});
+      }
     }
   }
   return shapes;
@@ -144,7 +151,8 @@ luci::Module *ModelData::module()
 
 void ModelData::save(std::ostream &stream)
 {
-  stream.write(reinterpret_cast<const char *>(buffer().data()), buffer().size());
+  auto &buff = buffer();
+  stream.write(reinterpret_cast<const char *>(buff.data()), buff.size());
   if (!stream.good())
   {
     throw std::runtime_error("Failed to write to output stream");
