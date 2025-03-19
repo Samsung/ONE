@@ -120,8 +120,7 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
       // for non-existing `shape`, we can use `newShape` if it's valid
       auto new_shape = node->newShape();
       auto rank = new_shape->rank();
-      auto shape_dummy = dynamic_cast<luci::CircleOutputDummy *>(node->shape());
-      if (shape_dummy && rank > 0)
+      if (rank > 0)
       {
         is_static_shape = true;
         shape_by_input.rank(rank);
@@ -154,7 +153,14 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
 
     for (uint32_t axis = 0; axis < shape_by_attr.rank(); ++axis)
     {
-      shape_by_attr.dim(axis) = node->newShape()->dim(axis);
+      if (node->newShape()->dim(axis) > 0)
+      {
+        shape_by_attr.dim(axis) = node->newShape()->dim(axis);
+      }
+      else
+      {
+        shape_by_attr.dim(axis).unset(); // unset means unknown dimension
+      }
     }
   }
 
