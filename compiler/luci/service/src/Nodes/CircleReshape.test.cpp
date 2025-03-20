@@ -204,7 +204,6 @@ TEST(ShapeRuleTest, reshape_by_newShape_dynamic)
   auto node_reshape = g->nodes()->create<luci::CircleReshape>();
   auto tensor_input = g->nodes()->create<luci::CircleInput>();
   auto target_shape = g->nodes()->create<luci::CircleInput>();
-  ;
 
   tensor_input->dtype(loco::DataType::S32);
   tensor_input->shape({2, 3, 4});
@@ -220,7 +219,7 @@ TEST(ShapeRuleTest, reshape_by_newShape_dynamic)
   // reshape to {dynamic, 4, dynamic}
   node_reshape->newShape()->rank(3);
   node_reshape->newShape()->dim(0) = -1;
-  node_reshape->newShape()->dim(1) = 4;
+  node_reshape->newShape()->dim(1) = 2;
   node_reshape->newShape()->dim(2) = -1;
 
   loco::TensorShape output_shape;
@@ -231,6 +230,6 @@ TEST(ShapeRuleTest, reshape_by_newShape_dynamic)
   ASSERT_EQ(3, output_shape.rank());
   ASSERT_FALSE(output_shape.dim(0).known());
   ASSERT_TRUE(output_shape.dim(1).known());
-  ASSERT_EQ(4, output_shape.dim(1).value());
+  ASSERT_EQ(2, output_shape.dim(1).value());
   ASSERT_FALSE(output_shape.dim(2).known());
 }
