@@ -17,11 +17,11 @@
 
 #ifndef ONERT_MICRO_EXECUTE_PAL_CONV_2D_H
 #define ONERT_MICRO_EXECUTE_PAL_CONV_2D_H
-
 #include "PALConv2DCommon.h"
 #include "core/OMKernelData.h"
 #include "core/OMRuntimeShape.h"
 #include "PALUtils.h"
+#include "OMHuffmanTranscoder.h"
 
 namespace onert_micro
 {
@@ -34,9 +34,11 @@ namespace pal
 OMStatus ConvPerChannel(const core::ConvQuant &params, const core::OMRuntimeShape &input_shape,
                         const int8_t *input_data, const core::OMRuntimeShape &filter_shape,
                         const int8_t *filter_data, const int32_t *bias_data,
-                        const core::OMRuntimeShape &output_shape, int8_t *output_data)
+                        const core::OMRuntimeShape &output_shape, int8_t *output_data,
+                        bool is_compressed = false)
 {
   // Get parameters.
+
   const int32_t input_offset = params.input_offset; // r = s(q - Z)
   const int stride_width = params.stride_width;
   const int stride_height = params.stride_height;
@@ -76,40 +78,53 @@ OMStatus ConvPerChannel(const core::ConvQuant &params, const core::OMRuntimeShap
   assert(filters_per_group != 0);
   const int output_height = output_shape.dims(1);
   const int output_width = output_shape.dims(2);
-  for (int batch = 0; batch < batches; ++batch)
+
+  // Buffer for decompressed filter vals
+  // TODO: get by pointer from memory manager
+  std::vector<int8_t> filter_data_tmp(filter_height * filter_width * filter_input_depth, 0);
+
+  core::HuffmanTranscoder<uint8_t> transcoder;
+  transcoder.init_decoder(reinterpret_cast<const uint8_t *>(filter_data));
+  transcoder.reset_decode_idx();
+  for (int out_channel = 0; out_channel < output_depth; ++out_channel)
   {
-    for (int out_y = 0; out_y < output_height; ++out_y)
+    auto group = out_channel / filters_per_group;
+    int32_t acc = 0;
+
+    // extract compressed filter
+    transcoder.decode_n(reinterpret_cast<uint8_t *>(&filter_data_tmp[0]), filter_data_tmp.size());
+
+    for (int batch = 0; batch < batches; ++batch)
     {
-      const int in_y_origin = (out_y * stride_height) - pad_height;
-      for (int out_x = 0; out_x < output_width; ++out_x)
+      for (int out_y = 0; out_y < output_height; ++out_y)
       {
-        const int in_x_origin = (out_x * stride_width) - pad_width;
-        for (int out_channel = 0; out_channel < output_depth; ++out_channel)
+        const int in_y_origin = (out_y * stride_height) - pad_height;
+        for (int out_x = 0; out_x < output_width; ++out_x)
         {
-          auto group = out_channel / filters_per_group;
-          int32_t acc = 0;
-          for (int filter_y = 0; filter_y < filter_height; ++filter_y)
+          const int in_x_origin = (out_x * stride_width) - pad_width;
+          for (int in_channel = 0; in_channel < filter_input_depth; ++in_channel)
           {
-            const int in_y = in_y_origin + dilation_height_factor * filter_y;
-            for (int filter_x = 0; filter_x < filter_width; ++filter_x)
+            for (int filter_y = 0; filter_y < filter_height; ++filter_y)
             {
-              const int in_x = in_x_origin + dilation_width_factor * filter_x;
-
-              // Zero padding by omitting the areas outside the image.
-              const bool is_point_inside_image =
-                (in_x >= 0) && (in_x < input_width) && (in_y >= 0) && (in_y < input_height);
-
-              if (!is_point_inside_image)
+              const int in_y = in_y_origin + dilation_height_factor * filter_y;
+              for (int filter_x = 0; filter_x < filter_width; ++filter_x)
               {
-                continue;
-              }
+                const int in_x = in_x_origin + dilation_width_factor * filter_x;
 
-              for (int in_channel = 0; in_channel < filter_input_depth; ++in_channel)
-              {
+                // Zero padding by omitting the areas outside the image.
+                const bool is_point_inside_image =
+                  (in_x >= 0) && (in_x < input_width) && (in_y >= 0) && (in_y < input_height);
+
+                if (!is_point_inside_image)
+                {
+                  continue;
+                }
+
                 int32_t input_val = input_data[offset(input_shape.dimsData(), batch, in_y, in_x,
                                                       in_channel + group * filter_input_depth)];
-                int32_t filter_val = filter_data[offset(filter_shape.dimsData(), out_channel,
-                                                        filter_y, filter_x, in_channel)];
+                int32_t filter_val =
+                  filter_data_tmp[(filter_y * filter_height + filter_x) * filter_width +
+                                  in_channel];
                 // Accumulate with 32 bits accumulator.
                 // In the nudging process during model quantization, we force
                 // real value of 0.0 be represented by a quantized value. This
@@ -145,6 +160,7 @@ OMStatus ConvPerChannel(const core::ConvQuant &params, const core::OMRuntimeShap
       }
     }
   }
+
   return Ok;
 }
 
