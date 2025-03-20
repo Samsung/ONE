@@ -1,0 +1,39 @@
+# test for EliminateDeadSubgraphPass
+
+operand {
+    name: "ifm1"
+    type: FLOAT32
+    shape { dim: 1 }
+}
+operand {
+  name: "ofm1"
+  type: FLOAT32
+  shape { dim: 1 }
+}
+operation {
+    type: "ReLU"
+    input: "ifm1"
+    output: "ofm1"
+}
+graph {
+operand {
+    name: "ifm2"
+    type: FLOAT32
+    shape { dim: 1 }
+}
+operand {
+  name: "ofm2"
+  type: FLOAT32
+  shape { dim: 1 }
+}
+
+operation {
+    type: "ReLU"
+    input: "ifm2"
+    output: "ofm2"
+}
+input: "ifm2"
+output: "ofm2"
+}
+input: "ifm1"
+output: "ofm1"
