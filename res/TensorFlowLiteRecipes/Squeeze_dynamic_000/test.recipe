@@ -1,0 +1,19 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 3 dim: 4 dim: 5 dim: 1 }
+  shape_signature { dim: 3 dim: 4 dim: 5 dim: -1 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 4 dim: 5 }
+}
+operation {
+  type: "Squeeze"
+  squeeze_options { squeeze_dim: 3 }
+  input: "ifm"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"
