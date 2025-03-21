@@ -1238,7 +1238,7 @@ loco::NodeShape infer_squeeze(const luci::CircleSqueeze *node)
       int32_t dim = raw_dim < 0 ? raw_dim + input_shape.rank() : raw_dim;
 
       if (dim < 0 || static_cast<uint32_t>(dim) >= input_shape.rank() ||
-          input_shape.dim(dim).value() != 1)
+          (input_shape.dim(dim).known() && input_shape.dim(dim).value() != 1))
       {
         INTERNAL_EXN("invalid dimention specified to Squeeze");
       }
