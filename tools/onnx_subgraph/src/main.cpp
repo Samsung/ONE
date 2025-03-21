@@ -20,57 +20,57 @@ namespace fs = std::filesystem;
 
 int main(int argc, char *argv[])
 {
-    std::string onnxFile;
-    std::string confFile;
-    if (argc == 3)
+  std::string onnxFile;
+  std::string confFile;
+  if (argc == 3)
+  {
+    std::string arg1 = argv[1];
+    if (arg1.substr(0, 7) == "--onnx=")
     {
-        std::string arg1 = argv[1];
-        if (arg1.substr(0, 7) == "--onnx=")
-        {
-            onnxFile = arg1.substr(7);
-            if (onnxFile.empty())
-            {
-                std::cout << "No ONNX file provided." << std::endl;
-                return -1;
-            }
-
-            if (!fs::exists(onnxFile))
-            {
-                std::cout << onnxFile << " not exists." << std::endl;
-                return -1;
-            }
-            else
-            {
-                std::cout << onnxFile << " exists." << std::endl;
-            }
-        }
-
-        std::string arg2 = argv[2];
-        if (arg2.substr(0, 7) == "--conf=")
-        {
-            confFile = arg2.substr(7);
-            if (confFile.empty())
-            {
-                std::cout << "No conf file provided." << std::endl;
-                return -1;
-            }
-
-            if (!fs::exists(confFile))
-            {
-                std::cout << confFile << " not exists." << std::endl;
-                return -1;
-            }
-            else
-            {
-                std::cout << confFile << " exists." << std::endl;
-            }
-        }
-    }
-    else
-    {
-        printf("Please set valide args: ./onnx-subgraph --onnx=xxx.onnx --conf=xxx.json\n");
+      onnxFile = arg1.substr(7);
+      if (onnxFile.empty())
+      {
+        std::cout << "No ONNX file provided." << std::endl;
         return -1;
+      }
+
+      if (!fs::exists(onnxFile))
+      {
+        std::cout << onnxFile << " not exists." << std::endl;
+        return -1;
+      }
+      else
+      {
+        std::cout << onnxFile << " exists." << std::endl;
+      }
     }
 
-    return 0;
+    std::string arg2 = argv[2];
+    if (arg2.substr(0, 7) == "--conf=")
+    {
+      confFile = arg2.substr(7);
+      if (confFile.empty())
+      {
+        std::cout << "No conf file provided." << std::endl;
+        return -1;
+      }
+
+      if (!fs::exists(confFile))
+      {
+        std::cout << confFile << " not exists." << std::endl;
+        return -1;
+      }
+      else
+      {
+        std::cout << confFile << " exists." << std::endl;
+      }
+    }
+  }
+  else
+  {
+    printf("Please set valide args: ./onnx-subgraph --onnx=xxx.onnx --conf=xxx.json\n");
+    return -1;
+  }
+
+  return 0;
 }
