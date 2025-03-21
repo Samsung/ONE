@@ -210,6 +210,10 @@ loco::TensorShape Algorithm::visit(const luci::CircleReshape *node)
     }
     if (unknown_dim_index != UINT32_MAX)
     {
+      if (input_element_count % output_element_count != 0)
+      {
+        INTERNAL_EXN("Reshape Op cannot infer unknown dimension from inputs.");
+      }
       output_shape.dim(unknown_dim_index) = input_element_count / output_element_count;
     }
   }

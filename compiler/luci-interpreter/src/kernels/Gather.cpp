@@ -55,7 +55,14 @@ void Gather::configure()
   // refer tensorflow/lite/kernels/gather.cc
 
   const Shape &params_shape = params()->shape();
-  const Shape &indices_shape = indices()->shape();
+  Shape indices_shape = indices()->shape();
+  {
+    // scalar index is treated as a tensor with the shape of [1]
+    if (indices_shape.num_dims() == 0)
+    {
+      indices_shape = Shape({1});
+    }
+  }
 
   int axis = _params.axis;
   if (axis < 0)
