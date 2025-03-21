@@ -237,6 +237,40 @@ void CustomOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// DivOp
+//===----------------------------------------------------------------------===//
+
+void DivOp::inferShapes()
+{
+  DivOp op = *this;
+  SmallVector<int64_t, 4> inferred;
+  if (!inferBinShapes<DivOp>(op, inferred))
+    return;
+
+  auto input0_op = getOperand(0);
+  auto input0_type = input0_op.getType().cast<TensorType>();
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input0_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
+// MulOp
+//===----------------------------------------------------------------------===//
+
+void MulOp::inferShapes()
+{
+  MulOp op = *this;
+  SmallVector<int64_t, 4> inferred;
+  if (!inferBinShapes<MulOp>(op, inferred))
+    return;
+
+  auto input0_op = getOperand(0);
+  auto input0_type = input0_op.getType().cast<TensorType>();
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input0_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // PadOp
 //===----------------------------------------------------------------------===//
 
@@ -425,6 +459,23 @@ void ReshapeOp::inferShapes()
 
     getResult().setType(inferred_type);
   }
+}
+
+//===----------------------------------------------------------------------===//
+// SubOp
+//===----------------------------------------------------------------------===//
+
+void SubOp::inferShapes()
+{
+  SubOp op = *this;
+  SmallVector<int64_t, 4> inferred;
+  if (!inferBinShapes<SubOp>(op, inferred))
+    return;
+
+  auto input0_op = getOperand(0);
+  auto input0_type = input0_op.getType().cast<TensorType>();
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input0_type.getElementType());
+  getResult().setType(inferred_type);
 }
 
 //===----------------------------------------------------------------------===//

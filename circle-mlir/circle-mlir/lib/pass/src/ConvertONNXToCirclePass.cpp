@@ -148,6 +148,9 @@ void ConvertONNXToCirclePass::runOnOperation()
   mlir::RewritePatternSet patterns(context);
   // NOTE use name from ONNX Op, suffix T for templates
   patterns.insert<ConvBinaryT<mlir::ONNXAddOp, mlir::Circle::AddOp>>(typeConverter, context);
+  patterns.insert<ConvBinaryT<mlir::ONNXDivOp, mlir::Circle::DivOp>>(typeConverter, context);
+  patterns.insert<ConvBinaryT<mlir::ONNXMulOp, mlir::Circle::MulOp>>(typeConverter, context);
+  patterns.insert<ConvBinaryT<mlir::ONNXSubOp, mlir::Circle::SubOp>>(typeConverter, context);
 
   patterns.insert<ConvConstant>(typeConverter, context);
   patterns.insert<ConvConv>(typeConverter, context);

@@ -446,10 +446,13 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 #include "ops/ConstOp.h"
 #include "ops/Conv2DOp.h"
 #include "ops/CustomOp.h"
+#include "ops/DivOp.h"
+#include "ops/MulOp.h"
 #include "ops/NoValueOp.h"
 #include "ops/PadOp.h"
 #include "ops/ReshapeOp.h"
 #include "ops/ShapeOp.h"
+#include "ops/SubOp.h"
 #include "ops/TransposeOp.h"
 
 #include "mlir/CircleOpsDialect.cc.inc"
