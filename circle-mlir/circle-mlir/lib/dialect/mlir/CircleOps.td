@@ -435,6 +435,81 @@ def CIR_CustomOp : Op<CIR_Dialect, "custom", [
   let hasVerifier = 1;
 }
 
+def CIR_DivOp : CIR_Op<"div", [
+    // TODO(fengliuai): NoQuantizableResult is only correct for int8
+    // quantization. update to handle Uint8 quantization.
+    BinaryOpSameElementTypeConstraint,
+    CIR_OperandsHaveSameShapesOrBroadcastableShape<[0, 1], 5>,
+    ResultsBroadcastableShape,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    Pure]> {
+  let summary = "Division operator";
+
+  let description = [{
+    Element-wise division operation.
+  }];
+
+  let arguments = (
+      ins CIR_TensorOf<[F32, I32/*, QUI8*/]>:$lhs,
+      CIR_TensorOf<[F32, I32/*, QUI8*/]>:$rhs,
+      CIR_AFAttr:$fused_activation_function);
+
+  let results = (outs CIR_TensorOf<[F32, I32/*, QUI8*/]>:$output);
+
+  let hasCustomAssemblyFormat = 1;
+
+  let extraClassDefinition = [{
+    ParseResult $cppClass::parse(OpAsmParser &parser, OperationState &result) {
+      return parseOneResultSameOperandTypeOp(parser, result);
+    }
+    void $cppClass::print(OpAsmPrinter &p) {
+      return printOneResultOp(getOperation(), p);
+    }
+  }];
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+}
+
+def CIR_MulOp : CIR_Op<"mul", [
+    ResultsBroadcastableShape,
+    Pure,
+    Commutative,
+    /*QuantizableResult,*/
+    BinaryOpSameElementTypeConstraint,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    CIR_RuntimePredOpTrait<"Operands do not have valid shapes",
+      CPred<"Circle::VerifyMulOpShapeConstraints(llvm::cast<MulOp>($_op))">>]> {
+  let summary = "Multiplication operator";
+
+  let description = [{
+    Element-wise multiplication operation.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, QI16, Complex<F<32>>*/]>:$lhs,
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, QI16, Complex<F<32>>*/]>:$rhs,
+    CIR_AFAttr:$fused_activation_function);
+
+  let results = (outs CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, QI16, Complex<F<32>>*/]>:$output);
+
+  let hasFolder = 1;
+
+  let hasCustomAssemblyFormat = 1;
+
+  let extraClassDefinition = [{
+    ParseResult $cppClass::parse(OpAsmParser &parser, OperationState &result) {
+      return parseOneResultSameOperandTypeOp(parser, result);
+    }
+    void $cppClass::print(OpAsmPrinter &p) {
+      return printOneResultOp(getOperation(), p);
+    }
+  }];
+
+  let hasOptions = 1;
+}
+
 def CIR_NoValueOp : Op<CIR_Dialect, "no_value", [ConstantLike, Pure]> {
   let summary = "constant representing no value.";
 
@@ -552,6 +627,44 @@ def CIR_ShapeOp: CIR_Op<"shape", [
   let hasOptions = 1;
 
   let hasFolder = 1;
+}
+
+def CIR_SubOp : CIR_Op<"sub", [
+    ResultsBroadcastableShape,
+    BinaryOpSameElementTypeConstraint,
+    CIR_RuntimePredOpTrait<"Operands do not have valid shapes",
+      CPred<"Circle::VerifySubOpShapeConstraints(llvm::cast<SubOp>($_op))">>,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    Pure,
+    /*QuantizableResult,*/
+    ]> {
+  let summary = "Subtraction operator";
+
+  let description = [{
+    Element-wise subtraction operation.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, QI16*/]>:$lhs,
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, QI16*/]>:$rhs,
+    CIR_AFAttr:$fused_activation_function);
+
+  let results = (outs CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, QI16*/]>:$output);
+
+  let hasFolder = 1;
+
+  let hasCustomAssemblyFormat = 1;
+
+  let extraClassDefinition = [{
+    ParseResult $cppClass::parse(OpAsmParser &parser, OperationState &result) {
+      return parseOneResultSameOperandTypeOp(parser, result);
+    }
+    void $cppClass::print(OpAsmPrinter &p) {
+      return printOneResultOp(getOperation(), p);
+    }
+  }];
+
+  let hasOptions = 1;
 }
 
 def CIR_TransposeOp : CIR_Op<"transpose", [
