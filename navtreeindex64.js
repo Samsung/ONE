@@ -1,7 +1,5 @@
 var NAVTREEINDEX64 =
 {
-"classloco_1_1_node_shape.html#af39878c3b5cf20e3769d84244d4a56a0":[39,0,76,94,19],
-"classloco_1_1_node_shape.html#af39878c3b5cf20e3769d84244d4a56a0":[40,0,55,94,19],
 "classloco_1_1_node_shape.html#afed490f1040473f7a1ef39de15846ecf":[40,0,55,94,6],
 "classloco_1_1_node_shape.html#afed490f1040473f7a1ef39de15846ecf":[39,0,76,94,6],
 "classloco_1_1_object_pool.html":[39,0,76,95],
@@ -249,5 +247,7 @@ var NAVTREEINDEX64 =
 "classloco_1_1_permuting_encoder_3_01_domain_1_1_matrix_01_4.html#a27b8c94090f88f2fe50d09290fdfd29d":[40,0,55,112,0],
 "classloco_1_1_permuting_encoder_3_01_domain_1_1_matrix_01_4.html#a27b8c94090f88f2fe50d09290fdfd29d":[39,0,76,112,0],
 "classloco_1_1_permuting_encoder_3_01_domain_1_1_matrix_01_4.html#a43743b204c39aecd33a178adc905112d":[39,0,76,112,5],
-"classloco_1_1_permuting_encoder_3_01_domain_1_1_matrix_01_4.html#a43743b204c39aecd33a178adc905112d":[40,0,55,112,5]
+"classloco_1_1_permuting_encoder_3_01_domain_1_1_matrix_01_4.html#a43743b204c39aecd33a178adc905112d":[40,0,55,112,5],
+"classloco_1_1_permuting_encoder_3_01_domain_1_1_matrix_01_4.html#a8df7dca5163acf7863b3718053072f95":[40,0,55,112,3],
+"classloco_1_1_permuting_encoder_3_01_domain_1_1_matrix_01_4.html#a8df7dca5163acf7863b3718053072f95":[39,0,76,112,3]
 };

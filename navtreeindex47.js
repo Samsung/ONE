@@ -1,7 +1,5 @@
 var NAVTREEINDEX47 =
 {
-"classcaffeimport_1_1_scale_builder.html#ae60ca6fd12e9e91676336af55cb6ea30":[40,0,11,10,0],
-"classcaffeimport_1_1_weight_context.html":[40,0,11,11],
 "classcaffeimport_1_1_weight_context.html":[39,0,13,11],
 "classcaffeimport_1_1_weight_context.html#a2ed8848a8227accf5b03bfb915c65c49":[40,0,11,11,0],
 "classcaffeimport_1_1_weight_context.html#a2ed8848a8227accf5b03bfb915c65c49":[39,0,13,11,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX47 =
 "classcirclechef_1_1_generated_model.html#a315a3d4775f294a8e3d429b39d0418e0":[40,0,15,10,3],
 "classcirclechef_1_1_generated_model.html#a39c9f8d953811d219b33359b43243f07":[39,0,18,10,1],
 "classcirclechef_1_1_generated_model.html#a39c9f8d953811d219b33359b43243f07":[40,0,15,10,1],
-"classcirclechef_1_1_generated_model.html#af3d01182b5ae13b817744e32e9035068":[39,0,18,10,2]
+"classcirclechef_1_1_generated_model.html#af3d01182b5ae13b817744e32e9035068":[39,0,18,10,2],
+"classcirclechef_1_1_generated_model.html#af3d01182b5ae13b817744e32e9035068":[40,0,15,10,2],
+"classcirclechef_1_1_logger.html":[40,0,15,11]
 };

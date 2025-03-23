@@ -1,7 +1,5 @@
 var NAVTREEINDEX39 =
 {
-"class_graph_testcase_3_01_graph_code_1_1_transposed_conv2_d_01_4.html#a4944c93f1b182005ad5fa0500002b0da":[40,0,272,0],
-"class_graph_testcase_3_01_graph_code_1_1_transposed_conv2_d_01_4.html#a5b1a12de4e9c1f7a232a80ff50c57f4b":[40,0,272,4],
 "class_graph_testcase_3_01_graph_code_1_1_transposed_conv2_d_01_4.html#a5ef1c80d09702db8f844db7e445b5f25":[40,0,272,3],
 "class_graph_testcase_3_01_graph_code_1_1_transposed_conv2_d_01_4.html#ab718e21da23218728d942ddef16e11a5":[40,0,272,6],
 "class_graph_testcase_3_01_graph_code_1_1_transposed_conv2_d_01_4.html#ae28ac884d31eccf67964817713bacdcd":[40,0,272,1],
@@ -147,8 +145,8 @@ var NAVTREEINDEX39 =
 "class_matrix_set_diag_chef.html#a39e7f707b29df80553cb39c8ecba186d":[40,0,335,0],
 "class_matrix_set_diag_chef.html#aa19b5f20a82b6031f7d702eef1ba2940":[40,0,335,2],
 "class_matrix_set_diag_chef.html#ae2c58caf17eb914a3c5230f6dbff8b8b":[40,0,335,3],
-"class_max_pool2_d__000_1_1_max_pool2_d__000___q8.html":[39,0,88,0],
 "class_max_pool2_d__000_1_1_max_pool2_d__000___q8.html":[40,0,64,0],
+"class_max_pool2_d__000_1_1_max_pool2_d__000___q8.html":[39,0,88,0],
 "class_max_pool2_d__000_1_1_max_pool2_d__000___q8.html#a69c3b797c6828cc6d6ac554f3d436cfd":[40,0,64,0,0],
 "class_max_pool2_d__000_1_1_max_pool2_d__000___q8.html#a69c3b797c6828cc6d6ac554f3d436cfd":[39,0,88,0,0],
 "class_max_pool2_d__000_1_1_max_pool2_d__000___q8.html#a88c6df8789cfededaeb5e338f56ff35b":[40,0,64,0,2],
@@ -175,8 +173,8 @@ var NAVTREEINDEX39 =
 "class_mean__000_1_1_mean__000___q8.html":[40,0,65,0],
 "class_mean__000_1_1_mean__000___q8.html#a562223fea211ee30a7c8247cf7c2cb02":[40,0,65,0,0],
 "class_mean__000_1_1_mean__000___q8.html#a562223fea211ee30a7c8247cf7c2cb02":[39,0,89,0,0],
-"class_mean__000_1_1_mean__000___q8.html#a602615d8f4343de789aad2d4c51631cc":[40,0,65,0,1],
 "class_mean__000_1_1_mean__000___q8.html#a602615d8f4343de789aad2d4c51631cc":[39,0,89,0,1],
+"class_mean__000_1_1_mean__000___q8.html#a602615d8f4343de789aad2d4c51631cc":[40,0,65,0,1],
 "class_mean__000_1_1_mean__000___q8.html#adb70ea723af45ffc204ea21c1fc914d8":[39,0,89,0,2],
 "class_mean__000_1_1_mean__000___q8.html#adb70ea723af45ffc204ea21c1fc914d8":[40,0,65,0,2],
 "class_mean_chef.html":[40,0,344],
@@ -230,12 +228,12 @@ var NAVTREEINDEX39 =
 "class_mul__000_1_1_mul__000___q8.html#a8b3488ae3f1858fcf9c8fa064a7c718d":[40,0,79,0,1],
 "class_mul__000_1_1_mul__000___q8.html#afd8f5e22a1dfd9271be000c39882a2b3":[39,0,110,0,2],
 "class_mul__000_1_1_mul__000___q8.html#afd8f5e22a1dfd9271be000c39882a2b3":[40,0,79,0,2],
-"class_mul__001_1_1_mul__001___q8.html":[39,0,111,0],
 "class_mul__001_1_1_mul__001___q8.html":[40,0,80,0],
+"class_mul__001_1_1_mul__001___q8.html":[39,0,111,0],
 "class_mul__001_1_1_mul__001___q8.html#a1b77b62b6a7d9761e1ac488469fed2ff":[40,0,80,0,2],
 "class_mul__001_1_1_mul__001___q8.html#a1b77b62b6a7d9761e1ac488469fed2ff":[39,0,111,0,2],
-"class_mul__001_1_1_mul__001___q8.html#a677ba6548f97086831662f2d430ea177":[40,0,80,0,1],
 "class_mul__001_1_1_mul__001___q8.html#a677ba6548f97086831662f2d430ea177":[39,0,111,0,1],
+"class_mul__001_1_1_mul__001___q8.html#a677ba6548f97086831662f2d430ea177":[40,0,80,0,1],
 "class_mul__001_1_1_mul__001___q8.html#a84e017b2576dcf67e98e579e653cee16":[40,0,80,0,0],
 "class_mul__001_1_1_mul__001___q8.html#a84e017b2576dcf67e98e579e653cee16":[39,0,111,0,0],
 "class_mul_chef.html":[40,0,357],
@@ -249,5 +247,7 @@ var NAVTREEINDEX39 =
 "class_neg_chef.html#a8c485c7afc4634229de432aebfecac20":[40,0,360,1],
 "class_neg_chef.html#acca35ce1659b149dc97d49700489b544":[40,0,360,3],
 "class_non_max_suppression_v4_chef.html":[40,0,369],
-"class_non_max_suppression_v4_chef.html#a00892221902d372144a4a90a8b10ee82":[40,0,369,1]
+"class_non_max_suppression_v4_chef.html#a00892221902d372144a4a90a8b10ee82":[40,0,369,1],
+"class_non_max_suppression_v4_chef.html#a0a27d50b52fbf1cfa81a49d0661e7efc":[40,0,369,3],
+"class_non_max_suppression_v4_chef.html#a0f1e3d36df85cd3178faa182966b220a":[40,0,369,0]
 };

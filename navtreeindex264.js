@@ -1,5 +1,9 @@
 var NAVTREEINDEX264 =
 {
+"struct_l2_pool2_d_chef_factory.html#a88e3e7f0867382b23d6dc905a64fd2a3":[40,0,307,0],
+"struct_leaky_relu_chef_factory.html":[40,0,309],
+"struct_leaky_relu_chef_factory.html#aa17b2c73df4d683f2abba4ad8e3105c1":[40,0,309,0],
+"struct_less_chef_factory.html":[40,0,311],
 "struct_less_chef_factory.html#ad09c30288fb097368a6e69c9f8305ffd":[40,0,311,0],
 "struct_less_equal_chef_factory.html":[40,0,313],
 "struct_less_equal_chef_factory.html#a1d3bd9ec4c0bcb158ebb2e2ccfa3bc71":[40,0,313,0],
@@ -83,13 +87,13 @@ var NAVTREEINDEX264 =
 "struct_op_chef.html#a741fb1e34c5c32757638f20139eae6cc":[40,0,378,9],
 "struct_op_chef.html#a826d49bed868605eded3b8474a1d2e16":[40,0,378,2],
 "struct_op_chef.html#aa60293dfb6304252fe3723700739b7e1":[40,0,378,6],
-"struct_op_chef.html#ac1f4f54559a8f3aff8aa17775f0db2bc":[40,0,378,5],
 "struct_op_chef.html#ac1f4f54559a8f3aff8aa17775f0db2bc":[40,0,378,4],
-"struct_op_chef.html#aeb92d15a21ac54d4d37d90c1a773ebf2":[40,0,378,0],
+"struct_op_chef.html#ac1f4f54559a8f3aff8aa17775f0db2bc":[40,0,378,5],
 "struct_op_chef.html#aeb92d15a21ac54d4d37d90c1a773ebf2":[40,0,378,1],
+"struct_op_chef.html#aeb92d15a21ac54d4d37d90c1a773ebf2":[40,0,378,0],
 "struct_op_chef_factory.html":[40,0,379],
-"struct_op_chef_factory.html#a15478222773e6f86990c5a935ed302d5":[40,0,379,1],
 "struct_op_chef_factory.html#a15478222773e6f86990c5a935ed302d5":[40,0,379,0],
+"struct_op_chef_factory.html#a15478222773e6f86990c5a935ed302d5":[40,0,379,1],
 "struct_op_chef_factory.html#a8a07d138773d51f6785b84c2f2f92865":[40,0,379,2],
 "struct_op_chef_factory.html#ae985b3ee49d967db1dd8d40801714bcd":[40,0,379,3],
 "struct_op_printer.html":[40,0,382],
@@ -245,9 +249,5 @@ var NAVTREEINDEX264 =
 "struct_sqrt_chef_factory.html":[40,0,482],
 "struct_sqrt_chef_factory.html#a4f87134f46982f57578f0d1783463c01":[40,0,482,0],
 "struct_square_chef_factory.html":[40,0,484],
-"struct_square_chef_factory.html#a3a28b67a24f886cddf68d11c1c8bd688":[40,0,484,0],
-"struct_squared_difference_chef_factory.html":[40,0,486],
-"struct_squared_difference_chef_factory.html#aeda9c0d5d70b8b55ea718eee5ab43ef3":[40,0,486,0],
-"struct_squeeze_chef_factory.html":[40,0,488],
-"struct_squeeze_chef_factory.html#ab5419804a3046d99bcb0d6f0337c2b4e":[40,0,488,0]
+"struct_square_chef_factory.html#a3a28b67a24f886cddf68d11c1c8bd688":[40,0,484,0]
 };

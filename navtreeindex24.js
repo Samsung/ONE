@@ -1,7 +1,5 @@
 var NAVTREEINDEX24 =
 {
-"_quantize_pre_checker_pass_8cpp.html":[41,0,0,58,7,1,83],
-"_quantize_pre_checker_pass_8cpp.html#a1c23705d99f4a6f4532eb580360f4d6c":[41,0,0,58,7,1,83,0],
 "_quantize_pre_checker_pass_8cpp.html#a3a781616f0ed3d0c677f17c01b3f867b":[41,0,0,58,7,1,83,1],
 "_quantize_pre_checker_pass_8cpp.html#a9885b9759311824e46bd2d21ada0ab3b":[41,0,0,58,7,1,83,2],
 "_quantize_pre_checker_pass_8cpp_source.html":[41,0,0,58,7,1,83],
@@ -249,5 +247,7 @@ var NAVTREEINDEX24 =
 "_relu6_canonicalizer_8h.html":[41,0,0,84,1,0,33],
 "_relu6_canonicalizer_8h_source.html":[41,0,0,84,1,0,33],
 "_relu6_converter_8cpp.html":[41,0,0,40,1,1,29],
-"_relu6_converter_8cpp_source.html":[41,0,0,40,1,1,29]
+"_relu6_converter_8cpp_source.html":[41,0,0,40,1,1,29],
+"_relu6_converter_8h.html":[41,0,0,40,1,1,30],
+"_relu6_converter_8h_source.html":[41,0,0,40,1,1,30]
 };

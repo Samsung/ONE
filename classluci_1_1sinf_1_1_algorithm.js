@@ -10,6 +10,7 @@ var classluci_1_1sinf_1_1_algorithm =
     [ "visit", "classluci_1_1sinf_1_1_algorithm.html#aa8855fe3a317dc416bf89784e33ffd96", null ],
     [ "visit", "classluci_1_1sinf_1_1_algorithm.html#a7aacbc577658f0706284325ba123c1aa", null ],
     [ "visit", "classluci_1_1sinf_1_1_algorithm.html#abc4706e0b6ad799bba4df046b092fc5e", null ],
+    [ "visit", "classluci_1_1sinf_1_1_algorithm.html#ab31f6880bcda2ddc47e2acf07918b479", null ],
     [ "visit", "classluci_1_1sinf_1_1_algorithm.html#a2f34fa89290a23b0310cdb9f539fadac", null ],
     [ "visit", "classluci_1_1sinf_1_1_algorithm.html#a5b8cd77c565019234f82074550de112f", null ],
     [ "visit", "classluci_1_1sinf_1_1_algorithm.html#aba7ae5f593265463dc393fe5d70e25ee", null ],

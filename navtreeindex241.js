@@ -1,5 +1,7 @@
 var NAVTREEINDEX241 =
 {
+"namespaceonert__micro_1_1train_1_1losses__functions.html":[39,0,122,5,0],
+"namespaceonert__micro_1_1train_1_1metrics.html":[39,0,122,5,1],
 "namespaceonert__micro_1_1train_1_1optimizers.html":[39,0,122,5,2],
 "namespaceonert__micro_1_1train_1_1pal.html":[39,0,122,5,3],
 "namespaceonert__micro_1_1train_1_1pal.html#a3b95c071f13296cd0dbd46bcc0cd57cb":[39,0,122,5,3,7],
@@ -238,16 +240,14 @@ var NAVTREEINDEX241 =
 "namespacesparsity.html#a741a972cf00f39d8bcf75112ce7d3f16":[39,0,157,7],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78":[39,0,157,9],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,8,1],
-"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,8,3],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,9,3],
+"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,8,3],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,9,1],
+"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,9,0],
+"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,9,2],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,8,2],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,8,0],
-"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,9,2],
-"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,9,0],
-"namespacesparsity.html#aebaa280a7d40b78a0e10bdff92358480":[39,0,157,8],
 "namespacesparsity.html#aebaa280a7d40b78a0e10bdff92358480":[39,0,157,5],
-"namespacestd.html":[39,0,158],
-"namespacetest__circle__part__value.html":[39,0,160],
-"namespacetest__circle__part__value.html#a1990c4eeb7448a9f2c934e626e53d915":[39,0,160,0]
+"namespacesparsity.html#aebaa280a7d40b78a0e10bdff92358480":[39,0,157,8],
+"namespacestd.html":[39,0,158]
 };

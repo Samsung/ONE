@@ -1,5 +1,7 @@
 var NAVTREEINDEX210 =
 {
+"luci-interpreter_2pal_2common_2_p_a_l_cos_common_8h.html":[41,0,2,4,1,1,14],
+"luci-interpreter_2pal_2common_2_p_a_l_cos_common_8h.html#a51ab7d75f4c4e3552e184a977dd02e52":[41,0,2,4,1,1,14,0],
 "luci-interpreter_2pal_2common_2_p_a_l_cos_common_8h_source.html":[41,0,2,4,1,1,14],
 "luci-interpreter_2pal_2common_2_p_a_l_depthwise_conv2_d_common_8h.html":[41,0,2,4,1,1,16],
 "luci-interpreter_2pal_2common_2_p_a_l_depthwise_conv2_d_common_8h_source.html":[41,0,2,4,1,1,16],
@@ -247,7 +249,5 @@ var NAVTREEINDEX210 =
 "luci-interpreter_2src_2kernels_2_ro_p_e_8cpp_source.html":[41,0,0,61,2,2,141],
 "luci-interpreter_2src_2kernels_2_rsqrt_8h.html":[41,0,0,61,2,2,144],
 "luci-interpreter_2src_2kernels_2_rsqrt_8h_source.html":[41,0,0,61,2,2,144],
-"luci-interpreter_2src_2kernels_2_s_v_d_f_8h.html":[41,0,0,61,2,2,180],
-"luci-interpreter_2src_2kernels_2_s_v_d_f_8h_source.html":[41,0,0,61,2,2,180],
-"luci-interpreter_2src_2kernels_2_select_8cpp.html":[41,0,0,61,2,2,145]
+"luci-interpreter_2src_2kernels_2_s_v_d_f_8h.html":[41,0,0,61,2,2,180]
 };

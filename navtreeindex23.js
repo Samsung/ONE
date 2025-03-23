@@ -1,7 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"_pooling_spec_8h.html#a9bf44421562b71b645dfee67ce65a82ca6a061313d22e51e0f25b7cd4dc065233":[41,0,0,37,2,0,0,23,1,0],
-"_pooling_spec_8h_source.html":[41,0,0,37,2,0,0,23],
 "_post_import_8cpp.html":[41,0,0,58,2,1,10],
 "_post_import_8cpp_source.html":[41,0,0,58,2,1,10],
 "_post_import_8h.html":[41,0,0,58,2,1,11],
@@ -249,5 +247,7 @@ var NAVTREEINDEX23 =
 "_quantize_onnx_q_d_q_pass_8h.html":[41,0,0,58,7,1,82],
 "_quantize_onnx_q_d_q_pass_8h_source.html":[41,0,0,58,7,1,82],
 "_quantize_op_8h.html":[41,0,0,79,0,0,0,28],
-"_quantize_op_8h_source.html":[41,0,0,79,0,0,0,28]
+"_quantize_op_8h_source.html":[41,0,0,79,0,0,0,28],
+"_quantize_pre_checker_pass_8cpp.html":[41,0,0,58,7,1,83],
+"_quantize_pre_checker_pass_8cpp.html#a1c23705d99f4a6f4532eb580360f4d6c":[41,0,0,58,7,1,83,0]
 };

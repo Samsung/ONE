@@ -1,7 +1,5 @@
 var NAVTREEINDEX46 =
 {
-"classarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex.html#aadc300885514cbcac7577b5fbb408d77":[39,0,8,48,5],
-"classarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex.html#ab6c6e047b89ad38375c1b5f9eb03b881":[40,0,7,47,4],
 "classarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex.html#ab6c6e047b89ad38375c1b5f9eb03b881":[39,0,8,48,4],
 "classarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex.html#ab934f6ad4effe3dddf3d5c658fda95de":[40,0,7,47,8],
 "classarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex.html#ab934f6ad4effe3dddf3d5c658fda95de":[39,0,8,48,8],
@@ -249,5 +247,7 @@ var NAVTREEINDEX46 =
 "classcaffeimport_1_1_re_l_u_builder.html#a7a09fb87cd46f5b6357cf282a2e9b68e":[39,0,13,9,0],
 "classcaffeimport_1_1_scale_builder.html":[39,0,13,10],
 "classcaffeimport_1_1_scale_builder.html":[40,0,11,10],
-"classcaffeimport_1_1_scale_builder.html#ae60ca6fd12e9e91676336af55cb6ea30":[39,0,13,10,0]
+"classcaffeimport_1_1_scale_builder.html#ae60ca6fd12e9e91676336af55cb6ea30":[39,0,13,10,0],
+"classcaffeimport_1_1_scale_builder.html#ae60ca6fd12e9e91676336af55cb6ea30":[40,0,11,10,0],
+"classcaffeimport_1_1_weight_context.html":[40,0,11,11]
 };

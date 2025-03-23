@@ -1,7 +1,5 @@
 var NAVTREEINDEX65 =
 {
-"classloco_1_1_permuting_encoder_3_01_domain_1_1_matrix_01_4.html#a8df7dca5163acf7863b3718053072f95":[40,0,55,112,3],
-"classloco_1_1_permuting_encoder_3_01_domain_1_1_matrix_01_4.html#a8df7dca5163acf7863b3718053072f95":[39,0,76,112,3],
 "classloco_1_1_permuting_encoder_3_01_domain_1_1_matrix_01_4.html#a9fe710e6b3b8d707e847602ff399662d":[40,0,55,112,4],
 "classloco_1_1_permuting_encoder_3_01_domain_1_1_matrix_01_4.html#a9fe710e6b3b8d707e847602ff399662d":[39,0,76,112,4],
 "classloco_1_1_permuting_encoder_3_01_domain_1_1_matrix_01_4.html#ab47d8d4101aa3e640b1008c0f57ac9da":[39,0,76,112,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX65 =
 "classloco_1_1_use.html":[39,0,76,140],
 "classloco_1_1_use.html":[40,0,55,140],
 "classloco_1_1_use.html#a1d1e4163d77714df63f0969692319963":[40,0,55,140,4],
-"classloco_1_1_use.html#a1d1e4163d77714df63f0969692319963":[39,0,76,140,4]
+"classloco_1_1_use.html#a1d1e4163d77714df63f0969692319963":[39,0,76,140,4],
+"classloco_1_1_use.html#a42ed519b1b26ac216edc4f88127ce5ea":[40,0,55,140,6],
+"classloco_1_1_use.html#a42ed519b1b26ac216edc4f88127ce5ea":[39,0,76,140,6]
 };

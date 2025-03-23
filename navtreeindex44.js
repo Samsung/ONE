@@ -1,7 +1,5 @@
 var NAVTREEINDEX44 =
 {
-"classarm__compute_1_1_c_l_gather_ex_kernel.html#add36caf05a3a72f2ac018899ca5c559f":[40,0,7,12,2],
-"classarm__compute_1_1_c_l_hashtable_lookup.html":[39,0,8,15],
 "classarm__compute_1_1_c_l_hashtable_lookup.html":[40,0,7,14],
 "classarm__compute_1_1_c_l_hashtable_lookup.html#a813ae42f63431c07cc0867124851871e":[39,0,8,15,0],
 "classarm__compute_1_1_c_l_hashtable_lookup.html#a813ae42f63431c07cc0867124851871e":[40,0,7,14,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX44 =
 "classarm__compute_1_1_c_l_reduce_operation.html#a79955070d6ef06204c703aa876178323":[39,0,8,29,1],
 "classarm__compute_1_1_c_l_reduce_operation_kernel.html":[39,0,8,30],
 "classarm__compute_1_1_c_l_reduce_operation_kernel.html":[40,0,7,29],
-"classarm__compute_1_1_c_l_reduce_operation_kernel.html#a2d248b73b6d8fcd65b7e704ff6c3a843":[40,0,7,29,6]
+"classarm__compute_1_1_c_l_reduce_operation_kernel.html#a2d248b73b6d8fcd65b7e704ff6c3a843":[40,0,7,29,6],
+"classarm__compute_1_1_c_l_reduce_operation_kernel.html#a2d248b73b6d8fcd65b7e704ff6c3a843":[39,0,8,30,6],
+"classarm__compute_1_1_c_l_reduce_operation_kernel.html#a3c9a8b9e10db553d7606f2440dc3d0d1":[40,0,7,29,3]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX256 =
 {
+"partition_2src_2_nodes_2_circle_logical_or_8cpp_source.html":[41,0,0,58,6,1,0,54],
+"partition_2src_2_nodes_2_circle_logistic_8cpp.html":[41,0,0,58,6,1,0,55],
 "partition_2src_2_nodes_2_circle_logistic_8cpp_source.html":[41,0,0,58,6,1,0,55],
 "partition_2src_2_nodes_2_circle_matrix_diag_8cpp.html":[41,0,0,58,6,1,0,57],
 "partition_2src_2_nodes_2_circle_matrix_diag_8cpp_source.html":[41,0,0,58,6,1,0,57],
@@ -247,7 +249,5 @@ var NAVTREEINDEX256 =
 "reflection_8h.html":[41,0,2,2,0,10],
 "reflection_8h.html#a06d4b97a3d782d99eef774f8b6f3286d":[41,0,2,2,0,10,1],
 "reflection_8h.html#a0d655a27fc629f93d84498cb1488fb3b":[41,0,2,2,0,10,23],
-"reflection_8h.html#a12aa054d4100e560507505df9265526d":[41,0,2,2,0,10,4],
-"reflection_8h.html#a1877d8ac4847e6b9ee7ee1c9d0582aa3":[41,0,2,2,0,10,27],
-"reflection_8h.html#a1cc65e63734b49a08a2bd8e1114ac24b":[41,0,2,2,0,10,5]
+"reflection_8h.html#a12aa054d4100e560507505df9265526d":[41,0,2,2,0,10,4]
 };

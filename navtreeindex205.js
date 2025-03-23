@@ -161,6 +161,8 @@ var NAVTREEINDEX205 =
 "lang_2src_2_nodes_2_circle_const_8cpp.html#adf9586d85f84de7b2444a6fade46b81f":[41,0,0,58,3,1,0,0,16],
 "lang_2src_2_nodes_2_circle_const_8cpp.html#af7ca93f71ec6c67ec58fc3ac4da6b4ee":[41,0,0,58,3,1,0,0,6],
 "lang_2src_2_nodes_2_circle_const_8cpp_source.html":[41,0,0,58,3,1,0,0],
+"lang_2src_2_nodes_2_circle_output_8cpp.html":[41,0,0,58,3,1,0,2],
+"lang_2src_2_nodes_2_circle_output_8cpp_source.html":[41,0,0,58,3,1,0,2],
 "library__info_8cc.html":[41,0,3,2,2,1,9],
 "library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca":[41,0,3,2,2,1,9,0],
 "library__info_8cc_source.html":[41,0,3,2,2,1,9],
@@ -247,7 +249,5 @@ var NAVTREEINDEX205 =
 "loco_8h.html":[41,0,0,51,0,1],
 "loco_8h_source.html":[41,0,0,51,0,1],
 "locoex-customop_2include_2locoex_2_c_op_call_8h.html":[41,0,0,52,0,0,2],
-"locoex-customop_2include_2locoex_2_c_op_call_8h_source.html":[41,0,0,52,0,0,2],
-"locoex-customop_2include_2locoex_2_variadic_arity_node_8h.html":[41,0,0,52,0,0,5],
-"locoex-customop_2include_2locoex_2_variadic_arity_node_8h_source.html":[41,0,0,52,0,0,5]
+"locoex-customop_2include_2locoex_2_c_op_call_8h_source.html":[41,0,0,52,0,0,2]
 };

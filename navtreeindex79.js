@@ -1,7 +1,5 @@
 var NAVTREEINDEX79 =
 {
-"classluci_1_1_circle_split_v_out.html#ac4f9aed973eaeb3cb58ffbe8fbd5598b":[40,0,61,263,0],
-"classluci_1_1_circle_split_v_out.html#ac4f9aed973eaeb3cb58ffbe8fbd5598b":[39,0,82,263,0],
 "classluci_1_1_circle_split_v_out.html#ae6f05f02d4ae66f2f7dfb90ae143bd3b":[40,0,61,263,3],
 "classluci_1_1_circle_split_v_out.html#ae6f05f02d4ae66f2f7dfb90ae143bd3b":[39,0,82,263,3],
 "classluci_1_1_circle_sqrt.html":[39,0,82,264],
@@ -249,5 +247,7 @@ var NAVTREEINDEX79 =
 "classluci_1_1_circle_unidirectional_sequence_l_s_t_m.html#a3f54ee497358b79561eba128c98a9a87":[39,0,82,293,10],
 "classluci_1_1_circle_unidirectional_sequence_l_s_t_m.html#a3f54ee497358b79561eba128c98a9a87":[40,0,61,293,10],
 "classluci_1_1_circle_unidirectional_sequence_l_s_t_m.html#a4925bafa6f40adffd775533ff1e5bc55":[40,0,61,293,53],
-"classluci_1_1_circle_unidirectional_sequence_l_s_t_m.html#a4925bafa6f40adffd775533ff1e5bc55":[39,0,82,293,53]
+"classluci_1_1_circle_unidirectional_sequence_l_s_t_m.html#a4925bafa6f40adffd775533ff1e5bc55":[39,0,82,293,53],
+"classluci_1_1_circle_unidirectional_sequence_l_s_t_m.html#a4ca5511825dac360ba8260a990d36dd3":[40,0,61,293,55],
+"classluci_1_1_circle_unidirectional_sequence_l_s_t_m.html#a4ca5511825dac360ba8260a990d36dd3":[39,0,82,293,55]
 };

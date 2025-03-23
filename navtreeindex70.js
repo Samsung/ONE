@@ -1,7 +1,5 @@
 var NAVTREEINDEX70 =
 {
-"classluci_1_1_circle_arg_min.html#ae6a88d378a2c6b66f6033a9fe992ca21":[40,0,61,18,3],
-"classluci_1_1_circle_arg_min.html#ae6a88d378a2c6b66f6033a9fe992ca21":[39,0,82,18,3],
 "classluci_1_1_circle_arg_min_graph_builder.html":[39,0,82,19],
 "classluci_1_1_circle_arg_min_graph_builder.html":[40,0,61,19],
 "classluci_1_1_circle_arg_min_graph_builder.html#a93abb807e190b2fd9f2b7bb16d462af1":[40,0,61,19,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX70 =
 "classluci_1_1_circle_bidirectional_sequence_l_s_t_m.html#a7de07777db9b4b92af1c76c6450886f0":[40,0,61,30,52],
 "classluci_1_1_circle_bidirectional_sequence_l_s_t_m.html#a7de07777db9b4b92af1c76c6450886f0":[39,0,82,30,52],
 "classluci_1_1_circle_bidirectional_sequence_l_s_t_m.html#a7f93df4c0e7e2d42dd9c9f75e5a2fb7c":[39,0,82,30,96],
-"classluci_1_1_circle_bidirectional_sequence_l_s_t_m.html#a7f93df4c0e7e2d42dd9c9f75e5a2fb7c":[40,0,61,30,96]
+"classluci_1_1_circle_bidirectional_sequence_l_s_t_m.html#a7f93df4c0e7e2d42dd9c9f75e5a2fb7c":[40,0,61,30,96],
+"classluci_1_1_circle_bidirectional_sequence_l_s_t_m.html#a804e85340fa212f15697c474646da022":[39,0,82,30,25],
+"classluci_1_1_circle_bidirectional_sequence_l_s_t_m.html#a804e85340fa212f15697c474646da022":[40,0,61,30,25]
 };

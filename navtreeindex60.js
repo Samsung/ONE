@@ -1,7 +1,5 @@
 var NAVTREEINDEX60 =
 {
-"classfme__apply_1_1_progress_reporter.html#a48942e303740d841d8195bd2b5f57ac0":[39,0,59,5,0],
-"classfme__apply_1_1_progress_reporter.html#a48942e303740d841d8195bd2b5f57ac0":[40,0,48,5,0],
 "classfme__apply_1_1_progress_reporter.html#a7fc2b67705ee68aa59145952c5e9a4d5":[39,0,59,5,4],
 "classfme__apply_1_1_progress_reporter.html#a7fc2b67705ee68aa59145952c5e9a4d5":[40,0,48,5,4],
 "classfme__apply_1_1_progress_reporter.html#a8c5a4da076759804eea22ca2843734c6":[40,0,48,5,2],
@@ -249,5 +247,7 @@ var NAVTREEINDEX60 =
 "classkuma_1_1_context_3_01_algorithm_1_1_greedy_01_4.html#ac1193f71115532b6e385ff164ab6acfd":[39,0,75,2,1],
 "classkuma_1_1_context_3_01_algorithm_1_1_greedy_01_4.html#ac1193f71115532b6e385ff164ab6acfd":[40,0,54,2,1],
 "classkuma_1_1_context_3_01_algorithm_1_1_greedy_01_4.html#aecfe3e50641282d927a1320277a02f25":[39,0,75,2,3],
-"classkuma_1_1_context_3_01_algorithm_1_1_greedy_01_4.html#aecfe3e50641282d927a1320277a02f25":[40,0,54,2,3]
+"classkuma_1_1_context_3_01_algorithm_1_1_greedy_01_4.html#aecfe3e50641282d927a1320277a02f25":[40,0,54,2,3],
+"classkuma_1_1_context_3_01_algorithm_1_1_linear_scan_first_fit_01_4.html":[39,0,75,3],
+"classkuma_1_1_context_3_01_algorithm_1_1_linear_scan_first_fit_01_4.html":[40,0,54,3]
 };
