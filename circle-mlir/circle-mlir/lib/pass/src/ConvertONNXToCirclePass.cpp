@@ -34,6 +34,8 @@
 #include "ops/ReluOp.h"
 #include "ops/ReshapeOp.h"
 #include "ops/ShapeOp.h"
+#include "ops/SqrtOp.h"
+#include "ops/TanhOp.h"
 #include "ops/TransposeOp.h"
 
 #include <circle-mlir/dialect/CircleDialect.h>
