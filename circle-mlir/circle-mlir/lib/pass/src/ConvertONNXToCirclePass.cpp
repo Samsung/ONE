@@ -168,6 +168,8 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvRelu>(typeConverter, context);
   patterns.insert<ConvReshape>(typeConverter, context);
   patterns.insert<ConvShape>(typeConverter, context);
+  patterns.insert<ConvSqrt>(typeConverter, context);
+  patterns.insert<ConvTanh>(typeConverter, context);
   patterns.insert<ConvTranspose>(typeConverter, context);
 
   auto res = mlir::applyFullConversion(function, target, std::move(patterns));
