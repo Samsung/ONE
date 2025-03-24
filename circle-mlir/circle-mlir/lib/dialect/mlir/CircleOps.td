@@ -629,6 +629,30 @@ def CIR_ShapeOp: CIR_Op<"shape", [
   let hasFolder = 1;
 }
 
+def CIR_SqrtOp: CIR_Op<"sqrt", [
+    Pure,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    // NOTE TFL_SqrtOp used TF_SameOperandsAndResultTypeResolveRef
+    // REFER https://github.sec.samsung.net/one-project/circle-mlir/issues/292
+    SameOperandsAndResultShape]> {
+  let summary = "Square root operator";
+
+  let description = [{
+    Computes element-wise Square root of input
+  }];
+
+  let arguments = (ins CIR_FpTensor:$x);
+
+  let results = (outs CIR_FpTensor:$y);
+
+  let hasFolder = 1;
+
+  let extraClassDeclaration = [{
+    // Returns whether the return types are compatible.
+    static bool isCompatibleReturnTypes(TypeRange l, TypeRange r);
+  }];
+}
+
 def CIR_SubOp : CIR_Op<"sub", [
     ResultsBroadcastableShape,
     BinaryOpSameElementTypeConstraint,
@@ -665,6 +689,50 @@ def CIR_SubOp : CIR_Op<"sub", [
   }];
 
   let hasOptions = 1;
+}
+
+def CIR_TanhOp: CIR_Op<"tanh", [
+    Pure,
+    SameOperandsAndResultShape,
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    // TODO enable FixedOutputRangeInterface,
+    // TODO enable QuantizableResult,
+    ]> {
+  let summary = "Hyperbolic tangent operator";
+
+  let description = [{
+    Computes element-wise Hyperbolic tangent of input
+  }];
+
+  let arguments = (ins CIR_TensorOf<[F32/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$input);
+
+  let results = (outs CIR_TensorOf<[F32/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$output);
+
+  // This builder doesn't work with quantized type, so it can only be used by
+  // non-quantization tablegen patterns. Currently, it is used by the
+  // elementwise-move reordering pattern in the optimize_patterns.td
+  let builders = [
+    OpBuilder<(ins "Value":$input),
+    [{
+      $_state.addOperands({input});
+      $_state.addTypes(input.getType());
+    }]>
+  ];
+
+  // TODO enable FixedOutputRangeInterface
+  // let extraClassDeclaration = [{
+  // // FixedOutputRangeInterface:
+  // quant::UniformQuantizedType GetFixedOutputRange(
+  //     bool is_signed, int bit_width) {
+  //   auto result_type = getOutput().getType();
+  //   // central_value = min_value / 2 + (max_value - 1) / 2 + 1
+  //   // zero_point = central_value
+  //   // scale = 1. / (central_value - min_value)
+  //   return quant::GetFixedOutputRange(is_signed, bit_width, result_type,
+  //       /*scale=*/1.0 / (1<<(bit_width-1)), /*zero_point=*/0);
+  // }
+  // }];
 }
 
 def CIR_TransposeOp : CIR_Op<"transpose", [
