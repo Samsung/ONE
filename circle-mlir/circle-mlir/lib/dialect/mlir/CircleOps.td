@@ -472,6 +472,82 @@ def CIR_DivOp : CIR_Op<"div", [
   let hasFolder = 1;
 }
 
+def CIR_LeakyReluOp: CIR_Op<"leaky_relu", [
+    SameOperandsAndResultShape,
+    // QuantizableResult,
+    Pure,
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>]> {
+  let summary = "Leaky Relu operator";
+
+  let description = [{
+    Element-wise Leaky ReLU operator
+      x -> x >= 0 ? x : (alpha * x)
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32/*, QUI8, QI8, TFL_Quint8, QI16*/]>:$input,
+    // Slope of the activation function at x < 0.
+    F32Attr:$alpha
+  );
+
+  let results = (outs CIR_TensorOf<[F32/*, QUI8, QI8, TFL_Quint8, QI16*/]>:$output);
+
+  let hasOptions = 0b1;
+}
+
+def CIR_MaximumOp : CIR_Op<"maximum", [
+    ResultsBroadcastableShape,
+    Pure,
+    /*QuantizableResult,*/
+    CIR_OperandsHaveSameShapesOrBroadcastableShape<[0, 1], 5>,
+    Commutative/*,*/
+    /*SameOperandsAndResultsScale*/]> {
+  let summary = "Max operator";
+  let description = [{
+    Element-wise max operation.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32, CIR_Int32Or64/*, QI8, QUI8, QI16*/]>:$lhs,
+    CIR_TensorOf<[F32, CIR_Int32Or64/*, QI8, QUI8, QI16*/]>:$rhs
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, CIR_Int32Or64/*, QI8, QUI8, QI16*/]>:$max
+  );
+
+  let builders = [CIR_BroadcastableBinaryBuilder];
+
+  let hasOptions = 0;
+}
+
+def CIR_MinimumOp : CIR_Op<"minimum", [
+    ResultsBroadcastableShape,
+    Pure,
+    CIR_OperandsHaveSameShapesOrBroadcastableShape<[0, 1], 5>,
+    Commutative/*,*/
+    /*QuantizableResult,*/
+    /*SameOperandsAndResultsScale*/]> {
+  let summary = "Min operator";
+  let description = [{
+    Element-wise min operation.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32, CIR_Int32Or64/*, QI8, QUI8, QI16*/]>:$lhs,
+    CIR_TensorOf<[F32, CIR_Int32Or64/*, QI8, QUI8, QI16*/]>:$rhs
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, CIR_Int32Or64/*, QI8, QUI8, QI16*/]>:$min
+  );
+
+  let builders = [CIR_BroadcastableBinaryBuilder];
+
+  let hasOptions = 0;
+}
+
 def CIR_MulOp : CIR_Op<"mul", [
     ResultsBroadcastableShape,
     Pure,
@@ -578,6 +654,101 @@ def CIR_PadOp : CIR_Op<"pad", [
   let hasOptions = 1;
 
   let hasFolder = 1;
+}
+
+def CIR_PReluOp : CIR_Op<"prelu", [
+    Pure,
+    //QuantizableResult,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    ResultsBroadcastableShape,
+    CIR_OperandsHaveSameShapesOrBroadcastableShape<[0, 1], 4>,
+    BinaryOpSameElementTypeConstraint,
+    PredOpTrait<"input and output must have the same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    /*AffineQuantizedOpInterface, AffineOpCoefficient<-1, 1>*/]> {
+  let summary = "Parameterized Relu operator";
+
+  let description = [{
+    Parameterized Relu operator
+      x -> x >= 0 ? x : (alpha * x)
+    where alpha is a trainable tensor.
+    input and alpha should be the same size as input or be broadcastable.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32/*, QI8, QUI8, TFL_Quint8*/]>:$input,
+    CIR_TensorOf<[F32/*, QI8, QUI8, TFL_Quint8*/]>:$alpha
+  );
+
+  let results = (outs CIR_TensorOf<[F32/*, QI8, QUI8, TFL_Quint8*/]>:$output);
+
+  let hasVerifier = 1;
+
+  /*
+  let extraClassDeclaration = [{
+    // AffineQuantizedOpInterface:
+    int GetChannelDimIndex() { return 0; }
+    int GetQuantizationDimIndex() { return -1; }
+  }];
+  */
+}
+
+def CIR_ReluOp: CIR_Op<"relu", [
+    PredOpTrait<"x and y must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    Pure,
+    /*QuantizableResult,*/
+    SameOperandsAndResultShape]> {
+  let summary = "Relu operator";
+
+  let description = [{
+    Element-wise Relu operator
+      x -> max(0, x)
+  }];
+
+  let arguments = (ins CIR_TensorOf<[F32/*, QUI8, QI8, QI16*/]>:$x);
+
+  let results = (outs CIR_TensorOf<[F32/*, QUI8, QI8, QI16*/]>:$y);
+
+  // This builder doesn't work with quantized type, so it can only be used by
+  // non-quantization tablegen patterns. Currently, it is used by the
+  // elementwise-move reordering pattern in the optimize_patterns.td
+  let builders = [
+    OpBuilder<(ins "Value":$input),
+    [{
+      $_state.addOperands({input});
+      $_state.addTypes(input.getType());
+    }]>
+  ];
+}
+
+def CIR_Relu6Op: CIR_Op<"relu6", [
+    PredOpTrait<"x and y must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    Pure,
+    /*QuantizableResult,*/
+    SameOperandsAndResultShape]> {
+  let summary = "Relu6 operator";
+
+  let description = [{
+    Element-wise Relu6 operator
+      x -> max(0, min(6, x))
+  }];
+
+  let arguments = (ins CIR_TensorOf<[F32/*, QUI8, QI8*/]>:$x);
+
+  let results = (outs CIR_TensorOf<[F32/*, QUI8, QI8*/]>:$y);
+
+  // This builder doesn't work with quantized type, so it can only be used by
+  // non-quantization tablegen patterns. Currently, it is used by the
+  // elementwise-move reordering pattern in the optimize_patterns.td
+  let builders = [
+    OpBuilder<(ins "Value":$input),
+    [{
+      $_state.addOperands({input});
+      $_state.addTypes(input.getType());
+    }]>
+  ];
 }
 
 def CIR_ReshapeOp: CIR_Op<"reshape", [
