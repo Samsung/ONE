@@ -778,6 +778,23 @@ def CIR_ReshapeOp: CIR_Op<"reshape", [
   }];
 }
 
+def CIR_RsqrtOp: CIR_Op<"rsqrt", [Pure,
+                                  //QuantizableResult,
+                                  CIR_SameFirstOperandAndFirstResultElementType,
+                                  SameOperandsAndResultShape]> {
+  let summary = "Reciprocal of square root operator";
+
+  let description = [{
+    Computes element-wise reverse square root of input
+  }];
+
+  let arguments = (ins CIR_TensorOf<[F32/*, QI8, QI16*/]>:$x);
+
+  let results = (outs CIR_TensorOf<[F32/*, QI8, QI16*/]>:$y);
+
+  let hasFolder = 1;
+}
+
 def CIR_ShapeOp: CIR_Op<"shape", [
     /*QuantizableResult,*/
     Pure]> {
