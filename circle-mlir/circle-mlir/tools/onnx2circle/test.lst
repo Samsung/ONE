@@ -7,6 +7,7 @@ ConvertUnitModel(Add_F32_0.circle.mlir)
 ConvertUnitModel(Add_F32_1.circle.mlir)
 ConvertUnitModel(Add_F32_2.circle.mlir)
 ConvertUnitModel(Add_F32.onnx.mlir)
+ConvertUnitModel(Rsqrt_F32_R1_C1.circle.mlir)
 
 # shape inference validation
 
