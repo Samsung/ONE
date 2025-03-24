@@ -7,6 +7,7 @@ ConvertUnitModel(Add_F32_0.circle.mlir)
 ConvertUnitModel(Add_F32_1.circle.mlir)
 ConvertUnitModel(Add_F32_2.circle.mlir)
 ConvertUnitModel(Add_F32.onnx.mlir)
+ConvertUnitModel(Rsqrt_F32_R1_C1.circle.mlir)
 
 # shape inference validation
 
@@ -16,12 +17,16 @@ ValidateShapeInf(Div_F32_us.circle.mlir)
 ValidateShapeInf(Mul_F32_us.circle.mlir)
 ValidateShapeInf(Mul_F32_R2_us.circle.mlir)
 ValidateShapeInf(Pad_F32_R4_us.circle.mlir)
+ValidateShapeInf(PRelu_F32_R4_us.circle.mlir)
 ValidateShapeInf(Reshape_F32_R4_us.circle.mlir)
+ValidateShapeInf(Sqrt_F32_R4_us.circle.mlir)
 ValidateShapeInf(Sub_F32_us.circle.mlir)
 ValidateShapeInf(Transpose_F32_R4_us.circle.mlir)
 
 # dynamic shape inference validation
 
 ValidateDynaShapeInf(Mul_F32_R2_ds.circle.mlir)
+ValidateDynaShapeInf(PRelu_F32_R4_ds.circle.mlir)
 ValidateDynaShapeInf(Reshape_F32_R4_ds.circle.mlir)
 ValidateDynaShapeInf(Reshape_F32_R4_ds_2.circle.mlir)
+ValidateDynaShapeInf(Sqrt_F32_R4_ds.circle.mlir)

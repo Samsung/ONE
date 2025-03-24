@@ -24,12 +24,18 @@
 //    ONNX: ONNXAbcdOp
 //   class: ConvAbcd
 //    file: AbcdOp.h
+#include "ops/ClipOp.h"
 #include "ops/ConstantOp.h"
 #include "ops/ConvOp.h"
+#include "ops/LeakyReluOp.h"
 #include "ops/NoneOp.h"
 #include "ops/PadOp.h"
+#include "ops/PReluOp.h"
+#include "ops/ReluOp.h"
 #include "ops/ReshapeOp.h"
 #include "ops/ShapeOp.h"
+#include "ops/SqrtOp.h"
+#include "ops/TanhOp.h"
 #include "ops/TransposeOp.h"
 
 #include <circle-mlir/dialect/CircleDialect.h>
@@ -152,12 +158,18 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvBinaryT<mlir::ONNXMulOp, mlir::Circle::MulOp>>(typeConverter, context);
   patterns.insert<ConvBinaryT<mlir::ONNXSubOp, mlir::Circle::SubOp>>(typeConverter, context);
 
+  patterns.insert<ConvClip>(typeConverter, context);
   patterns.insert<ConvConstant>(typeConverter, context);
   patterns.insert<ConvConv>(typeConverter, context);
+  patterns.insert<ConvLeakyRelu>(typeConverter, context);
   patterns.insert<ConvNone>(typeConverter, context);
   patterns.insert<ConvPad>(typeConverter, context);
+  patterns.insert<ConvPRelu>(typeConverter, context);
+  patterns.insert<ConvRelu>(typeConverter, context);
   patterns.insert<ConvReshape>(typeConverter, context);
   patterns.insert<ConvShape>(typeConverter, context);
+  patterns.insert<ConvSqrt>(typeConverter, context);
+  patterns.insert<ConvTanh>(typeConverter, context);
   patterns.insert<ConvTranspose>(typeConverter, context);
 
   auto res = mlir::applyFullConversion(function, target, std::move(patterns));

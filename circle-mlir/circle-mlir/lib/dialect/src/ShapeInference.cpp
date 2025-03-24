@@ -315,6 +315,29 @@ void PadOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// PReluOp
+//===----------------------------------------------------------------------===//
+
+void PReluOp::inferShapes()
+{
+  PReluOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // if input is dynamic, skip shape infer
+  auto input_op = getOperand(0);
+  auto input_type = input_op.getType().cast<TensorType>();
+  auto input_shape = input_type.getShape();
+  llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
+
+  dumpShape<PReluOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // ReshapeOp
 //===----------------------------------------------------------------------===//
 
@@ -459,6 +482,27 @@ void ReshapeOp::inferShapes()
 
     getResult().setType(inferred_type);
   }
+}
+
+//===----------------------------------------------------------------------===//
+// SqrtOp
+//===----------------------------------------------------------------------===//
+
+void SqrtOp::inferShapes()
+{
+  SqrtOp op = *this;
+  auto output_type = op.getY().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  auto input_type = op.getX().getType().cast<TensorType>();
+  auto input_shape = input_type.getShape();
+  llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
+
+  dumpShape<SqrtOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+  getResult().setType(inferred_type);
 }
 
 //===----------------------------------------------------------------------===//
