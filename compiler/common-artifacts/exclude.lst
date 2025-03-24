@@ -41,7 +41,6 @@ tcgenerate(DepthwiseConv2D_U8_001)  # luci-interpreter doesn't support channel-w
 tcgenerate(ExpandDims_001) # luci-interpreter doesn't support undefined shape
 tcgenerate(ExpandDims_002) # luci-interpreter doesn't support undefined shape
 tcgenerate(FakeQuant_000) # runtime and luci-interpreter doesn't support yet
-tcgenerate(Squeeze_dynamic_000) # luci-interpreter doesn't support undefined shape
 tcgenerate(Fill_000)
 tcgenerate(Fill_001)
 tcgenerate(FloorMod_000)
@@ -53,6 +52,7 @@ tcgenerate(FullyConnected_U8_000)
 tcgenerate(GatherNd_000)
 tcgenerate(GatherNd_001)
 tcgenerate(Inf_Mul_000) # TestDataGenerator does not support unknown dimension
+tcgenerate(Inf_Squeeze_000) # TestDataGenerator does not support unknown dimension
 tcgenerate(L2Pool2D_U8_000)
 tcgenerate(Log_000)
 tcgenerate(MatMul_000)
