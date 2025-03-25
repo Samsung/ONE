@@ -50,7 +50,12 @@ jobs:
         type: [ release ]
         ubuntu_code: [ jammy ]
         arch: [ x86_64, aarch64 ]
-    runs-on: ${{ matrix.arch == 'x86_64' && 'one-x64-linux' || 'one-arm-linux' }}
+        include:
+          - arch: x86_64
+            runner: one-x64-linux
+          - arch: aarch64
+            runner: one-arm-linux
+    runs-on: ${{ matrix.runner }}
     container:
       image: nnfw/one-devtools:${{ matrix.ubuntu_code }}-test
       options: --user root

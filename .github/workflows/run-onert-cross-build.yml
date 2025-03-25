@@ -53,9 +53,9 @@ jobs:
         include:
           - arch: armv7l
             platform: arm
-    runs-on: ubuntu-22.04
+    runs-on: one-x64-linux
     container:
-      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
+      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}-cross
       options: --user root
     env:
       TARGET_ARCH: ${{ matrix.arch }}
