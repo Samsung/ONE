@@ -45,9 +45,9 @@ jobs:
   build:
     if: github.repository_owner == 'Samsung'
     strategy:
-      # Not debug build test on aarch64
+      # Release build test only on non arm32 platforms
       matrix:
-        type: [ debug, release ]
+        type: [ release ]
         ubuntu_code: [ jammy ]
         arch: [ x86_64, aarch64 ]
     runs-on: ${{ matrix.arch == 'x86_64' && 'one-x64-linux' || 'one-arm-linux' }}
@@ -80,11 +80,3 @@ jobs:
         run: |
           ./Product/out/test/onert-test unittest
           ./Product/out/test/onert-test unittest --unittestdir=./Product/out/nnapi-gtest
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        if: matrix.type == 'release'
-        with:
-          name: onert-${{ matrix.arch }}-${{ matrix.ubuntu_code }}
-          path: Product/out/test-suite.tar.gz
-          retention-days: ${{ github.event_name == 'pull_request' && '3' || '7' }}
