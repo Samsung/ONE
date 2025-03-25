@@ -879,6 +879,42 @@ def CIR_SubOp : CIR_Op<"sub", [
   let hasOptions = 1;
 }
 
+def CIR_SumOp: CIR_Op<"sum", [
+    // TODO enable QuantizableResult,
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    // TODO(b/215655380): Re-enable this once there is 16-bit MLIR quantizer.
+    // SameOperandsAndResultsScale,
+    Pure]> {
+
+  let summary = "Sum operator";
+
+  let description = [{
+    Computes the sum reduction along the specified axes
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$input,
+    CIR_I32Tensor:$axes,
+    BoolAttr:$keep_dims
+  );
+
+  let results = (outs CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$output);
+
+  let hasOptions = 1;
+  let customOption = "ReducerOptions";
+
+  // TODO(b/215655380): Re-enable this once there is 16-bit MLIR quantizer.
+  //
+  //let extraClassDeclaration = [{
+  //  // SameScalesOpInterface:
+  //  bool RequiredSameOperandsAndResultsScale(bool sign, int bit_width) {
+  //    // Eight-bit types don't require same operands and results scales.
+  //    return bit_width != 8;
+  //  }
+  //}];
+}
+
 def CIR_TanhOp: CIR_Op<"tanh", [
     Pure,
     SameOperandsAndResultShape,
