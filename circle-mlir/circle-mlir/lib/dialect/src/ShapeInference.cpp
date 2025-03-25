@@ -254,6 +254,68 @@ void DivOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// MeanOp
+//===----------------------------------------------------------------------===//
+
+void MeanOp::inferShapes()
+{
+  MeanOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // if input is dynamic, skip shape infer
+  auto input_op = getOperand(0);
+  auto input_type = input_op.getType().cast<TensorType>();
+  if (!input_type.hasStaticShape())
+    return;
+
+  // skip if axes input is not constant
+  mlir::Operation *is_const = getOperand(1).getDefiningOp();
+  if (!mlir::isa_and_nonnull<ConstOp>(is_const))
+    return;
+  auto const_op = cast<ConstOp>(is_const);
+  std::vector<int64_t> axis_values;
+  if (!extractElements(const_op, axis_values))
+    return;
+  int64_t in_rank = input_type.getRank();
+  for (int64_t &axis : axis_values)
+  {
+    if (axis < 0)
+      axis += in_rank;
+  }
+
+  auto input_shape = input_type.getShape();
+
+  llvm::SmallVector<int64_t, 4> inferred;
+
+  if (op.getKeepDims())
+  {
+    inferred.assign(input_shape.begin(), input_shape.end());
+    for (int64_t axis : axis_values)
+      inferred[axis] = 1;
+  }
+  else
+  {
+    std::vector<bool> check_reduce(input_type.getRank(), false);
+    for (int64_t i = 0; i < axis_values.size(); ++i)
+    {
+      int64_t reduce_at = axis_values[i];
+      check_reduce.at(reduce_at) = true;
+    }
+
+    for (int64_t i = 0; i < check_reduce.size(); ++i)
+      if (check_reduce.at(i) == false)
+        inferred.push_back(input_shape[i]);
+  }
+
+  dumpShape<MeanOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // MulOp
 //===----------------------------------------------------------------------===//
 
