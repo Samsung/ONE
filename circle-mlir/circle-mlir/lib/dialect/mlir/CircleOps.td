@@ -693,6 +693,57 @@ def CIR_PReluOp : CIR_Op<"prelu", [
   */
 }
 
+def CIR_ReduceMaxOp: CIR_Op<"reduce_max", [
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    Pure,
+    /*QuantizableResult,*/
+    /*SameOperandsAndResultsScale*/]> {
+  let summary = "Max-reduction operator";
+
+  let description = [{
+    Computes the max reduction along the specified axes
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, CIR_Quint8, QI16*/]>:$input,
+    CIR_I32Tensor:$axes,
+    BoolAttr:$keep_dims
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, CIR_Quint8, QI16*/]>:$output);
+
+  let hasOptions = 1;
+  let customOption = "ReducerOptions";
+}
+
+def CIR_ReduceProdOp: CIR_Op<"reduce_prod", [
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    /*QuantizableResult,*/
+    Pure]> {
+  let summary = "Prod-reduction operator";
+
+  let description = [{
+    Computes the product along the specified axes
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$input,
+    CIR_I32Tensor:$axes,
+    BoolAttr:$keep_dims
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$output);
+
+  let hasFolder = 1;
+
+  let hasOptions = 1;
+  let customOption = "ReducerOptions";
+}
+
 def CIR_ReluOp: CIR_Op<"relu", [
     PredOpTrait<"x and y must have same element type",
       CIR_TCresVTEtIsSameAsOp<0, 0>>,
