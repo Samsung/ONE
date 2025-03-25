@@ -335,6 +335,35 @@ def CIR_AddOp : CIR_Op<"add", [
   let hasOptions = 1;
 }
 
+def CIR_ArgMaxOp : CIR_Op<"arg_max", [
+    // QuantizableResult,
+    Pure]> {
+  let summary = "ArgMax operator";
+
+  let description = [{
+    Returns the index with the largest value across dimensions of a tensor.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[I1, F32, I32, I8, UI8/*, QI8, QUI8*/]>:$input,
+    CIR_I32OrI64Tensor:$dim
+  );
+
+  let results = (outs
+    CIR_I32OrI64Tensor:$output
+  );
+
+  let hasOptions = 1;
+
+  DerivedCircleTypeAttr output_type = DerivedCircleTypeAttr<[{
+    return getResult().getType().cast<TensorType>().getElementType().
+        cast<IntegerType>().getWidth() > 32 ? circle::TensorType_INT64 :
+            circle::TensorType_INT32;
+    }], [{
+      TypeAttr::get(getResult().getType().cast<TensorType>().getElementType())
+    }]>;
+}
+
 def CIR_ConstOp : Op<CIR_Dialect, "pseudo_const", [ConstantLike, Pure,
     FirstAttrDerivedResultType,
     // TODO enable QuantizableResult,
