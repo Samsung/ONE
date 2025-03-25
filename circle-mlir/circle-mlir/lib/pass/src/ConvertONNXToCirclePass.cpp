@@ -24,6 +24,7 @@
 //    ONNX: ONNXAbcdOp
 //   class: ConvAbcd
 //    file: AbcdOp.h
+#include "ops/ArgMaxOp.h"
 #include "ops/ClipOp.h"
 #include "ops/ConstantOp.h"
 #include "ops/ConvOp.h"
@@ -158,6 +159,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvBinaryT<mlir::ONNXMulOp, mlir::Circle::MulOp>>(typeConverter, context);
   patterns.insert<ConvBinaryT<mlir::ONNXSubOp, mlir::Circle::SubOp>>(typeConverter, context);
 
+  patterns.insert<ConvArgMax>(typeConverter, context);
   patterns.insert<ConvClip>(typeConverter, context);
   patterns.insert<ConvConstant>(typeConverter, context);
   patterns.insert<ConvConv>(typeConverter, context);
