@@ -335,6 +335,35 @@ def CIR_AddOp : CIR_Op<"add", [
   let hasOptions = 1;
 }
 
+def CIR_ArgMaxOp : CIR_Op<"arg_max", [
+    // QuantizableResult,
+    Pure]> {
+  let summary = "ArgMax operator";
+
+  let description = [{
+    Returns the index with the largest value across dimensions of a tensor.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[I1, F32, I32, I8, UI8/*, QI8, QUI8*/]>:$input,
+    CIR_I32OrI64Tensor:$dim
+  );
+
+  let results = (outs
+    CIR_I32OrI64Tensor:$output
+  );
+
+  let hasOptions = 1;
+
+  DerivedCircleTypeAttr output_type = DerivedCircleTypeAttr<[{
+    return getResult().getType().cast<TensorType>().getElementType().
+        cast<IntegerType>().getWidth() > 32 ? circle::TensorType_INT64 :
+            circle::TensorType_INT32;
+    }], [{
+      TypeAttr::get(getResult().getType().cast<TensorType>().getElementType())
+    }]>;
+}
+
 def CIR_ConstOp : Op<CIR_Dialect, "pseudo_const", [ConstantLike, Pure,
     FirstAttrDerivedResultType,
     // TODO enable QuantizableResult,
@@ -522,6 +551,35 @@ def CIR_MaximumOp : CIR_Op<"maximum", [
   let hasOptions = 0;
 }
 
+def CIR_MeanOp : CIR_Op<"mean", [
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    /*QuantizableResult,*/
+    Pure]> {
+  let summary = "Mean operator";
+
+  let description = [{
+    Computes the mean of elements across dimensions of a tensor.
+    Reduces input_tensor along the dimensions given in axis.
+    Unless keepdims is true, the rank of the tensor is reduced by 1 for
+    each entry in axis. If keepdims is true, the reduced dimensions are retained
+    with length 1.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, UI8, QI16*/]>:$input,
+    CIR_TensorOf<[I32, I64]>:$axis,
+    BoolAttr:$keep_dims
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, UI8, QI16*/]>:$output);
+
+  let hasOptions = 1;
+  let customOption = "ReducerOptions";
+}
+
 def CIR_MinimumOp : CIR_Op<"minimum", [
     ResultsBroadcastableShape,
     Pure,
@@ -691,6 +749,57 @@ def CIR_PReluOp : CIR_Op<"prelu", [
     int GetQuantizationDimIndex() { return -1; }
   }];
   */
+}
+
+def CIR_ReduceMaxOp: CIR_Op<"reduce_max", [
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    Pure,
+    /*QuantizableResult,*/
+    /*SameOperandsAndResultsScale*/]> {
+  let summary = "Max-reduction operator";
+
+  let description = [{
+    Computes the max reduction along the specified axes
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, CIR_Quint8, QI16*/]>:$input,
+    CIR_I32Tensor:$axes,
+    BoolAttr:$keep_dims
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, CIR_Quint8, QI16*/]>:$output);
+
+  let hasOptions = 1;
+  let customOption = "ReducerOptions";
+}
+
+def CIR_ReduceProdOp: CIR_Op<"reduce_prod", [
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    /*QuantizableResult,*/
+    Pure]> {
+  let summary = "Prod-reduction operator";
+
+  let description = [{
+    Computes the product along the specified axes
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$input,
+    CIR_I32Tensor:$axes,
+    BoolAttr:$keep_dims
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$output);
+
+  let hasFolder = 1;
+
+  let hasOptions = 1;
+  let customOption = "ReducerOptions";
 }
 
 def CIR_ReluOp: CIR_Op<"relu", [
@@ -877,6 +986,42 @@ def CIR_SubOp : CIR_Op<"sub", [
   }];
 
   let hasOptions = 1;
+}
+
+def CIR_SumOp: CIR_Op<"sum", [
+    // TODO enable QuantizableResult,
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    // TODO(b/215655380): Re-enable this once there is 16-bit MLIR quantizer.
+    // SameOperandsAndResultsScale,
+    Pure]> {
+
+  let summary = "Sum operator";
+
+  let description = [{
+    Computes the sum reduction along the specified axes
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$input,
+    CIR_I32Tensor:$axes,
+    BoolAttr:$keep_dims
+  );
+
+  let results = (outs CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$output);
+
+  let hasOptions = 1;
+  let customOption = "ReducerOptions";
+
+  // TODO(b/215655380): Re-enable this once there is 16-bit MLIR quantizer.
+  //
+  //let extraClassDeclaration = [{
+  //  // SameScalesOpInterface:
+  //  bool RequiredSameOperandsAndResultsScale(bool sign, int bit_width) {
+  //    // Eight-bit types don't require same operands and results scales.
+  //    return bit_width != 8;
+  //  }
+  //}];
 }
 
 def CIR_TanhOp: CIR_Op<"tanh", [

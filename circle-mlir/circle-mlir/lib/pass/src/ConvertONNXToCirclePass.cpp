@@ -24,6 +24,7 @@
 //    ONNX: ONNXAbcdOp
 //   class: ConvAbcd
 //    file: AbcdOp.h
+#include "ops/ArgMaxOp.h"
 #include "ops/ClipOp.h"
 #include "ops/ConstantOp.h"
 #include "ops/ConvOp.h"
@@ -31,6 +32,10 @@
 #include "ops/NoneOp.h"
 #include "ops/PadOp.h"
 #include "ops/PReluOp.h"
+#include "ops/ReduceMaxOp.h"
+#include "ops/ReduceMeanOp.h"
+#include "ops/ReduceProdOp.h"
+#include "ops/ReduceSumOp.h"
 #include "ops/ReluOp.h"
 #include "ops/ReshapeOp.h"
 #include "ops/ShapeOp.h"
@@ -158,6 +163,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvBinaryT<mlir::ONNXMulOp, mlir::Circle::MulOp>>(typeConverter, context);
   patterns.insert<ConvBinaryT<mlir::ONNXSubOp, mlir::Circle::SubOp>>(typeConverter, context);
 
+  patterns.insert<ConvArgMax>(typeConverter, context);
   patterns.insert<ConvClip>(typeConverter, context);
   patterns.insert<ConvConstant>(typeConverter, context);
   patterns.insert<ConvConv>(typeConverter, context);
@@ -165,6 +171,14 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvNone>(typeConverter, context);
   patterns.insert<ConvPad>(typeConverter, context);
   patterns.insert<ConvPRelu>(typeConverter, context);
+  patterns.insert<ConvReduceMax>(typeConverter, context);
+  patterns.insert<ConvReduceMaxV13>(typeConverter, context);
+  patterns.insert<ConvReduceMean>(typeConverter, context);
+  patterns.insert<ConvReduceMeanV13>(typeConverter, context);
+  patterns.insert<ConvReduceProd>(typeConverter, context);
+  patterns.insert<ConvReduceProdV13>(typeConverter, context);
+  patterns.insert<ConvReduceSum>(typeConverter, context);
+  patterns.insert<ConvReduceSumV11>(typeConverter, context);
   patterns.insert<ConvRelu>(typeConverter, context);
   patterns.insert<ConvReshape>(typeConverter, context);
   patterns.insert<ConvShape>(typeConverter, context);
