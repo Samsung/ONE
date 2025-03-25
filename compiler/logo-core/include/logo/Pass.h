@@ -38,7 +38,7 @@ public:
    *
    * @return false if there was nothing changed
    */
-  virtual bool run(loco::Graph *graph) = 0;
+  virtual bool run_on_graph(loco::Graph *graph) = 0;
 };
 
 std::string pass_name(const Pass *);

@@ -38,7 +38,7 @@ struct RemoveForwardNodePass final : public Pass
 {
   const char *name(void) const final { return "RemoveForwardNodePass"; }
 
-  bool run(loco::Graph *g) final;
+  bool run_on_graph(loco::Graph *g) final;
 };
 
 } // namespace logo

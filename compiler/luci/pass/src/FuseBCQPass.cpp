@@ -610,7 +610,7 @@ private:
 namespace luci
 {
 
-bool FuseBCQPass::run(luci::Module *m)
+bool FuseBCQPass::run_on_module(luci::Module *m)
 {
   bool changed = false;
 
@@ -689,7 +689,7 @@ bool FuseBCQPass::run(luci::Module *m)
   return changed;
 }
 
-bool FuseBCQPass::run(loco::Graph *)
+bool FuseBCQPass::run_on_graph(loco::Graph *)
 {
   // Do nothing for graph
   return false;

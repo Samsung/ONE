@@ -29,7 +29,7 @@ class Pass : public logo::Pass
 {
 public:
   // Run module pass and return false if there was nothing changed
-  virtual bool run(luci::Module *) = 0;
+  virtual bool run_on_module(luci::Module *) = 0;
 };
 
 } // namespace luci

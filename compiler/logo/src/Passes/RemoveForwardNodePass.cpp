@@ -24,7 +24,7 @@
 namespace logo
 {
 
-bool RemoveForwardNodePass::run(loco::Graph *g)
+bool RemoveForwardNodePass::run_on_graph(loco::Graph *g)
 {
   struct Collector final : public loco::CanonicalNodeMutableVisitor<void>
   {
