@@ -551,6 +551,35 @@ def CIR_MaximumOp : CIR_Op<"maximum", [
   let hasOptions = 0;
 }
 
+def CIR_MeanOp : CIR_Op<"mean", [
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    /*QuantizableResult,*/
+    Pure]> {
+  let summary = "Mean operator";
+
+  let description = [{
+    Computes the mean of elements across dimensions of a tensor.
+    Reduces input_tensor along the dimensions given in axis.
+    Unless keepdims is true, the rank of the tensor is reduced by 1 for
+    each entry in axis. If keepdims is true, the reduced dimensions are retained
+    with length 1.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, UI8, QI16*/]>:$input,
+    CIR_TensorOf<[I32, I64]>:$axis,
+    BoolAttr:$keep_dims
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, I32, I64/*, QI8, QUI8, UI8, QI16*/]>:$output);
+
+  let hasOptions = 1;
+  let customOption = "ReducerOptions";
+}
+
 def CIR_MinimumOp : CIR_Op<"minimum", [
     ResultsBroadcastableShape,
     Pure,
