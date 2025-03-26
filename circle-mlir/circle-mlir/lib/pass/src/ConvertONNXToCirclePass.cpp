@@ -32,6 +32,7 @@
 #include "ops/NoneOp.h"
 #include "ops/PadOp.h"
 #include "ops/PReluOp.h"
+#include "ops/ReduceMaxOp.h"
 #include "ops/ReduceMeanOp.h"
 #include "ops/ReluOp.h"
 #include "ops/ReshapeOp.h"
@@ -168,6 +169,8 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvNone>(typeConverter, context);
   patterns.insert<ConvPad>(typeConverter, context);
   patterns.insert<ConvPRelu>(typeConverter, context);
+  patterns.insert<ConvReduceMax>(typeConverter, context);
+  patterns.insert<ConvReduceMaxV13>(typeConverter, context);
   patterns.insert<ConvReduceMean>(typeConverter, context);
   patterns.insert<ConvReduceMeanV13>(typeConverter, context);
   patterns.insert<ConvRelu>(typeConverter, context);
