@@ -443,6 +443,7 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 } // namespace mlir
 
 #include "ops/AddOp.h"
+#include "ops/CastOp.h"
 #include "ops/ConstOp.h"
 #include "ops/Conv2DOp.h"
 #include "ops/CosOp.h"
@@ -456,8 +457,12 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 #include "ops/ReduceProdOp.h"
 #include "ops/ReshapeOp.h"
 #include "ops/RsqrtOp.h"
+#include "ops/SelectOp.h"
+#include "ops/SelectV2Op.h"
 #include "ops/ShapeOp.h"
+#include "ops/SliceOp.h"
 #include "ops/SqrtOp.h"
+#include "ops/StridedSliceOp.h"
 #include "ops/SubOp.h"
 #include "ops/TransposeOp.h"
 

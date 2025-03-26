@@ -364,6 +364,29 @@ def CIR_ArgMaxOp : CIR_Op<"arg_max", [
     }]>;
 }
 
+def CIR_CastOp : CIR_Op<"cast", [
+    Pure,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    SameOperandsAndResultShape]> {
+  let summary = "Cast operator";
+
+  let description = [{
+    Casts input from input type to output type.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I1, I16, UI16, I32, UI32, I64/*, TFL_Quint8*/, UI8, I8/*, Complex<F<32>>*/]>:$input
+  );
+
+  let results = (outs CIR_TensorOf<[F32, I1, I16, UI16, I32, UI32, I64/*, TFL_Quint8*/, UI8, I8/*, Complex<F<32>>*/]>:$output);
+
+  // Circle's cast op does not utilize CastOptions, instead derives types
+  // from the CircleTensors.
+  let hasOptions = 0;
+
+  let hasFolder = 1;
+}
+
 def CIR_ConstOp : Op<CIR_Dialect, "pseudo_const", [ConstantLike, Pure,
     FirstAttrDerivedResultType,
     // TODO enable QuantizableResult,
@@ -1005,6 +1028,78 @@ def CIR_RsqrtOp: CIR_Op<"rsqrt", [Pure,
   let hasFolder = 1;
 }
 
+// Select has many instances in models where one or more of its operands
+// are unranked. Therefore, we skip adding shape constraints here.
+def CIR_SelectOp : CIR_Op<"select", [
+  Pure,
+  /*SameOperandsAndResultsScale,*/
+  /*QuantizableResult,*/
+  PredOpTrait<"operands have same element type", CIR_TCopVTEtAreSameAt<1, 2>>,
+  PredOpTrait<"operands and result have same element type", CIR_TCresVTEtIsSameAsOp<0, 1>>]> {
+  let summary = "Select operator";
+
+  let description = [{
+    Select values of 'x' if the corresponding value of 'condition' is true or
+    the value of 'y' if false. There are valid condition input sizes:
+
+    1. Either the same shape (in which case the select is elementwise), or
+    2. condition must be Rank 1 and match over the first dimension.
+  }];
+
+  let arguments = (ins
+    CIR_BoolTensor:$condition,
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$x,
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$y);
+
+  let results = (outs
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$output);
+
+  // TODO(jpienaar): autogenerate this.
+  let builders = [
+    OpBuilder<(ins "Value":$condition, "Value":$x, "Value":$y),
+    [{
+    auto resultType = x.getType();
+    $_state.addOperands({condition, x, y});
+    $_state.types.push_back(resultType);
+  }]>];
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+}
+
+def CIR_SelectV2Op : CIR_Op<"select_v2", [
+    ResultsBroadcastableShape,
+    Pure,
+    /*QuantizableResult,*/
+    /*SameOperandsAndResultsScale,*/
+    CIR_OperandsHaveSameShapesOrBroadcastableShape<[0, 1, 2], 5>,
+    PredOpTrait<"operands have same element type", CIR_TCopVTEtAreSameAt<1, 2>>,
+    PredOpTrait<"operands and result have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 1>>]> {
+  let summary = "SelectV2 operator";
+
+  let description = [{
+    Select values of 'x' if the corresponding value of 'condition' is true or
+    the value of 'y' if false. There are valid condition input sizes:
+
+    1. Either the same shape (in which case the select is elementwise), or
+    2. Broadcastable shapes between 'condition', 'x' and 'y'.
+  }];
+
+  let arguments = (ins
+    CIR_BoolTensor:$condition,
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64, UI32/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$x,
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64, UI32/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$y);
+
+  let results = (outs
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64, UI32/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$output);
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+}
+
 def CIR_ShapeOp: CIR_Op<"shape", [
     /*QuantizableResult,*/
     Pure]> {
@@ -1025,6 +1120,46 @@ def CIR_ShapeOp: CIR_Op<"shape", [
   let hasOptions = 1;
 
   let hasFolder = 1;
+}
+
+def CIR_SliceOp : CIR_Op<"slice", [
+    /*QuantizableResult,*/
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    Pure,
+    /*SameOperandsAndResultsScale,*/
+    CIR_OperandHasRankAtMost<0, 5>,
+    CIR_OperandHasRankAtMost<1, 1>,
+    CIR_OperandHasRankAtMost<2, 1>]> {
+  let summary = "Return a slice from 'input'.";
+
+  let description = [{
+The output tensor is a tensor with dimensions described by 'size'
+whose values are extracted from 'input' starting at the offsets in
+'begin'.
+
+`begin` is zero-based; `size` is one-based. If size[i] is -1, all remaining
+elements in dimension i are included in the slice. In other words, this is
+equivalent to setting:
+  size[i] = input.dim_size(i) - begin[i]
+
+*Requirements*:
+  0 <= begin[i] <= begin[i] + size[i] <= Di  for i in [0, n)
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64, I8, UI8/*, I1, CIR_Str, QI8, QUI8, TFL_Quint8, QI16*/]>:$input,
+    CIR_I32OrI64Tensor:$begin,
+    CIR_I32OrI64Tensor:$size
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, I32, I64, I8, UI8/*, I1, CIR_Str, QI8, QUI8, TFL_Quint8, QI16*/]>:$output
+  );
+
+  let hasVerifier = 1;
+
+  let hasCanonicalizer = 1;
 }
 
 def CIR_SqrtOp: CIR_Op<"sqrt", [
@@ -1048,6 +1183,58 @@ def CIR_SqrtOp: CIR_Op<"sqrt", [
   let extraClassDeclaration = [{
     // Returns whether the return types are compatible.
     static bool isCompatibleReturnTypes(TypeRange l, TypeRange r);
+  }];
+}
+
+def CIR_StridedSliceOp: CIR_Op<"strided_slice", [
+    Pure,
+    /*QuantizableResult,*/
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    /*SameOperandsAndResultsScale,*/
+    CIR_OperandHasRankAtMost<0, 5>,
+    CIR_OperandHasRank<1, 1>,
+    CIR_OperandHasRank<2, 1>,
+    CIR_OperandHasRank<3, 1>
+  ]> {
+  let summary = "StridedSlice Op";
+
+  let description = [{
+    Return a strided slice from `input`.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64, I8/*, UI8, QI8, QUI8, I1*/, I16/*, QI16, TFL_Quint8, TFL_Str*/]>:$input,
+    CIR_I32Tensor:$begin,
+    CIR_I32Tensor:$end,
+    CIR_I32Tensor:$strides,
+
+    I32Attr:$begin_mask,
+    I32Attr:$end_mask,
+    I32Attr:$ellipsis_mask,
+    I32Attr:$new_axis_mask,
+    I32Attr:$shrink_axis_mask
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, I32, I64, I8/*, UI8, QI8, QUI8, I1*/, I16/*, QI16, TFL_Quint8, TFL_Str*/]>:$output
+  );
+
+  // TFLite kernel only supports up to 5D input including added axis.
+  let hasVerifier = 1;
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+
+  let hasCanonicalizer = 1;
+
+  let extraClassDeclaration = [{
+    // Folding 1-dim of input
+    OpFoldResult foldOneDimension();
+    // Folding reverse of input when stride is -1
+    OpFoldResult foldReverseInput();
   }];
 }
 
