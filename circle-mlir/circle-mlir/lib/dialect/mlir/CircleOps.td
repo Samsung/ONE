@@ -438,6 +438,55 @@ def CIR_Conv2DOp : CIR_ConvOp<"conv_2d", "Convolution", /*TODO enable 0,*/
   }];
 }
 
+def CIR_CosOp: CIR_Op<"cos", [
+    Pure,
+    /*CIR_SameOperandsAndResultTypeResolveRef*/
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    SameOperandsAndResultShape]> {
+  let summary = "Cosine operator";
+
+  let description = [{
+    Computes element-wise Cosine of input
+  }];
+
+  let arguments = (ins CIR_FpTensor:$x);
+
+  let results = (outs CIR_FpTensor:$y);
+
+  let hasFolder = 1;
+
+  // TODO enable TF::ArraysAreCastCompatible
+  //let extraClassDeclaration = [{
+  //  // Returns whether the return types are compatible.
+  //  static bool isCompatibleReturnTypes(TypeRange l, TypeRange r) {
+  //    return TF::ArraysAreCastCompatible(l, r);
+  //  }
+  //}];
+}
+
+def CIR_CumsumOp: CIR_Op<"cumsum", [
+    Pure,
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    CIR_OperandHasRank<1, 0>]> {
+  let summary = "Cumsum operator";
+
+  let description = [{
+    Compute the cumulative sum of the tensor x along axis.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32, I32, I64]>:$input,
+    CIR_I32Tensor:$axis,
+    DefaultValuedOptionalAttr<BoolAttr, "false">:$exclusive,
+    DefaultValuedOptionalAttr<BoolAttr, "false">:$reverse
+  );
+
+  let results = (outs CIR_TensorOf<[F32, I32, I64]>:$output);
+
+  let hasOptions = 1;
+}
+
 def CIR_CustomOp : Op<CIR_Dialect, "custom", [
   DeclareOpInterfaceMethods<CIR_RuntimeVerification>,
   DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>
@@ -499,6 +548,78 @@ def CIR_DivOp : CIR_Op<"div", [
   let hasOptions = 1;
 
   let hasFolder = 1;
+}
+
+// TODO(jpienaar): Update post discussion on semantics of FC OP.
+def CIR_FullyConnectedOp : CIR_Op<"fully_connected", [
+    Pure, /*AccumulatorUniformScale<2, 0, 1>,*/
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    /*AffineQuantizedOpInterface,*/
+    /*AffineOpCoefficient<-1, 1>,*/
+    /*CIR_SparseOp,*/
+    /*QuantizableResult,*/
+    /*DynamicRangeQuantizedOpInterface*/]> {
+  let summary = "Fully connected op";
+
+  let arguments = (ins
+    CIR_TensorOf<[F32/*, QI8, QUI8, QI16, QUI16*/]>:$input,
+    CIR_TensorOf<[F32/*, QI8, QUI8, QI16*/]>:$filter,
+    CIR_TensorOfOrNone<[F32/*, QI32, QUI32*/]>:$bias,
+
+    CIR_AFAttr:$fused_activation_function,
+    CIR_FullyConnectedOptionsWeightFormatAttr:$weights_format,
+    BoolAttr:$keep_num_dims,
+    // Used in post-training dynamic range quantization. If the value is true,
+    // input activations are asymmetrically quantized.
+    OptionalAttr<BoolAttr>:$asymmetric_quantize_inputs
+  );
+
+  // Depending on the weights format, this op can have one or two outputs.
+  let results = (outs
+    CIR_VariadicTensorOf<[F32/*, QI8, QUI8, QI16, QUI16*/]>:$output
+  );
+
+  let hasVerifier = 1;
+
+  let hasOptions = 1;
+
+  let hasCanonicalizer = 1;
+
+  let hasFolder = 1;
+
+  let extraClassDeclaration = [{
+    // AffineQuantizedOpInterface:
+    int GetChannelDimIndex() { return 0; }
+    int GetQuantizationDimIndex() { return -1; }
+    // SparseOpInterface:
+    std::vector<int> GetSparseOperands() { return {1}; }
+    std::vector<std::vector<int>> GetFloatBlockSize() { return {{1, 4}}; }
+    std::vector<std::vector<int>> GetQuantizedBlockSize() { return {{1, 16}}; }
+    // DynamicRangeQuantizedOpInterface:
+    bool RequireAsymmetricQuantizeInputsAttr() { return true; }
+    bool GetDynamicRangeQuantKernelSupport() { return true; }
+    std::vector<int> GetQuantizableOperandIndices() { return {1}; }
+  }];
+}
+
+def CIR_HardSwishOp: CIR_Op<"hard_swish", [
+    Pure,
+    SameOperandsAndResultShape,
+    /*QuantizableResult,*/
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>]> {
+  let summary = "Hardswish activation function.";
+  let description = [{
+    Computes hard-swish activation function
+      f(x) -> (x * relu6(x+3))/6
+    element-wise.
+  }];
+
+  let arguments = (ins CIR_TensorOf<[F32/*, QUI8, QI8*/]>:$input);
+
+  let results = (outs CIR_TensorOf<[F32/*, QUI8, QI8*/]>:$output);
+
+  let hasOptions = 0;
 }
 
 def CIR_LeakyReluOp: CIR_Op<"leaky_relu", [
