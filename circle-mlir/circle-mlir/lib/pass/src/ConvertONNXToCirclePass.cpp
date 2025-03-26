@@ -25,6 +25,7 @@
 //   class: ConvAbcd
 //    file: AbcdOp.h
 #include "ops/ArgMaxOp.h"
+#include "ops/CastOp.h"
 #include "ops/ClipOp.h"
 #include "ops/ConstantOp.h"
 #include "ops/ConvOp.h"
@@ -43,6 +44,7 @@
 #include "ops/ReluOp.h"
 #include "ops/ReshapeOp.h"
 #include "ops/ShapeOp.h"
+#include "ops/SliceOp.h"
 #include "ops/SqrtOp.h"
 #include "ops/TanhOp.h"
 #include "ops/TransposeOp.h"
@@ -168,6 +170,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvBinaryT<mlir::ONNXSubOp, mlir::Circle::SubOp>>(typeConverter, context);
 
   patterns.insert<ConvArgMax>(typeConverter, context);
+  patterns.insert<ConvCast>(typeConverter, context);
   patterns.insert<ConvClip>(typeConverter, context);
   patterns.insert<ConvConstant>(typeConverter, context);
   patterns.insert<ConvConv>(typeConverter, context);
@@ -190,6 +193,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvRelu>(typeConverter, context);
   patterns.insert<ConvReshape>(typeConverter, context);
   patterns.insert<ConvShape>(typeConverter, context);
+  patterns.insert<ConvSlice>(typeConverter, context);
   patterns.insert<ConvSqrt>(typeConverter, context);
   patterns.insert<ConvTanh>(typeConverter, context);
   patterns.insert<ConvTranspose>(typeConverter, context);
