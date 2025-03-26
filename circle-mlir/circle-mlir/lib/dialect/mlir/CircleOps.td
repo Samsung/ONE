@@ -501,6 +501,58 @@ def CIR_DivOp : CIR_Op<"div", [
   let hasFolder = 1;
 }
 
+// TODO(jpienaar): Update post discussion on semantics of FC OP.
+def CIR_FullyConnectedOp : CIR_Op<"fully_connected", [
+    Pure, /*AccumulatorUniformScale<2, 0, 1>,*/
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    /*AffineQuantizedOpInterface,*/
+    /*AffineOpCoefficient<-1, 1>,*/
+    /*CIR_SparseOp,*/
+    /*QuantizableResult,*/
+    /*DynamicRangeQuantizedOpInterface*/]> {
+  let summary = "Fully connected op";
+
+  let arguments = (ins
+    CIR_TensorOf<[F32/*, QI8, QUI8, QI16, QUI16*/]>:$input,
+    CIR_TensorOf<[F32/*, QI8, QUI8, QI16*/]>:$filter,
+    CIR_TensorOfOrNone<[F32/*, QI32, QUI32*/]>:$bias,
+
+    CIR_AFAttr:$fused_activation_function,
+    CIR_FullyConnectedOptionsWeightFormatAttr:$weights_format,
+    BoolAttr:$keep_num_dims,
+    // Used in post-training dynamic range quantization. If the value is true,
+    // input activations are asymmetrically quantized.
+    OptionalAttr<BoolAttr>:$asymmetric_quantize_inputs
+  );
+
+  // Depending on the weights format, this op can have one or two outputs.
+  let results = (outs
+    CIR_VariadicTensorOf<[F32/*, QI8, QUI8, QI16, QUI16*/]>:$output
+  );
+
+  let hasVerifier = 1;
+
+  let hasOptions = 1;
+
+  let hasCanonicalizer = 1;
+
+  let hasFolder = 1;
+
+  let extraClassDeclaration = [{
+    // AffineQuantizedOpInterface:
+    int GetChannelDimIndex() { return 0; }
+    int GetQuantizationDimIndex() { return -1; }
+    // SparseOpInterface:
+    std::vector<int> GetSparseOperands() { return {1}; }
+    std::vector<std::vector<int>> GetFloatBlockSize() { return {{1, 4}}; }
+    std::vector<std::vector<int>> GetQuantizedBlockSize() { return {{1, 16}}; }
+    // DynamicRangeQuantizedOpInterface:
+    bool RequireAsymmetricQuantizeInputsAttr() { return true; }
+    bool GetDynamicRangeQuantKernelSupport() { return true; }
+    std::vector<int> GetQuantizableOperandIndices() { return {1}; }
+  }];
+}
+
 def CIR_LeakyReluOp: CIR_Op<"leaky_relu", [
     SameOperandsAndResultShape,
     // QuantizableResult,
