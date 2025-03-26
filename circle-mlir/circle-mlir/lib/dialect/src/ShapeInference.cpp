@@ -276,6 +276,54 @@ void DivOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// FullyConnectedOp
+//===----------------------------------------------------------------------===//
+
+void FullyConnectedOp::inferShapes(void)
+{
+  FullyConnectedOp op = *this;
+  auto output_type = (*op.getOutput().begin()).getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  auto filter_type = op.getFilter().getType().cast<TensorType>();
+  if (not filter_type.hasStaticShape())
+    return;
+  auto filter_shape = filter_type.getShape();
+
+  auto input_type = op.getInput().getType().cast<TensorType>();
+  auto input_shape = input_type.getShape();
+  llvm::SmallVector<int64_t, 4> inferred;
+
+  if (op.getKeepNumDims())
+  {
+    llvm::SmallVector<int64_t, 4> in_inferred(input_shape.begin(), input_shape.end());
+    in_inferred[in_inferred.size() - 1] = filter_shape[0];
+    inferred = in_inferred;
+  }
+  else
+  {
+    if (input_type.hasStaticShape())
+    {
+      int64_t ele_size = 1;
+      for (int64_t i = 0; i < input_shape.size() - 1; ++i)
+        ele_size *= input_shape[i];
+      inferred.push_back(ele_size);
+    }
+    else
+    {
+      inferred.push_back(ShapedType::kDynamic);
+    }
+    inferred.push_back(filter_shape[0]);
+  }
+
+  dumpShape<FullyConnectedOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, output_type.getElementType());
+  getResult(0).setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // MeanOp
 //===----------------------------------------------------------------------===//
 
