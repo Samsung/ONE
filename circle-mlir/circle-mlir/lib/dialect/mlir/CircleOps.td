@@ -438,6 +438,55 @@ def CIR_Conv2DOp : CIR_ConvOp<"conv_2d", "Convolution", /*TODO enable 0,*/
   }];
 }
 
+def CIR_CosOp: CIR_Op<"cos", [
+    Pure,
+    /*CIR_SameOperandsAndResultTypeResolveRef*/
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    SameOperandsAndResultShape]> {
+  let summary = "Cosine operator";
+
+  let description = [{
+    Computes element-wise Cosine of input
+  }];
+
+  let arguments = (ins CIR_FpTensor:$x);
+
+  let results = (outs CIR_FpTensor:$y);
+
+  let hasFolder = 1;
+
+  // TODO enable TF::ArraysAreCastCompatible
+  //let extraClassDeclaration = [{
+  //  // Returns whether the return types are compatible.
+  //  static bool isCompatibleReturnTypes(TypeRange l, TypeRange r) {
+  //    return TF::ArraysAreCastCompatible(l, r);
+  //  }
+  //}];
+}
+
+def CIR_CumsumOp: CIR_Op<"cumsum", [
+    Pure,
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    CIR_OperandHasRank<1, 0>]> {
+  let summary = "Cumsum operator";
+
+  let description = [{
+    Compute the cumulative sum of the tensor x along axis.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32, I32, I64]>:$input,
+    CIR_I32Tensor:$axis,
+    DefaultValuedOptionalAttr<BoolAttr, "false">:$exclusive,
+    DefaultValuedOptionalAttr<BoolAttr, "false">:$reverse
+  );
+
+  let results = (outs CIR_TensorOf<[F32, I32, I64]>:$output);
+
+  let hasOptions = 1;
+}
+
 def CIR_CustomOp : Op<CIR_Dialect, "custom", [
   DeclareOpInterfaceMethods<CIR_RuntimeVerification>,
   DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>
