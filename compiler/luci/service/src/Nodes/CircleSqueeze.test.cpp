@@ -44,7 +44,7 @@ TEST(ShapeRuleTest, squeeze_simple)
   ASSERT_EQ(1, shape.dim(2).value());
 }
 
-TEST(ShapeRuleTest, neg_squeeze_incorrect_dim)
+TEST(ShapeRuleTest, squeeze_incorrect_dim_NEG)
 {
   luci::CircleInput input;
   luci::CircleSqueeze squeeze;
