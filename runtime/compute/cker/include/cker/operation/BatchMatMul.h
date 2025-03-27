@@ -85,9 +85,10 @@ public:
                   float *output_data)
   {
     // Transpose once if rhas is constant and not transposed yet
-    if (!adj_y && (!_rhs_constant || !_rhs_transposed))
+    if (!adj_y && !(_rhs_constant && _rhs_transposed))
     {
       transposeRowsCols(rhs_shape, rhs_data, _temp_rhs_shape, _temp_rhs.data());
+      _rhs_transposed = true;
     }
 
     if (adj_x)

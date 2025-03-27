@@ -139,6 +139,15 @@ uint32_t CircleGen::addOperatorAveragePool2D(const OperatorParams &params, circl
                                 circle::BuiltinOptions_Pool2DOptions, options);
 }
 
+uint32_t CircleGen::addOperatorBatchMatMul(const OperatorParams &params, bool adj_x, bool adj_y,
+                                           bool asymmetric_quantize_inputs)
+{
+  auto options =
+    circle::CreateBatchMatMulOptions(_fbb, adj_x, adj_y, asymmetric_quantize_inputs).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_BATCH_MATMUL,
+                                circle::BuiltinOptions_BatchMatMulOptions, options);
+}
+
 uint32_t CircleGen::addOperatorCast(const OperatorParams &params, circle::TensorType input_type,
                                     circle::TensorType output_type)
 {
