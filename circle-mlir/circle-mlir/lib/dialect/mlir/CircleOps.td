@@ -574,6 +574,31 @@ def CIR_EqualOp: CIR_Op<"equal", [
   let hasFolder = 1;
 }
 
+def CIR_ExpOp: CIR_Op<"exp", [
+    Pure,
+    // NOTE TFL_ExpOp used TF_SameOperandsAndResultTypeResolveRef
+    SameOperandsAndResultShape]> {
+  let summary = "Natural exponentiation operator";
+
+  let description = [{
+    Performs element-wise natural exponentiation operation on input.
+  }];
+
+  let arguments = (ins CIR_FpTensor:$x);
+
+  let results = (outs CIR_FpTensor:$y);
+
+  let hasOptions = 0b1;
+
+  // TODO enable TF::ArraysAreCastCompatible
+  //let extraClassDeclaration = [{
+  //  // Returns whether the return types are compatible.
+  //  static bool isCompatibleReturnTypes(TypeRange l, TypeRange r) {
+  //    return TF::ArraysAreCastCompatible(l, r);
+  //  }
+  //}];
+}
+
 // TODO(jpienaar): Update post discussion on semantics of FC OP.
 def CIR_FullyConnectedOp : CIR_Op<"fully_connected", [
     Pure, /*AccumulatorUniformScale<2, 0, 1>,*/
