@@ -364,6 +364,28 @@ def CIR_ArgMaxOp : CIR_Op<"arg_max", [
     }]>;
 }
 
+def CIR_CastOp : CIR_Op<"cast", [
+    Pure,
+    SameOperandsAndResultShape]> {
+  let summary = "Cast operator";
+
+  let description = [{
+    Casts input from input type to output type.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I1, I16, UI16, I32, UI32, I64/*, TFL_Quint8*/, UI8, I8/*, Complex<F<32>>*/]>:$input
+  );
+
+  let results = (outs CIR_TensorOf<[F32, I1, I16, UI16, I32, UI32, I64/*, TFL_Quint8*/, UI8, I8/*, Complex<F<32>>*/]>:$output);
+
+  // Circle's cast op does not utilize CastOptions, instead derives types
+  // from the CircleTensors.
+  let hasOptions = 0;
+
+  let hasFolder = 1;
+}
+
 def CIR_ConstOp : Op<CIR_Dialect, "pseudo_const", [ConstantLike, Pure,
     FirstAttrDerivedResultType,
     // TODO enable QuantizableResult,
