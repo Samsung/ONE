@@ -1110,7 +1110,6 @@ def CIR_SqrtOp: CIR_Op<"sqrt", [
     Pure,
     DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
     // NOTE TFL_SqrtOp used TF_SameOperandsAndResultTypeResolveRef
-    // REFER https://github.sec.samsung.net/one-project/circle-mlir/issues/292
     SameOperandsAndResultShape]> {
   let summary = "Square root operator";
 
