@@ -366,6 +366,7 @@ def CIR_ArgMaxOp : CIR_Op<"arg_max", [
 
 def CIR_CastOp : CIR_Op<"cast", [
     Pure,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
     SameOperandsAndResultShape]> {
   let summary = "Cast operator";
 
