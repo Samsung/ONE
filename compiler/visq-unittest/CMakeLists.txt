@@ -43,6 +43,7 @@ get_target_property(FP32_MODEL_DIR testDataGenerator BINARY_DIR)
 add_custom_command(
   OUTPUT ${RESOURCE_FILE}
   COMMAND ${CMAKE_COMMAND} -E echo 'fp32_model_dir=\"${FP32_MODEL_DIR}\"' >> ${RESOURCE_FILE}
+  DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/test
   COMMENT "Generate file to specify resource location"
 )
 

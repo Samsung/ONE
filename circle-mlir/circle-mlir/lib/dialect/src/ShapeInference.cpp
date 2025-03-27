@@ -199,6 +199,28 @@ void Conv2DOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// CosOp
+//===----------------------------------------------------------------------===//
+
+void CosOp::inferShapes(void)
+{
+  CosOp op = *this;
+  auto output_type = op.getY().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // follow input shape
+  auto input_type = op.getX().getType().cast<TensorType>();
+  auto input_shape = input_type.getShape();
+  llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
+
+  dumpShape<CosOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // CustomOp
 //===----------------------------------------------------------------------===//
 
@@ -250,6 +272,116 @@ void DivOp::inferShapes()
   auto input0_op = getOperand(0);
   auto input0_type = input0_op.getType().cast<TensorType>();
   RankedTensorType inferred_type = RankedTensorType::get(inferred, input0_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
+// FullyConnectedOp
+//===----------------------------------------------------------------------===//
+
+void FullyConnectedOp::inferShapes(void)
+{
+  FullyConnectedOp op = *this;
+  auto output_type = (*op.getOutput().begin()).getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  auto filter_type = op.getFilter().getType().cast<TensorType>();
+  if (not filter_type.hasStaticShape())
+    return;
+  auto filter_shape = filter_type.getShape();
+
+  auto input_type = op.getInput().getType().cast<TensorType>();
+  auto input_shape = input_type.getShape();
+  llvm::SmallVector<int64_t, 4> inferred;
+
+  if (op.getKeepNumDims())
+  {
+    llvm::SmallVector<int64_t, 4> in_inferred(input_shape.begin(), input_shape.end());
+    in_inferred[in_inferred.size() - 1] = filter_shape[0];
+    inferred = in_inferred;
+  }
+  else
+  {
+    if (input_type.hasStaticShape())
+    {
+      int64_t ele_size = 1;
+      for (int64_t i = 0; i < input_shape.size() - 1; ++i)
+        ele_size *= input_shape[i];
+      inferred.push_back(ele_size);
+    }
+    else
+    {
+      inferred.push_back(ShapedType::kDynamic);
+    }
+    inferred.push_back(filter_shape[0]);
+  }
+
+  dumpShape<FullyConnectedOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, output_type.getElementType());
+  getResult(0).setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
+// MeanOp
+//===----------------------------------------------------------------------===//
+
+void MeanOp::inferShapes()
+{
+  MeanOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // if input is dynamic, skip shape infer
+  auto input_op = getOperand(0);
+  auto input_type = input_op.getType().cast<TensorType>();
+  if (!input_type.hasStaticShape())
+    return;
+
+  // skip if axes input is not constant
+  mlir::Operation *is_const = getOperand(1).getDefiningOp();
+  if (!mlir::isa_and_nonnull<ConstOp>(is_const))
+    return;
+  auto const_op = cast<ConstOp>(is_const);
+  std::vector<int64_t> axis_values;
+  if (!extractElements(const_op, axis_values))
+    return;
+  int64_t in_rank = input_type.getRank();
+  for (int64_t &axis : axis_values)
+  {
+    if (axis < 0)
+      axis += in_rank;
+  }
+
+  auto input_shape = input_type.getShape();
+
+  llvm::SmallVector<int64_t, 4> inferred;
+
+  if (op.getKeepDims())
+  {
+    inferred.assign(input_shape.begin(), input_shape.end());
+    for (int64_t axis : axis_values)
+      inferred[axis] = 1;
+  }
+  else
+  {
+    std::vector<bool> check_reduce(input_type.getRank(), false);
+    for (int64_t i = 0; i < axis_values.size(); ++i)
+    {
+      int64_t reduce_at = axis_values[i];
+      check_reduce.at(reduce_at) = true;
+    }
+
+    for (int64_t i = 0; i < check_reduce.size(); ++i)
+      if (check_reduce.at(i) == false)
+        inferred.push_back(input_shape[i]);
+  }
+
+  dumpShape<MeanOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
   getResult().setType(inferred_type);
 }
 
@@ -309,6 +441,29 @@ void PadOp::inferShapes()
   }
 
   dumpShape<PadOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
+// PReluOp
+//===----------------------------------------------------------------------===//
+
+void PReluOp::inferShapes()
+{
+  PReluOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // if input is dynamic, skip shape infer
+  auto input_op = getOperand(0);
+  auto input_type = input_op.getType().cast<TensorType>();
+  auto input_shape = input_type.getShape();
+  llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
+
+  dumpShape<PReluOp>(op, inferred);
 
   RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
   getResult().setType(inferred_type);
@@ -459,6 +614,27 @@ void ReshapeOp::inferShapes()
 
     getResult().setType(inferred_type);
   }
+}
+
+//===----------------------------------------------------------------------===//
+// SqrtOp
+//===----------------------------------------------------------------------===//
+
+void SqrtOp::inferShapes()
+{
+  SqrtOp op = *this;
+  auto output_type = op.getY().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  auto input_type = op.getX().getType().cast<TensorType>();
+  auto input_shape = input_type.getShape();
+  llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
+
+  dumpShape<SqrtOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+  getResult().setType(inferred_type);
 }
 
 //===----------------------------------------------------------------------===//

@@ -443,15 +443,23 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 } // namespace mlir
 
 #include "ops/AddOp.h"
+#include "ops/CastOp.h"
 #include "ops/ConstOp.h"
 #include "ops/Conv2DOp.h"
+#include "ops/CosOp.h"
 #include "ops/CustomOp.h"
 #include "ops/DivOp.h"
+#include "ops/EqualOp.h"
+#include "ops/FullyConnectedOp.h"
 #include "ops/MulOp.h"
 #include "ops/NoValueOp.h"
 #include "ops/PadOp.h"
+#include "ops/PReluOp.h"
+#include "ops/ReduceProdOp.h"
 #include "ops/ReshapeOp.h"
+#include "ops/RsqrtOp.h"
 #include "ops/ShapeOp.h"
+#include "ops/SqrtOp.h"
 #include "ops/SubOp.h"
 #include "ops/TransposeOp.h"
 
