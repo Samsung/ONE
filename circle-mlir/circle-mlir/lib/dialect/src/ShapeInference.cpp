@@ -112,6 +112,29 @@ void AddOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// CastOp
+//===----------------------------------------------------------------------===//
+
+void CastOp::inferShapes(void)
+{
+  CastOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // follow input shape
+  auto input_type = op.getInput().getType().cast<TensorType>();
+  auto input_shape = input_type.getShape();
+  llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
+
+  dumpShape<CastOp>(op, inferred);
+
+  // preserve output dtype as-is
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, output_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // Conv2DOp
 //===----------------------------------------------------------------------===//
 
