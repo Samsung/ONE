@@ -39,7 +39,7 @@ void BatchMatMulLayer::batchMatMulFloat32()
 
   // TODO implement for constant input
 
-  batchmatmul_kernel.prepare(lhs_shape, rhs_shape, _adj_x, _adj_y);
+  batchmatmul_kernel.prepare(lhs_shape, rhs_shape, _adj_x, _adj_y, _rhs->is_constant());
   batchmatmul_kernel(lhs_shape, getBuffer<float>(_lhs), rhs_shape, getBuffer<float>(_rhs), _adj_x,
                      _adj_y, output_shape, getBuffer<float>(_output));
 }

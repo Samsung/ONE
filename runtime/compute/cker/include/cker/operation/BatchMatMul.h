@@ -44,7 +44,8 @@ public:
   /**
    * @brief   Prepare temporary area for calculation
    */
-  void prepare(const Shape &lhs_shape, const Shape &rhs_shape, bool adj_x, bool adj_y)
+  void prepare(const Shape &lhs_shape, const Shape &rhs_shape, bool adj_x, bool adj_y,
+               bool rhs_constant)
   {
     if (adj_x)
     {
@@ -75,16 +76,16 @@ public:
 
       _temp_rhs.resize(_temp_rhs_shape.FlatSize());
     }
+
+    _rhs_constant = rhs_constant;
   }
 
   void operator()(const Shape &lhs_shape, const float *lhs_data, const Shape &rhs_shape,
                   const float *rhs_data, bool adj_x, bool adj_y, const Shape & /*output_shape*/,
                   float *output_data)
   {
-    // Assume lhs and rhs is not constant
-    // TODO Handle constant input
-
-    if (!adj_y)
+    // Transpose once if rhas is constant and not transposed yet
+    if (!adj_y && (!_rhs_constant || !_rhs_transposed))
     {
       transposeRowsCols(rhs_shape, rhs_data, _temp_rhs_shape, _temp_rhs.data());
     }
@@ -144,6 +145,8 @@ private:
   Shape _temp_lhs_shape;
   std::vector<float> _temp_rhs;
   Shape _temp_rhs_shape;
+  bool _rhs_constant = false;
+  bool _rhs_transposed = false;
 };
 
 } // namespace cker
