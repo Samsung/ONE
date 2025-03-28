@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,22 +14,29 @@
  * limitations under the License.
  */
 
-#include "luci/Service/CircleShapeInference.h"
+#ifndef __CIRCLE_RESIZER_H__
+#define __CIRCLE_RESIZER_H__
 
-#include "CircleShapeInferenceHelper.h"
-#include <iostream>
+#include "Shape.h"
+#include "ModelData.h"
 
-namespace luci
+#include <string>
+#include <vector>
+#include <memory>
+
+namespace circle_resizer
 {
-
-namespace sinf
+class ModelEditor
 {
+public:
+  explicit ModelEditor(std::shared_ptr<ModelData> model_data);
 
-loco::TensorShape Algorithm::visit(const luci::CircleOutput *node)
-{
-  const auto from_shape = loco::must_cast<luci::CircleNode *>(node->from());
-  return sinf::circle_shape(from_shape);
-}
+public:
+  ModelEditor &resize_inputs(const Shapes &shapes);
 
-} // namespace sinf
-} // namespace luci
+private:
+  std::shared_ptr<ModelData> _model_data;
+};
+} // namespace circle_resizer
+
+#endif // __CIRCLE_RESIZER_H__

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-#include "luci/Service/CircleShapeInference.h"
+#include "Shape.h"
 
-#include "CircleShapeInferenceHelper.h"
-#include <iostream>
+#include <stdexcept>
 
-namespace luci
+using namespace circle_resizer;
+
+Dim::Dim(int32_t dim) : _dim_value{dim}
 {
-
-namespace sinf
-{
-
-loco::TensorShape Algorithm::visit(const luci::CircleOutput *node)
-{
-  const auto from_shape = loco::must_cast<luci::CircleNode *>(node->from());
-  return sinf::circle_shape(from_shape);
+  if (dim < -1)
+  {
+    throw std::runtime_error("Invalid value of dimension: " + dim);
+  }
 }
 
-} // namespace sinf
-} // namespace luci
+bool Dim::is_dynamic() { return _dim_value == -1; }
+
+int32_t Dim::value() const { return _dim_value; }
+
+bool Dim::operator==(const Dim &rhs) const { return value() == rhs.value(); }
