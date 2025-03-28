@@ -46,10 +46,13 @@ RUN add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 m
 RUN apt-get update && apt-get install -qqy clang-format-16
 
 # Install libtsan_preinit.o manually (workaround for missing package in focal)
+WORKDIR /root/tmp
 RUN apt-get download libgcc-10-dev
-RUN dpkg -x libgcc-10-dev_*_amd64.deb libgcc/
-RUN cp -f libgcc/usr/lib/gcc/x86_64-linux-gnu/10/libtsan_preinit.o /usr/lib/gcc/x86_64-linux-gnu/9/
-RUN rm -rf libgcc-10-dev_*_amd64.deb libgcc/
+RUN dpkg -x libgcc-10-dev_*.deb .
+RUN find usr -name "libtsan_preinit.o" | xargs -i cp {} .
+RUN find usr -name "libtsan_preinit.o" | sed -e "s/10/9/g" | xargs -i cp libtsan_preinit.o /{}
+WORKDIR /root
+RUN rm -rf /root/tmp
 
 # Install gbs
 RUN echo 'deb [trusted=yes] http://download.tizen.org/tools/latest-release/Ubuntu_20.04/ /' | cat >> /etc/apt/sources.list
