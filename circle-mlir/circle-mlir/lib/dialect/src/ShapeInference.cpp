@@ -661,6 +661,75 @@ void SqrtOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// StridedSliceOp
+//===----------------------------------------------------------------------===//
+
+void StridedSliceOp::inferShapes()
+{
+  StridedSliceOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // Currently only support all masks being 0.
+  if (getBeginMask() != 0 || getEndMask() != 0 || getEllipsisMask() != 0 || getNewAxisMask() != 0 ||
+      getShrinkAxisMask() != 0)
+    return;
+
+  // Currently only support all strides being 1.
+  mlir::DenseIntElementsAttr strides_dense_elem_attr;
+  if (!matchPattern(getStrides(), m_Constant(&strides_dense_elem_attr)))
+    return;
+  for (auto stride_ele : strides_dense_elem_attr)
+  {
+    if (stride_ele.getSExtValue() != 1)
+      return;
+  }
+
+  auto op_type = op.getType();
+  auto rank = op_type.getRank();
+
+  mlir::DenseIntElementsAttr begin_element;
+  mlir::DenseIntElementsAttr end_element;
+  if (!matchPattern(getBegin(), m_Constant(&begin_element)))
+    return;
+  if (!matchPattern(getEnd(), m_Constant(&end_element)))
+    return;
+
+  llvm::SmallVector<int64_t, 4> begins;
+  llvm::SmallVector<int64_t, 4> ends;
+
+  auto input_type = getInput().getType();
+  auto input_shape = input_type.getShape();
+  for (const auto &[i, begin_int] : llvm::enumerate(begin_element.getValues<APInt>()))
+  {
+    int64_t val = begin_int.getSExtValue();
+    begins.push_back((val < 0) ? val + input_shape[i] : val);
+  }
+  for (const auto &[i, end_int] : llvm::enumerate(end_element.getValues<APInt>()))
+  {
+    int64_t val = end_int.getSExtValue();
+    ends.push_back((val < 0) ? val + input_shape[i] : val);
+  }
+
+  llvm::SmallVector<int64_t, 4> inferred;
+  for (int i = 0; i < rank; ++i)
+  {
+    if (begins[i] >= ends[i])
+      inferred.push_back(ShapedType::kDynamic);
+    else
+      inferred.push_back(ends[i] - begins[i]);
+  }
+
+  dumpShape<StridedSliceOp>(op, inferred);
+
+  RankedTensorType inferred_type =
+    RankedTensorType::get(inferred, FloatType::getF32(op->getContext()));
+
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // SubOp
 //===----------------------------------------------------------------------===//
 
