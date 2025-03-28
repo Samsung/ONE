@@ -15,6 +15,7 @@
  */
 #include <iostream>
 #include <string>
+#include "graph.h"
 #include <filesystem>
 namespace fs = std::filesystem;
 
@@ -72,5 +73,7 @@ int main(int argc, char *argv[])
     return -1;
   }
 
+  Graph graph;
+  auto g = graph.GetGraphFromOnnx(onnxFile);
   return 0;
 }
