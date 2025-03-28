@@ -42,20 +42,15 @@ class net_Slice(torch.nn.Module):
                 make_input_test_limit(input, 6, 12)
 
         # Constant as 'axes' of Expand node
-        axes = onnx.helper.make_tensor(name='/Axes',
-                                       data_type=onnx.TensorProto.INT64,
-                                       dims=[1],
-                                       vals=[-1])
+        axes = onnx.helper.make_tensor(
+            name='/Axes', data_type=onnx.TensorProto.INT64, dims=[1], vals=[-1])
         node_axes = onnx.helper.make_node('Constant', [], ['Axes'], value=axes)
         onnx_model.graph.node.insert(0, node_axes)
 
         # Constant as 'steps' of Expand node
-        steps = onnx.helper.make_tensor(name='/Steps',
-                                        data_type=onnx.TensorProto.INT64,
-                                        dims=[1],
-                                        vals=[1])
-        node_steps = onnx.helper.make_node('Constant', [], ['Steps'],
-                                           value=steps)
+        steps = onnx.helper.make_tensor(
+            name='/Steps', data_type=onnx.TensorProto.INT64, dims=[1], vals=[1])
+        node_steps = onnx.helper.make_node('Constant', [], ['Steps'], value=steps)
         onnx_model.graph.node.insert(1, node_steps)
 
         # Create SliceOp node
@@ -66,8 +61,7 @@ class net_Slice(torch.nn.Module):
         onnx_model.graph.node.insert(2, slice_node)
 
         # Update output information
-        out = onnx.helper.make_tensor_value_info('output',
-                                                 onnx.TensorProto.FLOAT,
+        out = onnx.helper.make_tensor_value_info('output', onnx.TensorProto.FLOAT,
                                                  [2, 2, 0])
         onnx_model.graph.output.insert(102, out)
 
