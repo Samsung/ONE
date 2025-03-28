@@ -364,8 +364,67 @@ def CIR_ArgMaxOp : CIR_Op<"arg_max", [
     }]>;
 }
 
+def CIR_BatchMatMulOp : CIR_Op<"batch_matmul", [
+   Pure,
+   CIR_OperandHasAtleastRank<0, 2>,
+   CIR_OperandHasAtleastRank<1, 2>,
+   /* TODO enable QuantizableResult, */
+   PredOpTrait<"x and output must have same element type or they are int8 and int32",
+       Or<[CIR_TCresVTEtIsSameAsOp<0, 0>,
+           And<[CPred<"getElementTypeOrSelf($_op.getOperand(0)).isInteger(8)">,
+                CPred<"getElementTypeOrSelf($_op.getOperand(1)).isInteger(8)">,
+                CPred<"getElementTypeOrSelf($_op.getResult(0)).isInteger(32)">]>]>>,
+   CIR_RuntimePredOpTrait<"lhs and rhs of this op must have rank between [2, 5]",
+     And<[CIR_OperandHasRankAtMostPred<0, 5>,
+          CIR_OperandHasRankAtMostPred<1, 5>]>>,
+   /* TODO enable DynamicRangeQuantizedOpInterface */]> {
+
+  let summary = "Batch Matrix Multiply Operator";
+
+  let description = [{
+Performs a batched matrix multiplication on the inputs. Follows the
+conventions of TensorFlow BatchMatMulV2, with support for unknown dimensions
+in the batch dimensions and broadcasting.
+
+    Inputs:
+      `inputs[0]`: required: input LHS
+      `inputs[1]`: required: input RHS
+      `adjoint_lhs`: optional: Transpose LHS (default false)
+      `adjoint_lhs`: optional: Transpose LHS (default false)
+  }];
+
+  // NOTE
+  // The circle schema uses adjoint_lhs/adjoin_rhs, unlike the tensorflow schema.
+  // Because the circle schema is based on TF v2.2-rc2 + more(`56d281c`) branch.
+  // Please refer to the Revision Histroy comment in the top of circle_schema.fbs
+  // file for detailed history.
+  let arguments = (ins
+    CIR_TensorOf<[F32/*, QI8, QI16*/, I8]>:$x,
+    CIR_TensorOf<[F32/*, QI8, QI16*/, I8]>:$y,
+    DefaultValuedAttr<BoolAttr, "false">:$adjoint_lhs,
+    DefaultValuedAttr<BoolAttr, "false">:$adjoint_rhs,
+    // Used in post-training dynamic range quantization. If the value is true,
+    // input activations are asymmetrically quantized.
+    OptionalAttr<BoolAttr>:$asymmetric_quantize_inputs
+  );
+
+   let results = (outs
+    CIR_TensorOf<[F32/*, QI8, QI16*/, I32]>:$output
+  );
+
+  let hasOptions = 1;
+
+  let extraClassDeclaration = [{
+    // DynamicRangeQuantizedOpInterface:
+    bool RequireAsymmetricQuantizeInputsAttr() { return true; }
+    bool GetDynamicRangeQuantKernelSupport() { return true; }
+    std::vector<int> GetQuantizableOperandIndices() { return {1}; }
+  }];
+}
+
 def CIR_CastOp : CIR_Op<"cast", [
     Pure,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
     SameOperandsAndResultShape]> {
   let summary = "Cast operator";
 
@@ -846,6 +905,48 @@ def CIR_MulOp : CIR_Op<"mul", [
   let hasOptions = 1;
 }
 
+def CIR_NegOp: CIR_Op<"neg", [
+    Pure,
+    // NOTE TFL_NegOp used TF_SameOperandsAndResultTypeResolveRef
+    SameOperandsAndResultShape]> {
+  let summary = "Negation operator";
+
+  let description = [{
+    Computes element-wise negation of input
+  }];
+
+  let arguments = (ins CIR_TensorOf<[F32, I32, I64]>:$x);
+
+  let results = (outs CIR_TensorOf<[F32, I32, I64]>:$y);
+
+  let hasOptions = 0b1;
+
+  let hasFolder = 1;
+
+  // NOTE ArraysAreCastCompatible requires too much fro TF
+  // TODO enable ArraysAreCastCompatible
+  //let extraClassDeclaration = [{
+  //  // Returns whether the return types are compatible.
+  //  static bool isCompatibleReturnTypes(TypeRange l, TypeRange r) {
+  //    return ArraysAreCastCompatible(l, r);
+  //  }
+  //}];
+}
+
+def CIR_NotOp: CIR_Op<"logical_not", [
+    Pure,
+    SameOperandsAndResultShape]> {
+  let summary = "Logical NOT operator";
+
+  let description = [{
+    Element-wise logical NOT operation.
+  }];
+
+  let arguments = (ins CIR_BoolTensor:$lhs);
+
+  let results = (outs CIR_BoolTensor:$output);
+}
+
 def CIR_NoValueOp : Op<CIR_Dialect, "no_value", [ConstantLike, Pure]> {
   let summary = "constant representing no value.";
 
@@ -1102,6 +1203,78 @@ def CIR_RsqrtOp: CIR_Op<"rsqrt", [Pure,
   let arguments = (ins CIR_TensorOf<[F32/*, QI8, QI16*/]>:$x);
 
   let results = (outs CIR_TensorOf<[F32/*, QI8, QI16*/]>:$y);
+
+  let hasFolder = 1;
+}
+
+// Select has many instances in models where one or more of its operands
+// are unranked. Therefore, we skip adding shape constraints here.
+def CIR_SelectOp : CIR_Op<"select", [
+  Pure,
+  /*SameOperandsAndResultsScale,*/
+  /*QuantizableResult,*/
+  PredOpTrait<"operands have same element type", CIR_TCopVTEtAreSameAt<1, 2>>,
+  PredOpTrait<"operands and result have same element type", CIR_TCresVTEtIsSameAsOp<0, 1>>]> {
+  let summary = "Select operator";
+
+  let description = [{
+    Select values of 'x' if the corresponding value of 'condition' is true or
+    the value of 'y' if false. There are valid condition input sizes:
+
+    1. Either the same shape (in which case the select is elementwise), or
+    2. condition must be Rank 1 and match over the first dimension.
+  }];
+
+  let arguments = (ins
+    CIR_BoolTensor:$condition,
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$x,
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$y);
+
+  let results = (outs
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$output);
+
+  // TODO(jpienaar): autogenerate this.
+  let builders = [
+    OpBuilder<(ins "Value":$condition, "Value":$x, "Value":$y),
+    [{
+    auto resultType = x.getType();
+    $_state.addOperands({condition, x, y});
+    $_state.types.push_back(resultType);
+  }]>];
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+}
+
+def CIR_SelectV2Op : CIR_Op<"select_v2", [
+    ResultsBroadcastableShape,
+    Pure,
+    /*QuantizableResult,*/
+    /*SameOperandsAndResultsScale,*/
+    CIR_OperandsHaveSameShapesOrBroadcastableShape<[0, 1, 2], 5>,
+    PredOpTrait<"operands have same element type", CIR_TCopVTEtAreSameAt<1, 2>>,
+    PredOpTrait<"operands and result have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 1>>]> {
+  let summary = "SelectV2 operator";
+
+  let description = [{
+    Select values of 'x' if the corresponding value of 'condition' is true or
+    the value of 'y' if false. There are valid condition input sizes:
+
+    1. Either the same shape (in which case the select is elementwise), or
+    2. Broadcastable shapes between 'condition', 'x' and 'y'.
+  }];
+
+  let arguments = (ins
+    CIR_BoolTensor:$condition,
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64, UI32/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$x,
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64, UI32/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$y);
+
+  let results = (outs
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64, UI32/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$output);
+
+  let hasOptions = 1;
 
   let hasFolder = 1;
 }

@@ -115,8 +115,14 @@ public:
     }
     else
     {
-      // TODO convert to BatchMatMulOp
-      return mlir::failure();
+      // NOTE adjoint values are by default False.
+      // from https://www.tensorflow.org/api_docs/cc/class/tensorflow/ops/batch-mat-mul
+      auto adjoint_lhs = rewriter.getBoolAttr(false);
+      auto adjoint_rhs = rewriter.getBoolAttr(false);
+      auto asymmetric_quantize_inputs = rewriter.getBoolAttr(false);
+
+      rewriter.replaceOpWithNewOp<BatchMatMulOp>(op, op.getType(), input, filter, adjoint_lhs,
+                                                 adjoint_rhs, asymmetric_quantize_inputs);
     }
 
     return mlir::success();
