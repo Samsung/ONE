@@ -1364,6 +1364,58 @@ def CIR_SqrtOp: CIR_Op<"sqrt", [
   }];
 }
 
+def CIR_StridedSliceOp: CIR_Op<"strided_slice", [
+    Pure,
+    /*QuantizableResult,*/
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    /*SameOperandsAndResultsScale,*/
+    CIR_OperandHasRankAtMost<0, 5>,
+    CIR_OperandHasRank<1, 1>,
+    CIR_OperandHasRank<2, 1>,
+    CIR_OperandHasRank<3, 1>
+  ]> {
+  let summary = "StridedSlice Op";
+
+  let description = [{
+    Return a strided slice from `input`.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64, I8/*, UI8, QI8, QUI8, I1*/, I16/*, QI16, TFL_Quint8, TFL_Str*/]>:$input,
+    CIR_I32Tensor:$begin,
+    CIR_I32Tensor:$end,
+    CIR_I32Tensor:$strides,
+
+    I32Attr:$begin_mask,
+    I32Attr:$end_mask,
+    I32Attr:$ellipsis_mask,
+    I32Attr:$new_axis_mask,
+    I32Attr:$shrink_axis_mask
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, I32, I64, I8/*, UI8, QI8, QUI8, I1*/, I16/*, QI16, TFL_Quint8, TFL_Str*/]>:$output
+  );
+
+  // TFLite kernel only supports up to 5D input including added axis.
+  let hasVerifier = 1;
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+
+  let hasCanonicalizer = 1;
+
+  let extraClassDeclaration = [{
+    // Folding 1-dim of input
+    OpFoldResult foldOneDimension();
+    // Folding reverse of input when stride is -1
+    OpFoldResult foldReverseInput();
+  }];
+}
+
 def CIR_SubOp : CIR_Op<"sub", [
     ResultsBroadcastableShape,
     BinaryOpSameElementTypeConstraint,
