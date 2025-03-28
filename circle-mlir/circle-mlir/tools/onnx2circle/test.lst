@@ -15,6 +15,10 @@ ConvertUnitModel(ReduceProd_I64_R1_1.circle.mlir)
 ConvertUnitModel(ReduceProd_I64_R1_3.circle.mlir)
 ConvertUnitModel(Rsqrt_F32_R1_C1.circle.mlir)
 
+# negative
+
+ConvertUnitModelNEG(Custom_F32.circle.neg.mlir)
+
 # shape inference validation
 
 ValidateShapeInf(Add_F32_us.circle.mlir)
