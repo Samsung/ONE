@@ -847,6 +847,48 @@ def CIR_MulOp : CIR_Op<"mul", [
   let hasOptions = 1;
 }
 
+def CIR_NegOp: CIR_Op<"neg", [
+    Pure,
+    // NOTE TFL_NegOp used TF_SameOperandsAndResultTypeResolveRef
+    SameOperandsAndResultShape]> {
+  let summary = "Negation operator";
+
+  let description = [{
+    Computes element-wise negation of input
+  }];
+
+  let arguments = (ins CIR_TensorOf<[F32, I32, I64]>:$x);
+
+  let results = (outs CIR_TensorOf<[F32, I32, I64]>:$y);
+
+  let hasOptions = 0b1;
+
+  let hasFolder = 1;
+
+  // NOTE ArraysAreCastCompatible requires too much fro TF
+  // TODO enable ArraysAreCastCompatible
+  //let extraClassDeclaration = [{
+  //  // Returns whether the return types are compatible.
+  //  static bool isCompatibleReturnTypes(TypeRange l, TypeRange r) {
+  //    return ArraysAreCastCompatible(l, r);
+  //  }
+  //}];
+}
+
+def CIR_NotOp: CIR_Op<"logical_not", [
+    Pure,
+    SameOperandsAndResultShape]> {
+  let summary = "Logical NOT operator";
+
+  let description = [{
+    Element-wise logical NOT operation.
+  }];
+
+  let arguments = (ins CIR_BoolTensor:$lhs);
+
+  let results = (outs CIR_BoolTensor:$output);
+}
+
 def CIR_NoValueOp : Op<CIR_Dialect, "no_value", [ConstantLike, Pure]> {
   let summary = "constant representing no value.";
 
