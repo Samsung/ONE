@@ -76,5 +76,4 @@ int main(int argc, char *argv[])
   Graph graph;
   auto g = graph.GetGraphFromOnnx(onnxFile);
   return 0;
-
 }
