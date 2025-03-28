@@ -1301,6 +1301,46 @@ def CIR_ShapeOp: CIR_Op<"shape", [
   let hasFolder = 1;
 }
 
+def CIR_SliceOp : CIR_Op<"slice", [
+    /*QuantizableResult,*/
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    Pure,
+    /*SameOperandsAndResultsScale,*/
+    CIR_OperandHasRankAtMost<0, 5>,
+    CIR_OperandHasRankAtMost<1, 1>,
+    CIR_OperandHasRankAtMost<2, 1>]> {
+  let summary = "Return a slice from 'input'.";
+
+  let description = [{
+The output tensor is a tensor with dimensions described by 'size'
+whose values are extracted from 'input' starting at the offsets in
+'begin'.
+
+`begin` is zero-based; `size` is one-based. If size[i] is -1, all remaining
+elements in dimension i are included in the slice. In other words, this is
+equivalent to setting:
+  size[i] = input.dim_size(i) - begin[i]
+
+*Requirements*:
+  0 <= begin[i] <= begin[i] + size[i] <= Di  for i in [0, n)
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64, I8, UI8/*, I1, CIR_Str, QI8, QUI8, TFL_Quint8, QI16*/]>:$input,
+    CIR_I32OrI64Tensor:$begin,
+    CIR_I32OrI64Tensor:$size
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, I32, I64, I8, UI8/*, I1, CIR_Str, QI8, QUI8, TFL_Quint8, QI16*/]>:$output
+  );
+
+  let hasVerifier = 1;
+
+  let hasCanonicalizer = 1;
+}
+
 def CIR_SqrtOp: CIR_Op<"sqrt", [
     Pure,
     DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
