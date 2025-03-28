@@ -1247,6 +1247,38 @@ def CIR_SelectOp : CIR_Op<"select", [
   let hasFolder = 1;
 }
 
+def CIR_SelectV2Op : CIR_Op<"select_v2", [
+    ResultsBroadcastableShape,
+    Pure,
+    /*QuantizableResult,*/
+    /*SameOperandsAndResultsScale,*/
+    CIR_OperandsHaveSameShapesOrBroadcastableShape<[0, 1, 2], 5>,
+    PredOpTrait<"operands have same element type", CIR_TCopVTEtAreSameAt<1, 2>>,
+    PredOpTrait<"operands and result have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 1>>]> {
+  let summary = "SelectV2 operator";
+
+  let description = [{
+    Select values of 'x' if the corresponding value of 'condition' is true or
+    the value of 'y' if false. There are valid condition input sizes:
+
+    1. Either the same shape (in which case the select is elementwise), or
+    2. Broadcastable shapes between 'condition', 'x' and 'y'.
+  }];
+
+  let arguments = (ins
+    CIR_BoolTensor:$condition,
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64, UI32/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$x,
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64, UI32/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$y);
+
+  let results = (outs
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64, UI32/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$output);
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+}
+
 def CIR_ShapeOp: CIR_Op<"shape", [
     /*QuantizableResult,*/
     Pure]> {
