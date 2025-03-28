@@ -49,6 +49,7 @@
 #include "ops/ReluOp.h"
 #include "ops/ReshapeOp.h"
 #include "ops/ShapeOp.h"
+#include "ops/SliceOp.h"
 #include "ops/SqrtOp.h"
 #include "ops/TanhOp.h"
 #include "ops/TransposeOp.h"
@@ -202,6 +203,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvRelu>(typeConverter, context);
   patterns.insert<ConvReshape>(typeConverter, context);
   patterns.insert<ConvShape>(typeConverter, context);
+  patterns.insert<ConvSlice>(typeConverter, context);
   patterns.insert<ConvSqrt>(typeConverter, context);
   patterns.insert<ConvTanh>(typeConverter, context);
   patterns.insert<ConvTranspose>(typeConverter, context);
