@@ -1207,6 +1207,46 @@ def CIR_RsqrtOp: CIR_Op<"rsqrt", [Pure,
   let hasFolder = 1;
 }
 
+// Select has many instances in models where one or more of its operands
+// are unranked. Therefore, we skip adding shape constraints here.
+def CIR_SelectOp : CIR_Op<"select", [
+  Pure,
+  /*SameOperandsAndResultsScale,*/
+  /*QuantizableResult,*/
+  PredOpTrait<"operands have same element type", CIR_TCopVTEtAreSameAt<1, 2>>,
+  PredOpTrait<"operands and result have same element type", CIR_TCresVTEtIsSameAsOp<0, 1>>]> {
+  let summary = "Select operator";
+
+  let description = [{
+    Select values of 'x' if the corresponding value of 'condition' is true or
+    the value of 'y' if false. There are valid condition input sizes:
+
+    1. Either the same shape (in which case the select is elementwise), or
+    2. condition must be Rank 1 and match over the first dimension.
+  }];
+
+  let arguments = (ins
+    CIR_BoolTensor:$condition,
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$x,
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$y);
+
+  let results = (outs
+    CIR_TensorOf<[F32, I1, I8, I16, I32, I64/*, QI8, QUI8, QI16, TFL_Quint8*/]>:$output);
+
+  // TODO(jpienaar): autogenerate this.
+  let builders = [
+    OpBuilder<(ins "Value":$condition, "Value":$x, "Value":$y),
+    [{
+    auto resultType = x.getType();
+    $_state.addOperands({condition, x, y});
+    $_state.types.push_back(resultType);
+  }]>];
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+}
+
 def CIR_ShapeOp: CIR_Op<"shape", [
     /*QuantizableResult,*/
     Pure]> {
