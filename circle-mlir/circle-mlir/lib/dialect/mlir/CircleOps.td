@@ -364,6 +364,64 @@ def CIR_ArgMaxOp : CIR_Op<"arg_max", [
     }]>;
 }
 
+def CIR_BatchMatMulOp : CIR_Op<"batch_matmul", [
+   Pure,
+   CIR_OperandHasAtleastRank<0, 2>,
+   CIR_OperandHasAtleastRank<1, 2>,
+   /* TODO enable QuantizableResult, */
+   PredOpTrait<"x and output must have same element type or they are int8 and int32",
+       Or<[CIR_TCresVTEtIsSameAsOp<0, 0>,
+           And<[CPred<"getElementTypeOrSelf($_op.getOperand(0)).isInteger(8)">,
+                CPred<"getElementTypeOrSelf($_op.getOperand(1)).isInteger(8)">,
+                CPred<"getElementTypeOrSelf($_op.getResult(0)).isInteger(32)">]>]>>,
+   CIR_RuntimePredOpTrait<"lhs and rhs of this op must have rank between [2, 5]",
+     And<[CIR_OperandHasRankAtMostPred<0, 5>,
+          CIR_OperandHasRankAtMostPred<1, 5>]>>,
+   /* TODO enable DynamicRangeQuantizedOpInterface */]> {
+
+  let summary = "Batch Matrix Multiply Operator";
+
+  let description = [{
+Performs a batched matrix multiplication on the inputs. Follows the
+conventions of TensorFlow BatchMatMulV2, with support for unknown dimensions
+in the batch dimensions and broadcasting.
+
+    Inputs:
+      `inputs[0]`: required: input LHS
+      `inputs[1]`: required: input RHS
+      `adjoint_lhs`: optional: Transpose LHS (default false)
+      `adjoint_lhs`: optional: Transpose LHS (default false)
+  }];
+
+  // NOTE
+  // The circle schema uses adjoint_lhs/adjoin_rhs, unlike the tensorflow schema.
+  // Because the circle schema is based on TF v2.2-rc2 + more(`56d281c`) branch.
+  // Please refer to the Revision Histroy comment in the top of circle_schema.fbs
+  // file for detailed history.
+  let arguments = (ins
+    CIR_TensorOf<[F32/*, QI8, QI16*/, I8]>:$x,
+    CIR_TensorOf<[F32/*, QI8, QI16*/, I8]>:$y,
+    DefaultValuedAttr<BoolAttr, "false">:$adjoint_lhs,
+    DefaultValuedAttr<BoolAttr, "false">:$adjoint_rhs,
+    // Used in post-training dynamic range quantization. If the value is true,
+    // input activations are asymmetrically quantized.
+    OptionalAttr<BoolAttr>:$asymmetric_quantize_inputs
+  );
+
+   let results = (outs
+    CIR_TensorOf<[F32/*, QI8, QI16*/, I32]>:$output
+  );
+
+  let hasOptions = 1;
+
+  let extraClassDeclaration = [{
+    // DynamicRangeQuantizedOpInterface:
+    bool RequireAsymmetricQuantizeInputsAttr() { return true; }
+    bool GetDynamicRangeQuantKernelSupport() { return true; }
+    std::vector<int> GetQuantizableOperandIndices() { return {1}; }
+  }];
+}
+
 def CIR_CastOp : CIR_Op<"cast", [
     Pure,
     DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
