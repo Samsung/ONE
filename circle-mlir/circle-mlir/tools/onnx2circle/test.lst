@@ -20,6 +20,9 @@ ConvertUnitModel(Rsqrt_F32_R1_C1.circle.mlir)
 ConvertUnitModel(SelectV2_I32_R2.circle.mlir)
 ConvertUnitModel(SelectV2_I64_R2.circle.mlir)
 ConvertUnitModel(SelectV2_F32_R2.circle.mlir)
+ConvertUnitModel(Slice_F32_R3_C1_0.circle.mlir)
+ConvertUnitModel(Slice_F32_R3_C1_1.circle.mlir)
+ConvertUnitModel(Slice_F32_R3_C1_2.circle.mlir)
 
 # negative
 
@@ -52,4 +55,5 @@ ValidateDynaShapeInf(Mul_F32_R2_ds.circle.mlir)
 ValidateDynaShapeInf(PRelu_F32_R4_ds.circle.mlir)
 ValidateDynaShapeInf(Reshape_F32_R4_ds.circle.mlir)
 ValidateDynaShapeInf(Reshape_F32_R4_ds_2.circle.mlir)
+ValidateDynaShapeInf(Slice_F32_R2_ds.circle.mlir)
 ValidateDynaShapeInf(Sqrt_F32_R4_ds.circle.mlir)
