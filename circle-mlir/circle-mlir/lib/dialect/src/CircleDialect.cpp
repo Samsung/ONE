@@ -463,6 +463,7 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 #include "ops/SelectV2Op.h"
 #include "ops/ShapeOp.h"
 #include "ops/SqrtOp.h"
+#include "ops/StridedSliceOp.h"
 #include "ops/SubOp.h"
 #include "ops/TransposeOp.h"
 
