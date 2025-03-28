@@ -37,7 +37,9 @@
 #include "ops/GreaterOp.h"
 #include "ops/LeakyReluOp.h"
 #include "ops/MatMulOp.h"
+#include "ops/NegOp.h"
 #include "ops/NoneOp.h"
+#include "ops/NotOp.h"
 #include "ops/PadOp.h"
 #include "ops/PReluOp.h"
 #include "ops/ReduceMaxOp.h"
@@ -184,7 +186,9 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvGreater>(typeConverter, context);
   patterns.insert<ConvLeakyRelu>(typeConverter, context);
   patterns.insert<ConvMatMul>(typeConverter, context);
+  patterns.insert<ConvNeg>(typeConverter, context);
   patterns.insert<ConvNone>(typeConverter, context);
+  patterns.insert<ConvNot>(typeConverter, context);
   patterns.insert<ConvPad>(typeConverter, context);
   patterns.insert<ConvPRelu>(typeConverter, context);
   patterns.insert<ConvReduceMax>(typeConverter, context);
