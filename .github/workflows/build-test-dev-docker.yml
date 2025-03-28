@@ -1,0 +1,76 @@
+name: Build docker build for CI/CD infra PR Test
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/build-test-dev-docker.yml'
+      - 'infra/docker/**'
+
+# Cancel previous running jobs when pull request is updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+# We cannot test multi-platform test on PR, so we only test amd64
+jobs:
+  # Build on docker CLI for PR test without login
+  build-pr-test:
+    if: github.repository_owner == 'Samsung'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [ 'android-sdk', 'focal', 'jammy', 'noble', 'gbs', 'focal-cross', 'jammy-cross', 'noble-cross', 'lint' ]
+        include:
+          - version: 'focal-cross'
+            ubuntu_code: 'focal'
+          - version: 'jammy-cross'
+            ubuntu_code: 'jammy'
+          # TODO: noble
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: |
+          docker build --tag one-test --load --file infra/docker/${{ matrix.version }}/Dockerfile .
+
+      - name: Test onert native build
+        if: matrix.version == 'focal' || matrix.version == 'jammy' || matrix.version == 'noble'
+        env:
+          DOCKER_IMAGE_NAME: one-test
+        run: |
+          ./nnas docker-run --user make -f Makefile.template
+          ./nnas docker-run --user Product/out/test/onert-test unittest
+
+      - name: Download rootfs for cross build
+        # TODO noble-cross
+        if: matrix.version == 'focal-cross' || matrix.version == 'jammy-cross'
+        uses: dawidd6/action-download-artifact@v7
+        with:
+          workflow: generate-rootfs.yml
+          branch: master
+          name: rootfs_arm_${{ matrix.ubuntu_code }}
+
+      # Workaround: symlink for rootfs checker in cmake toolchain file
+      - name: Install rootfs for cross build and build
+        if: matrix.version == 'focal-cross' || matrix.version == 'jammy-cross'
+        env:
+          DOCKER_IMAGE_NAME: one-test
+          DOCKER_ENV_VARS: '-e CROSS_BUILD=1 -e TARGET_ARCH=armv7l'
+        run: |
+          mkdir -p tools/cross/rootfs
+          tar -zxf rootfs_arm_${{ matrix.ubuntu_code }}.tar.gz -C tools/cross/rootfs
+          pushd tools/cross/rootfs/arm
+          ln -sf usr/lib lib
+          popd
+          ./nnas docker-run --user make -f Makefile.template
+
+      - name: Test android build
+        if: matrix.version == 'android-sdk'
+        env:
+          DOCKER_IMAGE_NAME: one-test
+          DOCKER_ENV_VARS: '-e CROSS_BUILD=1 -e TARGET_OS=android -e BUILD_TYPE=release'
+        run: |
+          ./nnas docker-run --user make -f Makefile.template

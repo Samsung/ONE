@@ -1,4 +1,4 @@
-# Copyright (c) 2022 Samsung Electronics Co., Ltd. All Rights Reserved
+# Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,27 +14,14 @@
 
 FROM ubuntu:jammy
 
+# Install 'add-apt-repository'
+RUN apt-get update && apt-get -qqy install software-properties-common
 # Install tzdata without user input
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -qqy install tzdata
+RUN DEBIAN_FRONTEND=noninteractive apt-get -qqy install tzdata
 
-# Build tool
-RUN apt-get update && apt-get -qqy install build-essential cmake scons git lcov
-
-# Debian build tool
-RUN apt-get update && apt-get -qqy install fakeroot devscripts debhelper python3-all dh-python
-
-# Install extra dependencies (Caffe, nnkit)
-RUN apt-get update && apt-get -qqy install libboost-all-dev libgflags-dev libgoogle-glog-dev libatlas-base-dev libhdf5-dev
-
-# Install protocol buffer
-RUN apt-get update && apt-get -qqy install libprotobuf-dev protobuf-compiler
-
-# Additonal tools
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive \
-    apt-get -qqy install wget zip unzip python3 python3-pip python3-venv python3-dev hdf5-tools curl
-RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install numpy flatbuffers
+# Install gbs
+RUN add-apt-repository -y 'deb [trusted=yes] http://download.tizen.org/tools/latest-release/Ubuntu_22.04/ /'
+RUN apt-get update && apt-get -qqy install gbs
 
 # Setup user to match host user, and give superuser permissions
 ARG USER_ID=1000
@@ -49,3 +36,4 @@ RUN apt-get clean -y
 
 # Set user to the one we just created
 USER ${USER_ID}
+ENTRYPOINT [ "gbs" ]
