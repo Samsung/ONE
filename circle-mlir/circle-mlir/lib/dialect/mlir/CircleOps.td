@@ -364,6 +364,33 @@ def CIR_ArgMaxOp : CIR_Op<"arg_max", [
     }]>;
 }
 
+def CIR_AveragePool2DOp:
+    CIR_Op<"average_pool_2d",
+           [Pure,
+            /*TODO enable SameOperandsAndResultsScale,*/
+            /*TODO enable QuantizableResult,*/]> {
+  let summary = "Average_pool_2d operator";
+
+  let description = [{
+    Performs average-pooling operation on input.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32/*TODO enable, QI8, QUI8, QI16*/]>:$input,
+    I32Attr:$filter_height,
+    I32Attr:$filter_width,
+    CIR_PaddingAttr:$padding,
+    I32Attr:$stride_h,
+    I32Attr:$stride_w,
+    CIR_AFAttr:$fused_activation_function
+  );
+
+  let results = (outs CIR_TensorOf<[F32/*TODO enable, QI8, QUI8, QI16*/]>:$output);
+
+  let hasOptions = 1;
+  let customOption = "Pool2DOptions";
+}
+
 def CIR_BatchMatMulOp : CIR_Op<"batch_matmul", [
    Pure,
    CIR_OperandHasAtleastRank<0, 2>,
@@ -810,6 +837,55 @@ def CIR_MaximumOp : CIR_Op<"maximum", [
   let builders = [CIR_BroadcastableBinaryBuilder];
 
   let hasOptions = 0;
+}
+
+// TODO(ashwinm): Revisit the granularity of the PredOpTraits. We could
+// break this into smaller PredOpTraits, each with more descriptive messages
+// that would make it easier to trace failures OR, need a way to specify desc
+// per Predicate inside the trait and get tablegen to use that to emit error
+// message.
+def MaxPoolOperandAndResultConstraints : PredOpTrait<"MaxPool2D operand and "
+    "result types match specified constraints",
+  And<[
+    // The input and output tensors should have the same elemental type
+    // and they should be one of the specified types below.
+    TCopVTEtIs<0, AnyTypeOf<[F32/* TODO enable, QI8, QUI8*/]>>,
+    CIR_TCresVTEtIsSameAsOp<0, 0>]>>;
+
+def CIR_MaxPool2DOp : CIR_Op<"max_pool_2d", [
+    CIR_OperandHasRank<0, 4>,
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    Pure,
+    MaxPoolOperandAndResultConstraints,
+    /*TODO enable SameOperandsAndResultsScale,*/
+    /*TODO enable QuantizableResult,*/
+    ]> {
+  let summary = "Max Pool 2D op";
+
+  let description = [{
+    Performs max pool 2D on input.
+
+    Inputs:
+      `inputs[0]`: required: the input tensor
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32/*TODO enable, QUI8, QI8, QI16, TFL_Quint8*/]>:$input,
+    CIR_PaddingAttr:$padding,
+    I32Attr:$stride_w,
+    I32Attr:$stride_h,
+    I32Attr:$filter_width,
+    I32Attr:$filter_height,
+    CIR_AFAttr:$fused_activation_function
+  );
+
+  let results = (outs CIR_TensorOf<[F32/*TODO enable, QUI8, QI8, QI16, TFL_Quint8*/]>:$output);
+
+  let hasOptions = 1;
+
+  let customOption = "Pool2DOptions";
 }
 
 def CIR_MeanOp : CIR_Op<"mean", [
