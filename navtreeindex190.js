@@ -1,5 +1,7 @@
 var NAVTREEINDEX190 =
 {
+"compute_2cker_2include_2cker_2operation_2_l_s_t_m_8h_source.html":[41,0,3,0,1,0,0,3,38],
+"compute_2cker_2include_2cker_2operation_2_reduce_8h.html":[41,0,3,0,1,0,0,3,48],
 "compute_2cker_2include_2cker_2operation_2_reduce_8h.html#a8fad551fcd78b2f8c9c53704029f0cc3":[41,0,3,0,1,0,0,3,48,3],
 "compute_2cker_2include_2cker_2operation_2_reduce_8h.html#a8fd12fa77a1168fe85d18326ed4b8bdb":[41,0,3,0,1,0,0,3,48,1],
 "compute_2cker_2include_2cker_2operation_2_reduce_8h.html#ada35ceafe42eab35a8cdd560f6ad66f3":[41,0,3,0,1,0,0,3,48,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX190 =
 "cpu_2ops_2_operation_utils_8h.html#a7f9662c4d904170b9a6a6ebc1f4ef2f0":[41,0,3,2,1,4,0,57,20],
 "cpu_2ops_2_operation_utils_8h.html#a8bd3b9d30711a87ca05dd34c92d35e6d":[41,0,3,2,1,4,0,57,12],
 "cpu_2ops_2_operation_utils_8h.html#a999ae4f2c6facf7f231d0594a1fcfc7a":[41,0,3,2,1,4,0,57,8],
-"cpu_2ops_2_operation_utils_8h.html#aa3ed894d41e9c8473df0db171af23d7d":[41,0,3,2,1,4,0,57,3],
-"cpu_2ops_2_operation_utils_8h.html#aad998e9198e97919831626a22ae9ee70":[41,0,3,2,1,4,0,57,11],
-"cpu_2ops_2_operation_utils_8h.html#ae4d438d3d3062bfd95a6e0caed125457":[41,0,3,2,1,4,0,57,15]
+"cpu_2ops_2_operation_utils_8h.html#aa3ed894d41e9c8473df0db171af23d7d":[41,0,3,2,1,4,0,57,3]
 };

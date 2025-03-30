@@ -1,5 +1,7 @@
 var NAVTREEINDEX215 =
 {
+"mio-circle08_2include_2mio__circle_2_helper_8h.html#ac4941377cebadf44ad88df3a1d78e47e":[41,0,0,74,0,0,0,3],
+"mio-circle08_2include_2mio__circle_2_helper_8h.html#ae833fa8c55869bac78dd55fab7d14415":[41,0,0,74,0,0,0,1],
 "mio-circle08_2include_2mio__circle_2_helper_8h_source.html":[41,0,0,74,0,0,0],
 "mio-circle08_2src_2_helper_8cpp.html":[41,0,0,74,1,0],
 "mio-circle08_2src_2_helper_8cpp.html#a0b3c17ce2e43636c2722c2a203fbd866":[41,0,0,74,1,0,4],
@@ -163,9 +165,9 @@ var NAVTREEINDEX215 =
 "mir_2include_2mir_2_quantization_8h.html":[41,0,0,79,0,0,13],
 "mir_2include_2mir_2_quantization_8h_source.html":[41,0,0,79,0,0,13],
 "mir_2include_2mir_2_visitor_8h.html":[41,0,0,79,0,0,21],
-"mir_2include_2mir_2_visitor_8h.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[41,0,0,79,0,0,21,4],
-"mir_2include_2mir_2_visitor_8h.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[41,0,0,79,0,0,21,3],
 "mir_2include_2mir_2_visitor_8h.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[41,0,0,79,0,0,21,2],
+"mir_2include_2mir_2_visitor_8h.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[41,0,0,79,0,0,21,3],
+"mir_2include_2mir_2_visitor_8h.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[41,0,0,79,0,0,21,4],
 "mir_2include_2mir_2_visitor_8h_source.html":[41,0,0,79,0,0,21],
 "mir_2src_2_graph_8cpp.html":[41,0,0,79,1,9],
 "mir_2src_2_graph_8cpp.html#aaf7f8fc0215983ba36a402319779e34e":[41,0,0,79,1,9,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX215 =
 "mir_2src_2mir__onnx__importer_2_op_2_max_pool_8cpp_source.html":[41,0,0,79,1,2,0,42],
 "mir_2src_2mir__onnx__importer_2_op_2_mul_8h.html":[41,0,0,79,1,2,0,45],
 "mir_2src_2mir__onnx__importer_2_op_2_mul_8h.html#acfd257ff558ec5829b53c659dc2361b5":[41,0,0,79,1,2,0,45,0],
-"mir_2src_2mir__onnx__importer_2_op_2_mul_8h_source.html":[41,0,0,79,1,2,0,45],
-"mir_2src_2mir__onnx__importer_2_op_2_reduce_mean_8cpp.html":[41,0,0,79,1,2,0,50],
-"mir_2src_2mir__onnx__importer_2_op_2_reduce_mean_8cpp.html#a97b0c2b5ffbcb5884a40eade43fa2028":[41,0,0,79,1,2,0,50,0]
+"mir_2src_2mir__onnx__importer_2_op_2_mul_8h_source.html":[41,0,0,79,1,2,0,45]
 };

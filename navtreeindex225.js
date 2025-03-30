@@ -1,5 +1,7 @@
 var NAVTREEINDEX225 =
 {
+"namespaceluci__interpreter_1_1test__kernel_1_1add__int__no__broadcasting.html#ae1aba7e81025a5c7183d1bd225bd8fee":[39,0,85,2,3,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1add__int__with__broadcasting.html":[39,0,85,2,4],
 "namespaceluci__interpreter_1_1test__kernel_1_1add__int__with__broadcasting.html#a104c287bf13a1d6fc727079271bebda6":[39,0,85,2,4,7],
 "namespaceluci__interpreter_1_1test__kernel_1_1add__int__with__broadcasting.html#a61224b1696c209bb06cd4afc8ccc8100":[39,0,85,2,4,1],
 "namespaceluci__interpreter_1_1test__kernel_1_1add__int__with__broadcasting.html#a77fb744e431868699edae11a0234f54f":[39,0,85,2,4,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX225 =
 "namespaceluci__interpreter_1_1test__kernel_1_1log__float.html#a1f582e9d1e538bbe21c3287d8c6f2735":[39,0,85,2,61,0],
 "namespaceluci__interpreter_1_1test__kernel_1_1log__float.html#a3e5001da478807feb79afcfa7d37dfa2":[39,0,85,2,61,1],
 "namespaceluci__interpreter_1_1test__kernel_1_1log__float.html#aa002e0b8965f2ced97ad8018e3747a70":[39,0,85,2,61,2],
-"namespaceluci__interpreter_1_1test__kernel_1_1log__softmax__float.html":[39,0,85,2,62],
-"namespaceluci__interpreter_1_1test__kernel_1_1log__softmax__float.html#a373bd8667c3aef31b5e0ff6695500307":[39,0,85,2,62,0],
-"namespaceluci__interpreter_1_1test__kernel_1_1log__softmax__float.html#aaa77e942a48a43aa95ade680299d2e40":[39,0,85,2,62,1]
+"namespaceluci__interpreter_1_1test__kernel_1_1log__softmax__float.html":[39,0,85,2,62]
 };

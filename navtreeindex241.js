@@ -1,5 +1,7 @@
 var NAVTREEINDEX241 =
 {
+"namespaceonert__micro_1_1train.html#ad206a498da8cf01aaed00bca0c2e42a2":[39,0,122,5,8],
+"namespaceonert__micro_1_1train.html#ae76ca2df5c7dc463025bd87a004301f5":[39,0,122,5,7],
 "namespaceonert__micro_1_1train_1_1losses__functions.html":[39,0,122,5,0],
 "namespaceonert__micro_1_1train_1_1metrics.html":[39,0,122,5,1],
 "namespaceonert__micro_1_1train_1_1optimizers.html":[39,0,122,5,2],
@@ -239,15 +241,13 @@ var NAVTREEINDEX241 =
 "namespacesparsity.html#a4e45b7e6021288b6033f29e1f75a9611":[39,0,157,4],
 "namespacesparsity.html#a741a972cf00f39d8bcf75112ce7d3f16":[39,0,157,7],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78":[39,0,157,9],
-"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,8,1],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,9,3],
+"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,8,1],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,8,3],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78aa48997d72e8d1448647405dc89229833":[39,0,157,9,1],
-"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,9,0],
-"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,9,2],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,8,2],
+"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,9,2],
+"namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,9,0],
 "namespacesparsity.html#ae99bb9cc01b3fa318543cd88adaa3b78ac6ea4f3115142a5152feb0ae974f7f9f":[39,0,157,8,0],
-"namespacesparsity.html#aebaa280a7d40b78a0e10bdff92358480":[39,0,157,5],
-"namespacesparsity.html#aebaa280a7d40b78a0e10bdff92358480":[39,0,157,8],
-"namespacestd.html":[39,0,158]
+"namespacesparsity.html#aebaa280a7d40b78a0e10bdff92358480":[39,0,157,8]
 };

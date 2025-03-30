@@ -1,5 +1,7 @@
 var NAVTREEINDEX182 =
 {
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_dequantize_8h.html":[41,0,0,61,1,2,6],
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_dequantize_8h_source.html":[41,0,0,61,1,2,6],
 "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_elu_8h.html":[41,0,0,61,1,2,7],
 "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_elu_8h_source.html":[41,0,0,61,1,2,7],
 "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_fully_connected_8h.html":[41,0,0,61,1,2,8],
@@ -247,7 +249,5 @@ var NAVTREEINDEX182 =
 "compiler_2luci-interpreter_2src_2kernels_2_resize_bilinear_8cpp.html":[41,0,0,61,2,2,133],
 "compiler_2luci-interpreter_2src_2kernels_2_resize_bilinear_8cpp_source.html":[41,0,0,61,2,2,133],
 "compiler_2luci-interpreter_2src_2kernels_2_resize_bilinear_8h.html":[41,0,0,61,2,2,134],
-"compiler_2luci-interpreter_2src_2kernels_2_resize_bilinear_8h_source.html":[41,0,0,61,2,2,134],
-"compiler_2luci-interpreter_2src_2kernels_2_resize_nearest_neighbor_8cpp.html":[41,0,0,61,2,2,135],
-"compiler_2luci-interpreter_2src_2kernels_2_resize_nearest_neighbor_8cpp_source.html":[41,0,0,61,2,2,135]
+"compiler_2luci-interpreter_2src_2kernels_2_resize_bilinear_8h_source.html":[41,0,0,61,2,2,134]
 };

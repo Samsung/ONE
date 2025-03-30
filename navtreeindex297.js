@@ -1,5 +1,7 @@
 var NAVTREEINDEX297 =
 {
+"tflchef_2core_2src_2_op_2_cos_8h_source.html":[41,0,0,131,0,1,1,29],
+"tflchef_2core_2src_2_op_2_cum_sum_8cpp.html":[41,0,0,131,0,1,1,30],
 "tflchef_2core_2src_2_op_2_cum_sum_8cpp_source.html":[41,0,0,131,0,1,1,30],
 "tflchef_2core_2src_2_op_2_cum_sum_8h.html":[41,0,0,131,0,1,1,31],
 "tflchef_2core_2src_2_op_2_cum_sum_8h_source.html":[41,0,0,131,0,1,1,31],
@@ -247,7 +249,5 @@ var NAVTREEINDEX297 =
 "tflite_2src_2_op_2_reduce_any_8cpp_source.html":[41,0,0,131,2,1,0,70],
 "tflite_2src_2_op_2_reduce_min_8cpp.html":[41,0,0,131,2,1,0,72],
 "tflite_2src_2_op_2_reduce_min_8cpp_source.html":[41,0,0,131,2,1,0,72],
-"tflite_2src_2_op_2_reverse_sequence_8cpp.html":[41,0,0,131,2,1,0,81],
-"tflite_2src_2_op_2_reverse_sequence_8cpp_source.html":[41,0,0,131,2,1,0,81],
-"tflite_2src_2_op_2_scatter_nd_8cpp.html":[41,0,0,131,2,1,0,85]
+"tflite_2src_2_op_2_reverse_sequence_8cpp.html":[41,0,0,131,2,1,0,81]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX188 =
 {
+"compiler_2tflchef_2core_2src_2_op_2_rank_8h_source.html":[41,0,0,131,0,1,1,141],
+"compiler_2tflchef_2core_2src_2_op_2_reduce_max_8cpp.html":[41,0,0,131,0,1,1,144],
 "compiler_2tflchef_2core_2src_2_op_2_reduce_max_8cpp_source.html":[41,0,0,131,0,1,1,144],
 "compiler_2tflchef_2core_2src_2_op_2_reduce_prod_8cpp.html":[41,0,0,131,0,1,1,148],
 "compiler_2tflchef_2core_2src_2_op_2_reduce_prod_8cpp_source.html":[41,0,0,131,0,1,1,148],
@@ -247,7 +249,5 @@ var NAVTREEINDEX188 =
 "compiler_2tflchef_2tflite_2src_2_op_2_pow_8cpp_source.html":[41,0,0,131,2,1,0,65],
 "compiler_2tflchef_2tflite_2src_2_op_2_quantize_8cpp.html":[41,0,0,131,2,1,0,67],
 "compiler_2tflchef_2tflite_2src_2_op_2_quantize_8cpp_source.html":[41,0,0,131,2,1,0,67],
-"compiler_2tflchef_2tflite_2src_2_op_2_reduce_max_8cpp.html":[41,0,0,131,2,1,0,71],
-"compiler_2tflchef_2tflite_2src_2_op_2_reduce_max_8cpp_source.html":[41,0,0,131,2,1,0,71],
-"compiler_2tflchef_2tflite_2src_2_op_2_reduce_prod_8cpp.html":[41,0,0,131,2,1,0,73]
+"compiler_2tflchef_2tflite_2src_2_op_2_reduce_max_8cpp.html":[41,0,0,131,2,1,0,71]
 };

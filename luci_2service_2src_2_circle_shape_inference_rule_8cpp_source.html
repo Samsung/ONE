@@ -1323,7 +1323,7 @@ $(document).ready(function(){initNavTree('luci_2service_2src_2_circle_shape_infe
 <div class="line"><a id="l01238" name="l01238"></a><span class="lineno"> 1238</span>      int32_t dim = raw_dim &lt; 0 ? raw_dim + input_shape.rank() : raw_dim;</div>
 <div class="line"><a id="l01239" name="l01239"></a><span class="lineno"> 1239</span> </div>
 <div class="line"><a id="l01240" name="l01240"></a><span class="lineno"> 1240</span>      <span class="keywordflow">if</span> (dim &lt; 0 || <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(dim) &gt;= input_shape.rank() ||</div>
-<div class="line"><a id="l01241" name="l01241"></a><span class="lineno"> 1241</span>          input_shape.dim(dim).value() != 1)</div>
+<div class="line"><a id="l01241" name="l01241"></a><span class="lineno"> 1241</span>          (input_shape.dim(dim).known() &amp;&amp; input_shape.dim(dim).value() != 1))</div>
 <div class="line"><a id="l01242" name="l01242"></a><span class="lineno"> 1242</span>      {</div>
 <div class="line"><a id="l01243" name="l01243"></a><span class="lineno"> 1243</span>        <a class="code hl_define" href="_internal_exn_8h.html#a28db93bdbd78e4f41821e1660182c9d5">INTERNAL_EXN</a>(<span class="stringliteral">&quot;invalid dimention specified to Squeeze&quot;</span>);</div>
 <div class="line"><a id="l01244" name="l01244"></a><span class="lineno"> 1244</span>      }</div>

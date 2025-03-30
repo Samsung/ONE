@@ -1,5 +1,7 @@
 var NAVTREEINDEX204 =
 {
+"include_2backend_2basic_2_dynamic_tensor_manager_8h.html":[41,0,3,2,2,0,0,0,3],
+"include_2backend_2basic_2_dynamic_tensor_manager_8h_source.html":[41,0,3,2,2,0,0,0,3],
 "index.html":[],
 "infer_2session_8py.html":[41,0,3,2,0,1,1,2,1],
 "infer_2session_8py_source.html":[41,0,3,2,0,1,1,2,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX204 =
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_not_8h.html":[41,0,0,58,3,0,0,0,0,56],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_not_8h_source.html":[41,0,0,58,3,0,0,0,0,56],
 "lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_or_8h.html":[41,0,0,58,3,0,0,0,0,57],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_or_8h_source.html":[41,0,0,58,3,0,0,0,0,57],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_logistic_8h.html":[41,0,0,58,3,0,0,0,0,58],
-"lang_2include_2luci_2_i_r_2_nodes_2_circle_logistic_8h_source.html":[41,0,0,58,3,0,0,0,0,58]
+"lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_or_8h_source.html":[41,0,0,58,3,0,0,0,0,57]
 };

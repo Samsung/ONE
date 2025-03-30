@@ -1,5 +1,7 @@
 var NAVTREEINDEX258 =
 {
+"runtime_2compute_2cker_2include_2cker_2operation_2_batch_to_space_n_d_8h_source.html":[41,0,3,0,1,0,0,3,7],
+"runtime_2compute_2cker_2include_2cker_2operation_2_broadcast_to_8h.html":[41,0,3,0,1,0,0,3,9],
 "runtime_2compute_2cker_2include_2cker_2operation_2_broadcast_to_8h.html#a1e1dff7348ecb46fba0b6781f8183c6a":[41,0,3,0,1,0,0,3,9,4],
 "runtime_2compute_2cker_2include_2cker_2operation_2_broadcast_to_8h.html#a86d500a34c624c2cae56bc25a31b12f3":[41,0,3,0,1,0,0,3,9,3],
 "runtime_2compute_2cker_2include_2cker_2operation_2_broadcast_to_8h_source.html":[41,0,3,0,1,0,0,3,9],
@@ -247,7 +249,5 @@ var NAVTREEINDEX258 =
 "runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h.html#a68e86023ece236637b0dc8b131a16f70":[41,0,3,0,1,0,0,3,2,3,0],
 "runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h.html#a954de12511ee583ef0e6b01a0679d4d8":[41,0,3,0,1,0,0,3,2,3,1],
 "runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html":[41,0,3,0,1,0,0,3,2,3],
-"runtime_2compute_2cker_2include_2cker_2train_2_types_8h.html":[41,0,3,0,1,0,0,5,2],
-"runtime_2compute_2cker_2include_2cker_2train_2_types_8h.html#a1175c776880a330984f05bf7ba5e26b8":[41,0,3,0,1,0,0,5,2,0],
-"runtime_2compute_2cker_2include_2cker_2train_2_types_8h.html#a1175c776880a330984f05bf7ba5e26b8a6970bdc2201030b9c03fbdcf3973858a":[41,0,3,0,1,0,0,5,2,0,1]
+"runtime_2compute_2cker_2include_2cker_2train_2_types_8h.html":[41,0,3,0,1,0,0,5,2]
 };
