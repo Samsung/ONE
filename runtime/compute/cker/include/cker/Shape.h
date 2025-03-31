@@ -31,9 +31,9 @@ namespace cker
 class Shape
 {
 public:
-  // Shapes with dimensions up to 5 are stored directly in the structure, while
+  // Shapes with dimensions up to 6 are stored directly in the structure, while
   // larger shapes are separately allocated.
-  static constexpr int kMaxSmallSize = 5;
+  static constexpr int kMaxSmallSize = 6;
 
   Shape &operator=(Shape const &) = delete;
 
@@ -111,8 +111,8 @@ public:
 
   inline int32_t *DimsData() { return _size > kMaxSmallSize ? _dims_pointer : _dims; }
   inline const int32_t *DimsData() const { return _size > kMaxSmallSize ? _dims_pointer : _dims; }
-  // The caller must ensure that the shape is no bigger than 4-D.
-  inline const int32_t *DimsDataUpTo4D() const { return _dims; }
+  // The caller must ensure that the shape is no bigger than 6D.
+  inline const int32_t *DimsDataUpTo6D() const { return _dims; }
 
   inline void Resize(int dimensions_count)
   {
@@ -237,7 +237,7 @@ inline Shape GetShape(const std::vector<int32_t> &data) { return Shape(data.size
 inline int Offset(const Shape &shape, int i0, int i1, int i2, int i3)
 {
   assert(shape.DimensionsCount() == 4);
-  const int *dims_data = shape.DimsDataUpTo4D();
+  const int *dims_data = shape.DimsDataUpTo6D();
   assert(i0 >= 0 && i0 < dims_data[0]);
   assert(i1 >= 0 && i1 < dims_data[1]);
   assert(i2 >= 0 && i2 < dims_data[2]);
@@ -245,9 +245,24 @@ inline int Offset(const Shape &shape, int i0, int i1, int i2, int i3)
   return ((i0 * dims_data[1] + i1) * dims_data[2] + i2) * dims_data[3] + i3;
 }
 
+inline int Offset(const Shape &shape, int i0, int i1, int i2, int i3, int i4, int i5)
+{
+  assert(shape.DimensionsCount() == 6);
+  const int *dim = shape.DimsDataUpTo6D();
+  assert(i0 >= 0 && i0 < dim[0]);
+  assert(i1 >= 0 && i1 < dim[1]);
+  assert(i2 >= 0 && i2 < dim[2]);
+  assert(i3 >= 0 && i3 < dim[3]);
+  assert(i4 >= 0 && i4 < dim[4]);
+  assert(i5 >= 0 && i5 < dim[5]);
+  // clang format off
+  return (((((i0 * dim[1] + i1) * dim[2] + i2) * dim[3] + i3) * dim[4]) + i4) * dim[5] + i5;
+  // clang format on
+}
+
 inline int Offset(const Shape &shape, int *index)
 {
-  return Offset(shape, index[0], index[1], index[2], index[3]);
+  return Offset(shape, index[0], index[1], index[2], index[3], index[4], index[5]);
 }
 
 inline int FlatSizeSkipDim(const Shape &shape, int skip_dim)
