@@ -37,6 +37,8 @@
 #include "ops/GemmOp.h"
 #include "ops/GreaterOp.h"
 #include "ops/LeakyReluOp.h"
+#include "ops/LogOp.h"
+#include "ops/LogSoftmaxOp.h"
 #include "ops/MatMulOp.h"
 #include "ops/MaxPoolSingleOutOp.h"
 #include "ops/NegOp.h"
@@ -51,7 +53,9 @@
 #include "ops/ReluOp.h"
 #include "ops/ReshapeOp.h"
 #include "ops/ShapeOp.h"
+#include "ops/SigmoidOp.h"
 #include "ops/SliceOp.h"
+#include "ops/SoftmaxOp.h"
 #include "ops/SqrtOp.h"
 #include "ops/TanhOp.h"
 #include "ops/TransposeOp.h"
@@ -189,6 +193,8 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvGemm>(typeConverter, context);
   patterns.insert<ConvGreater>(typeConverter, context);
   patterns.insert<ConvLeakyRelu>(typeConverter, context);
+  patterns.insert<ConvLog>(typeConverter, context);
+  patterns.insert<ConvLogSoftmax>(typeConverter, context);
   patterns.insert<ConvMatMul>(typeConverter, context);
   patterns.insert<ConvMaxPoolSingleOut>(typeConverter, context);
   patterns.insert<ConvNeg>(typeConverter, context);
@@ -207,7 +213,10 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvRelu>(typeConverter, context);
   patterns.insert<ConvReshape>(typeConverter, context);
   patterns.insert<ConvShape>(typeConverter, context);
+  patterns.insert<ConvSigmoid>(typeConverter, context);
   patterns.insert<ConvSlice>(typeConverter, context);
+  patterns.insert<ConvSoftmax>(typeConverter, context);
+  patterns.insert<ConvSoftmaxV11>(typeConverter, context);
   patterns.insert<ConvSqrt>(typeConverter, context);
   patterns.insert<ConvTanh>(typeConverter, context);
   patterns.insert<ConvTranspose>(typeConverter, context);
