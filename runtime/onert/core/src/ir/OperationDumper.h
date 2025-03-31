@@ -49,6 +49,7 @@ public:
   void visit(const operation::Fill &) override;
   void visit(const operation::FullyConnected &node) override;
   void visit(const operation::Gather &) override;
+  void visit(const operation::GELU &) override;
   void visit(const operation::HashtableLookup &) override;
   void visit(const operation::InstanceNorm &) override;
   void visit(const operation::L2Normalization &) override;

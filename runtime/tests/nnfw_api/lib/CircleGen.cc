@@ -287,6 +287,13 @@ uint32_t CircleGen::addOperatorGather(const OperatorParams &params, int axis, in
                                 circle::BuiltinOptions_GatherOptions, options);
 }
 
+uint32_t CircleGen::addOperatorGelu(const OperatorParams &params, bool approximate)
+{
+  auto options = circle::CreateGeluOptions(_fbb, approximate).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_GELU,
+                                circle::BuiltinOptions_GeluOptions, options);
+}
+
 uint32_t CircleGen::addOperatorGreater(const OperatorParams &params)
 {
   auto options = circle::CreateLessOptions(_fbb).Union();

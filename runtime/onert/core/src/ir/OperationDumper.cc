@@ -178,6 +178,8 @@ void OperationDumper::visit(const Gather &node)
   dumpUnaryInputOp(node, indices);
 }
 
+void OperationDumper::visit(const GELU &node) { dumpOpGeneric(node); }
+
 void OperationDumper::visit(const HashtableLookup &node)
 {
   VERBOSE(LIR) << "* HashTableLookup" << std::endl;
