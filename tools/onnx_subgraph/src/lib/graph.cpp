@@ -15,6 +15,7 @@
  */
 
 #include "graph.h"
+
 onnx::GraphProto Graph::GetGraphFromOnnx(std::string &path)
 {
   onnx::ModelProto model;
