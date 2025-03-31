@@ -455,6 +455,7 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 #include "ops/NegOp.h"
 #include "ops/NoValueOp.h"
 #include "ops/PadOp.h"
+#include "ops/PadV2Op.h"
 #include "ops/PReluOp.h"
 #include "ops/ReduceProdOp.h"
 #include "ops/ReshapeOp.h"
