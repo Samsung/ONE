@@ -24,12 +24,34 @@
 //    ONNX: ONNXAbcdOp
 //   class: ConvAbcd
 //    file: AbcdOp.h
+#include "ops/ArgMaxOp.h"
+#include "ops/CastOp.h"
+#include "ops/ClipOp.h"
 #include "ops/ConstantOp.h"
 #include "ops/ConvOp.h"
+#include "ops/CosOp.h"
+#include "ops/CumsumOp.h"
+#include "ops/EqualOp.h"
+#include "ops/ExpOp.h"
+#include "ops/GemmOp.h"
+#include "ops/GreaterOp.h"
+#include "ops/LeakyReluOp.h"
+#include "ops/MatMulOp.h"
+#include "ops/NegOp.h"
 #include "ops/NoneOp.h"
+#include "ops/NotOp.h"
 #include "ops/PadOp.h"
+#include "ops/PReluOp.h"
+#include "ops/ReduceMaxOp.h"
+#include "ops/ReduceMeanOp.h"
+#include "ops/ReduceProdOp.h"
+#include "ops/ReduceSumOp.h"
+#include "ops/ReluOp.h"
 #include "ops/ReshapeOp.h"
 #include "ops/ShapeOp.h"
+#include "ops/SliceOp.h"
+#include "ops/SqrtOp.h"
+#include "ops/TanhOp.h"
 #include "ops/TransposeOp.h"
 
 #include <circle-mlir/dialect/CircleDialect.h>
@@ -148,13 +170,42 @@ void ConvertONNXToCirclePass::runOnOperation()
   mlir::RewritePatternSet patterns(context);
   // NOTE use name from ONNX Op, suffix T for templates
   patterns.insert<ConvBinaryT<mlir::ONNXAddOp, mlir::Circle::AddOp>>(typeConverter, context);
+  patterns.insert<ConvBinaryT<mlir::ONNXDivOp, mlir::Circle::DivOp>>(typeConverter, context);
+  patterns.insert<ConvBinaryT<mlir::ONNXMulOp, mlir::Circle::MulOp>>(typeConverter, context);
+  patterns.insert<ConvBinaryT<mlir::ONNXSubOp, mlir::Circle::SubOp>>(typeConverter, context);
 
+  patterns.insert<ConvArgMax>(typeConverter, context);
+  patterns.insert<ConvCast>(typeConverter, context);
+  patterns.insert<ConvClip>(typeConverter, context);
   patterns.insert<ConvConstant>(typeConverter, context);
   patterns.insert<ConvConv>(typeConverter, context);
+  patterns.insert<ConvCos>(typeConverter, context);
+  patterns.insert<ConvCumsum>(typeConverter, context);
+  patterns.insert<ConvEqual>(typeConverter, context);
+  patterns.insert<ConvExp>(typeConverter, context);
+  patterns.insert<ConvGemm>(typeConverter, context);
+  patterns.insert<ConvGreater>(typeConverter, context);
+  patterns.insert<ConvLeakyRelu>(typeConverter, context);
+  patterns.insert<ConvMatMul>(typeConverter, context);
+  patterns.insert<ConvNeg>(typeConverter, context);
   patterns.insert<ConvNone>(typeConverter, context);
+  patterns.insert<ConvNot>(typeConverter, context);
   patterns.insert<ConvPad>(typeConverter, context);
+  patterns.insert<ConvPRelu>(typeConverter, context);
+  patterns.insert<ConvReduceMax>(typeConverter, context);
+  patterns.insert<ConvReduceMaxV13>(typeConverter, context);
+  patterns.insert<ConvReduceMean>(typeConverter, context);
+  patterns.insert<ConvReduceMeanV13>(typeConverter, context);
+  patterns.insert<ConvReduceProd>(typeConverter, context);
+  patterns.insert<ConvReduceProdV13>(typeConverter, context);
+  patterns.insert<ConvReduceSum>(typeConverter, context);
+  patterns.insert<ConvReduceSumV11>(typeConverter, context);
+  patterns.insert<ConvRelu>(typeConverter, context);
   patterns.insert<ConvReshape>(typeConverter, context);
   patterns.insert<ConvShape>(typeConverter, context);
+  patterns.insert<ConvSlice>(typeConverter, context);
+  patterns.insert<ConvSqrt>(typeConverter, context);
+  patterns.insert<ConvTanh>(typeConverter, context);
   patterns.insert<ConvTranspose>(typeConverter, context);
 
   auto res = mlir::applyFullConversion(function, target, std::move(patterns));

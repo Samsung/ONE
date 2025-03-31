@@ -1,16 +1,8 @@
-name: Build docker image for CI/CD infra
+name: Build docker image for CI/CD infra on PR
 on:
-  push:
-    branches:
-      - master
-      - release/*
-    paths:
-      - '.github/workflows/build-dev-docker.yml'
-      - 'infra/docker/**'
   pull_request:
     branches:
       - master
-      - release/*
     paths:
       - '.github/workflows/build-dev-docker.yml'
       - 'infra/docker/**'
@@ -23,7 +15,7 @@ concurrency:
 jobs:
   # Build on docker CLI for PR test without login
   build-pr-test:
-    if: github.event_name == 'pull_request' && github.repository_owner == 'Samsung'
+    if: github.repository_owner == 'Samsung'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -43,27 +35,3 @@ jobs:
         run: |
           ./nnas docker-run --user make -f Makefile.template
           ./nnas docker-run --user Product/out/test/onert-test unittest
-
-  # Use github action for build and push to docker hub
-  build-docker-image:
-    if: github.event_name == 'push' && github.repository_owner == 'Samsung'
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version: [ 'android-sdk', 'focal', 'jammy', 'noble' ]
-    steps:
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Install Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Docker Image
-        uses: docker/build-push-action@v6
-        with:
-          file: ./infra/docker/${{ matrix.version }}/Dockerfile
-          push: true
-          tags: nnfw/one-devtools:${{ matrix.version }}
