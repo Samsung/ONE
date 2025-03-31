@@ -93,5 +93,8 @@ fi
 # Fix version to that of TF release date
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade protobuf==4.23.3
 
+# Fix version with fsspec error on U20.04
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade fsspec==2024.6.1
+
 # Install pydot for visq
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install pydot==${VER_PYDOT}
