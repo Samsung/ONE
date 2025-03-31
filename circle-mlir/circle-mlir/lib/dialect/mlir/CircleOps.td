@@ -1017,6 +1017,62 @@ def CIR_PadOp : CIR_Op<"pad", [
   let hasFolder = 1;
 }
 
+def CIR_PadV2Op : CIR_Op<"padv2", [
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    Pure,
+    //QuantizableResult,
+    //SameOperandsAndResultsScale,
+    CIR_OperandHasRankAtMost<0, 5>,
+    CIR_OperandHasRank<1, 2>,
+    CIR_OperandHasRank<2, 0>,
+    CIR_OperandRankEquals1DimOfOperand<0, 1>,
+    PredOpTrait<"the first dim size of the padding argument must be at most 5",
+      Or<[CIR_OperandIsUnrankedPred<1>,
+          CIR_OperandDimIsAtMost<1, 0, 5>]>>,
+    PredOpTrait<"input and constant value operands must have same element type",
+      CIR_TCopVTEtAreSameAt<0, 2>>]> {
+  let summary = "Padding operator v2";
+
+  let description = [{
+    This operation pads a `input` according to the `paddings` and
+    `constant_values` you specify. `paddings` is an integer tensor with shape
+    `[Dn, 2]`, where n is the rank of `input`. For each dimension D of `input`,
+    `paddings[D, 0]` indicates how many zeros to add before the contents of
+    `input` in that dimension, and `paddings[D, 1]` indicates how many zeros to
+    add after the contents of `input` in that dimension. `constant_values` is a
+    scalar tensor of the same type as `input` that indicates the value to use
+    for padding `input`.
+
+    The padded size of each dimension D of the output is:
+
+      `paddings(D, 0) + input.dim_size(D) + paddings(D, 1)`
+
+    For example:
+
+    ```
+    # 't' is [[1, 1], [2, 2]]
+    # 'paddings' is [[1, 1], [2, 2]]
+    # rank of 't' is 2
+    pad(t, paddings) ==> [[0, 0, 0, 0, 0, 0]
+                          [0, 0, 1, 1, 0, 0]
+                          [0, 0, 2, 2, 0, 0]
+                          [0, 0, 0, 0, 0, 0]]
+    ```
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32, I32, I64, UI8/*, QI8, QUI8, TFL_Quint8*/]>:$input,
+    CIR_I32OrI64Tensor:$padding,
+    CIR_TensorOf<[F32, I32, I64, UI8/*, QI8, QUI8, TFL_Quint8*/]>:$constant_values);
+
+  let results = (outs CIR_TensorOf<[F32, I32, I64, UI8/*, QI8, QUI8, TFL_Quint8*/]>:$output);
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+}
+
 def CIR_PReluOp : CIR_Op<"prelu", [
     Pure,
     //QuantizableResult,
