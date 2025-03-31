@@ -347,6 +347,63 @@ void FullyConnectedOp::inferShapes(void)
 }
 
 //===----------------------------------------------------------------------===//
+// MaxPool2DOp
+//===----------------------------------------------------------------------===//
+
+void MaxPool2DOp::inferShapes()
+{
+  MaxPool2DOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // if input is dynamic, skip shape infer
+  auto input_op = getOperand();
+  auto input_type = input_op.getType().cast<TensorType>();
+  if (!input_type.hasStaticShape() || input_type.getRank() != 4)
+    return;
+  auto input_shape = input_type.getShape();
+
+  uint32_t input_height = input_shape[1];
+  uint32_t input_width = input_shape[2];
+  uint32_t stride_height = op.getStrideH();
+  uint32_t stride_width = op.getStrideW();
+  uint32_t window_height = op.getFilterHeight();
+  uint32_t window_width = op.getFilterWidth();
+  uint32_t dilation_height = 1;
+  uint32_t dilation_width = 1;
+  uint32_t effective_window_height = dilation_height * (window_height - 1) + 1;
+  uint32_t effective_window_width = dilation_width * (window_width - 1) + 1;
+
+  uint32_t output_height = 0;
+  uint32_t output_width = 0;
+
+  if (op.getPadding().str() == "VALID")
+  {
+    assert(input_height + stride_height > effective_window_height);
+    assert(input_width + stride_width > effective_window_width);
+    output_height = (input_height + stride_height - effective_window_height) / stride_height;
+    output_width = (input_width + stride_width - effective_window_width) / stride_width;
+  }
+  else if (op.getPadding().str() == "SAME")
+  {
+    output_height = (input_height + stride_height - 1) / stride_height;
+    output_width = (input_width + stride_width - 1) / stride_width;
+  }
+
+  llvm::SmallVector<int64_t, 4> inferred;
+  inferred.push_back(input_shape[0]);
+  inferred.push_back(output_height);
+  inferred.push_back(output_width);
+  inferred.push_back(input_shape[3]);
+
+  dumpShape<MaxPool2DOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // MeanOp
 //===----------------------------------------------------------------------===//
 
