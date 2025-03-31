@@ -25,6 +25,7 @@
 //   class: ConvAbcd
 //    file: AbcdOp.h
 #include "ops/ArgMaxOp.h"
+#include "ops/AveragePoolOp.h"
 #include "ops/CastOp.h"
 #include "ops/ClipOp.h"
 #include "ops/ConstantOp.h"
@@ -37,6 +38,7 @@
 #include "ops/GreaterOp.h"
 #include "ops/LeakyReluOp.h"
 #include "ops/MatMulOp.h"
+#include "ops/MaxPoolSingleOutOp.h"
 #include "ops/NegOp.h"
 #include "ops/NoneOp.h"
 #include "ops/NotOp.h"
@@ -175,6 +177,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvBinaryT<mlir::ONNXSubOp, mlir::Circle::SubOp>>(typeConverter, context);
 
   patterns.insert<ConvArgMax>(typeConverter, context);
+  patterns.insert<ConvAveragePool>(typeConverter, context);
   patterns.insert<ConvCast>(typeConverter, context);
   patterns.insert<ConvClip>(typeConverter, context);
   patterns.insert<ConvConstant>(typeConverter, context);
@@ -187,6 +190,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvGreater>(typeConverter, context);
   patterns.insert<ConvLeakyRelu>(typeConverter, context);
   patterns.insert<ConvMatMul>(typeConverter, context);
+  patterns.insert<ConvMaxPoolSingleOut>(typeConverter, context);
   patterns.insert<ConvNeg>(typeConverter, context);
   patterns.insert<ConvNone>(typeConverter, context);
   patterns.insert<ConvNot>(typeConverter, context);
