@@ -813,6 +813,116 @@ def CIR_LeakyReluOp: CIR_Op<"leaky_relu", [
   let hasOptions = 0b1;
 }
 
+def CIR_LogisticOp: CIR_Op<"logistic", [
+    Pure,
+    PredOpTrait<"x and y must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    SameOperandsAndResultShape,
+    // TODO enable FixedOutputRangeInterface,
+    // TODO enable QuantizableResult,
+    ]> {
+  let summary = "Logistic operator";
+
+  let description = [{
+    Computes element-wise Sigmoid of input
+  }];
+
+  let arguments = (ins CIR_TensorOf<[F32/*, QI8, QUI8, QI16, CIR_Quint8*/]>:$x);
+
+  let results = (outs CIR_TensorOf<[F32/*, QI8, QUI8, QI16, CIR_Quint8*/]>:$y);
+
+  // TODO enable FixedOutputRangeInterface
+  // let extraClassDeclaration = [{
+  // // FixedOutputRangeInterface:
+  // quant::UniformQuantizedType GetFixedOutputRange(
+  //     bool is_signed, int bit_width) {
+  //   auto result_type = getY().getType();
+  //   // zero_point = 0
+  //   // scale = 1. / (max_value + 1)
+  //   return quant::GetFixedOutputRange(is_signed, bit_width, result_type,
+  //       /*scale=*/1.0 / (1<<(bit_width)),
+  //       /*zero_point=*/-(1<<(bit_width-1)));
+  // }
+  // }];
+
+  // This builder doesn't work with quantized type, so it can only be used by
+  // non-quantization tablegen patterns. Currently, it is used by the
+  // elementwise-move reordering pattern in the optimize_patterns.td
+  let builders = [
+    OpBuilder<(ins "Value":$input),
+    [{
+      $_state.addOperands({input});
+      $_state.addTypes(input.getType());
+    }]>
+  ];
+}
+
+def CIR_LogOp: CIR_Op<"log", [
+    Pure,
+    // NOTE TFL_LogOp used TF_SameOperandsAndResultTypeResolveRef
+    // REFER https://github.sec.samsung.net/one-project/circle-mlir/issues/292
+    SameOperandsAndResultShape]> {
+  let summary = "Natural logarithm operator";
+
+  let description = [{
+    Performs element-wise natural logarithm operation on input.
+  }];
+
+  let arguments = (ins CIR_FpTensor:$x);
+
+  let results = (outs CIR_FpTensor:$y);
+
+  let hasFolder = 1;
+
+  // Added for LogOfSoftmax
+  let hasCanonicalizer = 1;
+
+  // TODO enable TF::ArraysAreCastCompatible
+  // let extraClassDeclaration = [{
+  //   // Returns whether the return types are compatible.
+  //   static bool isCompatibleReturnTypes(TypeRange l, TypeRange r) {
+  //     return TF::ArraysAreCastCompatible(l, r);
+  //   }
+  // }];
+}
+
+def CIR_LogSoftmaxOp : CIR_Op<"log_softmax", [
+    Pure,
+    SameOperandsAndResultShape,
+    PredOpTrait<"x and y must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    // TODO enable FixedOutputRangeInterface,
+    // TODO enable QuantizableResult,
+    ]> {
+  let summary = "Log softmax operator";
+
+  let description = [{
+    Computes element-wise log softmax activations with the following formula
+
+      input - log(reduce_sum(exp(input), dim))
+  }];
+
+  let arguments = (ins CIR_TensorOf<[F32/*, QUI8, QI8, TFL_Quint8*/]>:$input);
+
+  let results = (outs CIR_TensorOf<[F32/*, QUI8, QI8, TFL_Quint8*/]>:$output);
+
+  let hasOptions = 1;
+
+  // TODO enable FixedOutputRangeInterface
+  // let extraClassDeclaration = [{
+  // // FixedOutputRangeInterface:
+  // quant::UniformQuantizedType GetFixedOutputRange(
+  //     bool is_signed, int bit_width) {
+  //   auto result_type = getOutput().getType();
+  //   // zero_point = max_value
+  //   // scale = -log_softmax_output_min / (max_value + 1)
+  //   return quant::GetFixedOutputRange(is_signed, bit_width, result_type,
+  //       /*scale=*/16.0 / 256, /*zero_point=*/127);
+  // }
+  // }];
+}
+
 def CIR_MaximumOp : CIR_Op<"maximum", [
     ResultsBroadcastableShape,
     Pure,
@@ -1471,6 +1581,48 @@ equivalent to setting:
   let hasVerifier = 1;
 
   let hasCanonicalizer = 1;
+}
+
+def CIR_SoftmaxOp : CIR_Op<"softmax", [
+    Pure,
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    CIR_OperandHasRankAtLeast<0, 1>,
+    SameOperandsAndResultShape,
+    // TODO enable QuantizableResult,
+    // TODO enable FixedOutputRangeInterface,
+    ]> {
+  let summary = "Softmax operator";
+
+  let description = [{
+    Computes element-wise softmax activations with the following formula
+
+      exp(input) / tf.reduce_sum(exp(input * beta), dim)
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$input,
+    F32Attr:$beta
+  );
+
+  let results = (outs CIR_TensorOf<[F32/*, QI8, QUI8, TFL_Quint8, QI16*/]>:$output);
+
+  let hasOptions = 1;
+
+  // TODO enable FixedOutputRangeInterface
+  // let extraClassDeclaration = [{
+  // // FixedOutputRangeInterface:
+  // quant::UniformQuantizedType GetFixedOutputRange(
+  //     bool is_signed, int bit_width) {
+  //   if (bit_width != 8 && bit_width != 16) { return nullptr; }
+  //   auto result_type = getOutput().getType();
+  //   // zero_point = 0
+  //   // scale = 1. / (max_value + 1)
+  //   return quant::GetFixedOutputRange(is_signed, bit_width, result_type,
+  //       /*scale=*/1.0 / (bit_width == 8 ? (1<<(bit_width)) : (1<<(bit_width-1))),
+  //       /*zero_point=*/bit_width == 8 ? -(1<<(bit_width-1)): 0);
+  // }
+  // }];
 }
 
 def CIR_SqrtOp: CIR_Op<"sqrt", [
