@@ -77,15 +77,14 @@ template <> struct hash<NodeTensor>
 } // namespace std
 
 /**
-* @brief     Loads an ONNX model from a file and returns the graph contained within.
-*
-* @param     [in] path The file path to the ONNX model.
-* @pre       The file specified by path should exist and be a valid ONNX model.
-* @post      The ONNX model is parsed and its graph is returned.
-* @exception Exits the program with an error message if the file cannot be opened.
-* @return    The ONNX GraphProto object representing the graph from the model.
-*/
+ * @brief     Loads an ONNX model from a file and returns the graph contained within.
+ *
+ * @param     [in] path The file path to the ONNX model.
+ * @pre       The file specified by path should exist and be a valid ONNX model.
+ * @post      The ONNX model is parsed and its graph is returned.
+ * @exception Exits the program with an error message if the file cannot be opened.
+ * @return    The ONNX GraphProto object representing the graph from the model.
+ */
 onnx::GraphProto GetGraphFromOnnx(std::string &path);
-
 
 #endif // GRAPH_H
