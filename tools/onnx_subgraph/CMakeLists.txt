@@ -18,13 +18,14 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${Python3_INCLUDE_DIRS})
 
-file(GLOB SOURCES "src/lib/*.cpp" "src/lib/*.cpp" )
+file(GLOB SOURCES "src/lib/*.cpp" )
 
 add_library(onnx-subgraph-parser STATIC ${SOURCES} ${PROTO_SRCS} ${PROTO_FILES})
 target_link_libraries(onnx-subgraph-parser protobuf jsoncpp)
 
 add_executable(onnx-subgraph src/main.cpp)
-target_link_libraries(onnx-subgraph onnx-subgraph-parser ${Python3_LIBRARIES})
+target_link_libraries(onnx-subgraph onnx-subgraph-parser)
+target_link_libraries(onnx-subgraph  ${Python3_LIBRARIES})
 
 set(ONNX_SUBGRAPH_FILES                                                 
     test_model_download.sh

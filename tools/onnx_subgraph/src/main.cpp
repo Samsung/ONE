@@ -73,7 +73,6 @@ int main(int argc, char *argv[])
     return -1;
   }
 
-  Graph graph;
-  auto g = graph.GetGraphFromOnnx(onnxFile);
+  auto g = GetGraphFromOnnx(onnxFile);
   return 0;
 }
