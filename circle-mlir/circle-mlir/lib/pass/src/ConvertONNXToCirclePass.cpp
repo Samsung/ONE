@@ -30,6 +30,7 @@
 #include "ops/ClipOp.h"
 #include "ops/ConstantOp.h"
 #include "ops/ConvOp.h"
+#include "ops/ConvTransposeOp.h"
 #include "ops/CosOp.h"
 #include "ops/CumsumOp.h"
 #include "ops/EqualOp.h"
@@ -185,6 +186,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvClip>(typeConverter, context);
   patterns.insert<ConvConstant>(typeConverter, context);
   patterns.insert<ConvConv>(typeConverter, context);
+  patterns.insert<ConvConvTranspose>(typeConverter, context);
   patterns.insert<ConvCos>(typeConverter, context);
   patterns.insert<ConvCumsum>(typeConverter, context);
   patterns.insert<ConvEqual>(typeConverter, context);
