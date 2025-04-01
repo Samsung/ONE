@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <iostream>
-#include <string>
-#include <filesystem>
+
+#include "graph.h"
+
 namespace fs = std::filesystem;
 
 int main(int argc, char *argv[])
 {
   std::string onnxFile;
   std::string confFile;
+
   if (argc == 3)
   {
     std::string arg1 = argv[1];
@@ -72,5 +73,6 @@ int main(int argc, char *argv[])
     return -1;
   }
 
+  auto g = GetGraphFromOnnx(onnxFile);
   return 0;
 }
