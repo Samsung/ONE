@@ -10,6 +10,9 @@ ConvertUnitModel(Add_F32.onnx.mlir)
 ConvertUnitModel(Cast_F32_F32.circle.mlir)
 ConvertUnitModel(Cast_I8_I16_C1.circle.mlir)
 ConvertUnitModel(Cast_I64_F32_C1.circle.mlir)
+ConvertUnitModel(Concat_F32_R4_dn3.circle.mlir)
+ConvertUnitModel(Concat_F32_R4_empty_0.circle.mlir)
+ConvertUnitModel(Concat_F32_R4_empty_1.circle.mlir)
 ConvertUnitModel(Cos_F32_R1_C1.circle.mlir)
 ConvertUnitModel(Custom_F32.circle.mlir)
 ConvertUnitModel(FullyConnected_F32.circle.mlir)
@@ -35,11 +38,16 @@ ConvertUnitModel(StridedSlice_I64_R4_C4.circle.mlir)
 
 # negative
 
+ConvertUnitModelNEG(Concat_F32_R4_dn5.circle.neg.mlir)
+ConvertUnitModelNEG(Concat_F32_R4_d1_0.circle.neg.mlir)
+ConvertUnitModelNEG(Concat_F32_R4_d1_1.circle.neg.mlir)
+ConvertUnitModelNEG(Concat_F32_R4_R3_d1.circle.neg.mlir)
 ConvertUnitModelNEG(Custom_F32.circle.neg.mlir)
 
 # shape inference validation
 
 ValidateShapeInf(Add_F32_us.circle.mlir)
+ValidateShapeInf(Concat_F32_R4_us.circle.mlir)
 ValidateShapeInf(Conv2d_F32_R4_us.circle.mlir)
 ValidateShapeInf(Div_F32_us.circle.mlir)
 ValidateShapeInf(MaxPool2D_F32_R4_us.circle.mlir)
@@ -58,6 +66,7 @@ ValidateShapeInf(Transpose_F32_R4_us.circle.mlir)
 # dynamic shape inference validation
 
 ValidateDynaShapeInf(Cast_I64_F32_ds.circle.mlir)
+ValidateDynaShapeInf(Concat_F32_R4_ds.circle.mlir)
 ValidateDynaShapeInf(Cos_F32_R4_ds.circle.mlir)
 ValidateDynaShapeInf(Custom_Erf_F32_ds.circle.mlir)
 ValidateDynaShapeInf(FullyConnected_F32_ds.circle.mlir)

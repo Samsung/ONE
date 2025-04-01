@@ -135,6 +135,90 @@ void CastOp::inferShapes(void)
 }
 
 //===----------------------------------------------------------------------===//
+// ConcatenationOp
+//===----------------------------------------------------------------------===//
+
+int64_t GetConcatenationOpAxis(ConcatenationOp op)
+{
+  auto output_type = op.getOutput().getType().cast<RankedTensorType>();
+  int32_t axis = op.getAxis();
+  if (axis < 0)
+    axis += output_type.getRank();
+  return axis;
+}
+
+void ConcatenationOp::inferShapes()
+{
+  ConcatenationOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto operands = op.getOperands();
+  int64_t rank = -1;
+  const int64_t axis = GetConcatenationOpAxis(op);
+
+  if (output_type.hasStaticShape())
+    return;
+
+  for (auto operand : operands)
+  {
+    auto shaped_type = operand.getType().cast<ShapedType>();
+    if (!shaped_type.hasRank())
+    {
+      return;
+    }
+
+    if (rank == -1)
+    {
+      rank = shaped_type.getRank();
+    }
+    else if (shaped_type.getRank() != rank)
+    {
+      return;
+    }
+  }
+
+  // Fill the size of axes other than the connection axis.
+  SmallVector<int64_t, 4> new_shape(rank, ShapedType::kDynamic);
+  for (auto operand : operands)
+  {
+    auto shaped_type = operand.getType().cast<ShapedType>();
+    for (int64_t i = 0; i < rank; ++i)
+    {
+      if (i == axis)
+        continue;
+
+      int64_t dim_size = shaped_type.getDimSize(i);
+      if (ShapedType::isDynamic(new_shape[i]))
+      {
+        new_shape[i] = dim_size;
+      }
+      else if (new_shape[i] != dim_size)
+      {
+        return;
+      }
+    }
+  }
+
+  // Fill the size of the connection axis
+  int64_t axis_dim_size = 0;
+  for (auto operand : operands)
+  {
+    auto shaped_type = operand.getType().cast<ShapedType>();
+    int64_t dim_size = shaped_type.getDimSize(axis);
+    if (ShapedType::isDynamic(dim_size))
+      axis_dim_size = ShapedType::kDynamic;
+    else if (not ShapedType::isDynamic(axis_dim_size))
+      axis_dim_size += dim_size;
+  }
+  new_shape[axis] = axis_dim_size;
+
+  dumpShape<ConcatenationOp>(op, new_shape);
+
+  auto inferred_type =
+    mlir::Circle::GetTypeFromTensorShape(new_shape, output_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // Conv2DOp
 //===----------------------------------------------------------------------===//
 
@@ -481,6 +565,50 @@ void MeanOp::inferShapes()
   }
 
   dumpShape<MeanOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
+// MirrorPadOp
+//===----------------------------------------------------------------------===//
+
+void MirrorPadOp::inferShapes()
+{
+  MirrorPadOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // if input is dynamic, skip shape infer
+  auto input_op = getOperand(0);
+  auto input_type = input_op.getType().cast<TensorType>();
+  if (!input_type.hasStaticShape())
+    return;
+
+  // skip if size input is not constant
+  mlir::Operation *is_const = getOperand(1).getDefiningOp();
+  if (!mlir::isa_and_nonnull<ConstOp>(is_const))
+    return;
+  auto const_op = cast<ConstOp>(is_const);
+  std::vector<int64_t> padding_values;
+  if (!extractElements(const_op, padding_values))
+    return;
+
+  auto input_shape = input_type.getShape();
+  llvm::SmallVector<int64_t, 4> inferred;
+  int64_t num_dims = input_type.getRank();
+  for (int64_t i = 0; i < num_dims; ++i)
+  {
+    const int64_t padding_before = padding_values[i * 2];
+    const int64_t padding_after = padding_values[i * 2 + 1];
+    assert(padding_before >= 0 && padding_after >= 0);
+    int64_t output_val = input_shape[i] + padding_before + padding_after;
+    inferred.push_back(output_val);
+  }
+
+  dumpShape<MirrorPadOp>(op, inferred);
 
   RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
   getResult().setType(inferred_type);

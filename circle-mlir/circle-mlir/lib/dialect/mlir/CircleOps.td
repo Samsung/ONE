@@ -472,6 +472,48 @@ def CIR_CastOp : CIR_Op<"cast", [
   let hasFolder = 1;
 }
 
+def CIR_ConcatenationOp : CIR_Op<"concatenation",
+  [
+    Pure,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    CIR_SameFirstOperandAndFirstResultElementType,
+    // TODO enable SameOperandsAndResultsScale,
+    // TODO enable QuantizableResult
+  ]> {
+  let summary = "Concatenation operator";
+
+  let description = [{
+    Concatenates tensors along one dimension
+  }];
+
+  let arguments = (
+    ins CIR_VariadicTensorOf<
+      [F32, I64, I32, I16, I8/*, QI8, QUI8*/, UI8, I1]>:$values,
+    I32Attr:$axis,
+    CIR_AFAttr:$fused_activation_function
+  );
+
+  let results = (outs
+    CIR_TensorOf<
+      [F32, I64, I32, I16, I8/*, QI8, QUI8*/, UI8, I1]>:$output
+  );
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+
+  let hasVerifier = 1;
+
+  let extraClassDeclaration = [{
+    // SameScalesOpInterface:
+    bool RequiredSameOperandsAndResultsScale(bool sign, int bit_width) {
+      // uint8 doesn't require same operands and results scales.
+      bool is_uint8 = !sign && (bit_width == 8);
+      return !is_uint8;
+    }
+  }];
+}
+
 def CIR_ConstOp : Op<CIR_Dialect, "pseudo_const", [ConstantLike, Pure,
     FirstAttrDerivedResultType,
     // TODO enable QuantizableResult,
@@ -705,6 +747,33 @@ def CIR_ExpOp: CIR_Op<"exp", [
   //    return TF::ArraysAreCastCompatible(l, r);
   //  }
   //}];
+}
+
+// From submodules/onnx-mlir/src/Dialect/ONNX/ONNXOps.td.inc
+def CIR_ExpandOnnxOp : CIR_Op<"expand_onnx", [
+    Pure]> {
+  let summary = "Expand temporary ONNX Op";
+
+  let description = [{
+  Broadcast the input tensor following the given shape and the broadcast rule.
+  The broadcast rule is similar to numpy.array(input) * numpy.ones(shape):
+  Dimensions are right alignment;
+  Two corresponding dimensions must have the same value, or one of them is equal to 1.
+  Also, this operator is similar to numpy.broadcast_to(input, shape),
+  but the major difference is numpy.broadcast_to() does not allow shape to be smaller than input.size().
+  It is possible that the output.shape is not equal to shape, when some dimensions in shape is equal to 1,
+  or the shape.ndim < input.shape.ndim.
+  }];
+  let arguments = (ins
+    CIR_TensorOf<[F32]>:$input,
+    CIR_TensorOf<[I64]>:$shape);
+
+  let results = (outs
+    CIR_TensorOf<[F32]>:$output);
+
+  let hasVerifier = 1;
+  // ExpandOnnxOp with all constant inputs should convert to MulOp
+  let hasCanonicalizer = 1;
 }
 
 // TODO(jpienaar): Update post discussion on semantics of FC OP.
@@ -1051,6 +1120,45 @@ def CIR_MinimumOp : CIR_Op<"minimum", [
   let builders = [CIR_BroadcastableBinaryBuilder];
 
   let hasOptions = 0;
+}
+
+def CIR_MirrorPadOp: CIR_Op<"mirror_pad", [
+                     /*SameOperandsAndResultsScale,*/
+                     /*QuantizableResult,*/
+                     DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+                     Pure/*,
+                     CIR_OperandHasRank<1, 2>*/]> {
+  let summary = "MirrorPad Operator. Pads a tensor with mirrored values.";
+
+  let description = [{
+    This operation pads a input with mirrored values according to the paddings
+    you specify. paddings is an integer tensor with shape [n, 2],
+    where n is the rank of input.
+    For each dimension D of input, paddings[D, 0] indicates how many values
+    to add before the contents of input in that dimension,
+    and paddings[D, 1] indicates how many values to add after the contents of
+    input in that dimension.
+
+    Both paddings[D, 0] and paddings[D, 1] must be no greater than
+    input.dim_size(D) (or input.dim_size(D) - 1)
+    if copy_border is true (if false, respectively).
+
+    The padded size of each dimension D of the output is:
+
+    paddings(D, 0) + input.dim_size(D) + paddings(D, 1)
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64, I8, UI8/*, QI8, QUI8*/]>:$input,
+    CIR_TensorOf<[I32, I64]>:$pad,
+    CIR_MirrorPaddingAttr:$mode
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, I32, I64, I8, UI8/*, QI8, QUI8*/]>:$output
+  );
+
+  let hasOptions = 1;
 }
 
 def CIR_MulOp : CIR_Op<"mul", [

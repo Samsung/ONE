@@ -28,12 +28,15 @@
 #include "ops/AveragePoolOp.h"
 #include "ops/CastOp.h"
 #include "ops/ClipOp.h"
+#include "ops/ConcatOp.h"
 #include "ops/ConstantOp.h"
+#include "ops/ConstantOfShapeOp.h"
 #include "ops/ConvOp.h"
 #include "ops/CosOp.h"
 #include "ops/CumsumOp.h"
 #include "ops/EqualOp.h"
 #include "ops/ExpOp.h"
+#include "ops/ExpandOp.h"
 #include "ops/GemmOp.h"
 #include "ops/GreaterOp.h"
 #include "ops/LeakyReluOp.h"
@@ -58,6 +61,7 @@
 #include "ops/SqrtOp.h"
 #include "ops/TanhOp.h"
 #include "ops/TransposeOp.h"
+#include "ops/WhereOp.h"
 
 #include <circle-mlir/dialect/CircleDialect.h>
 
@@ -183,12 +187,15 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvAveragePool>(typeConverter, context);
   patterns.insert<ConvCast>(typeConverter, context);
   patterns.insert<ConvClip>(typeConverter, context);
+  patterns.insert<ConvConcat>(typeConverter, context);
   patterns.insert<ConvConstant>(typeConverter, context);
+  patterns.insert<ConvConstantOfShape>(typeConverter, context);
   patterns.insert<ConvConv>(typeConverter, context);
   patterns.insert<ConvCos>(typeConverter, context);
   patterns.insert<ConvCumsum>(typeConverter, context);
   patterns.insert<ConvEqual>(typeConverter, context);
   patterns.insert<ConvExp>(typeConverter, context);
+  patterns.insert<ConvExpand>(typeConverter, context);
   patterns.insert<ConvGemm>(typeConverter, context);
   patterns.insert<ConvGreater>(typeConverter, context);
   patterns.insert<ConvLeakyRelu>(typeConverter, context);
@@ -218,6 +225,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvSqrt>(typeConverter, context);
   patterns.insert<ConvTanh>(typeConverter, context);
   patterns.insert<ConvTranspose>(typeConverter, context);
+  patterns.insert<ConvWhere>(typeConverter, context);
 
   auto res = mlir::applyFullConversion(function, target, std::move(patterns));
   if (mlir::failed(res))
