@@ -24,6 +24,9 @@ include "mlir/IR/PatternBase.td"
 
 include "mlir/CircleOps.td"
 
-// TODO add rewrites
+//===----------------------------------------------------------------------===//
+// Log op patterns.
+//===----------------------------------------------------------------------===//
+def Fuse_LogOfSoftmax : Pat<(CIR_LogOp (CIR_SoftmaxOp $arg, $beta)), (CIR_LogSoftmaxOp $arg)>;
 
 #endif // CIRCLE_REWRITE

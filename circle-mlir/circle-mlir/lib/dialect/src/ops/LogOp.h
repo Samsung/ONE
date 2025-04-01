@@ -35,7 +35,7 @@ namespace Circle
 // on the mlir::Circle::LogOp
 void LogOp::getCanonicalizationPatterns(RewritePatternSet &results, MLIRContext *context)
 {
-  // TODO add fuse log softmax
+  results.add<Fuse_LogOfSoftmax>(context);
 }
 
 OpFoldResult LogOp::fold(FoldAdaptor adaptor)
