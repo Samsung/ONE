@@ -36,6 +36,7 @@
 #include "ops/CumsumOp.h"
 #include "ops/EqualOp.h"
 #include "ops/ExpOp.h"
+#include "ops/ExpandOp.h"
 #include "ops/GemmOp.h"
 #include "ops/GreaterOp.h"
 #include "ops/LeakyReluOp.h"
