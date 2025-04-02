@@ -809,6 +809,53 @@ def CIR_ExpandOnnxOp : CIR_Op<"expand_onnx", [
   let hasCanonicalizer = 1;
 }
 
+def CIR_FloorOp: CIR_Op<"floor", [
+    Pure,
+    /*TF_SameOperandsAndResultTypeResolveRef*/]> {
+  let summary = "Floor operator";
+
+  let description = [{
+    Returns element-wise floor value of the input.
+  }];
+
+  let arguments = (ins CIR_FpTensor:$x);
+
+  let results = (outs CIR_FpTensor:$y);
+
+  let hasFolder = 1;
+
+  /*
+  let extraClassDeclaration = [{
+    // Returns whether the return types are compatible.
+    static bool isCompatibleReturnTypes(TypeRange l, TypeRange r) {
+      return TF::ArraysAreCastCompatible(l, r);
+    }
+  }];
+  */
+}
+
+def CIR_FloorModOp : CIR_Op<"floor_mod", [
+    ResultsBroadcastableShape,
+    Pure,
+    BinaryOpSameElementTypeConstraint,
+    PredOpTrait<"lhs and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    CIR_OperandsHaveSameShapesOrBroadcastableShape<[0, 1], 4>]> {
+  let summary = "Division reminder";
+
+  let description = [{
+    Element-wise division reminder operation.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[I8, I16, I32, I64, F32]>:$lhs,
+    CIR_TensorOf<[I8, I16, I32, I64, F32]>:$rhs);
+
+  let results = (outs CIR_TensorOf<[I8, I16, I32, I64, F32]>:$output);
+
+  let builders = [CIR_BroadcastableBinaryBuilder];
+}
+
 // TODO(jpienaar): Update post discussion on semantics of FC OP.
 def CIR_FullyConnectedOp : CIR_Op<"fully_connected", [
     Pure, /*AccumulatorUniformScale<2, 0, 1>,*/
