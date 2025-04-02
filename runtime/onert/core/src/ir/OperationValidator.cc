@@ -551,6 +551,14 @@ void OperationValidator::visit(const operation::StridedSlice &node)
   OP_REQUIRES(isSameType(output_index, input_index));
 }
 
+void OperationValidator::visit(const operation::Transpose &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(operation::Transpose::Input::INPUT)};
+
+  OP_REQUIRES(isSameType(output_index, input_index));
+}
+
 void OperationValidator::visit(const operation::TransposeConv &node)
 {
   OP_REQUIRES((node.param().padding.type == PaddingType::SAME) ||

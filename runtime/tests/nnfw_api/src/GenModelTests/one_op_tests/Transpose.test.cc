@@ -140,3 +140,21 @@ TEST_F(GenModelTest, neg_OneOp_Transpose_DuplicatedPermsVal)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, neg_OneOp_Transpose_DifferentType)
+{
+  CircleGen cgen;
+  std::vector<int32_t> perms_data{3, 2, 1, 0};
+  uint32_t perms_buf = cgen.addBuffer(perms_data);
+  int perms = cgen.addTensor({{4}, circle::TensorType::TensorType_INT32, perms_buf});
+  int in = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT32});
+  cgen.addOperatorTranspose({{in, perms}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}

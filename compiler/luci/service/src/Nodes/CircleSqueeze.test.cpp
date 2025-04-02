@@ -44,6 +44,23 @@ TEST(ShapeRuleTest, squeeze_simple)
   ASSERT_EQ(1, shape.dim(2).value());
 }
 
+TEST(ShapeRuleTest, squeeze_incorrect_dim_NEG)
+{
+  luci::CircleInput input;
+  luci::CircleSqueeze squeeze;
+
+  input.shape({2, 4, 3, 1});
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  squeeze.input(&input);
+  squeeze.squeeze_dims({0});
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_THROW(shape_inf_rule.infer(&squeeze, shape), oops::InternalExn);
+}
+
 TEST(ShapeRuleTest, squeeze_all)
 {
   luci::CircleInput input;
@@ -62,6 +79,33 @@ TEST(ShapeRuleTest, squeeze_all)
   ASSERT_EQ(2, shape.rank());
   ASSERT_EQ(4, shape.dim(0).value());
   ASSERT_EQ(3, shape.dim(1).value());
+}
+
+TEST(ShapeRuleTest, squeeze_dyn_squeezed_dims)
+{
+  luci::CircleInput input;
+  luci::CircleSqueeze squeeze;
+
+  input.rank(5);
+  input.dim(0) = loco::Dimension(1);
+  input.dim(1) = loco::Dimension();
+  input.dim(2) = loco::Dimension(4);
+  input.dim(3) = loco::Dimension();
+  input.dim(4) = loco::Dimension(1);
+  input.shape_status(luci::ShapeStatus::VALID);
+
+  squeeze.input(&input);
+  squeeze.squeeze_dims({4});
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&squeeze, shape));
+  ASSERT_EQ(4, shape.rank());
+  ASSERT_EQ(1, shape.dim(0).value());
+  ASSERT_FALSE(shape.dim(1).known());
+  ASSERT_EQ(4, shape.dim(2).value());
+  ASSERT_FALSE(shape.dim(3).known());
 }
 
 TEST(CloneNodeTest, clone_Squeeze)

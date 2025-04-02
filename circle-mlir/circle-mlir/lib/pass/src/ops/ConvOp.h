@@ -178,8 +178,38 @@ public:
     }
     else if (group > 1)
     {
-      // TODO convert to DepthwiseConv2DOp
-      return mlir::failure();
+      auto inshape = intype.getShape();
+      auto outshape = outtype.getShape();
+      int32_t ic = inshape[1];
+      int32_t oc = outshape[1];
+
+      // https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html
+      // - groups controls the connections between inputs and outputs.
+      // - in_channels and out_channels must both be divisible by groups.
+      int32_t depth_multiplier = ic / group;
+      if (ic > 0)
+      {
+        // check only for known shape
+        if (depth_multiplier * group != ic)
+          return mlir::failure();
+      }
+      depth_multiplier = oc / group;
+      LLVM_DEBUG({ llvm::dbgs() << "depth_multiplier: " << depth_multiplier << "\n"; });
+      if (depth_multiplier * group != oc)
+        return mlir::failure();
+
+      // ONNX kernel is (I O H W) --> convert to Circle (O H W I)
+      llvm::SmallVector<int32_t, 4> ker_perm{1, 2, 3, 0};
+      mlir::Value filter_tran = CreateTranspose(rewriter, filter, ker_perm, filter_name);
+
+      auto dwconv_output_type = GetChnLastType(outtype);
+      mlir::Value dwconv2d = rewriter.create<DepthwiseConv2DOp>(
+        opLoc, dwconv_output_type, pre_tran, filter_tran, bias, dilation_h_factor,
+        dilation_w_factor,
+        /*fused_activation_function=*/"NONE",
+        /*padding=*/"VALID", stride_h, stride_w, depth_multiplier);
+
+      ReplaceOpWithPostTranspose(rewriter, op, dwconv2d, op.getType(), op_name);
     }
     else
       return mlir::failure();

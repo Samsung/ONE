@@ -43,8 +43,11 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
     if: github.repository_owner == 'Samsung'
+    runs-on: one-x64-linux
+    container:
+      image: nnfw/one-devtools:android-sdk
+      options: --user root
     env:
       TARGET_ARCH: aarch64
       TARGET_OS: android
@@ -71,8 +74,7 @@ jobs:
           pip3 install numpy
           sudo apt-get update && sudo apt-get -qqy install scons
 
-      # Use NDK Default
+      # Use NDK Default - path set by containe envrionment variable
       - name: Build onert
         run: |
-          export NDK_DIR=${ANDROID_NDK}
           make -f Makefile.template

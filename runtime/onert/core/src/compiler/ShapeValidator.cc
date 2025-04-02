@@ -563,9 +563,8 @@ void ShapeValidator::visit(const ir::operation::Gather &node)
   const auto &indices_shape = operands.at(indices_index).shape();
   const auto &ofm_shape = operands.at(ofm_index).shape();
 
-  OP_REQUIRES(ifm_shape.rank() <= 4);
-  OP_REQUIRES(indices_shape.rank() <= 3);
-  OP_REQUIRES(ofm_shape.rank() <= 4);
+  // Since gather implementation is general enough, we do not restrict max rank
+  OP_REQUIRES(ifm_shape.rank() + indices_shape.rank() - 1 == ofm_shape.rank());
 }
 
 void ShapeValidator::visit(const ir::operation::DepthToSpace &node)

@@ -62,6 +62,32 @@ TEST_F(GatherTest, Simple)
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 4}));
 }
 
+TEST_F(GatherTest, Scalar_Index)
+{
+  std::vector<float> params_data{1.f, 2.f, 3.f, 4.f, 5.f, 6.f};
+  std::vector<int32_t> indices_data{1};
+  std::vector<float> ref_output_data{2.f};
+
+  Tensor params_tensor =
+    makeInputTensor<DataType::FLOAT32>({1, 1, 6}, params_data, _memory_manager.get());
+  Tensor indices_tensor =
+    makeInputTensor<DataType::S32>(/* scalar */ {}, indices_data, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+  GatherParams gparams;
+
+  gparams.axis = 2;
+  gparams.batch_dims = 0;
+
+  Gather kernel(&params_tensor, &indices_tensor, &output_tensor, gparams);
+  kernel.configure();
+  _memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  EXPECT_THAT(extractTensorData<float>(output_tensor),
+              ::testing::ElementsAreArray(ref_output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray({1, 1, 1}));
+}
+
 TEST_F(GatherTest, Simple_Batch)
 {
   Shape params_shape = {3, 5};

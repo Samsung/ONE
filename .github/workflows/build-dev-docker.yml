@@ -1,16 +1,8 @@
-name: Build docker image for CI/CD infra
+name: Build docker image for CI/CD infra on PR
 on:
-  push:
-    branches:
-      - master
-      - release/*
-    paths:
-      - '.github/workflows/build-dev-docker.yml'
-      - 'infra/docker/**'
   pull_request:
     branches:
       - master
-      - release/*
     paths:
       - '.github/workflows/build-dev-docker.yml'
       - 'infra/docker/**'
@@ -21,13 +13,40 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Build on docker CLI for PR test without login
-  build-pr-test:
-    if: github.event_name == 'pull_request' && github.repository_owner == 'Samsung'
+  filtering:
     runs-on: ubuntu-latest
+    outputs:
+      yml: ${{ steps.filter.outputs.yml }}
+      android: ${{ steps.filter.outputs.android }}
+      ubuntu: ${{ steps.filter.outputs.ubuntu }}
+      ubuntu-cross: ${{ steps.filter.outputs.ubuntu-cross }}
+    steps:
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            android:
+              - '.github/**'
+              - 'infra/docker/android-sdk/**'
+            ubuntu:
+              - '.github/**'
+              - 'infra/docker/focal/Dockerfile'
+              - 'infra/docker/jammy/Dockerfile'
+              - 'infra/docker/noble/Dockerfile'
+            ubuntu-cross:
+              - '.github/**'
+              - 'infra/docker/focal-cross/Dockerfile'
+              - 'infra/docker/jammy-cross/Dockerfile'
+              - 'infra/docker/noble-cross/Dockerfile'
+
+  # Build on docker CLI for PR test without login
+  build-ubuntu:
+    needs: filtering
+    if: github.repository_owner == 'Samsung' && needs.filtering.outputs.ubuntu == 'true'
+    runs-on: one-x64-linux
     strategy:
       matrix:
-        version: [ 'android-sdk', 'focal', 'jammy', 'noble' ]
+        version: [ 'focal', 'jammy', 'noble' ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,33 +56,62 @@ jobs:
           ./nnas build-docker-image --codename ${{ matrix.version }} --tag one-test
 
       - name: Test onert build
-        if: matrix.version != 'android-sdk'
         env:
           DOCKER_IMAGE_NAME: one-test
         run: |
           ./nnas docker-run --user make -f Makefile.template
           ./nnas docker-run --user Product/out/test/onert-test unittest
 
-  # Use github action for build and push to docker hub
-  build-docker-image:
-    if: github.event_name == 'push' && github.repository_owner == 'Samsung'
-    runs-on: ubuntu-latest
+  build-ubuntu-cross:
+    needs: filtering
+    if: github.repository_owner == 'Samsung' && needs.filtering.outputs.ubuntu-cross == 'true'
+    runs-on: one-x64-linux
     strategy:
       matrix:
-        version: [ 'android-sdk', 'focal', 'jammy', 'noble' ]
+        version: [ 'focal', 'jammy', 'noble' ]
     steps:
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Install Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Build Docker Image
-        uses: docker/build-push-action@v6
+        run: |
+          docker build --file infra/docker/${{ matrix.version }}-cross/Dockerfile --tag one-test .
+
+      - name: Download rootfs for cross build
+        uses: dawidd6/action-download-artifact@v7
         with:
-          file: ./infra/docker/${{ matrix.version }}/Dockerfile
-          push: true
-          tags: nnfw/one-devtools:${{ matrix.version }}
+          workflow: generate-rootfs.yml
+          branch: master
+          name: rootfs_arm_${{ matrix.version }}
+
+      # Workaround: symlink for rootfs checker in cmake toolchain file
+      - name: Install rootfs and cross build
+        env:
+          DOCKER_IMAGE_NAME: one-test
+          DOCKER_ENV_VARS: '-e CROSS_BUILD=1 -e TARGET_ARCH=armv7l'
+        run: |
+          mkdir -p tools/cross/rootfs
+          tar -zxf rootfs_arm_${{ matrix.version }}.tar.gz -C tools/cross/rootfs
+          pushd tools/cross/rootfs/arm
+          ln -sf usr/lib lib
+          popd
+          ./nnas docker-run --user make -f Makefile.template
+
+  build-android:
+    needs: filtering
+    if: github.repository_owner == 'Samsung' && needs.filtering.outputs.android == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: |
+          ./nnas build-docker-image --codename android-sdk --tag one-test
+
+      - name: Test onert build
+        env:
+          DOCKER_IMAGE_NAME: one-test
+          DOCKER_ENV_VARS: '-e CROSS_BUILD=1 -e TARGET_OS=android -e BUILD_TYPE=release'
+        run: |
+          ./nnas docker-run --user make -f Makefile.template
