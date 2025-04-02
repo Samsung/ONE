@@ -740,7 +740,7 @@ def CIR_ExpOp: CIR_Op<"exp", [
   //}];
 }
 
-// From submodules/onnx-mlir/src/Dialect/ONNX/ONNXOps.td.inc
+// From circle-mlir/externals/onnx-mlir/src/Dialect/ONNX/ONNXOps.td.inc
 def CIR_ExpandOnnxOp : CIR_Op<"expand_onnx", [
     Pure]> {
   let summary = "Expand temporary ONNX Op";
