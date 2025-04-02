@@ -84,7 +84,7 @@ public:
                   const float *rhs_data, bool adj_x, bool adj_y, const Shape & /*output_shape*/,
                   float *output_data)
   {
-    // Don't need transpose if rhas is constant already transposed
+    // Don't need transpose if rhs is constant and already transposed
     if (!adj_y && !(_rhs_constant && _rhs_transposed))
     {
       transposeRowsCols(rhs_shape, rhs_data, _temp_rhs_shape, _temp_rhs.data());
