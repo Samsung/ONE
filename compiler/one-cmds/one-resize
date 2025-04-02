@@ -36,15 +36,21 @@ def _get_parser():
 
     oneutils.add_default_arg(parser)
 
-    parser.add_argument('--input_path',
-                        type=str,
-                        help='The path to the input model (.circle)')
+    ## model2nnpkg arguments
+    model2nnpkg_group = parser.add_argument_group('arguments for packaging')
 
-    parser.add_argument('--output_path',
-                        type=str,
-                        help='The path to the resized model (.circle)')
+    model2nnpkg_group.add_argument('-i',
+                                   '--input_path',
+                                   type=str,
+                                   help='The path to the input model (.circle)')
 
-    parser.add_argument(
+    model2nnpkg_group.add_argument('-o',
+                                   '--output_path',
+                                   type=str,
+                                   help='The path to the resized model (.circle)')
+
+    model2nnpkg_group.add_argument(
+        '-s',
         '--input_shapes',
         type=str,
         help=

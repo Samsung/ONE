@@ -1,0 +1,45 @@
+.TH ONE-RESIZE "1" "July 2025" "one-resize version 1.28.0" "User Commands"
+.SH NAME
+one-resize \- resize input shapes of the model
+.SH DESCRIPTION
+usage: one\-resize [\-h] [\-v] [\-V] [\-C CONFIG] [\-i INPUT_PATH] [\-s INPUT_SHAPES] [\-o OUTPUT_PATH]
+.PP
+\fBone\-resize\fR is a command line tool to change input shapes of Circle models.
+.SH OPTIONS
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show this help message and exit
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+show program's version number and exit
+.TP
+\fB\-V\fR, \fB\-\-verbose\fR
+output additional information to stdout or stderr
+.TP
+\fB\-C\fR CONFIG, \fB\-\-config\fR CONFIG
+run with configuration file
+.TP
+\fB\-i\fR INPUT_PATH, \fB\-\-input_path\fR INPUT_PATH
+The path to the input model (.circle)
+.TP
+\fB\-i\fR INPUT_SHAPES, \fB\-\-input_shapes\fR INPUT_SHAPES
+New inputs shapes in in comma separated format. An example for 2 inputs: [1,2],[3,4]
+.TP
+\fB\-o\fR OUTPUT_PATH, \fB\-\-output_path\fR OUTPUT_PATH
+The path to the resized model (.circle)
+.SH COPYRIGHT
+Copyright \(co 2020\-2025 Samsung Electronics Co., Ltd. All Rights Reserved
+Licensed under the Apache License, Version 2.0
+https://github.com/Samsung/ONE
+.SH "SEE ALSO"
+The full documentation for
+.B one-resize
+is maintained as a Texinfo manual.  If the
+.B info
+and
+.B one-resize
+programs are properly installed at your site, the command
+.IP
+.B info one-resize
+.PP
+should give you access to the complete manual.
