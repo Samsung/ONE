@@ -17,11 +17,9 @@
 #include "luci/Service/CircleShapeInference.h"
 
 #include "CircleShapeInferenceHelper.h"
-#include <iostream>
 
 namespace luci
 {
-
 namespace sinf
 {
 

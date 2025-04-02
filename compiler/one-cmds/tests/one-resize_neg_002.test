@@ -31,20 +31,20 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
-input_model="${test_model_name}.circle"
+input_path="${test_model_name}.circle"
 input_shapes="abcd"
-output_model="${test_model_name}.resize.circle"
+output_path="${test_model_name}.resize.circle"
 
 rm -f ${filename}.log
-rm -f  ${output_model}
+rm -f  ${output_path}
 
 # run test
 one-resize \
---input_model ${input_model} \
+--input_path ${input_path} \
 --input_shapes ${input_shapes} \
---output_model ${output_model} > ${filename}.log 2>&1
+--output_path ${output_path} > ${filename}.log 2>&1
 
-if [[ ! -s "${output_model}" ]]; then
+if [[ ! -s "${output_path}" ]]; then
   trap_err_onexit
 fi
 

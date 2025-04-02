@@ -49,17 +49,17 @@ int entry(const int argc, char **argv)
 {
   arser::Arser arser("circle-resizer");
 
-  arser.add_argument("--input_model")
+  arser.add_argument("--input_path")
     .nargs(1)
     .type(arser::DataType::STR)
     .required(true)
-    .help("Input model filepath (.circle)");
+    .help("The path to the input model (.circle)");
 
-  arser.add_argument("--output_model")
+  arser.add_argument("--output_path")
     .nargs(1)
     .type(arser::DataType::STR)
     .required(true)
-    .help("Resized output model filepath (.circle)");
+    .help("The path to the resized model (.circle)");
 
   arser.add_argument("--input_shapes")
     .nargs(1)
@@ -71,7 +71,7 @@ int entry(const int argc, char **argv)
   {
     arser.parse(argc, argv);
 
-    const auto input_path = arser.get<std::string>("--input_model");
+    const auto input_path = arser.get<std::string>("--input_path");
 
     auto model_data = std::make_shared<ModelData>(input_path);
     ModelEditor resizer(model_data);
@@ -89,7 +89,7 @@ int entry(const int argc, char **argv)
       std::cout << out_idx + 1 << ". " << to_string(output_shapes[out_idx]) << std::endl;
     }
 
-    const auto output_path = arser.get<std::string>("--output_model");
+    const auto output_path = arser.get<std::string>("--output_path");
     const auto new_input_shapes_str = arser.get<std::string>("--input_shapes");
 
     resizer.resize_inputs(parse_shapes(new_input_shapes_str));

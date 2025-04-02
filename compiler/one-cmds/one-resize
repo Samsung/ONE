@@ -36,17 +36,20 @@ def _get_parser():
 
     oneutils.add_default_arg(parser)
 
-    parser.add_argument('--input_model',
+    parser.add_argument('--input_path',
                         type=str,
-                        help='Input model filepath (.circle)')
+                        help='The path to the input model (.circle)')
 
-    parser.add_argument('--output_model',
+    parser.add_argument('--output_path',
                         type=str,
-                        help='Resized output model filepath (.circle)')
-    
-    parser.add_argument('--input_shapes',
-                        type=str,
-                        help='New inputs shapes in in comma separated format. An example for 2 inputs: [1,2],[3,4].')
+                        help='The path to the resized model (.circle)')
+
+    parser.add_argument(
+        '--input_shapes',
+        type=str,
+        help=
+        'New inputs shapes in in comma separated format. An example for 2 inputs: [1,2],[3,4].'
+    )
 
     return parser
 
@@ -64,10 +67,10 @@ def _verify_arg(parser, args):
     """verify given arguments"""
     # check if required arguments is given
     missing = []
-    if not oneutils.is_valid_attr(args, 'input_model'):
-        missing.append('input_model')
-    if not oneutils.is_valid_attr(args, 'output_model'):
-        missing.append('output_model')
+    if not oneutils.is_valid_attr(args, 'input_path'):
+        missing.append('input_path')
+    if not oneutils.is_valid_attr(args, 'output_path'):
+        missing.append('output_path')
     if not oneutils.is_valid_attr(args, 'input_shapes'):
         missing.append('input_shapes')
     if len(missing):
@@ -79,10 +82,10 @@ def _resize(args):
     # get file path to log
     bin_path = os.path.dirname(os.path.realpath(__file__))
     cur_path = os.getcwd()
-    input_model = os.path.join(cur_path, args.input_model)
-    output_model = os.path.join(cur_path, args.output_model) 
+    input_path = os.path.join(cur_path, args.input_path)
+    output_path = os.path.join(cur_path, args.output_path)
 
-    log_file_path = os.path.join(cur_path, output_model) + '.log'
+    log_file_path = os.path.join(cur_path, output_path) + '.log'
 
     with open(log_file_path, 'wb', buffering=0) as f:
         # make a command to package circle model and metadata into nnpackage
@@ -90,10 +93,10 @@ def _resize(args):
 
         cmd = [os.path.expanduser(circle_resizer_path)]
 
-        cmd.append('--input_model')
-        cmd.append(input_model)
-        cmd.append('--output_model')
-        cmd.append(output_model)
+        cmd.append('--input_path')
+        cmd.append(input_path)
+        cmd.append('--output_path')
+        cmd.append(output_path)
         cmd.append('--input_shapes')
         cmd.append(args.input_shapes)
 
@@ -116,6 +119,7 @@ def main():
 
     # resize the model
     _resize(args)
+
 
 if __name__ == '__main__':
     oneutils.safemain(main, __file__)
