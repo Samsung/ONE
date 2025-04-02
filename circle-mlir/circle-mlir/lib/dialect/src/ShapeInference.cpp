@@ -135,6 +135,90 @@ void CastOp::inferShapes(void)
 }
 
 //===----------------------------------------------------------------------===//
+// ConcatenationOp
+//===----------------------------------------------------------------------===//
+
+int64_t GetConcatenationOpAxis(ConcatenationOp op)
+{
+  auto output_type = op.getOutput().getType().cast<RankedTensorType>();
+  int32_t axis = op.getAxis();
+  if (axis < 0)
+    axis += output_type.getRank();
+  return axis;
+}
+
+void ConcatenationOp::inferShapes()
+{
+  ConcatenationOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto operands = op.getOperands();
+  int64_t rank = -1;
+  const int64_t axis = GetConcatenationOpAxis(op);
+
+  if (output_type.hasStaticShape())
+    return;
+
+  for (auto operand : operands)
+  {
+    auto shaped_type = operand.getType().cast<ShapedType>();
+    if (!shaped_type.hasRank())
+    {
+      return;
+    }
+
+    if (rank == -1)
+    {
+      rank = shaped_type.getRank();
+    }
+    else if (shaped_type.getRank() != rank)
+    {
+      return;
+    }
+  }
+
+  // Fill the size of axes other than the connection axis.
+  SmallVector<int64_t, 4> new_shape(rank, ShapedType::kDynamic);
+  for (auto operand : operands)
+  {
+    auto shaped_type = operand.getType().cast<ShapedType>();
+    for (int64_t i = 0; i < rank; ++i)
+    {
+      if (i == axis)
+        continue;
+
+      int64_t dim_size = shaped_type.getDimSize(i);
+      if (ShapedType::isDynamic(new_shape[i]))
+      {
+        new_shape[i] = dim_size;
+      }
+      else if (new_shape[i] != dim_size)
+      {
+        return;
+      }
+    }
+  }
+
+  // Fill the size of the connection axis
+  int64_t axis_dim_size = 0;
+  for (auto operand : operands)
+  {
+    auto shaped_type = operand.getType().cast<ShapedType>();
+    int64_t dim_size = shaped_type.getDimSize(axis);
+    if (ShapedType::isDynamic(dim_size))
+      axis_dim_size = ShapedType::kDynamic;
+    else if (not ShapedType::isDynamic(axis_dim_size))
+      axis_dim_size += dim_size;
+  }
+  new_shape[axis] = axis_dim_size;
+
+  dumpShape<ConcatenationOp>(op, new_shape);
+
+  auto inferred_type =
+    mlir::Circle::GetTypeFromTensorShape(new_shape, output_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // Conv2DOp
 //===----------------------------------------------------------------------===//
 
