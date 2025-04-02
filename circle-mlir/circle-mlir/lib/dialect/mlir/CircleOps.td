@@ -621,6 +621,39 @@ def CIR_CustomOp : Op<CIR_Dialect, "custom", [
   let hasVerifier = 1;
 }
 
+def CIR_DepthwiseConv2DOp :
+    CIR_ConvOp<"depthwise_conv_2d", "Depthwise-separable convolution", /*3,*/
+                [DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+                 /*DynamicRangeQuantizedOpInterface*/]> {
+  let arguments = (
+    ins CIR_TensorOf<[F32/*, QI8, QUI8, QI16*/]>:$input,
+    CIR_TensorOf<[F32/*, QI8, QUI8*/]>:$filter,
+    CIR_1DTensorOfOrNone<[F32, I32, I64]>:$bias,
+    I32Attr:$dilation_h_factor,
+    I32Attr:$dilation_w_factor,
+    CIR_AFAttr:$fused_activation_function,
+    CIR_PaddingAttr:$padding,
+    I32Attr:$stride_h,
+    I32Attr:$stride_w,
+    I32Attr:$depth_multiplier
+  );
+
+  let hasCanonicalizer = 1;
+
+  let extraClassDeclaration = [{
+    // AffineQuantizedOpInterface:
+    int GetChannelDimIndex() { return 3; }
+    int GetQuantizationDimIndex() { return 3; }
+    // SparseOpInterface:
+    std::vector<int> GetSparseOperands() { return {1}; }
+    std::vector<std::vector<int>> GetFloatBlockSize() { return {}; }
+    std::vector<std::vector<int>> GetQuantizedBlockSize() { return {}; }
+    // DynamicRangeQuantizedOpInterface:
+    bool GetDynamicRangeQuantKernelSupport() { return true; }
+    std::vector<int> GetQuantizableOperandIndices() { return {1}; }
+  }];
+}
+
 def CIR_DivOp : CIR_Op<"div", [
     // TODO(fengliuai): NoQuantizableResult is only correct for int8
     // quantization. update to handle Uint8 quantization.
@@ -1852,6 +1885,53 @@ def CIR_TransposeOp : CIR_Op<"transpose", [
   let extraClassDeclaration = [{
     // Quantized axes are verified in the Verify function.
     bool RequiredSameQuantizedAxes() { return false; }
+  }];
+}
+
+def CIR_TransposeConvOp: CIR_Op<"transpose_conv", [
+    Pure,
+    CIR_OperandHasRank<0, 1>,
+    CIR_OperandHasRank<1, 4>,
+    CIR_OperandHasRank<2, 4>,
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 2>>,
+    /*AccumulatorUniformScale<3, 1, 2>,*/
+    /*AffineQuantizedOpInterface, AffineOpCoefficient<0, 1>,*/
+    /*QuantizableResult,*/
+    CIR_SparseOp/*,
+    DynamicRangeQuantizedOpInterface*/]> {
+  let summary = "Transpose convolution operator";
+
+  let description = [{
+    Performs transpose convolution operation on input.
+  }];
+
+  let arguments = (ins
+    CIR_I32Tensor:$output_shape,
+    CIR_TensorOf<[F32/*, QI8, QUI8, QI16*/]>:$weights,
+    CIR_TensorOf<[F32/*, QI8, QUI8, QI16*/]>:$input,
+    CIR_TensorOfOrNone<[F32/*, QI32, I64*/]>:$bias,
+    CIR_PaddingAttr:$padding,
+    ConfinedAttr<I32Attr, [IntPositive]>:$stride_h,
+    ConfinedAttr<I32Attr, [IntPositive]>:$stride_w
+  );
+
+  let results = (outs CIR_TensorOf<[F32/*, QI8, QUI8, QI16*/]>:$output);
+
+  let hasOptions = 1;
+
+  let hasVerifier = 1;
+
+  let extraClassDeclaration = [{
+    // AffineQuantizedOpInterface:
+    int GetChannelDimIndex() { return 0; }
+    int GetQuantizationDimIndex() { return 0; }
+    // SparseOpInterface:
+    std::vector<int> GetSparseOperands() { return {1}; }
+    std::vector<std::vector<int>> GetFloatBlockSize() { return {}; }
+    std::vector<std::vector<int>> GetQuantizedBlockSize() { return {}; }
+    // DynamicRangeQuantizedOpInterface:
+    std::vector<int> GetQuantizableOperandIndices() { return {1}; }
   }];
 }
 
