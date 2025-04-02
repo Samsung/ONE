@@ -78,8 +78,8 @@ public:
 
       if (op_mode.str() == "reflect")
       {
-        // TODO convert to MirrorPadOp
-        return mlir::failure();
+        auto type = mlir::Circle::MirrorPaddingType::REFLECT;
+        rewriter.replaceOpWithNewOp<MirrorPadOp>(op, op.getType(), input, paddings, type);
       }
       else if (op_mode.str() == "constant")
       {
@@ -103,8 +103,8 @@ public:
 
       if (op_mode.str() == "reflect")
       {
-        // TODO convert to MirrorPadOp
-        return mlir::failure();
+        auto type = mlir::Circle::MirrorPaddingType::REFLECT;
+        rewriter.replaceOpWithNewOp<MirrorPadOp>(op, op.getType(), input, pre_tran, type);
       }
       else if (op_mode.str() == "constant")
       {
