@@ -79,6 +79,7 @@ def _get_driver_name(driver_name):
         'one-import-tf': 'one-import-tf',
         'one-import-tflite': 'one-import-tflite',
         'one-import-onnx': 'one-import-onnx',
+        'one-resize': 'one-resize',
         'one-optimize': 'one-optimize',
         'one-quantize': 'one-quantize',
         'one-partition': 'one-partition',
@@ -154,8 +155,8 @@ def main():
     bin_dir = os.path.dirname(os.path.realpath(__file__))
     import_drivers_dict = oneutils.detect_one_import_drivers(bin_dir)
     transform_drivers = [
-        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile',
-        'one-partition'
+        'one-resize', 'one-optimize', 'one-quantize', 'one-pack', 'one-codegen',
+        'one-profile', 'one-partition'
     ]
     _verify_cfg(import_drivers_dict, config)
 

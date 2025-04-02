@@ -126,6 +126,8 @@ jobs:
           ## onecc workflows
           bash onecc_032.test
           bash onecc_041.test
+          ## one-resize
+          bash onecc_070.test
 
       # Upload log if failed
       - name: Upload log
