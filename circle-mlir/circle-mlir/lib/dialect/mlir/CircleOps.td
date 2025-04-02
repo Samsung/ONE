@@ -472,6 +472,48 @@ def CIR_CastOp : CIR_Op<"cast", [
   let hasFolder = 1;
 }
 
+def CIR_ConcatenationOp : CIR_Op<"concatenation",
+  [
+    Pure,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    CIR_SameFirstOperandAndFirstResultElementType,
+    // TODO enable SameOperandsAndResultsScale,
+    // TODO enable QuantizableResult
+  ]> {
+  let summary = "Concatenation operator";
+
+  let description = [{
+    Concatenates tensors along one dimension
+  }];
+
+  let arguments = (
+    ins CIR_VariadicTensorOf<
+      [F32, I64, I32, I16, I8/*, QI8, QUI8*/, UI8, I1]>:$values,
+    I32Attr:$axis,
+    CIR_AFAttr:$fused_activation_function
+  );
+
+  let results = (outs
+    CIR_TensorOf<
+      [F32, I64, I32, I16, I8/*, QI8, QUI8*/, UI8, I1]>:$output
+  );
+
+  let hasOptions = 1;
+
+  let hasFolder = 1;
+
+  let hasVerifier = 1;
+
+  let extraClassDeclaration = [{
+    // SameScalesOpInterface:
+    bool RequiredSameOperandsAndResultsScale(bool sign, int bit_width) {
+      // uint8 doesn't require same operands and results scales.
+      bool is_uint8 = !sign && (bit_width == 8);
+      return !is_uint8;
+    }
+  }];
+}
+
 def CIR_ConstOp : Op<CIR_Dialect, "pseudo_const", [ConstantLike, Pure,
     FirstAttrDerivedResultType,
     // TODO enable QuantizableResult,

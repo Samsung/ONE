@@ -444,6 +444,7 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 
 #include "ops/AddOp.h"
 #include "ops/CastOp.h"
+#include "ops/ConcatenationOp.h"
 #include "ops/ConstOp.h"
 #include "ops/Conv2DOp.h"
 #include "ops/CosOp.h"
