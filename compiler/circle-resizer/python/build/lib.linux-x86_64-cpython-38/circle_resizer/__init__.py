@@ -1,5 +1,0 @@
-from circle_resizer.circle_resizer_python_api import Dim
-from circle_resizer.circle_resizer_python_api import Shape
-from circle_resizer.circle_resizer_python_api import Shapes
-from circle_resizer.circle_resizer_python_api import ModelData
-from circle_resizer.circle_resizer_python_api import ModelEditor
