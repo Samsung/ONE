@@ -658,6 +658,50 @@ void MeanOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// MirrorPadOp
+//===----------------------------------------------------------------------===//
+
+void MirrorPadOp::inferShapes()
+{
+  MirrorPadOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // if input is dynamic, skip shape infer
+  auto input_op = getOperand(0);
+  auto input_type = input_op.getType().cast<TensorType>();
+  if (!input_type.hasStaticShape())
+    return;
+
+  // skip if size input is not constant
+  mlir::Operation *is_const = getOperand(1).getDefiningOp();
+  if (!mlir::isa_and_nonnull<ConstOp>(is_const))
+    return;
+  auto const_op = cast<ConstOp>(is_const);
+  std::vector<int64_t> padding_values;
+  if (!extractElements(const_op, padding_values))
+    return;
+
+  auto input_shape = input_type.getShape();
+  llvm::SmallVector<int64_t, 4> inferred;
+  int64_t num_dims = input_type.getRank();
+  for (int64_t i = 0; i < num_dims; ++i)
+  {
+    const int64_t padding_before = padding_values[i * 2];
+    const int64_t padding_after = padding_values[i * 2 + 1];
+    assert(padding_before >= 0 && padding_after >= 0);
+    int64_t output_val = input_shape[i] + padding_before + padding_after;
+    inferred.push_back(output_val);
+  }
+
+  dumpShape<MirrorPadOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // MulOp
 //===----------------------------------------------------------------------===//
 

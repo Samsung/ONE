@@ -1128,6 +1128,45 @@ def CIR_MinimumOp : CIR_Op<"minimum", [
   let hasOptions = 0;
 }
 
+def CIR_MirrorPadOp: CIR_Op<"mirror_pad", [
+                     /*SameOperandsAndResultsScale,*/
+                     /*QuantizableResult,*/
+                     DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+                     Pure/*,
+                     CIR_OperandHasRank<1, 2>*/]> {
+  let summary = "MirrorPad Operator. Pads a tensor with mirrored values.";
+
+  let description = [{
+    This operation pads a input with mirrored values according to the paddings
+    you specify. paddings is an integer tensor with shape [n, 2],
+    where n is the rank of input.
+    For each dimension D of input, paddings[D, 0] indicates how many values
+    to add before the contents of input in that dimension,
+    and paddings[D, 1] indicates how many values to add after the contents of
+    input in that dimension.
+
+    Both paddings[D, 0] and paddings[D, 1] must be no greater than
+    input.dim_size(D) (or input.dim_size(D) - 1)
+    if copy_border is true (if false, respectively).
+
+    The padded size of each dimension D of the output is:
+
+    paddings(D, 0) + input.dim_size(D) + paddings(D, 1)
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I32, I64, I8, UI8/*, QI8, QUI8*/]>:$input,
+    CIR_TensorOf<[I32, I64]>:$pad,
+    CIR_MirrorPaddingAttr:$mode
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32, I32, I64, I8, UI8/*, QI8, QUI8*/]>:$output
+  );
+
+  let hasOptions = 1;
+}
+
 def CIR_MulOp : CIR_Op<"mul", [
     ResultsBroadcastableShape,
     Pure,
