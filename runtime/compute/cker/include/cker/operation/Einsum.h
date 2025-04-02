@@ -903,7 +903,8 @@ private:
 
     // LaunchBatchMatMul::Launch(lhs, rhs, adj_x, adj_y, bcast, &output_reshaped);
     BatchMatMul batchMatMul;
-    batchMatMul.prepare(lhs.shape, rhs.shape, adj_x, adj_y);
+    // Set rhs is not constant: don't use optimization
+    batchMatMul.prepare(lhs.shape, rhs.shape, adj_x, adj_y, false);
     batchMatMul(lhs.shape, lhs.base<float>(), rhs.shape, rhs.base<float>(), adj_x, adj_y,
                 output_reshaped.shape, output_reshaped.base<float>());
   }
