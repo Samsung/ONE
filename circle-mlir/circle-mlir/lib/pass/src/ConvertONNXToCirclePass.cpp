@@ -197,6 +197,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvCumsum>(typeConverter, context);
   patterns.insert<ConvEqual>(typeConverter, context);
   patterns.insert<ConvExp>(typeConverter, context);
+  patterns.insert<ConvExpand>(typeConverter, context);
   patterns.insert<ConvGemm>(typeConverter, context);
   patterns.insert<ConvGreater>(typeConverter, context);
   patterns.insert<ConvLeakyRelu>(typeConverter, context);
