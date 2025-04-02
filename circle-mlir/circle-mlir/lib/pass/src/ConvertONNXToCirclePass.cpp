@@ -28,6 +28,7 @@
 #include "ops/AveragePoolOp.h"
 #include "ops/CastOp.h"
 #include "ops/ClipOp.h"
+#include "ops/ConcatOp.h"
 #include "ops/ConstantOp.h"
 #include "ops/ConvOp.h"
 #include "ops/ConvTransposeOp.h"
@@ -185,6 +186,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvAveragePool>(typeConverter, context);
   patterns.insert<ConvCast>(typeConverter, context);
   patterns.insert<ConvClip>(typeConverter, context);
+  patterns.insert<ConvConcat>(typeConverter, context);
   patterns.insert<ConvConstant>(typeConverter, context);
   patterns.insert<ConvConv>(typeConverter, context);
   patterns.insert<ConvConvTranspose>(typeConverter, context);
