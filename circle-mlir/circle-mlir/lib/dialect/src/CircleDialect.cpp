@@ -452,6 +452,7 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 #include "ops/DepthwiseConv2DOp.h"
 #include "ops/DivOp.h"
 #include "ops/EqualOp.h"
+#include "ops/ExpandOnnxOp.h"
 #include "ops/FullyConnectedOp.h"
 #include "ops/LogOp.h"
 #include "ops/MulOp.h"
