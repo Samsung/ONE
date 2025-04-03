@@ -1620,6 +1620,85 @@ def CIR_ReshapeOp: CIR_Op<"reshape", [
   }];
 }
 
+def CIR_ResizeBilinearOp: CIR_Op<"resize_bilinear", [
+    Pure,
+    /*QuantizableResult,*/
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    CIR_OperandHasRank<0, 4>,
+    CIR_OperandHasRank<1, 1>,
+    /*SameOperandsAndResultsScale*/]> {
+  let summary = "ResizeBilinear Op";
+
+  let description = [{
+    Resize `images` to `size` using bilinear interpolation.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32/*, TFL_Quint8, QUI8, QI8, QI16*/]>:$input,
+    CIR_I32Tensor:$size,
+    BoolAttr:$align_corners,
+    DefaultValuedOptionalAttr<BoolAttr, "false">:$half_pixel_centers
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32/*, TFL_Quint8, QUI8, QI8, QI16*/]>:$output
+  );
+
+  let hasOptions = 1;
+}
+
+def CIR_ResizeNearestNeighborOp : CIR_Op<"resize_nearest_neighbor", [
+    Pure,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    /*QuantizableResult,*/
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    CIR_OperandHasRank<0, 4>,
+    CIR_OperandHasRank<1, 1>,
+    /*SameOperandsAndResultsScale*/]> {
+  let summary = "ResizeNearestNeighbor Op";
+
+  let description = [{
+    Resize `images` to `size` using nearest neighbor interpolation.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32/*, TFL_Quint8, QUI8, QI8, QI16*/]>:$input,
+    CIR_I32Tensor:$size,
+    BoolAttr:$align_corners,
+    DefaultValuedOptionalAttr<BoolAttr, "false">:$half_pixel_centers
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32/*, TFL_Quint8, QUI8, QI8, QI16*/]>:$output
+  );
+
+  let hasOptions = 1;
+}
+
+// NOTE this is temporary Op to hold scales for unknown input shape
+def CIR_ResizeOnnxOp : CIR_Op<"resize_onnx", [
+    Pure]> {
+  let summary = "Resize temporary ONNX Op";
+
+  let description = [{
+    Resize temporary Op for unknown shape.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32]>:$input,
+    CIR_TensorOf<[F32]>:$scales,
+    StrAttr:$mode
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32]>:$output
+  );
+
+  let hasCanonicalizer = 1;
+}
+
 def CIR_RsqrtOp: CIR_Op<"rsqrt", [Pure,
                                   //QuantizableResult,
                                   CIR_SameFirstOperandAndFirstResultElementType,

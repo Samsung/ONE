@@ -464,6 +464,7 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 #include "ops/PReluOp.h"
 #include "ops/ReduceProdOp.h"
 #include "ops/ReshapeOp.h"
+#include "ops/ResizeOnnxOp.h"
 #include "ops/RsqrtOp.h"
 #include "ops/SelectOp.h"
 #include "ops/SelectV2Op.h"
