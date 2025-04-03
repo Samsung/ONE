@@ -149,7 +149,7 @@ onnx::GraphProto GetGraphFromOnnx(std::string &path)
   if (!input.is_open())
   {
     std::cout << "Error: Failed to open file: " << path << std::endl;
-    exit(0);
+    exit(-1);
   }
 
   // get current position in file
