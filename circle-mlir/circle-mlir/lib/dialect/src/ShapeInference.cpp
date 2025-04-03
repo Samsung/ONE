@@ -933,6 +933,66 @@ void ReshapeOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// ResizeNearestNeighborOp
+//===----------------------------------------------------------------------===//
+
+void ResizeNearestNeighborOp::inferShapes()
+{
+  ResizeNearestNeighborOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // if input is dynamic, skip shape infer
+  auto input_op = getOperand(0);
+  auto input_type = input_op.getType().cast<TensorType>();
+  if (!input_type.hasStaticShape())
+    return;
+
+  // skip if size input is not constant
+  mlir::Operation *is_const = getOperand(1).getDefiningOp();
+  if (!mlir::isa_and_nonnull<ConstOp>(is_const))
+    return;
+  auto const_op = cast<ConstOp>(is_const);
+  std::vector<int64_t> size_values;
+  if (!extractElements(const_op, size_values))
+    return;
+
+  auto input_shape = input_type.getShape();
+  int64_t size_h = 0, size_w = 0;
+  if (size_values.size() == 4)
+  {
+    // where size is NCHW
+    size_h = size_values[2];
+    size_w = size_values[3];
+  }
+  else if (size_values.size() == 2)
+  {
+    // where size is HW
+    size_h = size_values[0];
+    size_w = size_values[1];
+  }
+  else
+  {
+    // this looks invalid
+    assert(false);
+    return;
+  }
+
+  // now shape can be fixed
+  llvm::SmallVector<int64_t, 4> inferred;
+  inferred.push_back(input_shape[0]);
+  inferred.push_back(size_h);
+  inferred.push_back(size_w);
+  inferred.push_back(input_shape[3]);
+
+  dumpShape<ResizeNearestNeighborOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // SqrtOp
 //===----------------------------------------------------------------------===//
 
