@@ -56,6 +56,7 @@
 #include "ops/ReduceSumOp.h"
 #include "ops/ReluOp.h"
 #include "ops/ReshapeOp.h"
+#include "ops/ResizeOp.h"
 #include "ops/ShapeOp.h"
 #include "ops/SigmoidOp.h"
 #include "ops/SliceOp.h"
@@ -221,6 +222,8 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvReduceSumV11>(typeConverter, context);
   patterns.insert<ConvRelu>(typeConverter, context);
   patterns.insert<ConvReshape>(typeConverter, context);
+  patterns.insert<ConvResize>(typeConverter, context);
+  patterns.insert<ConvResizeV13>(typeConverter, context);
   patterns.insert<ConvShape>(typeConverter, context);
   patterns.insert<ConvSigmoid>(typeConverter, context);
   patterns.insert<ConvSlice>(typeConverter, context);

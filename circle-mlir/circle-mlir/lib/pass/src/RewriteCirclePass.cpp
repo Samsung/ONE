@@ -31,6 +31,7 @@
 // Optimizations
 #include "opt/ConvertMirrorPadPad32.h"
 #include "opt/ConvertReshapeShape32.h"
+#include "opt/ConvertResizeNearestSize32.h"
 
 namespace mlir
 {
@@ -94,6 +95,7 @@ void RewriteCirclePass::applyActivationFusion()
 
   patterns.add<ConvertMirrorPadPad32>(context);
   patterns.add<ConvertReshapeShape32>(context);
+  patterns.add<ConvertResizeNearestSize32>(context);
 
   // TODO add more patterns
 
