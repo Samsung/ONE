@@ -48,3 +48,40 @@ TEST_F(GenModelTest, neg_OneOp_BatchMatMul_InvalidType)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, OneOp_BatchMatMul_Const)
+{
+  CircleGen cgen;
+  int lhs = cgen.addTensor({{1, 2, 3}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<float> const_data{7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
+  uint32_t rhs_buf = cgen.addBuffer(const_data);
+  int rhs = cgen.addTensor({{1, 3, 4}, circle::TensorType::TensorType_FLOAT32, rhs_buf});
+  int out = cgen.addTensor({{1, 2, 4}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorBatchMatMul({{lhs, rhs}, {out}}, false, false);
+  cgen.setInputsAndOutputs({lhs}, {out});
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(TestCaseData{}
+                          .addInput<float>({1, 2, 3, 4, 5, 6})
+                          .addOutput<float>({74, 80, 86, 92, 173, 188, 203, 218}));
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_BatchMatMul_InvalidConst)
+{
+  // LHS constant is not allowed
+  CircleGen cgen;
+  std::vector<float> const_data{1, 2, 3, 4, 5, 6};
+  uint32_t lhs_buf = cgen.addBuffer(const_data);
+  int lhs = cgen.addTensor({{1, 2, 3}, circle::TensorType::TensorType_FLOAT32, lhs_buf});
+  int rhs = cgen.addTensor({{1, 3, 4}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{1, 2, 4}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorBatchMatMul({{lhs, rhs}, {out}}, false, false);
+  cgen.setInputsAndOutputs({lhs}, {out});
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
