@@ -38,6 +38,7 @@
 #include "ops/EqualOp.h"
 #include "ops/ExpOp.h"
 #include "ops/ExpandOp.h"
+#include "ops/FloorOp.h"
 #include "ops/GemmOp.h"
 #include "ops/GreaterOp.h"
 #include "ops/LeakyReluOp.h"
@@ -198,6 +199,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvEqual>(typeConverter, context);
   patterns.insert<ConvExp>(typeConverter, context);
   patterns.insert<ConvExpand>(typeConverter, context);
+  patterns.insert<ConvFloor>(typeConverter, context);
   patterns.insert<ConvGemm>(typeConverter, context);
   patterns.insert<ConvGreater>(typeConverter, context);
   patterns.insert<ConvLeakyRelu>(typeConverter, context);
