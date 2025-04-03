@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
  *
@@ -19,6 +18,8 @@
 #include "ShapeParser.h"
 
 #include <arser/arser.h>
+#include <vconone/vconone.h>
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -30,24 +31,31 @@ namespace
 {
 std::string to_string(const Shape &shape)
 {
-  std::stringstream stream;
-  stream << "[";
-  for (size_t pos = 0; pos < shape.size(); ++pos)
+  if (shape.empty())
   {
-    stream << shape[pos].value();
-    if (pos < shape.size() - 1)
-    {
-      stream << ",";
-    }
+    return "";
   }
-  stream << "]";
-  return stream.str();
+  std::stringstream ss;
+  ss << "[";
+  for (int i = 0; i < shape.size() - 1; ++i)
+  {
+    ss << shape[i].value() << ", ";
+  }
+  ss << shape.back().value() << "]";
+  return ss.str();
 }
+
+void print_version()
+{
+  std::cout << "circle-resizer version " << vconone::get_string() << std::endl;
+  std::cout << vconone::get_copyright() << std::endl;
+}
+
 } // namespace
 
 int entry(const int argc, char **argv)
 {
-  arser::Arser arser("circle-resizer");
+  arser::Arser arser("circle-resizer provides capabilities to change inputs of the models");
 
   arser.add_argument("--input_path")
     .nargs(1)
@@ -66,6 +74,13 @@ int entry(const int argc, char **argv)
     .type(arser::DataType::STR)
     .required(true)
     .help("New inputs shapes in in comma separated format. An example for 2 inputs: [1,2],[3,4].");
+
+  arser.add_argument("--version")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help("Show version information and exit")
+    .exit_with(print_version);
 
   try
   {
@@ -106,7 +121,7 @@ int entry(const int argc, char **argv)
   }
   catch (const std::runtime_error &err)
   {
-    std::cout << err.what() << std::endl;
+    std::cerr << err.what() << std::endl;
     return EXIT_FAILURE;
   }
   return EXIT_SUCCESS;
