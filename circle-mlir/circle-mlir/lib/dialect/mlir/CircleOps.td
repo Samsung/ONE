@@ -938,6 +938,56 @@ def CIR_GreaterOp : CIR_Op<"greater", [
   }];
 }
 
+def CIR_HardSwishOp: CIR_Op<"hard_swish", [
+    Pure,
+    SameOperandsAndResultShape,
+    /*QuantizableResult,*/
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>]> {
+  let summary = "Hardswish activation function.";
+  let description = [{
+    Computes hard-swish activation function
+      f(x) -> (x * relu6(x+3))/6
+    element-wise.
+  }];
+
+  let arguments = (ins CIR_TensorOf<[F32/*, QUI8, QI8*/]>:$input);
+
+  let results = (outs CIR_TensorOf<[F32/*, QUI8, QI8*/]>:$output);
+
+  let hasOptions = 0;
+}
+
+// NOTE InstanceNormOp is added from scratch with looking around other ops
+//      without deep understanding of TableDef, so there maybe something wrong.
+//      we may have to fix errors when discovered.
+def CIR_InstanceNormOp : CIR_Op<"instance_norm", [
+    CIR_OperandHasRankAtMost<0, 4>,
+    PredOpTrait<"input and output must have same element type", CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    Pure,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>]> {
+  let summary = "Instance normalization op";
+
+  let description = [{
+    Performs Instance normalization on input.
+
+    Inputs:
+      `inputs[0]`: required: the input tensor
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32]>:$input,
+    CIR_1DTensorOf<[F32]>:$gamma,
+    CIR_1DTensorOf<[F32]>:$beta,
+    F32Attr:$epsilon,
+    CIR_AFAttr:$fused_activation_function
+  );
+  let results = (outs CIR_TensorOf<[F32]>:$output);
+
+  let hasOptions = 1;
+  let customOption = "InstanceNormOptions";
+}
+
 def CIR_LeakyReluOp: CIR_Op<"leaky_relu", [
     SameOperandsAndResultShape,
     // QuantizableResult,
