@@ -25,9 +25,9 @@ TEST_F(GenModelTest, OneOp_Gelu)
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<float>({{-2.0, -1.0, 0, 1.0, 2.0, 3.0f}},
+  _context->addTestCase(uniformTCD<float>({{-2.0, -1.0, 0, 1.0, 2.0, 3.0}},
                                           {{-0.0455, -0.1587, 0, 0.8413, 1.9545, 2.9960}}));
-  _context->setBackends({"cpu", "gpu_cl"});
+  _context->setBackends({"cpu"});
 
   SUCCEED();
 }
@@ -37,11 +37,11 @@ TEST_F(GenModelTest, neg_OneOp_Gelu_InvalidType)
   CircleGen cgen;
   int in = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_UINT8});
   int out = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorRelu({{in}, {out}});
+  cgen.addOperatorGelu({{in}, {out}});
   cgen.setInputsAndOutputs({in}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->setBackends({"cpu", "gpu_cl"});
+  _context->setBackends({"cpu"});
   _context->expectFailModelLoad();
 
   SUCCEED();

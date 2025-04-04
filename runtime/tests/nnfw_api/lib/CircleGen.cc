@@ -672,7 +672,7 @@ uint32_t CircleGen::addOperatorCode(circle::BuiltinOperator opcode)
     _opcodes.emplace_back(circle::CreateOperatorCode(_fbb, opcode));
   else
     _opcodes.emplace_back(circle::CreateOperatorCode(_fbb, 0, 0, 1, opcode));
-  
+
   return ind;
 }
 

@@ -1013,10 +1013,11 @@ void BaseLoader<LoaderDomain>::loadGather(const Operator *op, ir::Graph &subg)
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadGELU(const Operator *op, ir::Graph &subg)
 {
-  ir::operation::GELU::Param param;
+  ir::operation::ElementwiseActivation::Param param{};
+  param.op_type = ir::operation::ElementwiseActivation::Type::GELU;
   param.approximate = op->builtin_options_as_GeluOptions()->approximate();
 
-  loadOperationTo<ir::operation::GELU>(op, subg, param);
+  loadOperationTo<ir::operation::ElementwiseActivation>(op, subg, param);
 }
 
 template <typename LoaderDomain>

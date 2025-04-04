@@ -69,7 +69,6 @@ public:
   void visit(const ir::operation::HashtableLookup &node) override;
   void visit(const ir::operation::TransposeConv &node) override;
   void visit(const ir::operation::Gather &node) override;
-  void visit(const ir::operation::GELU &node) override;
   void visit(const ir::operation::DepthToSpace &node) override;
   void visit(const ir::operation::Pack &node) override;
   void visit(const ir::operation::LSTM &node) override;

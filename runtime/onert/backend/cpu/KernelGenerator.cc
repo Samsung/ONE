@@ -33,7 +33,6 @@
 #include "ops/FillLayer.h"
 #include "ops/FullyConnectedLayer.h"
 #include "ops/GatherLayer.h"
-#include "ops/GELULayer.h"
 #include "ops/LSTMLayer.h"
 #include "ops/MeanLayer.h"
 #include "ops/DetectionPostProcessLayer.h"
@@ -120,6 +119,8 @@ convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type
       return ops::ElementwiseActivationType::kTanh;
     case ir::operation::ElementwiseActivation::Type::LEAKY_RELU:
       return ops::ElementwiseActivationType::kLeakyReLU;
+    case ir::operation::ElementwiseActivation::Type::GELU:
+      return ops::ElementwiseActivationType::kGELU;
     default:
       throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
   }
@@ -575,22 +576,6 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::GELU &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::Gather::Input::INPUT)};
-
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
-  auto approximate = node.param().approximate;
-
-  auto fn = std::make_unique<ops::GELULayer>();
-
-  fn->configure(input_tensor, approximate, output_tensor);
-
-  _return_fn = std::move(fn);
-}
-
 void KernelGenerator::visit(const ir::operation::OneHot &node)
 {
   const auto output_index{node.getOutputs().at(0)};
@@ -673,7 +658,7 @@ void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
   auto fn = std::make_unique<ops::ElementwiseActivationLayer>();
 
   fn->configure(input_tensor, output_tensor, node.param().alpha, node.param().beta,
-                convertElementwiseActivationType(node.param().op_type));
+                node.param().approximate, convertElementwiseActivationType(node.param().op_type));
 
   _return_fn = std::move(fn);
 }

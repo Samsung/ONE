@@ -567,21 +567,6 @@ void ShapeValidator::visit(const ir::operation::Gather &node)
   OP_REQUIRES(ifm_shape.rank() + indices_shape.rank() - 1 == ofm_shape.rank());
 }
 
-void ShapeValidator::visit(const ir::operation::GELU &node)
-{
-  const auto &operands = _graph.operands();
-  const auto ofm_index{node.getOutputs().at(0)};
-  if (operands.at(ofm_index).info().isDynamic())
-    return;
-
-  const auto ifm_index{node.getInputs().at(ir::operation::GELU::Input::INPUT)};
-
-  const auto &ifm_shape = operands.at(ifm_index).shape();
-  const auto &ofm_shape = operands.at(ofm_index).shape();
-
-  OP_REQUIRES(ifm_shape == ofm_shape);
-}
-
 void ShapeValidator::visit(const ir::operation::DepthToSpace &node)
 {
   const auto &operands = _graph.operands();

@@ -61,7 +61,6 @@ public:
   void visit(const ir::operation::FullyConnected &) override;
   void visit(const ir::operation::FusedBatchNorm &) override;
   void visit(const ir::operation::Gather &) override;
-  void visit(const ir::operation::GELU &) override;
   void visit(const ir::operation::L2Normalization &) override;
   void visit(const ir::operation::LogSoftmax &) override;
   void visit(const ir::operation::LSTM &) override;

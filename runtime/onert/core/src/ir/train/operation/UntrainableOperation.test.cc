@@ -691,7 +691,7 @@ TEST(UntrainableOperation, testAllOps)
 
   const auto gather = generateGather();
   verifyOp(gather);
-  
+
   const auto hashtable = generateHashtableLookup();
   verifyOp(hashtable);
 

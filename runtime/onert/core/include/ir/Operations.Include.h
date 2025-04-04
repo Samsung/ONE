@@ -43,7 +43,6 @@
 #include "ir/operation/FullyConnected.h"
 #include "ir/operation/FusedBatchNorm.h"
 #include "ir/operation/Gather.h"
-#include "ir/operation/GELU.h"
 #include "ir/operation/HashtableLookup.h"
 #include "ir/operation/If.h"
 #include "ir/operation/InstanceNorm.h"
