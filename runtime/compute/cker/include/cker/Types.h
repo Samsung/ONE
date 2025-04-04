@@ -307,6 +307,11 @@ struct GatherParams
   int32_t axis;
 };
 
+struct GELUParams
+{
+  bool approximate;
+};
+
 struct InstanceNormParams
 {
   float epsilon;

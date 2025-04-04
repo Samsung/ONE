@@ -296,6 +296,13 @@ uint32_t CircleGen::addOperatorGather(const OperatorParams &params, int axis, in
                                 circle::BuiltinOptions_GatherOptions, options);
 }
 
+uint32_t CircleGen::addOperatorGelu(const OperatorParams &params, bool approximate)
+{
+  auto options = circle::CreateGeluOptions(_fbb, approximate).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_GELU,
+                                circle::BuiltinOptions_GeluOptions, options);
+}
+
 uint32_t CircleGen::addOperatorGreater(const OperatorParams &params)
 {
   auto options = circle::CreateLessOptions(_fbb).Union();
@@ -670,7 +677,11 @@ uint32_t CircleGen::addOperatorCode(circle::BuiltinOperator opcode)
 {
   // TODO If the same OperatorCode is registered already, just return it
   uint32_t ind = _opcodes.size();
-  _opcodes.emplace_back(circle::CreateOperatorCode(_fbb, opcode));
+  if (opcode < circle::BuiltinOperator::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+    _opcodes.emplace_back(circle::CreateOperatorCode(_fbb, opcode));
+  else
+    _opcodes.emplace_back(circle::CreateOperatorCode(_fbb, 0, 0, 1, opcode));
+
   return ind;
 }
 

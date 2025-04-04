@@ -324,7 +324,7 @@ void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &n
   };
 
   fn->configure(input_tensor, output_tensor, node.param().alpha, node.param().beta,
-                convertToInferActivationType(node.param().op_type));
+                node.param().approximate, convertToInferActivationType(node.param().op_type));
 
   if (node.isRequiredForBackward())
   {

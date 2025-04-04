@@ -30,7 +30,8 @@ enum class ElementwiseActivationType
   kLogistic,
   kReLU,
   kTanh,
-  kLeakyReLU
+  kLeakyReLU,
+  kGELU
 };
 
 class ElementwiseActivationLayer : public ::onert::exec::IFunction
@@ -40,7 +41,7 @@ public:
 
 public:
   void configure(const IPortableTensor *input, IPortableTensor *output, float alpha, float beta,
-                 const ElementwiseActivationType op_type);
+                 bool approximate, const ElementwiseActivationType op_type);
 
   void run() override;
 

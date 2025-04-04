@@ -149,6 +149,7 @@ private:
   void loadFC(const Operator *op, ir::Graph &subg);
   void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
   void loadGather(const Operator *op, ir::Graph &subg);
+  void loadGELU(const Operator *op, ir::Graph &subg);
   void loadIf(const Operator *op, ir::Graph &subg);
   void loadLeakyRelu(const Operator *op, ir::Graph &subg);
   void loadLogSoftmax(const Operator *op, ir::Graph &subg);
@@ -1010,6 +1011,16 @@ void BaseLoader<LoaderDomain>::loadGather(const Operator *op, ir::Graph &subg)
 }
 
 template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadGELU(const Operator *op, ir::Graph &subg)
+{
+  ir::operation::ElementwiseActivation::Param param{};
+  param.op_type = ir::operation::ElementwiseActivation::Type::GELU;
+  param.approximate = op->builtin_options_as_GeluOptions()->approximate();
+
+  loadOperationTo<ir::operation::ElementwiseActivation>(op, subg, param);
+}
+
+template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadDetectionPostProcess(const Operator *op, ir::Graph &subg)
 {
   const auto &m = getCustomOpAttrMap(op);
@@ -1580,6 +1591,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       return;
     case BuiltinOperator::BuiltinOperator_GATHER:
       loadGather(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_GELU:
+      loadGELU(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SPACE_TO_BATCH_ND:
       loadOperationTo<ir::operation::SpaceToBatchND>(op, subg);
