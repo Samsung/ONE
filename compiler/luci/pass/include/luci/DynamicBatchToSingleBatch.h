@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_DYNAMIC_BATCH_TO_SINGLE_BATCH_H__
-#define __LUCI_DYNAMIC_BATCH_TO_SINGLE_BATCH_H__
+#ifndef __LUCI_PASS_DYNAMIC_BATCH_TO_SINGLE_BATCH_H__
+#define __LUCI_PASS_DYNAMIC_BATCH_TO_SINGLE_BATCH_H__
 
 #include <luci/IR/Module.h>
 
@@ -26,4 +26,4 @@ void dynamic_batch_to_single_batch(luci::Module *);
 
 } // namespace luci
 
-#endif // __LUCI_DYNAMIC_BATCH_TO_SINGLE_BATCH_H__
+#endif // __LUCI_PASS_DYNAMIC_BATCH_TO_SINGLE_BATCH_H__

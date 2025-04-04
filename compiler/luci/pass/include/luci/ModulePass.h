@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __MODULE_PASS_H__
-#define __MODULE_PASS_H__
+#ifndef __LUCI_PASS_MODULE_PASS_H__
+#define __LUCI_PASS_MODULE_PASS_H__
 
 #include <loco.h>
 #include <logo/Pass.h>
@@ -34,4 +34,4 @@ public:
 
 } // namespace luci
 
-#endif // __MODULE_PASS_H__
+#endif // __LUCI_PASS_MODULE_PASS_H__
