@@ -2169,4 +2169,33 @@ def CIR_TransposeConvOp: CIR_Op<"transpose_conv", [
   }];
 }
 
+// From submodules/onnx-mlir/src/Dialect/ONNX/ONNXOps.td.inc
+def CIR_UnsqueezeOnnxOp:CIR_Op<"unsqueeze_onnx", [
+    Pure]> {
+  let summary = "Unsqueeze temporary ONNX Op";
+
+  let description = [{
+    Insert single-dimensional entries to the shape of an input tensor (`data`).
+    Takes one required input `axes` - which contains a list of dimension indices and this operator will insert a dimension of value `1` into the corresponding index of the output tensor (`expanded`).
+
+    For example, given an input tensor (`data`) of shape [3, 4, 5], then
+    Unsqueeze(data, axes=[0, 4]) outputs a tensor (`expanded`) containing same data as `data` but with shape [1, 3, 4, 5, 1].
+
+    The input `axes` should not contain any duplicate entries. It is an error if it contains duplicates.
+    The rank of the output tensor (`output_rank`) is the rank of the input tensor (`data`) plus the number of values in `axes`.
+    Each value in `axes` should be within the (inclusive) range [-output_rank , output_rank - 1].
+    The order of values in `axes` does not matter and can come in any order.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32]>:$data,
+    CIR_TensorOf<[I64]>:$axes);
+
+  let results = (outs
+    CIR_TensorOf<[F32]>:$expanded);
+
+  // UnsqueezeOnnxOp should be converted to ResizeOp
+  let hasCanonicalizer = 1;
+}
+
 #endif // CIRCLE_OPS
