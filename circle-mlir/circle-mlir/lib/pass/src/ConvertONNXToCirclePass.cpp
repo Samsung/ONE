@@ -41,6 +41,8 @@
 #include "ops/FloorOp.h"
 #include "ops/GemmOp.h"
 #include "ops/GreaterOp.h"
+#include "ops/HardSwishOp.h"
+#include "ops/InstanceNormalizationOp.h"
 #include "ops/LeakyReluOp.h"
 #include "ops/LogOp.h"
 #include "ops/MatMulOp.h"
@@ -203,6 +205,8 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvFloor>(typeConverter, context);
   patterns.insert<ConvGemm>(typeConverter, context);
   patterns.insert<ConvGreater>(typeConverter, context);
+  patterns.insert<ConvHardSwish>(typeConverter, context);
+  patterns.insert<ConvInstanceNormalization>(typeConverter, context);
   patterns.insert<ConvLeakyRelu>(typeConverter, context);
   patterns.insert<ConvLog>(typeConverter, context);
   patterns.insert<ConvMatMul>(typeConverter, context);
