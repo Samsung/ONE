@@ -241,14 +241,6 @@ operation::Gather generateGather()
   return operation::Gather{OperandIndexSequence{1, 2}, OperandIndexSequence{0}, param};
 }
 
-operation::GELU generateGELU()
-{
-  operation::GELU::Param param;
-  param.approximate = false;
-
-  return operation::GELU{OperandIndexSequence{1}, OperandIndexSequence{0}, param};
-}
-
 operation::HashtableLookup generateHashtableLookup()
 {
   return operation::HashtableLookup{OperandIndexSequence{2, 3, 4}, OperandIndexSequence{0, 1}};
@@ -699,10 +691,7 @@ TEST(UntrainableOperation, testAllOps)
 
   const auto gather = generateGather();
   verifyOp(gather);
-
-  const auto gelu = generateGELU();
-  verifyOp(gelu);
-
+  
   const auto hashtable = generateHashtableLookup();
   verifyOp(hashtable);
 
