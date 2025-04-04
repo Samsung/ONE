@@ -475,6 +475,7 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 #include "ops/SubOp.h"
 #include "ops/TransposeConvOp.h"
 #include "ops/TransposeOp.h"
+#include "ops/UnsqueezeOnnxOp.h"
 
 #include "mlir/CircleOpsDialect.cc.inc"
 #include "mlir/CircleOpsEnums.cc.inc"

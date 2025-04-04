@@ -41,6 +41,8 @@
 #include "ops/FloorOp.h"
 #include "ops/GemmOp.h"
 #include "ops/GreaterOp.h"
+#include "ops/HardSwishOp.h"
+#include "ops/InstanceNormalizationOp.h"
 #include "ops/LeakyReluOp.h"
 #include "ops/LogOp.h"
 #include "ops/MatMulOp.h"
@@ -64,6 +66,7 @@
 #include "ops/SqrtOp.h"
 #include "ops/TanhOp.h"
 #include "ops/TransposeOp.h"
+#include "ops/UnsqueezeOp.h"
 #include "ops/WhereOp.h"
 
 #include <circle-mlir/dialect/CircleDialect.h>
@@ -203,6 +206,8 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvFloor>(typeConverter, context);
   patterns.insert<ConvGemm>(typeConverter, context);
   patterns.insert<ConvGreater>(typeConverter, context);
+  patterns.insert<ConvHardSwish>(typeConverter, context);
+  patterns.insert<ConvInstanceNormalization>(typeConverter, context);
   patterns.insert<ConvLeakyRelu>(typeConverter, context);
   patterns.insert<ConvLog>(typeConverter, context);
   patterns.insert<ConvMatMul>(typeConverter, context);
@@ -232,6 +237,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvSqrt>(typeConverter, context);
   patterns.insert<ConvTanh>(typeConverter, context);
   patterns.insert<ConvTranspose>(typeConverter, context);
+  patterns.insert<ConvUnsqueeze>(typeConverter, context);
   patterns.insert<ConvWhere>(typeConverter, context);
 
   auto res = mlir::applyFullConversion(function, target, std::move(patterns));
