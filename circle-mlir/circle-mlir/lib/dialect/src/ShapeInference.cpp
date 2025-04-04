@@ -518,6 +518,32 @@ void FullyConnectedOp::inferShapes(void)
 }
 
 //===----------------------------------------------------------------------===//
+// InstanceNormOp
+//===----------------------------------------------------------------------===//
+
+void InstanceNormOp::inferShapes()
+{
+  InstanceNormOp op = *this;
+  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  if (output_type.hasStaticShape())
+    return;
+
+  // if input is dynamic, skip shape infer
+  auto input_op = getOperand(0);
+  auto input_type = input_op.getType().cast<TensorType>();
+  if (!input_type.hasStaticShape())
+    return;
+
+  auto input_shape = input_type.getShape();
+  llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
+
+  dumpShape<InstanceNormOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // LogisticOp
 //===----------------------------------------------------------------------===//
 
