@@ -668,7 +668,11 @@ uint32_t CircleGen::addOperatorCode(circle::BuiltinOperator opcode)
 {
   // TODO If the same OperatorCode is registered already, just return it
   uint32_t ind = _opcodes.size();
-  _opcodes.emplace_back(circle::CreateOperatorCode(_fbb, opcode));
+  if (opcode < circle::BuiltinOperator::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES)
+    _opcodes.emplace_back(circle::CreateOperatorCode(_fbb, opcode));
+  else
+    _opcodes.emplace_back(circle::CreateOperatorCode(_fbb, 0, 0, 1, opcode));
+  
   return ind;
 }
 
