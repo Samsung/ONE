@@ -34,17 +34,15 @@ void TransposeImpl(const TransposeParams &params, const Shape &unextended_input_
                    const T *input_data, const Shape &unextended_output_shape, T *output_data)
 {
   const int unextended_output_size = unextended_output_shape.DimensionsCount();
-  assert(unextended_input_shape.DimensionsCount() <= 4);
-  assert(unextended_output_size <= 4);
+  assert(unextended_input_shape.DimensionsCount() <= 6);
+  assert(unextended_output_size <= 6);
   assert(unextended_output_size == params.perm_count);
-  const Shape input_shape = Shape::ExtendedShape(4, unextended_input_shape);
-  const Shape output_shape = Shape::ExtendedShape(4, unextended_output_shape);
-  const int input_ext_size = 4 - unextended_input_shape.DimensionsCount();
-  const int output_ext_size = 4 - unextended_output_size;
+  const Shape input_shape = Shape::ExtendedShape(6, unextended_input_shape);
+  const Shape output_shape = Shape::ExtendedShape(6, unextended_output_shape);
+  const int input_ext_size = 6 - unextended_input_shape.DimensionsCount();
+  const int output_ext_size = 6 - unextended_output_size;
 
-  // The perm data is extended to match the output, each index incremented by
-  // the amount of front padding of the input shape.
-  int extended_perm[4];
+  int extended_perm[6];
   for (int i = 0; i < output_ext_size; ++i)
   {
     extended_perm[i] = i;
@@ -54,30 +52,35 @@ void TransposeImpl(const TransposeParams &params, const Shape &unextended_input_
     extended_perm[i + output_ext_size] = params.perm[i] + input_ext_size;
   }
 
-  int out_sizes[4];
-  // Compute the inverse permutation array so we can do an output centered
-  // transpose. Also, check to make sure output_dims is matching input_dims.
-  for (int k = 0; k < 4; k++)
+  int out_sizes[6];
+  for (int k = 0; k < 6; k++)
   {
     out_sizes[k] = MatchingDim(input_shape, extended_perm[k], output_shape, k);
   }
 
-  // Naive transpose loop (iterate on output index and compute input index).
-  int o[4]; // loop index (on output).
-  int i[4];
-  for (o[3] = 0; o[3] < out_sizes[3]; o[3]++)
+  int o[6];
+  int i[6];
+  for (o[5] = 0; o[5] < out_sizes[5]; o[5]++)
   {
-    i[extended_perm[3]] = o[3];
-    for (o[2] = 0; o[2] < out_sizes[2]; o[2]++)
+    i[extended_perm[5]] = o[5];
+    for (o[4] = 0; o[4] < out_sizes[4]; o[4]++)
     {
-      i[extended_perm[2]] = o[2];
-      for (o[1] = 0; o[1] < out_sizes[1]; o[1]++)
+      i[extended_perm[4]] = o[4];
+      for (o[3] = 0; o[3] < out_sizes[3]; o[3]++)
       {
-        i[extended_perm[1]] = o[1];
-        for (o[0] = 0; o[0] < out_sizes[0]; o[0]++)
+        i[extended_perm[3]] = o[3];
+        for (o[2] = 0; o[2] < out_sizes[2]; o[2]++)
         {
-          i[extended_perm[0]] = o[0];
-          output_data[Offset(output_shape, o)] = input_data[Offset(input_shape, i)];
+          i[extended_perm[2]] = o[2];
+          for (o[1] = 0; o[1] < out_sizes[1]; o[1]++)
+          {
+            i[extended_perm[1]] = o[1];
+            for (o[0] = 0; o[0] < out_sizes[0]; o[0]++)
+            {
+              i[extended_perm[0]] = o[0];
+              output_data[Offset(output_shape, o)] = input_data[Offset(input_shape, i)];
+            }
+          }
         }
       }
     }
@@ -510,8 +513,8 @@ void Transpose(const TransposeParams &unshrunk_params, const Shape &unshrunk_inp
                const T *input_data, const Shape &unshrunk_output_shape, T *output_data)
 {
   const int output_size = unshrunk_output_shape.DimensionsCount();
-  assert(unshrunk_input_shape.DimensionsCount() <= 4);
-  assert(output_size <= 4);
+  assert(unshrunk_input_shape.DimensionsCount() <= 6);
+  assert(output_size <= 6);
   assert(output_size == unshrunk_params.perm_count);
 
   Shape shrunk_input_shape = Shape(unshrunk_input_shape);
