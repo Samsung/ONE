@@ -66,6 +66,7 @@
 #include "ops/SqrtOp.h"
 #include "ops/TanhOp.h"
 #include "ops/TransposeOp.h"
+#include "ops/UnsqueezeOp.h"
 #include "ops/WhereOp.h"
 
 #include <circle-mlir/dialect/CircleDialect.h>
@@ -236,6 +237,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvSqrt>(typeConverter, context);
   patterns.insert<ConvTanh>(typeConverter, context);
   patterns.insert<ConvTranspose>(typeConverter, context);
+  patterns.insert<ConvUnsqueeze>(typeConverter, context);
   patterns.insert<ConvWhere>(typeConverter, context);
 
   auto res = mlir::applyFullConversion(function, target, std::move(patterns));
