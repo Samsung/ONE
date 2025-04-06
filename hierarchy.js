@@ -1600,7 +1600,6 @@ var hierarchy =
     [ "kuma::Context< Alg >", "classkuma_1_1_context.html", null ],
     [ "loco::ShapeInferenceRule::Context", "structloco_1_1_shape_inference_rule_1_1_context.html", null ],
     [ "luci::QuantizeDequantizeWeightsPass::Context", "structluci_1_1_quantize_dequantize_weights_pass_1_1_context.html", null ],
-    [ "luci::QuantizeDequantizeWeightsWithGPTQPass::Context", "structluci_1_1_quantize_dequantize_weights_with_g_p_t_q_pass_1_1_context.html", null ],
     [ "luci::QuantizedModelVerifier::Context", "structluci_1_1_quantized_model_verifier_1_1_context.html", null ],
     [ "luci::QuantizeOnnxFakeQuantModelPass::Context", "structluci_1_1_quantize_onnx_fake_quant_model_pass_1_1_context.html", null ],
     [ "luci::QuantizeWeightsPass::Context", "structluci_1_1_quantize_weights_pass_1_1_context.html", null ],
@@ -1934,7 +1933,6 @@ var hierarchy =
     [ "onert::exec::ExecutionObservee", "classonert_1_1exec_1_1_execution_observee.html", null ],
     [ "luci_interpreter::ExecutionObserver", "classluci__interpreter_1_1_execution_observer.html", [
       [ "dalgona::PythonHooks", "classdalgona_1_1_python_hooks.html", null ],
-      [ "record_hessian::HessianObserver", "classrecord__hessian_1_1_hessian_observer.html", null ],
       [ "record_minmax::MinMaxObserver", "classrecord__minmax_1_1_min_max_observer.html", null ]
     ] ],
     [ "onert::exec::ExecutionOptions", "structonert_1_1exec_1_1_execution_options.html", null ],
@@ -2305,8 +2303,6 @@ var hierarchy =
     [ "dio::hdf5::HDF5Importer", "classdio_1_1hdf5_1_1_h_d_f5_importer.html", null ],
     [ "coco::DLinkedList< Child, Parent >::Head", "classcoco_1_1_d_linked_list_1_1_head.html", null ],
     [ "arser::Helper", "classarser_1_1_helper.html", null ],
-    [ "record_hessian::HessianComputer", "classrecord__hessian_1_1_hessian_computer.html", null ],
-    [ "record_hessian::HessianVector", "structrecord__hessian_1_1_hessian_vector.html", null ],
     [ "enco::HostBlockCompiler", "classenco_1_1_host_block_compiler.html", null ],
     [ "nnc::IArtifactGenerator", "classnnc_1_1_i_artifact_generator.html", [
       [ "nnc::ArtifactGeneratorCppCode", "classnnc_1_1_artifact_generator_cpp_code.html", null ],
@@ -4607,7 +4603,6 @@ var hierarchy =
       [ "luci::PropagateQParamBackwardPass", "structluci_1_1_propagate_q_param_backward_pass.html", null ],
       [ "luci::PropagateQParamForwardPass", "structluci_1_1_propagate_q_param_forward_pass.html", null ],
       [ "luci::QuantizeDequantizeWeightsPass", "classluci_1_1_quantize_dequantize_weights_pass.html", null ],
-      [ "luci::QuantizeDequantizeWeightsWithGPTQPass", "classluci_1_1_quantize_dequantize_weights_with_g_p_t_q_pass.html", null ],
       [ "luci::QuantizeOnnxDequantizeLinearPass", "structluci_1_1_quantize_onnx_dequantize_linear_pass.html", null ],
       [ "luci::QuantizeOnnxFakeQuantModelPass", "classluci_1_1_quantize_onnx_fake_quant_model_pass.html", null ],
       [ "luci::QuantizeOnnxQDQPass", "structluci_1_1_quantize_onnx_q_d_q_pass.html", null ],

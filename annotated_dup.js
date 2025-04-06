@@ -1369,7 +1369,6 @@ var annotated_dup =
       [ "QuantizeBias", "structluci_1_1_quantize_bias.html", "structluci_1_1_quantize_bias" ],
       [ "QuantizeConstInputActivation", "structluci_1_1_quantize_const_input_activation.html", "structluci_1_1_quantize_const_input_activation" ],
       [ "QuantizeDequantizeWeightsPass", "classluci_1_1_quantize_dequantize_weights_pass.html", "classluci_1_1_quantize_dequantize_weights_pass" ],
-      [ "QuantizeDequantizeWeightsWithGPTQPass", "classluci_1_1_quantize_dequantize_weights_with_g_p_t_q_pass.html", "classluci_1_1_quantize_dequantize_weights_with_g_p_t_q_pass" ],
       [ "QuantizedModelVerifier", "structluci_1_1_quantized_model_verifier.html", "structluci_1_1_quantized_model_verifier" ],
       [ "QuantizeOnnxDequantizeLinearPass", "structluci_1_1_quantize_onnx_dequantize_linear_pass.html", "structluci_1_1_quantize_onnx_dequantize_linear_pass" ],
       [ "QuantizeOnnxFakeQuantModelPass", "classluci_1_1_quantize_onnx_fake_quant_model_pass.html", "classluci_1_1_quantize_onnx_fake_quant_model_pass" ],
@@ -3892,11 +3891,6 @@ var annotated_dup =
     ] ],
     [ "RandomDataGenerator", "namespace_random_data_generator.html", [
       [ "RandomDataGenerator", "class_random_data_generator_1_1_random_data_generator.html", "class_random_data_generator_1_1_random_data_generator" ]
-    ] ],
-    [ "record_hessian", "namespacerecord__hessian.html", [
-      [ "HessianComputer", "classrecord__hessian_1_1_hessian_computer.html", "classrecord__hessian_1_1_hessian_computer" ],
-      [ "HessianObserver", "classrecord__hessian_1_1_hessian_observer.html", "classrecord__hessian_1_1_hessian_observer" ],
-      [ "HessianVector", "structrecord__hessian_1_1_hessian_vector.html", "structrecord__hessian_1_1_hessian_vector" ]
     ] ],
     [ "record_minmax", "namespacerecord__minmax.html", [
       [ "DataBuffer", "structrecord__minmax_1_1_data_buffer.html", "structrecord__minmax_1_1_data_buffer" ],

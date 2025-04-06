@@ -1156,9 +1156,6 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_quantize_dequantize_weights_pass.html">QuantizeDequantizeWeightsPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass to quantize weights.  <a href="classluci_1_1_quantize_dequantize_weights_pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_quantize_dequantize_weights_with_g_p_t_q_pass.html">QuantizeDequantizeWeightsWithGPTQPass</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass to quantize weights with GPTQ algorithm.  <a href="classluci_1_1_quantize_dequantize_weights_with_g_p_t_q_pass.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantized_model_verifier.html">QuantizedModelVerifier</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to verify quantized model.  <a href="structluci_1_1_quantized_model_verifier.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1415,8 +1412,6 @@ Typedefs</h2></td></tr>
 <tr class="separator:a8b99a8dc228b538c7ede8625f5add473"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bb53bd2986909ad805b44657fbd67d6" id="r_a2bb53bd2986909ad805b44657fbd67d6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a2bb53bd2986909ad805b44657fbd67d6">GroupKey</a> = std::string</td></tr>
 <tr class="separator:a2bb53bd2986909ad805b44657fbd67d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b7beb4185d58ccb475fcbdcea048274" id="r_a2b7beb4185d58ccb475fcbdcea048274"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a2b7beb4185d58ccb475fcbdcea048274">HessianMap</a> = std::unordered_map&lt; const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *, std::vector&lt; float &gt; &gt;</td></tr>
-<tr class="separator:a2b7beb4185d58ccb475fcbdcea048274"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37237b7e9b6c3618aac7e14c9c19687d" id="r_a37237b7e9b6c3618aac7e14c9c19687d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a37237b7e9b6c3618aac7e14c9c19687d">LayerInfoMap</a> = std::unordered_map&lt; std::string, <a class="el" href="structluci_1_1_layer_info.html">luci::LayerInfo</a> &gt;</td></tr>
 <tr class="separator:a37237b7e9b6c3618aac7e14c9c19687d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fd29b268980eddca0a25bd63831ea83" id="r_a5fd29b268980eddca0a25bd63831ea83"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a5fd29b268980eddca0a25bd63831ea83">Phase</a> = std::vector&lt; std::unique_ptr&lt; <a class="el" href="classluci_1_1_pass.html">Pass</a> &gt; &gt;</td></tr>
@@ -1978,22 +1973,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_partition_i_r_8h_source.html#l00032">32</a> of file <a class="el" href="_partition_i_r_8h_source.html">PartitionIR.h</a>.</p>
-
-</div>
-</div>
-<a id="a2b7beb4185d58ccb475fcbdcea048274" name="a2b7beb4185d58ccb475fcbdcea048274"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b7beb4185d58ccb475fcbdcea048274">&#9670;&#160;</a></span>HessianMap</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespaceluci.html#a2b7beb4185d58ccb475fcbdcea048274">luci::HessianMap</a> = typedef std::unordered_map&lt;const <a class="el" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *, std::vector&lt;float&gt; &gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_quantize_dequantize_weights_with_g_p_t_q_pass_8h_source.html#l00031">31</a> of file <a class="el" href="_quantize_dequantize_weights_with_g_p_t_q_pass_8h_source.html">QuantizeDequantizeWeightsWithGPTQPass.h</a>.</p>
 
 </div>
 </div>
@@ -6668,7 +6647,7 @@ template&lt;typename Permutation &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_quantize_dequantize_weights_pass_8cpp_source.html#l00432">luci::QuantizeDequantizeWeightsPass::run()</a>, <a class="el" href="_quantize_dequantize_weights_with_g_p_t_q_pass_8cpp_source.html#l00149">luci::QuantizeDequantizeWeightsWithGPTQPass::run()</a>, <a class="el" href="_quantize_with_min_max_pass_8cpp_source.html#l00561">luci::QuantizeWithMinMaxPass::run()</a>, and <a class="el" href="_quantized_model_verifier_8cpp_source.html#l00029">luci::QuantizedModelVerifier::verify()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_quantize_dequantize_weights_pass_8cpp_source.html#l00432">luci::QuantizeDequantizeWeightsPass::run()</a>, <a class="el" href="_quantize_with_min_max_pass_8cpp_source.html#l00561">luci::QuantizeWithMinMaxPass::run()</a>, and <a class="el" href="_quantized_model_verifier_8cpp_source.html#l00029">luci::QuantizedModelVerifier::verify()</a>.</p>
 
 </div>
 </div>

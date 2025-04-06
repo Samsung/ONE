@@ -55,7 +55,6 @@ var dir_0cfc21e32c12176d5f20eadc124f82de =
     [ "PropagateQParamForwardPass.h", "_propagate_q_param_forward_pass_8h.html", "_propagate_q_param_forward_pass_8h" ],
     [ "QuantizationParameters.h", "_quantization_parameters_8h.html", "_quantization_parameters_8h" ],
     [ "QuantizeDequantizeWeightsPass.h", "_quantize_dequantize_weights_pass_8h.html", "_quantize_dequantize_weights_pass_8h" ],
-    [ "QuantizeDequantizeWeightsWithGPTQPass.h", "_quantize_dequantize_weights_with_g_p_t_q_pass_8h.html", "_quantize_dequantize_weights_with_g_p_t_q_pass_8h" ],
     [ "QuantizeOnnxFakeQuantModelPass.h", "_quantize_onnx_fake_quant_model_pass_8h.html", "_quantize_onnx_fake_quant_model_pass_8h" ],
     [ "QuantizePreCheckerPass.h", "_quantize_pre_checker_pass_8h.html", "_quantize_pre_checker_pass_8h" ],
     [ "QuantizeWeightsPass.h", "_quantize_weights_pass_8h.html", "_quantize_weights_pass_8h" ],

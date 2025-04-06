@@ -1027,37 +1027,38 @@ $(document).ready(function(){initNavTree('compute_2cker_2include_2cker_2operatio
 <div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span> </div>
 <div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span>    <span class="comment">// LaunchBatchMatMul::Launch(lhs, rhs, adj_x, adj_y, bcast, &amp;output_reshaped);</span></div>
 <div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span>    <a class="code hl_function" href="namespaceluci__interpreter__pal.html#a5f2971baddec44bd507ef27f8d90461a">BatchMatMul</a> batchMatMul;</div>
-<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span>    batchMatMul.prepare(lhs.shape, rhs.shape, adj_x, adj_y);</div>
-<div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span>    batchMatMul(lhs.shape, lhs.base&lt;<span class="keywordtype">float</span>&gt;(), rhs.shape, rhs.base&lt;<span class="keywordtype">float</span>&gt;(), adj_x, adj_y,</div>
-<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>                output_reshaped.shape, output_reshaped.base&lt;<span class="keywordtype">float</span>&gt;());</div>
-<div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span>  }</div>
-<div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span> </div>
-<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>  <span class="keywordtype">void</span> reshapeToRank3(<span class="keyword">const</span> <a class="code hl_class" href="class_tensor.html">Tensor</a> &amp;input, <span class="keywordtype">int</span> batch_size, <a class="code hl_class" href="class_tensor.html">Tensor</a> *output)</div>
-<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>  {</div>
-<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> rank = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.shape.DimensionsCount();</div>
-<div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span>    <a class="code hl_struct" href="struct_shape.html">Shape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>({batch_size, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.shape.Dims(rank - 2), <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.shape.Dims(rank - 1)});</div>
-<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>    copyFrom(input, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output);</div>
-<div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>  }</div>
-<div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span> </div>
-<div class="line"><a id="l00918" name="l00918"></a><span class="lineno">  918</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00919" name="l00919"></a><span class="lineno">  919</span>  <span class="keywordtype">bool</span> _prepared;</div>
-<div class="line"><a id="l00920" name="l00920"></a><span class="lineno">  920</span> </div>
-<div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>  <a class="code hl_typedef" href="namespacennfw_1_1cker.html#a0a03459d0f5a63f17831d9c8bd04b918">OperandLabels</a> _input_labels;</div>
-<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span>  <a class="code hl_typedef" href="namespacennfw_1_1cker.html#abb31958b1ebb5f6b6960924b56b18c80">Labels</a> _output_labels;</div>
-<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span>  std::vector&lt;DimensionType&gt; _label_types;</div>
-<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>  <a class="code hl_typedef" href="namespacennfw_1_1cker.html#a2e9a13956edd5a11e2964ba261b365f4">OperandLabelCounts</a> _input_label_counts;</div>
-<div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span>  <a class="code hl_typedef" href="namespacennfw_1_1cker.html#a12cb7a67a3d9e87df106165db7a0eafb">LabelCounts</a> _output_label_counts;</div>
-<div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span>  std::vector&lt;bool&gt; _input_has_ellipsis;</div>
-<div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span>  <span class="keywordtype">bool</span> _output_has_ellipsis = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span> </div>
-<div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span>  std::vector&lt;std::unique_ptr&lt;float[]&gt;&gt; temp_operand;</div>
-<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span>};</div>
+<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span>    <span class="comment">// Set rhs is not constant: don&#39;t use optimization</span></div>
+<div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span>    batchMatMul.prepare(lhs.shape, rhs.shape, adj_x, adj_y, <span class="keyword">false</span>);</div>
+<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>    batchMatMul(lhs.shape, lhs.base&lt;<span class="keywordtype">float</span>&gt;(), rhs.shape, rhs.base&lt;<span class="keywordtype">float</span>&gt;(), adj_x, adj_y,</div>
+<div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span>                output_reshaped.shape, output_reshaped.base&lt;<span class="keywordtype">float</span>&gt;());</div>
+<div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span>  }</div>
+<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span> </div>
+<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>  <span class="keywordtype">void</span> reshapeToRank3(<span class="keyword">const</span> <a class="code hl_class" href="class_tensor.html">Tensor</a> &amp;input, <span class="keywordtype">int</span> batch_size, <a class="code hl_class" href="class_tensor.html">Tensor</a> *output)</div>
+<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>  {</div>
+<div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> rank = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.shape.DimensionsCount();</div>
+<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>    <a class="code hl_struct" href="struct_shape.html">Shape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>({batch_size, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.shape.Dims(rank - 2), <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.shape.Dims(rank - 1)});</div>
+<div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>    copyFrom(input, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output);</div>
+<div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span>  }</div>
+<div class="line"><a id="l00918" name="l00918"></a><span class="lineno">  918</span> </div>
+<div class="line"><a id="l00919" name="l00919"></a><span class="lineno">  919</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00920" name="l00920"></a><span class="lineno">  920</span>  <span class="keywordtype">bool</span> _prepared;</div>
+<div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span> </div>
+<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span>  <a class="code hl_typedef" href="namespacennfw_1_1cker.html#a0a03459d0f5a63f17831d9c8bd04b918">OperandLabels</a> _input_labels;</div>
+<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span>  <a class="code hl_typedef" href="namespacennfw_1_1cker.html#abb31958b1ebb5f6b6960924b56b18c80">Labels</a> _output_labels;</div>
+<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>  std::vector&lt;DimensionType&gt; _label_types;</div>
+<div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span>  <a class="code hl_typedef" href="namespacennfw_1_1cker.html#a2e9a13956edd5a11e2964ba261b365f4">OperandLabelCounts</a> _input_label_counts;</div>
+<div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span>  <a class="code hl_typedef" href="namespacennfw_1_1cker.html#a12cb7a67a3d9e87df106165db7a0eafb">LabelCounts</a> _output_label_counts;</div>
+<div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span>  std::vector&lt;bool&gt; _input_has_ellipsis;</div>
+<div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span>  <span class="keywordtype">bool</span> _output_has_ellipsis = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span> </div>
+<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span>  std::vector&lt;std::unique_ptr&lt;float[]&gt;&gt; temp_operand;</div>
+<div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span>};</div>
 </div>
-<div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span> </div>
-<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span>} <span class="comment">// namespace cker</span></div>
-<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span>} <span class="comment">// namespace nnfw</span></div>
-<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span> </div>
-<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span><span class="preprocessor">#endif </span><span class="comment">// __NNFW_CKER_EINSUM_H__</span></div>
+<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span> </div>
+<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span>} <span class="comment">// namespace cker</span></div>
+<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span>} <span class="comment">// namespace nnfw</span></div>
+<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span> </div>
+<div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span><span class="preprocessor">#endif </span><span class="comment">// __NNFW_CKER_EINSUM_H__</span></div>
 <div class="ttc" id="a_matmul_b_cast_8h_html"><div class="ttname"><a href="_matmul_b_cast_8h.html">MatmulBCast.h</a></div></div>
 <div class="ttc" id="aclass_tensor_html"><div class="ttname"><a href="class_tensor.html">Tensor</a></div><div class="ttdef"><b>Definition</b> <a href="tensor__gen_8cpp_source.html#l00031">tensor_gen.cpp:32</a></div></div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_einsum_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_einsum.html">nnfw::cker::Einsum</a></div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2_einsum_8h_source.html#l00182">Einsum.h:183</a></div></div>
