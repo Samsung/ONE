@@ -36,14 +36,21 @@ public:
     LOGISTIC,
     RELU,
     TANH,
-    LEAKY_RELU
+    LEAKY_RELU,
+    GELU
   };
 
   struct Param
   {
     Type op_type;
-    float alpha;
-    float beta;
+    union {
+      struct
+      {
+        float alpha;
+        float beta;
+      };
+      bool approximate;
+    };
     Param() : op_type(Type::ELU), alpha(0.0f), beta(0.0f) {}
   };
 

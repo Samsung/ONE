@@ -253,6 +253,7 @@ void OperationValidator::visit(const operation::ElementwiseActivation &node)
   switch (node.param().op_type)
   {
     case operation::ElementwiseActivation::Type::ELU:
+    case operation::ElementwiseActivation::Type::GELU:
       OP_REQUIRES(isValidType(input_index, DataType::FLOAT32));
       break;
     case operation::ElementwiseActivation::Type::LEAKY_RELU:
