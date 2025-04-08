@@ -25,21 +25,19 @@ namespace circle_resizer
 {
 /**
  * The representation of a single dimension. Note that a dimension can be dynamic.
-*/
+ */
 class Dim
 {
 public:
-
   /**
    * @brief Initialize a single dimension. Note that '-1' means a dynamic dimension.
-   * 
+   *
    * Exceptions:
    * - std::runtime_error if provided dim value is less than -1.
    */
   explicit Dim(int32_t dim);
 
 public:
-
   /**
    * @brief Return true if the dimension is dynamic. Otherwise, return false.
    */
@@ -62,12 +60,12 @@ private:
 
 /**
  * The representation of a single shape.
-*/
+ */
 using Shape = std::vector<Dim>;
 
 /**
  * The representation of many shapes.
-*/
+ */
 using Shapes = std::vector<Shape>;
 
 } // namespace circle_resizer

@@ -26,11 +26,11 @@ namespace circle_resizer
 {
 /**
  * @brief Parse shapes from string representation to Shapes object.
- * 
+ *
  * The single shape is represented by comma-separated integers inside squared brackets.
  * If there is more than one shape, they are separated by commas.
  * An example for single shape: [1,2,3], an example for many shapes: [1,2,3],[4,5].
- * 
+ *
  * Exceptions:
  * std::invalid_argument is the parsing failed.
  */
