@@ -455,6 +455,7 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 #include "ops/ExpandOnnxOp.h"
 #include "ops/FloorOp.h"
 #include "ops/FullyConnectedOp.h"
+#include "ops/GatherOp.h"
 #include "ops/LogOp.h"
 #include "ops/MulOp.h"
 #include "ops/NegOp.h"
