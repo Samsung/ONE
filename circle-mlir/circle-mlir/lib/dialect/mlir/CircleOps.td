@@ -2035,6 +2035,34 @@ def CIR_SoftmaxOp : CIR_Op<"softmax", [
   // }];
 }
 
+def CIR_SplitVOp : CIR_Op<"split_v", [
+    Pure,
+    /*QuantizableResult,*/
+    /*SameOperandsAndResultsScale*/]> {
+  let summary = "Splits a tensor into `num_split` tensors along one dimension.";
+
+  let description = [{
+    Splits the `value` tensor along `split_dim` into a number of sub-tensors
+    with same shape as the original one, except for `split_dim`. The grouping
+    of the resultant sub-tensors is decided by `size-splits`. Same as tf.SplitV.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I16, I32, I64, I8, UI8/*, QI8, QUI8, QI16*/]>:$value,
+    CIR_1DTensorOf<[I32], [I32]>:$size_splits,
+    CIR_0DTensorOf<[I32], [I32]>:$split_dim,
+    ConfinedAttr<I32Attr, [IntPositive]>:$num_splits
+  );
+
+  let results = (outs
+    CIR_VariadicTensorOf<[F32, I16, I32, I64, I8, UI8/*, QI8, QUI8, QI16*/]>:$outputs
+  );
+
+  let hasVerifier = 1;
+
+  let hasOptions = 1;
+}
+
 def CIR_SqrtOp: CIR_Op<"sqrt", [
     Pure,
     DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
@@ -2056,6 +2084,47 @@ def CIR_SqrtOp: CIR_Op<"sqrt", [
     // Returns whether the return types are compatible.
     static bool isCompatibleReturnTypes(TypeRange l, TypeRange r);
   }];
+}
+
+def CIR_SqueezeOp: CIR_Op<"squeeze", [Pure,
+                                      /*QuantizableResult,*/
+                                      /*SameOperandsAndResultsScale*/]> {
+  let summary = "Removes dimensions of size 1 from the shape of a tensor.";
+
+  let description = [{
+Given a tensor `input`, this operation returns a tensor of the same type with
+all dimensions of size 1 removed. If you don't want to remove all size 1
+dimensions, you can remove specific size 1 dimensions by specifying
+`squeeze_dims`.
+
+For example:
+
+```
+# 't' is a tensor of shape [1, 2, 1, 3, 1, 1]
+shape(squeeze(t)) ==> [2, 3]
+```
+
+Or, to remove specific size 1 dimensions:
+
+```
+# 't' is a tensor of shape [1, 2, 1, 3, 1, 1]
+shape(squeeze(t, [2, 4])) ==> [1, 2, 3, 1]
+```
+  }];
+
+  let arguments = (ins
+    AnyTensor:$input,
+    ConfinedAttr<DefaultValuedOptionalAttr<I64ArrayAttr, "{}">, [CIR_ArrayMaxCount<8>]>:$squeeze_dims
+  );
+
+  let results = (outs
+    AnyTensor:$output
+  );
+
+  let hasFolder = 1;
+  let hasOptions = 1;
+
+  let customOption = "SqueezeOptions";
 }
 
 def CIR_StridedSliceOp: CIR_Op<"strided_slice", [
@@ -2226,6 +2295,33 @@ def CIR_TanhOp: CIR_Op<"tanh", [
   //       /*scale=*/1.0 / (1<<(bit_width-1)), /*zero_point=*/0);
   // }
   // }];
+}
+
+def CIR_TileOp: CIR_Op<"tile", [
+    Pure,
+    /*SameOperandsAndResultsScale,*/
+    /*QuantizableResult,*/
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>]> {
+  let summary = "Tile operator.";
+  let description = [{
+    Constructs a tensor by tiling a given tensor.
+
+   This operation creates a new tensor by replicating input
+   multiples times. The output tensor's i'th dimension has
+   input.dims(i) * multiples[i] elements, and the values of input
+   are replicated multiples[i] times along the 'i'th dimension.
+   For example, tiling [a b c d] by [2] produces [a b c d a b c d].
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I1, I32, I64/*, UI8, QI8, QUI8, TFL_Str*/]>:$input,
+    CIR_I32OrI64Tensor:$multiples);
+
+  let results = (outs
+    CIR_TensorOf<[F32, I1, I32, I64/*, UI8, QI8, QUI8, TFL_Str*/]>:$output);
+
+  let hasOptions = 0;
 }
 
 def CIR_TransposeOp : CIR_Op<"transpose", [
