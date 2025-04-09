@@ -26,6 +26,7 @@
 //    file: AbcdOp.h
 #include "ops/ArgMaxOp.h"
 #include "ops/AveragePoolOp.h"
+#include "ops/BatchNormalizationInferenceModeOp.h"
 #include "ops/CastOp.h"
 #include "ops/ClipOp.h"
 #include "ops/ConcatOp.h"
@@ -197,6 +198,7 @@ void ConvertONNXToCirclePass::runOnOperation()
 
   patterns.insert<ConvArgMax>(typeConverter, context);
   patterns.insert<ConvAveragePool>(typeConverter, context);
+  patterns.insert<ConvBatchNormalizationInferenceMode>(typeConverter, context);
   patterns.insert<ConvCast>(typeConverter, context);
   patterns.insert<ConvClip>(typeConverter, context);
   patterns.insert<ConvConcat>(typeConverter, context);
