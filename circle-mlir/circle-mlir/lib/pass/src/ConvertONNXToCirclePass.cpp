@@ -41,6 +41,7 @@
 #include "ops/FloorOp.h"
 #include "ops/GatherOp.h"
 #include "ops/GemmOp.h"
+#include "ops/GlobalAveragePoolOp.h"
 #include "ops/GreaterOp.h"
 #include "ops/HardSwishOp.h"
 #include "ops/InstanceNormalizationOp.h"
@@ -212,6 +213,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvFloor>(typeConverter, context);
   patterns.insert<ConvGather>(typeConverter, context);
   patterns.insert<ConvGemm>(typeConverter, context);
+  patterns.insert<ConvGlobalAveragePool>(typeConverter, context);
   patterns.insert<ConvGreater>(typeConverter, context);
   patterns.insert<ConvHardSwish>(typeConverter, context);
   patterns.insert<ConvInstanceNormalization>(typeConverter, context);
