@@ -66,8 +66,11 @@
 #include "ops/SinOp.h"
 #include "ops/SliceOp.h"
 #include "ops/SoftmaxOp.h"
+#include "ops/SplitOp.h"
 #include "ops/SqrtOp.h"
+#include "ops/SqueezeOp.h"
 #include "ops/TanhOp.h"
+#include "ops/TileOp.h"
 #include "ops/TransposeOp.h"
 #include "ops/UnsqueezeOp.h"
 #include "ops/WhereOp.h"
@@ -240,8 +243,12 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvSlice>(typeConverter, context);
   patterns.insert<ConvSoftmax>(typeConverter, context);
   patterns.insert<ConvSoftmaxV11>(typeConverter, context);
+  patterns.insert<ConvSplit>(typeConverter, context);
   patterns.insert<ConvSqrt>(typeConverter, context);
+  patterns.insert<ConvSqueeze>(typeConverter, context);
+  patterns.insert<ConvSqueezeV11>(typeConverter, context);
   patterns.insert<ConvTanh>(typeConverter, context);
+  patterns.insert<ConvTile>(typeConverter, context);
   patterns.insert<ConvTranspose>(typeConverter, context);
   patterns.insert<ConvUnsqueeze>(typeConverter, context);
   patterns.insert<ConvWhere>(typeConverter, context);
