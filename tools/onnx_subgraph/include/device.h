@@ -24,6 +24,7 @@
 #include <jsoncpp/json/json.h>
 #include "onnx.pb.h"
 #include "graph.h"
+
 enum class DeviceType
 {
   Target_NPU
@@ -32,26 +33,26 @@ enum class DeviceType
 class Device
 {
 private:
-  std::string onnxFile;
+  std::string _onnxFile;
 
 public:
   Device(/* args */)
   {
-    NPUPreferOp = {};
-    CPUSupportOp = {};
-    NPUSupportOp = {};
-    max_subgraph_size = 0;
+    _NPUPreferOp = {};
+    _CPUSupportOp = {};
+    _NPUSupportOp = {};
+    _max_subgraph_size = 0;
   }
 
-  std::vector<std::string> NPUPreferOp;
-  std::vector<std::string> CPUSupportOp;
-  std::vector<std::string> NPUSupportOp;
-  float max_subgraph_size;
+  std::vector<std::string> _NPUPreferOp;
+  std::vector<std::string> _CPUSupportOp;
+  std::vector<std::string> _NPUSupportOp;
+  float _max_subgraph_size;
 
   DeviceType getType() { return DeviceType::Target_NPU; }
-  std::vector<std::string> getNPUSupportOp() { return NPUSupportOp; }
-  std::vector<std::string> getCPUSupportOp() { return CPUSupportOp; }
-  std::vector<std::string> getNPUPreferOp() { return NPUPreferOp; }
+  std::vector<std::string> getNPUSupportOp() { return _NPUSupportOp; }
+  std::vector<std::string> getCPUSupportOp() { return _CPUSupportOp; }
+  std::vector<std::string> getNPUPreferOp() { return _NPUPreferOp; }
 
   /**
    * @brief     Generate cut instructions for subgraphs based on the given device type.
@@ -86,11 +87,11 @@ public:
    *
    * @param json_path The file path to the JSON file containing device information.
    */
-  void GetDeviceJson(std::string json_path);
+  void GetDeviceJson(const std::string &json_path);
 
-  void updateOnnxFile(std::string &path) { onnxFile = path; }
+  void updateOnnxFile(std::string &path) { _onnxFile = path; }
 
-  std::string getOnnxFile() { return onnxFile; }
+  std::string getOnnxFile() { return _onnxFile; }
 };
 
-#endif
+#endif // DEVICE_H

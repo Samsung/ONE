@@ -15,7 +15,7 @@
  */
 #include "device.h"
 
-void Device::GetDeviceJson(std::string json_path) { return; }
+void Device::GetDeviceJson(const std::string &json_path) { return; }
 
 void Device::GenerateCutInstruction(std::vector<onnx::GraphProto> &Subgraphs, std::string device,
                                     std::vector<std::unordered_set<NodeTensor>> &subgraphs_inputs,
