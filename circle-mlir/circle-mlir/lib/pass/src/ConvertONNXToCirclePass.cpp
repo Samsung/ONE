@@ -38,6 +38,7 @@
 #include "ops/EqualOp.h"
 #include "ops/ExpOp.h"
 #include "ops/ExpandOp.h"
+#include "ops/FlattenOp.h"
 #include "ops/FloorOp.h"
 #include "ops/GatherOp.h"
 #include "ops/GemmOp.h"
@@ -209,6 +210,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvEqual>(typeConverter, context);
   patterns.insert<ConvExp>(typeConverter, context);
   patterns.insert<ConvExpand>(typeConverter, context);
+  patterns.insert<ConvFlatten>(typeConverter, context);
   patterns.insert<ConvFloor>(typeConverter, context);
   patterns.insert<ConvGather>(typeConverter, context);
   patterns.insert<ConvGemm>(typeConverter, context);
