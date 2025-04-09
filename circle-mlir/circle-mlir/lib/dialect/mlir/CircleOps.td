@@ -1098,7 +1098,6 @@ def CIR_LogisticOp: CIR_Op<"logistic", [
 def CIR_LogOp: CIR_Op<"log", [
     Pure,
     // NOTE TFL_LogOp used TF_SameOperandsAndResultTypeResolveRef
-    // REFER https://github.sec.samsung.net/one-project/circle-mlir/issues/292
     SameOperandsAndResultShape]> {
   let summary = "Natural logarithm operator";
 
