@@ -51,6 +51,7 @@
 #include "ops/NoneOp.h"
 #include "ops/NotOp.h"
 #include "ops/PadOp.h"
+#include "ops/PowOp.h"
 #include "ops/PReluOp.h"
 #include "ops/ReduceMaxOp.h"
 #include "ops/ReduceMeanOp.h"
@@ -61,6 +62,7 @@
 #include "ops/ResizeOp.h"
 #include "ops/ShapeOp.h"
 #include "ops/SigmoidOp.h"
+#include "ops/SinOp.h"
 #include "ops/SliceOp.h"
 #include "ops/SoftmaxOp.h"
 #include "ops/SqrtOp.h"
@@ -216,6 +218,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvNone>(typeConverter, context);
   patterns.insert<ConvNot>(typeConverter, context);
   patterns.insert<ConvPad>(typeConverter, context);
+  patterns.insert<ConvPow>(typeConverter, context);
   patterns.insert<ConvPRelu>(typeConverter, context);
   patterns.insert<ConvReduceMax>(typeConverter, context);
   patterns.insert<ConvReduceMaxV13>(typeConverter, context);
@@ -231,6 +234,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvResizeV13>(typeConverter, context);
   patterns.insert<ConvShape>(typeConverter, context);
   patterns.insert<ConvSigmoid>(typeConverter, context);
+  patterns.insert<ConvSin>(typeConverter, context);
   patterns.insert<ConvSlice>(typeConverter, context);
   patterns.insert<ConvSoftmax>(typeConverter, context);
   patterns.insert<ConvSoftmaxV11>(typeConverter, context);
