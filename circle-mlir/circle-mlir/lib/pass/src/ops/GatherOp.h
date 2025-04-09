@@ -109,4 +109,4 @@ public:
 } // namespace Circle
 } // namespace mlir
 
-#endif // __CIRCLE_MLIR_PASS_OPS_GATHER_OP_H_
+#endif // __CIRCLE_MLIR_PASS_OPS_GATHER_OP_H__
