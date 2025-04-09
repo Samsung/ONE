@@ -121,22 +121,26 @@ public:
     // 2/ from tensorflow to tflite
     //   multiplier = scale / sqrt(variance + epsilon)
     //   output = (x * multiplier) + (offset - mean * multiplier)
+    // as new 'running_mean' is passed from onnx-tensorflow, we need to use
+    //   'running_mean' instead of 'mean' and 'running_variance' instead of 'variance'
 
-    mlir::Value const_epsilon = CreateConst(rewriter, variance, epsilon_val, op_name + "/epsilon");
+    mlir::Value const_epsilon =
+      CreateConst(rewriter, running_variance, epsilon_val, op_name + "/epsilon");
     assert(not const_epsilon.getType().isa<mlir::NoneType>());
     // add_ve = variance + epsilon
     mlir::Location add_ve_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/add_ve"));
-    mlir::Value add_ve =
-      rewriter.create<AddOp>(add_ve_loc, variance.getType(), variance, const_epsilon, "NONE");
+    mlir::Value add_ve = rewriter.create<AddOp>(add_ve_loc, running_variance.getType(),
+                                                running_variance, const_epsilon, "NONE");
     // sqrt_ave = sqrt(variance + epsilon) = sqrt(add_ve)
     mlir::Location sqrt_ave_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/sqrt_ave"));
-    mlir::Value sqrt_ave = rewriter.create<SqrtOp>(sqrt_ave_loc, variance.getType(), add_ve);
+    mlir::Value sqrt_ave =
+      rewriter.create<SqrtOp>(sqrt_ave_loc, running_variance.getType(), add_ve);
 
     // multiplier = scale / sqrt(variance + epsilon) = div(scale, sqrt_ave)
     mlir::Location multiplier_loc =
       mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/multiplier"));
     mlir::Value multiplier =
-      rewriter.create<DivOp>(multiplier_loc, variance.getType(), scale, sqrt_ave, "NONE");
+      rewriter.create<DivOp>(multiplier_loc, running_variance.getType(), scale, sqrt_ave, "NONE");
 
     // mul_imt = x * multiplier
     mlir::Location mul_imt_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/mul_imt"));
@@ -144,12 +148,12 @@ public:
       rewriter.create<MulOp>(mul_imt_loc, input.getType(), input, multiplier, "NONE");
     // mul_mmt = mean * multiplier
     mlir::Location mul_mmt_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/mul_mmt"));
-    mlir::Value mul_mmt =
-      rewriter.create<MulOp>(mul_mmt_loc, variance.getType(), mean, multiplier, "NONE");
+    mlir::Value mul_mmt = rewriter.create<MulOp>(mul_mmt_loc, running_variance.getType(),
+                                                 running_mean, multiplier, "NONE");
     // sub_omm = offset - mean * multiplier = offset - mul_mmt
     mlir::Location sub_omm_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/sub_omm"));
     mlir::Value sub_omm =
-      rewriter.create<SubOp>(sub_omm_loc, variance.getType(), bias, mul_mmt, "NONE");
+      rewriter.create<SubOp>(sub_omm_loc, running_variance.getType(), bias, mul_mmt, "NONE");
 
     // output = (x * multiplier) + (offset - mean * multiplier) = mul_imt + sub_omm
     rewriter.replaceOpWithNewOp<AddOp>(op, op.getType(), mul_imt, sub_omm, "NONE");

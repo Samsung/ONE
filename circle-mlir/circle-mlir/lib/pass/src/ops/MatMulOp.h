@@ -60,6 +60,7 @@ public:
     CHECK_VALID_RANK_ATLEAST(filtertype, 2);
     CHECK_VALID_RANK_ATLEAST(outtype, 2);
 
+    auto fr = filtertype.getRank();
     bool createFC = false;
     if (intype)
     {
@@ -70,7 +71,7 @@ public:
           createFC = true;
           break;
         case 3:
-          createFC = (inshape[0] == 1 || inshape[1] == 1);
+          createFC = (inshape[0] == 1 || (inshape[1] == 1 && fr == 2));
           break;
         case 4:
           createFC = (inshape[0] == 1 && inshape[1] == 1);
@@ -86,7 +87,6 @@ public:
       // FC filter shape can be rank2 OI
       // --> Add ReshapeOp to shape HW, 1HW, 11HW to HW
       auto filtershape = filtertype.getShape();
-      auto fr = filtertype.getRank();
       assert(2 <= fr && fr <= 4);
       llvm::SmallVector<int64_t> filter_hws;
       filter_hws.push_back(filtershape[fr - 2]); // pick last two dims

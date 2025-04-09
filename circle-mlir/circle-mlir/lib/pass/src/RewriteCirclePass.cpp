@@ -29,9 +29,14 @@
 #include <mlir/Transforms/GreedyPatternRewriteDriver.h>
 
 // Optimizations
+#include "opt/ConvertDivErfToMulErf.h"
 #include "opt/ConvertMirrorPadPad32.h"
 #include "opt/ConvertReshapeShape32.h"
 #include "opt/ConvertResizeNearestSize32.h"
+#include "opt/ConvertSqrtDivToRsqrt.h"
+#include "opt/FuseAddRelu.h"
+#include "opt/FuseConv2DRelu.h"
+#include "opt/FuseFullyConnectedAdd.h"
 
 namespace mlir
 {
@@ -90,12 +95,20 @@ void RewriteCirclePass::applyActivationFusion()
   mlir::MLIRContext *context = &getContext();
   mlir::RewritePatternSet patterns(context);
 
+  patterns.add<FuseConv2DRelu<ReluOp, ACT_RELU>>(context);
+  patterns.add<FuseConv2DRelu<Relu6Op, ACT_RELU6>>(context);
   // TODO enable Tanh after circle-interpreter works
   // patterns.add<FuseConv2DRelu<TanhOp, ACT_TANH>>(context);
 
+  patterns.add<FuseAddRelu<ReluOp, ACT_RELU>>(context);
+  patterns.add<FuseAddRelu<Relu6Op, ACT_RELU6>>(context);
+  patterns.add<FuseFullyConnectedAdd>(context);
+
+  patterns.add<ConvertDivErfToMulErf>(context);
   patterns.add<ConvertMirrorPadPad32>(context);
   patterns.add<ConvertReshapeShape32>(context);
   patterns.add<ConvertResizeNearestSize32>(context);
+  patterns.add<ConvertSqrtDivToRsqrt>(context);
 
   // TODO add more patterns
 
