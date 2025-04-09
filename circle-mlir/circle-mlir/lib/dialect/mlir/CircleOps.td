@@ -1497,6 +1497,36 @@ def CIR_PadV2Op : CIR_Op<"padv2", [
   let hasFolder = 1;
 }
 
+def CIR_PowOp : CIR_Op<"pow", [
+    ResultsBroadcastableShape,
+    Pure,
+    CIR_OperandsHaveSameShapesOrBroadcastableShape<[0, 1], 4>]> {
+  let summary = "Power operator";
+
+  let description = [{
+    Element-wise power operation.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32, I32]>:$lhs,
+    CIR_TensorOf<[F32, I32]>:$rhs);
+
+  let results = (outs CIR_TensorOf<[F32, I32]>:$output);
+
+  let hasCustomAssemblyFormat = 1;
+
+  let extraClassDefinition = [{
+    ParseResult $cppClass::parse(OpAsmParser &parser, OperationState &result) {
+      return parseOneResultSameOperandTypeOp(parser, result);
+    }
+    void $cppClass::print(OpAsmPrinter &p) {
+      return printOneResultOp(getOperation(), p);
+    }
+  }];
+
+  let builders = [CIR_BroadcastableBinaryBuilder];
+}
+
 def CIR_PReluOp : CIR_Op<"prelu", [
     Pure,
     //QuantizableResult,
@@ -1858,6 +1888,32 @@ def CIR_ShapeOp: CIR_Op<"shape", [
   let hasOptions = 1;
 
   let hasFolder = 1;
+}
+
+def CIR_SinOp: CIR_Op<"sin", [
+    Pure,
+    /*TF_SameOperandsAndResultTypeResolveRef*/
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    SameOperandsAndResultShape]> {
+  let summary = "Sine operator";
+
+  let description = [{
+    Computes element-wise Sine of input
+  }];
+
+  let arguments = (ins CIR_FpTensor:$x);
+
+  let results = (outs CIR_FpTensor:$y);
+
+  let hasFolder = 1;
+
+  // TODO enable TF::ArraysAreCastCompatible
+  //let extraClassDeclaration = [{
+  //  // Returns whether the return types are compatible.
+  //  static bool isCompatibleReturnTypes(TypeRange l, TypeRange r) {
+  //    return TF::ArraysAreCastCompatible(l, r);
+  //  }
+  //}];
 }
 
 def CIR_SliceOp : CIR_Op<"slice", [
