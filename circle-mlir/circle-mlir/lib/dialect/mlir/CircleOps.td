@@ -908,6 +908,44 @@ def CIR_FullyConnectedOp : CIR_Op<"fully_connected", [
   }];
 }
 
+def CIR_GatherOp : CIR_Op<"gather", [
+    Pure,
+    // TODO enable QuantizableResult,
+    // TODO enable SameOperandsAndResultsScale,
+    CIR_OperandHasAtleastRank<0, 1>,
+    PredOpTrait<"params and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    // TODO enable DynamicRangeQuantizedOpInterface
+  ]> {
+  let summary = "Gather operator";
+
+  let description = [{
+    Gather slices from `params` axis `axis` according to `indices`.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32/*, I1*/, I8, I16, I32, I64/*, TFL_Str, UI8, QI8, QUI8, QI16*/]>:$params,
+    CIR_TensorOf<[I16, I32, I64]>:$indices,
+    I32Attr:$axis,
+    DefaultValuedOptionalAttr<I32Attr, "0">:$batch_dims
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32/*, I1*/, I8, I16, I32, I64/*, TFL_Str, UI8, QI8, QUI8, QI16*/]>:$output
+  );
+
+  let hasOptions = 1;
+
+  let hasVerifier = 1;
+
+  let hasFolder = 1;
+
+  let extraClassDeclaration = [{
+    // DynamicRangeQuantizedOpInterface:
+    std::vector<int> GetQuantizableOperandIndices() { return {0}; }
+  }];
+}
+
 def CIR_GreaterOp : CIR_Op<"greater", [
     ResultsBroadcastableShape,
     ComparisonOpSameElementTypeConstraint,
