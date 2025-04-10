@@ -194,6 +194,7 @@ AddModel(Unsqueeze_F32_R2_d01_v11)
 AddModel(Unsqueeze_F32_R2_d02_v11)
 AddModel(Unsqueeze_F32_R2_d13_v11)
 AddModel(Unsqueeze_F32_R3_d3_v11)
+AddModel(Upsample_F32_R4)
 AddModel(Where_F32_R3_bc)
 AddModel(Where_F32_R4)
 
