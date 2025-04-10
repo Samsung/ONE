@@ -30,10 +30,10 @@ bool is_blank(const std::string &s)
                                     [](unsigned char c) { return !std::isblank(c); }) == s.end();
 }
 
-Shape parse_single_shape(const std::string &shape_str)
+Shape parse_single_shape(const std::string &shape)
 {
   Shape result_shape;
-  std::stringstream shape_stream(shape_str);
+  std::stringstream shape_stream(shape);
   std::string token;
   try
   {
@@ -44,39 +44,39 @@ Shape parse_single_shape(const std::string &shape_str)
   }
   catch (...)
   {
-    throw std::invalid_argument("Error during shape processing: " + shape_str);
+    throw std::invalid_argument("Error during shape processing: " + shape);
   }
   if (result_shape.empty())
   {
-    throw std::invalid_argument("No shapes found in input string: " + shape_str);
+    throw std::invalid_argument("No shapes found in input string: " + shape);
   }
   return result_shape;
 }
 } // namespace
 
-Shapes circle_resizer::parse_shapes(std::string shapes_str)
+Shapes circle_resizer::parse_shapes(const std::string &shapes)
 {
   Shapes result_shapes;
-  std::stringstream shapes_stream(shapes_str);
+  auto shapes_tmp = shapes;
   std::string token;
   size_t begin_pos = 0, end_pos = 0;
-  while ((begin_pos = shapes_str.find("[")) != std::string::npos &&
-         (end_pos = shapes_str.find("]")) != std::string::npos)
+  while ((begin_pos = shapes_tmp.find("[")) != std::string::npos &&
+         (end_pos = shapes_tmp.find("]")) != std::string::npos)
   {
-    token = shapes_str.substr(begin_pos + 1, end_pos);
+    token = shapes_tmp.substr(begin_pos + 1, end_pos);
     result_shapes.push_back(parse_single_shape(token));
-    shapes_str.erase(0, end_pos + 1);
+    shapes_tmp.erase(0, end_pos + 1);
   }
 
   if (result_shapes.empty())
   {
-    throw std::invalid_argument("No shapes found in input string: " + shapes_str);
+    throw std::invalid_argument("No shapes found in the input string: " + shapes);
   }
 
   // the rest of the input not handled by loop above cannot be processed properly
-  if (shapes_str.size() > 0 && !is_blank(shapes_str))
+  if (shapes_tmp.size() > 0 && !is_blank(shapes_tmp))
   {
-    throw std::invalid_argument("The part of input shape: " + shapes_str + " cannot be processed");
+    throw std::invalid_argument("The part of input shapes: " + shapes_tmp + " cannot be processed");
   }
 
   return result_shapes;

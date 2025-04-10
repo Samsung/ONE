@@ -20,7 +20,6 @@
 #include "Shape.h"
 
 #include <string>
-#include <vector>
 
 namespace circle_resizer
 {
@@ -34,7 +33,7 @@ namespace circle_resizer
  * Exceptions:
  * std::invalid_argument is the parsing failed.
  */
-Shapes parse_shapes(std::string shapes_str);
+Shapes parse_shapes(const std::string &shapes);
 } // namespace circle_resizer
 
 #endif // __CIRCLE_RESIZER_SHAPE_PARSER_H__

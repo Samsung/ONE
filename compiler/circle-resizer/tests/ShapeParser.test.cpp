@@ -60,7 +60,7 @@ class InvalidArgParseShapeTestFixture : public ::testing::TestWithParam<std::str
 {
 };
 
-TEST_P(InvalidArgParseShapeTestFixture, neg_invalid_input)
+TEST_P(InvalidArgParseShapeTestFixture, invalid_input_NEG)
 {
   EXPECT_THROW(parse_shapes(GetParam()), std::invalid_argument);
 }
