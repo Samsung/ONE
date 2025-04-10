@@ -63,6 +63,7 @@
 #include "ops/PowOp.h"
 #include "ops/PReluOp.h"
 #include "ops/QuantizeLinearOp.h"
+#include "ops/ReciprocalOp.h"
 #include "ops/ReduceMaxOp.h"
 #include "ops/ReduceMeanOp.h"
 #include "ops/ReduceProdOp.h"
@@ -243,6 +244,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvPow>(typeConverter, context);
   patterns.insert<ConvPRelu>(typeConverter, context);
   patterns.insert<ConvQuantizeLinear>(typeConverter, context);
+  patterns.insert<ConvReciprocal>(typeConverter, context);
   patterns.insert<ConvReduceMax>(typeConverter, context);
   patterns.insert<ConvReduceMaxV13>(typeConverter, context);
   patterns.insert<ConvReduceMean>(typeConverter, context);
