@@ -16,44 +16,60 @@
 
 #include "Shape.h"
 
-#include <stdexcept>
+#include <algorithm>
 
 using namespace circle_resizer;
 
-Dim::Dim(const std::optional<int32_t> &dim) : _dim{dim} {}
+Shape::Shape(const std::initializer_list<Dim> &dims) : _dims{dims} {}
 
-Dim::Dim(int32_t dim_value) : Dim{std::optional<int32_t>{dim_value}}
+Shape::Shape(const std::vector<Dim> &shape_vec) : _dims{shape_vec} {}
+
+Shape Shape::scalar() { return Shape{std::initializer_list<Dim>{}}; }
+
+size_t Shape::rank() const { return _dims.size(); }
+
+Dim Shape::operator[](const size_t &axis) const { return _dims[axis]; }
+
+bool Shape::is_scalar() const { return _dims.empty(); }
+
+bool Shape::is_dynamic() const
 {
-  if (_dim.value() < -1)
-  {
-    throw std::runtime_error("Invalid value of dimension: " + _dim.value());
-  }
-}
-
-Dim Dim::scalar() { return Dim{std::nullopt}; }
-
-bool Dim::is_scalar() const { return !_dim.has_value(); }
-
-bool Dim::is_dynamic() const { return _dim.value() == -1; }
-
-int32_t Dim::value() const
-{
-  if (!_dim.has_value())
-  {
-    std::runtime_error("The dimension is a scalar");
-  }
-  return _dim.value();
-}
-
-bool Dim::operator==(const Dim &rhs) const
-{
-  if (is_scalar() && rhs.is_scalar())
-  {
-    return true;
-  }
-  if (is_scalar() != rhs.is_scalar())
+  if (is_scalar())
   {
     return false;
   }
-  return value() == rhs.value();
+  return std::any_of(std::begin(_dims), std::end(_dims),
+                     [](const Dim &dim) { return dim.is_dynamic(); });
+}
+
+bool Shape::operator==(const Shape &rhs) const
+{
+  if (rank() != rhs.rank())
+  {
+    return false;
+  }
+  for (size_t axis = 0; axis < rank(); ++axis)
+  {
+    if (_dims[axis].value() != rhs[axis].value())
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+std::ostream &circle_resizer::operator<<(std::ostream &os, const Shape &shape)
+{
+  if (shape.is_scalar())
+  {
+    os << "[]";
+    return os;
+  }
+  os << "[";
+  for (int i = 0; i < shape.rank() - 1; ++i)
+  {
+    os << shape[i].value() << ", ";
+  }
+  os << shape[shape.rank() - 1].value() << "]";
+  return os;
 }

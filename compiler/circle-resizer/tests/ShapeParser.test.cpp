@@ -24,6 +24,7 @@
 #include <vector>
 
 using namespace circle_resizer;
+using Shapes = std::vector<Shape>;
 
 class ParseShapeTestFixture : public ::testing::TestWithParam<std::tuple<std::string, Shapes>>
 {
@@ -56,10 +57,10 @@ INSTANTIATE_TEST_SUITE_P(
                     Shapes{Shape{Dim{1}, Dim{2}}, Shape{Dim{3}, Dim{4}, Dim{5}},
                            Shape{Dim{6}, Dim{7}, Dim{8}, Dim{9}}}),
     // scalars
-    std::make_tuple("[]", Shapes{Shape{Dim::scalar()}}),
-    std::make_tuple("[],[]", Shapes{Shape{Dim::scalar()}, Shape{Dim::scalar()}}),
-    std::make_tuple("[],[2]", Shapes{Shape{Dim::scalar()}, Shape{Dim{2}}}),
-    std::make_tuple("[  ]", Shapes{Shape{Dim::scalar()}})));
+    std::make_tuple("[]", Shapes{Shape::scalar()}),
+    std::make_tuple("[],[]", Shapes{Shape::scalar(), Shape::scalar()}),
+    std::make_tuple("[],[2]", Shapes{Shape::scalar(), Shape{Dim{2}}}),
+    std::make_tuple("[  ]", Shapes{Shape::scalar()})));
 
 class InvalidArgParseShapeTestFixture : public ::testing::TestWithParam<std::string>
 {

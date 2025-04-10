@@ -17,71 +17,34 @@
 #ifndef __CIRCLE_RESIZER_SHAPE_H__
 #define __CIRCLE_RESIZER_SHAPE_H__
 
-#include <stdexcept>
-#include <stdint.h>
-#include <optional>
+#include "Dim.h"
+
+#include <ostream>
 #include <vector>
 
 namespace circle_resizer
 {
 /**
- * The representation of a single dimension. Note that a dimension can be dynamic.
- */
-class Dim
-{
-public:
-  /**
-   * @brief Initialize a single dimension. Note that '-1' means a dynamic dimension.
-   *
-   * Exceptions:
-   * - std::runtime_error if provided dim value is less than -1.
-   */
-  explicit Dim(int32_t dim_value);
-
-  /**
-   * @brief Initialize a single scalar dimension. Note that a scalar can be used to represent
-   * a shape with rank = 0 and size = 1.
-   */
-  static Dim scalar();
-
-public:
-  /**
-   * @brief Return true if the dimension is dynamic. Otherwise, return false.
-   */
-  bool is_dynamic() const;
-
-  /**
-   * @brief Return true if the dimension is a scalar. Otherwise, return false.
-   */
-  bool is_scalar() const;
-
-  /**
-   * @brief Return value of dimension in int32_t representation.
-   */
-  int32_t value() const;
-
-  /**
-   * @brief Return true of the current dimension and the provided rhs are equal.
-   */
-  bool operator==(const Dim &rhs) const;
-
-private:
-  explicit Dim(const std::optional<int32_t> &dim);
-
-private:
-  // Note that in the future, we might need to support dimension with lower and upper bounds
-  std::optional<int32_t> _dim;
-};
-
-/**
  * The representation of a single shape.
  */
-using Shape = std::vector<Dim>;
+class Shape
+{
+public:
+  Shape(const std::initializer_list<Dim> &dims);
+  Shape(const std::vector<Dim> &shape_vec);
+  static Shape scalar();
 
-/**
- * The representation of many shapes.
- */
-using Shapes = std::vector<Shape>;
+public:
+  size_t rank() const;
+  Dim operator[](const size_t &axis) const;
+  bool is_scalar() const;
+  bool is_dynamic() const;
+  bool operator==(const Shape &rhs) const;
+  friend std::ostream &operator<<(std::ostream &os, const Shape &shape);
+
+private:
+  std::vector<Dim> _dims;
+};
 
 } // namespace circle_resizer
 

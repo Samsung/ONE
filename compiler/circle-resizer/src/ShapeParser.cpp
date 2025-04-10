@@ -15,6 +15,7 @@
  */
 
 #include "ShapeParser.h"
+#include <Dim.h>
 
 #include <algorithm>
 #include <stdexcept>
@@ -34,34 +35,34 @@ Shape parse_single_shape(const std::string &shape)
 {
   if (shape.empty() || is_blank(shape))
   {
-    return Shape{Dim::scalar()};
+    return Shape::scalar();
   }
 
-  Shape result_shape;
+  std::vector<Dim> result_dims;
   std::stringstream shape_stream(shape);
   std::string token;
   try
   {
     while (std::getline(shape_stream, token, ','))
     {
-      result_shape.push_back(Dim{std::stoi(token)});
+      result_dims.push_back(Dim{std::stoi(token)});
     }
   }
   catch (...)
   {
     throw std::invalid_argument("Error during shape processing: " + shape);
   }
-  if (result_shape.empty())
+  if (result_dims.empty())
   {
     throw std::invalid_argument("No shapes found in input string: " + shape);
   }
-  return result_shape;
+  return Shape{result_dims};
 }
 } // namespace
 
-Shapes circle_resizer::parse_shapes(const std::string &shapes)
+std::vector<Shape> circle_resizer::parse_shapes(const std::string &shapes)
 {
-  Shapes result_shapes;
+  std::vector<Shape> result_shapes;
   auto shapes_tmp = shapes;
   std::string token;
   size_t begin_pos = 0, end_pos = 0;
