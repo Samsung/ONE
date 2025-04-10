@@ -204,6 +204,9 @@ AddModel(Upsample_F32_R4)
 AddModel(Where_F32_R3_bc)
 AddModel(Where_F32_R4)
 
+# Network of two or more Ops
+AddModel(Net_ReshapeConcat_F32_R4)
+
 # Import/Export test without value check
 
 ImportModel(QuantizeLinear_F32_R3_i16)
