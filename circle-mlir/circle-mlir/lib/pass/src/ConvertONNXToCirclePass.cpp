@@ -35,6 +35,7 @@
 #include "ops/ConvTransposeOp.h"
 #include "ops/CosOp.h"
 #include "ops/CumsumOp.h"
+#include "ops/DequantizeLinearOp.h"
 #include "ops/EqualOp.h"
 #include "ops/ExpOp.h"
 #include "ops/ExpandOp.h"
@@ -54,6 +55,7 @@
 #include "ops/PadOp.h"
 #include "ops/PowOp.h"
 #include "ops/PReluOp.h"
+#include "ops/QuantizeLinearOp.h"
 #include "ops/ReduceMaxOp.h"
 #include "ops/ReduceMeanOp.h"
 #include "ops/ReduceProdOp.h"
@@ -206,6 +208,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvConvTranspose>(typeConverter, context);
   patterns.insert<ConvCos>(typeConverter, context);
   patterns.insert<ConvCumsum>(typeConverter, context);
+  patterns.insert<ConvDequantizeLinear>(typeConverter, context);
   patterns.insert<ConvEqual>(typeConverter, context);
   patterns.insert<ConvExp>(typeConverter, context);
   patterns.insert<ConvExpand>(typeConverter, context);
@@ -225,6 +228,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvPad>(typeConverter, context);
   patterns.insert<ConvPow>(typeConverter, context);
   patterns.insert<ConvPRelu>(typeConverter, context);
+  patterns.insert<ConvQuantizeLinear>(typeConverter, context);
   patterns.insert<ConvReduceMax>(typeConverter, context);
   patterns.insert<ConvReduceMaxV13>(typeConverter, context);
   patterns.insert<ConvReduceMean>(typeConverter, context);

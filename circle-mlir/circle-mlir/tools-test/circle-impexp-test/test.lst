@@ -185,3 +185,12 @@ AddModel(Unsqueeze_F32_R2_d13_v11)
 AddModel(Unsqueeze_F32_R3_d3_v11)
 AddModel(Where_F32_R3_bc)
 AddModel(Where_F32_R4)
+
+# Import/Export test without value check
+
+ImportModel(QuantizeLinear_F32_R3_i16)
+ImportModel(QuantizeLinear_F32_R3_i16_cw)
+ImportModel(QuantizeLinear_F32_R3_ui8)
+ImportModel(QuantizeLinear_F32_R3_ui8_fq)
+ImportModel(QuantizeLinear_F32_R4_i16_cw)
+ImportModel(QuantizeLinear_F32_R4_ui8_cw)
