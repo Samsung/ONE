@@ -47,7 +47,9 @@
 #include "ops/LeakyReluOp.h"
 #include "ops/LogOp.h"
 #include "ops/MatMulOp.h"
+#include "ops/MaxOp.h"
 #include "ops/MaxPoolSingleOutOp.h"
+#include "ops/MinOp.h"
 #include "ops/NegOp.h"
 #include "ops/NoneOp.h"
 #include "ops/NotOp.h"
@@ -218,7 +220,9 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvLeakyRelu>(typeConverter, context);
   patterns.insert<ConvLog>(typeConverter, context);
   patterns.insert<ConvMatMul>(typeConverter, context);
+  patterns.insert<ConvMax>(typeConverter, context);
   patterns.insert<ConvMaxPoolSingleOut>(typeConverter, context);
+  patterns.insert<ConvMin>(typeConverter, context);
   patterns.insert<ConvNeg>(typeConverter, context);
   patterns.insert<ConvNone>(typeConverter, context);
   patterns.insert<ConvNot>(typeConverter, context);
