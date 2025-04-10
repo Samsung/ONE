@@ -51,6 +51,7 @@ AddModel(CumSum_F32_R4_2)
 AddModel(Div_F32_R4_C1)
 AddModel(Equal_F32_R4)
 AddModel(Equal_I64_R1)
+# AddModel(Erf_F32_R4) --> Cannot do value test with CustomOp("Erf")
 AddModel(Exp_F32_R0)
 AddModel(Exp_F32_R4)
 # AddModel(Expand_B_R4_D1) --> circle-interpreter does not support boolean type
