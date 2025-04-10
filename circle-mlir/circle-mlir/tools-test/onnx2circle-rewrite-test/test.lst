@@ -2,3 +2,7 @@
 #
 # AddModel(test_model)
 #
+
+AddModel(Net_AddReLU_F32_R4)
+AddModel(Net_AddReLUConcat_F32_R4)
+AddModel(Net_AddReLUSub_F32_R4)
