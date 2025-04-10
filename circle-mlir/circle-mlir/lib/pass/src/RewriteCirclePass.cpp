@@ -29,6 +29,7 @@
 #include <mlir/Transforms/GreedyPatternRewriteDriver.h>
 
 // Optimizations
+#include "opt/ConvertDivErfToMulErf.h"
 #include "opt/ConvertMirrorPadPad32.h"
 #include "opt/ConvertReshapeShape32.h"
 #include "opt/ConvertResizeNearestSize32.h"
@@ -97,6 +98,7 @@ void RewriteCirclePass::applyActivationFusion()
   patterns.add<FuseAddRelu<ReluOp, ACT_RELU>>(context);
   patterns.add<FuseAddRelu<Relu6Op, ACT_RELU6>>(context);
 
+  patterns.add<ConvertDivErfToMulErf>(context);
   patterns.add<ConvertMirrorPadPad32>(context);
   patterns.add<ConvertReshapeShape32>(context);
   patterns.add<ConvertResizeNearestSize32>(context);
