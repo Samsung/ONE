@@ -34,6 +34,7 @@
 #include "opt/ConvertReshapeShape32.h"
 #include "opt/ConvertResizeNearestSize32.h"
 #include "opt/FuseAddRelu.h"
+#include "opt/FuseConv2DRelu.h"
 
 namespace mlir
 {
@@ -97,6 +98,8 @@ void RewriteCirclePass::applyActivationFusion()
 
   patterns.add<FuseAddRelu<ReluOp, ACT_RELU>>(context);
   patterns.add<FuseAddRelu<Relu6Op, ACT_RELU6>>(context);
+  patterns.add<FuseConv2DRelu<ReluOp, ACT_RELU>>(context);
+  patterns.add<FuseConv2DRelu<Relu6Op, ACT_RELU6>>(context);
 
   patterns.add<ConvertDivErfToMulErf>(context);
   patterns.add<ConvertMirrorPadPad32>(context);
