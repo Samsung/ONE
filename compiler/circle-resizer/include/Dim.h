@@ -14,47 +14,47 @@
  * limitations under the License.
  */
 
- #ifndef __CIRCLE_RESIZER_DIM_H__
- #define __CIRCLE_RESIZER_DIM_H__
- 
- #include <stdint.h>
- 
- namespace circle_resizer
- {
- /**
-  * The representation of a single dimension. Note that a dimension can be dynamic.
-  */
- class Dim
- {
- public:
-   /**
-    * @brief Initialize a single dimension. Note that '-1' means a dynamic dimension.
-    *
-    * Exceptions:
-    * - std::runtime_error if provided dim value is less than -1.
-    */
-   explicit Dim(int32_t dim);
- 
- public:
-   /**
-    * @brief Return true if the dimension is dynamic. Otherwise, return false.
-    */
-   bool is_dynamic() const;
- 
-   /**
-    * @brief Return value of dimension in int32_t representation.
-    */
-   int32_t value() const;
- 
-   /**
-    * @brief Return true of the current dimension and the provided rhs are equal.
-    */
-   bool operator==(const Dim &rhs) const;
- 
- private:
-   // Note that in the future, we might need to support dimension with lower and upper bounds
-   int32_t _dim_value;
- };
+#ifndef __CIRCLE_RESIZER_DIM_H__
+#define __CIRCLE_RESIZER_DIM_H__
+
+#include <stdint.h>
+
+namespace circle_resizer
+{
+/**
+ * The representation of a single dimension. Note that a dimension can be dynamic.
+ */
+class Dim
+{
+public:
+  /**
+   * @brief Initialize a single dimension. Note that '-1' means a dynamic dimension.
+   *
+   * Exceptions:
+   * - std::runtime_error if provided dim value is less than -1.
+   */
+  explicit Dim(int32_t dim);
+
+public:
+  /**
+   * @brief Return true if the dimension is dynamic. Otherwise, return false.
+   */
+  bool is_dynamic() const;
+
+  /**
+   * @brief Return value of dimension in int32_t representation.
+   */
+  int32_t value() const;
+
+  /**
+   * @brief Return true of the current dimension and the provided rhs are equal.
+   */
+  bool operator==(const Dim &rhs) const;
+
+private:
+  // Note that in the future, we might need to support dimension with lower and upper bounds
+  int32_t _dim_value;
+};
 } // namespace circle_resizer
 
 #endif // __CIRCLE_RESIZER_DIM_H__

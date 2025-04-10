@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
- #include "Dim.h"
+#include "Dim.h"
 
- #include <stdexcept>
- 
- using namespace circle_resizer;
- 
- Dim::Dim(int32_t dim) : _dim_value{dim}
- {
-   if (dim < -1)
-   {
-     throw std::runtime_error("Invalid value of dimension: " + dim);
-   }
- }
- 
- bool Dim::is_dynamic() const { return _dim_value == -1; }
- 
- int32_t Dim::value() const { return _dim_value; }
- 
- bool Dim::operator==(const Dim &rhs) const { return value() == rhs.value(); }
- 
+#include <stdexcept>
+
+using namespace circle_resizer;
+
+Dim::Dim(int32_t dim) : _dim_value{dim}
+{
+  if (dim < -1)
+  {
+    throw std::runtime_error("Invalid value of dimension: " + dim);
+  }
+}
+
+bool Dim::is_dynamic() const { return _dim_value == -1; }
+
+int32_t Dim::value() const { return _dim_value; }
+
+bool Dim::operator==(const Dim &rhs) const { return value() == rhs.value(); }
