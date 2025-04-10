@@ -19,6 +19,7 @@
 
 #include <stdexcept>
 #include <stdint.h>
+#include <optional>
 #include <vector>
 
 namespace circle_resizer
@@ -35,13 +36,24 @@ public:
    * Exceptions:
    * - std::runtime_error if provided dim value is less than -1.
    */
-  explicit Dim(int32_t dim);
+  explicit Dim(int32_t dim_value);
+
+  /**
+   * @brief Initialize a single scalar dimension. Note that a scalar can be used to represent
+   * a shape with rank = 0 and size = 1.
+   */
+  static Dim scalar();
 
 public:
   /**
    * @brief Return true if the dimension is dynamic. Otherwise, return false.
    */
-  bool is_dynamic();
+  bool is_dynamic() const;
+
+  /**
+   * @brief Return true if the dimension is a scalar. Otherwise, return false.
+   */
+  bool is_scalar() const;
 
   /**
    * @brief Return value of dimension in int32_t representation.
@@ -54,8 +66,11 @@ public:
   bool operator==(const Dim &rhs) const;
 
 private:
+  explicit Dim(const std::optional<int32_t> &dim);
+
+private:
   // Note that in the future, we might need to support dimension with lower and upper bounds
-  int32_t _dim_value;
+  std::optional<int32_t> _dim;
 };
 
 /**

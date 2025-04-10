@@ -20,16 +20,40 @@
 
 using namespace circle_resizer;
 
-Dim::Dim(int32_t dim) : _dim_value{dim}
+Dim::Dim(const std::optional<int32_t> &dim) : _dim{dim} {}
+
+Dim::Dim(int32_t dim_value) : Dim{std::optional<int32_t>{dim_value}}
 {
-  if (dim < -1)
+  if (_dim.value() < -1)
   {
-    throw std::runtime_error("Invalid value of dimension: " + dim);
+    throw std::runtime_error("Invalid value of dimension: " + _dim.value());
   }
 }
 
-bool Dim::is_dynamic() { return _dim_value == -1; }
+Dim Dim::scalar() { return Dim{std::nullopt}; }
 
-int32_t Dim::value() const { return _dim_value; }
+bool Dim::is_scalar() const { return !_dim.has_value(); }
 
-bool Dim::operator==(const Dim &rhs) const { return value() == rhs.value(); }
+bool Dim::is_dynamic() const { return _dim.value() == -1; }
+
+int32_t Dim::value() const
+{
+  if (!_dim.has_value())
+  {
+    std::runtime_error("The dimension is a scalar");
+  }
+  return _dim.value();
+}
+
+bool Dim::operator==(const Dim &rhs) const
+{
+  if (is_scalar() && rhs.is_scalar())
+  {
+    return true;
+  }
+  if (is_scalar() != rhs.is_scalar())
+  {
+    return false;
+  }
+  return value() == rhs.value();
+}

@@ -54,7 +54,12 @@ INSTANTIATE_TEST_SUITE_P(
     std::make_tuple(" [ 1   ] ,[  2]  ", Shapes{Shape{Dim{1}}, Shape{Dim{2}}}),
     std::make_tuple(" [1,2],[3,4,5],[6,7,8,9]",
                     Shapes{Shape{Dim{1}, Dim{2}}, Shape{Dim{3}, Dim{4}, Dim{5}},
-                           Shape{Dim{6}, Dim{7}, Dim{8}, Dim{9}}})));
+                           Shape{Dim{6}, Dim{7}, Dim{8}, Dim{9}}}),
+    // scalars
+    std::make_tuple("[]", Shapes{Shape{Dim::scalar()}}),
+    std::make_tuple("[],[]", Shapes{Shape{Dim::scalar()}, Shape{Dim::scalar()}}),
+    std::make_tuple("[],[2]", Shapes{Shape{Dim::scalar()}, Shape{Dim{2}}}),
+    std::make_tuple("[  ]", Shapes{Shape{Dim::scalar()}})));
 
 class InvalidArgParseShapeTestFixture : public ::testing::TestWithParam<std::string>
 {
@@ -70,4 +75,4 @@ INSTANTIATE_TEST_SUITE_P(InvalidArgParseShape, InvalidArgParseShapeTestFixture,
                                            std::string{"[-2]"}, std::string{"[-2,1,3]"},
                                            std::string{"-1"}, std::string{"7,7"}, std::string{"8"},
                                            std::string{"[8],9"}, std::string{"1,2"},
-                                           std::string{"[1],[2],"}));
+                                           std::string{"[1],[2],"}, std::string{"[[]],"}));

@@ -32,6 +32,11 @@ bool is_blank(const std::string &s)
 
 Shape parse_single_shape(const std::string &shape)
 {
+  if (shape.empty() || is_blank(shape))
+  {
+    return Shape{Dim::scalar()};
+  }
+
   Shape result_shape;
   std::stringstream shape_stream(shape);
   std::string token;
@@ -60,10 +65,11 @@ Shapes circle_resizer::parse_shapes(const std::string &shapes)
   auto shapes_tmp = shapes;
   std::string token;
   size_t begin_pos = 0, end_pos = 0;
-  while ((begin_pos = shapes_tmp.find("[")) != std::string::npos &&
-         (end_pos = shapes_tmp.find("]")) != std::string::npos)
+  while ((begin_pos = shapes_tmp.find_first_of("[")) != std::string::npos &&
+         (end_pos = shapes_tmp.find_first_of("]")) != std::string::npos)
   {
-    token = shapes_tmp.substr(begin_pos + 1, end_pos);
+    const size_t token_size = end_pos - begin_pos - 1;
+    token = shapes_tmp.substr(begin_pos + 1, token_size);
     result_shapes.push_back(parse_single_shape(token));
     shapes_tmp.erase(0, end_pos + 1);
   }
