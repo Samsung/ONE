@@ -36,6 +36,7 @@
 #include "opt/ConvertSqrtDivToRsqrt.h"
 #include "opt/FuseAddRelu.h"
 #include "opt/FuseConv2DRelu.h"
+#include "opt/FuseFullyConnectedAdd.h"
 
 namespace mlir
 {
@@ -101,6 +102,7 @@ void RewriteCirclePass::applyActivationFusion()
   patterns.add<FuseAddRelu<Relu6Op, ACT_RELU6>>(context);
   patterns.add<FuseConv2DRelu<ReluOp, ACT_RELU>>(context);
   patterns.add<FuseConv2DRelu<Relu6Op, ACT_RELU6>>(context);
+  patterns.add<FuseFullyConnectedAdd>(context);
 
   patterns.add<ConvertDivErfToMulErf>(context);
   patterns.add<ConvertMirrorPadPad32>(context);
