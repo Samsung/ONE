@@ -32,6 +32,7 @@
 #include "opt/ConvertMirrorPadPad32.h"
 #include "opt/ConvertReshapeShape32.h"
 #include "opt/ConvertResizeNearestSize32.h"
+#include "opt/FuseAddRelu.h"
 
 namespace mlir
 {
@@ -92,6 +93,9 @@ void RewriteCirclePass::applyActivationFusion()
 
   // TODO enable Tanh after circle-interpreter works
   // patterns.add<FuseConv2DRelu<TanhOp, ACT_TANH>>(context);
+
+  patterns.add<FuseAddRelu<ReluOp, ACT_RELU>>(context);
+  patterns.add<FuseAddRelu<Relu6Op, ACT_RELU6>>(context);
 
   patterns.add<ConvertMirrorPadPad32>(context);
   patterns.add<ConvertReshapeShape32>(context);

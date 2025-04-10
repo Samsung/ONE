@@ -204,3 +204,8 @@ AddModel(Unsqueeze_F32_R2_d13_v11)
 AddModel(Unsqueeze_F32_R3_d3_v11)
 AddModel(Where_F32_R3_bc)
 AddModel(Where_F32_R4)
+
+# Network of two or more Ops
+AddModel(Net_AddReLU_F32_R4)
+AddModel(Net_AddReLUConcat_F32_R4)
+AddModel(Net_AddReLUSub_F32_R4)
