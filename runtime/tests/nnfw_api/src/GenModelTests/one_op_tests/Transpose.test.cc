@@ -17,7 +17,6 @@
 #include "GenModelTest.h"
 
 #include <memory>
-#include <numeric>
 
 TEST_F(GenModelTest, OneOp_Transpose_PermsToConst)
 {
@@ -85,58 +84,6 @@ TEST_F(GenModelTest, OneOp_Transpose_RegularTranspose)
                           .addOutput<float>({1, 4, 2, 5, 3, 6}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
-  SUCCEED();
-}
-
-TEST_F(GenModelTest, OneOp_Transpose_6D)
-{
-  CircleGen cgen;
-
-  std::vector<int32_t> in_shape{2, 3, 4, 5, 6, 2};
-  std::vector<int32_t> perms_data{5, 3, 4, 0, 2, 1};
-  std::vector<int32_t> out_shape{2, 5, 6, 2, 4, 3};
-
-  std::vector<int32_t> in_data(
-    std::accumulate(in_shape.begin(), in_shape.end(), 1, std::multiplies{}));
-  std::iota(in_data.begin(), in_data.end(), 0);
-
-  std::vector<int32_t> out_data(in_data.size());
-  auto p = perms_data.data();
-  auto i_ne = in_shape.data();
-  auto o_ne = out_shape.data();
-
-  // clang-format off
-  for (int i0 = 0; i0 < i_ne[0]; ++i0)
-    for (int i1 = 0; i1 < i_ne[1]; ++i1)
-      for (int i2 = 0; i2 < i_ne[2]; ++i2)
-        for (int i3 = 0; i3 < i_ne[3]; ++i3)
-          for (int i4 = 0; i4 < i_ne[4]; ++i4)
-            for (int i5 = 0; i5 < i_ne[5]; ++i5)
-            {
-              int i_idx = ((((i0 * i_ne[1] + i1) * i_ne[2] + i2) * i_ne[3] + i3) * i_ne[4] + i4) * i_ne[5] + i5;
-              int o_i0 = p[0] == 0 ? i0 : p[0] == 1 ? i1 : p[0] == 2 ? i2 : p[0] == 3 ? i3 : p[0] == 4 ? i4 : i5;
-              int o_i1 = p[1] == 0 ? i0 : p[1] == 1 ? i1 : p[1] == 2 ? i2 : p[1] == 3 ? i3 : p[1] == 4 ? i4 : i5;
-              int o_i2 = p[2] == 0 ? i0 : p[2] == 1 ? i1 : p[2] == 2 ? i2 : p[2] == 3 ? i3 : p[2] == 4 ? i4 : i5;
-              int o_i3 = p[3] == 0 ? i0 : p[3] == 1 ? i1 : p[3] == 2 ? i2 : p[3] == 3 ? i3 : p[3] == 4 ? i4 : i5;
-              int o_i4 = p[4] == 0 ? i0 : p[4] == 1 ? i1 : p[4] == 2 ? i2 : p[4] == 3 ? i3 : p[4] == 4 ? i4 : i5;
-              int o_i5 = p[5] == 0 ? i0 : p[5] == 1 ? i1 : p[5] == 2 ? i2 : p[5] == 3 ? i3 : p[5] == 4 ? i4 : i5;
-              int o_idx = ((((o_i0 * o_ne[1] + o_i1) * o_ne[2] + o_i2) * o_ne[3] + o_i3) * o_ne[4] + o_i4) * o_ne[5] + o_i5;
-              out_data[o_idx] = in_data[i_idx];
-            }
-  // clang-format on
-
-  int in = cgen.addTensor({in_shape, circle::TensorType::TensorType_INT32});
-  uint32_t perms_buf = cgen.addBuffer(perms_data);
-  int perms = cgen.addTensor({{6}, circle::TensorType::TensorType_INT32, perms_buf});
-  int out = cgen.addTensor({out_shape, circle::TensorType::TensorType_INT32});
-
-  cgen.addOperatorTranspose({{in, perms}, {out}});
-  cgen.setInputsAndOutputs({in}, {out});
-
-  _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(TestCaseData{}.addInput<int32_t>(in_data).addOutput<int32_t>(out_data));
-
-  _context->setBackends({"cpu"});
   SUCCEED();
 }
 

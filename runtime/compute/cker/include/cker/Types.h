@@ -215,7 +215,7 @@ struct BinaryArithmeticOpParam
 struct TransposeParams
 {
   int8_t perm_count;
-  int32_t perm[6];
+  int32_t perm[4];
 };
 
 struct ConcatenationParams
