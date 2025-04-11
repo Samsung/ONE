@@ -14,117 +14,82 @@
  * limitations under the License.
  */
 
-#include "execute/OMUtils.h"
+#include "core/OMRuntimeContext.h"
 #include "execute/OMKernelExecutionBuilder.h"
-#include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
-#include "core/OMUtils.h"
 
-#include "core/OMRuntimeShape.h"
-#include "PALReduceCommon.h"
+#include "PALMeanCommon.h"
 
 using namespace onert_micro;
 using namespace onert_micro::execute;
 
-namespace
+// ------------------------------------------------------------------------------------------------
+
+namespace impl
 {
 
-constexpr uint32_t input1TensorIdx = 0;
-constexpr uint32_t input2TensorIdx = 1;
-constexpr uint32_t outputTensorIdx = 0;
-
-template <typename T>
-void reduceMeanGeneric(core::OMRuntimeShape &input_shape, const T *input_data,
-                       core::OMRuntimeShape &axis_shape, const int *axis_data,
-                       core::OMRuntimeShape &output_shape, T *output_data, bool keep_dims)
+template <typename T> OMStatus CircleMean(OMRuntimeKernel &rt_kernel)
 {
-  onert_micro::execute::pal::ReduceGeneric<T>(
-    input_data, input_shape.dimsData(), input_shape.dimensionsCount(), output_data, axis_data,
-    axis_shape.dimensionsCount(),
-    /*init_value=*/T(0), output_shape.flatSize(),
-    [](const T current, const T in) -> T { return in + current; });
+  constexpr static uint32_t kAxisTensorIdx = 1;
+
+  OMInputOutputData<T> io_data(rt_kernel);
+  OMAxisData<kAxisTensorIdx> axis_data(rt_kernel);
+
+  bool is_ok = pal::Mean<T>(io_data, axis_data);
+  if (!is_ok)
+  {
+    return OMStatus::UnknownError;
+  }
+
+  return OMStatus::Ok;
 }
 
-} // namespace
+} // namespace impl
 
-namespace onert_micro
-{
-namespace execute
+// ------------------------------------------------------------------------------------------------
+
+namespace onert_micro::execute
 {
 
 OMStatus execute_kernel_CircleMean(const OMExecuteArgs &execute_args)
 {
-  core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
-  core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
-  uint16_t op_index = execute_args.kernel_index;
+  core::OMRuntimeContext &rt_context = execute_args.runtime_context;
+  core::OMRuntimeStorage &rt_storage = execute_args.runtime_storage;
 
-  const circle::Tensor *input;
-  const circle::Tensor *axis;
-  const circle::Tensor *output;
+  const uint16_t op_index = execute_args.kernel_index;
 
-  uint8_t *input_data;
-  uint8_t *axis_data;
-  uint8_t *output_data;
+  OMRuntimeKernel rt_kernel;
+  OMStatus status = rt_kernel.readKernel(op_index, rt_context);
 
-  uint16_t input_index = 0;
-  uint16_t axis_index = 0;
+  if (status != Ok)
+    return status;
 
-  const circle::ReducerOptions *options;
-  // Read kernel
-  {
-    execute::OMRuntimeKernel runtime_kernel;
-    runtime_kernel.readKernel(op_index, runtime_context);
+  constexpr static uint32_t kInputTensorIdx = 0;
+  const circle::Tensor *input = rt_kernel.inputs[kInputTensorIdx];
 
-    input = runtime_kernel.inputs[input1TensorIdx];
-    axis = runtime_kernel.inputs[input2TensorIdx];
-    output = runtime_kernel.outputs[outputTensorIdx];
-    assert(input != nullptr);
-    assert(axis != nullptr);
-    assert(output != nullptr);
+  assert(input != nullptr);
 
-    runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
+  rt_kernel.getDataFromStorage(op_index, rt_storage, rt_context);
 
-    input_data = runtime_kernel.inputs_data[input1TensorIdx];
-    axis_data = runtime_kernel.inputs_data[input2TensorIdx];
-    output_data = runtime_kernel.outputs_data[outputTensorIdx];
-    assert(input_data != nullptr);
-    assert(axis_data != nullptr);
-    assert(output_data != nullptr);
-
-    options = runtime_kernel.first_operator->builtin_options_as_ReducerOptions();
-
-    input_index = runtime_kernel.inputs_index[input1TensorIdx];
-    axis_index = runtime_kernel.inputs_index[input2TensorIdx];
-  }
-
-  OMStatus status;
-
-  core::OMRuntimeShape input_shape(input);
-  core::OMRuntimeShape axis_shape(axis);
-  core::OMRuntimeShape output_shape(output);
+  // clang-format off
 
   switch (input->type())
   {
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:
-      onert_micro::execute::pal::Mean<float>(
-        input_shape.dimsData(), core::utils::castInputData<float>(input_data),
-        input_shape.dimensionsCount(), core::utils::castOutputData<float>(output_data),
-        output_shape.flatSize(), core::utils::castInputData<int>(axis_data),
-        axis_shape.dimensionsCount());
-
-      break;
+    {
+      return impl::CircleMean<float>(rt_kernel);
+    }
 #endif // DIS_FLOAT
+
     case circle::TensorType_INT32:
-      break;
     case circle::TensorType_INT64:
-      break;
     default:
       assert(false && "Unsupported type");
+      break;
   }
 
-  return status;
+  return UnsupportedType;
 }
 
-} // namespace execute
-} // namespace onert_micro
+} // namespace onert_micro::execute
