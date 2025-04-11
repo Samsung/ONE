@@ -57,7 +57,7 @@ struct ConvertMirrorPadPad32 : public OpRewritePattern<MirrorPadOp>
     auto intattr = DenseIntElementsAttr::get(si32stype, values);
     mlir::Value shape32 = rewriter.create<ConstOp>(opLoc, intattr);
 
-    auto pad_mutable = mirrorpad_op.getPadMutable();
+    auto &pad_mutable = mirrorpad_op.getPadMutable();
     pad_mutable.assign(shape32);
 
     return mlir::success();
