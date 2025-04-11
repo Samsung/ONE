@@ -38,29 +38,28 @@ TEST_P(ParseShapeTestFixture, successful_parsing)
   ASSERT_EQ(result_shapes, expected_shapes);
 }
 
-INSTANTIATE_TEST_SUITE_P(
-  ParseShapeTest, ParseShapeTestFixture,
-  ::testing::Values(
-    // single shape
-    std::make_tuple("[3,4]", Shapes{Shape{Dim{3}, Dim{4}}}),
-    std::make_tuple("[3]", Shapes{Shape{Dim{3}}}), std::make_tuple("[-1]", Shapes{Shape{Dim{-1}}}),
-    std::make_tuple("[  5,  6]", Shapes{Shape{Dim{5}, Dim{6}}}),
-    std::make_tuple("[3 , 4]", Shapes{Shape{Dim{3}, Dim{4}}}),
-    std::make_tuple("[-1 , 4]", Shapes{Shape{Dim{-1}, Dim{4}}}),
-    // many shapes
-    std::make_tuple("[3,4],[5,6]", Shapes{Shape{Dim{3}, Dim{4}}, Shape{Dim{5}, Dim{6}}}),
-    std::make_tuple("[1],[2]", Shapes{Shape{Dim{1}}, Shape{Dim{2}}}),
-    std::make_tuple(" [3, 4] , [5,6]", Shapes{Shape{Dim{3}, Dim{4}}, Shape{Dim{5}, Dim{6}}}),
-    std::make_tuple(" [ 1   ] ,[  2]", Shapes{Shape{Dim{1}}, Shape{Dim{2}}}),
-    std::make_tuple(" [ 1   ] ,[  2]  ", Shapes{Shape{Dim{1}}, Shape{Dim{2}}}),
-    std::make_tuple(" [1,2],[3,4,5],[6,7,8,9]",
-                    Shapes{Shape{Dim{1}, Dim{2}}, Shape{Dim{3}, Dim{4}, Dim{5}},
-                           Shape{Dim{6}, Dim{7}, Dim{8}, Dim{9}}}),
-    // scalars
-    std::make_tuple("[]", Shapes{Shape::scalar()}),
-    std::make_tuple("[],[]", Shapes{Shape::scalar(), Shape::scalar()}),
-    std::make_tuple("[],[2]", Shapes{Shape::scalar(), Shape{Dim{2}}}),
-    std::make_tuple("[  ]", Shapes{Shape::scalar()})));
+INSTANTIATE_TEST_SUITE_P(ParseShapeTest, ParseShapeTestFixture,
+                         ::testing::Values(
+                           // single shape
+                           std::make_tuple("[3,4]", Shapes{Shape{3, 4}}),
+                           std::make_tuple("[3]", Shapes{Shape{3}}),
+                           std::make_tuple("[-1]", Shapes{Shape{Dim::dynamic()}}),
+                           std::make_tuple("[  5,  6]", Shapes{Shape{5, 6}}),
+                           std::make_tuple("[3 , 4]", Shapes{Shape{3, 4}}),
+                           std::make_tuple("[-1 , 4]", Shapes{Shape{Dim::dynamic(), Dim{4}}}),
+                           // many shapes
+                           std::make_tuple("[3,4],[5,6]", Shapes{Shape{3, 4}, Shape{5, 6}}),
+                           std::make_tuple("[1],[2]", Shapes{Shape{1}, Shape{2}}),
+                           std::make_tuple(" [3, 4] , [5,6]", Shapes{Shape{3, 4}, Shape{5, 6}}),
+                           std::make_tuple(" [ 1   ] ,[  2]", Shapes{Shape{1}, Shape{2}}),
+                           std::make_tuple(" [ 1   ] ,[  2]  ", Shapes{Shape{1}, Shape{2}}),
+                           std::make_tuple(" [1,2],[3,4,5],[6,7,8,9]",
+                                           Shapes{Shape{1, 2}, Shape{3, 4, 5}, Shape{6, 7, 8, 9}}),
+                           // scalars
+                           std::make_tuple("[]", Shapes{Shape::scalar()}),
+                           std::make_tuple("[],[]", Shapes{Shape::scalar(), Shape::scalar()}),
+                           std::make_tuple("[],[2]", Shapes{Shape::scalar(), Shape{2}}),
+                           std::make_tuple("[  ]", Shapes{Shape::scalar()})));
 
 class InvalidArgParseShapeTestFixture : public ::testing::TestWithParam<std::string>
 {

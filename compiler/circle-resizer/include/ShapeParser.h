@@ -32,7 +32,7 @@ namespace circle_resizer
  * An example for single shape: [1,2,3], an example for many shapes: [1,2,3],[4,5].
  *
  * Exceptions:
- * std::invalid_argument is the parsing failed.
+ * std::invalid_argument if the parsing failed.
  */
 std::vector<Shape> parse_shapes(const std::string &shapes);
 } // namespace circle_resizer

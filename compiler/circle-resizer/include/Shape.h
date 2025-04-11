@@ -30,16 +30,63 @@ namespace circle_resizer
 class Shape
 {
 public:
+  /**
+   * @brief Initialize shape with initializer list of dims.
+   */
   Shape(const std::initializer_list<Dim> &dims);
+
+  /**
+   * @brief Initialize shape with vector of dims.
+   */
   Shape(const std::vector<Dim> &shape_vec);
+
+  /**
+   * @brief Initialize static shape with initializer list of of uint32_t values.
+   *
+   * Exceptions:
+   * - std::out_of_range if some elements in shape_vec exceed int32_t range.
+   */
+  Shape(const std::initializer_list<uint32_t> &shape_vec);
+
+  /**
+   * @brief Create scalar shape. Note, that the same can be achieved with Shape{}.
+   */
   static Shape scalar();
 
 public:
+  /**
+   * @brief Returns number of dimensions in the shape.
+   */
   size_t rank() const;
+
+  /**
+   * @brief Returns dimension of the position determined by axis.
+   *
+   * Exceptions:
+   * - std::invalid_argument if the method is called on a scalar shape.
+   * - std::out_of_range if the provided axis is greater than rank.
+   */
   Dim operator[](const size_t &axis) const;
+
+  /**
+   * @brief Returns true if the shape is a scalar. Otherwise, return false.
+   */
   bool is_scalar() const;
+
+  /**
+   * @brief Returns true if all dimensions in the shape are static or the shape is a scalar.
+   *        Otherwise, return false.
+   */
   bool is_dynamic() const;
+
+  /**
+   * @brief Returns true of the current shape and the provided rhs are equal.
+   */
   bool operator==(const Shape &rhs) const;
+
+  /**
+   * @brief Print the shape in format [1, 2, 3].
+   */
   friend std::ostream &operator<<(std::ostream &os, const Shape &shape);
 
 private:

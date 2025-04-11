@@ -28,26 +28,31 @@ class Dim
 {
 public:
   /**
-   * @brief Initialize a single dimension. Note that '-1' means a dynamic dimension.
+   * @brief Initialize single dimension. Note that '-1' means a dynamic dimension.
    *
    * Exceptions:
    * - std::runtime_error if provided dim value is less than -1.
    */
   explicit Dim(int32_t dim);
 
+  /**
+   * @brief Create dynamic dimension. Note that it's equivalent of Dim{-1}.
+   */
+  static Dim dynamic();
+
 public:
   /**
-   * @brief Return true if the dimension is dynamic. Otherwise, return false.
+   * @brief Returns true if the dimension is dynamic. Otherwise, return false.
    */
   bool is_dynamic() const;
 
   /**
-   * @brief Return value of dimension in int32_t representation.
+   * @brief Returns value of dimension in int32_t representation.
    */
   int32_t value() const;
 
   /**
-   * @brief Return true of the current dimension and the provided rhs are equal.
+   * @brief Returns true of the current dimension and the provided rhs are equal.
    */
   bool operator==(const Dim &rhs) const;
 

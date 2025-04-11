@@ -28,6 +28,8 @@ Dim::Dim(int32_t dim) : _dim_value{dim}
   }
 }
 
+Dim Dim::dynamic() { return Dim{-1}; }
+
 bool Dim::is_dynamic() const { return _dim_value == -1; }
 
 int32_t Dim::value() const { return _dim_value; }

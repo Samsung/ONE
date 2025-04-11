@@ -2,6 +2,7 @@ if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
 
+list(APPEND CIRCLE_RESIZER_TEST_SOURCES Shape.test.cpp)
 list(APPEND CIRCLE_RESIZER_TEST_SOURCES ShapeParser.test.cpp)
 
 nnas_find_package(GTest REQUIRED)

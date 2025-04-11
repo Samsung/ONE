@@ -17,6 +17,7 @@
 #include "Shape.h"
 
 #include <algorithm>
+#include <limits>
 
 using namespace circle_resizer;
 
@@ -24,11 +25,35 @@ Shape::Shape(const std::initializer_list<Dim> &dims) : _dims{dims} {}
 
 Shape::Shape(const std::vector<Dim> &shape_vec) : _dims{shape_vec} {}
 
+Shape::Shape(const std::initializer_list<uint32_t> &shape_vec)
+{
+  for (const auto &dim : shape_vec)
+  {
+    if (dim >= std::numeric_limits<int32_t>::max())
+    {
+      std::out_of_range("Provided dimension: " + std::to_string(dim) + " is out of range");
+    }
+    _dims.emplace_back(Dim{static_cast<int32_t>(dim)});
+  }
+}
+
 Shape Shape::scalar() { return Shape{std::initializer_list<Dim>{}}; }
 
 size_t Shape::rank() const { return _dims.size(); }
 
-Dim Shape::operator[](const size_t &axis) const { return _dims[axis]; }
+Dim Shape::operator[](const size_t &axis) const
+{
+  if (is_scalar())
+  {
+    throw std::invalid_argument("You cannot gather dimension from a scalar");
+  }
+  if (axis > rank() - 1)
+  {
+    throw std::out_of_range("Axis=" + std::to_string(axis) +
+                            " is out of range of shape's rank: " + std::to_string(rank()));
+  }
+  return _dims[axis];
+}
 
 bool Shape::is_scalar() const { return _dims.empty(); }
 
