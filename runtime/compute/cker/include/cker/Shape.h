@@ -62,7 +62,15 @@ public:
   // Constructor that creates a shape of given size and fills all dimensions with "value".
   Shape(int shape_size, int32_t value) : _size(0)
   {
-    Resize(shape_size);
+    if (shape_size <= kMaxSmallSize)
+    {
+      dims_ = std::array<int32_t, kMaxSmallSize>{};
+    }
+    else
+    {
+      dims_ = std::vector<int32_t>(shape_size);
+    }
+
     for (int i = 0; i < shape_size; ++i)
     {
       SetDim(i, value);
@@ -72,12 +80,38 @@ public:
   // Constructor that creates a shape from an array of dimension data.
   Shape(int dimensions_count, const int32_t *dims_data) : _size(0)
   {
+    // Explicitly initialize dims_ based on dimensions_count to avoid uninitialized state.
+    if (dimensions_count <= kMaxSmallSize)
+    {
+      dims_ = std::array<int32_t, kMaxSmallSize>{};
+    }
+    else
+    {
+      dims_ = std::vector<int32_t>(dimensions_count);
+    }
+
     ReplaceWith(dimensions_count, dims_data);
   }
 
   // Initializer list constructor.
   // Marked explicit to avoid unintended overload resolution.
-  Shape(const std::initializer_list<int> init_list) : _size(0) { BuildFrom(init_list); }
+  Shape(const std::initializer_list<int> init_list) : _size(0)
+  {
+    const auto size = static_cast<int>(std::distance(init_list.begin(), init_list.end()));
+
+    // Explicitly initialize dims_ based on the initializer list size to prevent
+    // "maybe uninitialized" warnings when BuildFrom() is invoked.
+    if (size <= kMaxSmallSize)
+    {
+      dims_ = std::array<int32_t, kMaxSmallSize>{};
+    }
+    else
+    {
+      dims_ = std::vector<int32_t>(size);
+    }
+
+    BuildFrom(init_list);
+  }
 
   // Copy constructor
   Shape(const Shape &other) : _size(other._size)
@@ -169,6 +203,16 @@ public:
   // Resizes the shape to dimensions_count while preserving existing data.
   inline void Resize(int dimensions_count)
   {
+    // If dims_ is in a valueless state (i.e. not yet initialized or lost due to an exception),
+    // initialize dims_ explicitly based on dimensions_count to ensure it is in a valid state.
+    if (dims_.valueless_by_exception())
+    {
+      if (dimensions_count <= kMaxSmallSize)
+        dims_ = std::array<int32_t, kMaxSmallSize>{};
+      else
+        dims_ = std::vector<int32_t>(dimensions_count);
+    }
+
     std::vector<int32_t> oldDims;
     oldDims.reserve(_size);
     if (_size <= kMaxSmallSize)
