@@ -24,7 +24,7 @@ void Device::GetDeviceJson(const std::string &json_path)
   std::ifstream in(json_path, std::ios::binary);
   if (!in.is_open())
   {
-    std::cout << "Error opening file\n";
+    std::cerr << "Error opening file." << std::endl;
     exit(-1);
   }
 
