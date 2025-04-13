@@ -9,6 +9,9 @@ var namespacennfw_1_1cker =
     [ "detail", "namespacennfw_1_1cker_1_1detail.html", "namespacennfw_1_1cker_1_1detail" ],
     [ "eigen_support", "namespacennfw_1_1cker_1_1eigen__support.html", "namespacennfw_1_1cker_1_1eigen__support" ],
     [ "functor", "namespacennfw_1_1cker_1_1functor.html", "namespacennfw_1_1cker_1_1functor" ],
+    [ "gelu_internal", "namespacennfw_1_1cker_1_1gelu__internal.html", [
+      [ "kSqrt2dPi", "namespacennfw_1_1cker_1_1gelu__internal.html#aa1e479ea3e5a199feac8be9ab07c4756", null ]
+    ] ],
     [ "gemm_support", "namespacennfw_1_1cker_1_1gemm__support.html", "namespacennfw_1_1cker_1_1gemm__support" ],
     [ "multithreaded", "namespacennfw_1_1cker_1_1multithreaded.html", [
       [ "Conv", "namespacennfw_1_1cker_1_1multithreaded.html#a2a76a60442b85b70622d1e68043897da", null ]
@@ -67,6 +70,7 @@ var namespacennfw_1_1cker =
     [ "FusedBatchNorm", "classnnfw_1_1cker_1_1_fused_batch_norm.html", "classnnfw_1_1cker_1_1_fused_batch_norm" ],
     [ "FusedBatchNormParams", "structnnfw_1_1cker_1_1_fused_batch_norm_params.html", "structnnfw_1_1cker_1_1_fused_batch_norm_params" ],
     [ "GatherParams", "structnnfw_1_1cker_1_1_gather_params.html", "structnnfw_1_1cker_1_1_gather_params" ],
+    [ "GELUParams", "structnnfw_1_1cker_1_1_g_e_l_u_params.html", "structnnfw_1_1cker_1_1_g_e_l_u_params" ],
     [ "GemmParams", "structnnfw_1_1cker_1_1_gemm_params.html", "structnnfw_1_1cker_1_1_gemm_params" ],
     [ "InputTensor", "structnnfw_1_1cker_1_1_input_tensor.html", "structnnfw_1_1cker_1_1_input_tensor" ],
     [ "InstanceNormParams", "structnnfw_1_1cker_1_1_instance_norm_params.html", "structnnfw_1_1cker_1_1_instance_norm_params" ],
@@ -248,6 +252,7 @@ var namespacennfw_1_1cker =
     [ "FullyConnectedSparseWeight16x1", "namespacennfw_1_1cker.html#a38ce7e8df68ce5c6527f23b008a422b3", null ],
     [ "FullyConnectedSparseWeightRandom", "namespacennfw_1_1cker.html#a0da6b0f998eacd17836e7f7265cd1605", null ],
     [ "Gather", "namespacennfw_1_1cker.html#a21e58446bc3556bdae330c10c2c79762", null ],
+    [ "GELU", "namespacennfw_1_1cker.html#a6d5d86d778002db839e976ec6889f544", null ],
     [ "GenerateKey", "namespacennfw_1_1cker.html#a1dcc2778e5a8a630d83dcccc61cefb4a", null ],
     [ "GetIndexRange", "namespacennfw_1_1cker.html#a19d2b445270efc71bcf94536aef0b970", null ],
     [ "GetInvSqrtQuantizedMultiplierExp", "namespacennfw_1_1cker.html#a8301134d496b81d8653d171b974113b9", null ],
@@ -310,6 +315,7 @@ var namespacennfw_1_1cker =
     [ "NotEqualFn", "namespacennfw_1_1cker.html#af98f6c535dcc1915db5edc72f6098805", null ],
     [ "Offset", "namespacennfw_1_1cker.html#a1787f356a8298ee1a4219afe7c712456", null ],
     [ "Offset", "namespacennfw_1_1cker.html#a2e31fa973e9bdf4c9e988d5501e8e070", null ],
+    [ "Offset", "namespacennfw_1_1cker.html#aa13a61e8e94cfd5cc3b1b298ee932abf", null ],
     [ "OneHot", "namespacennfw_1_1cker.html#abe1ec50ccd0fc868120eef5c6d0bbf75", null ],
     [ "operator<<", "namespacennfw_1_1cker.html#a6eb57a8d6426f6be75b1e8fa7381fc19", null ],
     [ "optimized_ops_preload_l1_keep", "namespacennfw_1_1cker.html#af55ce51eecaba18a0369fb20bf2458a0", null ],

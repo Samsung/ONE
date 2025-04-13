@@ -9,7 +9,8 @@ var classonert_1_1ir_1_1operation_1_1_elementwise_activation =
       [ "LOGISTIC", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a72ee60fba0509af07cbbd91398d8db9d", null ],
       [ "RELU", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329ad346bb4679d29be241279f15d7795c1c", null ],
       [ "TANH", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a143c8c6f51b9bb893ce71e38702e3cc1", null ],
-      [ "LEAKY_RELU", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329ac7e80a3de04936f4e423e1b564fdca10", null ]
+      [ "LEAKY_RELU", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329ac7e80a3de04936f4e423e1b564fdca10", null ],
+      [ "GELU", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a655c45f3fd5251307d73aaadd805d329a6c83d4d579e33c2e1b09f2e9825fcbc6", null ]
     ] ],
     [ "ElementwiseActivation", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a913fe30e2628fd6d3da9603bbaa65ca6", null ],
     [ "accept", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html#a8037a011c5450ede36561aaee9f76f68", null ],

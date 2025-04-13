@@ -1,5 +1,17 @@
 var NAVTREEINDEX208 =
 {
+"luci-interpreter_2include_2luci__interpreter_2test__models_2log_2_float_log_kernel_8h_source.html":[41,0,2,4,0,0,1,36,0],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2log_2_neg_log_kernel_8h.html":[41,0,2,4,0,0,1,36,1],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2log_2_neg_log_kernel_8h_source.html":[41,0,2,4,0,0,1,36,1],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2log_2_test_data_log_base_8h.html":[41,0,2,4,0,0,1,36,2],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2log_2_test_data_log_base_8h_source.html":[41,0,2,4,0,0,1,36,2],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2log__softmax_2_float_log_softmax_kernel_8h.html":[41,0,2,4,0,0,1,37,0],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2log__softmax_2_float_log_softmax_kernel_8h.html#a373bd8667c3aef31b5e0ff6695500307":[41,0,2,4,0,0,1,37,0,1],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2log__softmax_2_float_log_softmax_kernel_8h.html#aaa77e942a48a43aa95ade680299d2e40":[41,0,2,4,0,0,1,37,0,2],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2log__softmax_2_float_log_softmax_kernel_8h.html#ad037f19c4ef59e0048291afe716f1cfa":[41,0,2,4,0,0,1,37,0,3],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2log__softmax_2_float_log_softmax_kernel_8h_source.html":[41,0,2,4,0,0,1,37,0],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2log__softmax_2_neg_log_softmax_kernel_8h.html":[41,0,2,4,0,0,1,37,1],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2log__softmax_2_neg_log_softmax_kernel_8h.html#af2be3f486da52ce36fa4ee1eaeed44ac":[41,0,2,4,0,0,1,37,1,1],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2log__softmax_2_neg_log_softmax_kernel_8h_source.html":[41,0,2,4,0,0,1,37,1],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2log__softmax_2_test_data_log_softmax_base_8h.html":[41,0,2,4,0,0,1,37,2],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2log__softmax_2_test_data_log_softmax_base_8h_source.html":[41,0,2,4,0,0,1,37,2],
@@ -237,17 +249,5 @@ var NAVTREEINDEX208 =
 "luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_float_slice_kernel_8h.html":[41,0,2,4,0,0,1,67,0],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_float_slice_kernel_8h.html#a1cd8d27bbb5ac6f1395dc1064a8ae316":[41,0,2,4,0,0,1,67,0,1],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_float_slice_kernel_8h.html#adc716a49d3cb5815d31cdfe85b59dc90":[41,0,2,4,0,0,1,67,0,3],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_float_slice_kernel_8h.html#af7bafde6340f1b3d42aa01210339552a":[41,0,2,4,0,0,1,67,0,2],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_float_slice_kernel_8h_source.html":[41,0,2,4,0,0,1,67,0],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_neg_slice_kernel_8h.html":[41,0,2,4,0,0,1,67,1],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_neg_slice_kernel_8h.html#a24310b712f4554156ca7e122f0d9f088":[41,0,2,4,0,0,1,67,1,4],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_neg_slice_kernel_8h.html#a2ef4fa4fb952e4a1157e613fb8ec0442":[41,0,2,4,0,0,1,67,1,6],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_neg_slice_kernel_8h.html#a533465ccbc84c6831fadc75237b9c080":[41,0,2,4,0,0,1,67,1,5],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_neg_slice_kernel_8h.html#a80c51c66135e92bb0867ef87d53c89b1":[41,0,2,4,0,0,1,67,1,7],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_neg_slice_kernel_8h_source.html":[41,0,2,4,0,0,1,67,1],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_test_data_slice_base_8h.html":[41,0,2,4,0,0,1,67,4],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_test_data_slice_base_8h_source.html":[41,0,2,4,0,0,1,67,4],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2space__to__batch__nd_2_float_space_to_batch_n_d_kernel_8h.html":[41,0,2,4,0,0,1,68,0],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2space__to__batch__nd_2_float_space_to_batch_n_d_kernel_8h.html#a634fd70b819e60e7839f496cc97f4634":[41,0,2,4,0,0,1,68,0,3],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2space__to__batch__nd_2_float_space_to_batch_n_d_kernel_8h.html#a94024ca97c9080c267ddaa262af342d7":[41,0,2,4,0,0,1,68,0,1]
+"luci-interpreter_2include_2luci__interpreter_2test__models_2slice_2_float_slice_kernel_8h.html#af7bafde6340f1b3d42aa01210339552a":[41,0,2,4,0,0,1,67,0,2]
 };

@@ -15,6 +15,7 @@ var runtime_2compute_2cker_2include_2cker_2_types_8h =
     [ "nnfw::cker::L2NormParams", "structnnfw_1_1cker_1_1_l2_norm_params.html", "structnnfw_1_1cker_1_1_l2_norm_params" ],
     [ "nnfw::cker::LSTMParams", "structnnfw_1_1cker_1_1_l_s_t_m_params.html", "structnnfw_1_1cker_1_1_l_s_t_m_params" ],
     [ "nnfw::cker::GatherParams", "structnnfw_1_1cker_1_1_gather_params.html", "structnnfw_1_1cker_1_1_gather_params" ],
+    [ "nnfw::cker::GELUParams", "structnnfw_1_1cker_1_1_g_e_l_u_params.html", "structnnfw_1_1cker_1_1_g_e_l_u_params" ],
     [ "nnfw::cker::InstanceNormParams", "structnnfw_1_1cker_1_1_instance_norm_params.html", "structnnfw_1_1cker_1_1_instance_norm_params" ],
     [ "nnfw::cker::ResizeBilinearParams", "structnnfw_1_1cker_1_1_resize_bilinear_params.html", "structnnfw_1_1cker_1_1_resize_bilinear_params" ],
     [ "nnfw::cker::RmsNormParams", "structnnfw_1_1cker_1_1_rms_norm_params.html", "structnnfw_1_1cker_1_1_rms_norm_params" ],

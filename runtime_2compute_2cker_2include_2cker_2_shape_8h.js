@@ -12,5 +12,6 @@ var runtime_2compute_2cker_2include_2cker_2_shape_8h =
     [ "MatchingFlatSizeSkipDim", "runtime_2compute_2cker_2include_2cker_2_shape_8h.html#aabf0edca9e5984799338bb320bf6eb90", null ],
     [ "MatchingFlatSizeSkipDim", "runtime_2compute_2cker_2include_2cker_2_shape_8h.html#a9c6ce7ebc988022b50e3db4c4690aad1", null ],
     [ "Offset", "runtime_2compute_2cker_2include_2cker_2_shape_8h.html#a1787f356a8298ee1a4219afe7c712456", null ],
-    [ "Offset", "runtime_2compute_2cker_2include_2cker_2_shape_8h.html#a2e31fa973e9bdf4c9e988d5501e8e070", null ]
+    [ "Offset", "runtime_2compute_2cker_2include_2cker_2_shape_8h.html#a2e31fa973e9bdf4c9e988d5501e8e070", null ],
+    [ "Offset", "runtime_2compute_2cker_2include_2cker_2_shape_8h.html#aa13a61e8e94cfd5cc3b1b298ee932abf", null ]
 ];

@@ -2672,6 +2672,7 @@ var annotated_dup =
         [ "FusedBatchNorm", "classnnfw_1_1cker_1_1_fused_batch_norm.html", "classnnfw_1_1cker_1_1_fused_batch_norm" ],
         [ "FusedBatchNormParams", "structnnfw_1_1cker_1_1_fused_batch_norm_params.html", "structnnfw_1_1cker_1_1_fused_batch_norm_params" ],
         [ "GatherParams", "structnnfw_1_1cker_1_1_gather_params.html", "structnnfw_1_1cker_1_1_gather_params" ],
+        [ "GELUParams", "structnnfw_1_1cker_1_1_g_e_l_u_params.html", "structnnfw_1_1cker_1_1_g_e_l_u_params" ],
         [ "GemmParams", "structnnfw_1_1cker_1_1_gemm_params.html", "structnnfw_1_1cker_1_1_gemm_params" ],
         [ "InputTensor", "structnnfw_1_1cker_1_1_input_tensor.html", "structnnfw_1_1cker_1_1_input_tensor" ],
         [ "InstanceNormParams", "structnnfw_1_1cker_1_1_instance_norm_params.html", "structnnfw_1_1cker_1_1_instance_norm_params" ],

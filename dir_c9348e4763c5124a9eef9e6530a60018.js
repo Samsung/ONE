@@ -30,6 +30,7 @@ var dir_c9348e4763c5124a9eef9e6530a60018 =
     [ "FullyConnectedSparse16x1.h", "_fully_connected_sparse16x1_8h.html", "_fully_connected_sparse16x1_8h" ],
     [ "FusedBatchNorm.h", "runtime_2compute_2cker_2include_2cker_2operation_2_fused_batch_norm_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_fused_batch_norm_8h" ],
     [ "Gather.h", "runtime_2compute_2cker_2include_2cker_2operation_2_gather_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_gather_8h" ],
+    [ "GELU.h", "runtime_2compute_2cker_2include_2cker_2operation_2_gelu_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_gelu_8h" ],
     [ "InstanceNorm.h", "runtime_2compute_2cker_2include_2cker_2operation_2_instance_norm_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_instance_norm_8h" ],
     [ "L2Normalize.h", "runtime_2compute_2cker_2include_2cker_2operation_2_l2_normalize_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_l2_normalize_8h" ],
     [ "LeakyReLU.h", "runtime_2compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h" ],

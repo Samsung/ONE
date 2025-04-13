@@ -54,7 +54,7 @@ var dir_c4a85e64d6b44b6088d388e953098055 =
     [ "Gather.cpp", "compiler_2luci-interpreter_2src_2kernels_2_gather_8cpp.html", null ],
     [ "Gather.h", "compiler_2luci-interpreter_2src_2kernels_2_gather_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_gather_8h" ],
     [ "Gelu.cpp", "luci-interpreter_2src_2kernels_2_gelu_8cpp.html", null ],
-    [ "Gelu.h", "luci-interpreter_2src_2kernels_2_gelu_8h.html", "luci-interpreter_2src_2kernels_2_gelu_8h" ],
+    [ "Gelu.h", "compiler_2luci-interpreter_2src_2kernels_2_gelu_8h.html", "compiler_2luci-interpreter_2src_2kernels_2_gelu_8h" ],
     [ "Greater.cpp", "compiler_2luci-interpreter_2src_2kernels_2_greater_8cpp.html", null ],
     [ "Greater.h", "luci-interpreter_2src_2kernels_2_greater_8h.html", "luci-interpreter_2src_2kernels_2_greater_8h" ],
     [ "GreaterEqual.cpp", "compiler_2luci-interpreter_2src_2kernels_2_greater_equal_8cpp.html", null ],

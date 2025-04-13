@@ -67,7 +67,8 @@ var namespaceonert_1_1backend_1_1cpu_1_1ops =
       [ "kLogistic", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868ab9cf6caab917a7db802a8752be2e9710", null ],
       [ "kReLU", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868acd272990c8697bac168e2b0fb9b54ae4", null ],
       [ "kTanh", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a4918cf5d849692c2bed918bb9e948630", null ],
-      [ "kLeakyReLU", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a195843ccfcf373a0c5c2f6a5ae9af89f", null ]
+      [ "kLeakyReLU", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868a195843ccfcf373a0c5c2f6a5ae9af89f", null ],
+      [ "kGELU", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868aa59cbeb8ec1cc5c85f1390344276cf4d", null ]
     ] ],
     [ "ElementwiseBinaryType", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7", [
       [ "kFloorDiv", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7a47d7da92f8fee9486cb83971585bb449", null ],

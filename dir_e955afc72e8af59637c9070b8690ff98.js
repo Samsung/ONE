@@ -23,6 +23,7 @@ var dir_e955afc72e8af59637c9070b8690ff98 =
     [ "circle-part-value-test", "dir_9454caeb18acfcdaaa664974167e4654.html", "dir_9454caeb18acfcdaaa664974167e4654" ],
     [ "circle-partitioner", "dir_0f3bef3f7a7bffced2221c6b00d39ac4.html", "dir_0f3bef3f7a7bffced2221c6b00d39ac4" ],
     [ "circle-quantizer", "dir_a8a581a5c7ae30913b7e10b64e5b0bb8.html", "dir_a8a581a5c7ae30913b7e10b64e5b0bb8" ],
+    [ "circle-resizer", "dir_e74fa1f10689f8898bb99a8046bcc339.html", "dir_e74fa1f10689f8898bb99a8046bcc339" ],
     [ "circle-tensordump", "dir_7d37a89d894e8ecfe57072e5e7c59bf4.html", "dir_7d37a89d894e8ecfe57072e5e7c59bf4" ],
     [ "circle-verify", "dir_e36e3b4972413f65f761e52d5eb06041.html", "dir_e36e3b4972413f65f761e52d5eb06041" ],
     [ "circle2circle", "dir_0496714f8113a0a82a9b14fd5b6da5d8.html", "dir_0496714f8113a0a82a9b14fd5b6da5d8" ],
