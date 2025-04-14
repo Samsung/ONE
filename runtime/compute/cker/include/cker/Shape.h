@@ -60,7 +60,7 @@ public:
   }
 
   // Constructor that creates a shape from an array of dimension data.
-  Shape(int dimensions_count, const int32_t *dims_data) : _size(0)
+  Shape(int dimensions_count, const int32_t *dims_data) : _size(dimensions_count)
   {
     initStorage(dimensions_count);
     ReplaceWith(dimensions_count, dims_data);
@@ -205,6 +205,7 @@ public:
   // Replaces the current shape with a new one defined by dimensions_count and dims_data.
   inline void ReplaceWith(int dimensions_count, const int32_t *dims_data)
   {
+    assert(dims_data != nullptr);
     Resize(dimensions_count);
     std::memcpy(DimsData(), dims_data, dimensions_count * sizeof(int32_t));
   }
@@ -266,6 +267,7 @@ private:
   // Helper function: initialize dims_ storage based on the number of dimensions.
   inline void initStorage(int dimensions_count)
   {
+    assert(dimensions_count >= 0);
     if (dimensions_count <= kMaxSmallSize)
       dims_ = std::array<int32_t, kMaxSmallSize>{};
     else
@@ -275,11 +277,11 @@ private:
   // For use only by ExtendedShape(), written to guarantee (return-value) copy
   // elision in C++17.
   // This creates a shape padded to the desired size with the specified value.
-  Shape(int new_shape_size, const Shape &shape, int pad_value) : _size(0)
+  Shape(int new_shape_size, const Shape &shape, int pad_value) : _size(new_shape_size)
   {
     assert(new_shape_size >= shape.DimensionsCount());
     assert(new_shape_size <= kMaxSmallSize);
-    initStorage(new_shape_size);
+    Resize(new_shape_size);
     const int size_increase = new_shape_size - shape.DimensionsCount();
     for (int i = 0; i < size_increase; ++i)
     {
@@ -287,7 +289,6 @@ private:
     }
     std::memcpy(DimsData() + size_increase, shape.DimsData(),
                 sizeof(int32_t) * shape.DimensionsCount());
-    _size = new_shape_size;
   }
 
   int32_t _size;
