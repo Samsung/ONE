@@ -47,30 +47,12 @@ public:
   // Constructor that takes a dimension count.
   // If dimensions_count <= kMaxSmallSize, it uses a fixed-size array.
   // Otherwise, it uses a dynamic vector.
-  explicit Shape(int dimensions_count) : _size(dimensions_count)
-  {
-    if (dimensions_count <= kMaxSmallSize)
-    {
-      dims_ = std::array<int32_t, kMaxSmallSize>{};
-    }
-    else
-    {
-      dims_ = std::vector<int32_t>(dimensions_count);
-    }
-  }
+  explicit Shape(int dimensions_count) : _size(dimensions_count) { initStorage(dimensions_count); }
 
   // Constructor that creates a shape of given size and fills all dimensions with "value".
-  Shape(int shape_size, int32_t value) : _size(0)
+  Shape(int shape_size, int32_t value) : _size(shape_size)
   {
-    if (shape_size <= kMaxSmallSize)
-    {
-      dims_ = std::array<int32_t, kMaxSmallSize>{};
-    }
-    else
-    {
-      dims_ = std::vector<int32_t>(shape_size);
-    }
-
+    initStorage(shape_size);
     for (int i = 0; i < shape_size; ++i)
     {
       SetDim(i, value);
@@ -78,18 +60,9 @@ public:
   }
 
   // Constructor that creates a shape from an array of dimension data.
-  Shape(int dimensions_count, const int32_t *dims_data) : _size(0)
+  Shape(int dimensions_count, const int32_t *dims_data) : _size(dimensions_count)
   {
-    // Explicitly initialize dims_ based on dimensions_count to avoid uninitialized state.
-    if (dimensions_count <= kMaxSmallSize)
-    {
-      dims_ = std::array<int32_t, kMaxSmallSize>{};
-    }
-    else
-    {
-      dims_ = std::vector<int32_t>(dimensions_count);
-    }
-
+    initStorage(dimensions_count);
     ReplaceWith(dimensions_count, dims_data);
   }
 
@@ -98,18 +71,7 @@ public:
   Shape(const std::initializer_list<int> init_list) : _size(0)
   {
     const auto size = static_cast<int>(std::distance(init_list.begin(), init_list.end()));
-
-    // Explicitly initialize dims_ based on the initializer list size to prevent
-    // "maybe uninitialized" warnings when BuildFrom() is invoked.
-    if (size <= kMaxSmallSize)
-    {
-      dims_ = std::array<int32_t, kMaxSmallSize>{};
-    }
-    else
-    {
-      dims_ = std::vector<int32_t>(size);
-    }
-
+    initStorage(size);
     BuildFrom(init_list);
   }
 
@@ -207,10 +169,7 @@ public:
     // initialize dims_ explicitly based on dimensions_count to ensure it is in a valid state.
     if (dims_.valueless_by_exception())
     {
-      if (dimensions_count <= kMaxSmallSize)
-        dims_ = std::array<int32_t, kMaxSmallSize>{};
-      else
-        dims_ = std::vector<int32_t>(dimensions_count);
+      initStorage(dimensions_count);
     }
 
     std::vector<int32_t> oldDims;
@@ -246,6 +205,7 @@ public:
   // Replaces the current shape with a new one defined by dimensions_count and dims_data.
   inline void ReplaceWith(int dimensions_count, const int32_t *dims_data)
   {
+    assert(dims_data != nullptr);
     Resize(dimensions_count);
     std::memcpy(DimsData(), dims_data, dimensions_count * sizeof(int32_t));
   }
@@ -304,10 +264,20 @@ public:
   bool operator!=(const Shape &comp) const { return !((*this) == comp); }
 
 private:
+  // Helper function: initialize dims_ storage based on the number of dimensions.
+  inline void initStorage(int dimensions_count)
+  {
+    assert(dimensions_count >= 0);
+    if (dimensions_count <= kMaxSmallSize)
+      dims_ = std::array<int32_t, kMaxSmallSize>{};
+    else
+      dims_ = std::vector<int32_t>(dimensions_count);
+  }
+
   // For use only by ExtendedShape(), written to guarantee (return-value) copy
   // elision in C++17.
   // This creates a shape padded to the desired size with the specified value.
-  Shape(int new_shape_size, const Shape &shape, int pad_value) : _size(0)
+  Shape(int new_shape_size, const Shape &shape, int pad_value) : _size(new_shape_size)
   {
     assert(new_shape_size >= shape.DimensionsCount());
     assert(new_shape_size <= kMaxSmallSize);
