@@ -1,0 +1,70 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index bec9c490..9df9070e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -223,5 +223,5 @@ else()
+   add_subdirectory(include)
+   add_subdirectory(src)
+   add_subdirectory(docs)
+-  add_subdirectory(test)
++  #add_subdirectory(test)
+ endif()
+diff --git a/src/Dialect/ONNX/ONNXOps.td.inc b/src/Dialect/ONNX/ONNXOps.td.inc
+index 666c0cde..ee0ccf75 100644
+--- a/src/Dialect/ONNX/ONNXOps.td.inc
++++ b/src/Dialect/ONNX/ONNXOps.td.inc
+@@ -1833,9 +1833,9 @@ def ONNXDequantizeLinearOp:ONNX_Op<"DequantizeLinear",
+   `zero-point` is usually not used in the case of float8e4m3fn, float8e4m3fnuz, float8e5m2, float8e5m2fnuz quantization,
+   but the dequantization formula remains the same for consistency and 'x_scale' still determines the output type.
+   }];
+-  let arguments = (ins AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[I32]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>]>:$x,
++  let arguments = (ins AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[I16]>, TensorOf<[I32]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>]>:$x,
+     AnyTypeOf<[TensorOf<[F32]>, TensorOf<[F16]>, TensorOf<[BF16]>]>:$x_scale,
+-    AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[I32]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>, NoneType]>:$x_zero_point,
++    AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[I16]>, TensorOf<[I32]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>, NoneType]>:$x_zero_point,
+     DefaultValuedAttr<SI64Attr, "1">:$axis);
+   let results = (outs AnyTypeOf<[TensorOf<[F32]>, TensorOf<[F16]>, TensorOf<[BF16]>]>:$y);
+   let extraClassDeclaration = [{
+@@ -6030,10 +6030,10 @@ def ONNXQuantizeLinearOp:ONNX_Op<"QuantizeLinear",
+   }];
+   let arguments = (ins AnyTypeOf<[TensorOf<[F32]>, TensorOf<[F16]>, TensorOf<[BF16]>, TensorOf<[I32]>]>:$x,
+     AnyTypeOf<[TensorOf<[F32]>, TensorOf<[F16]>, TensorOf<[BF16]>, TensorOf<[I32]>]>:$y_scale,
+-    AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>, NoneType]>:$y_zero_point,
++    AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[I16]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>, NoneType]>:$y_zero_point,
+     DefaultValuedAttr<SI64Attr, "1">:$axis,
+     DefaultValuedAttr<SI64Attr, "1">:$saturate);
+-  let results = (outs AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>]>:$y);
++  let results = (outs AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[I16]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>]>:$y);
+   let extraClassDeclaration = [{
+     static int getNumberOfOperands() {
+       return 3;
+diff --git a/src/Dialect/ONNX/Transforms/Decompose.cpp b/src/Dialect/ONNX/Transforms/Decompose.cpp
+index d61a980e..e6a4902c 100644
+--- a/src/Dialect/ONNX/Transforms/Decompose.cpp
++++ b/src/Dialect/ONNX/Transforms/Decompose.cpp
+@@ -460,6 +460,7 @@ Value replaceSequenceAt(
+ }
+ 
+ bool shouldDecomposeConvTransposeOp(Value convTransposeResult) {
++  return false;
+   ONNXConvTransposeOp op =
+       mlir::cast<ONNXConvTransposeOp>(convTransposeResult.getDefiningOp());
+   return hasShapeAndRank(convTransposeResult) &&
+@@ -1333,7 +1334,7 @@ void DecomposeONNXToONNXPass::runOnOperation() {
+   target.addIllegalOp<ONNXGridSampleV16Op>();
+   target.addIllegalOp<ONNXGroupNormalizationOp>();
+   target.addIllegalOp<ONNXGroupNormalizationV18Op>();
+-  target.addIllegalOp<ONNXInstanceNormalizationOp>();
++  //target.addIllegalOp<ONNXInstanceNormalizationOp>();
+   target.addIllegalOp<ONNXLogSoftmaxOp>();
+   target.addIllegalOp<ONNXPadV11Op>();
+   target.addIllegalOp<ONNXPadV13Op>();
+@@ -1433,7 +1434,7 @@ void onnx_mlir::getDecomposeONNXToONNXPatterns(
+   // Decompose CustomOp FusedMatMul introduced by onnxruntime:
+   // https://github.com/microsoft/onnxruntime/blob/main/docs/ContribOperators.md#com.microsoft.FusedMatMul
+   patterns.insert<CustomOpFuseMatMulPattern>(context);
+-  patterns.insert<InstanceNormIntoLayerNormPattern>(context);
++  //patterns.insert<InstanceNormIntoLayerNormPattern>(context);
+   patterns.insert<GroupNormIntoLayerNormPattern1>(context);
+   patterns.insert<GroupNormIntoLayerNormPattern2>(context);
+   patterns.insert<SoftmaxCrossEntropyPattern>(context);
