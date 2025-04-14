@@ -96,7 +96,7 @@ LogicalResult FullyConnectedOp::fold(FoldAdaptor adaptor, SmallVectorImpl<OpFold
     return failure();
 
   // Bias tensor is optional.
-  const bool has_bias = !(!getBias() || getBias().getType().isa<NoneType>());
+  const bool has_bias = !(!getBias() || mlir::isa<NoneType>(getBias().getType()));
 
   // Get the tensors.
   DenseElementsAttr input_tensor, weights_tensor, bias_tensor;

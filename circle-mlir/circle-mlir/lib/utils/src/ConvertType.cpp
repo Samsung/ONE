@@ -50,7 +50,7 @@ circle::TensorType ConvertTypeToTensorType(mlir::Type type)
     return circle::TensorType_STRING;
   }
   */
-  else if (auto complex_type = type.dyn_cast<mlir::ComplexType>())
+  else if (auto complex_type = mlir::dyn_cast<mlir::ComplexType>(type))
   {
     if (complex_type.getElementType().isF32())
     {
@@ -62,7 +62,7 @@ circle::TensorType ConvertTypeToTensorType(mlir::Type type)
     }
     throw std::runtime_error("invalid complex Type in conversion");
   }
-  else if (auto itype = type.dyn_cast<mlir::IntegerType>())
+  else if (auto itype = mlir::dyn_cast<mlir::IntegerType>(type))
   {
     switch (itype.getWidth())
     {

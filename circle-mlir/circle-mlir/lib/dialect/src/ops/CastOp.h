@@ -41,15 +41,15 @@ OpFoldResult CastOp::fold(FoldAdaptor adaptor)
   }
 
   // For now, only supports cast for the integer/float input type.
-  auto elements_attr = operands[0].dyn_cast_or_null<mlir::DenseElementsAttr>();
+  auto elements_attr = mlir::dyn_cast_or_null<mlir::DenseElementsAttr>(operands[0]);
   if (!elements_attr)
   {
     return nullptr;
   }
 
-  auto result_element_type = getType().cast<ShapedType>().getElementType();
-  auto operand_element_type = getInput().getType().cast<ShapedType>().getElementType();
-  auto operand_int_type = operand_element_type.dyn_cast<IntegerType>();
+  auto result_element_type = mlir::cast<ShapedType>(getType()).getElementType();
+  auto operand_element_type = mlir::cast<ShapedType>(getInput().getType()).getElementType();
+  auto operand_int_type = mlir::dyn_cast<IntegerType>(operand_element_type);
   if (!result_element_type || !operand_element_type)
   {
     return nullptr;
@@ -57,7 +57,7 @@ OpFoldResult CastOp::fold(FoldAdaptor adaptor)
 
   if (mlir::isa<mlir::IntegerType>(result_element_type))
   {
-    auto result_int_type = result_element_type.dyn_cast<IntegerType>();
+    auto result_int_type = mlir::dyn_cast<IntegerType>(result_element_type);
     const int output_bitwidth = result_int_type.getWidth();
     // check for INT64 <--> INT32
     if (operand_int_type)
@@ -97,7 +97,7 @@ OpFoldResult CastOp::fold(FoldAdaptor adaptor)
   else if (mlir::isa<mlir::FloatType>(result_element_type))
   {
     // Refer to https://llvm.org/doxygen/classllvm_1_1APFloat.html
-    auto result_float_type = result_element_type.dyn_cast<FloatType>();
+    auto result_float_type = mlir::dyn_cast<FloatType>(result_element_type);
     // To get the correct semantics of floating point from the type of this CastOp
     const llvm::fltSemantics &semantics = result_float_type.getFloatSemantics();
     auto cast = [&](const llvm::APInt &value) {

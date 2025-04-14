@@ -83,10 +83,10 @@ bool ConstOp::isBuildableWith(Attribute value, Type type)
   if (!typedAttr || typedAttr.getType() != type)
     return false;
   // Integer values must be signless.
-  if (type.isa<IntegerType>() && !type.cast<IntegerType>().isSignless())
+  if (mlir::isa<IntegerType>(type) && !mlir::cast<IntegerType>(type).isSignless())
     return false;
   // Integer, float, and element attributes are buildable.
-  return value.isa<IntegerAttr, FloatAttr, ElementsAttr>();
+  return mlir::isa<IntegerAttr, FloatAttr, ElementsAttr>(value);
 }
 
 } // namespace Circle

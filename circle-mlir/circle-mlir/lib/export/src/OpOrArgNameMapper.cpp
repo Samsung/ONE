@@ -120,7 +120,7 @@ bool OpOrArgNameMapper::IsUnique(llvm::StringRef name) { return true; }
 
 std::string OpOrArgLocNameMapper::GetName(OpOrVal op_or_val)
 {
-  if (auto *op = op_or_val.dyn_cast<mlir::Operation *>())
+  if (auto *op = mlir::dyn_cast<mlir::Operation *>(op_or_val))
   {
     // NOTE stop for debug version to find out if there is any Op for this case
     assert(false);
@@ -131,14 +131,14 @@ std::string OpOrArgLocNameMapper::GetName(OpOrVal op_or_val)
     // generated using the op type.
     return std::string(op->getName().getStringRef());
   }
-  auto val = op_or_val.dyn_cast<mlir::Value>();
+  auto val = mlir::dyn_cast<mlir::Value>(op_or_val);
   auto name_from_loc = mlir::GetNameFromLoc(val.getLoc());
   if (!name_from_loc.empty())
     return name_from_loc;
   // If the location is none of the expected types, then simply use name
   // generated using the op type. Follow TF convention and append the result
   // index unless 0.
-  if (auto result = val.dyn_cast<mlir::OpResult>())
+  if (auto result = mlir::dyn_cast<mlir::OpResult>(val))
   {
     auto name_str = result.getOwner()->getName().getStringRef().str();
     auto value_op = val.getDefiningOp();
@@ -154,7 +154,7 @@ std::string OpOrArgLocNameMapper::GetName(OpOrVal op_or_val)
     return std::string(name_str);
   }
   // Use the ASM syntax for BlockArgument
-  if (auto arg = val.dyn_cast<mlir::BlockArgument>())
+  if (auto arg = mlir::dyn_cast<mlir::BlockArgument>(val))
   {
     return "arg" + std::to_string(arg.getArgNumber());
   }

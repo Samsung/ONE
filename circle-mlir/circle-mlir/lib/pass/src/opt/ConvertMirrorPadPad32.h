@@ -41,7 +41,7 @@ struct ConvertMirrorPadPad32 : public OpRewritePattern<MirrorPadOp>
       return mlir::failure();
 
     auto const_op = cast<ConstOp>(is_const);
-    auto const_type = const_op.getType().cast<TensorType>();
+    auto const_type = mlir::cast<TensorType>(const_op.getType());
     if (const_type.getElementType().isInteger(32))
       return mlir::failure();
     assert(const_type.getElementType().isInteger(64));
@@ -52,7 +52,7 @@ struct ConvertMirrorPadPad32 : public OpRewritePattern<MirrorPadOp>
       return mlir::failure();
 
     auto opLoc = const_op->getLoc();
-    auto stype = const_op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    auto stype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(const_op.getType());
     auto si32stype = RankedTensorType::get(stype.getShape(), rewriter.getI32Type());
     auto intattr = DenseIntElementsAttr::get(si32stype, values);
     mlir::Value shape32 = rewriter.create<ConstOp>(opLoc, intattr);

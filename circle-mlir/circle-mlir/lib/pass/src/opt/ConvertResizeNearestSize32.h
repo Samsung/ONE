@@ -44,7 +44,7 @@ struct ConvertResizeNearestSize32 : public OpRewritePattern<ResizeNearestNeighbo
       return mlir::failure();
 
     auto const_op = cast<ConstOp>(is_const);
-    auto const_type = const_op.getType().cast<TensorType>();
+    auto const_type = mlir::cast<TensorType>(const_op.getType());
     mlir::Value resize_size = const_op; // ExtractConstantValues requries mlir::Value
     std::vector<int32_t> values;
     if (!ExtractConstantValues(resize_size, values))

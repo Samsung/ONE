@@ -54,7 +54,7 @@ struct FuseFullyConnectedAdd : public OpRewritePattern<AddOp>
     // NOTE we can add existing bias values with values from ADD op
     // TODO implement when fc_bias is valid constant
     auto fc_bias = fc_op.getBias();
-    if (!fc_bias.getType().isa<mlir::NoneType>())
+    if (!mlir::isa<mlir::NoneType>(fc_bias.getType()))
       return mlir::failure();
     // skip if FC activation is NOT none
     if (fc_op.getFusedActivationFunction() != ACT_NONE)
@@ -62,7 +62,7 @@ struct FuseFullyConnectedAdd : public OpRewritePattern<AddOp>
 
     // check constant is scalar or 1D
     bool is_const_scalar = false;
-    auto const_type = const_op.getType().cast<TensorType>();
+    auto const_type = mlir::cast<TensorType>(const_op.getType());
     if (const_type.getRank() == 0)
       is_const_scalar = true;
     else if (const_type.getRank() != 1)
@@ -98,7 +98,7 @@ struct FuseFullyConnectedAdd : public OpRewritePattern<AddOp>
       if (!ExtractConstantValues(cop, bias_values))
         return mlir::failure();
 
-      auto fc_type = (*fc_op.getOutput().begin()).getType().cast<ShapedType>();
+      auto fc_type = mlir::cast<ShapedType>((*fc_op.getOutput().begin()).getType());
       auto fc_shape = fc_type.getShape();
       auto fc_rank = fc_type.getRank();
       int64_t num_ele = fc_shape[fc_rank - 1];
