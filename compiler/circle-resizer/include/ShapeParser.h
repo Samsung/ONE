@@ -24,6 +24,7 @@
 
 namespace circle_resizer
 {
+
 /**
  * @brief Parse shapes from string representation to Shapes object.
  *
@@ -35,6 +36,7 @@ namespace circle_resizer
  * std::invalid_argument if the parsing failed.
  */
 std::vector<Shape> parse_shapes(const std::string &shapes);
+
 } // namespace circle_resizer
 
 #endif // __CIRCLE_RESIZER_SHAPE_PARSER_H__

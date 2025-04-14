@@ -21,6 +21,7 @@
 
 namespace circle_resizer
 {
+
 /**
  * The representation of a single dimension. Note that a dimension can be dynamic.
  */
@@ -60,6 +61,7 @@ private:
   // Note that in the future, we might need to support dimension with lower and upper bounds
   int32_t _dim_value;
 };
+
 } // namespace circle_resizer
 
 #endif // __CIRCLE_RESIZER_DIM_H__

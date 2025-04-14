@@ -25,6 +25,7 @@ using namespace circle_resizer;
 
 namespace
 {
+
 bool is_blank(const std::string &s)
 {
   return !s.empty() && std::find_if(s.begin(), s.end(),
@@ -58,6 +59,7 @@ Shape parse_single_shape(const std::string &shape)
   }
   return Shape{result_dims};
 }
+
 } // namespace
 
 std::vector<Shape> circle_resizer::parse_shapes(const std::string &shapes)
@@ -69,6 +71,10 @@ std::vector<Shape> circle_resizer::parse_shapes(const std::string &shapes)
   while ((begin_pos = shapes_tmp.find_first_of("[")) != std::string::npos &&
          (end_pos = shapes_tmp.find_first_of("]")) != std::string::npos)
   {
+    if (begin_pos > end_pos)
+    {
+      throw std::invalid_argument("Invalid shape format: " + shapes);
+    }
     const size_t token_size = end_pos - begin_pos - 1;
     token = shapes_tmp.substr(begin_pos + 1, token_size);
     result_shapes.push_back(parse_single_shape(token));

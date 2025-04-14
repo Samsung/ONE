@@ -24,6 +24,7 @@
 
 namespace circle_resizer
 {
+
 /**
  * The representation of a single shape.
  */

@@ -75,4 +75,5 @@ INSTANTIATE_TEST_SUITE_P(InvalidArgParseShape, InvalidArgParseShapeTestFixture,
                                            std::string{"[-2]"}, std::string{"[-2,1,3]"},
                                            std::string{"-1"}, std::string{"7,7"}, std::string{"8"},
                                            std::string{"[8],9"}, std::string{"1,2"},
-                                           std::string{"[1],[2],"}, std::string{"[[]],"}));
+                                           std::string{"[1],[2],"}, std::string{"[[]],"},
+                                           std::string{"][1]"}, std::string{"]["}));
