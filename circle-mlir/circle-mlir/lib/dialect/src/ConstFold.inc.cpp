@@ -150,7 +150,7 @@ Attribute ConstFoldBinaryOp(Type result_type, Attribute operand1, Attribute oper
       operand2.dyn_cast_or_null<DenseElementsAttr>())
   {
     return ConstFoldBinaryOpDenseDense<AttrElementT, ElementValueT>(
-      result_type, operand1.cast<DenseElementsAttr>(), operand2.cast<DenseElementsAttr>(),
+      result_type, mlir::cast<DenseElementsAttr>(operand1), mlir::cast<DenseElementsAttr>(operand2),
       calculate);
   }
 
@@ -169,13 +169,13 @@ Attribute ConstFoldBinaryOp(Type result_type, ArrayRef<Attribute> operands,
 {
   // Note: All types are wrapped in tensor types in Circle. E.g., f32 is
   // represented as tensor<f32>. So we are only handling tensor types here.
-  auto type = result_type.dyn_cast<ShapedType>();
+  auto type = mlir::dyn_cast<ShapedType>(result_type);
   if (!type)
     return {};
 
   auto elemType = type.getElementType();
 
-  if (elemType.isa<FloatType>())
+  if (mlir::isa<FloatType>(elemType))
     return ConstFoldBinaryOp<FloatAttr>(result_type, operands[0], operands[1], float_calculate);
 
   if (elemType.isSignlessInteger())
@@ -191,12 +191,12 @@ Attribute ConstFoldUnaryOp(Type result_type, Attribute operand,
                            llvm::function_ref<APFloat(APFloat)> calculate)
 {
   assert(IsF32ShapedType(result_type));
-  auto result_shape_type = result_type.cast<ShapedType>();
+  auto result_shape_type = mlir::cast<ShapedType>(result_type);
 
   if (!result_shape_type.hasStaticShape())
     return {};
 
-  if (auto dense_elements = operand.dyn_cast_or_null<DenseElementsAttr>())
+  if (auto dense_elements = mlir::dyn_cast_or_null<DenseElementsAttr>(operand))
   {
     SmallVector<APFloat, 16> new_values;
     const int num_elements = result_shape_type.getNumElements();

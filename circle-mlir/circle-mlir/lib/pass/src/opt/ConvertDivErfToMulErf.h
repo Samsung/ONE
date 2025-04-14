@@ -49,7 +49,7 @@ struct ConvertDivErfToMulErf : public OpRewritePattern<CustomOp>
       return mlir::failure();
 
     auto const_op = cast<ConstOp>(is_const);
-    auto const_type = const_op.getType().cast<TensorType>();
+    auto const_type = mlir::cast<TensorType>(const_op.getType());
     if (not const_type.getElementType().isF32())
       return mlir::failure();
 

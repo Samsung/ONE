@@ -40,7 +40,7 @@ std::string GetNameFromLoc(Location loc)
   {
     Location curr_loc = locs.pop_back_val();
 
-    if (auto name_loc = curr_loc.dyn_cast<NameLoc>())
+    if (auto name_loc = mlir::dyn_cast<NameLoc>(curr_loc))
     {
       // Add name in NameLoc. For NameLoc we also account for names due to ops
       // in functions where the op's name is first.
@@ -54,13 +54,13 @@ std::string GetNameFromLoc(Location loc)
       }
       continue;
     }
-    else if (auto call_loc = curr_loc.dyn_cast<CallSiteLoc>())
+    else if (auto call_loc = mlir::dyn_cast<CallSiteLoc>(curr_loc))
     {
       // Use location of the Callee to generate the name.
       locs.push_back(call_loc.getCallee());
       continue;
     }
-    else if (auto fused_loc = curr_loc.dyn_cast<FusedLoc>())
+    else if (auto fused_loc = mlir::dyn_cast<FusedLoc>(curr_loc))
     {
       // Push all locations in FusedLoc in reverse order, so locations are
       // visited based on order in FusedLoc.

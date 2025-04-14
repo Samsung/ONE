@@ -273,11 +273,11 @@ std::optional<mlir::ElementsAttr> ConvertIntBuffer(mlir::RankedTensorType shaped
 {
   mlir::Type elem_type = shaped_type.getElementType();
   unsigned bit_width;
-  if (auto itype = elem_type.dyn_cast<mlir::IntegerType>())
+  if (auto itype = mlir::dyn_cast<mlir::IntegerType>(elem_type))
   {
     bit_width = itype.getWidth();
   }
-  else if (auto qtype = elem_type.dyn_cast<mlir::quant::QuantizedType>())
+  else if (auto qtype = mlir::dyn_cast<mlir::quant::QuantizedType>(elem_type))
   {
     llvm::errs() << "NYI ConvertIntBuffer QuantizedType\n";
     return {};
@@ -353,7 +353,7 @@ std::optional<Operation *> BuildConstOp(const circle::TensorT &tensor,
                                             /*is_constant=*/true,
                                             /*is_intermediate=*/false,
                                             /*get_storage=*/true));
-  auto shaped_type = type.dyn_cast<mlir::RankedTensorType>();
+  auto shaped_type = mlir::dyn_cast<mlir::RankedTensorType>(type);
   if (!shaped_type)
   {
     llvm::errs() << "Constant doesn't have a shape\n";
@@ -369,11 +369,11 @@ std::optional<Operation *> BuildConstOp(const circle::TensorT &tensor,
   }
 
   auto elem_type = shaped_type.getElementType();
-  if (auto float_type = elem_type.dyn_cast<mlir::FloatType>())
+  if (auto float_type = mlir::dyn_cast<mlir::FloatType>(elem_type))
   {
     ASSIGN_OR_RETURN(value, ConvertFloatBuffer(shaped_type, buffer));
   }
-  else if (elem_type.isa<mlir::IntegerType>())
+  else if (mlir::isa<mlir::IntegerType>(elem_type))
   {
     ASSIGN_OR_RETURN(value, ConvertIntBuffer(shaped_type, buffer));
   }
@@ -487,7 +487,7 @@ ConvertOp(const circle::OperatorT &op, const std::vector<Value> &vals_map,
     mlir::DenseIntElementsAttr shape_attr;
     if (matchPattern(op_state.operands[1], m_Constant(&shape_attr)))
     {
-      auto shape_ty = op_state.operands[1].getType().dyn_cast<RankedTensorType>();
+      auto shape_ty = mlir::dyn_cast<RankedTensorType>(op_state.operands[1].getType());
       if (shape_ty != nullptr && shape_ty.hasRank() && shape_ty.getRank() > 1)
       {
         llvm::SmallVector<mlir::Attribute, 4> shape;

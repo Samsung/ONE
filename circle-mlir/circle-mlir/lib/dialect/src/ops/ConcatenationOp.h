@@ -150,7 +150,7 @@ bool IsConcatenationOpConstFoldable(ConcatenationOp op, ArrayRef<Attribute> oper
     return false;
 
   return llvm::all_of(
-    operands, [](Attribute operand) { return operand && operand.isa<DenseElementsAttr>(); });
+    operands, [](Attribute operand) { return operand && mlir::isa<DenseElementsAttr>(operand); });
 }
 
 DenseElementsAttr ConstFoldConcatenateOpDense(ArrayRef<Attribute> operands,

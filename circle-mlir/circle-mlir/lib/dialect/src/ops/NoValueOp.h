@@ -35,7 +35,7 @@ OpFoldResult NoValueOp::fold(FoldAdaptor adaptor) { return getValueAttr(); }
 
 bool NoValueOp::isBuildableWith(Attribute value, Type type)
 {
-  return value.isa<UnitAttr>() && type.isa<NoneType>();
+  return mlir::isa<UnitAttr>(value) && mlir::isa<NoneType>(type);
 }
 
 } // namespace Circle
