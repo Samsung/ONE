@@ -205,7 +205,10 @@ public:
   // Replaces the current shape with a new one defined by dimensions_count and dims_data.
   inline void ReplaceWith(int dimensions_count, const int32_t *dims_data)
   {
-    assert(dims_data != nullptr);
+    // Allow dims_data to be nullptr when dimensions_count is 0,
+    // because there are no dimensions to copy. For any non-zero dimensions_count,
+    // dims_data must not be nullptr to ensure valid shape data is provided.
+    assert(dimensions_count == 0 || dims_data != nullptr);
     Resize(dimensions_count);
     std::memcpy(DimsData(), dims_data, dimensions_count * sizeof(int32_t));
   }
