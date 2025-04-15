@@ -78,6 +78,7 @@ file(APPEND "${DRIVER_SCRIPT}"
 else
   echo \"ALL TESTS PASSED!\"
 fi\n
+echo \"Test results are also recorded in runtestall.log file.\"
 ")
 
 set(PREPARE_TEST_MATERIALS_SH "${CMAKE_CURRENT_SOURCE_DIR}/prepare_test_materials.sh")

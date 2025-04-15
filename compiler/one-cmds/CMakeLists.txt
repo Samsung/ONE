@@ -2,7 +2,7 @@
 #   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
 #   Ubuntu20.04; default python3.8
 #   Ubuntu22.04; default python3.10
-#   Ubuntu24.04; explicitly installed python3.8 (default is python3.12)
+#   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
 if(CMAKE_VERSION VERSION_LESS 3.12)
   find_package(PythonInterp 3.8 QUIET)
@@ -24,10 +24,10 @@ else()
   endif()
 
   # tensorflow 2.12.1 supports Python 3.8 ~ 3.11
-  if(Python_VERSION VERSION_GREATER_EQUAL 3.12)
-    message(STATUS "Build one-cmds: FALSE (Python version 3.12 or higher is not supported yet)")
-    return()
-  endif()
+  #if(Python_VERSION VERSION_GREATER_EQUAL 3.12)
+  #  message(STATUS "Build one-cmds: FALSE (Python version 3.12 or higher is not supported yet)")
+  #  return()
+  #endif()
   if(Python_VERSION VERSION_LESS 3.8)
     message(STATUS "Build one-cmds: FAILED (Install Python version 3.8 or 3.10)")
     return()
@@ -67,17 +67,7 @@ if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
   #      and install build/../one-prepare-venv file
   list(APPEND ONE_COMMAND_FILES one-prepare-venv.aarch64)
 else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  if(ONE_UBUNTU_CODENAME_BIONIC)
-    # NOTE copy one-prepare-venv.u1804 as build/../one-prepare-venv
-    #      and install build/../one-prepare-venv file
-    list(APPEND ONE_COMMAND_FILES one-prepare-venv.u1804)
-  elseif(ONE_UBUNTU_CODENAME_NOBLE)
-    # NOTE copy one-prepare-venv.u2404 as build/../one-prepare-venv
-    #      and install build/../one-prepare-venv file
-    list(APPEND ONE_COMMAND_FILES one-prepare-venv.u2404)
-  else()
-    list(APPEND ONE_COMMAND_FILES one-prepare-venv)
-  endif()
+  list(APPEND ONE_COMMAND_FILES one-prepare-venv)
 endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
 
 # pytorch importer is an experimental feature, it is not used in default configuration

@@ -45,12 +45,14 @@ jobs:
     strategy:
       matrix:
         type: [ Debug, Release ]
-        ubuntu_code: [ focal, jammy ]
+        ubuntu_code: [ focal, jammy ] #, noble ]
         include:
           - ubuntu_code: focal
             ubuntu_ver: 20.04
           - ubuntu_code: jammy
             ubuntu_ver: 22.04
+          #- ubuntu_code: noble
+          #  ubuntu_ver: 24.04
     runs-on: one-x64-linux
     container:
       image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}
@@ -67,8 +69,14 @@ jobs:
       # dalgona uses pybind11, but pybind11 cannot bind packages in virtualenv.
       # So we need to install packages for dalgona-test globally.
       - name: Install required packages
+        if: ${{ matrix.ubuntu_code == 'focal' || matrix.ubuntu_code == 'jammy' }}
         run: |
           python3 -m pip install numpy h5py==3.11.0 flatbuffers==23.5.26
+
+      - name: Install required packages
+        if: ${{ matrix.ubuntu_code == 'noble' }}
+        run: |
+          apt-get install -y python3-numpy python3-h5py python3-flatbuffers
 
       - name: Caching externals
         uses: actions/cache@v4

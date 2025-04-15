@@ -3,7 +3,7 @@
 set(ONE_UBUNTU_CODENAME "focal")
 find_program(LSB_RELEASE_EXEC lsb_release)
 if(LSB_RELEASE_EXEC)
-  # output should be one of 'bionic', 'focal', 'jammy'
+  # output should be one of 'bionic', 'focal', 'jammy', 'noble'
   # others are not tested
   execute_process(COMMAND "${LSB_RELEASE_EXEC}" --short --codename
                   OUTPUT_VARIABLE ONE_UBUNTU_CODENAME
@@ -14,6 +14,10 @@ endif()
 
 if(${ONE_UBUNTU_CODENAME} STREQUAL "bionic")
   set(ONE_UBUNTU_CODENAME_BIONIC TRUE)
+elseif(${ONE_UBUNTU_CODENAME} STREQUAL "focal")
+  set(ONE_UBUNTU_CODENAME_FOCAL TRUE)
+elseif(${ONE_UBUNTU_CODENAME} STREQUAL "jammy")
+  set(ONE_UBUNTU_CODENAME_JAMMY TRUE)
 elseif(${ONE_UBUNTU_CODENAME} STREQUAL "noble")
   set(ONE_UBUNTU_CODENAME_NOBLE TRUE)
 endif()

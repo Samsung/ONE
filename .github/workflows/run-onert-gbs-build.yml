@@ -24,15 +24,6 @@ on:
       - master
       - release/*
     paths:
-      - '.github/workflows/run-onert-gbs-build.yml'
-      - 'nncc'
-      - 'nnfw'
-      - 'compiler/luci/**'
-      - 'compiler/loco/**'
-      - 'compiler/logo/**'
-      - 'compute/**'
-      - 'infra/nnfw/**'
-      - 'infra/cmake/**'
       - 'runtime/**'
       - '!runtime/contrib/**'
       - 'packaging/**'
