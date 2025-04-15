@@ -39,8 +39,7 @@ inline constexpr unsigned int flatbuffer_size_max = 2147483648;
 #include <llvm/Support/FormatVariadic.h>
 #include <mlir/IR/Matchers.h> // m_Constant
 #include <mlir/Dialect/Func/IR/FuncOps.h>
-#include <mlir/Dialect/Quant/QuantOps.h>
-#include <mlir/Dialect/Quant/QuantTypes.h>
+#include <mlir/Dialect/Quant/IR/QuantTypes.h>
 
 #include <circle_schema/schema_generated.h>
 
@@ -226,8 +225,8 @@ template <typename T> llvm::SmallVector<mlir::APInt> ReadAsHostEndian(llvm::Arra
   const char *data_ptr = reinterpret_cast<const char *>(bytes.data());
   for (size_t i = 0; i < elem_count; i++)
   {
-    T val = llvm::support::endian::readNext<T, llvm::support::endianness::native,
-                                            llvm::support::unaligned>(data_ptr);
+    T val = llvm::support::endian::readNext<T, llvm::endianness::native, llvm::support::unaligned>(
+      data_ptr);
     ret.push_back(mlir::APInt(sizeof(T) * 8, val));
   }
   return ret;
@@ -254,9 +253,8 @@ std::optional<mlir::ElementsAttr> ConvertFloatBuffer(mlir::RankedTensorType shap
 
       for (int i = 0; i < elem_count; i++)
       {
-        uint32_t bit_repr =
-          llvm::support::endian::readNext<uint32_t, llvm::support::endianness::native,
-                                          llvm::support::unaligned>(data);
+        uint32_t bit_repr = llvm::support::endian::readNext<uint32_t, llvm::endianness::native,
+                                                            llvm::support::unaligned>(data);
         values.push_back(absl::bit_cast<float>(bit_repr));
       }
       auto num = shaped_type.getNumElements();

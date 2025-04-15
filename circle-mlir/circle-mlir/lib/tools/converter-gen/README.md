@@ -2,7 +2,7 @@
 
 converter_gen is from TensorFlow
 - `tensorflow/compiler/mlir/lite/converter_gen.cc`
-- commit hash d5b57ca93e506df258271ea00fc29cf98383a374
+- commit hash 2a3f646e6177178fde3e79f15b582580252e558c
 
 build script is translated from bazel `BUILD`
 ```bazel

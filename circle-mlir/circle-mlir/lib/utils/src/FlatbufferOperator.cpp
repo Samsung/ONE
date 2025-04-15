@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-// from tensorflow/compiler/mlir/lite/flatbuffer_operator.cpp
+// from tensorflow/compiler/mlir/lite/flatbuffer_operator.cc
 
 #include "circle-mlir/utils/FlatbufferOperator.h"
 #include "circle-mlir/utils/ConvertType.h"

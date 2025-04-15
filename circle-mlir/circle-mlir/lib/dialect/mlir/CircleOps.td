@@ -20,7 +20,7 @@
 #ifndef CIRCLE_OPS
 #define CIRCLE_OPS
 
-include "mlir/IR/FunctionInterfaces.td"
+// include "mlir/IR/FunctionInterfaces.td"
 include "mlir/IR/OpBase.td"
 include "mlir/Interfaces/InferTypeOpInterface.td"
 include "mlir/Interfaces/SideEffectInterfaces.td"
@@ -81,6 +81,7 @@ class CIR_VariadicTensorOf<list<Type> allowedRuntimeTypes,
   Variadic<TensorOf<allowedOpTypes>>,
   CIR_RuntimeType<Variadic<TensorOf<allowedRuntimeTypes>>>;
 
+def CIR_I4 : I<4>;
 def CIR_Int32Or64 : SignlessIntOfWidths<[32, 64]>;
 
 def CIR_BoolTensor : CIR_TensorOf<[I1]>;
@@ -260,6 +261,8 @@ class CIR_Op<string mnemonic, list<Trait> traits = []> :
 
   // Whether the Circle operator has options in the schema representation.
   bit hasOptions = 0b0;
+  // Whether the Circle operator has options2 in the schema representation.
+  bit hasOptions2 = 0b0;
 
   // Use to specify a custom options type for Circle operators where
   // the option's name does not match the Cirlce operator's name.
