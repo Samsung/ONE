@@ -150,6 +150,7 @@ public:
   uint32_t addOperatorBatchMatMul(const OperatorParams &params, bool adj_x, bool adj_y,
                                   bool asymmetric_quantize_inputs = false);
   uint32_t addOperatorBatchToSpaceND(const OperatorParams &params);
+  uint32_t addOperatorBroadcastTo(const OperatorParams &params);
   uint32_t addOperatorCast(const OperatorParams &params, circle::TensorType input_type,
                            circle::TensorType output_type);
   uint32_t addOperatorConcatenation(const OperatorParams &params, int axis,

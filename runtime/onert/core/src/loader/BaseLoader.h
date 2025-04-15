@@ -1721,6 +1721,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
       loadBatchMatMul(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_BROADCAST_TO:
+      loadOperationTo<ir::operation::BroadcastTo>(op, subg);
+      return;
     case BuiltinOperator::BuiltinOperator_LOG_SOFTMAX:
       loadLogSoftmax(op, subg);
       return;
