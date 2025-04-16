@@ -67,7 +67,7 @@ TEST_F(GenModelTest, OneOp_BroadcastTo_3D_to_3D)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_BroadcastTo_InputOutputDifferentType)
+TEST_F(GenModelTest, neg_OneOp_BroadcastTo_InputOutputDifferentType)
 {
   CircleGen cgen;
   const uint32_t shape_buf = cgen.addBuffer(std::vector<int32_t>{3, 3});
@@ -85,7 +85,7 @@ TEST_F(GenModelTest, OneOp_BroadcastTo_InputOutputDifferentType)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_BroadcastTo_1D_to_2D_InvalidShape)
+TEST_F(GenModelTest, neg_OneOp_BroadcastTo_1D_to_2D_InvalidShape)
 {
   CircleGen cgen;
   const uint32_t shape_buf = cgen.addBuffer(std::vector<int32_t>{3, 2});
@@ -103,7 +103,7 @@ TEST_F(GenModelTest, OneOp_BroadcastTo_1D_to_2D_InvalidShape)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_BroadcastTo_2D_to_3D_InvalidShape)
+TEST_F(GenModelTest, neg_OneOp_BroadcastTo_2D_to_3D_InvalidShape)
 {
   CircleGen cgen;
   const uint32_t shape_buf = cgen.addBuffer(std::vector<int32_t>{2, 1, 3});
@@ -121,7 +121,7 @@ TEST_F(GenModelTest, OneOp_BroadcastTo_2D_to_3D_InvalidShape)
   SUCCEED();
 }
 
-TEST_F(GenModelTest, OneOp_BroadcastTo_3D_to_3D_InvalidShape)
+TEST_F(GenModelTest, neg_OneOp_BroadcastTo_3D_to_3D_InvalidShape)
 {
   CircleGen cgen;
   const uint32_t shape_buf = cgen.addBuffer(std::vector<int32_t>{2, 3, 2});
