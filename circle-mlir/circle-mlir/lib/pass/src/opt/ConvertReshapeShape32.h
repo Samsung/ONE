@@ -59,7 +59,7 @@ struct ConvertReshapeShape32 : public OpRewritePattern<ReshapeOp>
     mlir::Value shape32 =
       rewriter.create<ConstOp>(opLoc, DenseIntElementsAttr::get(si32stype, values));
 
-    auto shape_mutable = reshape_op.getShapeMutable();
+    auto &shape_mutable = reshape_op.getShapeMutable();
     shape_mutable.assign(shape32);
 
     return mlir::success();

@@ -1,5 +1,5 @@
 # Match the minimum required version of LLVM and MLIR
-cmake_minimum_required(VERSION 3.13.4)
+cmake_minimum_required(VERSION 3.20.0)
 
 project(circle-mlir-externals)
 
@@ -105,7 +105,7 @@ ExternalProject_Add(externals-abseil-cpp
 # from https://github.com/onnx/onnx-mlir/blob/main/docs/BuildOnLinuxOSX.md
 ExternalProject_Add(externals-llvm-project
   GIT_REPOSITORY "https://github.com/llvm/llvm-project.git"
-  GIT_TAG        "91088978d712cd7b33610c59f69d87d5a39e3113"
+  GIT_TAG        "b270525f730be6e7196667925f5a9bfa153262e9"
   SOURCE_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/llvm-project"
   SOURCE_SUBDIR  "llvm"
   BINARY_DIR     "${LP_BUILD_DIR}"
@@ -145,11 +145,12 @@ list(APPEND CMAKE_PREFIX_PATH ${PB_INSTALL_DIR})
 # build ONNX-MLIR
 ExternalProject_Add(externals-onnx-mlir
   GIT_REPOSITORY "https://github.com/onnx/onnx-mlir.git"
-  GIT_TAG        "40615b362fe474d6cce4fd9c31a7ec51acd8f88a" # v0.4.1.2
+  GIT_TAG        "660bd8efa664bd2d05801a7a793fe29925313b4b" # v0.5.0.0
+  GIT_SUBMODULES_RECURSE True
   SOURCE_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/onnx-mlir"
   BINARY_DIR     "${OM_BUILD_DIR}"
   INSTALL_DIR    "${OM_INSTALL_DIR}"
-  PATCH_COMMAND  patch -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/onnx_quantdequant_i16.diff -N || true
+  PATCH_COMMAND  patch -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/onnx_mlir_0_5_0_0.diff -N || true
   CMAKE_ARGS     -DCMAKE_BUILD_TYPE=Release
                  -DCMAKE_PREFIX_PATH='${CMAKE_PREFIX_PATH}'
                  -DCMAKE_INSTALL_PREFIX='${OM_INSTALL_DIR}'
@@ -157,10 +158,11 @@ ExternalProject_Add(externals-onnx-mlir
                  -DMLIR_DIR='${LP_BUILD_DIR}/lib/cmake/mlir'
                  -DPython3_ROOT_DIR='$ENV{Python3_ROOT_DIR}'
                  -DONNX_MLIR_BUILD_TESTS=OFF
-                 -DONNX_MLIR_ENABLE_MHLO=OFF
-                 -DONNX_MLIR_DECOMP_ONNX_CONVTRANSPOSE=OFF
+                 -DONNX_MLIR_ENABLE_STABLEHLO=OFF
+                 -DONNX_MLIR_ENABLE_JAVA=OFF
                  -DLLVM_ENABLE_ASSERTIONS=ON
   DEPENDS        externals-llvm-project externals-protobuf
 )
-# NOTE onnx_quantdequant_i16.diff is to provide I16 type in
-#      DequantizeLinear/QuantizeLinear Ops
+# NOTE onnx_mlir_0_5_0_0.diff is to provide I16 type in DequantizeLinear/QuantizeLinear Ops
+#      and disable decompose for InstanceNormalization and ConvTranspose
+#      and not necessary test build.
