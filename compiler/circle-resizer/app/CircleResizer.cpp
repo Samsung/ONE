@@ -29,21 +29,6 @@ using namespace circle_resizer;
 
 namespace
 {
-std::string to_string(const Shape &shape)
-{
-  if (shape.empty())
-  {
-    return "";
-  }
-  std::stringstream ss;
-  ss << "[";
-  for (int i = 0; i < shape.size() - 1; ++i)
-  {
-    ss << shape[i].value() << ", ";
-  }
-  ss << shape.back().value() << "]";
-  return ss.str();
-}
 
 void print_version()
 {
@@ -94,14 +79,14 @@ int entry(const int argc, char **argv)
     std::cout << "Input shapes before resizing:" << std::endl;
     for (size_t in_idx = 0; in_idx < input_shapes.size(); ++in_idx)
     {
-      std::cout << in_idx + 1 << ". " << to_string(input_shapes[in_idx]) << std::endl;
+      std::cout << in_idx + 1 << ". " << input_shapes[in_idx] << std::endl;
     }
 
     auto output_shapes = model_data->output_shapes();
     std::cout << "Output shapes before resizing:" << std::endl;
     for (size_t out_idx = 0; out_idx < output_shapes.size(); ++out_idx)
     {
-      std::cout << out_idx + 1 << ". " << to_string(output_shapes[out_idx]) << std::endl;
+      std::cout << out_idx + 1 << ". " << output_shapes[out_idx] << std::endl;
     }
 
     const auto output_path = arser.get<std::string>("--output_path");
@@ -113,7 +98,7 @@ int entry(const int argc, char **argv)
     std::cout << "Output shapes after resizing:" << std::endl;
     for (size_t out_idx = 0; out_idx < output_shapes.size(); ++out_idx)
     {
-      std::cout << out_idx + 1 << ". " << to_string(output_shapes[out_idx]) << std::endl;
+      std::cout << out_idx + 1 << ". " << output_shapes[out_idx] << std::endl;
     }
 
     model_data->save(output_path);

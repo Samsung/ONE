@@ -117,8 +117,10 @@ void OperationValidator::visit(const operation::BatchMatMul &node)
   const auto rhs_index(node.getInputs().at(operation::BatchMatMul::Input::RHS));
   const auto output_index(node.getOutputs().at(0));
 
-  // Constant lhs and rhs is not implemented yet
-  OP_REQUIRES(!isConstant(lhs_index) && !isConstant(rhs_index));
+  // RHS can be constant, but LHS is not constant
+  // If one of inputs is constant, it must be RHS
+  // If two inputs are constant, BatchMatMul is optimized into constant by compiler
+  OP_REQUIRES(!isConstant(lhs_index));
 
   // Allow hybrid quantization (lhs: float / rhs: qint8 / out: float)
   OP_REQUIRES(isValidType(
@@ -251,6 +253,7 @@ void OperationValidator::visit(const operation::ElementwiseActivation &node)
   switch (node.param().op_type)
   {
     case operation::ElementwiseActivation::Type::ELU:
+    case operation::ElementwiseActivation::Type::GELU:
       OP_REQUIRES(isValidType(input_index, DataType::FLOAT32));
       break;
     case operation::ElementwiseActivation::Type::LEAKY_RELU:

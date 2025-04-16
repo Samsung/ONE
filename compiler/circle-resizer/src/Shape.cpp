@@ -16,20 +16,85 @@
 
 #include "Shape.h"
 
-#include <stdexcept>
+#include <algorithm>
+#include <limits>
 
 using namespace circle_resizer;
 
-Dim::Dim(int32_t dim) : _dim_value{dim}
+Shape::Shape(const std::initializer_list<Dim> &dims) : _dims{dims} {}
+
+Shape::Shape(const std::vector<Dim> &shape_vec) : _dims{shape_vec} {}
+
+Shape::Shape(const std::initializer_list<uint32_t> &shape_vec)
 {
-  if (dim < -1)
+  for (const auto &dim : shape_vec)
   {
-    throw std::runtime_error("Invalid value of dimension: " + dim);
+    if (dim >= std::numeric_limits<int32_t>::max())
+    {
+      std::out_of_range("Provided dimension: " + std::to_string(dim) + " is out of range");
+    }
+    _dims.emplace_back(Dim{static_cast<int32_t>(dim)});
   }
 }
 
-bool Dim::is_dynamic() { return _dim_value == -1; }
+Shape Shape::scalar() { return Shape{std::initializer_list<Dim>{}}; }
 
-int32_t Dim::value() const { return _dim_value; }
+size_t Shape::rank() const { return _dims.size(); }
 
-bool Dim::operator==(const Dim &rhs) const { return value() == rhs.value(); }
+Dim Shape::operator[](const size_t &axis) const
+{
+  if (is_scalar())
+  {
+    throw std::invalid_argument("You cannot gather dimension from a scalar");
+  }
+  if (axis > rank() - 1)
+  {
+    throw std::out_of_range("Axis=" + std::to_string(axis) +
+                            " is out of range of shape's rank: " + std::to_string(rank()));
+  }
+  return _dims[axis];
+}
+
+bool Shape::is_scalar() const { return _dims.empty(); }
+
+bool Shape::is_dynamic() const
+{
+  if (is_scalar())
+  {
+    return false;
+  }
+  return std::any_of(std::begin(_dims), std::end(_dims),
+                     [](const Dim &dim) { return dim.is_dynamic(); });
+}
+
+bool Shape::operator==(const Shape &rhs) const
+{
+  if (rank() != rhs.rank())
+  {
+    return false;
+  }
+  for (size_t axis = 0; axis < rank(); ++axis)
+  {
+    if (_dims[axis].value() != rhs[axis].value())
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+std::ostream &circle_resizer::operator<<(std::ostream &os, const Shape &shape)
+{
+  if (shape.is_scalar())
+  {
+    os << "[]";
+    return os;
+  }
+  os << "[";
+  for (int i = 0; i < shape.rank() - 1; ++i)
+  {
+    os << shape[i].value() << ", ";
+  }
+  os << shape[shape.rank() - 1].value() << "]";
+  return os;
+}

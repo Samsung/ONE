@@ -86,25 +86,27 @@ private:
   std::unique_ptr<std::vector<uint8_t>> _buffer;
 };
 
-template <typename NodeType> Shapes extract_shapes(const std::vector<loco::Node *> &nodes)
+template <typename NodeType>
+std::vector<Shape> extract_shapes(const std::vector<loco::Node *> &nodes)
 {
-  Shapes shapes;
+  std::vector<Shape> shapes;
   for (const auto &loco_node : nodes)
   {
-    shapes.push_back(Shape{});
+    std::vector<Dim> dims;
     const auto circle_node = loco::must_cast<const NodeType *>(loco_node);
     for (uint32_t dim_idx = 0; dim_idx < circle_node->rank(); dim_idx++)
     {
       if (circle_node->dim(dim_idx).known())
       {
         const int32_t dim_val = circle_node->dim(dim_idx).value();
-        shapes.back().push_back(Dim{dim_val});
+        dims.push_back(Dim{dim_val});
       }
       else
       {
-        shapes.back().push_back(Dim{-1});
+        dims.push_back(Dim{-1});
       }
     }
+    shapes.push_back(Shape{dims});
   }
   return shapes;
 }
@@ -165,12 +167,12 @@ void ModelData::save(const std::string &output_path)
   save(out_stream);
 }
 
-Shapes ModelData::input_shapes()
+std::vector<Shape> ModelData::input_shapes()
 {
   return extract_shapes<luci::CircleInput>(loco::input_nodes(module()->graph()));
 }
 
-Shapes ModelData::output_shapes()
+std::vector<Shape> ModelData::output_shapes()
 {
   return extract_shapes<luci::CircleOutput>(loco::output_nodes(module()->graph()));
 }

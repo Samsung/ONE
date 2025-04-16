@@ -173,8 +173,9 @@ private:
       int32_t axis = normalizedAxes[i];
       bool is_inshape_static = not mlir::ShapedType::isDynamic(inshape[axis]);
 
-      // refer
-      // https://github.sec.samsung.net/one-project/circle-mlir/issues/1429#issuecomment-2837761
+      // Clamp 'starts' and 'ends' values based on input shape for static input shapes
+      // - If stride > 0: clamp within [-dim, dim]
+      // - If stride < 0: clamp within [-dim-1, dim-1] to ensure inclusive range handling
       if (is_inshape_static)
       {
         if (stridesValue[axis] > 0)
@@ -230,8 +231,10 @@ private:
         return mlir::failure();
     }
 
-    // refer
-    // https://github.sec.samsung.net/one-project/circle-mlir/issues/1301#issuecomment-2637564
+    // Note: from model with starts and ends are NOT constant,
+    // - Cast starts/ends to i32
+    // - Select begin/end using axis mask
+    // - Create strides and build StridedSliceOp
 
     llvm::SmallVector<bool, 4> conditionValue;
 

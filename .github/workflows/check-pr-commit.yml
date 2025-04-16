@@ -18,7 +18,7 @@ defaults:
 jobs:
   check-commit-message:
     name: Check commit message
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     # Skip on draft, check on draft -> ready
     if: github.repository_owner == 'Samsung' && github.event.pull_request.draft == false
 

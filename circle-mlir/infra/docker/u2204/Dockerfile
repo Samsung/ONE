@@ -11,14 +11,6 @@ RUN apt-get update \
  && apt-get -qqy install build-essential cmake git fakeroot autoconf automake libtool unzip wget \
                          devscripts debmake debhelper lcov
 
-# Install clang-format
-RUN apt-get update \
- && apt-get install -qqy gnupg2 \
- && wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - \
- && add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main" \
- && apt-get update \
- && apt-get install -qqy clang-format-16
-
 # additonal tools
 RUN apt-get update \
  && apt-get -qqy install tree tmux
@@ -27,16 +19,14 @@ RUN apt-get update \
 RUN apt-get update \
  && apt-get -qqy install python3 python3-pip python3-venv python3-dev python3-all dh-python
 RUN python3 -m pip install --upgrade pip setuptools
-RUN python3 -m pip install yapf==0.43.0 numpy==1.24.4 h5py==3.8.0 einops
+RUN python3 -m pip install yapf==0.43.0 numpy==2.2.4 h5py==3.8.0 einops
 
 # TODO upgrade
-ARG VER_TORCH=2.1.0
-ARG VER_ONNX=1.16.0
-ARG VER_ONNXRUNTIME=1.18.0
+ARG VER_TORCH=2.6.0
+ARG VER_ONNX=1.17.0
+ARG VER_ONNXRUNTIME=1.21.0
 
-RUN python3 -m pip install torch==${VER_TORCH}
-RUN python3 -m pip install onnx==${VER_ONNX}
-RUN python3 -m pip install onnxruntime==${VER_ONNXRUNTIME}
+RUN python3 -m pip install torch==${VER_TORCH} onnx==${VER_ONNX} onnxruntime==${VER_ONNXRUNTIME}
 
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
@@ -48,47 +38,15 @@ ARG NPROC=4
 ARG WORK_DIR=/workdir
 ARG FLATBUFFERS_HASH=a078130c
 ARG ABSEIL_CPP_HASH=21510581
-ARG LLVM_PROJECT_HASH=91088978d712cd7b33610c59f69d87d5a39e3113
-ARG ONNX_MLIR_HASH=40615b362fe474d6cce4fd9c31a7ec51acd8f88a
+ARG LLVM_PROJECT_HASH=b270525f730be6e7196667925f5a9bfa153262e9
+ARG ONNX_MLIR_HASH=660bd8efa664bd2d05801a7a793fe29925313b4b
 
 WORKDIR ${WORK_DIR}
 
-# Generate experimental patch file for onnx-mlir
+# Download experimental patch file for onnx-mlir
 
-RUN set -x \
- && { \
-echo 'diff --git a/src/Dialect/ONNX/ONNXOps.td.inc b/src/Dialect/ONNX/ONNXOps.td.inc'; \
-echo 'index d75ee6b6..f63a2910 100644'; \
-echo '--- a/src/Dialect/ONNX/ONNXOps.td.inc'; \
-echo '+++ b/src/Dialect/ONNX/ONNXOps.td.inc'; \
-echo '@@ -1779,9 +1779,9 @@ def ONNXDequantizeLinearOp:ONNX_Op<"DequantizeLinear",'; \
-echo '   `zero-point` is usually not used in the case of float8e4m3fn, float8e4m3fnuz, float8e5m2, float8e5m2fnuz quantization,'; \
-echo "   but the dequantization formula remains the same for consistency and 'x_scale' still determines the output type."; \
-echo '   }];'; \
-echo '-  let arguments = (ins AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[I32]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>]>:$x,'; \
-echo '+  let arguments = (ins AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[I16]>, TensorOf<[I32]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>]>:$x,'; \
-echo '     AnyTypeOf<[TensorOf<[F32]>, TensorOf<[F16]>, TensorOf<[BF16]>]>:$x_scale,'; \
-echo '-    AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[I32]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>, NoneType]>:$x_zero_point,'; \
-echo '+    AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[I16]>, TensorOf<[I32]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>, NoneType]>:$x_zero_point,'; \
-echo '     DefaultValuedAttr<SI64Attr, "1">:$axis);'; \
-echo '   let results = (outs AnyTypeOf<[TensorOf<[F32]>, TensorOf<[F16]>, TensorOf<[BF16]>]>:$y);'; \
-echo '   let extraClassDeclaration = [{'; \
-echo '@@ -5721,10 +5721,10 @@ def ONNXQuantizeLinearOp:ONNX_Op<"QuantizeLinear",'; \
-echo '   }];'; \
-echo '   let arguments = (ins AnyTypeOf<[TensorOf<[F32]>, TensorOf<[F16]>, TensorOf<[BF16]>, TensorOf<[I32]>]>:$x,'; \
-echo '     AnyTypeOf<[TensorOf<[F32]>, TensorOf<[F16]>, TensorOf<[BF16]>, TensorOf<[I32]>]>:$y_scale,'; \
-echo '-    AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>, NoneType]>:$y_zero_point,'; \
-echo '+    AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[I16]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>, NoneType]>:$y_zero_point,'; \
-echo '     DefaultValuedAttr<SI64Attr, "1">:$axis,'; \
-echo '     DefaultValuedAttr<SI64Attr, "1">:$saturate);'; \
-echo '-  let results = (outs AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>]>:$y);'; \
-echo '+  let results = (outs AnyTypeOf<[TensorOf<[I8]>, TensorOf<[UI8]>, TensorOf<[I16]>, TensorOf<[F8E4M3FN]>, TensorOf<[F8E4M3FNUZ]>, TensorOf<[F8E5M2]>, TensorOf<[F8E5M2FNUZ]>]>:$y);'; \
-echo '   let extraClassDeclaration = [{'; \
-echo '     static int getNumberOfOperands() {'; \
-echo '       return 3;'; \
-echo ''; \
-} > ${WORK_DIR}/onnx_quantdequant_i16.patch \
- && cat ${WORK_DIR}/onnx_quantdequant_i16.patch
+RUN wget https://raw.githubusercontent.com/Samsung/ONE/refs/heads/master/circle-mlir/externals/onnx_mlir_0_5_0_0.diff \
+    -O ${WORK_DIR}/onnx_mlir_0_5_0_0.diff
 
 # FLATBUFFERS build from source
 RUN git clone --recursive https://github.com/google/flatbuffers.git \
@@ -165,9 +123,9 @@ RUN mkdir llvm-project-build && cd llvm-project-build \
 RUN cd llvm-project-build && cmake --build . && cmake --install .
 
 # ONNX-MLIR build from source
-# Patch to accept INT16 for QuantizeLinear/DequantizeLinear
+# Patch to accept INT16 for QuantizeLinear/DequantizeLinear and fix ONNX passes
 RUN cd onnx-mlir \
- && patch -p1 < ${WORK_DIR}/onnx_quantdequant_i16.patch
+ && patch -p1 < ${WORK_DIR}/onnx_mlir_0_5_0_0.diff
 
 RUN mkdir onnx-mlir-build && cd onnx-mlir-build \
  && cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${WORK_DIR} \
@@ -176,7 +134,6 @@ RUN mkdir onnx-mlir-build && cd onnx-mlir-build \
     -DCMAKE_JOB_POOL_COMPILE:STRING=compile -DCMAKE_JOB_POOL_LINK:STRING=link \
     -DCMAKE_JOB_POOLS:STRING='compile=4;link=1' \
     -DONNX_MLIR_BUILD_TESTS=OFF -DONNX_MLIR_ENABLE_MHLO=OFF -DLLVM_ENABLE_ASSERTIONS=ON \
-    -DONNX_MLIR_DECOMP_ONNX_CONVTRANSPOSE=OFF \
     ../onnx-mlir
 
 RUN cd onnx-mlir-build && cmake --build . && cmake --install .

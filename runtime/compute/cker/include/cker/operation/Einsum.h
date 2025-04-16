@@ -871,7 +871,7 @@ private:
     Tensor rhs;
     reshapeToRank3(inputs[1], bcast.y_batch_size(), &rhs);
     Shape old_output_shape = bcast.output_batch_shape();
-    Shape output_shape(old_output_shape.DimensionsCount() + inputs.size());
+    Shape output_shape(static_cast<int>(old_output_shape.DimensionsCount() + inputs.size()));
     for (int i = 0; i < old_output_shape.DimensionsCount(); i++)
     {
       output_shape.SetDim(i, old_output_shape.Dims(i));
@@ -903,7 +903,8 @@ private:
 
     // LaunchBatchMatMul::Launch(lhs, rhs, adj_x, adj_y, bcast, &output_reshaped);
     BatchMatMul batchMatMul;
-    batchMatMul.prepare(lhs.shape, rhs.shape, adj_x, adj_y);
+    // Set rhs is not constant: don't use optimization
+    batchMatMul.prepare(lhs.shape, rhs.shape, adj_x, adj_y, false);
     batchMatMul(lhs.shape, lhs.base<float>(), rhs.shape, rhs.base<float>(), adj_x, adj_y,
                 output_reshaped.shape, output_reshaped.base<float>());
   }

@@ -83,7 +83,7 @@ static circle::TensorType GetCircleType(mlir::Type type, bool is_signed = true)
   {
     return circle::TensorType_FLOAT64;
   }
-  else if (auto itype = type.dyn_cast<mlir::IntegerType>())
+  else if (auto itype = mlir::dyn_cast<mlir::IntegerType>(type))
   {
     switch (itype.getWidth())
     {
@@ -313,7 +313,7 @@ std::optional<BufferOffset<circle::Buffer>> Translator::BuildBuffer(mlir::Value 
   {
     // arith::ConstantOp have ElementAttr at this point due to validation of the
     // Circle module.
-    attr = cst.getValue().cast<mlir::ElementsAttr>();
+    attr = mlir::cast<mlir::ElementsAttr>(cst.getValue());
   }
   else if (auto cst = llvm::dyn_cast<mlir::Circle::ConstOp>(inst))
   {
@@ -325,7 +325,7 @@ std::optional<BufferOffset<circle::Buffer>> Translator::BuildBuffer(mlir::Value 
     return empty_buffer_;
   }
 
-  auto type = value.getType().cast<mlir::TensorType>();
+  auto type = mlir::cast<mlir::TensorType>(value.getType());
   circle::TensorType circle_element_type = GetCircleType(type.getElementType());
 
   BYTES data;
@@ -383,7 +383,7 @@ std::optional<BufferOffset<circle::Tensor>> Translator::BuildTensor(
   mlir::Value value, const std::string &name, unsigned buffer_idx,
   const std::optional<BufferOffset<circle::QuantizationParameters>> &quant_parameters)
 {
-  auto type = value.getType().cast<mlir::TensorType>();
+  auto type = mlir::cast<mlir::TensorType>(value.getType());
 
   // Circle requires tensor shape only for the inputs and constants.
   // However, we output all known shapes for better round-tripping
@@ -413,8 +413,9 @@ std::optional<BufferOffset<circle::Tensor>> Translator::BuildTensor(
     // Const op can have a result of dynamic shaped type (e.g. due to constant
     // folding), but we can still derive the shape of a constant tensor for
     // its attribute type.
-    auto tensor_attr = inst->getAttr("value").cast<mlir::TypedAttr>();
-    llvm::ArrayRef<int64_t> shape_ref = tensor_attr.getType().cast<mlir::TensorType>().getShape();
+    auto tensor_attr = mlir::cast<mlir::TypedAttr>(inst->getAttr("value"));
+    llvm::ArrayRef<int64_t> shape_ref =
+      mlir::cast<mlir::TensorType>(tensor_attr.getType()).getShape();
     if (mlir::failed(check_shape(shape_ref)))
       return std::nullopt;
 
@@ -495,7 +496,7 @@ BufferOffset<circle::Operator> Translator::BuildCustomOperator(Operation *inst,
                                                                const std::vector<int32_t> &results)
 {
   const std::string attrs =
-    op.getCustomOption().cast<mlir::Circle::ConstBytesAttr>().getValue().str();
+    mlir::cast<mlir::Circle::ConstBytesAttr>(op.getCustomOption()).getValue().str();
   std::vector<uint8_t> custom_option_vector(attrs.size());
   memcpy(custom_option_vector.data(), attrs.data(), attrs.size());
   auto opcode_index = GetOpcodeIndex(op.getCustomCode().str(), circle::BuiltinOperator_CUSTOM);
@@ -616,7 +617,7 @@ void Translator::InitializeNamesFromAttribute(mlir::func::FuncOp fn, bool *has_i
     assert(inputNames.size() == fn.getArguments().size());
     for (const auto &it : llvm::enumerate(fn.getArguments()))
     {
-      auto strattr = inputNames[it.index()].cast<mlir::StringAttr>();
+      auto strattr = mlir::cast<mlir::StringAttr>(inputNames[it.index()]);
       name_mapper_.InitOpName(it.value(), strattr);
     }
     *has_input_attr = true;
@@ -628,7 +629,7 @@ void Translator::InitializeNamesFromAttribute(mlir::func::FuncOp fn, bool *has_i
     assert(outputNames.size() == term->getOperands().size());
     for (const auto &it : llvm::enumerate(term->getOperands()))
     {
-      auto strattr = outputNames[it.index()].cast<mlir::StringAttr>();
+      auto strattr = mlir::cast<mlir::StringAttr>(outputNames[it.index()]);
       name_mapper_.InitOpName(it.value(), strattr);
     }
     *has_input_attr = true;
@@ -651,7 +652,7 @@ Translator::BuildSubGraph(const std::string &name, mlir::Region *region, const i
   auto build_tensor_and_buffer = [&](mlir::Value value, const int subgraph_index,
                                      const std::string &tensor_name) {
     // NoneType represents optional and may be skipped here.
-    if (value.getType().isa<mlir::NoneType>())
+    if (mlir::isa<mlir::NoneType>(value.getType()))
     {
       return true;
     }
@@ -754,7 +755,7 @@ Translator::BuildSubGraph(const std::string &name, mlir::Region *region, const i
     operands.reserve(real_inst->getNumOperands());
     for (auto operand : real_inst->getOperands())
     {
-      if (operand.getType().isa<mlir::NoneType>())
+      if (mlir::isa<mlir::NoneType>(operand.getType()))
         operands.push_back(kCircleOptionalTensor);
       else
         operands.push_back(tensor_index_map.lookup(operand));

@@ -15,6 +15,7 @@
  */
 
 #include "graph.h"
+#include "device.h"
 
 namespace fs = std::filesystem;
 
@@ -74,5 +75,10 @@ int main(int argc, char *argv[])
   }
 
   auto g = GetGraphFromOnnx(onnxFile);
+
+  Device target;
+  target.updateOnnxFile(onnxFile);
+  target.GetDeviceJson(confFile);
+
   return 0;
 }

@@ -215,7 +215,7 @@ struct BinaryArithmeticOpParam
 struct TransposeParams
 {
   int8_t perm_count;
-  int32_t perm[4];
+  int32_t perm[6];
 };
 
 struct ConcatenationParams
@@ -305,6 +305,11 @@ struct LSTMParams
 struct GatherParams
 {
   int32_t axis;
+};
+
+struct GELUParams
+{
+  bool approximate;
 };
 
 struct InstanceNormParams

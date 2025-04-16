@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_CIRCLE_OPTIMIZER_H__
-#define __LUCI_CIRCLE_OPTIMIZER_H__
+#ifndef __LUCI_PASS_CIRCLE_OPTIMIZER_H__
+#define __LUCI_PASS_CIRCLE_OPTIMIZER_H__
 
 #include <loco.h>
 
@@ -160,4 +160,4 @@ private:
 
 } // namespace luci
 
-#endif // __LUCI_CIRCLE_OPTIMIZER_H__
+#endif // __LUCI_PASS_CIRCLE_OPTIMIZER_H__

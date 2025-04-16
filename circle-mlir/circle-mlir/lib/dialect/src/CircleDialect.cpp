@@ -73,7 +73,7 @@ ParseResult parseOneResultSameOperandTypeOp(OpAsmParser &parser, OperationState 
         parser.parseOptionalAttrDict(result.attributes) || parser.parseColon() ||
         parser.parseType(type))
       return failure();
-    auto fnType = type.dyn_cast<FunctionType>();
+    auto fnType = mlir::dyn_cast<FunctionType>(type);
     if (!fnType)
     {
       parser.emitError(loc, "expected function type");
@@ -134,7 +134,7 @@ bool VerifyOperandsHaveSameShapesOrBroadcastableShape(Operation *op, ArrayRef<un
 
   for (unsigned index : indices)
   {
-    ShapedType shaped_type = op->getOperand(index).getType().dyn_cast<ShapedType>();
+    ShapedType shaped_type = mlir::dyn_cast<ShapedType>(op->getOperand(index).getType());
     if (!shaped_type || !shaped_type.hasRank())
     {
       // Marks that we have an unknown rank input.
@@ -212,8 +212,8 @@ bool EqualsZero(Value value)
     return false;
   }
 
-  Type element_type = value.getType().cast<ShapedType>().getElementType();
-  if (element_type.isa<FloatType>())
+  Type element_type = mlir::cast<ShapedType>(value.getType()).getElementType();
+  if (mlir::isa<FloatType>(element_type))
   {
     return constant.getSplatValue<APFloat>().isZero();
   }
@@ -315,7 +315,7 @@ bool ExtractConstantValues(mlir::Value &input, std::vector<int64_t> &values)
 
 void CIRDialect::printType(Type type, DialectAsmPrinter &os) const
 {
-  if (type.isa<ControlType>())
+  if (mlir::isa<ControlType>(type))
   {
     os << "control";
     return;
@@ -357,7 +357,7 @@ namespace
 // Returns true if it is a shaped type of f32 elements.
 inline bool IsF32ShapedType(Type t)
 {
-  if (auto shaped_type = t.dyn_cast_or_null<ShapedType>())
+  if (auto shaped_type = mlir::dyn_cast_or_null<ShapedType>(t))
   {
     return shaped_type.getElementType().isF32();
   }
@@ -367,7 +367,7 @@ inline bool IsF32ShapedType(Type t)
 // Returns true if it is a shaped type of i64 elements.
 inline bool IsI64ShapedType(Type t)
 {
-  if (auto shaped_type = t.dyn_cast_or_null<ShapedType>())
+  if (auto shaped_type = mlir::dyn_cast_or_null<ShapedType>(t))
   {
     return shaped_type.getElementType().isInteger(64);
   }
@@ -391,11 +391,11 @@ namespace
 
 bool InputOutputHasSameShape(mlir::Type input_type, mlir::Type output_type)
 {
-  auto input_shaped_type = input_type.dyn_cast_or_null<ShapedType>();
+  auto input_shaped_type = mlir::dyn_cast_or_null<ShapedType>(input_type);
   if (!input_shaped_type || !input_shaped_type.hasStaticShape())
     return false;
 
-  auto output_shaped_type = output_type.dyn_cast_or_null<ShapedType>();
+  auto output_shaped_type = mlir::dyn_cast_or_null<ShapedType>(output_type);
   if (!output_shaped_type || !output_shaped_type.hasStaticShape())
     return false;
 
@@ -453,7 +453,9 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 #include "ops/DivOp.h"
 #include "ops/EqualOp.h"
 #include "ops/ExpandOnnxOp.h"
+#include "ops/FloorOp.h"
 #include "ops/FullyConnectedOp.h"
+#include "ops/GatherOp.h"
 #include "ops/LogOp.h"
 #include "ops/MulOp.h"
 #include "ops/NegOp.h"
@@ -463,16 +465,21 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 #include "ops/PReluOp.h"
 #include "ops/ReduceProdOp.h"
 #include "ops/ReshapeOp.h"
+#include "ops/ResizeOnnxOp.h"
 #include "ops/RsqrtOp.h"
 #include "ops/SelectOp.h"
 #include "ops/SelectV2Op.h"
 #include "ops/ShapeOp.h"
+#include "ops/SinOp.h"
 #include "ops/SliceOp.h"
+#include "ops/SplitVOp.h"
 #include "ops/SqrtOp.h"
+#include "ops/SqueezeOp.h"
 #include "ops/StridedSliceOp.h"
 #include "ops/SubOp.h"
 #include "ops/TransposeConvOp.h"
 #include "ops/TransposeOp.h"
+#include "ops/UnsqueezeOnnxOp.h"
 
 #include "mlir/CircleOpsDialect.cc.inc"
 #include "mlir/CircleOpsEnums.cc.inc"
@@ -493,13 +500,13 @@ Operation *CIRDialect::materializeConstant(OpBuilder &builder, Attribute value, 
 {
   // If this is a constant bytes attribute or the result type doesn't match the
   // attribute type, then generate a tfl.pseudo_const.
-  if (value.isa<ConstBytesAttr>() ||
-      (value.isa<ElementsAttr>() && value.cast<ElementsAttr>().getType() != type))
-    return builder.create<ConstOp>(loc, type, value.cast<ElementsAttr>());
+  if (mlir::isa<ConstBytesAttr>(value) ||
+      (mlir::isa<ElementsAttr>(value) && mlir::cast<ElementsAttr>(value).getType() != type))
+    return builder.create<ConstOp>(loc, type, mlir::cast<ElementsAttr>(value));
   if (ConstOp::isBuildableWith(value, type))
-    return builder.create<ConstOp>(loc, type, value.cast<ElementsAttr>());
+    return builder.create<ConstOp>(loc, type, mlir::cast<ElementsAttr>(value));
   if (NoValueOp::isBuildableWith(value, type))
-    return builder.create<NoValueOp>(loc, type, value.cast<UnitAttr>());
+    return builder.create<NoValueOp>(loc, type, mlir::cast<UnitAttr>(value));
   return nullptr;
 }
 

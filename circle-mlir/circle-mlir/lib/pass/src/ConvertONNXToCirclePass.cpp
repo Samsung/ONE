@@ -26,6 +26,7 @@
 //    file: AbcdOp.h
 #include "ops/ArgMaxOp.h"
 #include "ops/AveragePoolOp.h"
+#include "ops/BatchNormalizationInferenceModeOp.h"
 #include "ops/CastOp.h"
 #include "ops/ClipOp.h"
 #include "ops/ConcatOp.h"
@@ -35,33 +36,54 @@
 #include "ops/ConvTransposeOp.h"
 #include "ops/CosOp.h"
 #include "ops/CumsumOp.h"
+#include "ops/DequantizeLinearOp.h"
 #include "ops/EqualOp.h"
+#include "ops/ErfOp.h"
 #include "ops/ExpOp.h"
 #include "ops/ExpandOp.h"
+#include "ops/FlattenOp.h"
+#include "ops/FloorOp.h"
+#include "ops/GatherOp.h"
 #include "ops/GemmOp.h"
+#include "ops/GlobalAveragePoolOp.h"
 #include "ops/GreaterOp.h"
+#include "ops/HardSigmoidOp.h"
+#include "ops/HardSwishOp.h"
+#include "ops/IdentityOp.h"
+#include "ops/InstanceNormalizationOp.h"
 #include "ops/LeakyReluOp.h"
 #include "ops/LogOp.h"
 #include "ops/MatMulOp.h"
+#include "ops/MaxOp.h"
 #include "ops/MaxPoolSingleOutOp.h"
+#include "ops/MinOp.h"
 #include "ops/NegOp.h"
 #include "ops/NoneOp.h"
 #include "ops/NotOp.h"
 #include "ops/PadOp.h"
+#include "ops/PowOp.h"
 #include "ops/PReluOp.h"
+#include "ops/QuantizeLinearOp.h"
+#include "ops/ReciprocalOp.h"
 #include "ops/ReduceMaxOp.h"
 #include "ops/ReduceMeanOp.h"
 #include "ops/ReduceProdOp.h"
 #include "ops/ReduceSumOp.h"
 #include "ops/ReluOp.h"
 #include "ops/ReshapeOp.h"
+#include "ops/ResizeOp.h"
 #include "ops/ShapeOp.h"
 #include "ops/SigmoidOp.h"
+#include "ops/SinOp.h"
 #include "ops/SliceOp.h"
 #include "ops/SoftmaxOp.h"
+#include "ops/SplitOp.h"
 #include "ops/SqrtOp.h"
+#include "ops/SqueezeOp.h"
 #include "ops/TanhOp.h"
+#include "ops/TileOp.h"
 #include "ops/TransposeOp.h"
+#include "ops/UnsqueezeOp.h"
 #include "ops/WhereOp.h"
 
 #include <circle-mlir/dialect/CircleDialect.h>
@@ -186,6 +208,7 @@ void ConvertONNXToCirclePass::runOnOperation()
 
   patterns.insert<ConvArgMax>(typeConverter, context);
   patterns.insert<ConvAveragePool>(typeConverter, context);
+  patterns.insert<ConvBatchNormalizationInferenceMode>(typeConverter, context);
   patterns.insert<ConvCast>(typeConverter, context);
   patterns.insert<ConvClip>(typeConverter, context);
   patterns.insert<ConvConcat>(typeConverter, context);
@@ -195,19 +218,35 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvConvTranspose>(typeConverter, context);
   patterns.insert<ConvCos>(typeConverter, context);
   patterns.insert<ConvCumsum>(typeConverter, context);
+  patterns.insert<ConvDequantizeLinear>(typeConverter, context);
   patterns.insert<ConvEqual>(typeConverter, context);
+  patterns.insert<ConvErf>(typeConverter, context);
   patterns.insert<ConvExp>(typeConverter, context);
+  patterns.insert<ConvExpand>(typeConverter, context);
+  patterns.insert<ConvFlatten>(typeConverter, context);
+  patterns.insert<ConvFloor>(typeConverter, context);
+  patterns.insert<ConvGather>(typeConverter, context);
   patterns.insert<ConvGemm>(typeConverter, context);
+  patterns.insert<ConvGlobalAveragePool>(typeConverter, context);
   patterns.insert<ConvGreater>(typeConverter, context);
+  patterns.insert<ConvHardSigmoid>(typeConverter, context);
+  patterns.insert<ConvHardSwish>(typeConverter, context);
+  patterns.insert<ConvIdentity>(typeConverter, context);
+  patterns.insert<ConvInstanceNormalization>(typeConverter, context);
   patterns.insert<ConvLeakyRelu>(typeConverter, context);
   patterns.insert<ConvLog>(typeConverter, context);
   patterns.insert<ConvMatMul>(typeConverter, context);
+  patterns.insert<ConvMax>(typeConverter, context);
   patterns.insert<ConvMaxPoolSingleOut>(typeConverter, context);
+  patterns.insert<ConvMin>(typeConverter, context);
   patterns.insert<ConvNeg>(typeConverter, context);
   patterns.insert<ConvNone>(typeConverter, context);
   patterns.insert<ConvNot>(typeConverter, context);
   patterns.insert<ConvPad>(typeConverter, context);
+  patterns.insert<ConvPow>(typeConverter, context);
   patterns.insert<ConvPRelu>(typeConverter, context);
+  patterns.insert<ConvQuantizeLinear>(typeConverter, context);
+  patterns.insert<ConvReciprocal>(typeConverter, context);
   patterns.insert<ConvReduceMax>(typeConverter, context);
   patterns.insert<ConvReduceMaxV13>(typeConverter, context);
   patterns.insert<ConvReduceMean>(typeConverter, context);
@@ -218,14 +257,21 @@ void ConvertONNXToCirclePass::runOnOperation()
   patterns.insert<ConvReduceSumV11>(typeConverter, context);
   patterns.insert<ConvRelu>(typeConverter, context);
   patterns.insert<ConvReshape>(typeConverter, context);
+  patterns.insert<ConvResize>(typeConverter, context);
+  patterns.insert<ConvResizeV13>(typeConverter, context);
   patterns.insert<ConvShape>(typeConverter, context);
   patterns.insert<ConvSigmoid>(typeConverter, context);
+  patterns.insert<ConvSin>(typeConverter, context);
   patterns.insert<ConvSlice>(typeConverter, context);
   patterns.insert<ConvSoftmax>(typeConverter, context);
   patterns.insert<ConvSoftmaxV11>(typeConverter, context);
+  patterns.insert<ConvSplit>(typeConverter, context);
   patterns.insert<ConvSqrt>(typeConverter, context);
+  patterns.insert<ConvSqueeze>(typeConverter, context);
   patterns.insert<ConvTanh>(typeConverter, context);
+  patterns.insert<ConvTile>(typeConverter, context);
   patterns.insert<ConvTranspose>(typeConverter, context);
+  patterns.insert<ConvUnsqueeze>(typeConverter, context);
   patterns.insert<ConvWhere>(typeConverter, context);
 
   auto res = mlir::applyFullConversion(function, target, std::move(patterns));

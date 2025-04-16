@@ -370,10 +370,10 @@ mlir::LogicalResult ReshapeOp::verify()
 
 LogicalResult ReshapeOp::inferReturnTypes(MLIRContext *context, std::optional<Location> location,
                                           ValueRange operands, DictionaryAttr attr,
-                                          OpaqueProperties, RegionRange,
+                                          OpaqueProperties properties, RegionRange,
                                           SmallVectorImpl<Type> &inferredReturnTypes)
 {
-  ReshapeOpAdaptor op(operands, attr);
+  ReshapeOpAdaptor op(operands, attr, properties);
   const Value input = op.getInput();
   const Value shape = op.getShape();
 

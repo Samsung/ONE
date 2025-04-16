@@ -110,7 +110,7 @@ ConvertI64ArrayAttrForOptionWriter(mlir::ArrayAttr attrArray,
   intVec.reserve(attrArray.getValue().size());
   for (auto attr : attrArray.getValue())
   {
-    intVec.push_back(attr.cast<mlir::IntegerAttr>().getInt());
+    intVec.push_back(mlir::cast<mlir::IntegerAttr>(attr).getInt());
   }
   return builder->CreateVector(intVec);
 }

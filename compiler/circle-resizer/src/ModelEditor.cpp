@@ -34,9 +34,9 @@ namespace
 void replace_tensor_shape(::flatbuffers::Vector<int32_t> *tensor_shape, const Shape &new_shape)
 {
   const auto shape_size = tensor_shape->size();
-  if (shape_size != new_shape.size())
+  if (shape_size != new_shape.rank())
   {
-    throw std::runtime_error("Provided shape rank: " + std::to_string(new_shape.size()) +
+    throw std::runtime_error("Provided shape rank: " + std::to_string(new_shape.rank()) +
                              " is different from expected: " + std::to_string(shape_size));
   }
   for (uint32_t dim_idx = 0; dim_idx < shape_size; ++dim_idx)
@@ -49,7 +49,7 @@ void replace_tensor_shape(::flatbuffers::Vector<int32_t> *tensor_shape, const Sh
 
 ModelEditor::ModelEditor(std::shared_ptr<ModelData> model_data) : _model_data{model_data} {}
 
-ModelEditor &ModelEditor::resize_inputs(const Shapes &shapes)
+ModelEditor &ModelEditor::resize_inputs(const std::vector<Shape> &shapes)
 {
   auto model = circle::GetMutableModel(_model_data->buffer().data());
   if (!model)

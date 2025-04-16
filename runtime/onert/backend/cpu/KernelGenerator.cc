@@ -119,6 +119,8 @@ convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type
       return ops::ElementwiseActivationType::kTanh;
     case ir::operation::ElementwiseActivation::Type::LEAKY_RELU:
       return ops::ElementwiseActivationType::kLeakyReLU;
+    case ir::operation::ElementwiseActivation::Type::GELU:
+      return ops::ElementwiseActivationType::kGELU;
     default:
       throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
   }
@@ -656,7 +658,7 @@ void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
   auto fn = std::make_unique<ops::ElementwiseActivationLayer>();
 
   fn->configure(input_tensor, output_tensor, node.param().alpha, node.param().beta,
-                convertElementwiseActivationType(node.param().op_type));
+                node.param().approximate, convertElementwiseActivationType(node.param().op_type));
 
   _return_fn = std::move(fn);
 }

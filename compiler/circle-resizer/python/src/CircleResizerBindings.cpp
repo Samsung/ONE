@@ -31,25 +31,9 @@
 namespace py = pybind11;
 using namespace circle_resizer;
 
-namespace
-{
-std::string print_shape(const Shape &shape)
-{
-  if (shape.empty())
-  {
-    return "";
-  }
-  std::stringstream ss;
-  ss << "[";
-  for (int i = 0; i < shape.size() - 1; ++i)
-  {
-    ss << shape[i].value() << ", ";
-  }
-  ss << shape.back().value() << "]";
-  return ss.str();
-}
-} // namespace
+using Shapes = std::vector<Shape>;
 
+PYBIND11_MAKE_OPAQUE(Dim);
 PYBIND11_MAKE_OPAQUE(Shape);
 PYBIND11_MAKE_OPAQUE(Shapes);
 
@@ -65,23 +49,14 @@ PYBIND11_MODULE(circle_resizer_python_api, m)
   dim.def("__eq__", [](const Dim &rhs, const Dim &lhs) { return rhs.value() == lhs.value(); });
   dim.def("__str__", [](const Dim &self) { return std::to_string(self.value()); });
 
-  auto shape = py::bind_vector<Shape>(m, "Shape");
+  py::class_<Dim> shape(m, "Shape");
   shape.doc() = "circle_resizer::Shape";
-  shape.def("__eq__", [](const Shape &rhs, const Shape &lhs) {
-    if (rhs.size() != lhs.size())
-    {
-      return false;
-    }
-    for (int i = 0; i < rhs.size(); ++i)
-    {
-      if (!(rhs[i] == lhs[i]))
-      {
-        return false;
-      }
-    }
-    return true;
+  shape.def("__eq__", [](const Shape &rhs, const Shape &lhs) { return rhs == lhs; });
+  shape.def("__str__", [](const Shape &shape) -> std::string {
+    std::stringstream ss;
+    ss << shape;
+    return ss.str();
   });
-  shape.def("__str__", [](const Shape &shape) -> std::string { return print_shape(shape); });
 
   auto shapes = py::bind_vector<Shapes>(m, "Shapes");
   shapes.doc() = "circle_resizer::Shapes";
@@ -93,9 +68,9 @@ PYBIND11_MODULE(circle_resizer_python_api, m)
     std::stringstream ss;
     for (int i = 0; i < shapes.size() - 1; ++i)
     {
-      ss << print_shape(shapes[i]) << ", ";
+      ss << shapes[i] << ", ";
     }
-    ss << print_shape(shapes.back());
+    ss << shapes.back();
     return ss.str();
   });
 

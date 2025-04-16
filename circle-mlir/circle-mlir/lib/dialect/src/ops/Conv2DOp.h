@@ -54,10 +54,11 @@ LogicalResult ComputeConvWindowedOutputSize(int64_t input_size, int64_t filter_s
 }
 
 LogicalResult Conv2DOp::inferReturnTypes(MLIRContext *, std::optional<Location> location,
-                                         ValueRange operands, DictionaryAttr attr, OpaqueProperties,
-                                         RegionRange, SmallVectorImpl<Type> &inferredReturnTypes)
+                                         ValueRange operands, DictionaryAttr attr,
+                                         OpaqueProperties properties, RegionRange,
+                                         SmallVectorImpl<Type> &inferredReturnTypes)
 {
-  Conv2DOpAdaptor op(operands, attr);
+  Conv2DOpAdaptor op(operands, attr, properties);
 
   const Value input = op.getInput();
   const Value filter = op.getFilter();

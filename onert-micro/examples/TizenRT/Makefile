@@ -150,6 +150,12 @@ CXXSRCS += $(ONERTMICRO_SRC_DIR)/execute/kernels/Quantize.cpp
 CXXSRCS += $(ONERTMICRO_SRC_DIR)/execute/kernels/SVDF.cpp
 CXXSRCS += $(ONERTMICRO_SRC_DIR)/execute/kernels/GRU.cpp
 CXXSRCS += $(ONERTMICRO_SRC_DIR)/execute/kernels/Pack.cpp
+CXXSRCS += $(ONERTMICRO_SRC_DIR)/execute/kernels/ZerosLike.cpp
+CXXSRCS += $(ONERTMICRO_SRC_DIR)/execute/kernels/SelectV2.cpp
+CXXSRCS += $(ONERTMICRO_SRC_DIR)/execute/kernels/Sum.cpp
+CXXSRCS += $(ONERTMICRO_SRC_DIR)/execute/kernels/Shape.cpp
+CXXSRCS += $(ONERTMICRO_SRC_DIR)/execute/kernels/Mean.cpp
+CXXSRCS += $(ONERTMICRO_SRC_DIR)/execute/kernels/ReduceProd.cpp
 
 # Import Kernels
 CXXSRCS += $(ONERTMICRO_SRC_DIR)/import/kernels/Abs.cpp
@@ -221,6 +227,12 @@ CXXSRCS += $(ONERTMICRO_SRC_DIR)/import/kernels/Quantize.cpp
 CXXSRCS += $(ONERTMICRO_SRC_DIR)/import/kernels/SVDF.cpp
 CXXSRCS += $(ONERTMICRO_SRC_DIR)/import/kernels/GRU.cpp
 CXXSRCS += $(ONERTMICRO_SRC_DIR)/import/kernels/Pack.cpp
+CXXSRCS += $(ONERTMICRO_SRC_DIR)/import/kernels/ZerosLike.cpp
+CXXSRCS += $(ONERTMICRO_SRC_DIR)/import/kernels/SelectV2.cpp
+CXXSRCS += $(ONERTMICRO_SRC_DIR)/import/kernels/Sum.cpp
+CXXSRCS += $(ONERTMICRO_SRC_DIR)/import/kernels/Shape.cpp
+CXXSRCS += $(ONERTMICRO_SRC_DIR)/import/kernels/Mean.cpp
+CXXSRCS += $(ONERTMICRO_SRC_DIR)/import/kernels/ReduceProd.cpp
 
 # Import Helpers
 CXXSRCS += $(ONERTMICRO_SRC_DIR)/import/helpers/OMConfigureSISOKernel.cpp

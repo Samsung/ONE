@@ -809,6 +809,53 @@ def CIR_ExpandOnnxOp : CIR_Op<"expand_onnx", [
   let hasCanonicalizer = 1;
 }
 
+def CIR_FloorOp: CIR_Op<"floor", [
+    Pure,
+    /*TF_SameOperandsAndResultTypeResolveRef*/]> {
+  let summary = "Floor operator";
+
+  let description = [{
+    Returns element-wise floor value of the input.
+  }];
+
+  let arguments = (ins CIR_FpTensor:$x);
+
+  let results = (outs CIR_FpTensor:$y);
+
+  let hasFolder = 1;
+
+  /*
+  let extraClassDeclaration = [{
+    // Returns whether the return types are compatible.
+    static bool isCompatibleReturnTypes(TypeRange l, TypeRange r) {
+      return TF::ArraysAreCastCompatible(l, r);
+    }
+  }];
+  */
+}
+
+def CIR_FloorModOp : CIR_Op<"floor_mod", [
+    ResultsBroadcastableShape,
+    Pure,
+    BinaryOpSameElementTypeConstraint,
+    PredOpTrait<"lhs and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    CIR_OperandsHaveSameShapesOrBroadcastableShape<[0, 1], 4>]> {
+  let summary = "Division reminder";
+
+  let description = [{
+    Element-wise division reminder operation.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[I8, I16, I32, I64, F32]>:$lhs,
+    CIR_TensorOf<[I8, I16, I32, I64, F32]>:$rhs);
+
+  let results = (outs CIR_TensorOf<[I8, I16, I32, I64, F32]>:$output);
+
+  let builders = [CIR_BroadcastableBinaryBuilder];
+}
+
 // TODO(jpienaar): Update post discussion on semantics of FC OP.
 def CIR_FullyConnectedOp : CIR_Op<"fully_connected", [
     Pure, /*AccumulatorUniformScale<2, 0, 1>,*/
@@ -861,6 +908,44 @@ def CIR_FullyConnectedOp : CIR_Op<"fully_connected", [
   }];
 }
 
+def CIR_GatherOp : CIR_Op<"gather", [
+    Pure,
+    // TODO enable QuantizableResult,
+    // TODO enable SameOperandsAndResultsScale,
+    CIR_OperandHasAtleastRank<0, 1>,
+    PredOpTrait<"params and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    // TODO enable DynamicRangeQuantizedOpInterface
+  ]> {
+  let summary = "Gather operator";
+
+  let description = [{
+    Gather slices from `params` axis `axis` according to `indices`.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32/*, I1*/, I8, I16, I32, I64/*, TFL_Str, UI8, QI8, QUI8, QI16*/]>:$params,
+    CIR_TensorOf<[I16, I32, I64]>:$indices,
+    I32Attr:$axis,
+    DefaultValuedOptionalAttr<I32Attr, "0">:$batch_dims
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32/*, I1*/, I8, I16, I32, I64/*, TFL_Str, UI8, QI8, QUI8, QI16*/]>:$output
+  );
+
+  let hasOptions = 1;
+
+  let hasVerifier = 1;
+
+  let hasFolder = 1;
+
+  let extraClassDeclaration = [{
+    // DynamicRangeQuantizedOpInterface:
+    std::vector<int> GetQuantizableOperandIndices() { return {0}; }
+  }];
+}
+
 def CIR_GreaterOp : CIR_Op<"greater", [
     ResultsBroadcastableShape,
     ComparisonOpSameElementTypeConstraint,
@@ -889,6 +974,56 @@ def CIR_GreaterOp : CIR_Op<"greater", [
       return printOneResultOp(getOperation(), p);
     }
   }];
+}
+
+def CIR_HardSwishOp: CIR_Op<"hard_swish", [
+    Pure,
+    SameOperandsAndResultShape,
+    /*QuantizableResult,*/
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>]> {
+  let summary = "Hardswish activation function.";
+  let description = [{
+    Computes hard-swish activation function
+      f(x) -> (x * relu6(x+3))/6
+    element-wise.
+  }];
+
+  let arguments = (ins CIR_TensorOf<[F32/*, QUI8, QI8*/]>:$input);
+
+  let results = (outs CIR_TensorOf<[F32/*, QUI8, QI8*/]>:$output);
+
+  let hasOptions = 0;
+}
+
+// NOTE InstanceNormOp is added from scratch with looking around other ops
+//      without deep understanding of TableDef, so there maybe something wrong.
+//      we may have to fix errors when discovered.
+def CIR_InstanceNormOp : CIR_Op<"instance_norm", [
+    CIR_OperandHasRankAtMost<0, 4>,
+    PredOpTrait<"input and output must have same element type", CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    Pure,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>]> {
+  let summary = "Instance normalization op";
+
+  let description = [{
+    Performs Instance normalization on input.
+
+    Inputs:
+      `inputs[0]`: required: the input tensor
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32]>:$input,
+    CIR_1DTensorOf<[F32]>:$gamma,
+    CIR_1DTensorOf<[F32]>:$beta,
+    F32Attr:$epsilon,
+    CIR_AFAttr:$fused_activation_function
+  );
+  let results = (outs CIR_TensorOf<[F32]>:$output);
+
+  let hasOptions = 1;
+  let customOption = "InstanceNormOptions";
 }
 
 def CIR_LeakyReluOp: CIR_Op<"leaky_relu", [
@@ -963,7 +1098,6 @@ def CIR_LogisticOp: CIR_Op<"logistic", [
 def CIR_LogOp: CIR_Op<"log", [
     Pure,
     // NOTE TFL_LogOp used TF_SameOperandsAndResultTypeResolveRef
-    // REFER https://github.sec.samsung.net/one-project/circle-mlir/issues/292
     SameOperandsAndResultShape]> {
   let summary = "Natural logarithm operator";
 
@@ -1400,6 +1534,36 @@ def CIR_PadV2Op : CIR_Op<"padv2", [
   let hasFolder = 1;
 }
 
+def CIR_PowOp : CIR_Op<"pow", [
+    ResultsBroadcastableShape,
+    Pure,
+    CIR_OperandsHaveSameShapesOrBroadcastableShape<[0, 1], 4>]> {
+  let summary = "Power operator";
+
+  let description = [{
+    Element-wise power operation.
+  }];
+
+  let arguments = (
+    ins CIR_TensorOf<[F32, I32]>:$lhs,
+    CIR_TensorOf<[F32, I32]>:$rhs);
+
+  let results = (outs CIR_TensorOf<[F32, I32]>:$output);
+
+  let hasCustomAssemblyFormat = 1;
+
+  let extraClassDefinition = [{
+    ParseResult $cppClass::parse(OpAsmParser &parser, OperationState &result) {
+      return parseOneResultSameOperandTypeOp(parser, result);
+    }
+    void $cppClass::print(OpAsmPrinter &p) {
+      return printOneResultOp(getOperation(), p);
+    }
+  }];
+
+  let builders = [CIR_BroadcastableBinaryBuilder];
+}
+
 def CIR_PReluOp : CIR_Op<"prelu", [
     Pure,
     //QuantizableResult,
@@ -1573,6 +1737,85 @@ def CIR_ReshapeOp: CIR_Op<"reshape", [
   }];
 }
 
+def CIR_ResizeBilinearOp: CIR_Op<"resize_bilinear", [
+    Pure,
+    /*QuantizableResult,*/
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    CIR_OperandHasRank<0, 4>,
+    CIR_OperandHasRank<1, 1>,
+    /*SameOperandsAndResultsScale*/]> {
+  let summary = "ResizeBilinear Op";
+
+  let description = [{
+    Resize `images` to `size` using bilinear interpolation.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32/*, TFL_Quint8, QUI8, QI8, QI16*/]>:$input,
+    CIR_I32Tensor:$size,
+    BoolAttr:$align_corners,
+    DefaultValuedOptionalAttr<BoolAttr, "false">:$half_pixel_centers
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32/*, TFL_Quint8, QUI8, QI8, QI16*/]>:$output
+  );
+
+  let hasOptions = 1;
+}
+
+def CIR_ResizeNearestNeighborOp : CIR_Op<"resize_nearest_neighbor", [
+    Pure,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    /*QuantizableResult,*/
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>,
+    CIR_OperandHasRank<0, 4>,
+    CIR_OperandHasRank<1, 1>,
+    /*SameOperandsAndResultsScale*/]> {
+  let summary = "ResizeNearestNeighbor Op";
+
+  let description = [{
+    Resize `images` to `size` using nearest neighbor interpolation.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32/*, TFL_Quint8, QUI8, QI8, QI16*/]>:$input,
+    CIR_I32Tensor:$size,
+    BoolAttr:$align_corners,
+    DefaultValuedOptionalAttr<BoolAttr, "false">:$half_pixel_centers
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32/*, TFL_Quint8, QUI8, QI8, QI16*/]>:$output
+  );
+
+  let hasOptions = 1;
+}
+
+// NOTE this is temporary Op to hold scales for unknown input shape
+def CIR_ResizeOnnxOp : CIR_Op<"resize_onnx", [
+    Pure]> {
+  let summary = "Resize temporary ONNX Op";
+
+  let description = [{
+    Resize temporary Op for unknown shape.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32]>:$input,
+    CIR_TensorOf<[F32]>:$scales,
+    StrAttr:$mode
+  );
+
+  let results = (outs
+    CIR_TensorOf<[F32]>:$output
+  );
+
+  let hasCanonicalizer = 1;
+}
+
 def CIR_RsqrtOp: CIR_Op<"rsqrt", [Pure,
                                   //QuantizableResult,
                                   CIR_SameFirstOperandAndFirstResultElementType,
@@ -1684,6 +1927,32 @@ def CIR_ShapeOp: CIR_Op<"shape", [
   let hasFolder = 1;
 }
 
+def CIR_SinOp: CIR_Op<"sin", [
+    Pure,
+    /*TF_SameOperandsAndResultTypeResolveRef*/
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
+    SameOperandsAndResultShape]> {
+  let summary = "Sine operator";
+
+  let description = [{
+    Computes element-wise Sine of input
+  }];
+
+  let arguments = (ins CIR_FpTensor:$x);
+
+  let results = (outs CIR_FpTensor:$y);
+
+  let hasFolder = 1;
+
+  // TODO enable TF::ArraysAreCastCompatible
+  //let extraClassDeclaration = [{
+  //  // Returns whether the return types are compatible.
+  //  static bool isCompatibleReturnTypes(TypeRange l, TypeRange r) {
+  //    return TF::ArraysAreCastCompatible(l, r);
+  //  }
+  //}];
+}
+
 def CIR_SliceOp : CIR_Op<"slice", [
     /*QuantizableResult,*/
     PredOpTrait<"input and output must have same element type",
@@ -1766,6 +2035,34 @@ def CIR_SoftmaxOp : CIR_Op<"softmax", [
   // }];
 }
 
+def CIR_SplitVOp : CIR_Op<"split_v", [
+    Pure,
+    /*QuantizableResult,*/
+    /*SameOperandsAndResultsScale*/]> {
+  let summary = "Splits a tensor into `num_split` tensors along one dimension.";
+
+  let description = [{
+    Splits the `value` tensor along `split_dim` into a number of sub-tensors
+    with same shape as the original one, except for `split_dim`. The grouping
+    of the resultant sub-tensors is decided by `size-splits`. Same as tf.SplitV.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I16, I32, I64, I8, UI8/*, QI8, QUI8, QI16*/]>:$value,
+    CIR_1DTensorOf<[I32], [I32]>:$size_splits,
+    CIR_0DTensorOf<[I32], [I32]>:$split_dim,
+    ConfinedAttr<I32Attr, [IntPositive]>:$num_splits
+  );
+
+  let results = (outs
+    CIR_VariadicTensorOf<[F32, I16, I32, I64, I8, UI8/*, QI8, QUI8, QI16*/]>:$outputs
+  );
+
+  let hasVerifier = 1;
+
+  let hasOptions = 1;
+}
+
 def CIR_SqrtOp: CIR_Op<"sqrt", [
     Pure,
     DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
@@ -1787,6 +2084,47 @@ def CIR_SqrtOp: CIR_Op<"sqrt", [
     // Returns whether the return types are compatible.
     static bool isCompatibleReturnTypes(TypeRange l, TypeRange r);
   }];
+}
+
+def CIR_SqueezeOp: CIR_Op<"squeeze", [Pure,
+                                      /*QuantizableResult,*/
+                                      /*SameOperandsAndResultsScale*/]> {
+  let summary = "Removes dimensions of size 1 from the shape of a tensor.";
+
+  let description = [{
+Given a tensor `input`, this operation returns a tensor of the same type with
+all dimensions of size 1 removed. If you don't want to remove all size 1
+dimensions, you can remove specific size 1 dimensions by specifying
+`squeeze_dims`.
+
+For example:
+
+```
+# 't' is a tensor of shape [1, 2, 1, 3, 1, 1]
+shape(squeeze(t)) ==> [2, 3]
+```
+
+Or, to remove specific size 1 dimensions:
+
+```
+# 't' is a tensor of shape [1, 2, 1, 3, 1, 1]
+shape(squeeze(t, [2, 4])) ==> [1, 2, 3, 1]
+```
+  }];
+
+  let arguments = (ins
+    AnyTensor:$input,
+    ConfinedAttr<DefaultValuedOptionalAttr<I64ArrayAttr, "{}">, [CIR_ArrayMaxCount<8>]>:$squeeze_dims
+  );
+
+  let results = (outs
+    AnyTensor:$output
+  );
+
+  let hasFolder = 1;
+  let hasOptions = 1;
+
+  let customOption = "SqueezeOptions";
 }
 
 def CIR_StridedSliceOp: CIR_Op<"strided_slice", [
@@ -1959,6 +2297,33 @@ def CIR_TanhOp: CIR_Op<"tanh", [
   // }];
 }
 
+def CIR_TileOp: CIR_Op<"tile", [
+    Pure,
+    /*SameOperandsAndResultsScale,*/
+    /*QuantizableResult,*/
+    PredOpTrait<"input and output must have same element type",
+      CIR_TCresVTEtIsSameAsOp<0, 0>>]> {
+  let summary = "Tile operator.";
+  let description = [{
+    Constructs a tensor by tiling a given tensor.
+
+   This operation creates a new tensor by replicating input
+   multiples times. The output tensor's i'th dimension has
+   input.dims(i) * multiples[i] elements, and the values of input
+   are replicated multiples[i] times along the 'i'th dimension.
+   For example, tiling [a b c d] by [2] produces [a b c d a b c d].
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32, I1, I32, I64/*, UI8, QI8, QUI8, TFL_Str*/]>:$input,
+    CIR_I32OrI64Tensor:$multiples);
+
+  let results = (outs
+    CIR_TensorOf<[F32, I1, I32, I64/*, UI8, QI8, QUI8, TFL_Str*/]>:$output);
+
+  let hasOptions = 0;
+}
+
 def CIR_TransposeOp : CIR_Op<"transpose", [
     Pure,
     DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
@@ -2041,6 +2406,35 @@ def CIR_TransposeConvOp: CIR_Op<"transpose_conv", [
     // DynamicRangeQuantizedOpInterface:
     std::vector<int> GetQuantizableOperandIndices() { return {1}; }
   }];
+}
+
+// From submodules/onnx-mlir/src/Dialect/ONNX/ONNXOps.td.inc
+def CIR_UnsqueezeOnnxOp:CIR_Op<"unsqueeze_onnx", [
+    Pure]> {
+  let summary = "Unsqueeze temporary ONNX Op";
+
+  let description = [{
+    Insert single-dimensional entries to the shape of an input tensor (`data`).
+    Takes one required input `axes` - which contains a list of dimension indices and this operator will insert a dimension of value `1` into the corresponding index of the output tensor (`expanded`).
+
+    For example, given an input tensor (`data`) of shape [3, 4, 5], then
+    Unsqueeze(data, axes=[0, 4]) outputs a tensor (`expanded`) containing same data as `data` but with shape [1, 3, 4, 5, 1].
+
+    The input `axes` should not contain any duplicate entries. It is an error if it contains duplicates.
+    The rank of the output tensor (`output_rank`) is the rank of the input tensor (`data`) plus the number of values in `axes`.
+    Each value in `axes` should be within the (inclusive) range [-output_rank , output_rank - 1].
+    The order of values in `axes` does not matter and can come in any order.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[F32]>:$data,
+    CIR_TensorOf<[I64]>:$axes);
+
+  let results = (outs
+    CIR_TensorOf<[F32]>:$expanded);
+
+  // UnsqueezeOnnxOp should be converted to ResizeOp
+  let hasCanonicalizer = 1;
 }
 
 #endif // CIRCLE_OPS

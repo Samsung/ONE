@@ -32,7 +32,7 @@ public:
   explicit ModelEditor(std::shared_ptr<ModelData> model_data);
 
 public:
-  ModelEditor &resize_inputs(const Shapes &shapes);
+  ModelEditor &resize_inputs(const std::vector<Shape> &shapes);
 
 private:
   std::shared_ptr<ModelData> _model_data;

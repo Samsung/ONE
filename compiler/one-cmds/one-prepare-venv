@@ -71,7 +71,7 @@ ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_addons==0.20.0
 
 # Install PyTorch and ONNX related
 # NOTE set ONE_PREPVENV_TORCH_SOURCE to override options for source URL.
-TORCH_SOURCE_OPTION="-f https://download.pytorch.org/whl/torch_stable.html"
+TORCH_SOURCE_OPTION="-f https://download.pytorch.org/whl/torch"
 if [[ ! -z "$ONE_PREPVENV_TORCH_SOURCE" ]]; then
   TORCH_SOURCE_OPTION="${ONE_PREPVENV_TORCH_SOURCE}"
 fi

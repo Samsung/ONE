@@ -131,6 +131,10 @@ void OperationDumper::visit(const ElementwiseActivation &node)
   {
     params = " alpha value(" + std::to_string(node.param().alpha) + ")";
   }
+  else if (node.param().op_type == ElementwiseActivation::Type::GELU)
+  {
+    params = " approximate(" + std::to_string(node.param().approximate) + ")";
+  }
   dumpOpGeneric(node, params);
 }
 
