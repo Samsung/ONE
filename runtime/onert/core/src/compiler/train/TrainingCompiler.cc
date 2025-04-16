@@ -181,7 +181,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       auto &input = trainable_subg->operands().at(ind);
       auto new_shape = input.info().shape();
       // TODO Consider batch size index
-      if (new_shape.dim(0) != 1)
+      if (new_shape.dim(0) != 1 && new_shape.dim(0) != ir::Shape::kUnspecifiedDim)
         throw std::runtime_error("the first dim is not 1. It is not supported yet.");
       new_shape.dim(0) = _training_info.batchSize();
       input.info().shape(new_shape);
