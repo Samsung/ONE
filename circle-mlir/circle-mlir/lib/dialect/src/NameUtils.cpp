@@ -46,7 +46,7 @@ std::string GetNameFromLoc(Location loc)
       // in functions where the op's name is first.
       auto name = name_loc.getName().strref().split('@').first;
       // Skip if the name is for op type.
-      if (!name.endswith(":"))
+      if (!name.ends_with(":"))
       {
         loc_names.push_back(name);
         if (!name.empty())

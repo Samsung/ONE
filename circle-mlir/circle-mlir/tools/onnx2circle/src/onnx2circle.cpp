@@ -73,7 +73,7 @@ int loadONNX(const std::string &onnx_path, mlir::MLIRContext &context,
 {
   llvm::StringRef inputFilename(onnx_path);
   std::string errorMessage;
-  if (inputFilename.endswith(".mlir"))
+  if (inputFilename.ends_with(".mlir"))
   {
     auto input = mlir::openInputFile(inputFilename, &errorMessage);
     if (!input)
@@ -95,7 +95,7 @@ int loadONNX(const std::string &onnx_path, mlir::MLIRContext &context,
       return -1;
     }
   }
-  else if (inputFilename.endswith(".onnx"))
+  else if (inputFilename.ends_with(".onnx"))
   {
     onnx_mlir::ImportOptions options;
     options.useOnnxModelTypes = onnx_mlir::useOnnxModelTypes;
