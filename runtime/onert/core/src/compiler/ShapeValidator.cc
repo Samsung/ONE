@@ -158,6 +158,41 @@ void ShapeValidator::visit(const ir::operation::BCQGather &node)
   // more shape validation will be done inside kernel.
 }
 
+void ShapeValidator::visit(const ir::operation::BroadcastTo &node)
+{
+  const auto &operands = _graph.operands();
+  const auto output_index{node.getOutputs().at(0)};
+  if (operands.at(output_index).info().isDynamic())
+    return;
+
+  const auto input_index{node.getInputs().at(ir::operation::BroadcastTo::Input::INPUT)};
+  const auto shape_index{node.getInputs().at(ir::operation::BroadcastTo::Input::SHAPE)};
+
+  std::vector<int32_t> input_shape = operands.at(input_index).shape().dims();
+  std::vector<int32_t> target_shape = operands.at(shape_index).asVector<int32_t>();
+
+  int in_len = input_shape.size();
+  int tgt_len = target_shape.size();
+  int max_len = std::max(in_len, tgt_len);
+
+  std::vector<int32_t> in_shape_padded(max_len, 1);
+  std::vector<int32_t> tgt_shape_padded(max_len, 1);
+
+  for (int i = 0; i < in_len; i++)
+  {
+    in_shape_padded[max_len - in_len + i] = input_shape[i];
+  }
+  for (int i = 0; i < tgt_len; i++)
+  {
+    tgt_shape_padded[max_len - tgt_len + i] = target_shape[i];
+  }
+
+  for (int i = max_len - 1; i >= 0; --i)
+  {
+    OP_REQUIRES((in_shape_padded[i] == tgt_shape_padded[i]) || (in_shape_padded[i] == 1));
+  }
+}
+
 void ShapeValidator::visit(const ir::operation::Conv2D &node)
 {
   const auto &operands = _graph.operands();

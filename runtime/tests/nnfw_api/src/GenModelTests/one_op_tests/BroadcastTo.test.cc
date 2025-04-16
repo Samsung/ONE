@@ -66,3 +66,76 @@ TEST_F(GenModelTest, OneOp_BroadcastTo_3D_to_3D)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, OneOp_BroadcastTo_InputOutputDifferentType)
+{
+  CircleGen cgen;
+  const uint32_t shape_buf = cgen.addBuffer(std::vector<int32_t>{3, 3});
+  int shape = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, shape_buf});
+  int in = cgen.addTensor({{3}, circle::TensorType::TensorType_INT32});
+  int out = cgen.addTensor({{3, 3}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorBroadcastTo({{in, shape}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 2, 3}}, {{1, 2, 3, 1, 2, 3, 1, 2, 3}}));
+  _context->setBackends({"cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_BroadcastTo_1D_to_2D_InvalidShape)
+{
+  CircleGen cgen;
+  const uint32_t shape_buf = cgen.addBuffer(std::vector<int32_t>{3, 2});
+  int shape = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, shape_buf});
+  int in = cgen.addTensor({{3}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{3, 2}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorBroadcastTo({{in, shape}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 2, 3}}, {{1, 2, 3, 1, 2, 3}}));
+  _context->setBackends({"cpu"});
+  _context->expectFailCompile();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_BroadcastTo_2D_to_3D_InvalidShape)
+{
+  CircleGen cgen;
+  const uint32_t shape_buf = cgen.addBuffer(std::vector<int32_t>{2, 1, 3});
+  int shape = cgen.addTensor({{3}, circle::TensorType::TensorType_INT32, shape_buf});
+  int in = cgen.addTensor({{2, 3}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{2, 1, 3}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorBroadcastTo({{in, shape}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 2, 3, 1, 2, 3}}, {{1, 2, 3, 1, 2, 3}}));
+  _context->setBackends({"cpu"});
+  _context->expectFailCompile();
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, OneOp_BroadcastTo_3D_to_3D_InvalidShape)
+{
+  CircleGen cgen;
+  const uint32_t shape_buf = cgen.addBuffer(std::vector<int32_t>{2, 3, 2});
+  int shape = cgen.addTensor({{3}, circle::TensorType::TensorType_INT32, shape_buf});
+  int in = cgen.addTensor({{2, 2, 2}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{2, 3, 2}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorBroadcastTo({{in, shape}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(
+    uniformTCD<float>({{1, 2, 1, 2, 1, 2, 1, 2}}, {{1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2}}));
+  _context->setBackends({"cpu"});
+  _context->expectFailCompile();
+
+  SUCCEED();
+}
