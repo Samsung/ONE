@@ -19,14 +19,15 @@ RUN apt-get update \
 RUN apt-get update \
  && apt-get -qqy install python3 python3-pip python3-venv python3-dev python3-all dh-python
 RUN python3 -m pip install --upgrade pip setuptools
-RUN python3 -m pip install yapf==0.43.0 numpy==2.2.4 h5py==3.8.0 einops
+RUN python3 -m pip install yapf==0.43.0 h5py==3.8.0 einops
 
 # TODO upgrade
-ARG VER_TORCH=2.6.0
+ARG VER_TORCH=2.6.0+cpu
 ARG VER_ONNX=1.17.0
 ARG VER_ONNXRUNTIME=1.21.0
 
-RUN python3 -m pip install torch==${VER_TORCH} onnx==${VER_ONNX} onnxruntime==${VER_ONNXRUNTIME}
+RUN python3 -m pip install numpy==1.24.3 torch==${VER_TORCH} -f https://download.pytorch.org/whl/torch
+RUN python3 -m pip install onnx==${VER_ONNX} onnxruntime==${VER_ONNXRUNTIME}
 
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
@@ -122,6 +123,10 @@ RUN mkdir llvm-project-build && cd llvm-project-build \
 
 RUN cd llvm-project-build && cmake --build . && cmake --install .
 
+# LLVM/MLIR clean up
+RUN rm -rf llvm-project
+RUN rm -rf llvm-project-build
+
 # ONNX-MLIR build from source
 # Patch to accept INT16 for QuantizeLinear/DequantizeLinear and fix ONNX passes
 RUN cd onnx-mlir \
@@ -133,14 +138,11 @@ RUN mkdir onnx-mlir-build && cd onnx-mlir-build \
     -DPython3_ROOT_DIR=/usr/bin \
     -DCMAKE_JOB_POOL_COMPILE:STRING=compile -DCMAKE_JOB_POOL_LINK:STRING=link \
     -DCMAKE_JOB_POOLS:STRING='compile=4;link=1' \
-    -DONNX_MLIR_BUILD_TESTS=OFF -DONNX_MLIR_ENABLE_MHLO=OFF -DLLVM_ENABLE_ASSERTIONS=ON \
+    -DONNX_MLIR_BUILD_TESTS=OFF -DONNX_MLIR_ENABLE_STABLEHLO=OFF \
+    -DONNX_MLIR_ENABLE_JAVA=OFF -DLLVM_ENABLE_ASSERTIONS=ON \
     ../onnx-mlir
 
 RUN cd onnx-mlir-build && cmake --build . && cmake --install .
-
-# LLVM/MLIR clean up
-RUN rm -rf llvm-project
-RUN rm -rf llvm-project-build
 
 # ONNX-MLIR clean up
 RUN rm -rf onnx-mlir/.git \
