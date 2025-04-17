@@ -45,6 +45,7 @@ public:
   void visit(const operation::BatchMatMul &node) override;
   void visit(const operation::BatchToSpaceND &node) override;
   void visit(const operation::BinaryArithmetic &node) override;
+  void visit(const operation::BroadcastTo &node) override;
   void visit(const operation::Comparison &node) override;
   void visit(const operation::Concat &node) override;
   void visit(const operation::Conv2D &node) override;

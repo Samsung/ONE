@@ -149,6 +149,14 @@ void OperationValidator::visit(const operation::BinaryArithmetic &node)
   OP_REQUIRES(isSameType(lhs_index, output_index));
 }
 
+void OperationValidator::visit(const operation::BroadcastTo &node)
+{
+  const auto input_index(node.getInputs().at(operation::BroadcastTo::Input::INPUT));
+  const auto output_index(node.getOutputs().at(0));
+
+  OP_REQUIRES(isSameType(input_index, output_index));
+}
+
 void OperationValidator::visit(const operation::Comparison &node)
 {
   const auto output_index{node.getOutputs().at(0)};
