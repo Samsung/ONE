@@ -18,12 +18,6 @@
 #ifndef __NNFW_CKER_HELPER_BCAST_H__
 #define __NNFW_CKER_HELPER_BCAST_H__
 
-/**
- * ToDo : This file will be moved into upper folder when integrate with other
- *        custom operations.
- *        And It should merged with EinsumHelper's BCast.
- **/
-
 #include "cker/Shape.h"
 #include "cker/eigen/EigenSupport.h"
 
