@@ -138,7 +138,6 @@ private:
   void loadCustom(const Operator *op, ir::Graph &subg);
   void loadDepthToSpace(const Operator *op, ir::Graph &subg);
   void loadDepthwiseConv2D(const Operator *op, ir::Graph &subg);
-  void loadEinsum(const Operator *op, ir::Graph &subg);
   void loadElementwiseActivation(const Operator *op, ir::Graph &subg,
                                  ir::operation::ElementwiseActivation::Type op_type,
                                  float alpha = 0.f, float beta = 0.f);
@@ -1124,7 +1123,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
     ReduceAll,
     MatrixBandPart,
     BatchMatMul,
-    Einsum,
     BroadcastTo,
     FusedBatchNorm,
     StatelessRandomUniform,
@@ -1138,7 +1136,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
     {"All", BuiltinOP::ReduceAll},
     {"MatrixBandPart", BuiltinOP::MatrixBandPart},
     {"BatchMatMulV2", BuiltinOP::BatchMatMul},
-    {"Einsum", BuiltinOP::Einsum},
     {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
     {"BroadcastTo", BuiltinOP::BroadcastTo},
     {"StatelessRandomUniform", BuiltinOP::StatelessRandomUniform},
@@ -1163,9 +1160,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
         break;
       case BuiltinOP::BatchMatMul:
         loadBatchMatMul(op, subg);
-        break;
-      case BuiltinOP::Einsum:
-        loadEinsum(op, subg);
         break;
       case BuiltinOP::BroadcastTo:
         loadOperationTo<ir::operation::BroadcastTo>(op, subg);
@@ -1307,26 +1301,6 @@ void BaseLoader<LoaderDomain>::loadComparison(const Operator *op, ir::Graph &sub
   loadOperationTo<ir::operation::Comparison>(op, subg, param);
 }
 
-template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadEinsum(const Operator *op, ir::Graph &subg)
-{
-  ir::operation::Einsum::Param param;
-  if (op->custom_options() == nullptr)
-  {
-    throw std::runtime_error{"Einsum: empty equation"};
-  }
-  else
-  {
-    const auto attr_map = getCustomOpAttrMap(op);
-    param.equation = attr_map["equation"].ToString();
-  }
-
-  const auto es = loadOperationTo<ir::operation::Einsum>(op, subg, param);
-  if (es->getInputs().size() != 2)
-  {
-    throw std::runtime_error{"Einsum: NYI input - only support two inputs"};
-  }
-}
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadFusedBatchNorm(const Operator *op, ir::Graph &subg)
 {

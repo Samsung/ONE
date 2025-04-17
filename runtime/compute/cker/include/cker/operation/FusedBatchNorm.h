@@ -23,7 +23,6 @@
 #include "cker/Utils.h"
 
 #include "cker/operation/Helper/Tensor.h"
-#include "cker/operation/Helper/MatmulBCast.h"
 
 #include "Transpose.h"
 #include "BatchMatMul.h"
@@ -146,7 +145,7 @@ public:
     if (output->copyFrom(input, shape))
       return;
 
-    throw std::runtime_error{"Einsum: Encountered error while reshaping a Tensor"};
+    throw std::runtime_error{"FusedBatchNorm: Encountered error while reshaping a Tensor"};
   }
 
 private:

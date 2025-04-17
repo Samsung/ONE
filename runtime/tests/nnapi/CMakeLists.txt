@@ -12,7 +12,7 @@ set(GENERATED_CPPS "${CMAKE_CURRENT_SOURCE_DIR}/src/generated/all_generated_V1_2
 # Skip script for generate test and use pre-generated test
 if (GENERATE_RUNTIME_NNAPI_TESTS)
   set(GENERATOR_SCRIPT "${CMAKE_CURRENT_SOURCE_DIR}/specs/generate_test.sh")
-  file(GLOB_RECURSE TEST_SPECS "${CMAKE_CURRENT_SOURCE_DIR}/specs/*.mod.py")
+  file(GLOB_RECURSE TEST_SPECS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/specs/*.mod.py")
 
   add_custom_command(OUTPUT ${GENERATED_CPPS}
                      COMMAND ${GENERATOR_SCRIPT}
