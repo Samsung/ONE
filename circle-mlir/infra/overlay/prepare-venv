@@ -27,9 +27,24 @@ VENV_ACTIVATE=${DRIVER_PATH}/${VENV_NAME}/bin/activate
 # NOTE please use venv's python instead of python after `source activation`.
 VENV_PYTHON=${DRIVER_PATH}/${VENV_NAME}/bin/python
 
+# Minimum python requirment version
+PYTHON_REQUIRED_MAJOR=3
+PYTHON_REQUIRED_MINOR=10
+
+PYTHON_BIN=$(which python3)
+PYTHON_VER=$($PYTHON_BIN -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
+IFS='.' read -r CUR_MAJOR CUR_MINOR <<< "$PYTHON_VER"
+
+if [ "$CUR_MAJOR" -lt "$REQUIRED_MAJOR" ] || \
+  { [ "$CUR_MAJOR" -eq "$REQUIRED_MAJOR" ] && [ "$CUR_MINOR" -lt "$REQUIRED_MINOR" ]; }; then
+  echo "Python >= 3.10 is required. Found: $PYTHON_VER"
+  exit 1
+fi
+echo "Found Python version $PYTHON_VER"
+
 if [ ! -f ${VENV_ACTIVATE} ]; then
   # Create python virtual enviornment
-  python3 -m venv "${DRIVER_PATH}/${VENV_NAME}"
+  $PYTHON_BIN -m venv "${DRIVER_PATH}/${VENV_NAME}"
 fi
 
 # NOTE version
