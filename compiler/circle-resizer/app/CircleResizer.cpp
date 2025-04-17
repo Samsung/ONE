@@ -73,16 +73,16 @@ int entry(const int argc, char **argv)
 
     const auto input_path = arser.get<std::string>("--input_path");
 
-    auto model_data = std::make_shared<ModelData>(input_path);
-    ModelEditor resizer(model_data);
-    const auto input_shapes = model_data->input_shapes();
+    auto circle_model = std::make_shared<CircleModel>(input_path);
+    ModelEditor resizer(circle_model);
+    const auto input_shapes = circle_model->input_shapes();
     std::cout << "Input shapes before resizing:" << std::endl;
     for (size_t in_idx = 0; in_idx < input_shapes.size(); ++in_idx)
     {
       std::cout << in_idx + 1 << ". " << input_shapes[in_idx] << std::endl;
     }
 
-    auto output_shapes = model_data->output_shapes();
+    auto output_shapes = circle_model->output_shapes();
     std::cout << "Output shapes before resizing:" << std::endl;
     for (size_t out_idx = 0; out_idx < output_shapes.size(); ++out_idx)
     {
@@ -94,14 +94,14 @@ int entry(const int argc, char **argv)
 
     resizer.resize_inputs(parse_shapes(new_input_shapes_str));
 
-    output_shapes = model_data->output_shapes();
+    output_shapes = circle_model->output_shapes();
     std::cout << "Output shapes after resizing:" << std::endl;
     for (size_t out_idx = 0; out_idx < output_shapes.size(); ++out_idx)
     {
       std::cout << out_idx + 1 << ". " << output_shapes[out_idx] << std::endl;
     }
 
-    model_data->save(output_path);
+    circle_model->save(output_path);
     std::cout << "Resizing complete, the model saved to: " << output_path << std::endl;
   }
   catch (const std::runtime_error &err)

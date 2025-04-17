@@ -18,7 +18,7 @@
 #define __CIRCLE_RESIZER_H__
 
 #include "Shape.h"
-#include "ModelData.h"
+#include "CircleModel.h"
 
 #include <string>
 #include <vector>
@@ -29,13 +29,13 @@ namespace circle_resizer
 class ModelEditor
 {
 public:
-  explicit ModelEditor(std::shared_ptr<ModelData> model_data);
+  explicit ModelEditor(std::shared_ptr<CircleModel> circle_model);
 
 public:
-  ModelEditor &resize_inputs(const std::vector<Shape> &shapes);
+  ModelEditor &resize_inputs(const std::vector<Shape> &new_inputs_shapes);
 
 private:
-  std::shared_ptr<ModelData> _model_data;
+  std::shared_ptr<CircleModel> _circle_model;
 };
 } // namespace circle_resizer
 

@@ -18,78 +18,62 @@
 
 #include <mio/circle/schema_generated.h>
 
+#include <loco/IR/Graph.h>
 #include <logo/Phase.h>
+#include <logo/RemoveDeadNodeWithQueryPass.h>
+#include <luci/IR/Nodes/CircleInput.h>
 #include <luci/Pass/CircleShapeInferencePass.h>
 #include <luci/Pass/CircleTypeInferencePass.h>
-#include <logo/RemoveDeadNodeWithQueryPass.h>
-#include <luci/Import/GraphBuilderRegistry.h>
-
-#include <iostream>
-#include <string>
 
 using namespace circle_resizer;
 
 namespace
 {
-void replace_tensor_shape(::flatbuffers::Vector<int32_t> *tensor_shape, const Shape &new_shape)
+
+void change_single_input_shape(luci::CircleInput* circle_input, const Shape &new_shape)
 {
-  const auto shape_size = tensor_shape->size();
-  if (shape_size != new_shape.rank())
-  {
-    throw std::runtime_error("Provided shape rank: " + std::to_string(new_shape.rank()) +
-                             " is different from expected: " + std::to_string(shape_size));
+  circle_input->rank(new_shape.rank());
+  for (uint32_t i = 0; i < new_shape.rank(); ++i) {
+    if(new_shape[i].is_dynamic())
+    {
+      circle_input->dim(i) = loco::Dimension(); // empty ctor means dynamic dimension
+    } else {
+      circle_input->dim(i) = loco::Dimension(static_cast<uint32_t>(new_shape[i].value()));
+    }
   }
-  for (uint32_t dim_idx = 0; dim_idx < shape_size; ++dim_idx)
+}
+
+bool change_inputs_shapes(loco::Graph *graph, const std::vector<Shape> &new_inputs_shapes)
+{
+  auto graph_inputs = loco::input_nodes(graph);
+  if(graph_inputs.size() != new_inputs_shapes.size())
   {
-    tensor_shape->Mutate(dim_idx, new_shape[dim_idx].value());
+    return false;
   }
+  for(size_t in_idx=0; in_idx<new_inputs_shapes.size(); ++in_idx)
+  {
+    auto circle_input = loco::must_cast<luci::CircleInput*>(graph_inputs[in_idx]);
+    change_single_input_shape(circle_input, new_inputs_shapes[in_idx]);
+  }
+  return true;
 }
 
 } // namespace
 
-ModelEditor::ModelEditor(std::shared_ptr<ModelData> model_data) : _model_data{model_data} {}
+ModelEditor::ModelEditor(std::shared_ptr<CircleModel> circle_model) : _circle_model{circle_model} {}
 
-ModelEditor &ModelEditor::resize_inputs(const std::vector<Shape> &shapes)
+ModelEditor &ModelEditor::resize_inputs(const std::vector<Shape> &new_inputs_shapes)
 {
-  auto model = circle::GetMutableModel(_model_data->buffer().data());
-  if (!model)
-  {
-    throw std::runtime_error("Incorrect model format");
-  }
-  auto subgraphs = model->mutable_subgraphs();
-  if (!subgraphs || subgraphs->size() != 1)
-  {
-    throw std::runtime_error("Many subgraphs are not supported");
-  }
-  auto subgraph = subgraphs->GetMutableObject(0);
-  const auto inputs_number = subgraph->inputs()->size();
-  if (inputs_number != shapes.size())
-  {
-    throw std::runtime_error("Expected input shapes: " + std::to_string(inputs_number) +
-                             " while provided: " + std::to_string(shapes.size()));
-  }
-  for (int in_idx = 0; in_idx < inputs_number; ++in_idx)
-  {
-    const auto in_tensor_idx = subgraph->inputs()->Get(in_idx);
-    auto input_shape =
-      subgraph->mutable_tensors()->GetMutableObject(in_tensor_idx)->mutable_shape();
-    replace_tensor_shape(input_shape, shapes[in_idx]);
-  }
-
-  // invalidate after changing input shape
-  _model_data->invalidate_module();
+  auto graph = _circle_model->module()->graph();
+  change_inputs_shapes(graph, new_inputs_shapes);
 
   logo::Phase phase;
   phase.emplace_back(std::make_unique<logo::RemoveDeadNodeWithQueryPass>());
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
-  auto graph = _model_data->module()->graph();
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{graph};
   phase_runner.run(phase);
-
-  // invalidate after shape inference
-  _model_data->invalidate_buffer();
 
   return *this;
 }

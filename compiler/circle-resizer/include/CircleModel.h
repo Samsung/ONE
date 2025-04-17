@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_RESIZER_MODEL_DATA_H__
-#define __CIRCLE_RESIZER_MODEL_DATA_H__
+#ifndef __CIRCLE_RESIZER_CIRCLE_MODEL_H__
+#define __CIRCLE_RESIZER_CIRCLE_MODEL_H__
 
 #include "Shape.h"
 
@@ -33,10 +33,8 @@ namespace circle_resizer
 
 /**
  * The representation of Circle Model.
- * The purpose of the class is to keep the buffer and the module representation of the model
- * synchronized.
  */
-class ModelData
+class CircleModel
 {
 public:
   /**
@@ -45,7 +43,7 @@ public:
    * Exceptions:
    * - std::runtime_error if interpretation of provided buffer as a circle model failed.
    */
-  explicit ModelData(const std::vector<uint8_t> &buffer);
+  explicit CircleModel(const std::vector<uint8_t> &buffer);
 
   /**
    * @brief Initialize the model with buffer representation.
@@ -53,49 +51,32 @@ public:
    * Exceptions:
    * - std::runtime_error if reading a model from provided path failed.
    */
-  explicit ModelData(const std::string &model_path);
+  explicit CircleModel(const std::string &model_path);
 
   /**
-   * @brief Dtor of ModelData. Note that explicit declaration is needed to satisfy forward
+   * @brief Dtor of CircleModel. Note that explicit declaration is needed to satisfy forward
    * declaration + unique_ptr.
    */
-  ~ModelData();
+  ~CircleModel();
 
   /**
-   * @brief Notify that the buffer representation of the model has been modified so the module is no
-   * more valid.
-   */
-  void invalidate_module();
-
-  /**
-   * @brief Notify that the module representation of the model has been modified so the buffer is no
-   * more valid.
-   */
-  void invalidate_buffer();
-
-  /**
-   * @brief Get the loaded model as the buffer.
-   */
-  std::vector<uint8_t> &buffer();
-
-  /**
-   * @brief Get the loaded model as the module.
+   * @brief Get the loaded model in luci::Module representation.
    */
   luci::Module *module();
 
   /**
    * @brief Get input shapes of the loaded model.
    */
-  std::vector<Shape> input_shapes();
+  std::vector<Shape> input_shapes() const;
 
   /**
    * @brief Get output shapes of the loaded model.
    *
    */
-  std::vector<Shape> output_shapes();
+  std::vector<Shape> output_shapes() const;
 
   /**
-   * @brief Save the loaded model to the stream.
+   * @brief Save the model to the output stream.
    *
    * Exceptions:
    * - std::runtime_error if saving the model the given stream failed.
@@ -103,7 +84,7 @@ public:
   void save(std::ostream &stream);
 
   /**
-   * @brief Save the loaded model to the location indicated by output_path.
+   * @brief Save the model to the location indicated by output_path.
    *
    * Exceptions:
    * - std::runtime_error if saving the model the given path failed.
@@ -111,11 +92,9 @@ public:
   void save(const std::string &output_path);
 
 private:
-  bool _module_invalidated = false, _buffer_invalidated = false;
-  std::vector<uint8_t> _buffer;
   std::unique_ptr<luci::Module> _module;
 };
 
 } // namespace circle_resizer
 
-#endif // __CIRCLE_RESIZER_MODEL_DATA_H__
+#endif // __CIRCLE_RESIZER_CIRCLE_MODEL_H__

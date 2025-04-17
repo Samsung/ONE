@@ -16,7 +16,7 @@
  */
 
 #include "Shape.h"
-#include "ModelData.h"
+#include "CircleModel.h"
 #include "ModelEditor.h"
 
 #include <vector>
@@ -74,19 +74,18 @@ PYBIND11_MODULE(circle_resizer_python_api, m)
     return ss.str();
   });
 
-  py::class_<ModelData, std::shared_ptr<ModelData>> model_data(m, "ModelData");
-  model_data.doc() = "circle_resizer::ModelData";
-  model_data.def(py::init<const std::vector<uint8_t> &>(), py::arg("buffer"));
-  model_data.def(py::init<const std::string &>(), py::arg("model_path"));
-  model_data.def("buffer", &ModelData::buffer);
-  model_data.def("input_shapes", &ModelData::input_shapes);
-  model_data.def("output_shapes", &ModelData::output_shapes);
-  model_data.def("save", py::overload_cast<std::ostream &>(&ModelData::save), py::arg("stream"));
-  model_data.def("save", py::overload_cast<const std::string &>(&ModelData::save),
+  py::class_<CircleModel, std::shared_ptr<CircleModel>> circle_model(m, "CircleModel");
+  circle_model.doc() = "circle_resizer::CircleModel";
+  circle_model.def(py::init<const std::vector<uint8_t> &>(), py::arg("buffer"));
+  circle_model.def(py::init<const std::string &>(), py::arg("model_path"));
+  circle_model.def("input_shapes", &CircleModel::input_shapes);
+  circle_model.def("output_shapes", &CircleModel::output_shapes);
+  circle_model.def("save", py::overload_cast<std::ostream &>(&CircleModel::save), py::arg("stream"));
+  circle_model.def("save", py::overload_cast<const std::string &>(&CircleModel::save),
                  py::arg("output_path"));
 
   py::class_<ModelEditor> model_editor(m, "ModelEditor");
   model_editor.doc() = "circle_resizer::ModelEditor";
-  model_editor.def(py::init<std::shared_ptr<ModelData>>(), py::arg("model_data"));
+  model_editor.def(py::init<std::shared_ptr<CircleModel>>(), py::arg("circle_model"));
   model_editor.def("resize_inputs", &ModelEditor::resize_inputs, py::arg("shapes"));
 }

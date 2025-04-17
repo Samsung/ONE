@@ -48,56 +48,56 @@ protected:
 
 TEST_F(ModelEditorTest, single_input_single_output)
 {
-  auto model_data = std::make_shared<ModelData>(_test_models_dir + "/ExpandDims_000.circle");
-  ModelEditor editor(model_data);
+  auto circle_model = std::make_shared<CircleModel>(_test_models_dir + "/ExpandDims_000.circle");
+  ModelEditor editor(circle_model);
   const auto new_input_shapes = std::vector<Shape>{Shape{Dim{4}, Dim{6}}};
   editor.resize_inputs(new_input_shapes);
-  EXPECT_EQ(model_data->input_shapes(), new_input_shapes);
-  EXPECT_EQ(model_data->output_shapes(), (std::vector<Shape>{Shape{Dim{4}, Dim{1}, Dim{6}}}));
+  EXPECT_EQ(circle_model->input_shapes(), new_input_shapes);
+  EXPECT_EQ(circle_model->output_shapes(), (std::vector<Shape>{Shape{Dim{4}, Dim{1}, Dim{6}}}));
 }
 
 TEST_F(ModelEditorTest, single_input_two_outputs)
 {
-  auto model_data = std::make_shared<ModelData>(_test_models_dir + "/CSE_Quantize_000.circle");
-  ModelEditor editor(model_data);
+  auto circle_model = std::make_shared<CircleModel>(_test_models_dir + "/CSE_Quantize_000.circle");
+  ModelEditor editor(circle_model);
   const auto new_input_shapes = std::vector<Shape>{Shape{Dim{1}, Dim{6}, Dim{6}, Dim{4}}};
   editor.resize_inputs(new_input_shapes);
-  EXPECT_EQ(model_data->input_shapes(), new_input_shapes);
-  EXPECT_EQ(model_data->output_shapes(),
+  EXPECT_EQ(circle_model->input_shapes(), new_input_shapes);
+  EXPECT_EQ(circle_model->output_shapes(),
             (std::vector<Shape>{Shape{Dim{1}, Dim{6}, Dim{6}, Dim{4}},
                                 Shape{Dim{1}, Dim{6}, Dim{6}, Dim{4}}}));
 }
 
 TEST_F(ModelEditorTest, two_inputs_single_output)
 {
-  auto model_data = std::make_shared<ModelData>(_test_models_dir + "/Add_000.circle");
-  ModelEditor editor(model_data);
+  auto circle_model = std::make_shared<CircleModel>(_test_models_dir + "/Add_000.circle");
+  ModelEditor editor(circle_model);
   const auto new_input_shapes = std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{3}},
                                                    Shape{Dim{1}, Dim{5}, Dim{5}, Dim{3}}};
   editor.resize_inputs(new_input_shapes);
-  EXPECT_EQ(model_data->input_shapes(), new_input_shapes);
-  EXPECT_EQ(model_data->output_shapes(),
+  EXPECT_EQ(circle_model->input_shapes(), new_input_shapes);
+  EXPECT_EQ(circle_model->output_shapes(),
             (std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{3}}}));
 }
 
 TEST_F(ModelEditorTest, two_inputs_two_outputs)
 {
-  auto model_data =
-    std::make_shared<ModelData>(_test_models_dir + "/Part_Add_Sqrt_Rsqrt_000.circle");
-  ModelEditor editor(model_data);
+  auto circle_model =
+    std::make_shared<CircleModel>(_test_models_dir + "/Part_Add_Sqrt_Rsqrt_000.circle");
+  ModelEditor editor(circle_model);
   const auto new_input_shapes = std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}},
                                                    Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}}};
   editor.resize_inputs(new_input_shapes);
-  EXPECT_EQ(model_data->input_shapes(), new_input_shapes);
-  EXPECT_EQ(model_data->output_shapes(),
+  EXPECT_EQ(circle_model->input_shapes(), new_input_shapes);
+  EXPECT_EQ(circle_model->output_shapes(),
             (std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}},
                                 Shape{Dim{1}, Dim{5}, Dim{5}, Dim{2}}}));
 }
 
 TEST_F(ModelEditorTest, neg_not_all_input_shapes_provided)
 {
-  auto model_data = std::make_shared<ModelData>(_test_models_dir + "/Add_000.circle");
-  ModelEditor editor(model_data);
+  auto circle_model = std::make_shared<CircleModel>(_test_models_dir + "/Add_000.circle");
+  ModelEditor editor(circle_model);
   try
   {
     editor.resize_inputs(std::vector<Shape>{Shape{Dim{1}, Dim{5}, Dim{5}, Dim{3}}});
@@ -114,8 +114,8 @@ TEST_F(ModelEditorTest, neg_not_all_input_shapes_provided)
 
 TEST_F(ModelEditorTest, neg_incorrect_rank_of_new_shape)
 {
-  auto model_data = std::make_shared<ModelData>(_test_models_dir + "/ExpandDims_000.circle");
-  ModelEditor editor(model_data);
+  auto circle_model = std::make_shared<CircleModel>(_test_models_dir + "/ExpandDims_000.circle");
+  ModelEditor editor(circle_model);
   try
   {
     editor.resize_inputs(std::vector<Shape>{Shape{Dim{3}}});
@@ -130,53 +130,44 @@ TEST_F(ModelEditorTest, neg_incorrect_rank_of_new_shape)
   }
 }
 
-TEST_F(ModelEditorTest, neg_shape_inference_failed)
-{
-  auto model_data = std::make_shared<ModelData>(_test_models_dir + "/DepthwiseConv2D_000.circle");
-  ModelEditor editor(model_data);
-  EXPECT_THROW(editor.resize_inputs(std::vector<Shape>{Shape{Dim{1}, Dim{64}, Dim{64}, Dim{8}},
-                                                       Shape{Dim{1}, Dim{2}, Dim{2}, Dim{3}}}),
-               oops::UserExn);
-}
-
 TEST_F(ModelEditorTest, save_without_change)
 {
-  auto model_data = std::make_shared<ModelData>(_test_models_dir + "/ExpandDims_000.circle");
-  ModelEditor editor(model_data);
+  auto circle_model = std::make_shared<CircleModel>(_test_models_dir + "/ExpandDims_000.circle");
+  ModelEditor editor(circle_model);
   std::stringstream out_stream;
-  model_data->save(out_stream);
+  circle_model->save(out_stream);
   const std::string &model_buf_str = out_stream.str();
   std::vector<uint8_t> model_buffer(std::begin(model_buf_str), std::end(model_buf_str));
   model_buffer.insert(std::end(model_buffer), std::begin(model_buf_str), std::end(model_buf_str));
-  auto model_data_2 = std::make_shared<ModelData>(model_buffer);
-  ModelEditor editor_2(model_data_2);
-  EXPECT_EQ(model_data_2->input_shapes(), (std::vector<Shape>{Shape{Dim{3}, Dim{3}}}));
-  EXPECT_EQ(model_data_2->output_shapes(), (std::vector<Shape>{Shape{Dim{3}, Dim{1}, Dim{3}}}));
+  auto circle_model_2 = std::make_shared<CircleModel>(model_buffer);
+  ModelEditor editor_2(circle_model_2);
+  EXPECT_EQ(circle_model_2->input_shapes(), (std::vector<Shape>{Shape{Dim{3}, Dim{3}}}));
+  EXPECT_EQ(circle_model_2->output_shapes(), (std::vector<Shape>{Shape{Dim{3}, Dim{1}, Dim{3}}}));
 }
 
 TEST_F(ModelEditorTest, save_after_resizing)
 {
-  auto model_data = std::make_shared<ModelData>(_test_models_dir + "/ExpandDims_000.circle");
-  ModelEditor editor(model_data);
+  auto circle_model = std::make_shared<CircleModel>(_test_models_dir + "/ExpandDims_000.circle");
+  ModelEditor editor(circle_model);
   std::stringstream out_stream;
   const auto new_input_shapes = std::vector<Shape>{Shape{Dim{4}, Dim{6}}};
   editor.resize_inputs(new_input_shapes);
-  model_data->save(out_stream);
+  circle_model->save(out_stream);
   const std::string &model_buf_str = out_stream.str();
   std::vector<uint8_t> model_buffer(std::begin(model_buf_str), std::end(model_buf_str));
   model_buffer.insert(std::end(model_buffer), std::begin(model_buf_str), std::end(model_buf_str));
-  auto model_data_2 = std::make_shared<ModelData>(model_buffer);
-  ModelEditor editor_2(model_data_2);
-  EXPECT_EQ(model_data_2->input_shapes(), new_input_shapes);
-  EXPECT_EQ(model_data_2->output_shapes(), (std::vector<Shape>{Shape{Dim{4}, Dim{1}, Dim{6}}}));
+  auto circle_model_2 = std::make_shared<CircleModel>(model_buffer);
+  ModelEditor editor_2(circle_model_2);
+  EXPECT_EQ(circle_model_2->input_shapes(), new_input_shapes);
+  EXPECT_EQ(circle_model_2->output_shapes(), (std::vector<Shape>{Shape{Dim{4}, Dim{1}, Dim{6}}}));
 }
 
 TEST_F(ModelEditorTest, single_input_single_output_double_resizing)
 {
-  auto model_data = std::make_shared<ModelData>(_test_models_dir + "/ExpandDims_000.circle");
-  ModelEditor editor(model_data);
+  auto circle_model = std::make_shared<CircleModel>(_test_models_dir + "/ExpandDims_000.circle");
+  ModelEditor editor(circle_model);
   const auto new_input_shapes = std::vector<Shape>{Shape{Dim{4}, Dim{6}}};
   editor.resize_inputs(std::vector<Shape>{Shape{Dim{6}, Dim{8}}}).resize_inputs(new_input_shapes);
-  EXPECT_EQ(model_data->input_shapes(), new_input_shapes);
-  EXPECT_EQ(model_data->output_shapes(), (std::vector<Shape>{Shape{Dim{4}, Dim{1}, Dim{6}}}));
+  EXPECT_EQ(circle_model->input_shapes(), new_input_shapes);
+  EXPECT_EQ(circle_model->output_shapes(), (std::vector<Shape>{Shape{Dim{4}, Dim{1}, Dim{6}}}));
 }

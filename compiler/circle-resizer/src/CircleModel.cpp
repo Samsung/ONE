@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "ModelData.h"
+#include "CircleModel.h"
 
 #include <mio/circle/schema_generated.h>
 
@@ -23,12 +23,12 @@
 #include <luci/CircleFileExpContract.h>
 
 #include <fstream>
-#include <vector>
 
 using namespace circle_resizer;
 
 namespace
 {
+
 std::vector<uint8_t> read_model(const std::string &model_path)
 {
   std::ifstream file_stream(model_path, std::ios::in | std::ios::binary | std::ifstream::ate);
@@ -83,7 +83,7 @@ public:
 
 private:
   luci::Module *_module;
-  std::unique_ptr<std::vector<uint8_t>> _buffer;
+  std::unique_ptr<std::vector<uint8_t>> _buffer; // note that the store method has to be const
 };
 
 template <typename NodeType>
@@ -113,68 +113,49 @@ std::vector<Shape> extract_shapes(const std::vector<loco::Node *> &nodes)
 
 } // namespace
 
-ModelData::ModelData(const std::vector<uint8_t> &buffer)
-  : _buffer{buffer}, _module{load_module(buffer)}
+CircleModel::CircleModel(const std::vector<uint8_t> &buffer)
+  : _module{load_module(buffer)}
 {
 }
 
-ModelData::ModelData(const std::string &model_path) : ModelData(read_model(model_path)) {}
+CircleModel::CircleModel(const std::string &model_path) : CircleModel(read_model(model_path)) {}
 
-void ModelData::invalidate_module() { _module_invalidated = true; }
-
-void ModelData::invalidate_buffer() { _buffer_invalidated = true; }
-
-std::vector<uint8_t> &ModelData::buffer()
+luci::Module *CircleModel::module()
 {
-  if (_buffer_invalidated)
-  {
-    luci::CircleExporter exporter;
-    BufferModelContract contract(module());
-
-    if (!exporter.invoke(&contract))
-    {
-      throw std::runtime_error("Exporting buffer from the model failed");
-    }
-    _buffer = contract.get_buffer();
-    _buffer_invalidated = false;
-  }
-  return _buffer;
-}
-
-luci::Module *ModelData::module()
-{
-  if (_module_invalidated)
-  {
-    _module = load_module(_buffer);
-    _module_invalidated = false;
-  }
   return _module.get();
 }
 
-void ModelData::save(std::ostream &stream)
+void CircleModel::save(std::ostream &stream)
 {
-  auto &buff = buffer();
-  stream.write(reinterpret_cast<const char *>(buff.data()), buff.size());
+  BufferModelContract contract(module());
+  luci::CircleExporter exporter;
+  if (!exporter.invoke(&contract))
+  {
+    throw std::runtime_error("Exporting buffer from the model failed");
+  }
+
+  auto model_buffer = contract.get_buffer();
+  stream.write(reinterpret_cast<const char *>(model_buffer.data()), model_buffer.size());
   if (!stream.good())
   {
     throw std::runtime_error("Failed to write to output stream");
   }
 }
 
-void ModelData::save(const std::string &output_path)
+void CircleModel::save(const std::string &output_path)
 {
   std::ofstream out_stream(output_path, std::ios::out | std::ios::binary);
   save(out_stream);
 }
 
-std::vector<Shape> ModelData::input_shapes()
+std::vector<Shape> CircleModel::input_shapes() const
 {
-  return extract_shapes<luci::CircleInput>(loco::input_nodes(module()->graph()));
+  return extract_shapes<luci::CircleInput>(loco::input_nodes(_module->graph()));
 }
 
-std::vector<Shape> ModelData::output_shapes()
+std::vector<Shape> CircleModel::output_shapes() const
 {
-  return extract_shapes<luci::CircleOutput>(loco::output_nodes(module()->graph()));
+  return extract_shapes<luci::CircleOutput>(loco::output_nodes(_module->graph()));
 }
 
-ModelData::~ModelData() = default;
+CircleModel::~CircleModel() = default;
