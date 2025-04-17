@@ -6,6 +6,7 @@ debian/docs/one-import-bcq.1
 debian/docs/one-import-onnx.1
 debian/docs/one-import-tf.1
 debian/docs/one-import-tflite.1
+debian/docs/one-resize.1
 debian/docs/one-optimize.1
 debian/docs/one-pack.1
 debian/docs/one-partition.1
