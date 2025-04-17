@@ -23,9 +23,7 @@
 #include <cstdint>
 #include <cassert>
 
-namespace onert_micro
-{
-namespace core
+namespace onert_micro::core
 {
 
 static constexpr int maxTensorShapeSize = 6;
@@ -35,6 +33,7 @@ class OMRuntimeShape
 private:
   int32_t _size = 0;
   int32_t _dims[maxTensorShapeSize] = {0};
+  bool _is_scalar = false;
 
 public:
   OMRuntimeShape(const OMRuntimeShape &other) : _size(other.dimensionsCount())
@@ -47,16 +46,19 @@ public:
     if (tensor == nullptr)
       return;
 
-    // Shape is scalar
-    if (tensor->shape() == nullptr or tensor->shape()->size() == 0)
+    auto shape = tensor->shape();
+
+    if (shape == nullptr || shape->size() == 0)
     {
+      _is_scalar = true;
       _size = 1;
       _dims[0] = 1;
+
       return;
     }
 
-    _size = tensor->shape()->size();
-    std::memcpy(_dims, tensor->shape()->data(), sizeof(int32_t) * _size);
+    _size = shape->size();
+    std::memcpy(_dims, shape->data(), sizeof(int32_t) * _size);
   }
 
   // Returns the total count of elements, that is the size when flattened into a
@@ -124,6 +126,8 @@ public:
            std::memcmp(dimsData(), comp.dimsData(), _size * sizeof(int32_t)) == 0;
   }
 
+  bool isScalar() const { return _is_scalar; }
+
   inline int32_t dimensionsCount() const { return _size; }
 
   inline int32_t dims(int i) const
@@ -148,7 +152,6 @@ public:
   }
 };
 
-} // namespace core
-} // namespace onert_micro
+} // namespace onert_micro::core
 
 #endif // ONERT_MICRO_CORE_RUNTIME_SHAPE_H
