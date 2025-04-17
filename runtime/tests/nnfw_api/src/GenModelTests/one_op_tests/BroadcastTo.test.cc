@@ -139,3 +139,21 @@ TEST_F(GenModelTest, neg_OneOp_BroadcastTo_3D_to_3D_InvalidShape)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, neg_OneOp_BroadcastTo_InvalidShapeType)
+{
+  CircleGen cgen;
+  const uint32_t shape_buf = cgen.addBuffer(std::vector<float>{3, 3});
+  int shape = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, shape_buf});
+  int in = cgen.addTensor({{3}, circle::TensorType::TensorType_FLOAT32});
+  int out = cgen.addTensor({{3, 3}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorBroadcastTo({{in, shape}, {out}});
+  cgen.setInputsAndOutputs({in}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{1, 2, 3}}, {{1, 2, 3, 1, 2, 3, 1, 2, 3}}));
+  _context->setBackends({"cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}

@@ -152,9 +152,11 @@ void OperationValidator::visit(const operation::BinaryArithmetic &node)
 void OperationValidator::visit(const operation::BroadcastTo &node)
 {
   const auto input_index(node.getInputs().at(operation::BroadcastTo::Input::INPUT));
+  const auto shape_index(node.getInputs().at(operation::BroadcastTo::Input::SHAPE));
   const auto output_index(node.getOutputs().at(0));
 
   OP_REQUIRES(isSameType(input_index, output_index));
+  OP_REQUIRES(isValidType(shape_index, {DataType::INT32, DataType::INT64}));
 }
 
 void OperationValidator::visit(const operation::Comparison &node)
