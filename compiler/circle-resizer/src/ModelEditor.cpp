@@ -30,14 +30,17 @@ using namespace circle_resizer;
 namespace
 {
 
-void change_single_input_shape(luci::CircleInput* circle_input, const Shape &new_shape)
+void change_single_input_shape(luci::CircleInput *circle_input, const Shape &new_shape)
 {
   circle_input->rank(new_shape.rank());
-  for (uint32_t i = 0; i < new_shape.rank(); ++i) {
-    if(new_shape[i].is_dynamic())
+  for (uint32_t i = 0; i < new_shape.rank(); ++i)
+  {
+    if (new_shape[i].is_dynamic())
     {
       circle_input->dim(i) = loco::Dimension(); // empty ctor means dynamic dimension
-    } else {
+    }
+    else
+    {
       circle_input->dim(i) = loco::Dimension(static_cast<uint32_t>(new_shape[i].value()));
     }
   }
@@ -46,13 +49,13 @@ void change_single_input_shape(luci::CircleInput* circle_input, const Shape &new
 bool change_inputs_shapes(loco::Graph *graph, const std::vector<Shape> &new_inputs_shapes)
 {
   auto graph_inputs = loco::input_nodes(graph);
-  if(graph_inputs.size() != new_inputs_shapes.size())
+  if (graph_inputs.size() != new_inputs_shapes.size())
   {
     return false;
   }
-  for(size_t in_idx=0; in_idx<new_inputs_shapes.size(); ++in_idx)
+  for (size_t in_idx = 0; in_idx < new_inputs_shapes.size(); ++in_idx)
   {
-    auto circle_input = loco::must_cast<luci::CircleInput*>(graph_inputs[in_idx]);
+    auto circle_input = loco::must_cast<luci::CircleInput *>(graph_inputs[in_idx]);
     change_single_input_shape(circle_input, new_inputs_shapes[in_idx]);
   }
   return true;

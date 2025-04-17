@@ -80,9 +80,10 @@ PYBIND11_MODULE(circle_resizer_python_api, m)
   circle_model.def(py::init<const std::string &>(), py::arg("model_path"));
   circle_model.def("input_shapes", &CircleModel::input_shapes);
   circle_model.def("output_shapes", &CircleModel::output_shapes);
-  circle_model.def("save", py::overload_cast<std::ostream &>(&CircleModel::save), py::arg("stream"));
+  circle_model.def("save", py::overload_cast<std::ostream &>(&CircleModel::save),
+                   py::arg("stream"));
   circle_model.def("save", py::overload_cast<const std::string &>(&CircleModel::save),
-                 py::arg("output_path"));
+                   py::arg("output_path"));
 
   py::class_<ModelEditor> model_editor(m, "ModelEditor");
   model_editor.doc() = "circle_resizer::ModelEditor";

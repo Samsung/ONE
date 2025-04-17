@@ -113,17 +113,11 @@ std::vector<Shape> extract_shapes(const std::vector<loco::Node *> &nodes)
 
 } // namespace
 
-CircleModel::CircleModel(const std::vector<uint8_t> &buffer)
-  : _module{load_module(buffer)}
-{
-}
+CircleModel::CircleModel(const std::vector<uint8_t> &buffer) : _module{load_module(buffer)} {}
 
 CircleModel::CircleModel(const std::string &model_path) : CircleModel(read_model(model_path)) {}
 
-luci::Module *CircleModel::module()
-{
-  return _module.get();
-}
+luci::Module *CircleModel::module() { return _module.get(); }
 
 void CircleModel::save(std::ostream &stream)
 {
