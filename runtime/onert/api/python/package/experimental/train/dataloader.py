@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from typing import List, Tuple, Union, Optional, Any, Iterator
 
 
 class DataLoader:
@@ -8,30 +9,36 @@ class DataLoader:
     Automatically detects whether inputs are paths or NumPy arrays.
     """
     def __init__(self,
-                 input_dataset,
-                 expected_dataset,
-                 batch_size,
-                 input_shape=None,
-                 expected_shape=None,
-                 dtype=np.float32):
+                 input_dataset: Union[List[np.ndarray], np.ndarray, str],
+                 expected_dataset: Union[List[np.ndarray], np.ndarray, str],
+                 batch_size: int,
+                 input_shape: Optional[Tuple[int, ...]] = None,
+                 expected_shape: Optional[Tuple[int, ...]] = None,
+                 dtype: Any = np.float32) -> None:
         """
         Initialize the DataLoader.
 
         Args:
-            input_dataset (list of np.ndarray): List of input arrays where each array's first dimension is the batch dimension.
-            expected_dataset (list of np.ndarray): List of expected arrays where each array's first dimension is the batch dimension.
+            input_dataset (list of np.ndarray | np.ndarray | str):
+                List of input arrays where each array's first dimension is the batch dimension,
+                or a single NumPy array, or a file path.
+            expected_dataset (list of np.ndarray | np.ndarray | str):
+                List of expected arrays where each array's first dimension is the batch dimension,
+                or a single NumPy array, or a file path.
             batch_size (int): Number of samples per batch.
-            input_shape (tuple, optional): Shape of the input data if raw format is used.
-            expected_shape (tuple, optional): Shape of the expected data if raw format is used.
+            input_shape (tuple[int, ...], optional): Shape of the input data if raw format is used.
+            expected_shape (tuple[int, ...], optional): Shape of the expected data if raw format is used.
             dtype (type, optional): Data type of the raw file (default: np.float32).
         """
-        self.batch_size = batch_size
-        self.inputs = self._process_dataset(input_dataset, input_shape, dtype)
-        self.expecteds = self._process_dataset(expected_dataset, expected_shape, dtype)
-        self.batched_inputs = []
+        self.batch_size: int = batch_size
+        self.inputs: List[np.ndarray] = self._process_dataset(input_dataset, input_shape,
+                                                              dtype)
+        self.expecteds: List[np.ndarray] = self._process_dataset(
+            expected_dataset, expected_shape, dtype)
+        self.batched_inputs: List[List[np.ndarray]] = []
 
         # Verify data consistency
-        self.num_samples = self.inputs[0].shape[0]  # Batch dimension
+        self.num_samples: int = self.inputs[0].shape[0]  # Batch dimension
         if self.num_samples != self.expecteds[0].shape[0]:
             raise ValueError(
                 "Input data and expected data must have the same number of samples.")
@@ -39,17 +46,20 @@ class DataLoader:
         # Precompute batches
         self.batched_inputs, self.batched_expecteds = self._create_batches()
 
-    def _process_dataset(self, data, shape, dtype=np.float32):
+    def _process_dataset(self,
+                         data: Union[List[np.ndarray], np.ndarray, str],
+                         shape: Optional[Tuple[int, ...]],
+                         dtype: Any = np.float32) -> List[np.ndarray]:
         """
         Process a dataset or file path.
 
         Args:
-            data (str or np.ndarray): Path to file or NumPy arrays.
-            shape (tuple, optional): Shape of the data if raw format is used.
+            data (str | np.ndarray | list[np.ndarray]): Path to file or NumPy arrays.
+            shape (tuple[int, ...], optional): Shape of the data if raw format is used.
             dtype (type, optional): Data type for raw files.
 
         Returns:
-            list of np.ndarray: Loaded or passed data as NumPy arrays.
+            list[np.ndarray]: Loaded or passed data as NumPy arrays.
         """
         if isinstance(data, list):
             # Check if all elements in the list are NumPy arrays
@@ -58,7 +68,7 @@ class DataLoader:
             raise ValueError("All elements in the list must be NumPy arrays.")
         if isinstance(data, np.ndarray):
             # If it's already a NumPy array and is not a list of arrays
-            if len(data.shape) > 1:
+            if data.ndim > 1:
                 # If the array has multiple dimensions, split it into a list of arrays
                 return [data[i] for i in range(data.shape[0])]
             else:
@@ -70,13 +80,16 @@ class DataLoader:
         else:
             raise ValueError("Data must be a NumPy array or a valid file path.")
 
-    def _load_data(self, file_path, shape, dtype=np.float32):
+    def _load_data(self,
+                   file_path: str,
+                   shape: Optional[Tuple[int, ...]],
+                   dtype: Any = np.float32) -> np.ndarray:
         """
         Load data from a file, supporting both .npy and raw formats.
 
         Args:
             file_path (str): Path to the file to load.
-            shape (tuple, optional): Shape of the data if raw format is used.
+            shape (tuple[int, ...], optional): Shape of the data if raw format is used.
             dtype (type, optional): Data type of the raw file (default: np.float32).
 
         Returns:
@@ -95,26 +108,26 @@ class DataLoader:
         else:
             raise ValueError(f"Unsupported file format: {ext}")
 
-    def _load_raw(self, file_path, shape, dtype):
+    def _load_raw(self, file_path: str, shape: Tuple[int, ...], dtype: Any) -> np.ndarray:
         """
         Load raw binary data.
 
         Args:
             file_path (str): Path to the raw binary file.
-            shape (tuple): Shape of the data to reshape into.
+            shape (tuple[int, ...]): Shape of the data to reshape into.
             dtype (type): Data type of the binary file.
 
         Returns:
             np.ndarray: Loaded data as a NumPy array.
         """
         # Calculate the expected number of elements based on the provided shape
-        expected_elements = np.prod(shape)
+        expected_elements: int = int(np.prod(shape))
 
         # Calculate the expected size of the raw file in bytes
-        expected_size = expected_elements * np.dtype(dtype).itemsize
+        expected_size: int = expected_elements * np.dtype(dtype).itemsize
 
         # Get the actual size of the raw file
-        actual_size = os.path.getsize(file_path)
+        actual_size: int = os.path.getsize(file_path)
 
         # Check if the sizes match
         if actual_size != expected_size:
@@ -126,22 +139,22 @@ class DataLoader:
         # Read and load the raw data
         with open(file_path, "rb") as f:
             data = f.read()
-            array = np.frombuffer(data, dtype=dtype)
-            if array.size != expected_elements:
-                raise ValueError(
-                    f"Raw data size does not match the expected shape: {shape}. "
-                    f"Expected {expected_elements} elements, got {array.size} elements.")
-            return array.reshape(shape)
+        array = np.frombuffer(data, dtype=dtype)
+        if array.size != expected_elements:
+            raise ValueError(
+                f"Raw data size does not match the expected shape: {shape}. "
+                f"Expected {expected_elements} elements, got {array.size} elements.")
+        return array.reshape(shape)
 
-    def _create_batches(self):
+    def _create_batches(self) -> Tuple[List[List[np.ndarray]], List[List[np.ndarray]]]:
         """
         Precompute batches for inputs and expected outputs.
 
         Returns:
             tuple: Lists of batched inputs and batched expecteds.
         """
-        batched_inputs = []
-        batched_expecteds = []
+        batched_inputs: List[List[np.ndarray]] = []
+        batched_expecteds: List[List[np.ndarray]] = []
 
         for batch_start in range(0, self.num_samples, self.batch_size):
             batch_end = min(batch_start + self.batch_size, self.num_samples)
@@ -174,7 +187,7 @@ class DataLoader:
 
         return batched_inputs, batched_expecteds
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Tuple[List[np.ndarray], List[np.ndarray]]]:
         """
         Make the DataLoader iterable.
 
@@ -184,7 +197,7 @@ class DataLoader:
         self.index = 0
         return self
 
-    def __next__(self):
+    def __next__(self) -> Tuple[List[np.ndarray], List[np.ndarray]]:
         """
         Return the next batch of data.
 
@@ -201,7 +214,7 @@ class DataLoader:
         self.index += 1
         return input_batch, expected_batch
 
-    def split(self, validation_split):
+    def split(self, validation_split: float) -> Tuple["DataLoader", "DataLoader"]:
         """
         Split the data into training and validation sets.
 
