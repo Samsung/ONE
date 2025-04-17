@@ -35,8 +35,9 @@ PYTHON_BIN=$(which python3)
 PYTHON_VER=$($PYTHON_BIN -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
 IFS='.' read -r CUR_MAJOR CUR_MINOR <<< "$PYTHON_VER"
 
-if [ "$CUR_MAJOR" -lt "$REQUIRED_MAJOR" ] || \
-  { [ "$CUR_MAJOR" -eq "$REQUIRED_MAJOR" ] && [ "$CUR_MINOR" -lt "$REQUIRED_MINOR" ]; }; then
+if [ "$CUR_MAJOR" -lt "$PYTHON_REQUIRED_MAJOR" ] || \
+  { [ "$CUR_MAJOR" -eq "$PYTHON_REQUIRED_MAJOR" ] && \
+    [ "$CUR_MINOR" -lt "$PYTHON_REQUIRED_MINOR" ]; }; then
   echo "Python >= 3.10 is required. Found: $PYTHON_VER"
   exit 1
 fi
