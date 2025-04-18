@@ -41,13 +41,20 @@ class session(BaseSession):
             new_infos (list[tensorinfo]): A list of updated tensorinfo objects for the inputs.
 
         Raises:
-            ValueError: If the number of new_infos does not match the session's input size.
+            ValueError: If the number of new_infos does not match the session's input size,
+                        or if any tensorinfo contains a negative dimension.
         """
         num_inputs: int = self.session.input_size()
         if len(new_infos) != num_inputs:
             raise ValueError(
                 f"Expected {num_inputs} input tensorinfo(s), but got {len(new_infos)}.")
+
         for i, info in enumerate(new_infos):
+            # Check for any negative dimension in the specified rank
+            if any(d < 0 for d in info.dims[:info.rank]):
+                raise ValueError(
+                    f"Input tensorinfo at index {i} contains negative dimension(s): "
+                    f"{info.dims[:info.rank]}")
             self.session.set_input_tensorinfo(i, info)
 
     def infer(self, inputs_array: List[np.ndarray]) -> List[np.ndarray]:
