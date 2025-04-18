@@ -286,6 +286,18 @@ TEST(ShapeTest, neg_Offset4DNegativeIndex)
     ".*");
 }
 
+// Test that calling Offset on a 5D shape with a negative index triggers an assertion.
+TEST(ShapeTest, neg_Offset5DNegativeIndex)
+{
+  Shape s{2, 3, 4, 5, 6};
+  EXPECT_EXIT_BY_ABRT_DEBUG_ONLY(
+    {
+      int offset = Offset(s, 1, 1, -1, 1, 1);
+      (void)offset;
+    },
+    ".*");
+}
+
 // Test that calling Offset on a 6D shape with an out-of-range index triggers an assertion.
 TEST(ShapeTest, neg_Offset6DIndexOutOfRange)
 {

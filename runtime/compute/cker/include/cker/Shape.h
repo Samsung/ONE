@@ -333,6 +333,18 @@ inline int Offset(const Shape &shape, int i0, int i1, int i2, int i3)
   return ((i0 * dims_data[1] + i1) * dims_data[2] + i2) * dims_data[3] + i3;
 }
 
+inline int Offset(const Shape &shape, int i0, int i1, int i2, int i3, int i4)
+{
+  assert(shape.DimensionsCount() == 5);
+  const int *dim = shape.DimsDataUpTo6D();
+  assert(i0 >= 0 && i0 < dim[0]);
+  assert(i1 >= 0 && i1 < dim[1]);
+  assert(i2 >= 0 && i2 < dim[2]);
+  assert(i3 >= 0 && i3 < dim[3]);
+  assert(i4 >= 0 && i4 < dim[4]);
+  return ((((i0 * dim[1] + i1) * dim[2] + i2) * dim[3] + i3) * dim[4]) + i4;
+}
+
 inline int Offset(const Shape &shape, int i0, int i1, int i2, int i3, int i4, int i5)
 {
   assert(shape.DimensionsCount() == 6);

@@ -966,7 +966,7 @@ void ShapeValidator::visit(const ir::operation::StridedSlice &node)
   if (operands.at(output_index).info().isDynamic())
     return;
 
-  OP_REQUIRES(operands.at(input_index).shape().rank() <= 4);
+  OP_REQUIRES(operands.at(input_index).shape().rank() <= 5);
 }
 
 void ShapeValidator::visit(const ir::operation::Split &node)
