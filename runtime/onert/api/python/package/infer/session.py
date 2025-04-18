@@ -20,8 +20,8 @@ class session(BaseSession):
         super().__init__(infer.nnfw_session(path, backends))
         self._prepared: bool = False
 
-        # Replace any dynamic dimension (-1) with 1 before static shape inference,
-        # because nnfw_session cannot perform static shape inference on input dimensions set to -1.
+        # TODO: Revise this after discussion to properly support dynamic shapes
+        # This is a temporary workaround to prevent prepare() errors when tensorinfo dims include -1
         original_infos: List[tensorinfo] = self.get_inputs_tensorinfo()
         fixed_infos: List[tensorinfo] = []
         for info in original_infos:
