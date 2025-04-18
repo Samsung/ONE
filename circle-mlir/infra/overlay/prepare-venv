@@ -31,9 +31,9 @@ VENV_PYTHON=${DRIVER_PATH}/${VENV_NAME}/bin/python
 PYTHON_REQUIRED_MAJOR=3
 PYTHON_REQUIRED_MINOR=10
 
-PYTHON_BIN=$(which python$PYTHON_REQUIRED_MAJOR.$PYTHON_REQUIRED_MINOR 2>/dev/null || true)
+PYTHON_BIN=$(command -v python$PYTHON_REQUIRED_MAJOR.$PYTHON_REQUIRED_MINOR 2>/dev/null || true)
 if [ -z "$PYTHON_BIN" ]; then
-  PYTHON_BIN=$(which python3)
+  PYTHON_BIN=$(command -v python3)
 fi
 
 PYTHON_VER=$($PYTHON_BIN -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
