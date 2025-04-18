@@ -68,6 +68,7 @@ public:
   BufferModelContract(luci::Module *module)
     : _module(module), _buffer{std::make_unique<std::vector<uint8_t>>()}
   {
+    assert(_module); // FIX_CALLER_UNLESS
   }
 
   luci::Module *module() const override { return _module; }
