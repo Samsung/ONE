@@ -19,7 +19,7 @@ def main(nnpackage_path, backends="cpu"):
         # Create a dummy numpy array filled with zeros.
         dummy_inputs.append(np.zeros(shape, dtype=info.dtype))
 
-    outputs = session.run_inference(dummy_inputs)
+    outputs = session.infer(dummy_inputs)
 
     print(f"nnpackage {nnpackage_path.split('/')[-1]} runs successfully.")
     return

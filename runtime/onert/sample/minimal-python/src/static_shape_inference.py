@@ -39,7 +39,7 @@ def main(nnpackage_path, backends="cpu"):
         dummy_inputs.append(np.zeros(shape, dtype=info.dtype))
 
     # Run inference with the new static input shapes.
-    outputs = sess.run_inference(dummy_inputs)
+    outputs = sess.infer(dummy_inputs)
 
     print(
         f"Static shape modification sample: nnpackage {nnpackage_path.split('/')[-1]} runs successfully."

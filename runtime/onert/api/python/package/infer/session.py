@@ -50,7 +50,7 @@ class session(BaseSession):
         for i, info in enumerate(new_infos):
             self.session.set_input_tensorinfo(i, info)
 
-    def run_inference(self, inputs_array: List[np.ndarray]) -> List[np.ndarray]:
+    def infer(self, inputs_array: List[np.ndarray]) -> List[np.ndarray]:
         """
         Run a complete inference cycle:
          - If the session has not been prepared or outputs have not been set, call prepare() and set_outputs().
