@@ -61,15 +61,18 @@ class TrainSession(BaseSession):
             MetricsRegistry.create_metric(m) if isinstance(m, str) else m for m in metrics
         ]
 
+        # Validate that all elements in self.metrics are instances of Metric
         for m in self.metrics:
             if not isinstance(m, Metric):
-                raise TypeError(f"Invalid metric type: {type(m).__name__}")
+                raise TypeError(f"Invalid metric type: {type(m).__name__}. "
+                                "All metrics must inherit from the Metric base class.")
 
+        # Check if the number of metrics matches the number of outputs
         num_outputs: int = self.session.output_size()
         if 0 < len(self.metrics) != num_outputs:
             raise ValueError(
                 f"Number of metrics ({len(self.metrics)}) does not match outputs ({num_outputs})"
-            )
+                "Please ensure one metric is provided for each model output.")
 
         # Set training info
         self.train_info.learning_rate = self.optimizer.learning_rate
@@ -80,8 +83,10 @@ class TrainSession(BaseSession):
         self.train_info.num_of_trainable_ops = self.optimizer.nums_trainable_ops
         self.session.train_set_traininfo(self.train_info)
 
+        # Print training parameters
         self._print_training_parameters()
 
+        # Prepare session for training
         compile_start: float = time.perf_counter()
         self.session.train_prepare()
         compile_end: float = time.perf_counter()
@@ -174,34 +179,44 @@ class TrainSession(BaseSession):
         train_time: float = 0.0
 
         for inputs, expecteds in data:
+            # Validate batch sizes
             self._check_batch_size(inputs, self.train_info.batch_size, "input")
             self._check_batch_size(expecteds, self.train_info.batch_size, "expected")
 
+            # Set inputs
             io_start = time.perf_counter()
-            for i, inp in enumerate(inputs):
-                self.session.train_set_input(i, inp)
+            for i, input_data in enumerate(inputs):
+                self.session.train_set_input(i, input_data)
+
+            # Set expected outputs
             outputs: List[np.ndarray] = []
-            for i, exp in enumerate(expecteds):
-                arr = np.array(exp, dtype=self.session.output_tensorinfo(i).dtype)
-                self.session.train_set_expected(i, arr)
-                out = np.zeros(arr.shape, dtype=self.session.output_tensorinfo(i).dtype)
-                self.session.train_set_output(i, out)
-                outputs.append(out)
+            for i, expected_data in enumerate(expecteds):
+                expected = np.array(expected_data,
+                                    dtype=self.session.output_tensorinfo(i).dtype)
+                self.session.train_set_expected(i, expected)
+                output = np.zeros(expected.shape,
+                                  dtype=self.session.output_tensorinfo(i).dtype)
+                self.session.train_set_output(i, output)
+                outputs.append(output)
             io_end = time.perf_counter()
 
+            # Run training or validation
             t_start = time.perf_counter()
             self.session.train(update_weights=train)
             t_end = time.perf_counter()
 
+            # Accumulate loss
             batch_loss = sum(
                 self.session.train_get_loss(i) for i in range(len(expecteds)))
             total_loss += batch_loss
             num_batches += 1
 
+            # Update metrics
             if not train:
                 for m in self.metrics:
                     m.update_state(outputs, expecteds)
 
+            # Calculate times
             io_time += (io_end - io_start)
             train_time += (t_end - t_start)
 
@@ -221,11 +236,15 @@ class TrainSession(BaseSession):
             data (list of np.ndarray): The data to validate.
             batch_size (int): The expected batch size.
             data_type (str): 'input' or 'expected'.
+
+        Raises:
+            ValueError: If the batch size does not match the expected value.
         """
         for idx, arr in enumerate(data):
             if arr.shape[0] > batch_size:
-                raise ValueError(f"{data_type} batch size mismatch at index {idx}: "
-                                 f"{arr.shape[0]} vs {batch_size}")
+                raise ValueError(
+                    f"{data_type} batch size mismatch at index {idx}: "
+                    f"shape[0] = {arr.shape[0]} vs batch size = {batch_size}")
 
     def train_step(self, inputs: List[np.ndarray],
                    expecteds: List[np.ndarray]) -> Dict[str, Any]:
@@ -233,43 +252,52 @@ class TrainSession(BaseSession):
         Train the model for a single batch.
 
         Args:
-            inputs (list of np.ndarray): Input arrays.
-            expecteds (list of np.ndarray): Expected output arrays.
+            inputs (list of np.ndarray): List of input arrays for the batch.
+            expecteds (list of np.ndarray): List of expected output arrays for the batch.
 
         Returns:
             dict: Loss and metrics values, and train_time in ms.
         """
         if self.optimizer is None or self.loss is None:
-            raise RuntimeError("Call compile() before train_step().")
+            raise RuntimeError(
+                "The training session is not properly configured. "
+                "Please call `compile(optimizer, loss)` before calling `train_step()`.")
 
+        # Validate batch sizes
         self._check_batch_size(inputs, self.train_info.batch_size, "input")
         self._check_batch_size(expecteds, self.train_info.batch_size, "expected")
 
-        for i, inp in enumerate(inputs):
-            self.session.train_set_input(i, inp)
+        # Set inputs
+        for i, input_data in enumerate(inputs):
+            self.session.train_set_input(i, input_data)
 
+        # Set expected outputs
         outputs: List[np.ndarray] = []
-        for i, exp in enumerate(expecteds):
-            self.session.train_set_expected(i, exp)
-            out = np.zeros(exp.shape, dtype=self.session.output_tensorinfo(i).dtype)
-            self.session.train_set_output(i, out)
-            outputs.append(out)
+        for i, expected_data in enumerate(expecteds):
+            self.session.train_set_expected(i, expected_data)
+            output = np.zeros(expected_data.shape,
+                              dtype=self.session.output_tensorinfo(i).dtype)
+            self.session.train_set_output(i, output)
+            outputs.append(output)
 
-        start: float = time.perf_counter()
+        # Run a single training step
+        t_start: float = time.perf_counter()
         self.session.train(update_weights=True)
-        end: float = time.perf_counter()
+        t_end: float = time.perf_counter()
 
+        # Update loss
         losses: List[float] = [
             self.session.train_get_loss(i) for i in range(len(expecteds))
         ]
 
+        # Update metrics
         metric_results: Dict[str, float] = {}
-        for m in self.metrics:
-            m.update_state(outputs, expecteds)
-            metric_results[m.__class__.__name__] = m.result()
+        for metric in self.metrics:
+            metric.update_state(outputs, expecteds)
+            metric_results[metric.__class__.__name__] = metric.result()
 
         return {
             "loss": losses,
             "metrics": metric_results,
-            "train_time": (end - start) * 1000
+            "train_time": (t_end - t_start) * 1000
         }
