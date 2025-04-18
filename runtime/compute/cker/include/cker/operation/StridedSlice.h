@@ -325,7 +325,7 @@ inline void StridedSlice(const StridedSliceParams &op_params, const Shape &unext
              in_3 += params_copy.strides[3])
         {
           for (int in_4 = start_4; !LoopCondition(in_4, stop_4, params_copy.strides[4]);
-             in_4 += params_copy.strides[4])
+               in_4 += params_copy.strides[4])
           {
             *out_ptr++ = input_data[Offset(input_shape, in_0, in_1, in_2, in_3, in_4)];
           }
