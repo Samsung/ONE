@@ -218,19 +218,18 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html#l00048">48</a> of file <a class="el" href="runtime_2onert_2backend_2train_2_backend_8h_source.html">Backend.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   49</span>  {</div>
 <div class="line"><span class="lineno">   50</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;tgraph = *tdata.tgraph;</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keyword">auto</span> <a class="code hl_namespace" href="namespaceoptimizer.html">optimizer</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1train.html#a9487515b281a36b5c774eb456275e89e">createOptimizer</a>(tdata.optim_info);</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keyword">auto</span> optimizer = <a class="code hl_function" href="namespaceonert_1_1backend_1_1train.html#a9487515b281a36b5c774eb456275e89e">createOptimizer</a>(tdata.optim_info);</div>
 <div class="line"><span class="lineno">   52</span>    <span class="keyword">auto</span> tr = std::make_shared&lt;TensorRegistry&gt;();</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, <a class="code hl_namespace" href="namespaceoptimizer.html">optimizer</a>.get());</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keyword">auto</span> tb = std::make_shared&lt;TensorBuilder&gt;(tr, optimizer.get());</div>
 <div class="line"><span class="lineno">   54</span>    <span class="keyword">auto</span> tdata_ptr = std::make_unique&lt;backend::train::TrainableContextData&gt;(std::move(tdata));</div>
 <div class="line"><span class="lineno">   55</span>    <span class="keyword">auto</span> context = std::make_unique&lt;train::BackendContext&gt;(<span class="keyword">this</span>, std::move(tdata_ptr), tr, tb,</div>
-<div class="line"><span class="lineno">   56</span>                                                           std::move(<a class="code hl_namespace" href="namespaceoptimizer.html">optimizer</a>));</div>
+<div class="line"><span class="lineno">   56</span>                                                           std::move(optimizer));</div>
 <div class="line"><span class="lineno">   57</span> </div>
 <div class="line"><span class="lineno">   58</span>    context-&gt;kernel_gen = std::make_shared&lt;train::KernelGenerator&gt;(</div>
 <div class="line"><span class="lineno">   59</span>      tgraph, tr, context-&gt;external_context(), context-&gt;optimizer());</div>
 <div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> context;</div>
 <div class="line"><span class="lineno">   61</span>  }</div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1train_html_a9487515b281a36b5c774eb456275e89e"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train.html#a9487515b281a36b5c774eb456275e89e">onert::backend::train::createOptimizer</a></div><div class="ttdeci">std::unique_ptr&lt; exec::train::optimizer::Optimizer &gt; createOptimizer(const ir::train::OptimizerInfo &amp;optim_info)</div><div class="ttdef"><b>Definition</b> <a href="_optimizers_8h_source.html#l00029">Optimizers.h:29</a></div></div>
-<div class="ttc" id="anamespaceoptimizer_html"><div class="ttname"><a href="namespaceoptimizer.html">optimizer</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2api_2python_2package_2experimental_2train_2optimizer_2____init_____8py_source.html#l00001">__init__.py:1</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_optimizers_8h_source.html#l00029">onert::backend::train::createOptimizer()</a>.</p>
 

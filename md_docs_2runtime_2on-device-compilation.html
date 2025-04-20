@@ -104,20 +104,19 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2on-device-compilatio
 <li>Call quantize API to perform quantization</li>
 </ul>
 <div class="fragment"><div class="line"><span class="comment">// Load float32 model</span></div>
-<div class="line"><a class="code hl_function" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>, pkg_path);</div>
+<div class="line"><a class="code hl_function" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a>(session, pkg_path);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Set quantization type: weight-only, symmetric, int8</span></div>
-<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#a7c18c5f0f8b1746fb5016bb696d215b6">nnfw_set_quantization_type</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>, <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10">NNFW_QUANTIZE_TYPE_WO_I8_SYM</a>);</div>
+<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#a7c18c5f0f8b1746fb5016bb696d215b6">nnfw_set_quantization_type</a>(session, <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10">NNFW_QUANTIZE_TYPE_WO_I8_SYM</a>);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Set path to save quantized model</span></div>
-<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#ae1bb47075976b3334e5df27e4110a9c0">nnfw_set_quantized_model_path</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>, quantized_model_path);</div>
+<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#ae1bb47075976b3334e5df27e4110a9c0">nnfw_set_quantized_model_path</a>(session, quantized_model_path);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Quantize model</span></div>
-<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#aa4046ec782673ee90f6ab2dca1a317d9">nnfw_quantize</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
+<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#aa4046ec782673ee90f6ab2dca1a317d9">nnfw_quantize</a>(session);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Run model for inference with quantized model</span></div>
-<div class="line"><a class="code hl_function" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
-<div class="ttc" id="anamespacesession_html"><div class="ttname"><a href="namespacesession.html">session</a></div><div class="ttdef"><b>Definition</b> <a href="experimental_2train_2session_8py_source.html#l00001">session.py:1</a></div></div>
+<div class="line"><a class="code hl_function" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a>(session);</div>
 <div class="ttc" id="annfw_8h_html_a8e193702b11c77db6580253a4ae8cd1f"><div class="ttname"><a href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></div><div class="ttdeci">NNFW_STATUS nnfw_run(nnfw_session *session)</div><div class="ttdoc">Run inference.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00078">nnfw_api.cc:78</a></div></div>
 <div class="ttc" id="annfw__experimental_8h_html_a7c18c5f0f8b1746fb5016bb696d215b6"><div class="ttname"><a href="nnfw__experimental_8h.html#a7c18c5f0f8b1746fb5016bb696d215b6">nnfw_set_quantization_type</a></div><div class="ttdeci">NNFW_STATUS nnfw_set_quantization_type(nnfw_session *session, NNFW_QUANTIZE_TYPE qtype)</div><div class="ttdoc">Set quantization type.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00323">nnfw_api.cc:323</a></div></div>
 <div class="ttc" id="annfw__experimental_8h_html_aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10"><div class="ttname"><a href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ae1c740bda073b335cfa9353b5170df10">NNFW_QUANTIZE_TYPE_WO_I8_SYM</a></div><div class="ttdeci">@ NNFW_QUANTIZE_TYPE_WO_I8_SYM</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00473">nnfw_experimental.h:473</a></div></div>
@@ -145,38 +144,38 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2on-device-compilatio
 </li>
 </ul>
 <div class="fragment"><div class="line"><span class="comment">// Load float32 model</span></div>
-<div class="line"><a class="code hl_function" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>, pkg_path);</div>
+<div class="line"><a class="code hl_function" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a>(session, pkg_path);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Prepare model to run</span></div>
-<div class="line"><a class="code hl_function" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
+<div class="line"><a class="code hl_function" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a>(session);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Set input and output buffer(s)</span></div>
-<div class="line"><a class="code hl_function" href="nnfw_8h.html#a1043343aa0dc8fc8f1b09197a6b7249c">nnfw_set_input</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>, input_index, input_type, input_buffer, input_element_size);</div>
-<div class="line"><a class="code hl_function" href="nnfw_8h.html#ac1af7b7a6c70fff801171904d9403dba">nnfw_set_output</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>, output_index, output_type, output_buffer, output_element_size);</div>
+<div class="line"><a class="code hl_function" href="nnfw_8h.html#a1043343aa0dc8fc8f1b09197a6b7249c">nnfw_set_input</a>(session, input_index, input_type, input_buffer, input_element_size);</div>
+<div class="line"><a class="code hl_function" href="nnfw_8h.html#ac1af7b7a6c70fff801171904d9403dba">nnfw_set_output</a>(session, output_index, output_type, output_buffer, output_element_size);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Set execution configuration to gather activation range</span></div>
-<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#ac1121e4e6f07fc7dbda4466afbd3f670">nnfw_set_execute_config</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>, <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3">NNFW_RUN_CONFIG_DUMP_MINMAX</a>, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#ac1121e4e6f07fc7dbda4466afbd3f670">nnfw_set_execute_config</a>(session, <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3">NNFW_RUN_CONFIG_DUMP_MINMAX</a>, <span class="keyword">nullptr</span>);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Run model multiple times for inference with gathering activation range</span></div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_of_inference; ++i)</div>
 <div class="line">{</div>
-<div class="line">  <a class="code hl_function" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
+<div class="line">  <a class="code hl_function" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a>(session);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Set quantization type: full, asymmetric, uint8</span></div>
-<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#a7c18c5f0f8b1746fb5016bb696d215b6">nnfw_set_quantization_type</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>, <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a>);</div>
+<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#a7c18c5f0f8b1746fb5016bb696d215b6">nnfw_set_quantization_type</a>(session, <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7a481bdd8149fc4808e2df6e6e1b738e72">NNFW_QUANTIZE_TYPE_U8_ASYM</a>);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Set path to save quantized model</span></div>
-<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#ae1bb47075976b3334e5df27e4110a9c0">nnfw_set_quantized_model_path</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>, quantized_model_path);</div>
+<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#ae1bb47075976b3334e5df27e4110a9c0">nnfw_set_quantized_model_path</a>(session, quantized_model_path);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Quantize model</span></div>
-<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#aa4046ec782673ee90f6ab2dca1a317d9">nnfw_quantize</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
+<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#aa4046ec782673ee90f6ab2dca1a317d9">nnfw_quantize</a>(session);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Reset execution configuration to normal execution</span></div>
-<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#ab8ac04143e1db077ea615e463ea1ce38">nnfw_reset_execute_config</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
+<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#ab8ac04143e1db077ea615e463ea1ce38">nnfw_reset_execute_config</a>(session);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Run model for inference with quantized model</span></div>
-<div class="line"><a class="code hl_function" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
+<div class="line"><a class="code hl_function" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a>(session);</div>
 <div class="ttc" id="annfw_8h_html_a1043343aa0dc8fc8f1b09197a6b7249c"><div class="ttname"><a href="nnfw_8h.html#a1043343aa0dc8fc8f1b09197a6b7249c">nnfw_set_input</a></div><div class="ttdeci">NNFW_STATUS nnfw_set_input(nnfw_session *session, uint32_t index, NNFW_TYPE type, const void *buffer, size_t length)</div><div class="ttdoc">Set input buffer.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00096">nnfw_api.cc:96</a></div></div>
 <div class="ttc" id="annfw_8h_html_a93da789a116a47c0cb66f26bdff12f24"><div class="ttname"><a href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></div><div class="ttdeci">NNFW_STATUS nnfw_prepare(nnfw_session *session)</div><div class="ttdoc">Prepare session to be ready for inference.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00072">nnfw_api.cc:72</a></div></div>
 <div class="ttc" id="annfw_8h_html_ac1af7b7a6c70fff801171904d9403dba"><div class="ttname"><a href="nnfw_8h.html#ac1af7b7a6c70fff801171904d9403dba">nnfw_set_output</a></div><div class="ttdeci">NNFW_STATUS nnfw_set_output(nnfw_session *session, uint32_t index, NNFW_TYPE type, void *buffer, size_t length)</div><div class="ttdoc">Set output buffer.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00103">nnfw_api.cc:103</a></div></div>
@@ -201,26 +200,26 @@ $(document).ready(function(){initNavTree('md_docs_2runtime_2on-device-compilatio
 <li>Call generate_code API to perform code generation</li>
 </ul>
 <div class="fragment"><div class="line"><span class="comment">// Load model</span></div>
-<div class="line"><a class="code hl_function" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>, pkg_path);</div>
+<div class="line"><a class="code hl_function" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a>(session, pkg_path);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// (Optional) Set path to save generated code</span></div>
 <div class="line"><span class="comment">// nnfw_set_codegen_model_path(session, codegen_model_path);</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Generate code for target backend: target codegen plugin name is &quot;abc&quot; (installed as `libabc-gen.lib`)</span></div>
-<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#a9c434de04d0c57bf7e28a1c7721bdd49">nnfw_codegen</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>, <span class="stringliteral">&quot;abc-gen&quot;</span>, <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac">NNFW_CODEGEN_PREF_DEFAULT</a>);</div>
+<div class="line"><a class="code hl_function" href="nnfw__experimental_8h.html#a9c434de04d0c57bf7e28a1c7721bdd49">nnfw_codegen</a>(session, <span class="stringliteral">&quot;abc-gen&quot;</span>, <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac">NNFW_CODEGEN_PREF_DEFAULT</a>);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Prepare model to run</span></div>
-<div class="line"><a class="code hl_function" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
+<div class="line"><a class="code hl_function" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a>(session);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Set backend to use generated code on specific target backend if need</span></div>
-<div class="line">nnfw_set_available_backend(<a class="code hl_namespace" href="namespacesession.html">session</a>, <span class="stringliteral">&quot;abc&quot;</span>);</div>
+<div class="line">nnfw_set_available_backend(session, <span class="stringliteral">&quot;abc&quot;</span>);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Set input and output buffer(s)</span></div>
-<div class="line"><a class="code hl_function" href="nnfw_8h.html#a1043343aa0dc8fc8f1b09197a6b7249c">nnfw_set_input</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>, input_index, input_type, input_buffer, input_element_size);</div>
-<div class="line"><a class="code hl_function" href="nnfw_8h.html#ac1af7b7a6c70fff801171904d9403dba">nnfw_set_output</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>, output_index, output_type, output_buffer, output_element_size);</div>
+<div class="line"><a class="code hl_function" href="nnfw_8h.html#a1043343aa0dc8fc8f1b09197a6b7249c">nnfw_set_input</a>(session, input_index, input_type, input_buffer, input_element_size);</div>
+<div class="line"><a class="code hl_function" href="nnfw_8h.html#ac1af7b7a6c70fff801171904d9403dba">nnfw_set_output</a>(session, output_index, output_type, output_buffer, output_element_size);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Run model</span></div>
-<div class="line"><a class="code hl_function" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
+<div class="line"><a class="code hl_function" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a>(session);</div>
 <div class="ttc" id="annfw__experimental_8h_html_a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac"><div class="ttname"><a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19a53cc66fab85eab846a8d44da4d743fac">NNFW_CODEGEN_PREF_DEFAULT</a></div><div class="ttdeci">@ NNFW_CODEGEN_PREF_DEFAULT</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00519">nnfw_experimental.h:519</a></div></div>
 <div class="ttc" id="annfw__experimental_8h_html_a9c434de04d0c57bf7e28a1c7721bdd49"><div class="ttname"><a href="nnfw__experimental_8h.html#a9c434de04d0c57bf7e28a1c7721bdd49">nnfw_codegen</a></div><div class="ttdeci">NNFW_STATUS nnfw_codegen(nnfw_session *session, const char *target, NNFW_CODEGEN_PREF pref)</div><div class="ttdoc">Generate target-dependent code.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00347">nnfw_api.cc:347</a></div></div>
 </div><!-- fragment --><h1>Collaboration on-device quantization and code generation</h1>

@@ -218,30 +218,30 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  136</span>    output_prefix = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--dump_output_with_prefix&quot;</span>);</div>
 <div class="line"><span class="lineno">  137</span> </div>
 <div class="line"><span class="lineno">  138</span>  <span class="comment">// Set Metrics</span></div>
-<div class="line"><span class="lineno">  139</span>  std::vector&lt;Metric&gt; <a class="code hl_namespace" href="namespacemetrics.html">metrics</a>;</div>
+<div class="line"><span class="lineno">  139</span>  std::vector&lt;Metric&gt; metrics;</div>
 <div class="line"><span class="lineno">  140</span>  <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[<span class="stringliteral">&quot;--print_mae&quot;</span>] and <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;<span class="keywordtype">bool</span>&gt;(<span class="stringliteral">&quot;--print_mae&quot;</span>))</div>
 <div class="line"><span class="lineno">  141</span>  {</div>
-<div class="line"><span class="lineno">  142</span>    <a class="code hl_namespace" href="namespacemetrics.html">metrics</a>.emplace_back(Metric::MAE);</div>
+<div class="line"><span class="lineno">  142</span>    metrics.emplace_back(Metric::MAE);</div>
 <div class="line"><span class="lineno">  143</span>  }</div>
 <div class="line"><span class="lineno">  144</span>  <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[<span class="stringliteral">&quot;--print_mape&quot;</span>] and <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;<span class="keywordtype">bool</span>&gt;(<span class="stringliteral">&quot;--print_mape&quot;</span>))</div>
 <div class="line"><span class="lineno">  145</span>  {</div>
-<div class="line"><span class="lineno">  146</span>    <a class="code hl_namespace" href="namespacemetrics.html">metrics</a>.emplace_back(Metric::MAPE);</div>
+<div class="line"><span class="lineno">  146</span>    metrics.emplace_back(Metric::MAPE);</div>
 <div class="line"><span class="lineno">  147</span>  }</div>
 <div class="line"><span class="lineno">  148</span>  <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[<span class="stringliteral">&quot;--print_mpeir&quot;</span>] and <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;<span class="keywordtype">bool</span>&gt;(<span class="stringliteral">&quot;--print_mpeir&quot;</span>))</div>
 <div class="line"><span class="lineno">  149</span>  {</div>
-<div class="line"><span class="lineno">  150</span>    <a class="code hl_namespace" href="namespacemetrics.html">metrics</a>.emplace_back(Metric::MPEIR);</div>
+<div class="line"><span class="lineno">  150</span>    metrics.emplace_back(Metric::MPEIR);</div>
 <div class="line"><span class="lineno">  151</span>  }</div>
 <div class="line"><span class="lineno">  152</span>  <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[<span class="stringliteral">&quot;--print_top1_match&quot;</span>] and <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;<span class="keywordtype">bool</span>&gt;(<span class="stringliteral">&quot;--print_top1_match&quot;</span>))</div>
 <div class="line"><span class="lineno">  153</span>  {</div>
-<div class="line"><span class="lineno">  154</span>    <a class="code hl_namespace" href="namespacemetrics.html">metrics</a>.emplace_back(Metric::MTOP1);</div>
+<div class="line"><span class="lineno">  154</span>    metrics.emplace_back(Metric::MTOP1);</div>
 <div class="line"><span class="lineno">  155</span>  }</div>
 <div class="line"><span class="lineno">  156</span>  <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[<span class="stringliteral">&quot;--print_top5_match&quot;</span>] and <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;<span class="keywordtype">bool</span>&gt;(<span class="stringliteral">&quot;--print_top5_match&quot;</span>))</div>
 <div class="line"><span class="lineno">  157</span>  {</div>
-<div class="line"><span class="lineno">  158</span>    <a class="code hl_namespace" href="namespacemetrics.html">metrics</a>.emplace_back(Metric::MTOP5);</div>
+<div class="line"><span class="lineno">  158</span>    metrics.emplace_back(Metric::MTOP5);</div>
 <div class="line"><span class="lineno">  159</span>  }</div>
 <div class="line"><span class="lineno">  160</span>  <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespacearser.html">arser</a>[<span class="stringliteral">&quot;--print_mse&quot;</span>] and <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;<span class="keywordtype">bool</span>&gt;(<span class="stringliteral">&quot;--print_mse&quot;</span>))</div>
 <div class="line"><span class="lineno">  161</span>  {</div>
-<div class="line"><span class="lineno">  162</span>    <a class="code hl_namespace" href="namespacemetrics.html">metrics</a>.emplace_back(Metric::MSE);</div>
+<div class="line"><span class="lineno">  162</span>    metrics.emplace_back(Metric::MSE);</div>
 <div class="line"><span class="lineno">  163</span>  }</div>
 <div class="line"><span class="lineno">  164</span> </div>
 <div class="line"><span class="lineno">  165</span>  input_data_format = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--input_data_format&quot;</span>);</div>
@@ -252,7 +252,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  170</span>    ctx-&gt;second_model_path = second_model_path;</div>
 <div class="line"><span class="lineno">  171</span>    ctx-&gt;first_input_data_path = first_input_data_path;</div>
 <div class="line"><span class="lineno">  172</span>    ctx-&gt;second_input_data_path = second_input_data_path;</div>
-<div class="line"><span class="lineno">  173</span>    ctx-&gt;metric = <a class="code hl_namespace" href="namespacemetrics.html">metrics</a>;</div>
+<div class="line"><span class="lineno">  173</span>    ctx-&gt;metric = metrics;</div>
 <div class="line"><span class="lineno">  174</span>    ctx-&gt;input_format = to_input_format(input_data_format);</div>
 <div class="line"><span class="lineno">  175</span>    ctx-&gt;output_prefix = output_prefix;</div>
 <div class="line"><span class="lineno">  176</span>  }</div>
@@ -270,7 +270,6 @@ Functions</h2></td></tr>
 <div class="ttc" id="aclassarser_1_1_helper_html_a679d0a65011da0aeb71d1dc967f846fa"><div class="ttname"><a href="classarser_1_1_helper.html#a679d0a65011da0aeb71d1dc967f846fa">arser::Helper::add_version</a></div><div class="ttdeci">static void add_version(Arser &amp;arser, const std::function&lt; void(void)&gt; &amp;func)</div><div class="ttdef"><b>Definition</b> <a href="arser_8h_source.html#l00755">arser.h:755</a></div></div>
 <div class="ttc" id="aclasscircle__eval__diff_1_1_circle_eval_diff_html"><div class="ttname"><a href="classcircle__eval__diff_1_1_circle_eval_diff.html">circle_eval_diff::CircleEvalDiff</a></div><div class="ttdef"><b>Definition</b> <a href="_circle_eval_diff_8h_source.html#l00047">CircleEvalDiff.h:48</a></div></div>
 <div class="ttc" id="anamespacearser_html"><div class="ttname"><a href="namespacearser.html">arser</a></div><div class="ttdef"><b>Definition</b> <a href="arser_8h_source.html#l00038">arser.h:39</a></div></div>
-<div class="ttc" id="anamespacemetrics_html"><div class="ttname"><a href="namespacemetrics.html">metrics</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2api_2python_2package_2experimental_2train_2metrics_2____init_____8py_source.html#l00001">__init__.py:1</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="arser_8h_source.html#l00755">arser::Helper::add_version()</a>, <a class="el" href="_circle_eval_diff_8cpp_source.html#l00201">circle_eval_diff::CircleEvalDiff::evalDiff()</a>, <a class="el" href="_circle_eval_diff_8cpp_source.html#l00149">circle_eval_diff::CircleEvalDiff::init()</a>, and <a class="el" href="_circle_m_p_q_solver_8cpp_source.html#l00032">print_version()</a>.</p>
 

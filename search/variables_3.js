@@ -51,7 +51,7 @@ var searchData=
   ['context_48',['context',['../structluci_1_1_graph_builder_multi_output_1_1_build_node_args.html#a71f6930163937febb41078c0e77543f2',1,'luci::GraphBuilderMultiOutput::BuildNodeArgs']]],
   ['coordinates_49',['coordinates',['../structonert_1_1backend_1_1cl__common_1_1_parent_info.html#a6d55803fafe75b76f700183b76f6acfd',1,'onert::backend::cl_common::ParentInfo']]],
   ['coords_50',['coords',['../_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a',1,'DetectionPostProcessLayer.cc']]],
-  ['correct_51',['correct',['../classmetrics_1_1categorical__accuracy_1_1_categorical_accuracy.html#a260dc162676479cbfa7af02b50711fc8',1,'metrics::categorical_accuracy::CategoricalAccuracy']]],
+  ['correct_51',['correct',['../classpackage_1_1experimental_1_1train_1_1metrics_1_1categorical__accuracy_1_1_categorical_accuracy.html#a653065ea89ab949ecd8ebe8f762af73f',1,'package::experimental::train::metrics::categorical_accuracy::CategoricalAccuracy']]],
   ['cpp_5fdirect_5fcopy_52',['cpp_direct_copy',['../structflatbuffers_1_1_i_d_l_options.html#acc426e649fae3ae8cbbd30818c7d531a',1,'flatbuffers::IDLOptions']]],
   ['cpp_5fincludes_53',['cpp_includes',['../structflatbuffers_1_1_i_d_l_options.html#a4d2075a266e971713c441ece791925f4',1,'flatbuffers::IDLOptions']]],
   ['cpp_5fobject_5fapi_5fpointer_5ftype_54',['cpp_object_api_pointer_type',['../structflatbuffers_1_1_i_d_l_options.html#a57b13c67b8cca4ba7c08aaca8eaa6675',1,'flatbuffers::IDLOptions']]],

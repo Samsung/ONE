@@ -1,4 +1,4 @@
 var sgd_8py =
 [
-    [ "optimizer.sgd.SGD", "classoptimizer_1_1sgd_1_1_s_g_d.html", "classoptimizer_1_1sgd_1_1_s_g_d" ]
+    [ "package.experimental.train.optimizer.sgd.SGD", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1sgd_1_1_s_g_d.html", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1sgd_1_1_s_g_d" ]
 ];

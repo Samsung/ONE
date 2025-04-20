@@ -31,6 +31,7 @@ var namespaces_dup =
     ] ],
     [ "circle_eval_diff", "namespacecircle__eval__diff.html", "namespacecircle__eval__diff" ],
     [ "circle_planner", "namespacecircle__planner.html", "namespacecircle__planner" ],
+    [ "circle_resizer", "namespacecircle__resizer.html", "namespacecircle__resizer" ],
     [ "circlechef", "namespacecirclechef.html", "namespacecirclechef" ],
     [ "circledump", "namespacecircledump.html", "namespacecircledump" ],
     [ "circleinspect", "namespacecircleinspect.html", "namespacecircleinspect" ],
@@ -402,7 +403,6 @@ var namespaces_dup =
     [ "locomotiv", "namespacelocomotiv.html", "namespacelocomotiv" ],
     [ "locop", "namespacelocop.html", "namespacelocop" ],
     [ "logo", "namespacelogo.html", "namespacelogo" ],
-    [ "losses", "namespacelosses.html", "namespacelosses" ],
     [ "luci", "namespaceluci.html", "namespaceluci" ],
     [ "luci_eval_verifier", "namespaceluci__eval__verifier.html", [
       [ "args", "namespaceluci__eval__verifier.html#a53d4efe172cb0587427c6c0fdeca74ab", null ],
@@ -481,7 +481,6 @@ var namespaces_dup =
     ] ],
     [ "MaxPool2D_000", "namespace_max_pool2_d__000.html", "namespace_max_pool2_d__000" ],
     [ "Mean_000", "namespace_mean__000.html", "namespace_mean__000" ],
-    [ "metrics", "namespacemetrics.html", "namespacemetrics" ],
     [ "minimal", "namespaceminimal.html", [
       [ "main", "namespaceminimal.html#a1b02f42a4f713242e41972ed5e4c28f2", null ],
       [ "argv", "namespaceminimal.html#a5f2767e1a6e0198d72dfe1719abc3b2a", null ]
@@ -557,7 +556,6 @@ var namespaces_dup =
     [ "oops", "namespaceoops.html", "namespaceoops" ],
     [ "opselector", "namespaceopselector.html", "namespaceopselector" ],
     [ "optimized_ops", "namespaceoptimized__ops.html", "namespaceoptimized__ops" ],
-    [ "optimizer", "namespaceoptimizer.html", "namespaceoptimizer" ],
     [ "OptionBuilder", "namespace_option_builder.html", "namespace_option_builder" ],
     [ "package", "namespacepackage.html", "namespacepackage" ],
     [ "Pad_000", "namespace_pad__000.html", "namespace_pad__000" ],
@@ -650,7 +648,6 @@ var namespaces_dup =
       [ "cl_files", "namespaceresolve__includes.html#ac0718ed4c36d2c8b5d61017256cdaf8d", null ],
       [ "embed_files", "namespaceresolve__includes.html#a3380eed9d3c2bd1cbadb1ca6c74dcbf0", null ]
     ] ],
-    [ "session", "namespacesession.html", "namespacesession" ],
     [ "ShapeTransform", "namespace_shape_transform.html", null ],
     [ "SingleOperatorTest", "namespace_single_operator_test.html", "namespace_single_operator_test" ],
     [ "Softmax_000", "namespace_softmax__000.html", "namespace_softmax__000" ],

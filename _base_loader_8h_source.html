@@ -1825,92 +1825,95 @@ $(document).ready(function(){initNavTree('_base_loader_8h_source.html',''); init
 <div class="line"><a id="l01721" name="l01721"></a><span class="lineno"> 1721</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_BATCH_MATMUL:</div>
 <div class="line"><a id="l01722" name="l01722"></a><span class="lineno"> 1722</span>      loadBatchMatMul(op, subg);</div>
 <div class="line"><a id="l01723" name="l01723"></a><span class="lineno"> 1723</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l01724" name="l01724"></a><span class="lineno"> 1724</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOG_SOFTMAX:</div>
-<div class="line"><a id="l01725" name="l01725"></a><span class="lineno"> 1725</span>      loadLogSoftmax(op, subg);</div>
+<div class="line"><a id="l01724" name="l01724"></a><span class="lineno"> 1724</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_BROADCAST_TO:</div>
+<div class="line"><a id="l01725" name="l01725"></a><span class="lineno"> 1725</span>      loadOperationTo&lt;ir::operation::BroadcastTo&gt;(op, subg);</div>
 <div class="line"><a id="l01726" name="l01726"></a><span class="lineno"> 1726</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l01727" name="l01727"></a><span class="lineno"> 1727</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_QUANTIZE:</div>
-<div class="line"><a id="l01728" name="l01728"></a><span class="lineno"> 1728</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a5758d4b17069a02495ee183b937221b2">ir::operation::ElementwiseUnary::Type::QUANTIZE</a>);</div>
+<div class="line"><a id="l01727" name="l01727"></a><span class="lineno"> 1727</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LOG_SOFTMAX:</div>
+<div class="line"><a id="l01728" name="l01728"></a><span class="lineno"> 1728</span>      loadLogSoftmax(op, subg);</div>
 <div class="line"><a id="l01729" name="l01729"></a><span class="lineno"> 1729</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l01730" name="l01730"></a><span class="lineno"> 1730</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_DEQUANTIZE:</div>
-<div class="line"><a id="l01731" name="l01731"></a><span class="lineno"> 1731</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51aa81d3a23bce0d4438ba9be9e9f3c29e8">ir::operation::ElementwiseUnary::Type::DEQUANTIZE</a>);</div>
+<div class="line"><a id="l01730" name="l01730"></a><span class="lineno"> 1730</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_QUANTIZE:</div>
+<div class="line"><a id="l01731" name="l01731"></a><span class="lineno"> 1731</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a5758d4b17069a02495ee183b937221b2">ir::operation::ElementwiseUnary::Type::QUANTIZE</a>);</div>
 <div class="line"><a id="l01732" name="l01732"></a><span class="lineno"> 1732</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l01733" name="l01733"></a><span class="lineno"> 1733</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SPACE_TO_DEPTH:</div>
-<div class="line"><a id="l01734" name="l01734"></a><span class="lineno"> 1734</span>      loadSpaceToDepth(op, subg);</div>
+<div class="line"><a id="l01733" name="l01733"></a><span class="lineno"> 1733</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_DEQUANTIZE:</div>
+<div class="line"><a id="l01734" name="l01734"></a><span class="lineno"> 1734</span>      loadElementwiseUnary(op, subg, <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51aa81d3a23bce0d4438ba9be9e9f3c29e8">ir::operation::ElementwiseUnary::Type::DEQUANTIZE</a>);</div>
 <div class="line"><a id="l01735" name="l01735"></a><span class="lineno"> 1735</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l01736" name="l01736"></a><span class="lineno"> 1736</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_L2_NORMALIZATION:</div>
-<div class="line"><a id="l01737" name="l01737"></a><span class="lineno"> 1737</span>      loadOperationTo&lt;ir::operation::L2Normalization&gt;(op, subg);</div>
-<div class="line"><a id="l01738" name="l01738"></a><span class="lineno"> 1738</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01739" name="l01739"></a><span class="lineno"> 1739</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LEAKY_RELU:</div>
-<div class="line"><a id="l01740" name="l01740"></a><span class="lineno"> 1740</span>      loadLeakyRelu(op, subg);</div>
-<div class="line"><a id="l01741" name="l01741"></a><span class="lineno"> 1741</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l01742" name="l01742"></a><span class="lineno"> 1742</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RANK:</div>
-<div class="line"><a id="l01743" name="l01743"></a><span class="lineno"> 1743</span>      loadOperationTo&lt;ir::operation::Rank&gt;(op, subg);</div>
+<div class="line"><a id="l01736" name="l01736"></a><span class="lineno"> 1736</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_SPACE_TO_DEPTH:</div>
+<div class="line"><a id="l01737" name="l01737"></a><span class="lineno"> 1737</span>      loadSpaceToDepth(op, subg);</div>
+<div class="line"><a id="l01738" name="l01738"></a><span class="lineno"> 1738</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l01739" name="l01739"></a><span class="lineno"> 1739</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_L2_NORMALIZATION:</div>
+<div class="line"><a id="l01740" name="l01740"></a><span class="lineno"> 1740</span>      loadOperationTo&lt;ir::operation::L2Normalization&gt;(op, subg);</div>
+<div class="line"><a id="l01741" name="l01741"></a><span class="lineno"> 1741</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l01742" name="l01742"></a><span class="lineno"> 1742</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_LEAKY_RELU:</div>
+<div class="line"><a id="l01743" name="l01743"></a><span class="lineno"> 1743</span>      loadLeakyRelu(op, subg);</div>
 <div class="line"><a id="l01744" name="l01744"></a><span class="lineno"> 1744</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l01745" name="l01745"></a><span class="lineno"> 1745</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM:</div>
-<div class="line"><a id="l01746" name="l01746"></a><span class="lineno"> 1746</span>      loadUnidirectionalSequenceLSTM(op, subg);</div>
+<div class="line"><a id="l01745" name="l01745"></a><span class="lineno"> 1745</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_RANK:</div>
+<div class="line"><a id="l01746" name="l01746"></a><span class="lineno"> 1746</span>      loadOperationTo&lt;ir::operation::Rank&gt;(op, subg);</div>
 <div class="line"><a id="l01747" name="l01747"></a><span class="lineno"> 1747</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l01748" name="l01748"></a><span class="lineno"> 1748</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_DEPTH_TO_SPACE:</div>
-<div class="line"><a id="l01749" name="l01749"></a><span class="lineno"> 1749</span>      loadDepthToSpace(op, subg);</div>
+<div class="line"><a id="l01748" name="l01748"></a><span class="lineno"> 1748</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM:</div>
+<div class="line"><a id="l01749" name="l01749"></a><span class="lineno"> 1749</span>      loadUnidirectionalSequenceLSTM(op, subg);</div>
 <div class="line"><a id="l01750" name="l01750"></a><span class="lineno"> 1750</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l01751" name="l01751"></a><span class="lineno"> 1751</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_EMBEDDING_LOOKUP:</div>
-<div class="line"><a id="l01752" name="l01752"></a><span class="lineno"> 1752</span>      loadOperationTo&lt;ir::operation::EmbeddingLookup&gt;(op, subg);</div>
+<div class="line"><a id="l01751" name="l01751"></a><span class="lineno"> 1751</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_DEPTH_TO_SPACE:</div>
+<div class="line"><a id="l01752" name="l01752"></a><span class="lineno"> 1752</span>      loadDepthToSpace(op, subg);</div>
 <div class="line"><a id="l01753" name="l01753"></a><span class="lineno"> 1753</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l01754" name="l01754"></a><span class="lineno"> 1754</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_HASHTABLE_LOOKUP:</div>
-<div class="line"><a id="l01755" name="l01755"></a><span class="lineno"> 1755</span>      loadOperationTo&lt;ir::operation::HashtableLookup&gt;(op, subg);</div>
+<div class="line"><a id="l01754" name="l01754"></a><span class="lineno"> 1754</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_EMBEDDING_LOOKUP:</div>
+<div class="line"><a id="l01755" name="l01755"></a><span class="lineno"> 1755</span>      loadOperationTo&lt;ir::operation::EmbeddingLookup&gt;(op, subg);</div>
 <div class="line"><a id="l01756" name="l01756"></a><span class="lineno"> 1756</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l01757" name="l01757"></a><span class="lineno"> 1757</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l01758" name="l01758"></a><span class="lineno"> 1758</span>      <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a id="l01759" name="l01759"></a><span class="lineno"> 1759</span>        std::string(<span class="stringliteral">&quot;Unsupported operation: &quot;</span>).append(EnumNameBuiltinOperator(builtin_op)));</div>
-<div class="line"><a id="l01760" name="l01760"></a><span class="lineno"> 1760</span>  }</div>
-<div class="line"><a id="l01761" name="l01761"></a><span class="lineno"> 1761</span>}</div>
+<div class="line"><a id="l01757" name="l01757"></a><span class="lineno"> 1757</span>    <span class="keywordflow">case</span> BuiltinOperator::BuiltinOperator_HASHTABLE_LOOKUP:</div>
+<div class="line"><a id="l01758" name="l01758"></a><span class="lineno"> 1758</span>      loadOperationTo&lt;ir::operation::HashtableLookup&gt;(op, subg);</div>
+<div class="line"><a id="l01759" name="l01759"></a><span class="lineno"> 1759</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l01760" name="l01760"></a><span class="lineno"> 1760</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l01761" name="l01761"></a><span class="lineno"> 1761</span>      <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><a id="l01762" name="l01762"></a><span class="lineno"> 1762</span>        std::string(<span class="stringliteral">&quot;Unsupported operation: &quot;</span>).append(EnumNameBuiltinOperator(builtin_op)));</div>
+<div class="line"><a id="l01763" name="l01763"></a><span class="lineno"> 1763</span>  }</div>
+<div class="line"><a id="l01764" name="l01764"></a><span class="lineno"> 1764</span>}</div>
 </div>
-<div class="line"><a id="l01762" name="l01762"></a><span class="lineno"> 1762</span> </div>
-<div class="foldopen" id="foldopen01763" data-start="{" data-end="}">
-<div class="line"><a id="l01763" name="l01763"></a><span class="lineno"><a class="line" href="classonert_1_1loader_1_1_base_loader.html#a1a1619e7b6fff2cb7a0a75731b870957"> 1763</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> LoaderDomain&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1loader_1_1_base_loader.html#a1a1619e7b6fff2cb7a0a75731b870957">BaseLoader&lt;LoaderDomain&gt;::loadModel</a>()</div>
-<div class="line"><a id="l01764" name="l01764"></a><span class="lineno"> 1764</span>{</div>
-<div class="line"><a id="l01765" name="l01765"></a><span class="lineno"> 1765</span>  LoaderDomain::VerifyModelBuffer(*_verifier.get());</div>
-<div class="line"><a id="l01766" name="l01766"></a><span class="lineno"> 1766</span>  _domain_model = LoaderDomain::GetModel(_base);</div>
-<div class="line"><a id="l01767" name="l01767"></a><span class="lineno"> 1767</span> </div>
-<div class="line"><a id="l01768" name="l01768"></a><span class="lineno"> 1768</span>  <span class="keyword">auto</span> model = std::make_unique&lt;ir::Model&gt;();</div>
-<div class="line"><a id="l01769" name="l01769"></a><span class="lineno"> 1769</span>  <span class="comment">// Version unused</span></div>
-<div class="line"><a id="l01770" name="l01770"></a><span class="lineno"> 1770</span>  <span class="comment">// const auto version = _model-&gt;version();</span></div>
-<div class="line"><a id="l01771" name="l01771"></a><span class="lineno"> 1771</span>  <span class="comment">// Description unused</span></div>
-<div class="line"><a id="l01772" name="l01772"></a><span class="lineno"> 1772</span> </div>
-<div class="line"><a id="l01773" name="l01773"></a><span class="lineno"> 1773</span>  <span class="comment">// Load Metadata</span></div>
-<div class="line"><a id="l01774" name="l01774"></a><span class="lineno"> 1774</span>  <span class="keyword">auto</span> <span class="keyword">const</span> metadata_list = _domain_model-&gt;metadata();</div>
-<div class="line"><a id="l01775" name="l01775"></a><span class="lineno"> 1775</span>  <span class="keywordflow">if</span> (metadata_list != <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l01776" name="l01776"></a><span class="lineno"> 1776</span>  {</div>
-<div class="line"><a id="l01777" name="l01777"></a><span class="lineno"> 1777</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; metadata_list-&gt;size(); ++i)</div>
-<div class="line"><a id="l01778" name="l01778"></a><span class="lineno"> 1778</span>    {</div>
-<div class="line"><a id="l01779" name="l01779"></a><span class="lineno"> 1779</span>      <span class="keyword">const</span> <span class="keyword">auto</span> metadata = metadata_list-&gt;Get(i);</div>
-<div class="line"><a id="l01780" name="l01780"></a><span class="lineno"> 1780</span>      <span class="keywordflow">if</span> (metadata-&gt;name() == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l01781" name="l01781"></a><span class="lineno"> 1781</span>        <span class="keywordflow">continue</span>; <span class="comment">// metadata should have name</span></div>
-<div class="line"><a id="l01782" name="l01782"></a><span class="lineno"> 1782</span> </div>
-<div class="line"><a id="l01783" name="l01783"></a><span class="lineno"> 1783</span>      std::unique_ptr&lt;const ir::Data&gt; data = loadMetadata(metadata-&gt;buffer());</div>
-<div class="line"><a id="l01784" name="l01784"></a><span class="lineno"> 1784</span>      model-&gt;add_metadata(metadata-&gt;name()-&gt;str(), std::move(data));</div>
-<div class="line"><a id="l01785" name="l01785"></a><span class="lineno"> 1785</span>    }</div>
-<div class="line"><a id="l01786" name="l01786"></a><span class="lineno"> 1786</span>  }</div>
-<div class="line"><a id="l01787" name="l01787"></a><span class="lineno"> 1787</span> </div>
-<div class="line"><a id="l01788" name="l01788"></a><span class="lineno"> 1788</span>  <span class="comment">// const auto *description = _model-&gt;description();</span></div>
-<div class="line"><a id="l01789" name="l01789"></a><span class="lineno"> 1789</span>  <span class="comment">// Load subgraphs and map operations on subgraph</span></div>
-<div class="line"><a id="l01790" name="l01790"></a><span class="lineno"> 1790</span>  <span class="keyword">const</span> <span class="keyword">auto</span> subgraphs = _domain_model-&gt;subgraphs();</div>
-<div class="line"><a id="l01791" name="l01791"></a><span class="lineno"> 1791</span>  <span class="keywordflow">if</span> (subgraphs-&gt;size() - 1 &gt; <a class="code hl_function" href="classonert_1_1util_1_1_index.html#a76643097f92e5123e424ddea2715383a">ir::SubgraphIndex::max</a>())</div>
-<div class="line"><a id="l01792" name="l01792"></a><span class="lineno"> 1792</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;The number of subgraphs cannot exceed &quot;</span> +</div>
-<div class="line"><a id="l01793" name="l01793"></a><span class="lineno"> 1793</span>                             std::to_string(<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a76643097f92e5123e424ddea2715383a">ir::SubgraphIndex::max</a>() + 1)};</div>
-<div class="line"><a id="l01794" name="l01794"></a><span class="lineno"> 1794</span>  <span class="keywordflow">for</span> (uint16_t subgraph_index = 0; subgraph_index &lt; subgraphs-&gt;size(); ++subgraph_index)</div>
-<div class="line"><a id="l01795" name="l01795"></a><span class="lineno"> 1795</span>  {</div>
-<div class="line"><a id="l01796" name="l01796"></a><span class="lineno"> 1796</span>    <span class="keyword">auto</span> subg = loadSubgraph((*_domain_model-&gt;subgraphs())[subgraph_index]);</div>
-<div class="line"><a id="l01797" name="l01797"></a><span class="lineno"> 1797</span>    <span class="comment">// NOTE: Used () instead of {}, which does not check narrowing.</span></div>
-<div class="line"><a id="l01798" name="l01798"></a><span class="lineno"> 1798</span>    <span class="comment">// It is okay since overflow is checked the above if-statement.</span></div>
-<div class="line"><a id="l01799" name="l01799"></a><span class="lineno"> 1799</span>    model-&gt;push(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a>(subgraph_index), std::move(subg));</div>
-<div class="line"><a id="l01800" name="l01800"></a><span class="lineno"> 1800</span>  }</div>
-<div class="line"><a id="l01801" name="l01801"></a><span class="lineno"> 1801</span>  _model = std::move(model);</div>
-<div class="line"><a id="l01802" name="l01802"></a><span class="lineno"> 1802</span>}</div>
+<div class="line"><a id="l01765" name="l01765"></a><span class="lineno"> 1765</span> </div>
+<div class="foldopen" id="foldopen01766" data-start="{" data-end="}">
+<div class="line"><a id="l01766" name="l01766"></a><span class="lineno"><a class="line" href="classonert_1_1loader_1_1_base_loader.html#a1a1619e7b6fff2cb7a0a75731b870957"> 1766</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> LoaderDomain&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1loader_1_1_base_loader.html#a1a1619e7b6fff2cb7a0a75731b870957">BaseLoader&lt;LoaderDomain&gt;::loadModel</a>()</div>
+<div class="line"><a id="l01767" name="l01767"></a><span class="lineno"> 1767</span>{</div>
+<div class="line"><a id="l01768" name="l01768"></a><span class="lineno"> 1768</span>  LoaderDomain::VerifyModelBuffer(*_verifier.get());</div>
+<div class="line"><a id="l01769" name="l01769"></a><span class="lineno"> 1769</span>  _domain_model = LoaderDomain::GetModel(_base);</div>
+<div class="line"><a id="l01770" name="l01770"></a><span class="lineno"> 1770</span> </div>
+<div class="line"><a id="l01771" name="l01771"></a><span class="lineno"> 1771</span>  <span class="keyword">auto</span> model = std::make_unique&lt;ir::Model&gt;();</div>
+<div class="line"><a id="l01772" name="l01772"></a><span class="lineno"> 1772</span>  <span class="comment">// Version unused</span></div>
+<div class="line"><a id="l01773" name="l01773"></a><span class="lineno"> 1773</span>  <span class="comment">// const auto version = _model-&gt;version();</span></div>
+<div class="line"><a id="l01774" name="l01774"></a><span class="lineno"> 1774</span>  <span class="comment">// Description unused</span></div>
+<div class="line"><a id="l01775" name="l01775"></a><span class="lineno"> 1775</span> </div>
+<div class="line"><a id="l01776" name="l01776"></a><span class="lineno"> 1776</span>  <span class="comment">// Load Metadata</span></div>
+<div class="line"><a id="l01777" name="l01777"></a><span class="lineno"> 1777</span>  <span class="keyword">auto</span> <span class="keyword">const</span> metadata_list = _domain_model-&gt;metadata();</div>
+<div class="line"><a id="l01778" name="l01778"></a><span class="lineno"> 1778</span>  <span class="keywordflow">if</span> (metadata_list != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l01779" name="l01779"></a><span class="lineno"> 1779</span>  {</div>
+<div class="line"><a id="l01780" name="l01780"></a><span class="lineno"> 1780</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; metadata_list-&gt;size(); ++i)</div>
+<div class="line"><a id="l01781" name="l01781"></a><span class="lineno"> 1781</span>    {</div>
+<div class="line"><a id="l01782" name="l01782"></a><span class="lineno"> 1782</span>      <span class="keyword">const</span> <span class="keyword">auto</span> metadata = metadata_list-&gt;Get(i);</div>
+<div class="line"><a id="l01783" name="l01783"></a><span class="lineno"> 1783</span>      <span class="keywordflow">if</span> (metadata-&gt;name() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l01784" name="l01784"></a><span class="lineno"> 1784</span>        <span class="keywordflow">continue</span>; <span class="comment">// metadata should have name</span></div>
+<div class="line"><a id="l01785" name="l01785"></a><span class="lineno"> 1785</span> </div>
+<div class="line"><a id="l01786" name="l01786"></a><span class="lineno"> 1786</span>      std::unique_ptr&lt;const ir::Data&gt; data = loadMetadata(metadata-&gt;buffer());</div>
+<div class="line"><a id="l01787" name="l01787"></a><span class="lineno"> 1787</span>      model-&gt;add_metadata(metadata-&gt;name()-&gt;str(), std::move(data));</div>
+<div class="line"><a id="l01788" name="l01788"></a><span class="lineno"> 1788</span>    }</div>
+<div class="line"><a id="l01789" name="l01789"></a><span class="lineno"> 1789</span>  }</div>
+<div class="line"><a id="l01790" name="l01790"></a><span class="lineno"> 1790</span> </div>
+<div class="line"><a id="l01791" name="l01791"></a><span class="lineno"> 1791</span>  <span class="comment">// const auto *description = _model-&gt;description();</span></div>
+<div class="line"><a id="l01792" name="l01792"></a><span class="lineno"> 1792</span>  <span class="comment">// Load subgraphs and map operations on subgraph</span></div>
+<div class="line"><a id="l01793" name="l01793"></a><span class="lineno"> 1793</span>  <span class="keyword">const</span> <span class="keyword">auto</span> subgraphs = _domain_model-&gt;subgraphs();</div>
+<div class="line"><a id="l01794" name="l01794"></a><span class="lineno"> 1794</span>  <span class="keywordflow">if</span> (subgraphs-&gt;size() - 1 &gt; <a class="code hl_function" href="classonert_1_1util_1_1_index.html#a76643097f92e5123e424ddea2715383a">ir::SubgraphIndex::max</a>())</div>
+<div class="line"><a id="l01795" name="l01795"></a><span class="lineno"> 1795</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;The number of subgraphs cannot exceed &quot;</span> +</div>
+<div class="line"><a id="l01796" name="l01796"></a><span class="lineno"> 1796</span>                             std::to_string(<a class="code hl_function" href="classonert_1_1util_1_1_index.html#a76643097f92e5123e424ddea2715383a">ir::SubgraphIndex::max</a>() + 1)};</div>
+<div class="line"><a id="l01797" name="l01797"></a><span class="lineno"> 1797</span>  <span class="keywordflow">for</span> (uint16_t subgraph_index = 0; subgraph_index &lt; subgraphs-&gt;size(); ++subgraph_index)</div>
+<div class="line"><a id="l01798" name="l01798"></a><span class="lineno"> 1798</span>  {</div>
+<div class="line"><a id="l01799" name="l01799"></a><span class="lineno"> 1799</span>    <span class="keyword">auto</span> subg = loadSubgraph((*_domain_model-&gt;subgraphs())[subgraph_index]);</div>
+<div class="line"><a id="l01800" name="l01800"></a><span class="lineno"> 1800</span>    <span class="comment">// NOTE: Used () instead of {}, which does not check narrowing.</span></div>
+<div class="line"><a id="l01801" name="l01801"></a><span class="lineno"> 1801</span>    <span class="comment">// It is okay since overflow is checked the above if-statement.</span></div>
+<div class="line"><a id="l01802" name="l01802"></a><span class="lineno"> 1802</span>    model-&gt;push(<a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a>(subgraph_index), std::move(subg));</div>
+<div class="line"><a id="l01803" name="l01803"></a><span class="lineno"> 1803</span>  }</div>
+<div class="line"><a id="l01804" name="l01804"></a><span class="lineno"> 1804</span>  _model = std::move(model);</div>
+<div class="line"><a id="l01805" name="l01805"></a><span class="lineno"> 1805</span>}</div>
 </div>
-<div class="line"><a id="l01803" name="l01803"></a><span class="lineno"> 1803</span> </div>
-<div class="line"><a id="l01804" name="l01804"></a><span class="lineno"> 1804</span>} <span class="comment">// namespace onert::loader</span></div>
-<div class="line"><a id="l01805" name="l01805"></a><span class="lineno"> 1805</span> </div>
-<div class="line"><a id="l01806" name="l01806"></a><span class="lineno"> 1806</span><span class="preprocessor">#endif </span><span class="comment">//__ONERT_LOADER_BASE_LOADER_H__</span></div>
+<div class="line"><a id="l01806" name="l01806"></a><span class="lineno"> 1806</span> </div>
+<div class="line"><a id="l01807" name="l01807"></a><span class="lineno"> 1807</span>} <span class="comment">// namespace onert::loader</span></div>
+<div class="line"><a id="l01808" name="l01808"></a><span class="lineno"> 1808</span> </div>
+<div class="line"><a id="l01809" name="l01809"></a><span class="lineno"> 1809</span><span class="preprocessor">#endif </span><span class="comment">//__ONERT_LOADER_BASE_LOADER_H__</span></div>
 <div class="ttc" id="a_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_html_aa73e018b04368e7afaded77ef0ac69db"><div class="ttname"><a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a></div><div class="ttdeci">std::mutex m</div><div class="ttdef"><b>Definition</b> <a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">NEGEMMMatrixAccumulateBiasesKernel.cpp:135</a></div></div>
 <div class="ttc" id="a_operations_8_include_8h_html"><div class="ttname"><a href="_operations_8_include_8h.html">Operations.Include.h</a></div></div>
 <div class="ttc" id="aclass_tensor_html"><div class="ttname"><a href="class_tensor.html">Tensor</a></div><div class="ttdef"><b>Definition</b> <a href="tensor__gen_8cpp_source.html#l00031">tensor_gen.cpp:32</a></div></div>
@@ -1993,7 +1996,7 @@ $(document).ready(function(){initNavTree('_base_loader_8h_source.html',''); init
 <div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html">onert::loader::BaseLoader</a></div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l00040">BaseLoader.h:41</a></div></div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a08bf507fe77d3bdfd4a6fecffa747d78"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a08bf507fe77d3bdfd4a6fecffa747d78">onert::loader::BaseLoader::Verifier</a></div><div class="ttdeci">typename LoaderDomain::Verifier Verifier</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l00043">BaseLoader.h:43</a></div></div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a16e6926b139d69b6efb6df18893bb2ed"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a16e6926b139d69b6efb6df18893bb2ed">onert::loader::BaseLoader::convertActivation</a></div><div class="ttdeci">ir::Activation convertActivation(ActivationFunctionType type)</div></div>
-<div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a1a1619e7b6fff2cb7a0a75731b870957"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a1a1619e7b6fff2cb7a0a75731b870957">onert::loader::BaseLoader::loadModel</a></div><div class="ttdeci">void loadModel()</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l01763">BaseLoader.h:1763</a></div></div>
+<div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a1a1619e7b6fff2cb7a0a75731b870957"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a1a1619e7b6fff2cb7a0a75731b870957">onert::loader::BaseLoader::loadModel</a></div><div class="ttdeci">void loadModel()</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l01766">BaseLoader.h:1766</a></div></div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a1ff0c207573994546820d8dfe1e5791c"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a1ff0c207573994546820d8dfe1e5791c">onert::loader::BaseLoader::_buf_to_data</a></div><div class="ttdeci">std::unordered_map&lt; uint32_t, std::shared_ptr&lt; ir::Data &gt; &gt; _buf_to_data</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l00204">BaseLoader.h:204</a></div></div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a2500224c2e805fd7ba10f8f6cc5929e9"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a2500224c2e805fd7ba10f8f6cc5929e9">onert::loader::BaseLoader::~BaseLoader</a></div><div class="ttdeci">~BaseLoader()=default</div></div>
 <div class="ttc" id="aclassonert_1_1loader_1_1_base_loader_html_a258cb4ea179e17d7f86173efb4babf24"><div class="ttname"><a href="classonert_1_1loader_1_1_base_loader.html#a258cb4ea179e17d7f86173efb4babf24">onert::loader::BaseLoader::loadPool2DOptions</a></div><div class="ttdeci">void loadPool2DOptions(Param &amp;param, const Pool2DOptions *options)</div><div class="ttdef"><b>Definition</b> <a href="_base_loader_8h_source.html#l00640">BaseLoader.h:640</a></div></div>

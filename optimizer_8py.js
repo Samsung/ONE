@@ -1,4 +1,4 @@
 var optimizer_8py =
 [
-    [ "optimizer.optimizer.Optimizer", "classoptimizer_1_1optimizer_1_1_optimizer.html", "classoptimizer_1_1optimizer_1_1_optimizer" ]
+    [ "package.experimental.train.optimizer.optimizer.Optimizer", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer" ]
 ];

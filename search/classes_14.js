@@ -743,7 +743,7 @@ var searchData=
   ['traininginfo_740',['TrainingInfo',['../classonert_1_1ir_1_1train_1_1_training_info.html',1,'onert::ir::train']]],
   ['trainingkernelregistry_741',['TrainingKernelRegistry',['../classonert_1_1backend_1_1train_1_1ops_1_1_training_kernel_registry.html',1,'onert::backend::train::ops']]],
   ['trainresult_742',['TrainResult',['../structtraining__configure__tool_1_1_train_result.html',1,'training_configure_tool']]],
-  ['trainsession_743',['TrainSession',['../classsession_1_1_train_session.html',1,'session']]],
+  ['trainsession_743',['TrainSession',['../classpackage_1_1experimental_1_1train_1_1session_1_1_train_session.html',1,'package::experimental::train::session']]],
   ['transformer_744',['Transformer',['../classmir2loco_1_1_transformer.html',1,'mir2loco']]],
   ['transformminmaxtorelu6pass_745',['TransformMinMaxToRelu6Pass',['../structluci_1_1_transform_min_max_to_relu6_pass.html',1,'luci']]],
   ['transformminrelutorelu6pass_746',['TransformMinReluToRelu6Pass',['../structluci_1_1_transform_min_relu_to_relu6_pass.html',1,'luci']]],

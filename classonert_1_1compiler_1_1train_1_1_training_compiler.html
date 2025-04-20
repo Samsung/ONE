@@ -410,7 +410,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  181</span>      <span class="keyword">auto</span> &amp;<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = trainable_subg-&gt;operands().at(ind);</div>
 <div class="line"><span class="lineno">  182</span>      <span class="keyword">auto</span> new_shape = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.info().shape();</div>
 <div class="line"><span class="lineno">  183</span>      <span class="comment">// TODO Consider batch size index</span></div>
-<div class="line"><span class="lineno">  184</span>      <span class="keywordflow">if</span> (new_shape.dim(0) != 1)</div>
+<div class="line"><span class="lineno">  184</span>      <span class="keywordflow">if</span> (new_shape.dim(0) != 1 &amp;&amp; new_shape.dim(0) != ir::Shape::kUnspecifiedDim)</div>
 <div class="line"><span class="lineno">  185</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;the first dim is not 1. It is not supported yet.&quot;</span>);</div>
 <div class="line"><span class="lineno">  186</span>      new_shape.dim(0) = _training_info.<a class="code hl_function" href="classonert_1_1ir_1_1train_1_1_training_info.html#ab1f6a7ed20fdd59a629b8952b22afdbc">batchSize</a>();</div>
 <div class="line"><span class="lineno">  187</span>      <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>.info().shape(new_shape);</div>

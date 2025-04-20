@@ -1,5 +1,17 @@
 var NAVTREEINDEX30 =
 {
+"_t_f_squeeze_8h.html":[41,0,0,83,1,0,0,0,0,28],
+"_t_f_squeeze_8h_source.html":[41,0,0,83,1,0,0,0,0,28],
+"_t_f_stop_gradient_8h.html":[41,0,0,83,1,0,0,0,0,29],
+"_t_f_stop_gradient_8h_source.html":[41,0,0,83,1,0,0,0,0,29],
+"_t_f_strided_slice_8h.html":[41,0,0,83,1,0,0,0,0,30],
+"_t_f_strided_slice_8h_source.html":[41,0,0,83,1,0,0,0,0,30],
+"_t_f_sub_8h.html":[41,0,0,83,1,0,0,0,0,31],
+"_t_f_sub_8h_source.html":[41,0,0,83,1,0,0,0,0,31],
+"_t_f_tanh_8h.html":[41,0,0,83,1,0,0,0,0,32],
+"_t_f_tanh_8h_source.html":[41,0,0,83,1,0,0,0,0,32],
+"_t_f_type_inference_rule_8cpp.html":[41,0,0,83,3,1,0,1],
+"_t_f_type_inference_rule_8cpp.html#a2b5916874e9600c373b5f79dbd738018":[41,0,0,83,3,1,0,1,0],
 "_t_f_type_inference_rule_8cpp_source.html":[41,0,0,83,3,1,0,1],
 "_t_f_type_inference_rule_8h.html":[41,0,0,83,3,0,0,0,1],
 "_t_f_type_inference_rule_8h_source.html":[41,0,0,83,3,0,0,0,1],
@@ -237,17 +249,5 @@ var NAVTREEINDEX30 =
 "_train_config_data_8h.html#aad104162b66b4218c09ef3841eb82c61":[41,0,2,6,0,3,3],
 "_train_config_data_8h.html#aad104162b66b4218c09ef3841eb82c61a111f80a34537fcecdadfc3a924ec443c":[41,0,2,6,0,3,3,4],
 "_train_config_data_8h.html#aad104162b66b4218c09ef3841eb82c61a1459afa71326506984b267361645c0b3":[41,0,2,6,0,3,3,2],
-"_train_config_data_8h.html#aad104162b66b4218c09ef3841eb82c61a20bb4ced883209856f1758e4871a3ae8":[41,0,2,6,0,3,3,1],
-"_train_config_data_8h.html#aad104162b66b4218c09ef3841eb82c61a632d624897ecc8f010f9f7c2b8fb4a33":[41,0,2,6,0,3,3,3],
-"_train_config_data_8h.html#aad104162b66b4218c09ef3841eb82c61aee27678db5366b83ddaaa422ea9f65cb":[41,0,2,6,0,3,3,0],
-"_train_config_data_8h_source.html":[41,0,2,6,0,3],
-"_train_info_builder_8h.html":[41,0,3,2,2,1,4,2],
-"_train_info_builder_8h_source.html":[41,0,3,2,2,1,4,2],
-"_train_info_loader_8cc.html":[41,0,3,2,2,1,6,5],
-"_train_info_loader_8cc.html#a2378958fd4f3320e32e141eb326e452a":[41,0,3,2,2,1,6,5,0],
-"_train_info_loader_8cc_source.html":[41,0,3,2,2,1,6,5],
-"_train_info_loader_8h.html":[41,0,3,2,2,0,5,5],
-"_train_info_loader_8h.html#a2378958fd4f3320e32e141eb326e452a":[41,0,3,2,2,0,5,5,0],
-"_train_info_loader_8h.html#a91223507faa877aba38f06a3eb7405ef":[41,0,3,2,2,0,5,5,1],
-"_train_info_loader_8h_source.html":[41,0,3,2,2,0,5,5]
+"_train_config_data_8h.html#aad104162b66b4218c09ef3841eb82c61a20bb4ced883209856f1758e4871a3ae8":[41,0,2,6,0,3,3,1]
 };

@@ -1,4 +1,4 @@
 var categorical__accuracy_8py =
 [
-    [ "metrics.categorical_accuracy.CategoricalAccuracy", "classmetrics_1_1categorical__accuracy_1_1_categorical_accuracy.html", "classmetrics_1_1categorical__accuracy_1_1_categorical_accuracy" ]
+    [ "package.experimental.train.metrics.categorical_accuracy.CategoricalAccuracy", "classpackage_1_1experimental_1_1train_1_1metrics_1_1categorical__accuracy_1_1_categorical_accuracy.html", "classpackage_1_1experimental_1_1train_1_1metrics_1_1categorical__accuracy_1_1_categorical_accuracy" ]
 ];

@@ -10,7 +10,7 @@ var searchData=
   ['vecstropt2_7',['VecStrOpt2',['../_command_line_test_8cpp.html#aa1bdaea491a7834b47172fd90cdeb5c3',1,'CommandLineTest.cpp']]],
   ['vecstroptwithvals_8',['VecStrOptWithVals',['../_command_line_test_8cpp.html#ad6ff56e8aded180a59b90a80eacd7efc',1,'CommandLineTest.cpp']]],
   ['vector_5fdelimited_9',['vector_delimited',['../structflatbuffers_1_1_to_string_visitor.html#a766c67647be81c44de4d97cc0dcddca7',1,'flatbuffers::ToStringVisitor']]],
-  ['velocity_10',['velocity',['../classoptimizer_1_1sgd_1_1_s_g_d.html#a5796e435048a09b26a336acf3a033aec',1,'optimizer::sgd::SGD']]],
+  ['velocity_10',['velocity',['../classpackage_1_1experimental_1_1train_1_1optimizer_1_1sgd_1_1_s_g_d.html#a2486607404d3fef917c1cf7a82e44823',1,'package::experimental::train::optimizer::sgd::SGD']]],
   ['version_11',['version',['../structluci_1_1_op_code.html#a5cfc4c80107bb0e6504c8c686eb64be3',1,'luci::OpCode']]],
   ['vertical_12',['vertical',['../structonert_1_1ir_1_1_stride.html#a0b9506f5d3122aa564302452ffefb5db',1,'onert::ir::Stride']]],
   ['vertices_13',['vertices',['../class_topological_sort_helper_1_1_topological_sort_helper.html#a1f840cfce31dfe7089e78dc50caccf7c',1,'TopologicalSortHelper::TopologicalSortHelper']]]

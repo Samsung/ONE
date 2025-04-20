@@ -532,10 +532,10 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="nnfw__api_8cc_source.html#l00060">60</a> of file <a class="el" href="nnfw__api_8cc_source.html">nnfw_api.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   61</span>{</div>
-<div class="line"><span class="lineno">   62</span>  <span class="keyword">delete</span> <a class="code hl_namespace" href="namespacesession.html">session</a>;</div>
+<div class="line"><span class="lineno">   62</span>  <span class="keyword">delete</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>;</div>
 <div class="line"><span class="lineno">   63</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
 <div class="line"><span class="lineno">   64</span>}</div>
-<div class="ttc" id="anamespacesession_html"><div class="ttname"><a href="namespacesession.html">session</a></div><div class="ttdef"><b>Definition</b> <a href="experimental_2train_2session_8py_source.html#l00001">session.py:1</a></div></div>
+<div class="ttc" id="anamespaceenco_html_a862eb4da6e8b0c8f2bf11c7a8df6d684"><div class="ttname"><a href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">enco::session</a></div><div class="ttdeci">SessionID session(const coco::Module *m)</div><div class="ttdef"><b>Definition</b> <a href="enco_2core_2src_2_session_8cpp_source.html#l00048">Session.cpp:48</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00088">NNFW_STATUS_NO_ERROR</a>.</p>
 
@@ -571,7 +571,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>NNFW_STATUS_NO_ERROR if successful </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00390">390</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  390</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="structnnfw__session.html#abc067567cf760f641a4a2004fdf2bcb5">nnfw_session::create</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>); }</div>
+<div class="fragment"><div class="line"><span class="lineno">  390</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="structnnfw__session.html#abc067567cf760f641a4a2004fdf2bcb5">nnfw_session::create</a>(session); }</div>
 <div class="ttc" id="astructnnfw__session_html_abc067567cf760f641a4a2004fdf2bcb5"><div class="ttname"><a href="structnnfw__session.html#abc067567cf760f641a4a2004fdf2bcb5">nnfw_session::create</a></div><div class="ttdeci">static NNFW_STATUS create(nnfw_session **session)</div><div class="ttdoc">Factory method. It creates and initialize nnfw_session.</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00149">onert-micro.cpp:149</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_8cpp_source.html#l00149">nnfw_session::create()</a>.</p>
@@ -619,7 +619,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00392">392</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  393</span>{</div>
-<div class="line"><span class="lineno">  394</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;load_model_from_file(package_file_path);</div>
+<div class="line"><span class="lineno">  394</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;load_model_from_file(package_file_path);</div>
 <div class="line"><span class="lineno">  395</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="minimal_8cc_source.html#l00031">main()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00166">onert::api::python::NNFW_SESSION::NNFW_SESSION()</a>.</p>
@@ -666,7 +666,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00399">399</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  400</span>{</div>
-<div class="line"><span class="lineno">  401</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;train_run(update_weights);</div>
+<div class="line"><span class="lineno">  401</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_run(update_weights);</div>
 <div class="line"><span class="lineno">  402</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00269">onert::api::python::NNFW_SESSION::train()</a>.</p>
@@ -701,7 +701,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00409">409</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  410</span>{</div>
-<div class="line"><span class="lineno">  411</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;train_export_checkpoint(path);</div>
+<div class="line"><span class="lineno">  411</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_export_checkpoint(path);</div>
 <div class="line"><span class="lineno">  412</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00293">onert::api::python::NNFW_SESSION::train_export_checkpoint()</a>.</p>
@@ -747,7 +747,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00404">404</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  405</span>{</div>
-<div class="line"><span class="lineno">  406</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;train_export_circle(path);</div>
+<div class="line"><span class="lineno">  406</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_export_circle(path);</div>
 <div class="line"><span class="lineno">  407</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00281">onert::api::python::NNFW_SESSION::train_export_circle()</a>.</p>
@@ -800,8 +800,8 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00433">433</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  434</span>{</div>
-<div class="line"><span class="lineno">  435</span>  <a class="code hl_define" href="onert-micro_8cpp.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
-<div class="line"><span class="lineno">  436</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;train_get_loss(index, loss);</div>
+<div class="line"><span class="lineno">  435</span>  <a class="code hl_define" href="onert-micro_8cpp.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  436</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_get_loss(index, loss);</div>
 <div class="line"><span class="lineno">  437</span>}</div>
 <div class="ttc" id="aonert-micro_8cpp_html_a2254c17b16ddb9f9475d7488d6489a1c"><div class="ttname"><a href="onert-micro_8cpp.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a></div><div class="ttdeci">#define NNFW_RETURN_ERROR_IF_NULL(p)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00029">onert-micro.cpp:29</a></div></div>
 </div><!-- fragment -->
@@ -839,7 +839,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00414">414</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  415</span>{</div>
-<div class="line"><span class="lineno">  416</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;train_import_checkpoint(path);</div>
+<div class="line"><span class="lineno">  416</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_import_checkpoint(path);</div>
 <div class="line"><span class="lineno">  417</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00287">onert::api::python::NNFW_SESSION::train_import_checkpoint()</a>.</p>
@@ -875,7 +875,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd><code>NNFW_STATUS_NO_ERROR</code> if successful </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00397">397</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  397</span>{ <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;train_prepare(); }</div>
+<div class="fragment"><div class="line"><span class="lineno">  397</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_prepare(); }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00267">onert::api::python::NNFW_SESSION::train_prepare()</a>.</p>
 
@@ -934,8 +934,8 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00426">426</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  428</span>{</div>
-<div class="line"><span class="lineno">  429</span>  <a class="code hl_define" href="onert-micro_8cpp.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
-<div class="line"><span class="lineno">  430</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;train_set_expected(index, expected);</div>
+<div class="line"><span class="lineno">  429</span>  <a class="code hl_define" href="onert-micro_8cpp.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  430</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_expected(index, expected);</div>
 <div class="line"><span class="lineno">  431</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_8cpp_source.html#l00029">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
@@ -997,8 +997,8 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00419">419</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  421</span>{</div>
-<div class="line"><span class="lineno">  422</span>  <a class="code hl_define" href="onert-micro_8cpp.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
-<div class="line"><span class="lineno">  423</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;train_set_input(index, input);</div>
+<div class="line"><span class="lineno">  422</span>  <a class="code hl_define" href="onert-micro_8cpp.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  423</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_input(index, input);</div>
 <div class="line"><span class="lineno">  424</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_8cpp_source.html#l00029">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
@@ -1067,8 +1067,8 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00445">445</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  447</span>{</div>
-<div class="line"><span class="lineno">  448</span>  <a class="code hl_define" href="onert-micro_8cpp.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
-<div class="line"><span class="lineno">  449</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;train_set_output(index, type, buffer, length);</div>
+<div class="line"><span class="lineno">  448</span>  <a class="code hl_define" href="onert-micro_8cpp.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  449</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_output(index, type, buffer, length);</div>
 <div class="line"><span class="lineno">  450</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_8cpp_source.html#l00029">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
@@ -1116,8 +1116,8 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_8cpp_source.html#l00439">439</a> of file <a class="el" href="onert-micro_8cpp_source.html">onert-micro.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  440</span>{</div>
-<div class="line"><span class="lineno">  441</span>  <a class="code hl_define" href="onert-micro_8cpp.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
-<div class="line"><span class="lineno">  442</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;train_set_traininfo(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
+<div class="line"><span class="lineno">  441</span>  <a class="code hl_define" href="onert-micro_8cpp.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">  442</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_set_traininfo(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>);</div>
 <div class="line"><span class="lineno">  443</span>}</div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
 </div><!-- fragment -->

@@ -1,5 +1,12 @@
 var NAVTREEINDEX21 =
 {
+"_p_a_l_fully_connected_weight_grad_8h_source.html":[41,0,2,5,0,4,1,27],
+"_p_a_l_g_r_u_common_8h.html":[41,0,2,5,0,4,1,29],
+"_p_a_l_g_r_u_common_8h.html#addf23051aa4fdb41d61d03af1f4d9163":[41,0,2,5,0,4,1,29,0],
+"_p_a_l_g_r_u_common_8h_source.html":[41,0,2,5,0,4,1,29],
+"_p_a_l_g_r_u_weight_grad_8h.html":[41,0,2,5,0,4,1,30],
+"_p_a_l_g_r_u_weight_grad_8h.html#a99c93f6fa72bdcac318b81e3bd3f9dc0":[41,0,2,5,0,4,1,30,0],
+"_p_a_l_g_r_u_weight_grad_8h_source.html":[41,0,2,5,0,4,1,30],
 "_p_a_l_gather_8h.html":[41,0,0,62,1,1,11],
 "_p_a_l_gather_8h_source.html":[41,0,0,62,1,1,11],
 "_p_a_l_gelu_8h.html":[41,0,0,62,1,1,12],
@@ -242,12 +249,5 @@ var NAVTREEINDEX21 =
 "_padding_utils_8h_source.html":[41,0,0,38,2,0,0,21],
 "_palette_8py.html":[41,0,0,135,0,3],
 "_palette_8py_source.html":[41,0,0,135,0,3],
-"_parallel_executor_8cc.html":[41,0,3,2,2,1,3,33],
-"_parallel_executor_8cc_source.html":[41,0,3,2,2,1,3,33],
-"_parallel_executor_8h.html":[41,0,3,2,2,1,3,34],
-"_parallel_executor_8h_source.html":[41,0,3,2,2,1,3,34],
-"_parallel_scheduler_8cc.html":[41,0,3,2,2,1,3,35],
-"_parallel_scheduler_8cc_source.html":[41,0,3,2,2,1,3,35],
-"_parallel_scheduler_8h.html":[41,0,3,2,2,1,3,36],
-"_parallel_scheduler_8h_source.html":[41,0,3,2,2,1,3,36]
+"_parallel_executor_8cc.html":[41,0,3,2,2,1,3,33]
 };

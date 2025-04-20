@@ -157,6 +157,10 @@ var annotated_dup =
       [ "ScratchpadHelperMCU", "classcircle__planner_1_1_scratchpad_helper_m_c_u.html", "classcircle__planner_1_1_scratchpad_helper_m_c_u" ],
       [ "TargetPlatform", "structcircle__planner_1_1_target_platform.html", "structcircle__planner_1_1_target_platform" ]
     ] ],
+    [ "circle_resizer", "namespacecircle__resizer.html", [
+      [ "Dim", "classcircle__resizer_1_1_dim.html", "classcircle__resizer_1_1_dim" ],
+      [ "Shape", "classcircle__resizer_1_1_shape.html", "classcircle__resizer_1_1_shape" ]
+    ] ],
     [ "circlechef", "namespacecirclechef.html", [
       [ "CircleImport", "classcirclechef_1_1_circle_import.html", "classcirclechef_1_1_circle_import" ],
       [ "CircleOpBatchMatMul", "classcirclechef_1_1_circle_op_batch_mat_mul.html", "classcirclechef_1_1_circle_op_batch_mat_mul" ],
@@ -914,20 +918,6 @@ var annotated_dup =
       [ "ResolveDuplicateReshapePass", "classlogo_1_1_resolve_duplicate_reshape_pass.html", "classlogo_1_1_resolve_duplicate_reshape_pass" ],
       [ "ResolveRedundantReshapePass", "classlogo_1_1_resolve_redundant_reshape_pass.html", "classlogo_1_1_resolve_redundant_reshape_pass" ],
       [ "SimplifyDomainConversionPass", "structlogo_1_1_simplify_domain_conversion_pass.html", "structlogo_1_1_simplify_domain_conversion_pass" ]
-    ] ],
-    [ "losses", "namespacelosses.html", [
-      [ "cce", "namespacelosses_1_1cce.html", [
-        [ "CategoricalCrossentropy", "classlosses_1_1cce_1_1_categorical_crossentropy.html", "classlosses_1_1cce_1_1_categorical_crossentropy" ]
-      ] ],
-      [ "loss", "namespacelosses_1_1loss.html", [
-        [ "LossFunction", "classlosses_1_1loss_1_1_loss_function.html", "classlosses_1_1loss_1_1_loss_function" ]
-      ] ],
-      [ "mse", "namespacelosses_1_1mse.html", [
-        [ "MeanSquaredError", "classlosses_1_1mse_1_1_mean_squared_error.html", "classlosses_1_1mse_1_1_mean_squared_error" ]
-      ] ],
-      [ "registry", "namespacelosses_1_1registry.html", [
-        [ "LossRegistry", "classlosses_1_1registry_1_1_loss_registry.html", null ]
-      ] ]
     ] ],
     [ "luci", "namespaceluci.html", [
       [ "compute", "namespaceluci_1_1compute.html", [
@@ -1987,17 +1977,6 @@ var annotated_dup =
     ] ],
     [ "Mean_000", "namespace_mean__000.html", [
       [ "Mean_000_Q8", "class_mean__000_1_1_mean__000___q8.html", "class_mean__000_1_1_mean__000___q8" ]
-    ] ],
-    [ "metrics", "namespacemetrics.html", [
-      [ "categorical_accuracy", "namespacemetrics_1_1categorical__accuracy.html", [
-        [ "CategoricalAccuracy", "classmetrics_1_1categorical__accuracy_1_1_categorical_accuracy.html", "classmetrics_1_1categorical__accuracy_1_1_categorical_accuracy" ]
-      ] ],
-      [ "metric", "namespacemetrics_1_1metric.html", [
-        [ "Metric", "classmetrics_1_1metric_1_1_metric.html", "classmetrics_1_1metric_1_1_metric" ]
-      ] ],
-      [ "registry", "namespacemetrics_1_1registry.html", [
-        [ "MetricsRegistry", "classmetrics_1_1registry_1_1_metrics_registry.html", null ]
-      ] ]
     ] ],
     [ "minmax_embedder", "namespaceminmax__embedder.html", [
       [ "h5", "namespaceminmax__embedder_1_1h5.html", [
@@ -3829,20 +3808,6 @@ var annotated_dup =
     [ "optimized_ops", "namespaceoptimized__ops.html", [
       [ "FloatDepthwiseConvKernel", "structoptimized__ops_1_1_float_depthwise_conv_kernel.html", null ]
     ] ],
-    [ "optimizer", "namespaceoptimizer.html", [
-      [ "adam", "namespaceoptimizer_1_1adam.html", [
-        [ "Adam", "classoptimizer_1_1adam_1_1_adam.html", "classoptimizer_1_1adam_1_1_adam" ]
-      ] ],
-      [ "optimizer", "namespaceoptimizer_1_1optimizer.html", [
-        [ "Optimizer", "classoptimizer_1_1optimizer_1_1_optimizer.html", "classoptimizer_1_1optimizer_1_1_optimizer" ]
-      ] ],
-      [ "registry", "namespaceoptimizer_1_1registry.html", [
-        [ "OptimizerRegistry", "classoptimizer_1_1registry_1_1_optimizer_registry.html", null ]
-      ] ],
-      [ "sgd", "namespaceoptimizer_1_1sgd.html", [
-        [ "SGD", "classoptimizer_1_1sgd_1_1_s_g_d.html", "classoptimizer_1_1sgd_1_1_s_g_d" ]
-      ] ]
-    ] ],
     [ "OptionBuilder", "namespace_option_builder.html", [
       [ "OptionBuilder", "class_option_builder_1_1_option_builder.html", "class_option_builder_1_1_option_builder" ]
     ] ],
@@ -3850,6 +3815,55 @@ var annotated_dup =
       [ "common", "namespacepackage_1_1common.html", [
         [ "basesession", "namespacepackage_1_1common_1_1basesession.html", [
           [ "BaseSession", "classpackage_1_1common_1_1basesession_1_1_base_session.html", "classpackage_1_1common_1_1basesession_1_1_base_session" ]
+        ] ]
+      ] ],
+      [ "experimental", "namespacepackage_1_1experimental.html", [
+        [ "train", "namespacepackage_1_1experimental_1_1train.html", [
+          [ "dataloader", "namespacepackage_1_1experimental_1_1train_1_1dataloader.html", [
+            [ "DataLoader", "classpackage_1_1experimental_1_1train_1_1dataloader_1_1_data_loader.html", "classpackage_1_1experimental_1_1train_1_1dataloader_1_1_data_loader" ]
+          ] ],
+          [ "losses", "namespacepackage_1_1experimental_1_1train_1_1losses.html", [
+            [ "cce", "namespacepackage_1_1experimental_1_1train_1_1losses_1_1cce.html", [
+              [ "CategoricalCrossentropy", "classpackage_1_1experimental_1_1train_1_1losses_1_1cce_1_1_categorical_crossentropy.html", "classpackage_1_1experimental_1_1train_1_1losses_1_1cce_1_1_categorical_crossentropy" ]
+            ] ],
+            [ "loss", "namespacepackage_1_1experimental_1_1train_1_1losses_1_1loss.html", [
+              [ "LossFunction", "classpackage_1_1experimental_1_1train_1_1losses_1_1loss_1_1_loss_function.html", "classpackage_1_1experimental_1_1train_1_1losses_1_1loss_1_1_loss_function" ]
+            ] ],
+            [ "mse", "namespacepackage_1_1experimental_1_1train_1_1losses_1_1mse.html", [
+              [ "MeanSquaredError", "classpackage_1_1experimental_1_1train_1_1losses_1_1mse_1_1_mean_squared_error.html", "classpackage_1_1experimental_1_1train_1_1losses_1_1mse_1_1_mean_squared_error" ]
+            ] ],
+            [ "registry", "namespacepackage_1_1experimental_1_1train_1_1losses_1_1registry.html", [
+              [ "LossRegistry", "classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html", null ]
+            ] ]
+          ] ],
+          [ "metrics", "namespacepackage_1_1experimental_1_1train_1_1metrics.html", [
+            [ "categorical_accuracy", "namespacepackage_1_1experimental_1_1train_1_1metrics_1_1categorical__accuracy.html", [
+              [ "CategoricalAccuracy", "classpackage_1_1experimental_1_1train_1_1metrics_1_1categorical__accuracy_1_1_categorical_accuracy.html", "classpackage_1_1experimental_1_1train_1_1metrics_1_1categorical__accuracy_1_1_categorical_accuracy" ]
+            ] ],
+            [ "metric", "namespacepackage_1_1experimental_1_1train_1_1metrics_1_1metric.html", [
+              [ "Metric", "classpackage_1_1experimental_1_1train_1_1metrics_1_1metric_1_1_metric.html", "classpackage_1_1experimental_1_1train_1_1metrics_1_1metric_1_1_metric" ]
+            ] ],
+            [ "registry", "namespacepackage_1_1experimental_1_1train_1_1metrics_1_1registry.html", [
+              [ "MetricsRegistry", "classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html", null ]
+            ] ]
+          ] ],
+          [ "optimizer", "namespacepackage_1_1experimental_1_1train_1_1optimizer.html", [
+            [ "adam", "namespacepackage_1_1experimental_1_1train_1_1optimizer_1_1adam.html", [
+              [ "Adam", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam" ]
+            ] ],
+            [ "optimizer", "namespacepackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer.html", [
+              [ "Optimizer", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer" ]
+            ] ],
+            [ "registry", "namespacepackage_1_1experimental_1_1train_1_1optimizer_1_1registry.html", [
+              [ "OptimizerRegistry", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1registry_1_1_optimizer_registry.html", null ]
+            ] ],
+            [ "sgd", "namespacepackage_1_1experimental_1_1train_1_1optimizer_1_1sgd.html", [
+              [ "SGD", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1sgd_1_1_s_g_d.html", "classpackage_1_1experimental_1_1train_1_1optimizer_1_1sgd_1_1_s_g_d" ]
+            ] ]
+          ] ],
+          [ "session", "namespacepackage_1_1experimental_1_1train_1_1session.html", [
+            [ "TrainSession", "classpackage_1_1experimental_1_1train_1_1session_1_1_train_session.html", "classpackage_1_1experimental_1_1train_1_1session_1_1_train_session" ]
+          ] ]
         ] ]
       ] ],
       [ "infer", "namespacepackage_1_1infer.html", [
@@ -3910,9 +3924,6 @@ var annotated_dup =
     ] ],
     [ "Reshape_000", "namespace_reshape__000.html", [
       [ "Reshape_000_Q8", "class_reshape__000_1_1_reshape__000___q8.html", "class_reshape__000_1_1_reshape__000___q8" ]
-    ] ],
-    [ "session", "namespacesession.html", [
-      [ "TrainSession", "classsession_1_1_train_session.html", "classsession_1_1_train_session" ]
     ] ],
     [ "SingleOperatorTest", "namespace_single_operator_test.html", [
       [ "SingleOperatorTest", "class_single_operator_test_1_1_single_operator_test.html", "class_single_operator_test_1_1_single_operator_test" ]

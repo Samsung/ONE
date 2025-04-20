@@ -152,10 +152,10 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="nnfw__internal_8cc_source.html#l00036">36</a> of file <a class="el" href="nnfw__internal_8cc_source.html">nnfw_internal.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  <a class="code hl_define" href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
-<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;get_config(key, value, value_size);</div>
+<div class="line"><span class="lineno">   38</span>  <a class="code hl_define" href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;get_config(key, value, value_size);</div>
 <div class="line"><span class="lineno">   40</span>}</div>
-<div class="ttc" id="anamespacesession_html"><div class="ttname"><a href="namespacesession.html">session</a></div><div class="ttdef"><b>Definition</b> <a href="experimental_2train_2session_8py_source.html#l00001">session.py:1</a></div></div>
+<div class="ttc" id="anamespaceenco_html_a862eb4da6e8b0c8f2bf11c7a8df6d684"><div class="ttname"><a href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">enco::session</a></div><div class="ttdeci">SessionID session(const coco::Module *m)</div><div class="ttdef"><b>Definition</b> <a href="enco_2core_2src_2_session_8cpp_source.html#l00048">Session.cpp:48</a></div></div>
 <div class="ttc" id="annfw__internal_8cc_html_a2254c17b16ddb9f9475d7488d6489a1c"><div class="ttname"><a href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a></div><div class="ttdeci">#define NNFW_RETURN_ERROR_IF_NULL(p)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__internal_8cc_source.html#l00023">nnfw_internal.cc:23</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__internal_8cc_source.html#l00023">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
@@ -208,8 +208,8 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="nnfw__internal_8cc_source.html#l00042">42</a> of file <a class="el" href="nnfw__internal_8cc_source.html">nnfw_internal.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
-<div class="line"><span class="lineno">   44</span>  <a class="code hl_define" href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
-<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;load_circle_from_buffer(buffer, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">   44</span>  <a class="code hl_define" href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">   45</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;load_circle_from_buffer(buffer, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
 <div class="line"><span class="lineno">   46</span>}</div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
@@ -251,8 +251,8 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="nnfw__internal_8cc_source.html#l00030">30</a> of file <a class="el" href="nnfw__internal_8cc_source.html">nnfw_internal.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   31</span>{</div>
-<div class="line"><span class="lineno">   32</span>  <a class="code hl_define" href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;set_config(key, value);</div>
+<div class="line"><span class="lineno">   32</span>  <a class="code hl_define" href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">   33</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;set_config(key, value);</div>
 <div class="line"><span class="lineno">   34</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__internal_8cc_source.html#l00023">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
@@ -298,8 +298,8 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="nnfw__internal_8cc_source.html#l00048">48</a> of file <a class="el" href="nnfw__internal_8cc_source.html">nnfw_internal.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
-<div class="line"><span class="lineno">   50</span>  <a class="code hl_define" href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(<a class="code hl_namespace" href="namespacesession.html">session</a>);</div>
-<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespacesession.html">session</a>-&gt;train_export_circleplus(path);</div>
+<div class="line"><span class="lineno">   50</span>  <a class="code hl_define" href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">   51</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;train_export_circleplus(path);</div>
 <div class="line"><span class="lineno">   52</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__internal_8cc_source.html#l00023">NNFW_RETURN_ERROR_IF_NULL</a>.</p>

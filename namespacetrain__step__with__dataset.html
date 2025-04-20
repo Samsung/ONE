@@ -156,15 +156,13 @@ Returns:
 <div class="line"><span class="lineno">   56</span><span class="stringliteral">        object: An instance of the specified loss function.</span></div>
 <div class="line"><span class="lineno">   57</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> loss_type.lower() == <span class="stringliteral">&quot;mse&quot;</span>:</div>
-<div class="line"><span class="lineno">   59</span>        <span class="keywordflow">return</span> <a class="code hl_class" href="classlosses_1_1mse_1_1_mean_squared_error.html">losses.MeanSquaredError</a>(reduction=reduction)</div>
+<div class="line"><span class="lineno">   59</span>        <span class="keywordflow">return</span> losses.MeanSquaredError(reduction=reduction)</div>
 <div class="line"><span class="lineno">   60</span>    <span class="keywordflow">elif</span> loss_type.lower() == <span class="stringliteral">&quot;cce&quot;</span>:</div>
-<div class="line"><span class="lineno">   61</span>        <span class="keywordflow">return</span> <a class="code hl_class" href="classlosses_1_1cce_1_1_categorical_crossentropy.html">losses.CategoricalCrossentropy</a>(reduction=reduction)</div>
+<div class="line"><span class="lineno">   61</span>        <span class="keywordflow">return</span> losses.CategoricalCrossentropy(reduction=reduction)</div>
 <div class="line"><span class="lineno">   62</span>    <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">   63</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown loss type: {loss_type}&quot;</span>)</div>
 <div class="line"><span class="lineno">   64</span> </div>
 <div class="line"><span class="lineno">   65</span> </div>
-<div class="ttc" id="aclasslosses_1_1cce_1_1_categorical_crossentropy_html"><div class="ttname"><a href="classlosses_1_1cce_1_1_categorical_crossentropy.html">losses.cce.CategoricalCrossentropy</a></div><div class="ttdef"><b>Definition</b> <a href="cce_8py_source.html#l00005">cce.py:5</a></div></div>
-<div class="ttc" id="aclasslosses_1_1mse_1_1_mean_squared_error_html"><div class="ttname"><a href="classlosses_1_1mse_1_1_mean_squared_error.html">losses.mse.MeanSquaredError</a></div><div class="ttdef"><b>Definition</b> <a href="mse_8py_source.html#l00005">mse.py:5</a></div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="train__step__with__dataset_8py_source.html#l00066">train_steps()</a>.</p>
 
@@ -221,15 +219,13 @@ Returns:
 <div class="line"><span class="lineno">   39</span><span class="stringliteral">        Optimizer: The created optimizer instance.</span></div>
 <div class="line"><span class="lineno">   40</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> optimizer_type.lower() == <span class="stringliteral">&quot;sgd&quot;</span>:</div>
-<div class="line"><span class="lineno">   42</span>        <span class="keywordflow">return</span> <a class="code hl_class" href="classoptimizer_1_1sgd_1_1_s_g_d.html">optimizer.SGD</a>(learning_rate=learning_rate, **kwargs)</div>
+<div class="line"><span class="lineno">   42</span>        <span class="keywordflow">return</span> optimizer.SGD(learning_rate=learning_rate, **kwargs)</div>
 <div class="line"><span class="lineno">   43</span>    <span class="keywordflow">elif</span> optimizer_type.lower() == <span class="stringliteral">&quot;adam&quot;</span>:</div>
-<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">return</span> <a class="code hl_class" href="classoptimizer_1_1adam_1_1_adam.html">optimizer.Adam</a>(learning_rate=learning_rate, **kwargs)</div>
+<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">return</span> optimizer.Adam(learning_rate=learning_rate, **kwargs)</div>
 <div class="line"><span class="lineno">   45</span>    <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">   46</span>        <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown optimizer type: {optimizer_type}&quot;</span>)</div>
 <div class="line"><span class="lineno">   47</span> </div>
 <div class="line"><span class="lineno">   48</span> </div>
-<div class="ttc" id="aclassoptimizer_1_1adam_1_1_adam_html"><div class="ttname"><a href="classoptimizer_1_1adam_1_1_adam.html">optimizer.adam.Adam</a></div><div class="ttdef"><b>Definition</b> <a href="adam_8py_source.html#l00004">adam.py:4</a></div></div>
-<div class="ttc" id="aclassoptimizer_1_1sgd_1_1_s_g_d_html"><div class="ttname"><a href="classoptimizer_1_1sgd_1_1_s_g_d.html">optimizer.sgd.SGD</a></div><div class="ttdef"><b>Definition</b> <a href="sgd_8py_source.html#l00004">sgd.py:4</a></div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="train__step__with__dataset_8py_source.html#l00066">train_steps()</a>.</p>
 
@@ -303,7 +299,7 @@ Returns:
 <div class="line"><span class="lineno">   68</span><span class="stringliteral">    Main function to train the model.</span></div>
 <div class="line"><span class="lineno">   69</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><span class="lineno">   70</span>    <span class="comment"># Create session and load nnpackage</span></div>
-<div class="line"><span class="lineno">   71</span>    sess = <a class="code hl_namespace" href="namespacesession.html">session</a>(args.nnpkg, args.backends)</div>
+<div class="line"><span class="lineno">   71</span>    sess = session(args.nnpkg, args.backends)</div>
 <div class="line"><span class="lineno">   72</span> </div>
 <div class="line"><span class="lineno">   73</span>    <span class="comment"># Load data</span></div>
 <div class="line"><span class="lineno">   74</span>    input_shape = sess.input_tensorinfo(0).dims</div>
@@ -328,7 +324,7 @@ Returns:
 <div class="line"><span class="lineno">   93</span>    sess.compile(optimizer=opt_fn, loss=loss_fn, batch_size=args.batch_size)</div>
 <div class="line"><span class="lineno">   94</span> </div>
 <div class="line"><span class="lineno">   95</span>    <span class="comment"># Train model</span></div>
-<div class="line"><span class="lineno">   96</span>    mtrs = [<a class="code hl_class" href="classmetrics_1_1categorical__accuracy_1_1_categorical_accuracy.html">metrics.CategoricalAccuracy</a>()]</div>
+<div class="line"><span class="lineno">   96</span>    mtrs = [metrics.CategoricalAccuracy()]</div>
 <div class="line"><span class="lineno">   97</span>    total_loss = 0.0</div>
 <div class="line"><span class="lineno">   98</span>    metric_aggregates = {metric.__class__.__name__: 0.0 <span class="keywordflow">for</span> metric <span class="keywordflow">in</span> mtrs}</div>
 <div class="line"><span class="lineno">   99</span>    train_time = 0.0</div>
@@ -366,8 +362,6 @@ Returns:
 <div class="line"><span class="lineno">  131</span>    print(f<span class="stringliteral">&quot;nnpackage {args.nnpkg.split(&#39;/&#39;)[-1]} trains successfully.&quot;</span>)</div>
 <div class="line"><span class="lineno">  132</span> </div>
 <div class="line"><span class="lineno">  133</span> </div>
-<div class="ttc" id="aclassmetrics_1_1categorical__accuracy_1_1_categorical_accuracy_html"><div class="ttname"><a href="classmetrics_1_1categorical__accuracy_1_1_categorical_accuracy.html">metrics.categorical_accuracy.CategoricalAccuracy</a></div><div class="ttdef"><b>Definition</b> <a href="categorical__accuracy_8py_source.html#l00005">categorical_accuracy.py:5</a></div></div>
-<div class="ttc" id="anamespacesession_html"><div class="ttname"><a href="namespacesession.html">session</a></div><div class="ttdef"><b>Definition</b> <a href="experimental_2train_2session_8py_source.html#l00001">session.py:1</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="train__step__with__dataset_8py_source.html#l00049">createLoss()</a>, and <a class="el" href="train__step__with__dataset_8py_source.html#l00031">createOptimizer()</a>.</p>
 

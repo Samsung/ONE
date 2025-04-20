@@ -116,8 +116,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9029dfe0dd1ae9a9add56a5bd5064bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20f26f4bec0243556be2145d6f6bb2a0" id="r_a20f26f4bec0243556be2145d6f6bb2a0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_shape.html#a20f26f4bec0243556be2145d6f6bb2a0">Shape</a> (std::initializer_list&lt; int32_t &gt; dimensions)</td></tr>
 <tr class="separator:a20f26f4bec0243556be2145d6f6bb2a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a530b621694e26ce618cb936985d9e4de" id="r_a530b621694e26ce618cb936985d9e4de"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a> () const</td></tr>
-<tr class="separator:a530b621694e26ce618cb936985d9e4de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9456bf7a80d24045b7e87f1eea5f72b3" id="r_a9456bf7a80d24045b7e87f1eea5f72b3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_shape.html#a9456bf7a80d24045b7e87f1eea5f72b3">rank</a> () const</td></tr>
+<tr class="separator:a9456bf7a80d24045b7e87f1eea5f72b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab06eabb8e3462971aca274bf44b5056b" id="r_ab06eabb8e3462971aca274bf44b5056b"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; int32_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_shape.html#ab06eabb8e3462971aca274bf44b5056b">dims</a> () const</td></tr>
 <tr class="separator:ab06eabb8e3462971aca274bf44b5056b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c78b1b9d3b66da28ddacb66cd1ea305" id="r_a3c78b1b9d3b66da28ddacb66cd1ea305"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">dim</a> (int i) const</td></tr>
@@ -291,7 +291,7 @@ Static Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_shape_8cc_source.html#l00027">27</a> of file <a class="el" href="_shape_8cc_source.html">Shape.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   28</span>{</div>
-<div class="line"><span class="lineno">   29</span>  assert(<a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() == 4);</div>
+<div class="line"><span class="lineno">   29</span>  assert(<a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a9456bf7a80d24045b7e87f1eea5f72b3">rank</a>() == 4);</div>
 <div class="line"><span class="lineno">   30</span> </div>
 <div class="line"><span class="lineno">   31</span>  <span class="comment">// Feature Map in NHWC layout</span></div>
 <div class="line"><span class="lineno">   32</span>  <span class="comment">//  - Dimension(0) -&gt; Batch</span></div>
@@ -306,7 +306,7 @@ Static Public Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   41</span>  <span class="keywordflow">return</span> {batch, depth, height, width};</div>
 <div class="line"><span class="lineno">   42</span>}</div>
 <div class="ttc" id="astructonert_1_1ir_1_1_shape_html_a3c78b1b9d3b66da28ddacb66cd1ea305"><div class="ttname"><a href="structonert_1_1ir_1_1_shape.html#a3c78b1b9d3b66da28ddacb66cd1ea305">onert::ir::Shape::dim</a></div><div class="ttdeci">int32_t dim(int i) const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00085">Shape.h:85</a></div></div>
-<div class="ttc" id="astructonert_1_1ir_1_1_shape_html_a530b621694e26ce618cb936985d9e4de"><div class="ttname"><a href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">onert::ir::Shape::rank</a></div><div class="ttdeci">int rank() const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00081">Shape.h:81</a></div></div>
+<div class="ttc" id="astructonert_1_1ir_1_1_shape_html_a9456bf7a80d24045b7e87f1eea5f72b3"><div class="ttname"><a href="structonert_1_1ir_1_1_shape.html#a9456bf7a80d24045b7e87f1eea5f72b3">onert::ir::Shape::rank</a></div><div class="ttdeci">int rank() const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00081">Shape.h:81</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -365,8 +365,8 @@ Static Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00085">85</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   86</span>  {</div>
-<div class="line"><span class="lineno">   87</span>    assert(<a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() != 0 || i == 0);</div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() == 0 ? 1 : _dimensions.at(i);</div>
+<div class="line"><span class="lineno">   87</span>    assert(<a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a9456bf7a80d24045b7e87f1eea5f72b3">rank</a>() != 0 || i == 0);</div>
+<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a9456bf7a80d24045b7e87f1eea5f72b3">rank</a>() == 0 ? 1 : _dimensions.at(i);</div>
 <div class="line"><span class="lineno">   89</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html#l00081">rank()</a>.</p>
@@ -427,8 +427,8 @@ Static Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_shape_8cc_source.html#l00045">45</a> of file <a class="el" href="_shape_8cc_source.html">Shape.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span>  assert(to_rank - <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>() &gt;= 0);</div>
-<div class="line"><span class="lineno">   48</span>  _dimensions.insert(_dimensions.cbegin(), to_rank - <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a530b621694e26ce618cb936985d9e4de">rank</a>(), 1);</div>
+<div class="line"><span class="lineno">   47</span>  assert(to_rank - <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a9456bf7a80d24045b7e87f1eea5f72b3">rank</a>() &gt;= 0);</div>
+<div class="line"><span class="lineno">   48</span>  _dimensions.insert(_dimensions.cbegin(), to_rank - <a class="code hl_function" href="structonert_1_1ir_1_1_shape.html#a9456bf7a80d24045b7e87f1eea5f72b3">rank</a>(), 1);</div>
 <div class="line"><span class="lineno">   49</span>}</div>
 </div><!-- fragment -->
 </div>
@@ -535,8 +535,8 @@ Static Public Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a530b621694e26ce618cb936985d9e4de" name="a530b621694e26ce618cb936985d9e4de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a530b621694e26ce618cb936985d9e4de">&#9670;&#160;</a></span>rank()</h2>
+<a id="a9456bf7a80d24045b7e87f1eea5f72b3" name="a9456bf7a80d24045b7e87f1eea5f72b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9456bf7a80d24045b7e87f1eea5f72b3">&#9670;&#160;</a></span>rank()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -545,7 +545,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int onert::ir::Shape::rank </td>
+          <td class="memname">size_t Shape::rank </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -616,6 +616,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 <hr/>The documentation for this struct was generated from the following files:<ul>
 <li>runtime/onert/core/include/ir/<a class="el" href="runtime_2onert_2core_2include_2ir_2_shape_8h_source.html">Shape.h</a></li>
+<li>compiler/circle-resizer/src/<a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html">Shape.cpp</a></li>
 <li>runtime/onert/core/src/ir/<a class="el" href="_shape_8cc_source.html">Shape.cc</a></li>
 </ul>
 </div><!-- contents -->

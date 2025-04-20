@@ -9,7 +9,7 @@ var searchData=
   ['recurrent_5ffc_5fparams_6',['recurrent_fc_params',['../structluci__interpreter_1_1lstm_1_1_gate_parameters.html#a151c23f2f4b3c36fa8c669fe28e3e3cd',1,'luci_interpreter::lstm::GateParameters']]],
   ['reds_7',['reds',['../namespacejpeg2hdf5.html#a2732c65a7b5f721cc9d35878b40fa8b5',1,'jpeg2hdf5']]],
   ['reduce_5ftype_8',['reduce_type',['../structonert_1_1ir_1_1operation_1_1_reduce_1_1_param.html#a805c8bbbd0c80d4522708af77e27a565',1,'onert::ir::operation::Reduce::Param']]],
-  ['reduction_9',['reduction',['../classlosses_1_1loss_1_1_loss_function.html#a9f450ff0be97bf43b0c6768c2a50384c',1,'losses::loss::LossFunction']]],
+  ['reduction_9',['reduction',['../classpackage_1_1experimental_1_1train_1_1losses_1_1loss_1_1_loss_function.html#a07e752f11d4c702cbe8f2085c66d2da0',1,'package::experimental::train::losses::loss::LossFunction']]],
   ['reduction_5ftype_10',['reduction_type',['../structnnfw__loss__info.html#ad31bfd7b92afe822f93665b8a30e9b19',1,'nnfw_loss_info::reduction_type'],['../structonert_1_1ir_1_1train_1_1_loss_info.html#a556b7f82e06213c28641a78a7b04cca9',1,'onert::ir::train::LossInfo::reduction_type']]],
   ['refcount_11',['refcount',['../structflatbuffers_1_1_definition.html#a5cd946cbd99418223542fc54abae6b53',1,'flatbuffers::Definition']]],
   ['reference_12',['Reference',['../classflexbuffers_1_1_typed_vector.html#ade8c6c90a135bd70a188ff45df2b06bc',1,'flexbuffers::TypedVector']]],
