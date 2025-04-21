@@ -82,7 +82,7 @@ def benchmark_inference(nnpackage_path: str, backends: str, input_shapes: List[L
         total_io += metrics["io_time_ms"]
         total_run += metrics["run_time_ms"]
 
-    execute_kb = get_memory_usage_mb() * 1024
+    execute_kb = get_memory_usage_mb() * 1024 - mem_before_kb
 
     print("======= Inference Benchmark =======")
     print(f"- Warmup runs   : 3")
