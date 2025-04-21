@@ -1,0 +1,40 @@
+#!/usr/bin/make -f
+
+export NNCC_WORKSPACE=build/debian
+export NNCC_INSTALL_PREFIX=$(CURDIR)/debian/tmp/usr/
+
+%:
+	dh $@
+
+override_dh_auto_clean:
+	# skip clean
+
+override_dh_auto_configure:
+	CIRCLEINT_ITEMS="angkor;cwrap;pepper-str;pepper-strcast;pepper-csv2vec;pp"
+	CIRCLEINT_ITEMS="${CIRCLEINT_ITEMS};oops;loco;logo-core;logo;locop"
+	CIRCLEINT_ITEMS="${CIRCLEINT_ITEMS};hermes;hermes-std;safemain;mio-circle08"
+	CIRCLEINT_ITEMS="${CIRCLEINT_ITEMS};luci-compute;luci;luci-interpreter"
+	CIRCLEINT_ITEMS="${CIRCLEINT_ITEMS};foder;arser;vconone;circle-interpreter"
+
+	./nncc configure \
+		-DENABLE_STRICT_BUILD=ON \
+		-DENABLE_TEST=OFF \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DEXTERNALS_BUILD_THREADS=4 \
+		-DCMAKE_INSTALL_PREFIX=${NNCC_INSTALL_PREFIX} \
+		-DBUILD_WHITELIST="${CIRCLEINT_ITEMS}"
+
+override_dh_auto_build:
+	./nncc build -j4
+
+override_dh_auto_test:
+	# skip test
+
+override_dh_auto_install:
+	cmake --build ${NNCC_WORKSPACE} -- install
+
+override_dh_shlibdeps:
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
+
+override_dh_builddeb:
+	dh_builddeb -- -Zgzip

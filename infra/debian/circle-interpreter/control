@@ -1,0 +1,11 @@
+Source: circle-interpreter
+Section: devel
+Priority: optional
+Build-Depends: devscripts, debhelper, cmake
+Maintainer: Neural Network Acceleration Solution Developers <nnfw@samsung.com>
+
+Package: circle-interpreter
+Homepage: https://github.com/Samsung/ONE
+Standards-Version: 3.9.8
+Architecture: amd64
+Description: Interpreter for circle model
