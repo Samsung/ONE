@@ -30,7 +30,7 @@ TEST(CKer_Operation, StridedSlice5D)
   op_params.strides_count = 5;
 
   op_params.stop_indices[0] = 1;
-  op_params.stop_indices[1] = 2;
+  op_params.stop_indices[1] = 1;
   op_params.stop_indices[2] = 2;
   op_params.stop_indices[3] = 2;
   op_params.stop_indices[4] = 2;
@@ -41,10 +41,10 @@ TEST(CKer_Operation, StridedSlice5D)
   op_params.strides[3] = 1;
   op_params.strides[4] = 1;
 
-  nnfw::cker::Shape input_shape{2, 2, 2, 2, 2};
+  nnfw::cker::Shape input_shape{2, 1, 2, 2, 2};
   std::vector<float> input = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 
-  nnfw::cker::Shape output_shape{1, 2, 2, 2, 2};
+  nnfw::cker::Shape output_shape{1, 1, 2, 2, 2};
   std::vector<float> output(output_shape.FlatSize());
 
   nnfw::cker::StridedSlice(op_params, input_shape, input.data(), output_shape, output.data());
@@ -62,7 +62,7 @@ TEST(CKer_Operation, neg_StridedSliceNotSupportedDims)
   op_params.strides_count = 5;
 
   op_params.stop_indices[0] = 1;
-  op_params.stop_indices[1] = 2;
+  op_params.stop_indices[1] = 1;
   op_params.stop_indices[2] = 2;
   op_params.stop_indices[3] = 2;
   op_params.stop_indices[4] = 2;
@@ -73,10 +73,10 @@ TEST(CKer_Operation, neg_StridedSliceNotSupportedDims)
   op_params.strides[3] = 1;
   op_params.strides[4] = 1;
 
-  nnfw::cker::Shape input_shape{2, 2, 2, 2, 2, 1};
+  nnfw::cker::Shape input_shape{2, 1, 2, 2, 2, 1};
   std::vector<float> input = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 
-  nnfw::cker::Shape output_shape{1, 2, 2, 2, 2, 1};
+  nnfw::cker::Shape output_shape{1, 1, 2, 2, 2, 1};
   std::vector<float> output(output_shape.FlatSize());
 
   EXPECT_EXIT_BY_ABRT_DEBUG_ONLY(
