@@ -42,7 +42,7 @@ inline int Clamp(const int v, const int lo, const int hi)
 inline void StridedSlicePadIndices(StridedSliceParams *p, int dim_count)
 {
   // Add indices and mask bits to fully include extra dimensions
-  assert(dim_count <= 4);
+  assert(dim_count <= 5);
   assert(dim_count >= p->start_indices_count);
   assert(p->start_indices_count == p->stop_indices_count);
   assert(p->stop_indices_count == p->strides_count);
@@ -258,8 +258,8 @@ template <typename T>
 inline void StridedSlice(const StridedSliceParams &op_params, const Shape &unextended_input_shape,
                          const T *input_data, const Shape &unextended_output_shape, T *output_data)
 {
-  assert(unextended_input_shape.DimensionsCount() <= 4);
-  assert(unextended_output_shape.DimensionsCount() <= 4);
+  assert(unextended_input_shape.DimensionsCount() <= 5);
+  assert(unextended_output_shape.DimensionsCount() <= 5);
 
   bool optimize = true;
   int st_count = op_params.strides_count;
@@ -293,36 +293,42 @@ inline void StridedSlice(const StridedSliceParams &op_params, const Shape &unext
   // Note that the output_shape is not used herein.
   StridedSliceParams params_copy = op_params;
 
-  const Shape input_shape = Shape::ExtendedShape(4, unextended_input_shape);
-  const Shape output_shape = Shape::ExtendedShape(4, unextended_output_shape);
+  const Shape input_shape = Shape::ExtendedShape(5, unextended_input_shape);
+  const Shape output_shape = Shape::ExtendedShape(5, unextended_output_shape);
 
-  // Reverse and pad to 4 dimensions because that is what the runtime code
-  // requires (ie. all shapes must be 4D and are given backwards).
-  StridedSlicePadIndices(&params_copy, 4);
+  // Reverse and pad to 5 dimensions because that is what the runtime code
+  // requires (ie. all shapes must be 5D and are given backwards).
+  StridedSlicePadIndices(&params_copy, 5);
 
-  const int start_b = StartForAxis(params_copy, input_shape, 0);
-  const int stop_b = StopForAxis(params_copy, input_shape, 0, start_b);
-  const int start_h = StartForAxis(params_copy, input_shape, 1);
-  const int stop_h = StopForAxis(params_copy, input_shape, 1, start_h);
-  const int start_w = StartForAxis(params_copy, input_shape, 2);
-  const int stop_w = StopForAxis(params_copy, input_shape, 2, start_w);
-  const int start_d = StartForAxis(params_copy, input_shape, 3);
-  const int stop_d = StopForAxis(params_copy, input_shape, 3, start_d);
+  const int start_0 = StartForAxis(params_copy, input_shape, 0);
+  const int stop_0 = StopForAxis(params_copy, input_shape, 0, start_0);
+  const int start_1 = StartForAxis(params_copy, input_shape, 1);
+  const int stop_1 = StopForAxis(params_copy, input_shape, 1, start_1);
+  const int start_2 = StartForAxis(params_copy, input_shape, 2);
+  const int stop_2 = StopForAxis(params_copy, input_shape, 2, start_2);
+  const int start_3 = StartForAxis(params_copy, input_shape, 3);
+  const int stop_3 = StopForAxis(params_copy, input_shape, 3, start_3);
+  const int start_4 = StartForAxis(params_copy, input_shape, 4);
+  const int stop_4 = StopForAxis(params_copy, input_shape, 4, start_4);
 
   T *out_ptr = output_data;
-  for (int in_b = start_b; !LoopCondition(in_b, stop_b, params_copy.strides[0]);
-       in_b += params_copy.strides[0])
+  for (int in_0 = start_0; !LoopCondition(in_0, stop_0, params_copy.strides[0]);
+       in_0 += params_copy.strides[0])
   {
-    for (int in_h = start_h; !LoopCondition(in_h, stop_h, params_copy.strides[1]);
-         in_h += params_copy.strides[1])
+    for (int in_1 = start_1; !LoopCondition(in_1, stop_1, params_copy.strides[1]);
+         in_1 += params_copy.strides[1])
     {
-      for (int in_w = start_w; !LoopCondition(in_w, stop_w, params_copy.strides[2]);
-           in_w += params_copy.strides[2])
+      for (int in_2 = start_2; !LoopCondition(in_2, stop_2, params_copy.strides[2]);
+           in_2 += params_copy.strides[2])
       {
-        for (int in_d = start_d; !LoopCondition(in_d, stop_d, params_copy.strides[3]);
-             in_d += params_copy.strides[3])
+        for (int in_3 = start_3; !LoopCondition(in_3, stop_3, params_copy.strides[3]);
+             in_3 += params_copy.strides[3])
         {
-          *out_ptr++ = input_data[Offset(input_shape, in_b, in_h, in_w, in_d)];
+          for (int in_4 = start_4; !LoopCondition(in_4, stop_4, params_copy.strides[4]);
+               in_4 += params_copy.strides[4])
+          {
+            *out_ptr++ = input_data[Offset(input_shape, in_0, in_1, in_2, in_3, in_4)];
+          }
         }
       }
     }
