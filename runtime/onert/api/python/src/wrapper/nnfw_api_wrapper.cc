@@ -16,6 +16,8 @@
 
 #include "nnfw_api_wrapper.h"
 
+#include "nnfw_exceptions.h"
+
 #include <iostream>
 
 namespace onert::api::python
@@ -28,85 +30,54 @@ void ensure_status(NNFW_STATUS status)
   switch (status)
   {
     case NNFW_STATUS::NNFW_STATUS_NO_ERROR:
-      break;
+      return;
     case NNFW_STATUS::NNFW_STATUS_ERROR:
-      std::cout << "[ERROR]\tNNFW_STATUS_ERROR\n";
-      exit(1);
+      throw NnfwError("NNFW_STATUS_ERROR");
     case NNFW_STATUS::NNFW_STATUS_UNEXPECTED_NULL:
-      std::cout << "[ERROR]\tNNFW_STATUS_UNEXPECTED_NULL\n";
-      exit(1);
+      throw NnfwUnexpectedNullError("NNFW_STATUS_UNEXPECTED_NULL");
     case NNFW_STATUS::NNFW_STATUS_INVALID_STATE:
-      std::cout << "[ERROR]\tNNFW_STATUS_INVALID_STATE\n";
-      exit(1);
+      throw NnfwInvalidStateError("NNFW_STATUS_INVALID_STATE");
     case NNFW_STATUS::NNFW_STATUS_OUT_OF_MEMORY:
-      std::cout << "[ERROR]\tNNFW_STATUS_OUT_OF_MEMORY\n";
-      exit(1);
+      throw NnfwOutOfMemoryError("NNFW_STATUS_OUT_OF_MEMORY");
     case NNFW_STATUS::NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE:
-      std::cout << "[ERROR]\tNNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE\n";
-      exit(1);
+      throw NnfwInsufficientOutputError("NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE");
     case NNFW_STATUS::NNFW_STATUS_DEPRECATED_API:
-      std::cout << "[ERROR]\tNNFW_STATUS_DEPRECATED_API\n";
-      exit(1);
+      throw NnfwDeprecatedApiError("NNFW_STATUS_DEPRECATED_API");
+    default:
+      throw NnfwError("NNFW_UNKNOWN_ERROR");
   }
 }
 
 NNFW_LAYOUT getLayout(const char *layout)
 {
-  if (!strcmp(layout, "NCHW"))
-  {
+  if (std::strcmp(layout, "NCHW") == 0)
     return NNFW_LAYOUT::NNFW_LAYOUT_CHANNELS_FIRST;
-  }
-  else if (!strcmp(layout, "NHWC"))
-  {
+  else if (std::strcmp(layout, "NHWC") == 0)
     return NNFW_LAYOUT::NNFW_LAYOUT_CHANNELS_LAST;
-  }
-  else if (!strcmp(layout, "NONE"))
-  {
+  else if (std::strcmp(layout, "NONE") == 0)
     return NNFW_LAYOUT::NNFW_LAYOUT_NONE;
-  }
   else
-  {
-    std::cout << "[ERROR]\tLAYOUT_TYPE\n";
-    exit(1);
-  }
+    throw NnfwError(std::string("Unknown layout type: '") + layout + "'");
 }
 
 NNFW_TYPE getType(const char *type)
 {
-  if (!strcmp(type, "float32"))
-  {
+  if (std::strcmp(type, "float32") == 0)
     return NNFW_TYPE::NNFW_TYPE_TENSOR_FLOAT32;
-  }
-  else if (!strcmp(type, "int32"))
-  {
+  else if (std::strcmp(type, "int32") == 0)
     return NNFW_TYPE::NNFW_TYPE_TENSOR_INT32;
-  }
-  else if (!strcmp(type, "uint8"))
-  {
+  else if (std::strcmp(type, "uint8") == 0)
     return NNFW_TYPE::NNFW_TYPE_TENSOR_UINT8;
-    // return NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM;
-  }
-  else if (!strcmp(type, "bool"))
-  {
+  else if (std::strcmp(type, "bool") == 0)
     return NNFW_TYPE::NNFW_TYPE_TENSOR_BOOL;
-  }
-  else if (!strcmp(type, "int64"))
-  {
+  else if (std::strcmp(type, "int64") == 0)
     return NNFW_TYPE::NNFW_TYPE_TENSOR_INT64;
-  }
-  else if (!strcmp(type, "int8"))
-  {
+  else if (std::strcmp(type, "int8") == 0)
     return NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED;
-  }
-  else if (!strcmp(type, "int16"))
-  {
+  else if (std::strcmp(type, "int16") == 0)
     return NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED;
-  }
   else
-  {
-    std::cout << "[ERROR] String to NNFW_TYPE Failure\n";
-    exit(1);
-  }
+    throw NnfwError(std::string("Cannot convert string to NNFW_TYPE: '") + type + "'");
 }
 
 const char *getStringType(NNFW_TYPE type)
@@ -129,8 +100,8 @@ const char *getStringType(NNFW_TYPE type)
     case NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED:
       return "int16";
     default:
-      std::cout << "[ERROR] NNFW_TYPE to String Failure\n";
-      exit(1);
+      throw NnfwError(std::string("Cannot convert NNFW_TYPE enum to string (value=") +
+                      std::to_string(static_cast<int>(type)) + ")");
   }
 }
 

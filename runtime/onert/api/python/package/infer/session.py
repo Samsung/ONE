@@ -4,6 +4,7 @@ import time
 from contextlib import contextmanager
 
 from ..native.libnnfw_api_pybind import infer, tensorinfo
+from ..native.libnnfw_api_pybind.exception import OnertError
 from ..common.basesession import BaseSession
 
 
@@ -44,13 +45,24 @@ class session(BaseSession):
 
         Raises:
             ValueError: If the number of new_infos does not match the session's input size.
+            OnertError: If the underlying C-API call fails.
         """
-        num_inputs: int = self.session.input_size()
+        num_inputs: int = self.session.input_size()  # may raise OnertError
         if len(new_infos) != num_inputs:
             raise ValueError(
                 f"Expected {num_inputs} input tensorinfo(s), but got {len(new_infos)}.")
+
         for i, info in enumerate(new_infos):
-            self.session.set_input_tensorinfo(i, info)
+            if any(d < 0 for d in info.dims[:info.rank]):
+                raise ValueError(
+                    f"Input tensorinfo #{i} has negative dims: {info.dims[:info.rank]}")
+            try:
+                self.session.set_input_tensorinfo(i, info)
+            except ValueError:
+                # re‑raise ValueError directly
+                raise
+            except Exception as e:
+                raise OnertError(f"Failed to set tensorinfo for input #{i}: {e}") from e
 
     def run_inference(
         self,
@@ -84,25 +96,40 @@ class session(BaseSession):
 
         # Check if the session is prepared. If not, call prepare() and set_outputs() once.
         if not self._prepared:
-            with self._time_block(metrics, 'prepare_time_ms', measure):
-                self.session.prepare()
-                self.set_outputs(self.session.output_size())
-                self._prepared = True
+            try:
+                with self._time_block(metrics, 'prepare_time_ms', measure):
+                    self.session.prepare()
+                    self.set_outputs(self.session.output_size())
+                    self._prepared = True
+            except ValueError:
+                raise
+            except Exception as e:
+                raise OnertError(f"Session preparation failed: {e}") from e
 
         # Verify that the number of provided inputs matches the session's expected input count.
-        expected_input_size: int = self.session.input_size()
+        expected_input_size: int = self.session.input_size()  # may raise OnertError
         if len(inputs_array) != expected_input_size:
             raise ValueError(
                 f"Expected {expected_input_size} input(s), but received {len(inputs_array)}."
             )
 
         # Configure input buffers using the current session's input size and provided data.
-        with self._time_block(metrics, 'io_time_ms', measure):
-            self.set_inputs(expected_input_size, inputs_array)
+        try:
+            with self._time_block(metrics, 'io_time_ms', measure):
+                self.set_inputs(expected_input_size, inputs_array)
+        except ValueError:
+            raise
+        except Exception as e:
+            raise OnertError(f"Failed to bind inputs: {e}") from e
 
         # Execute the inference.
-        with self._time_block(metrics, 'run_time_ms', measure):
-            self.session.run()
+        try:
+            with self._time_block(metrics, 'run_time_ms', measure):
+                self.session.run()
+        except ValueError:
+            raise
+        except Exception as e:
+            raise OnertError(f"Inference execution failed: {e}") from e
 
         # Set the output buffers.
         outputs = self.outputs

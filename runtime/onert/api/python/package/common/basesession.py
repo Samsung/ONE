@@ -2,6 +2,7 @@ from typing import List
 import numpy as np
 
 from ..native.libnnfw_api_pybind import infer, tensorinfo
+from ..native.libnnfw_api_pybind.exception import OnertError
 
 
 def num_elems(tensor_info):
@@ -57,18 +58,29 @@ class BaseSession:
         """
         Retrieve tensorinfo for all input tensors.
 
+        Raises:
+            OnertError: If the underlying C‑API call fails.
+
         Returns:
             list[tensorinfo]: A list of tensorinfo objects for each input.
         """
         num_inputs: int = self.session.input_size()
         infos: List[tensorinfo] = []
         for i in range(num_inputs):
-            infos.append(self.session.input_tensorinfo(i))
+            try:
+                infos.append(self.session.input_tensorinfo(i))
+            except ValueError:
+                raise
+            except Exception as e:
+                raise OnertError(f"Failed to get input tensorinfo #{i}: {e}") from e
         return infos
 
     def get_outputs_tensorinfo(self) -> List[tensorinfo]:
         """
         Retrieve tensorinfo for all output tensors.
+
+        Raises:
+            OnertError: If the underlying C‑API call fails.
 
         Returns:
             list[tensorinfo]: A list of tensorinfo objects for each output.
@@ -76,15 +88,25 @@ class BaseSession:
         num_outputs: int = self.session.output_size()
         infos: List[tensorinfo] = []
         for i in range(num_outputs):
-            infos.append(self.session.output_tensorinfo(i))
+            try:
+                infos.append(self.session.output_tensorinfo(i))
+            except ValueError:
+                raise
+            except Exception as e:
+                raise OnertError(f"Failed to get output tensorinfo #{i}: {e}") from e
         return infos
 
     def set_inputs(self, size, inputs_array=[]):
         """
         Set the input tensors for the session.
+
         Args:
             size (int): Number of input tensors.
             inputs_array (list): List of numpy arrays for the input data.
+
+        Raises:
+            ValueError: If session uninitialized.
+            OnertError:  If any C‑API call fails.
         """
         if self.session is None:
             raise ValueError(
@@ -93,7 +115,12 @@ class BaseSession:
 
         self.inputs = []
         for i in range(size):
-            input_tensorinfo = self.session.input_tensorinfo(i)
+            try:
+                input_tensorinfo = self.session.input_tensorinfo(i)
+            except ValueError:
+                raise
+            except Exception as e:
+                raise OnertError(f"Failed to get input tensorinfo #{i}: {e}") from e
 
             if len(inputs_array) > i:
                 input_array = np.array(inputs_array[i], dtype=input_tensorinfo.dtype)
@@ -104,14 +131,25 @@ class BaseSession:
                 input_array = np.zeros((num_elems(input_tensorinfo)),
                                        dtype=input_tensorinfo.dtype)
 
-            self.session.set_input(i, input_array)
+            try:
+                self.session.set_input(i, input_array)
+            except ValueError:
+                raise
+            except Exception as e:
+                raise OnertError(f"Failed to set input #{i}: {e}") from e
+
             self.inputs.append(input_array)
 
     def set_outputs(self, size):
         """
         Set the output tensors for the session.
+
         Args:
             size (int): Number of output tensors.
+
+        Raises:
+            ValueError: If session uninitialized.
+            OnertError:  If any C‑API call fails.
         """
         if self.session is None:
             raise ValueError(
@@ -120,12 +158,37 @@ class BaseSession:
 
         self.outputs = []
         for i in range(size):
-            output_tensorinfo = self.session.output_tensorinfo(i)
+            try:
+                output_tensorinfo = self.session.output_tensorinfo(i)
+            except ValueError:
+                raise
+            except Exception as e:
+                raise OnertError(f"Failed to get output tensorinfo #{i}: {e}") from e
+
             output_array = np.zeros((num_elems(output_tensorinfo)),
                                     dtype=output_tensorinfo.dtype)
-            self.session.set_output(i, output_array)
+
+            try:
+                self.session.set_output(i, output_array)
+            except ValueError:
+                raise
+            except Exception as e:
+                raise OnertError(f"Failed to set output #{i}: {e}") from e
+
             self.outputs.append(output_array)
 
 
 def tensorinfo():
-    return infer.nnfw_tensorinfo()
+    """
+    Shortcut to create a fresh tensorinfo instance.
+
+    Raises:
+        OnertError: If the C‑API call fails.
+    """
+
+    try:
+        return infer.nnfw_tensorinfo()
+    except OnertError:
+        raise
+    except Exception as e:
+        raise OnertError(f"Failed to create tensorinfo: {e}") from e
