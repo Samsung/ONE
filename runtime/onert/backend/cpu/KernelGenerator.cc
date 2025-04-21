@@ -25,7 +25,6 @@
 #include "ops/ConvolutionLayer.h"
 #include "ops/DepthToSpaceLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
-#include "ops/EinsumLayer.h"
 #include "ops/ElementwiseActivationLayer.h"
 #include "ops/ElementwiseBinaryLayer.h"
 #include "ops/ElementwiseUnaryLayer.h"
@@ -598,24 +597,6 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   auto fn = std::make_unique<ops::OneHotLayer>();
 
   fn->configure(indices_tensor, depth_tensor, onvalue_tensor, offvalue_tensor, output_tensor, axis);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Einsum &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-
-  auto output_tensor = _tensor_reg->getPortableTensor(ofm_index);
-  std::vector<const IPortableTensor *> input_tensors;
-  for (const auto &ifm_idx : node.getInputs())
-    input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx));
-
-  const auto &equation = node.param().equation;
-
-  auto fn = std::make_unique<ops::EinsumLayer>();
-
-  fn->configure(input_tensors, equation, output_tensor);
 
   _return_fn = std::move(fn);
 }

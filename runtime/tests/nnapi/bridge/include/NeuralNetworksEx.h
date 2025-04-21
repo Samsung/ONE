@@ -506,21 +506,10 @@ typedef enum
   ANEURALNETWORKS_MATRIX_BAND_PART_EX = 50036,
 
   /**
-   * Tensor contraction over specified indices and outer product
    *
-   * Supported tensor {@link OperandCode}:
-   * * {@link ANEURALNETWORKS_TENSOR_FLOAT32}
+   * IMPORTANT NOTICE:
+   * ANEURALNETWORKS_REDUCE_MAX_EX operation is DEPRECATED
    *
-   * Supported tensor rank: up to 4
-   *
-   * Inputs:
-   * * 0 ~ n-1: The list of n input tensors.
-   * * 1: An 1-D tensor of {@link ANEURALNETWORKS_TENSOR_QUANT8_ASYMM}. Each element represent
-   * equation character.
-   *      Always scalar is 1.0 and zeroPoint is 0
-   *
-   * Outputs:
-   * * 0: An output tensor.
    */
   ANEURALNETWORKS_EINSUM_EX = 50037,
 
