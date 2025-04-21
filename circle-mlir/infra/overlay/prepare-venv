@@ -35,7 +35,7 @@ fi
 # NOTE version
 # - https://github.com/onnx/onnx/blob/master/docs/Versioning.md
 
-VER_TORCH=2.6.0
+VER_TORCH=2.6.0+cpu
 VER_ONNX=1.17.0
 VER_ONNXRUNTIME=1.21.0
 
@@ -57,7 +57,7 @@ fi
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade pip setuptools
 
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==${VER_TORCH}
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==${VER_TORCH} -f https://download.pytorch.org/whl/torch
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX}
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnxruntime==${VER_ONNXRUNTIME}
 
