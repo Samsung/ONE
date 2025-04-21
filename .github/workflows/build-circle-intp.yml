@@ -1,11 +1,12 @@
 name: Build circle-interpreter
 
 on:
-  # TODO turn on schedule
-  #schedule:
-  #  # 05:00 AM (KST, UTC+9:00) Mon-Fri
-  #  - cron: '00 20 * * 0-4'
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Current develop version plus 0.0.1'
+        required: true
+        default: '1.30.1'
 
 defaults:
   run:
@@ -25,85 +26,46 @@ jobs:
         include:
           - ubuntu_code: focal
             ubuntu_ver: 2004
-            # TODO update comment ID, these are experimental IDs of issue #14669
-            comment_id: 2658267907
           - ubuntu_code: jammy
             ubuntu_ver: 2204
-            comment_id: 2658268060
     runs-on: ubuntu-latest
     container:
       image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
       options: --user root
-    env:
-      NNCC_WORKSPACE : build
-      NNCC_INSTALL_PREFIX : install
     name: circle-interpreter ubuntu ${{ matrix.ubuntu_ver }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: master
+          path: 'code'
 
-      - name: Install required packages
+      - name: Build Debian package
+        env:
+          DEBEMAIL=nnfw@samsung.com
         run: |
-          apt-get update
-          apt-get install curl
+          cd code
+          mkdir -p debian
+          cp -Rvf infra/debian/circle-interpreter/* ./debian/.
 
-      - name: Build without test
-        run: |
-          CIR_INTP_ITEMS="angkor;cwrap;pepper-str;pepper-strcast;pepper-csv2vec;pp"
-          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};oops;loco;logo-core;logo;locop"
-          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};hermes;hermes-std;safemain;mio-circle08"
-          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};luci-compute;luci;luci-interpreter"
-          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};foder;arser;vconone;circle-interpreter"
-          echo ${CIR_INTP_ITEMS}
+          # update version with ~YYMMDDHH
+          release_semver=${{ inputs.version }}
+          build_number=$(date +"%y%m%d%H")
+          version="$release_semver~$build_number"
+          dch -c ./debian/changelog -b -v "$version" "$version release"
+          dch -c ./debian/changelog -r ""
 
-          ./nncc configure \
-            -DENABLE_STRICT_BUILD=ON \
-            -DENABLE_TEST=OFF \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DEXTERNALS_BUILD_THREADS=$(nproc) \
-            -DCMAKE_INSTALL_PREFIX=${NNCC_INSTALL_PREFIX} \
-            -DBUILD_WHITELIST="${CIR_INTP_ITEMS}"
-          ./nncc build -j$(nproc)
-          cmake --build ${NNCC_WORKSPACE} -- install
+          # build
+          debuild -us -uc -b
 
-      - name: Gather files
-        run: |
-          cd ${NNCC_WORKSPACE}
-          mkdir -p cirintp
-          cp -v ./${NNCC_INSTALL_PREFIX}/bin/circle-interpreter ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libloco.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_env.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_import.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_interpreter.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_lang.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_logex.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_log.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_plan.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_profile.so ./cirintp/.
-
+      # NOTE Upload Artifact will be removed after testing
       - name: Upload Artifact
-        id: step-upload
         uses: actions/upload-artifact@v4
         with:
           name: circle_intp_${{ matrix.ubuntu_ver }}
-          # TODO enable retention-days, default is 90
-          # retention-days: 3
+          retention-days: 2
           path: |
-            ${{ env.NNCC_WORKSPACE }}/cirintp/
+            ./circle-interpreter*.deb
 
-      # refer https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#update-an-issue-comment
-      # TODO update comment id from experiment to official
-      # TODO enable update URL when key is available
-      - name: Update URL
-        if: false
-        run: |
-          echo "Artifact URL is ${{ steps.step-upload.outputs.artifact-url }}"
-          COMMENT_ADDR=https://api.github.com/repos/Samsung/ONE/issues/comments/${{ matrix.comment_id }}
-          curl -L \
-            -X PATCH \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.COMMENT_UPDATE_KEY }}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            ${COMMENT_ADDR} \
-            -d '{"body":"${{ steps.step-upload.outputs.artifact-url }}"}'
+      # TODO add publish to launchpad.net
