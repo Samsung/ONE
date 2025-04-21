@@ -62,4 +62,13 @@ ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX}
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnxruntime==${VER_ONNXRUNTIME}
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install h5py==3.8.0 einops
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install numpy==1.24.3
+
+PYTHON_VERSION=$(${VENV_PYTHON} -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
+PY_MAJOR=$(echo $PYTHON_VERSION | cut -d. -f1)
+PY_MINOR=$(echo $PYTHON_VERSION | cut -d. -f2)
+NUMPY_VERSION="1.24.3"
+if [ "$PY_MAJOR" -gt 3 ] || { [ "$PY_MAJOR" -eq 3 ] && [ "$PY_MINOR" -ge 10 ]; }; then
+  NUMPY_VERSION="1.26.0"
+fi
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install numpy==${NUMPY_VERSION}
+
