@@ -90,6 +90,8 @@ class BaseSession:
             raise ValueError(
                 "Session is not initialized with a model. Please compile with a model before setting inputs."
             )
+
+        self.inputs = []
         for i in range(size):
             input_tensorinfo = self.session.input_tensorinfo(i)
 
@@ -115,6 +117,8 @@ class BaseSession:
             raise ValueError(
                 "Session is not initialized with a model. Please compile a model before setting outputs."
             )
+
+        self.outputs = []
         for i in range(size):
             output_tensorinfo = self.session.output_tensorinfo(i)
             output_array = np.zeros((num_elems(output_tensorinfo)),

@@ -1,5 +1,7 @@
-from typing import List, Any
+from typing import List, Union, Tuple, Dict
 import numpy as np
+import time
+from contextlib import contextmanager
 
 from ..native.libnnfw_api_pybind import infer, tensorinfo
 from ..common.basesession import BaseSession
@@ -50,7 +52,12 @@ class session(BaseSession):
         for i, info in enumerate(new_infos):
             self.session.set_input_tensorinfo(i, info)
 
-    def run_inference(self, inputs_array: List[np.ndarray]) -> List[np.ndarray]:
+    def run_inference(
+        self,
+        inputs_array: List[np.ndarray],
+        *,
+        measure: bool = False
+    ) -> Union[List[np.ndarray], Tuple[List[np.ndarray], Dict[str, float]]]:
         """
         Run a complete inference cycle:
          - If the session has not been prepared or outputs have not been set, call prepare() and set_outputs().
@@ -65,15 +72,22 @@ class session(BaseSession):
 
         Args:
             inputs_array (list[np.ndarray]): List of numpy arrays representing the input data.
+            measure (bool): If True, measure prepare/io/run latencies (ms).
 
         Returns:
             list[np.ndarray]: A list containing the output numpy arrays.
+            OR
+            (outputs, metrics): Tuple where metrics is a dict with keys
+                'prepare_time_ms', 'io_time_ms', 'run_time_ms'.
         """
+        metrics: Dict[str, float] = {}
+
         # Check if the session is prepared. If not, call prepare() and set_outputs() once.
         if not self._prepared:
-            self.session.prepare()
-            self.set_outputs(self.session.output_size())
-            self._prepared = True
+            with self._time_block(metrics, 'prepare_time_ms', measure):
+                self.session.prepare()
+                self.set_outputs(self.session.output_size())
+                self._prepared = True
 
         # Verify that the number of provided inputs matches the session's expected input count.
         expected_input_size: int = self.session.input_size()
@@ -83,8 +97,23 @@ class session(BaseSession):
             )
 
         # Configure input buffers using the current session's input size and provided data.
-        self.set_inputs(expected_input_size, inputs_array)
+        with self._time_block(metrics, 'io_time_ms', measure):
+            self.set_inputs(expected_input_size, inputs_array)
+
         # Execute the inference.
-        self.session.run()
-        # Return the output buffers.
-        return self.outputs
+        with self._time_block(metrics, 'run_time_ms', measure):
+            self.session.run()
+
+        # Set the output buffers.
+        outputs = self.outputs
+
+        return (outputs, metrics) if measure else outputs
+
+    @contextmanager
+    def _time_block(self, metrics: Dict[str, float], key: str, mesure: bool):
+        if mesure:
+            start = time.perf_counter()
+            yield
+            metrics[key] = (time.perf_counter() - start) * 1000
+        else:
+            yield
