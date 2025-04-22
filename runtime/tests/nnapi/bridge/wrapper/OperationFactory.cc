@@ -1566,10 +1566,6 @@ OperationFactory::OperationFactory()
     return new operation::BatchMatMul{inputs, outputs, param};
   };
 
-  //  0 -> Input Tensor Index
-  //  1 -> int32, int64, An 1-D int tensor Index
-  _map[ANEURALNETWORKS_BROADCAST_TO_EX] = createSimpleBinaryOp<operation::BroadcastTo>;
-
   _map[ANEURALNETWORKS_STATELESS_RANDOM_UNIFORM_EX] = [](const OperationFactory::Param &init_param,
                                                          Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);
