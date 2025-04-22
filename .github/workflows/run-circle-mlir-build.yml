@@ -35,7 +35,6 @@ jobs:
         include:
           - ubuntu_code: jammy
             ubuntu_vstr: u2204
-            one_comp_ver: 1.29.0
 
     runs-on: ubuntu-latest
 
@@ -49,17 +48,30 @@ jobs:
       # NOTE we only need small circle-interpreter Debian package, but
       #      as it's not ready yet, install whole one_compiler for now.
       # TODO prepare circle-interpreter Debian package and install it.
-      - name: Install one-compiler
-        run: |
-          cd /var/tmp
-          ONE_COMPILER=one-compiler-${{ matrix.ubuntu_code }}_${{ matrix.one_comp_ver }}_amd64.deb
-          wget https://github.com/Samsung/ONE/releases/download/${{ matrix.one_comp_ver }}/${ONE_COMPILER}
-          ls -al .
-          dpkg -i ${ONE_COMPILER}
-          ls -al /usr/share/one/bin
-
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Prepare circle-interpreter from source
+        env:
+          NNCC_WORKSPACE: build
+        run: |
+          CIRINT_ITEMS="angkor;cwrap;pepper-str;pepper-strcast;pepper-csv2vec;pp"
+          CIRINT_ITEMS="${CIRINT_ITEMS};oops;loco;logo-core;logo;locop"
+          CIRINT_ITEMS="${CIRINT_ITEMS};hermes;hermes-std;safemain;mio-circle08"
+          CIRINT_ITEMS="${CIRINT_ITEMS};luci-compute;luci;luci-interpreter"
+          CIRINT_ITEMS="${CIRINT_ITEMS};foder;arser;vconone;circle-interpreter"
+          echo ${CIRINT_ITEMS}
+
+          ./nncc configure \
+            -DENABLE_STRICT_BUILD=ON \
+            -DENABLE_TEST=OFF \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DEXTERNALS_BUILD_THREADS=4 \
+            -DCMAKE_INSTALL_PREFIX=install \
+            -DLUCI_ONLY_FOR_INTERPRETER=ON \
+            -DBUILD_WHITELIST="${CIRINT_ITEMS}"
+          ./nncc build -j4
+          cmake --build ${NNCC_WORKSPACE} -- install
 
       # NOTE Docker image has pre-installed submodules in /workdir
       # NOTE Docker image has pre-installed python packages
@@ -72,6 +84,8 @@ jobs:
           -DCIRCLE_MLIR_WORKDIR=/workdir
 
       - name: Build, test & install
+        env:
+          ONE_COMPILER_ROOT: ${{ github.workspace }}/build/install
         run: |
           cd circle-mlir
           cmake --build build/${{ matrix.type }} -j4
