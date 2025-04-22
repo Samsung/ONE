@@ -1123,7 +1123,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
     ReduceAll,
     MatrixBandPart,
     BatchMatMul,
-    BroadcastTo,
     FusedBatchNorm,
     StatelessRandomUniform,
     Erf,
@@ -1137,7 +1136,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
     {"MatrixBandPart", BuiltinOP::MatrixBandPart},
     {"BatchMatMulV2", BuiltinOP::BatchMatMul},
     {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
-    {"BroadcastTo", BuiltinOP::BroadcastTo},
     {"StatelessRandomUniform", BuiltinOP::StatelessRandomUniform},
     {"Erf", BuiltinOP::Erf},
     {"TFLite_Detection_PostProcess", BuiltinOP::DetectionPostProcess},
@@ -1160,9 +1158,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
         break;
       case BuiltinOP::BatchMatMul:
         loadBatchMatMul(op, subg);
-        break;
-      case BuiltinOP::BroadcastTo:
-        loadOperationTo<ir::operation::BroadcastTo>(op, subg);
         break;
       case BuiltinOP::FusedBatchNorm:
         loadFusedBatchNorm(op, subg);
