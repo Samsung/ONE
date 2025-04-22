@@ -33,6 +33,11 @@ RUN python3 -m pip install onnx==${VER_ONNX} onnxruntime==${VER_ONNXRUNTIME}
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
 
+# CMake 3.22
+RUN wget https://cmake.org/files/v3.22/cmake-3.22.6-linux-x86_64.sh -O ${WORK_DIR}/cmake-3.22.6-linux-x86_64.sh \
+ && bash ${WORK_DIR}/cmake-3.22.6-linux-x86_64.sh --prefix=/usr/local --skip-license
+RUN rm ${WORK_DIR}/cmake-3.22.6-linux-x86_64.sh
+
 #
 # For CIRCLE-MLIR
 #
