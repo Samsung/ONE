@@ -22,11 +22,12 @@ RUN python3 -m pip install --upgrade pip setuptools
 RUN python3 -m pip install yapf==0.43.0 h5py==3.8.0 einops
 
 # TODO upgrade
-ARG VER_TORCH=2.6.0+cpu
+ARG VER_TORCH=2.4.1+cpu
 ARG VER_ONNX=1.17.0
-ARG VER_ONNXRUNTIME=1.21.0
+ARG VER_ONNXRUNTIME=1.18.0
+ARG VER_NUMPY=1.24.4
 
-RUN python3 -m pip install numpy==1.24.3 torch==${VER_TORCH} -f https://download.pytorch.org/whl/torch
+RUN python3 -m pip install numpy==${VER_NUMPY} torch==${VER_TORCH} -f https://download.pytorch.org/whl/torch
 RUN python3 -m pip install onnx==${VER_ONNX} onnxruntime==${VER_ONNXRUNTIME}
 
 # Clean archives (to reduce image size)
