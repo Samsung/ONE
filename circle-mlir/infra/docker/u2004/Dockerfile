@@ -8,7 +8,7 @@ RUN apt-get update \
 
 # Build tool
 RUN apt-get update \
- && apt-get -qqy install build-essential cmake git fakeroot autoconf automake libtool unzip wget \
+ && apt-get -qqy install build-essential git fakeroot autoconf automake libtool unzip wget \
                          devscripts debmake debhelper lcov
 
 # additonal tools
@@ -166,6 +166,8 @@ RUN cd ./lib && strip -s *.so.*git
 
 # more cleanup
 RUN rm -f /usr/local/lib/libprotoc.* \
+ && rm -f /usr/local/man \
+ && rm -f /usr/local/doc \
  && rm -rf ./onnx-mlir-build/docs/* \
  && rm -rf ./onnx-mlir-build/third_party/* \
  && rm -f ./onnx-mlir-build/.ninja_* \
