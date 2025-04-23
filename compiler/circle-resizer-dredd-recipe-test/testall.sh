@@ -55,8 +55,8 @@ while [[ $# -ne 0 ]]; do
     # Note: turn off 'command printing'. Otherwise printing will be so messy
     set +x
 
-    # (RESIZED_FILE, INSPECT_PROG_PATH, VERIFY_PROG_PATH, ERROR_LOG) must be set for rule-lib.sh
-    RESIZED_FILE="${PREFIX}.resized.circle"
+    # (COMPILED_FILE, INSPECT_PROG_PATH, VERIFY_PROG_PATH, ERROR_LOG) must be set for rule-lib.sh
+    COMPILED_FILE="${PREFIX}.resized.circle"
     INSPECT_PROG_PATH=${CIRCLE_INSPECT_PATH}
     VERIFY_PROG_PATH=${CIRCLE_VERIFY_PATH}
     ERROR_LOG="${PREFIX}.error"
