@@ -31,8 +31,10 @@ jobs:
     strategy:
       matrix:
         type: [ Debug, Release ]
-        ubuntu_code: [ jammy ]
+        ubuntu_code: [ focal, jammy ]
         include:
+          - ubuntu_code: focal
+            ubuntu_vstr: u2004
           - ubuntu_code: jammy
             ubuntu_vstr: u2204
 
