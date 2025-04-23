@@ -35,6 +35,29 @@ set the environment variable as follows;
 export ONE_COMPILER_ROOT=/home/user/one/build/install
 ```
 
+### CIRCLE_MLIR_LOCALINST environment (optional)
+
+For working with multiple clones, each clone may have externals build binaries,
+which may take about 150GB to 200GB of disk space.
+
+To overcome this issue, use `CIRCLE_MLIR_LOCALINST` and `CIRCLE_MLIR_LOCALINST_USE`
+environment variable to build a single binary and use for other clones.
+
+For example, to build externals in first clone,
+```
+export CIRCLE_MLIR_LOCALINST=$HOME/local/circlemlir
+make prep
+```
+
+and for other clones that uses externals build from the first clone,
+```
+export CIRCLE_MLIR_LOCALINST=$HOME/local/circlemlir
+export CIRCLE_MLIR_LOCALINST_USE
+make prep
+```
+NOTE, `onnx-mlir` is cloned in `externals` folder, as `onnx-mlir` source is
+referenced from `circle-mlir`.
+
 ### Prepare overlay
 
 This will prepare virtual-env with necessary python packages installed;
