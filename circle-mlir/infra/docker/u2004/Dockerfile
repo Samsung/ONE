@@ -166,8 +166,8 @@ RUN cd ./lib && strip -s *.so.*git
 
 # more cleanup
 RUN rm -f /usr/local/lib/libprotoc.* \
- && rm -f /usr/local/man \
- && rm -f /usr/local/doc \
+ && rm -rf /usr/local/man \
+ && rm -rf /usr/local/doc \
  && rm -rf ./onnx-mlir-build/docs/* \
  && rm -rf ./onnx-mlir-build/third_party/* \
  && rm -f ./onnx-mlir-build/.ninja_* \
