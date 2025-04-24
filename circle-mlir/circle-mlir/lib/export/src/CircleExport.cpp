@@ -34,6 +34,7 @@ const int64_t kCIRDynamicSize = -1;
 
 #include <absl/container/flat_hash_map.h>
 #include <absl/container/flat_hash_set.h>
+#include <absl/strings/str_cat.h>
 
 #include <mlir/Dialect/Arith/IR/Arith.h> // from @llvm-project
 #include <llvm/ADT/STLExtras.h>
