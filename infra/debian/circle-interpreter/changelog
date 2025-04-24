@@ -1,5 +1,5 @@
-circle-interpreter (1.30.0) jammy; urgency=low
+circle-interpreter (1.30.0) focal; urgency=low
 
   * First circle-interpreter Debian package release for developers.
 
- -- Saehie Park <saehie.park@gmail.com>  Mon, 23 Apr 2025 10:10:00 +0900
+ -- SeunghoPark <shs.park@samsung.com>  Thu, 24 Apr 2025 16:07:00 +0900
