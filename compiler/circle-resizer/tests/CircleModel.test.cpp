@@ -123,6 +123,7 @@ TEST_F(CircleModelTest, incorrect_output_stream_NEG)
   try
   {
     circle_model->save(out_stream);
+    FAIL() << "Expected exception.";
   }
   catch (const std::runtime_error &err)
   {

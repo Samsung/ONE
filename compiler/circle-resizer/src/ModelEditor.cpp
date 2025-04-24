@@ -46,19 +46,18 @@ void change_single_input_shape(luci::CircleInput *circle_input, const Shape &new
   }
 }
 
-bool change_inputs_shapes(loco::Graph *graph, const std::vector<Shape> &new_inputs_shapes)
+void change_inputs_shapes(loco::Graph *graph, const std::vector<Shape> &new_inputs_shapes)
 {
   auto graph_inputs = loco::input_nodes(graph);
   if (graph_inputs.size() != new_inputs_shapes.size())
   {
-    return false;
+    throw std::runtime_error("Expected " + std::to_string(graph_inputs.size()) + " shapes but provided only " + std::to_string(new_inputs_shapes.size()));
   }
   for (size_t in_idx = 0; in_idx < new_inputs_shapes.size(); ++in_idx)
   {
     auto circle_input = loco::must_cast<luci::CircleInput *>(graph_inputs[in_idx]);
     change_single_input_shape(circle_input, new_inputs_shapes[in_idx]);
   }
-  return true;
 }
 
 } // namespace
@@ -76,7 +75,14 @@ ModelEditor &ModelEditor::resize_inputs(const std::vector<Shape> &new_inputs_sha
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
   logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{graph};
-  phase_runner.run(phase);
+  try
+  {
+    phase_runner.run(phase);
+  }
+  catch(const std::exception& e)
+  {
+    throw std::runtime_error("Exception during shape inference with message: " + std::string{e.what()});
+  }
 
   return *this;
 }
