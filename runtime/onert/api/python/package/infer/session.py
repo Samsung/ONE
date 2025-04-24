@@ -111,6 +111,7 @@ class session(BaseSession):
 
                 # Update tensorinfo to optimize using it
                 self.update_inputs_tensorinfo(fixed_infos)
+
                 self.session.prepare()
                 self.set_outputs(self.session.output_size())
                 self._prepared = True

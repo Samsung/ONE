@@ -20,15 +20,12 @@ def main(nnpackage_path, backends="cpu"):
             # Replace -1 with a random value between 1 and 10
             dims = [random.randint(1, 10) if d == -1 else d for d in dims]
             # Build the shape tuple from tensorinfo dimensions.
-            print(dims)
             shape = tuple(dims[:info.rank])
             # Create a dummy numpy array filled with uniform random values in [0,1).
             dummy_inputs.append(
                 np.random.uniform(low=0.0, high=1.0, size=shape).astype(info.dtype))
 
-        print(dummy_inputs)
         outputs = session.infer(dummy_inputs)
-        print(outputs)
         print(f"Inference run {i+1}/10 completed.")
 
     print(f"nnpackage {nnpackage_path.split('/')[-1]} runs successfully.")
