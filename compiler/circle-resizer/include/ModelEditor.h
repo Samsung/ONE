@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __CIRCLE_RESIZER_H__
-#define __CIRCLE_RESIZER_H__
+#ifndef __CIRCLE_RESIZER_MODEL_EDITOR_H__
+#define __CIRCLE_RESIZER_MODEL_EDITOR_H__
 
 #include "Shape.h"
 #include "CircleModel.h"
@@ -26,12 +26,29 @@
 
 namespace circle_resizer
 {
+
+/**
+ * The class to modify circle models.
+ */
 class ModelEditor
 {
 public:
+  /**
+   * @brief Initialize the editor with CircleModel object.
+   */
   explicit ModelEditor(std::shared_ptr<CircleModel> circle_model);
 
 public:
+
+  /**
+   * @brief Resize the model. In means changing shape of the inputs 
+   *        and propagating changes through the graph.
+   *
+   * Exceptions:
+   * - std::runtime_error if the new_inputs_shapes are invalid. It can happens for scenarios like:
+   *   - new shapes for NOT all inputs are provided
+   *   - an exception was thrown during shape inference pass
+   */
   ModelEditor &resize_inputs(const std::vector<Shape> &new_inputs_shapes);
 
 private:
@@ -39,4 +56,4 @@ private:
 };
 } // namespace circle_resizer
 
-#endif // __CIRCLE_RESIZER_H__
+#endif // __CIRCLE_RESIZER_MODEL_EDITOR_H__
