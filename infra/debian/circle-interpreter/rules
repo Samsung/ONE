@@ -1,40 +1,49 @@
 #!/usr/bin/make -f
 
-export NNCC_WORKSPACE=build/debian
-export NNCC_INSTALL_PREFIX=$(CURDIR)/debian/tmp/usr/
+export NNCC_INSTALL_PREFIX=$(CURDIR)/build/debian.install
+export DEBIAN_PREFIX=$(CURDIR)/debian/tmp
 
 %:
 	dh $@
 
 override_dh_auto_clean:
-	# skip clean
+	# Nothing to clean
+	true
 
 override_dh_auto_configure:
-	CIRCLEINT_ITEMS="angkor;cwrap;pepper-str;pepper-strcast;pepper-csv2vec;pp"
-	CIRCLEINT_ITEMS="${CIRCLEINT_ITEMS};oops;loco;logo-core;logo;locop"
-	CIRCLEINT_ITEMS="${CIRCLEINT_ITEMS};hermes;hermes-std;safemain;mio-circle08"
-	CIRCLEINT_ITEMS="${CIRCLEINT_ITEMS};luci-compute;luci;luci-interpreter"
-	CIRCLEINT_ITEMS="${CIRCLEINT_ITEMS};foder;arser;vconone;circle-interpreter"
-
-	./nncc configure \
-		-DENABLE_STRICT_BUILD=ON \
-		-DENABLE_TEST=OFF \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DEXTERNALS_BUILD_THREADS=4 \
-		-DCMAKE_INSTALL_PREFIX=${NNCC_INSTALL_PREFIX} \
-		-DBUILD_WHITELIST="${CIRCLEINT_ITEMS}"
+	# No configure step needed
+	true
 
 override_dh_auto_build:
-	./nncc build -j4
+	# No build step needed
+	true
 
 override_dh_auto_test:
-	# skip test
+	# No test step needed
+	true
 
 override_dh_auto_install:
-	cmake --build ${NNCC_WORKSPACE} -- install
+	# copy the bin file
+	mkdir -p ${DEBIAN_PREFIX}/bin
+	cp ${NNCC_INSTALL_PREFIX}/bin/circle-interpreter ${DEBIAN_PREFIX}/bin/
+	
+	# copy the lib files
+	mkdir -p ${DEBIAN_PREFIX}/lib
+	cp ${NNCC_INSTALL_PREFIX}/lib/libloco.so ${DEBIAN_PREFIX}/lib/
+	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_env.so ${DEBIAN_PREFIX}/lib/
+	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_import.so ${DEBIAN_PREFIX}/lib/
+	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_interpreter.so ${DEBIAN_PREFIX}/lib/
+	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_lang.so ${DEBIAN_PREFIX}/lib/
+	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_logex.so ${DEBIAN_PREFIX}/lib/
+	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_log.so ${DEBIAN_PREFIX}/lib/
+	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_plan.so ${DEBIAN_PREFIX}/lib/
+	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_profile.so ${DEBIAN_PREFIX}/lib/
 
 override_dh_shlibdeps:
 	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
 
+override_dh_strip:
+	dh_strip --no-automatic-dbgsym
+
 override_dh_builddeb:
-	dh_builddeb -- -Zgzip
+	dh_builddeb
