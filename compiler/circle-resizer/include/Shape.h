@@ -85,14 +85,14 @@ public:
    */
   bool operator==(const Shape &rhs) const;
 
-  /**
-   * @brief Print the shape in format [1, 2, 3].
-   */
-  friend std::ostream &operator<<(std::ostream &os, const Shape &shape);
-
 private:
   std::vector<Dim> _dims;
 };
+
+/**
+ * @brief Print the shape in format [1, 2, 3].
+ */
+std::ostream &operator<<(std::ostream &os, const Shape &shape);
 
 } // namespace circle_resizer
 
