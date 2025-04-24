@@ -51,7 +51,9 @@ void change_inputs_shapes(loco::Graph *graph, const std::vector<Shape> &new_inpu
   auto graph_inputs = loco::input_nodes(graph);
   if (graph_inputs.size() != new_inputs_shapes.size())
   {
-    throw std::runtime_error("Expected " + std::to_string(graph_inputs.size()) + " shapes but provided only " + std::to_string(new_inputs_shapes.size()));
+    throw std::runtime_error("Expected " + std::to_string(graph_inputs.size()) +
+                             " shapes but provided only " +
+                             std::to_string(new_inputs_shapes.size()));
   }
   for (size_t in_idx = 0; in_idx < new_inputs_shapes.size(); ++in_idx)
   {
@@ -79,9 +81,10 @@ ModelEditor &ModelEditor::resize_inputs(const std::vector<Shape> &new_inputs_sha
   {
     phase_runner.run(phase);
   }
-  catch(const std::exception& e)
+  catch (const std::exception &e)
   {
-    throw std::runtime_error("Exception during shape inference with message: " + std::string{e.what()});
+    throw std::runtime_error("Exception during shape inference with message: " +
+                             std::string{e.what()});
   }
 
   return *this;

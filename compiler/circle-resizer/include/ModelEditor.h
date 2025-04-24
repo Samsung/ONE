@@ -39,9 +39,8 @@ public:
   explicit ModelEditor(std::shared_ptr<CircleModel> circle_model);
 
 public:
-
   /**
-   * @brief Resize the model. In means changing shape of the inputs 
+   * @brief Resize the model. In means changing shape of the inputs
    *        and propagating changes through the graph.
    *
    * Exceptions:
@@ -54,6 +53,7 @@ public:
 private:
   std::shared_ptr<CircleModel> _circle_model;
 };
+
 } // namespace circle_resizer
 
 #endif // __CIRCLE_RESIZER_MODEL_EDITOR_H__

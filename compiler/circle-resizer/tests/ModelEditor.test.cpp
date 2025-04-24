@@ -63,20 +63,17 @@ TEST_F(ModelEditorTest, single_input_two_outputs)
   editor.resize_inputs(new_input_shapes);
   EXPECT_EQ(circle_model->input_shapes(), new_input_shapes);
   EXPECT_EQ(circle_model->output_shapes(),
-            (std::vector<Shape>{Shape{1, 6, 6, 4},
-                                Shape{1, 6, 6, 4}}));
+            (std::vector<Shape>{Shape{1, 6, 6, 4}, Shape{1, 6, 6, 4}}));
 }
 
 TEST_F(ModelEditorTest, two_inputs_single_output)
 {
   auto circle_model = std::make_shared<CircleModel>(_test_models_dir + "/Add_000.circle");
   ModelEditor editor(circle_model);
-  const auto new_input_shapes = std::vector<Shape>{Shape{1, 5, 5, 3},
-                                                   Shape{1, 5, 5, 3}};
+  const auto new_input_shapes = std::vector<Shape>{Shape{1, 5, 5, 3}, Shape{1, 5, 5, 3}};
   editor.resize_inputs(new_input_shapes);
   EXPECT_EQ(circle_model->input_shapes(), new_input_shapes);
-  EXPECT_EQ(circle_model->output_shapes(),
-            (std::vector<Shape>{Shape{1, 5, 5, 3}}));
+  EXPECT_EQ(circle_model->output_shapes(), (std::vector<Shape>{Shape{1, 5, 5, 3}}));
 }
 
 TEST_F(ModelEditorTest, two_inputs_two_outputs)
@@ -84,13 +81,11 @@ TEST_F(ModelEditorTest, two_inputs_two_outputs)
   auto circle_model =
     std::make_shared<CircleModel>(_test_models_dir + "/Part_Add_Sqrt_Rsqrt_000.circle");
   ModelEditor editor(circle_model);
-  const auto new_input_shapes = std::vector<Shape>{Shape{1, 5, 5, 2},
-                                                   Shape{1, 5, 5, 2}};
+  const auto new_input_shapes = std::vector<Shape>{Shape{1, 5, 5, 2}, Shape{1, 5, 5, 2}};
   editor.resize_inputs(new_input_shapes);
   EXPECT_EQ(circle_model->input_shapes(), new_input_shapes);
   EXPECT_EQ(circle_model->output_shapes(),
-            (std::vector<Shape>{Shape{1, 5, 5, 2},
-                                Shape{1, 5, 5, 2}}));
+            (std::vector<Shape>{Shape{1, 5, 5, 2}, Shape{1, 5, 5, 2}}));
 }
 
 TEST_F(ModelEditorTest, resize_applied_after_save)
@@ -138,7 +133,8 @@ TEST_F(ModelEditorTest, resize_to_dynamic)
   const auto new_input_shapes = std::vector<Shape>{Shape{Dim{4}, Dim::dynamic()}};
   editor.resize_inputs(new_input_shapes);
   EXPECT_EQ(circle_model->input_shapes(), new_input_shapes);
-  EXPECT_EQ(circle_model->output_shapes(), (std::vector<Shape>{Shape{Dim{4}, Dim{1}, Dim::dynamic()}}));
+  EXPECT_EQ(circle_model->output_shapes(),
+            (std::vector<Shape>{Shape{Dim{4}, Dim{1}, Dim::dynamic()}}));
 }
 
 TEST_F(ModelEditorTest, not_all_input_shapes_provided_NEG)
@@ -166,8 +162,7 @@ TEST_F(ModelEditorTest, exception_during_shape_inference_NEG)
   ModelEditor editor(circle_model);
   try
   {
-    editor.resize_inputs(std::vector<Shape>{Shape{1, 2, 3},
-                                                    Shape{4, 5, 6}});
+    editor.resize_inputs(std::vector<Shape>{Shape{1, 2, 3}, Shape{4, 5, 6}});
     FAIL() << "Unexpected successful resizing with invalid shapes.";
   }
   catch (const std::runtime_error &err)
