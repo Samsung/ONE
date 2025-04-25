@@ -7,12 +7,8 @@ on:
       - release/*
     paths:
       - '.github/workflows/run-onert-cross-build.yml'
-      - 'nn*'
+      - 'nnfw'
       - 'Makefile.template'
-      - 'infra/buildtool/**'
-      - 'infra/cmake/**'
-      - 'infra/nncc/**'
-      - 'infra/nnfw/**'
       - 'runtime/**'
       - '!runtime/contrib/**'
       - '!**/*.md'
@@ -22,12 +18,8 @@ on:
       - release/*
     paths:
       - '.github/workflows/run-onert-cross-build.yml'
-      - 'nn*'
+      - 'nnfw'
       - 'Makefile.template'
-      - 'infra/buildtool/**'
-      - 'infra/cmake/**'
-      - 'infra/nncc/**'
-      - 'infra/nnfw/**'
       - 'runtime/**'
       - '!runtime/contrib/**'
       - '!**/*.md'
@@ -70,7 +62,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: externals
-          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('runtime/infra/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-${{ matrix.ubuntu_code }}-
             external-onert-
@@ -92,9 +84,10 @@ jobs:
           ln -sf usr/lib lib
           popd
 
+      # Build without odc
       - name: Build onert
         run: |
-          make -f Makefile.template create-testsuite
+          make -f Makefile.template create-testsuite-except-odc
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

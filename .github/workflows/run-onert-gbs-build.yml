@@ -7,14 +7,7 @@ on:
       - release/*
     paths:
       - '.github/workflows/run-onert-gbs-build.yml'
-      - 'nncc'
       - 'nnfw'
-      - 'compiler/luci/**'
-      - 'compiler/loco/**'
-      - 'compiler/logo/**'
-      - 'compute/**'
-      - 'infra/nnfw/**'
-      - 'infra/cmake/**'
       - 'runtime/**'
       - '!runtime/contrib/**'
       - 'packaging/**'
@@ -25,14 +18,7 @@ on:
       - release/*
     paths:
       - '.github/workflows/run-onert-gbs-build.yml'
-      - 'nncc'
       - 'nnfw'
-      - 'compiler/luci/**'
-      - 'compiler/loco/**'
-      - 'compiler/logo/**'
-      - 'compute/**'
-      - 'infra/nnfw/**'
-      - 'infra/cmake/**'
       - 'runtime/**'
       - '!runtime/contrib/**'
       - 'packaging/**'
@@ -76,6 +62,9 @@ jobs:
           restore-keys: |
             gbs-repo-${{ matrix.profile }}-${{ matrix.arch }}-
 
+      # Disable odc build
       - name: Build
         run: |
-          gbs -c infra/nnfw/config/gbs.conf build -A ${{ matrix.arch }} --profile ${{ matrix.profile }} --buildroot .gbs
+          gbs -c infra/nnfw/config/gbs.conf build \
+            -A ${{ matrix.arch }} --profile ${{ matrix.profile }} \
+            --buildroot .gbs --define 'odc_build 0'

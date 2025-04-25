@@ -1,0 +1,2 @@
+# This is for reproducible building. Otherwise, `debuild` recognizes build artifacts as source files.
+diff-ignore="build|externals"
