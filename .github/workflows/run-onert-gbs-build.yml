@@ -65,6 +65,6 @@ jobs:
       # Disable odc build
       - name: Build
         run: |
-          gbs -c infra/nnfw/config/gbs.conf build \
+          gbs -c runtime/infra/config/gbs.conf build \
             -A ${{ matrix.arch }} --profile ${{ matrix.profile }} \
             --buildroot .gbs --define 'odc_build 0'
