@@ -18,10 +18,11 @@ concurrency:
 
 jobs:
   onecc-test:
-    if: github.repository_owner == 'Samsung'
+    if: github.repository_owner == 'Samsung' || github.repository_owner == 'shs-park'
     strategy:
       matrix:
-        ubuntu_code: [ focal, jammy ]
+        # TODO activate jammy
+        ubuntu_code: [ focal ]
         include:
           - ubuntu_code: focal
             ubuntu_ver: 2004
@@ -30,13 +31,15 @@ jobs:
           - ubuntu_code: jammy
             ubuntu_ver: 2204
             comment_id: 2658268060
-    runs-on: ubuntu-latest
+    # TODO change to the 'ubuntu-latest'
+    #runs-on: ubuntu-latest
+    runs-on: [ self-hosted, shs-park ]
     container:
       image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
       options: --user root
     env:
-      NNCC_WORKSPACE : build
-      NNCC_INSTALL_PREFIX : install
+      NNCC_WORKSPACE : build/debian
+      NNCC_INSTALL_PREFIX : ${{ github.workspace }}/debian/tmp/usr/
     name: circle-interpreter ubuntu ${{ matrix.ubuntu_ver }}
 
     steps:
@@ -87,8 +90,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: circle_intp_${{ matrix.ubuntu_ver }}
-          # TODO enable retention-days, default is 90
-          # retention-days: 3
+          retention-days: 3
           path: |
             ${{ env.NNCC_WORKSPACE }}/cirintp/
 
@@ -98,6 +100,7 @@ jobs:
       - name: Update URL
         if: false
         run: |
+          exit(1) # TODO enable posting comments
           echo "Artifact URL is ${{ steps.step-upload.outputs.artifact-url }}"
           COMMENT_ADDR=https://api.github.com/repos/Samsung/ONE/issues/comments/${{ matrix.comment_id }}
           curl -L \
