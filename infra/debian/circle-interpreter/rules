@@ -26,18 +26,6 @@ override_dh_auto_install:
 	# copy the bin file
 	mkdir -p ${DEBIAN_PREFIX}/bin
 	cp ${NNCC_INSTALL_PREFIX}/bin/circle-interpreter ${DEBIAN_PREFIX}/bin/
-	
-	# copy the lib files
-	mkdir -p ${DEBIAN_PREFIX}/lib
-	cp ${NNCC_INSTALL_PREFIX}/lib/libloco.so ${DEBIAN_PREFIX}/lib/
-	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_env.so ${DEBIAN_PREFIX}/lib/
-	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_import.so ${DEBIAN_PREFIX}/lib/
-	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_interpreter.so ${DEBIAN_PREFIX}/lib/
-	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_lang.so ${DEBIAN_PREFIX}/lib/
-	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_logex.so ${DEBIAN_PREFIX}/lib/
-	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_log.so ${DEBIAN_PREFIX}/lib/
-	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_plan.so ${DEBIAN_PREFIX}/lib/
-	cp ${NNCC_INSTALL_PREFIX}/lib/libluci_profile.so ${DEBIAN_PREFIX}/lib/
 
 override_dh_shlibdeps:
 	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
