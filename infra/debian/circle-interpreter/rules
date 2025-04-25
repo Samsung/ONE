@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-export NNCC_INSTALL_PREFIX=$(CURDIR)/build/debian.install
+export NNCC_INSTALL_PREFIX=$(CURDIR)/debian.install
 export DEBIAN_PREFIX=$(CURDIR)/debian/tmp
 
 %:
