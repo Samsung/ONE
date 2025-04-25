@@ -6,7 +6,7 @@ on:
       - master
       - release/*
     paths:
-      - '.github/workflows/run-onert-build.yml'
+      - '.github/workflows/run-onert-native-build.yml'
       - 'nn*'
       - 'Makefile.template'
       - 'infra/buildtool/**'
@@ -21,7 +21,7 @@ on:
       - master
       - release/*
     paths:
-      - '.github/workflows/run-onert-build.yml'
+      - '.github/workflows/run-onert-native-build.yml'
       - 'nn*'
       - 'Makefile.template'
       - 'infra/buildtool/**'
