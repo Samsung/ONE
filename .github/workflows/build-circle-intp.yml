@@ -84,6 +84,7 @@ jobs:
           cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_plan.so ./cirintp/.
           cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_profile.so ./cirintp/.
 
+      # Doesn't actually need this step
       - name: Upload Artifact
         id: step-upload
         uses: actions/upload-artifact@v4
