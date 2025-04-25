@@ -86,8 +86,7 @@ ModelEditor &ModelEditor::resize_inputs(const std::vector<Shape> &new_inputs_sha
   }
   catch (const std::exception &e)
   {
-    throw std::runtime_error("Exception during resizing with message: " +
-                             std::string{e.what()});
+    throw std::runtime_error("Exception during resizing with message: " + std::string{e.what()});
   }
 
   return *this;
