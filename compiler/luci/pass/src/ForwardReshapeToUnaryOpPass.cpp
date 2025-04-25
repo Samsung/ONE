@@ -182,11 +182,14 @@ bool forward_reshape(luci::CircleReshape *reshape, luci::CircleMul *div,
   assert(reshape != nullptr); // FIX_CALLER_UNLESS
   assert(div != nullptr);     // FIX_CALLER_UNLESS
 
+  const auto prev = loco::must_cast<luci::CircleNode *>(reshape->tensor());
+  // Skip if rank is higher than 4 because MUL(in onert) cannot handle input rank higher than 4.
+  if (prev->rank() > 4)
+    return false;
+
   auto new_reshape = create_cloned_reshape(reshape);
   if (not new_reshape)
     return false;
-
-  const auto prev = loco::must_cast<luci::CircleNode *>(reshape->tensor());
 
   // Reshape can change rank of tensor, so we need to update constant value accordingly.
   assert(const_value->size<loco::DataType::FLOAT32>() == 1);
