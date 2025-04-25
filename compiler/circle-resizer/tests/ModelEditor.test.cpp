@@ -36,7 +36,7 @@ protected:
     if (path == nullptr)
     {
       throw std::runtime_error("environmental variable ARTIFACTS_PATH required for circle-resizer "
-                               "tests was not not provided");
+                               "tests was not provided");
     }
     _test_models_dir = path;
   }

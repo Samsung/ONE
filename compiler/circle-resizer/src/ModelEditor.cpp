@@ -64,7 +64,10 @@ void change_inputs_shapes(loco::Graph *graph, const std::vector<Shape> &new_inpu
 
 } // namespace
 
-ModelEditor::ModelEditor(std::shared_ptr<CircleModel> circle_model) : _circle_model{circle_model} {}
+ModelEditor::ModelEditor(std::shared_ptr<CircleModel> circle_model) : _circle_model{circle_model}
+{
+  assert(circle_model != nullptr); // FIX_CALLER_UNLESS
+}
 
 ModelEditor &ModelEditor::resize_inputs(const std::vector<Shape> &new_inputs_shapes)
 {
@@ -83,7 +86,7 @@ ModelEditor &ModelEditor::resize_inputs(const std::vector<Shape> &new_inputs_sha
   }
   catch (const std::exception &e)
   {
-    throw std::runtime_error("Exception during shape inference with message: " +
+    throw std::runtime_error("Exception during resizing with message: " +
                              std::string{e.what()});
   }
 
