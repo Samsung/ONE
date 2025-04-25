@@ -19,7 +19,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <iostream>
 #include <cstdlib>
 #include <fstream>
 #include <vector>
