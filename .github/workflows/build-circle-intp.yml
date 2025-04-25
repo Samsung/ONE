@@ -74,16 +74,16 @@ jobs:
         run: |
           cd ${NNCC_WORKSPACE}
           mkdir -p cirintp
-          cp -v ./${NNCC_INSTALL_PREFIX}/bin/circle-interpreter ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libloco.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_env.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_import.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_interpreter.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_lang.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_logex.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_log.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_plan.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_profile.so ./cirintp/.
+          cp -v ${NNCC_INSTALL_PREFIX}/bin/circle-interpreter ./cirintp/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libloco.so ./cirintp/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_env.so ./cirintp/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_import.so ./cirintp/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_interpreter.so ./cirintp/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_lang.so ./cirintp/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_logex.so ./cirintp/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_log.so ./cirintp/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_plan.so ./cirintp/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_profile.so ./cirintp/.
 
       - name: Upload Artifact
         id: step-upload
