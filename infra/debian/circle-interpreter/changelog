@@ -1,3 +1,9 @@
+circle-interpreter (1.30.0~20250424.2227) focal; urgency=medium
+
+  * Daily build with timestamp.
+
+ -- SeunghoPark <shs.park@samsung.com>  Thu, 24 Apr 2025 22:27:41 +0900
+
 circle-interpreter (1.30.0) focal; urgency=low
 
   * First circle-interpreter Debian package release for developers.
