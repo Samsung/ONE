@@ -280,7 +280,7 @@ TEST(CKer_Operation, neg_MulUnsupportedBroadcastRank)
 {
   // Unsupported rank
   {
-    // Shape: {1, 2, 2, 1, 1}
+    // Shape: {1, 2, 2, 1, 1, 1}
     std::vector<float> input1 = {10, -9, -11, 7};
     // Shape: {1}
     std::vector<float> input2 = {-3};
@@ -290,7 +290,7 @@ TEST(CKer_Operation, neg_MulUnsupportedBroadcastRank)
 
     EXPECT_ANY_THROW(
       nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::MUL>(
-        param, nnfw::cker::Shape{1, 2, 2, 1, 1}, input1.data(), nnfw::cker::Shape{1}, input2.data(),
-        nnfw::cker::Shape{1, 2, 2, 1, 1}, output.data()));
+        param, nnfw::cker::Shape{1, 2, 2, 1, 1, 1}, input1.data(), nnfw::cker::Shape{1},
+        input2.data(), nnfw::cker::Shape{1, 2, 2, 1, 1, 1}, output.data()));
   }
 }
