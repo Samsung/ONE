@@ -329,7 +329,7 @@ inline void BroadcastBinaryArithmeticOp(BinaryArithmeticOpParam &params, const S
                                         const float *input2_data, const Shape &output_shape,
                                         float *output_data)
 {
-  if (output_shape.DimensionsCount() > 4)
+  if (output_shape.DimensionsCount() > 5)
     throw std::runtime_error(
       std::string("cker::BroadcastBinaryArithmeticOp: Unsupported rank size : ") +
       std::to_string(output_shape.DimensionsCount()));

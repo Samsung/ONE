@@ -261,6 +261,17 @@ inline int SubscriptToIndex(const NdArrayDesc<4> &desc, int i0, int i1, int i2, 
   return i0 * desc.strides[0] + i1 * desc.strides[1] + i2 * desc.strides[2] + i3 * desc.strides[3];
 }
 
+inline int SubscriptToIndex(const NdArrayDesc<5> &desc, int i0, int i1, int i2, int i3, int i4)
+{
+  assert(i0 >= 0 && i0 < desc.extents[0]);
+  assert(i1 >= 0 && i1 < desc.extents[1]);
+  assert(i2 >= 0 && i2 < desc.extents[2]);
+  assert(i3 >= 0 && i3 < desc.extents[3]);
+  assert(i4 >= 0 && i4 < desc.extents[4]);
+  return i0 * desc.strides[0] + i1 * desc.strides[1] + i2 * desc.strides[2] + i3 * desc.strides[3] +
+         i4 * desc.strides[4];
+}
+
 template <int N> inline int SubscriptToIndexGeneric(const NdArrayDesc<N> *desc, int *iter)
 {
   int ret_indx = 0;
