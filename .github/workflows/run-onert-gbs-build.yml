@@ -1,7 +1,7 @@
 name: Run ONERT Tizen GBS Build
 
 on:
-  pull_request:
+  push:
     branches:
       - master
       - release/*
@@ -19,7 +19,7 @@ on:
       - '!runtime/contrib/**'
       - 'packaging/**'
       - '!**.md'
-  push:
+  pull_request:
     branches:
       - master
       - release/*
