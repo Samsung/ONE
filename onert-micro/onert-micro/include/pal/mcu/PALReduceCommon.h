@@ -20,6 +20,7 @@
 
 #include "PALUtils.h"
 #include "core/OMCustomRuntimeData.h"
+#include "core/OMRuntimeShape.h"
 
 using namespace onert_micro::core;
 
@@ -160,8 +161,38 @@ inline bool reduceSumImpl(const T *input_data, const int *input_dims, const int 
                           [](const T current, const T in) -> T { return in + current; });
 }
 
-// ------------------------------------------------------------------------------------------------
+// Mean over WH of axis 1,2
+inline void MeanROWH(const OMRuntimeShape &unextended_input_shape, const float *input_data,
+                     const OMRuntimeShape &unextended_output_shape, float *output_data)
+{
+  // Current implementation only supports dimension equals 4 and simultaneous
+  // reduction over width and height.
+  const OMRuntimeShape input_shape = OMRuntimeShape::extendedShape(4, unextended_input_shape);
+  const OMRuntimeShape output_shape = OMRuntimeShape::extendedShape(4, unextended_output_shape);
 
+  const int output_batch = output_shape.dims(0);
+  const int output_depth = output_shape.dims(3);
+
+  const int input_height = input_shape.dims(1);
+  const int input_width = input_shape.dims(2);
+
+  for (int out_b = 0; out_b < output_batch; ++out_b)
+  {
+    for (int out_d = 0; out_d < output_depth; ++out_d)
+    {
+      float value = 0;
+      for (int in_h = 0; in_h < input_height; ++in_h)
+      {
+        for (int in_w = 0; in_w < input_width; ++in_w)
+        {
+          value += input_data[offset(input_shape.dimsData(), out_b, in_h, in_w, out_d)];
+        }
+      }
+      output_data[offset(output_shape.dimsData(), out_b, 0, 0, out_d)] =
+        value / (input_width * input_height);
+    }
+  }
+}
 // New version (used in Mean).
 template <typename T, class ReduceFn> bool ReduceGeneric(OMReduceDataContext<T> &ctx, T init_value)
 {
