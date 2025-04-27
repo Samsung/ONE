@@ -98,10 +98,10 @@ $(document).ready(function(){initNavTree('classpackage_1_1experimental_1_1train_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ab1160bc3eb2e105a50f000625525d984" id="r_ab1160bc3eb2e105a50f000625525d984"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#ab1160bc3eb2e105a50f000625525d984">create_loss</a> (name)</td></tr>
-<tr class="separator:ab1160bc3eb2e105a50f000625525d984"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ab778ae6cd32081ba42aa0c15614f43" id="r_a9ab778ae6cd32081ba42aa0c15614f43"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#a9ab778ae6cd32081ba42aa0c15614f43">map_loss_function_to_enum</a> (loss_instance)</td></tr>
-<tr class="separator:a9ab778ae6cd32081ba42aa0c15614f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8e9bd6332d428be91b8e0bb6a498521" id="r_ae8e9bd6332d428be91b8e0bb6a498521"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpackage_1_1experimental_1_1train_1_1losses_1_1loss_1_1_loss_function.html">LossFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#ae8e9bd6332d428be91b8e0bb6a498521">create_loss</a> (str name)</td></tr>
+<tr class="separator:ae8e9bd6332d428be91b8e0bb6a498521"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d9a029ee91c0099d323dc98977a4fb7" id="r_a5d9a029ee91c0099d323dc98977a4fb7"><td class="memItemLeft" align="right" valign="top">loss_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpackage_1_1experimental_1_1train_1_1losses_1_1registry_1_1_loss_registry.html#a5d9a029ee91c0099d323dc98977a4fb7">map_loss_function_to_enum</a> (<a class="el" href="classpackage_1_1experimental_1_1train_1_1losses_1_1loss_1_1_loss_function.html">LossFunction</a> loss_instance)</td></tr>
+<tr class="separator:a5d9a029ee91c0099d323dc98977a4fb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
@@ -111,10 +111,10 @@ Static Protected Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Registry for creating and mapping losses by name or instance.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="losses_2registry_8py_source.html#l00006">6</a> of file <a class="el" href="losses_2registry_8py_source.html">registry.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="losses_2registry_8py_source.html#l00008">8</a> of file <a class="el" href="losses_2registry_8py_source.html">registry.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab1160bc3eb2e105a50f000625525d984" name="ab1160bc3eb2e105a50f000625525d984"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1160bc3eb2e105a50f000625525d984">&#9670;&#160;</a></span>create_loss()</h2>
+<a id="ae8e9bd6332d428be91b8e0bb6a498521" name="ae8e9bd6332d428be91b8e0bb6a498521"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8e9bd6332d428be91b8e0bb6a498521">&#9670;&#160;</a></span>create_loss()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -123,9 +123,9 @@ Static Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">package.experimental.train.losses.registry.LossRegistry.create_loss </td>
+          <td class="memname"> <a class="el" href="classpackage_1_1experimental_1_1train_1_1losses_1_1loss_1_1_loss_function.html">LossFunction</a> package.experimental.train.losses.registry.LossRegistry.create_loss </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">str&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
@@ -142,24 +142,24 @@ Args:
 Returns:
     BaseLoss: Loss instance.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="losses_2registry_8py_source.html#l00016">16</a> of file <a class="el" href="losses_2registry_8py_source.html">registry.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   16</span>    <span class="keyword">def </span>create_loss(name):</div>
-<div class="line"><span class="lineno">   17</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   18</span><span class="stringliteral">        Create a loss instance by name.</span></div>
-<div class="line"><span class="lineno">   19</span><span class="stringliteral">        Args:</span></div>
-<div class="line"><span class="lineno">   20</span><span class="stringliteral">            name (str): Name of the loss.</span></div>
-<div class="line"><span class="lineno">   21</span><span class="stringliteral">        Returns:</span></div>
-<div class="line"><span class="lineno">   22</span><span class="stringliteral">            BaseLoss: Loss instance.</span></div>
-<div class="line"><span class="lineno">   23</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   24</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> LossRegistry._losses:</div>
-<div class="line"><span class="lineno">   25</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown Loss: {name}. Custom loss is not supported yet&quot;</span>)</div>
-<div class="line"><span class="lineno">   26</span>        <span class="keywordflow">return</span> LossRegistry._losses[name]()</div>
-<div class="line"><span class="lineno">   27</span> </div>
+<p class="definition">Definition at line <a class="el" href="losses_2registry_8py_source.html#l00018">18</a> of file <a class="el" href="losses_2registry_8py_source.html">registry.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   18</span>    <span class="keyword">def </span>create_loss(name: str) -&gt; LossFunction:</div>
+<div class="line"><span class="lineno">   19</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   20</span><span class="stringliteral">        Create a loss instance by name.</span></div>
+<div class="line"><span class="lineno">   21</span><span class="stringliteral">        Args:</span></div>
+<div class="line"><span class="lineno">   22</span><span class="stringliteral">            name (str): Name of the loss.</span></div>
+<div class="line"><span class="lineno">   23</span><span class="stringliteral">        Returns:</span></div>
+<div class="line"><span class="lineno">   24</span><span class="stringliteral">            BaseLoss: Loss instance.</span></div>
+<div class="line"><span class="lineno">   25</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   26</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> LossRegistry._losses:</div>
+<div class="line"><span class="lineno">   27</span>            <span class="keywordflow">raise</span> ValueError(f<span class="stringliteral">&quot;Unknown Loss: {name}. Custom loss is not supported yet&quot;</span>)</div>
+<div class="line"><span class="lineno">   28</span>        <span class="keywordflow">return</span> LossRegistry._losses[name]()</div>
+<div class="line"><span class="lineno">   29</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a9ab778ae6cd32081ba42aa0c15614f43" name="a9ab778ae6cd32081ba42aa0c15614f43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ab778ae6cd32081ba42aa0c15614f43">&#9670;&#160;</a></span>map_loss_function_to_enum()</h2>
+<a id="a5d9a029ee91c0099d323dc98977a4fb7" name="a5d9a029ee91c0099d323dc98977a4fb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d9a029ee91c0099d323dc98977a4fb7">&#9670;&#160;</a></span>map_loss_function_to_enum()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -168,9 +168,9 @@ Returns:
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">package.experimental.train.losses.registry.LossRegistry.map_loss_function_to_enum </td>
+          <td class="memname"> loss_type package.experimental.train.losses.registry.LossRegistry.map_loss_function_to_enum </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype"><a class="el" href="classpackage_1_1experimental_1_1train_1_1losses_1_1loss_1_1_loss_function.html">LossFunction</a>&#160;</td>
           <td class="paramname"><em>loss_instance</em></td><td>)</td>
           <td></td>
         </tr>
@@ -189,28 +189,27 @@ Returns:
 Raises:
     TypeError: If the loss_instance is not a recognized LossFunction type.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="losses_2registry_8py_source.html#l00029">29</a> of file <a class="el" href="losses_2registry_8py_source.html">registry.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>    <span class="keyword">def </span>map_loss_function_to_enum(loss_instance):</div>
-<div class="line"><span class="lineno">   30</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   31</span><span class="stringliteral">        Maps a LossFunction instance to the appropriate enum value.</span></div>
-<div class="line"><span class="lineno">   32</span><span class="stringliteral">        Args:</span></div>
-<div class="line"><span class="lineno">   33</span><span class="stringliteral">            loss_instance (BaseLoss): An instance of a loss function.</span></div>
-<div class="line"><span class="lineno">   34</span><span class="stringliteral">        Returns:</span></div>
-<div class="line"><span class="lineno">   35</span><span class="stringliteral">            loss_type: Corresponding enum value for the loss function.</span></div>
-<div class="line"><span class="lineno">   36</span><span class="stringliteral">        Raises:</span></div>
-<div class="line"><span class="lineno">   37</span><span class="stringliteral">            TypeError: If the loss_instance is not a recognized LossFunction type.</span></div>
-<div class="line"><span class="lineno">   38</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   39</span>        <span class="comment"># Loss to Enum mapping</span></div>
-<div class="line"><span class="lineno">   40</span>        loss_to_enum = {</div>
-<div class="line"><span class="lineno">   41</span>            CategoricalCrossentropy: loss_type.CATEGORICAL_CROSSENTROPY,</div>
-<div class="line"><span class="lineno">   42</span>            MeanSquaredError: loss_type.MEAN_SQUARED_ERROR</div>
-<div class="line"><span class="lineno">   43</span>        }</div>
-<div class="line"><span class="lineno">   44</span>        <span class="keywordflow">for</span> loss_class, enum_value <span class="keywordflow">in</span> loss_to_enum.items():</div>
-<div class="line"><span class="lineno">   45</span>            <span class="keywordflow">if</span> isinstance(loss_instance, loss_class):</div>
-<div class="line"><span class="lineno">   46</span>                <span class="keywordflow">return</span> enum_value</div>
-<div class="line"><span class="lineno">   47</span>        <span class="keywordflow">raise</span> TypeError(</div>
-<div class="line"><span class="lineno">   48</span>            f<span class="stringliteral">&quot;Unsupported loss function type: {type(loss_instance).__name__}. &quot;</span></div>
-<div class="line"><span class="lineno">   49</span>            f<span class="stringliteral">&quot;Supported types are: {list(loss_to_enum.keys())}.&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="losses_2registry_8py_source.html#l00031">31</a> of file <a class="el" href="losses_2registry_8py_source.html">registry.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>    <span class="keyword">def </span>map_loss_function_to_enum(loss_instance: LossFunction) -&gt; loss_type:</div>
+<div class="line"><span class="lineno">   32</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   33</span><span class="stringliteral">        Maps a LossFunction instance to the appropriate enum value.</span></div>
+<div class="line"><span class="lineno">   34</span><span class="stringliteral">        Args:</span></div>
+<div class="line"><span class="lineno">   35</span><span class="stringliteral">            loss_instance (BaseLoss): An instance of a loss function.</span></div>
+<div class="line"><span class="lineno">   36</span><span class="stringliteral">        Returns:</span></div>
+<div class="line"><span class="lineno">   37</span><span class="stringliteral">            loss_type: Corresponding enum value for the loss function.</span></div>
+<div class="line"><span class="lineno">   38</span><span class="stringliteral">        Raises:</span></div>
+<div class="line"><span class="lineno">   39</span><span class="stringliteral">            TypeError: If the loss_instance is not a recognized LossFunction type.</span></div>
+<div class="line"><span class="lineno">   40</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   41</span>        loss_to_enum: Dict[Type[LossFunction], loss_type] = {</div>
+<div class="line"><span class="lineno">   42</span>            CategoricalCrossentropy: loss_type.CATEGORICAL_CROSSENTROPY,</div>
+<div class="line"><span class="lineno">   43</span>            MeanSquaredError: loss_type.MEAN_SQUARED_ERROR</div>
+<div class="line"><span class="lineno">   44</span>        }</div>
+<div class="line"><span class="lineno">   45</span>        <span class="keywordflow">for</span> loss_class, enum_value <span class="keywordflow">in</span> loss_to_enum.items():</div>
+<div class="line"><span class="lineno">   46</span>            <span class="keywordflow">if</span> isinstance(loss_instance, loss_class):</div>
+<div class="line"><span class="lineno">   47</span>                <span class="keywordflow">return</span> enum_value</div>
+<div class="line"><span class="lineno">   48</span>        <span class="keywordflow">raise</span> TypeError(</div>
+<div class="line"><span class="lineno">   49</span>            f<span class="stringliteral">&quot;Unsupported loss function type: {type(loss_instance).__name__}. &quot;</span></div>
+<div class="line"><span class="lineno">   50</span>            f<span class="stringliteral">&quot;Supported types are: {list(loss_to_enum.keys())}.&quot;</span>)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -239,7 +238,7 @@ Raises:
 <div class="line">        <span class="stringliteral">&quot;mean_squared_error&quot;</span>: MeanSquaredError</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="losses_2registry_8py_source.html#l00010">10</a> of file <a class="el" href="losses_2registry_8py_source.html">registry.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="losses_2registry_8py_source.html#l00012">12</a> of file <a class="el" href="losses_2registry_8py_source.html">registry.py</a>.</p>
 
 </div>
 </div>

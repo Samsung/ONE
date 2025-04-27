@@ -1,12 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"_data_lookup_8cpp.html#a30267a8711769893a0cd0c1dd5b5774b":[41,0,0,133,2,3,1],
-"_data_lookup_8cpp.html#a30267a8711769893a0cd0c1dd5b5774b":[41,0,0,133,2,3,2],
-"_data_lookup_8cpp.html#a32ac2496d4368640e656bff9a800bb43":[41,0,0,133,2,3,14],
-"_data_lookup_8cpp.html#a431b2a4af1a40df83f01653b4b3d4a34":[41,0,0,133,2,3,6],
-"_data_lookup_8cpp.html#a4c4c2936f158474653beb225cc4cb472":[41,0,0,133,2,3,0],
-"_data_lookup_8cpp.html#a5bc2a4beed66e82aca55e81652239328":[41,0,0,133,2,3,16],
-"_data_lookup_8cpp.html#a7274fed2ad3ab17806db232bd56f6a50":[41,0,0,133,2,3,5],
 "_data_lookup_8cpp.html#a8c7a0e3659a80c1ea3afcb13c2d24921":[41,0,0,133,2,3,11],
 "_data_lookup_8cpp.html#a93c0e02f6fd849f42c5e08ee10c0387a":[41,0,0,133,2,3,13],
 "_data_lookup_8cpp.html#a9f65a4bac21f20ab7ccc404a194d1778":[41,0,0,133,2,3,12],
@@ -249,5 +242,12 @@ var NAVTREEINDEX7 =
 "_depthwise_filter_codec_8h_source.html":[41,0,0,52,0,0,1,13],
 "_depthwise_filter_encode_8cpp.html":[41,0,0,54,1,0,6],
 "_depthwise_filter_encode_8cpp_source.html":[41,0,0,54,1,0,6],
-"_depthwise_filter_index_8h.html":[41,0,0,52,0,0,1,14]
+"_depthwise_filter_index_8h.html":[41,0,0,52,0,0,1,14],
+"_depthwise_filter_index_8h_source.html":[41,0,0,52,0,0,1,14],
+"_depthwise_filter_shape_8h.html":[41,0,0,52,0,0,1,15],
+"_depthwise_filter_shape_8h_source.html":[41,0,0,52,0,0,1,15],
+"_dequantize_op_8h.html":[41,0,0,80,0,0,0,11],
+"_dequantize_op_8h_source.html":[41,0,0,80,0,0,0,11],
+"_dequantize_options_8cpp.html":[41,0,0,133,2,0,34],
+"_dequantize_options_8cpp.html#ac6d2d576b4eca5402317ce989f9cbb18":[41,0,0,133,2,0,34,0]
 };

@@ -91,8 +91,7 @@ $(document).ready(function(){initNavTree('classcircle__resizer_1_1_shape.html','
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#friends">Friends</a>  </div>
+<a href="#pub-static-methods">Static Public Member Functions</a>  </div>
   <div class="headertitle"><div class="title">circle_resizer::Shape Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -131,12 +130,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a38ee5c3f9a09371a3a0d23427fc7cf58" id="r_a38ee5c3f9a09371a3a0d23427fc7cf58"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classcircle__resizer_1_1_shape.html">Shape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcircle__resizer_1_1_shape.html#a38ee5c3f9a09371a3a0d23427fc7cf58">scalar</a> ()</td></tr>
 <tr class="memdesc:a38ee5c3f9a09371a3a0d23427fc7cf58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create scalar shape. Note, that the same can be achieved with Shape{}.  <br /></td></tr>
 <tr class="separator:a38ee5c3f9a09371a3a0d23427fc7cf58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
-Friends</h2></td></tr>
-<tr class="memitem:ac9c8a61ee3ea6e807a978fb7c61da35c" id="r_ac9c8a61ee3ea6e807a978fb7c61da35c"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcircle__resizer_1_1_shape.html#ac9c8a61ee3ea6e807a978fb7c61da35c">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classcircle__resizer_1_1_shape.html">Shape</a> &amp;shape)</td></tr>
-<tr class="memdesc:ac9c8a61ee3ea6e807a978fb7c61da35c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the shape in format [1, 2, 3].  <br /></td></tr>
-<tr class="separator:ac9c8a61ee3ea6e807a978fb7c61da35c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The representation of a single shape. </p>
@@ -280,7 +273,7 @@ Friends</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html#l00058">58</a> of file <a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html">Shape.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   58</span>{ <span class="keywordflow">return</span> _dims.empty(); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html#l00060">is_dynamic()</a>, and <a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html#l00044">operator[]()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html#l00060">is_dynamic()</a>, <a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html#l00086">circle_resizer::operator&lt;&lt;()</a>, and <a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html#l00044">operator[]()</a>.</p>
 
 </div>
 </div>
@@ -362,7 +355,7 @@ Friends</h2></td></tr>
 
 <p>Returns number of dimensions in the shape. </p>
 
-<p class="reference">Referenced by <a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html#l00044">operator[]()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html#l00086">circle_resizer::operator&lt;&lt;()</a>, and <a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html#l00044">operator[]()</a>.</p>
 
 </div>
 </div>
@@ -395,45 +388,6 @@ Friends</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   40</span>{ <span class="keywordflow">return</span> <a class="code hl_struct" href="struct_shape.html">Shape</a>{std::initializer_list&lt;Dim&gt;{}}; }</div>
 <div class="ttc" id="astruct_shape_html"><div class="ttname"><a href="struct_shape.html">Shape</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_shape_8h_source.html#l00027">Shape.h:28</a></div></div>
 </div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
-<a id="ac9c8a61ee3ea6e807a978fb7c61da35c" name="ac9c8a61ee3ea6e807a978fb7c61da35c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9c8a61ee3ea6e807a978fb7c61da35c">&#9670;&#160;</a></span>operator&lt;&lt;</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classcircle__resizer_1_1_shape.html">Shape</a> &amp;&#160;</td>
-          <td class="paramname"><em>shape</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Print the shape in format [1, 2, 3]. </p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

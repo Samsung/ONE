@@ -7,6 +7,5 @@ var classcircle__resizer_1_1_shape =
     [ "is_scalar", "classcircle__resizer_1_1_shape.html#a064301e8ab0322f0518746be46d11caa", null ],
     [ "operator==", "classcircle__resizer_1_1_shape.html#aed1bd0dc7cf843858e1fd9906467eb57", null ],
     [ "operator[]", "classcircle__resizer_1_1_shape.html#a8f531b153c00ac50b647625e7f4fb470", null ],
-    [ "rank", "classcircle__resizer_1_1_shape.html#aac9b93c9c6a245abff2305ac13553c6b", null ],
-    [ "operator<<", "classcircle__resizer_1_1_shape.html#ac9c8a61ee3ea6e807a978fb7c61da35c", null ]
+    [ "rank", "classcircle__resizer_1_1_shape.html#aac9b93c9c6a245abff2305ac13553c6b", null ]
 ];

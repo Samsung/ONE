@@ -18,7 +18,6 @@ var dir_617364de53cb63ef037bbfe87a3d680c =
     [ "DepthToSpace.cc", "_depth_to_space_8cc.html", null ],
     [ "DepthwiseConv2D.cc", "operation_2_depthwise_conv2_d_8cc.html", null ],
     [ "DetectionPostProcess.cc", "_detection_post_process_8cc.html", null ],
-    [ "Einsum.cc", "_einsum_8cc.html", null ],
     [ "ElementwiseActivation.cc", "operation_2_elementwise_activation_8cc.html", null ],
     [ "ElementwiseBinary.cc", "_elementwise_binary_8cc.html", null ],
     [ "ElementwiseUnary.cc", "_elementwise_unary_8cc.html", null ],

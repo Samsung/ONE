@@ -98,6 +98,8 @@ $(document).ready(function(){initNavTree('namespacecircle__resizer.html',''); in
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcircle__resizer_1_1_circle_model.html">CircleModel</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcircle__resizer_1_1_dim.html">Dim</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcircle__resizer_1_1_shape.html">Shape</a></td></tr>
@@ -105,11 +107,64 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ac6925547b124ea4fe87e82cfb4831b58" id="r_ac6925547b124ea4fe87e82cfb4831b58"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecircle__resizer.html#ac6925547b124ea4fe87e82cfb4831b58">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classcircle__resizer_1_1_shape.html">Shape</a> &amp;shape)</td></tr>
+<tr class="memdesc:ac6925547b124ea4fe87e82cfb4831b58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the shape in format [1, 2, 3].  <br /></td></tr>
+<tr class="separator:ac6925547b124ea4fe87e82cfb4831b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31ee125c6bd5806d9c42996efcc7502f" id="r_a31ee125c6bd5806d9c42996efcc7502f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classcircle__resizer_1_1_shape.html">Shape</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecircle__resizer.html#a31ee125c6bd5806d9c42996efcc7502f">parse_shapes</a> (const std::string &amp;shapes)</td></tr>
 <tr class="memdesc:a31ee125c6bd5806d9c42996efcc7502f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse shapes from string representation to Shapes object.  <br /></td></tr>
 <tr class="separator:a31ee125c6bd5806d9c42996efcc7502f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ac6925547b124ea4fe87e82cfb4831b58" name="ac6925547b124ea4fe87e82cfb4831b58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6925547b124ea4fe87e82cfb4831b58">&#9670;&#160;</a></span>operator&lt;&lt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; circle_resizer::operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classcircle__resizer_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>shape</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Print the shape in format [1, 2, 3]. </p>
+
+<p class="definition">Definition at line <a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html#l00086">86</a> of file <a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html">Shape.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span>{</div>
+<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">if</span> (shape.<a class="code hl_function" href="classcircle__resizer_1_1_shape.html#a064301e8ab0322f0518746be46d11caa">is_scalar</a>())</div>
+<div class="line"><span class="lineno">   89</span>  {</div>
+<div class="line"><span class="lineno">   90</span>    os &lt;&lt; <span class="stringliteral">&quot;[]&quot;</span>;</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">return</span> os;</div>
+<div class="line"><span class="lineno">   92</span>  }</div>
+<div class="line"><span class="lineno">   93</span>  os &lt;&lt; <span class="stringliteral">&quot;[&quot;</span>;</div>
+<div class="line"><span class="lineno">   94</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; shape.<a class="code hl_function" href="classcircle__resizer_1_1_shape.html#aac9b93c9c6a245abff2305ac13553c6b">rank</a>() - 1; ++i)</div>
+<div class="line"><span class="lineno">   95</span>  {</div>
+<div class="line"><span class="lineno">   96</span>    os &lt;&lt; shape[i].value() &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
+<div class="line"><span class="lineno">   97</span>  }</div>
+<div class="line"><span class="lineno">   98</span>  os &lt;&lt; shape[shape.<a class="code hl_function" href="classcircle__resizer_1_1_shape.html#aac9b93c9c6a245abff2305ac13553c6b">rank</a>() - 1].value() &lt;&lt; <span class="stringliteral">&quot;]&quot;</span>;</div>
+<div class="line"><span class="lineno">   99</span>  <span class="keywordflow">return</span> os;</div>
+<div class="line"><span class="lineno">  100</span>}</div>
+<div class="ttc" id="aclasscircle__resizer_1_1_shape_html_a064301e8ab0322f0518746be46d11caa"><div class="ttname"><a href="classcircle__resizer_1_1_shape.html#a064301e8ab0322f0518746be46d11caa">circle_resizer::Shape::is_scalar</a></div><div class="ttdeci">bool is_scalar() const</div><div class="ttdoc">Returns true if the shape is a scalar. Otherwise, return false.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html#l00058">Shape.cpp:58</a></div></div>
+<div class="ttc" id="aclasscircle__resizer_1_1_shape_html_aac9b93c9c6a245abff2305ac13553c6b"><div class="ttname"><a href="classcircle__resizer_1_1_shape.html#aac9b93c9c6a245abff2305ac13553c6b">circle_resizer::Shape::rank</a></div><div class="ttdeci">size_t rank() const</div><div class="ttdoc">Returns number of dimensions in the shape.</div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="compiler_2circle-resizer_2src_2_shape_8cpp_source.html#l00058">circle_resizer::Shape::is_scalar()</a>, and <a class="el" href="classcircle__resizer_1_1_shape.html#aac9b93c9c6a245abff2305ac13553c6b">circle_resizer::Shape::rank()</a>.</p>
+
+</div>
+</div>
 <a id="a31ee125c6bd5806d9c42996efcc7502f" name="a31ee125c6bd5806d9c42996efcc7502f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a31ee125c6bd5806d9c42996efcc7502f">&#9670;&#160;</a></span>parse_shapes()</h2>
 

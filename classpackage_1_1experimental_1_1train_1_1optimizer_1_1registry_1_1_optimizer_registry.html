@@ -98,10 +98,10 @@ $(document).ready(function(){initNavTree('classpackage_1_1experimental_1_1train_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a21d21ed4b17a0c981db783d6e16a9d99" id="r_a21d21ed4b17a0c981db783d6e16a9d99"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1registry_1_1_optimizer_registry.html#a21d21ed4b17a0c981db783d6e16a9d99">create_optimizer</a> (name)</td></tr>
-<tr class="separator:a21d21ed4b17a0c981db783d6e16a9d99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53ac43f22999b2b11736dfe8390d8083" id="r_a53ac43f22999b2b11736dfe8390d8083"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1registry_1_1_optimizer_registry.html#a53ac43f22999b2b11736dfe8390d8083">map_optimizer_to_enum</a> (optimizer_instance)</td></tr>
-<tr class="separator:a53ac43f22999b2b11736dfe8390d8083"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a674fc921cca1c000a63ac7f4de7d3ae1" id="r_a674fc921cca1c000a63ac7f4de7d3ae1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html">Optimizer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1registry_1_1_optimizer_registry.html#a674fc921cca1c000a63ac7f4de7d3ae1">create_optimizer</a> (str name)</td></tr>
+<tr class="separator:a674fc921cca1c000a63ac7f4de7d3ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d82d779edf9953eea814dd3c558c761" id="r_a3d82d779edf9953eea814dd3c558c761"><td class="memItemLeft" align="right" valign="top">optimizer_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1registry_1_1_optimizer_registry.html#a3d82d779edf9953eea814dd3c558c761">map_optimizer_to_enum</a> (<a class="el" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html">Optimizer</a> optimizer_instance)</td></tr>
+<tr class="separator:a3d82d779edf9953eea814dd3c558c761"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
@@ -111,10 +111,10 @@ Static Protected Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Registry for creating optimizers by name.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="optimizer_2registry_8py_source.html#l00006">6</a> of file <a class="el" href="optimizer_2registry_8py_source.html">registry.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="optimizer_2registry_8py_source.html#l00008">8</a> of file <a class="el" href="optimizer_2registry_8py_source.html">registry.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a21d21ed4b17a0c981db783d6e16a9d99" name="a21d21ed4b17a0c981db783d6e16a9d99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21d21ed4b17a0c981db783d6e16a9d99">&#9670;&#160;</a></span>create_optimizer()</h2>
+<a id="a674fc921cca1c000a63ac7f4de7d3ae1" name="a674fc921cca1c000a63ac7f4de7d3ae1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a674fc921cca1c000a63ac7f4de7d3ae1">&#9670;&#160;</a></span>create_optimizer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -123,9 +123,9 @@ Static Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">package.experimental.train.optimizer.registry.OptimizerRegistry.create_optimizer </td>
+          <td class="memname"> <a class="el" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html">Optimizer</a> package.experimental.train.optimizer.registry.OptimizerRegistry.create_optimizer </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">str&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
@@ -137,30 +137,34 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Create an optimizer instance by name.
+
 Args:
     name (str): Name of the optimizer.
+
 Returns:
-    BaseOptimizer: Optimizer instance.
+    Optimizer: Optimizer instance.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="optimizer_2registry_8py_source.html#l00013">13</a> of file <a class="el" href="optimizer_2registry_8py_source.html">registry.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   13</span>    <span class="keyword">def </span>create_optimizer(name):</div>
-<div class="line"><span class="lineno">   14</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   15</span><span class="stringliteral">        Create an optimizer instance by name.</span></div>
-<div class="line"><span class="lineno">   16</span><span class="stringliteral">        Args:</span></div>
-<div class="line"><span class="lineno">   17</span><span class="stringliteral">            name (str): Name of the optimizer.</span></div>
-<div class="line"><span class="lineno">   18</span><span class="stringliteral">        Returns:</span></div>
-<div class="line"><span class="lineno">   19</span><span class="stringliteral">            BaseOptimizer: Optimizer instance.</span></div>
-<div class="line"><span class="lineno">   20</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   21</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> OptimizerRegistry._optimizers:</div>
-<div class="line"><span class="lineno">   22</span>            <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">   23</span>                f<span class="stringliteral">&quot;Unknown Optimizer: {name}. Custom optimizer is not supported yet&quot;</span>)</div>
-<div class="line"><span class="lineno">   24</span>        <span class="keywordflow">return</span> OptimizerRegistry._optimizers[name]()</div>
-<div class="line"><span class="lineno">   25</span> </div>
+<p class="definition">Definition at line <a class="el" href="optimizer_2registry_8py_source.html#l00015">15</a> of file <a class="el" href="optimizer_2registry_8py_source.html">registry.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   15</span>    <span class="keyword">def </span>create_optimizer(name: str) -&gt; Optimizer:</div>
+<div class="line"><span class="lineno">   16</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   17</span><span class="stringliteral">        Create an optimizer instance by name.</span></div>
+<div class="line"><span class="lineno">   18</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   19</span><span class="stringliteral">        Args:</span></div>
+<div class="line"><span class="lineno">   20</span><span class="stringliteral">            name (str): Name of the optimizer.</span></div>
+<div class="line"><span class="lineno">   21</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   22</span><span class="stringliteral">        Returns:</span></div>
+<div class="line"><span class="lineno">   23</span><span class="stringliteral">            Optimizer: Optimizer instance.</span></div>
+<div class="line"><span class="lineno">   24</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   25</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> OptimizerRegistry._optimizers:</div>
+<div class="line"><span class="lineno">   26</span>            <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">   27</span>                f<span class="stringliteral">&quot;Unknown Optimizer: {name}. Custom optimizer is not supported yet&quot;</span>)</div>
+<div class="line"><span class="lineno">   28</span>        <span class="keywordflow">return</span> OptimizerRegistry._optimizers[name]()</div>
+<div class="line"><span class="lineno">   29</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a53ac43f22999b2b11736dfe8390d8083" name="a53ac43f22999b2b11736dfe8390d8083"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53ac43f22999b2b11736dfe8390d8083">&#9670;&#160;</a></span>map_optimizer_to_enum()</h2>
+<a id="a3d82d779edf9953eea814dd3c558c761" name="a3d82d779edf9953eea814dd3c558c761"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d82d779edf9953eea814dd3c558c761">&#9670;&#160;</a></span>map_optimizer_to_enum()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -169,9 +173,9 @@ Returns:
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">package.experimental.train.optimizer.registry.OptimizerRegistry.map_optimizer_to_enum </td>
+          <td class="memname"> optimizer_type package.experimental.train.optimizer.registry.OptimizerRegistry.map_optimizer_to_enum </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype"><a class="el" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html">Optimizer</a>&#160;</td>
           <td class="paramname"><em>optimizer_instance</em></td><td>)</td>
           <td></td>
         </tr>
@@ -183,32 +187,40 @@ Returns:
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Maps an optimizer instance to the appropriate enum value.
+
 Args:
     optimizer_instance (Optimizer): An instance of an optimizer.
+
 Returns:
     optimizer_type: Corresponding enum value for the optimizer.
+
 Raises:
     TypeError: If the optimizer_instance is not a recognized optimizer type.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="optimizer_2registry_8py_source.html#l00027">27</a> of file <a class="el" href="optimizer_2registry_8py_source.html">registry.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>    <span class="keyword">def </span>map_optimizer_to_enum(optimizer_instance):</div>
-<div class="line"><span class="lineno">   28</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   29</span><span class="stringliteral">        Maps an optimizer instance to the appropriate enum value.</span></div>
-<div class="line"><span class="lineno">   30</span><span class="stringliteral">        Args:</span></div>
-<div class="line"><span class="lineno">   31</span><span class="stringliteral">            optimizer_instance (Optimizer): An instance of an optimizer.</span></div>
-<div class="line"><span class="lineno">   32</span><span class="stringliteral">        Returns:</span></div>
-<div class="line"><span class="lineno">   33</span><span class="stringliteral">            optimizer_type: Corresponding enum value for the optimizer.</span></div>
-<div class="line"><span class="lineno">   34</span><span class="stringliteral">        Raises:</span></div>
-<div class="line"><span class="lineno">   35</span><span class="stringliteral">            TypeError: If the optimizer_instance is not a recognized optimizer type.</span></div>
-<div class="line"><span class="lineno">   36</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   37</span>        <span class="comment"># Optimizer to Enum mapping</span></div>
-<div class="line"><span class="lineno">   38</span>        optimizer_to_enum = {SGD: optimizer_type.SGD, Adam: optimizer_type.ADAM}</div>
-<div class="line"><span class="lineno">   39</span>        <span class="keywordflow">for</span> optimizer_class, enum_value <span class="keywordflow">in</span> optimizer_to_enum.items():</div>
-<div class="line"><span class="lineno">   40</span>            <span class="keywordflow">if</span> isinstance(optimizer_instance, optimizer_class):</div>
-<div class="line"><span class="lineno">   41</span>                <span class="keywordflow">return</span> enum_value</div>
-<div class="line"><span class="lineno">   42</span>        <span class="keywordflow">raise</span> TypeError(</div>
-<div class="line"><span class="lineno">   43</span>            f<span class="stringliteral">&quot;Unsupported optimizer type: {type(optimizer_instance).__name__}. &quot;</span></div>
-<div class="line"><span class="lineno">   44</span>            f<span class="stringliteral">&quot;Supported types are: {list(optimizer_to_enum.keys())}.&quot;</span>)</div>
+<p class="definition">Definition at line <a class="el" href="optimizer_2registry_8py_source.html#l00031">31</a> of file <a class="el" href="optimizer_2registry_8py_source.html">registry.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   31</span>    <span class="keyword">def </span>map_optimizer_to_enum(optimizer_instance: Optimizer) -&gt; optimizer_type:</div>
+<div class="line"><span class="lineno">   32</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   33</span><span class="stringliteral">        Maps an optimizer instance to the appropriate enum value.</span></div>
+<div class="line"><span class="lineno">   34</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   35</span><span class="stringliteral">        Args:</span></div>
+<div class="line"><span class="lineno">   36</span><span class="stringliteral">            optimizer_instance (Optimizer): An instance of an optimizer.</span></div>
+<div class="line"><span class="lineno">   37</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   38</span><span class="stringliteral">        Returns:</span></div>
+<div class="line"><span class="lineno">   39</span><span class="stringliteral">            optimizer_type: Corresponding enum value for the optimizer.</span></div>
+<div class="line"><span class="lineno">   40</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   41</span><span class="stringliteral">        Raises:</span></div>
+<div class="line"><span class="lineno">   42</span><span class="stringliteral">            TypeError: If the optimizer_instance is not a recognized optimizer type.</span></div>
+<div class="line"><span class="lineno">   43</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   44</span>        optimizer_to_enum: Dict[Type[Optimizer], optimizer_type] = {</div>
+<div class="line"><span class="lineno">   45</span>            SGD: optimizer_type.SGD,</div>
+<div class="line"><span class="lineno">   46</span>            Adam: optimizer_type.ADAM</div>
+<div class="line"><span class="lineno">   47</span>        }</div>
+<div class="line"><span class="lineno">   48</span>        <span class="keywordflow">for</span> cls, enum_val <span class="keywordflow">in</span> optimizer_to_enum.items():</div>
+<div class="line"><span class="lineno">   49</span>            <span class="keywordflow">if</span> isinstance(optimizer_instance, cls):</div>
+<div class="line"><span class="lineno">   50</span>                <span class="keywordflow">return</span> enum_val</div>
+<div class="line"><span class="lineno">   51</span>        <span class="keywordflow">raise</span> TypeError(</div>
+<div class="line"><span class="lineno">   52</span>            f<span class="stringliteral">&quot;Unsupported optimizer type: {type(optimizer_instance).__name__}. &quot;</span></div>
+<div class="line"><span class="lineno">   53</span>            f<span class="stringliteral">&quot;Supported types are: {list(optimizer_to_enum.keys())}.&quot;</span>)</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -233,7 +245,7 @@ Raises:
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="optimizer_2registry_8py_source.html#l00010">10</a> of file <a class="el" href="optimizer_2registry_8py_source.html">registry.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="optimizer_2registry_8py_source.html#l00012">12</a> of file <a class="el" href="optimizer_2registry_8py_source.html">registry.py</a>.</p>
 
 </div>
 </div>

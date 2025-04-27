@@ -158,6 +158,7 @@ var annotated_dup =
       [ "TargetPlatform", "structcircle__planner_1_1_target_platform.html", "structcircle__planner_1_1_target_platform" ]
     ] ],
     [ "circle_resizer", "namespacecircle__resizer.html", [
+      [ "CircleModel", "classcircle__resizer_1_1_circle_model.html", "classcircle__resizer_1_1_circle_model" ],
       [ "Dim", "classcircle__resizer_1_1_dim.html", "classcircle__resizer_1_1_dim" ],
       [ "Shape", "classcircle__resizer_1_1_shape.html", "classcircle__resizer_1_1_shape" ]
     ] ],
@@ -2551,11 +2552,7 @@ var annotated_dup =
           [ "FillPhiloxRandomTask", "structnnfw_1_1cker_1_1functor_1_1_fill_philox_random_task.html", null ],
           [ "FillPhiloxRandomTask< Distribution, false >", "structnnfw_1_1cker_1_1functor_1_1_fill_philox_random_task_3_01_distribution_00_01false_01_4.html", "structnnfw_1_1cker_1_1functor_1_1_fill_philox_random_task_3_01_distribution_00_01false_01_4" ],
           [ "FillPhiloxRandomTask< Distribution, true >", "structnnfw_1_1cker_1_1functor_1_1_fill_philox_random_task_3_01_distribution_00_01true_01_4.html", "structnnfw_1_1cker_1_1functor_1_1_fill_philox_random_task_3_01_distribution_00_01true_01_4" ],
-          [ "InflateFunctor", "structnnfw_1_1cker_1_1functor_1_1_inflate_functor.html", "structnnfw_1_1cker_1_1functor_1_1_inflate_functor" ],
-          [ "ReduceFunctor", "structnnfw_1_1cker_1_1functor_1_1_reduce_functor.html", null ],
-          [ "ReduceOuterDimensions", "structnnfw_1_1cker_1_1functor_1_1_reduce_outer_dimensions.html", "structnnfw_1_1cker_1_1functor_1_1_reduce_outer_dimensions" ],
-          [ "SetZeroFunctor", "structnnfw_1_1cker_1_1functor_1_1_set_zero_functor.html", "structnnfw_1_1cker_1_1functor_1_1_set_zero_functor" ],
-          [ "StrideFunctor", "structnnfw_1_1cker_1_1functor_1_1_stride_functor.html", "structnnfw_1_1cker_1_1functor_1_1_stride_functor" ]
+          [ "ReduceOuterDimensions", "structnnfw_1_1cker_1_1functor_1_1_reduce_outer_dimensions.html", "structnnfw_1_1cker_1_1functor_1_1_reduce_outer_dimensions" ]
         ] ],
         [ "gemm_support", "namespacennfw_1_1cker_1_1gemm__support.html", [
           [ "GemmContext", "structnnfw_1_1cker_1_1gemm__support_1_1_gemm_context.html", "structnnfw_1_1cker_1_1gemm__support_1_1_gemm_context" ]
@@ -2645,7 +2642,6 @@ var annotated_dup =
         [ "ConvParams", "structnnfw_1_1cker_1_1_conv_params.html", "structnnfw_1_1cker_1_1_conv_params" ],
         [ "DepthwiseConvParams", "structnnfw_1_1cker_1_1_depthwise_conv_params.html", "structnnfw_1_1cker_1_1_depthwise_conv_params" ],
         [ "DepthwiseConvWorkerTask", "structnnfw_1_1cker_1_1_depthwise_conv_worker_task.html", "structnnfw_1_1cker_1_1_depthwise_conv_worker_task" ],
-        [ "Einsum", "classnnfw_1_1cker_1_1_einsum.html", "classnnfw_1_1cker_1_1_einsum" ],
         [ "FCTempArena", "classnnfw_1_1cker_1_1_f_c_temp_arena.html", "classnnfw_1_1cker_1_1_f_c_temp_arena" ],
         [ "FullyConnectedParams", "structnnfw_1_1cker_1_1_fully_connected_params.html", "structnnfw_1_1cker_1_1_fully_connected_params" ],
         [ "FusedBatchNorm", "classnnfw_1_1cker_1_1_fused_batch_norm.html", "classnnfw_1_1cker_1_1_fused_batch_norm" ],
@@ -2659,7 +2655,6 @@ var annotated_dup =
         [ "L2NormParams", "structnnfw_1_1cker_1_1_l2_norm_params.html", "structnnfw_1_1cker_1_1_l2_norm_params" ],
         [ "LeakyReluParams", "structnnfw_1_1cker_1_1_leaky_relu_params.html", "structnnfw_1_1cker_1_1_leaky_relu_params" ],
         [ "LSTMParams", "structnnfw_1_1cker_1_1_l_s_t_m_params.html", "structnnfw_1_1cker_1_1_l_s_t_m_params" ],
-        [ "MatMulBCast", "classnnfw_1_1cker_1_1_mat_mul_b_cast.html", "classnnfw_1_1cker_1_1_mat_mul_b_cast" ],
         [ "MatrixParams", "structnnfw_1_1cker_1_1_matrix_params.html", "structnnfw_1_1cker_1_1_matrix_params" ],
         [ "MaximumOp", "structnnfw_1_1cker_1_1_maximum_op.html", null ],
         [ "MinimumOp", "structnnfw_1_1cker_1_1_minimum_op.html", null ],
@@ -2922,7 +2917,6 @@ var annotated_dup =
             [ "DepthToSpaceLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depth_to_space_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depth_to_space_layer" ],
             [ "DepthwiseConvolutionLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer" ],
             [ "DetectionPostProcessLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer" ],
-            [ "EinsumLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_einsum_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_einsum_layer" ],
             [ "ElementwiseActivationLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer" ],
             [ "ElementwiseBinaryLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_binary_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_binary_layer" ],
             [ "ElementwiseUnaryLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_unary_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_unary_layer" ],
@@ -3210,7 +3204,6 @@ var annotated_dup =
           [ "DepthToSpace", "classonert_1_1ir_1_1operation_1_1_depth_to_space.html", "classonert_1_1ir_1_1operation_1_1_depth_to_space" ],
           [ "DepthwiseConv2D", "classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html", "classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d" ],
           [ "DetectionPostProcess", "classonert_1_1ir_1_1operation_1_1_detection_post_process.html", "classonert_1_1ir_1_1operation_1_1_detection_post_process" ],
-          [ "Einsum", "classonert_1_1ir_1_1operation_1_1_einsum.html", "classonert_1_1ir_1_1operation_1_1_einsum" ],
           [ "ElementwiseActivation", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html", "classonert_1_1ir_1_1operation_1_1_elementwise_activation" ],
           [ "ElementwiseBinary", "classonert_1_1ir_1_1operation_1_1_elementwise_binary.html", "classonert_1_1ir_1_1operation_1_1_elementwise_binary" ],
           [ "ElementwiseUnary", "classonert_1_1ir_1_1operation_1_1_elementwise_unary.html", "classonert_1_1ir_1_1operation_1_1_elementwise_unary" ],

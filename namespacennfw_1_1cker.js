@@ -64,7 +64,6 @@ var namespacennfw_1_1cker =
     [ "ConvParams", "structnnfw_1_1cker_1_1_conv_params.html", "structnnfw_1_1cker_1_1_conv_params" ],
     [ "DepthwiseConvParams", "structnnfw_1_1cker_1_1_depthwise_conv_params.html", "structnnfw_1_1cker_1_1_depthwise_conv_params" ],
     [ "DepthwiseConvWorkerTask", "structnnfw_1_1cker_1_1_depthwise_conv_worker_task.html", "structnnfw_1_1cker_1_1_depthwise_conv_worker_task" ],
-    [ "Einsum", "classnnfw_1_1cker_1_1_einsum.html", "classnnfw_1_1cker_1_1_einsum" ],
     [ "FCTempArena", "classnnfw_1_1cker_1_1_f_c_temp_arena.html", "classnnfw_1_1cker_1_1_f_c_temp_arena" ],
     [ "FullyConnectedParams", "structnnfw_1_1cker_1_1_fully_connected_params.html", "structnnfw_1_1cker_1_1_fully_connected_params" ],
     [ "FusedBatchNorm", "classnnfw_1_1cker_1_1_fused_batch_norm.html", "classnnfw_1_1cker_1_1_fused_batch_norm" ],
@@ -78,7 +77,6 @@ var namespacennfw_1_1cker =
     [ "L2NormParams", "structnnfw_1_1cker_1_1_l2_norm_params.html", "structnnfw_1_1cker_1_1_l2_norm_params" ],
     [ "LeakyReluParams", "structnnfw_1_1cker_1_1_leaky_relu_params.html", "structnnfw_1_1cker_1_1_leaky_relu_params" ],
     [ "LSTMParams", "structnnfw_1_1cker_1_1_l_s_t_m_params.html", "structnnfw_1_1cker_1_1_l_s_t_m_params" ],
-    [ "MatMulBCast", "classnnfw_1_1cker_1_1_mat_mul_b_cast.html", "classnnfw_1_1cker_1_1_mat_mul_b_cast" ],
     [ "MatrixParams", "structnnfw_1_1cker_1_1_matrix_params.html", "structnnfw_1_1cker_1_1_matrix_params" ],
     [ "MaximumOp", "structnnfw_1_1cker_1_1_maximum_op.html", null ],
     [ "MinimumOp", "structnnfw_1_1cker_1_1_minimum_op.html", null ],
@@ -110,13 +108,7 @@ var namespacennfw_1_1cker =
     [ "ComparisonFn", "namespacennfw_1_1cker.html#a32d7bbc3821ab0c58af23c7355f92695", null ],
     [ "CPUDevice", "namespacennfw_1_1cker.html#ab3f3f3369d99105c245b3382d62a5de1", null ],
     [ "Index32", "namespacennfw_1_1cker.html#aab2a370f7e046a4262f70ddb92962083", null ],
-    [ "LabelCounts", "namespacennfw_1_1cker.html#a12cb7a67a3d9e87df106165db7a0eafb", null ],
-    [ "Labels", "namespacennfw_1_1cker.html#abb31958b1ebb5f6b6960924b56b18c80", null ],
-    [ "LabelToDimSizes", "namespacennfw_1_1cker.html#ae4e25021b9f046b71c87c76553489365", null ],
     [ "MatrixMap", "namespacennfw_1_1cker.html#af0c8d67ba855462165cef7650358e704", null ],
-    [ "OperandLabelCounts", "namespacennfw_1_1cker.html#a2e9a13956edd5a11e2964ba261b365f4", null ],
-    [ "OperandLabels", "namespacennfw_1_1cker.html#a0a03459d0f5a63f17831d9c8bd04b918", null ],
-    [ "ShapeVec", "namespacennfw_1_1cker.html#a1e404ef5b4c8379dd2164989a0898ac7", null ],
     [ "VectorMap", "namespacennfw_1_1cker.html#a64d52c7ef14b0949f0ce01a4b366eef5", null ],
     [ "BinaryArithmeticOpType", "namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27", [
       [ "ADD", "namespacennfw_1_1cker.html#ae614fca042c2ace9275536cb940ffd27a9eeb52badb613229884838847294b90d", null ],
@@ -144,13 +136,6 @@ var namespacennfw_1_1cker =
       [ "GreaterEqual", "namespacennfw_1_1cker.html#a04e74b636ed65b7eb628f5a76798b5d6a758b05d899def79c9eb864ad4f96be1f", null ],
       [ "Less", "namespacennfw_1_1cker.html#a04e74b636ed65b7eb628f5a76798b5d6a1cfdf0e8d0c87a228c1f40d9bee7888b", null ],
       [ "LessEqual", "namespacennfw_1_1cker.html#a04e74b636ed65b7eb628f5a76798b5d6ad3e6fdac55bb7b0edd7834c968ba1f38", null ]
-    ] ],
-    [ "DimensionType", "namespacennfw_1_1cker.html#a8064f66d64af0ebca48c7329ad0e1484", [
-      [ "kBroadcasting", "namespacennfw_1_1cker.html#a8064f66d64af0ebca48c7329ad0e1484a4fd6ec1b5b851da65795a182041d7819", null ],
-      [ "kBatch", "namespacennfw_1_1cker.html#a8064f66d64af0ebca48c7329ad0e1484a96b3fba269af94a667c7ca2117c1742d", null ],
-      [ "kFree", "namespacennfw_1_1cker.html#a8064f66d64af0ebca48c7329ad0e1484adf9f4e4e432b58ecc71019954cd97e22", null ],
-      [ "kContract", "namespacennfw_1_1cker.html#a8064f66d64af0ebca48c7329ad0e1484a8497de8463aedf59900fc1590973dff5", null ],
-      [ "kReduce", "namespacennfw_1_1cker.html#a8064f66d64af0ebca48c7329ad0e1484ab38638c9b3c3aac11a16c70a389344bd", null ]
     ] ],
     [ "FusedActivationFunctionType", "namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2", [
       [ "kNone", "namespacennfw_1_1cker.html#af09a114337895158c72fde6226b568a2a35c3ace1970663a16e5c65baa5941b13", null ],
@@ -315,6 +300,7 @@ var namespacennfw_1_1cker =
     [ "NotEqualFn", "namespacennfw_1_1cker.html#af98f6c535dcc1915db5edc72f6098805", null ],
     [ "Offset", "namespacennfw_1_1cker.html#a1787f356a8298ee1a4219afe7c712456", null ],
     [ "Offset", "namespacennfw_1_1cker.html#a2e31fa973e9bdf4c9e988d5501e8e070", null ],
+    [ "Offset", "namespacennfw_1_1cker.html#a2a1f8978961bceaba81a987f7df62510", null ],
     [ "Offset", "namespacennfw_1_1cker.html#aa13a61e8e94cfd5cc3b1b298ee932abf", null ],
     [ "OneHot", "namespacennfw_1_1cker.html#abe1ec50ccd0fc868120eef5c6d0bbf75", null ],
     [ "operator<<", "namespacennfw_1_1cker.html#a6eb57a8d6426f6be75b1e8fa7381fc19", null ],

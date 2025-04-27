@@ -98,8 +98,8 @@ $(document).ready(function(){initNavTree('classpackage_1_1experimental_1_1train_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:afe153cc8298e11076edc67fd3cb286a5" id="r_afe153cc8298e11076edc67fd3cb286a5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html#afe153cc8298e11076edc67fd3cb286a5">create_metric</a> (name)</td></tr>
-<tr class="separator:afe153cc8298e11076edc67fd3cb286a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a005bbaf0791d5c10b264c08912ee4f38" id="r_a005bbaf0791d5c10b264c08912ee4f38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1metric_1_1_metric.html">Metric</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html#a005bbaf0791d5c10b264c08912ee4f38">create_metric</a> (str name)</td></tr>
+<tr class="separator:a005bbaf0791d5c10b264c08912ee4f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
@@ -109,10 +109,10 @@ Static Protected Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Registry for creating metrics by name.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="metrics_2registry_8py_source.html#l00004">4</a> of file <a class="el" href="metrics_2registry_8py_source.html">registry.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="metrics_2registry_8py_source.html#l00006">6</a> of file <a class="el" href="metrics_2registry_8py_source.html">registry.py</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="afe153cc8298e11076edc67fd3cb286a5" name="afe153cc8298e11076edc67fd3cb286a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe153cc8298e11076edc67fd3cb286a5">&#9670;&#160;</a></span>create_metric()</h2>
+<a id="a005bbaf0791d5c10b264c08912ee4f38" name="a005bbaf0791d5c10b264c08912ee4f38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a005bbaf0791d5c10b264c08912ee4f38">&#9670;&#160;</a></span>create_metric()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -121,9 +121,9 @@ Static Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">package.experimental.train.metrics.registry.MetricsRegistry.create_metric </td>
+          <td class="memname"> <a class="el" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1metric_1_1_metric.html">Metric</a> package.experimental.train.metrics.registry.MetricsRegistry.create_metric </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
+          <td class="paramtype">str&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
@@ -135,24 +135,28 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Create a metric instance by name.
+
 Args:
     name (str): Name of the metric.
+
 Returns:
-    BaseMetric: Metric instance.
+    Metric: Metric instance.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="metrics_2registry_8py_source.html#l00013">13</a> of file <a class="el" href="metrics_2registry_8py_source.html">registry.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   13</span>    <span class="keyword">def </span>create_metric(name):</div>
-<div class="line"><span class="lineno">   14</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   15</span><span class="stringliteral">        Create a metric instance by name.</span></div>
-<div class="line"><span class="lineno">   16</span><span class="stringliteral">        Args:</span></div>
-<div class="line"><span class="lineno">   17</span><span class="stringliteral">            name (str): Name of the metric.</span></div>
-<div class="line"><span class="lineno">   18</span><span class="stringliteral">        Returns:</span></div>
-<div class="line"><span class="lineno">   19</span><span class="stringliteral">            BaseMetric: Metric instance.</span></div>
-<div class="line"><span class="lineno">   20</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   21</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> MetricsRegistry._metrics:</div>
-<div class="line"><span class="lineno">   22</span>            <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">   23</span>                f<span class="stringliteral">&quot;Unknown Metric: {name}. Custom metric is not supported yet&quot;</span>)</div>
-<div class="line"><span class="lineno">   24</span>        <span class="keywordflow">return</span> MetricsRegistry._metrics[name]()</div>
+<p class="definition">Definition at line <a class="el" href="metrics_2registry_8py_source.html#l00015">15</a> of file <a class="el" href="metrics_2registry_8py_source.html">registry.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   15</span>    <span class="keyword">def </span>create_metric(name: str) -&gt; Metric:</div>
+<div class="line"><span class="lineno">   16</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   17</span><span class="stringliteral">        Create a metric instance by name.</span></div>
+<div class="line"><span class="lineno">   18</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   19</span><span class="stringliteral">        Args:</span></div>
+<div class="line"><span class="lineno">   20</span><span class="stringliteral">            name (str): Name of the metric.</span></div>
+<div class="line"><span class="lineno">   21</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   22</span><span class="stringliteral">        Returns:</span></div>
+<div class="line"><span class="lineno">   23</span><span class="stringliteral">            Metric: Metric instance.</span></div>
+<div class="line"><span class="lineno">   24</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   25</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> MetricsRegistry._metrics:</div>
+<div class="line"><span class="lineno">   26</span>            <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">   27</span>                f<span class="stringliteral">&quot;Unknown Metric: {name}. Custom metric is not supported yet&quot;</span>)</div>
+<div class="line"><span class="lineno">   28</span>        <span class="keywordflow">return</span> MetricsRegistry._metrics[name]()</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -180,7 +184,7 @@ Returns:
 <div class="line">        <span class="stringliteral">&quot;categorical_accuracy&quot;</span>: CategoricalAccuracy,</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="metrics_2registry_8py_source.html#l00008">8</a> of file <a class="el" href="metrics_2registry_8py_source.html">registry.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="metrics_2registry_8py_source.html#l00010">10</a> of file <a class="el" href="metrics_2registry_8py_source.html">registry.py</a>.</p>
 
 </div>
 </div>

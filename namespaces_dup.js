@@ -354,6 +354,13 @@ var namespaces_dup =
       [ "testcases", "namespaceinfer__testcases.html#a29dc56fc92a461d0109047148be4f3c1", null ],
       [ "testcases_dir", "namespaceinfer__testcases.html#a4952978a3ab596b5ce1ca96b641e30ab", null ]
     ] ],
+    [ "inference_benchmark", "namespaceinference__benchmark.html", [
+      [ "apply_static_shapes", "namespaceinference__benchmark.html#aaed3cbc516016158c534a633c07da097", null ],
+      [ "benchmark_inference", "namespaceinference__benchmark.html#a1b1e7330826a69f6a5052abfba79d744", null ],
+      [ "get_memory_usage_mb", "namespaceinference__benchmark.html#a9230bbbeba298957eb49c02ce2d53014", null ],
+      [ "main", "namespaceinference__benchmark.html#a89b1a96205c34e19ccbd95f1eca9bd85", null ],
+      [ "parse_shapes", "namespaceinference__benchmark.html#a6eb94b272589bf57dd52e2e35f055216", null ]
+    ] ],
     [ "jpeg2hdf5", "namespacejpeg2hdf5.html", [
       [ "arg", "namespacejpeg2hdf5.html#a05ea37ae45180343747ff124886460d0", null ],
       [ "argc", "namespacejpeg2hdf5.html#a4f47e1b7fb503287389374edac8605ed", null ],
@@ -653,6 +660,10 @@ var namespaces_dup =
     [ "Softmax_000", "namespace_softmax__000.html", "namespace_softmax__000" ],
     [ "souschef", "namespacesouschef.html", "namespacesouschef" ],
     [ "sparsity", "namespacesparsity.html", "namespacesparsity" ],
+    [ "static_shape_inference", "namespacestatic__shape__inference.html", [
+      [ "main", "namespacestatic__shape__inference.html#a8cf51015edf3dfb9d3e9493e7a4bb938", null ],
+      [ "argv", "namespacestatic__shape__inference.html#a970b4b8eb29929104124de9d1994d0ff", null ]
+    ] ],
     [ "std", "namespacestd.html", "namespacestd" ],
     [ "TensorIndexTISO", "namespace_tensor_index_t_i_s_o.html", [
       [ "input1TensorIdx", "namespace_tensor_index_t_i_s_o.html#a999f55140d3a16df07774d1649048f1b", null ],

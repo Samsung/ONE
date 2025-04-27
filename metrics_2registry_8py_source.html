@@ -97,36 +97,40 @@ $(document).ready(function(){initNavTree('metrics_2registry_8py_source.html','')
   <div class="headertitle"><div class="title">registry.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="metrics_2registry_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacepackage_1_1experimental_1_1train_1_1metrics_1_1registry.html">    1</a></span><span class="keyword">from</span> .categorical_accuracy <span class="keyword">import</span> CategoricalAccuracy</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="foldopen" id="foldopen00004" data-start="" data-end="">
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html">    4</a></span><span class="keyword">class </span><a class="code hl_class" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html">MetricsRegistry</a>:</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="stringliteral">    Registry for creating metrics by name.</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html#a8b5931e5cc25082a67dd22e6b1cd79d4">    8</a></span>    _metrics = {</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>        <span class="stringliteral">&quot;categorical_accuracy&quot;</span>: CategoricalAccuracy,</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    }</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="preprocessor">@staticmethod</span></div>
-<div class="foldopen" id="foldopen00013" data-start="" data-end="">
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html#afe153cc8298e11076edc67fd3cb286a5">   13</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html#afe153cc8298e11076edc67fd3cb286a5">create_metric</a>(name):</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="stringliteral">        Create a metric instance by name.</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="stringliteral">        Args:</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="stringliteral">            name (str): Name of the metric.</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="stringliteral">        Returns:</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="stringliteral">            BaseMetric: Metric instance.</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> MetricsRegistry._metrics:</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>            <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                f<span class="stringliteral">&quot;Unknown Metric: {name}. Custom metric is not supported yet&quot;</span>)</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        <span class="keywordflow">return</span> MetricsRegistry._metrics[name]()</div>
+<a href="metrics_2registry_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacepackage_1_1experimental_1_1train_1_1metrics_1_1registry.html">    1</a></span><span class="keyword">from</span> typing <span class="keyword">import</span> Type, Dict</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> .metric <span class="keyword">import</span> Metric</div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">from</span> .categorical_accuracy <span class="keyword">import</span> CategoricalAccuracy</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="foldopen" id="foldopen00006" data-start="" data-end="">
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html">    6</a></span><span class="keyword">class </span><a class="code hl_class" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html">MetricsRegistry</a>:</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="stringliteral">    Registry for creating metrics by name.</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html#a8b5931e5cc25082a67dd22e6b1cd79d4">   10</a></span>    _metrics: Dict[str, Type[Metric]] = {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        <span class="stringliteral">&quot;categorical_accuracy&quot;</span>: CategoricalAccuracy,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    }</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="preprocessor">@staticmethod</span></div>
+<div class="foldopen" id="foldopen00015" data-start="" data-end="">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html#a005bbaf0791d5c10b264c08912ee4f38">   15</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html#a005bbaf0791d5c10b264c08912ee4f38">create_metric</a>(name: str) -&gt; Metric:</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="stringliteral">        Create a metric instance by name.</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="stringliteral">        Args:</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="stringliteral">            name (str): Name of the metric.</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="stringliteral">        Returns:</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="stringliteral">            Metric: Metric instance.</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keywordflow">if</span> name <span class="keywordflow">not</span> <span class="keywordflow">in</span> MetricsRegistry._metrics:</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                f<span class="stringliteral">&quot;Unknown Metric: {name}. Custom metric is not supported yet&quot;</span>)</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <span class="keywordflow">return</span> MetricsRegistry._metrics[name]()</div>
 </div>
 </div>
-<div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry_html"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html">package.experimental.train.metrics.registry.MetricsRegistry</a></div><div class="ttdef"><b>Definition</b> <a href="metrics_2registry_8py_source.html#l00004">registry.py:4</a></div></div>
-<div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry_html_afe153cc8298e11076edc67fd3cb286a5"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html#afe153cc8298e11076edc67fd3cb286a5">package.experimental.train.metrics.registry.MetricsRegistry.create_metric</a></div><div class="ttdeci">create_metric(name)</div><div class="ttdef"><b>Definition</b> <a href="metrics_2registry_8py_source.html#l00013">registry.py:13</a></div></div>
+<div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry_html"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html">package.experimental.train.metrics.registry.MetricsRegistry</a></div><div class="ttdef"><b>Definition</b> <a href="metrics_2registry_8py_source.html#l00006">registry.py:6</a></div></div>
+<div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry_html_a005bbaf0791d5c10b264c08912ee4f38"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1metrics_1_1registry_1_1_metrics_registry.html#a005bbaf0791d5c10b264c08912ee4f38">package.experimental.train.metrics.registry.MetricsRegistry.create_metric</a></div><div class="ttdeci">Metric create_metric(str name)</div><div class="ttdef"><b>Definition</b> <a href="metrics_2registry_8py_source.html#l00015">registry.py:15</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

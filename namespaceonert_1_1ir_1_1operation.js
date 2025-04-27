@@ -18,7 +18,6 @@ var namespaceonert_1_1ir_1_1operation =
     [ "DepthToSpace", "classonert_1_1ir_1_1operation_1_1_depth_to_space.html", "classonert_1_1ir_1_1operation_1_1_depth_to_space" ],
     [ "DepthwiseConv2D", "classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html", "classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d" ],
     [ "DetectionPostProcess", "classonert_1_1ir_1_1operation_1_1_detection_post_process.html", "classonert_1_1ir_1_1operation_1_1_detection_post_process" ],
-    [ "Einsum", "classonert_1_1ir_1_1operation_1_1_einsum.html", "classonert_1_1ir_1_1operation_1_1_einsum" ],
     [ "ElementwiseActivation", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html", "classonert_1_1ir_1_1operation_1_1_elementwise_activation" ],
     [ "ElementwiseBinary", "classonert_1_1ir_1_1operation_1_1_elementwise_binary.html", "classonert_1_1ir_1_1operation_1_1_elementwise_binary" ],
     [ "ElementwiseUnary", "classonert_1_1ir_1_1operation_1_1_elementwise_unary.html", "classonert_1_1ir_1_1operation_1_1_elementwise_unary" ],
