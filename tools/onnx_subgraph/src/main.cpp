@@ -16,6 +16,7 @@
 
 #include "graph.h"
 #include "device.h"
+#include "partition.h"
 
 namespace fs = std::filesystem;
 
@@ -79,6 +80,9 @@ int main(int argc, char *argv[])
   Device target;
   target.updateOnnxFile(onnxFile);
   target.GetDeviceJson(confFile);
+  std::unordered_map<std::string, NodeIOSize> node_io_size;
+  PartitionGraph(g, target, PartitionStrategy::SPILTE_CPU_STRUCTURE_FIRST, node_io_size);
+  std::cout << "PartitionGraph done." << std::endl;
 
   return 0;
 }
