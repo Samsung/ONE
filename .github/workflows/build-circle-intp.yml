@@ -46,8 +46,8 @@ jobs:
       options: --user root
     env:
       NNCC_BUILD: build
-      NNCC_WORKSPACE: build/debian
-      NNCC_INSTALL_PREFIX: ${{ github.workspace }}/debian.install
+      NNCC_WORKSPACE: build/release
+      NNCC_INSTALL_PREFIX: ${{ github.workspace }}/build/release.install
       CIRINTP_PREFIX: cirintp
     name: circle-interpreter ubuntu ${{ matrix.ubuntu_ver }}
 
