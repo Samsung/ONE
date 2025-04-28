@@ -27,6 +27,7 @@
 #include "coco/IR/Part.h"
 #include "coco/IR/Entity.h"
 
+#include <cstdint>
 #include <set>
 
 #include <stdexcept>
