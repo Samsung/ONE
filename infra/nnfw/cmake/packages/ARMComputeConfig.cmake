@@ -15,7 +15,7 @@ function(_ARMCompute_Import)
   # TODO Don't use headers in "src/"
   find_path(HEADER_SRC_DIR NAMES src/core/CL/ICLKernel.h)
   if(NOT INCLUDE_DIR OR NOT HEADER_SRC_DIR)
-    nnas_find_package(ARMComputeSource QUIET)
+    nnfw_find_package(ARMComputeSource QUIET)
     if (NOT ARMComputeSource_FOUND)
       set(ARMCompute_FOUND FALSE PARENT_SCOPE)
       return()
@@ -72,7 +72,7 @@ function(_ARMCompute_Build ARMComputeInstall_DIR)
   endif(EXISTS ${INSTALL_STAMP_PATH})
 
   ### Let's build with SCONS
-  nnas_find_package(ARMComputeSource QUIET)
+  nnfw_find_package(ARMComputeSource QUIET)
 
   if(NOT ARMComputeSource_FOUND)
     return()

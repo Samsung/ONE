@@ -16,7 +16,7 @@ function(_Fp16_Build)
 
   set(FP16_BUILD_TESTS OFF CACHE BOOL "Build FP16 unit tests")
   set(FP16_BUILD_BENCHMARKS OFF CACHE BOOL "Build FP16 micro-benchmarks")
-  nnas_find_package(PsimdSource)
+  nnfw_find_package(PsimdSource)
   set(PSIMD_SOURCE_DIR ${PsimdSource_DIR} CACHE STRING "String to disable download PSIMD on fp16")
   add_extdirectory("${Fp16Source_DIR}" FP16 EXCLUDE_FROM_ALL)
   set(Fp16Source_DIR ${Fp16Source_DIR} PARENT_SCOPE)

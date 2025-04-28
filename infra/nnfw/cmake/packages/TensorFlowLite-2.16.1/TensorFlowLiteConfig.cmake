@@ -20,11 +20,11 @@ if(BUILD_TENSORFLOW_LITE)
   return_unless(TensorFlowSource_FOUND)
 
   # Below urls come from https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/workspace2.bzl
-  nnas_find_package(Abseil QUIET)
+  nnfw_find_package(Abseil QUIET)
   return_unless(Abseil_FOUND)
   nnfw_find_package(Eigen QUIET)
   return_unless(Eigen_FOUND)
-  nnas_find_package(Farmhash QUIET)
+  nnfw_find_package(Farmhash QUIET)
   return_unless(Farmhash_FOUND)
   nnfw_find_package(FlatBuffers EXACT 23.5.26 QUIET)
   return_unless(FlatBuffers_FOUND)
@@ -34,7 +34,7 @@ if(BUILD_TENSORFLOW_LITE)
   return_unless(OouraFFT_FOUND)
   nnfw_find_package(Ruy QUIET)
   return_unless(Ruy_FOUND)
-  nnas_find_package(MLDtypesSource QUIET)
+  nnfw_find_package(MLDtypesSource QUIET)
   return_unless(MLDtypesSource_FOUND)
 
   # TensorFlow Lite requires FP16 library's header only

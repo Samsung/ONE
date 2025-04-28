@@ -1,5 +1,5 @@
 function(_Psimd_Build)
-  nnas_find_package(PsimdSource QUIET)
+  nnfw_find_package(PsimdSource QUIET)
 
   # NOTE This line prevents multiple definitions of target
   if(TARGET psimd)

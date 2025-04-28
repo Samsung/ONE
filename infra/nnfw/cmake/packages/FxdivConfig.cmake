@@ -1,5 +1,5 @@
 function(_Fxdiv_Build)
-  nnas_find_package(FxdivSource QUIET)
+  nnfw_find_package(FxdivSource QUIET)
 
   # NOTE This line prevents multiple definitions of target
   if(TARGET fxdiv)
