@@ -1,8 +1,0 @@
-# circle-resizer
-
-_circle-resizer provides capabilities to change the shapes of models inputs.
-
-## How to build Python API
-```py
-CMAKE_INSTALL_PREFIX=~/workspace/one_install_nncc python setup.py bdist_wheel
-```
