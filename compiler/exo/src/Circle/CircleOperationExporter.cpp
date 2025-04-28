@@ -37,6 +37,8 @@
 
 #include <flatbuffers/flexbuffers.h>
 
+#include <cassert>
+
 using namespace flatbuffers;
 using namespace circle;
 
@@ -73,6 +75,8 @@ public:
   void visit(locoex::TFLRelu *) final;
   void visit(locoex::TFLRelu6 *) final;
   // TODO TFLReshape
+  // NOTE adding visit() to make compiler happy with "-Werror=overloaded-virtual="
+  void visit(locoex::TFLReshape *) final { assert(false); };
   void visit(locoex::TFLRsqrt *) final;
   // TODO TFLSoftmax
   void visit(locoex::TFLSqrt *) final;
@@ -124,6 +128,19 @@ public:
   void visit(loco::TensorConstantPad *) final;
 
   void visit(locoex::COpCall *);
+
+  // NOTE adding visit() to make compiler happy with "-Werror=overloaded-virtual="
+  void visit(loco::Node *) final { assert(false); }
+  void visit(loco::MatMul *) final { assert(false); }
+  void visit(loco::MatrixDecode *) final { assert(false); }
+  void visit(loco::MatrixEncode *) final { assert(false); }
+  void visit(loco::TensorTranspose *) final { assert(false); }
+  void visit(loco::Forward *) final { assert(false); }
+  void visit(loco::FilterDecode *) final { assert(false); }
+  void visit(loco::DepthwiseFilterDecode *) final { assert(false); }
+  void visit(loco::BiasDecode *) final { assert(false); }
+  void visit(locoex::TFLNode *) final { assert(false); }
+  void visit(locoex::CircleNode *) final { assert(false); }
 
 private:
   /**
