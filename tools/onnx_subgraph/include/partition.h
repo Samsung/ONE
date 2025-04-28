@@ -26,7 +26,7 @@
 #include "device.h"
 #include "graph.h"
 
-// deprecated
+// Priority setting when OPs can be supported by both CPU & NPU, and performance is same on both
 enum PartitionStrategy
 {
   SPILTE_CPU_STRUCTURE_FIRST,
