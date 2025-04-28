@@ -24,13 +24,13 @@ else()
     find_package(Python 3.8 COMPONENTS Interpreter QUIET)
   endif()
 
-  # tensorflow 2.12.1 supports Python 3.8 ~ 3.11
-  if(Python_VERSION VERSION_GREATER_EQUAL 3.12)
-    message(STATUS "Build common-artifacts: FALSE (Python version 3.12 or higher is not supported yet)")
+  # tensorflow 2.12.1 supports Python 3.8 ~ 3.12
+  if(Python_VERSION VERSION_GREATER_EQUAL 3.13)
+    message(STATUS "Build common-artifacts: FALSE (Python version 3.13 or higher is not supported yet)")
     return()
   endif()
   if(Python_VERSION VERSION_LESS 3.8)
-    message(STATUS "Build common-artifacts: FAILED (Install Python version 3.8 or 3.10)")
+    message(STATUS "Build common-artifacts: FAILED (Install Python version 3.8 or above)")
     return()
   endif()
 
