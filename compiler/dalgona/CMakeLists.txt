@@ -24,12 +24,12 @@ else()
   endif()
 
   # Require same python version of common-artifacts
-  if(Python_VERSION VERSION_GREATER_EQUAL 3.12)
-    message(STATUS "Build dalgona: FALSE (Python version 3.12 or higher is not supported yet)")
+  if(Python_VERSION VERSION_GREATER_EQUAL 3.13)
+    message(STATUS "Build dalgona: FALSE (Python version 3.13 or higher is not supported yet)")
     return()
   endif()
   if(Python_VERSION VERSION_LESS 3.8)
-    message(STATUS "Build dalgona: FAILED (Install Python version 3.8 or 3.10)")
+    message(STATUS "Build dalgona: FAILED (Install Python version 3.8 or above)")
     return()
   endif()
 
