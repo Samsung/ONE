@@ -102,13 +102,21 @@ jobs:
           name: circle_intp_${{ matrix.ubuntu_ver }}
           retention-days: 3
           path: |
-            ${{ env.NNCC_BUILD }}/${CIRINTP_PREFIX}/
+            ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}/
 
       - name: Create debian package
         run: |
           cd ${{ env.NNCC_BUILD }}
           cp -rf ../infra/debian/circle-interpreter ./debian
           ls -alh  # TODO remove this
+          release_date=$(date +%Y%m%d)
+          version=${{ inputs.cirint_version }}~${release_date}
+          tar -caf circle-interpreter_${version}.orig.tar.xz ${{ env.CIRINTP_PREFIX }}
+          dch -v "${version}" "${{ inputs.cirint_description }}" -b
+          cat debian/changelog  # TODO remove this
+          debuild -S -sa
+          ls -alh # TODO remove this
+          # dput ppa:circletools/nightly circle-interpreter_${version}_source.changes
 
       # refer https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#update-an-issue-comment
       # TODO update comment id from experiment to official
