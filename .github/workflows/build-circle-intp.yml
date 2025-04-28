@@ -126,13 +126,17 @@ jobs:
           cd ../
           tar -caf circle-interpreter_${version}.orig.tar.xz ${{ env.CIRINTP_PREFIX }}
 
+          mkdir -p ~/.gnupg
+          chmod 700 ~/.gnupg
+          echo "${{ secrets.GPG_NNFW_PRIVATE_KEY }}" | gpg --batch --import
+          gpg --list-secret-keys  # TODO remove this
           cd ${{ env.CIRINTP_PREFIX }}
           debuild -S -sa
 
           cd ../
           ls -alh  # TODO remove this
           mkdir -p ~/.ssh
-          echo "${{ secrets.LAUNCHPAD_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.LAUNCHPAD_NNFW_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           cat ~/.ssh/id_rsa
           # dput ppa:circletools/nightly circle-interpreter_${version}_source.changes
