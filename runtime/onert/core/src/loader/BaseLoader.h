@@ -127,7 +127,6 @@ private:
   template <typename OpIR, typename... Args>
   const OpIR *loadOperationTo(const Operator *op, ir::Graph &subg, Args &&...args);
 
-  void loadAddV2(const Operator *op, ir::Graph &subg);
   void loadArgMinMax(const Operator *op, ir::Graph &subg, bool is_argmax);
   void loadBatchMatMul(const Operator *op, ir::Graph &subg);
   void loadBinaryArithmetic(const Operator *op, ir::Graph &subg,
@@ -816,27 +815,6 @@ void BaseLoader<LoaderDomain>::loadFC(const Operator *op, ir::Graph &subg)
 }
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadAddV2(const Operator *op, ir::Graph &subg)
-{
-  ir::operation::BinaryArithmetic::Param param;
-  param.arithmetic_type = ir::operation::BinaryArithmetic::ArithmeticType::ADD;
-
-  if (op->custom_options() == nullptr)
-  {
-    param.activation = ir::Activation::NONE;
-  }
-  else
-  {
-    const auto attr_map = getCustomOpAttrMap(op);
-    const auto fused_activation_func = static_cast<typename LoaderDomain::ActivationFunctionType>(
-      attr_map["fused_activation_function"].AsInt8());
-    param.activation = convertActivation(fused_activation_func);
-  }
-
-  loadOperationTo<ir::operation::BinaryArithmetic>(op, subg, param);
-}
-
-template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadDepthToSpace(const Operator *op, ir::Graph &subg)
 {
   ir::operation::DepthToSpace::Param param;
@@ -1119,7 +1097,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
 
   enum class BuiltinOP
   {
-    AddV2,
     ReduceAll,
     MatrixBandPart,
     BatchMatMul,
@@ -1131,7 +1108,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
 
   // Mapping from custom op name string to BuiltinOP enum
   std::map<std::string, BuiltinOP> builtin_map = {
-    {"AddV2", BuiltinOP::AddV2},
     {"All", BuiltinOP::ReduceAll},
     {"MatrixBandPart", BuiltinOP::MatrixBandPart},
     {"BatchMatMulV2", BuiltinOP::BatchMatMul},
@@ -1147,9 +1123,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
     auto custom_op_id = builtin_map.at(custom_op_name);
     switch (custom_op_id)
     {
-      case BuiltinOP::AddV2:
-        loadAddV2(op, subg);
-        break;
       case BuiltinOP::ReduceAll:
         loadReduceAll(op, subg);
         break;

@@ -663,8 +663,6 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_ADD] =
     getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::ADD);
 
-  _map[ANEURALNETWORKS_ADDV2_EX] = _map[ANEURALNETWORKS_ADD];
-
   _map[ANEURALNETWORKS_REDUCE_SUM] =
     getReduceGenerator(onert::ir::operation::Reduce::ReduceType::SUM);
 
