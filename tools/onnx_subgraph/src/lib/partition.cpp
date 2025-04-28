@@ -21,8 +21,6 @@
 
 #define MAX_DEPTH 1000
 
-std::vector<onnx::GraphProto> Subgraphs;
-
 void PartitionGraph(const onnx::GraphProto &g, Device &d, PartitionStrategy strategy,
                     const std::unordered_map<std::string, NodeIOSize> &node_io_size)
 {
