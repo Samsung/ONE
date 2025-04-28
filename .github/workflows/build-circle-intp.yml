@@ -81,7 +81,7 @@ jobs:
 
       - name: Gather files
         run: |
-          cd ${NNCC_WORKSPACE}
+          cd ${NNCC_BUILD}
           mkdir -p ${CIRINTP_PREFIX}
           cp -v ${NNCC_INSTALL_PREFIX}/bin/circle-interpreter ./${CIRINTP_PREFIX}/.
           cp -v ${NNCC_INSTALL_PREFIX}/lib/libloco.so ./${CIRINTP_PREFIX}/.
@@ -102,13 +102,13 @@ jobs:
           name: circle_intp_${{ matrix.ubuntu_ver }}
           retention-days: 3
           path: |
-            ${{ env.NNCC_WORKSPACE }}/${CIRINTP_PREFIX}/
+            ${{ env.NNCC_BUILD }}/${CIRINTP_PREFIX}/
 
       - name: Create debian package
         run: |
           cd ${{ env.NNCC_BUILD }}
           cp -rf ../infra/debian/circle-interpreter ./debian
-          la -alh  # TODO remove this
+          ls -alh  # TODO remove this
 
       # refer https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#update-an-issue-comment
       # TODO update comment id from experiment to official
