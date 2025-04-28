@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef PARTITION_H
-#define PARTITION_H
+#ifndef __TOOLS_ONNX_SUBGRAPH_PARTITION_H__
+#define __TOOLS_ONNX_SUBGRAPH_PARTITION_H__
 
 #include "onnx.pb.h"
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
-#include <algorithm>
 #include "device.h"
 #include "graph.h"
 
@@ -50,4 +45,4 @@ enum PartitionStrategy
 void PartitionGraph(const onnx::GraphProto &g, Device &d, PartitionStrategy strategy,
                     const std::unordered_map<std::string, NodeIOSize> &node_io_size);
 
-#endif // PARTITION_H
+#endif // __TOOLS_ONNX_SUBGRAPH_PARTITION_H__

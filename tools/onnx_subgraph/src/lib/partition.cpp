@@ -18,7 +18,9 @@
 #include <algorithm>
 #include <stdio.h>
 #include <stdlib.h>
+
 #define MAX_DEPTH 1000
+
 std::vector<onnx::GraphProto> Subgraphs;
 
 void PartitionGraph(const onnx::GraphProto &g, Device &d, PartitionStrategy strategy,
