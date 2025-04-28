@@ -20,6 +20,7 @@
 #ifndef __CIRCLE_MLIR_DIALECT_CIRCLE_DIALECT_H__
 #define __CIRCLE_MLIR_DIALECT_CIRCLE_DIALECT_H__
 
+#include <mlir/Bytecode/BytecodeOpInterface.h>           // from @llvm-project
 #include <mlir/Dialect/Traits.h>                         // from @llvm-project
 #include <mlir/IR/Dialect.h>                             // from @llvm-project
 #include <mlir/IR/DialectImplementation.h>               // from @llvm-project
@@ -46,6 +47,7 @@ class ControlType : public Type::TypeBase<ControlType, Type, TypeStorage>
 {
 public:
   using Base::Base;
+  static constexpr StringLiteral name = "cir.control";
 };
 
 #include "mlir/CircleOpInterface.h.inc"

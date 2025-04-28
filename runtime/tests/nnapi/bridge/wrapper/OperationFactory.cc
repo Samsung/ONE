@@ -1566,33 +1566,6 @@ OperationFactory::OperationFactory()
     return new operation::BatchMatMul{inputs, outputs, param};
   };
 
-  _map[ANEURALNETWORKS_EINSUM_EX] = [](const OperationFactory::Param &init_param,
-                                       Operands &operands) {
-    // Each input should be interpreted as follows:
-    //
-    //  0....n - 1 -> n Input Tensors Index
-    //  n -> equation
-    assert(init_param.input_count >= 1 && init_param.output_count == 1);
-
-    OperandIndexSequence inputs;
-    for (uint32_t n = 0; n < init_param.input_count - 1; ++n)
-    {
-      inputs.append(OperandIndex{init_param.inputs[n]});
-    }
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    operation::Einsum::Param param;
-    const OperandIndex equation_index{init_param.inputs[init_param.input_count - 1]};
-    std::vector<char> equation_vector = operands.at(equation_index).asVector<char>();
-    param.equation = std::string(equation_vector.begin(), equation_vector.end());
-
-    return new operation::Einsum{inputs, outputs, param};
-  };
-
-  //  0 -> Input Tensor Index
-  //  1 -> int32, int64, An 1-D int tensor Index
-  _map[ANEURALNETWORKS_BROADCAST_TO_EX] = createSimpleBinaryOp<operation::BroadcastTo>;
-
   _map[ANEURALNETWORKS_STATELESS_RANDOM_UNIFORM_EX] = [](const OperationFactory::Param &init_param,
                                                          Operands &) {
     assert(init_param.input_count == 2 && init_param.output_count == 1);

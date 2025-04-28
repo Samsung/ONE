@@ -148,6 +148,13 @@ uint32_t CircleGen::addOperatorBatchMatMul(const OperatorParams &params, bool ad
                                 circle::BuiltinOptions_BatchMatMulOptions, options);
 }
 
+uint32_t CircleGen::addOperatorBroadcastTo(const OperatorParams &params)
+{
+  auto options = circle::CreateBroadcastToOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_BROADCAST_TO,
+                                circle::BuiltinOptions_BroadcastToOptions, options);
+}
+
 uint32_t CircleGen::addOperatorCast(const OperatorParams &params, circle::TensorType input_type,
                                     circle::TensorType output_type)
 {

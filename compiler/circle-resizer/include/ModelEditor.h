@@ -40,7 +40,7 @@ public:
 
 public:
   /**
-   * @brief Resize the model. In means changing shape of the inputs
+   * @brief Resize the model. It means changing shape of the inputs
    *        and propagating changes through the graph.
    *
    * Exceptions:

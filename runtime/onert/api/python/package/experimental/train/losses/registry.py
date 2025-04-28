@@ -1,19 +1,21 @@
-from onert.native.libnnfw_api_pybind import loss as loss_type
+from typing import Type, Dict
+from .loss import LossFunction
 from .cce import CategoricalCrossentropy
 from .mse import MeanSquaredError
+from onert.native.libnnfw_api_pybind import loss as loss_type
 
 
 class LossRegistry:
     """
     Registry for creating and mapping losses by name or instance.
     """
-    _losses = {
+    _losses: Dict[str, Type[LossFunction]] = {
         "categorical_crossentropy": CategoricalCrossentropy,
         "mean_squared_error": MeanSquaredError
     }
 
     @staticmethod
-    def create_loss(name):
+    def create_loss(name: str) -> LossFunction:
         """
         Create a loss instance by name.
         Args:
@@ -26,7 +28,7 @@ class LossRegistry:
         return LossRegistry._losses[name]()
 
     @staticmethod
-    def map_loss_function_to_enum(loss_instance):
+    def map_loss_function_to_enum(loss_instance: LossFunction) -> loss_type:
         """
         Maps a LossFunction instance to the appropriate enum value.
         Args:
@@ -36,8 +38,7 @@ class LossRegistry:
         Raises:
             TypeError: If the loss_instance is not a recognized LossFunction type.
         """
-        # Loss to Enum mapping
-        loss_to_enum = {
+        loss_to_enum: Dict[Type[LossFunction], loss_type] = {
             CategoricalCrossentropy: loss_type.CATEGORICAL_CROSSENTROPY,
             MeanSquaredError: loss_type.MEAN_SQUARED_ERROR
         }

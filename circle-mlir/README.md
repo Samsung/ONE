@@ -20,7 +20,7 @@ ln -s Makefile.sample Makefile
 Install necessary packages;
 ```
 sudo apt-get install build-essential cmake git
-sudo apt-get install autoconf automake libtool unzip wget
+sudo apt-get install autoconf automake libtool pkg-config unzip wget libhdf5-dev
 sudo apt-get install devscripts debmake debhelper lcov
 sudo apt-get install python3 python3-pip python3-venv python3-dev python3-all dh-python
 ```

@@ -42,6 +42,57 @@ TEST_F(GenModelTest, OneOp_StridedSlice_LastDim)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_StridedSlice_5D)
+{
+  CircleGen cgen;
+  std::vector<int32_t> begin_data{0, 0, 0, 0, 0};
+  std::vector<int32_t> end_data{1, 1, 2, 2, 2};
+  std::vector<int32_t> strides_data{1, 1, 1, 1, 1};
+  uint32_t begin_buf = cgen.addBuffer(begin_data);
+  uint32_t end_buf = cgen.addBuffer(end_data);
+  uint32_t strides_buf = cgen.addBuffer(strides_data);
+  int input = cgen.addTensor({{2, 1, 2, 2, 2}, circle::TensorType::TensorType_FLOAT32});
+  int begin = cgen.addTensor({{5}, circle::TensorType::TensorType_INT32, begin_buf});
+  int end = cgen.addTensor({{5}, circle::TensorType::TensorType_INT32, end_buf});
+  int strides = cgen.addTensor({{5}, circle::TensorType::TensorType_INT32, strides_buf});
+  int out = cgen.addTensor({{1, 1, 2, 2, 2}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorStridedSlice({{input, begin, end, strides}, {out}}, 0, 0);
+  cgen.setInputsAndOutputs({input}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}},
+                                          {{0, 1, 2, 3, 4, 5, 6, 7}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_StridedSlice_UnsupportedDims)
+{
+  CircleGen cgen;
+  std::vector<int32_t> begin_data{0, 0, 0, 0, 0};
+  std::vector<int32_t> end_data{1, 1, 2, 2, 2};
+  std::vector<int32_t> strides_data{1, 1, 1, 1, 1};
+  uint32_t begin_buf = cgen.addBuffer(begin_data);
+  uint32_t end_buf = cgen.addBuffer(end_data);
+  uint32_t strides_buf = cgen.addBuffer(strides_data);
+  int input = cgen.addTensor({{2, 1, 2, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  int begin = cgen.addTensor({{5}, circle::TensorType::TensorType_INT32, begin_buf});
+  int end = cgen.addTensor({{5}, circle::TensorType::TensorType_INT32, end_buf});
+  int strides = cgen.addTensor({{5}, circle::TensorType::TensorType_INT32, strides_buf});
+  int out = cgen.addTensor({{1, 1, 2, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
+  cgen.addOperatorStridedSlice({{input, begin, end, strides}, {out}}, 0, 0);
+  cgen.setInputsAndOutputs({input}, {out});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(uniformTCD<float>({{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}},
+                                          {{0, 1, 2, 3, 4, 5, 6, 7}}));
+  _context->setBackends({"acl_cl", "acl_neon", "cpu"});
+  _context->expectFailCompile();
+
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, neg_OneOp_StridedSlice_DifferentType)
 {
   CircleGen cgen;

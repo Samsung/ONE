@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2020 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -156,6 +157,29 @@ void ShapeValidator::visit(const ir::operation::BCQGather &node)
   OP_REQUIRES(operands.at(input_clusters_index).shape().dim(1) == 2);
 
   // more shape validation will be done inside kernel.
+}
+
+void ShapeValidator::visit(const ir::operation::BroadcastTo &node)
+{
+  const auto &operands = _graph.operands();
+  const auto output_index{node.getOutputs().at(0)};
+  if (operands.at(output_index).info().isDynamic())
+    return;
+
+  const auto input_index{node.getInputs().at(ir::operation::BroadcastTo::Input::INPUT)};
+  const auto shape_index{node.getInputs().at(ir::operation::BroadcastTo::Input::SHAPE)};
+  const auto &input_shape = operands.at(input_index).shape();
+  const auto &output_shape_vec = operands.at(shape_index).asVector<int32_t>();
+  int input_num_dims = input_shape.rank();
+  int output_num_dims = output_shape_vec.size();
+  OP_REQUIRES(input_num_dims <= output_num_dims);
+
+  int extending_dims = output_num_dims - input_num_dims;
+  for (int idx = 0; idx < input_num_dims; ++idx)
+  {
+    OP_REQUIRES(input_shape.dim(idx) == 1 ||
+                input_shape.dim(idx) == output_shape_vec.at(extending_dims + idx));
+  }
 }
 
 void ShapeValidator::visit(const ir::operation::Conv2D &node)
@@ -942,7 +966,7 @@ void ShapeValidator::visit(const ir::operation::StridedSlice &node)
   if (operands.at(output_index).info().isDynamic())
     return;
 
-  OP_REQUIRES(operands.at(input_index).shape().rank() <= 4);
+  OP_REQUIRES(operands.at(input_index).shape().rank() <= 5);
 }
 
 void ShapeValidator::visit(const ir::operation::Split &node)

@@ -111,11 +111,11 @@ ir::Shape inferSqueezeShape(const ir::Shape &in_shape, const ir::operation::Sque
 struct StridedSliceParams
 {
   int8_t start_indices_count;
-  int16_t start_indices[4];
+  int32_t start_indices[5];
   int8_t stop_indices_count;
-  int16_t stop_indices[4];
+  int32_t stop_indices[5];
   int8_t strides_count;
-  int16_t strides[4];
+  int32_t strides[5];
 
   int16_t begin_mask;
   int16_t ellipsis_mask;

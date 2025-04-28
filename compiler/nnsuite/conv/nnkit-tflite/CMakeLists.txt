@@ -10,6 +10,10 @@ add_library(nnsuite_conv_tflite SHARED ${SOURCES})
 target_link_libraries(nnsuite_conv_tflite nnsuite_conv)
 target_link_libraries(nnsuite_conv_tflite nnkit_support_tflite-1.7)
 
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
 nnas_find_package(GTest QUIET)
 
 if(NOT GTest_FOUND)

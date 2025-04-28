@@ -74,7 +74,7 @@ struct ConvertResizeNearestSize32 : public OpRewritePattern<ResizeNearestNeighbo
     mlir::Value size32 =
       rewriter.create<ConstOp>(opLoc, DenseIntElementsAttr::get(si32stype, values));
 
-    auto resize_mutable = resize_op.getSizeMutable();
+    auto &resize_mutable = resize_op.getSizeMutable();
     resize_mutable.assign(size32);
 
     return mlir::success();

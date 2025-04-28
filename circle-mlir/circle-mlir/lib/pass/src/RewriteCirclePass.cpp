@@ -112,7 +112,7 @@ void RewriteCirclePass::applyActivationFusion()
 
   // TODO add more patterns
 
-  (void)applyPatternsAndFoldGreedily(func, std::move(patterns));
+  (void)applyPatternsGreedily(func, std::move(patterns));
 }
 
 std::unique_ptr<mlir::Pass> createRewriteCirclePass(void)

@@ -164,14 +164,6 @@ operation::DetectionPostProcess generateDetectionPostProcess()
                                          param};
 }
 
-operation::Einsum generateEinsum()
-{
-  operation::Einsum::Param param;
-  param.equation = "";
-
-  return operation::Einsum{OperandIndexSequence{1}, OperandIndexSequence{0}, param};
-}
-
 operation::ElementwiseActivation generateElementwiseActivation()
 {
   operation::ElementwiseActivation::Param param;
@@ -662,9 +654,6 @@ TEST(UntrainableOperation, testAllOps)
   const auto detection = generateDetectionPostProcess();
   verifyOp(detection);
 
-  const auto einsum = generateEinsum();
-  verifyOp(einsum);
-
   const auto activation = generateElementwiseActivation();
   verifyOp(activation);
 
@@ -939,12 +928,6 @@ TEST(UntrainableOperation, neg_TrainableOperationVisitor)
   {
     const auto detection = generateDetectionPostProcess();
     auto untrainable = generateUntrainableOperation(detection);
-    EXPECT_ANY_THROW(visitor.invoke(*untrainable));
-  }
-
-  {
-    const auto einsum = generateEinsum();
-    auto untrainable = generateUntrainableOperation(einsum);
     EXPECT_ANY_THROW(visitor.invoke(*untrainable));
   }
 

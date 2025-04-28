@@ -41,6 +41,7 @@ void change_single_input_shape(luci::CircleInput *circle_input, const Shape &new
     }
     else
     {
+      // a value here can be in range (0, std::numeric_limits<int32_t>::max()) so the cast is safe
       circle_input->dim(i) = loco::Dimension(static_cast<uint32_t>(new_shape[i].value()));
     }
   }
@@ -52,8 +53,7 @@ void change_inputs_shapes(loco::Graph *graph, const std::vector<Shape> &new_inpu
   if (graph_inputs.size() != new_inputs_shapes.size())
   {
     throw std::runtime_error("Expected " + std::to_string(graph_inputs.size()) +
-                             " shapes but provided only " +
-                             std::to_string(new_inputs_shapes.size()));
+                             " shapes but provided " + std::to_string(new_inputs_shapes.size()));
   }
   for (size_t in_idx = 0; in_idx < new_inputs_shapes.size(); ++in_idx)
   {
@@ -64,7 +64,10 @@ void change_inputs_shapes(loco::Graph *graph, const std::vector<Shape> &new_inpu
 
 } // namespace
 
-ModelEditor::ModelEditor(std::shared_ptr<CircleModel> circle_model) : _circle_model{circle_model} {}
+ModelEditor::ModelEditor(std::shared_ptr<CircleModel> circle_model) : _circle_model{circle_model}
+{
+  assert(circle_model != nullptr); // FIX_CALLER_UNLESS
+}
 
 ModelEditor &ModelEditor::resize_inputs(const std::vector<Shape> &new_inputs_shapes)
 {
@@ -83,8 +86,7 @@ ModelEditor &ModelEditor::resize_inputs(const std::vector<Shape> &new_inputs_sha
   }
   catch (const std::exception &e)
   {
-    throw std::runtime_error("Exception during shape inference with message: " +
-                             std::string{e.what()});
+    throw std::runtime_error("Exception during resizing with message: " + std::string{e.what()});
   }
 
   return *this;

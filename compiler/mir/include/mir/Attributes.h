@@ -17,6 +17,7 @@
 #ifndef OP_ATTRIBUTES_H
 #define OP_ATTRIBUTES_H
 
+#include <cstdint>
 #include <vector>
 #include "mir/DataFormat.h"
 #include "mir/ops/PaddingType.h"

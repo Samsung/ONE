@@ -27,3 +27,6 @@
 
 # Python virtualenv
 /.venv
+
+# Debian folder for multiple packages
+/debian

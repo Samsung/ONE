@@ -1,6 +1,7 @@
+from typing import List
 import numpy as np
 
-from ..native import libnnfw_api_pybind
+from ..native.libnnfw_api_pybind import infer, tensorinfo
 
 
 def num_elems(tensor_info):
@@ -52,6 +53,32 @@ class BaseSession:
             del self.session  # Clean up the existing session
         self.session = backend_session
 
+    def get_inputs_tensorinfo(self) -> List[tensorinfo]:
+        """
+        Retrieve tensorinfo for all input tensors.
+
+        Returns:
+            list[tensorinfo]: A list of tensorinfo objects for each input.
+        """
+        num_inputs: int = self.session.input_size()
+        infos: List[tensorinfo] = []
+        for i in range(num_inputs):
+            infos.append(self.session.input_tensorinfo(i))
+        return infos
+
+    def get_outputs_tensorinfo(self) -> List[tensorinfo]:
+        """
+        Retrieve tensorinfo for all output tensors.
+
+        Returns:
+            list[tensorinfo]: A list of tensorinfo objects for each output.
+        """
+        num_outputs: int = self.session.output_size()
+        infos: List[tensorinfo] = []
+        for i in range(num_outputs):
+            infos.append(self.session.output_tensorinfo(i))
+        return infos
+
     def set_inputs(self, size, inputs_array=[]):
         """
         Set the input tensors for the session.
@@ -63,6 +90,8 @@ class BaseSession:
             raise ValueError(
                 "Session is not initialized with a model. Please compile with a model before setting inputs."
             )
+
+        self.inputs = []
         for i in range(size):
             input_tensorinfo = self.session.input_tensorinfo(i)
 
@@ -88,6 +117,8 @@ class BaseSession:
             raise ValueError(
                 "Session is not initialized with a model. Please compile a model before setting outputs."
             )
+
+        self.outputs = []
         for i in range(size):
             output_tensorinfo = self.session.output_tensorinfo(i)
             output_array = np.zeros((num_elems(output_tensorinfo)),
@@ -97,4 +128,4 @@ class BaseSession:
 
 
 def tensorinfo():
-    return libnnfw_api_pybind.infer.nnfw_tensorinfo()
+    return infer.nnfw_tensorinfo()

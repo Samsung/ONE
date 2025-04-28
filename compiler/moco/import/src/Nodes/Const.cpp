@@ -144,7 +144,7 @@ bool ConstGraphBuilder::validate(const tensorflow::NodeDef &node) const
   if (!plier::tf::has_attrs(node, {"dtype", "value"}))
     return false;
 
-  const auto &input_tensor = plier::tf::get_tensor_attr(node, "value");
+  const auto input_tensor = plier::tf::get_tensor_attr(node, "value");
   const auto &input_shape = input_tensor.tensor_shape();
   const auto &input_dims = input_shape.dim();
 
@@ -183,7 +183,7 @@ void ConstGraphBuilder::build(const tensorflow::NodeDef &node, GraphBuilderConte
   const_node->dtype(dtype);
 
   // import shape and value
-  const auto &input_tensor = plier::tf::get_tensor_attr(node, "value");
+  const auto input_tensor = plier::tf::get_tensor_attr(node, "value");
   const auto &input_shape = input_tensor.tensor_shape();
   const auto &input_dims = input_shape.dim();
   assert(input_shape.dim_size() <= 6);
