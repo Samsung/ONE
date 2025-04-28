@@ -6,6 +6,14 @@ on:
   #  # 05:00 AM (KST, UTC+9:00) Mon-Fri
   #  - cron: '00 20 * * 0-4'
   workflow_dispatch:
+    inputs:
+      cirint_version:
+        description: 'The version of circle-interpreter'
+        required: true
+        default: '1.30.0'
+      cirint_description:
+        description: 'Description of changelog for circle-interpreter'
+        required: true
 
 defaults:
   run:
