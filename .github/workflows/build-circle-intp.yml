@@ -114,13 +114,13 @@ jobs:
           dch -v "${version}" "${{ inputs.cirint_description }}" -b
           cat debian/changelog  # TODO remove this
 
-          cd ${{ env.NNCC_BUILD }}
+          cd ../
           tar -caf circle-interpreter_${version}.orig.tar.xz ${{ env.CIRINTP_PREFIX }}
 
-          cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
+          cd ${{ env.CIRINTP_PREFIX }}
           debuild -S -sa
           ls -alh # TODO remove this
-          cd ${{ env.NNCC_BUILD }} # TODO remove this
+          cd ../ # TODO remove this
           ls -alh # TODO remove this
           # dput ppa:circletools/nightly circle-interpreter_${version}_source.changes
 
