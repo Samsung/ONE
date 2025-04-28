@@ -1,0 +1,6 @@
+#!/bin/bash
+
+import "build.configuration"
+
+# Require cmake version >= 3.13 to use '-S' & '-B' option
+cmake -S "${NNFW_PROJECT_PATH}"/runtime -B ${BUILD_PATH} "$@"

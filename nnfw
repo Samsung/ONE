@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NNFW_SCRIPT_RPATH="infra/nnfw"
+NNFW_SCRIPT_RPATH="runtime/infra"
 NNFW_COMMAND_RPATH="${NNFW_SCRIPT_RPATH}/command"
 
 NNFW_PROJECT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

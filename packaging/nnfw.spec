@@ -26,6 +26,7 @@ Source3013: TENSORFLOW-2.16.1-GEMMLOWP.tar.gz
 Source3014: TENSORFLOW-2.16.1-RUY.tar.gz
 Source3015: TENSORFLOW-2.16.1.tar.gz
 Source3016: XNNPACK.tar.gz
+Source3017: FP16-onecc.tar.gz
 
 %{!?build_type:     %define build_type      Release}
 %{!?trix_support:   %define trix_support    1}
@@ -162,24 +163,42 @@ If you want to get coverage info, you should install runtime package which is bu
 %prep
 %setup -q
 cp %{SOURCE1} .
-mkdir ./externals
+mkdir ./runtime/externals
 tar -xf %{SOURCE1001} -C ./runtime/tests/nnapi/src/
-tar -xf %{SOURCE3001} -C ./externals
-tar -xf %{SOURCE3002} -C ./externals
-tar -xf %{SOURCE3003} -C ./externals
-tar -xf %{SOURCE3004} -C ./externals
-tar -xf %{SOURCE3005} -C ./externals
-tar -xf %{SOURCE3006} -C ./externals
-tar -xf %{SOURCE3007} -C ./externals
-tar -xf %{SOURCE3008} -C ./externals
-tar -xf %{SOURCE3009} -C ./externals
-tar -xf %{SOURCE3010} -C ./externals
-tar -xf %{SOURCE3011} -C ./externals
-tar -xf %{SOURCE3012} -C ./externals
-tar -xf %{SOURCE3013} -C ./externals
-tar -xf %{SOURCE3014} -C ./externals
-tar -xf %{SOURCE3015} -C ./externals
-tar -xf %{SOURCE3016} -C ./externals
+tar -xf %{SOURCE3001} -C ./runtime/externals
+tar -xf %{SOURCE3002} -C ./runtime/externals
+tar -xf %{SOURCE3003} -C ./runtime/externals
+tar -xf %{SOURCE3004} -C ./runtime/externals
+tar -xf %{SOURCE3005} -C ./runtime/externals
+tar -xf %{SOURCE3006} -C ./runtime/externals
+tar -xf %{SOURCE3007} -C ./runtime/externals
+tar -xf %{SOURCE3008} -C ./runtime/externals
+tar -xf %{SOURCE3009} -C ./runtime/externals
+tar -xf %{SOURCE3010} -C ./runtime/externals
+tar -xf %{SOURCE3011} -C ./runtime/externals
+tar -xf %{SOURCE3012} -C ./runtime/externals
+tar -xf %{SOURCE3013} -C ./runtime/externals
+tar -xf %{SOURCE3014} -C ./runtime/externals
+tar -xf %{SOURCE3015} -C ./runtime/externals
+tar -xf %{SOURCE3016} -C ./runtime/externals
+
+%if %{odc_build} == 1
+mkdir ./externals
+tar -xf %{SOURCE3004} -C ./externals    #Flatbuffers
+tar -xf %{SOURCE3008} -C ./externals    #NEON2SSE
+tar -xf %{SOURCE3013} -C ./externals    #GEMMLowp
+tar -xf %{SOURCE3014} -C ./externals    #Ruy
+tar -xf %{SOURCE3015} -C ./externals    #TensorFlow
+tar -xf %{SOURCE3017} -C ./externals    #FP16
+%endif # odc_build
+
+# Naming workaround: remove this after version up with tar file update
+mv ./runtime/externals/TENSORFLOW-2.16.1-EIGEN ./runtime/externals/EIGEN
+mv ./runtime/externals/TENSORFLOW-2.16.1-EIGEN.stamp ./runtime/externals/EIGEN.stamp
+mv ./runtime/externals/TENSORFLOW-2.16.1-GEMMLOWP ./runtime/externals/GEMMLOWP
+mv ./runtime/externals/TENSORFLOW-2.16.1-GEMMLOWP.stamp ./runtime/externals/GEMMLOWP.stamp
+mv ./runtime/externals/TENSORFLOW-2.16.1-RUY ./runtime/externals/RUY
+mv ./runtime/externals/TENSORFLOW-2.16.1-RUY.stamp ./runtime/externals/RUY.stamp
 
 %build
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64

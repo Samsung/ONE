@@ -3,7 +3,7 @@ if(NOT BUILD_UBEN)
 endif(NOT BUILD_UBEN)
 
 nnfw_find_package(ARMCompute QUIET)
-nnas_find_package(Nonius QUIET)
+nnfw_find_package(Nonius QUIET)
 
 if(NOT ARMCompute_FOUND)
   return()

@@ -7,12 +7,8 @@ on:
       - release/*
     paths:
       - '.github/workflows/run-onert-android-build.yml'
-      - 'nn*'
+      - 'nnfw'
       - 'Makefile.template'
-      - 'infra/buildtool/**'
-      - 'infra/cmake/**'
-      - 'infra/nncc/**'
-      - 'infra/nnfw/**'
       - 'runtime/**'
       - '!runtime/contrib/**'
       - '!**/*.md'
@@ -22,12 +18,8 @@ on:
       - release/*
     paths:
       - '.github/workflows/run-onert-android-build.yml'
-      - 'nn*'
+      - 'nnfw'
       - 'Makefile.template'
-      - 'infra/buildtool/**'
-      - 'infra/cmake/**'
-      - 'infra/nncc/**'
-      - 'infra/nnfw/**'
       - 'runtime/**'
       - '!runtime/contrib/**'
       - '!**/*.md'
@@ -61,11 +53,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: externals
-          key: external-onert-ndk-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          key: external-onert-ndk-${{ hashFiles('runtime/infra/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-ndk-
             external-onert-
-            external-
 
       # numpy: test build
       # scons: arm compute library build
@@ -75,6 +66,7 @@ jobs:
           sudo apt-get update && sudo apt-get -qqy install scons
 
       # Use NDK Default - path set by containe envrionment variable
+      # Build without odc
       - name: Build onert
         run: |
-          make -f Makefile.template
+          make -f Makefile.template except-odc

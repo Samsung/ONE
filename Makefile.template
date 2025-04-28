@@ -36,9 +36,10 @@ endif
 endif
 # the toolchain file, only for cross build
 ifeq ($(CROSS_BUILD),1)
-	TOOLCHAIN_FILE=cmake/buildtool/cross/toolchain_$(TARGET_ARCH_LC)-$(TARGET_OS).cmake
+	NNCC_TOOLCHAIN_FILE=cmake/buildtool/cross/toolchain_$(TARGET_ARCH_LC)-$(TARGET_OS).cmake
+	TOOLCHAIN_FILE=infra/cmake/buildtool/cross/toolchain_$(TARGET_ARCH_LC)-$(TARGET_OS).cmake
 	OPTIONS+= -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN_FILE)
-	OPTIONS_NNCC+= -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN_FILE)
+	OPTIONS_NNCC+= -DCMAKE_TOOLCHAIN_FILE=$(NNCC_TOOLCHAIN_FILE)
 endif
 
 ifneq ($(filter create-covsuite,$(MAKECMDGOALS)),)
@@ -113,6 +114,8 @@ export NNCC_WORKSPACE=$(NNCC_FOLDER)
 ###
 all: prepare-buildtool prepare-nncc configure build install
 
+except-odc: configure build install
+
 ###
 ### Command (build step)
 ###
@@ -136,6 +139,8 @@ create-aclpack: configure acl_tar_internal
 
 create-testsuite: all test_suite_internal
 
+create-testsuite-except-odc: except-odc test_suite_internal
+
 create-covsuite: all coverage_suite_internal
 
 clean:
@@ -153,7 +158,7 @@ $(WORKSPACE):
 	mkdir -p $@
 
 prepare_buildtool_internal: $(WORKSPACE)
-	cmake -S infra/buildtool -B $(BUILDTOOL_WORKSPACE)/obj -DBUILDTOOL_PATH=$(BUILDTOOL_PATH)
+	cmake -S runtime/infra/buildtool -B $(BUILDTOOL_WORKSPACE)/obj -DBUILDTOOL_PATH=$(BUILDTOOL_PATH)
 	cmake --build $(BUILDTOOL_WORKSPACE)/obj/ -j$(NPROCS)
 prepare_nncc_internal: $(WORKSPACE)
 ifeq (,$(findstring android,$(TARGET_OS)))
@@ -221,7 +226,7 @@ test_suite_internal: install_all_internal
 	@echo "packaging test suite"
 	@rm -rf $(INSTALL_PATH)/test-suite.tar.gz
 # TODO Divide runtime package, external library package, and test suite
-	@tar -zcf test-suite.tar.gz infra Product/out --dereference
+	@tar -zcf test-suite.tar.gz runtime/infra/scripts Product/out -C runtime infra/scripts --dereference
 	@mv test-suite.tar.gz $(INSTALL_PATH)/.
 
 coverage_suite_internal: install_all_internal
@@ -229,6 +234,6 @@ coverage_suite_internal: install_all_internal
 	@rm -rf $(INSTALL_PATH)/coverage-suite.tar.gz
 	@find Product -name "*.gcno" > include_lists.txt
 	@pwd | grep -o '/' | wc -l > runtime/tests/scripts/build_path_depth.txt
-	@tar -zcf coverage-suite.tar.gz runtime/tests/scripts infra Product/out --dereference -T include_lists.txt
+	@tar -zcf coverage-suite.tar.gz runtime/tests/scripts runtime/infra/scripts Product/out -C runtime infra/scripts --dereference -T include_lists.txt
 	@rm -rf include_lists.txt runtime/tests/scripts/build_path_depth.txt
 	@mv coverage-suite.tar.gz $(INSTALL_PATH)/.

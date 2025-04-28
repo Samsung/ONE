@@ -7,7 +7,6 @@ on:
       - release/*
     paths:
       - '.github/workflows/run-onecc-build.yml'
-      - 'nnas'
       - 'nncc'
       - 'compiler/**'
       - 'infra/cmake/**'
@@ -21,7 +20,6 @@ on:
       - release/*
     paths:
       - '.github/workflows/run-onecc-build.yml'
-      - 'nnas'
       - 'nncc'
       - 'compiler/**'
       - 'infra/cmake/**'
