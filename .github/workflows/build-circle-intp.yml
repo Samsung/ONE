@@ -107,9 +107,7 @@ jobs:
       - name: Create debian package
         run: |
           cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
-          pwd  # TODO remove this
-          ls -alh  # TODO remove this
-          cp -rf ${{ github.workspace }}/infra/debian/circle-interpreter ./debian
+          cp -rf ../../infra/debian/circle-interpreter ./debian
           ls -alh  # TODO remove this
           release_date=$(date +%Y%m%d)
           version=${{ inputs.cirint_version }}~${release_date}
