@@ -14,6 +14,14 @@ on:
       cirint_description:
         description: 'Description of changelog for circle-interpreter'
         required: true
+      deb_fullname:
+        description: 'Full name of Debian package author'
+        required: false
+        default: 'On-device AI developers'
+      deb_email:
+        description: 'Email address of Debian package author'
+        required: false
+        default: 'nnfw@samsung.com'
 
 defaults:
   run:
@@ -108,9 +116,10 @@ jobs:
         run: |
           cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
           cp -rf ../../infra/debian/circle-interpreter ./debian
-          ls -alh  # TODO remove this
           release_date=$(date +%Y%m%d)
           version=${{ inputs.cirint_version }}~${release_date}
+          export DEBFULLNAME="${{ inputs.deb_fullname }}"
+          export DEBEMAIL="${{ inputs.deb_email }}"
           dch -v "${version}" "${{ inputs.cirint_description }}" -b
           cat debian/changelog  # TODO remove this
 
@@ -119,9 +128,7 @@ jobs:
 
           cd ${{ env.CIRINTP_PREFIX }}
           debuild -S -sa
-          ls -alh # TODO remove this
-          cd ../ # TODO remove this
-          ls -alh # TODO remove this
+
           # dput ppa:circletools/nightly circle-interpreter_${version}_source.changes
 
       # refer https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#update-an-issue-comment
