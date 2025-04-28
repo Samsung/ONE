@@ -74,8 +74,8 @@ void GRU::evalFloat() const
     reinterpret_cast<float *>(output_hidden_data), getTensorShape(input()),
     getTensorShape(output()), getTensorShape(hidden_input()), getTensorShape(hidden_hidden()));
 
-  delete output_hidden_data;
-  delete output_input_data;
+  delete[] output_hidden_data;
+  delete[] output_input_data;
 }
 
 } // namespace kernels
