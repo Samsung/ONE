@@ -106,15 +106,21 @@ jobs:
 
       - name: Create debian package
         run: |
-          cd ${{ env.NNCC_BUILD }}
-          cp -rf ../infra/debian/circle-interpreter ./debian
+          cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
+          cp -rf ${{ github.workspace }}/infra/debian/circle-interpreter ./debian
           ls -alh  # TODO remove this
           release_date=$(date +%Y%m%d)
           version=${{ inputs.cirint_version }}~${release_date}
-          tar -caf circle-interpreter_${version}.orig.tar.xz ${{ env.CIRINTP_PREFIX }}
           dch -v "${version}" "${{ inputs.cirint_description }}" -b
           cat debian/changelog  # TODO remove this
+
+          cd ${{ env.NNCC_BUILD }}
+          tar -caf circle-interpreter_${version}.orig.tar.xz ${{ env.CIRINTP_PREFIX }}
+
+          cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
           debuild -S -sa
+          ls -alh # TODO remove this
+          cd ${{ env.NNCC_BUILD }} # TODO remove this
           ls -alh # TODO remove this
           # dput ppa:circletools/nightly circle-interpreter_${version}_source.changes
 
