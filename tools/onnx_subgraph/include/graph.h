@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef GRAPH_H
-#define GRAPH_H
+#ifndef __TOOLS_ONNX_SUBGRAPH_GRAPH_H__
+#define __TOOLS_ONNX_SUBGRAPH_GRAPH_H__
 
 #include "onnx.pb.h"
 
@@ -196,4 +196,4 @@ void mergeGraphs(onnx::GraphProto &targetGraph, onnx::GraphProto &sourceGraph);
  */
 onnx::GraphProto GetGraphFromOnnx(std::string &path);
 
-#endif // GRAPH_H
+#endif //__TOOLS_ONNX_SUBGRAPH_GRAPH_H__
