@@ -66,6 +66,9 @@ public:
   luci::CircleQuantParam *quantparam(void) const { return _quantparam; }
   void quantparam(luci::CircleQuantParam *qp) { _quantparam = qp; }
 
+  luci::CircleMXQuantParam *mx_quantparam(void) const { return _mx_quantparam; }
+  void mx_quantparam(luci::CircleMXQuantParam *qp) { _mx_quantparam = qp; }
+
   luci::SparsityParam *sparsityparam(void) const { return _sparsityparam; }
   void sparsityparam(luci::SparsityParam *sp) { _sparsityparam = sp; }
 
@@ -81,6 +84,7 @@ private:
 
   luci::CircleConst *_content = nullptr;
   luci::CircleQuantParam *_quantparam = nullptr;
+  luci::CircleMXQuantParam *_mx_quantparam = nullptr;
   luci::SparsityParam *_sparsityparam = nullptr;
 
   bool _is_variable = false;
@@ -150,6 +154,7 @@ void allocateCircleTensorInfo(CircleNode *node, CircleTensorContext &ctx)
 
   tensor_info.content(dynamic_cast<luci::CircleConst *>(node));
   tensor_info.quantparam(node->quantparam());
+  tensor_info.mx_quantparam(node->mx_quantparam());
   tensor_info.sparsityparam(node->sparsityparam());
 
   tensor_info.is_variable(dynamic_cast<luci::CircleVariable *>(node) != nullptr);
@@ -498,10 +503,25 @@ flatbuffers::Offset<circle::Buffer> encodeOpBuffer(FlatBufferBuilder &builder,
 }
 
 flatbuffers::Offset<circle::QuantizationParameters>
-encodeQuantizationParameters(FlatBufferBuilder &builder, luci::CircleQuantParam *quantparam)
+encodeQuantizationParameters(FlatBufferBuilder &builder, luci::CircleQuantParam *quantparam,
+                             luci::CircleMXQuantParam *mx_quantparam)
 {
-  if (quantparam == nullptr)
+  if (quantparam == nullptr and mx_quantparam == nullptr)
     return 0;
+
+  if (mx_quantparam)
+  {
+    if (quantparam != nullptr)
+      throw std::runtime_error("Affine quantparam can not exist with MX quantparam.");
+
+    auto mx_quantize = circle::CreateMXQuantization(builder, mx_quantparam->axis);
+
+    // Note: QuantizationDetails is not supported
+    return circle::CreateQuantizationParameters(
+      builder, 0 /* min */, 0 /* max */, 0 /* scale */, 0 /* zero_point */,
+      circle::QuantizationDetails::QuantizationDetails_MXQuantization, mx_quantize.Union(),
+      0 /* quantized_dimension */);
+  }
 
   flatbuffers::Offset<flatbuffers::Vector<float>> min;
   flatbuffers::Offset<flatbuffers::Vector<float>> max;
@@ -658,7 +678,7 @@ void exportOpDefinedTensor(const CircleTensorInfo &info, FlatBufferBuilder &buil
     shape_signature_offset = encodeShapeSignature(builder, info.shape());
   }
 
-  auto quantparam = encodeQuantizationParameters(builder, info.quantparam());
+  auto quantparam = encodeQuantizationParameters(builder, info.quantparam(), info.mx_quantparam());
 
   auto sparsityparam = encodeSparsityParameters(builder, info.sparsityparam());
 
