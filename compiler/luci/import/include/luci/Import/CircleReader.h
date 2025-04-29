@@ -23,6 +23,7 @@
 #include <luci/IR/AttrPadding.h>
 #include <luci/IR/CircleNode.h>
 #include <luci/IR/CircleQuantParam.h>
+#include <luci/IR/CircleMXQuantParam.h>
 #include <luci/IR/SparsityParam.h>
 
 #include <loco.h>
@@ -47,6 +48,7 @@ luci::CircleFullyConnected::WeightsFormat
 luci_weights_format(const circle::FullyConnectedOptionsWeightsFormat weights_format);
 std::unique_ptr<CircleQuantParam>
 luci_quantparam(const circle::QuantizationParameters *quantization);
+std::unique_ptr<CircleMXQuantParam> luci_mx_quantparam(const circle::MXQuantization *quantization);
 
 /// @brief Copy common tensor attributes such as name, type, etc. to node.
 void copy_tensor_attributes(const circle::Tensor *tensor, CircleNode *node);
