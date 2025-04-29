@@ -133,7 +133,11 @@ jobs:
           echo "${{ secrets.GPG_NNFW_PRIVATE_KEY }}" | gpg --batch --import
           gpg --list-secret-keys  # TODO remove this
           cd ${{ env.CIRINTP_PREFIX }}
-          debuild -S -sa
+          GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format=long | grep '^sec' | head -n1 | awk -F'/' '{print $2}' | awk '{print $1}')
+          DEBSIGN_PROGRAM=gpg \
+            DEBSIGN_KEYID=${GPG_KEY_ID} \
+            GPG_TTY=$(tty) \
+            debuild -S -sa
 
           echo "Upload to Launchpad"
           cd ../
