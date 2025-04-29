@@ -157,7 +157,6 @@ private:
   void loadPool2D(const Operator *op, ir::Graph &subg, ir::operation::Pool2D::PoolType op_type);
   void loadReduce(const Operator *op, ir::Graph &subg,
                   ir::operation::Reduce::ReduceType reduce_type);
-  void loadReduceAll(const Operator *op, ir::Graph &subg);
   void loadReshape(const Operator *op, ir::Graph &subg);
   void loadResizeBilinear(const Operator *op, ir::Graph &subg);
   void loadResizeNearestNeighbor(const Operator *op, ir::Graph &subg);
@@ -928,24 +927,6 @@ void BaseLoader<LoaderDomain>::loadReduce(const Operator *op, ir::Graph &subg,
 }
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadReduceAll(const Operator *op, ir::Graph &subg)
-{
-  ir::operation::Reduce::Param param;
-  param.reduce_type = ir::operation::Reduce::ReduceType::ALL;
-  if (op->custom_options() == nullptr)
-  {
-    param.keep_dims = false;
-  }
-  else
-  {
-    const auto attr_map = getCustomOpAttrMap(op);
-    param.keep_dims = attr_map["keep_dims"].AsBool();
-  }
-
-  loadOperationTo<ir::operation::Reduce>(op, subg, param);
-}
-
-template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadElementwiseBinary(
   const Operator *op, ir::Graph &subg,
   ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type)
@@ -1097,7 +1078,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
 
   enum class BuiltinOP
   {
-    ReduceAll,
     MatrixBandPart,
     BatchMatMul,
     FusedBatchNorm,
@@ -1108,7 +1088,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
 
   // Mapping from custom op name string to BuiltinOP enum
   std::map<std::string, BuiltinOP> builtin_map = {
-    {"All", BuiltinOP::ReduceAll},
     {"MatrixBandPart", BuiltinOP::MatrixBandPart},
     {"BatchMatMulV2", BuiltinOP::BatchMatMul},
     {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
@@ -1123,9 +1102,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
     auto custom_op_id = builtin_map.at(custom_op_name);
     switch (custom_op_id)
     {
-      case BuiltinOP::ReduceAll:
-        loadReduceAll(op, subg);
-        break;
       case BuiltinOP::MatrixBandPart:
         loadOperationTo<ir::operation::MatrixBandPart>(op, subg);
         break;
@@ -1514,6 +1490,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       return;
     case BuiltinOperator::BuiltinOperator_REDUCE_MAX:
       loadReduce(op, subg, ir::operation::Reduce::ReduceType::MAX);
+      return;
+    case BuiltinOperator::BuiltinOperator_REDUCE_ALL:
+      loadReduce(op, subg, ir::operation::Reduce::ReduceType::ALL);
       return;
     case BuiltinOperator::BuiltinOperator_REVERSE_V2:
       loadOperationTo<ir::operation::Reverse>(op, subg);
