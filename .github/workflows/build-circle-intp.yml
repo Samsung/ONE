@@ -128,24 +128,28 @@ jobs:
           tar -caf circle-interpreter_${version}.orig.tar.xz ${{ env.CIRINTP_PREFIX }}
 
           echo "debuild: signing with the gpg key"
-          mkdir -p ~/.gnupg
-          chmod 700 ~/.gnupg
+
           echo "${{ secrets.GPG_NNFW_PRIVATE_KEY }}" | gpg --batch --import
           gpg --list-secret-keys  # TODO remove this
           cd ${{ env.CIRINTP_PREFIX }}
+
           # get fingerprint
           FPR=$(gpg --list-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')
           echo "$FPR:6:" | gpg --import-ownertrust
+
+          mkdir -p ~/.gnupg
+          chmod 700 ~/.gnupg
           echo "use-agent" >> ~/.gnupg/gpg.conf
           echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
           echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
-          GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format=long | grep '^sec' | head -n1 | awk -F'/' '{print $2}' | awk '{print $1}')
-          export DEBSIGN_KEYID=${GPG_KEY_ID}
-          export GPG_TTY=$(tty)
           gpgconf --kill gpg-agent
           gpgconf --launch gpg-agent
-          DEBSIGN_PROGRAM=gpg \
-            debuild -S -sa --sign-key=$GPG_KEY_ID
+
+          #GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format=long | grep '^sec' | head -n1 | awk -F'/' '{print $2}' | awk '{print $1}')
+          export DEBSIGN_KEYID=${FPR}
+          export GPG_TTY=""
+          export DEBSIGN_PROGRAM=gpg
+          debuild -S -sa --sign-key=${FPR}
 
           echo "Upload to Launchpad"
           cd ../
