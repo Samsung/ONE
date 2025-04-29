@@ -65,46 +65,48 @@ if(DEFINED ENV{ONE_PIP_OPTION_TRUST_HOST})
   set(PIP_OPTION_TRUSTED_HOST --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org)
 endif()
 
+set(PY_PKG_LIST )
 if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
   # NOTE `tensorflow-cpu` package is not available for aarch64, so we use `tensorflow` package.
-  add_custom_command(
-    OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==2.12.1" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==23.5.26" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "protobuf==4.23.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "pydot==1.4.2" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "pytest==7.4.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "h5py==3.11.0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "cffi==1.16.0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
-            ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
-    COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
-            ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1} --upgrade
-    DEPENDS ${VIRTUALENV_OVERLAY_TF_2_12_1}
-  )
+  list(APPEND PY_PKG_LIST "tensorflow==2.12.1")
 else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  add_custom_command(
-    OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "tensorflow-cpu==2.12.1" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==23.5.26" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "protobuf==4.23.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "pydot==1.4.2" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "pytest==7.4.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "h5py==3.11.0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "cffi==1.16.0" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
-            ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
-    COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
-            ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1} --upgrade
-    DEPENDS ${VIRTUALENV_OVERLAY_TF_2_12_1}
-  )
+  list(APPEND PY_PKG_LIST "tensorflow-cpu==2.12.1")
 endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+list(APPEND PY_PKG_LIST "flatbuffers==23.5.26")
+list(APPEND PY_PKG_LIST "protobuf==4.23.3")
+list(APPEND PY_PKG_LIST "pydot==1.4.2")
+list(APPEND PY_PKG_LIST "pytest==7.4.3")
+list(APPEND PY_PKG_LIST "h5py==3.11.0")
+list(APPEND PY_PKG_LIST "cffi==1.16.0")
+
+add_custom_command(
+  OUTPUT REQUIREMENTS_OVERLAY_PATH_TF_2_12_1_clean
+  COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+)
+
+set(PY_PKG_LIST_DEPENDS_PREV REQUIREMENTS_OVERLAY_PATH_TF_2_12_1_clean)
+foreach(PKG_VER IN LISTS PY_PKG_LIST)
+  add_custom_command(
+    OUTPUT ${PKG_VER}_item ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    COMMAND ${CMAKE_COMMAND} -E echo "${PKG_VER}" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+    DEPENDS ${VIRTUALENV_OVERLAY_TF_2_12_1} ${PY_PKG_LIST_DEPENDS_PREV}
+  )
+  set(PY_PKG_LIST_DEPENDS_PREV ${PKG_VER}_item)
+endforeach()
+
+add_custom_command(
+  OUTPUT VIRTUALENV_OVERLAY_TF_2_12_1_installed
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
+          ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
+  COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
+          ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1} --upgrade
+  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_12_1} ${PY_PKG_LIST_DEPENDS_PREV}
+)
 
 add_custom_target(common_artifacts_python_deps ALL
   DEPENDS ${VIRTUALENV_OVERLAY_TF_2_12_1}
           ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+          VIRTUALENV_OVERLAY_TF_2_12_1_installed
 )
 
 #[[ Generate common resources ]]
