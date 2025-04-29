@@ -137,7 +137,13 @@ jobs:
           FPR=$(gpg --list-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')
           echo "$FPR:6:" | gpg --import-ownertrust
 
+          echo "Reading.. gpg.conf"
+          cat ~/.gnupg/gpg.conf
+
+          echo "Running.. debuild -S -us -uc"
           debuild -S -us -uc
+
+          echo "Running.. debsign -k${FPR} ../circle-interpreter_*.changes"
           debsign -k${FPR} ../circle-interpreter_*.changes
 
           # mkdir -p ~/.gnupg
