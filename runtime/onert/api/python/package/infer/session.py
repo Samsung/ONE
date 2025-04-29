@@ -1,6 +1,7 @@
 from typing import List, Union, Tuple, Dict
 import numpy as np
 import time
+import warnings
 from contextlib import contextmanager
 
 from ..native.libnnfw_api_pybind import infer, tensorinfo
@@ -92,6 +93,7 @@ class session(BaseSession):
                 for idx, info in enumerate(original_infos):
                     input_shape = inputs_array[idx].shape
                     new_dims = []
+                    static_dim_changed = False
                     # only the first `info.rank` entries matter
                     for j, d in enumerate(info.dims[:info.rank]):
                         if d == -1:
@@ -101,11 +103,14 @@ class session(BaseSession):
                             # static dim must match the provided array
                             new_dims.append(d)
                         else:
-                            raise ValueError(
-                                f"Input #{idx} dim {j} mismatch: "
-                                f"tensorinfo={d}, actual input shape={input_shape[j]}")
-                    # Preserve any trailing dims beyond rank
-                    # new_dims += list(info.dims[info.rank:])
+                            static_dim_changed = True
+
+                    if static_dim_changed:
+                        warnings.warn(
+                            f"infer() called with input {idx}'s shape={input_shape}, "
+                            f"which differs from model’s expected shape={tuple(info.dims)}. "
+                            "Ensure this is intended.", UserWarning)
+
                     info.dims = new_dims
                     fixed_infos.append(info)
 
