@@ -25,4 +25,6 @@ set(MIR_CAFFE2_IMPORTER_SOURCES
 add_library(mir_caffe2_importer STATIC ${MIR_CAFFE2_IMPORTER_SOURCES})
 set_target_properties(mir_caffe2_importer PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(mir_caffe2_importer PUBLIC ../../include/mir_caffe2_importer)
-target_link_libraries(mir_caffe2_importer PUBLIC mir PRIVATE caffe2proto nncc_common)
+target_link_libraries(mir_caffe2_importer PUBLIC mir PRIVATE caffe2proto)
+# to prevent _GLIBCXX17_DEPRECATED warning as error
+# target_link_libraries(mir_caffe2_importer PRIVATE nncc_common)

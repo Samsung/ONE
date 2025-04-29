@@ -29,7 +29,8 @@ set(MIR_SOURCES
 add_library(mir STATIC ${MIR_SOURCES})
 target_include_directories(mir PUBLIC include)
 target_link_libraries(mir PUBLIC adtidas)
-target_link_libraries(mir PRIVATE nncc_common)
+# to prevent _GLIBCXX17_DEPRECATED warning as error
+# target_link_libraries(mir PRIVATE nncc_common)
 target_link_libraries(mir PUBLIC nncc_coverage)
 
 set_target_properties(mir PROPERTIES POSITION_INDEPENDENT_CODE ON)
