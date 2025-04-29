@@ -66,7 +66,7 @@ jobs:
       - name: Install required packages
         run: |
           apt-get update
-          apt-get install curl
+          apt-get install -y curl
 
       - name: Build without test
         run: |
@@ -112,49 +112,63 @@ jobs:
           path: |
             ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}/
 
-      - name: Create debian package
-        id: create-debian-package
+      - name: Config files
+        id: config
         run: |
-          echo "Update changelog"
-          cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
-          cp -rf ../../infra/debian/circle-interpreter ./debian
           release_date=$(date +%Y%m%d)
           version=${{ inputs.cirint_version }}~${release_date}
+          changes_file="circle-interpreter_${version}_source.changes"
+          tarball_file="circle-interpreter_${version}.orig.tar.xz"
+
+          echo "version=${version}" >> $GITHUB_OUTPUT
+          echo "changes_file=${changes_file}" >> $GITHUB_OUTPUT
+          echo "tarball_file=${tarball_file}" >> $GITHUB_OUTPUT
+
+      - name: Update changelog
+        run: |
+          cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
+          cp -rf ../../infra/debian/circle-interpreter ./debian
           export DEBFULLNAME="${{ inputs.deb_fullname }}"
           export DEBEMAIL="${{ inputs.deb_email }}"
-          dch -v "${version}" --distribution "${{ matrix.ubuntu_code }}" "${{ inputs.cirint_description }}" -b
-          cat debian/changelog  # TODO remove this
+          dch -v "${{ steps.config.outputs.version }}" \
+            --distribution "${{ matrix.ubuntu_code }}" \
+            "${{ inputs.cirint_description }}" -b
 
-          cd ../
-          tar -caf circle-interpreter_${version}.orig.tar.xz ${{ env.CIRINTP_PREFIX }}
+      - name: Craete original tarball
+        run: |
+          cd ${{ env.NNCC_BUILD }}
+          tar -caf \
+            circle-interpreter_${{ steps.config.outputs.version }}.orig.tar.xz \
+            ${{ env.CIRINTP_PREFIX }}
 
-          echo "debuild: signing with the gpg key"
+      - name: Signing with debuild and debsign
+        run: |
+          cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
           rm -rf ~/.gnupg
           echo -n "${{ secrets.GPG_NNFW_SIGNING_KEY }}" | base64 --decode | gpg --import
-          cd ${{ env.CIRINTP_PREFIX }}
           # get fingerprint
           FPR=$(gpg --list-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')
           echo "$FPR:6:" | gpg --import-ownertrust
           debuild -S -us -uc
           debsign -k${FPR} ../circle-interpreter_*.changes
 
-          echo "Upload to Launchpad"
-          cd ../
-          ls -alh  # TODO remove this
+      - name: Upload to Launchpad
+        run: |
+          cd ${{ env.NNCC_BUILD }}
           mkdir -p ~/.ssh
           echo "${{ secrets.LAUNCHPAD_NNFW_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          cat ~/.ssh/id_rsa
-          # dput ppa:circletools/nightly circle-interpreter_${version}_source.changes
+          # dput ppa:circletools/nightly \
+          #   circle-interpreter_${{ steps.config.outputs.version }}_source.changes
 
-      - name: Upload Artifact
-        id: upload-debian-package
+      - name: Upload artifact; circle-interpreter
+        id: upload
         uses: actions/upload-artifact@v4
         with:
-          name: circle-interpreter_${{ steps.create-debian-package.outputs.version }}
+          name: circle-interpreter_${{ steps.config.outputs.version }}
           retention-days: 3
           path: |
-            ${{ env.NNCC_BUILD }}/circle-interpreter_${{ steps.create-debian-package.outputs.version }}.orig.tar.xz
+            ${{ env.NNCC_BUILD }}/circle-interpreter_${{ steps.config.outputs.version }}.orig.tar.xz
 
       # refer https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#update-an-issue-comment
       # TODO update comment id from experiment to official
