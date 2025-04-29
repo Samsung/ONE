@@ -129,7 +129,8 @@ jobs:
 
           echo "debuild: signing with the gpg key"
 
-          echo "${{ secrets.GPG_NNFW_PRIVATE_KEY }}" | gpg --batch --import
+          #echo "${{ secrets.GPG_NNFW_PRIVATE_KEY }}" | gpg --import
+          echo -n "${{ secrets.GPG_NNFW_SIGNING_KEY }}" | base64 --decode | gpg --import
           gpg --list-secret-keys  # TODO remove this
           cd ${{ env.CIRINTP_PREFIX }}
 
@@ -137,23 +138,26 @@ jobs:
           FPR=$(gpg --list-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')
           echo "$FPR:6:" | gpg --import-ownertrust
 
-          mkdir -p ~/.gnupg
-          chmod 700 ~/.gnupg
-          echo "use-agent" >> ~/.gnupg/gpg.conf
-          #echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-          #echo "allow-loopback-pinentry" >> ~/.gnupg/gpg.conf
-          #echo "no-tty" >> ~/.gnupg/gpg.conf
-          echo "batch" >> ~/.gnupg/gpg.conf
-          #echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
-          gpgconf --kill gpg-agent
-          gpgconf --launch gpg-agent
+          debuild -S -us -uc
+          debsign -k${FPR} ../circle-interpreter_*.changes
 
-          #GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format=long | grep '^sec' | head -n1 | awk -F'/' '{print $2}' | awk '{print $1}')
-          export DEBSIGN_KEYID=${FPR}
-          #export GPG_TTY=""
-          export GPG_AGENT_INFO=1
-          export DEBSIGN_PROGRAM=gpg
-          debuild -S -sa --sign-key=${FPR}
+          # mkdir -p ~/.gnupg
+          # chmod 700 ~/.gnupg
+          # echo "use-agent" >> ~/.gnupg/gpg.conf
+          # #echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+          # #echo "allow-loopback-pinentry" >> ~/.gnupg/gpg.conf
+          # #echo "no-tty" >> ~/.gnupg/gpg.conf
+          # echo "batch" >> ~/.gnupg/gpg.conf
+          # #echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          # gpgconf --kill gpg-agent
+          # gpgconf --launch gpg-agent
+
+          # #GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format=long | grep '^sec' | head -n1 | awk -F'/' '{print $2}' | awk '{print $1}')
+          # export DEBSIGN_KEYID=${FPR}
+          # #export GPG_TTY=""
+          # export GPG_AGENT_INFO=1
+          # export DEBSIGN_PROGRAM=gpg
+          # debuild -S -sa --sign-key=${FPR}
 
           echo "Upload to Launchpad"
           cd ../
