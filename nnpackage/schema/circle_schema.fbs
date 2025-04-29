@@ -35,6 +35,7 @@
 // Version 0.8: GRU op is added. UINT4 is added.
 // Version 0.9: GGML_Q{X}_{Y} types are added. Weight compression option is added.
 //              ROPE op is added. MXFP4, MXINT8 types are added.
+//              MXQuantizationParameters is added.
 
 namespace circle;
 
@@ -124,6 +125,11 @@ table QuantizationParameters {
   //   t[:, 1, :, :] will have scale[1]=2.0, zero_point[0]=2
   //   t[:, 2, :, :] will have scale[2]=3.0, zero_point[0]=3
   quantized_dimension:int;
+}
+
+// Parameters for MX (MicroXcaling) quantization
+table MXQuantizationParameters {
+  axis:int;
 }
 
 // Sparse tensors.
@@ -257,6 +263,7 @@ table Tensor {
   buffer:uint;
   name:string;  // For debugging and importing back into tensorflow.
   quantization:QuantizationParameters;  // Optional.
+  mx_quantization:MXQuantizationParameters;  // Optional.
 
   is_variable:bool = false;
 
