@@ -1,5 +1,5 @@
 function(_OouraFFT_build)
-  nnas_find_package(OouraFFTSource QUIET)
+  nnfw_find_package(OouraFFTSource QUIET)
 
   if(NOT OouraFFTSource_FOUND)
     set(OouraFFT_FOUND FALSE PARENT_SCOPE)

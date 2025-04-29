@@ -1,5 +1,5 @@
 function(_Nonius_import)
-  nnas_find_package(NoniusSource QUIET)
+  nnfw_find_package(NoniusSource QUIET)
 
   if(NOT NoniusSource_FOUND)
     set(Nonius_FOUND FALSE PARENT_SCOPE)

@@ -1,5 +1,5 @@
 function(_Opencl_Headers_import)
-  nnas_find_package(Opencl_HeadersSource QUIET)
+  nnfw_find_package(Opencl_HeadersSource QUIET)
 
   # NOTE This line prevents multiple definitions of target
   if(TARGET OpenCL_Headers)

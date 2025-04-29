@@ -17,25 +17,25 @@ function(_Build_TfliteGpuDelagate_)
   nnas_find_package(TensorFlowEigenSource EXACT 2.8.0 QUIET)
   return_unless(TensorFlowEigenSource_FOUND)
 
-  nnas_find_package(Abseil REQUIRED)
+  nnfw_find_package(Abseil REQUIRED)
   return_unless(Abseil_FOUND)
 
-  nnas_find_package(Farmhash REQUIRED)
+  nnfw_find_package(Farmhash REQUIRED)
   return_unless(Farmhash_FOUND)
 
   nnfw_find_package(Fp16 REQUIRED)
   return_unless(Fp16_FOUND)
 
-  nnas_find_package(VulkanSource QUIET)
+  nnfw_find_package(VulkanSource QUIET)
   return_unless(VulkanSource_FOUND)
 
-  nnas_find_package(Opencl_HeadersSource QUIET)
+  nnfw_find_package(Opencl_HeadersSource QUIET)
   return_unless(Opencl_HeadersSource_FOUND)
 
-  nnas_find_package(Opengl_HeadersSource QUIET)
+  nnfw_find_package(Opengl_HeadersSource QUIET)
   return_unless(Opengl_HeadersSource_FOUND)
 
-  nnas_find_package(Egl_HeadersSource QUIET)
+  nnfw_find_package(Egl_HeadersSource QUIET)
   return_unless(Egl_HeadersSource_FOUND)
 
   nnfw_find_package(FlatBuffers EXACT 2.0 QUIET)
