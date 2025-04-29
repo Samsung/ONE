@@ -18,4 +18,6 @@ set(MIR_TFLITE_IMPORTER_SOURCES
 add_library(mir_tflite_importer STATIC ${MIR_TFLITE_IMPORTER_SOURCES})
 set_target_properties(mir_tflite_importer PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(mir_tflite_importer PUBLIC ../../include/mir_tflite_importer)
-target_link_libraries(mir_tflite_importer PUBLIC mir PRIVATE mir_tflite_schema nncc_common)
+target_link_libraries(mir_tflite_importer PUBLIC mir PRIVATE mir_tflite_schema)
+# to prevent _GLIBCXX17_DEPRECATED warning as error
+# target_link_libraries(mir_tflite_importer PUBLIC mir PRIVATE nncc_common)
