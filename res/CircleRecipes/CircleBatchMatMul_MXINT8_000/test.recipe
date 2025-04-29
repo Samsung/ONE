@@ -12,16 +12,19 @@ operand {
   name: "ifm1_mxint8"
   type: MXINT8
   shape { dim: 1 dim: 1 dim: 32 dim: 32 }
+  mx_quant { axis: -1 }
 }
 operand {
   name: "ifm2_mxint8"
   type: MXINT8
   shape { dim: 1 dim: 1 dim: 32 dim: 32 }
+  mx_quant { axis: -2 }
 }
 operand {
   name: "ofm_mxint8"
   type: MXINT8
   shape { dim: 1 dim: 1 dim: 32 dim: 32 }
+  mx_quant { axis: -1 }
 }
 operand {
   name: "ofm"
