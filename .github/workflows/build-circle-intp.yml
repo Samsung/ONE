@@ -114,6 +114,7 @@ jobs:
 
       - name: Create debian package
         run: |
+          echo "Update changelog"
           cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
           cp -rf ../../infra/debian/circle-interpreter ./debian
           release_date=$(date +%Y%m%d)
@@ -126,6 +127,7 @@ jobs:
           cd ../
           tar -caf circle-interpreter_${version}.orig.tar.xz ${{ env.CIRINTP_PREFIX }}
 
+          echo "debuild: signing with the gpg key"
           mkdir -p ~/.gnupg
           chmod 700 ~/.gnupg
           echo "${{ secrets.GPG_NNFW_PRIVATE_KEY }}" | gpg --batch --import
@@ -133,6 +135,7 @@ jobs:
           cd ${{ env.CIRINTP_PREFIX }}
           debuild -S -sa
 
+          echo "Upload to Launchpad"
           cd ../
           ls -alh  # TODO remove this
           mkdir -p ~/.ssh
