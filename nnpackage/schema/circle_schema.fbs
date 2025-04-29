@@ -91,6 +91,12 @@ table CustomQuantization {
   custom:[ubyte] (force_align: 16);
 }
 
+// Parameters for MX (Microscaling) quantization
+table MXQuantization {
+  // axis of mx quantization
+  axis:int;
+}
+
 // Represents a specific quantization technique's parameters.
 union QuantizationDetails {
   CustomQuantization,
@@ -126,12 +132,6 @@ table QuantizationParameters {
   //   t[:, 1, :, :] will have scale[1]=2.0, zero_point[0]=2
   //   t[:, 2, :, :] will have scale[2]=3.0, zero_point[0]=3
   quantized_dimension:int;
-}
-
-// Parameters for MX (Microscaling) quantization
-table MXQuantization {
-  // axis of mx quantization
-  axis:int;
 }
 
 // Sparse tensors.
