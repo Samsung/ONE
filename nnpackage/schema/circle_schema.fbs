@@ -35,6 +35,7 @@
 // Version 0.8: GRU op is added. UINT4 is added.
 // Version 0.9: GGML_Q{X}_{Y} types are added. Weight compression option is added.
 //              ROPE op is added. MXFP4, MXINT8 types are added.
+//              MXQuantization is added.
 
 namespace circle;
 
@@ -93,6 +94,7 @@ table CustomQuantization {
 // Represents a specific quantization technique's parameters.
 union QuantizationDetails {
   CustomQuantization,
+  MXQuantization,
 }
 
 // Parameters for converting a quantized tensor back to float.
@@ -124,6 +126,12 @@ table QuantizationParameters {
   //   t[:, 1, :, :] will have scale[1]=2.0, zero_point[0]=2
   //   t[:, 2, :, :] will have scale[2]=3.0, zero_point[0]=3
   quantized_dimension:int;
+}
+
+// Parameters for MX (Microscaling) quantization
+table MXQuantization {
+  // axis of mx quantization
+  axis:int;
 }
 
 // Sparse tensors.
