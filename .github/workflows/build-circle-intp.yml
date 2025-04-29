@@ -141,7 +141,7 @@ jobs:
           echo "$FPR:6:" | gpg --import-ownertrust
 
           echo "Reading.. gpg.conf"
-          cat ~/.gnupg/gpg.conf
+          cat ~/.gnupg/gpg.conf | true
 
           echo "Running.. debuild -S -us -uc"
           debuild -S -us -uc
