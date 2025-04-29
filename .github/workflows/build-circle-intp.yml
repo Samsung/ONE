@@ -158,8 +158,8 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.LAUNCHPAD_NNFW_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          # dput ppa:circletools/nightly \
-          #   circle-interpreter_${{ steps.config.outputs.version }}_source.changes
+          dput ppa:circletools/nightly \
+            circle-interpreter_${{ steps.config.outputs.version }}_source.changes
 
       - name: Upload artifact; circle-interpreter
         id: upload
