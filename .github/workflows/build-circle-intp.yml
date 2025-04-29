@@ -113,6 +113,7 @@ jobs:
             ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}/
 
       - name: Create debian package
+        id: create-debian-package
         run: |
           echo "Update changelog"
           cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
@@ -128,44 +129,14 @@ jobs:
           tar -caf circle-interpreter_${version}.orig.tar.xz ${{ env.CIRINTP_PREFIX }}
 
           echo "debuild: signing with the gpg key"
-
-          echo "Remove.. gpg.conf"
           rm -rf ~/.gnupg
-
           echo -n "${{ secrets.GPG_NNFW_SIGNING_KEY }}" | base64 --decode | gpg --import
-          gpg --list-secret-keys  # TODO remove this
           cd ${{ env.CIRINTP_PREFIX }}
-
           # get fingerprint
           FPR=$(gpg --list-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')
           echo "$FPR:6:" | gpg --import-ownertrust
-
-          echo "Reading.. gpg.conf"
-          cat ~/.gnupg/gpg.conf || true
-
-          echo "Running.. debuild -S -us -uc"
           debuild -S -us -uc
-
-          echo "Running.. debsign -k${FPR} ../circle-interpreter_*.changes"
           debsign -k${FPR} ../circle-interpreter_*.changes
-
-          # mkdir -p ~/.gnupg
-          # chmod 700 ~/.gnupg
-          # echo "use-agent" >> ~/.gnupg/gpg.conf
-          # #echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-          # #echo "allow-loopback-pinentry" >> ~/.gnupg/gpg.conf
-          # #echo "no-tty" >> ~/.gnupg/gpg.conf
-          # echo "batch" >> ~/.gnupg/gpg.conf
-          # #echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
-          # gpgconf --kill gpg-agent
-          # gpgconf --launch gpg-agent
-
-          # #GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format=long | grep '^sec' | head -n1 | awk -F'/' '{print $2}' | awk '{print $1}')
-          # export DEBSIGN_KEYID=${FPR}
-          # #export GPG_TTY=""
-          # export GPG_AGENT_INFO=1
-          # export DEBSIGN_PROGRAM=gpg
-          # debuild -S -sa --sign-key=${FPR}
 
           echo "Upload to Launchpad"
           cd ../
@@ -175,6 +146,15 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           cat ~/.ssh/id_rsa
           # dput ppa:circletools/nightly circle-interpreter_${version}_source.changes
+
+      - name: Upload Artifact
+        id: upload-debian-package
+        uses: actions/upload-artifact@v4
+        with:
+          name: circle-interpreter_${{ steps.create-debian-package.outputs.version }}
+          retention-days: 3
+          path: |
+            ${{ env.NNCC_BUILD }}/circle-interpreter_${{ steps.create-debian-package.outputs.version }}.orig.tar.xz
 
       # refer https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#update-an-issue-comment
       # TODO update comment id from experiment to official
