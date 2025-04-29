@@ -129,6 +129,9 @@ jobs:
 
           echo "debuild: signing with the gpg key"
 
+          echo "Remove.. gpg.conf"
+          rm -rf ~/.gnupg
+
           echo -n "${{ secrets.GPG_NNFW_SIGNING_KEY }}" | base64 --decode | gpg --import
           gpg --list-secret-keys  # TODO remove this
           cd ${{ env.CIRINTP_PREFIX }}
