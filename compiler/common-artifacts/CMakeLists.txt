@@ -42,9 +42,16 @@ else()
   set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 endif()
 
+# Create python virtual environment
+set(VIRTUALENV_OVERLAY "${NNCC_OVERLAY_DIR}/venv")
+# TODO remove venv_2_12_1 and related scripts
 # Create python virtual environment with tensorflow 2.12.1
 set(VIRTUALENV_OVERLAY_TF_2_12_1 "${NNCC_OVERLAY_DIR}/venv_2_12_1")
 
+add_custom_command(
+  OUTPUT ${VIRTUALENV_OVERLAY}
+  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY}
+)
 add_custom_command(
   OUTPUT ${VIRTUALENV_OVERLAY_TF_2_12_1}
   COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_2_12_1}
@@ -52,6 +59,7 @@ add_custom_command(
 
 # Create requirements.txt and install required pip packages
 set(REQUIREMENTS_FILE "requirements.txt")
+set(REQUIREMENTS_OVERLAY_PATH "${VIRTUALENV_OVERLAY}/${REQUIREMENTS_FILE}")
 set(REQUIREMENTS_OVERLAY_PATH_TF_2_12_1 "${VIRTUALENV_OVERLAY_TF_2_12_1}/${REQUIREMENTS_FILE}")
 
 set(PYTHON_OVERLAY python3)
@@ -80,6 +88,31 @@ list(APPEND PY_PKG_LIST "h5py==3.11.0")
 list(APPEND PY_PKG_LIST "cffi==1.16.0")
 
 add_custom_command(
+  OUTPUT REQUIREMENTS_OVERLAY_PATH_clean
+  COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH}
+)
+
+set(PY_PKG_LIST_DEPENDS_PREV REQUIREMENTS_OVERLAY_PATH_clean)
+foreach(PKG_VER IN LISTS PY_PKG_LIST)
+  add_custom_command(
+    OUTPUT ${PKG_VER}_py_item ${REQUIREMENTS_OVERLAY_PATH}
+    COMMAND ${CMAKE_COMMAND} -E echo "${PKG_VER}" >> ${REQUIREMENTS_OVERLAY_PATH}
+    DEPENDS ${VIRTUALENV_OVERLAY_TF} ${PY_PKG_LIST_DEPENDS_PREV}
+  )
+  set(PY_PKG_LIST_DEPENDS_PREV ${PKG_VER}_py_item)
+endforeach()
+
+add_custom_command(
+  OUTPUT VIRTUALENV_OVERLAY_installed
+  COMMAND ${VIRTUALENV_OVERLAY}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
+          ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
+  COMMAND ${VIRTUALENV_OVERLAY}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
+          ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH} --upgrade
+  DEPENDS ${VIRTUALENV_OVERLAY} ${PY_PKG_LIST_DEPENDS_PREV}
+)
+
+# TODO remove *_TF_2_12_1
+add_custom_command(
   OUTPUT REQUIREMENTS_OVERLAY_PATH_TF_2_12_1_clean
   COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
 )
@@ -104,7 +137,10 @@ add_custom_command(
 )
 
 add_custom_target(common_artifacts_python_deps ALL
-  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_12_1}
+  DEPENDS ${VIRTUALENV_OVERLAY}
+          ${REQUIREMENTS_OVERLAY_PATH}
+          VIRTUALENV_OVERLAY_installed
+          ${VIRTUALENV_OVERLAY_TF_2_12_1}
           ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
           VIRTUALENV_OVERLAY_TF_2_12_1_installed
 )
