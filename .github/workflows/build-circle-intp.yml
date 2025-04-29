@@ -134,10 +134,16 @@ jobs:
           gpg --list-secret-keys  # TODO remove this
           cd ${{ env.CIRINTP_PREFIX }}
           GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format=long | grep '^sec' | head -n1 | awk -F'/' '{print $2}' | awk '{print $1}')
+          echo "$GPG_KEY_ID:6:" | gpg --import-ownertrust
+          echo "use-agent" >> ~/.gnupg/gpg.conf
+          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          export DEBSIGN_KEYID=${GPG_KEY_ID}
+          export GPG_TTY=$(tty)
+          gpgconf --kill gpg-agent
+          gpgconf --launch gpg-agent
           DEBSIGN_PROGRAM=gpg \
-            DEBSIGN_KEYID=${GPG_KEY_ID} \
-            GPG_TTY=$(tty) \
-            debuild -S -sa
+            debuild -S -sa --no-lintian --sign-key=$GPG_KEY_ID
 
           echo "Upload to Launchpad"
           cd ../
