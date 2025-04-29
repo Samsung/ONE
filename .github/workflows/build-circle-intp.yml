@@ -141,14 +141,14 @@ jobs:
           chmod 700 ~/.gnupg
           echo "use-agent" >> ~/.gnupg/gpg.conf
           echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-          echo "no-tty" >> ~/.gnupg/gpg.conf
+          # echo "no-tty" >> ~/.gnupg/gpg.conf
           echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
           gpgconf --kill gpg-agent
           gpgconf --launch gpg-agent
 
           #GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format=long | grep '^sec' | head -n1 | awk -F'/' '{print $2}' | awk '{print $1}')
           export DEBSIGN_KEYID=${FPR}
-          export GPG_TTY=""
+          #export GPG_TTY=""
           export GPG_AGENT_INFO=1
           export DEBSIGN_PROGRAM=gpg
           debuild -S -sa --sign-key=${FPR}
