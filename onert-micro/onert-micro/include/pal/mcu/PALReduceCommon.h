@@ -131,17 +131,14 @@ inline bool reduceSumImpl(const T *input_data, const int *input_dims, const int 
                           [](const T current, const T in) -> T { return in + current; });
 }
 
-
 // Mean over WH of axis 1,2
 inline void MeanROWH(const OMRuntimeShape &unextended_input_shape, const float *input_data,
                      const OMRuntimeShape &unextended_output_shape, float *output_data)
 {
   // Current implementation only supports dimension equals 4 and simultaneous
   // reduction over width and height.
-  const OMRuntimeShape input_shape =
-    OMRuntimeShape::extendedShape(4, unextended_input_shape);
-  const OMRuntimeShape output_shape =
-    OMRuntimeShape::extendedShape(4, unextended_output_shape);
+  const OMRuntimeShape input_shape = OMRuntimeShape::extendedShape(4, unextended_input_shape);
+  const OMRuntimeShape output_shape = OMRuntimeShape::extendedShape(4, unextended_output_shape);
 
   const int output_batch = output_shape.dims(0);
   const int output_depth = output_shape.dims(3);
