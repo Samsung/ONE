@@ -54,6 +54,9 @@ jobs:
     runs-on: one-x64-linux
     container:
       image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
+      credentials:
+        username: ${{ secrets.NNFW_DOCKER_USERNAME }}
+        password: ${{ secrets.NNFW_DOCKER_TOKEN }}
       options: --user root
     env:
       NNCC_WORKSPACE : build
