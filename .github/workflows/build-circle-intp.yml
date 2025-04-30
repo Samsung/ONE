@@ -22,6 +22,12 @@ on:
         description: 'Email address of Debian package author'
         required: false
         default: 'nnfw@samsung.com'
+      is_release:
+        description: 'Is this a release version? \
+          Set to false to append date-based subversion. \
+          (true/false)'
+        required: false
+        default: 'false'
 
 defaults:
   run:
@@ -46,8 +52,16 @@ jobs:
       - name: Set version
         id: set-version
         run: |
-          release_date=$(date +%Y%m%d%H%M)
-          version=${{ inputs.cirint_version }}~${release_date}
+          base_version="${{ inputs.cirint_version }}"
+          is_release="${{ inputs.is_release }}"
+
+          if [[ "$is_release" == "true" ]]; then
+            version="$base_version"
+          else
+            release_date=$(date +%Y%m%d%H%M)
+            version="${base_version}~${release_date}"
+          fi
+
           changes_file="circle-interpreter_${version}_source.changes"
           tarball_file="circle-interpreter_${version}.orig.tar.xz"
 
