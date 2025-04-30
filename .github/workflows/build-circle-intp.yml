@@ -77,8 +77,10 @@ jobs:
         include:
           - ubuntu_code: focal
             ubuntu_ver: 2004
+            upload_artifact: false
           - ubuntu_code: jammy
             ubuntu_ver: 2204
+            upload_artifact: true # only this artifact will be shared
     name: circle-interpreter ubuntu ${{ matrix.ubuntu_ver }}
     # TODO change to the 'ubuntu-latest'
     #runs-on: ubuntu-latest
@@ -149,6 +151,7 @@ jobs:
             "${{ inputs.cirint_description }}" -b
 
       - name: Craete original tarball
+        if: matrix.upload_artifact == true
         run: |
           cd ${{ env.NNCC_BUILD }}
           tar -caf ${{ env.TARBALL_FILE }} ${{ env.CIRINTP_PREFIX }}
@@ -161,7 +164,11 @@ jobs:
           # get fingerprint
           FPR=$(gpg --list-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')
           echo "$FPR:6:" | gpg --import-ownertrust
-          debuild -S -us -uc
+          if [[ "${{ matrix.upload_artifact }}" == "true" ]]; then
+            debuild -S -us -uc
+          else
+            debuild -S -us -uc -sd  # without *.orig.tar.xz
+          fi
           debsign -k${FPR} ../circle-interpreter_*.changes
 
       - name: Upload to Launchpad
@@ -173,7 +180,7 @@ jobs:
           dput ppa:circletools/nightly ${{ env.CHANGE_FILE }}
 
       - name: Upload artifact; circle-interpreter
-        id: upload
+        if: matrix.upload_artifact == true
         uses: actions/upload-artifact@v4
         with:
           name: circle-interpreter_${{ env.VERSION }}
