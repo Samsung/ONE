@@ -23,30 +23,6 @@ class session(BaseSession):
         super().__init__(infer.nnfw_session(path, backends))
         self._prepared: bool = False
 
-    def update_inputs_tensorinfo(self, new_infos: List[tensorinfo]) -> None:
-        """
-        Update all input tensors' tensorinfo at once.
-
-        Args:
-            new_infos (list[tensorinfo]): A list of updated tensorinfo objects for the inputs.
-
-        Raises:
-            ValueError: If the number of new_infos does not match the session's input size,
-                        or if any tensorinfo contains a negative dimension.
-        """
-        num_inputs: int = self.session.input_size()
-        if len(new_infos) != num_inputs:
-            raise ValueError(
-                f"Expected {num_inputs} input tensorinfo(s), but got {len(new_infos)}.")
-
-        for i, info in enumerate(new_infos):
-            # Check for any negative dimension in the specified rank
-            if any(d < 0 for d in info.dims[:info.rank]):
-                raise ValueError(
-                    f"Input tensorinfo at index {i} contains negative dimension(s): "
-                    f"{info.dims[:info.rank]}")
-            self.session.set_input_tensorinfo(i, info)
-
     def infer(
         self,
         inputs_array: List[np.ndarray],
@@ -60,10 +36,8 @@ class session(BaseSession):
          - Execute the inference session.
          - Return the output tensors with proper multi-dimensional shapes.
 
-        This method supports both static and dynamic shape modification:
-         - If update_inputs_tensorinfo() has been called before running inference, the model is compiled
-           with the fixed static input shape.
-         - Otherwise, the input shapes can be adjusted dynamically.
+        This method supports both dynamic shape modification:
+         - The input shapes can be adjusted dynamically.
 
         Args:
             inputs_array (list[np.ndarray]): List of numpy arrays representing the input data.
@@ -115,7 +89,7 @@ class session(BaseSession):
                     fixed_infos.append(info)
 
                 # Update tensorinfo to optimize using it
-                self.update_inputs_tensorinfo(fixed_infos)
+                self._update_inputs_tensorinfo(fixed_infos)
 
                 self.session.prepare()
                 self.set_outputs(self.session.output_size())
@@ -133,6 +107,30 @@ class session(BaseSession):
 
         # Return the output buffers.
         return (self.outputs.copy(), metrics) if measure else self.outputs.copy()
+
+    def _update_inputs_tensorinfo(self, new_infos: List[tensorinfo]) -> None:
+        """
+        Update all input tensors' tensorinfo at once.
+
+        Args:
+            new_infos (list[tensorinfo]): A list of updated tensorinfo objects for the inputs.
+
+        Raises:
+            ValueError: If the number of new_infos does not match the session's input size,
+                        or if any tensorinfo contains a negative dimension.
+        """
+        num_inputs: int = self.session.input_size()
+        if len(new_infos) != num_inputs:
+            raise ValueError(
+                f"Expected {num_inputs} input tensorinfo(s), but got {len(new_infos)}.")
+
+        for i, info in enumerate(new_infos):
+            # Check for any negative dimension in the specified rank
+            if any(d < 0 for d in info.dims[:info.rank]):
+                raise ValueError(
+                    f"Input tensorinfo at index {i} contains negative dimension(s): "
+                    f"{info.dims[:info.rank]}")
+            self.session.set_input_tensorinfo(i, info)
 
     @contextmanager
     def _time_block(self, metrics: Dict[str, float], key: str, mesure: bool):
