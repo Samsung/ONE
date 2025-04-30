@@ -1,6 +1,7 @@
 from typing import List, Union, Tuple, Dict
 import numpy as np
 import time
+import warnings
 from contextlib import contextmanager
 
 from ..native.libnnfw_api_pybind import infer, tensorinfo
@@ -21,19 +22,6 @@ class session(BaseSession):
         """
         super().__init__(infer.nnfw_session(path, backends))
         self._prepared: bool = False
-
-        # TODO: Revise this after discussion to properly support dynamic shapes
-        # This is a temporary workaround to prevent prepare() errors when tensorinfo dims include -1
-        original_infos: List[tensorinfo] = self.get_inputs_tensorinfo()
-        fixed_infos: List[tensorinfo] = []
-        for info in original_infos:
-            dims = list(info.dims)
-            # replace -1 with 1
-            dims = [1 if d == -1 else d for d in dims]
-            info.dims = dims  # assume setter accepts a list
-            fixed_infos.append(info)
-        # update tensorinfo in session
-        self.update_inputs_tensorinfo(fixed_infos)
 
     def update_inputs_tensorinfo(self, new_infos: List[tensorinfo]) -> None:
         """
@@ -89,19 +77,49 @@ class session(BaseSession):
         """
         metrics: Dict[str, float] = {}
 
-        # Check if the session is prepared. If not, call prepare() and set_outputs() once.
-        if not self._prepared:
-            with self._time_block(metrics, 'prepare_time_ms', measure):
-                self.session.prepare()
-                self.set_outputs(self.session.output_size())
-                self._prepared = True
-
         # Verify that the number of provided inputs matches the session's expected input count.
         expected_input_size: int = self.session.input_size()
         if len(inputs_array) != expected_input_size:
             raise ValueError(
                 f"Expected {expected_input_size} input(s), but received {len(inputs_array)}."
             )
+
+        # Check if the session is prepared. If not, call prepare() and set_outputs() once.
+        if not self._prepared:
+            with self._time_block(metrics, 'prepare_time_ms', measure):
+                # On first call, fix any -1 dims to real input shapes and validate
+                original_infos = self.get_inputs_tensorinfo()
+                fixed_infos = []
+                for idx, info in enumerate(original_infos):
+                    input_shape = inputs_array[idx].shape
+                    new_dims = []
+                    static_dim_changed = False
+                    # only the first `info.rank` entries matter
+                    for j, d in enumerate(info.dims[:info.rank]):
+                        if d == -1:
+                            # replace dynamic dim with actual incoming shape
+                            new_dims.append(input_shape[j])
+                        elif d == input_shape[j]:
+                            # static dim must match the provided array
+                            new_dims.append(d)
+                        else:
+                            static_dim_changed = True
+
+                    if static_dim_changed:
+                        warnings.warn(
+                            f"infer() called with input {idx}'s shape={input_shape}, "
+                            f"which differs from model’s expected shape={tuple(info.dims)}. "
+                            "Ensure this is intended.", UserWarning)
+
+                    info.dims = new_dims
+                    fixed_infos.append(info)
+
+                # Update tensorinfo to optimize using it
+                self.update_inputs_tensorinfo(fixed_infos)
+
+                self.session.prepare()
+                self.set_outputs(self.session.output_size())
+                self._prepared = True
 
         # Configure input buffers using the current session's input size and provided data.
         with self._time_block(metrics, 'io_time_ms', measure):

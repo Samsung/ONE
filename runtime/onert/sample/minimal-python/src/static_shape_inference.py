@@ -18,12 +18,7 @@ def main(nnpackage_path, backends="cpu"):
         # We copy the current info and modify the rank and dims.
         # (Note: Depending on your model, you may want to modify additional dimensions.)
         new_shape = [10] + list(info.dims[1:info.rank])
-        info.rank = len(new_shape)
-        for i, dim in enumerate(new_shape):
-            info.dims[i] = dim
-        # For any remaining dimensions up to NNFW_MAX_RANK, set them to a default (1).
-        for i in range(len(new_shape), len(info.dims)):
-            info.dims[i] = 1
+        info.dims = new_shape
         new_input_infos.append(info)
 
     # Update all input tensorinfos in the session at once.
