@@ -88,8 +88,8 @@ jobs:
     container:
       image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
       credentials:
-        username: ${{ secrets.NNFW_DOCKERHUB_USERNAME }}
-        password: ${{ secrets.NNFW_DOCKERHUB_TOKEN }}
+        username: ${{ secrets.NNFW_DOCKER_USERNAME }}
+        password: ${{ secrets.NNFW_DOCKER_TOKEN }}
       options: --user root
     env:
       VERSION: ${{ needs.prepare.outputs.version }}
