@@ -77,11 +77,8 @@ jobs:
         include:
           - ubuntu_code: focal
             ubuntu_ver: 2004
-            # TODO update comment ID, these are experimental IDs of issue #14669
-            comment_id: 2658267907
-          # - ubuntu_code: jammy
-          #   ubuntu_ver: 2204
-          #   comment_id: 2658268060
+          - ubuntu_code: jammy
+            ubuntu_ver: 2204
     name: circle-interpreter ubuntu ${{ matrix.ubuntu_ver }}
     # TODO change to the 'ubuntu-latest'
     #runs-on: ubuntu-latest
