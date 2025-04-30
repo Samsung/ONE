@@ -87,6 +87,9 @@ jobs:
     runs-on: [ self-hosted, shs-park ]
     container:
       image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
+      credentials:
+        username: ${{ secrets.NNFW_DOCKERHUB_USERNAME }}
+        password: ${{ secrets.NNFW_DOCKERHUB_TOKEN }}
       options: --user root
     env:
       VERSION: ${{ needs.prepare.outputs.version }}
@@ -151,7 +154,6 @@ jobs:
             "${{ inputs.cirint_description }}" -b
 
       - name: Craete original tarball
-        if: matrix.upload_artifact == true
         run: |
           cd ${{ env.NNCC_BUILD }}
           tar -caf ${{ env.TARBALL_FILE }} ${{ env.CIRINTP_PREFIX }}
