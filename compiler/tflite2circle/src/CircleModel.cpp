@@ -27,7 +27,9 @@
 namespace tflite2circle
 {
 
-template <> void Offset<MetaDataBufferLink>::build(const TFLFlatBufVec *tflite_flatbuffer_vec)
+template <>
+void Offset<MetaDataBufferLink>::build(const TFLFlatBufVec *tflite_flatbuffer_vec,
+                                       const bool replace_unsupported_ops_with_custom)
 {
   if (tflite_flatbuffer_vec == nullptr)
     return;
@@ -36,7 +38,9 @@ template <> void Offset<MetaDataBufferLink>::build(const TFLFlatBufVec *tflite_f
   _circle_flatbuffer_vec_offset = _fb->CreateVector(metadata_buffer_vec);
 }
 
-template <> void Offset<BufferLink>::build(const TFLFlatBufVec *tflite_flatbuffer_vec)
+template <>
+void Offset<BufferLink>::build(const TFLFlatBufVec *tflite_flatbuffer_vec,
+                               const bool replace_unsupported_ops_with_custom)
 {
   std::vector<flatbuffers::Offset<circle::Buffer>> buffers_vec;
 
@@ -90,7 +94,9 @@ template <> void Offset<BufferLink>::build(const TFLFlatBufVec *tflite_flatbuffe
   _circle_flatbuffer_vec_offset = _fb->CreateVector(buffers_vec);
 }
 
-template <> void Offset<SubGraphLink>::build(const TFLFlatBufVec *tflite_flatbuffer_vec)
+template <>
+void Offset<SubGraphLink>::build(const TFLFlatBufVec *tflite_flatbuffer_vec,
+                                 const bool replace_unsupported_ops_with_custom)
 {
   std::vector<flatbuffers::Offset<circle::SubGraph>> subgprahs_vec;
 
@@ -316,8 +322,10 @@ template <> void Offset<SubGraphLink>::build(const TFLFlatBufVec *tflite_flatbuf
         std::vector<int32_t> output_vec{it->outputs()->begin(), it->outputs()->end()};
         auto circle_outputs = _fb->CreateVector(output_vec);
         // builtin options
-        auto circle_builtin_options = get_circle_builtin_options(*_fb, it);
-        auto circle_builtin_options_type = get_circle_builtin_options_type(it);
+        auto circle_builtin_options =
+          get_circle_builtin_options(*_fb, it, replace_unsupported_ops_with_custom);
+        auto circle_builtin_options_type =
+          get_circle_builtin_options_type(it, replace_unsupported_ops_with_custom);
         // custom options
         flatbuffers::Offset<flatbuffers::Vector<uint8_t>> circle_custom_options;
         if (it->custom_options())
@@ -367,7 +375,9 @@ template <> void Offset<SubGraphLink>::build(const TFLFlatBufVec *tflite_flatbuf
   _circle_flatbuffer_vec_offset = _fb->CreateVector(subgprahs_vec);
 }
 
-template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_flatbuffer_vec)
+template <>
+void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_flatbuffer_vec,
+                                     const bool replace_unsupported_ops_with_custom)
 {
   std::vector<flatbuffers::Offset<circle::OperatorCode>> operator_code_vec;
 
@@ -385,8 +395,8 @@ template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_fla
     if (de_code >= 0 and de_code < 127)
     {
       // Use deprecated builtin opcode.
-      auto cir_de_code = get_circle_builtin_code(de_code);
-      auto cir_bt_code = get_circle_builtin_code(bt_code);
+      auto cir_de_code = get_circle_builtin_code(de_code, replace_unsupported_ops_with_custom);
+      auto cir_bt_code = get_circle_builtin_code(bt_code, replace_unsupported_ops_with_custom);
       // correct bt_code where bt_code == 0 for old tflite format
       if (cir_bt_code == 0)
         cir_bt_code = static_cast<circle::BuiltinOperator>(cir_de_code);
@@ -397,10 +407,18 @@ template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_fla
     {
       // Use extended builtin opcode
       // Set 127 (PLACEHOLDER_FOR_GREATER_OP_CODES) for deprecated builtin code
-      auto cir_bt_code = get_circle_builtin_code(bt_code);
-      operator_code_builder.add_deprecated_builtin_code(
-        tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);
-      operator_code_builder.add_builtin_code(cir_bt_code);
+      auto cir_bt_code = get_circle_builtin_code(bt_code, replace_unsupported_ops_with_custom);
+      if (replace_unsupported_ops_with_custom)
+      {
+        operator_code_builder.add_deprecated_builtin_code(cir_bt_code);
+        operator_code_builder.add_builtin_code(cir_bt_code);
+      }
+      else
+      {
+        operator_code_builder.add_deprecated_builtin_code(
+          tflite::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);
+        operator_code_builder.add_builtin_code(cir_bt_code);
+      }
     }
     operator_code_builder.add_custom_code(custom_code);
     operator_code_builder.add_version(it->version());
@@ -416,7 +434,8 @@ CircleModel::CircleModel(FlatBufBuilder &fb, const std::vector<char> &fr)
   // NOTHING TODO
 }
 
-void CircleModel::load_offsets(const tflite::Model *tfl_model)
+void CircleModel::load_offsets(const tflite::Model *tfl_model,
+                               const bool replace_unsupported_ops_with_custom)
 {
   _operator_codes_offset = std::make_unique<Offset<OperatorCodeLink>>(_fb);
   _subGraphs_offset = std::make_unique<Offset<SubGraphLink>>(_fb);
@@ -427,8 +446,8 @@ void CircleModel::load_offsets(const tflite::Model *tfl_model)
   _buffers_offset->set_buffer_data_map(&_buffer_data_map);
   _buffers_offset->set_file_raw(&_file_raw);
 
-  _operator_codes_offset->build(tfl_model->operator_codes());
-  _subGraphs_offset->build(tfl_model->subgraphs());
+  _operator_codes_offset->build(tfl_model->operator_codes(), replace_unsupported_ops_with_custom);
+  _subGraphs_offset->build(tfl_model->subgraphs(), replace_unsupported_ops_with_custom);
   _buffers_offset->build(tfl_model->buffers());
   _metadata_buffer_offset->build(tfl_model->metadata_buffer());
 }
