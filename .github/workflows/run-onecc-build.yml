@@ -79,7 +79,7 @@ jobs:
             external-onecc-
             external-
 
-      - name: Caching externals
+      - name: Caching overlay
         uses: actions/cache@v4
         with:
           path: ${{ env.NNCC_WORKSPACE }}/overlay
