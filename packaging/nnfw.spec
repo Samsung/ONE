@@ -60,6 +60,7 @@ BuildRequires:  gtest-devel
 
 %if %{trix_support} == 1
 BuildRequires:  pkgconfig(npu-engine)
+%global extra_option %{extra_option} -DBUILD_TRIX_LOADER=ON
 %endif
 
 %description

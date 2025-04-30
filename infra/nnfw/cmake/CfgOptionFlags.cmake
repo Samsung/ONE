@@ -16,7 +16,7 @@ option(ENABLE_COVERAGE "Build for coverage test" OFF)
 #
 # Default build configuration for runtime
 #
-option(BUILD_TRIX_LOADER "Build trix loader" ON)
+option(BUILD_TRIX_LOADER "Build trix loader" OFF)
 option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
 
 #
