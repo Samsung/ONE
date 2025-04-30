@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-export NNCC_INSTALL_PREFIX=$(CURDIR)/debian.install
+export NNCC_INSTALL_PREFIX=$(CURDIR)
 export DEBIAN_PREFIX=$(CURDIR)/debian/tmp
 
 %:
@@ -25,7 +25,7 @@ override_dh_auto_test:
 override_dh_auto_install:
 	# copy the bin file
 	mkdir -p ${DEBIAN_PREFIX}/bin
-	cp ${NNCC_INSTALL_PREFIX}/bin/circle-interpreter ${DEBIAN_PREFIX}/bin/
+	cp ${NNCC_INSTALL_PREFIX}/circle-interpreter ${DEBIAN_PREFIX}/bin/
 
 override_dh_shlibdeps:
 	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
