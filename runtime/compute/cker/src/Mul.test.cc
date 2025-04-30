@@ -273,6 +273,28 @@ TEST(CKer_Operation, Mul)
       EXPECT_EQ(output[i], expected_output[i]);
   }
 
+  // Max supported rank
+  {
+    // Shape: {1, 2, 2, 1, 1, 1}
+    std::vector<int32_t> input1 = {10, -9, -11, 7};
+    // Shape: {1}
+    std::vector<int32_t> input2 = {-3};
+    std::vector<int32_t> expected_output = {-30, 27, 33, -21};
+    std::vector<int32_t> output(4);
+
+    nnfw::cker::BinaryArithmeticOpParam param;
+    param.broadcast_category = nnfw::cker::BroadcastableOpCategory::kGenericBroadcast;
+    param.quantized_activation_min = std::numeric_limits<int32_t>::lowest();
+    param.quantized_activation_max = std::numeric_limits<int32_t>::max();
+
+    nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::MUL>(
+      param, nnfw::cker::Shape{1, 2, 2, 1, 1, 1}, input1.data(), nnfw::cker::Shape{1},
+      input2.data(), nnfw::cker::Shape{1, 2, 2, 1, 1, 1}, output.data());
+
+    for (size_t i = 0; i < expected_output.size(); ++i)
+      EXPECT_EQ(output[i], expected_output[i]);
+  }
+
   // TODO Add other types
 }
 
@@ -280,7 +302,7 @@ TEST(CKer_Operation, neg_MulUnsupportedBroadcastRank)
 {
   // Unsupported rank
   {
-    // Shape: {1, 2, 2, 1, 1}
+    // Shape: {1, 2, 2, 1, 1, 1, 1}
     std::vector<float> input1 = {10, -9, -11, 7};
     // Shape: {1}
     std::vector<float> input2 = {-3};
@@ -290,7 +312,7 @@ TEST(CKer_Operation, neg_MulUnsupportedBroadcastRank)
 
     EXPECT_ANY_THROW(
       nnfw::cker::BroadcastBinaryArithmeticOp<nnfw::cker::BinaryArithmeticOpType::MUL>(
-        param, nnfw::cker::Shape{1, 2, 2, 1, 1}, input1.data(), nnfw::cker::Shape{1}, input2.data(),
-        nnfw::cker::Shape{1, 2, 2, 1, 1}, output.data()));
+        param, nnfw::cker::Shape{1, 2, 2, 1, 1, 1, 1}, input1.data(), nnfw::cker::Shape{1},
+        input2.data(), nnfw::cker::Shape{1, 2, 2, 1, 1, 1, 1}, output.data()));
   }
 }
