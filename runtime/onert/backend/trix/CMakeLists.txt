@@ -1,3 +1,8 @@
+if (NOT BUILD_TRIX_LOADER)
+  message(STATUS "ONERT backend: Skip TRIX since BUILD_TRIX_LOADER is OFF")
+  return()
+endif ()
+
 set(LIB_ONERT_BACKEND_TRIX onert_backend_trix)
 
 find_package(PkgConfig REQUIRED)
