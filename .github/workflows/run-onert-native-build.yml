@@ -58,8 +58,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     container:
       # Use test image: default image is not supporting arm64 yet
-      # TODO Use default image when it supports arm64
-      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}-test
+      image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}
       options: --user root
     env:
       TARGET_ARCH: ${{ matrix.arch }}

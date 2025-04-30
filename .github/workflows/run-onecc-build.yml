@@ -53,7 +53,7 @@ jobs:
             ubuntu_ver: 22.04
     runs-on: one-x64-linux
     container:
-      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
+      image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}
       options: --user root
     env:
       NNCC_WORKSPACE : build
