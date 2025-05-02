@@ -16,7 +16,7 @@ add_test(NAME q-implant-qparam-test
   COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/q_implant_qparam_test.sh"
           "${CMAKE_CURRENT_BINARY_DIR}"
           "${ARTIFACTS_BIN_PATH}"
-          "${NNCC_OVERLAY_DIR}/venv_2_12_1"
+          "${NNCC_OVERLAY_DIR}/venv"
           "$<TARGET_FILE:q-implant>"
           "$<TARGET_FILE:circle-tensordump>"
           ${Q_IMPLANT_TESTS}
