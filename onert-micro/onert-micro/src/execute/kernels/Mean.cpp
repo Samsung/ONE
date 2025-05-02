@@ -130,7 +130,7 @@ OMStatus execute_kernel_CircleMean(const OMExecuteArgs &execute_args)
           axis_shape.dimensionsCount());
       }
     }
-      break;
+    break;
 #endif // DIS_FLOAT
     case circle::TensorType_INT32:
       break;
