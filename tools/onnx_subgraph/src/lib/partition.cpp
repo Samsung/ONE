@@ -24,17 +24,15 @@
 /**
  * Prints the subgraph information of an ONNX model to specified files.
  *
- * @param Subgraphs A vector containing subgraph information.
- * @param SubgraphFileName The filename for the output of subgraph information.
- * @param OtherSubgraphs A vector containing other subgraph information.
- * @param OtherSubgraphFileName The filename for the output of other subgraph information.
+ * @param subgraphs A vector containing subgraph information.
+ * @param subgraphFileName The filename for the output of subgraph information.
+ * @param otherSubgraphs A vector containing other subgraph information.
+ * @param otherSubgraphFileName The filename for the output of other subgraph information.
  */
-void PrintSubgraphs(std::vector<onnx::GraphProto> Subgraphs, char *SubgraphFileName,
-                    std::vector<onnx::GraphProto> OtherSubgraphs, char *OtherSubgraphFileName)
+void PrintSubgraphs(std::vector<onnx::GraphProto> &subgraphs, char *subgraphFileName,
+                    std::vector<onnx::GraphProto> &otherSubgraphs, char *otherSubgraphFileName)
 {
-  int nodeSum = 0;
-
-  std::ofstream outFile(SubgraphFileName);
+  std::ofstream outFile(subgraphFileName);
   if (!outFile.is_open())
   {
     std::cerr << "Error opening file." << std::endl;
@@ -42,7 +40,7 @@ void PrintSubgraphs(std::vector<onnx::GraphProto> Subgraphs, char *SubgraphFileN
   }
 
   int id = 0;
-  for (const auto &vec : Subgraphs)
+  for (const auto &vec : subgraphs)
   {
     outFile << " subgraph" << id << ":";
     for (const auto &node : vec.node())
@@ -52,10 +50,9 @@ void PrintSubgraphs(std::vector<onnx::GraphProto> Subgraphs, char *SubgraphFileN
 
     id++;
     outFile << std::endl;
-    nodeSum += vec.node_size();
   }
 
-  std::ofstream outFileOther(OtherSubgraphFileName);
+  std::ofstream outFileOther(otherSubgraphFileName);
   if (!outFileOther.is_open())
   {
     std::cerr << "Error opening file." << std::endl;
@@ -63,7 +60,7 @@ void PrintSubgraphs(std::vector<onnx::GraphProto> Subgraphs, char *SubgraphFileN
   }
 
   std::cout << "before:" << std::endl;
-  for (const auto &vec : OtherSubgraphs)
+  for (const auto &vec : otherSubgraphs)
   {
     outFileOther << " subgraph" << id << ":";
     for (const auto &node : vec.node())
@@ -73,7 +70,6 @@ void PrintSubgraphs(std::vector<onnx::GraphProto> Subgraphs, char *SubgraphFileN
 
     id++;
     outFileOther << std::endl;
-    nodeSum += vec.node_size();
   }
 }
 
