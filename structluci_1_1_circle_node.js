@@ -4,6 +4,8 @@ var structluci_1_1_circle_node =
     [ "accept", "structluci_1_1_circle_node.html#a9bf429b87ed97a131f17ddafd0be267d", null ],
     [ "accept", "structluci_1_1_circle_node.html#af87ed4609b528bde55c06ef670d878a0", null ],
     [ "dialect", "structluci_1_1_circle_node.html#afef1d0e164bba6b0d5f436c642c0ecc8", null ],
+    [ "mx_quantparam", "structluci_1_1_circle_node.html#a2f41b30622c36616b95ee1dce2adf216", null ],
+    [ "mx_quantparam", "structluci_1_1_circle_node.html#ab0a4fb397c0b1825518bcfb828d4d1b6", null ],
     [ "name", "structluci_1_1_circle_node.html#a8e219cb1960af63369c99fb10d3d3a80", null ],
     [ "name", "structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855", null ],
     [ "op_version", "structluci_1_1_circle_node.html#afc344a51da07eeec930086f95b68d1b1", null ],

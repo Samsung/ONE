@@ -132,7 +132,7 @@ Protected Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
 class nnc::cli::OptionType&lt; T, false &gt;</div>
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00090">90</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00091">91</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a187af125bc51aeaa2c531876048773ab" name="a187af125bc51aeaa2c531876048773ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a187af125bc51aeaa2c531876048773ab">&#9670;&#160;</a></span>convToBool()</h2>
@@ -160,21 +160,21 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00437">437</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  438</span>{</div>
-<div class="line"><span class="lineno">  439</span>  <span class="keywordflow">if</span> (val.empty() || val == <span class="stringliteral">&quot;TRUE&quot;</span> || val == <span class="stringliteral">&quot;True&quot;</span> || val == <span class="stringliteral">&quot;true&quot;</span> || val == <span class="stringliteral">&quot;1&quot;</span>)</div>
-<div class="line"><span class="lineno">  440</span>  {</div>
-<div class="line"><span class="lineno">  441</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  442</span>  }</div>
-<div class="line"><span class="lineno">  443</span> </div>
-<div class="line"><span class="lineno">  444</span>  <span class="keywordflow">if</span> (val == <span class="stringliteral">&quot;FALSE&quot;</span> || val == <span class="stringliteral">&quot;False&quot;</span> || val == <span class="stringliteral">&quot;false&quot;</span> || val == <span class="stringliteral">&quot;0&quot;</span>)</div>
-<div class="line"><span class="lineno">  445</span>  {</div>
-<div class="line"><span class="lineno">  446</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  447</span>  }</div>
-<div class="line"><span class="lineno">  448</span> </div>
-<div class="line"><span class="lineno">  449</span>  <span class="keywordflow">throw</span> BadOption(<span class="stringliteral">&quot;&quot;</span>, val);</div>
-<div class="line"><span class="lineno">  450</span> </div>
-<div class="line"><span class="lineno">  451</span>} <span class="comment">// convToBool</span></div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00438">438</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  439</span>{</div>
+<div class="line"><span class="lineno">  440</span>  <span class="keywordflow">if</span> (val.empty() || val == <span class="stringliteral">&quot;TRUE&quot;</span> || val == <span class="stringliteral">&quot;True&quot;</span> || val == <span class="stringliteral">&quot;true&quot;</span> || val == <span class="stringliteral">&quot;1&quot;</span>)</div>
+<div class="line"><span class="lineno">  441</span>  {</div>
+<div class="line"><span class="lineno">  442</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  443</span>  }</div>
+<div class="line"><span class="lineno">  444</span> </div>
+<div class="line"><span class="lineno">  445</span>  <span class="keywordflow">if</span> (val == <span class="stringliteral">&quot;FALSE&quot;</span> || val == <span class="stringliteral">&quot;False&quot;</span> || val == <span class="stringliteral">&quot;false&quot;</span> || val == <span class="stringliteral">&quot;0&quot;</span>)</div>
+<div class="line"><span class="lineno">  446</span>  {</div>
+<div class="line"><span class="lineno">  447</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  448</span>  }</div>
+<div class="line"><span class="lineno">  449</span> </div>
+<div class="line"><span class="lineno">  450</span>  <span class="keywordflow">throw</span> BadOption(<span class="stringliteral">&quot;&quot;</span>, val);</div>
+<div class="line"><span class="lineno">  451</span> </div>
+<div class="line"><span class="lineno">  452</span>} <span class="comment">// convToBool</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -204,18 +204,18 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00453">453</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  454</span>{</div>
-<div class="line"><span class="lineno">  455</span>  <span class="keywordflow">if</span> (val.length() == 1)</div>
-<div class="line"><span class="lineno">  456</span>  {</div>
-<div class="line"><span class="lineno">  457</span>    <span class="keywordflow">return</span> val[0];</div>
-<div class="line"><span class="lineno">  458</span>  }</div>
-<div class="line"><span class="lineno">  459</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  460</span>  {</div>
-<div class="line"><span class="lineno">  461</span>    <span class="keywordflow">throw</span> BadOption(<span class="stringliteral">&quot;&quot;</span>, val);</div>
-<div class="line"><span class="lineno">  462</span>  }</div>
-<div class="line"><span class="lineno">  463</span> </div>
-<div class="line"><span class="lineno">  464</span>} <span class="comment">// convToChar</span></div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00454">454</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  455</span>{</div>
+<div class="line"><span class="lineno">  456</span>  <span class="keywordflow">if</span> (val.length() == 1)</div>
+<div class="line"><span class="lineno">  457</span>  {</div>
+<div class="line"><span class="lineno">  458</span>    <span class="keywordflow">return</span> val[0];</div>
+<div class="line"><span class="lineno">  459</span>  }</div>
+<div class="line"><span class="lineno">  460</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  461</span>  {</div>
+<div class="line"><span class="lineno">  462</span>    <span class="keywordflow">throw</span> BadOption(<span class="stringliteral">&quot;&quot;</span>, val);</div>
+<div class="line"><span class="lineno">  463</span>  }</div>
+<div class="line"><span class="lineno">  464</span> </div>
+<div class="line"><span class="lineno">  465</span>} <span class="comment">// convToChar</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -247,31 +247,31 @@ template&lt;typename Tnum &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00468">468</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  469</span>{</div>
-<div class="line"><span class="lineno">  470</span>  Tnum num_val;</div>
-<div class="line"><span class="lineno">  471</span> </div>
-<div class="line"><span class="lineno">  472</span>  assert((std::is_same&lt;Tnum, uint64_t&gt;::value || std::is_same&lt;Tnum, int64_t&gt;::value));</div>
-<div class="line"><span class="lineno">  473</span>  assert((std::numeric_limits&lt;T&gt;::max() &lt; std::numeric_limits&lt;Tnum&gt;::max()));</div>
-<div class="line"><span class="lineno">  474</span>  assert(std::numeric_limits&lt;T&gt;::min() &gt;= std::numeric_limits&lt;Tnum&gt;::min());</div>
-<div class="line"><span class="lineno">  475</span> </div>
-<div class="line"><span class="lineno">  476</span>  <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno">  477</span>  {</div>
-<div class="line"><span class="lineno">  478</span>    num_val = std::is_same&lt;Tnum, uint64_t&gt;::value ? stoull(val) : stoll(val);</div>
-<div class="line"><span class="lineno">  479</span>  }</div>
-<div class="line"><span class="lineno">  480</span>  <span class="keywordflow">catch</span> (...)</div>
-<div class="line"><span class="lineno">  481</span>  {</div>
-<div class="line"><span class="lineno">  482</span>    <span class="keywordflow">throw</span> BadOption(<span class="stringliteral">&quot;&quot;</span>, val);</div>
-<div class="line"><span class="lineno">  483</span>  }</div>
-<div class="line"><span class="lineno">  484</span> </div>
-<div class="line"><span class="lineno">  485</span>  <span class="keywordflow">if</span> (num_val &gt; std::numeric_limits&lt;T&gt;::max() || num_val &lt; std::numeric_limits&lt;T&gt;::min())</div>
-<div class="line"><span class="lineno">  486</span>  {</div>
-<div class="line"><span class="lineno">  487</span>    <span class="keywordflow">throw</span> BadOption(<span class="stringliteral">&quot;&quot;</span>, val);</div>
-<div class="line"><span class="lineno">  488</span>  }</div>
-<div class="line"><span class="lineno">  489</span> </div>
-<div class="line"><span class="lineno">  490</span>  <span class="keywordflow">return</span> num_val;</div>
-<div class="line"><span class="lineno">  491</span> </div>
-<div class="line"><span class="lineno">  492</span>} <span class="comment">// convToNum</span></div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00469">469</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  470</span>{</div>
+<div class="line"><span class="lineno">  471</span>  Tnum num_val;</div>
+<div class="line"><span class="lineno">  472</span> </div>
+<div class="line"><span class="lineno">  473</span>  assert((std::is_same&lt;Tnum, uint64_t&gt;::value || std::is_same&lt;Tnum, int64_t&gt;::value));</div>
+<div class="line"><span class="lineno">  474</span>  assert((std::numeric_limits&lt;T&gt;::max() &lt; std::numeric_limits&lt;Tnum&gt;::max()));</div>
+<div class="line"><span class="lineno">  475</span>  assert(std::numeric_limits&lt;T&gt;::min() &gt;= std::numeric_limits&lt;Tnum&gt;::min());</div>
+<div class="line"><span class="lineno">  476</span> </div>
+<div class="line"><span class="lineno">  477</span>  <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno">  478</span>  {</div>
+<div class="line"><span class="lineno">  479</span>    num_val = std::is_same&lt;Tnum, uint64_t&gt;::value ? stoull(val) : stoll(val);</div>
+<div class="line"><span class="lineno">  480</span>  }</div>
+<div class="line"><span class="lineno">  481</span>  <span class="keywordflow">catch</span> (...)</div>
+<div class="line"><span class="lineno">  482</span>  {</div>
+<div class="line"><span class="lineno">  483</span>    <span class="keywordflow">throw</span> BadOption(<span class="stringliteral">&quot;&quot;</span>, val);</div>
+<div class="line"><span class="lineno">  484</span>  }</div>
+<div class="line"><span class="lineno">  485</span> </div>
+<div class="line"><span class="lineno">  486</span>  <span class="keywordflow">if</span> (num_val &gt; std::numeric_limits&lt;T&gt;::max() || num_val &lt; std::numeric_limits&lt;T&gt;::min())</div>
+<div class="line"><span class="lineno">  487</span>  {</div>
+<div class="line"><span class="lineno">  488</span>    <span class="keywordflow">throw</span> BadOption(<span class="stringliteral">&quot;&quot;</span>, val);</div>
+<div class="line"><span class="lineno">  489</span>  }</div>
+<div class="line"><span class="lineno">  490</span> </div>
+<div class="line"><span class="lineno">  491</span>  <span class="keywordflow">return</span> num_val;</div>
+<div class="line"><span class="lineno">  492</span> </div>
+<div class="line"><span class="lineno">  493</span>} <span class="comment">// convToNum</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -300,9 +300,9 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00114">114</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  114</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classnnc_1_1cli_1_1_option_type_3_01_t_00_01false_01_4.html#a3e625c6014ba96ea3779036790a9a646">_value</a>; }</div>
-<div class="ttc" id="aclassnnc_1_1cli_1_1_option_type_3_01_t_00_01false_01_4_html_a3e625c6014ba96ea3779036790a9a646"><div class="ttname"><a href="classnnc_1_1cli_1_1_option_type_3_01_t_00_01false_01_4.html#a3e625c6014ba96ea3779036790a9a646">nnc::cli::OptionType&lt; T, false &gt;::_value</a></div><div class="ttdeci">T _value</div><div class="ttdef"><b>Definition</b> <a href="_command_line_8h_source.html#l00123">CommandLine.h:123</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00115">115</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  115</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classnnc_1_1cli_1_1_option_type_3_01_t_00_01false_01_4.html#a3e625c6014ba96ea3779036790a9a646">_value</a>; }</div>
+<div class="ttc" id="aclassnnc_1_1cli_1_1_option_type_3_01_t_00_01false_01_4_html_a3e625c6014ba96ea3779036790a9a646"><div class="ttname"><a href="classnnc_1_1cli_1_1_option_type_3_01_t_00_01false_01_4.html#a3e625c6014ba96ea3779036790a9a646">nnc::cli::OptionType&lt; T, false &gt;::_value</a></div><div class="ttdeci">T _value</div><div class="ttdef"><b>Definition</b> <a href="_command_line_8h_source.html#l00124">CommandLine.h:124</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -334,8 +334,8 @@ template&lt;typename T &gt; </div>
 <p>get option value </p>
 <dl class="section return"><dt>Returns</dt><dd>value of option </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00112">112</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  112</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classnnc_1_1cli_1_1_option_type_3_01_t_00_01false_01_4.html#a3e625c6014ba96ea3779036790a9a646">_value</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00113">113</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  113</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classnnc_1_1cli_1_1_option_type_3_01_t_00_01false_01_4.html#a3e625c6014ba96ea3779036790a9a646">_value</a>; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -366,10 +366,10 @@ template&lt;typename T &gt; </div>
 
 <p>convert Option to scalar option type </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00096">96</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>  {</div>
-<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classnnc_1_1cli_1_1_option_type_3_01_t_00_01false_01_4.html#a3e625c6014ba96ea3779036790a9a646">_value</a>;</div>
-<div class="line"><span class="lineno">   99</span>  } <span class="comment">// NOLINT(google-explicit-constructor,hicpp-explicit-conversions)</span></div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00097">97</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   98</span>  {</div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classnnc_1_1cli_1_1_option_type_3_01_t_00_01false_01_4.html#a3e625c6014ba96ea3779036790a9a646">_value</a>;</div>
+<div class="line"><span class="lineno">  100</span>  } <span class="comment">// NOLINT(google-explicit-constructor,hicpp-explicit-conversions)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -415,8 +415,8 @@ template&lt;typename Tval &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00106">106</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  106</span>{ <a class="code hl_variable" href="classnnc_1_1cli_1_1_option_type_3_01_t_00_01false_01_4.html#a3e625c6014ba96ea3779036790a9a646">_value</a> = val; }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00107">107</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  107</span>{ <a class="code hl_variable" href="classnnc_1_1cli_1_1_option_type_3_01_t_00_01false_01_4.html#a3e625c6014ba96ea3779036790a9a646">_value</a> = val; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -443,7 +443,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00123">123</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00124">124</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
 
 </div>
 </div>

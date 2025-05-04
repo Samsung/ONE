@@ -918,6 +918,10 @@ Functions</h2></td></tr>
 <tr class="separator:a8301134d496b81d8653d171b974113b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec446d97125ede2dc10e58a86c928e4c" id="r_aec446d97125ede2dc10e58a86c928e4c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#aec446d97125ede2dc10e58a86c928e4c">SubscriptToIndex</a> (const <a class="el" href="structnnfw_1_1cker_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; 4 &gt; &amp;desc, int i0, int i1, int i2, int i3)</td></tr>
 <tr class="separator:aec446d97125ede2dc10e58a86c928e4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23b1ec5edd694ac9f01793427c01eb3f" id="r_a23b1ec5edd694ac9f01793427c01eb3f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a23b1ec5edd694ac9f01793427c01eb3f">SubscriptToIndex</a> (const <a class="el" href="structnnfw_1_1cker_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; 5 &gt; &amp;desc, int i0, int i1, int i2, int i3, int i4)</td></tr>
+<tr class="separator:a23b1ec5edd694ac9f01793427c01eb3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f1bd1e544dd30179554e8182df5f3e8" id="r_a6f1bd1e544dd30179554e8182df5f3e8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a6f1bd1e544dd30179554e8182df5f3e8">SubscriptToIndex</a> (const <a class="el" href="structnnfw_1_1cker_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; 6 &gt; &amp;desc, int i0, int i1, int i2, int i3, int i4, int i5)</td></tr>
+<tr class="separator:a6f1bd1e544dd30179554e8182df5f3e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a463e648ae455ddaf93d167b1d73ee490" id="r_a463e648ae455ddaf93d167b1d73ee490"><td class="memTemplParams" colspan="2">template&lt;int N&gt; </td></tr>
 <tr class="memitem:a463e648ae455ddaf93d167b1d73ee490"><td class="memTemplItemLeft" align="right" valign="top">int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a463e648ae455ddaf93d167b1d73ee490">SubscriptToIndexGeneric</a> (const <a class="el" href="structnnfw_1_1cker_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; N &gt; *desc, int *iter)</td></tr>
 <tr class="separator:a463e648ae455ddaf93d167b1d73ee490"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1516,7 +1520,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   45</span>  <span class="keywordflow">return</span> std::min&lt;T&gt;(std::max&lt;T&gt;(x, output_activation_min), output_activation_max);</div>
 <div class="line"><span class="lineno">   46</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00044">AveragePool&lt; float &gt;()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_common_8h_source.html#l00029">BiasAndClamp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00050">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00079">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00035">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00178">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00235">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00033">nnfw::cker::reference::Conv()</a>, <a class="el" href="_depthwise_conv_hybrid_8h_source.html#l00032">nnfw::cker::reference_integer_ops::DepthwiseConvHybridPerChannel()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00314">nnfw::cker::reference::HybridConvPerChannel()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_instance_norm_8h_source.html#l00031">InstanceNorm()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_max_pool_8h_source.html#l00042">MaxPool&lt; float &gt;()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00044">AveragePool&lt; float &gt;()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_common_8h_source.html#l00029">BiasAndClamp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00053">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00082">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00038">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00195">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00265">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00033">nnfw::cker::reference::Conv()</a>, <a class="el" href="_depthwise_conv_hybrid_8h_source.html#l00032">nnfw::cker::reference_integer_ops::DepthwiseConvHybridPerChannel()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00314">nnfw::cker::reference::HybridConvPerChannel()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_instance_norm_8h_source.html#l00031">InstanceNorm()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_max_pool_8h_source.html#l00042">MaxPool&lt; float &gt;()</a>.</p>
 
 </div>
 </div>
@@ -3029,7 +3033,7 @@ template&lt;<a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace92755
 <div class="line"><span class="lineno">  216</span>                                <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, GetBinaryArtithmeticFn&lt;op_type, T&gt;());</div>
 <div class="line"><span class="lineno">  217</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00035">nnfw::cker::reference::BinaryArithmeticOp()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00038">nnfw::cker::reference::BinaryArithmeticOp()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -3105,7 +3109,7 @@ template&lt;<a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace92755
 <div class="line"><span class="lineno">  226</span>                                <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data, GetBinaryArtithmeticFn&lt;op_type, T&gt;());</div>
 <div class="line"><span class="lineno">  227</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00035">nnfw::cker::reference::BinaryArithmeticOp()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00038">nnfw::cker::reference::BinaryArithmeticOp()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -3270,7 +3274,7 @@ template&lt;<a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace92755
 
 <p class="definition">Definition at line <a class="el" href="_binary_arithmetic_ops_8h_source.html#l00327">327</a> of file <a class="el" href="_binary_arithmetic_ops_8h_source.html">BinaryArithmeticOps.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  331</span>{</div>
-<div class="line"><span class="lineno">  332</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount() &gt; 4)</div>
+<div class="line"><span class="lineno">  332</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount() &gt; 6)</div>
 <div class="line"><span class="lineno">  333</span>    <span class="keywordflow">throw</span> std::runtime_error(</div>
 <div class="line"><span class="lineno">  334</span>      std::string(<span class="stringliteral">&quot;cker::BroadcastBinaryArithmeticOp: Unsupported rank size : &quot;</span>) +</div>
 <div class="line"><span class="lineno">  335</span>      std::to_string(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.DimensionsCount()));</div>
@@ -3382,7 +3386,7 @@ template&lt;<a class="el" href="namespacennfw_1_1cker.html#ae614fca042c2ace92755
 <div class="line"><span class="lineno">  295</span>                                             GetBinaryArtithmeticFn&lt;op_type, T&gt;());</div>
 <div class="line"><span class="lineno">  296</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00094">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00097">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -3644,7 +3648,7 @@ template&lt;typename T , <a class="el" href="namespacennfw_1_1cker.html#a32d7bbc
 <div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_ab5b08ef1201803398018fac4598b8b27"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#ab5b08ef1201803398018fac4598b8b27">desc2</a></div><div class="ttdeci">NdArrayDesc&lt; 4 &gt; desc2</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">PALComparisons.h:34</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_nd_array_desc_html"><div class="ttname"><a href="structnnfw_1_1cker_1_1_nd_array_desc.html">nnfw::cker::NdArrayDesc</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00238">Utils.h:239</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00290">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00314">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
 
 </div>
 </div>
@@ -3764,7 +3768,7 @@ template&lt;typename T , <a class="el" href="namespacennfw_1_1cker.html#a32d7bbc
 <div class="ttc" id="astructnnfw_1_1cker_1_1_comparison_params_html_a879b105168ef3e09af41914a403ab521"><div class="ttname"><a href="structnnfw_1_1cker_1_1_comparison_params.html#a879b105168ef3e09af41914a403ab521">nnfw::cker::ComparisonParams::input1_offset</a></div><div class="ttdeci">int32_t input1_offset</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00171">Types.h:171</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_comparison_params_html_a8fbc6e2560461281e961de1b8291fb51"><div class="ttname"><a href="structnnfw_1_1cker_1_1_comparison_params.html#a8fbc6e2560461281e961de1b8291fb51">nnfw::cker::ComparisonParams::input1_multiplier</a></div><div class="ttdeci">int32_t input1_multiplier</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00172">Types.h:172</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00172">nnfw::cker::ComparisonParams::input1_multiplier</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00171">nnfw::cker::ComparisonParams::input1_offset</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00169">nnfw::cker::ComparisonParams::input1_shift</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00174">nnfw::cker::ComparisonParams::input2_multiplier</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00173">nnfw::cker::ComparisonParams::input2_offset</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00170">nnfw::cker::ComparisonParams::input2_shift</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00168">nnfw::cker::ComparisonParams::left_shift</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00111">MultiplyByQuantizedMultiplierSmallerThanOneExp()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00290">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00172">nnfw::cker::ComparisonParams::input1_multiplier</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00171">nnfw::cker::ComparisonParams::input1_offset</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00169">nnfw::cker::ComparisonParams::input1_shift</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00174">nnfw::cker::ComparisonParams::input2_multiplier</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00173">nnfw::cker::ComparisonParams::input2_offset</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00170">nnfw::cker::ComparisonParams::input2_shift</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00168">nnfw::cker::ComparisonParams::left_shift</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00111">MultiplyByQuantizedMultiplierSmallerThanOneExp()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00314">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
 
 </div>
 </div>
@@ -3877,7 +3881,7 @@ template&lt;typename D , typename T &gt; </div>
 <div class="line"><span class="lineno">  108</span>  }</div>
 <div class="line"><span class="lineno">  109</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00106">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00290">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00106">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00314">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
 
 </div>
 </div>
@@ -5363,16 +5367,16 @@ template&lt;int N&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00277">277</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  278</span>{</div>
-<div class="line"><span class="lineno">  279</span>  <span class="keywordtype">int</span> desc_stride = 1;</div>
-<div class="line"><span class="lineno">  280</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = N - 1; i &gt;= 0; --i)</div>
-<div class="line"><span class="lineno">  281</span>  {</div>
-<div class="line"><span class="lineno">  282</span>    desc_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[i] = input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(i);</div>
-<div class="line"><span class="lineno">  283</span>    desc_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[i] = desc_stride;</div>
-<div class="line"><span class="lineno">  284</span>    desc_stride *= input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(i);</div>
-<div class="line"><span class="lineno">  285</span>  }</div>
-<div class="line"><span class="lineno">  286</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00301">301</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  302</span>{</div>
+<div class="line"><span class="lineno">  303</span>  <span class="keywordtype">int</span> desc_stride = 1;</div>
+<div class="line"><span class="lineno">  304</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = N - 1; i &gt;= 0; --i)</div>
+<div class="line"><span class="lineno">  305</span>  {</div>
+<div class="line"><span class="lineno">  306</span>    desc_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[i] = input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(i);</div>
+<div class="line"><span class="lineno">  307</span>    desc_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[i] = desc_stride;</div>
+<div class="line"><span class="lineno">  308</span>    desc_stride *= input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(i);</div>
+<div class="line"><span class="lineno">  309</span>  }</div>
+<div class="line"><span class="lineno">  310</span>}</div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_nd_array_desc_html_a2cfe5e716fc863d52a6979a4ab836d3a"><div class="ttname"><a href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">nnfw::cker::NdArrayDesc::extents</a></div><div class="ttdeci">int extents[N]</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00242">Utils.h:242</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_nd_array_desc_html_ae0867883d8b556d060f1ff1cebdb4b24"><div class="ttname"><a href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">nnfw::cker::NdArrayDesc::strides</a></div><div class="ttdeci">int strides[N]</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00246">Utils.h:246</a></div></div>
 </div><!-- fragment -->
@@ -6339,7 +6343,7 @@ template&lt;typename T , typename TS &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_shape_iterator_8h_source.html#l00037">nnfw::cker::ShapeIterator::end_iterator()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00195">buildStridedSliceParams()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00224">checkOutputSize()</a>, <a class="el" href="xent__op_8h_source.html#l00078">nnfw::cker::xent_ops::functor::XentFunctorBase&lt; Device, T &gt;::operator()()</a>, <a class="el" href="training__ops_8h_source.html#l00078">nnfw::cker::training_ops::functor::ApplyAdamNonCuda&lt; Device, T &gt;::operator()()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00486">operator&lt;&lt;()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00258">StridedSlice()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00195">buildStridedSliceParams()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00224">checkOutputSize()</a>, <a class="el" href="xent__op_8h_source.html#l00078">nnfw::cker::xent_ops::functor::XentFunctorBase&lt; Device, T &gt;::operator()()</a>, <a class="el" href="training__ops_8h_source.html#l00078">nnfw::cker::training_ops::functor::ApplyAdamNonCuda&lt; Device, T &gt;::operator()()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00510">operator&lt;&lt;()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00258">StridedSlice()</a>.</p>
 
 </div>
 </div>
@@ -6805,7 +6809,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   62</span>  }</div>
 <div class="line"><span class="lineno">   63</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00290">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00314">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
 
 </div>
 </div>
@@ -6983,7 +6987,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   83</span>}</div>
 <div class="ttc" id="astruct_nd_array_desc_html"><div class="ttname"><a href="struct_nd_array_desc.html">NdArrayDesc</a></div><div class="ttdef"><b>Definition</b> <a href="_n_d_array_8h_source.html#l00037">NDArray.h:38</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00290">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00314">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
 
 </div>
 </div>
@@ -9173,7 +9177,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   61</span>  }</div>
 <div class="line"><span class="lineno">   62</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00290">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00314">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
 
 </div>
 </div>
@@ -9391,7 +9395,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   61</span>  }</div>
 <div class="line"><span class="lineno">   62</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00290">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00314">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
 
 </div>
 </div>
@@ -10387,7 +10391,7 @@ template&lt;typename... Args&gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00256">nnfw::cker::Shape::FlatSize()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l00699">nnfw::cker::optimized::Add()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l00692">nnfw::cker::optimized::Add()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00065">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00050">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00079">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00035">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l01217">nnfw::cker::optimized::Div()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l01071">nnfw::cker::optimized::Mul()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l01064">nnfw::cker::optimized::Mul()</a>, and <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l00857">nnfw::cker::optimized::Sub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l00699">nnfw::cker::optimized::Add()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l00692">nnfw::cker::optimized::Add()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00068">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00053">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00082">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00038">nnfw::cker::reference::BinaryArithmeticOp()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l01217">nnfw::cker::optimized::Div()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l01071">nnfw::cker::optimized::Mul()</a>, <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l01064">nnfw::cker::optimized::Mul()</a>, and <a class="el" href="optimized_2_binary_arithmetic_ops_8h_source.html#l00857">nnfw::cker::optimized::Sub()</a>.</p>
 
 </div>
 </div>
@@ -11079,7 +11083,7 @@ template&lt;typename T , typename Op &gt; </div>
 <div class="line"><span class="lineno">   78</span>  }</div>
 <div class="line"><span class="lineno">   79</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00290">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
+<p class="reference">References <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00033">desc1</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00034">desc2</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00314">NdArrayDescsForElementwiseBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00255">SubscriptToIndex()</a>.</p>
 
 </div>
 </div>
@@ -12068,60 +12072,60 @@ template&lt;int N&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00329">329</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  332</span>{</div>
-<div class="line"><span class="lineno">  333</span>  assert(desc0_out != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  334</span>  assert(desc1_out != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  335</span>  assert(desc2_out != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  336</span> </div>
-<div class="line"><span class="lineno">  337</span>  <span class="keyword">auto</span> extended_input0_shape = Shape::ExtendedShape(N, input0_shape);</div>
-<div class="line"><span class="lineno">  338</span>  <span class="keyword">auto</span> extended_input1_shape = Shape::ExtendedShape(N, input1_shape);</div>
-<div class="line"><span class="lineno">  339</span>  <span class="keyword">auto</span> extended_input2_shape = Shape::ExtendedShape(N, input2_shape);</div>
-<div class="line"><span class="lineno">  340</span> </div>
-<div class="line"><span class="lineno">  341</span>  <span class="comment">// Copy dims to desc, calculating strides.</span></div>
-<div class="line"><span class="lineno">  342</span>  CopyDimsToDesc&lt;N&gt;(extended_input0_shape, desc0_out);</div>
-<div class="line"><span class="lineno">  343</span>  CopyDimsToDesc&lt;N&gt;(extended_input1_shape, desc1_out);</div>
-<div class="line"><span class="lineno">  344</span>  CopyDimsToDesc&lt;N&gt;(extended_input2_shape, desc2_out);</div>
-<div class="line"><span class="lineno">  345</span> </div>
-<div class="line"><span class="lineno">  346</span>  <span class="comment">// Walk over each dimension. If the extents are equal do nothing.</span></div>
-<div class="line"><span class="lineno">  347</span>  <span class="comment">// Otherwise, set the desc with extent 1 to have extent equal to the other and</span></div>
-<div class="line"><span class="lineno">  348</span>  <span class="comment">// stride 0.</span></div>
-<div class="line"><span class="lineno">  349</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; N; ++i)</div>
-<div class="line"><span class="lineno">  350</span>  {</div>
-<div class="line"><span class="lineno">  351</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> extent0 = extended_input0_shape.Dims(i);</div>
-<div class="line"><span class="lineno">  352</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> extent1 = extended_input1_shape.Dims(i);</div>
-<div class="line"><span class="lineno">  353</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> extent2 = extended_input2_shape.Dims(i);</div>
-<div class="line"><span class="lineno">  354</span> </div>
-<div class="line"><span class="lineno">  355</span>    <span class="keywordtype">int</span> extent = extent0;</div>
-<div class="line"><span class="lineno">  356</span>    <span class="keywordflow">if</span> (extent1 != 1)</div>
-<div class="line"><span class="lineno">  357</span>      extent = extent1;</div>
-<div class="line"><span class="lineno">  358</span>    <span class="keywordflow">if</span> (extent2 != 1)</div>
-<div class="line"><span class="lineno">  359</span>      extent = extent2;</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00353">353</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  356</span>{</div>
+<div class="line"><span class="lineno">  357</span>  assert(desc0_out != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  358</span>  assert(desc1_out != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  359</span>  assert(desc2_out != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  360</span> </div>
-<div class="line"><span class="lineno">  361</span>    assert(extent0 == 1 || extent0 == extent);</div>
-<div class="line"><span class="lineno">  362</span>    assert(extent1 == 1 || extent1 == extent);</div>
-<div class="line"><span class="lineno">  363</span>    assert(extent2 == 1 || extent2 == extent);</div>
+<div class="line"><span class="lineno">  361</span>  <span class="keyword">auto</span> extended_input0_shape = Shape::ExtendedShape(N, input0_shape);</div>
+<div class="line"><span class="lineno">  362</span>  <span class="keyword">auto</span> extended_input1_shape = Shape::ExtendedShape(N, input1_shape);</div>
+<div class="line"><span class="lineno">  363</span>  <span class="keyword">auto</span> extended_input2_shape = Shape::ExtendedShape(N, input2_shape);</div>
 <div class="line"><span class="lineno">  364</span> </div>
-<div class="line"><span class="lineno">  365</span>    <span class="keywordflow">if</span> (!(extent0 == extent1 &amp;&amp; extent1 == extent2))</div>
-<div class="line"><span class="lineno">  366</span>    {</div>
-<div class="line"><span class="lineno">  367</span>      <span class="keywordflow">if</span> (extent0 == 1)</div>
-<div class="line"><span class="lineno">  368</span>      {</div>
-<div class="line"><span class="lineno">  369</span>        desc0_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[i] = 0;</div>
-<div class="line"><span class="lineno">  370</span>        desc0_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[i] = extent;</div>
-<div class="line"><span class="lineno">  371</span>      }</div>
-<div class="line"><span class="lineno">  372</span>      <span class="keywordflow">if</span> (extent1 == 1)</div>
-<div class="line"><span class="lineno">  373</span>      {</div>
-<div class="line"><span class="lineno">  374</span>        desc1_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[i] = 0;</div>
-<div class="line"><span class="lineno">  375</span>        desc1_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[i] = extent;</div>
-<div class="line"><span class="lineno">  376</span>      }</div>
-<div class="line"><span class="lineno">  377</span>      <span class="keywordflow">if</span> (extent2 == 1)</div>
-<div class="line"><span class="lineno">  378</span>      {</div>
-<div class="line"><span class="lineno">  379</span>        desc2_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[i] = 0;</div>
-<div class="line"><span class="lineno">  380</span>        desc2_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[i] = extent;</div>
-<div class="line"><span class="lineno">  381</span>      }</div>
-<div class="line"><span class="lineno">  382</span>    }</div>
-<div class="line"><span class="lineno">  383</span>  }</div>
-<div class="line"><span class="lineno">  384</span>}</div>
+<div class="line"><span class="lineno">  365</span>  <span class="comment">// Copy dims to desc, calculating strides.</span></div>
+<div class="line"><span class="lineno">  366</span>  CopyDimsToDesc&lt;N&gt;(extended_input0_shape, desc0_out);</div>
+<div class="line"><span class="lineno">  367</span>  CopyDimsToDesc&lt;N&gt;(extended_input1_shape, desc1_out);</div>
+<div class="line"><span class="lineno">  368</span>  CopyDimsToDesc&lt;N&gt;(extended_input2_shape, desc2_out);</div>
+<div class="line"><span class="lineno">  369</span> </div>
+<div class="line"><span class="lineno">  370</span>  <span class="comment">// Walk over each dimension. If the extents are equal do nothing.</span></div>
+<div class="line"><span class="lineno">  371</span>  <span class="comment">// Otherwise, set the desc with extent 1 to have extent equal to the other and</span></div>
+<div class="line"><span class="lineno">  372</span>  <span class="comment">// stride 0.</span></div>
+<div class="line"><span class="lineno">  373</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; N; ++i)</div>
+<div class="line"><span class="lineno">  374</span>  {</div>
+<div class="line"><span class="lineno">  375</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> extent0 = extended_input0_shape.Dims(i);</div>
+<div class="line"><span class="lineno">  376</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> extent1 = extended_input1_shape.Dims(i);</div>
+<div class="line"><span class="lineno">  377</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> extent2 = extended_input2_shape.Dims(i);</div>
+<div class="line"><span class="lineno">  378</span> </div>
+<div class="line"><span class="lineno">  379</span>    <span class="keywordtype">int</span> extent = extent0;</div>
+<div class="line"><span class="lineno">  380</span>    <span class="keywordflow">if</span> (extent1 != 1)</div>
+<div class="line"><span class="lineno">  381</span>      extent = extent1;</div>
+<div class="line"><span class="lineno">  382</span>    <span class="keywordflow">if</span> (extent2 != 1)</div>
+<div class="line"><span class="lineno">  383</span>      extent = extent2;</div>
+<div class="line"><span class="lineno">  384</span> </div>
+<div class="line"><span class="lineno">  385</span>    assert(extent0 == 1 || extent0 == extent);</div>
+<div class="line"><span class="lineno">  386</span>    assert(extent1 == 1 || extent1 == extent);</div>
+<div class="line"><span class="lineno">  387</span>    assert(extent2 == 1 || extent2 == extent);</div>
+<div class="line"><span class="lineno">  388</span> </div>
+<div class="line"><span class="lineno">  389</span>    <span class="keywordflow">if</span> (!(extent0 == extent1 &amp;&amp; extent1 == extent2))</div>
+<div class="line"><span class="lineno">  390</span>    {</div>
+<div class="line"><span class="lineno">  391</span>      <span class="keywordflow">if</span> (extent0 == 1)</div>
+<div class="line"><span class="lineno">  392</span>      {</div>
+<div class="line"><span class="lineno">  393</span>        desc0_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[i] = 0;</div>
+<div class="line"><span class="lineno">  394</span>        desc0_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[i] = extent;</div>
+<div class="line"><span class="lineno">  395</span>      }</div>
+<div class="line"><span class="lineno">  396</span>      <span class="keywordflow">if</span> (extent1 == 1)</div>
+<div class="line"><span class="lineno">  397</span>      {</div>
+<div class="line"><span class="lineno">  398</span>        desc1_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[i] = 0;</div>
+<div class="line"><span class="lineno">  399</span>        desc1_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[i] = extent;</div>
+<div class="line"><span class="lineno">  400</span>      }</div>
+<div class="line"><span class="lineno">  401</span>      <span class="keywordflow">if</span> (extent2 == 1)</div>
+<div class="line"><span class="lineno">  402</span>      {</div>
+<div class="line"><span class="lineno">  403</span>        desc2_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[i] = 0;</div>
+<div class="line"><span class="lineno">  404</span>        desc2_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[i] = extent;</div>
+<div class="line"><span class="lineno">  405</span>      }</div>
+<div class="line"><span class="lineno">  406</span>    }</div>
+<div class="line"><span class="lineno">  407</span>  }</div>
+<div class="line"><span class="lineno">  408</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00242">nnfw::cker::NdArrayDesc&lt; N &gt;::extents</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00246">nnfw::cker::NdArrayDesc&lt; N &gt;::strides</a>.</p>
 
@@ -12175,45 +12179,45 @@ template&lt;int N&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00290">290</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  292</span>{</div>
-<div class="line"><span class="lineno">  293</span>  assert(desc0_out != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  294</span>  assert(desc1_out != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  295</span> </div>
-<div class="line"><span class="lineno">  296</span>  <span class="keyword">auto</span> extended_input0_shape = Shape::ExtendedShape(N, input0_shape);</div>
-<div class="line"><span class="lineno">  297</span>  <span class="keyword">auto</span> extended_input1_shape = Shape::ExtendedShape(N, input1_shape);</div>
-<div class="line"><span class="lineno">  298</span> </div>
-<div class="line"><span class="lineno">  299</span>  <span class="comment">// Copy dims to desc, calculating strides.</span></div>
-<div class="line"><span class="lineno">  300</span>  CopyDimsToDesc&lt;N&gt;(extended_input0_shape, desc0_out);</div>
-<div class="line"><span class="lineno">  301</span>  CopyDimsToDesc&lt;N&gt;(extended_input1_shape, desc1_out);</div>
-<div class="line"><span class="lineno">  302</span> </div>
-<div class="line"><span class="lineno">  303</span>  <span class="comment">// Walk over each dimension. If the extents are equal do nothing.</span></div>
-<div class="line"><span class="lineno">  304</span>  <span class="comment">// Otherwise, set the desc with extent 1 to have extent equal to the other and</span></div>
-<div class="line"><span class="lineno">  305</span>  <span class="comment">// stride 0.</span></div>
-<div class="line"><span class="lineno">  306</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; N; ++i)</div>
-<div class="line"><span class="lineno">  307</span>  {</div>
-<div class="line"><span class="lineno">  308</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> extent0 = extended_input0_shape.Dims(i);</div>
-<div class="line"><span class="lineno">  309</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> extent1 = extended_input1_shape.Dims(i);</div>
-<div class="line"><span class="lineno">  310</span>    <span class="keywordflow">if</span> (extent0 != extent1)</div>
-<div class="line"><span class="lineno">  311</span>    {</div>
-<div class="line"><span class="lineno">  312</span>      <span class="keywordflow">if</span> (extent0 == 1)</div>
-<div class="line"><span class="lineno">  313</span>      {</div>
-<div class="line"><span class="lineno">  314</span>        desc0_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[i] = 0;</div>
-<div class="line"><span class="lineno">  315</span>        desc0_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[i] = extent1;</div>
-<div class="line"><span class="lineno">  316</span>      }</div>
-<div class="line"><span class="lineno">  317</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  318</span>      {</div>
-<div class="line"><span class="lineno">  319</span>        assert(extent1 == 1);</div>
-<div class="line"><span class="lineno">  320</span>        desc1_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[i] = 0;</div>
-<div class="line"><span class="lineno">  321</span>        desc1_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[i] = extent0;</div>
-<div class="line"><span class="lineno">  322</span>      }</div>
-<div class="line"><span class="lineno">  323</span>    }</div>
-<div class="line"><span class="lineno">  324</span>  }</div>
-<div class="line"><span class="lineno">  325</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00314">314</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  316</span>{</div>
+<div class="line"><span class="lineno">  317</span>  assert(desc0_out != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  318</span>  assert(desc1_out != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  319</span> </div>
+<div class="line"><span class="lineno">  320</span>  <span class="keyword">auto</span> extended_input0_shape = Shape::ExtendedShape(N, input0_shape);</div>
+<div class="line"><span class="lineno">  321</span>  <span class="keyword">auto</span> extended_input1_shape = Shape::ExtendedShape(N, input1_shape);</div>
+<div class="line"><span class="lineno">  322</span> </div>
+<div class="line"><span class="lineno">  323</span>  <span class="comment">// Copy dims to desc, calculating strides.</span></div>
+<div class="line"><span class="lineno">  324</span>  CopyDimsToDesc&lt;N&gt;(extended_input0_shape, desc0_out);</div>
+<div class="line"><span class="lineno">  325</span>  CopyDimsToDesc&lt;N&gt;(extended_input1_shape, desc1_out);</div>
+<div class="line"><span class="lineno">  326</span> </div>
+<div class="line"><span class="lineno">  327</span>  <span class="comment">// Walk over each dimension. If the extents are equal do nothing.</span></div>
+<div class="line"><span class="lineno">  328</span>  <span class="comment">// Otherwise, set the desc with extent 1 to have extent equal to the other and</span></div>
+<div class="line"><span class="lineno">  329</span>  <span class="comment">// stride 0.</span></div>
+<div class="line"><span class="lineno">  330</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; N; ++i)</div>
+<div class="line"><span class="lineno">  331</span>  {</div>
+<div class="line"><span class="lineno">  332</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> extent0 = extended_input0_shape.Dims(i);</div>
+<div class="line"><span class="lineno">  333</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> extent1 = extended_input1_shape.Dims(i);</div>
+<div class="line"><span class="lineno">  334</span>    <span class="keywordflow">if</span> (extent0 != extent1)</div>
+<div class="line"><span class="lineno">  335</span>    {</div>
+<div class="line"><span class="lineno">  336</span>      <span class="keywordflow">if</span> (extent0 == 1)</div>
+<div class="line"><span class="lineno">  337</span>      {</div>
+<div class="line"><span class="lineno">  338</span>        desc0_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[i] = 0;</div>
+<div class="line"><span class="lineno">  339</span>        desc0_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[i] = extent1;</div>
+<div class="line"><span class="lineno">  340</span>      }</div>
+<div class="line"><span class="lineno">  341</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  342</span>      {</div>
+<div class="line"><span class="lineno">  343</span>        assert(extent1 == 1);</div>
+<div class="line"><span class="lineno">  344</span>        desc1_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[i] = 0;</div>
+<div class="line"><span class="lineno">  345</span>        desc1_out-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[i] = extent0;</div>
+<div class="line"><span class="lineno">  346</span>      }</div>
+<div class="line"><span class="lineno">  347</span>    }</div>
+<div class="line"><span class="lineno">  348</span>  }</div>
+<div class="line"><span class="lineno">  349</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00242">nnfw::cker::NdArrayDesc&lt; N &gt;::extents</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00246">nnfw::cker::NdArrayDesc&lt; N &gt;::strides</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00207">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00178">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00235">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00094">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00135">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00091">BroadcastComparison4DSlowImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00132">BroadcastComparison4DSlowWithScaling()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_select_8h_source.html#l00063">BroadcastSelect4DSlow()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_div_8h_source.html#l00030">FloorDivBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_mod_8h_source.html#l00034">FloorModBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_and_8h_source.html#l00030">LogicalAndBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_or_8h_source.html#l00030">LogicalOrBroadcast()</a>, and <a class="el" href="_max_min_8h_source.html#l00047">MaximumMinimumBroadcast4DSlow()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00231">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00195">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00265">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00097">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00145">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00091">BroadcastComparison4DSlowImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00132">BroadcastComparison4DSlowWithScaling()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_select_8h_source.html#l00063">BroadcastSelect4DSlow()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_div_8h_source.html#l00030">FloorDivBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_mod_8h_source.html#l00034">FloorModBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_and_8h_source.html#l00030">LogicalAndBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_or_8h_source.html#l00030">LogicalOrBroadcast()</a>, and <a class="el" href="_max_min_8h_source.html#l00047">MaximumMinimumBroadcast4DSlow()</a>.</p>
 
 </div>
 </div>
@@ -12318,32 +12322,32 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00387">387</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  388</span>{</div>
-<div class="line"><span class="lineno">  389</span>  <span class="keywordflow">if</span> (num_dims == 0)</div>
-<div class="line"><span class="lineno">  390</span>  {</div>
-<div class="line"><span class="lineno">  391</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  392</span>  }</div>
-<div class="line"><span class="lineno">  393</span>  assert(dims != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  394</span>  assert(current != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  395</span>  <span class="keywordtype">int</span> carry = 1;</div>
-<div class="line"><span class="lineno">  396</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = num_dims - 1; idx &gt;= 0; --idx)</div>
-<div class="line"><span class="lineno">  397</span>  {</div>
-<div class="line"><span class="lineno">  398</span>    <span class="keywordtype">int</span> current_val = current[idx] + carry;</div>
-<div class="line"><span class="lineno">  399</span>    assert(dims[idx] &gt;= current_val);</div>
-<div class="line"><span class="lineno">  400</span>    <span class="keywordflow">if</span> (dims[idx] == current_val)</div>
-<div class="line"><span class="lineno">  401</span>    {</div>
-<div class="line"><span class="lineno">  402</span>      current[idx] = 0;</div>
-<div class="line"><span class="lineno">  403</span>    }</div>
-<div class="line"><span class="lineno">  404</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  405</span>    {</div>
-<div class="line"><span class="lineno">  406</span>      current[idx] = current_val;</div>
-<div class="line"><span class="lineno">  407</span>      carry = 0;</div>
-<div class="line"><span class="lineno">  408</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  409</span>    }</div>
-<div class="line"><span class="lineno">  410</span>  }</div>
-<div class="line"><span class="lineno">  411</span>  <span class="keywordflow">return</span> (carry == 0);</div>
-<div class="line"><span class="lineno">  412</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00411">411</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  412</span>{</div>
+<div class="line"><span class="lineno">  413</span>  <span class="keywordflow">if</span> (num_dims == 0)</div>
+<div class="line"><span class="lineno">  414</span>  {</div>
+<div class="line"><span class="lineno">  415</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  416</span>  }</div>
+<div class="line"><span class="lineno">  417</span>  assert(dims != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  418</span>  assert(current != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  419</span>  <span class="keywordtype">int</span> carry = 1;</div>
+<div class="line"><span class="lineno">  420</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = num_dims - 1; idx &gt;= 0; --idx)</div>
+<div class="line"><span class="lineno">  421</span>  {</div>
+<div class="line"><span class="lineno">  422</span>    <span class="keywordtype">int</span> current_val = current[idx] + carry;</div>
+<div class="line"><span class="lineno">  423</span>    assert(dims[idx] &gt;= current_val);</div>
+<div class="line"><span class="lineno">  424</span>    <span class="keywordflow">if</span> (dims[idx] == current_val)</div>
+<div class="line"><span class="lineno">  425</span>    {</div>
+<div class="line"><span class="lineno">  426</span>      current[idx] = 0;</div>
+<div class="line"><span class="lineno">  427</span>    }</div>
+<div class="line"><span class="lineno">  428</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  429</span>    {</div>
+<div class="line"><span class="lineno">  430</span>      current[idx] = current_val;</div>
+<div class="line"><span class="lineno">  431</span>      carry = 0;</div>
+<div class="line"><span class="lineno">  432</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  433</span>    }</div>
+<div class="line"><span class="lineno">  434</span>  }</div>
+<div class="line"><span class="lineno">  435</span>  <span class="keywordflow">return</span> (carry == 0);</div>
+<div class="line"><span class="lineno">  436</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="compute_2cker_2include_2cker_2operation_2_reduce_8h_source.html#l00118">ReduceImpl()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00052">ReduceMeanImpl()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00083">ReduceSumQuantImpl()</a>, and <a class="el" href="_sq_diff_8h_source.html#l00040">SqDiffImpl()</a>.</p>
 
@@ -12560,7 +12564,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00160">nnfw::cker::Shape::DimsDataUpTo6D()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00106">AveragePool16()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00242">AveragePool32()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00399">AveragePool&lt; int8_t &gt;()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_batch_to_space_n_d_8h_source.html#l00050">BatchToSpaceND()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00207">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00178">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00235">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00094">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00135">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00091">BroadcastComparison4DSlowImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00132">BroadcastComparison4DSlowWithScaling()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_select_8h_source.html#l00063">BroadcastSelect4DSlow()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00195">nnfw::cker::reference::Conv()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00033">nnfw::cker::reference::Conv()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00109">nnfw::cker::reference::Conv()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_depth_to_space_8h_source.html#l00030">DepthToSpace()</a>, <a class="el" href="_depthwise_conv_hybrid_8h_source.html#l00032">nnfw::cker::reference_integer_ops::DepthwiseConvHybridPerChannel()</a>, <a class="el" href="reference_2integer__ops_2_depthwise_conv_uint8_8h_source.html#l00031">nnfw::cker::reference_integer_ops::DepthwiseConvPerChannel()</a>, <a class="el" href="_optimized_utils_8h_source.html#l00121">nnfw::cker::optimized::DilatedIm2col()</a>, <a class="el" href="_optimized_utils_8h_source.html#l00034">nnfw::cker::optimized::ExtractPatchIntoBufferColumn()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_div_8h_source.html#l00030">FloorDivBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_mod_8h_source.html#l00034">FloorModBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00314">nnfw::cker::reference::HybridConvPerChannel()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_instance_norm_8h_source.html#l00031">InstanceNorm()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_and_8h_source.html#l00030">LogicalAndBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_or_8h_source.html#l00030">LogicalOrBroadcast()</a>, <a class="el" href="_max_min_8h_source.html#l00047">MaximumMinimumBroadcast4DSlow()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_max_pool_8h_source.html#l00098">MaxPool&lt; uint8_t &gt;()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00233">MeanAxis1And2()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00363">Offset()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00285">ResizeBilinear()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00118">ResizeBilinearGeneric()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00171">ResizeBilinearGenericSmallChannel()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00030">ResizeBilinearKernel2x2()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_rms_norm_8h_source.html#l00032">RmsNorm()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_ro_p_e_8h_source.html#l00032">RoPE()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_slice_8h_source.html#l00031">Slice()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_space_to_batch_n_d_8h_source.html#l00031">SpaceToBatchND()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_space_to_depth_8h_source.html#l00030">SpaceToDepth()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00258">StridedSlice()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_transpose_conv_8h_source.html#l00030">TransposeConv()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_transpose_8h_source.html#l00033">nnfw::cker::reference::TransposeImpl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00106">AveragePool16()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00242">AveragePool32()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_average_pool_8h_source.html#l00399">AveragePool&lt; int8_t &gt;()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_batch_to_space_n_d_8h_source.html#l00050">BatchToSpaceND()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00231">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00195">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00265">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00097">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00145">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00091">BroadcastComparison4DSlowImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00132">BroadcastComparison4DSlowWithScaling()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_select_8h_source.html#l00063">BroadcastSelect4DSlow()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00195">nnfw::cker::reference::Conv()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00033">nnfw::cker::reference::Conv()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00109">nnfw::cker::reference::Conv()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_depth_to_space_8h_source.html#l00030">DepthToSpace()</a>, <a class="el" href="_depthwise_conv_hybrid_8h_source.html#l00032">nnfw::cker::reference_integer_ops::DepthwiseConvHybridPerChannel()</a>, <a class="el" href="reference_2integer__ops_2_depthwise_conv_uint8_8h_source.html#l00031">nnfw::cker::reference_integer_ops::DepthwiseConvPerChannel()</a>, <a class="el" href="_optimized_utils_8h_source.html#l00121">nnfw::cker::optimized::DilatedIm2col()</a>, <a class="el" href="_optimized_utils_8h_source.html#l00034">nnfw::cker::optimized::ExtractPatchIntoBufferColumn()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_div_8h_source.html#l00030">FloorDivBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_mod_8h_source.html#l00034">FloorModBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2reference_2_conv_8h_source.html#l00314">nnfw::cker::reference::HybridConvPerChannel()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_instance_norm_8h_source.html#l00031">InstanceNorm()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_and_8h_source.html#l00030">LogicalAndBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_or_8h_source.html#l00030">LogicalOrBroadcast()</a>, <a class="el" href="_max_min_8h_source.html#l00047">MaximumMinimumBroadcast4DSlow()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_max_pool_8h_source.html#l00098">MaxPool&lt; uint8_t &gt;()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00233">MeanAxis1And2()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00363">Offset()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00285">ResizeBilinear()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00118">ResizeBilinearGeneric()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00171">ResizeBilinearGenericSmallChannel()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h_source.html#l00030">ResizeBilinearKernel2x2()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_rms_norm_8h_source.html#l00032">RmsNorm()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_ro_p_e_8h_source.html#l00032">RoPE()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_slice_8h_source.html#l00031">Slice()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_space_to_batch_n_d_8h_source.html#l00031">SpaceToBatchND()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_space_to_depth_8h_source.html#l00030">SpaceToDepth()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_strided_slice_8h_source.html#l00258">StridedSlice()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_transpose_conv_8h_source.html#l00030">TransposeConv()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_transpose_8h_source.html#l00033">nnfw::cker::reference::TransposeImpl()</a>.</p>
 
 </div>
 </div>
@@ -12857,29 +12861,29 @@ template&lt;typename T , typename TI &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00486">486</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  487</span>{</div>
-<div class="line"><span class="lineno">  488</span>  <span class="keyword">using </span>std::begin;</div>
-<div class="line"><span class="lineno">  489</span>  <span class="keyword">using </span>std::end;</div>
-<div class="line"><span class="lineno">  490</span> </div>
-<div class="line"><span class="lineno">  491</span>  std::string formatted =</div>
-<div class="line"><span class="lineno">  492</span>    std::accumulate(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>(shape), <a class="code hl_function" href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">end</a>(shape), std::string{<span class="stringliteral">&quot;[&quot;</span>},</div>
-<div class="line"><span class="lineno">  493</span>                    [](std::string joined, ShapeIterator::value_type dim) {</div>
-<div class="line"><span class="lineno">  494</span>                      <span class="keywordflow">return</span> std::move(joined).append(std::to_string(dim)).append(<span class="stringliteral">&quot;,&quot;</span>);</div>
-<div class="line"><span class="lineno">  495</span>                    });</div>
-<div class="line"><span class="lineno">  496</span> </div>
-<div class="line"><span class="lineno">  497</span>  <span class="keywordflow">if</span> (formatted.back() == <span class="charliteral">&#39;[&#39;</span>)</div>
-<div class="line"><span class="lineno">  498</span>  {</div>
-<div class="line"><span class="lineno">  499</span>    formatted.push_back(<span class="charliteral">&#39;]&#39;</span>);</div>
-<div class="line"><span class="lineno">  500</span>  }</div>
-<div class="line"><span class="lineno">  501</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  502</span>  {</div>
-<div class="line"><span class="lineno">  503</span>    formatted.back() = <span class="charliteral">&#39;]&#39;</span>;</div>
-<div class="line"><span class="lineno">  504</span>  }</div>
-<div class="line"><span class="lineno">  505</span> </div>
-<div class="line"><span class="lineno">  506</span>  os &lt;&lt; formatted;</div>
-<div class="line"><span class="lineno">  507</span>  <span class="keywordflow">return</span> os;</div>
-<div class="line"><span class="lineno">  508</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00510">510</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  511</span>{</div>
+<div class="line"><span class="lineno">  512</span>  <span class="keyword">using </span>std::begin;</div>
+<div class="line"><span class="lineno">  513</span>  <span class="keyword">using </span>std::end;</div>
+<div class="line"><span class="lineno">  514</span> </div>
+<div class="line"><span class="lineno">  515</span>  std::string formatted =</div>
+<div class="line"><span class="lineno">  516</span>    std::accumulate(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>(shape), <a class="code hl_function" href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">end</a>(shape), std::string{<span class="stringliteral">&quot;[&quot;</span>},</div>
+<div class="line"><span class="lineno">  517</span>                    [](std::string joined, ShapeIterator::value_type dim) {</div>
+<div class="line"><span class="lineno">  518</span>                      <span class="keywordflow">return</span> std::move(joined).append(std::to_string(dim)).append(<span class="stringliteral">&quot;,&quot;</span>);</div>
+<div class="line"><span class="lineno">  519</span>                    });</div>
+<div class="line"><span class="lineno">  520</span> </div>
+<div class="line"><span class="lineno">  521</span>  <span class="keywordflow">if</span> (formatted.back() == <span class="charliteral">&#39;[&#39;</span>)</div>
+<div class="line"><span class="lineno">  522</span>  {</div>
+<div class="line"><span class="lineno">  523</span>    formatted.push_back(<span class="charliteral">&#39;]&#39;</span>);</div>
+<div class="line"><span class="lineno">  524</span>  }</div>
+<div class="line"><span class="lineno">  525</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  526</span>  {</div>
+<div class="line"><span class="lineno">  527</span>    formatted.back() = <span class="charliteral">&#39;]&#39;</span>;</div>
+<div class="line"><span class="lineno">  528</span>  }</div>
+<div class="line"><span class="lineno">  529</span> </div>
+<div class="line"><span class="lineno">  530</span>  os &lt;&lt; formatted;</div>
+<div class="line"><span class="lineno">  531</span>  <span class="keywordflow">return</span> os;</div>
+<div class="line"><span class="lineno">  532</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00033">begin</a>, and <a class="el" href="_shape_iterator_8h_source.html#l00089">end()</a>.</p>
 
@@ -12903,15 +12907,15 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00455">455</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  456</span>{</div>
-<div class="line"><span class="lineno">  457</span><span class="preprocessor">#ifdef __GNUC__</span></div>
-<div class="line"><span class="lineno">  458</span>  <span class="comment">// builtin offered by GCC-compatible compilers including clang</span></div>
-<div class="line"><span class="lineno">  459</span>  __builtin_prefetch(ptr, <span class="comment">/* 0 means read */</span> 0, <span class="comment">/* 3 means high locality */</span> 3);</div>
-<div class="line"><span class="lineno">  460</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">  461</span>  (void)ptr;</div>
-<div class="line"><span class="lineno">  462</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">  463</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00479">479</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  480</span>{</div>
+<div class="line"><span class="lineno">  481</span><span class="preprocessor">#ifdef __GNUC__</span></div>
+<div class="line"><span class="lineno">  482</span>  <span class="comment">// builtin offered by GCC-compatible compilers including clang</span></div>
+<div class="line"><span class="lineno">  483</span>  __builtin_prefetch(ptr, <span class="comment">/* 0 means read */</span> 0, <span class="comment">/* 3 means high locality */</span> 3);</div>
+<div class="line"><span class="lineno">  484</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">  485</span>  (void)ptr;</div>
+<div class="line"><span class="lineno">  486</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">  487</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_transpose_8h_source.html#l00300">Transpose2D()</a>.</p>
 
@@ -15477,39 +15481,39 @@ template&lt;typename D , typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00420">420</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  422</span>{</div>
-<div class="line"><span class="lineno">  423</span>  <span class="keywordflow">if</span> (num_dims == 0)</div>
-<div class="line"><span class="lineno">  424</span>  {</div>
-<div class="line"><span class="lineno">  425</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  426</span>  }</div>
-<div class="line"><span class="lineno">  427</span> </div>
-<div class="line"><span class="lineno">  428</span>  assert(dims != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  429</span>  assert(index != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  430</span> </div>
-<div class="line"><span class="lineno">  431</span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0;</div>
-<div class="line"><span class="lineno">  432</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; num_dims; ++idx)</div>
-<div class="line"><span class="lineno">  433</span>  {</div>
-<div class="line"><span class="lineno">  434</span>    <span class="comment">// if we need to skip this axis</span></div>
-<div class="line"><span class="lineno">  435</span>    <span class="keywordtype">bool</span> is_axis = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  436</span>    <span class="keywordflow">if</span> (axis != <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  437</span>    {</div>
-<div class="line"><span class="lineno">  438</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> axis_idx = 0; axis_idx &lt; num_axis; ++axis_idx)</div>
-<div class="line"><span class="lineno">  439</span>      {</div>
-<div class="line"><span class="lineno">  440</span>        <span class="keywordflow">if</span> (idx == axis[axis_idx])</div>
-<div class="line"><span class="lineno">  441</span>        {</div>
-<div class="line"><span class="lineno">  442</span>          is_axis = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  443</span>          <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  444</span>        }</div>
-<div class="line"><span class="lineno">  445</span>      }</div>
-<div class="line"><span class="lineno">  446</span>    }</div>
-<div class="line"><span class="lineno">  447</span>    <span class="keywordflow">if</span> (!is_axis)</div>
-<div class="line"><span class="lineno">  448</span>    {</div>
-<div class="line"><span class="lineno">  449</span>      <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> * <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>[idx]) + <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(index[idx]);</div>
-<div class="line"><span class="lineno">  450</span>    }</div>
-<div class="line"><span class="lineno">  451</span>  }</div>
-<div class="line"><span class="lineno">  452</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>;</div>
-<div class="line"><span class="lineno">  453</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00444">444</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  446</span>{</div>
+<div class="line"><span class="lineno">  447</span>  <span class="keywordflow">if</span> (num_dims == 0)</div>
+<div class="line"><span class="lineno">  448</span>  {</div>
+<div class="line"><span class="lineno">  449</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">  450</span>  }</div>
+<div class="line"><span class="lineno">  451</span> </div>
+<div class="line"><span class="lineno">  452</span>  assert(dims != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  453</span>  assert(index != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  454</span> </div>
+<div class="line"><span class="lineno">  455</span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0;</div>
+<div class="line"><span class="lineno">  456</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; num_dims; ++idx)</div>
+<div class="line"><span class="lineno">  457</span>  {</div>
+<div class="line"><span class="lineno">  458</span>    <span class="comment">// if we need to skip this axis</span></div>
+<div class="line"><span class="lineno">  459</span>    <span class="keywordtype">bool</span> is_axis = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  460</span>    <span class="keywordflow">if</span> (axis != <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  461</span>    {</div>
+<div class="line"><span class="lineno">  462</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> axis_idx = 0; axis_idx &lt; num_axis; ++axis_idx)</div>
+<div class="line"><span class="lineno">  463</span>      {</div>
+<div class="line"><span class="lineno">  464</span>        <span class="keywordflow">if</span> (idx == axis[axis_idx])</div>
+<div class="line"><span class="lineno">  465</span>        {</div>
+<div class="line"><span class="lineno">  466</span>          is_axis = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  467</span>          <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  468</span>        }</div>
+<div class="line"><span class="lineno">  469</span>      }</div>
+<div class="line"><span class="lineno">  470</span>    }</div>
+<div class="line"><span class="lineno">  471</span>    <span class="keywordflow">if</span> (!is_axis)</div>
+<div class="line"><span class="lineno">  472</span>    {</div>
+<div class="line"><span class="lineno">  473</span>      <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> * <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>[idx]) + <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(index[idx]);</div>
+<div class="line"><span class="lineno">  474</span>    }</div>
+<div class="line"><span class="lineno">  475</span>  }</div>
+<div class="line"><span class="lineno">  476</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>;</div>
+<div class="line"><span class="lineno">  477</span>}</div>
 <div class="ttc" id="anamespacekbenchmark_html_a0f4026f3dfa7f3d4d876efc26dca96ea"><div class="ttname"><a href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">kbenchmark::dims</a></div><div class="ttdeci">std::vector&lt; int &gt; dims(const std::string &amp;src)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2_utils_8h_source.html#l00035">Utils.h:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>
@@ -15636,10 +15640,10 @@ template&lt;typename In , typename Out &gt; </div>
 <div class="line"><span class="lineno">  163</span>  } <span class="keywordflow">while</span> (<a class="code hl_function" href="namespacennfw_1_1cker.html#a6d8c0220b027bc83d5d7d0e19c38f42f">NextIndex</a>(input_num_dims, input_dims, input_iter));</div>
 <div class="line"><span class="lineno">  164</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  165</span>}</div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a6d8c0220b027bc83d5d7d0e19c38f42f"><div class="ttname"><a href="namespacennfw_1_1cker.html#a6d8c0220b027bc83d5d7d0e19c38f42f">nnfw::cker::NextIndex</a></div><div class="ttdeci">bool NextIndex(const int num_dims, const int *dims, int *current)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00387">Utils.h:387</a></div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a757324a1a73d98f1a822a08d4bedffb9"><div class="ttname"><a href="namespacennfw_1_1cker.html#a757324a1a73d98f1a822a08d4bedffb9">nnfw::cker::ReducedOutputOffset</a></div><div class="ttdeci">size_t ReducedOutputOffset(const int num_dims, const int *dims, const int *index, const int num_axis, const int *axis)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00420">Utils.h:420</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a6d8c0220b027bc83d5d7d0e19c38f42f"><div class="ttname"><a href="namespacennfw_1_1cker.html#a6d8c0220b027bc83d5d7d0e19c38f42f">nnfw::cker::NextIndex</a></div><div class="ttdeci">bool NextIndex(const int num_dims, const int *dims, int *current)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00411">Utils.h:411</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a757324a1a73d98f1a822a08d4bedffb9"><div class="ttname"><a href="namespacennfw_1_1cker.html#a757324a1a73d98f1a822a08d4bedffb9">nnfw::cker::ReducedOutputOffset</a></div><div class="ttdeci">size_t ReducedOutputOffset(const int num_dims, const int *dims, const int *index, const int num_axis, const int *axis)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00444">Utils.h:444</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00134">nnfw::cker::Shape::DimsData()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00387">NextIndex()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00420">ReducedOutputOffset()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00134">nnfw::cker::Shape::DimsData()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00411">NextIndex()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00444">ReducedOutputOffset()</a>.</p>
 
 </div>
 </div>
@@ -15736,7 +15740,7 @@ template&lt;typename In , typename Out &gt; </div>
 <div class="line"><span class="lineno">   79</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   80</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00134">nnfw::cker::Shape::DimsData()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00387">NextIndex()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00420">ReducedOutputOffset()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00134">nnfw::cker::Shape::DimsData()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00411">NextIndex()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00444">ReducedOutputOffset()</a>.</p>
 
 </div>
 </div>
@@ -15832,7 +15836,7 @@ template&lt;typename In &gt; </div>
 <div class="line"><span class="lineno">  108</span>  <span class="keywordflow">return</span> normalizer;</div>
 <div class="line"><span class="lineno">  109</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00134">nnfw::cker::Shape::DimsData()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00387">NextIndex()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00420">ReducedOutputOffset()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00134">nnfw::cker::Shape::DimsData()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00411">NextIndex()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00444">ReducedOutputOffset()</a>.</p>
 
 </div>
 </div>
@@ -17996,7 +18000,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   75</span>  <a class="code hl_class" href="classnnfw_1_1cker_1_1_sequential_tensor_writer.html">SequentialTensorWriter&lt;T&gt;</a> writer(input_data, output_data);</div>
 <div class="line"><span class="lineno">   76</span>  <span class="keywordflow">return</span> Slice(op_params, input_shape, &amp;writer);</div>
 <div class="line"><span class="lineno">   77</span>}</div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_sequential_tensor_writer_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_sequential_tensor_writer.html">nnfw::cker::SequentialTensorWriter</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00466">Utils.h:467</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_sequential_tensor_writer_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_sequential_tensor_writer.html">nnfw::cker::SequentialTensorWriter</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00490">Utils.h:491</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_slice_8h_source.html#l00031">Slice()</a>.</p>
 
@@ -18082,7 +18086,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   67</span>    }</div>
 <div class="line"><span class="lineno">   68</span>  }</div>
 <div class="line"><span class="lineno">   69</span>}</div>
-<div class="ttc" id="aclassnnfw_1_1cker_1_1_sequential_tensor_writer_html_ab79b33fb3a1cdcd46311f3a2d5a24729"><div class="ttname"><a href="classnnfw_1_1cker_1_1_sequential_tensor_writer.html#ab79b33fb3a1cdcd46311f3a2d5a24729">nnfw::cker::SequentialTensorWriter::WriteN</a></div><div class="ttdeci">void WriteN(int position, int len)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00475">Utils.h:475</a></div></div>
+<div class="ttc" id="aclassnnfw_1_1cker_1_1_sequential_tensor_writer_html_ab79b33fb3a1cdcd46311f3a2d5a24729"><div class="ttname"><a href="classnnfw_1_1cker_1_1_sequential_tensor_writer.html#ab79b33fb3a1cdcd46311f3a2d5a24729">nnfw::cker::SequentialTensorWriter::WriteN</a></div><div class="ttdeci">void WriteN(int position, int len)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00499">Utils.h:499</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a3ce8586aaa3e877d453e2ec54d5bf477"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a3ce8586aaa3e877d453e2ec54d5bf477">size_count</a></div><div class="ttdeci">int8_t size_count</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00034">Slice.cpp:34</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a44f852c599d9194e67818ccd1a20ea61"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a44f852c599d9194e67818ccd1a20ea61">begin_count</a></div><div class="ttdeci">int8_t begin_count</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00032">Slice.cpp:32</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_slice_params_html_a6b9412e86603a0178f36e982f51549f9"><div class="ttname"><a href="structnnfw_1_1cker_1_1_slice_params.html#a6b9412e86603a0178f36e982f51549f9">nnfw::cker::SliceParams::size</a></div><div class="ttdeci">int32_t size[4]</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00364">Types.h:364</a></div></div>
@@ -18090,7 +18094,7 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_slice_params_html_ada2f13242e91f9c235053cb3f71df63a"><div class="ttname"><a href="structnnfw_1_1cker_1_1_slice_params.html#ada2f13242e91f9c235053cb3f71df63a">nnfw::cker::SliceParams::begin_count</a></div><div class="ttdeci">int8_t begin_count</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00361">Types.h:361</a></div></div>
 <div class="ttc" id="astructnnfw_1_1cker_1_1_slice_params_html_aefb593481ce0602d60ec017bb6a88f6c"><div class="ttname"><a href="structnnfw_1_1cker_1_1_slice_params.html#aefb593481ce0602d60ec017bb6a88f6c">nnfw::cker::SliceParams::size_count</a></div><div class="ttdeci">int8_t size_count</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00363">Types.h:363</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00362">nnfw::cker::SliceParams::begin</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00032">begin_count</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00361">nnfw::cker::SliceParams::begin_count</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00106">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00364">nnfw::cker::SliceParams::size</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00034">size_count</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00363">nnfw::cker::SliceParams::size_count</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00475">nnfw::cker::SequentialTensorWriter&lt; T &gt;::WriteN()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00362">nnfw::cker::SliceParams::begin</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00032">begin_count</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00361">nnfw::cker::SliceParams::begin_count</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00106">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00325">Offset()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00364">nnfw::cker::SliceParams::size</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00034">size_count</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_types_8h_source.html#l00363">nnfw::cker::SliceParams::size_count</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00499">nnfw::cker::SequentialTensorWriter&lt; T &gt;::WriteN()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_slice_8h_source.html#l00072">Slice()</a>.</p>
 
@@ -18949,9 +18953,9 @@ template&lt;typename T , int N&gt; </div>
 <div class="line"><span class="lineno">   58</span>                               (input1_data[input1_indx] - input2_data[input2_indx]);</div>
 <div class="line"><span class="lineno">   59</span>  } <span class="keywordflow">while</span> (NextIndex(N, output_dims, input_iter.data()));</div>
 <div class="line"><span class="lineno">   60</span>}</div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_a463e648ae455ddaf93d167b1d73ee490"><div class="ttname"><a href="namespacennfw_1_1cker.html#a463e648ae455ddaf93d167b1d73ee490">nnfw::cker::SubscriptToIndexGeneric</a></div><div class="ttdeci">int SubscriptToIndexGeneric(const NdArrayDesc&lt; N &gt; *desc, int *iter)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00264">Utils.h:264</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a463e648ae455ddaf93d167b1d73ee490"><div class="ttname"><a href="namespacennfw_1_1cker.html#a463e648ae455ddaf93d167b1d73ee490">nnfw::cker::SubscriptToIndexGeneric</a></div><div class="ttdeci">int SubscriptToIndexGeneric(const NdArrayDesc&lt; N &gt; *desc, int *iter)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00288">Utils.h:288</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00387">NextIndex()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00264">SubscriptToIndexGeneric()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00411">NextIndex()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00288">SubscriptToIndexGeneric()</a>.</p>
 
 </div>
 </div>
@@ -19638,7 +19642,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="aec446d97125ede2dc10e58a86c928e4c" name="aec446d97125ede2dc10e58a86c928e4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec446d97125ede2dc10e58a86c928e4c">&#9670;&#160;</a></span>SubscriptToIndex()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aec446d97125ede2dc10e58a86c928e4c">&#9670;&#160;</a></span>SubscriptToIndex() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -19700,7 +19704,160 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00242">nnfw::cker::NdArrayDesc&lt; N &gt;::extents</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00246">nnfw::cker::NdArrayDesc&lt; N &gt;::strides</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00207">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00178">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00235">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00094">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00135">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00091">BroadcastComparison4DSlowImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00132">BroadcastComparison4DSlowWithScaling()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_select_8h_source.html#l00063">BroadcastSelect4DSlow()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_div_8h_source.html#l00030">FloorDivBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_mod_8h_source.html#l00034">FloorModBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_and_8h_source.html#l00030">LogicalAndBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_or_8h_source.html#l00030">LogicalOrBroadcast()</a>, and <a class="el" href="_max_min_8h_source.html#l00047">MaximumMinimumBroadcast4DSlow()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00231">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00195">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00265">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00097">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="reference_2_binary_arithmetic_ops_8h_source.html#l00145">nnfw::cker::reference::BroadcastBinaryArithmeticOpSlow()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00091">BroadcastComparison4DSlowImpl()</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_comparison_8h_source.html#l00132">BroadcastComparison4DSlowWithScaling()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_select_8h_source.html#l00063">BroadcastSelect4DSlow()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_div_8h_source.html#l00030">FloorDivBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_floor_mod_8h_source.html#l00034">FloorModBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_and_8h_source.html#l00030">LogicalAndBroadcast()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_logical_or_8h_source.html#l00030">LogicalOrBroadcast()</a>, and <a class="el" href="_max_min_8h_source.html#l00047">MaximumMinimumBroadcast4DSlow()</a>.</p>
+
+</div>
+</div>
+<a id="a23b1ec5edd694ac9f01793427c01eb3f" name="a23b1ec5edd694ac9f01793427c01eb3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23b1ec5edd694ac9f01793427c01eb3f">&#9670;&#160;</a></span>SubscriptToIndex() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int nnfw::cker::SubscriptToIndex </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structnnfw_1_1cker_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; 5 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>desc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i4</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00264">264</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  265</span>{</div>
+<div class="line"><span class="lineno">  266</span>  assert(i0 &gt;= 0 &amp;&amp; i0 &lt; desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[0]);</div>
+<div class="line"><span class="lineno">  267</span>  assert(i1 &gt;= 0 &amp;&amp; i1 &lt; desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[1]);</div>
+<div class="line"><span class="lineno">  268</span>  assert(i2 &gt;= 0 &amp;&amp; i2 &lt; desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[2]);</div>
+<div class="line"><span class="lineno">  269</span>  assert(i3 &gt;= 0 &amp;&amp; i3 &lt; desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[3]);</div>
+<div class="line"><span class="lineno">  270</span>  assert(i4 &gt;= 0 &amp;&amp; i4 &lt; desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[4]);</div>
+<div class="line"><span class="lineno">  271</span>  <span class="keywordflow">return</span> i0 * desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[0] + i1 * desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[1] + i2 * desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[2] + i3 * desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[3] +</div>
+<div class="line"><span class="lineno">  272</span>         i4 * desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[4];</div>
+<div class="line"><span class="lineno">  273</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00242">nnfw::cker::NdArrayDesc&lt; N &gt;::extents</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00246">nnfw::cker::NdArrayDesc&lt; N &gt;::strides</a>.</p>
+
+</div>
+</div>
+<a id="a6f1bd1e544dd30179554e8182df5f3e8" name="a6f1bd1e544dd30179554e8182df5f3e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f1bd1e544dd30179554e8182df5f3e8">&#9670;&#160;</a></span>SubscriptToIndex() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int nnfw::cker::SubscriptToIndex </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structnnfw_1_1cker_1_1_nd_array_desc.html">NdArrayDesc</a>&lt; 6 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>desc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i3</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i4</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i5</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00275">275</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  277</span>{</div>
+<div class="line"><span class="lineno">  278</span>  assert(i0 &gt;= 0 &amp;&amp; i0 &lt; desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[0]);</div>
+<div class="line"><span class="lineno">  279</span>  assert(i1 &gt;= 0 &amp;&amp; i1 &lt; desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[1]);</div>
+<div class="line"><span class="lineno">  280</span>  assert(i2 &gt;= 0 &amp;&amp; i2 &lt; desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[2]);</div>
+<div class="line"><span class="lineno">  281</span>  assert(i3 &gt;= 0 &amp;&amp; i3 &lt; desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[3]);</div>
+<div class="line"><span class="lineno">  282</span>  assert(i4 &gt;= 0 &amp;&amp; i4 &lt; desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[4]);</div>
+<div class="line"><span class="lineno">  283</span>  assert(i5 &gt;= 0 &amp;&amp; i5 &lt; desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[5]);</div>
+<div class="line"><span class="lineno">  284</span>  <span class="keywordflow">return</span> i0 * desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[0] + i1 * desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[1] + i2 * desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[2] + i3 * desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[3] +</div>
+<div class="line"><span class="lineno">  285</span>         i4 * desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[4] + i5 * desc.<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[5];</div>
+<div class="line"><span class="lineno">  286</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00242">nnfw::cker::NdArrayDesc&lt; N &gt;::extents</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00246">nnfw::cker::NdArrayDesc&lt; N &gt;::strides</a>.</p>
 
 </div>
 </div>
@@ -19740,17 +19897,17 @@ template&lt;int N&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00264">264</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  265</span>{</div>
-<div class="line"><span class="lineno">  266</span>  <span class="keywordtype">int</span> ret_indx = 0;</div>
-<div class="line"><span class="lineno">  267</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; static_cast&lt;size_t&gt;(N); idx++)</div>
-<div class="line"><span class="lineno">  268</span>  {</div>
-<div class="line"><span class="lineno">  269</span>    assert(iter[idx] &gt;= 0 &amp;&amp; iter[idx] &lt; desc-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[idx]);</div>
-<div class="line"><span class="lineno">  270</span>    ret_indx += iter[idx] * desc-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[idx];</div>
-<div class="line"><span class="lineno">  271</span>  }</div>
-<div class="line"><span class="lineno">  272</span> </div>
-<div class="line"><span class="lineno">  273</span>  <span class="keywordflow">return</span> ret_indx;</div>
-<div class="line"><span class="lineno">  274</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00288">288</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html">Utils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  289</span>{</div>
+<div class="line"><span class="lineno">  290</span>  <span class="keywordtype">int</span> ret_indx = 0;</div>
+<div class="line"><span class="lineno">  291</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; static_cast&lt;size_t&gt;(N); idx++)</div>
+<div class="line"><span class="lineno">  292</span>  {</div>
+<div class="line"><span class="lineno">  293</span>    assert(iter[idx] &gt;= 0 &amp;&amp; iter[idx] &lt; desc-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#a2cfe5e716fc863d52a6979a4ab836d3a">extents</a>[idx]);</div>
+<div class="line"><span class="lineno">  294</span>    ret_indx += iter[idx] * desc-&gt;<a class="code hl_variable" href="structnnfw_1_1cker_1_1_nd_array_desc.html#ae0867883d8b556d060f1ff1cebdb4b24">strides</a>[idx];</div>
+<div class="line"><span class="lineno">  295</span>  }</div>
+<div class="line"><span class="lineno">  296</span> </div>
+<div class="line"><span class="lineno">  297</span>  <span class="keywordflow">return</span> ret_indx;</div>
+<div class="line"><span class="lineno">  298</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00242">nnfw::cker::NdArrayDesc&lt; N &gt;::extents</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00246">nnfw::cker::NdArrayDesc&lt; N &gt;::strides</a>.</p>
 
@@ -20451,9 +20608,9 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  403</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
-<div class="ttc" id="anamespacennfw_1_1cker_html_af55ce51eecaba18a0369fb20bf2458a0"><div class="ttname"><a href="namespacennfw_1_1cker.html#af55ce51eecaba18a0369fb20bf2458a0">nnfw::cker::optimized_ops_preload_l1_keep</a></div><div class="ttdeci">void optimized_ops_preload_l1_keep(const T *ptr)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00455">Utils.h:455</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_af55ce51eecaba18a0369fb20bf2458a0"><div class="ttname"><a href="namespacennfw_1_1cker.html#af55ce51eecaba18a0369fb20bf2458a0">nnfw::cker::optimized_ops_preload_l1_keep</a></div><div class="ttdeci">void optimized_ops_preload_l1_keep(const T *ptr)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00479">Utils.h:479</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00134">nnfw::cker::Shape::DimsData()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00455">optimized_ops_preload_l1_keep()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00134">nnfw::cker::Shape::DimsData()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00479">optimized_ops_preload_l1_keep()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_transpose_8h_source.html#l00478">TransposeImpl()</a>.</p>
 

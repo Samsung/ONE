@@ -112,6 +112,10 @@ var namespaces_dup =
     [ "DotBuilder", "namespace_dot_builder.html", "namespace_dot_builder" ],
     [ "DumpFakeQuantFM", "namespace_dump_fake_quant_f_m.html", "namespace_dump_fake_quant_f_m" ],
     [ "DumpFP32FM", "namespace_dump_f_p32_f_m.html", "namespace_dump_f_p32_f_m" ],
+    [ "dynamic_shape_inference", "namespacedynamic__shape__inference.html", [
+      [ "main", "namespacedynamic__shape__inference.html#aa4c392e16470aa1f631734eeb5a19a56", null ],
+      [ "argv", "namespacedynamic__shape__inference.html#a1626c53dd9ca4a28fc47c3eb6b61221a", null ]
+    ] ],
     [ "Eigen", "namespace_eigen.html", "namespace_eigen" ],
     [ "enco", "namespaceenco.html", "namespaceenco" ],
     [ "eval_result_verifier", "namespaceeval__result__verifier.html", [

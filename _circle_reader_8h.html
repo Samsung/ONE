@@ -101,6 +101,7 @@ $(document).ready(function(){initNavTree('_circle_reader_8h.html',''); initResiz
 <code>#include &lt;<a class="el" href="_attr_padding_8h_source.html">luci/IR/AttrPadding.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_8h_source.html">luci/IR/CircleNode.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="_circle_quant_param_8h_source.html">luci/IR/CircleQuantParam.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="_circle_m_x_quant_param_8h_source.html">luci/IR/CircleMXQuantParam.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="_sparsity_param_8h_source.html">luci/IR/SparsityParam.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="loco_8h_source.html">loco.h</a>&gt;</code><br />
 <code>#include &lt;map&gt;</code><br />
@@ -144,6 +145,8 @@ Functions</h2></td></tr>
 <tr class="separator:a300d09cf8582e6d501c43758fe10b609"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0111f725fe709fc649e669d2a3f4892f" id="r_a0111f725fe709fc649e669d2a3f4892f"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="structluci_1_1_circle_quant_param.html">CircleQuantParam</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a0111f725fe709fc649e669d2a3f4892f">luci::luci_quantparam</a> (const circle::QuantizationParameters *quantization)</td></tr>
 <tr class="separator:a0111f725fe709fc649e669d2a3f4892f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33f5b62aca9d40fa879b6a87c287385e" id="r_a33f5b62aca9d40fa879b6a87c287385e"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="structluci_1_1_circle_m_x_quant_param.html">CircleMXQuantParam</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a33f5b62aca9d40fa879b6a87c287385e">luci::luci_mx_quantparam</a> (const circle::MXQuantization *quantization)</td></tr>
+<tr class="separator:a33f5b62aca9d40fa879b6a87c287385e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a485965fe8e6f85fb6670047ef915ce8a" id="r_a485965fe8e6f85fb6670047ef915ce8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a485965fe8e6f85fb6670047ef915ce8a">luci::copy_tensor_attributes</a> (const circle::Tensor *tensor, <a class="el" href="structluci_1_1_circle_node.html">CircleNode</a> *node)</td></tr>
 <tr class="memdesc:a485965fe8e6f85fb6670047ef915ce8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy common tensor attributes such as name, type, etc. to node.  <br /></td></tr>
 <tr class="separator:a485965fe8e6f85fb6670047ef915ce8a"><td class="memSeparator" colspan="2">&#160;</td></tr>

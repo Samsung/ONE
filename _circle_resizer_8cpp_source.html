@@ -113,52 +113,114 @@ $(document).ready(function(){initNavTree('_circle_resizer_8cpp_source.html','');
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * limitations under the License.</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;<a class="code" href="arser_8h.html">arser/arser.h</a>&gt;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;<a class="code" href="vconone_8h.html">vconone/vconone.h</a>&gt;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="_model_editor_8h.html">ModelEditor.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="_shape_parser_8h.html">ShapeParser.h</a>&quot;</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;<a class="code" href="arser_8h.html">arser/arser.h</a>&gt;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;<a class="code" href="vconone_8h.html">vconone/vconone.h</a>&gt;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">namespace</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>{</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keywordtype">void</span> <a class="code hl_function" href="_circle_m_p_q_solver_8cpp.html#ac6230d495fc909bb61195c45f703d492">print_version</a>()</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;circle-resizer version &quot;</span> &lt;&lt; <a class="code hl_function" href="namespacevconone.html#adbedbd4315319b57ce1fea1acf328e2b">vconone::get_string</a>() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  std::cout &lt;&lt; <a class="code hl_function" href="namespacevconone.html#a2bcd74c947907f6fdad6d10eea64427c">vconone::get_copyright</a>() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacecircle__resizer.html">circle_resizer</a>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>} <span class="comment">// namespace</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="_circle_resizer_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">   34</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="_circle_resizer_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv)</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <a class="code hl_class" href="classarser_1_1_arser.html">arser::Arser</a> <a class="code hl_namespace" href="namespacearser.html">arser</a>(<span class="stringliteral">&quot;circle-resizer provides capabilities to change inputs of the models&quot;</span>);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keywordtype">void</span> <a class="code hl_function" href="_circle_m_p_q_solver_8cpp.html#ac6230d495fc909bb61195c45f703d492">print_version</a>()</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  std::cout &lt;&lt; <span class="stringliteral">&quot;circle-resizer version &quot;</span> &lt;&lt; <a class="code hl_function" href="namespacevconone.html#adbedbd4315319b57ce1fea1acf328e2b">vconone::get_string</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  std::cout &lt;&lt; <a class="code hl_function" href="namespacevconone.html#a2bcd74c947907f6fdad6d10eea64427c">vconone::get_copyright</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <a class="code hl_namespace" href="namespacearser.html">arser</a>.add_argument(<span class="stringliteral">&quot;--version&quot;</span>)</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    .nargs(0)</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    .required(<span class="keyword">false</span>)</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    .default_value(<span class="keyword">false</span>)</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    .help(<span class="stringliteral">&quot;Show version information and exit&quot;</span>)</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    .exit_with(<a class="code hl_function" href="_circle_m_p_q_solver_8cpp.html#ac6230d495fc909bb61195c45f703d492">print_version</a>);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordflow">try</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_namespace" href="namespacearser.html">arser</a>.parse(argc, argv);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  }</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error &amp;err)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    std::cerr &lt;&lt; err.what() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keywordtype">void</span> list_shapes(<span class="keyword">const</span> std::vector&lt;Shape&gt; &amp;shapes)</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>{</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; shapes.size(); ++idx)</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    std::cout &lt;&lt; idx &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; shapes[idx] &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>} <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="foldopen" id="foldopen00048" data-start="{" data-end="}">
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="_circle_resizer_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">   48</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="_circle_resizer_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>{</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <a class="code hl_class" href="classarser_1_1_arser.html">arser::Arser</a> <a class="code hl_namespace" href="namespacearser.html">arser</a>(<span class="stringliteral">&quot;circle-resizer provides capabilities to change inputs of the models&quot;</span>);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <a class="code hl_namespace" href="namespacearser.html">arser</a>.add_argument(<span class="stringliteral">&quot;--input_path&quot;</span>)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    .nargs(1)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    .type(arser::DataType::STR)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    .required(<span class="keyword">true</span>)</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    .help(<span class="stringliteral">&quot;Path to the input model (.circle)&quot;</span>);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <a class="code hl_namespace" href="namespacearser.html">arser</a>.add_argument(<span class="stringliteral">&quot;--output_path&quot;</span>)</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    .nargs(1)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    .type(arser::DataType::STR)</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    .required(<span class="keyword">true</span>)</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    .help(<span class="stringliteral">&quot;Path to the resized model (.circle)&quot;</span>);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <a class="code hl_namespace" href="namespacearser.html">arser</a>.add_argument(<span class="stringliteral">&quot;--input_shapes&quot;</span>)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    .nargs(1)</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    .type(arser::DataType::STR)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    .required(<span class="keyword">true</span>)</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    .help(<span class="stringliteral">&quot;New inputs shapes in the comma separated format. An example for 2 inputs: [1,2],[3,4].&quot;</span>);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <a class="code hl_namespace" href="namespacearser.html">arser</a>.add_argument(<span class="stringliteral">&quot;--version&quot;</span>)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    .nargs(0)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    .required(<span class="keyword">false</span>)</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    .default_value(<span class="keyword">false</span>)</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    .help(<span class="stringliteral">&quot;Show version information and exit&quot;</span>)</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    .exit_with(<a class="code hl_function" href="_circle_m_p_q_solver_8cpp.html#ac6230d495fc909bb61195c45f703d492">print_version</a>);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  {</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <a class="code hl_namespace" href="namespacearser.html">arser</a>.parse(argc, argv);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_path = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--input_path&quot;</span>);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keyword">auto</span> circle_model = std::make_shared&lt;CircleModel&gt;(input_path);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <a class="code hl_class" href="classcircle__resizer_1_1_model_editor.html">ModelEditor</a> resizer(circle_model);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Shapes of inputs before resizing:&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    list_shapes(circle_model-&gt;input_shapes());</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Shapes of outputs before resizing:&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    list_shapes(circle_model-&gt;output_shapes());</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keyword">const</span> <span class="keyword">auto</span> output_path = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--output_path&quot;</span>);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keyword">const</span> <span class="keyword">auto</span> new_input_shapes_str = <a class="code hl_namespace" href="namespacearser.html">arser</a>.get&lt;std::string&gt;(<span class="stringliteral">&quot;--input_shapes&quot;</span>);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    resizer.<a class="code hl_function" href="classcircle__resizer_1_1_model_editor.html#a08de884b024afcb234e3b6b946742ae5">resize_inputs</a>(<a class="code hl_function" href="namespacecircle__resizer.html#a31ee125c6bd5806d9c42996efcc7502f">parse_shapes</a>(new_input_shapes_str));</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Shapes of inputs after resizing:&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    list_shapes(circle_model-&gt;input_shapes());</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Shapes of outputs after resizing:&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    list_shapes(circle_model-&gt;output_shapes());</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    circle_model-&gt;save(output_path);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    std::cout &lt;&lt; <span class="stringliteral">&quot;Resizing complete, the model saved to: &quot;</span> &lt;&lt; output_path &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::runtime_error &amp;err)</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  {</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    std::cerr &lt;&lt; <span class="stringliteral">&quot;Exception during resizing: &quot;</span> &lt;&lt; err.what() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  }</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>}</div>
 </div>
 <div class="ttc" id="a_circle_m_p_q_solver_8cpp_html_ac6230d495fc909bb61195c45f703d492"><div class="ttname"><a href="_circle_m_p_q_solver_8cpp.html#ac6230d495fc909bb61195c45f703d492">print_version</a></div><div class="ttdeci">void print_version(void)</div><div class="ttdef"><b>Definition</b> <a href="_circle_m_p_q_solver_8cpp_source.html#l00032">CircleMPQSolver.cpp:32</a></div></div>
-<div class="ttc" id="a_circle_resizer_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="_circle_resizer_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="_circle_resizer_8cpp_source.html#l00034">CircleResizer.cpp:34</a></div></div>
+<div class="ttc" id="a_circle_resizer_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="_circle_resizer_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="_circle_resizer_8cpp_source.html#l00048">CircleResizer.cpp:48</a></div></div>
+<div class="ttc" id="a_model_editor_8h_html"><div class="ttname"><a href="_model_editor_8h.html">ModelEditor.h</a></div></div>
+<div class="ttc" id="a_shape_parser_8h_html"><div class="ttname"><a href="_shape_parser_8h.html">ShapeParser.h</a></div></div>
 <div class="ttc" id="aarser_8h_html"><div class="ttname"><a href="arser_8h.html">arser.h</a></div></div>
 <div class="ttc" id="aclassarser_1_1_arser_html"><div class="ttname"><a href="classarser_1_1_arser.html">arser::Arser</a></div><div class="ttdef"><b>Definition</b> <a href="arser_8h_source.html#l00329">arser.h:330</a></div></div>
+<div class="ttc" id="aclasscircle__resizer_1_1_model_editor_html"><div class="ttname"><a href="classcircle__resizer_1_1_model_editor.html">circle_resizer::ModelEditor</a></div><div class="ttdef"><b>Definition</b> <a href="_model_editor_8h_source.html#l00033">ModelEditor.h:34</a></div></div>
+<div class="ttc" id="aclasscircle__resizer_1_1_model_editor_html_a08de884b024afcb234e3b6b946742ae5"><div class="ttname"><a href="classcircle__resizer_1_1_model_editor.html#a08de884b024afcb234e3b6b946742ae5">circle_resizer::ModelEditor::resize_inputs</a></div><div class="ttdeci">ModelEditor &amp; resize_inputs(const std::vector&lt; Shape &gt; &amp;new_inputs_shapes)</div><div class="ttdoc">Resize the model. It means changing shape of the inputs and propagating changes through the graph.</div><div class="ttdef"><b>Definition</b> <a href="_model_editor_8cpp_source.html#l00072">ModelEditor.cpp:72</a></div></div>
 <div class="ttc" id="anamespacearser_html"><div class="ttname"><a href="namespacearser.html">arser</a></div><div class="ttdef"><b>Definition</b> <a href="arser_8h_source.html#l00038">arser.h:39</a></div></div>
+<div class="ttc" id="anamespacecircle__resizer_html"><div class="ttname"><a href="namespacecircle__resizer.html">circle_resizer</a></div><div class="ttdef"><b>Definition</b> <a href="circle-resizer_2include_2_circle_model_8h_source.html#l00031">CircleModel.h:32</a></div></div>
+<div class="ttc" id="anamespacecircle__resizer_html_a31ee125c6bd5806d9c42996efcc7502f"><div class="ttname"><a href="namespacecircle__resizer.html#a31ee125c6bd5806d9c42996efcc7502f">circle_resizer::parse_shapes</a></div><div class="ttdeci">std::vector&lt; Shape &gt; parse_shapes(const std::string &amp;shapes)</div><div class="ttdoc">Parse shapes from string representation to Shapes object.</div><div class="ttdef"><b>Definition</b> <a href="_shape_parser_8cpp_source.html#l00065">ShapeParser.cpp:65</a></div></div>
 <div class="ttc" id="anamespacevconone_html_a2bcd74c947907f6fdad6d10eea64427c"><div class="ttname"><a href="namespacevconone.html#a2bcd74c947907f6fdad6d10eea64427c">vconone::get_copyright</a></div><div class="ttdeci">std::string get_copyright(void)</div><div class="ttdoc">get_copyright will return copyright string</div><div class="ttdef"><b>Definition</b> <a href="version_8cpp_source.html#l00054">version.cpp:54</a></div></div>
 <div class="ttc" id="anamespacevconone_html_adbedbd4315319b57ce1fea1acf328e2b"><div class="ttname"><a href="namespacevconone.html#adbedbd4315319b57ce1fea1acf328e2b">vconone::get_string</a></div><div class="ttdeci">std::string get_string(void)</div><div class="ttdoc">get_string will return string of major.minor.patch (without build)</div><div class="ttdef"><b>Definition</b> <a href="version_8cpp_source.html#l00044">version.cpp:44</a></div></div>
 <div class="ttc" id="avconone_8h_html"><div class="ttname"><a href="vconone_8h.html">vconone.h</a></div></div>

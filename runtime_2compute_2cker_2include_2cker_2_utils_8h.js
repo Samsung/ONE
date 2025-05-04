@@ -20,5 +20,7 @@ var runtime_2compute_2cker_2include_2cker_2_utils_8h =
     [ "QuantizeMultiplierSmallerThanOneExp", "runtime_2compute_2cker_2include_2cker_2_utils_8h.html#a75309f19ef4f7067a8523debd1af1434", null ],
     [ "ReducedOutputOffset", "runtime_2compute_2cker_2include_2cker_2_utils_8h.html#a757324a1a73d98f1a822a08d4bedffb9", null ],
     [ "SubscriptToIndex", "runtime_2compute_2cker_2include_2cker_2_utils_8h.html#aec446d97125ede2dc10e58a86c928e4c", null ],
+    [ "SubscriptToIndex", "runtime_2compute_2cker_2include_2cker_2_utils_8h.html#a23b1ec5edd694ac9f01793427c01eb3f", null ],
+    [ "SubscriptToIndex", "runtime_2compute_2cker_2include_2cker_2_utils_8h.html#a6f1bd1e544dd30179554e8182df5f3e8", null ],
     [ "SubscriptToIndexGeneric", "runtime_2compute_2cker_2include_2cker_2_utils_8h.html#a463e648ae455ddaf93d167b1d73ee490", null ]
 ];

@@ -160,6 +160,7 @@ var annotated_dup =
     [ "circle_resizer", "namespacecircle__resizer.html", [
       [ "CircleModel", "classcircle__resizer_1_1_circle_model.html", "classcircle__resizer_1_1_circle_model" ],
       [ "Dim", "classcircle__resizer_1_1_dim.html", "classcircle__resizer_1_1_dim" ],
+      [ "ModelEditor", "classcircle__resizer_1_1_model_editor.html", "classcircle__resizer_1_1_model_editor" ],
       [ "Shape", "classcircle__resizer_1_1_shape.html", "classcircle__resizer_1_1_shape" ]
     ] ],
     [ "circlechef", "namespacecirclechef.html", [
@@ -1091,6 +1092,7 @@ var annotated_dup =
       [ "CircleMirrorPadGraphBuilder", "classluci_1_1_circle_mirror_pad_graph_builder.html", "classluci_1_1_circle_mirror_pad_graph_builder" ],
       [ "CircleMul", "classluci_1_1_circle_mul.html", "classluci_1_1_circle_mul" ],
       [ "CircleMulGraphBuilder", "classluci_1_1_circle_mul_graph_builder.html", "classluci_1_1_circle_mul_graph_builder" ],
+      [ "CircleMXQuantParam", "structluci_1_1_circle_m_x_quant_param.html", "structluci_1_1_circle_m_x_quant_param" ],
       [ "CircleNeg", "classluci_1_1_circle_neg.html", "classluci_1_1_circle_neg" ],
       [ "CircleNegGraphBuilder", "classluci_1_1_circle_neg_graph_builder.html", "classluci_1_1_circle_neg_graph_builder" ],
       [ "CircleNode", "structluci_1_1_circle_node.html", "structluci_1_1_circle_node" ],
@@ -1336,6 +1338,7 @@ var annotated_dup =
       [ "LoggingContext", "structluci_1_1_logging_context.html", null ],
       [ "MakeBatchNormGammaPositivePass", "structluci_1_1_make_batch_norm_gamma_positive_pass.html", "structluci_1_1_make_batch_norm_gamma_positive_pass" ],
       [ "Module", "classluci_1_1_module.html", "classluci_1_1_module" ],
+      [ "ModulePass", "classluci_1_1_module_pass.html", "classluci_1_1_module_pass" ],
       [ "ModuleProgressReporter", "classluci_1_1_module_progress_reporter.html", "classluci_1_1_module_progress_reporter" ],
       [ "NodeBuilderBase", "classluci_1_1_node_builder_base.html", "classluci_1_1_node_builder_base" ],
       [ "NodeFiller", "classluci_1_1_node_filler.html", "classluci_1_1_node_filler" ],

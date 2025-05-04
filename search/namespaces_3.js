@@ -9,5 +9,6 @@ var searchData=
   ['dio_3a_3ahdf5_6',['hdf5',['../namespacedio_1_1hdf5.html',1,'dio']]],
   ['dotbuilder_7',['DotBuilder',['../namespace_dot_builder.html',1,'']]],
   ['dumpfakequantfm_8',['DumpFakeQuantFM',['../namespace_dump_fake_quant_f_m.html',1,'']]],
-  ['dumpfp32fm_9',['DumpFP32FM',['../namespace_dump_f_p32_f_m.html',1,'']]]
+  ['dumpfp32fm_9',['DumpFP32FM',['../namespace_dump_f_p32_f_m.html',1,'']]],
+  ['dynamic_5fshape_5finference_10',['dynamic_shape_inference',['../namespacedynamic__shape__inference.html',1,'']]]
 ];

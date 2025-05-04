@@ -227,7 +227,7 @@ class nnc::cli::Option&lt; T &gt;</div><p>this class describes command line opti
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00214">214</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00215">215</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ade8a9f08a3418c0c350b3458c5b74c18" name="ade8a9f08a3418c0c350b3458c5b74c18"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ade8a9f08a3418c0c350b3458c5b74c18">&#9670;&#160;</a></span>option_checker_t</h2>
@@ -245,7 +245,7 @@ template&lt;typename T &gt; </div>
 
 <p>function type for option verification </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00220">220</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00221">221</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
 
 </div>
 </div>
@@ -350,49 +350,49 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00495">495</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  499</span>{</div>
-<div class="line"><span class="lineno">  500</span>  <span class="comment">// save all names</span></div>
-<div class="line"><span class="lineno">  501</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;n : optnames)</div>
-<div class="line"><span class="lineno">  502</span>  {</div>
-<div class="line"><span class="lineno">  503</span>    _names.push_back(n);</div>
-<div class="line"><span class="lineno">  504</span> </div>
-<div class="line"><span class="lineno">  505</span>    assert(n[0] == <span class="charliteral">&#39;-&#39;</span> &amp;&amp; <span class="stringliteral">&quot;option name must start with `-`&quot;</span>);</div>
-<div class="line"><span class="lineno">  506</span>  }</div>
-<div class="line"><span class="lineno">  507</span> </div>
-<div class="line"><span class="lineno">  508</span>  _descr = descr;</div>
-<div class="line"><span class="lineno">  509</span>  _is_optional = is_optional;</div>
-<div class="line"><span class="lineno">  510</span>  _valid_vals = vals;</div>
-<div class="line"><span class="lineno">  511</span>  _seps = seps;</div>
-<div class="line"><span class="lineno">  512</span> </div>
-<div class="line"><span class="lineno">  513</span>  this-&gt;setRawValue(default_val);</div>
-<div class="line"><span class="lineno">  514</span> </div>
-<div class="line"><span class="lineno">  515</span><span class="preprocessor">#ifndef NDEBUG</span></div>
-<div class="line"><span class="lineno">  516</span>  <span class="comment">// check that separators are valid symbols</span></div>
-<div class="line"><span class="lineno">  517</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;s : _seps)</div>
-<div class="line"><span class="lineno">  518</span>  {</div>
-<div class="line"><span class="lineno">  519</span>    assert((s == <span class="charliteral">&#39;=&#39;</span> || s == <span class="charliteral">&#39;:&#39;</span>) &amp;&amp; <span class="stringliteral">&quot;invalid option separators&quot;</span>);</div>
-<div class="line"><span class="lineno">  520</span>  }</div>
-<div class="line"><span class="lineno">  521</span><span class="preprocessor">#endif </span><span class="comment">// NDEBUG</span></div>
-<div class="line"><span class="lineno">  522</span> </div>
-<div class="line"><span class="lineno">  523</span>  <span class="comment">// save checker</span></div>
-<div class="line"><span class="lineno">  524</span>  _checker = checker;</div>
-<div class="line"><span class="lineno">  525</span> </div>
-<div class="line"><span class="lineno">  526</span>  _is_enabled = enabled;</div>
-<div class="line"><span class="lineno">  527</span>  assert((_is_enabled || _is_optional || group != <a class="code hl_enumvalue" href="classnnc_1_1cli_1_1_i_option.html#aed7641dbb8b81f003aaf56412b1596c9a334c4a4c42fdb79d7ebc3e73b517e6f8">IOption::Group::none</a>) &amp;&amp;</div>
-<div class="line"><span class="lineno">  528</span>         <span class="stringliteral">&quot;disabled non-group option can&#39;t be required&quot;</span>);</div>
-<div class="line"><span class="lineno">  529</span> </div>
-<div class="line"><span class="lineno">  530</span>  _group = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a4261d1713284ff94edd1a7bfb3ef3547">group</a>;</div>
-<div class="line"><span class="lineno">  531</span> </div>
-<div class="line"><span class="lineno">  532</span>  _can_have_several_vals =</div>
-<div class="line"><span class="lineno">  533</span>    std::is_same&lt;T, std::vector&lt;std::string&gt;&gt;::value || std::is_same&lt;T, std::vector&lt;int&gt;&gt;::value;</div>
-<div class="line"><span class="lineno">  534</span>  assert(!(_can_have_several_vals &amp;&amp; !_seps.empty()) &amp;&amp;</div>
-<div class="line"><span class="lineno">  535</span>         <span class="stringliteral">&quot;option with several values can&#39;t have separators&quot;</span>);</div>
-<div class="line"><span class="lineno">  536</span> </div>
-<div class="line"><span class="lineno">  537</span>  <span class="comment">// register new option for parser</span></div>
-<div class="line"><span class="lineno">  538</span>  <a class="code hl_function" href="classnnc_1_1cli_1_1_command_line.html#a6f64cdc1d91c64de4f96edfa9304c1ae">CommandLine::getParser</a>()-&gt;<a class="code hl_function" href="classnnc_1_1cli_1_1_command_line.html#a28df1fcbb7dad0a63da66ee36b3603d8">registerOption</a>(<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">  539</span> </div>
-<div class="line"><span class="lineno">  540</span>} <span class="comment">// Option</span></div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00496">496</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  500</span>{</div>
+<div class="line"><span class="lineno">  501</span>  <span class="comment">// save all names</span></div>
+<div class="line"><span class="lineno">  502</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;n : optnames)</div>
+<div class="line"><span class="lineno">  503</span>  {</div>
+<div class="line"><span class="lineno">  504</span>    _names.push_back(n);</div>
+<div class="line"><span class="lineno">  505</span> </div>
+<div class="line"><span class="lineno">  506</span>    assert(n[0] == <span class="charliteral">&#39;-&#39;</span> &amp;&amp; <span class="stringliteral">&quot;option name must start with `-`&quot;</span>);</div>
+<div class="line"><span class="lineno">  507</span>  }</div>
+<div class="line"><span class="lineno">  508</span> </div>
+<div class="line"><span class="lineno">  509</span>  _descr = descr;</div>
+<div class="line"><span class="lineno">  510</span>  _is_optional = is_optional;</div>
+<div class="line"><span class="lineno">  511</span>  _valid_vals = vals;</div>
+<div class="line"><span class="lineno">  512</span>  _seps = seps;</div>
+<div class="line"><span class="lineno">  513</span> </div>
+<div class="line"><span class="lineno">  514</span>  this-&gt;setRawValue(default_val);</div>
+<div class="line"><span class="lineno">  515</span> </div>
+<div class="line"><span class="lineno">  516</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><span class="lineno">  517</span>  <span class="comment">// check that separators are valid symbols</span></div>
+<div class="line"><span class="lineno">  518</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;s : _seps)</div>
+<div class="line"><span class="lineno">  519</span>  {</div>
+<div class="line"><span class="lineno">  520</span>    assert((s == <span class="charliteral">&#39;=&#39;</span> || s == <span class="charliteral">&#39;:&#39;</span>) &amp;&amp; <span class="stringliteral">&quot;invalid option separators&quot;</span>);</div>
+<div class="line"><span class="lineno">  521</span>  }</div>
+<div class="line"><span class="lineno">  522</span><span class="preprocessor">#endif </span><span class="comment">// NDEBUG</span></div>
+<div class="line"><span class="lineno">  523</span> </div>
+<div class="line"><span class="lineno">  524</span>  <span class="comment">// save checker</span></div>
+<div class="line"><span class="lineno">  525</span>  _checker = checker;</div>
+<div class="line"><span class="lineno">  526</span> </div>
+<div class="line"><span class="lineno">  527</span>  _is_enabled = enabled;</div>
+<div class="line"><span class="lineno">  528</span>  assert((_is_enabled || _is_optional || group != <a class="code hl_enumvalue" href="classnnc_1_1cli_1_1_i_option.html#aed7641dbb8b81f003aaf56412b1596c9a334c4a4c42fdb79d7ebc3e73b517e6f8">IOption::Group::none</a>) &amp;&amp;</div>
+<div class="line"><span class="lineno">  529</span>         <span class="stringliteral">&quot;disabled non-group option can&#39;t be required&quot;</span>);</div>
+<div class="line"><span class="lineno">  530</span> </div>
+<div class="line"><span class="lineno">  531</span>  _group = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a4261d1713284ff94edd1a7bfb3ef3547">group</a>;</div>
+<div class="line"><span class="lineno">  532</span> </div>
+<div class="line"><span class="lineno">  533</span>  _can_have_several_vals =</div>
+<div class="line"><span class="lineno">  534</span>    std::is_same&lt;T, std::vector&lt;std::string&gt;&gt;::value || std::is_same&lt;T, std::vector&lt;int&gt;&gt;::value;</div>
+<div class="line"><span class="lineno">  535</span>  assert(!(_can_have_several_vals &amp;&amp; !_seps.empty()) &amp;&amp;</div>
+<div class="line"><span class="lineno">  536</span>         <span class="stringliteral">&quot;option with several values can&#39;t have separators&quot;</span>);</div>
+<div class="line"><span class="lineno">  537</span> </div>
+<div class="line"><span class="lineno">  538</span>  <span class="comment">// register new option for parser</span></div>
+<div class="line"><span class="lineno">  539</span>  <a class="code hl_function" href="classnnc_1_1cli_1_1_command_line.html#a6f64cdc1d91c64de4f96edfa9304c1ae">CommandLine::getParser</a>()-&gt;<a class="code hl_function" href="classnnc_1_1cli_1_1_command_line.html#a28df1fcbb7dad0a63da66ee36b3603d8">registerOption</a>(<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">  540</span> </div>
+<div class="line"><span class="lineno">  541</span>} <span class="comment">// Option</span></div>
 <div class="ttc" id="aclassnnc_1_1cli_1_1_command_line_html_a28df1fcbb7dad0a63da66ee36b3603d8"><div class="ttname"><a href="classnnc_1_1cli_1_1_command_line.html#a28df1fcbb7dad0a63da66ee36b3603d8">nnc::cli::CommandLine::registerOption</a></div><div class="ttdeci">void registerOption(IOption *opt)</div><div class="ttdoc">register option for parser</div><div class="ttdef"><b>Definition</b> <a href="_command_line_8cpp_source.html#l00199">CommandLine.cpp:199</a></div></div>
 <div class="ttc" id="aclassnnc_1_1cli_1_1_command_line_html_a6f64cdc1d91c64de4f96edfa9304c1ae"><div class="ttname"><a href="classnnc_1_1cli_1_1_command_line.html#a6f64cdc1d91c64de4f96edfa9304c1ae">nnc::cli::CommandLine::getParser</a></div><div class="ttdeci">static CommandLine * getParser()</div><div class="ttdoc">singleton method</div><div class="ttdef"><b>Definition</b> <a href="_command_line_8cpp_source.html#l00106">CommandLine.cpp:106</a></div></div>
 <div class="ttc" id="aclassnnc_1_1cli_1_1_i_option_html_aed7641dbb8b81f003aaf56412b1596c9a334c4a4c42fdb79d7ebc3e73b517e6f8"><div class="ttname"><a href="classnnc_1_1cli_1_1_i_option.html#aed7641dbb8b81f003aaf56412b1596c9a334c4a4c42fdb79d7ebc3e73b517e6f8">nnc::cli::IOption::Group::none</a></div><div class="ttdeci">@ none</div></div>
@@ -460,8 +460,8 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="classnnc_1_1cli_1_1_i_option.html#ac9e71457df74fdf084aada25a009a494">nnc::cli::IOption</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00279">279</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  279</span>{ <span class="keywordflow">return</span> _can_have_several_vals; }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00280">280</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  280</span>{ <span class="keywordflow">return</span> _can_have_several_vals; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -493,8 +493,8 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="classnnc_1_1cli_1_1_i_option.html#a56032f02dde72bf2a7903b03fe0505b6">nnc::cli::IOption</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00283">283</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  283</span>{ <span class="keywordflow">return</span> _group; }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00284">284</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  284</span>{ <span class="keywordflow">return</span> _group; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -527,11 +527,11 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="classnnc_1_1cli_1_1_i_option.html#a6de2625cb1f4d119beda42087ac2d259">nnc::cli::IOption</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00285">285</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  285</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classnnc_1_1cli_1_1_i_option.html#af0664046076bd067559c5b25e78182e6">_groupNames</a>[<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(_group)]; }</div>
-<div class="ttc" id="aclassnnc_1_1cli_1_1_i_option_html_af0664046076bd067559c5b25e78182e6"><div class="ttname"><a href="classnnc_1_1cli_1_1_i_option.html#af0664046076bd067559c5b25e78182e6">nnc::cli::IOption::_groupNames</a></div><div class="ttdeci">static constexpr const char *const _groupNames[]</div><div class="ttdef"><b>Definition</b> <a href="_command_line_8h_source.html#l00206">CommandLine.h:206</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00286">286</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  286</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classnnc_1_1cli_1_1_i_option.html#af0664046076bd067559c5b25e78182e6">_groupNames</a>[<span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(_group)]; }</div>
+<div class="ttc" id="aclassnnc_1_1cli_1_1_i_option_html_af0664046076bd067559c5b25e78182e6"><div class="ttname"><a href="classnnc_1_1cli_1_1_i_option.html#af0664046076bd067559c5b25e78182e6">nnc::cli::IOption::_groupNames</a></div><div class="ttdeci">static constexpr const char *const _groupNames[]</div><div class="ttdef"><b>Definition</b> <a href="_command_line_8h_source.html#l00207">CommandLine.h:207</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_command_line_8h_source.html#l00206">nnc::cli::IOption::_groupNames</a>.</p>
+<p class="reference">References <a class="el" href="_command_line_8h_source.html#l00207">nnc::cli::IOption::_groupNames</a>.</p>
 
 </div>
 </div>
@@ -564,8 +564,8 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="classnnc_1_1cli_1_1_i_option.html#a9bce709cdb89dc082b5110d26e343466">nnc::cli::IOption</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00259">259</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  259</span>{ <span class="keywordflow">return</span> _names; }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00260">260</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  260</span>{ <span class="keywordflow">return</span> _names; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -598,8 +598,8 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="classnnc_1_1cli_1_1_i_option.html#aa9f58da9ff0633fa90c30dcd9748a375">nnc::cli::IOption</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00261">261</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  261</span>{ <span class="keywordflow">return</span> _descr; }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00262">262</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  262</span>{ <span class="keywordflow">return</span> _descr; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -632,8 +632,8 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="classnnc_1_1cli_1_1_i_option.html#a1e7e095e877f01b28a04c7b7eda6276a">nnc::cli::IOption</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00275">275</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  275</span>{ <span class="keywordflow">return</span> _seps; }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00276">276</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  276</span>{ <span class="keywordflow">return</span> _seps; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -666,8 +666,8 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="classnnc_1_1cli_1_1_i_option.html#a1a7c400d8b3dc233e25dc92c9cd1f730">nnc::cli::IOption</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00265">265</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  265</span>{ <span class="keywordflow">return</span> _valid_vals; }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00266">266</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  266</span>{ <span class="keywordflow">return</span> _valid_vals; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -700,8 +700,8 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="classnnc_1_1cli_1_1_i_option.html#a7266ca579d4d6e928748885b9a1bd612">nnc::cli::IOption</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00277">277</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  277</span>{ <span class="keywordflow">return</span> !_is_enabled; }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00278">278</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  278</span>{ <span class="keywordflow">return</span> !_is_enabled; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -733,8 +733,8 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="classnnc_1_1cli_1_1_i_option.html#accf7c6e78404973b1ab75818324408f1">nnc::cli::IOption</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00281">281</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  281</span>{ <span class="keywordflow">return</span> _group != <a class="code hl_enumvalue" href="classnnc_1_1cli_1_1_i_option.html#aed7641dbb8b81f003aaf56412b1596c9a334c4a4c42fdb79d7ebc3e73b517e6f8">IOption::Group::none</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00282">282</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  282</span>{ <span class="keywordflow">return</span> _group != <a class="code hl_enumvalue" href="classnnc_1_1cli_1_1_i_option.html#aed7641dbb8b81f003aaf56412b1596c9a334c4a4c42fdb79d7ebc3e73b517e6f8">IOption::Group::none</a>; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classnnc_1_1cli_1_1_i_option.html#aed7641dbb8b81f003aaf56412b1596c9a334c4a4c42fdb79d7ebc3e73b517e6f8">nnc::cli::IOption::none</a>.</p>
 
@@ -769,8 +769,8 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="classnnc_1_1cli_1_1_i_option.html#a95935f9f75e5cd4c48547dcd2edcccfe">nnc::cli::IOption</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00263">263</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  263</span>{ <span class="keywordflow">return</span> _is_optional; }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00264">264</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  264</span>{ <span class="keywordflow">return</span> _is_optional; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -832,11 +832,11 @@ template&lt;typename Tval &gt; </div>
 
 <p>overload assignment operator for type </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00250">250</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  251</span>  { <span class="comment">// NOLINT(cppcoreguidelines-c-copy-assignment-signature, misc-unconventional-assign-operator)</span></div>
-<div class="line"><span class="lineno">  252</span>    setRawValue(val);</div>
-<div class="line"><span class="lineno">  253</span>    <span class="keywordflow">return</span> this-&gt;getRawValue(); <span class="comment">// If not using `this` it won&#39;t work</span></div>
-<div class="line"><span class="lineno">  254</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00251">251</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  252</span>  { <span class="comment">// NOLINT(cppcoreguidelines-c-copy-assignment-signature, misc-unconventional-assign-operator)</span></div>
+<div class="line"><span class="lineno">  253</span>    setRawValue(val);</div>
+<div class="line"><span class="lineno">  254</span>    <span class="keywordflow">return</span> this-&gt;getRawValue(); <span class="comment">// If not using `this` it won&#39;t work</span></div>
+<div class="line"><span class="lineno">  255</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -875,13 +875,13 @@ template&lt;typename T &gt; </div>
 
 <p>Implements <a class="el" href="classnnc_1_1cli_1_1_i_option.html#addcacdd71d30f73e0666ab262f61012b">nnc::cli::IOption</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00267">267</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  268</span>  {</div>
-<div class="line"><span class="lineno">  269</span>    <span class="keywordflow">if</span> (_checker)</div>
-<div class="line"><span class="lineno">  270</span>    {</div>
-<div class="line"><span class="lineno">  271</span>      _checker(*<span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">  272</span>    }</div>
-<div class="line"><span class="lineno">  273</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00268">268</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  269</span>  {</div>
+<div class="line"><span class="lineno">  270</span>    <span class="keywordflow">if</span> (_checker)</div>
+<div class="line"><span class="lineno">  271</span>    {</div>
+<div class="line"><span class="lineno">  272</span>      _checker(*<span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">  273</span>    }</div>
+<div class="line"><span class="lineno">  274</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

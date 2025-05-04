@@ -1386,6 +1386,7 @@ var hierarchy =
     [ "luci::CircleImportMetadata", "classluci_1_1_circle_import_metadata.html", null ],
     [ "circle_resizer::CircleModel", "classcircle__resizer_1_1_circle_model.html", null ],
     [ "tflite2circle::CircleModel", "classtflite2circle_1_1_circle_model.html", null ],
+    [ "luci::CircleMXQuantParam", "structluci_1_1_circle_m_x_quant_param.html", null ],
     [ "luci::CircleNodeExecutionPlan", "classluci_1_1_circle_node_execution_plan.html", null ],
     [ "locoex::CircleNodeMixin< T >", "classlocoex_1_1_circle_node_mixin.html", null ],
     [ "luci::CircleNodeMixin< T >", "classluci_1_1_circle_node_mixin.html", null ],
@@ -3326,6 +3327,7 @@ var hierarchy =
     [ "onert::ir::ModelEdgeEqual", "structonert_1_1ir_1_1_model_edge_equal.html", null ],
     [ "onert::ir::ModelEdgeHash", "structonert_1_1ir_1_1_model_edge_hash.html", null ],
     [ "onert::ir::ModelEdges", "structonert_1_1ir_1_1_model_edges.html", null ],
+    [ "circle_resizer::ModelEditor", "classcircle__resizer_1_1_model_editor.html", null ],
     [ "circledump::ModelEx", "structcircledump_1_1_model_ex.html", null ],
     [ "tfldump::ModelEx", "structtfldump_1_1_model_ex.html", null ],
     [ "moco::ModelSignature", "structmoco_1_1_model_signature.html", null ],
@@ -3335,6 +3337,13 @@ var hierarchy =
     [ "luci::Module", "classluci_1_1_module.html", null ],
     [ "nest::Module", "classnest_1_1_module.html", null ],
     [ "luci_interpreter::ModuleLoader", "classluci__interpreter_1_1_module_loader.html", null ],
+    [ "luci::ModulePass", "classluci_1_1_module_pass.html", [
+      [ "luci::Pass", "classluci_1_1_pass.html", [
+        [ "luci::CircleShapeInferencePass", "classluci_1_1_circle_shape_inference_pass.html", null ],
+        [ "luci::CircleTypeInferencePass", "classluci_1_1_circle_type_inference_pass.html", null ],
+        [ "luci::FuseBCQPass", "structluci_1_1_fuse_b_c_q_pass.html", null ]
+      ] ]
+    ] ],
     [ "mpqsolver::pattern::MPQOptions", "structmpqsolver_1_1pattern_1_1_m_p_q_options.html", null ],
     [ "mpqsolver::MPQSolver", "classmpqsolver_1_1_m_p_q_solver.html", [
       [ "mpqsolver::bisection::BisectionSolver", "classmpqsolver_1_1bisection_1_1_bisection_solver.html", null ],
@@ -4593,11 +4602,7 @@ var hierarchy =
       [ "luci::FuseSliceWithTConvPass", "structluci_1_1_fuse_slice_with_t_conv_pass.html", null ],
       [ "luci::FuseTransposeWithMeanPass", "structluci_1_1_fuse_transpose_with_mean_pass.html", null ],
       [ "luci::MakeBatchNormGammaPositivePass", "structluci_1_1_make_batch_norm_gamma_positive_pass.html", null ],
-      [ "luci::Pass", "classluci_1_1_pass.html", [
-        [ "luci::CircleShapeInferencePass", "classluci_1_1_circle_shape_inference_pass.html", null ],
-        [ "luci::CircleTypeInferencePass", "classluci_1_1_circle_type_inference_pass.html", null ],
-        [ "luci::FuseBCQPass", "structluci_1_1_fuse_b_c_q_pass.html", null ]
-      ] ],
+      [ "luci::Pass", "classluci_1_1_pass.html", null ],
       [ "luci::PropagateQParamBackwardPass", "structluci_1_1_propagate_q_param_backward_pass.html", null ],
       [ "luci::PropagateQParamForwardPass", "structluci_1_1_propagate_q_param_forward_pass.html", null ],
       [ "luci::QuantizeDequantizeWeightsPass", "classluci_1_1_quantize_dequantize_weights_pass.html", null ],

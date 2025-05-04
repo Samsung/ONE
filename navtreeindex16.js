@@ -1,5 +1,10 @@
 var NAVTREEINDEX16 =
 {
+"_matrix_index_8h_source.html":[41,0,0,52,0,0,1,34],
+"_matrix_set_diag_options_8cpp.html":[41,0,0,133,2,0,86],
+"_matrix_set_diag_options_8cpp.html#a376cbd2ff766b20178cb76e6d632544f":[41,0,0,133,2,0,86,0],
+"_matrix_set_diag_options_8cpp_source.html":[41,0,0,133,2,0,86],
+"_matrix_set_diag_options_8h.html":[41,0,0,133,2,0,87],
 "_matrix_set_diag_options_8h.html#a376cbd2ff766b20178cb76e6d632544f":[41,0,0,133,2,0,87,0],
 "_matrix_set_diag_options_8h_source.html":[41,0,0,133,2,0,87],
 "_matrix_shape_8h.html":[41,0,0,52,0,0,1,35],
@@ -149,6 +154,10 @@ var NAVTREEINDEX16 =
 "_model_builder_8cpp_source.html":[41,0,0,3,0,18],
 "_model_builder_8h.html":[41,0,0,3,0,19],
 "_model_builder_8h_source.html":[41,0,0,3,0,19],
+"_model_editor_8cpp.html":[41,0,0,23,2,2],
+"_model_editor_8cpp_source.html":[41,0,0,23,2,2],
+"_model_editor_8h.html":[41,0,0,23,1,2],
+"_model_editor_8h_source.html":[41,0,0,23,1,2],
 "_model_loader_8cc.html":[41,0,3,2,2,1,6,3],
 "_model_loader_8cc.html#aa3e212d74367c0eed3cbe983e1fe7421":[41,0,3,2,2,1,6,3,0],
 "_model_loader_8cc_source.html":[41,0,3,2,2,1,6,3],
@@ -240,14 +249,5 @@ var NAVTREEINDEX16 =
 "_n_e_embedding_lookup_8cpp.html":[41,0,3,0,0,1,1,1,0,1],
 "_n_e_embedding_lookup_8cpp_source.html":[41,0,3,0,0,1,1,1,0,1],
 "_n_e_embedding_lookup_8h.html":[41,0,3,0,0,0,1,1,0,1],
-"_n_e_embedding_lookup_8h_source.html":[41,0,3,0,0,0,1,1,0,1],
-"_n_e_embedding_lookup_kernel_8cpp.html":[41,0,3,0,0,1,0,1,0,1],
-"_n_e_embedding_lookup_kernel_8cpp_source.html":[41,0,3,0,0,1,0,1,0,1],
-"_n_e_embedding_lookup_kernel_8h.html":[41,0,3,0,0,0,0,1,0,1],
-"_n_e_embedding_lookup_kernel_8h_source.html":[41,0,3,0,0,0,0,1,0,1],
-"_n_e_fully_connected_hybrid_layer_8cpp.html":[41,0,3,0,0,1,1,1,0,2],
-"_n_e_fully_connected_hybrid_layer_8cpp_source.html":[41,0,3,0,0,1,1,1,0,2],
-"_n_e_fully_connected_hybrid_layer_8h.html":[41,0,3,0,0,0,1,1,0,2],
-"_n_e_fully_connected_hybrid_layer_8h_source.html":[41,0,3,0,0,0,1,1,0,2],
-"_n_e_fully_connected_layer_ex_8cpp.html":[41,0,3,0,0,1,1,1,0,3]
+"_n_e_embedding_lookup_8h_source.html":[41,0,3,0,0,0,1,1,0,1]
 };

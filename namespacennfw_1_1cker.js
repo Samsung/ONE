@@ -36,7 +36,8 @@ var namespacennfw_1_1cker =
       [ "HybridConvPerChannel", "namespacennfw_1_1cker_1_1reference.html#a0958f78457730903189b8f3e4988d156", null ],
       [ "Softmax", "namespacennfw_1_1cker_1_1reference.html#ab55312a313b1a6280c4fc9bafc80b05c", null ],
       [ "Transpose", "namespacennfw_1_1cker_1_1reference.html#a295888086391d908f57fa904c9d4544d", null ],
-      [ "TransposeImpl", "namespacennfw_1_1cker_1_1reference.html#a77ee976f07a81db2abb12effb60384d7", null ]
+      [ "TransposeImpl", "namespacennfw_1_1cker_1_1reference.html#a77ee976f07a81db2abb12effb60384d7", null ],
+      [ "kMaxBroadcastDim", "namespacennfw_1_1cker_1_1reference.html#a113b625bbc11ffb0ec9b0cf060c9fb3b", null ]
     ] ],
     [ "reference_integer_ops", "namespacennfw_1_1cker_1_1reference__integer__ops.html", [
       [ "DepthwiseConvHybridPerChannel", "namespacennfw_1_1cker_1_1reference__integer__ops.html#ae8e087e2b3673d5ff23849f5c5e12747", null ],
@@ -381,6 +382,8 @@ var namespacennfw_1_1cker =
     [ "StridedSlicePadIndices", "namespacennfw_1_1cker.html#a5ff133f6e9a6a679eebe83d1580a02ea", null ],
     [ "Sub1Vector", "namespacennfw_1_1cker.html#a51ef48d1448691d903c3204a0d3f91ca", null ],
     [ "SubscriptToIndex", "namespacennfw_1_1cker.html#aec446d97125ede2dc10e58a86c928e4c", null ],
+    [ "SubscriptToIndex", "namespacennfw_1_1cker.html#a23b1ec5edd694ac9f01793427c01eb3f", null ],
+    [ "SubscriptToIndex", "namespacennfw_1_1cker.html#a6f1bd1e544dd30179554e8182df5f3e8", null ],
     [ "SubscriptToIndexGeneric", "namespacennfw_1_1cker.html#a463e648ae455ddaf93d167b1d73ee490", null ],
     [ "sum_reducer", "namespacennfw_1_1cker.html#a2dd447b2cc2a2da27db67a00ed89a9d0", null ],
     [ "SymmetricQuantizeFloats", "namespacennfw_1_1cker.html#a97514158a93f892f0f777864d4c0a7bb", null ],

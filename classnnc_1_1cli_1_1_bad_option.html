@@ -124,7 +124,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>simple exception class for invalid options </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00037">37</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00038">38</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac0987ea581653b3d26129c88d3ebc446" name="ac0987ea581653b3d26129c88d3ebc446"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac0987ea581653b3d26129c88d3ebc446">&#9670;&#160;</a></span>BadOption()</h2>
@@ -166,10 +166,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00040">40</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>    : std::logic_error(msg), _option_name(std::move(<a class="code hl_function" href="namespacennc_1_1cli.html#ab647291b4d8c20e43a0a4a5f8c5b8e01">optname</a>)), _option_value(std::move(value))</div>
-<div class="line"><span class="lineno">   42</span>  {</div>
-<div class="line"><span class="lineno">   43</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00041">41</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>    : std::logic_error(msg), _option_name(std::move(<a class="code hl_function" href="namespacennc_1_1cli.html#ab647291b4d8c20e43a0a4a5f8c5b8e01">optname</a>)), _option_value(std::move(value))</div>
+<div class="line"><span class="lineno">   43</span>  {</div>
+<div class="line"><span class="lineno">   44</span>  }</div>
 <div class="ttc" id="anamespacennc_1_1cli_html_ab647291b4d8c20e43a0a4a5f8c5b8e01"><div class="ttname"><a href="namespacennc_1_1cli.html#ab647291b4d8c20e43a0a4a5f8c5b8e01">nnc::cli::optname</a></div><div class="ttdeci">std::vector&lt; std::string &gt; optname(const char *names)</div><div class="ttdoc">convert option names for Option constructor</div><div class="ttdef"><b>Definition</b> <a href="_command_line_8cpp_source.html#l00071">CommandLine.cpp:71</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -200,8 +200,8 @@ Public Member Functions</h2></td></tr>
 
 <p>get name for invalid option </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00048">48</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <span class="keywordflow">return</span> _option_name; }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00049">49</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> _option_name; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_command_line_8cpp_source.html#l00466">nnc::cli::CommandLine::parseCommandLine()</a>.</p>
 
@@ -232,8 +232,8 @@ Public Member Functions</h2></td></tr>
 
 <p>get value for invalid option </p>
 
-<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00053">53</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>{ <span class="keywordflow">return</span> _option_value; }</div>
+<p class="definition">Definition at line <a class="el" href="_command_line_8h_source.html#l00054">54</a> of file <a class="el" href="_command_line_8h_source.html">CommandLine.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{ <span class="keywordflow">return</span> _option_value; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_command_line_8cpp_source.html#l00466">nnc::cli::CommandLine::parseCommandLine()</a>.</p>
 

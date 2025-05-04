@@ -1,5 +1,14 @@
 var NAVTREEINDEX24 =
 {
+"_quantize_weights_8h.html":[41,0,0,59,7,1,84],
+"_quantize_weights_8h_source.html":[41,0,0,59,7,1,84],
+"_quantize_weights_only_8cpp.html":[41,0,0,59,7,1,85],
+"_quantize_weights_only_8cpp_source.html":[41,0,0,59,7,1,85],
+"_quantize_weights_only_8h.html":[41,0,0,59,7,1,86],
+"_quantize_weights_only_8h_source.html":[41,0,0,59,7,1,86],
+"_quantize_weights_pass_8cpp.html":[41,0,0,59,7,1,87],
+"_quantize_weights_pass_8cpp_source.html":[41,0,0,59,7,1,87],
+"_quantize_weights_pass_8h.html":[41,0,0,59,7,0,0,0,57],
 "_quantize_weights_pass_8h_source.html":[41,0,0,59,7,0,0,0,57],
 "_quantize_with_min_max_pass_8cpp.html":[41,0,0,59,7,1,88],
 "_quantize_with_min_max_pass_8cpp.html#aac1a1621fc1410d8e0c1ed5c758b4435":[41,0,0,59,7,1,88,1],
@@ -240,14 +249,5 @@ var NAVTREEINDEX24 =
 "_relu_converter_8cpp_source.html":[41,0,0,41,1,1,31],
 "_relu_converter_8h.html":[41,0,0,41,1,1,32],
 "_relu_converter_8h_source.html":[41,0,0,41,1,1,32],
-"_relu_op_8h.html":[41,0,0,80,0,0,0,31],
-"_relu_op_8h_source.html":[41,0,0,80,0,0,0,31],
-"_remove_dead_node_pass_8cpp.html":[41,0,0,56,1,0,1],
-"_remove_dead_node_pass_8cpp_source.html":[41,0,0,56,1,0,1],
-"_remove_dead_node_pass_8h.html":[41,0,0,56,0,0,2],
-"_remove_dead_node_pass_8h_source.html":[41,0,0,56,0,0,2],
-"_remove_dead_node_with_query_pass_8cpp.html":[41,0,0,56,1,0,2],
-"_remove_dead_node_with_query_pass_8cpp_source.html":[41,0,0,56,1,0,2],
-"_remove_dead_node_with_query_pass_8h.html":[41,0,0,56,0,0,3],
-"_remove_dead_node_with_query_pass_8h_source.html":[41,0,0,56,0,0,3]
+"_relu_op_8h.html":[41,0,0,80,0,0,0,31]
 };

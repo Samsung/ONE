@@ -7,6 +7,7 @@ var _circle_reader_8h =
     [ "luci_actfunc", "_circle_reader_8h.html#ac4c75545009edf35d9f53e105648cced", null ],
     [ "luci_datatype", "_circle_reader_8h.html#a2e83620deea300e0affbd8c5878d0ff4", null ],
     [ "luci_mirrorpad_mode", "_circle_reader_8h.html#ac9799a0576bf12d496b2ef97da0b8cfc", null ],
+    [ "luci_mx_quantparam", "_circle_reader_8h.html#a33f5b62aca9d40fa879b6a87c287385e", null ],
     [ "luci_padding", "_circle_reader_8h.html#a74041f680f0151e1d8bbb3b88260f3d5", null ],
     [ "luci_quantparam", "_circle_reader_8h.html#a0111f725fe709fc649e669d2a3f4892f", null ],
     [ "luci_rope_mode", "_circle_reader_8h.html#aede2cde5be00af421bf3d891ce55c098", null ],
