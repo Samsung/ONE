@@ -21,6 +21,58 @@
 
 #define MAX_DEPTH 1000
 
+/**
+ * Prints the subgraph information of an ONNX model to specified files.
+ *
+ * @param subgraphs A vector containing subgraph information.
+ * @param subgraphFileName The filename for the output of subgraph information.
+ * @param otherSubgraphs A vector containing other subgraph information.
+ * @param otherSubgraphFileName The filename for the output of other subgraph information.
+ */
+void PrintSubgraphs(std::vector<onnx::GraphProto> &subgraphs, char *subgraphFileName,
+                    std::vector<onnx::GraphProto> &otherSubgraphs, char *otherSubgraphFileName)
+{
+  std::ofstream outFile(subgraphFileName);
+  if (!outFile.is_open())
+  {
+    std::cerr << "Error opening file." << std::endl;
+    exit(-1);
+  }
+
+  int id = 0;
+  for (const auto &vec : subgraphs)
+  {
+    outFile << " subgraph" << id << ":";
+    for (const auto &node : vec.node())
+    {
+      outFile << node.name() << " ";
+    }
+
+    id++;
+    outFile << std::endl;
+  }
+
+  std::ofstream outFileOther(otherSubgraphFileName);
+  if (!outFileOther.is_open())
+  {
+    std::cerr << "Error opening file." << std::endl;
+    exit(-1);
+  }
+
+  std::cout << "before:" << std::endl;
+  for (const auto &vec : otherSubgraphs)
+  {
+    outFileOther << " subgraph" << id << ":";
+    for (const auto &node : vec.node())
+    {
+      outFileOther << node.name() << " ";
+    }
+
+    id++;
+    outFileOther << std::endl;
+  }
+}
+
 void PartitionGraph(const onnx::GraphProto &g, Device &d, PartitionStrategy strategy,
                     const std::unordered_map<std::string, NodeIOSize> &node_io_size)
 {
