@@ -62,19 +62,16 @@ install(DIRECTORY ${FM_EQUALIZE_PYTHON_DIR}
                           WORLD_READ
         DESTINATION bin)
 
+# TODO separate test to another module so that we can remove depends of common-artifacts
+#      if we are to include fm-equalize to release set
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
 
-set(Python_ADDITIONAL_VERSIONS 3.8)
-find_package(PythonInterp 3.8 QUIET)
-
-if(NOT ${PYTHONINTERP_FOUND})
-  message(FATAL_ERROR "Build fm-equalize_unittest: FAIL (Python3 is missing)")
-endif()
+set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv")
 
 add_test(
   NAME fm-equalize_unittest
-  COMMAND ${PYTHON_EXECUTABLE} -m unittest
+  COMMAND ${VIRTUALENV}/bin/python -m unittest
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
