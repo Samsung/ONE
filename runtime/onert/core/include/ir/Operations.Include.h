@@ -50,7 +50,6 @@
 #include "ir/operation/LogSoftmax.h"
 #include "ir/operation/Loss.h"
 #include "ir/operation/LSTM.h"
-#include "ir/operation/MatrixBandPart.h"
 #include "ir/operation/DetectionPostProcess.h"
 #include "ir/operation/OneHot.h"
 #include "ir/operation/Pack.h"

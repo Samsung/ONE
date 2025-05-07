@@ -486,22 +486,10 @@ typedef enum
   ANEURALNETWORKS_BATCH_MATMUL_EX = 50035,
 
   /**
-   * Copy a tensor setting everything outside a central band in each innermost matrix.
    *
-   * Supported tensor {@link OperandCode}:
-   * * {@link ANEURALNETWORKS_TENSOR_FLOAT32}
+   * IMPORTANT NOTICE:
+   * ANEURALNETWORKS_MATRIX_BAND_PART_EX operation is DEPRECATED
    *
-   * Supported tensor rank: up to 4
-   *
-   * Inputs:
-   * * 0: A tensor.
-   * * 1: An {@link ANEURALNETWORKS_INT32} scalar. Number of subdiagonals to keep. If negative, keep
-   * entire lower triangle.
-   * * 2: An {@link ANEURALNETWORKS_INT32} scalar. Number of superdiagonals to keep. If negative,
-   * keep entire upper triangle.
-   *
-   * Outputs:
-   * * 0: An output tensor. The extracted banded tensor with the same shape as input.
    */
   ANEURALNETWORKS_MATRIX_BAND_PART_EX = 50036,
 

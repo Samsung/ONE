@@ -745,11 +745,6 @@ void StaticShapeInferer::visit(const ir::operation::LSTM &op)
   }
 }
 
-void StaticShapeInferer::visit(const ir::operation::MatrixBandPart &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::Input::INPUT));
-}
-
 void StaticShapeInferer::visit(const ir::operation::OneHot &op)
 {
   auto &operands = _lowered_subg->graph().operands();

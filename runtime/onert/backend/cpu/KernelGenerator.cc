@@ -63,7 +63,6 @@
 #include "ops/UnpackLayer.h"
 #include "ops/SquaredDiffLayer.h"
 #include "ops/L2NormLayer.h"
-#include "ops/MatrixBandPartLayer.h"
 #include "ops/BatchMatMulLayer.h"
 #include "ops/BroadcastToLayer.h"
 #include "ops/FusedBatchNormLayer.h"
@@ -1129,24 +1128,6 @@ void KernelGenerator::visit(const ir::operation::Tile &node)
   auto fn = std::make_unique<ops::TileLayer>();
 
   fn->configure(input_tensor, multiples_tensor, output_tensor);
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::MatrixBandPart &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::MatrixBandPart::INPUT)};
-  const auto num_lower_index{node.getInputs().at(ir::operation::MatrixBandPart::NUM_LOWER_DIAG)};
-  const auto num_upper_index{node.getInputs().at(ir::operation::MatrixBandPart::NUM_UPPER_DIAG)};
-
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
-  auto num_lower_tensor = _tensor_reg->getPortableTensor(num_lower_index);
-  auto num_upper_tensor = _tensor_reg->getPortableTensor(num_upper_index);
-
-  auto fn = std::make_unique<ops::MatrixBandPartLayer>();
-
-  fn->configure(input_tensor, num_lower_tensor, num_upper_tensor, output_tensor);
   _return_fn = std::move(fn);
 }
 

@@ -109,8 +109,6 @@ GeneratedTests.lstm3_state2
 GeneratedTests.lstm3_state3
 GeneratedTests.lstm_state
 GeneratedTests.lstm_state2
-GeneratedTests.matrix_band_part_ex_4D_float
-GeneratedTests.matrix_band_part_ex_dynamic_nnfw
 GeneratedTests.maximum_dynamic_nnfw
 GeneratedTests.minimum_dynamic_nnfw
 GeneratedTests.minimum_int32

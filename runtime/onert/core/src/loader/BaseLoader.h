@@ -1039,7 +1039,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
 
   enum class BuiltinOP
   {
-    MatrixBandPart,
     FusedBatchNorm,
     StatelessRandomUniform,
     Erf,
@@ -1048,7 +1047,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
 
   // Mapping from custom op name string to BuiltinOP enum
   std::map<std::string, BuiltinOP> builtin_map = {
-    {"MatrixBandPart", BuiltinOP::MatrixBandPart},
     {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
     {"StatelessRandomUniform", BuiltinOP::StatelessRandomUniform},
     {"Erf", BuiltinOP::Erf},
@@ -1061,9 +1059,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
     auto custom_op_id = builtin_map.at(custom_op_name);
     switch (custom_op_id)
     {
-      case BuiltinOP::MatrixBandPart:
-        loadOperationTo<ir::operation::MatrixBandPart>(op, subg);
-        break;
       case BuiltinOP::FusedBatchNorm:
         loadFusedBatchNorm(op, subg);
         break;
