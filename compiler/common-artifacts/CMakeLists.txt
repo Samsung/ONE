@@ -10,32 +10,25 @@ if(CMAKE_VERSION VERSION_LESS 3.12)
   find_package(PythonLibs 3.8 QUIET)
 
   if(NOT ${PYTHONINTERP_FOUND})
-    message(STATUS "Build common-artifacts: FALSE (Python3 is missing)")
+    message(STATUS "Build common-artifacts: FAILED (Python3 is missing)")
     return()
   endif()
 
   if(${PYTHON_VERSION_MINOR} LESS 8)
-    message(STATUS "Build common-artifacts: FALSE (You need to install Python version higher than 3.8)")
+    message(STATUS "Build common-artifacts: FAILED (Need Python version 3.8 or higher)")
     return()
   endif()
 else()
-  find_package(Python 3.8 EXACT COMPONENTS Interpreter QUIET)
-  if(NOT Python_FOUND)
-    find_package(Python 3.8 COMPONENTS Interpreter QUIET)
-  endif()
-
-  # tensorflow 2.12.1 supports Python 3.8 ~ 3.11
-  if(Python_VERSION VERSION_GREATER_EQUAL 3.12)
-    message(STATUS "Build common-artifacts: FALSE (Python version 3.12 or higher is not supported yet)")
-    return()
-  endif()
-  if(Python_VERSION VERSION_LESS 3.8)
-    message(STATUS "Build common-artifacts: FAILED (Install Python version 3.8 or 3.10)")
-    return()
-  endif()
+  # find python 3.8 or above
+  find_package(Python 3.8 COMPONENTS Interpreter QUIET)
 
   if(NOT Python_Interpreter_FOUND)
     message(STATUS "Build common-artifacts: FAILED (Python3 is missing)")
+    return()
+  endif()
+
+  if(Python_VERSION VERSION_LESS 3.8)
+    message(STATUS "Build common-artifacts: FAILED (Need Python version 3.8 or higher)")
     return()
   endif()
 
