@@ -33,9 +33,19 @@ macro(eval RECIPE)
   set(AFTER_CIRCLE_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${AFTER_CIRCLE_FILE}")
   set(AFTER_CIRCLE_PATTERN_PATH "${CMAKE_CURRENT_BINARY_DIR}/${AFETR_PATTERN_FILE}")
 
+  execute_process(
+    COMMAND ${VIRTUALENV}/bin/python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')"
+    OUTPUT_VARIABLE PYTHON_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+
+  set(PYTHON_SITE_PACKAGES "${NNCC_OVERLAY_DIR}/venv/lib/python${PYTHON_VERSION}/site-packages")
+
   # Apply fm-equalize
   add_custom_command(OUTPUT ${AFTER_CIRCLE_OUTPUT_PATH} ${AFTER_CIRCLE_PATTERN_PATH}
-    COMMAND ${VIRTUALENV}/bin/python ${FM_EQUALIZE_BIN} -i ${OPT_CIRCLE_OUTPUT_PATH} 
+    COMMAND ${CMAKE_COMMAND} -E env
+            PYTHONPATH=${PYTHON_SITE_PACKAGES}
+            ${VIRTUALENV}/bin/python ${FM_EQUALIZE_BIN} -i ${OPT_CIRCLE_OUTPUT_PATH}
                                        -o ${AFTER_CIRCLE_OUTPUT_PATH} -f ${AFTER_CIRCLE_PATTERN_PATH}
                                        --fme_detect ${FME_DETECT_BIN} --dalgona ${DALGONA_BIN}
                                        --fme_apply ${FME_APPLY_BIN}
