@@ -156,7 +156,7 @@ jobs:
             --distribution "${{ matrix.ubuntu_code }}" \
             "${{ inputs.cirint_description }}" -b
 
-      - name: Craete original tarball
+      - name: Create original tarball
         run: |
           cd ${{ env.NNCC_BUILD }}
           tar -caf ${{ env.TARBALL_FILE }} ${{ env.CIRINTP_PREFIX }}
