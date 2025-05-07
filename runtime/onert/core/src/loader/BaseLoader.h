@@ -128,7 +128,6 @@ private:
   const OpIR *loadOperationTo(const Operator *op, ir::Graph &subg, Args &&...args);
 
   void loadArgMinMax(const Operator *op, ir::Graph &subg, bool is_argmax);
-  void loadBatchMatMul(const Operator *op, ir::Graph &subg);
   void loadBinaryArithmetic(const Operator *op, ir::Graph &subg,
                             ir::operation::BinaryArithmetic::ArithmeticType op_type);
   void loadComparison(const Operator *op, ir::Graph &subg);
@@ -1017,44 +1016,6 @@ void BaseLoader<LoaderDomain>::loadDetectionPostProcess(const Operator *op, ir::
 }
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadBatchMatMul(const Operator *op, ir::Graph &subg)
-{
-  ir::operation::BatchMatMul::Param param;
-
-  const auto builtin_op = getBuiltinOperator(op);
-
-  switch (builtin_op)
-  {
-    case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
-      // Handled on each loader: different option name
-      //  Circle: adjoint_lhs, adjoint_rhs
-      //  TFLite: adj_x, adj_y
-      throw std::runtime_error(
-        std::string("Cannot handle here: ").append(EnumNameBuiltinOperator(builtin_op)) + " as " +
-        EnumNameBuiltinOperator(BuiltinOperator::BuiltinOperator_BATCH_MATMUL));
-    case BuiltinOperator::BuiltinOperator_CUSTOM:
-      if (op->custom_options() == nullptr)
-      {
-        param.adj_x = false;
-        param.adj_y = false;
-      }
-      else
-      {
-        const auto attr_map = getCustomOpAttrMap(op);
-        param.adj_x = attr_map["adj_x"].AsBool();
-        param.adj_y = attr_map["adj_y"].AsBool();
-      }
-      break;
-    default:
-      throw std::runtime_error(
-        std::string("Wrong loaded operation: ").append(EnumNameBuiltinOperator(builtin_op)) +
-        " as " + EnumNameBuiltinOperator(BuiltinOperator::BuiltinOperator_BATCH_MATMUL));
-  }
-
-  loadOperationTo<ir::operation::BatchMatMul>(op, subg, param);
-}
-
-template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadSpaceToDepth(const Operator *op, ir::Graph &subg)
 {
   ir::operation::SpaceToDepth::Param param;
@@ -1079,7 +1040,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
   enum class BuiltinOP
   {
     MatrixBandPart,
-    BatchMatMul,
     FusedBatchNorm,
     StatelessRandomUniform,
     Erf,
@@ -1089,7 +1049,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
   // Mapping from custom op name string to BuiltinOP enum
   std::map<std::string, BuiltinOP> builtin_map = {
     {"MatrixBandPart", BuiltinOP::MatrixBandPart},
-    {"BatchMatMulV2", BuiltinOP::BatchMatMul},
     {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
     {"StatelessRandomUniform", BuiltinOP::StatelessRandomUniform},
     {"Erf", BuiltinOP::Erf},
@@ -1104,9 +1063,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
     {
       case BuiltinOP::MatrixBandPart:
         loadOperationTo<ir::operation::MatrixBandPart>(op, subg);
-        break;
-      case BuiltinOP::BatchMatMul:
-        loadBatchMatMul(op, subg);
         break;
       case BuiltinOP::FusedBatchNorm:
         loadFusedBatchNorm(op, subg);
@@ -1639,9 +1595,10 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_RANGE:
       loadOperationTo<ir::operation::Range>(op, subg);
       return;
-    case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
-      loadBatchMatMul(op, subg);
-      return;
+    // case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
+    //   Handled on each loader: different option name
+    //     Circle: adjoint_lhs, adjoint_rhs
+    //     TFLite: adj_x, adj_y
     case BuiltinOperator::BuiltinOperator_BROADCAST_TO:
       loadOperationTo<ir::operation::BroadcastTo>(op, subg);
       return;
