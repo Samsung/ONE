@@ -2,8 +2,9 @@
 #   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
 #   Ubuntu20.04; default python3.8
 #   Ubuntu22.04; default python3.10
-#   Ubuntu24.04; explictly installed python3.8 (default is python3.12)
+#   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
+# NOTE Require same python version of common-artifacts
 if(CMAKE_VERSION VERSION_LESS 3.12)
   find_package(PythonInterp 3.8 QUIET)
   find_package(PythonLibs 3.8 QUIET)
@@ -14,27 +15,20 @@ if(CMAKE_VERSION VERSION_LESS 3.12)
   endif()
 
   if(${PYTHON_VERSION_MINOR} LESS 8)
-    message(STATUS "Build dalgona: FAILED (Install Python version higher than or equal to 3.8)")
+    message(STATUS "Build dalgona: FAILED (Need Python version 3.8 or higher)")
     return()
   endif()
 else()
-  find_package(Python 3.8 EXACT COMPONENTS Development QUIET)
-  if(NOT Python_FOUND)
-    find_package(Python 3.8 COMPONENTS Development QUIET)
-  endif()
-
-  # Require same python version of common-artifacts
-  if(Python_VERSION VERSION_GREATER_EQUAL 3.13)
-    message(STATUS "Build dalgona: FALSE (Python version 3.13 or higher is not supported yet)")
-    return()
-  endif()
-  if(Python_VERSION VERSION_LESS 3.8)
-    message(STATUS "Build dalgona: FAILED (Install Python version 3.8 or above)")
-    return()
-  endif()
+  # find python 3.8 or above
+  find_package(Python 3.8 COMPONENTS Development QUIET)
 
   if(NOT Python_Development_FOUND)
     message(STATUS "Build dalgona: FAILED (Python3 development package is missing)")
+    return()
+  endif()
+
+  if(Python_VERSION VERSION_LESS 3.8)
+    message(STATUS "Build dalgona: FAILED (Need Python version 3.8 or higher)")
     return()
   endif()
 
