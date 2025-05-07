@@ -32,6 +32,19 @@ else()
     return()
   endif()
 
+  # NOTE assume only use 3.8.x or 3.10.x or 3.12.x
+  if((Python_VERSION VERSION_GREATER_EQUAL 3.8) AND (Python_VERSION VERSION_LESS 3.9))
+    set(PYTHON_VERSION_MINOR 8)
+  elseif((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
+    set(PYTHON_VERSION_MINOR 10)
+  elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
+    set(PYTHON_VERSION_MINOR 12)
+  else()
+    # TODO support more
+    message(STATUS "Build common-artifacts: FAILED (Unsupported python: ${Python_VERSION})")
+    return()
+  endif()
+
   set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 endif()
 
