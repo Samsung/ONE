@@ -3,7 +3,7 @@
 #   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
 #   Ubuntu20.04; default python3.8
 #   Ubuntu22.04; default python3.10
-#   Ubuntu24.04; explictly installed python3.8 (default is python3.12)
+#   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
 if(CMAKE_VERSION VERSION_LESS 3.12)
   find_package(PythonInterp 3.8 QUIET)
