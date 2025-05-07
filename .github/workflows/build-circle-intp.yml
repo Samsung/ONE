@@ -90,7 +90,7 @@ jobs:
       credentials:
         username: ${{ secrets.NNFW_DOCKER_USERNAME }}
         password: ${{ secrets.NNFW_DOCKER_TOKEN }}
-      options: --user root
+      # options: --user root
     env:
       VERSION: ${{ needs.prepare.outputs.version }}
       CHANGE_FILE: ${{ needs.prepare.outputs.changes_file }}
@@ -104,10 +104,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install required packages
-        run: |
-          apt-get update
-          apt-get install -y curl
+      # - name: Install required packages
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y curl
 
       - name: Build without test
         run: |
