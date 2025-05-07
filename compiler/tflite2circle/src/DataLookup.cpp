@@ -20,7 +20,8 @@
 namespace tflite2circle
 {
 
-circle::BuiltinOperator get_circle_builtin_code(tflite::BuiltinOperator tfl_bop)
+circle::BuiltinOperator get_circle_builtin_code(tflite::BuiltinOperator tfl_bop,
+                                                const bool replace_unsupported_ops_with_custom)
 {
   switch (tfl_bop)
   {
@@ -31,6 +32,8 @@ circle::BuiltinOperator get_circle_builtin_code(tflite::BuiltinOperator tfl_bop)
 #undef TFL_OPERATOR
     default:
     {
+      if (replace_unsupported_ops_with_custom)
+        return circle::BuiltinOperator_CUSTOM;
       std::string msg = "tflite2circle: Unsupported op ";
       msg = msg + tflite::EnumNameBuiltinOperator(tfl_bop);
       throw std::runtime_error(msg.c_str());
@@ -38,12 +41,13 @@ circle::BuiltinOperator get_circle_builtin_code(tflite::BuiltinOperator tfl_bop)
   }
 }
 
-int8_t get_circle_builtin_code(int8_t tfl_bop_i8)
+int8_t get_circle_builtin_code(int8_t tfl_bop_i8, const bool replace_unsupported_ops_with_custom)
 {
-  return get_circle_builtin_code(static_cast<int32_t>(tfl_bop_i8));
+  return get_circle_builtin_code(static_cast<int32_t>(tfl_bop_i8),
+                                 replace_unsupported_ops_with_custom);
 }
 
-int32_t get_circle_builtin_code(int32_t tfl_bop_i32)
+int32_t get_circle_builtin_code(int32_t tfl_bop_i32, const bool replace_unsupported_ops_with_custom)
 {
   tflite::BuiltinOperator tfl_bop = static_cast<tflite::BuiltinOperator>(tfl_bop_i32);
 
@@ -58,6 +62,8 @@ int32_t get_circle_builtin_code(int32_t tfl_bop_i32)
       return static_cast<int32_t>(circle::BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES);
     default:
     {
+      if (replace_unsupported_ops_with_custom)
+        return circle::BuiltinOperator_CUSTOM;
       std::string msg = "tflite2circle: Unsupported op ";
       msg = msg + tflite::EnumNameBuiltinOperator(tfl_bop);
       throw std::runtime_error(msg.c_str());
@@ -108,7 +114,8 @@ get_circle_activation_function_type(tflite::ActivationFunctionType tfl_aft)
 }
 
 flatbuffers::Offset<void> get_circle_builtin_options(flatbuffers::FlatBufferBuilder &fb,
-                                                     const tflite::Operator *op)
+                                                     const tflite::Operator *op,
+                                                     const bool replace_unsupported_ops_with_custom)
 {
   auto tflite_builtin_options_type = op->builtin_options_type();
   switch (tflite_builtin_options_type)
@@ -121,11 +128,17 @@ flatbuffers::Offset<void> get_circle_builtin_options(flatbuffers::FlatBufferBuil
 #include "TFLBuiltinOptions.lst"
 #undef TFL_BUILTIN_OPTIONS
     default:
+    {
+      if (replace_unsupported_ops_with_custom)
+        return flatbuffers::Offset<void>();
       throw std::runtime_error("tflite2circle: wrong builtin options type.");
+    }
   }
 }
 
-circle::BuiltinOptions get_circle_builtin_options_type(const tflite::Operator *op)
+circle::BuiltinOptions
+get_circle_builtin_options_type(const tflite::Operator *op,
+                                const bool replace_unsupported_ops_with_custom)
 {
   switch (op->builtin_options_type())
   {
@@ -137,7 +150,11 @@ circle::BuiltinOptions get_circle_builtin_options_type(const tflite::Operator *o
 #include "TFLBuiltinOptions.lst"
 #undef TFL_BUILTIN_OPTIONS
     default:
+    {
+      if (replace_unsupported_ops_with_custom)
+        return circle::BuiltinOptions_NONE;
       throw std::runtime_error("tflite2circle: wrong builtin options type.");
+    }
   }
 }
 

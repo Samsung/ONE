@@ -41,6 +41,10 @@ int entry(int argc, char **argv)
 
   arser.add_argument("tflite").help("Source tflite file path to convert");
   arser.add_argument("circle").help("Target circle file path");
+  arser.add_argument("--replace-unsupported-with-custom", "-r")
+    .nargs(0)
+    .default_value(false)
+    .help("Replaces unsupported TFLite ops with CustomOps instead of erroring.");
 
   try
   {
@@ -70,7 +74,8 @@ int entry(int argc, char **argv)
   const std::vector<char> &raw_data = tfl_model.raw_data();
   tflite2circle::CircleModel circle_model{flatbuffer_builder, raw_data};
 
-  circle_model.load_offsets(tfl_model.get_model());
+  circle_model.load_offsets(tfl_model.get_model(),
+                            arser.get<bool>("--replace-unsupported-with-custom"));
   circle_model.model_build();
   circle_model.finalize();
 

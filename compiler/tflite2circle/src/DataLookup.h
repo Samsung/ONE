@@ -28,10 +28,14 @@ namespace tflite2circle
  *
  * @note You can see a list of currently supported BuiltinOperator in TFLOperator.lst file.
  */
-circle::BuiltinOperator get_circle_builtin_code(tflite::BuiltinOperator tfl_bop);
+circle::BuiltinOperator
+get_circle_builtin_code(tflite::BuiltinOperator tfl_bop,
+                        const bool replace_unsupported_ops_with_custom = false);
 
-int8_t get_circle_builtin_code(int8_t tfl_bop_i8);
-int32_t get_circle_builtin_code(int32_t tfl_bop_i32);
+int8_t get_circle_builtin_code(int8_t tfl_bop_i8,
+                               const bool replace_unsupported_ops_with_custom = false);
+int32_t get_circle_builtin_code(int32_t tfl_bop_i32,
+                                const bool replace_unsupported_ops_with_custom = false);
 
 /**
  * @brief Returns circle TensorType according to tflite.
@@ -64,15 +68,18 @@ get_circle_activation_function_type(tflite::ActivationFunctionType tfl_aft);
  *       build_circle_AbsOptions, build_circle_AddOptions, etc.), so refer to it for a more
  *       detailed implementation.
  */
-flatbuffers::Offset<void> get_circle_builtin_options(flatbuffers::FlatBufferBuilder &fb,
-                                                     const tflite::Operator *op);
+flatbuffers::Offset<void>
+get_circle_builtin_options(flatbuffers::FlatBufferBuilder &fb, const tflite::Operator *op,
+                           const bool replace_unsupported_ops_with_custom = false);
 
 /**
  * @brief Returns circle builtin_options_type according to tflite.
  *
  * @note You can see a list of currently supported BuiltinOptions in TFLBuiltinOptions.lst file.
  */
-circle::BuiltinOptions get_circle_builtin_options_type(const tflite::Operator *op);
+circle::BuiltinOptions
+get_circle_builtin_options_type(const tflite::Operator *op,
+                                const bool replace_unsupported_ops_with_custom = false);
 
 /**
  * @brief Returns circle MirrorPadMode according to tflite.

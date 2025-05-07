@@ -75,7 +75,8 @@ public:
   void set_file_raw(const std::vector<char> *raw) { _file_raw = raw; }
 
 public:
-  void build(const TFLFlatBufVec *tflite_flatbuffer_vec);
+  void build(const TFLFlatBufVec *tflite_flatbuffer_vec,
+             const bool replace_unsupported_ops_with_custom = false);
 
 public:
   CIRFlatBufVecOffset offset(void) const { return _circle_flatbuffer_vec_offset; }
@@ -100,7 +101,8 @@ public:
   CircleModel(FlatBufBuilder &fb, const std::vector<char> &fr);
 
 public:
-  void load_offsets(const tflite::Model *tfl_model);
+  void load_offsets(const tflite::Model *tfl_model,
+                    const bool replace_unsupported_ops_with_custom = false);
   void model_build(void) const;
   void finalize(void);
   const char *base(void) const;
