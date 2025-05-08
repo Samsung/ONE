@@ -1111,25 +1111,6 @@ void ShapeValidator::visit(const ir::operation::Range &node)
   OP_REQUIRES(operands.at(delta_index).shape().rank() == 0);
 }
 
-void ShapeValidator::visit(const ir::operation::MatrixBandPart &node)
-{
-  const auto &operands = _graph.operands();
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::MatrixBandPart::Input::INPUT)};
-  const auto num_lower_index{
-    node.getInputs().at(ir::operation::MatrixBandPart::Input::NUM_LOWER_DIAG)};
-  const auto num_upper_index{
-    node.getInputs().at(ir::operation::MatrixBandPart::Input::NUM_UPPER_DIAG)};
-
-  // Check for dimension constraints
-  if (operands.at(output_index).info().isDynamic())
-    return;
-
-  OP_REQUIRES(operands.at(input_index).shape().rank() >= 2); // input must be more than 2 dim matrix
-  OP_REQUIRES(operands.at(num_upper_index).shape().rank() == 0); // num_lower must be scalar
-  OP_REQUIRES(operands.at(num_lower_index).shape().rank() == 0); // num_upper must be scalar
-}
-
 void ShapeValidator::visit(const ir::operation::LogSoftmax &node)
 {
   const auto &operands = _graph.operands();

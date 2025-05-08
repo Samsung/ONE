@@ -87,7 +87,6 @@ public:
   void visit(const ir::operation::SquaredDifference &node) override;
   void visit(const ir::operation::Tile &node) override;
   void visit(const ir::operation::Range &node) override;
-  void visit(const ir::operation::MatrixBandPart &node) override;
   void visit(const ir::operation::LogSoftmax &node) override;
   void visit(const ir::operation::RmsNorm &node) override;
   void visit(const ir::operation::RoPE &node) override;
