@@ -45,10 +45,6 @@ RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
 RUN add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
 RUN apt-get update && apt-get install -qqy clang-format-16
 
-# Install gbs
-RUN echo 'deb [trusted=yes] http://download.tizen.org/tools/latest-release/Ubuntu_22.04/ /' | cat >> /etc/apt/sources.list
-RUN apt-get update && apt-get -qqy install gbs
-
 # Setup user to match host user, and give superuser permissions
 ARG USER_ID=1000
 ARG GROUP_ID=${USER_ID}

@@ -54,10 +54,6 @@ RUN find usr -name "libtsan_preinit.o" | sed -e "s/10/9/g" | xargs -i cp libtsan
 WORKDIR /root
 RUN rm -rf /root/tmp
 
-# Install gbs
-RUN echo 'deb [trusted=yes] http://download.tizen.org/tools/latest-release/Ubuntu_20.04/ /' | cat >> /etc/apt/sources.list
-RUN apt-get update && apt-get -qqy install gbs
-
 # Setup user to match host user, and give superuser permissions
 ARG USER_ID=1000
 ARG GROUP_ID=${USER_ID}

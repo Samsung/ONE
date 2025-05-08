@@ -37,9 +37,6 @@ RUN python3 -m pip install yapf==0.40.2 pylint numpy flatbuffers --break-system-
 # Install clang-format
 RUN apt-get update && apt-get -qqy install clang-format-16
 
-# TODO: Install gbs & sdb
-# gbs & sdb are not support ubuntu noble yet
-
 # Setup user ubuntu: give superuser permissions without password
 RUN apt-get update && apt-get -qqy install sudo
 RUN usermod -aG sudo ubuntu

@@ -4,8 +4,8 @@ on:
     branches:
       - master
     paths:
-      - '.github/workflows/build-dev-docker.yml'
-      - 'infra/docker/**'
+      - '.github/workflows/build-cdev-docker.yml'
+
 
 # Cancel previous running jobs when pull request is updated
 concurrency:
