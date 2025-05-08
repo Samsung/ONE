@@ -46,4 +46,14 @@ uint64_t bufsize_for(const nnfw_tensorinfo *ti)
   return elmsize[ti->dtype] * num_elems(ti);
 }
 
+uint64_t has_dynamic_dim(const nnfw_tensorinfo *ti)
+{
+  for (int32_t i = 0; i < ti->rank; ++i)
+  {
+    if (ti->dims[i] < 0)
+      return true;
+  }
+  return false;
+}
+
 } // namespace onert_run

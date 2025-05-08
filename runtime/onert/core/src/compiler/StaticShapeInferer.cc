@@ -58,6 +58,17 @@ void StaticShapeInferer::infer()
   for (const auto &op_idx : _lowered_subg->graph().topolSortOperations())
   {
     const auto &op = _lowered_subg->graph().operations().at(op_idx);
+
+    // Automatically mark any input with a dynamic dimension (-1)
+    // so its shape is computed at execution time.
+    for (const auto &idx : op.getInputs())
+    {
+      auto &input = _lowered_subg->graph().operands().at(idx);
+      const auto &shape = input.info().shape();
+      if (shape.hasUnspecifiedDims())
+        input.info().setDynamic();
+    }
+
     bool has_dynamic_tensor = false;
     const auto opcode = op.opcode();
     // IF: requires shape inference for then, else

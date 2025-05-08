@@ -37,7 +37,7 @@ public:
 
 public:
   Tensor(const ir::OperandInfo &info, DynamicMemoryManager *dynamic_mem_mgr)
-    : IPortableTensor(info), _buffer(nullptr), _size(info.total_size()), _num_references(0),
+    : IPortableTensor(info), _buffer(nullptr), _size(0), _num_references(0),
       _dynamic_mem_mgr(dynamic_mem_mgr), _allocator(nullptr)
   {
     // DO NOTHING
