@@ -71,19 +71,40 @@ if(DEFINED ENV{ONE_PIP_OPTION_TRUST_HOST})
   set(PIP_OPTION_TRUSTED_HOST --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org)
 endif()
 
+# NOTE `tensorflow-cpu` package is not available for aarch64, so we use `tensorflow` package.
+# NOTE refer https://github.com/Samsung/ONE/issues/15226 for versions
 set(PY_PKG_LIST )
-if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  # NOTE `tensorflow-cpu` package is not available for aarch64, so we use `tensorflow` package.
-  list(APPEND PY_PKG_LIST "tensorflow==2.12.1")
-else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  list(APPEND PY_PKG_LIST "tensorflow-cpu==2.12.1")
-endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-list(APPEND PY_PKG_LIST "flatbuffers==23.5.26")
-list(APPEND PY_PKG_LIST "protobuf==4.23.3")
-list(APPEND PY_PKG_LIST "pydot==1.4.2")
-list(APPEND PY_PKG_LIST "pytest==7.4.3")
-list(APPEND PY_PKG_LIST "h5py==3.11.0")
-list(APPEND PY_PKG_LIST "cffi==1.16.0")
+if (PYTHON_VERSION_MINOR EQUAL 8)
+  # python3.8; Ubuntu 18.04, 20.04
+  if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow==2.12.1")
+  else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow-cpu==2.12.1")
+  endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+  list(APPEND PY_PKG_LIST "flatbuffers==23.5.26")
+  list(APPEND PY_PKG_LIST "protobuf==4.23.3")
+  list(APPEND PY_PKG_LIST "pydot==1.4.2")
+  list(APPEND PY_PKG_LIST "pytest==7.4.3")
+  list(APPEND PY_PKG_LIST "h5py==3.11.0")
+  list(APPEND PY_PKG_LIST "cffi==1.16.0")
+elseif (PYTHON_VERSION_MINOR EQUAL 10)
+  # python 3.10; Ubuntu 22.04
+  if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow==2.12.1")
+  else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow-cpu==2.12.1")
+  endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+  list(APPEND PY_PKG_LIST "flatbuffers==23.5.26")
+  list(APPEND PY_PKG_LIST "protobuf==4.23.3")
+  list(APPEND PY_PKG_LIST "pydot==1.4.2")
+  list(APPEND PY_PKG_LIST "pytest==7.4.3")
+  list(APPEND PY_PKG_LIST "h5py==3.11.0")
+  list(APPEND PY_PKG_LIST "cffi==1.16.0")
+else()
+  # TODO add for 12
+  # should not enter here
+  message(FATAL_ERROR "Build common-artifacts: FAILED (Invalid pyhon version)")
+endif()
 
 add_custom_command(
   OUTPUT REQUIREMENTS_OVERLAY_PATH_clean
