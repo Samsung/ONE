@@ -103,8 +103,22 @@ elseif (PYTHON_VERSION_MINOR EQUAL 10)
   list(APPEND PY_PKG_LIST "h5py==3.11.0")
   list(APPEND PY_PKG_LIST "cffi==1.16.0")
   list(APPEND PY_PKG_LIST "numpy==1.26.4")
+elseif (PYTHON_VERSION_MINOR EQUAL 12)
+  # python 3.12; Ubuntu 24.04
+  # TF2.19.0 release at 2025-03-12
+  if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow==2.19.0")
+  else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow-cpu==2.19.0")
+  endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+  list(APPEND PY_PKG_LIST "flatbuffers==24.3.25")
+  list(APPEND PY_PKG_LIST "protobuf==4.23.3")
+  list(APPEND PY_PKG_LIST "pydot==1.4.2")
+  list(APPEND PY_PKG_LIST "pytest==7.4.3")
+  list(APPEND PY_PKG_LIST "h5py==3.11.0")
+  list(APPEND PY_PKG_LIST "cffi==1.16.0")
+  list(APPEND PY_PKG_LIST "numpy==1.26.4")
 else()
-  # TODO add for 12
   # should not enter here
   message(FATAL_ERROR "Build common-artifacts: FAILED (Invalid pyhon version)")
 endif()
