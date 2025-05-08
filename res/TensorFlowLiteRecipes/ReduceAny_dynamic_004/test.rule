@@ -1,0 +1,6 @@
+# To check if the model is resized properly
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "IFM_SHAPE"               $(tensor_shape ifm) '=' [4,5,6]
+RULE    "REDUCE_ANY_SHAPE"        $(tensor_shape ofm) '=' []
