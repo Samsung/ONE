@@ -60,18 +60,29 @@ inline void BatchMatMul(const OMRuntimeShape &lhs_shape, const T *lhs_data,
   const int rhs_cols = extended_rhs_shape.dims(4);
   const int accum_depth = extended_lhs_shape.dims(4);
 
+  // stride for each batch dim
+  const int lhs_stride_b0 =
+    extended_lhs_shape.dims(1) * extended_lhs_shape.dims(2) * lhs_rows * accum_depth;
+  const int lhs_stride_b1 = extended_lhs_shape.dims(2) * lhs_rows * accum_depth;
+  const int lhs_stride_b2 = lhs_rows * accum_depth;
+
+  const int rhs_stride_b0 =
+    extended_rhs_shape.dims(1) * extended_rhs_shape.dims(2) * accum_depth * rhs_cols;
+  const int rhs_stride_b1 = extended_rhs_shape.dims(2) * accum_depth * rhs_cols;
+  const int rhs_stride_b2 = accum_depth * rhs_cols;
+
   for (int b0 = 0; b0 < batch_dim0; ++b0)
   {
-    const T *lhs_ptr0 = lhs_data + (b0 * lhs_ext0);
-    const T *rhs_ptr0 = rhs_data + (b0 * rhs_ext0);
+    const T *lhs_ptr0 = lhs_data + (b0 * lhs_stride_b0);
+    const T *rhs_ptr0 = rhs_data + (b0 * rhs_stride_b0);
     for (int b1 = 0; b1 < batch_dim1; ++b1)
     {
-      const T *lhs_ptr1 = lhs_ptr0 + b1 * lhs_ext1;
-      const T *rhs_ptr1 = rhs_ptr0 + b1 * rhs_ext1;
+      const T *lhs_ptr1 = lhs_ptr0 + b1 * lhs_stride_b1;
+      const T *rhs_ptr1 = rhs_ptr0 + b1 * rhs_stride_b1;
       for (int b2 = 0; b2 < batch_dim2; ++b2)
       {
-        const T *lhs_ptr2 = lhs_ptr1 + b2 * lhs_ext2;
-        const T *rhs_ptr2 = rhs_ptr1 + b2 * rhs_ext2;
+        const T *lhs_ptr2 = lhs_ptr1 + b2 * lhs_stride_b2;
+        const T *rhs_ptr2 = rhs_ptr1 + b2 * rhs_stride_b2;
         T *out_ptr = output_data +
                      ((b0 * batch_dim1 * batch_dim2) + b1 * batch_dim2 + b2) * lhs_rows * rhs_cols;
 
