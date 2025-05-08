@@ -1,5 +1,5 @@
 function(_CpuInfo_Build)
-  nnas_find_package(CpuInfoSource QUIET)
+  nnfw_find_package(CpuInfoSource QUIET)
 
   # NOTE This line prevents multiple definitions of cpuinfo target
   if(TARGET cpuinfo)

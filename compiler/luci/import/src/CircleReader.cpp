@@ -227,6 +227,16 @@ luci_quantparam(const circle::QuantizationParametersT *quantization)
   return nullptr;
 }
 
+std::unique_ptr<CircleMXQuantParam> luci_mx_quantparam(const circle::MXQuantizationT *quantization)
+{
+  const auto &axis = quantization->axis;
+
+  auto quantparam = std::make_unique<CircleMXQuantParam>();
+  quantparam->axis = axis;
+
+  return quantparam;
+}
+
 std::unique_ptr<CircleQuantParam> luci_quantparam(const circle::QuantizationParameters *qparams)
 {
   // create temporary unpacked API object
@@ -235,6 +245,16 @@ std::unique_ptr<CircleQuantParam> luci_quantparam(const circle::QuantizationPara
   qparams->UnPackTo(&quantization);
 
   return luci_quantparam(&quantization);
+}
+
+std::unique_ptr<CircleMXQuantParam> luci_mx_quantparam(const circle::MXQuantization *qparams)
+{
+  // create temporary unpacked API object
+  assert(qparams != nullptr);
+  circle::MXQuantizationT quantization;
+  qparams->UnPackTo(&quantization);
+
+  return luci_mx_quantparam(&quantization);
 }
 
 std::unique_ptr<SparsityParam> luci_sparsityparam(const circle::SparsityParametersT *sparsity)
@@ -294,9 +314,22 @@ void copy_tensor_attributes(const circle::Tensor *tensor, CircleNode *node)
   const auto quantization = tensor->quantization();
   if (quantization != nullptr)
   {
+    if (quantization->details_type() ==
+        circle::QuantizationDetails::QuantizationDetails_MXQuantization)
+    {
+      const auto qdetails = quantization->details_as_MXQuantization();
+      auto mx_quantparam = luci_mx_quantparam(qdetails);
+      if (mx_quantparam)
+        node->mx_quantparam(std::move(mx_quantparam));
+    }
+    else
+    {
+      // clang-format off
     auto quantparam = luci_quantparam(quantization);
     if (quantparam)
       node->quantparam(std::move(quantparam));
+      // clang-format on
+    }
   }
 
   const auto sparsity = tensor->sparsity();

@@ -295,11 +295,6 @@ operation::LSTM generateLSTM()
     OperandIndexSequence{0}, param};
 }
 
-operation::MatrixBandPart generateMatrixBandPart()
-{
-  return operation::MatrixBandPart{OperandIndexSequence{1, 2, 3}, OperandIndexSequence{0}};
-}
-
 operation::OneHot generateOneHot()
 {
   operation::OneHot::Param param;
@@ -702,9 +697,6 @@ TEST(UntrainableOperation, testAllOps)
   const auto lstm = generateLSTM();
   verifyOp(lstm);
 
-  const auto maxrix_band_part = generateMatrixBandPart();
-  verifyOp(maxrix_band_part);
-
   const auto one_hot = generateOneHot();
   verifyOp(one_hot);
 
@@ -1024,12 +1016,6 @@ TEST(UntrainableOperation, neg_TrainableOperationVisitor)
   {
     const auto lstm = generateLSTM();
     auto untrainable = generateUntrainableOperation(lstm);
-    EXPECT_ANY_THROW(visitor.invoke(*untrainable));
-  }
-
-  {
-    const auto matrix_band_part = generateMatrixBandPart();
-    auto untrainable = generateUntrainableOperation(matrix_band_part);
     EXPECT_ANY_THROW(visitor.invoke(*untrainable));
   }
 

@@ -1,5 +1,5 @@
 function(_Farmhash_import)
-  nnas_find_package(FarmhashSource QUIET)
+  nnfw_find_package(FarmhashSource QUIET)
 
   if(NOT FarmhashSource_FOUND)
     set(Farmhash_FOUND FALSE PARENT_SCOPE)

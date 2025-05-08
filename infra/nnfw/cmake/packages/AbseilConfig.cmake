@@ -1,5 +1,5 @@
 function(_Abseil_import)
-  nnas_find_package(AbseilSource QUIET)
+  nnfw_find_package(AbseilSource QUIET)
 
   if(NOT AbseilSource_FOUND)
     message("Abseil: NOT FOUND (Cannot access source)")

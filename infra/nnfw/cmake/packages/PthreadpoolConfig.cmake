@@ -1,5 +1,5 @@
 function(_Pthreadpool_Build)
-  nnas_find_package(PthreadpoolSource QUIET)
+  nnfw_find_package(PthreadpoolSource QUIET)
 
   # NOTE This line prevents multiple definitions of target
   if(TARGET pthreadpool)
@@ -17,7 +17,7 @@ function(_Pthreadpool_Build)
   SET(PTHREADPOOL_BUILD_TESTS OFF CACHE BOOL "Build pthreadpool unit tests")
   SET(PTHREADPOOL_BUILD_BENCHMARKS OFF CACHE BOOL "Build pthreadpool micro-benchmarks")
 
-  nnas_find_package(FxdivSource)
+  nnfw_find_package(FxdivSource)
   set(FXDIV_SOURCE_DIR ${FxdivSource_DIR} CACHE STRING "String to disable download FXDIV")
 
   add_extdirectory("${PthreadpoolSource_DIR}" PTHREADPOOL EXCLUDE_FROM_ALL)

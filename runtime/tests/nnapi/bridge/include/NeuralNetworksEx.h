@@ -486,22 +486,10 @@ typedef enum
   ANEURALNETWORKS_BATCH_MATMUL_EX = 50035,
 
   /**
-   * Copy a tensor setting everything outside a central band in each innermost matrix.
    *
-   * Supported tensor {@link OperandCode}:
-   * * {@link ANEURALNETWORKS_TENSOR_FLOAT32}
+   * IMPORTANT NOTICE:
+   * ANEURALNETWORKS_MATRIX_BAND_PART_EX operation is DEPRECATED
    *
-   * Supported tensor rank: up to 4
-   *
-   * Inputs:
-   * * 0: A tensor.
-   * * 1: An {@link ANEURALNETWORKS_INT32} scalar. Number of subdiagonals to keep. If negative, keep
-   * entire lower triangle.
-   * * 2: An {@link ANEURALNETWORKS_INT32} scalar. Number of superdiagonals to keep. If negative,
-   * keep entire upper triangle.
-   *
-   * Outputs:
-   * * 0: An output tensor. The extracted banded tensor with the same shape as input.
    */
   ANEURALNETWORKS_MATRIX_BAND_PART_EX = 50036,
 
@@ -515,38 +503,12 @@ typedef enum
 
   ANEURALNETWORKS_BROADCAST_TO_EX = 50038,
 
-  /** Adds two tensors, element-wise.
+  /**
    *
-   * Takes two input tensors of identical type and compatible dimensions. The output
-   * is the sum of both input tensors, optionally modified by an activation function.
+   * IMPORTANT NOTICE:
+   * ANEURALNETWORKS_ADDV2_EX operation is DEPRECATED
+   * Use ANEURALNETWORKS_ADD instead
    *
-   * Two dimensions are compatible when:
-   *     1. they are equal, or
-   *     2. one of them is 1
-   *
-   * The size of the output is the maximum size along each dimension of the input operands.
-   * It starts with the trailing dimensions, and works its way forward.
-   *
-   * Example:
-   *
-   *     input1.dimension = {4, 1, 2}
-   *     input2.dimension = {5, 4, 3, 1}
-   *     output.dimension = {5, 4, 3, 2}
-   *
-   * Supported tensor types:
-   * * {@link ANEURALNETWORKS_TENSOR_FLOAT32}
-   * * {@link ANEURALNETWORKS_TENSOR_QUANT8_ASYMM}
-   *
-   * Supported tensor rank: up to 4
-   *
-   * Inputs:
-   * * 0: A tensor.
-   * * 1: A tensor of the same type, and compatible dimensions as input0.
-   * * 2: An INT32 value, and has to be one of the {@link FuseCode} values.
-   *      Specifies the activation to invoke on the result of each addition.
-   *
-   * Outputs:
-   * * 0: The sum, a tensor of the same type as input0.
    */
   ANEURALNETWORKS_ADDV2_EX = 50039,
 

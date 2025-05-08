@@ -98,7 +98,7 @@ endforeach(IDX)
 add_custom_target(circle_part_value_py_test_prepare ALL DEPENDS ${TEST_DEPS})
 add_dependencies(circle_part_value_py_test_prepare common_artifacts_deps)
 
-set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_2_12_1")
+set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv")
 set(TEST_LIST_FILE "test.lst")
 
 add_test(NAME circle_part_value_py_test

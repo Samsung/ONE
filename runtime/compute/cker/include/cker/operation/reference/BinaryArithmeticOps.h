@@ -31,6 +31,9 @@ namespace cker
 namespace reference
 {
 
+// Maximum dimension supported by the broadcast operation.
+constexpr int kMaxBroadcastDim = 6;
+
 template <typename T>
 inline void BinaryArithmeticOp(const BinaryArithmeticOpParam &params, const Shape &input1_shape,
                                const T *input1_data, const Shape &input2_shape,
@@ -96,10 +99,10 @@ inline typename std::enable_if_t<is_quant8<T>::value> BroadcastBinaryArithmeticO
   const Shape &input2_shape, const T *input2_data, const Shape &output_shape, T *output_data,
   const std::function<T(const BinaryArithmeticOpParam &params, const T &, const T &)> &fn)
 {
-  NdArrayDesc<4> desc1;
-  NdArrayDesc<4> desc2;
+  NdArrayDesc<kMaxBroadcastDim> desc1;
+  NdArrayDesc<kMaxBroadcastDim> desc2;
   NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);
-  const Shape extended_output_shape = Shape::ExtendedShape(4, output_shape);
+  const Shape extended_output_shape = Shape::ExtendedShape(kMaxBroadcastDim, output_shape);
 
   // Comment from tensorflow lite:
   //
@@ -114,18 +117,25 @@ inline typename std::enable_if_t<is_quant8<T>::value> BroadcastBinaryArithmeticO
   // We name our variables by their Tensorflow convention, but generate C code
   // nesting loops such that the innermost loop has the smallest stride for the
   // best cache behavior.
-  for (int b = 0; b < extended_output_shape.Dims(0); ++b)
+  for (int d0 = 0; d0 < extended_output_shape.Dims(0); ++d0)
   {
-    for (int y = 0; y < extended_output_shape.Dims(1); ++y)
+    for (int d1 = 0; d1 < extended_output_shape.Dims(1); ++d1)
     {
-      for (int x = 0; x < extended_output_shape.Dims(2); ++x)
+      for (int d2 = 0; d2 < extended_output_shape.Dims(2); ++d2)
       {
-        for (int c = 0; c < extended_output_shape.Dims(3); ++c)
+        for (int d3 = 0; d3 < extended_output_shape.Dims(3); ++d3)
         {
-          output_data[Offset(extended_output_shape, b, y, x, c)] = ActivationFunctionWithMinMax<T>(
-            fn(params, input1_data[SubscriptToIndex(desc1, b, y, x, c)],
-               input2_data[SubscriptToIndex(desc2, b, y, x, c)]),
-            params.quantized_activation_min, params.quantized_activation_max);
+          for (int d4 = 0; d4 < extended_output_shape.Dims(4); ++d4)
+          {
+            for (int d5 = 0; d5 < extended_output_shape.Dims(5); ++d5)
+            {
+              output_data[Offset(extended_output_shape, d0, d1, d2, d3, d4, d5)] =
+                ActivationFunctionWithMinMax<T>(
+                  fn(params, input1_data[SubscriptToIndex(desc1, d0, d1, d2, d3, d4, d5)],
+                     input2_data[SubscriptToIndex(desc2, d0, d1, d2, d3, d4, d5)]),
+                  params.quantized_activation_min, params.quantized_activation_max);
+            }
+          }
         }
       }
     }
@@ -138,10 +148,10 @@ inline void BroadcastBinaryArithmeticOpSlow(const BinaryArithmeticOpParam &param
                                             const Shape &output_shape, T *output_data,
                                             const std::function<T(const T &, const T &)> &fn)
 {
-  NdArrayDesc<4> desc1;
-  NdArrayDesc<4> desc2;
+  NdArrayDesc<kMaxBroadcastDim> desc1;
+  NdArrayDesc<kMaxBroadcastDim> desc2;
   NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);
-  const Shape extended_output_shape = Shape::ExtendedShape(4, output_shape);
+  const Shape extended_output_shape = Shape::ExtendedShape(kMaxBroadcastDim, output_shape);
 
   // Comment from tensorflow lite:
   //
@@ -156,18 +166,25 @@ inline void BroadcastBinaryArithmeticOpSlow(const BinaryArithmeticOpParam &param
   // We name our variables by their Tensorflow convention, but generate C code
   // nesting loops such that the innermost loop has the smallest stride for the
   // best cache behavior.
-  for (int b = 0; b < extended_output_shape.Dims(0); ++b)
+  for (int d0 = 0; d0 < extended_output_shape.Dims(0); ++d0)
   {
-    for (int y = 0; y < extended_output_shape.Dims(1); ++y)
+    for (int d1 = 0; d1 < extended_output_shape.Dims(1); ++d1)
     {
-      for (int x = 0; x < extended_output_shape.Dims(2); ++x)
+      for (int d2 = 0; d2 < extended_output_shape.Dims(2); ++d2)
       {
-        for (int c = 0; c < extended_output_shape.Dims(3); ++c)
+        for (int d3 = 0; d3 < extended_output_shape.Dims(3); ++d3)
         {
-          output_data[Offset(extended_output_shape, b, y, x, c)] = ActivationFunctionWithMinMax<T>(
-            fn(input1_data[SubscriptToIndex(desc1, b, y, x, c)],
-               input2_data[SubscriptToIndex(desc2, b, y, x, c)]),
-            params.quantized_activation_min, params.quantized_activation_max);
+          for (int d4 = 0; d4 < extended_output_shape.Dims(4); ++d4)
+          {
+            for (int d5 = 0; d5 < extended_output_shape.Dims(5); ++d5)
+            {
+              output_data[Offset(extended_output_shape, d0, d1, d2, d3, d4, d5)] =
+                ActivationFunctionWithMinMax<T>(
+                  fn(input1_data[SubscriptToIndex(desc1, d0, d1, d2, d3, d4, d5)],
+                     input2_data[SubscriptToIndex(desc2, d0, d1, d2, d3, d4, d5)]),
+                  params.quantized_activation_min, params.quantized_activation_max);
+            }
+          }
         }
       }
     }
@@ -180,23 +197,30 @@ inline void BroadcastBinaryArithmeticOpSlow(
   const Shape &input2_shape, const float *input2_data, const Shape &output_shape,
   float *output_data, const std::function<float(const float &, const float &)> &fn)
 {
-  NdArrayDesc<4> desc1;
-  NdArrayDesc<4> desc2;
+  NdArrayDesc<kMaxBroadcastDim> desc1;
+  NdArrayDesc<kMaxBroadcastDim> desc2;
   NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);
-  const Shape extended_output_shape = Shape::ExtendedShape(4, output_shape);
+  const Shape extended_output_shape = Shape::ExtendedShape(kMaxBroadcastDim, output_shape);
 
-  for (int b = 0; b < extended_output_shape.Dims(0); ++b)
+  for (int d0 = 0; d0 < extended_output_shape.Dims(0); ++d0)
   {
-    for (int y = 0; y < extended_output_shape.Dims(1); ++y)
+    for (int d1 = 0; d1 < extended_output_shape.Dims(1); ++d1)
     {
-      for (int x = 0; x < extended_output_shape.Dims(2); ++x)
+      for (int d2 = 0; d2 < extended_output_shape.Dims(2); ++d2)
       {
-        for (int c = 0; c < extended_output_shape.Dims(3); ++c)
+        for (int d3 = 0; d3 < extended_output_shape.Dims(3); ++d3)
         {
-          output_data[Offset(extended_output_shape, b, y, x, c)] =
-            ActivationFunctionWithMinMax(fn(input1_data[SubscriptToIndex(desc1, b, y, x, c)],
-                                            input2_data[SubscriptToIndex(desc2, b, y, x, c)]),
-                                         params.float_activation_min, params.float_activation_max);
+          for (int d4 = 0; d4 < extended_output_shape.Dims(4); ++d4)
+          {
+            for (int d5 = 0; d5 < extended_output_shape.Dims(5); ++d5)
+            {
+              output_data[Offset(extended_output_shape, d0, d1, d2, d3, d4, d5)] =
+                ActivationFunctionWithMinMax(
+                  fn(input1_data[SubscriptToIndex(desc1, d0, d1, d2, d3, d4, d5)],
+                     input2_data[SubscriptToIndex(desc2, d0, d1, d2, d3, d4, d5)]),
+                  params.float_activation_min, params.float_activation_max);
+            }
+          }
         }
       }
     }
@@ -209,22 +233,28 @@ inline void BroadcastBinaryArithmeticOpSlow(
   const Shape &input2_shape, const bool *input2_data, const Shape &output_shape, bool *output_data,
   const std::function<bool(const bool &, const bool &)> &fn)
 {
-  NdArrayDesc<4> desc1;
-  NdArrayDesc<4> desc2;
+  NdArrayDesc<kMaxBroadcastDim> desc1;
+  NdArrayDesc<kMaxBroadcastDim> desc2;
   NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);
-  const Shape extended_output_shape = Shape::ExtendedShape(4, output_shape);
+  const Shape extended_output_shape = Shape::ExtendedShape(kMaxBroadcastDim, output_shape);
 
-  for (int b = 0; b < extended_output_shape.Dims(0); ++b)
+  for (int d0 = 0; d0 < extended_output_shape.Dims(0); ++d0)
   {
-    for (int y = 0; y < extended_output_shape.Dims(1); ++y)
+    for (int d1 = 0; d1 < extended_output_shape.Dims(1); ++d1)
     {
-      for (int x = 0; x < extended_output_shape.Dims(2); ++x)
+      for (int d2 = 0; d2 < extended_output_shape.Dims(2); ++d2)
       {
-        for (int c = 0; c < extended_output_shape.Dims(3); ++c)
+        for (int d3 = 0; d3 < extended_output_shape.Dims(3); ++d3)
         {
-          output_data[Offset(extended_output_shape, b, y, x, c)] =
-            fn(input1_data[SubscriptToIndex(desc1, b, y, x, c)],
-               input2_data[SubscriptToIndex(desc2, b, y, x, c)]);
+          for (int d4 = 0; d4 < extended_output_shape.Dims(4); ++d4)
+          {
+            for (int d5 = 0; d5 < extended_output_shape.Dims(5); ++d5)
+            {
+              output_data[Offset(extended_output_shape, d0, d1, d2, d3, d4, d5)] =
+                fn(input1_data[SubscriptToIndex(desc1, d0, d1, d2, d3, d4, d5)],
+                   input2_data[SubscriptToIndex(desc2, d0, d1, d2, d3, d4, d5)]);
+            }
+          }
         }
       }
     }
@@ -237,23 +267,30 @@ inline void BroadcastBinaryArithmeticOpSlow(
   const Shape &input2_shape, const int64_t *input2_data, const Shape &output_shape,
   int64_t *output_data, const std::function<int64_t(const int64_t &, const int64_t &)> &fn)
 {
-  NdArrayDesc<4> desc1;
-  NdArrayDesc<4> desc2;
+  NdArrayDesc<kMaxBroadcastDim> desc1;
+  NdArrayDesc<kMaxBroadcastDim> desc2;
   NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);
-  const Shape extended_output_shape = Shape::ExtendedShape(4, output_shape);
+  const Shape extended_output_shape = Shape::ExtendedShape(kMaxBroadcastDim, output_shape);
 
-  for (int b = 0; b < extended_output_shape.Dims(0); ++b)
+  for (int d0 = 0; d0 < extended_output_shape.Dims(0); ++d0)
   {
-    for (int y = 0; y < extended_output_shape.Dims(1); ++y)
+    for (int d1 = 0; d1 < extended_output_shape.Dims(1); ++d1)
     {
-      for (int x = 0; x < extended_output_shape.Dims(2); ++x)
+      for (int d2 = 0; d2 < extended_output_shape.Dims(2); ++d2)
       {
-        for (int c = 0; c < extended_output_shape.Dims(3); ++c)
+        for (int d3 = 0; d3 < extended_output_shape.Dims(3); ++d3)
         {
-          output_data[Offset(extended_output_shape, b, y, x, c)] =
-            ActivationFunctionWithMinMax(fn(input1_data[SubscriptToIndex(desc1, b, y, x, c)],
-                                            input2_data[SubscriptToIndex(desc2, b, y, x, c)]),
-                                         params.int64_activation_min, params.int64_activation_max);
+          for (int d4 = 0; d4 < extended_output_shape.Dims(4); ++d4)
+          {
+            for (int d5 = 0; d5 < extended_output_shape.Dims(5); ++d5)
+            {
+              output_data[Offset(extended_output_shape, d0, d1, d2, d3, d4, d5)] =
+                ActivationFunctionWithMinMax(
+                  fn(input1_data[SubscriptToIndex(desc1, d0, d1, d2, d3, d4, d5)],
+                     input2_data[SubscriptToIndex(desc2, d0, d1, d2, d3, d4, d5)]),
+                  params.int64_activation_min, params.int64_activation_max);
+            }
+          }
         }
       }
     }

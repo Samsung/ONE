@@ -116,7 +116,9 @@ add_library(mir_onnx_importer STATIC ${MIR_ONNX_IMPORTER_SOURCES})
 set_target_properties(mir_onnx_importer PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(mir_onnx_importer PUBLIC ../../include/mir_onnx_importer)
 target_include_directories(mir_onnx_importer PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(mir_onnx_importer PUBLIC mir mir_onnx_proto PRIVATE mir_interpreter nncc_common)
+target_link_libraries(mir_onnx_importer PUBLIC mir mir_onnx_proto PRIVATE mir_interpreter)
+# to prevent _GLIBCXX17_DEPRECATED warning as error
+# target_link_libraries(mir_onnx_importer PRIVATE nncc_common)
 
 if(NOT ENABLE_TEST)
   return()

@@ -663,8 +663,6 @@ OperationFactory::OperationFactory()
   _map[ANEURALNETWORKS_ADD] =
     getBinaryArithmeticGenerator(onert::ir::operation::BinaryArithmetic::ArithmeticType::ADD);
 
-  _map[ANEURALNETWORKS_ADDV2_EX] = _map[ANEURALNETWORKS_ADD];
-
   _map[ANEURALNETWORKS_REDUCE_SUM] =
     getReduceGenerator(onert::ir::operation::Reduce::ReduceType::SUM);
 
@@ -1528,21 +1526,6 @@ OperationFactory::OperationFactory()
   //  0 -> Input Tensor Index
   //  1 -> Multiple Tensor Index
   _map[ANEURALNETWORKS_TILE] = createSimpleBinaryOp<operation::Tile>;
-
-  _map[ANEURALNETWORKS_MATRIX_BAND_PART_EX] = [](const OperationFactory::Param &init_param,
-                                                 Operands &) {
-    assert(init_param.input_count == 3);
-    assert(init_param.output_count == 1);
-    // Each input should be interpreted as follows:
-    //
-    // 0 -> A tensor, input
-    // 1 -> A 0-D tensor, number of lower diagnonals to keep
-    // 2 -> A 0-D tensor, number of upper diagnonals to keep
-    OperandIndexSequence inputs{init_param.inputs[0], init_param.inputs[1], init_param.inputs[2]};
-    OperandIndexSequence outputs{init_param.outputs[0]};
-
-    return new operation::MatrixBandPart{inputs, outputs};
-  };
 
   _map[ANEURALNETWORKS_BATCH_MATMUL_EX] = [](const OperationFactory::Param &init_param,
                                              Operands &operands) {

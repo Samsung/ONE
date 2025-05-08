@@ -46,7 +46,7 @@ jobs:
     if: github.repository_owner == 'Samsung'
     runs-on: one-x64-linux
     container:
-      image: nnfw/one-devtools:android-sdk
+      image: samsungonedev.azurecr.io/nnfw/one-devtools:android-sdk
       options: --user root
     env:
       TARGET_ARCH: aarch64

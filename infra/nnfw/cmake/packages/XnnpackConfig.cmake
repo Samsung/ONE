@@ -1,5 +1,5 @@
 function(_Xnnpack_Build)
-  nnas_find_package(XnnpackSource QUIET)
+  nnfw_find_package(XnnpackSource QUIET)
   nnfw_find_package(Fxdiv QUIET)
   nnfw_find_package(CpuInfo QUIET)
   nnfw_find_package(Pthreadpool QUIET)

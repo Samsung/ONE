@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef DEVICE_H
-#define DEVICE_H
+#ifndef __TOOLS_ONNX_SUBGRAPH_DEVICE_H__
+#define __TOOLS_ONNX_SUBGRAPH_DEVICE_H__
 
 #include <vector>
 #include <string>
@@ -94,4 +94,4 @@ public:
   std::string getOnnxFile() { return _onnxFile; }
 };
 
-#endif // DEVICE_H
+#endif //__TOOLS_ONNX_SUBGRAPH_DEVICE_H__
