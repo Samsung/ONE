@@ -6,6 +6,28 @@ on:
   #  # 05:00 AM (KST, UTC+9:00) Mon-Fri
   #  - cron: '00 20 * * 0-4'
   workflow_dispatch:
+    inputs:
+      cirint_version:
+        description: 'The version of circle-interpreter'
+        required: true
+        default: '1.30.0'
+      cirint_description:
+        description: 'Description of changelog for circle-interpreter'
+        required: true
+      deb_fullname:
+        description: 'Full name of Debian package author'
+        required: false
+        default: 'On-device AI developers'
+      deb_email:
+        description: 'Email address of Debian package author'
+        required: false
+        default: 'nnfw@samsung.com'
+      is_release:
+        description: 'Is this a release version?
+          Set to false to append date-based subversion.
+          (true/false)'
+        required: false
+        default: 'false'
 
 defaults:
   run:
@@ -17,36 +39,67 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  onecc-test:
-    if: github.repository_owner == 'Samsung'
+  configure:
+    if: github.repository_owner == 'Samsung' || github.repository_owner == 'shs-park'
+    name: Set current date and time
+    # TODO change to the 'ubuntu-latest'
+    #runs-on: ubuntu-latest
+    runs-on: [ self-hosted, shs-park ]
+    outputs:
+      version: ${{ steps.set-datetime.outputs.version }}
+      br_version: ${{ steps.set-datetime.outputs.br_version }}
+    steps:
+      - name: Set date and time
+        id: set-datetime
+        run: |
+          base_version="${{ inputs.cirint_version }}"
+          is_release="${{ inputs.is_release }}"
+          if [[ "$is_release" == "true" ]]; then
+            version="${base_version}"
+            br_version="$base_version"
+          else
+            release_date=$(date +%Y%m%d%H%M)
+            version="${base_version}~${release_date}"
+            br_version="${base_version}-${release_date}"
+          fi
+          echo "version=${version}" >> $GITHUB_OUTPUT
+          echo "br_version=${br_version}" >> $GITHUB_OUTPUT
+
+  debian-release:
+    needs: configure
     strategy:
       matrix:
+        # TODO activate noble
         ubuntu_code: [ focal, jammy ]
-        include:
-          - ubuntu_code: focal
-            ubuntu_ver: 2004
-            # TODO update comment ID, these are experimental IDs of issue #14669
-            comment_id: 2658267907
-          - ubuntu_code: jammy
-            ubuntu_ver: 2204
-            comment_id: 2658268060
-    runs-on: ubuntu-latest
+    name: circle-interpreter ubuntu ${{ matrix.ubuntu_code }}
+    # TODO change to the 'ubuntu-latest'
+    #runs-on: ubuntu-latest
+    runs-on: [ self-hosted, shs-park ]
     container:
       image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
-      options: --user root
+      credentials:
+        username: ${{ secrets.NNFW_DOCKER_USERNAME }}
+        password: ${{ secrets.NNFW_DOCKER_TOKEN }}
+      # options: --user root
     env:
-      NNCC_WORKSPACE : build
-      NNCC_INSTALL_PREFIX : install
-    name: circle-interpreter ubuntu ${{ matrix.ubuntu_ver }}
+      NNCC_BUILD: build
+      NNCC_WORKSPACE: build/release
+      NNCC_INSTALL_PREFIX: ${{ github.workspace }}/build/release.install
+      CIRINTP_PREFIX: cirintp
 
     steps:
+      - name: Prepare, set distro versions
+        id: prepare
+        run: |
+          VERSION="${{ needs.configure.outputs.version }}~${{ matrix.ubuntu_code }}"
+          changes_file="circle-interpreter_${VERSION}_source.changes"
+          tarball_file="circle-interpreter_${VERSION}.orig.tar.xz"
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          echo "changes_file=${changes_file}" >> $GITHUB_OUTPUT
+          echo "tarball_file=${tarball_file}" >> $GITHUB_OUTPUT
+
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Install required packages
-        run: |
-          apt-get update
-          apt-get install curl
 
       - name: Build without test
         run: |
@@ -69,41 +122,124 @@ jobs:
 
       - name: Gather files
         run: |
-          cd ${NNCC_WORKSPACE}
-          mkdir -p cirintp
-          cp -v ./${NNCC_INSTALL_PREFIX}/bin/circle-interpreter ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libloco.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_env.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_import.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_interpreter.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_lang.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_logex.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_log.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_plan.so ./cirintp/.
-          cp -v ./${NNCC_INSTALL_PREFIX}/lib/libluci_profile.so ./cirintp/.
+          cd ${NNCC_BUILD}
+          mkdir -p ${CIRINTP_PREFIX}
+          cp -v ${NNCC_INSTALL_PREFIX}/bin/circle-interpreter ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libloco.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_env.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_import.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_interpreter.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_lang.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_logex.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_log.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_plan.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_profile.so ./${CIRINTP_PREFIX}/.
 
-      - name: Upload Artifact
-        id: step-upload
+      - name: Update changelog
+        run: |
+          cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
+          cp -rf ../../infra/debian/circle-interpreter ./debian
+          export DEBFULLNAME="${{ inputs.deb_fullname }}"
+          export DEBEMAIL="${{ inputs.deb_email }}"
+          dch -v "${{ steps.prepare.outputs.VERSION }}" \
+            --distribution "${{ matrix.ubuntu_code }}" \
+            "${{ inputs.cirint_description }}" -b
+
+      - name: Create original tarball
+        run: |
+          cd ${{ env.NNCC_BUILD }}
+          tar -caf ${{ steps.prepare.outputs.tarball_file }} ${{ env.CIRINTP_PREFIX }}
+
+      - name: Signing with debuild and debsign
+        run: |
+          cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
+          rm -rf ~/.gnupg
+          echo -n "${{ secrets.GPG_NNFW_SIGNING_KEY }}" | base64 --decode | gpg --import
+          # get fingerprint
+          FPR=$(gpg --list-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')
+          echo "$FPR:6:" | gpg --import-ownertrust
+          debuild -S -us -uc
+          debsign -k${FPR} ../circle-interpreter_*.changes
+
+      - name: Upload to Launchpad
+        run: |
+          cd ${{ env.NNCC_BUILD }}
+          mkdir -p ~/.ssh
+          echo "${{ secrets.LAUNCHPAD_NNFW_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          dput ppa:circletools/nightly ${{ steps.prepare.outputs.changes_file }}
+
+      - name: Upload artifact; circle-interpreter
         uses: actions/upload-artifact@v4
         with:
-          name: circle_intp_${{ matrix.ubuntu_ver }}
-          # TODO enable retention-days, default is 90
-          # retention-days: 3
+          name: circle-interpreter_${{ steps.prepare.outputs.version }}
+          retention-days: 3
           path: |
-            ${{ env.NNCC_WORKSPACE }}/cirintp/
+            ${{ env.NNCC_BUILD }}/${{ steps.prepare.outputs.tarball_file }}
 
-      # refer https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28#update-an-issue-comment
-      # TODO update comment id from experiment to official
-      # TODO enable update URL when key is available
-      - name: Update URL
-        if: false
+  create-pr-on-success:
+    name: Create changelog update PR on success
+    # TODO change to the 'ubuntu-latest'
+    #runs-on: ubuntu-latest
+    runs-on: [ self-hosted, shs-park ]
+    needs: debian-release
+    env:
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      BR_VERSION: ${{ needs.prepare.outputs.br_version }}
+    # TODO need to activate the branch condition
+    # if: ${{ success() && github.ref == 'refs/heads/master' }}
+    # if: ${{ success() }}
+    if: false
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Git
         run: |
-          echo "Artifact URL is ${{ steps.step-upload.outputs.artifact-url }}"
-          COMMENT_ADDR=https://api.github.com/repos/Samsung/ONE/issues/comments/${{ matrix.comment_id }}
-          curl -L \
-            -X PATCH \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.COMMENT_UPDATE_KEY }}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            ${COMMENT_ADDR} \
-            -d '{"body":"${{ steps.step-upload.outputs.artifact-url }}"}'
+          git config --global user.name "Seungho Henry Park"
+          git config --global user.email "shs.park@samsung.com"
+
+      - name: Download tarball
+        uses: actions/download-artifact@v4
+        with:
+          name: circle-interpreter_${{ env.VERSION }}
+
+      - name: Extract changelog
+        run: |
+          tar -xaf circle-interpreter_${VERSION}.orig.tar.xz
+          cp cirintp/debian/changelog \
+            infra/debian/circle-interpreter/changelog
+
+      - name: Create PR branch and commit changelog
+        run: |
+          BRANCH=auto/update-cirint-changelog-${BR_VERSION}
+          git checkout -b $BRANCH
+          git add infra/debian/circle-interpreter/changelog
+          git commit -m "[infra/debian] Update changelog for circle-interpreter" \
+            -m "This updates the changelog for circle-interpreter_${VERSION}." \
+            -m "It is auto-generated PR from github workflow." \
+            -m "" \
+            -m "ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>"
+          git push origin $BRANCH
+
+      - name: Create PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+            gh pr create \
+              --title "[infra/debian] Update changelog for circle-interpreter" \
+              --body \
+                "$(cat <<EOF
+                  This updates the changelog for circle-interpreter_${VERSION}.
+                  This PR includes updated changelog after successful debian build.
+                  It is auto-generated PR from github workflow.
+
+                  ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>
+                  EOF
+                )"
+              --head $BRANCH \
+              --base master
