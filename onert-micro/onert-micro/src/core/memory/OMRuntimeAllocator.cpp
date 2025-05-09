@@ -26,7 +26,7 @@ using namespace onert_micro;
 OMStatus OMRuntimeAllocator::clearAllTensorsData(OMRuntimeContext *context,
                                                  OMRuntimeStorage *storage)
 {
-  auto tensor_index_to_data = storage->getTensorIndexToData();
+  auto &tensor_index_to_data = storage->getTensorIndexToData();
 
   for (auto &cur_tensor_index_data : tensor_index_to_data)
   {
