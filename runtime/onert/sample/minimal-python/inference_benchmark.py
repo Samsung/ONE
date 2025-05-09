@@ -24,8 +24,8 @@ def parse_shapes(shape_strs: List[str]) -> List[List[int]]:
     return shapes
 
 
-def apply_static_shapes(sess: infer.session,
-                        static_shapes: List[List[int]]) -> List[tensorinfo]:
+def get_input_infos(sess: infer.session,
+                    static_shapes: List[List[int]]) -> List[tensorinfo]:
     original_infos = sess.get_inputs_tensorinfo()
     if len(static_shapes) != len(original_infos):
         raise ValueError(
@@ -44,7 +44,6 @@ def apply_static_shapes(sess: infer.session,
         info.rank = len(shape)
         updated_infos.append(info)
 
-    sess.update_inputs_tensorinfo(updated_infos)
     return updated_infos
 
 
@@ -55,7 +54,7 @@ def benchmark_inference(nnpackage_path: str, backends: str, input_shapes: List[L
     sess = infer.session(path=nnpackage_path, backends=backends)
     model_load_kb = get_memory_usage_mb() * 1024 - mem_before_kb
 
-    input_infos = apply_static_shapes(
+    input_infos = get_input_infos(
         sess, input_shapes) if input_shapes else sess.get_inputs_tensorinfo()
 
     # Create dummy input arrays
@@ -99,7 +98,6 @@ def benchmark_inference(nnpackage_path: str, backends: str, input_shapes: List[L
     print("===================================")
 
 
-# TODO: Support dynamic(on-the-fly) shape
 def main():
     parser = argparse.ArgumentParser(description="ONERT Inference Benchmark")
     parser.add_argument("nnpackage", type=str, help="Path to .nnpackage directory")
