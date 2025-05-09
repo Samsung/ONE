@@ -112,6 +112,10 @@ ExternalProject_Add(externals-llvm-project
   INSTALL_DIR    "${LP_INSTALL_DIR}"
   CMAKE_ARGS     -DLLVM_ENABLE_PROJECTS=mlir
                  -DLLVM_TARGETS_TO_BUILD=host
+                 -DLLVM_ENABLE_TERMINFO=OFF
+                 -DLLVM_ENABLE_ZLIB=OFF
+                 -DLLVM_ENABLE_ZSTD=OFF
+                 -DLLVM_INCLUDE_TESTS=OFF
                  -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                  -DCMAKE_INSTALL_PREFIX='${LP_INSTALL_DIR}'
                  ${CIRCLE_MLIR_GOLD_OPTION}
