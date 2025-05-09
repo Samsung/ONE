@@ -36,7 +36,7 @@ class session(BaseSession):
          - Execute the inference session.
          - Return the output tensors with proper multi-dimensional shapes.
 
-        This method supports both dynamic shape modification:
+        This method supports dynamic shape modification:
          - The input shapes can be adjusted dynamically.
 
         Args:
