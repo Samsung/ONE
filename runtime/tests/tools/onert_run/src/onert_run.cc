@@ -364,14 +364,18 @@ int main(const int argc, char **argv)
       if (args.getForceFloat())
         ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
 
-      uint64_t output_size_in_bytes = bufsize_for(&ti);
+      uint64_t output_size_in_bytes = 0;
+      auto found = output_sizes.find(i);
+      if (found != output_sizes.end())
+        output_size_in_bytes = found->second;
+      else
       {
-        auto found = output_sizes.find(i);
-        if (output_sizes.find(i) != output_sizes.end())
-        {
-          output_size_in_bytes = found->second;
-        }
+        if (has_dynamic_dim(&ti))
+          throw std::runtime_error("Cannot allocate output buffer for dynamic shape. Use "
+                                   "--output_sizes to specify output buffer sizes");
+        output_size_in_bytes = bufsize_for(&ti);
       }
+
       outputs[i].alloc(output_size_in_bytes, ti.dtype);
       NNPR_ENSURE_STATUS(
         nnfw_set_output(session, i, ti.dtype, outputs[i].data(), output_size_in_bytes));

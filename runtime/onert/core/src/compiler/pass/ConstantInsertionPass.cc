@@ -26,7 +26,7 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::I
 {
   const auto backend = _lowered_graph.lower_info().operation.at(node_index);
 
-  for (const auto &input : node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+  for (const auto &input : node.getUsedInputSet())
   {
     auto &object = _graph.operands().at(input);
 

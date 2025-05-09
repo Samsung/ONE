@@ -28,6 +28,7 @@ namespace onert::backend::train::ops
 DepthwiseConvolutionLayer::DepthwiseConvolutionLayer()
   : cpu::ops::DepthwiseConvolutionLayer(), _grad_weights{nullptr}, _grad_bias{nullptr},
     _back_prop_input{nullptr}, _back_prop_output{nullptr}, _act_back_prop_output{nullptr},
+    _use_padded_filter{false}, _padded_filter{nullptr}, _filter_buffers{nullptr},
     _filter_dim_buffers{nullptr}
 {
   // DO NOTHING
@@ -83,6 +84,26 @@ void DepthwiseConvolutionLayer::configureBackward(IPortableTensor *back_prop_inp
   _filter_dim_buffers = std::make_unique<Tensor>(filter_dim_buffers_info);
   _filter_dim_buffers->setBuffer(
     std::make_shared<basic::Allocator>(_filter_dim_buffers->total_size()));
+
+  _use_padded_filter = (out_depth % k_packet_size) == 0 ? false : true;
+
+  const auto filter_shape = getShape(_kernel);
+  const int batch = incoming_shape.Dims(0);
+
+  const int filter_rows = filter_shape.Dims(1);
+  const int filter_cols = filter_shape.Dims(2);
+  const int filter_spatial_size = filter_rows * filter_cols;
+
+  // prepare padded_filter buffer for cker
+  auto padded_filter_info = ir::OperandInfo(_kernel->get_info());
+  padded_filter_info.shape({batch, filter_spatial_size, padded_filter_inner_dim_size});
+  _padded_filter = std::make_unique<Tensor>(padded_filter_info);
+  _padded_filter->setBuffer(std::make_shared<basic::Allocator>(_padded_filter->total_size()));
+
+  auto filter_buffers_info = ir::OperandInfo(_kernel->get_info());
+  filter_buffers_info.shape({thread_count, filter_spatial_size, padded_filter_inner_dim_size});
+  _filter_buffers = std::make_unique<Tensor>(filter_buffers_info);
+  _filter_buffers->setBuffer(std::make_shared<basic::Allocator>(_filter_buffers->total_size()));
 }
 
 void DepthwiseConvolutionLayer::forward(bool) { cpu::ops::DepthwiseConvolutionLayer::run(); }

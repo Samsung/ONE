@@ -56,7 +56,7 @@ void StaticBackwardShapeInferer::dump()
 bool StaticBackwardShapeInferer::checkDynamicInput(const ir::IOperation &op)
 {
   const auto &operands = _lowered_subg->graph().operands();
-  for (const auto &input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  for (const auto &input_idx : op.getUsedInputSet())
   {
     if (operands.at(input_idx).info().isDynamic())
     {
