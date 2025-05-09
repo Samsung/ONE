@@ -37,6 +37,12 @@ struct LayerInfo
   QuantizationGranularity granularity;
 };
 
+enum struct QuantizationAlgorithm
+{
+  Common = 0,
+  MinimumMSE = 1,
+};
+
 } // namespace luci
 
 #endif // __LUCI_QUANTIZATION_PARAMETERS_H__
