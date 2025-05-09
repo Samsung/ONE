@@ -84,7 +84,7 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
   for (const auto &op_index : order)
   {
     const auto &op = _tgraph.operations().at(op_index);
-    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_inputs = op.getUsedInputSet();
     auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
 
     // Define outputs
@@ -315,7 +315,7 @@ void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
   for (const auto &op_ind : border)
   {
     const auto &op = _tgraph.operations().at(op_ind);
-    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_inputs = op.getUsedInputSet();
     auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
 
     // Allocate back-propagated tensors in first def
@@ -415,7 +415,7 @@ void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
     std::vector<ir::train::TrainingOperandIndex> cur_seq;
     const auto &op = _tgraph.operations().at(op_index);
     const auto backwarding_op_index = ir::train::TrainingOperationIndex{op_index, false};
-    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_inputs = op.getUsedInputSet();
 
     // Only inputs can be candidates for def of backwarding tensors
     for (const auto &input : op_inputs)
@@ -487,7 +487,7 @@ ir::OperandIndexSequence TensorPlanner::getOutgoingBackPropSeq(const ir::Operati
   ir::OperandIndexSequence ret;
 
   const auto &op = _tgraph.operation(op_index);
-  for (const auto &input : (op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED))
+  for (const auto &input : op.getUsedInputSet())
   {
     if (_external_operands.contains(input))
       continue;

@@ -61,7 +61,7 @@ void StaticShapeInferer::infer()
 
     // Automatically mark any input with a dynamic dimension (-1)
     // so its shape is computed at execution time.
-    for (const auto &idx : op.getInputs())
+    for (const auto &idx : op.getUsedInputSet())
     {
       auto &input = _lowered_subg->graph().operands().at(idx);
       const auto &shape = input.info().shape();
@@ -111,7 +111,7 @@ void StaticShapeInferer::infer()
 bool StaticShapeInferer::checkDynamicInput(const ir::IOperation &op)
 {
   const auto &operands = _lowered_subg->graph().operands();
-  for (auto &&input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  for (auto &&input_idx : op.getUsedInputSet())
   {
     if (operands.at(input_idx).info().isDynamic())
     {

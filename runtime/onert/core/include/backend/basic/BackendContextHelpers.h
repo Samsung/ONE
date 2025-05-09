@@ -94,7 +94,7 @@ void planTensors(const std::shared_ptr<T_TensorBuilder> &tensor_builder, const i
   for (const auto &op_ind : op_order)
   {
     const auto &op = graph.operations().at(op_ind);
-    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_inputs = op.getUsedInputSet();
     auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
 
     // Define outputs

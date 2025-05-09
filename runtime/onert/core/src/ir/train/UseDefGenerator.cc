@@ -81,7 +81,7 @@ void UseDefGenerator::visit(const train::operation::BinaryArithmetic &node)
     insertUse(out_forwarding_index, backwarding_op_index);
   }
 
-  for (const auto &in_index : node.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  for (const auto &in_index : node.getUsedInputSet())
   {
     // Insert use of forwarding inputs
     const auto in_forwarding_index = TrainingOperandIndex{in_index, true};
@@ -185,7 +185,7 @@ void UseDefGenerator::visit(const train::operation::ElementwiseActivation &node)
   insertUse(out_forwarding_index, backwarding_op_index);
 
   // Set def of backwarding(backprop) inputs
-  for (const auto &in_index : node.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  for (const auto &in_index : node.getUsedInputSet())
   {
     const auto outgoing_index = TrainingOperandIndex{in_index, false};
     insertBackPropDef(outgoing_index, backwarding_op_index);
@@ -236,7 +236,7 @@ void UseDefGenerator::visit(const train::operation::Loss &node)
   const auto &op_index = _node_to_idx.at(&node);
   const auto backwarding_op_index = TrainingOperationIndex{op_index, false};
 
-  for (const auto &in_index : node.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  for (const auto &in_index : node.getUsedInputSet())
   {
     // Insert use of forwarding inputs
     const auto in_forwarding_index = TrainingOperandIndex{in_index, true};

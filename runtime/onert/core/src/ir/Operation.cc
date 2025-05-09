@@ -50,6 +50,12 @@ void Operation::setOutputs(const OperandIndexSequence &indexes)
   _outputs = indexes;
 }
 
+std::set<OperandIndex> Operation::getUsedInputSet() const
+{
+  auto seq = _inputs | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+  return std::set<OperandIndex>(seq.begin(), seq.end());
+}
+
 void Operation::replaceInputs(const OperandIndex &from, const OperandIndex &to)
 {
   _inputs.replace(from, to);
