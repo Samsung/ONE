@@ -29,10 +29,11 @@ jobs:
         with:
           python-version: '3.x'
 
-      # C format: clang-format-16 (already installed)
+      # C format: clang-format-16
       # Python format: yapf==0.43.0
       - name: Install packages
         run: |
+          sudo apt-get update && sudo apt-get install -qqy clang-format-16
           pip install yapf==0.43.0
 
       - name: Check
