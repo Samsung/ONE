@@ -14,11 +14,8 @@
 
 FROM ubuntu:noble
 
-# Install 'add-apt-repository'
-RUN apt-get update && apt-get -qqy install software-properties-common
-
 # Install tzdata without user input
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -qqy install tzdata
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -qqy install tzdata
 
 # Build tool
 RUN apt-get update && apt-get -qqy install build-essential cmake scons git lcov g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
@@ -32,13 +29,7 @@ RUN apt-get update && apt-get -qqy install libboost-all-dev libgflags-dev libgoo
 # Additonal tools
 RUN apt-get update && \
     apt-get -qqy install doxygen graphviz wget zip unzip python3 python3-pip python3-venv python3-dev hdf5-tools curl
-RUN python3 -m pip install yapf==0.40.2 pylint numpy flatbuffers --break-system-packages
-
-# Install clang-format
-RUN apt-get update && apt-get -qqy install clang-format-16
-
-# TODO: Install gbs & sdb
-# gbs & sdb are not support ubuntu noble yet
+RUN python3 -m pip install numpy flatbuffers --break-system-packages
 
 # Setup user ubuntu: give superuser permissions without password
 RUN apt-get update && apt-get -qqy install sudo
