@@ -190,6 +190,15 @@ void dump_sub_graph(std::ostream &os, mio::circle::Reader &reader)
 
         os << std::endl;
       }
+      if (q_params->details_type() == circle::QuantizationDetails_MXQuantization)
+      {
+        const auto &mx_params = q_params->details_as_MXQuantization();
+        std::string strquantiz = "    MX Quantization: ";
+        os << strquantiz;
+        os << "axis (" << mx_params->axis() << ")" << std::endl;
+
+        os << std::endl;
+      }
     }
 
     if (const auto &s_params = tensor->sparsity())
