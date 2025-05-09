@@ -22,6 +22,7 @@ usr/bin/one-import-bcq usr/share/one/bin/
 usr/bin/one-import-onnx usr/share/one/bin/
 usr/bin/one-import-tf usr/share/one/bin/
 usr/bin/one-import-tflite usr/share/one/bin/
+usr/bin/one-resize usr/share/one/bin/
 usr/bin/one-infer usr/share/one/bin/
 usr/bin/one-optimize usr/share/one/bin/
 usr/bin/one-pack usr/share/one/bin/
