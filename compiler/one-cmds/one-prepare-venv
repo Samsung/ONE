@@ -64,8 +64,6 @@ VER_PYDOT=1.4.2
 VER_TORCH="2.1.2+cpu"
 VER_PROTOBUF=4.23.3
 
-# Install tensorflow
-
 echo "Setting version for '$DISTRIB_CODENAME'"
 if [[ "$DISTRIB_CODENAME" == "bionic" ]]; then
   : # use as is
