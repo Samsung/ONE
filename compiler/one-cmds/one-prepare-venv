@@ -14,6 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# NOTE check if we can use python3.8 for Ubuntu 18.04.
+# use +e as python3.8 may not exist in the system and 'command' will return error.
+set +e
+
+PYTHON3_EXEC=$(command -v python3.8)
+if [[ -z "${PYTHON3_EXEC}" ]]; then
+  PYTHON3_EXEC=$(command -v python3)
+fi
+if [[ -z "${PYTHON3_EXEC}" ]]; then
+  echo "Error one-prepare-venv: python3 not found"
+  exit -1
+fi
+
 set -e
 
 DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -26,7 +39,7 @@ VENV_PYTHON=${DRIVER_PATH}/venv/bin/python
 
 if [ ! -f ${VENV_ACTIVATE} ]; then
   # Create python virtual enviornment
-  python3 -m venv "${DRIVER_PATH}/venv"
+  ${PYTHON3_EXEC} -m venv "${DRIVER_PATH}/venv"
 fi
 
 # NOTE version
