@@ -116,8 +116,7 @@ include("cmake/ApplyCompileFlags.cmake")
 ###
 add_library(nncc_common INTERFACE)
 if(ENABLE_STRICT_BUILD)
-  # TODO Remove -Wno-overloaded-virtual
-  target_compile_options(nncc_common INTERFACE -Werror -Wall -Wextra -Wno-overloaded-virtual)
+  target_compile_options(nncc_common INTERFACE -Werror -Wall -Wextra)
 endif(ENABLE_STRICT_BUILD)
 
 add_library(nncc_coverage INTERFACE)

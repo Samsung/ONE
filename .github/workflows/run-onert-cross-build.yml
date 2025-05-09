@@ -21,13 +21,6 @@ on:
       - master
       - release/*
     paths:
-      - '.github/workflows/run-onert-cross-build.yml'
-      - 'nn*'
-      - 'Makefile.template'
-      - 'infra/buildtool/**'
-      - 'infra/cmake/**'
-      - 'infra/nncc/**'
-      - 'infra/nnfw/**'
       - 'runtime/**'
       - '!runtime/contrib/**'
       - '!**/*.md'

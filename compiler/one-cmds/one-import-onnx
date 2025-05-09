@@ -24,7 +24,13 @@ import os
 import sys
 import tempfile
 import onnx
-import onnx_tf
+
+# onnx_tf may not exist for latest python
+try:
+    import onnx_tf
+    _onnx_tf_enabled = True
+except ImportError:
+    _onnx_tf_enabled = False
 
 # ONNX legalizer is an optional feature
 # It enables conversion of some operations, but in experimental phase for now
@@ -122,6 +128,10 @@ class TidyIONames:
                 to_rename = self.onnx_model.graph.output[i].name
                 idx = self.output_nodes.index(to_rename)
                 self.onnx_model.graph.output[i].name = self.remap_outputs[idx]
+
+
+def _check_onnx_tf():
+    import onnx
 
 
 def get_driver_cfg_section():
@@ -329,6 +339,9 @@ def _convert(args):
 
             if _force_ext(args):
                 run_default_import = False
+
+        if not _onnx_tf_enabled:
+            run_default_import = False
 
         res_conv = -1
         if run_default_import:

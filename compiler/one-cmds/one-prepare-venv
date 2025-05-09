@@ -54,6 +54,7 @@ source /etc/lsb-release
 # - https://github.com/onnx/onnx/blob/master/docs/Versioning.md
 # - https://github.com/onnx/onnx-tensorflow/blob/master/Versioning.md
 
+# default version values
 VER_TENSORFLOW=2.12.1
 VER_TF_PROB=0.20.1
 VER_TF_ADON=0.20.0
@@ -63,18 +64,31 @@ VER_ONNX_TF=1.10.0
 VER_PYDOT=1.4.2
 VER_TORCH="2.1.2+cpu"
 VER_PROTOBUF=4.23.3
-
-# Install tensorflow
+VER_NUMPY=1.24.3
 
 echo "Setting version for '$DISTRIB_CODENAME'"
 if [[ "$DISTRIB_CODENAME" == "bionic" ]]; then
-  : # use as is
+  : # use default
 elif [[ "$DISTRIB_CODENAME" == "focal" ]]; then
-  : # use as is
+  : # use default
 elif [[ "$DISTRIB_CODENAME" == "jammy" ]]; then
-  : # TODO change vesions
+  :
+  #VER_TENSORFLOW=2.19.0
+  #VER_TF_PROB=0.25.0
+  #VER_TF_ADON=0.23.0
+  #VER_ONNX=1.17.0
+  #VER_ONNXRUNTIME=1.21.1
+  #VER_TORCH="2.7.0+cpu"
+  #VER_NUMPY=1.24.4
 elif [[ "$DISTRIB_CODENAME" == "noble" ]]; then
-  : # TODO change vesions
+  VER_TENSORFLOW=2.19.0
+  VER_TF_PROB=0
+  VER_TF_ADON=0 # EOL, don't exist in python3.12~
+  VER_ONNX=1.17.0
+  VER_ONNXRUNTIME=1.21.0
+  VER_ONNX_TF=0
+  VER_TORCH="2.7.0+cpu"
+  VER_NUMPY=1.26.4
 else
   echo "Error one-prepare-venv: Unsupported codename $DISTRIB_CODENAME"
   exit -1
@@ -97,15 +111,18 @@ if [[ ! -z "$ONE_PREPVENV_PIP_OPTION" ]]; then
 fi
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade pip setuptools
-if [ -n "${EXT_TENSORFLOW_WHL}" ]; then
-  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install ${EXT_TENSORFLOW_WHL}
-else
-  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow-cpu==${VER_TENSORFLOW}
+
+PYTHON_PACKAGES="tensorflow-cpu==${VER_TENSORFLOW} "
+
+PYTHON_PACKAGES+="Pillow "
+
+if [[ "$VER_TF_PROB" != "0" ]]; then
+  # Fix version to that of TF release date
+  PYTHON_PACKAGES+="tensorflow_probability==${VER_TF_PROB} "
 fi
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install Pillow
-# Fix version to that of TF release date
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_probability==${VER_TF_PROB}
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_addons==${VER_TF_ADON}
+if [[ "$VER_TF_ADON" != "0" ]]; then
+  PYTHON_PACKAGES+="tensorflow_addons==${VER_TF_ADON} "
+fi
 
 # Install PyTorch and ONNX related
 # NOTE set ONE_PREPVENV_TORCH_SOURCE to override options for source URL.
@@ -115,24 +132,26 @@ if [[ ! -z "$ONE_PREPVENV_TORCH_SOURCE" ]]; then
 fi
 # TODO remove torch message
 echo "Torch from '${ONE_PREPVENV_TORCH_SOURCE}' -> '${TORCH_SOURCE_OPTION}'"
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==${VER_TORCH} ${TORCH_SOURCE_OPTION}
+PYTHON_PACKAGES+="torch==${VER_TORCH} "
 
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX}
+PYTHON_PACKAGES+="onnx==${VER_ONNX} "
 
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnxruntime==${VER_ONNXRUNTIME}
+PYTHON_PACKAGES+="onnxruntime==${VER_ONNXRUNTIME} "
 
-# Provide install of custom onnx-tf
-if [ -n "${EXT_ONNX_TF_WHL}" ]; then
-  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install ${EXT_ONNX_TF_WHL}
-else
-  ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx-tf==${VER_ONNX_TF}
+if [[ "$VER_ONNX_TF" != "0" ]]; then
+  PYTHON_PACKAGES+="onnx-tf==${VER_ONNX_TF} "
 fi
 
 # Fix version to that of TF release date
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade protobuf==${VER_PROTOBUF}
+PYTHON_PACKAGES+="protobuf==${VER_PROTOBUF} "
 
-# Fix version with fsspec error on U20.04
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade fsspec==2024.6.1
+# Fix version with fsspec error
+PYTHON_PACKAGES+="fsspec==2024.6.1 "
 
 # Install pydot for visq
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install pydot==${VER_PYDOT}
+PYTHON_PACKAGES+="pydot==${VER_PYDOT} "
+
+# Install numpy 1.x
+PYTHON_PACKAGES+="numpy==${VER_NUMPY} "
+
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade ${PYTHON_PACKAGES} ${TORCH_SOURCE_OPTION}
