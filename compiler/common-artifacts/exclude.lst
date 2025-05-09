@@ -110,6 +110,7 @@ tcgenerate(ReduceAny_dynamic_000) # TestDataGenerator does not support unknown d
 tcgenerate(ReduceAny_dynamic_001) # TestDataGenerator does not support unknown dimension
 tcgenerate(ReduceAny_dynamic_002) # TestDataGenerator does not support unknown dimension
 tcgenerate(ReduceAny_dynamic_003) # TestDataGenerator does not support unknown dimension
+tcgenerate(ReduceAny_dynamic_004) # TestDataGenerator does not support unknown dimension
 tcgenerate(ReduceMax_000)
 tcgenerate(ReduceMax_dynamic_000) # TestDataGenerator does not support unknown dimension
 tcgenerate(ReduceMin_000)
