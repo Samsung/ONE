@@ -141,7 +141,7 @@ jobs:
           cp -rf ../../infra/debian/circle-interpreter ./debian
           export DEBFULLNAME="${{ inputs.deb_fullname }}"
           export DEBEMAIL="${{ inputs.deb_email }}"
-          dch -v "${{ steps.prepare.outcome.VERSION }}" \
+          dch -v "${{ steps.prepare.outputs.VERSION }}" \
             --distribution "${{ matrix.ubuntu_code }}" \
             "${{ inputs.cirint_description }}" -b
 
