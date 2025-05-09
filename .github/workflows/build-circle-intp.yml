@@ -39,52 +39,39 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  prepare:
+  configure:
     if: github.repository_owner == 'Samsung' || github.repository_owner == 'shs-park'
+    name: Set current date and time
     # TODO change to the 'ubuntu-latest'
     #runs-on: ubuntu-latest
     runs-on: [ self-hosted, shs-park ]
     outputs:
-      version: ${{ steps.set-version.outputs.version }}
-      changes_file: ${{ steps.set-version.outputs.changes_file }}
-      tarball_file: ${{ steps.set-version.outputs.tarball_file }}
-      br_version: ${{ steps.set-version.outputs.br_version }}
+      version: ${{ steps.set-datetime.outputs.version }}
+      br_version: ${{ steps.set-datetime.outputs.br_version }}
     steps:
-      - name: Set version
-        id: set-version
+      - name: Set date and time
+        id: set-datetime
         run: |
           base_version="${{ inputs.cirint_version }}"
           is_release="${{ inputs.is_release }}"
-
           if [[ "$is_release" == "true" ]]; then
-            version="$base_version"
+            version="${base_version}"
             br_version="$base_version"
           else
             release_date=$(date +%Y%m%d%H%M)
             version="${base_version}~${release_date}"
             br_version="${base_version}-${release_date}"
           fi
-
-          changes_file="circle-interpreter_${version}_source.changes"
-          tarball_file="circle-interpreter_${version}.orig.tar.xz"
-
           echo "version=${version}" >> $GITHUB_OUTPUT
-          echo "changes_file=${changes_file}" >> $GITHUB_OUTPUT
-          echo "tarball_file=${tarball_file}" >> $GITHUB_OUTPUT
+          echo "br_version=${br_version}" >> $GITHUB_OUTPUT
 
   debian-release:
-    needs: prepare
+    needs: configure
     strategy:
       matrix:
-        # TODO activate jammy
-        include:
-          - ubuntu_code: focal
-            ubuntu_ver: 2004
-            upload_artifact: false
-          - ubuntu_code: jammy
-            ubuntu_ver: 2204
-            upload_artifact: true # only this artifact will be shared
-    name: circle-interpreter ubuntu ${{ matrix.ubuntu_ver }}
+        # TODO activate noble
+        ubuntu_code: [ focal, jammy ]
+    name: circle-interpreter ubuntu ${{ matrix.ubuntu_code }}
     # TODO change to the 'ubuntu-latest'
     #runs-on: ubuntu-latest
     runs-on: [ self-hosted, shs-park ]
@@ -95,22 +82,24 @@ jobs:
         password: ${{ secrets.NNFW_DOCKER_TOKEN }}
       # options: --user root
     env:
-      VERSION: ${{ needs.prepare.outputs.version }}
-      CHANGE_FILE: ${{ needs.prepare.outputs.changes_file }}
-      TARBALL_FILE: ${{ needs.prepare.outputs.tarball_file }}
       NNCC_BUILD: build
       NNCC_WORKSPACE: build/release
       NNCC_INSTALL_PREFIX: ${{ github.workspace }}/build/release.install
       CIRINTP_PREFIX: cirintp
 
     steps:
+      - name: Prepare, set distro versions
+        id: prepare
+        run: |
+          VERSION="${{ needs.configure.outputs.version }}~${{ matrix.ubuntu_code }}"
+          changes_file="circle-interpreter_${VERSION}_source.changes"
+          tarball_file="circle-interpreter_${VERSION}.orig.tar.xz"
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          echo "changes_file=${changes_file}" >> $GITHUB_OUTPUT
+          echo "tarball_file=${tarball_file}" >> $GITHUB_OUTPUT
+
       - name: Checkout
         uses: actions/checkout@v4
-
-      # - name: Install required packages
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y curl
 
       - name: Build without test
         run: |
@@ -152,14 +141,14 @@ jobs:
           cp -rf ../../infra/debian/circle-interpreter ./debian
           export DEBFULLNAME="${{ inputs.deb_fullname }}"
           export DEBEMAIL="${{ inputs.deb_email }}"
-          dch -v "${{ env.VERSION }}" \
+          dch -v "${{ steps.prepare.outcome.VERSION }}" \
             --distribution "${{ matrix.ubuntu_code }}" \
             "${{ inputs.cirint_description }}" -b
 
       - name: Create original tarball
         run: |
           cd ${{ env.NNCC_BUILD }}
-          tar -caf ${{ env.TARBALL_FILE }} ${{ env.CIRINTP_PREFIX }}
+          tar -caf ${{ steps.prepare.outputs.tarball_file }} ${{ env.CIRINTP_PREFIX }}
 
       - name: Signing with debuild and debsign
         run: |
@@ -169,11 +158,7 @@ jobs:
           # get fingerprint
           FPR=$(gpg --list-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')
           echo "$FPR:6:" | gpg --import-ownertrust
-          if [[ "${{ matrix.upload_artifact }}" == "true" ]]; then
-            debuild -S -us -uc
-          else
-            debuild -S -us -uc -sd  # without *.orig.tar.xz
-          fi
+          debuild -S -us -uc
           debsign -k${FPR} ../circle-interpreter_*.changes
 
       - name: Upload to Launchpad
@@ -182,29 +167,29 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.LAUNCHPAD_NNFW_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          dput ppa:circletools/nightly ${{ env.CHANGE_FILE }}
+          dput ppa:circletools/nightly ${{ steps.prepare.outputs.changes_file }}
 
       - name: Upload artifact; circle-interpreter
-        if: matrix.upload_artifact == true
         uses: actions/upload-artifact@v4
         with:
-          name: circle-interpreter_${{ env.VERSION }}
+          name: circle-interpreter_${{ steps.prepare.outputs.version }}
           retention-days: 3
           path: |
-            ${{ env.NNCC_BUILD }}/${{ env.TARBALL_FILE }}
+            ${{ env.NNCC_BUILD }}/${{ steps.prepare.outputs.tarball_file }}
 
   create-pr-on-success:
     name: Create changelog update PR on success
     # TODO change to the 'ubuntu-latest'
     #runs-on: ubuntu-latest
     runs-on: [ self-hosted, shs-park ]
-    needs: [ prepare, debian-release ]
+    needs: debian-release
     env:
-      VERSION: ${{ needs.prepare.outputs.version }}
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
       BR_VERSION: ${{ needs.prepare.outputs.br_version }}
     # TODO need to activate the branch condition
     # if: ${{ success() && github.ref == 'refs/heads/master' }}
-    if: ${{ success() }}
+    # if: ${{ success() }}
+    if: false
     permissions:
       contents: write
       pull-requests: write
