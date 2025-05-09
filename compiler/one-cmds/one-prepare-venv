@@ -47,11 +47,14 @@ fi
 # - https://github.com/onnx/onnx-tensorflow/blob/master/Versioning.md
 
 VER_TENSORFLOW=2.12.1
+VER_TF_PROB=0.20.1
+VER_TF_ADON=0.20.0
 VER_ONNX=1.16.0
 VER_ONNXRUNTIME=1.18.0
 VER_ONNX_TF=1.10.0
 VER_PYDOT=1.4.2
 VER_TORCH="2.1.2+cpu"
+VER_PROTOBUF=4.23.3
 
 # Install tensorflow
 
@@ -79,8 +82,8 @@ else
 fi
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install Pillow
 # Fix version to that of TF release date
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_probability==0.20.1
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_addons==0.20.0
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_probability==${VER_TF_PROB}
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install tensorflow_addons==${VER_TF_ADON}
 
 # Install PyTorch and ONNX related
 # NOTE set ONE_PREPVENV_TORCH_SOURCE to override options for source URL.
@@ -104,7 +107,7 @@ else
 fi
 
 # Fix version to that of TF release date
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade protobuf==4.23.3
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade protobuf==${VER_PROTOBUF}
 
 # Fix version with fsspec error on U20.04
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade fsspec==2024.6.1
