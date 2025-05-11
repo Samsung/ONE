@@ -39,7 +39,6 @@ var dir_c9348e4763c5124a9eef9e6530a60018 =
     [ "Logistic.h", "runtime_2compute_2cker_2include_2cker_2operation_2_logistic_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_logistic_8h" ],
     [ "LogSoftMax.h", "runtime_2compute_2cker_2include_2cker_2operation_2_log_softmax_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_log_softmax_8h" ],
     [ "LSTM.h", "compute_2cker_2include_2cker_2operation_2_l_s_t_m_8h.html", "compute_2cker_2include_2cker_2operation_2_l_s_t_m_8h" ],
-    [ "MatrixBandPart.h", "runtime_2compute_2cker_2include_2cker_2operation_2_matrix_band_part_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_matrix_band_part_8h" ],
     [ "MaxMin.h", "_max_min_8h.html", "_max_min_8h" ],
     [ "MaxPool.h", "runtime_2compute_2cker_2include_2cker_2operation_2_max_pool_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_max_pool_8h" ],
     [ "OneHot.h", "runtime_2compute_2cker_2include_2cker_2operation_2_one_hot_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_one_hot_8h" ],

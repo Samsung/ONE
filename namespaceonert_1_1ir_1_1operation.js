@@ -35,7 +35,6 @@ var namespaceonert_1_1ir_1_1operation =
     [ "LogSoftmax", "classonert_1_1ir_1_1operation_1_1_log_softmax.html", "classonert_1_1ir_1_1operation_1_1_log_softmax" ],
     [ "Loss", "classonert_1_1ir_1_1operation_1_1_loss.html", "classonert_1_1ir_1_1operation_1_1_loss" ],
     [ "LSTM", "classonert_1_1ir_1_1operation_1_1_l_s_t_m.html", "classonert_1_1ir_1_1operation_1_1_l_s_t_m" ],
-    [ "MatrixBandPart", "classonert_1_1ir_1_1operation_1_1_matrix_band_part.html", "classonert_1_1ir_1_1operation_1_1_matrix_band_part" ],
     [ "OneHot", "classonert_1_1ir_1_1operation_1_1_one_hot.html", "classonert_1_1ir_1_1operation_1_1_one_hot" ],
     [ "Pack", "classonert_1_1ir_1_1operation_1_1_pack.html", "classonert_1_1ir_1_1operation_1_1_pack" ],
     [ "Pad", "classonert_1_1ir_1_1operation_1_1_pad.html", "classonert_1_1ir_1_1operation_1_1_pad" ],

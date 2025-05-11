@@ -227,14 +227,10 @@ var NAVTREEINDEX15 =
 "_matrix_axis_8h.html#adeb1a0d0952a6bd7c327f99931e35320a32954654ac8fe66a1d09be19001de2d4":[41,0,0,52,0,0,1,32,0,1],
 "_matrix_axis_8h.html#adeb1a0d0952a6bd7c327f99931e35320aeec6c4bdbd339edf8cbea68becb85244":[41,0,0,52,0,0,1,32,0,0],
 "_matrix_axis_8h_source.html":[41,0,0,52,0,0,1,32],
-"_matrix_band_part_8cc.html":[41,0,3,2,2,1,5,0,35],
-"_matrix_band_part_8cc_source.html":[41,0,3,2,2,1,5,0,35],
 "_matrix_band_part_8cpp.html":[41,0,0,131,0,1,0,12],
 "_matrix_band_part_8cpp_source.html":[41,0,0,131,0,1,0,12],
-"_matrix_band_part_layer_8cc.html":[41,0,3,2,1,4,0,48],
-"_matrix_band_part_layer_8cc_source.html":[41,0,3,2,1,4,0,48],
-"_matrix_band_part_layer_8h.html":[41,0,3,2,1,4,0,49],
-"_matrix_band_part_layer_8h_source.html":[41,0,3,2,1,4,0,49],
+"_matrix_band_part_8h.html":[41,0,0,131,0,1,0,13],
+"_matrix_band_part_8h_source.html":[41,0,0,131,0,1,0,13],
 "_matrix_codec_8cpp.html":[41,0,0,52,1,1,19],
 "_matrix_codec_8cpp_source.html":[41,0,0,52,1,1,19],
 "_matrix_codec_8h.html":[41,0,0,52,0,0,1,33],
@@ -249,5 +245,9 @@ var NAVTREEINDEX15 =
 "_matrix_diag_options_8h_source.html":[41,0,0,133,2,0,85],
 "_matrix_encode_8cpp.html":[41,0,0,54,1,0,19],
 "_matrix_encode_8cpp_source.html":[41,0,0,54,1,0,19],
-"_matrix_index_8h.html":[41,0,0,52,0,0,1,34]
+"_matrix_index_8h.html":[41,0,0,52,0,0,1,34],
+"_matrix_index_8h_source.html":[41,0,0,52,0,0,1,34],
+"_matrix_set_diag_options_8cpp.html":[41,0,0,133,2,0,86],
+"_matrix_set_diag_options_8cpp.html#a376cbd2ff766b20178cb76e6d632544f":[41,0,0,133,2,0,86,0],
+"_matrix_set_diag_options_8cpp_source.html":[41,0,0,133,2,0,86]
 };

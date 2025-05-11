@@ -274,7 +274,6 @@ var namespacennfw_1_1cker =
     [ "MatchingFlatSize", "namespacennfw_1_1cker.html#ad99f65ff98fb571287a96424b0233fdb", null ],
     [ "MatchingFlatSizeSkipDim", "namespacennfw_1_1cker.html#aabf0edca9e5984799338bb320bf6eb90", null ],
     [ "MatchingFlatSizeSkipDim", "namespacennfw_1_1cker.html#a9c6ce7ebc988022b50e3db4c4690aad1", null ],
-    [ "MatrixBandPart", "namespacennfw_1_1cker.html#a1465a5df23800121c27199c7907295e4", null ],
     [ "MatrixBatchVectorMultiplyAccumulate", "namespacennfw_1_1cker.html#a3bce16e213a95dfa95f473e8bf6cc2ef", null ],
     [ "MatrixBatchVectorMultiplyAccumulate", "namespacennfw_1_1cker.html#a537a30edc4be725f28ebdd5c2b123c0b", null ],
     [ "MatrixBatchVectorMultiplyAccumulate", "namespacennfw_1_1cker.html#a67681735486ed7bfa70716daada6ba3d", null ],

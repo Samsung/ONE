@@ -35,7 +35,6 @@ var dir_617364de53cb63ef037bbfe87a3d680c =
     [ "LogSoftmax.cc", "_log_softmax_8cc.html", null ],
     [ "Loss.cc", "operation_2_loss_8cc.html", null ],
     [ "LSTM.cc", "_l_s_t_m_8cc.html", null ],
-    [ "MatrixBandPart.cc", "_matrix_band_part_8cc.html", null ],
     [ "OneHot.cc", "_one_hot_8cc.html", null ],
     [ "Pack.cc", "_pack_8cc.html", null ],
     [ "Pad.cc", "operation_2_pad_8cc.html", null ],

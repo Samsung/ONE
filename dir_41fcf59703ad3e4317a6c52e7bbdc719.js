@@ -48,8 +48,6 @@ var dir_41fcf59703ad3e4317a6c52e7bbdc719 =
     [ "LogSoftMaxLayer.h", "_log_soft_max_layer_8h.html", "_log_soft_max_layer_8h" ],
     [ "LSTMLayer.cc", "_l_s_t_m_layer_8cc.html", null ],
     [ "LSTMLayer.h", "_l_s_t_m_layer_8h.html", "_l_s_t_m_layer_8h" ],
-    [ "MatrixBandPartLayer.cc", "_matrix_band_part_layer_8cc.html", null ],
-    [ "MatrixBandPartLayer.h", "_matrix_band_part_layer_8h.html", "_matrix_band_part_layer_8h" ],
     [ "MeanLayer.cc", "cpu_2ops_2_mean_layer_8cc.html", null ],
     [ "MeanLayer.h", "cpu_2ops_2_mean_layer_8h.html", "cpu_2ops_2_mean_layer_8h" ],
     [ "OneHotLayer.cc", "_one_hot_layer_8cc.html", null ],

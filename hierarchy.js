@@ -2445,7 +2445,6 @@ var hierarchy =
       [ "onert::backend::cpu::ops::L2NormLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_l2_norm_layer.html", null ],
       [ "onert::backend::cpu::ops::LSTMLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_l_s_t_m_layer.html", null ],
       [ "onert::backend::cpu::ops::LogSoftMaxLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html", null ],
-      [ "onert::backend::cpu::ops::MatrixBandPartLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_matrix_band_part_layer.html", null ],
       [ "onert::backend::cpu::ops::MeanLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html", [
         [ "onert::backend::train::ops::MeanLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_mean_layer.html", null ]
       ] ],
@@ -2666,7 +2665,6 @@ var hierarchy =
         [ "onert::ir::operation::Loss", "classonert_1_1ir_1_1operation_1_1_loss.html", [
           [ "onert::ir::train::operation::Loss", "classonert_1_1ir_1_1train_1_1operation_1_1_loss.html", null ]
         ] ],
-        [ "onert::ir::operation::MatrixBandPart", "classonert_1_1ir_1_1operation_1_1_matrix_band_part.html", null ],
         [ "onert::ir::operation::OneHot", "classonert_1_1ir_1_1operation_1_1_one_hot.html", null ],
         [ "onert::ir::operation::PReLU", "classonert_1_1ir_1_1operation_1_1_p_re_l_u.html", null ],
         [ "onert::ir::operation::Pack", "classonert_1_1ir_1_1operation_1_1_pack.html", null ],

@@ -25,7 +25,6 @@ var namespaceonert_1_1backend_1_1cpu_1_1ops =
     [ "L2NormLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_l2_norm_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_l2_norm_layer" ],
     [ "LogSoftMaxLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_log_soft_max_layer" ],
     [ "LSTMLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_l_s_t_m_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_l_s_t_m_layer" ],
-    [ "MatrixBandPartLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_matrix_band_part_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_matrix_band_part_layer" ],
     [ "MeanLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer" ],
     [ "OneHotLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_one_hot_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_one_hot_layer" ],
     [ "PackLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_pack_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_pack_layer" ],
