@@ -106,27 +106,15 @@ echo "Torch from '${ONE_PREPVENV_TORCH_SOURCE}' -> '${TORCH_SOURCE_OPTION}'"
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade pip setuptools
 
 PYTHON_PACKAGES="tensorflow-cpu==${VER_TENSORFLOW} "
-
 PYTHON_PACKAGES+="Pillow "
-# Fix version to that of TF release date
 PYTHON_PACKAGES+="tensorflow_probability==${VER_TF_PROB} "
 PYTHON_PACKAGES+="tensorflow_addons==${VER_TF_ADON} "
-
 PYTHON_PACKAGES+="torch==${VER_TORCH} "
-
 PYTHON_PACKAGES+="onnx==${VER_ONNX} "
-
 PYTHON_PACKAGES+="onnxruntime==${VER_ONNXRUNTIME} "
-
 PYTHON_PACKAGES+="onnx-tf==${VER_ONNX_TF} "
-
-# Fix version to that of TF release date
 PYTHON_PACKAGES+="protobuf==${VER_PROTOBUF} "
-
-# Fix version with fsspec error on U20.04
 PYTHON_PACKAGES+="fsspec==2024.6.1 "
-
-# Install pydot for visq
 PYTHON_PACKAGES+="pydot==${VER_PYDOT} "
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade ${PYTHON_PACKAGES} ${TORCH_SOURCE_OPTION}
