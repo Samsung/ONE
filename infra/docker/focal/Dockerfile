@@ -14,11 +14,8 @@
 
 FROM ubuntu:20.04
 
-# Install 'add-apt-repository'
-RUN apt-get update && apt-get -qqy install software-properties-common
-
 # Install tzdata without user input
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -qqy install tzdata
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -qqy install tzdata
 
 # Build tool
 RUN apt-get update && apt-get -qqy install build-essential cmake scons git lcov g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
@@ -37,13 +34,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
     apt-get -qqy install doxygen graphviz wget zip unzip python3 python3-pip python3-venv python3-dev hdf5-tools curl
 RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install yapf==0.40.2 pylint numpy flatbuffers
-
-# Install clang-format
-RUN apt-get install -qqy gnupg2
-RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
-RUN add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main"
-RUN apt-get update && apt-get install -qqy clang-format-16
+RUN python3 -m pip install numpy flatbuffers
 
 # Install libtsan_preinit.o manually (workaround for missing package in focal)
 WORKDIR /root/tmp
@@ -53,10 +44,6 @@ RUN find usr -name "libtsan_preinit.o" | xargs -i cp {} .
 RUN find usr -name "libtsan_preinit.o" | sed -e "s/10/9/g" | xargs -i cp libtsan_preinit.o /{}
 WORKDIR /root
 RUN rm -rf /root/tmp
-
-# Install gbs
-RUN echo 'deb [trusted=yes] http://download.tizen.org/tools/latest-release/Ubuntu_20.04/ /' | cat >> /etc/apt/sources.list
-RUN apt-get update && apt-get -qqy install gbs
 
 # Setup user to match host user, and give superuser permissions
 ARG USER_ID=1000
