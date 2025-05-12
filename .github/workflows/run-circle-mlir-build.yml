@@ -47,32 +47,14 @@ jobs:
     name: circle-mlir ${{ matrix.ubuntu_vstr }} ${{ matrix.type }} test
 
     steps:
-      # NOTE we only need small circle-interpreter Debian package, but
-      #      as it's not ready yet, install circle-interpreter from build.
-      # TODO prepare circle-interpreter Debian package and install it.
+      - name: Install circle-interpreter
+        run: |
+          add-apt-repository ppa:circletools/nightly
+          apt update
+          apt install circle-interpreter
+
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Prepare circle-interpreter from source
-        env:
-          NNCC_WORKSPACE: build
-        run: |
-          CIRINT_ITEMS="angkor;cwrap;pepper-str;pepper-strcast;pepper-csv2vec;pp"
-          CIRINT_ITEMS="${CIRINT_ITEMS};oops;loco;logo-core;logo;locop"
-          CIRINT_ITEMS="${CIRINT_ITEMS};hermes;hermes-std;safemain;mio-circle08"
-          CIRINT_ITEMS="${CIRINT_ITEMS};luci-compute;luci;luci-interpreter"
-          CIRINT_ITEMS="${CIRINT_ITEMS};foder;arser;vconone;circle-interpreter"
-          echo ${CIRINT_ITEMS}
-
-          ./nncc configure \
-            -DENABLE_STRICT_BUILD=ON \
-            -DENABLE_TEST=OFF \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DEXTERNALS_BUILD_THREADS=4 \
-            -DCMAKE_INSTALL_PREFIX=install \
-            -DBUILD_WHITELIST="${CIRINT_ITEMS}"
-          ./nncc build -j4
-          cmake --build ${NNCC_WORKSPACE} -- install
 
       # NOTE Docker image has pre-installed submodules in /workdir
       # NOTE Docker image has pre-installed python packages
@@ -86,7 +68,7 @@ jobs:
 
       - name: Build, test & install
         env:
-          ONE_COMPILER_ROOT: ${{ github.workspace }}/build/install
+          ONE_COMPILER_ROOT: /usr/share/cirint
         run: |
           cd circle-mlir
           cmake --build build/${{ matrix.type }} -j4
