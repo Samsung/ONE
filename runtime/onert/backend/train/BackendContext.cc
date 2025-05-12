@@ -56,8 +56,7 @@ void AddBackPropInitializers(const ir::train::TrainableGraph &tgraph, TensorRegi
     // The function added latest is executed first in a sequence during backwarding.
     std::vector<BackPropTensor *> back_props;
     const auto &op = tgraph.operation(op_index);
-    for (const auto &back_prop_index :
-         op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+    for (const auto &back_prop_index : op.getUsedInputSet())
     {
       assert(op.isRequiredForBackward());
       if (unvisited.contains(back_prop_index))
@@ -89,8 +88,7 @@ getBackwardTensorList(const ir::train::TrainableGraph &tgraph,
     const auto &trainable_op = tgraph.operation(op_index);
     assert(trainable_op.isRequiredForBackward());
     // This assumes that back-propagated tensors of loss outputs are not used
-    for (const auto &ind :
-         trainable_op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &ind : trainable_op.getUsedInputSet())
     {
       if (external_operands.contains(ind))
         continue;

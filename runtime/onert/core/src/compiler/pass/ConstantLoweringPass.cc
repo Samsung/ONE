@@ -29,7 +29,7 @@ void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::IO
   const auto backend = _lowered_graph.lower_info().operation.at(node_index);
 
   // Now this runtime does not support the node making output of operation as constant
-  for (const auto &input : node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+  for (const auto &input : node.getUsedInputSet())
   {
     auto &object = _graph.operands().at(input);
     if (object.isConstant())

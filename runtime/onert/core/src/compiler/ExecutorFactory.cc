@@ -440,7 +440,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     for (const auto &op_ind : order)
     {
       const auto &op = graph.operations().at(op_ind);
-      auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+      auto op_inputs = op.getUsedInputSet();
       auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
 
       for (const auto &ind : op_inputs)
@@ -813,7 +813,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     for (const auto &op_ind : order)
     {
       const auto &op = graph.operations().at(op_ind);
-      auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+      auto op_inputs = op.getUsedInputSet();
       auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
 
       for (const auto &ind : op_inputs)

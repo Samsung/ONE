@@ -25,7 +25,7 @@ namespace onert::compiler::train::pass
 void TrainableConstantInsertionPass::callback(const ir::OperationIndex &node_index,
                                               ir::IOperation &node)
 {
-  for (const auto &input : node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+  for (const auto &input : node.getUsedInputSet())
   {
     auto &object = _graph.operands().at(input);
 
