@@ -46,4 +46,28 @@ NNFW_STATUS nnfw_load_circle_from_buffer(nnfw_session *session, uint8_t *buffer,
  */
 NNFW_STATUS nnfw_train_export_circleplus(nnfw_session *session, const char *file_path);
 
+/**
+ * @brief Python-binding-only API to retrieve a read-only dynamic output buffer and its tensor info
+ *
+ * After nnfw_run has been called, the session has already resized or allocated the internal output
+ * buffer to match the latest output dimensions. This API simply retrieves that internal buffer
+ * pointer and the corresponding tensor info without performing any allocation itself.
+ *
+ * Note: this function is intended for Python binding only. The buffer is managed internally by the
+ * session and must not be modified by the caller. In Python, wrap the pointer as a NumPy array and
+ * set array.flags.writeable = False to enforce read-only access.
+ *
+ * Important: To use this API, you must call
+ * nnfw_set_prepare_config(session, NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC, "true")
+ * before calling nnfw_prepare().
+ *
+ * @param[in]    session     The session object
+ * @param[in]    index       Output tensor index
+ * @param[out]   out_info    nnfw_tensorinfo to be filled with the latest shape/type information
+ * @param[out]   out_buffer  Pointer to a const buffer managed by the session
+ * @return       NNFW_STATUS_NO_ERROR on success, otherwise an error code
+ */
+NNFW_STATUS nnfw_get_dynamic_output(nnfw_session *session, uint32_t index,
+                                    nnfw_tensorinfo *out_info, const void **out_buffer);
+
 #endif // __NNFW_INTERNAL_H__

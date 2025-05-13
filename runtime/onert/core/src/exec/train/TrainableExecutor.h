@@ -80,6 +80,11 @@ public:
     return _output_tensors[index]->layout();
   }
 
+  const uint8_t *outputBuffer(uint32_t index) const final
+  {
+    return _output_tensors[index]->buffer();
+  }
+
   void forward(const std::vector<backend::IPortableTensor *> &inputs,
                const std::vector<backend::IPortableTensor *> &outputs,
                const ExecutionOptions &options, bool training);

@@ -66,6 +66,8 @@ struct ExecutionOptions
   bool dump_minmax = false;
   bool trace = false;
   bool profile = false;
+  // when true, do not set UserTensor on output IOTensors
+  bool skip_set_output_user_tensor = false;
 
   static void fromGlobalConfig(ExecutionOptions &options);
 };

@@ -78,6 +78,8 @@ public:
 
   const ir::OperandInfo &outputInfo(const ir::IOIndex &index) const override;
 
+  const void *outputBuffer(const ir::IOIndex &index) const final;
+
   void execute(const ExecutionContext &ctx) override;
 
 private:

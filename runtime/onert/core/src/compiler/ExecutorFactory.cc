@@ -145,7 +145,8 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
 
 backend::BackendContexts
 createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
-                      std::shared_ptr<backend::custom::IKernelBuilder> custom_kernel_builder)
+                      std::shared_ptr<backend::custom::IKernelBuilder> custom_kernel_builder,
+                      bool is_output_external_tensor)
 {
   backend::BackendContexts contexts;
   std::unordered_map<const backend::Backend *, backend::ContextData> context_data_map;
@@ -232,6 +233,19 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
       if (whole_graph.getOutputs().contains(ind) || operand.getUses().size() == 0)
         graph->addOutput(ind);
     });
+
+    // include model inputs always, outputs only when flag==true
+    if (!is_output_external_tensor)
+    {
+      for (const auto &index :
+           whole_graph.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+      {
+        auto &external_operands = data.external_operands;
+        if (external_operands.contains(index))
+          external_operands.remove(index);
+      }
+    }
+
     VERBOSE(ExecutorFactory) << "createBackendContexts: partial graph for backend="
                              << backend->config()->id() << std::endl;
     dumper::text::dumpGraph(*data.graph);
@@ -244,6 +258,25 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
     contexts.emplace(backend, backend->newContext(std::move(data)));
   }
   return contexts;
+}
+
+void bindInternalOutputTensors(const compiler::ILoweredGraph &lgraph,
+                               compiler::TensorRegistries &tensor_regs)
+{
+  for (const auto &output :
+       lgraph.graph().getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  {
+    if (auto output_tensor =
+          dynamic_cast<backend::IPortableTensor *>(tensor_regs.getITensor(output));
+        output_tensor == nullptr)
+      throw std::runtime_error(
+        "When outputs are allocated internally, output tensor must be IPortableTensor");
+    else
+    {
+      auto io_tensor = tensor_regs.getIOTensor(output);
+      io_tensor->setTensor(output_tensor);
+    }
+  }
 }
 
 template <typename Context>
@@ -383,10 +416,13 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   const auto &model_index = args.model_index;
   const auto tracing_ctx = args.tracing_ctx;
   auto custom_kernel_builder = args.custom_kernel_builder;
+  const bool is_entry_executor = args.is_entry_executor;
   auto &graph = lowered_graph->graph();
 
+  const bool is_output_external_tensor = !is_entry_executor || !options->internal_output_alloc;
   backend::BackendContexts backend_contexts =
-    createBackendContexts(*lowered_graph, options->executor == "Linear", custom_kernel_builder);
+    createBackendContexts(*lowered_graph, options->executor == "Linear", custom_kernel_builder,
+                          is_output_external_tensor);
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -405,6 +441,9 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   }
 
   prepareMigrantTensors(*lowered_graph, backend_contexts);
+
+  if (!is_output_external_tensor)
+    bindInternalOutputTensors(*lowered_graph, tensor_regs);
 
   // Give some runtime objects to builtin KernelGenerator
   prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);
@@ -512,9 +551,12 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
   const auto &model_index = args.model_index;
   const auto tracing_ctx = args.tracing_ctx;
   auto custom_kernel_builder = args.custom_kernel_builder;
+  const bool is_entry_executor = args.is_entry_executor;
 
+  const bool is_output_external_tensor = !is_entry_executor || !options->internal_output_alloc;
   backend::BackendContexts backend_contexts =
-    createBackendContexts(*lowered_graph, options->executor == "Linear", custom_kernel_builder);
+    createBackendContexts(*lowered_graph, options->executor == "Linear", custom_kernel_builder,
+                          is_output_external_tensor);
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -529,6 +571,9 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
   }
 
   prepareMigrantTensors(*lowered_graph, backend_contexts);
+
+  if (!is_output_external_tensor)
+    bindInternalOutputTensors(*lowered_graph, tensor_regs);
 
   // Give some runtime objects to builtin KernelGenerator
   prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);
@@ -658,7 +703,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   // TODO Create context only once instead of replacing
   backend::train::TrainableBackendContexts tbackend_contexts;
   backend::BackendContexts base_backend_contexts =
-    createBackendContexts(*lowered_graph, true, custom_kernel_builder);
+    createBackendContexts(*lowered_graph, true, custom_kernel_builder, false);
 
   // Replace BackendContext with TrainbleBackendContext
   for (auto &&[backend, ctx] : base_backend_contexts)
@@ -686,14 +731,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       }
     });
 
-    // Remove outputs of whole graph from external_operands
-    auto external_operands = data.external_operands;
-    for (const auto &index : lowered_graph->trainable_graph().getOutputs())
-    {
-      if (external_operands.contains(index))
-        external_operands.remove(index);
-    }
-
     // NOTE The builtin backend does not yet support initializing UseDefs for training
     //      because it's graph does not have loss operation
     //      Without loss opeartion, we cannot call btopolSortOperations() or
@@ -711,7 +748,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     backend::train::TrainableContextData tdata;
     tdata.tgraph = std::move(tgraph);
     tdata.op_order = std::move(data.op_order);
-    tdata.external_operands = std::move(external_operands);
+    tdata.external_operands = std::move(data.external_operands);
     tdata.custom_kernel_builder = std::move(data.custom_kernel_builder);
     tdata.is_linear_executor = data.is_linear_executor;
     tdata.optim_info = training_info.optimizerInfo();

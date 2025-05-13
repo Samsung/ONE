@@ -95,6 +95,20 @@ public:
     return return_val;
   }
 
+  /**
+   * @brief Synchronize this IOTensor's operand info from the underlying tensor
+   *        Copies the full OperandInfo from _tensor to _info
+   */
+  void syncInfoFromDynamicTensor()
+  {
+    assert(_tensor != nullptr);
+    if (_tensor->is_dynamic())
+    {
+
+      _info = _tensor->get_info();
+    }
+  }
+
 private:
   IPortableTensor *_tensor{nullptr}; //< The actual tensor that is indirected
   // "_orig" has UserTensor type original tensor's info with nullptr buffer and layout,

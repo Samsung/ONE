@@ -449,7 +449,10 @@ NNFW_STATUS nnfw_session::prepare()
     auto compiler = onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions.get());
     _nnpkg.reset();
     _compiler_artifact = compiler->compile();
-    _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
+    onert::exec::ExecutionOptions options;
+    onert::exec::ExecutionOptions::fromGlobalConfig(options);
+    options.skip_set_output_user_tensor = _coptions->internal_output_alloc;
+    _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors, options);
   }
   catch (const std::exception &e)
   {
@@ -1728,6 +1731,64 @@ NNFW_STATUS nnfw_session::train_export_checkpoint(const char *path)
   return NNFW_STATUS_NO_ERROR;
 }
 
+NNFW_STATUS nnfw_session::get_dynamic_output(uint32_t index, nnfw_tensorinfo *ti,
+                                             const void **out_buffer)
+{
+  if (ti == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::get_dynamic_output : tensor info is null" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  if (out_buffer == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::get_dynamic_output : output buffer is null"
+              << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  if (!isStateFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::get_dynamic_output : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  try
+  {
+    if (index >= getOutputSize())
+    {
+      std::cerr << "Error during nnfw_session::get_dynamic_output, index " << index
+                << " is out of range. (output count: " << getOutputSize() << ")" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    if (!_coptions->internal_output_alloc)
+    {
+      std::cerr << "Error during nnfw_session::get_dynamic_output: "
+                << "internal dynamic output allocation is not enabled. "
+                << "Call nnfw_set_prepare_config(session, "
+                   "NNFW_PREPARE_CONFIG_ENABLE_INTERNAL_OUTPUT_ALLOC, \"true\") "
+                << "before nnfw_prepare()." << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    auto io_index = onert::ir::IOIndex{index};
+    const auto &info = _compiler_artifact->_executors->outputInfo(io_index);
+    const auto &shape = info.shape();
+    const auto &dtype = info.typeInfo().type();
+    fillTensorInfo(ti, shape, dtype);
+
+    *out_buffer = _compiler_artifact->_executors->outputBuffer(io_index);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::get_dynamic_output : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
 bool nnfw_session::isStatePreparedTraining()
 {
   if (_state == State::PREPARED_TRAINING)
@@ -1942,6 +2003,10 @@ NNFW_STATUS nnfw_session::set_prepare_config(const NNFW_PREPARE_CONFIG key, cons
     case NNFW_PREPARE_CONFIG_PROFILE:
       _coptions->he_profiling_mode = true;
       break;
+    case NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC:
+      _coptions->internal_output_alloc = true;
+      break;
+
     default:
       return NNFW_STATUS_ERROR;
   }

@@ -47,6 +47,13 @@ public:
    */
   Execution(const std::shared_ptr<IExecutors> &executors);
 
+  /**
+   * @brief     Construct a new Execution object
+   * @param[in] executor  Model executor
+   * @param[in] options   ExecutionOptions
+   */
+  Execution(const std::shared_ptr<IExecutors> &executors, const ExecutionOptions &options);
+
 public:
   /**
    * @brief   Returns primary graph object
@@ -193,6 +200,7 @@ public:
 private:
   const IExecutor *entryExecutor() const { return _executors->entryExecutor(); };
   IExecutor *entryExecutor() { return _executors->entryExecutor(); };
+  void initContext();
 
 private:
   const std::shared_ptr<IExecutors> _executors;

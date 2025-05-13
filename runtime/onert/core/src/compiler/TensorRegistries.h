@@ -78,6 +78,11 @@ public:
     return nullptr;
   }
 
+  backend::builtin::IOTensor *getIOTensor(ir::OperandIndex ind) const
+  {
+    return _builtin_tensor_reg->getNativeIOTensor(ind);
+  }
+
 private:
   std::unordered_set<std::shared_ptr<backend::ITensorRegistry>> _tensor_regs;
   std::shared_ptr<backend::builtin::TensorRegistry> _builtin_tensor_reg;
