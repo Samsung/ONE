@@ -133,8 +133,8 @@ class session(BaseSession):
             self.session.set_input_tensorinfo(i, info)
 
     @contextmanager
-    def _time_block(self, metrics: Dict[str, float], key: str, mesure: bool):
-        if mesure:
+    def _time_block(self, metrics: Dict[str, float], key: str, measure: bool):
+        if measure:
             start = time.perf_counter()
             yield
             metrics[key] = (time.perf_counter() - start) * 1000
