@@ -193,13 +193,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: circle-interpreter_${{ needs.configure.outputs.version }}~focal
-          path: focal
 
       - name: Download tarball, jammy
         uses: actions/download-artifact@v4
         with:
           name: circle-interpreter_${{ needs.configure.outputs.version }}~jammy
-          path: jammy
 
       - name: Copy changelogs
         run: |
@@ -207,7 +205,10 @@ jobs:
           mkdir -p changelogs
           ls -alh  # TODO remove this
           for distro in focal jammy; do
-            cp ${distro}/cirintp/debian changelog changelogs/changelog-${distro}
+            mkdir ${distro}
+            tar -axf circle-interpreter_${{ needs.configure.outputs.version }}~${distro}.orig.tar.xz \
+              -C ${distro}
+            cp ${distro}/cirintp/debian/changelog changelogs/changelog-${distro}
           done
           ls -alh ./changelogs/ # TODO remove this
 
@@ -252,7 +253,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: changelogs
-          path: ./
 
       - name: Extract changelog
         run: |
