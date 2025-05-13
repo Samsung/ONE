@@ -22,6 +22,7 @@
 #define __ONERT_EXEC_EXECUTION_H__
 
 #include "backend/train/ITrainableTensor.h"
+#include "compiler/CompilerOptions.h"
 #include "ir/Layout.h"
 #include "exec/IExecutors.h"
 #include "ExecutionContext.h"

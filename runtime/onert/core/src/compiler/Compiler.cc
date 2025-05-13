@@ -170,6 +170,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     args.options = _options;
     args.model_index = model_index;
     args.custom_kernel_builder = custom_kernel_builder;
+    args.is_entry_executor = subg_index == 0 ? true : false;
     auto executor = std::unique_ptr<exec::IExecutor>{
       ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
     executor->setIndexedRanks(indexed_ranks);

@@ -206,6 +206,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       args.options = _options;
       args.model_index = model_index;
       args.custom_kernel_builder = custom_kernel_builders[model_index];
+      args.is_entry_executor = (model_index == 0 && subg_index == 0) ? true : false;
       auto executor = std::unique_ptr<exec::IExecutor>{
         ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
       executor->setIndexedRanks(indexed_ranks);

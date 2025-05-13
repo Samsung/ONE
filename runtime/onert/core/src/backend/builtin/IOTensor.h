@@ -95,12 +95,24 @@ public:
     return return_val;
   }
 
+  /**
+   * @brief Synchronize this IOTensor's operand info from the underlying tensor
+   * Copies the full OperandInfo from _tensor to _info
+   */
+  void syncInfoFromDynamicTensor()
+  {
+    assert(_tensor != nullptr);
+    if (_tensor->is_dynamic())
+      _info = _tensor->get_info();
+  }
+
 private:
   IPortableTensor *_tensor{nullptr}; //< The actual tensor that is indirected
   // "_orig" has UserTensor type original tensor's info with nullptr buffer and layout,
   // and "_tensor" points to "_user_tensor".
   // After 1st setTensor(tensor) call, "_tensor" is updated to actual tensor
   std::unique_ptr<UserTensor> _orig; //< If it is a user tensor, it is managed by this object
+  bool _enable_internal_output_alloc{false}; ///< skip setTensor() if argument is UserTensor
 };
 
 } // namespace onert::backend::builtin

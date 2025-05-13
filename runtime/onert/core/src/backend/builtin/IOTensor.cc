@@ -36,7 +36,9 @@ void IOTensor::setTensor(IPortableTensor *tensor)
 {
   assert(tensor);
   assert(tensor != this);
+
   _tensor = tensor;
+
   if (_info.shape() != tensor->getShape())
   {
     _info.shape(tensor->getShape());

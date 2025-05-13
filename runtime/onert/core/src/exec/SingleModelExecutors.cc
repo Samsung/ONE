@@ -49,6 +49,11 @@ const ir::OperandInfo &SingleModelExecutors::outputInfo(const ir::IOIndex &index
   return entryExecutor()->outputInfo(index.value());
 }
 
+const void *SingleModelExecutors::outputBuffer(const ir::IOIndex &index) const
+{
+  return static_cast<const void *>(entryExecutor()->outputBuffer(index.value()));
+}
+
 void SingleModelExecutors::execute(const ExecutionContext &ctx)
 {
   // UserTensor for Input/Output
@@ -126,6 +131,10 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
     if ((user_type != model_type && user_type == ir::DataType::FLOAT32) ||
         (desc->layout == ir::Layout::NCHW))
     {
+      if (ctx.options.skip_set_output_user_tensor)
+        std::runtime_error("When outputs are allocated internally, backend-aware quantization is "
+                           "not yet supported.");
+
       auto quantized_info = desc->info;
       quantized_info.typeInfo(model_info);
       qtensorpool.emplace_back(
