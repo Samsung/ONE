@@ -50,6 +50,7 @@ public:
   void replaceOutputs(const OperandIndex &from, const OperandIndex &to) override;
   OperandIndexSequence &getInputs() { return _inputs; }
   const OperandIndexSequence &getInputs() const override { return _inputs; }
+  OperandIndexSequence getUsedInputSet() const override;
   const OperandIndexSequence &getOutputs() const override { return _outputs; }
   // It's for only input/output tensors but const data.
   void setInputs(const OperandIndexSequence &indexes);

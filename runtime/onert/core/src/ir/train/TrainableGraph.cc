@@ -54,7 +54,7 @@ void disableUnusedBackwardNodes(const UseDefChains &training_usedefs, TrainableG
       });
 
     // NOTE Backward op does not define any incoming operand in backwarding
-    const auto &inputs = node.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+    const auto &inputs = node.getUsedInputSet();
     const bool is_backward_op_def =
       std::any_of(inputs.begin(), inputs.end(), [&](const OperandIndex &input) {
         const auto training_op_index = TrainingOperationIndex{op_index, false};
@@ -288,7 +288,7 @@ std::vector<ir::OperationIndex> TrainableGraph::btopolSortOperations() const
       return;
     unvisited.remove(index);
 
-    for (const auto &input : op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &input : op.getUsedInputSet())
     {
       const auto &operand = operands().at(input);
       const auto &def = operand.getDef();

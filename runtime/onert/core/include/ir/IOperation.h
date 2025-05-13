@@ -39,6 +39,7 @@ struct IOperation
   virtual void replaceInputs(const OperandIndex &from, const OperandIndex &to) = 0;
   virtual void replaceOutputs(const OperandIndex &from, const OperandIndex &to) = 0;
   virtual const OperandIndexSequence &getInputs() const = 0;
+  virtual OperandIndexSequence getUsedInputSet() const = 0;
   virtual const OperandIndexSequence &getOutputs() const = 0;
 };
 

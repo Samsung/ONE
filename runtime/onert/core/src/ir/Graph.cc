@@ -42,7 +42,7 @@ OperandIndex Graph::addOperand(OperandIndex index, std::unique_ptr<Operand> &&op
 
 bool Graph::checkOperandsForOperation(const IOperation &operation)
 {
-  auto inputs = operation.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+  auto inputs = operation.getUsedInputSet();
   auto outputs = operation.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
   for (auto &&input : inputs)
     if (!operands().exist(input))
@@ -55,7 +55,7 @@ bool Graph::checkOperandsForOperation(const IOperation &operation)
 
 void Graph::linkOperandToOperation(OperationIndex index, const IOperation &operation)
 {
-  auto inputs = operation.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+  auto inputs = operation.getUsedInputSet();
   auto outputs = operation.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
 
   for (auto &&input : inputs)
