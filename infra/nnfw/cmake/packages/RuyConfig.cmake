@@ -5,14 +5,14 @@ function(_Ruy_Build)
     return()
   endif(TARGET ruy)
 
-  nnas_find_package(TensorFlowRuySource EXACT 2.16.1 QUIET)
+  nnfw_find_package(RuySource QUIET)
   nnfw_find_package(CpuInfo QUIET)
 
-  if(NOT TensorFlowRuySource_FOUND)
+  if(NOT RuySource_FOUND)
     message(STATUS "RUY: Source not found")
     set(Ruy_FOUND FALSE PARENT_SCOPE)
     return()
-  endif(NOT TensorFlowRuySource_FOUND)
+  endif(NOT RuySource_FOUND)
 
   if (NOT CpuInfo_FOUND)
     message(STATUS "RUY: CPUINFO not found")

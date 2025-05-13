@@ -16,7 +16,7 @@ if(BUILD_TENSORFLOW_LITE)
   nnas_include(ExternalSourceTools)
   nnas_include(OptionTools)
 
-  nnas_find_package(TensorFlowSource EXACT 2.16.1 QUIET)
+  nnfw_find_package(TensorFlowSource QUIET)
   return_unless(TensorFlowSource_FOUND)
 
   # Below urls come from https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/workspace2.bzl
@@ -28,8 +28,8 @@ if(BUILD_TENSORFLOW_LITE)
   return_unless(Farmhash_FOUND)
   nnfw_find_package(FlatBuffers EXACT 23.5.26 QUIET)
   return_unless(FlatBuffers_FOUND)
-  nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.16.1 QUIET)
-  return_unless(TensorFlowGEMMLowpSource_FOUND)
+  nnfw_find_package(GEMMLowpSource QUIET)
+  return_unless(GEMMLowpSource_FOUND)
   nnfw_find_package(OouraFFT QUIET)
   return_unless(OouraFFT_FOUND)
   nnfw_find_package(Ruy QUIET)
@@ -38,7 +38,7 @@ if(BUILD_TENSORFLOW_LITE)
   return_unless(MLDtypesSource_FOUND)
 
   # TensorFlow Lite requires FP16 library's header only
-  nnas_find_package(Fp16Source QUIET)
+  nnfw_find_package(Fp16Source QUIET)
   return_unless(Fp16Source_FOUND)
 
   # PThreadpool
@@ -48,11 +48,11 @@ if(BUILD_TENSORFLOW_LITE)
   # TensorFlow Lite requires Pybind11 library's header only
   # But Pybind11 requires python3-dev package
   # TODO Enable below by installing package on build system
-  #nnas_find_package(Pybind11Source QUIET)
+  #nnfw_find_package(Pybind11Source QUIET)
   #return_unless(Pybind11Source_FOUND)
 
   # Optional packages
-  nnas_find_package(NEON2SSESource QUIET)
+  nnfw_find_package(NEON2SSESource QUIET)
 
   nnas_include(ExternalProjectTools)
   add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/TensorFlowLite" tflite-2.16.1)

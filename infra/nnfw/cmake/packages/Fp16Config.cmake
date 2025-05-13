@@ -1,5 +1,5 @@
 function(_Fp16_Build)
-  nnas_find_package(Fp16Source QUIET)
+  nnfw_find_package(Fp16Source QUIET)
 
   # NOTE This line prevents multiple definitions of target
   if(TARGET fp16)

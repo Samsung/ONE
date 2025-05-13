@@ -1,4 +1,4 @@
-set(RUY_BASE ${TensorFlowRuySource_DIR}/ruy)
+set(RUY_BASE ${RuySource_DIR}/ruy)
 
 #
 # Ruy library
@@ -22,7 +22,7 @@ if(PROFILE_RUY)
   list(APPEND RUY_PROFILER_SRCS "${RUY_BASE}/profiler/treeview.cc")
 endif(PROFILE_RUY)
 
-list(APPEND RUY_INCLUDES "${TensorFlowRuySource_DIR}")
+list(APPEND RUY_INCLUDES "${RuySource_DIR}")
 
 add_library(ruy STATIC ${RUY_SRCS})
 target_include_directories(ruy SYSTEM PUBLIC ${RUY_INCLUDES})

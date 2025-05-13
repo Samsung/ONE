@@ -48,14 +48,6 @@ macro(nnfw_find_package PREFIX)
   )
 endmacro(nnfw_find_package)
 
-# Common 'find_package()' wrapper to find in infra/cmake/packages folder
-macro(nnas_find_package PREFIX)
-  find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
-    PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/packages
-    ${ARGN}
-  )
-endmacro(nnas_find_package)
-
 # C++17 feature requires 9.1 or later for stable usage
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1)
   message(FATAL "Runtime build requires GNU Compiler version 9.1 or later.")

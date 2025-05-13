@@ -173,7 +173,7 @@ endif()
 # include headers
 list(APPEND TFLITE_INCLUDE_DIRS "${TSL_SOURCE_DIR}")
 list(APPEND TFLITE_INCLUDE_DIRS "${TensorFlowSource_DIR}")
-list(APPEND TFLITE_INCLUDE_DIRS "${TensorFlowGEMMLowpSource_DIR}")
+list(APPEND TFLITE_INCLUDE_DIRS "${GEMMLowpSource_DIR}")
 list(APPEND TFLITE_INCLUDE_DIRS "${Fp16Source_DIR}/include")
 #list(APPEND TFLITE_INCLUDE_DIRS "${Pybind11Source_DIR}/include")
 list(APPEND TFLITE_INCLUDE_DIRS "${CpuInfoSource_DIR}")
