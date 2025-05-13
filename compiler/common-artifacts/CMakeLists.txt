@@ -19,16 +19,19 @@ if(CMAKE_VERSION VERSION_LESS 3.12)
     return()
   endif()
 else()
-  # find python 3.8 or above
-  find_package(Python 3.8 COMPONENTS Interpreter QUIET)
+  # find python 3.10 or above
+  find_package(Python 3.10 EXACT COMPONENTS Interpreter QUIET)
+  if(NOT Python_Interpreter_FOUND)
+    find_package(Python 3.10 COMPONENTS Interpreter QUIET)
+  endif()
 
   if(NOT Python_Interpreter_FOUND)
     message(STATUS "Build common-artifacts: FAILED (Python3 is missing)")
     return()
   endif()
 
-  if(Python_VERSION VERSION_LESS 3.8)
-    message(STATUS "Build common-artifacts: FAILED (Need Python version 3.8 or higher)")
+  if(Python_VERSION VERSION_LESS 3.10)
+    message(STATUS "Build common-artifacts: FAILED (Need Python version 3.10 or higher)")
     return()
   endif()
 
@@ -47,6 +50,8 @@ else()
 
   set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 endif()
+
+message(STATUS "!!! python: ${PYTHON_EXECUTABLE}")
 
 # Create python virtual environment
 set(VIRTUALENV_OVERLAY "${NNCC_OVERLAY_DIR}/venv")
@@ -406,4 +411,4 @@ foreach(RECIPE IN ITEMS ${RECIPES})
   endif()
 endforeach()
 
-add_custom_target(common_artifacts_deps ALL DEPENDS ${TEST_DEPS})
+add_custom_target(common_artifacts_deps ALL DEPENDS ${TEST_DEPS} common_artifacts_python_deps)

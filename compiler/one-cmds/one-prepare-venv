@@ -18,14 +18,22 @@
 # use +e as python3.8 may not exist in the system and 'command' will return error.
 set +e
 
-PYTHON3_EXEC=$(command -v python3.8)
+PYTHON3_EXEC=$(command -v python3.12)
 if [[ -z "${PYTHON3_EXEC}" ]]; then
-  PYTHON3_EXEC=$(command -v python3)
+  PYTHON3_EXEC=$(command -v python3.10)
+  if [[ -z "${PYTHON3_EXEC}" ]]; then
+    PYTHON3_EXEC=$(command -v python3.8)
+    if [[ -z "${PYTHON3_EXEC}" ]]; then
+      PYTHON3_EXEC=$(command -v python3)
+    fi
+  fi
 fi
 if [[ -z "${PYTHON3_EXEC}" ]]; then
   echo "Error one-prepare-venv: python3 not found"
   exit -1
 fi
+
+echo "python is ${PYTHON3_EXEC}"
 
 set -e
 
@@ -63,18 +71,38 @@ VER_ONNX_TF=1.10.0
 VER_PYDOT=1.4.2
 VER_TORCH="2.1.2+cpu"
 VER_PROTOBUF=4.23.3
+VER_NUMPY=1.24.4
 
 echo "Setting version for '$DISTRIB_CODENAME'"
-if [[ "$DISTRIB_CODENAME" == "bionic" ]]; then
+#if [[ "$DISTRIB_CODENAME" == "bionic" ]]; then
+#  : # use as is
+#elif [[ "$DISTRIB_CODENAME" == "focal" ]]; then
+#  : # use as is
+#elif [[ "$DISTRIB_CODENAME" == "jammy" ]]; then
+#  : # TODO change vesions
+#elif [[ "$DISTRIB_CODENAME" == "noble" ]]; then
+#  : # TODO change vesions
+#else
+#  echo "Error one-prepare-venv: Unsupported codename $DISTRIB_CODENAME"
+#  exit -1
+#fi
+
+PYTHON3_VER_MIN=$(command ${VENV_PYTHON} -c "import sys; print(f'{sys.version_info.minor}')")
+
+echo "Setting version for '$PYTHON3_VER_MIN'"
+
+if [[ "$PYTHON3_VER_MIN" == "8" ]]; then
   : # use as is
-elif [[ "$DISTRIB_CODENAME" == "focal" ]]; then
-  : # use as is
-elif [[ "$DISTRIB_CODENAME" == "jammy" ]]; then
-  : # TODO change vesions
-elif [[ "$DISTRIB_CODENAME" == "noble" ]]; then
-  : # TODO change vesions
+elif [[ "$PYTHON3_VER_MIN" == "10" ]]; then
+  VER_TENSORFLOW=2.19.0
+  VER_TF_PROB=0.25.0
+  VER_TF_ADON=0.23.0
+  VER_ONNX=1.17.0
+  VER_ONNXRUNTIME=1.21.1
+  VER_TORCH="2.7.0+cpu"
+  VER_NUMPY=1.26.4
 else
-  echo "Error one-prepare-venv: Unsupported codename $DISTRIB_CODENAME"
+  echo "Error one-prepare-venv: Unsupported verion 3.$PYTHON3_VER_MIN"
   exit -1
 fi
 
@@ -103,6 +131,7 @@ fi
 # TODO remove torch message
 echo "Torch from '${ONE_PREPVENV_TORCH_SOURCE}' -> '${TORCH_SOURCE_OPTION}'"
 
+${VENV_PYTHON} -m ensurepip
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade pip setuptools
 
 PYTHON_PACKAGES="tensorflow-cpu==${VER_TENSORFLOW} "
@@ -116,5 +145,6 @@ PYTHON_PACKAGES+="onnx-tf==${VER_ONNX_TF} "
 PYTHON_PACKAGES+="protobuf==${VER_PROTOBUF} "
 PYTHON_PACKAGES+="fsspec==2024.6.1 "
 PYTHON_PACKAGES+="pydot==${VER_PYDOT} "
+PYTHON_PACKAGES+="numpy==${VER_NUMPY} "
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade ${PYTHON_PACKAGES} ${TORCH_SOURCE_OPTION}
