@@ -10,7 +10,7 @@ jobs:
   # Use github action for build and push test image to docker hub
   build-docker-image:
     if: github.repository_owner == 'Samsung'
-    runs-on: ubuntu-latest
+    runs-on: one-x64-linux
     strategy:
       matrix:
         version: [ 'android-sdk', 'focal', 'jammy', 'noble', 'focal-cross', 'jammy-cross', 'noble-cross' ]
@@ -215,7 +215,7 @@ jobs:
           - version: 'noble'
             platform-add: ',linux/arm64'
       fail-fast: false
-    runs-on: ubuntu-latest
+    runs-on: one-x64-linux
     steps:
       - name: Login to DockerHub
         uses: docker/login-action@v3
