@@ -139,6 +139,8 @@ jobs:
         run: |
           cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
           cp -rf ../../infra/debian/circle-interpreter ./debian
+          mv ./debian/changelog-${{ matrix.ubuntu_code }} ./debian/changelog
+          rm -f ./debian/changelog-*
           export DEBFULLNAME="${{ inputs.deb_fullname }}"
           export DEBEMAIL="${{ inputs.deb_email }}"
           dch -v "${{ steps.prepare.outputs.VERSION }}" \
@@ -169,32 +171,80 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           dput ppa:circletools/nightly ${{ steps.prepare.outputs.changes_file }}
 
-      - name: Upload artifact; circle-interpreter
+      - name: Upload artifact, circle-interpreter
         uses: actions/upload-artifact@v4
         with:
-          name: circle-interpreter_${{ steps.prepare.outputs.version }}
+          name: circle-interpreter_${{ steps.prepare.outputs.VERSION }}
           retention-days: 3
           path: |
             ${{ env.NNCC_BUILD }}/${{ steps.prepare.outputs.tarball_file }}
 
-  create-pr-on-success:
-    name: Create changelog update PR on success
+  create-changelog-artifact:
+    needs: [ configure, debian-release ]
+    # TODO need to activate the branch condition
+    # if: ${{ success() && github.ref == 'refs/heads/master' }}
+    if: ${{ success() }}
     # TODO change to the 'ubuntu-latest'
     #runs-on: ubuntu-latest
     runs-on: [ self-hosted, shs-park ]
-    needs: debian-release
-    env:
-      VERSION: ${{ needs.prepare.outputs.VERSION }}
-      BR_VERSION: ${{ needs.prepare.outputs.br_version }}
+
+    steps:
+      - name: Prepare, set distro versions
+        id: prepare
+        run: |
+          VERSION="${{ needs.configure.outputs.version }}~${{ matrix.ubuntu_code }}"
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          mkdir -p changelogs
+
+      - name: Download tarball, focal
+        uses: actions/download-artifact@v4
+        with:
+          name: circle-interpreter_${{ needs.configure.outputs.version }}-focal
+          path: focal
+
+      - name: Download tarball, jammy
+        uses: actions/download-artifact@v4
+        with:
+          name: circle-interpreter_${{ needs.configure.outputs.version }}-jammy
+          path: jammy
+
+      - name: Copy changelogs
+        run: |
+          ls -alh  # TODO remove this
+          for distro in focal jammy; do
+            cp ${distro}/cirintp/debian changelog changelogs/changelog-${distro}
+          done
+          ls -alh ./changelogs/ # TODO remove this
+
+      - name: Upload artifact, changelogs
+        uses: actions/upload-artifact@v4
+        with:
+          name: changelogs
+          retention-days: 3
+          path: |
+            changelogs
+
+  create-pr-on-success:
+    needs: [ configure, create-changelog-artifact ]
     # TODO need to activate the branch condition
     # if: ${{ success() && github.ref == 'refs/heads/master' }}
-    # if: ${{ success() }}
-    if: false
+    if: ${{ success() }}
+    # TODO change to the 'ubuntu-latest'
+    #runs-on: ubuntu-latest
+    runs-on: [ self-hosted, shs-park ]
+    env:
+      BR_VERSION: ${{ needs.configure.outputs.br_version }}
     permissions:
       contents: write
       pull-requests: write
 
     steps:
+      - name: Prepare, set distro versions
+        id: prepare
+        run: |
+          VERSION="${{ needs.configure.outputs.version }}"
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -206,13 +256,14 @@ jobs:
       - name: Download tarball
         uses: actions/download-artifact@v4
         with:
-          name: circle-interpreter_${{ env.VERSION }}
+          name: changelogs
+          path: ./
 
       - name: Extract changelog
         run: |
-          tar -xaf circle-interpreter_${VERSION}.orig.tar.xz
-          cp cirintp/debian/changelog \
-            infra/debian/circle-interpreter/changelog
+          ls -alh  # TODO remove this
+          cp changelogs/changelog-* \
+            infra/debian/circle-interpreter/
 
       - name: Create PR branch and commit changelog
         run: |
