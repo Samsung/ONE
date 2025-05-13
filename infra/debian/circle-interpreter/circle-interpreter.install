@@ -1,4 +1,6 @@
 # {FILES_TO_INSTALL} {DEST_DIR}
+# bin
+bin/circle-interpreter usr/share/cirint/bin/
 # lib
 libloco.so usr/share/cirint/bin/
 libluci_env.so usr/share/cirint/bin/
