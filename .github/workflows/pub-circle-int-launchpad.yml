@@ -57,7 +57,7 @@ jobs:
           is_release="${{ inputs.is_release }}"
           if [[ "$is_release" == "true" ]]; then
             version="${base_version}"
-            br_version="$base_version"
+            br_version="${base_version}"
           else
             release_date=$(date +%Y%m%d%H%M)
             version="${base_version}~${release_date}"
@@ -87,7 +87,6 @@ jobs:
       NNCC_WORKSPACE: build/release
       NNCC_INSTALL_PREFIX: ${{ github.workspace }}/build/release.install
       CIRINTP_PREFIX: cirintp
-
     steps:
       - name: Prepare, set distro versions
         id: prepare
