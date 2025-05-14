@@ -262,14 +262,14 @@ jobs:
       - name: Create PR branch and commit changelog
         run: |
           BRANCH=auto/update-cirint-changelog-${BR_VERSION}
-          git checkout -b $BRANCH
+          git checkout -b ${BRANCH}
           git add infra/debian/circle-interpreter/changelog-*
           git commit -m "[infra/debian] Update changelog for circle-interpreter" \
             -m "This updates the changelog for circle-interpreter_${{ steps.prepare.outputs.VERSION }}." \
             -m "It is auto-generated PR from github workflow." \
             -m "" \
             -m "ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>"
-          git push origin $BRANCH
+          git push origin ${BRANCH}
 
       - name: Create PR
         env:
@@ -281,9 +281,9 @@ jobs:
           This updates the changelog for circle-interpreter_${{ steps.prepare.outputs.VERSION }}.
           This PR includes updated changelog after successful debian build.
           It is auto-generated PR from github workflow.
-          .
+
           ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>
           EOF
           )" \
-            --head $BRANCH \
+            --head ${BRANCH} \
             --base master
