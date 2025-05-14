@@ -54,7 +54,7 @@ jobs:
           is_release="${{ inputs.is_release }}"
           if [[ "$is_release" == "true" ]]; then
             version="${base_version}"
-            br_version="$base_version"
+            br_version="${base_version}"
           else
             release_date=$(date +%Y%m%d%H%M)
             version="${base_version}~${release_date}"
