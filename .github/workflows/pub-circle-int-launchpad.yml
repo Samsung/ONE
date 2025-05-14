@@ -43,10 +43,25 @@ jobs:
     if: github.repository_owner == 'Samsung'
     name: Set current date and time
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set-datetime.outputs.version }}
+      br_version: ${{ steps.set-datetime.outputs.br_version }}
     steps:
       - name: Set date and time
+        id: set-datetime
         run: |
-          echo "TODO: Setting date and time"
+          base_version="${{ inputs.cirint_version }}"
+          is_release="${{ inputs.is_release }}"
+          if [[ "$is_release" == "true" ]]; then
+            version="${base_version}"
+            br_version="${base_version}"
+          else
+            release_date=$(date +%Y%m%d%H%M)
+            version="${base_version}~${release_date}"
+            br_version="${base_version}-${release_date}"
+          fi
+          echo "version=${version}" >> $GITHUB_OUTPUT
+          echo "br_version=${br_version}" >> $GITHUB_OUTPUT
 
   debian-release:
     needs: configure
