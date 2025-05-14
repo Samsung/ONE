@@ -275,15 +275,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            gh pr create \
-              --title "[infra/debian] Update changelog for circle-interpreter" \
-              --body "$(cat <<EOF
-              This updates the changelog for circle-interpreter_${{ steps.prepare.outputs.VERSION }}.
-              This PR includes updated changelog after successful debian build.
-              It is auto-generated PR from github workflow.
-              .
-              ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>
-              EOF
-              )" \
-              --head $BRANCH \
-              --base master
+          gh pr create \
+            --title "[infra/debian] Update changelog for circle-interpreter" \
+            --body "$(cat <<EOF
+          This updates the changelog for circle-interpreter_${{ steps.prepare.outputs.VERSION }}.
+          This PR includes updated changelog after successful debian build.
+          It is auto-generated PR from github workflow.
+          .
+          ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>
+          EOF
+          )" \
+            --head $BRANCH \
+            --base master
