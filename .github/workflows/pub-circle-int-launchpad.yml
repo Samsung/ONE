@@ -1,4 +1,4 @@
-name: Build circle-interpreter
+name: Publish circle-interpreter to Launchpad
 
 on:
   # TODO turn on schedule
@@ -264,7 +264,7 @@ jobs:
           git checkout -b $BRANCH
           git add infra/debian/circle-interpreter/changelog-*
           git commit -m "[infra/debian] Update changelog for circle-interpreter" \
-            -m "This updates the changelog for circle-interpreter_${VERSION}." \
+            -m "This updates the changelog for circle-interpreter_${{ steps.prepare.outputs.VERSION }}." \
             -m "It is auto-generated PR from github workflow." \
             -m "" \
             -m "ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>"
@@ -277,8 +277,8 @@ jobs:
             gh pr create \
               --title "[infra/debian] Update changelog for circle-interpreter" \
               --body \
-                "$(cat <<EOF
-                  This updates the changelog for circle-interpreter_${VERSION}.
+                "$(cat <<-EOF
+                  This updates the changelog for circle-interpreter_${{ steps.prepare.outputs.VERSION }}.
                   This PR includes updated changelog after successful debian build.
                   It is auto-generated PR from github workflow.
 
