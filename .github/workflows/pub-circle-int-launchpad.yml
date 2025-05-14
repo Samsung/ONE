@@ -23,7 +23,8 @@ on:
         required: false
         default: 'nnfw@samsung.com'
       is_release:
-        description: 'Is this a release version?
+        description: |
+          'Is this a release version?
           Set to false to append date-based subversion.
           (true/false)'
         required: false
@@ -277,13 +278,13 @@ jobs:
             gh pr create \
               --title "[infra/debian] Update changelog for circle-interpreter" \
               --body \
-                "$(cat <<-EOF
-This updates the changelog for circle-interpreter_${{ steps.prepare.outputs.VERSION }}.
-This PR includes updated changelog after successful debian build.
-It is auto-generated PR from github workflow.
-
-ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>
-EOF
+                "$(cat <<EOF
+                  echo "This updates the changelog for circle-interpreter_${{ steps.prepare.outputs.VERSION }}."
+                  echo "This PR includes updated changelog after successful debian build."
+                  echo "It is auto-generated PR from github workflow."
+                  echo ""
+                  echo "ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>"
+                  EOF
                 )"
               --head $BRANCH \
               --base master
