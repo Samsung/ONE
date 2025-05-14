@@ -1,4 +1,4 @@
-name: Build circle-interpreter debian package
+name: Publish circle-interpreter to Launchpad
 
 on:
   # TODO turn on schedule
@@ -6,6 +6,28 @@ on:
   #  # 05:00 AM (KST, UTC+9:00) Mon-Fri
   #  - cron: '00 20 * * 0-4'
   workflow_dispatch:
+    inputs:
+      cirint_version:
+        description: 'The version of circle-interpreter'
+        required: true
+        default: '1.30.0'
+      cirint_description:
+        description: 'Description of changelog for circle-interpreter'
+        required: true
+      deb_fullname:
+        description: 'Full name of Debian package author'
+        required: false
+        default: 'On-device AI developers'
+      deb_email:
+        description: 'Email address of Debian package author'
+        required: false
+        default: 'nnfw@samsung.com'
+      is_release:
+        description: 'Is this a release version?
+          Set to false to append date-based subversion.
+          (true/false)'
+        required: false
+        default: 'false'
 
 defaults:
   run:
