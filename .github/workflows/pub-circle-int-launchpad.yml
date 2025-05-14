@@ -285,5 +285,5 @@ jobs:
           ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>
           EOF
           )" \
-            --head ${BRANCH} \
-            --base master
+            --head "${BRANCH}" \
+            --base "master"
