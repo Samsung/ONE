@@ -79,15 +79,31 @@ jobs:
         run: |
           echo "TODO: Gather files"
 
-      - name: Upload Artifact
+      - name: Update changelog
         run: |
-          echo "TODO: Upload Artifact"
+          echo "TODO: Update changelog"
 
-  create-pr-on-success:
-    name: Create changelog update PR on success
-    needs: debian-release
+      - name: Upload to Launchpad
+        run: |
+          echo "TODO: Upload to Launchpad"
+
+  create-changelog-artifact:
+    needs: [ configure, debian-release ]
+    if: ${{ success() && github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     steps:
-    - name: Create PR branch and commit changelog
-      run: |
-        echo "TODO: Create PR branch and commit changelog"
+      - name: Copy changelogs
+        run: |
+          echo "TODO: Copy changelogs"
+
+  create-pr-on-success:
+    needs: [ configure, create-changelog-artifact ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create PR branch and commit changelog
+        run: |
+          echo "TODO: Create PR branch and commit changelog"
+
+      - name: Create PR
+        run: |
+          echo "TODO: Create PR"
