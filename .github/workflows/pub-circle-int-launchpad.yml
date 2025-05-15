@@ -65,7 +65,17 @@ jobs:
 
   debian-release:
     needs: configure
+    strategy:
+      matrix:
+        # TODO activate noble
+        ubuntu_code: [ focal, jammy ]
+    name: circle-interpreter ubuntu ${{ matrix.ubuntu_code }}
     runs-on: ubuntu-latest
+    container:
+      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
+      credentials:
+        username: ${{ secrets.NNFW_DOCKER_USERNAME }}
+        password: ${{ secrets.NNFW_DOCKER_TOKEN }}
     steps:
       - name: Prepare, set distro versions
         run: |
