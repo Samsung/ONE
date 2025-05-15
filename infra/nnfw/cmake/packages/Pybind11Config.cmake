@@ -1,5 +1,5 @@
 function(_Pybind11_Build)
-  nnas_find_package(Pybind11Source QUIET)
+  nnfw_find_package(Pybind11Source QUIET)
 
   if(NOT Pybind11Source_FOUND)
     set(Pybind11_FOUND FALSE)

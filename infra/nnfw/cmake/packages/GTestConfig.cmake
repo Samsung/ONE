@@ -1,5 +1,5 @@
 if(${DOWNLOAD_GTEST})
-  nnas_find_package(GTestSource QUIET)
+  nnfw_find_package(GTestSource QUIET)
 
   if(NOT GTestSource_FOUND)
     set(GTest_FOUND FALSE)

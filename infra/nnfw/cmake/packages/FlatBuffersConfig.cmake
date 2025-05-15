@@ -6,7 +6,7 @@ function(_FlatBuffers_import)
       return()
     endif(Flatbuffers_FOUND)
 
-    nnas_find_package(FlatBuffersSource EXACT 23.5.26 QUIET)
+    nnfw_find_package(FlatBuffersSource QUIET)
 
     if(NOT FlatBuffersSource_FOUND)
       set(FlatBuffers_FOUND FALSE PARENT_SCOPE)
