@@ -23,8 +23,7 @@ on:
         required: false
         default: 'nnfw@samsung.com'
       is_release:
-        description: |
-          'Is this a release version?
+        description: 'Is this a release version?
           Set to false to append date-based subversion.
           (true/false)'
         required: false
