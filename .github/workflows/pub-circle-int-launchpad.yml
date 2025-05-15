@@ -68,8 +68,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Prepare, set distro versions
+        id: prepare
         run: |
-          echo "TODO: Prepare and set distro versions"
+          VERSION="${{ needs.configure.outputs.version }}~${{ matrix.ubuntu_code }}"
+          changes_file="circle-interpreter_${VERSION}_source.changes"
+          tarball_file="circle-interpreter_${VERSION}.orig.tar.xz"
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          echo "changes_file=${changes_file}" >> $GITHUB_OUTPUT
+          echo "tarball_file=${tarball_file}" >> $GITHUB_OUTPUT
 
       - name: Build without test
         run: |
