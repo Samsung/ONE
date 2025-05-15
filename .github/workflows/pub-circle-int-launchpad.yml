@@ -259,6 +259,8 @@ jobs:
             infra/debian/circle-interpreter/
 
       - name: Create PR branch and commit changelog
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           BRANCH=auto/update-cirint-changelog-${BR_VERSION}
           git checkout -b ${BRANCH}
@@ -274,6 +276,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          BRANCH=auto/update-cirint-changelog-${BR_VERSION}
           gh pr create \
             --title "[infra/debian] Update changelog for circle-interpreter" \
             --body "$(cat <<EOF
