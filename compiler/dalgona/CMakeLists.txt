@@ -19,22 +19,28 @@ if(CMAKE_VERSION VERSION_LESS 3.12)
     return()
   endif()
 else()
-  # find python 3.8 or above
-  find_package(Python 3.8 COMPONENTS Development QUIET)
+  # find python 3.10 or above
+  find_package(Python 3.10 EXACT COMPONENTS Development QUIET)
+  if(NOT Python_Development_FOUND)
+    find_package(Python 3.10 COMPONENTS Development QUIET)
+  endif()
 
   if(NOT Python_Development_FOUND)
     message(STATUS "Build dalgona: FAILED (Python3 development package is missing)")
     return()
   endif()
 
-  if(Python_VERSION VERSION_LESS 3.8)
-    message(STATUS "Build dalgona: FAILED (Need Python version 3.8 or higher)")
+  if(Python_VERSION VERSION_LESS 3.10)
+    message(STATUS "Build dalgona: FAILED (Need Python version 3.10 or higher)")
     return()
   endif()
 
   set(PYTHON_INCLUDE_DIRS ${Python_INCLUDE_DIRS})
   set(PYTHON_LIBRARIES ${Python_LIBRARIES})
 endif()
+
+message(STATUS "!!! python: ${Python_INCLUDE_DIRS}")
+message(STATUS "!!! python: ${Python_LIBRARIES}")
 
 nnas_find_package(Pybind11)
 if(NOT Pybind11_FOUND)

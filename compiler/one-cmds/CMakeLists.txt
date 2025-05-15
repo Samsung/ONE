@@ -18,18 +18,18 @@ if(CMAKE_VERSION VERSION_LESS 3.12)
     return()
   endif()
 else()
-  find_package(Python 3.8 EXACT COMPONENTS Interpreter QUIET)
+  find_package(Python 3.10 EXACT COMPONENTS Interpreter QUIET)
   if(NOT Python_FOUND)
-    find_package(Python 3.8 COMPONENTS Interpreter QUIET)
+    find_package(Python 3.10 COMPONENTS Interpreter QUIET)
   endif()
 
   # tensorflow 2.12.1 supports Python 3.8 ~ 3.11
-  if(Python_VERSION VERSION_GREATER_EQUAL 3.12)
-    message(STATUS "Build one-cmds: FALSE (Python version 3.12 or higher is not supported yet)")
-    return()
-  endif()
-  if(Python_VERSION VERSION_LESS 3.8)
-    message(STATUS "Build one-cmds: FAILED (Install Python version 3.8 or 3.10)")
+  #if(Python_VERSION VERSION_GREATER_EQUAL 3.12)
+  #  message(STATUS "Build one-cmds: FALSE (Python version 3.12 or higher is not supported yet)")
+  #  return()
+  #endif()
+  if(Python_VERSION VERSION_LESS 3.10)
+    message(STATUS "Build one-cmds: FAILED (Install Python version 3.10 or higher)")
     return()
   endif()
 
@@ -40,6 +40,8 @@ else()
 
   set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 endif()
+
+message(STATUS "!!! python: ${PYTHON_EXECUTABLE}")
 
 # NOTE these files should not have extensions.
 #      below code will remove extension when copy and install.
