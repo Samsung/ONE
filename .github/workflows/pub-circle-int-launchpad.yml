@@ -139,8 +139,6 @@ jobs:
         run: |
           cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
           cp -rf ../../infra/debian/circle-interpreter ./debian
-          mv ./debian/changelog-${{ matrix.ubuntu_code }} ./debian/changelog
-          rm -f ./debian/changelog-*
           export DEBFULLNAME="${{ inputs.deb_fullname }}"
           export DEBEMAIL="${{ inputs.deb_email }}"
           dch -v "${{ steps.prepare.outputs.VERSION }}" \
@@ -187,28 +185,22 @@ jobs:
     # TODO change to the 'ubuntu-latest'
     #runs-on: ubuntu-latest
     runs-on: [ self-hosted, shs-park ]
+    env:
+      DEFAULT_DISTRO: jammy
 
     steps:
-      - name: Download tarball, focal
+      - name: Download tarball, ${{ env.DEFAULT_DISTRO }}
         uses: actions/download-artifact@v4
         with:
-          name: circle-interpreter_${{ needs.configure.outputs.version }}~focal
-
-      - name: Download tarball, jammy
-        uses: actions/download-artifact@v4
-        with:
-          name: circle-interpreter_${{ needs.configure.outputs.version }}~jammy
+          name: circle-interpreter_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}
 
       - name: Copy changelogs
         run: |
-          mkdir -p changelogs
-          for distro in focal jammy; do
-            mkdir ${distro}
-            tar -axf circle-interpreter_${{ needs.configure.outputs.version }}~${distro}.orig.tar.xz \
-              -C ${distro}
-            cp ${distro}/cirintp/debian/changelog changelogs/changelog-${distro}
-          done
-          ls -alh ./changelogs/ # TODO remove this
+          mkdir changelogs
+          mkdir ${{ env.DEFAULT_DISTRO }}
+          tar -axf circle-interpreter_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}.orig.tar.xz \
+            -C ${{ env.DEFAULT_DISTRO }}
+          cp ${{ env.DEFAULT_DISTRO }}/cirintp/debian/changelog changelogs/changelog
 
       - name: Upload artifact, changelogs
         uses: actions/upload-artifact@v4
@@ -252,11 +244,9 @@ jobs:
         with:
           name: changelogs
 
-      - name: Extract changelog
+      - name: Update the changelog file
         run: |
-          ls -alh  # TODO remove this
-          cp changelog-* \
-            infra/debian/circle-interpreter/
+          cp changelog infra/debian/circle-interpreter/
 
       - name: Create PR branch and commit changelog
         env:
@@ -264,7 +254,7 @@ jobs:
         run: |
           BRANCH=auto/update-cirint-changelog-${BR_VERSION}
           git checkout -b ${BRANCH}
-          git add infra/debian/circle-interpreter/changelog-*
+          git add infra/debian/circle-interpreter/changelog
           git commit -m "[infra/debian] Update changelog for circle-interpreter" \
             -m "This updates the changelog for circle-interpreter_${{ steps.prepare.outputs.VERSION }}." \
             -m "It is auto-generated PR from github workflow." \
