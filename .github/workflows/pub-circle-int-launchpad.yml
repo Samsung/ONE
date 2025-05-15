@@ -73,7 +73,7 @@ jobs:
 
       - name: Build without test
         run: |
-          echo "TODO: Build without test
+          echo "TODO: Build without test"
 
       - name: Gather files
         run: |
