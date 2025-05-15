@@ -24,6 +24,17 @@ namespace onert::backend::basic
 
 Tensor::~Tensor() {}
 
+// Initialize _size to 0 because actual buffer size may be unknown until inference for dynamic
+// shapes including unknown dimensions
+// Otherwise, it should be initialized to total size of operand info
+Tensor::Tensor(const ir::OperandInfo &info, DynamicMemoryManager *dynamic_mem_mgr)
+  : IPortableTensor(info), _buffer(nullptr),
+    _size(info.shape().hasUnspecifiedDims() ? 0 : info.total_size()), _num_references(0),
+    _dynamic_mem_mgr(dynamic_mem_mgr), _allocator(nullptr)
+{
+  // DO NOTHING
+}
+
 void Tensor::setShape(const ir::Shape &new_shape) { _info.shape(new_shape); }
 
 bool Tensor::applyShape(const ir::Shape &new_shape)
