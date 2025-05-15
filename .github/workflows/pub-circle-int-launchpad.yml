@@ -274,7 +274,7 @@ jobs:
 
       - name: Create PR
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.SHSPARK_GITHUB_TOKEN }}
         run: |
           BRANCH=auto/update-cirint-changelog-${BR_VERSION}
           gh pr create \
