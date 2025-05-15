@@ -72,11 +72,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: externals
-          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-${{ matrix.ubuntu_code }}-
-            external-onert-
-            external-
+
       - name: Build onert
         run: |
           make -f Makefile.template

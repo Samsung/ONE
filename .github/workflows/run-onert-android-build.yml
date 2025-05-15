@@ -61,11 +61,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: externals
-          key: external-onert-ndk-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          key: external-onert-ndk-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-ndk-
-            external-onert-
-            external-
 
       # numpy: test build
       # scons: arm compute library build

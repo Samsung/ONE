@@ -75,11 +75,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: externals
-          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-${{ matrix.ubuntu_code }}-
-            external-onert-
-            external-
 
       - name: Download rootfs for cross build
         uses: dawidd6/action-download-artifact@v7
@@ -124,11 +122,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: externals
-          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-${{ matrix.ubuntu_code }}-
-            external-onert-
-            external-
 
       - name: Build
         run: make -f Makefile.template
@@ -156,11 +152,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: externals
-          key: external-onert-ndk-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          key: external-onert-ndk-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-ndk-
-            external-onert-
-            external-
 
       - name: Build onert
         run: make -f Makefile.template
@@ -191,11 +185,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: externals
-          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-${{ matrix.ubuntu_code }}-
-            external-onert-
-            external-
 
       - name: Build onert
         run: |
