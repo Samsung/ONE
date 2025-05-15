@@ -125,6 +125,7 @@ public:
    */
   bool hasUnspecifiedDims() const
   {
+    assert(_dimensions.size() > 0);
     return (std::find(_dimensions.begin(), _dimensions.end(), kUnspecifiedDim) !=
             _dimensions.end());
   }
