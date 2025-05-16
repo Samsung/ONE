@@ -55,6 +55,11 @@ OperandIndexSequence Operation::getUsedInputSet() const
   return _inputs | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
 }
 
+OperandIndexSequence Operation::getUsedOutputSet() const
+{
+  return _outputs | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+}
+
 void Operation::replaceInputs(const OperandIndex &from, const OperandIndex &to)
 {
   _inputs.replace(from, to);

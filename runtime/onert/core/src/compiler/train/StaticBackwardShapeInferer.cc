@@ -70,7 +70,7 @@ bool StaticBackwardShapeInferer::checkDynamicInput(const ir::IOperation &op)
 void StaticBackwardShapeInferer::checkOutput(const ir::IOperation &op)
 {
   const auto &bwd_operands = _lowered_subg->trainable_graph().backward_operands();
-  for (const auto &output_idx : op.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  for (const auto &output_idx : op.getUsedOutputSet())
   {
     if (!bwd_operands.exist(output_idx))
     {

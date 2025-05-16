@@ -85,7 +85,7 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
   {
     const auto &op = _tgraph.operations().at(op_index);
     auto op_inputs = op.getUsedInputSet();
-    auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_outputs = op.getUsedOutputSet();
 
     // Define outputs
     for (const auto &output : op_outputs)
@@ -152,7 +152,7 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
   {
     const auto &op = _tgraph.operations().at(op_index);
     auto op_inputs = op.getUsedInputSet();
-    auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_outputs = op.getUsedOutputSet();
 
     for (const auto &index : op_inputs + op_outputs)
     {
@@ -316,7 +316,7 @@ void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
   {
     const auto &op = _tgraph.operations().at(op_ind);
     auto op_inputs = op.getUsedInputSet();
-    auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_outputs = op.getUsedOutputSet();
 
     // Allocate back-propagated tensors in first def
     for (const auto &outgoing : op_inputs)
