@@ -16,11 +16,13 @@
 
 #include <pybind11/pybind11.h>
 
+#include "nnfw_exception_bindings.h"
 #include "nnfw_session_bindings.h"
 #include "nnfw_tensorinfo_bindings.h"
 #include "nnfw_traininfo_bindings.h"
 
 using namespace onert::api::python;
+namespace py = pybind11;
 
 PYBIND11_MODULE(libnnfw_api_pybind, m)
 {
@@ -33,6 +35,10 @@ PYBIND11_MODULE(libnnfw_api_pybind, m)
   // Currently, the `infer` session is the same as common.
   auto infer = m.def_submodule("infer", "Inference submodule");
   infer.attr("nnfw_session") = m.attr("nnfw_session");
+
+  // Bind our NNFW-status exceptions
+  auto ex = m.def_submodule("exception", "NNFW-status Exception");
+  bind_nnfw_exceptions(ex);
 
   // Bind experimental `NNFW_SESSION` class
   auto experimental = m.def_submodule("experimental", "Experimental submodule");
