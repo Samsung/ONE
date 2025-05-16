@@ -140,7 +140,7 @@ protected:
     {
       const auto &op = graph()->operations().at(op_ind);
       auto op_inputs = op.getUsedInputSet();
-      auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+      auto op_outputs = op.getUsedOutputSet();
 
       // Define outputs
       for (const auto &ind : op_outputs)

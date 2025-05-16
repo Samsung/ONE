@@ -80,8 +80,7 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::I
   }
 
   // Now this runtime does not support the node making output as constant
-  for ([[maybe_unused]] const auto &output :
-       node.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+  for ([[maybe_unused]] const auto &output : node.getUsedOutputSet())
   {
     assert(!_graph.operands().at(output).isConstant());
   }

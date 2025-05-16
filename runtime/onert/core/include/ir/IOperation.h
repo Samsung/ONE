@@ -41,6 +41,7 @@ struct IOperation
   virtual const OperandIndexSequence &getInputs() const = 0;
   virtual OperandIndexSequence getUsedInputSet() const = 0;
   virtual const OperandIndexSequence &getOutputs() const = 0;
+  virtual OperandIndexSequence getUsedOutputSet() const = 0;
 };
 
 } // namespace onert::ir

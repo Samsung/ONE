@@ -223,7 +223,7 @@ void TrainableGraph::validateTopologicalOrder(std::vector<ir::OperationIndex> or
 
     uint32_t p = position[index];
 
-    for (const auto &output : op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &output : op.getUsedOutputSet())
     {
       const auto &operand = operands().at(output);
       for (const auto &use : operand.getUses())

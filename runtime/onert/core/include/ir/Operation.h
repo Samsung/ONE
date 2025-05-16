@@ -52,6 +52,7 @@ public:
   const OperandIndexSequence &getInputs() const override { return _inputs; }
   OperandIndexSequence getUsedInputSet() const override;
   const OperandIndexSequence &getOutputs() const override { return _outputs; }
+  OperandIndexSequence getUsedOutputSet() const override;
   // It's for only input/output tensors but const data.
   void setInputs(const OperandIndexSequence &indexes);
   void setOutputs(const OperandIndexSequence &indexes);
