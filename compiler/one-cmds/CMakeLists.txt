@@ -67,11 +67,7 @@ if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
   #      and install build/../one-prepare-venv file
   list(APPEND ONE_COMMAND_FILES one-prepare-venv.aarch64)
 else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  if(ONE_UBUNTU_CODENAME_BIONIC)
-    # NOTE copy one-prepare-venv.u1804 as build/../one-prepare-venv
-    #      and install build/../one-prepare-venv file
-    list(APPEND ONE_COMMAND_FILES one-prepare-venv.u1804)
-  elseif(ONE_UBUNTU_CODENAME_NOBLE)
+  if(ONE_UBUNTU_CODENAME_NOBLE)
     # NOTE copy one-prepare-venv.u2404 as build/../one-prepare-venv
     #      and install build/../one-prepare-venv file
     list(APPEND ONE_COMMAND_FILES one-prepare-venv.u2404)
