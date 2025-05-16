@@ -56,11 +56,15 @@ if [[ ! -z "$PREPVENV_PIP_OPTION" ]]; then
   PIP_OPTIONS+=" ${PREPVENV_PIP_OPTION} "
 fi
 
+PYTHON_PACKAGES="torch==${VER_TORCH} "
+PYTHON_PACKAGES+="onnx==${VER_ONNX} "
+PYTHON_PACKAGES+="onnxruntime==${VER_ONNXRUNTIME} "
+PYTHON_PACKAGES+="h5py==3.8.0 "
+PYTHON_PACKAGES+="einops "
+PYTHON_PACKAGES+="numpy==${VER_NUMPY} "
+
+TORCH_SOURCE_OPTION="-f https://download.pytorch.org/whl/torch"
+
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade pip setuptools
 
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install torch==${VER_TORCH} -f https://download.pytorch.org/whl/torch
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnx==${VER_ONNX}
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install onnxruntime==${VER_ONNXRUNTIME}
-
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install h5py==3.8.0 einops
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install numpy==${VER_NUMPY}
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade ${PYTHON_PACKAGES} ${TORCH_SOURCE_OPTION}
