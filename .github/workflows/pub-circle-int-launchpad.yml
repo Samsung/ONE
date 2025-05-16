@@ -77,8 +77,10 @@ jobs:
         username: ${{ secrets.NNFW_DOCKER_USERNAME }}
         password: ${{ secrets.NNFW_DOCKER_TOKEN }}
     env:
+      NNCC_BUILD: build
       NNCC_WORKSPACE: build/release
       NNCC_INSTALL_PREFIX: ${{ github.workspace }}/build/release.install
+      CIRINTP_PREFIX: cirintp
     steps:
       - name: Prepare, set distro versions
         id: prepare
