@@ -76,6 +76,9 @@ jobs:
       credentials:
         username: ${{ secrets.NNFW_DOCKER_USERNAME }}
         password: ${{ secrets.NNFW_DOCKER_TOKEN }}
+    env:
+      NNCC_WORKSPACE: build/release
+      NNCC_INSTALL_PREFIX: ${{ github.workspace }}/build/release.install
     steps:
       - name: Prepare, set distro versions
         id: prepare
@@ -87,9 +90,27 @@ jobs:
           echo "changes_file=${changes_file}" >> $GITHUB_OUTPUT
           echo "tarball_file=${tarball_file}" >> $GITHUB_OUTPUT
 
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Build without test
         run: |
-          echo "TODO: Build without test"
+          CIR_INTP_ITEMS="angkor;cwrap;pepper-str;pepper-strcast;pepper-csv2vec;pp"
+          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};oops;loco;logo-core;logo;locop"
+          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};hermes;hermes-std;safemain;mio-circle08"
+          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};luci-compute;luci;luci-interpreter"
+          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};foder;arser;vconone;circle-interpreter"
+          echo ${CIR_INTP_ITEMS}
+
+          ./nncc configure \
+            -DENABLE_STRICT_BUILD=ON \
+            -DENABLE_TEST=OFF \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DEXTERNALS_BUILD_THREADS=$(nproc) \
+            -DCMAKE_INSTALL_PREFIX=${NNCC_INSTALL_PREFIX} \
+            -DBUILD_WHITELIST="${CIR_INTP_ITEMS}"
+          ./nncc build -j$(nproc)
+          cmake --build ${NNCC_WORKSPACE} -- install
 
       - name: Gather files
         run: |
