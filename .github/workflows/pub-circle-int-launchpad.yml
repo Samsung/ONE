@@ -73,6 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
+      options: --user root
       credentials:
         username: ${{ secrets.NNFW_DOCKER_USERNAME }}
         password: ${{ secrets.NNFW_DOCKER_TOKEN }}
