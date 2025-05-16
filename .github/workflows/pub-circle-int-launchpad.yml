@@ -118,7 +118,18 @@ jobs:
 
       - name: Update changelog
         run: |
-          echo "TODO: Update changelog"
+          cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
+          cp -rf ../../infra/debian/circle-interpreter ./debian
+          export DEBFULLNAME="${{ inputs.deb_fullname }}"
+          export DEBEMAIL="${{ inputs.deb_email }}"
+          dch -v "${{ steps.prepare.outputs.VERSION }}" \
+            --distribution "${{ matrix.ubuntu_code }}" \
+            "${{ inputs.cirint_description }}" -b
+
+      - name: Create original tarball
+        run: |
+          cd ${{ env.NNCC_BUILD }}
+          tar -caf ${{ steps.prepare.outputs.tarball_file }} ${{ env.CIRINTP_PREFIX }}
 
       - name: Upload to Launchpad
         run: |
