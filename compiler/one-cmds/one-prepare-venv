@@ -18,10 +18,13 @@
 # use +e as python3.8 may not exist in the system and 'command' will return error.
 set +e
 
-PYTHON3_EXEC=$(command -v python3.8)
-if [[ -z "${PYTHON3_EXEC}" ]]; then
-  PYTHON3_EXEC=$(command -v python3)
-fi
+PYTHON_CANDIDATES=("python3.12" "python3.10" "python3.8" "python3")
+for py in "${PYTHON_CANDIDATES[@]}"; do
+  PYTHON3_EXEC=$(command -v "$py")
+  if [[ -n "${PYTHON3_EXEC}" ]]; then
+    break
+  fi
+done
 if [[ -z "${PYTHON3_EXEC}" ]]; then
   echo "Error one-prepare-venv: python3 not found"
   exit -1
