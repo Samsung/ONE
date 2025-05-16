@@ -114,7 +114,18 @@ jobs:
 
       - name: Gather files
         run: |
-          echo "TODO: Gather files"
+          cd ${NNCC_BUILD}
+          mkdir -p ${CIRINTP_PREFIX}
+          cp -v ${NNCC_INSTALL_PREFIX}/bin/circle-interpreter ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libloco.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_env.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_import.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_interpreter.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_lang.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_logex.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_log.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_plan.so ./${CIRINTP_PREFIX}/.
+          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_profile.so ./${CIRINTP_PREFIX}/.
 
       - name: Update changelog
         run: |
