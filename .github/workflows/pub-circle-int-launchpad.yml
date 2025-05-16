@@ -144,6 +144,17 @@ jobs:
           cd ${{ env.NNCC_BUILD }}
           tar -caf ${{ steps.prepare.outputs.tarball_file }} ${{ env.CIRINTP_PREFIX }}
 
+      - name: Signing with debuild and debsign
+        run: |
+          cd ${{ env.NNCC_BUILD }}/${{ env.CIRINTP_PREFIX }}
+          rm -rf ~/.gnupg
+          echo -n "${{ secrets.GPG_NNFW_SIGNING_KEY }}" | base64 --decode | gpg --import
+          # get fingerprint
+          FPR=$(gpg --list-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')
+          echo "$FPR:6:" | gpg --import-ownertrust
+          debuild -S -us -uc
+          debsign -k${FPR} ../circle-interpreter_*.changes
+
       - name: Upload to Launchpad
         run: |
           echo "TODO: Upload to Launchpad"
