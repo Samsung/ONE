@@ -134,6 +134,12 @@ table QuantizationParameters {
   quantized_dimension:int;
 }
 
+// Parameters for MX (Microscaling) quantization
+table MXQuantization {
+  // axis of mx quantization
+  axis:int;
+}
+
 // Sparse tensors.
 // We use a modification of the TACO format.
 // Reference: http://tensor-compiler.org/kjolstad-oopsla17-tensor-compiler.pdf

@@ -48,6 +48,10 @@ message TensorQuantization {
   optional int32 quantized_dimension = 5 [default = 0];
 }
 
+message TensorMXQuantization {
+  optional int32 axis = 1 [default = 0];
+}
+
 message Operand {
   optional string name = 1;
   optional TensorType type = 2;
@@ -55,6 +59,7 @@ message Operand {
   optional TensorFiller filler = 4;
   optional TensorQuantization quant = 5;
   optional ShapeSignature shape_signature = 8;
+  optional TensorMXQuantization mx_quant = 100;
 }
 
 // This enum value corresponds to Padding in TensorFlow Lite schema
