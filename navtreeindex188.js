@@ -1,7 +1,5 @@
 var NAVTREEINDEX188 =
 {
-"compiler_2tflchef_2core_2src_2_op_2_resize_nearest_neighbor_8h.html":[41,0,0,131,0,1,1,163],
-"compiler_2tflchef_2core_2src_2_op_2_resize_nearest_neighbor_8h_source.html":[41,0,0,131,0,1,1,163],
 "compiler_2tflchef_2core_2src_2_op_2_reverse_v2_8cpp.html":[41,0,0,131,0,1,1,166],
 "compiler_2tflchef_2core_2src_2_op_2_reverse_v2_8cpp_source.html":[41,0,0,131,0,1,1,166],
 "compiler_2tflchef_2core_2src_2_op_2_reverse_v2_8h.html":[41,0,0,131,0,1,1,167],
@@ -98,6 +96,8 @@ var NAVTREEINDEX188 =
 "compiler_2tflchef_2core_2src_2_op_2_while_8h_source.html":[41,0,0,131,0,1,1,233],
 "compiler_2tflchef_2core_2src_2_op_2_zeros_like_8cpp.html":[41,0,0,131,0,1,1,234],
 "compiler_2tflchef_2core_2src_2_op_2_zeros_like_8cpp_source.html":[41,0,0,131,0,1,1,234],
+"compiler_2tflchef_2core_2src_2_op_2conv2d_8cpp.html":[41,0,0,131,0,1,1,26],
+"compiler_2tflchef_2core_2src_2_op_2conv2d_8cpp_source.html":[41,0,0,131,0,1,1,26],
 "compiler_2tflchef_2log_2src_2_log_8cpp.html":[41,0,0,131,1,1,0],
 "compiler_2tflchef_2log_2src_2_log_8cpp_source.html":[41,0,0,131,1,1,0],
 "compiler_2tflchef_2tflite_2src_2_convert_8h.html":[41,0,0,131,2,1,2],
@@ -134,8 +134,6 @@ var NAVTREEINDEX188 =
 "compiler_2tflchef_2tflite_2src_2_op_2_ceil_8cpp_source.html":[41,0,0,131,2,1,0,12],
 "compiler_2tflchef_2tflite_2src_2_op_2_concatenation_8cpp.html":[41,0,0,131,2,1,0,13],
 "compiler_2tflchef_2tflite_2src_2_op_2_concatenation_8cpp_source.html":[41,0,0,131,2,1,0,13],
-"compiler_2tflchef_2tflite_2src_2_op_2_conv2_d_8cpp.html":[41,0,0,131,2,1,0,14],
-"compiler_2tflchef_2tflite_2src_2_op_2_conv2_d_8cpp_source.html":[41,0,0,131,2,1,0,14],
 "compiler_2tflchef_2tflite_2src_2_op_2_cos_8cpp.html":[41,0,0,131,2,1,0,15],
 "compiler_2tflchef_2tflite_2src_2_op_2_cos_8cpp_source.html":[41,0,0,131,2,1,0,15],
 "compiler_2tflchef_2tflite_2src_2_op_2_depth_to_space_8cpp.html":[41,0,0,131,2,1,0,17],
@@ -228,12 +226,12 @@ var NAVTREEINDEX188 =
 "compiler_2tflchef_2tflite_2src_2_op_2_quantize_8cpp_source.html":[41,0,0,131,2,1,0,67],
 "compiler_2tflchef_2tflite_2src_2_op_2_re_l_u6_8cpp.html":[41,0,0,131,2,1,0,76],
 "compiler_2tflchef_2tflite_2src_2_op_2_re_l_u6_8cpp_source.html":[41,0,0,131,2,1,0,76],
-"compiler_2tflchef_2tflite_2src_2_op_2_re_l_u_8cpp.html":[41,0,0,131,2,1,0,74],
-"compiler_2tflchef_2tflite_2src_2_op_2_re_l_u_8cpp_source.html":[41,0,0,131,2,1,0,74],
 "compiler_2tflchef_2tflite_2src_2_op_2_reduce_max_8cpp.html":[41,0,0,131,2,1,0,71],
 "compiler_2tflchef_2tflite_2src_2_op_2_reduce_max_8cpp_source.html":[41,0,0,131,2,1,0,71],
 "compiler_2tflchef_2tflite_2src_2_op_2_reduce_prod_8cpp.html":[41,0,0,131,2,1,0,73],
 "compiler_2tflchef_2tflite_2src_2_op_2_reduce_prod_8cpp_source.html":[41,0,0,131,2,1,0,73],
+"compiler_2tflchef_2tflite_2src_2_op_2_relu_8cpp.html":[41,0,0,131,2,1,0,74],
+"compiler_2tflchef_2tflite_2src_2_op_2_relu_8cpp_source.html":[41,0,0,131,2,1,0,74],
 "compiler_2tflchef_2tflite_2src_2_op_2_reshape_8cpp.html":[41,0,0,131,2,1,0,78],
 "compiler_2tflchef_2tflite_2src_2_op_2_reshape_8cpp_source.html":[41,0,0,131,2,1,0,78],
 "compiler_2tflchef_2tflite_2src_2_op_2_resize_bilinear_8cpp.html":[41,0,0,131,2,1,0,79],
@@ -249,5 +247,7 @@ var NAVTREEINDEX188 =
 "compiler_2tflchef_2tflite_2src_2_op_2_s_v_d_f_8cpp.html":[41,0,0,131,2,1,0,105],
 "compiler_2tflchef_2tflite_2src_2_op_2_s_v_d_f_8cpp_source.html":[41,0,0,131,2,1,0,105],
 "compiler_2tflchef_2tflite_2src_2_op_2_select_v2_8cpp.html":[41,0,0,131,2,1,0,88],
-"compiler_2tflchef_2tflite_2src_2_op_2_select_v2_8cpp_source.html":[41,0,0,131,2,1,0,88]
+"compiler_2tflchef_2tflite_2src_2_op_2_select_v2_8cpp_source.html":[41,0,0,131,2,1,0,88],
+"compiler_2tflchef_2tflite_2src_2_op_2_shape_8cpp.html":[41,0,0,131,2,1,0,89],
+"compiler_2tflchef_2tflite_2src_2_op_2_shape_8cpp_source.html":[41,0,0,131,2,1,0,89]
 };

@@ -1,9 +1,5 @@
 var NAVTREEINDEX297 =
 {
-"tflchef_2core_2src_2_op_2_less_equal_8h_source.html":[41,0,0,131,0,1,1,85],
-"tflchef_2core_2src_2_op_2_log_8h.html":[41,0,0,131,0,1,1,89],
-"tflchef_2core_2src_2_op_2_log_8h_source.html":[41,0,0,131,0,1,1,89],
-"tflchef_2core_2src_2_op_2_max_pool2_d_8h.html":[41,0,0,131,0,1,1,107],
 "tflchef_2core_2src_2_op_2_max_pool2_d_8h_source.html":[41,0,0,131,0,1,1,107],
 "tflchef_2core_2src_2_op_2_maximum_8h.html":[41,0,0,131,0,1,1,105],
 "tflchef_2core_2src_2_op_2_maximum_8h_source.html":[41,0,0,131,0,1,1,105],
@@ -249,5 +245,9 @@ var NAVTREEINDEX297 =
 "tflite_2src_2_op_2include_2_fake_quant_8h.html":[41,0,0,131,2,1,0,0,24],
 "tflite_2src_2_op_2include_2_fake_quant_8h_source.html":[41,0,0,131,2,1,0,0,24],
 "tflite_2src_2_op_2include_2_gather_nd_8h.html":[41,0,0,131,2,1,0,0,31],
-"tflite_2src_2_op_2include_2_gather_nd_8h_source.html":[41,0,0,131,2,1,0,0,31]
+"tflite_2src_2_op_2include_2_gather_nd_8h_source.html":[41,0,0,131,2,1,0,0,31],
+"tflite_2src_2_op_2include_2_matrix_diag_8h.html":[41,0,0,131,2,1,0,0,48],
+"tflite_2src_2_op_2include_2_matrix_diag_8h_source.html":[41,0,0,131,2,1,0,0,48],
+"tflite_2src_2_op_2include_2_matrix_set_diag_8h.html":[41,0,0,131,2,1,0,0,49],
+"tflite_2src_2_op_2include_2_matrix_set_diag_8h_source.html":[41,0,0,131,2,1,0,0,49]
 };

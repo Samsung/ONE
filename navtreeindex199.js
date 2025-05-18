@@ -1,6 +1,5 @@
 var NAVTREEINDEX199 =
 {
-"gemm__helpers_8h.html#a95da845fbd8793b29a1e09d148949fa4":[41,0,3,0,0,1,0,0,0,1,31],
 "gemm__helpers_8h.html#a95e48c8e88afb7e8b51e7dd85650d91f":[41,0,3,0,0,1,0,0,0,1,163],
 "gemm__helpers_8h.html#a985131db76a28d171da0810a8b0f70ee":[41,0,3,0,0,1,0,0,0,1,11],
 "gemm__helpers_8h.html#a9a4a3e258c8a76d2b2366d5c6f18e938":[41,0,3,0,0,1,0,0,0,1,30],
@@ -184,14 +183,14 @@ var NAVTREEINDEX199 =
 "generate__bcq__output__arrays_8py.html#aeaa6a1950a9795dc9721104f4e96b587":[41,0,0,5,1,0],
 "generate__bcq__output__arrays_8py.html#aec1e9cc762002e596cea8e71d6afb441":[41,0,0,5,1,1],
 "generate__bcq__output__arrays_8py_source.html":[41,0,0,5,1],
-"globals.html":[41,1,0,0],
 "globals.html":[41,1,0],
+"globals.html":[41,1,0,0],
 "globals_a.html":[41,1,0,1],
 "globals_b.html":[41,1,0,2],
 "globals_c.html":[41,1,0,3],
 "globals_d.html":[41,1,0,4],
-"globals_defs.html":[41,1,6,0],
 "globals_defs.html":[41,1,6],
+"globals_defs.html":[41,1,6,0],
 "globals_defs_a.html":[41,1,6,1],
 "globals_defs_b.html":[41,1,6,2],
 "globals_defs_c.html":[41,1,6,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX199 =
 "globals_o.html":[41,1,0,14],
 "globals_p.html":[41,1,0,15],
 "globals_q.html":[41,1,0,16],
-"globals_r.html":[41,1,0,17]
+"globals_r.html":[41,1,0,17],
+"globals_s.html":[41,1,0,18]
 };

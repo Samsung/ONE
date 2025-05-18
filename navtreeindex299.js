@@ -1,9 +1,5 @@
 var NAVTREEINDEX299 =
 {
-"unittests_2_operation_8cpp.html#ab7ecfc4ef215c21d0d11b3d9c93adcff":[41,0,0,80,2,2,0],
-"unittests_2_operation_8cpp.html#acb64719d7737e9b4a36edea8f0ce6dfd":[41,0,0,80,2,2,1],
-"unittests_2_operation_8cpp_source.html":[41,0,0,80,2,2],
-"unittests_2_tensor_variant_8cpp.html":[41,0,0,80,2,5],
 "unittests_2_tensor_variant_8cpp.html#a5a7abd2bd119f21b2cdd8e638c06512d":[41,0,0,80,2,5,0],
 "unittests_2_tensor_variant_8cpp.html#af1ae4989b4bc789ac490373e639e270e":[41,0,0,80,2,5,1],
 "unittests_2_tensor_variant_8cpp_source.html":[41,0,0,80,2,5],

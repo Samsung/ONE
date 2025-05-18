@@ -8,6 +8,8 @@ var classonert_1_1ir_1_1_operation =
     [ "getInputs", "classonert_1_1ir_1_1_operation.html#a9f59a46100157938710e64d40e2f2a88", null ],
     [ "getInputs", "classonert_1_1ir_1_1_operation.html#a70f0e53fafa8dde52ae22e65eee7952c", null ],
     [ "getOutputs", "classonert_1_1ir_1_1_operation.html#a672e67744fb958d62e04116d315334c2", null ],
+    [ "getUsedInputSet", "classonert_1_1ir_1_1_operation.html#af47a263161440a385136cf77e4790741", null ],
+    [ "getUsedOutputSet", "classonert_1_1ir_1_1_operation.html#a481307f5b3deec34d63da81d332b92fa", null ],
     [ "operator=", "classonert_1_1ir_1_1_operation.html#a8cdadeefc492fa43b62aa6ee5d45446f", null ],
     [ "operator=", "classonert_1_1ir_1_1_operation.html#a57f90c9f194c5256ed9afae6b8ef52f9", null ],
     [ "replaceInputs", "classonert_1_1ir_1_1_operation.html#a9dce2d153856ac873e3cc4b833da6af9", null ],

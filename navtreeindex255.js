@@ -1,9 +1,5 @@
 var NAVTREEINDEX255 =
 {
-"opencl__info_8cc.html#a3a45deff9c6114997801aa0c7f6729f5":[41,0,3,3,1,0,0,3],
-"opencl__info_8cc.html#a4e64a1a5c12ff29d99189e99d324e13d":[41,0,3,3,1,0,0,1],
-"opencl__info_8cc.html#a79713d83efd0eeec05f1d72a9f20b9b4":[41,0,3,3,1,0,0,2],
-"opencl__info_8cc.html#aa06f5fbe915d0bf149dcf793acea47a1":[41,0,3,3,1,0,0,0],
 "opencl__info_8cc_source.html":[41,0,3,3,1,0,0],
 "operation_2_binary_arithmetic_8cc.html":[41,0,3,2,2,1,5,0,6],
 "operation_2_binary_arithmetic_8cc_source.html":[41,0,3,2,2,1,5,0,6],
@@ -249,5 +245,9 @@ var NAVTREEINDEX255 =
 "partition_2src_2_nodes_2_circle_max_pool2_d_8cpp_source.html":[41,0,0,59,6,1,0,60],
 "partition_2src_2_nodes_2_circle_maximum_8cpp.html":[41,0,0,59,6,1,0,59],
 "partition_2src_2_nodes_2_circle_maximum_8cpp_source.html":[41,0,0,59,6,1,0,59],
-"partition_2src_2_nodes_2_circle_mean_8cpp.html":[41,0,0,59,6,1,0,61]
+"partition_2src_2_nodes_2_circle_mean_8cpp.html":[41,0,0,59,6,1,0,61],
+"partition_2src_2_nodes_2_circle_mean_8cpp_source.html":[41,0,0,59,6,1,0,61],
+"partition_2src_2_nodes_2_circle_minimum_8cpp.html":[41,0,0,59,6,1,0,62],
+"partition_2src_2_nodes_2_circle_minimum_8cpp_source.html":[41,0,0,59,6,1,0,62],
+"partition_2src_2_nodes_2_circle_mirror_pad_8cpp.html":[41,0,0,59,6,1,0,63]
 };

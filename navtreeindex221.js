@@ -1,6 +1,5 @@
 var NAVTREEINDEX221 =
 {
-"namespacekbenchmark.html#abd2707cf7a4ba14f519bc287caa582bc":[39,0,77,7],
 "namespacekbenchmark_1_1kernels.html":[39,0,77,0],
 "namespacekbenchmark_1_1kernels_1_1acl__common.html":[39,0,77,0,0],
 "namespacekbenchmark_1_1kernels_1_1acl__common.html#a3b9cbcaefbfa15c3c5fe0ee892e49a71":[39,0,77,0,0,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX221 =
 "namespaceluci.html#a29e69e1d36ff270ef86f341d85d0a22e":[39,0,84,523],
 "namespaceluci.html#a29e69e1d36ff270ef86f341d85d0a22ea0db45d2a4141101bdfe48e3314cfbca3":[39,0,84,523,0],
 "namespaceluci.html#a29e69e1d36ff270ef86f341d85d0a22ea161b3d9016563aba9ac190fc02ada9bb":[39,0,84,523,2],
-"namespaceluci.html#a29e69e1d36ff270ef86f341d85d0a22eae4f6a05f82ed398f984f4bc1a55838df":[39,0,84,523,1]
+"namespaceluci.html#a29e69e1d36ff270ef86f341d85d0a22eae4f6a05f82ed398f984f4bc1a55838df":[39,0,84,523,1],
+"namespaceluci.html#a2a94b2f596282dc800716cffef4367af":[39,0,84,586]
 };

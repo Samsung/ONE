@@ -49,7 +49,7 @@ var dir_c9348e4763c5124a9eef9e6530a60018 =
     [ "Range.h", "runtime_2compute_2cker_2include_2cker_2operation_2_range_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_range_8h" ],
     [ "Reduce.h", "compute_2cker_2include_2cker_2operation_2_reduce_8h.html", "compute_2cker_2include_2cker_2operation_2_reduce_8h" ],
     [ "ReduceMean.h", "runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h" ],
-    [ "ReLU.h", "runtime_2compute_2cker_2include_2cker_2operation_2_re_l_u_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_re_l_u_8h" ],
+    [ "ReLU.h", "runtime_2compute_2cker_2include_2cker_2operation_2_relu_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_relu_8h" ],
     [ "ReLU6.h", "runtime_2compute_2cker_2include_2cker_2operation_2_re_l_u6_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_re_l_u6_8h" ],
     [ "ResizeBilinear.h", "runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_resize_bilinear_8h" ],
     [ "Reverse.h", "compute_2cker_2include_2cker_2operation_2_reverse_8h.html", "compute_2cker_2include_2cker_2operation_2_reverse_8h" ],

@@ -1,6 +1,5 @@
 var NAVTREEINDEX225 =
 {
-"namespaceluci__interpreter_1_1test__kernel_1_1add__n__float.html#aacaf5fbff655ee4f17f69657a76a53a5":[39,0,87,2,5,2],
 "namespaceluci__interpreter_1_1test__kernel_1_1argmax__float.html":[39,0,87,2,6],
 "namespaceluci__interpreter_1_1test__kernel_1_1argmax__float.html#a15c490e9dc8e330a54ab03f36b11c30e":[39,0,87,2,6,2],
 "namespaceluci__interpreter_1_1test__kernel_1_1argmax__float.html#a97de0d1a63297294907c890d878caea1":[39,0,87,2,6,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX225 =
 "namespaceluci__interpreter_1_1test__kernel_1_1logical__not__bool.html#a322d88462c365dc13597a61f311e8879":[39,0,87,2,64,0],
 "namespaceluci__interpreter_1_1test__kernel_1_1logical__or__bool.html":[39,0,87,2,65],
 "namespaceluci__interpreter_1_1test__kernel_1_1logical__or__bool.html#a0eb529efd245356419f07b7dfb707e18":[39,0,87,2,65,3],
-"namespaceluci__interpreter_1_1test__kernel_1_1logical__or__bool.html#a2fa38276c83d7178a5a989314b117110":[39,0,87,2,65,2]
+"namespaceluci__interpreter_1_1test__kernel_1_1logical__or__bool.html#a2fa38276c83d7178a5a989314b117110":[39,0,87,2,65,2],
+"namespaceluci__interpreter_1_1test__kernel_1_1logical__or__bool.html#a9ae40229caa7ac4c0f15311e102b2b8d":[39,0,87,2,65,0]
 };
