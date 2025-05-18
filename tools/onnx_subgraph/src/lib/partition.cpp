@@ -73,6 +73,69 @@ void PrintSubgraphs(std::vector<onnx::GraphProto> &subgraphs, char *subgraphFile
   }
 }
 
+/**
+ * @brief     Constructs an adjacency list representation of the ONNX graph.
+ *
+ * @param     [in] g A const reference to an ONNX GraphProto object that contains the graph
+ *            structure.
+ * @param     [in,out] visited A pointer to an integer array used to mark whether nodes have been
+ *             visited.
+ * @pre       The 'visited' array should be pre-allocated with a size at least equal to the number
+ *            of nodes in the graph.
+ * @post      The 'visited' array will be initialized to 0 for all nodes.
+ * @exception None
+ * @return    A vector of GraphAdjacencyNode objects representing the adjacency list of the graph.
+ */
+std::vector<GraphAdjacencyNode> GetAdjancencyList(const onnx::GraphProto &g, int *visited)
+{
+  std::vector<GraphAdjacencyNode> adjacencyList;
+  int nodeIndex = 0;
+  for (const auto &node : g.node())
+  {
+    visited[nodeIndex] = 0;
+    GraphAdjacencyNode adNode;
+    adNode.index = nodeIndex;
+    adNode.name = node.name();
+    const auto &outputs = node.output();
+
+    for (const auto &output : outputs)
+    {
+      int outputNodeIndex = 0;
+
+      for (const auto &output_node : g.node())
+      {
+        int find_flag = 0;
+
+        const auto &inputs = output_node.input();
+        for (const auto &input : inputs)
+        {
+          if (output == input)
+          {
+            find_flag = 1;
+            break;
+          }
+        }
+
+        if (find_flag == 1)
+        {
+          if (std::find(adNode.outputNodeIndex.begin(), adNode.outputNodeIndex.end(),
+                        outputNodeIndex) == adNode.outputNodeIndex.end())
+          {
+            adNode.outputNodeIndex.push_back(outputNodeIndex);
+          }
+        }
+
+        outputNodeIndex++;
+      }
+    }
+
+    nodeIndex++;
+    adjacencyList.push_back(adNode);
+  }
+
+  return adjacencyList;
+}
+
 void PartitionGraph(const onnx::GraphProto &g, Device &d, PartitionStrategy strategy,
                     const std::unordered_map<std::string, NodeIOSize> &node_io_size)
 {
