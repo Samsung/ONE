@@ -164,10 +164,29 @@ jobs:
     needs: [ configure, debian-release ]
     if: ${{ success() && github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
+    env:
+      DEFAULT_DISTRO: jammy
     steps:
+      - name: Download tarball, ${{ env.DEFAULT_DISTRO }}
+        uses: actions/download-artifact@v4
+        with:
+          name: circle-interpreter_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}
+
       - name: Copy changelogs
         run: |
-          echo "TODO: Copy changelogs"
+          mkdir changelogs
+          mkdir ${{ env.DEFAULT_DISTRO }}
+          tar -axf circle-interpreter_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}.orig.tar.xz \
+            -C ${{ env.DEFAULT_DISTRO }}
+          cp ${{ env.DEFAULT_DISTRO }}/cirintp/debian/changelog changelogs/changelog
+
+      - name: Upload artifact, changelogs
+        uses: actions/upload-artifact@v4
+        with:
+          name: changelogs
+          retention-days: 3
+          path: |
+            changelogs
 
   create-pr-on-success:
     needs: [ configure, create-changelog-artifact ]
