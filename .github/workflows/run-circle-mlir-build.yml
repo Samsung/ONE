@@ -68,7 +68,7 @@ jobs:
 
       - name: Build, test & install
         env:
-          ONE_COMPILER_ROOT: /usr/share/cirint
+          ONE_COMPILER_ROOT: /usr/share/circletools
         run: |
           cd circle-mlir
           cmake --build build/${{ matrix.type }} -j4
