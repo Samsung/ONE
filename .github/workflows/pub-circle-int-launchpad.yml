@@ -202,8 +202,32 @@ jobs:
 
   create-pr-on-success:
     needs: [ configure, create-changelog-artifact ]
+    if: ${{ success() && github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Prepare, set distro versions
+        id: prepare
+        run: |
+          VERSION="${{ needs.configure.outputs.version }}"
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "Seungho Henry Park"
+          git config --global user.email "shs.park@samsung.com"
+
+      - name: Download tarball
+        uses: actions/download-artifact@v4
+        with:
+          name: changelogs
+
+      - name: Update the changelog file
+        run: |
+          cp changelog infra/debian/circle-interpreter/
+
       - name: Create PR branch and commit changelog
         run: |
           echo "TODO: Create PR branch and commit changelog"
