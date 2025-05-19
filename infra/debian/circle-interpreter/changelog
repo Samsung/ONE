@@ -1,3 +1,9 @@
+circle-interpreter (1.30.0~202505190918~jammy) jammy; urgency=medium
+
+  * Test Release Triggering by nnfw
+
+ -- On-device AI developers <nnfw@samsung.com>  Mon, 19 May 2025 09:28:52 +0000
+
 circle-interpreter (1.30.0) jammy; urgency=low
 
   * First circle-interpreter Debian package release for developers.
