@@ -18,7 +18,7 @@ FROM ubuntu:20.04
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -qqy install tzdata
 
 # Build tool
-RUN apt-get update && apt-get -qqy install build-essential cmake scons git lcov g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
+RUN apt-get update && apt-get -qqy install build-essential cmake scons git lcov g++-arm-linux-gnueabihf g++-aarch64-linux-gnu pkg-config
 
 # Debian build tool
 RUN apt-get update && apt-get -qqy install fakeroot devscripts debhelper python3-all dh-python

@@ -24,7 +24,7 @@ RUN apt-get update && apt-get -qqy install software-properties-common
 RUN add-apt-repository ppa:git-core/ppa -y
 
 # Build tool
-RUN apt-get update && apt-get -qqy install build-essential cmake scons git g++-arm-linux-gnueabihf g++-aarch64-linux-gnu
+RUN apt-get update && apt-get -qqy install build-essential cmake scons git g++-arm-linux-gnueabihf g++-aarch64-linux-gnu pkg-config
 
 # ARM none eabi build tool
 RUN apt-get update && apt-get -qqy install gcc-arm-none-eabi
