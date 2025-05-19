@@ -204,6 +204,11 @@ jobs:
     needs: [ configure, create-changelog-artifact ]
     if: ${{ success() && github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
+    env:
+      BR_VERSION: ${{ needs.configure.outputs.br_version }}
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Prepare, set distro versions
         id: prepare
@@ -229,9 +234,33 @@ jobs:
           cp changelog infra/debian/circle-interpreter/
 
       - name: Create PR branch and commit changelog
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "TODO: Create PR branch and commit changelog"
+          BRANCH=auto/update-cirint-changelog-${BR_VERSION}
+          git checkout -b ${BRANCH}
+          git add infra/debian/circle-interpreter/changelog
+          git commit -m "[infra/debian] Update changelog for circle-interpreter" \
+            -m "This updates the changelog for circle-interpreter_${{ steps.prepare.outputs.VERSION }}." \
+            -m "It is auto-generated PR from github workflow." \
+            -m "" \
+            -m "ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>"
+          git push origin ${BRANCH}
 
       - name: Create PR
+        env:
+          GH_TOKEN: ${{ secrets.SHSPARK_GITHUB_TOKEN }}
         run: |
-          echo "TODO: Create PR"
+          BRANCH=auto/update-cirint-changelog-${BR_VERSION}
+          gh pr create \
+            --title "[infra/debian] Update changelog for circle-interpreter" \
+            --body "$(cat <<EOF
+          This updates the changelog for circle-interpreter_${{ steps.prepare.outputs.VERSION }}.
+          This PR includes updated changelog after successful debian build.
+          It is auto-generated PR from github workflow.
+
+          ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>
+          EOF
+          )" \
+            --head "${BRANCH}" \
+            --base "master"
