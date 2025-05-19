@@ -6,7 +6,7 @@ Supported Architecture : AARCH64 only (ARM32 is not supported yet)
 
 ## Prepare Android NDK
 
-There is two ways to get Android NDK: install Android NDK on your PC or use docker image which already has Android NDK installed.
+There are two ways to get Android NDK: install Android NDK on your PC or use docker image which already has Android NDK installed.
 
 ### Install Android NDK
 
