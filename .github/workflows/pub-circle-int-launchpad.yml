@@ -158,7 +158,19 @@ jobs:
 
       - name: Upload to Launchpad
         run: |
-          echo "TODO: Upload to Launchpad"
+          cd ${{ env.NNCC_BUILD }}
+          mkdir -p ~/.ssh
+          echo "${{ secrets.LAUNCHPAD_NNFW_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          dput ppa:circletools/nightly ${{ steps.prepare.outputs.changes_file }}
+
+      - name: Upload artifact, circle-interpreter
+        uses: actions/upload-artifact@v4
+        with:
+          name: circle-interpreter_${{ steps.prepare.outputs.VERSION }}
+          retention-days: 3
+          path: |
+            ${{ env.NNCC_BUILD }}/${{ steps.prepare.outputs.tarball_file }}
 
   create-changelog-artifact:
     needs: [ configure, debian-release ]
