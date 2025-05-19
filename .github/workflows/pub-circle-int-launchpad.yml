@@ -221,7 +221,6 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-
     steps:
       - name: Prepare, set distro versions
         id: prepare
