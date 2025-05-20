@@ -5,20 +5,7 @@
 #   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
 # NOTE Require same python version of common-artifacts
-if(CMAKE_VERSION VERSION_LESS 3.12)
-  find_package(PythonInterp 3.8 QUIET)
-  find_package(PythonLibs 3.8 QUIET)
-
-  if(NOT ${PYTHONINTERP_FOUND})
-    message(STATUS "Build dalgona: FAILED (Python3 is missing)")
-    return()
-  endif()
-
-  if(${PYTHON_VERSION_MINOR} LESS 8)
-    message(STATUS "Build dalgona: FAILED (Need Python version 3.8 or higher)")
-    return()
-  endif()
-else()
+# TODO fix indentation
   # find python 3.8 or above
   find_package(Python 3.8 COMPONENTS Development QUIET)
 
@@ -34,7 +21,6 @@ else()
 
   set(PYTHON_INCLUDE_DIRS ${Python_INCLUDE_DIRS})
   set(PYTHON_LIBRARIES ${Python_LIBRARIES})
-endif()
 
 nnas_find_package(Pybind11)
 if(NOT Pybind11_FOUND)
