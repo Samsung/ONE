@@ -27,7 +27,7 @@ for py in "${PYTHON_CANDIDATES[@]}"; do
 done
 if [[ -z "${PYTHON3_EXEC}" ]]; then
   echo "Error one-prepare-venv: python3 not found"
-  exit -1
+  exit 1
 fi
 
 set -e
@@ -49,7 +49,7 @@ fi
 # this should exist for all Ubuntu.
 if [ ! -f "/etc/lsb-release" ]; then
   echo "Error one-prepare-venv: /etc/lsb-release file not found"
-  exit -1
+  exit 1
 fi
 source /etc/lsb-release
 
@@ -79,7 +79,7 @@ elif [[ "$DISTRIB_CODENAME" == "noble" ]]; then
   : # TODO change vesions
 else
   echo "Error one-prepare-venv: Unsupported codename $DISTRIB_CODENAME"
-  exit -1
+  exit 1
 fi
 
 PIP_TRUSTED_HOST="--trusted-host pypi.org "
