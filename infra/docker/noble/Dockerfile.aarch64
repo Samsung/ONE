@@ -21,7 +21,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -qqy install tzdata
 RUN apt-get update && apt-get -qqy install software-properties-common
 
 # Build tool
-RUN apt-get update && apt-get -qqy install build-essential cmake scons git lcov g++-arm-linux-gnueabihf
+RUN apt-get update && apt-get -qqy install build-essential cmake scons git lcov g++-arm-linux-gnueabihf pkg-config
 
 # Debian build tool
 RUN apt-get update && apt-get -qqy install fakeroot devscripts debhelper python3-all dh-python

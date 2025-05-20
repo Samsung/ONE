@@ -15,7 +15,7 @@
 FROM ubuntu:jammy
 
 # Build tool
-RUN apt-get update && apt-get -qqy install build-essential cmake scons git
+RUN apt-get update && apt-get -qqy install build-essential cmake scons git pkg-config
 
 # Additonal tools
 RUN apt-get update && \
