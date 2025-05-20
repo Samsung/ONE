@@ -5,20 +5,7 @@
 #   Ubuntu22.04; default python3.10
 #   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
-if(CMAKE_VERSION VERSION_LESS 3.12)
-  find_package(PythonInterp 3.8 QUIET)
-  find_package(PythonLibs 3.8 QUIET)
-
-  if(NOT ${PYTHONINTERP_FOUND})
-    message(STATUS "Build common-artifacts: FAILED (Python3 is missing)")
-    return()
-  endif()
-
-  if(${PYTHON_VERSION_MINOR} LESS 8)
-    message(STATUS "Build common-artifacts: FAILED (Need Python version 3.8 or higher)")
-    return()
-  endif()
-else()
+# TODO fix indentation
   # find python 3.8 or above
   find_package(Python 3.8 COMPONENTS Interpreter QUIET)
 
@@ -46,7 +33,6 @@ else()
   endif()
 
   set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
-endif()
 
 # Create python virtual environment
 set(VIRTUALENV_OVERLAY "${NNCC_OVERLAY_DIR}/venv")
