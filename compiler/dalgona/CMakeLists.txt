@@ -5,22 +5,21 @@
 #   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
 # NOTE Require same python version of common-artifacts
-# TODO fix indentation
-  # find python 3.8 or above
-  find_package(Python 3.8 COMPONENTS Development QUIET)
+# find python 3.8 or above
+find_package(Python 3.8 COMPONENTS Development QUIET)
 
-  if(NOT Python_Development_FOUND)
-    message(STATUS "Build dalgona: FAILED (Python3 development package is missing)")
-    return()
-  endif()
+if(NOT Python_Development_FOUND)
+  message(STATUS "Build dalgona: FAILED (Python3 development package is missing)")
+  return()
+endif()
 
-  if(Python_VERSION VERSION_LESS 3.8)
-    message(STATUS "Build dalgona: FAILED (Need Python version 3.8 or higher)")
-    return()
-  endif()
+if(Python_VERSION VERSION_LESS 3.8)
+  message(STATUS "Build dalgona: FAILED (Need Python version 3.8 or higher)")
+  return()
+endif()
 
-  set(PYTHON_INCLUDE_DIRS ${Python_INCLUDE_DIRS})
-  set(PYTHON_LIBRARIES ${Python_LIBRARIES})
+set(PYTHON_INCLUDE_DIRS ${Python_INCLUDE_DIRS})
+set(PYTHON_LIBRARIES ${Python_LIBRARIES})
 
 nnas_find_package(Pybind11)
 if(NOT Pybind11_FOUND)
