@@ -4,28 +4,27 @@
 #   Ubuntu22.04; default python3.10
 #   Ubuntu24.04; explicitly installed python3.8 (default is python3.12)
 #   refer https://github.com/Samsung/ONE/issues/9962
-# TODO fix indentation
-  find_package(Python 3.8 EXACT COMPONENTS Interpreter QUIET)
-  if(NOT Python_FOUND)
-    find_package(Python 3.8 COMPONENTS Interpreter QUIET)
-  endif()
+find_package(Python 3.8 EXACT COMPONENTS Interpreter QUIET)
+if(NOT Python_FOUND)
+  find_package(Python 3.8 COMPONENTS Interpreter QUIET)
+endif()
 
-  # tensorflow 2.12.1 supports Python 3.8 ~ 3.11
-  if(Python_VERSION VERSION_GREATER_EQUAL 3.12)
-    message(STATUS "Build one-cmds: FALSE (Python version 3.12 or higher is not supported yet)")
-    return()
-  endif()
-  if(Python_VERSION VERSION_LESS 3.8)
-    message(STATUS "Build one-cmds: FAILED (Install Python version 3.8 or 3.10)")
-    return()
-  endif()
+# tensorflow 2.12.1 supports Python 3.8 ~ 3.11
+if(Python_VERSION VERSION_GREATER_EQUAL 3.12)
+  message(STATUS "Build one-cmds: FALSE (Python version 3.12 or higher is not supported yet)")
+  return()
+endif()
+if(Python_VERSION VERSION_LESS 3.8)
+  message(STATUS "Build one-cmds: FAILED (Install Python version 3.8 or 3.10)")
+  return()
+endif()
 
-  if(NOT Python_Interpreter_FOUND)
-    message(STATUS "Build one-cmds: FAILED (Python3 is missing)")
-    return()
-  endif()
+if(NOT Python_Interpreter_FOUND)
+  message(STATUS "Build one-cmds: FAILED (Python3 is missing)")
+  return()
+endif()
 
-  set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
+set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 
 # NOTE these files should not have extensions.
 #      below code will remove extension when copy and install.
