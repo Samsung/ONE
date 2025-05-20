@@ -5,6 +5,7 @@ import warnings
 from contextlib import contextmanager
 
 from ..native.libnnfw_api_pybind import infer, tensorinfo
+from ..native.libnnfw_api_pybind.exception import OnertError
 from ..common.basesession import BaseSession
 
 
@@ -60,48 +61,63 @@ class session(BaseSession):
 
         # Check if the session is prepared. If not, call prepare() and set_outputs() once.
         if not self._prepared:
-            with self._time_block(metrics, 'prepare_time_ms', measure):
-                # On first call, fix any -1 dims to real input shapes and validate
-                original_infos = self.get_inputs_tensorinfo()
-                fixed_infos = []
-                for idx, info in enumerate(original_infos):
-                    input_shape = inputs_array[idx].shape
-                    new_dims = []
-                    static_dim_changed = False
-                    # only the first `info.rank` entries matter
-                    for j, d in enumerate(info.dims[:info.rank]):
-                        if d == -1:
-                            # replace dynamic dim with actual incoming shape
-                            new_dims.append(input_shape[j])
-                        elif d == input_shape[j]:
-                            # static dim must match the provided array
-                            new_dims.append(d)
-                        else:
-                            static_dim_changed = True
+            try:
+                with self._time_block(metrics, 'prepare_time_ms', measure):
+                    # On first call, fix any -1 dims to real input shapes and validate
+                    original_infos = self.get_inputs_tensorinfo()
+                    fixed_infos = []
+                    for idx, info in enumerate(original_infos):
+                        input_shape = inputs_array[idx].shape
+                        new_dims = []
+                        static_dim_changed = False
+                        # only the first `info.rank` entries matter
+                        for j, d in enumerate(info.dims[:info.rank]):
+                            if d == -1:
+                                # replace dynamic dim with actual incoming shape
+                                new_dims.append(input_shape[j])
+                            elif d == input_shape[j]:
+                                # static dim must match the provided array
+                                new_dims.append(d)
+                            else:
+                                static_dim_changed = True
 
-                    if static_dim_changed:
-                        warnings.warn(
-                            f"infer() called with input {idx}'s shape={input_shape}, "
-                            f"which differs from model’s expected shape={tuple(info.dims)}. "
-                            "Ensure this is intended.", UserWarning)
+                        if static_dim_changed:
+                            warnings.warn(
+                                f"infer() called with input {idx}'s shape={input_shape}, "
+                                f"which differs from model's expected shape={tuple(info.dims)}. "
+                                "Ensure this is intended.", UserWarning)
 
-                    info.dims = new_dims
-                    fixed_infos.append(info)
+                        info.dims = new_dims
+                        fixed_infos.append(info)
 
-                # Update tensorinfo to optimize using it
-                self._update_inputs_tensorinfo(fixed_infos)
+                    # Update tensorinfo to optimize using it
+                    self._update_inputs_tensorinfo(fixed_infos)
 
-                self.session.prepare()
-                self.set_outputs(self.session.output_size())
-                self._prepared = True
+                    self.session.prepare()
+                    self.set_outputs(self.session.output_size())
+                    self._prepared = True
+            except ValueError:
+                raise
+            except Exception as e:
+                raise OnertError(f"Session preparation failed: {e}") from e
 
         # Configure input buffers using the current session's input size and provided data.
-        with self._time_block(metrics, 'io_time_ms', measure):
-            self.set_inputs(expected_input_size, inputs_array)
+        try:
+            with self._time_block(metrics, 'io_time_ms', measure):
+                self.set_inputs(expected_input_size, inputs_array)
+        except ValueError:
+            raise
+        except Exception as e:
+            raise OnertError(f"Failed to bind inputs: {e}") from e
 
         # Execute the inference.
-        with self._time_block(metrics, 'run_time_ms', measure):
-            self.session.run()
+        try:
+            with self._time_block(metrics, 'run_time_ms', measure):
+                self.session.run()
+        except ValueError:
+            raise
+        except Exception as e:
+            raise OnertError(f"Inference execution failed: {e}") from e
 
         # TODO: Support dynamic shapes for outputs.
 
@@ -118,6 +134,8 @@ class session(BaseSession):
         Raises:
             ValueError: If the number of new_infos does not match the session's input size,
                         or if any tensorinfo contains a negative dimension.
+
+            OnertError: If the underlying C-API call fails.
         """
         num_inputs: int = self.session.input_size()
         if len(new_infos) != num_inputs:
@@ -130,7 +148,13 @@ class session(BaseSession):
                 raise ValueError(
                     f"Input tensorinfo at index {i} contains negative dimension(s): "
                     f"{info.dims[:info.rank]}")
-            self.session.set_input_tensorinfo(i, info)
+            try:
+                self.session.set_input_tensorinfo(i, info)
+            except ValueError:
+                # re-raise ValueError directly
+                raise
+            except Exception as e:
+                raise Oner
 
     @contextmanager
     def _time_block(self, metrics: Dict[str, float], key: str, measure: bool):
