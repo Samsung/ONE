@@ -90,7 +90,7 @@ ExternalProject_Add(externals-flatbuffers
 # build abseil-cpp
 ExternalProject_Add(externals-abseil-cpp
   GIT_REPOSITORY "https://github.com/abseil/abseil-cpp.git"
-  GIT_TAG        "215105818dfde3174fe799600bb0f3cae233d0bf" # 20211102.0
+  GIT_TAG        "d9e4955c65cd4367dd6bf46f4ccb8cd3d100540b" # 20250127.1
   SOURCE_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/abseil-cpp"
   BINARY_DIR     "${AC_BUILD_DIR}"
   INSTALL_DIR    "${AC_INSTALL_DIR}"
