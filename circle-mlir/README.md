@@ -99,6 +99,13 @@ Test build
 make testr
 ```
 
+Install tools into `(ONE)/build/install`
+```
+make install
+```
+- `onnx2circle` is going to be the default converter of `one-import-onnx` tool
+- this will install `onnx2circle` to `build/install` of compiler
+
 ### Docker build
 
 You can build within Docker image, with pre-built `externals`.
