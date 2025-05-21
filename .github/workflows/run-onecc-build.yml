@@ -49,8 +49,10 @@ jobs:
         include:
           - ubuntu_code: focal
             ubuntu_ver: 20.04
+            python_exec: python3.10
           - ubuntu_code: jammy
             ubuntu_ver: 22.04
+            python_exec: python3
     runs-on: one-x64-linux
     container:
       image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}
@@ -77,12 +79,6 @@ jobs:
           add-apt-repository ppa:deadsnakes/ppa
           apt-get -qqy install python3.10 python3.10-dev python3.10-venv
           python3.10 -m ensurepip --upgrade
-
-      # dalgona uses pybind11, but pybind11 cannot bind packages in virtualenv.
-      # So we need to install packages for dalgona-test globally.
-      - name: Install required packages
-        run: |
-          python3 -m pip install numpy h5py==3.11.0 flatbuffers==23.5.26
 
       - name: Caching externals
         uses: actions/cache@v4

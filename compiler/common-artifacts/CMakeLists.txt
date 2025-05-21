@@ -1,27 +1,23 @@
 #[[ Generate common python virtual enviornment ]]
-# NOTE find_package try to use at least python3.8 as follows depending on platform version
-#   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
-#   Ubuntu20.04; default python3.8
+# NOTE find_package try to use at least python3.10 as follows depending on platform version
+#   Ubuntu20.04; explictly installed python3.10 (default is python3.8)
 #   Ubuntu22.04; default python3.10
 #   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
-# find python 3.8 or above
-find_package(Python 3.8 COMPONENTS Interpreter QUIET)
+#   refer https://github.com/Samsung/ONE/issues/15226
+# find python 3.10 or above
+find_package(Python 3.10 EXACT COMPONENTS Interpreter QUIET)
+if(NOT Python_FOUND)
+  find_package(Python 3 COMPONENTS Interpreter QUIET)
+endif()
 
 if(NOT Python_Interpreter_FOUND)
   message(STATUS "Build common-artifacts: FAILED (Python3 is missing)")
   return()
 endif()
 
-if(Python_VERSION VERSION_LESS 3.8)
-  message(STATUS "Build common-artifacts: FAILED (Need Python version 3.8 or higher)")
-  return()
-endif()
-
-# NOTE assume only use 3.8.x or 3.10.x or 3.12.x
-if((Python_VERSION VERSION_GREATER_EQUAL 3.8) AND (Python_VERSION VERSION_LESS 3.9))
-  set(PYTHON_VERSION_MINOR 8)
-elseif((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
+# NOTE assume only use 3.10.x or 3.12.x
+if((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
   set(PYTHON_VERSION_MINOR 10)
 elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
   set(PYTHON_VERSION_MINOR 12)
@@ -46,8 +42,8 @@ set(REQUIREMENTS_FILE "requirements.txt")
 set(REQUIREMENTS_OVERLAY_PATH "${VIRTUALENV_OVERLAY}/${REQUIREMENTS_FILE}")
 
 set(PYTHON_OVERLAY python3)
-if(PYTHON_EXECUTABLE MATCHES python3.8)
-  set(PYTHON_OVERLAY python3.8)
+if(PYTHON_EXECUTABLE MATCHES python3.10)
+  set(PYTHON_OVERLAY python3.10)
 endif()
 
 # NOTE when using behind proxy with self signed certificate, need to set '--trusted-host' options

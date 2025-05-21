@@ -1,26 +1,27 @@
-# NOTE find_package try to use at least python3.8 as follows depending on platform version
-#   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
-#   Ubuntu20.04; default python3.8
+# NOTE find_package will try to use at least python3.10 as follows depending on platform version
+#   Ubuntu20.04; explictly installed python3.10 (default is python3.8)
 #   Ubuntu22.04; default python3.10
 #   Ubuntu24.04; explicitly installed python3.8 (default is python3.12)
 #   refer https://github.com/Samsung/ONE/issues/9962
-find_package(Python 3.8 EXACT COMPONENTS Interpreter QUIET)
+#   refer https://github.com/Samsung/ONE/issues/15226
+find_package(Python 3.10 EXACT COMPONENTS Interpreter QUIET)
 if(NOT Python_FOUND)
-  find_package(Python 3.8 COMPONENTS Interpreter QUIET)
-endif()
-
-# tensorflow 2.12.1 supports Python 3.8 ~ 3.11
-if(Python_VERSION VERSION_GREATER_EQUAL 3.12)
-  message(STATUS "Build one-cmds: FALSE (Python version 3.12 or higher is not supported yet)")
-  return()
-endif()
-if(Python_VERSION VERSION_LESS 3.8)
-  message(STATUS "Build one-cmds: FAILED (Install Python version 3.8 or 3.10)")
-  return()
+  find_package(Python 3 COMPONENTS Interpreter QUIET)
 endif()
 
 if(NOT Python_Interpreter_FOUND)
   message(STATUS "Build one-cmds: FAILED (Python3 is missing)")
+  return()
+endif()
+
+# NOTE assume only use 3.10.x or 3.12.x
+if((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
+  set(PYTHON_VERSION_MINOR 10)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
+  set(PYTHON_VERSION_MINOR 12)
+else()
+  # TODO support more
+  message(STATUS "Build one-cmds: FAILED (Unsupported python: ${Python_VERSION})")
   return()
 endif()
 
