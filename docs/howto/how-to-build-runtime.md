@@ -1,6 +1,6 @@
 # How to Build Runtime
 
-This document is based on the system where Ubuntu Desktop Linux 20.04 LTS is installed with default settings, and can be applied in other environments without much difference. For reference, the development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.
+This document is based on the system where Ubuntu Desktop Linux 22.04 LTS is installed with default settings, and can be applied in other environments without much difference. For reference, the development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.
 
 ## Build requirements
 
@@ -15,27 +15,26 @@ In the Ubuntu, you can easily install it with the following command.
 $ sudo apt-get install cmake
 ```
 
-If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in https://github.com/Samsung/ONE/blob/master/infra/docker/focal/Dockerfile.
+If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in `infra/docker/<ubuntu_code>/Dockerfile` of our repository.
 
 Here is a summary of it for runtime and related tools
 
 ```
 $ sudo apt install \
 build-essential \
-clang-format-8 \
 cmake \
-doxygen \
 git \
 graphviz \
-hdf5-tools \
 lcov \
 libhdf5-dev \
 python3 \
 python3-pip \
+python3-dev \
 scons \
 software-properties-common \
 unzip \
-wget
+wget \
+curl
 ```
 
 ## Get ONE source code
