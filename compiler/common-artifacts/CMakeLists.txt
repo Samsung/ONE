@@ -5,34 +5,33 @@
 #   Ubuntu22.04; default python3.10
 #   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
-# TODO fix indentation
-  # find python 3.8 or above
-  find_package(Python 3.8 COMPONENTS Interpreter QUIET)
+# find python 3.8 or above
+find_package(Python 3.8 COMPONENTS Interpreter QUIET)
 
-  if(NOT Python_Interpreter_FOUND)
-    message(STATUS "Build common-artifacts: FAILED (Python3 is missing)")
-    return()
-  endif()
+if(NOT Python_Interpreter_FOUND)
+  message(STATUS "Build common-artifacts: FAILED (Python3 is missing)")
+  return()
+endif()
 
-  if(Python_VERSION VERSION_LESS 3.8)
-    message(STATUS "Build common-artifacts: FAILED (Need Python version 3.8 or higher)")
-    return()
-  endif()
+if(Python_VERSION VERSION_LESS 3.8)
+  message(STATUS "Build common-artifacts: FAILED (Need Python version 3.8 or higher)")
+  return()
+endif()
 
-  # NOTE assume only use 3.8.x or 3.10.x or 3.12.x
-  if((Python_VERSION VERSION_GREATER_EQUAL 3.8) AND (Python_VERSION VERSION_LESS 3.9))
-    set(PYTHON_VERSION_MINOR 8)
-  elseif((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
-    set(PYTHON_VERSION_MINOR 10)
-  elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
-    set(PYTHON_VERSION_MINOR 12)
-  else()
-    # TODO support more
-    message(STATUS "Build common-artifacts: FAILED (Unsupported python: ${Python_VERSION})")
-    return()
-  endif()
+# NOTE assume only use 3.8.x or 3.10.x or 3.12.x
+if((Python_VERSION VERSION_GREATER_EQUAL 3.8) AND (Python_VERSION VERSION_LESS 3.9))
+  set(PYTHON_VERSION_MINOR 8)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
+  set(PYTHON_VERSION_MINOR 10)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
+  set(PYTHON_VERSION_MINOR 12)
+else()
+  # TODO support more
+  message(STATUS "Build common-artifacts: FAILED (Unsupported python: ${Python_VERSION})")
+  return()
+endif()
 
-  set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
+set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 
 # Create python virtual environment
 set(VIRTUALENV_OVERLAY "${NNCC_OVERLAY_DIR}/venv")
