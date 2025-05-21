@@ -1,14 +1,14 @@
 #[[ Generate common python virtual enviornment ]]
-# NOTE find_package try to use at least python3.8 as follows depending on platform version
-#   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
-#   Ubuntu20.04; default python3.8
+# NOTE find_package try to use at least python3.10 as follows depending on platform version
+#   Ubuntu20.04; explictly installed python3.10 (default is python3.8)
 #   Ubuntu22.04; default python3.10
 #   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
-# find python 3.8 or above
-find_package(Python 3.8 EXACT COMPONENTS Interpreter QUIET)
+#   refer https://github.com/Samsung/ONE/issues/15226
+# find python 3.10 or above
+find_package(Python 3.10 EXACT COMPONENTS Interpreter QUIET)
 if(NOT Python_FOUND)
-  find_package(Python 3.8 COMPONENTS Interpreter QUIET)
+  find_package(Python 3.10 COMPONENTS Interpreter QUIET)
 endif()
 
 if(NOT Python_Interpreter_FOUND)
@@ -16,10 +16,8 @@ if(NOT Python_Interpreter_FOUND)
   return()
 endif()
 
-# NOTE assume only use 3.8.x or 3.10.x or 3.12.x
-if((Python_VERSION VERSION_GREATER_EQUAL 3.8) AND (Python_VERSION VERSION_LESS 3.9))
-  set(PYTHON_VERSION_MINOR 8)
-elseif((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
+# NOTE assume only use 3.10.x or 3.12.x
+if((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
   set(PYTHON_VERSION_MINOR 10)
 elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
   set(PYTHON_VERSION_MINOR 12)
@@ -48,8 +46,8 @@ set(REQUIREMENTS_FILE "requirements.txt")
 set(REQUIREMENTS_OVERLAY_PATH "${VIRTUALENV_OVERLAY}/${REQUIREMENTS_FILE}")
 
 set(PYTHON_OVERLAY python3)
-if(PYTHON_EXECUTABLE MATCHES python3.8)
-  set(PYTHON_OVERLAY python3.8)
+if(PYTHON_EXECUTABLE MATCHES python3.10)
+  set(PYTHON_OVERLAY python3.10)
 endif()
 
 # NOTE when using behind proxy with self signed certificate, need to set '--trusted-host' options
@@ -61,21 +59,7 @@ endif()
 # NOTE `tensorflow-cpu` package is not available for aarch64, so we use `tensorflow` package.
 # NOTE refer https://github.com/Samsung/ONE/issues/15226 for versions
 set(PY_PKG_LIST )
-if (PYTHON_VERSION_MINOR EQUAL 8)
-  # python3.8; Ubuntu 18.04, 20.04
-  if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-    list(APPEND PY_PKG_LIST "tensorflow==2.12.1")
-  else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-    list(APPEND PY_PKG_LIST "tensorflow-cpu==2.12.1")
-  endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  list(APPEND PY_PKG_LIST "flatbuffers==23.5.26")
-  list(APPEND PY_PKG_LIST "protobuf==4.23.3")
-  list(APPEND PY_PKG_LIST "pydot==1.4.2")
-  list(APPEND PY_PKG_LIST "pytest==7.4.3")
-  list(APPEND PY_PKG_LIST "h5py==3.11.0")
-  list(APPEND PY_PKG_LIST "cffi==1.16.0")
-  list(APPEND PY_PKG_LIST "numpy==1.24.3")
-elseif (PYTHON_VERSION_MINOR EQUAL 10)
+if (PYTHON_VERSION_MINOR EQUAL 10)
   # python 3.10; Ubuntu 22.04
   # TF2.19.0 release at 2025-03-12
   if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")

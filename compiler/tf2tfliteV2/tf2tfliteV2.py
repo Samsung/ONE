@@ -263,9 +263,8 @@ def _convert(flags):
     _apply_verbosity(flags.verbose)
 
     if (flags.v1):
-        _v1_convert(flags)
-    else:
-        _v2_convert(flags)
+        print("tf2tfliteV2: v1 not supported anymore. convert with v2.")
+    _v2_convert(flags)
 
 
 """

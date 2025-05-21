@@ -57,22 +57,16 @@ source /etc/lsb-release
 # - https://github.com/onnx/onnx/blob/master/docs/Versioning.md
 # - https://github.com/onnx/onnx-tensorflow/blob/master/Versioning.md
 
-VER_TENSORFLOW=2.12.1
-VER_TF_PROB=0.20.1
-VER_TF_ADON=0.20.0
-VER_ONNX=1.16.0
-VER_ONNXRUNTIME=1.18.0
-VER_ONNX_TF=1.10.0
+VER_TENSORFLOW=2.19.0
+VER_ONNX=1.18.0
+VER_ONNXRUNTIME=1.21.1
 VER_PYDOT=1.4.2
-VER_TORCH="2.1.2+cpu"
-VER_PROTOBUF=4.23.3
-VER_NUMPY=1.24.3
+VER_TORCH="2.7.0+cpu"
+VER_PROTOBUF="5.29.4"
+VER_NUMPY="1.26.4"
 
 PYTHON_VER=$(${PYTHON3_EXEC} -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
-echo "Setting package version for python $PYTHON_VER"
-if [[ "$PYTHON_VER" == "3.8" ]]; then
-  : # use as is
-elif [[ "$PYTHON_VER" == "3.10" ]]; then
+if [[ "$PYTHON_VER" == "3.10" ]]; then
   : # TODO change vesions
 elif [[ "$PYTHON_VER" == "3.12" ]]; then
   : # TODO change vesions
@@ -110,12 +104,9 @@ ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade pip setuptools
 
 PYTHON_PACKAGES="tensorflow-cpu==${VER_TENSORFLOW} "
 PYTHON_PACKAGES+="Pillow "
-PYTHON_PACKAGES+="tensorflow_probability==${VER_TF_PROB} "
-PYTHON_PACKAGES+="tensorflow_addons==${VER_TF_ADON} "
 PYTHON_PACKAGES+="torch==${VER_TORCH} "
 PYTHON_PACKAGES+="onnx==${VER_ONNX} "
 PYTHON_PACKAGES+="onnxruntime==${VER_ONNXRUNTIME} "
-PYTHON_PACKAGES+="onnx-tf==${VER_ONNX_TF} "
 PYTHON_PACKAGES+="protobuf==${VER_PROTOBUF} "
 PYTHON_PACKAGES+="fsspec==2024.6.1 "
 PYTHON_PACKAGES+="pydot==${VER_PYDOT} "

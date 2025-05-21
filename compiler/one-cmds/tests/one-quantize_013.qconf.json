@@ -10,7 +10,9 @@
             "InceptionV3/InceptionV3/Mixed_7c/concat",
             "InceptionV3/Predictions/Reshape_1"],
             "alternate": {
-                "tf2190": "InceptionV3/InceptionV3/Conv2d_2b_3x3/Relu;InceptionV3/InceptionV3/Conv2d_2b_3x3/BatchNorm/FusedBatchNorm;InceptionV3/InceptionV3/Conv2d_2b_3x3/Conv2D"
+                "tf2190": [
+                    "InceptionV3/InceptionV3/Conv2d_2b_3x3/Relu;InceptionV3/InceptionV3/Conv2d_2b_3x3/BatchNorm/FusedBatchNorm;InceptionV3/InceptionV3/Conv2d_2b_3x3/Conv2D"
+                ]
             },
             "dtype" : "int16",
             "granularity" : "channel"
