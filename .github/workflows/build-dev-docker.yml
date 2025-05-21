@@ -53,7 +53,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          ./nnas build-docker-image --codename ${{ matrix.version }} --tag one-test
+          docker build --file infra/docker/${{ matrix.version }}/Dockerfile --tag one-test .
 
       - name: Test onert build
         env:
@@ -107,7 +107,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          ./nnas build-docker-image --codename android-sdk --tag one-test
+          docker build --file infra/docker/android-sdk/Dockerfile --tag one-test .
 
       - name: Test onert build
         env:
