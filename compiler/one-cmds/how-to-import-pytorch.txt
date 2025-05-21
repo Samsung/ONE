@@ -1,0 +1,17 @@
+ONE-IMPORT-PYTORCH QUICK-START GUIDE
+====================================
+
+Convert any PyTorch model to a deploy‑ready circle file in two steps.
+
+1. Export your model
+   Freeze the module with example inputs.
+
+   import torch
+   from torch.export import export
+
+   exported = export(model, (dummy_input,))
+   exported.save("model.pt2")
+
+2. Run the converter
+
+   $ one-import-pytorch -i model.pt2 -o model.circle
