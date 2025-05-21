@@ -29,7 +29,8 @@ include(TestCoverage)
 # enable ctest
 include(CTest)
 
-# enable googletest
+# enable googletest but do not install
+set(INSTALL_GTEST OFF)
 include(GTestHelper)
 include(GoogleTest)
 
