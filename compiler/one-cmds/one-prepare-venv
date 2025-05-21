@@ -105,3 +105,6 @@ PYTHON_PACKAGES+="pydot==${VER_PYDOT} "
 PYTHON_PACKAGES+="numpy==${VER_NUMPY} "
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade ${PYTHON_PACKAGES} ${TORCH_SOURCE_OPTION}
+
+### Install tico
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --pre tico
