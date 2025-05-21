@@ -14,8 +14,6 @@ include("cmake/buildtool/config/config_linux.cmake")
 
 # addition for arm-linux
 set(FLAGS_COMMON ${FLAGS_COMMON}
-    "-mtune=cortex-a8"
-    "-mfloat-abi=softfp"
     "-funsafe-math-optimizations"
     )
 
