@@ -64,7 +64,7 @@ VER_ONNX=1.16.0
 VER_ONNXRUNTIME=1.18.0
 VER_ONNX_TF=1.10.0
 VER_PYDOT=1.4.2
-VER_TORCH="2.1.2+cpu"
+VER_TORCH="2.5.1+cpu"
 VER_PROTOBUF=4.23.3
 VER_NUMPY=1.24.3
 
@@ -123,3 +123,19 @@ PYTHON_PACKAGES+="pydot==${VER_PYDOT} "
 PYTHON_PACKAGES+="numpy==${VER_NUMPY} "
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade ${PYTHON_PACKAGES} ${TORCH_SOURCE_OPTION}
+
+### Install tico only if the Python version is 3.10 or higher.
+PYTHON_VERSION=$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
+
+REQUIRED_MAJOR=3
+REQUIRED_MINOR=10
+
+# compare versions
+MAJOR=$(echo $PYTHON_VERSION | cut -d. -f1)
+MINOR=$(echo $PYTHON_VERSION | cut -d. -f2)
+
+if [ "$MAJOR" -gt "$REQUIRED_MAJOR" ] || { [ "$MAJOR" -eq "$REQUIRED_MAJOR" ] && [ "$MINOR" -ge "$REQUIRED_MINOR" ]; }; then
+    ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --pre tico
+else
+    echo "[TICO] Python 3.10 or higher is required. Current version is $PYTHON_VERSION. Skipping installation."
+fi
