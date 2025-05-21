@@ -13,8 +13,17 @@ set(CMAKE_CXX_FLAGS_DEBUG   "-O -g -DDEBUG")
 include("cmake/buildtool/config/config_linux.cmake")
 
 # addition for arm-linux
+set(MFPU_OPTION "-mfpu=neon-vfpv4")
+string(REGEX MATCH "-march=([a-zA-Z0-9]+)" MARCH_MATCH "${CMAKE_C_FLAGS}")
+if(MARCH_MATCH)
+    string(REGEX REPLACE "-march=" "" MARCH_VALUE "${MARCH_MATCH}")
+    # Check if the target arch is armv8
+    if(MARCH_VALUE MATCHES "armv8")
+        set(MFPU_OPTION "-mfpu=neon-fp-armv8")
+    endif()
+endif(MARCH_MATCH)
 set(FLAGS_COMMON ${FLAGS_COMMON}
-    "-mfpu=neon-vfpv4"
+    ${MFPU_OPTION}
     "-funsafe-math-optimizations"
     "-ftree-vectorize"
     "-mfp16-format=ieee"
