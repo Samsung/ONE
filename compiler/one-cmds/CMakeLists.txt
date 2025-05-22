@@ -182,7 +182,7 @@ add_custom_command(OUTPUT ${O1_CFG_FILE_BIN}
           --constant ${O1_OPTION}
           --format cfg
           --output_path ${O1_CFG_FILE_BIN}
-  DEPENDS ${CONSTANT_EXPORTING_SCRIPT} ${CONSTANT_SCRIPT}
+  DEPENDS ${CONSTANT_EXPORTING_SCRIPT} ${CONSTANT_SCRIPT} ${ONE_PYTHON_DIR_BIN}
   COMMENT "Generate ${O1_CFG_FILE}"
 )
 
