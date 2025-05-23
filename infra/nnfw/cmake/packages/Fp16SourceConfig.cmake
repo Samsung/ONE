@@ -4,8 +4,8 @@ function(_Fp16Source_import)
     return()
   endif(NOT ${DOWNLOAD_FP16})
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   # fp16 commit in xnnpack (tflite v2.16.1)

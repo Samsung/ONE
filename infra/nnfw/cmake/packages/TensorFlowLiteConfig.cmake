@@ -13,8 +13,8 @@ if(BUILD_TENSORFLOW_LITE)
   endif(NOT ${VAR})
   endmacro(return_unless)
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   nnfw_find_package(TensorFlowSource QUIET)
   return_unless(TensorFlowSource_FOUND)
@@ -54,7 +54,7 @@ if(BUILD_TENSORFLOW_LITE)
   # Optional packages
   nnfw_find_package(NEON2SSESource QUIET)
 
-  nnas_include(ExternalProjectTools)
+  nnfw_include(ExternalProjectTools)
   add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/TensorFlowLite" tflite-2.16.1)
 
   set(TensorFlowLite_FOUND TRUE)

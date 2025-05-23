@@ -4,8 +4,8 @@ function(_CpuInfoSource_import)
     return()
   endif(NOT ${DOWNLOAD_CPUINFO})
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   # CPUINFO commit for RISC-V bug fix

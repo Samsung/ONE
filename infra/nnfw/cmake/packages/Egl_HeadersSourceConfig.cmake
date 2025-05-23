@@ -4,8 +4,8 @@ function(_Egl_HeadersSource_import)
     return()
   endif(NOT DOWNLOAD_EGL_HEADERS)
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(EGL_HEADERS_URL ${EXTERNAL_DOWNLOAD_SERVER}/KhronosGroup/EGL-Registry/archive/649981109e263b737e7735933c90626c29a306f2.zip)

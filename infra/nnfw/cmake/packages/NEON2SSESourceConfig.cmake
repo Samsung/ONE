@@ -4,8 +4,8 @@ function(_NEON2SSESource_import)
     return()
   endif(NOT DOWNLOAD_NEON2SSE)
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   # NOTE TensorFlow 2.16.1 downloads NEON2SSE from the following URL
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")

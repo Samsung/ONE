@@ -4,8 +4,8 @@ function(_NoniusSource_import)
     return()
   endif(NOT ${DOWNLOAD_NONIUS})
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   set(NONIUS_URL ${EXTERNAL_DOWNLOAD_SERVER}/libnonius/nonius/archive/v1.2.0-beta.1.tar.gz)

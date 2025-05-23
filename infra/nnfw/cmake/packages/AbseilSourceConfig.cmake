@@ -4,8 +4,8 @@ function(_AbseilSource_import)
     return()
   endif(NOT DOWNLOAD_ABSEIL)
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   # NOTE TensorFlow 2.16.1 downloads abseil from the following URL
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")

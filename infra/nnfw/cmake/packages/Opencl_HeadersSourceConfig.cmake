@@ -4,8 +4,8 @@ function(_Opencl_HeadersSource_import)
     return()
   endif(NOT DOWNLOAD_OPENCL_HEADERS)
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(OPENCL_HEADERS_URL ${EXTERNAL_DOWNLOAD_SERVER}/KhronosGroup/OpenCL-Headers/archive/v2021.04.29.tar.gz)

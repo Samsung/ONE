@@ -4,8 +4,8 @@ function(_PsimdSource_import)
     return()
   endif(NOT ${DOWNLOAD_PSIMD})
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   # psimd commit in xnnpack 8b283aa30a31

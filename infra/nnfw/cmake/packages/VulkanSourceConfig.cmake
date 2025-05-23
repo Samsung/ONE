@@ -4,8 +4,8 @@ function(_VulkanSource_import)
     return()
   endif(NOT ${DOWNLOAD_VULKAN})
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(VULKAN_URL ${EXTERNAL_DOWNLOAD_SERVER}/KhronosGroup/Vulkan-Headers/archive/ec2db85225ab410bc6829251bef6c578aaed5868.tar.gz)
