@@ -31,7 +31,7 @@ set(EXT_OVERLAY_DIR ${NNFW_OVERLAY_DIR})
 list(INSERT CMAKE_FIND_ROOT_PATH 0 "${EXT_OVERLAY_DIR}")
 
 macro(nnas_include PREFIX)
-  include("${NNAS_PROJECT_SOURCE_DIR}/infra/cmake/modules/${PREFIX}.cmake")
+  include("${NNAS_PROJECT_SOURCE_DIR}/infra/nnfw/cmake/modules/${PREFIX}.cmake")
 endmacro(nnas_include)
 
 # Runtime 'find_package()' wrapper to find in cmake/packages folder
