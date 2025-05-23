@@ -12,16 +12,19 @@ operand {
   name: "ifm1_mxfp4"
   type: MXFP4
   shape { dim: 1 dim: 1 dim: 32 dim: 32 }
+  mx_quant { axis: -1 }
 }
 operand {
   name: "ifm2_mxfp4"
   type: MXFP4
   shape { dim: 1 dim: 1 dim: 32 dim: 32 }
+  mx_quant { axis: -2 }
 }
 operand {
   name: "ofm_mxfp4"
   type: MXFP4
   shape { dim: 1 dim: 1 dim: 32 dim: 32 }
+  mx_quant { axis: -1 }
 }
 operand {
   name: "ofm"
