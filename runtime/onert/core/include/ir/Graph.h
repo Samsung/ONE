@@ -30,13 +30,6 @@ namespace onert::ir
 
 class Graph : public IGraph
 {
-private:
-  enum class Phase
-  {
-    BUILDING,
-    MODEL
-  };
-
 public:
   explicit Graph(void);
   explicit Graph(const Graph &);
