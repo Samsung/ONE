@@ -420,6 +420,30 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
       quant_index = quant_builder.Finish();
     }
 
+    // Create MXQuantization if mx quant is specified
+    if (operand.has_mx_quant())
+    {
+      if (operand.has_quant())
+        throw std::runtime_error("Affine quantization can not exist with MX quantization.");
+
+      const auto &quant = operand.mx_quant();
+
+      int32_t axis = quant.axis();
+
+      // Create MXQuantization
+      circle::MXQuantizationBuilder mx_quant_builder{*flatbuffer_builder};
+      mx_quant_builder.add_axis(axis);
+      auto mx_quant_index = mx_quant_builder.Finish();
+
+      // Create QuantizationParameters
+      circle::QuantizationParametersBuilder quant_builder{*flatbuffer_builder};
+      quant_builder.add_details_type(circle::QuantizationDetails_MXQuantization);
+      quant_builder.add_details(mx_quant_index.Union());
+
+      // Update QuantizationParameters Index
+      quant_index = quant_builder.Finish();
+    }
+
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape_signature;
     if (operand.has_shape_signature())
     {
@@ -434,7 +458,7 @@ template <typename T> void cook_graph(const T &graph, CookParams &cp)
     tensor_builder.add_type(as_circle_tensortype(operand.type()));
     tensor_builder.add_buffer(buffer_index);
     tensor_builder.add_name(name);
-    if (operand.has_quant())
+    if (operand.has_quant() or operand.has_mx_quant())
       tensor_builder.add_quantization(quant_index);
     if (operand.has_shape_signature())
       tensor_builder.add_shape_signature(shape_signature);
