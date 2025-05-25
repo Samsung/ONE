@@ -4876,7 +4876,14 @@ var hierarchy =
     [ "nnkit::support::onnx::Runner", "classnnkit_1_1support_1_1onnx_1_1_runner.html", null ],
     [ "nnkit::support::tf::Runner", "classnnkit_1_1support_1_1tf_1_1_runner.html", null ],
     [ "std::runtime_error", null, [
-      [ "nnc::AclCppException", "classnnc_1_1_acl_cpp_exception.html", null ]
+      [ "nnc::AclCppException", "classnnc_1_1_acl_cpp_exception.html", null ],
+      [ "onert::api::python::NnfwError", "structonert_1_1api_1_1python_1_1_nnfw_error.html", [
+        [ "onert::api::python::NnfwDeprecatedApiError", "structonert_1_1api_1_1python_1_1_nnfw_deprecated_api_error.html", null ],
+        [ "onert::api::python::NnfwInsufficientOutputError", "structonert_1_1api_1_1python_1_1_nnfw_insufficient_output_error.html", null ],
+        [ "onert::api::python::NnfwInvalidStateError", "structonert_1_1api_1_1python_1_1_nnfw_invalid_state_error.html", null ],
+        [ "onert::api::python::NnfwOutOfMemoryError", "structonert_1_1api_1_1python_1_1_nnfw_out_of_memory_error.html", null ],
+        [ "onert::api::python::NnfwUnexpectedNullError", "structonert_1_1api_1_1python_1_1_nnfw_unexpected_null_error.html", null ]
+      ] ]
     ] ],
     [ "luci_interpreter::RuntimeGraph", "classluci__interpreter_1_1_runtime_graph.html", null ],
     [ "luci_interpreter::RuntimeModule", "classluci__interpreter_1_1_runtime_module.html", null ],

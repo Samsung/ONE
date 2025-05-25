@@ -1,9 +1,16 @@
 var namespaceonert_1_1api_1_1python =
 [
     [ "NNFW_SESSION", "classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html", "classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n" ],
+    [ "NnfwDeprecatedApiError", "structonert_1_1api_1_1python_1_1_nnfw_deprecated_api_error.html", "structonert_1_1api_1_1python_1_1_nnfw_deprecated_api_error" ],
+    [ "NnfwError", "structonert_1_1api_1_1python_1_1_nnfw_error.html", "structonert_1_1api_1_1python_1_1_nnfw_error" ],
+    [ "NnfwInsufficientOutputError", "structonert_1_1api_1_1python_1_1_nnfw_insufficient_output_error.html", "structonert_1_1api_1_1python_1_1_nnfw_insufficient_output_error" ],
+    [ "NnfwInvalidStateError", "structonert_1_1api_1_1python_1_1_nnfw_invalid_state_error.html", "structonert_1_1api_1_1python_1_1_nnfw_invalid_state_error" ],
+    [ "NnfwOutOfMemoryError", "structonert_1_1api_1_1python_1_1_nnfw_out_of_memory_error.html", "structonert_1_1api_1_1python_1_1_nnfw_out_of_memory_error" ],
+    [ "NnfwUnexpectedNullError", "structonert_1_1api_1_1python_1_1_nnfw_unexpected_null_error.html", "structonert_1_1api_1_1python_1_1_nnfw_unexpected_null_error" ],
     [ "tensorinfo", "structonert_1_1api_1_1python_1_1tensorinfo.html", "structonert_1_1api_1_1python_1_1tensorinfo" ],
     [ "bind_experimental_nnfw_session", "namespaceonert_1_1api_1_1python.html#a5762ea5b6b3da6a09cc3f05c77e18b09", null ],
     [ "bind_experimental_nnfw_session", "namespaceonert_1_1api_1_1python.html#a81dce2c684428f6f55f0d49eb0ea7e96", null ],
+    [ "bind_nnfw_exceptions", "namespaceonert_1_1api_1_1python.html#a9eb012c09ee41e247a1886c3775f453e", null ],
     [ "bind_nnfw_session", "namespaceonert_1_1api_1_1python.html#aa356c33bec37978327ba209b95345f96", null ],
     [ "bind_nnfw_session", "namespaceonert_1_1api_1_1python.html#a2c5ebaad6c8ed31a90dac1aba9274449", null ],
     [ "bind_tensorinfo", "namespaceonert_1_1api_1_1python.html#a9cc399e5d4e296ae959c09a1697104a2", null ],

@@ -246,8 +246,8 @@ var NAVTREEINDEX197 =
 "fp32_8h.html#a5ad7ef750b1b01622050952639c4be40":[41,0,3,1,0,0,0,7,2],
 "fp32_8h.html#acb4dd61c65baf6a2cfbc2b15ad88e7b3":[41,0,3,1,0,0,0,7,0],
 "fp32_8h_source.html":[41,0,3,1,0,0,0,7],
-"functions.html":[40,3,0,0],
 "functions.html":[40,3,0],
+"functions.html":[40,3,0,0],
 "functions_a.html":[40,3,0,1],
 "functions_b.html":[40,3,0,2]
 };

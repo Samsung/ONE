@@ -153,7 +153,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Class for inference using nnfw_session.
 </pre> 
-<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00011">11</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00012">12</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7ec56e691aed5dfa03b11b8e7c487612" name="a7ec56e691aed5dfa03b11b8e7c487612"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ec56e691aed5dfa03b11b8e7c487612">&#9670;&#160;</a></span>__init__()</h2>
@@ -194,22 +194,22 @@ Args:
 </pre> 
 <p>Reimplemented from <a class="el" href="classpackage_1_1common_1_1basesession_1_1_base_session.html#a3541cb913c4a3cadc558429033f65bfd">package.common.basesession.BaseSession</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00015">15</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   15</span>    <span class="keyword">def </span>__init__(self, path: str, backends: str = <span class="stringliteral">&quot;cpu&quot;</span>) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">   16</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   17</span><span class="stringliteral">        Initialize the inference session.</span></div>
-<div class="line"><span class="lineno">   18</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   19</span><span class="stringliteral">        Args:</span></div>
-<div class="line"><span class="lineno">   20</span><span class="stringliteral">            path (str): Path to the model file or nnpackage directory.</span></div>
-<div class="line"><span class="lineno">   21</span><span class="stringliteral">            backends (str): Backends to use, default is &quot;cpu&quot;.</span></div>
-<div class="line"><span class="lineno">   22</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   23</span>        super().__init__(infer.nnfw_session(path, backends))</div>
-<div class="line"><span class="lineno">   24</span>        self._prepared: bool = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   25</span> </div>
+<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00016">16</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   16</span>    <span class="keyword">def </span>__init__(self, path: str, backends: str = <span class="stringliteral">&quot;cpu&quot;</span>) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">   17</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   18</span><span class="stringliteral">        Initialize the inference session.</span></div>
+<div class="line"><span class="lineno">   19</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   20</span><span class="stringliteral">        Args:</span></div>
+<div class="line"><span class="lineno">   21</span><span class="stringliteral">            path (str): Path to the model file or nnpackage directory.</span></div>
+<div class="line"><span class="lineno">   22</span><span class="stringliteral">            backends (str): Backends to use, default is &quot;cpu&quot;.</span></div>
+<div class="line"><span class="lineno">   23</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   24</span>        super().__init__(infer.nnfw_session(path, backends))</div>
+<div class="line"><span class="lineno">   25</span>        self._prepared: bool = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   26</span> </div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="infer_2session_8py_source.html#l00015">package.infer.session.session.__init__()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00194">nnfw::cker::Conv._prepared</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_fused_batch_norm_8h_source.html#l00152">nnfw::cker::FusedBatchNorm._prepared</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_reduce_8h_source.html#l00370">nnfw::cker::Reduce._prepared</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2operation_2_conv_8h_source.html#l00192">nnfw::ruy::Conv._prepared</a>, <a class="el" href="infer_2session_8py_source.html#l00096">package.infer.session.session._prepared</a>, and <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8h_source.html#l00083">onert::backend::cpu::ops::DepthwiseConvolutionLayer._prepared</a>.</p>
+<p class="reference">References <a class="el" href="infer_2session_8py_source.html#l00016">package.infer.session.session.__init__()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00194">nnfw::cker::Conv._prepared</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_fused_batch_norm_8h_source.html#l00152">nnfw::cker::FusedBatchNorm._prepared</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_reduce_8h_source.html#l00370">nnfw::cker::Reduce._prepared</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2operation_2_conv_8h_source.html#l00192">nnfw::ruy::Conv._prepared</a>, <a class="el" href="infer_2session_8py_source.html#l00098">package.infer.session.session._prepared</a>, and <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8h_source.html#l00083">onert::backend::cpu::ops::DepthwiseConvolutionLayer._prepared</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="infer_2session_8py_source.html#l00015">package.infer.session.session.__init__()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="infer_2session_8py_source.html#l00016">package.infer.session.session.__init__()</a>.</p>
 
 </div>
 </div>
@@ -260,16 +260,16 @@ Args:
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00136">136</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  136</span>    <span class="keyword">def </span>_time_block(self, metrics: Dict[str, float], key: str, measure: bool):</div>
-<div class="line"><span class="lineno">  137</span>        <span class="keywordflow">if</span> measure:</div>
-<div class="line"><span class="lineno">  138</span>            start = time.perf_counter()</div>
-<div class="line"><span class="lineno">  139</span>            <span class="keywordflow">yield</span></div>
-<div class="line"><span class="lineno">  140</span>            metrics[key] = (time.perf_counter() - start) * 1000</div>
-<div class="line"><span class="lineno">  141</span>        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">  142</span>            <span class="keywordflow">yield</span></div>
+<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00160">160</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  160</span>    <span class="keyword">def </span>_time_block(self, metrics: Dict[str, float], key: str, measure: bool):</div>
+<div class="line"><span class="lineno">  161</span>        <span class="keywordflow">if</span> measure:</div>
+<div class="line"><span class="lineno">  162</span>            start = time.perf_counter()</div>
+<div class="line"><span class="lineno">  163</span>            <span class="keywordflow">yield</span></div>
+<div class="line"><span class="lineno">  164</span>            metrics[key] = (time.perf_counter() - start) * 1000</div>
+<div class="line"><span class="lineno">  165</span>        <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">  166</span>            <span class="keywordflow">yield</span></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="infer_2session_8py_source.html#l00031">package.infer.session.session.infer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="infer_2session_8py_source.html#l00032">package.infer.session.session.infer()</a>.</p>
 
 </div>
 </div>
@@ -314,36 +314,46 @@ Args:
 Raises:
     ValueError: If the number of new_infos does not match the session's input size,
                 or if any tensorinfo contains a negative dimension.
-</pre> 
-<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00111">111</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  111</span>    <span class="keyword">def </span>_update_inputs_tensorinfo(self, new_infos: List[tensorinfo]) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><span class="lineno">  112</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  113</span><span class="stringliteral">        Update all input tensors&#39; tensorinfo at once.</span></div>
-<div class="line"><span class="lineno">  114</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  115</span><span class="stringliteral">        Args:</span></div>
-<div class="line"><span class="lineno">  116</span><span class="stringliteral">            new_infos (list[tensorinfo]): A list of updated tensorinfo objects for the inputs.</span></div>
-<div class="line"><span class="lineno">  117</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">  118</span><span class="stringliteral">        Raises:</span></div>
-<div class="line"><span class="lineno">  119</span><span class="stringliteral">            ValueError: If the number of new_infos does not match the session&#39;s input size,</span></div>
-<div class="line"><span class="lineno">  120</span><span class="stringliteral">                        or if any tensorinfo contains a negative dimension.</span></div>
-<div class="line"><span class="lineno">  121</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  122</span>        num_inputs: int = self.session.input_size()</div>
-<div class="line"><span class="lineno">  123</span>        <span class="keywordflow">if</span> len(new_infos) != num_inputs:</div>
-<div class="line"><span class="lineno">  124</span>            <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">  125</span>                f<span class="stringliteral">&quot;Expected {num_inputs} input tensorinfo(s), but got {len(new_infos)}.&quot;</span>)</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>        <span class="keywordflow">for</span> i, info <span class="keywordflow">in</span> enumerate(new_infos):</div>
-<div class="line"><span class="lineno">  128</span>            <span class="comment"># Check for any negative dimension in the specified rank</span></div>
-<div class="line"><span class="lineno">  129</span>            <span class="keywordflow">if</span> any(d &lt; 0 <span class="keywordflow">for</span> d <span class="keywordflow">in</span> info.dims[:info.rank]):</div>
-<div class="line"><span class="lineno">  130</span>                <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">  131</span>                    f<span class="stringliteral">&quot;Input tensorinfo at index {i} contains negative dimension(s): &quot;</span></div>
-<div class="line"><span class="lineno">  132</span>                    f<span class="stringliteral">&quot;{info.dims[:info.rank]}&quot;</span>)</div>
-<div class="line"><span class="lineno">  133</span>            self.session.set_input_tensorinfo(i, info)</div>
-<div class="line"><span class="lineno">  134</span> </div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="validate__onnx2circle_8py_source.html#l00057">validate_onnx2circle.OnnxRunner.session</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00126">onert::api::python::NNFW_SESSION.session</a>, and <a class="el" href="basesession_8py_source.html#l00025">package.common.basesession.BaseSession.session</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="infer_2session_8py_source.html#l00031">package.infer.session.session.infer()</a>.</p>
+    OnertError: If the underlying C-API call fails.
+</pre> 
+<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00127">127</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  127</span>    <span class="keyword">def </span>_update_inputs_tensorinfo(self, new_infos: List[tensorinfo]) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><span class="lineno">  128</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  129</span><span class="stringliteral">        Update all input tensors&#39; tensorinfo at once.</span></div>
+<div class="line"><span class="lineno">  130</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  131</span><span class="stringliteral">        Args:</span></div>
+<div class="line"><span class="lineno">  132</span><span class="stringliteral">            new_infos (list[tensorinfo]): A list of updated tensorinfo objects for the inputs.</span></div>
+<div class="line"><span class="lineno">  133</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  134</span><span class="stringliteral">        Raises:</span></div>
+<div class="line"><span class="lineno">  135</span><span class="stringliteral">            ValueError: If the number of new_infos does not match the session&#39;s input size,</span></div>
+<div class="line"><span class="lineno">  136</span><span class="stringliteral">                        or if any tensorinfo contains a negative dimension.</span></div>
+<div class="line"><span class="lineno">  137</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">  138</span><span class="stringliteral">            OnertError: If the underlying C-API call fails.</span></div>
+<div class="line"><span class="lineno">  139</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  140</span>        num_inputs: int = self.session.input_size()</div>
+<div class="line"><span class="lineno">  141</span>        <span class="keywordflow">if</span> len(new_infos) != num_inputs:</div>
+<div class="line"><span class="lineno">  142</span>            <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">  143</span>                f<span class="stringliteral">&quot;Expected {num_inputs} input tensorinfo(s), but got {len(new_infos)}.&quot;</span>)</div>
+<div class="line"><span class="lineno">  144</span> </div>
+<div class="line"><span class="lineno">  145</span>        <span class="keywordflow">for</span> i, info <span class="keywordflow">in</span> enumerate(new_infos):</div>
+<div class="line"><span class="lineno">  146</span>            <span class="comment"># Check for any negative dimension in the specified rank</span></div>
+<div class="line"><span class="lineno">  147</span>            <span class="keywordflow">if</span> any(d &lt; 0 <span class="keywordflow">for</span> d <span class="keywordflow">in</span> info.dims[:info.rank]):</div>
+<div class="line"><span class="lineno">  148</span>                <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">  149</span>                    f<span class="stringliteral">&quot;Input tensorinfo at index {i} contains negative dimension(s): &quot;</span></div>
+<div class="line"><span class="lineno">  150</span>                    f<span class="stringliteral">&quot;{info.dims[:info.rank]}&quot;</span>)</div>
+<div class="line"><span class="lineno">  151</span>            <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  152</span>                self.session.set_input_tensorinfo(i, info)</div>
+<div class="line"><span class="lineno">  153</span>            <span class="keywordflow">except</span> ValueError:</div>
+<div class="line"><span class="lineno">  154</span>                <span class="comment"># re-raise ValueError directly</span></div>
+<div class="line"><span class="lineno">  155</span>                <span class="keywordflow">raise</span></div>
+<div class="line"><span class="lineno">  156</span>            <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
+<div class="line"><span class="lineno">  157</span>                <span class="keywordflow">raise</span> Oner</div>
+<div class="line"><span class="lineno">  158</span> </div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="validate__onnx2circle_8py_source.html#l00057">validate_onnx2circle.OnnxRunner.session</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00126">onert::api::python::NNFW_SESSION.session</a>, and <a class="el" href="basesession_8py_source.html#l00026">package.common.basesession.BaseSession.session</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="infer_2session_8py_source.html#l00032">package.infer.session.session.infer()</a>.</p>
 
 </div>
 </div>
@@ -397,90 +407,105 @@ Returns:
     (outputs, metrics): Tuple where metrics is a dict with keys
         'prepare_time_ms', 'io_time_ms', 'run_time_ms'
 </pre> 
-<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00026">26</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   31</span>    ) -&gt; Union[List[np.ndarray], Tuple[List[np.ndarray], Dict[str, float]]]:</div>
-<div class="line"><span class="lineno">   32</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   33</span><span class="stringliteral">        Run a complete inference cycle:</span></div>
-<div class="line"><span class="lineno">   34</span><span class="stringliteral">         - If the session has not been prepared or outputs have not been set, call prepare() and set_outputs().</span></div>
-<div class="line"><span class="lineno">   35</span><span class="stringliteral">         - Automatically configure input buffers based on the provided numpy arrays.</span></div>
-<div class="line"><span class="lineno">   36</span><span class="stringliteral">         - Execute the inference session.</span></div>
-<div class="line"><span class="lineno">   37</span><span class="stringliteral">         - Return the output tensors with proper multi-dimensional shapes.</span></div>
-<div class="line"><span class="lineno">   38</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   39</span><span class="stringliteral">        This method supports dynamic shape modification:</span></div>
-<div class="line"><span class="lineno">   40</span><span class="stringliteral">         - The input shapes can be adjusted dynamically.</span></div>
-<div class="line"><span class="lineno">   41</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   42</span><span class="stringliteral">        Args:</span></div>
-<div class="line"><span class="lineno">   43</span><span class="stringliteral">            inputs_array (list[np.ndarray]): List of numpy arrays representing the input data.</span></div>
-<div class="line"><span class="lineno">   44</span><span class="stringliteral">            measure (bool): If True, measure prepare/io/run latencies (ms).</span></div>
-<div class="line"><span class="lineno">   45</span><span class="stringliteral"></span> </div>
-<div class="line"><span class="lineno">   46</span><span class="stringliteral">        Returns:</span></div>
-<div class="line"><span class="lineno">   47</span><span class="stringliteral">            list[np.ndarray]: A list containing the output numpy arrays.</span></div>
-<div class="line"><span class="lineno">   48</span><span class="stringliteral">            OR</span></div>
-<div class="line"><span class="lineno">   49</span><span class="stringliteral">            (outputs, metrics): Tuple where metrics is a dict with keys</span></div>
-<div class="line"><span class="lineno">   50</span><span class="stringliteral">                &#39;prepare_time_ms&#39;, &#39;io_time_ms&#39;, &#39;run_time_ms&#39;</span></div>
-<div class="line"><span class="lineno">   51</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   52</span>        metrics: Dict[str, float] = {}</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>        <span class="comment"># Verify that the number of provided inputs matches the session&#39;s expected input count.</span></div>
-<div class="line"><span class="lineno">   55</span>        expected_input_size: int = self.session.input_size()</div>
-<div class="line"><span class="lineno">   56</span>        <span class="keywordflow">if</span> len(inputs_array) != expected_input_size:</div>
-<div class="line"><span class="lineno">   57</span>            <span class="keywordflow">raise</span> ValueError(</div>
-<div class="line"><span class="lineno">   58</span>                f<span class="stringliteral">&quot;Expected {expected_input_size} input(s), but received {len(inputs_array)}.&quot;</span></div>
-<div class="line"><span class="lineno">   59</span>            )</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>        <span class="comment"># Check if the session is prepared. If not, call prepare() and set_outputs() once.</span></div>
-<div class="line"><span class="lineno">   62</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> self._prepared:</div>
-<div class="line"><span class="lineno">   63</span>            <span class="keyword">with</span> self._time_block(metrics, <span class="stringliteral">&#39;prepare_time_ms&#39;</span>, measure):</div>
-<div class="line"><span class="lineno">   64</span>                <span class="comment"># On first call, fix any -1 dims to real input shapes and validate</span></div>
-<div class="line"><span class="lineno">   65</span>                original_infos = self.get_inputs_tensorinfo()</div>
-<div class="line"><span class="lineno">   66</span>                fixed_infos = []</div>
-<div class="line"><span class="lineno">   67</span>                <span class="keywordflow">for</span> idx, info <span class="keywordflow">in</span> enumerate(original_infos):</div>
-<div class="line"><span class="lineno">   68</span>                    input_shape = inputs_array[idx].shape</div>
-<div class="line"><span class="lineno">   69</span>                    new_dims = []</div>
-<div class="line"><span class="lineno">   70</span>                    static_dim_changed = <span class="keyword">False</span></div>
-<div class="line"><span class="lineno">   71</span>                    <span class="comment"># only the first `info.rank` entries matter</span></div>
-<div class="line"><span class="lineno">   72</span>                    <span class="keywordflow">for</span> j, d <span class="keywordflow">in</span> enumerate(info.dims[:info.rank]):</div>
-<div class="line"><span class="lineno">   73</span>                        <span class="keywordflow">if</span> d == -1:</div>
-<div class="line"><span class="lineno">   74</span>                            <span class="comment"># replace dynamic dim with actual incoming shape</span></div>
-<div class="line"><span class="lineno">   75</span>                            new_dims.append(input_shape[j])</div>
-<div class="line"><span class="lineno">   76</span>                        <span class="keywordflow">elif</span> d == input_shape[j]:</div>
-<div class="line"><span class="lineno">   77</span>                            <span class="comment"># static dim must match the provided array</span></div>
-<div class="line"><span class="lineno">   78</span>                            new_dims.append(d)</div>
-<div class="line"><span class="lineno">   79</span>                        <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   80</span>                            static_dim_changed = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   81</span> </div>
-<div class="line"><span class="lineno">   82</span>                    <span class="keywordflow">if</span> static_dim_changed:</div>
-<div class="line"><span class="lineno">   83</span>                        warnings.warn(</div>
-<div class="line"><span class="lineno">   84</span>                            f<span class="stringliteral">&quot;infer() called with input {idx}&#39;s shape={input_shape}, &quot;</span></div>
-<div class="line"><span class="lineno">   85</span>                            f<span class="stringliteral">&quot;which differs from model’s expected shape={tuple(info.dims)}. &quot;</span></div>
-<div class="line"><span class="lineno">   86</span>                            <span class="stringliteral">&quot;Ensure this is intended.&quot;</span>, UserWarning)</div>
-<div class="line"><span class="lineno">   87</span> </div>
-<div class="line"><span class="lineno">   88</span>                    info.dims = new_dims</div>
-<div class="line"><span class="lineno">   89</span>                    fixed_infos.append(info)</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>                <span class="comment"># Update tensorinfo to optimize using it</span></div>
-<div class="line"><span class="lineno">   92</span>                self._update_inputs_tensorinfo(fixed_infos)</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>                self.session.prepare()</div>
-<div class="line"><span class="lineno">   95</span>                self.set_outputs(self.session.output_size())</div>
-<div class="line"><span class="lineno">   96</span>                self._prepared = <span class="keyword">True</span></div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>        <span class="comment"># Configure input buffers using the current session&#39;s input size and provided data.</span></div>
-<div class="line"><span class="lineno">   99</span>        <span class="keyword">with</span> self._time_block(metrics, <span class="stringliteral">&#39;io_time_ms&#39;</span>, measure):</div>
-<div class="line"><span class="lineno">  100</span>            self.set_inputs(expected_input_size, inputs_array)</div>
-<div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span>        <span class="comment"># Execute the inference.</span></div>
-<div class="line"><span class="lineno">  103</span>        <span class="keyword">with</span> self._time_block(metrics, <span class="stringliteral">&#39;run_time_ms&#39;</span>, measure):</div>
-<div class="line"><span class="lineno">  104</span>            self.session.<a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>()</div>
-<div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>        <span class="comment"># TODO: Support dynamic shapes for outputs.</span></div>
-<div class="line"><span class="lineno">  107</span> </div>
-<div class="line"><span class="lineno">  108</span>        <span class="comment"># Return the output buffers.</span></div>
-<div class="line"><span class="lineno">  109</span>        <span class="keywordflow">return</span> (self.outputs.copy(), metrics) <span class="keywordflow">if</span> measure <span class="keywordflow">else</span> self.outputs.copy()</div>
-<div class="line"><span class="lineno">  110</span> </div>
+<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00027">27</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   32</span>    ) -&gt; Union[List[np.ndarray], Tuple[List[np.ndarray], Dict[str, float]]]:</div>
+<div class="line"><span class="lineno">   33</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   34</span><span class="stringliteral">        Run a complete inference cycle:</span></div>
+<div class="line"><span class="lineno">   35</span><span class="stringliteral">         - If the session has not been prepared or outputs have not been set, call prepare() and set_outputs().</span></div>
+<div class="line"><span class="lineno">   36</span><span class="stringliteral">         - Automatically configure input buffers based on the provided numpy arrays.</span></div>
+<div class="line"><span class="lineno">   37</span><span class="stringliteral">         - Execute the inference session.</span></div>
+<div class="line"><span class="lineno">   38</span><span class="stringliteral">         - Return the output tensors with proper multi-dimensional shapes.</span></div>
+<div class="line"><span class="lineno">   39</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   40</span><span class="stringliteral">        This method supports dynamic shape modification:</span></div>
+<div class="line"><span class="lineno">   41</span><span class="stringliteral">         - The input shapes can be adjusted dynamically.</span></div>
+<div class="line"><span class="lineno">   42</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   43</span><span class="stringliteral">        Args:</span></div>
+<div class="line"><span class="lineno">   44</span><span class="stringliteral">            inputs_array (list[np.ndarray]): List of numpy arrays representing the input data.</span></div>
+<div class="line"><span class="lineno">   45</span><span class="stringliteral">            measure (bool): If True, measure prepare/io/run latencies (ms).</span></div>
+<div class="line"><span class="lineno">   46</span><span class="stringliteral"></span> </div>
+<div class="line"><span class="lineno">   47</span><span class="stringliteral">        Returns:</span></div>
+<div class="line"><span class="lineno">   48</span><span class="stringliteral">            list[np.ndarray]: A list containing the output numpy arrays.</span></div>
+<div class="line"><span class="lineno">   49</span><span class="stringliteral">            OR</span></div>
+<div class="line"><span class="lineno">   50</span><span class="stringliteral">            (outputs, metrics): Tuple where metrics is a dict with keys</span></div>
+<div class="line"><span class="lineno">   51</span><span class="stringliteral">                &#39;prepare_time_ms&#39;, &#39;io_time_ms&#39;, &#39;run_time_ms&#39;</span></div>
+<div class="line"><span class="lineno">   52</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   53</span>        metrics: Dict[str, float] = {}</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>        <span class="comment"># Verify that the number of provided inputs matches the session&#39;s expected input count.</span></div>
+<div class="line"><span class="lineno">   56</span>        expected_input_size: int = self.session.input_size()</div>
+<div class="line"><span class="lineno">   57</span>        <span class="keywordflow">if</span> len(inputs_array) != expected_input_size:</div>
+<div class="line"><span class="lineno">   58</span>            <span class="keywordflow">raise</span> ValueError(</div>
+<div class="line"><span class="lineno">   59</span>                f<span class="stringliteral">&quot;Expected {expected_input_size} input(s), but received {len(inputs_array)}.&quot;</span></div>
+<div class="line"><span class="lineno">   60</span>            )</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>        <span class="comment"># Check if the session is prepared. If not, call prepare() and set_outputs() once.</span></div>
+<div class="line"><span class="lineno">   63</span>        <span class="keywordflow">if</span> <span class="keywordflow">not</span> self._prepared:</div>
+<div class="line"><span class="lineno">   64</span>            <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">   65</span>                <span class="keyword">with</span> self._time_block(metrics, <span class="stringliteral">&#39;prepare_time_ms&#39;</span>, measure):</div>
+<div class="line"><span class="lineno">   66</span>                    <span class="comment"># On first call, fix any -1 dims to real input shapes and validate</span></div>
+<div class="line"><span class="lineno">   67</span>                    original_infos = self.get_inputs_tensorinfo()</div>
+<div class="line"><span class="lineno">   68</span>                    fixed_infos = []</div>
+<div class="line"><span class="lineno">   69</span>                    <span class="keywordflow">for</span> idx, info <span class="keywordflow">in</span> enumerate(original_infos):</div>
+<div class="line"><span class="lineno">   70</span>                        input_shape = inputs_array[idx].shape</div>
+<div class="line"><span class="lineno">   71</span>                        new_dims = []</div>
+<div class="line"><span class="lineno">   72</span>                        static_dim_changed = <span class="keyword">False</span></div>
+<div class="line"><span class="lineno">   73</span>                        <span class="comment"># only the first `info.rank` entries matter</span></div>
+<div class="line"><span class="lineno">   74</span>                        <span class="keywordflow">for</span> j, d <span class="keywordflow">in</span> enumerate(info.dims[:info.rank]):</div>
+<div class="line"><span class="lineno">   75</span>                            <span class="keywordflow">if</span> d == -1:</div>
+<div class="line"><span class="lineno">   76</span>                                <span class="comment"># replace dynamic dim with actual incoming shape</span></div>
+<div class="line"><span class="lineno">   77</span>                                new_dims.append(input_shape[j])</div>
+<div class="line"><span class="lineno">   78</span>                            <span class="keywordflow">elif</span> d == input_shape[j]:</div>
+<div class="line"><span class="lineno">   79</span>                                <span class="comment"># static dim must match the provided array</span></div>
+<div class="line"><span class="lineno">   80</span>                                new_dims.append(d)</div>
+<div class="line"><span class="lineno">   81</span>                            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   82</span>                                static_dim_changed = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>                        <span class="keywordflow">if</span> static_dim_changed:</div>
+<div class="line"><span class="lineno">   85</span>                            warnings.warn(</div>
+<div class="line"><span class="lineno">   86</span>                                f<span class="stringliteral">&quot;infer() called with input {idx}&#39;s shape={input_shape}, &quot;</span></div>
+<div class="line"><span class="lineno">   87</span>                                f<span class="stringliteral">&quot;which differs from model&#39;s expected shape={tuple(info.dims)}. &quot;</span></div>
+<div class="line"><span class="lineno">   88</span>                                <span class="stringliteral">&quot;Ensure this is intended.&quot;</span>, UserWarning)</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>                        info.dims = new_dims</div>
+<div class="line"><span class="lineno">   91</span>                        fixed_infos.append(info)</div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span>                    <span class="comment"># Update tensorinfo to optimize using it</span></div>
+<div class="line"><span class="lineno">   94</span>                    self._update_inputs_tensorinfo(fixed_infos)</div>
+<div class="line"><span class="lineno">   95</span> </div>
+<div class="line"><span class="lineno">   96</span>                    self.session.prepare()</div>
+<div class="line"><span class="lineno">   97</span>                    self.set_outputs(self.session.output_size())</div>
+<div class="line"><span class="lineno">   98</span>                    self._prepared = <span class="keyword">True</span></div>
+<div class="line"><span class="lineno">   99</span>            <span class="keywordflow">except</span> ValueError:</div>
+<div class="line"><span class="lineno">  100</span>                <span class="keywordflow">raise</span></div>
+<div class="line"><span class="lineno">  101</span>            <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
+<div class="line"><span class="lineno">  102</span>                <span class="keywordflow">raise</span> OnertError(f<span class="stringliteral">&quot;Session preparation failed: {e}&quot;</span>) <span class="keyword">from</span> e</div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span>        <span class="comment"># Configure input buffers using the current session&#39;s input size and provided data.</span></div>
+<div class="line"><span class="lineno">  105</span>        <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  106</span>            <span class="keyword">with</span> self._time_block(metrics, <span class="stringliteral">&#39;io_time_ms&#39;</span>, measure):</div>
+<div class="line"><span class="lineno">  107</span>                self.set_inputs(expected_input_size, inputs_array)</div>
+<div class="line"><span class="lineno">  108</span>        <span class="keywordflow">except</span> ValueError:</div>
+<div class="line"><span class="lineno">  109</span>            <span class="keywordflow">raise</span></div>
+<div class="line"><span class="lineno">  110</span>        <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
+<div class="line"><span class="lineno">  111</span>            <span class="keywordflow">raise</span> OnertError(f<span class="stringliteral">&quot;Failed to bind inputs: {e}&quot;</span>) <span class="keyword">from</span> e</div>
+<div class="line"><span class="lineno">  112</span> </div>
+<div class="line"><span class="lineno">  113</span>        <span class="comment"># Execute the inference.</span></div>
+<div class="line"><span class="lineno">  114</span>        <span class="keywordflow">try</span>:</div>
+<div class="line"><span class="lineno">  115</span>            <span class="keyword">with</span> self._time_block(metrics, <span class="stringliteral">&#39;run_time_ms&#39;</span>, measure):</div>
+<div class="line"><span class="lineno">  116</span>                self.session.<a class="code hl_function" href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a>()</div>
+<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">except</span> ValueError:</div>
+<div class="line"><span class="lineno">  118</span>            <span class="keywordflow">raise</span></div>
+<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
+<div class="line"><span class="lineno">  120</span>            <span class="keywordflow">raise</span> OnertError(f<span class="stringliteral">&quot;Inference execution failed: {e}&quot;</span>) <span class="keyword">from</span> e</div>
+<div class="line"><span class="lineno">  121</span> </div>
+<div class="line"><span class="lineno">  122</span>        <span class="comment"># TODO: Support dynamic shapes for outputs.</span></div>
+<div class="line"><span class="lineno">  123</span> </div>
+<div class="line"><span class="lineno">  124</span>        <span class="comment"># Return the output buffers.</span></div>
+<div class="line"><span class="lineno">  125</span>        <span class="keywordflow">return</span> (self.outputs.copy(), metrics) <span class="keywordflow">if</span> measure <span class="keywordflow">else</span> self.outputs.copy()</div>
+<div class="line"><span class="lineno">  126</span> </div>
 <div class="ttc" id="a_generate_kernels_list_helper_8cpp_html_a3b45f71347f9da730e585edad717d140"><div class="ttname"><a href="_generate_kernels_list_helper_8cpp.html#a3b45f71347f9da730e585edad717d140">run</a></div><div class="ttdeci">void run(std::ofstream &amp;os, const circle::Model *model)</div><div class="ttdef"><b>Definition</b> <a href="_generate_kernels_list_helper_8cpp_source.html#l00198">GenerateKernelsListHelper.cpp:198</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00194">nnfw::cker::Conv._prepared</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_fused_batch_norm_8h_source.html#l00152">nnfw::cker::FusedBatchNorm._prepared</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_reduce_8h_source.html#l00370">nnfw::cker::Reduce._prepared</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2operation_2_conv_8h_source.html#l00192">nnfw::ruy::Conv._prepared</a>, <a class="el" href="infer_2session_8py_source.html#l00096">package.infer.session.session._prepared</a>, <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8h_source.html#l00083">onert::backend::cpu::ops::DepthwiseConvolutionLayer._prepared</a>, <a class="el" href="infer_2session_8py_source.html#l00136">package.infer.session.session._time_block()</a>, <a class="el" href="infer_2session_8py_source.html#l00111">package.infer.session.session._update_inputs_tensorinfo()</a>, <a class="el" href="basesession_8py_source.html#l00056">package.common.basesession.BaseSession.get_inputs_tensorinfo()</a>, <a class="el" href="validate__onnx2circle_8py_source.html#l00057">validate_onnx2circle.OnnxRunner.session</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00126">onert::api::python::NNFW_SESSION.session</a>, <a class="el" href="basesession_8py_source.html#l00025">package.common.basesession.BaseSession.session</a>, and <a class="el" href="basesession_8py_source.html#l00110">package.common.basesession.BaseSession.set_outputs()</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00194">nnfw::cker::Conv._prepared</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_fused_batch_norm_8h_source.html#l00152">nnfw::cker::FusedBatchNorm._prepared</a>, <a class="el" href="compute_2cker_2include_2cker_2operation_2_reduce_8h_source.html#l00370">nnfw::cker::Reduce._prepared</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2operation_2_conv_8h_source.html#l00192">nnfw::ruy::Conv._prepared</a>, <a class="el" href="infer_2session_8py_source.html#l00098">package.infer.session.session._prepared</a>, <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8h_source.html#l00083">onert::backend::cpu::ops::DepthwiseConvolutionLayer._prepared</a>, <a class="el" href="infer_2session_8py_source.html#l00160">package.infer.session.session._time_block()</a>, <a class="el" href="infer_2session_8py_source.html#l00127">package.infer.session.session._update_inputs_tensorinfo()</a>, <a class="el" href="basesession_8py_source.html#l00057">package.common.basesession.BaseSession.get_inputs_tensorinfo()</a>, <a class="el" href="validate__onnx2circle_8py_source.html#l00057">validate_onnx2circle.OnnxRunner.session</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00126">onert::api::python::NNFW_SESSION.session</a>, <a class="el" href="basesession_8py_source.html#l00026">package.common.basesession.BaseSession.session</a>, and <a class="el" href="basesession_8py_source.html#l00143">package.common.basesession.BaseSession.set_outputs()</a>.</p>
 
 </div>
 </div>
@@ -505,9 +530,9 @@ Returns:
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00096">96</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="infer_2session_8py_source.html#l00098">98</a> of file <a class="el" href="infer_2session_8py_source.html">session.py</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="infer_2session_8py_source.html#l00015">package.infer.session.session.__init__()</a>, and <a class="el" href="infer_2session_8py_source.html#l00031">package.infer.session.session.infer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="infer_2session_8py_source.html#l00016">package.infer.session.session.__init__()</a>, and <a class="el" href="infer_2session_8py_source.html#l00032">package.infer.session.session.infer()</a>.</p>
 
 </div>
 </div>

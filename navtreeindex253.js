@@ -1,5 +1,14 @@
 var NAVTREEINDEX253 =
 {
+"onert-micro_2onert-micro_2src_2execute_2kernels_2_maximum_8cpp.html":[41,0,2,5,1,2,0,40],
+"onert-micro_2onert-micro_2src_2execute_2kernels_2_maximum_8cpp.html#a55faa1a522088ec7bc3238b85ab6fb10":[41,0,2,5,1,2,0,40,0],
+"onert-micro_2onert-micro_2src_2execute_2kernels_2_maximum_8cpp_source.html":[41,0,2,5,1,2,0,40],
+"onert-micro_2onert-micro_2src_2execute_2kernels_2_mean_8cpp.html":[41,0,2,5,1,2,0,42],
+"onert-micro_2onert-micro_2src_2execute_2kernels_2_mean_8cpp.html#a77d73a68aa0c0cc432c2a28970336eda":[41,0,2,5,1,2,0,42,0],
+"onert-micro_2onert-micro_2src_2execute_2kernels_2_mean_8cpp_source.html":[41,0,2,5,1,2,0,42],
+"onert-micro_2onert-micro_2src_2execute_2kernels_2_minimum_8cpp.html":[41,0,2,5,1,2,0,43],
+"onert-micro_2onert-micro_2src_2execute_2kernels_2_minimum_8cpp.html#ad073b85bcb8ce46520e4bba588790b43":[41,0,2,5,1,2,0,43,0],
+"onert-micro_2onert-micro_2src_2execute_2kernels_2_minimum_8cpp_source.html":[41,0,2,5,1,2,0,43],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_mul_8cpp.html":[41,0,2,5,1,2,0,44],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_mul_8cpp.html#a91a850ea46bfad699b28e81ae9f0585c":[41,0,2,5,1,2,0,44,0],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_mul_8cpp_source.html":[41,0,2,5,1,2,0,44],
@@ -240,14 +249,5 @@ var NAVTREEINDEX253 =
 "onert-micro_2onert-micro_2src_2import_2kernels_2_pad_8cpp.html":[41,0,2,5,1,3,1,45],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_pad_8cpp.html#a9fe1f82970fa0f4ebbc3ec7a0d3c580a":[41,0,2,5,1,3,1,45,0],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_pad_8cpp_source.html":[41,0,2,5,1,3,1,45],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_quantize_8cpp.html":[41,0,2,5,1,3,1,46],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_quantize_8cpp.html#a271291e266d5e226a3f295fd868367d7":[41,0,2,5,1,3,1,46,0],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_quantize_8cpp_source.html":[41,0,2,5,1,3,1,46],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_re_l_u6_8cpp.html":[41,0,2,5,1,3,1,49],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_re_l_u6_8cpp.html#abb30e31314a29a426bef884ce89056d5":[41,0,2,5,1,3,1,49,0],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_re_l_u6_8cpp_source.html":[41,0,2,5,1,3,1,49],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_reduce_prod_8cpp.html":[41,0,2,5,1,3,1,47],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_reduce_prod_8cpp.html#a1ac32b615335839c26d948d8ee138609":[41,0,2,5,1,3,1,47,0],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_reduce_prod_8cpp_source.html":[41,0,2,5,1,3,1,47],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_relu_8cpp.html":[41,0,2,5,1,3,1,48]
+"onert-micro_2onert-micro_2src_2import_2kernels_2_quantize_8cpp.html":[41,0,2,5,1,3,1,46]
 };

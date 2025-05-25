@@ -1,0 +1,7 @@
+<map id="onert::api::python::NnfwInsufficientOutputError" name="onert::api::python::NnfwInsufficientOutputError">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,168,192,208"/>
+<area shape="rect" id="Node000002" href="$structonert_1_1api_1_1python_1_1_nnfw_error.html" title=" " alt="" coords="40,79,157,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,135,101,167,96,167,96,135"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="38,5,159,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="101,46,101,79,96,79,96,46"/>
+</map>

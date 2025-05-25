@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-build-runtime.h
   <div class="headertitle"><div class="title">How to Build Runtime</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This document is based on the system where Ubuntu Desktop Linux 20.04 LTS is installed with default settings, and can be applied in other environments without much difference. For reference, the development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.</p>
+<div class="textblock"><p>This document is based on the system where Ubuntu Desktop Linux 22.04 LTS is installed with default settings, and can be applied in other environments without much difference. For reference, the development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.</p>
 <h1>Build requirements</h1>
 <p>If you are going to build this project, the following modules must be installed on your system:</p>
 <ul>
@@ -101,24 +101,23 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-build-runtime.h
 </ul>
 <p>In the Ubuntu, you can easily install it with the following command.</p>
 <div class="fragment"><div class="line">$ sudo apt-get install cmake</div>
-</div><!-- fragment --><p>If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in <a href="https://github.com/Samsung/ONE/blob/master/infra/docker/focal/Dockerfile">https://github.com/Samsung/ONE/blob/master/infra/docker/focal/Dockerfile</a>.</p>
+</div><!-- fragment --><p>If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in <code>infra/docker/&lt;ubuntu_code&gt;/Dockerfile</code> of our repository.</p>
 <p>Here is a summary of it for runtime and related tools</p>
 <div class="fragment"><div class="line">$ sudo apt install \</div>
 <div class="line">build-essential \</div>
-<div class="line">clang-format-8 \</div>
 <div class="line">cmake \</div>
-<div class="line">doxygen \</div>
 <div class="line">git \</div>
 <div class="line">graphviz \</div>
-<div class="line">hdf5-tools \</div>
 <div class="line">lcov \</div>
 <div class="line">libhdf5-dev \</div>
 <div class="line">python3 \</div>
 <div class="line">python3-pip \</div>
+<div class="line">python3-dev \</div>
 <div class="line">scons \</div>
 <div class="line">software-properties-common \</div>
 <div class="line">unzip \</div>
-<div class="line">wget</div>
+<div class="line">wget \</div>
+<div class="line">curl</div>
 </div><!-- fragment --><h1>Get ONE source code</h1>
 <p>Getting code is as simple as</p>
 <div class="fragment"><div class="line">$ git clone https://github.com/Samsung/ONE.git one</div>

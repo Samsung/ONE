@@ -2807,6 +2807,12 @@ var annotated_dup =
       [ "api", "namespaceonert_1_1api.html", [
         [ "python", "namespaceonert_1_1api_1_1python.html", [
           [ "NNFW_SESSION", "classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html", "classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n" ],
+          [ "NnfwDeprecatedApiError", "structonert_1_1api_1_1python_1_1_nnfw_deprecated_api_error.html", "structonert_1_1api_1_1python_1_1_nnfw_deprecated_api_error" ],
+          [ "NnfwError", "structonert_1_1api_1_1python_1_1_nnfw_error.html", "structonert_1_1api_1_1python_1_1_nnfw_error" ],
+          [ "NnfwInsufficientOutputError", "structonert_1_1api_1_1python_1_1_nnfw_insufficient_output_error.html", "structonert_1_1api_1_1python_1_1_nnfw_insufficient_output_error" ],
+          [ "NnfwInvalidStateError", "structonert_1_1api_1_1python_1_1_nnfw_invalid_state_error.html", "structonert_1_1api_1_1python_1_1_nnfw_invalid_state_error" ],
+          [ "NnfwOutOfMemoryError", "structonert_1_1api_1_1python_1_1_nnfw_out_of_memory_error.html", "structonert_1_1api_1_1python_1_1_nnfw_out_of_memory_error" ],
+          [ "NnfwUnexpectedNullError", "structonert_1_1api_1_1python_1_1_nnfw_unexpected_null_error.html", "structonert_1_1api_1_1python_1_1_nnfw_unexpected_null_error" ],
           [ "tensorinfo", "structonert_1_1api_1_1python_1_1tensorinfo.html", "structonert_1_1api_1_1python_1_1tensorinfo" ]
         ] ],
         [ "APIConverter", "classonert_1_1api_1_1_a_p_i_converter.html", null ],

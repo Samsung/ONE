@@ -1,5 +1,14 @@
 var NAVTREEINDEX254 =
 {
+"onert-micro_2onert-micro_2src_2import_2kernels_2_quantize_8cpp.html#a271291e266d5e226a3f295fd868367d7":[41,0,2,5,1,3,1,46,0],
+"onert-micro_2onert-micro_2src_2import_2kernels_2_quantize_8cpp_source.html":[41,0,2,5,1,3,1,46],
+"onert-micro_2onert-micro_2src_2import_2kernels_2_re_l_u6_8cpp.html":[41,0,2,5,1,3,1,49],
+"onert-micro_2onert-micro_2src_2import_2kernels_2_re_l_u6_8cpp.html#abb30e31314a29a426bef884ce89056d5":[41,0,2,5,1,3,1,49,0],
+"onert-micro_2onert-micro_2src_2import_2kernels_2_re_l_u6_8cpp_source.html":[41,0,2,5,1,3,1,49],
+"onert-micro_2onert-micro_2src_2import_2kernels_2_reduce_prod_8cpp.html":[41,0,2,5,1,3,1,47],
+"onert-micro_2onert-micro_2src_2import_2kernels_2_reduce_prod_8cpp.html#a1ac32b615335839c26d948d8ee138609":[41,0,2,5,1,3,1,47,0],
+"onert-micro_2onert-micro_2src_2import_2kernels_2_reduce_prod_8cpp_source.html":[41,0,2,5,1,3,1,47],
+"onert-micro_2onert-micro_2src_2import_2kernels_2_relu_8cpp.html":[41,0,2,5,1,3,1,48],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_relu_8cpp.html#a426c8198a319b5be63b6c465540f7922":[41,0,2,5,1,3,1,48,0],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_relu_8cpp_source.html":[41,0,2,5,1,3,1,48],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_reshape_8cpp.html":[41,0,2,5,1,3,1,50],
@@ -240,14 +249,5 @@ var NAVTREEINDEX254 =
 "onnxkit_2src_2_encode_command_8hpp.html":[41,0,0,105,0,3],
 "onnxkit_2src_2_encode_command_8hpp_source.html":[41,0,0,105,0,3],
 "onnxkit_2src_2_support_8cpp.html":[41,0,0,105,0,5],
-"onnxkit_2src_2_support_8cpp.html#aa70dff44442daf31437418c2d5223fb6":[41,0,0,105,0,5,0],
-"onnxkit_2src_2_support_8cpp_source.html":[41,0,0,105,0,5],
-"onnxkit_2src_2_support_8hpp.html":[41,0,0,105,0,6],
-"onnxkit_2src_2_support_8hpp.html#aa70dff44442daf31437418c2d5223fb6":[41,0,0,105,0,6,2],
-"onnxkit_2src_2_support_8hpp_source.html":[41,0,0,105,0,6],
-"opencl__info_8cc.html":[41,0,3,3,1,0,0],
-"opencl__info_8cc.html#a3a45deff9c6114997801aa0c7f6729f5":[41,0,3,3,1,0,0,3],
-"opencl__info_8cc.html#a4e64a1a5c12ff29d99189e99d324e13d":[41,0,3,3,1,0,0,1],
-"opencl__info_8cc.html#a79713d83efd0eeec05f1d72a9f20b9b4":[41,0,3,3,1,0,0,2],
-"opencl__info_8cc.html#aa06f5fbe915d0bf149dcf793acea47a1":[41,0,3,3,1,0,0,0]
+"onnxkit_2src_2_support_8cpp.html#aa70dff44442daf31437418c2d5223fb6":[41,0,0,105,0,5,0]
 };

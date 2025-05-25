@@ -95,18 +95,22 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-cross-build-run
 <div class="textblock"><p><b>Note: To set up a basic build environment on your development PC, please read the <a class="el" href="md_docs_2howto_2how-to-build-runtime.html">how-to-build-runtime.md</a> document first. The cross build covered in this document assumes that you have an environment in which the native build operates normally without problems.</b></p>
 <p>Supported Architecture : AARCH64 only (ARM32 is not supported yet)</p>
 <h1>Prepare Android NDK</h1>
+<p>There are two ways to get Android NDK: install Android NDK on your PC or use docker image which already has Android NDK installed.</p>
+<h2>Install Android NDK</h2>
 <p>Use <code>tools/cross/install_android_ndk.sh</code> script to prepare Android NDK. This is recommended way to build Android NDK.</p>
 <p>Or you can use <code>tools/cross/install_android_sdk.sh</code> script to prepare Android SDK including NDK. You can find NDK in <code>{android-sdk-dir}/ndk/{ndk-version}</code> directory.</p>
-<h1>Build</h1>
+<p>CMake 3.6.0 or later is required for Android NDK r26d CMake support.</p>
 <h2>Host Environment Requirements</h2>
-<p>CMake 3.6.0 or later is required for Android NDK r26d CMake support. So if you want to use Docker, please use <code>infra/docker/android-sdk/Dockerfile</code>.</p>
-<div class="fragment"><div class="line">$ ./nnas build-docker-image --codename android-sdk -t nnfw/one-devtools:android-sdk</div>
-</div><!-- fragment --><h2>Build and install the runtime</h2>
+<p>If you want to use docker image, please use <code>infra/docker/android-sdk/Dockerfile</code> of our repository or pull the image <code>nnfw/one-devtools:android-sdk</code> from <code>DockerHub</code>. It includes Android SDK and NDK.</p>
+<p>You can build the docker image with following command: </p><div class="fragment"><div class="line">$ docker build -t nnfw/one-devtools:android-sdk -f infra/docker/android-sdk/Dockerfile .</div>
+</div><!-- fragment --><h1>Build</h1>
+<h2>Build and install the runtime</h2>
 <p>Some tools/libs are still not supported and those are not built by default - mostly due to dependency on HDF5 library. Please refer to <code>infra/nnfw/cmake/options/options_aarch64-android.cmake</code> for details.</p>
 <p>Different from cross build for linux,</p>
 <ul>
 <li><code>NDK_DIR</code> is required</li>
 </ul>
+<p>If you are using docker image <code>nnfw/one-devtools:android-sdk</code>, you don't need to specify <code>NDK_DIR</code> because it is already set in the image.</p>
 <p>Here is an example of using Makefile.</p>
 <div class="fragment"><div class="line">TARGET_OS=android \</div>
 <div class="line">CROSS_BUILD=1 \</div>

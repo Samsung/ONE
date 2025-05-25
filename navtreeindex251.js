@@ -1,5 +1,14 @@
 var NAVTREEINDEX251 =
 {
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_and_8cpp.html#adc44743676ed7c320ce02247436c496c":[41,0,2,4,2,1,51,0],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_and_8cpp.html#aed98e7cce7e23805b451406083e27c3a":[41,0,2,4,2,1,51,1],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_and_8cpp_source.html":[41,0,2,4,2,1,51],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8cpp.html":[41,0,2,4,2,1,52],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8cpp.html#a6a13ac908aace42c38e56cef9be18f97":[41,0,2,4,2,1,52,0],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8cpp.html#a74a3c4cdd92c0ae04221ab40fe9c8ac2":[41,0,2,4,2,1,52,1],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_not_8cpp_source.html":[41,0,2,4,2,1,52],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_or_8cpp.html":[41,0,2,4,2,1,53],
+"onert-micro_2luci-interpreter_2src_2kernels_2_logical_or_8cpp.html#a0a987c998ee0c271a0fff765d9e2c2e5":[41,0,2,4,2,1,53,1],
 "onert-micro_2luci-interpreter_2src_2kernels_2_logical_or_8cpp.html#a602829cd49d8b338bf29557fe71b9a4e":[41,0,2,4,2,1,53,0],
 "onert-micro_2luci-interpreter_2src_2kernels_2_logical_or_8cpp_source.html":[41,0,2,4,2,1,53],
 "onert-micro_2luci-interpreter_2src_2kernels_2_logistic_8cpp.html":[41,0,2,4,2,1,54],
@@ -240,14 +249,5 @@ var NAVTREEINDEX251 =
 "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#a98a3bc29bb49235d704aea9373bdb866":[41,0,2,4,2,1,118,7],
 "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#aa927fdc0b589de75449d8d5cf991e398":[41,0,2,4,2,1,118,10],
 "onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#aaeab94e4b66016c7ac88378ac1c045e0":[41,0,2,4,2,1,118,25],
-"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#ab09e74b805778ace392d93e577c75d73":[41,0,2,4,2,1,118,17],
-"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#ab4b854d27a207793b08b8e5acf096b26":[41,0,2,4,2,1,118,19],
-"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#abc1fcd91990e1a4189758637adb1fe1b":[41,0,2,4,2,1,118,26],
-"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#abe6e23f6f2bdd0ce20f06a5a400e1c90":[41,0,2,4,2,1,118,12],
-"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#ac3be54c2b358be58058168bfdabbf230":[41,0,2,4,2,1,118,16],
-"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#adcf639b916825841b3f99d5f4fccff22":[41,0,2,4,2,1,118,27],
-"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#ae60919502a67829946ab89ad902bcd13":[41,0,2,4,2,1,118,14],
-"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#ae6f5ad209c4d64063344b02ec5be4967":[41,0,2,4,2,1,118,18],
-"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#aeb15fbffca423ac64cb7c57cb7f5ec2c":[41,0,2,4,2,1,118,21],
-"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#afd0d7e8134f1365f84ef40571dec5ea8":[41,0,2,4,2,1,118,24]
+"onert-micro_2luci-interpreter_2src_2kernels_2_utils_8h.html#ab09e74b805778ace392d93e577c75d73":[41,0,2,4,2,1,118,17]
 };
