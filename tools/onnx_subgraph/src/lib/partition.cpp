@@ -136,6 +136,43 @@ std::vector<GraphAdjacencyNode> GetAdjancencyList(const onnx::GraphProto &g, int
   return adjacencyList;
 }
 
+/**
+ * @brief     Calculates the size of a specific node in the ONNX graph in kilobytes (KB).
+ *
+ * @param     [in] g A const reference to an ONNX GraphProto object that contains the graph
+ * structure.
+ * @param     [in] nodeIndex The index of the node for which the size is to be calculated.
+ * @pre       The node_index should be a valid index within the range of nodes in the graph.
+ * @post      None
+ * @exception None
+ * @return    The size of the node in kilobytes (KB).
+ */
+float CalculateNodeSize(const onnx::GraphProto &g, int nodeIndex) // unit : KB
+{
+  int64_t nodeSize = 0;
+  for (int i = 0; i < g.node(nodeIndex).input_size(); i++)
+  {
+    std::string inputName = g.node(nodeIndex).input(i);
+
+    for (int j = 0; j < g.initializer_size(); j++)
+    {
+      if (g.initializer(j).name() == inputName)
+      {
+        int64_t nodeInitSize = 4;
+
+        for (int k = 0; k < g.initializer(j).dims().size(); k++)
+        {
+          nodeInitSize = g.initializer(j).dims(k) * nodeInitSize;
+        }
+
+        nodeSize += nodeInitSize;
+        break;
+      }
+    }
+  }
+  return float(nodeSize * 1.0 / 1024.0);
+}
+
 void PartitionGraph(const onnx::GraphProto &g, Device &d, PartitionStrategy strategy,
                     const std::unordered_map<std::string, NodeIOSize> &node_io_size)
 {
