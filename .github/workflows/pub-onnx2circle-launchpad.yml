@@ -151,6 +151,10 @@ jobs:
           cd circle-mlir
           tar -caf ${{ steps.prepare.outputs.tarball_file }} ${{ env.O2C_PREFIX }}
 
+      # TODO remove this
+      - name: Confirm cmake is installed
+        run: which cmake && cmake --version
+
       - name: Signing with debuild and debsign
         run: |
           cd circle-mlir/${{ env.O2C_PREFIX }}
