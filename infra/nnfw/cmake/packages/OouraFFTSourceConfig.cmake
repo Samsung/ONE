@@ -4,8 +4,8 @@ function(_OouraFFTSource_import)
     return()
   endif(NOT DOWNLOAD_OOURAFFT)
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   # NOTE TensorFlow 2.3 downloads OOURAFFT from the following URL
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")

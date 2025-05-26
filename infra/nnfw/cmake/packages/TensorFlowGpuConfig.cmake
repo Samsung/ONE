@@ -42,7 +42,7 @@ function(_Build_TfliteGpuDelagate_)
   return_unless(FlatBuffers_FOUND)
 
   if(NOT TARGET TensorFlowGpu)
-    nnas_include(ExternalProjectTools)
+    nnfw_include(ExternalProjectTools)
     add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/TensorFlowLiteGpu" TensorFlowLiteGpu)
   endif()
   set(TensorFlowSource_DIR ${TensorFlowSource_DIR} PARENT_SCOPE)

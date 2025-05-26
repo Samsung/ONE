@@ -7,7 +7,7 @@ function(_Farmhash_import)
   endif(NOT FarmhashSource_FOUND)
 
   if(NOT TARGET farmhash)
-    nnas_include(ExternalProjectTools)
+    nnfw_include(ExternalProjectTools)
     add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/Farmhash" farmhash)
   endif(NOT TARGET farmhash)
 

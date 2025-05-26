@@ -30,9 +30,9 @@ set(EXT_OVERLAY_DIR ${NNFW_OVERLAY_DIR})
 # EXT_OVERLAY_DIR is higher priority than ROOTFS_DIR on cross build
 list(INSERT CMAKE_FIND_ROOT_PATH 0 "${EXT_OVERLAY_DIR}")
 
-macro(nnas_include PREFIX)
+macro(nnfw_include PREFIX)
   include("${NNAS_PROJECT_SOURCE_DIR}/infra/nnfw/cmake/modules/${PREFIX}.cmake")
-endmacro(nnas_include)
+endmacro(nnfw_include)
 
 # Runtime 'find_package()' wrapper to find in cmake/packages folder
 #
@@ -60,7 +60,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # identify platform: HOST_PLATFORM, TARGET_PLATFORM and related
 # note: this should be placed before flags and options setting
-nnas_include(IdentifyPlatform)
+nnfw_include(IdentifyPlatform)
 
 # Configuration flags
 include("cmake/CfgOptionFlags.cmake")
@@ -106,7 +106,7 @@ if(ENABLE_COVERAGE)
   target_link_libraries(nnfw_coverage INTERFACE gcov)
 endif(ENABLE_COVERAGE)
 
-nnas_include(AddSubdirectories)
+nnfw_include(AddSubdirectories)
 
 # Add arser for test driver
 # TODO: Better way to handle this

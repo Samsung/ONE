@@ -3,7 +3,7 @@
 #
 function(ExternalSource_Download PREFIX)
   include(CMakeParseArguments)
-  nnas_include(StampTools)
+  nnfw_include(StampTools)
 
   cmake_parse_arguments(ARG "" "DIRNAME;URL;CHECKSUM;PATCH" "" ${ARGN})
 

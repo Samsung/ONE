@@ -4,8 +4,8 @@ function(_Pybind11Source_import)
     return()
   endif(NOT DOWNLOAD_PYBIND11)
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(PYBIND11_URL ${EXTERNAL_DOWNLOAD_SERVER}/pybind/pybind11/archive/v2.13.6.tar.gz)

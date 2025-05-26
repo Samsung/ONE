@@ -4,8 +4,8 @@ function(_FlatBuffersSource_import)
     return()
   endif(NOT DOWNLOAD_FLATBUFFERS)
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(FLATBUFFERS_23_5_26_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/flatbuffers/archive/v23.5.26.tar.gz)

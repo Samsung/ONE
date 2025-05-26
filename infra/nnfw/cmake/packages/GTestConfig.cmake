@@ -7,7 +7,7 @@ if(${DOWNLOAD_GTEST})
   endif(NOT GTestSource_FOUND)
 
   if(NOT TARGET gtest_main)
-    nnas_include(ExternalProjectTools)
+    nnfw_include(ExternalProjectTools)
     add_extdirectory(${GTestSource_DIR} gtest EXCLUDE_FROM_ALL)
   endif(NOT TARGET gtest_main)
 

@@ -4,8 +4,8 @@ function(_PthreadpoolSource_import)
     return()
   endif(NOT ${DOWNLOAD_PTHREADPOOL})
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   # pthreadpool commit in xnnpack (tflite v2.16.1)

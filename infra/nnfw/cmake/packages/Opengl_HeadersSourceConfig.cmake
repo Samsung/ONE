@@ -4,8 +4,8 @@ function(_Opengl_HeadersSource_import)
     return()
   endif(NOT DOWNLOAD_OPENGL_HEADERS)
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(OPENGL_HEADERS_URL ${EXTERNAL_DOWNLOAD_SERVER}/KhronosGroup/OpenGL-Registry/archive/0cb0880d91581d34f96899c86fc1bf35627b4b81.zip)

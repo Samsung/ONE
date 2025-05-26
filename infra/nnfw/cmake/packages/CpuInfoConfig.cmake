@@ -14,7 +14,7 @@ function(_CpuInfo_Build)
     return()
   endif(NOT CpuInfoSource_FOUND)
 
-  nnas_include(ExternalProjectTools)
+  nnfw_include(ExternalProjectTools)
 
   # Set build option
   # - Static (position independent)

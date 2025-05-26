@@ -4,8 +4,8 @@ function(_TensorFlowSource_import)
     return()
   endif(NOT DOWNLOAD_TENSORFLOW)
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(TENSORFLOW_2_16_1_URL ${EXTERNAL_DOWNLOAD_SERVER}/tensorflow/tensorflow/archive/v2.16.1.tar.gz)

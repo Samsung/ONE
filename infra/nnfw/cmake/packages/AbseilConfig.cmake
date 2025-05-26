@@ -8,7 +8,7 @@ function(_Abseil_import)
   endif(NOT AbseilSource_FOUND)
 
   if(NOT TARGET abseil)
-    nnas_include(ExternalProjectTools)
+    nnfw_include(ExternalProjectTools)
 
     # NOTE Turn off abseil testing
     set(BUILD_TESTING OFF)

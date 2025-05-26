@@ -4,8 +4,8 @@ function(_GTestSource_import)
     return()
   endif(NOT DOWNLOAD_GTEST)
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(GTEST_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/googletest/archive/release-1.12.1.tar.gz)

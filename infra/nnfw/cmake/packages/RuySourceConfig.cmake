@@ -4,8 +4,8 @@ function(_RuySource_import)
     return()
   endif(NOT DOWNLOAD_RUY)
 
-  nnas_include(ExternalSourceTools)
-  nnas_include(OptionTools)
+  nnfw_include(ExternalSourceTools)
+  nnfw_include(OptionTools)
 
   # Exact version used by TensorFlow v2.16.1.
   # See tensorflow/third_party/ruy/workspace.bzl
