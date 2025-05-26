@@ -24,7 +24,7 @@ CIRCLEMLIR_EXTS_REL?=build/externals/release
 CIRCLEMLIR_PY3_ROOT?=$(PYTHON3_PATH)
 CIRCLEMLIR_BUILD_JOBS?=4
 
-ONE_COMPILER_INSTALL?=$(CURDIR)/../build/install
+ONE_COMPILER_INSTALL?=build/install
 
 .PHONY: help all overlay \
 	prep cfg debug test clean \
@@ -44,7 +44,7 @@ help:
 	@echo "make cfgr     : configure circle-mlir for release build"
 	@echo "make rel      : build for release"
 	@echo "make testr    : test for release"
-	@echo "make install  : install release build to (ONE)/build/install"
+	@echo "make install  : install release build"
 	@echo "make cleanr   : clean release build"
 	@echo "make prepcov  : prepare submodules for coverage test (needed only once)"
 	@echo "make cfgcov   : configure circle-mlir for debug build with coverage test"
