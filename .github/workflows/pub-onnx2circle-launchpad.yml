@@ -148,6 +148,7 @@ jobs:
 
       - name: Create original tarball
         run: |
+          cd circle-mlir
           tar -caf ${{ steps.prepare.outputs.tarball_file }} ${{ env.O2C_PREFIX }}
 
       - name: Signing with debuild and debsign
