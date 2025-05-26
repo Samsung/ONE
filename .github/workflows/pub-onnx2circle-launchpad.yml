@@ -186,103 +186,103 @@ jobs:
           path: |
             circle-mlir/${{ steps.prepare.outputs.tarball_file }}
 
-  # create-changelog-artifact:
-  #   needs: [ configure, debian-release ]
-  #   # TODO need to activate the branch condition
-  #   # if: ${{ success() && github.ref == 'refs/heads/master' }}
-  #   if: ${{ success() }}
-  #   # TODO change to the 'ubuntu-latest'
-  #   #runs-on: ubuntu-latest
-  #   runs-on: [ self-hosted, shs-park ]
-  #   env:
-  #     DEFAULT_DISTRO: jammy
-  #   steps:
-  #     - name: Download tarball, ${{ env.DEFAULT_DISTRO }}
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: onnx2circle_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}
+  create-changelog-artifact:
+    needs: [ configure, debian-release ]
+    # TODO need to activate the branch condition
+    # if: ${{ success() && github.ref == 'refs/heads/master' }}
+    if: ${{ success() }}
+    # TODO change to the 'ubuntu-latest'
+    #runs-on: ubuntu-latest
+    runs-on: [ self-hosted, shs-park ]
+    env:
+      DEFAULT_DISTRO: jammy
+    steps:
+      - name: Download tarball, ${{ env.DEFAULT_DISTRO }}
+        uses: actions/download-artifact@v4
+        with:
+          name: onnx2circle_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}
 
-  #     - name: Copy changelogs
-  #       run: |
-  #         mkdir changelogs
-  #         mkdir ${{ env.DEFAULT_DISTRO }}
-  #         tar -axf onnx2circle_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}.orig.tar.xz \
-  #           -C ${{ env.DEFAULT_DISTRO }}
-  #         cp ${{ env.DEFAULT_DISTRO }}/o2c/debian/changelog changelogs/changelog
+      - name: Copy changelogs
+        run: |
+          mkdir changelogs
+          mkdir ${{ env.DEFAULT_DISTRO }}
+          tar -axf onnx2circle_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}.orig.tar.xz \
+            -C ${{ env.DEFAULT_DISTRO }}
+          cp ${{ env.DEFAULT_DISTRO }}/o2c/debian/changelog changelogs/changelog
 
-  #     - name: Upload artifact, changelogs
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: changelogs
-  #         retention-days: 3
-  #         path: |
-  #           changelogs
+      - name: Upload artifact, changelogs
+        uses: actions/upload-artifact@v4
+        with:
+          name: changelogs
+          retention-days: 3
+          path: |
+            changelogs
 
-  # create-pr-on-success:
-  #   needs: [ configure, create-changelog-artifact ]
-  #   # TODO need to activate the branch condition
-  #   # if: ${{ success() && github.ref == 'refs/heads/master' }}
-  #   if: ${{ success() }}
-  #   # TODO change to the 'ubuntu-latest'
-  #   #runs-on: ubuntu-latest
-  #   runs-on: [ self-hosted, shs-park ]
-  #   env:
-  #     BR_VERSION: ${{ needs.configure.outputs.br_version }}
-  #   permissions:
-  #     contents: write
-  #     pull-requests: write
-  #   steps:
-  #     - name: Prepare, set distro versions
-  #       id: prepare
-  #       run: |
-  #         VERSION="${{ needs.configure.outputs.version }}"
-  #         echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+  create-pr-on-success:
+    needs: [ configure, create-changelog-artifact ]
+    # TODO need to activate the branch condition
+    # if: ${{ success() && github.ref == 'refs/heads/master' }}
+    if: ${{ success() }}
+    # TODO change to the 'ubuntu-latest'
+    #runs-on: ubuntu-latest
+    runs-on: [ self-hosted, shs-park ]
+    env:
+      BR_VERSION: ${{ needs.configure.outputs.br_version }}
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Prepare, set distro versions
+        id: prepare
+        run: |
+          VERSION="${{ needs.configure.outputs.version }}"
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  #     - name: Set up Git
-  #       run: |
-  #         git config --global user.name "Seungho Henry Park"
-  #         git config --global user.email "shs.park@samsung.com"
+      - name: Set up Git
+        run: |
+          git config --global user.name "Seungho Henry Park"
+          git config --global user.email "shs.park@samsung.com"
 
-  #     - name: Download tarball
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: changelogs
+      - name: Download tarball
+        uses: actions/download-artifact@v4
+        with:
+          name: changelogs
 
-  #     - name: Update the changelog file
-  #       run: |
-  #         cp changelog infra/debian/onnx2circle/
+      - name: Update the changelog file
+        run: |
+          cp changelog infra/debian/onnx2circle/
 
-  #     - name: Create PR branch and commit changelog
-  #       env:
-  #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       run: |
-  #         BRANCH=auto/update-o2c-changelog-${BR_VERSION}
-  #         git checkout -b ${BRANCH}
-  #         git add infra/debian/onnx2circle/changelog
-  #         git commit -m "[infra/debian] Update changelog for onnx2circle" \
-  #           -m "This updates the changelog for onnx2circle_${{ steps.prepare.outputs.VERSION }}." \
-  #           -m "It is auto-generated PR from github workflow." \
-  #           -m "" \
-  #           -m "ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>"
-  #         git push origin ${BRANCH}
+      - name: Create PR branch and commit changelog
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH=auto/update-o2c-changelog-${BR_VERSION}
+          git checkout -b ${BRANCH}
+          git add infra/debian/onnx2circle/changelog
+          git commit -m "[infra/debian] Update changelog for onnx2circle" \
+            -m "This updates the changelog for onnx2circle_${{ steps.prepare.outputs.VERSION }}." \
+            -m "It is auto-generated PR from github workflow." \
+            -m "" \
+            -m "ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>"
+          git push origin ${BRANCH}
 
-  #     - name: Create PR
-  #       env:
-  #         GH_TOKEN: ${{ secrets.SHSPARK_GITHUB_TOKEN }}
-  #       run: |
-  #         BRANCH=auto/update-o2c-changelog-${BR_VERSION}
-  #         gh pr create \
-  #           --title "[infra/debian] Update changelog for onnx2circle" \
-  #           --body "$(cat <<EOF
-  #         This updates the changelog for onnx2circle_${{ steps.prepare.outputs.VERSION }}.
-  #         This PR includes updated changelog after successful debian build.
-  #         It is auto-generated PR from github workflow.
+      - name: Create PR
+        env:
+          GH_TOKEN: ${{ secrets.SHSPARK_GITHUB_TOKEN }}
+        run: |
+          BRANCH=auto/update-o2c-changelog-${BR_VERSION}
+          gh pr create \
+            --title "[infra/debian] Update changelog for onnx2circle" \
+            --body "$(cat <<EOF
+          This updates the changelog for onnx2circle_${{ steps.prepare.outputs.VERSION }}.
+          This PR includes updated changelog after successful debian build.
+          It is auto-generated PR from github workflow.
 
-  #         ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>
-  #         EOF
-  #         )" \
-  #           --head "${BRANCH}" \
-  #           --base "master"
+          ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>
+          EOF
+          )" \
+            --head "${BRANCH}" \
+            --base "master"
