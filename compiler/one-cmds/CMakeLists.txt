@@ -94,13 +94,13 @@ endforeach(ONE_COMMAND)
 # if ONE_ONNX2CIRCLE_PATH is set, install that file to bin folder
 if(DEFINED ENV{ONE_ONNX2CIRCLE_PATH})
   message(STATUS "ONNX2CIRCLE from env-var $ENV{ONE_ONNX2CIRCLE_PATH}")
-  install(FILES $ENV{ONE_BLD_ONNX2CIRCLE_PATH}
+  install(FILES $ENV{ONE_ONNX2CIRCLE_PATH}
           PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
                       GROUP_READ GROUP_EXECUTE
                       WORLD_READ WORLD_EXECUTE
           DESTINATION bin)
 else()
-  set(ONNX2CIRCLE_PATH "circle-mlir/build/install/bin/onnx2circle")
+  set(ONNX2CIRCLE_PATH "${NNAS_PROJECT_SOURCE_DIR}/circle-mlir/build/install/bin/onnx2circle")
   if (EXISTS ${ONNX2CIRCLE_PATH})
     message(STATUS "ONNX2CIRCLE from ${ONNX2CIRCLE_PATH}")
     install(FILES ${ONNX2CIRCLE_PATH}
