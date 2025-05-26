@@ -10,7 +10,7 @@ on:
       o2c_version:
         description: 'The version of onnx2circle'
         required: true
-        default: '1.30.0'
+        default: '0.2.0'
       o2c_description:
         description: 'Description of changelog for onnx2circle'
         required: true
@@ -69,23 +69,27 @@ jobs:
     needs: configure
     strategy:
       matrix:
+        include:
         # TODO activate noble
-        ubuntu_code: [ focal, jammy ]
+        - ubuntu_code: focal
+          ubuntu_vstr: u2004
+        - ubuntu_code: jammy
+          ubuntu_vstr: u2204
     name: onnx2circle ubuntu ${{ matrix.ubuntu_code }}
     # TODO change to the 'ubuntu-latest'
     #runs-on: ubuntu-latest
     runs-on: [ self-hosted, shs-park ]
     container:
-      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
+      image: nnfw/circle-mlir-build-${{ matrix.ubuntu_vstr }}:latest
       options: --user root
       credentials:
         username: ${{ secrets.NNFW_DOCKER_USERNAME }}
         password: ${{ secrets.NNFW_DOCKER_TOKEN }}
     env:
-      NNCC_BUILD: build
-      NNCC_WORKSPACE: build/release
-      NNCC_INSTALL_PREFIX: ${{ github.workspace }}/build/release.install
+      BUILD: build
+      INSTALL: build/Release.install
       O2C_PREFIX: o2c
+      O2C_BUILDTYPE: Release
     steps:
       - name: Prepare, set distro versions
         id: prepare
@@ -97,46 +101,43 @@ jobs:
           echo "changes_file=${changes_file}" >> $GITHUB_OUTPUT
           echo "tarball_file=${tarball_file}" >> $GITHUB_OUTPUT
 
+      - name: Install circle-interpreter
+        run: |
+          add-apt-repository ppa:circletools/nightly
+          apt update
+          apt install circle-interpreter
+
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build without test
+      # NOTE Docker image has pre-installed submodules in /workdir
+      # NOTE Docker image has pre-installed python packages
+      - name: Configure
         run: |
-          CIR_INTP_ITEMS="angkor;cwrap;pepper-str;pepper-strcast;pepper-csv2vec;pp"
-          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};oops;loco;logo-core;logo;locop"
-          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};hermes;hermes-std;safemain;mio-circle08"
-          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};luci-compute;luci;luci-interpreter"
-          CIR_INTP_ITEMS="${CIR_INTP_ITEMS};foder;arser;vconone;circle-interpreter"
-          echo ${CIR_INTP_ITEMS}
+          cd circle-mlir
+          Python3_ROOT_DIR=/usr/bin cmake -B build/${{ env.O2C_BUILDTYPE }} -S ./ \
+          -DCMAKE_INSTALL_PREFIX=build/${{ env.O2C_BUILDTYPE }}.install \
+          -DCMAKE_BUILD_TYPE=${{ env.O2C_BUILDTYPE }} \
+          -DCIRCLE_MLIR_WORKDIR=/workdir
 
-          ./nncc configure \
-            -DENABLE_STRICT_BUILD=ON \
-            -DENABLE_TEST=OFF \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DEXTERNALS_BUILD_THREADS=$(nproc) \
-            -DCMAKE_INSTALL_PREFIX=${NNCC_INSTALL_PREFIX} \
-            -DBUILD_WHITELIST="${CIR_INTP_ITEMS}"
-          ./nncc build -j$(nproc)
-          cmake --build ${NNCC_WORKSPACE} -- install
+      - name: Build, test & install
+        env:
+          ONE_COMPILER_ROOT: /usr/share/circletools
+        run: |
+          cd circle-mlir
+          cmake --build build/${{ env.O2C_BUILDTYPE }} -j4
+          CTEST_OUTPUT_ON_FAILURE=1 cmake --build build/${{ env.O2C_BUILDTYPE }} --verbose -- test
+          cmake --build build/${{ env.O2C_BUILDTYPE }} -j4 -- install
 
       - name: Gather files
         run: |
-          cd ${NNCC_BUILD}
+          cd ${BUILD}
           mkdir -p ${O2C_PREFIX}
-          cp -v ${NNCC_INSTALL_PREFIX}/bin/circle-interpreter ./${O2C_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libloco.so ./${O2C_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_env.so ./${O2C_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_import.so ./${O2C_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_interpreter.so ./${O2C_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_lang.so ./${O2C_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_logex.so ./${O2C_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_log.so ./${O2C_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_plan.so ./${O2C_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_profile.so ./${O2C_PREFIX}/.
+          cp -v ${INSTALL}/bin/onnx2circle ./${O2C_PREFIX}/.
 
       - name: Update changelog
         run: |
-          cd ${{ env.NNCC_BUILD }}/${{ env.O2C_PREFIX }}
+          cd ${{ env.BUILD }}/${{ env.O2C_PREFIX }}
           cp -rf ../../infra/debian/onnx2circle ./debian
           export DEBFULLNAME="${{ inputs.deb_fullname }}"
           export DEBEMAIL="${{ inputs.deb_email }}"
@@ -146,12 +147,12 @@ jobs:
 
       - name: Create original tarball
         run: |
-          cd ${{ env.NNCC_BUILD }}
+          cd ${{ env.BUILD }}
           tar -caf ${{ steps.prepare.outputs.tarball_file }} ${{ env.O2C_PREFIX }}
 
       - name: Signing with debuild and debsign
         run: |
-          cd ${{ env.NNCC_BUILD }}/${{ env.O2C_PREFIX }}
+          cd ${{ env.BUILD }}/${{ env.O2C_PREFIX }}
           rm -rf ~/.gnupg
           echo -n "${{ secrets.GPG_NNFW_SIGNING_KEY }}" | base64 --decode | gpg --import
           # get fingerprint
@@ -162,7 +163,7 @@ jobs:
 
       - name: Upload to Launchpad
         run: |
-          cd ${{ env.NNCC_BUILD }}
+          cd ${{ env.BUILD }}
           mkdir -p ~/.ssh
           echo "${{ secrets.LAUNCHPAD_NNFW_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
@@ -174,105 +175,105 @@ jobs:
           name: onnx2circle_${{ steps.prepare.outputs.VERSION }}
           retention-days: 3
           path: |
-            ${{ env.NNCC_BUILD }}/${{ steps.prepare.outputs.tarball_file }}
+            ${{ env.BUILD }}/${{ steps.prepare.outputs.tarball_file }}
 
-  create-changelog-artifact:
-    needs: [ configure, debian-release ]
-    # TODO need to activate the branch condition
-    # if: ${{ success() && github.ref == 'refs/heads/master' }}
-    if: ${{ success() }}
-    # TODO change to the 'ubuntu-latest'
-    #runs-on: ubuntu-latest
-    runs-on: [ self-hosted, shs-park ]
-    env:
-      DEFAULT_DISTRO: jammy
-    steps:
-      - name: Download tarball, ${{ env.DEFAULT_DISTRO }}
-        uses: actions/download-artifact@v4
-        with:
-          name: onnx2circle_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}
+  # create-changelog-artifact:
+  #   needs: [ configure, debian-release ]
+  #   # TODO need to activate the branch condition
+  #   # if: ${{ success() && github.ref == 'refs/heads/master' }}
+  #   if: ${{ success() }}
+  #   # TODO change to the 'ubuntu-latest'
+  #   #runs-on: ubuntu-latest
+  #   runs-on: [ self-hosted, shs-park ]
+  #   env:
+  #     DEFAULT_DISTRO: jammy
+  #   steps:
+  #     - name: Download tarball, ${{ env.DEFAULT_DISTRO }}
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: onnx2circle_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}
 
-      - name: Copy changelogs
-        run: |
-          mkdir changelogs
-          mkdir ${{ env.DEFAULT_DISTRO }}
-          tar -axf onnx2circle_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}.orig.tar.xz \
-            -C ${{ env.DEFAULT_DISTRO }}
-          cp ${{ env.DEFAULT_DISTRO }}/o2c/debian/changelog changelogs/changelog
+  #     - name: Copy changelogs
+  #       run: |
+  #         mkdir changelogs
+  #         mkdir ${{ env.DEFAULT_DISTRO }}
+  #         tar -axf onnx2circle_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}.orig.tar.xz \
+  #           -C ${{ env.DEFAULT_DISTRO }}
+  #         cp ${{ env.DEFAULT_DISTRO }}/o2c/debian/changelog changelogs/changelog
 
-      - name: Upload artifact, changelogs
-        uses: actions/upload-artifact@v4
-        with:
-          name: changelogs
-          retention-days: 3
-          path: |
-            changelogs
+  #     - name: Upload artifact, changelogs
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: changelogs
+  #         retention-days: 3
+  #         path: |
+  #           changelogs
 
-  create-pr-on-success:
-    needs: [ configure, create-changelog-artifact ]
-    # TODO need to activate the branch condition
-    # if: ${{ success() && github.ref == 'refs/heads/master' }}
-    if: ${{ success() }}
-    # TODO change to the 'ubuntu-latest'
-    #runs-on: ubuntu-latest
-    runs-on: [ self-hosted, shs-park ]
-    env:
-      BR_VERSION: ${{ needs.configure.outputs.br_version }}
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - name: Prepare, set distro versions
-        id: prepare
-        run: |
-          VERSION="${{ needs.configure.outputs.version }}"
-          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+  # create-pr-on-success:
+  #   needs: [ configure, create-changelog-artifact ]
+  #   # TODO need to activate the branch condition
+  #   # if: ${{ success() && github.ref == 'refs/heads/master' }}
+  #   if: ${{ success() }}
+  #   # TODO change to the 'ubuntu-latest'
+  #   #runs-on: ubuntu-latest
+  #   runs-on: [ self-hosted, shs-park ]
+  #   env:
+  #     BR_VERSION: ${{ needs.configure.outputs.br_version }}
+  #   permissions:
+  #     contents: write
+  #     pull-requests: write
+  #   steps:
+  #     - name: Prepare, set distro versions
+  #       id: prepare
+  #       run: |
+  #         VERSION="${{ needs.configure.outputs.version }}"
+  #         echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
-      - name: Checkout
-        uses: actions/checkout@v4
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Set up Git
-        run: |
-          git config --global user.name "Seungho Henry Park"
-          git config --global user.email "shs.park@samsung.com"
+  #     - name: Set up Git
+  #       run: |
+  #         git config --global user.name "Seungho Henry Park"
+  #         git config --global user.email "shs.park@samsung.com"
 
-      - name: Download tarball
-        uses: actions/download-artifact@v4
-        with:
-          name: changelogs
+  #     - name: Download tarball
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: changelogs
 
-      - name: Update the changelog file
-        run: |
-          cp changelog infra/debian/onnx2circle/
+  #     - name: Update the changelog file
+  #       run: |
+  #         cp changelog infra/debian/onnx2circle/
 
-      - name: Create PR branch and commit changelog
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          BRANCH=auto/update-o2c-changelog-${BR_VERSION}
-          git checkout -b ${BRANCH}
-          git add infra/debian/onnx2circle/changelog
-          git commit -m "[infra/debian] Update changelog for onnx2circle" \
-            -m "This updates the changelog for onnx2circle_${{ steps.prepare.outputs.VERSION }}." \
-            -m "It is auto-generated PR from github workflow." \
-            -m "" \
-            -m "ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>"
-          git push origin ${BRANCH}
+  #     - name: Create PR branch and commit changelog
+  #       env:
+  #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       run: |
+  #         BRANCH=auto/update-o2c-changelog-${BR_VERSION}
+  #         git checkout -b ${BRANCH}
+  #         git add infra/debian/onnx2circle/changelog
+  #         git commit -m "[infra/debian] Update changelog for onnx2circle" \
+  #           -m "This updates the changelog for onnx2circle_${{ steps.prepare.outputs.VERSION }}." \
+  #           -m "It is auto-generated PR from github workflow." \
+  #           -m "" \
+  #           -m "ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>"
+  #         git push origin ${BRANCH}
 
-      - name: Create PR
-        env:
-          GH_TOKEN: ${{ secrets.SHSPARK_GITHUB_TOKEN }}
-        run: |
-          BRANCH=auto/update-o2c-changelog-${BR_VERSION}
-          gh pr create \
-            --title "[infra/debian] Update changelog for onnx2circle" \
-            --body "$(cat <<EOF
-          This updates the changelog for onnx2circle_${{ steps.prepare.outputs.VERSION }}.
-          This PR includes updated changelog after successful debian build.
-          It is auto-generated PR from github workflow.
+  #     - name: Create PR
+  #       env:
+  #         GH_TOKEN: ${{ secrets.SHSPARK_GITHUB_TOKEN }}
+  #       run: |
+  #         BRANCH=auto/update-o2c-changelog-${BR_VERSION}
+  #         gh pr create \
+  #           --title "[infra/debian] Update changelog for onnx2circle" \
+  #           --body "$(cat <<EOF
+  #         This updates the changelog for onnx2circle_${{ steps.prepare.outputs.VERSION }}.
+  #         This PR includes updated changelog after successful debian build.
+  #         It is auto-generated PR from github workflow.
 
-          ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>
-          EOF
-          )" \
-            --head "${BRANCH}" \
-            --base "master"
+  #         ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>
+  #         EOF
+  #         )" \
+  #           --head "${BRANCH}" \
+  #           --base "master"
