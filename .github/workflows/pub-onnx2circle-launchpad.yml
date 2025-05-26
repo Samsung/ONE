@@ -73,9 +73,8 @@ jobs:
         # TODO activate noble
         - ubuntu_code: focal
           ubuntu_vstr: u2004
-        # TODO activate jammy
-        # - ubuntu_code: jammy
-        #   ubuntu_vstr: u2204
+        - ubuntu_code: jammy
+          ubuntu_vstr: u2204
     name: onnx2circle ubuntu ${{ matrix.ubuntu_code }}
     # TODO change to the 'ubuntu-latest'
     #runs-on: ubuntu-latest
