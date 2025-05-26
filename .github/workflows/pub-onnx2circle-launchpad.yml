@@ -131,13 +131,13 @@ jobs:
 
       - name: Gather files
         run: |
-          cd ${BUILD}
-          mkdir -p ${O2C_PREFIX}
-          cp -v ${INSTALL}/bin/onnx2circle ./${O2C_PREFIX}/.
+          cd circle-mlir
+          mkdir -p ${{ env.O2C_PREFIX }}
+          cp -v ${{ env.INSTALL }}/bin/onnx2circle ./${{ env.O2C_PREFIX }}/.
 
       - name: Update changelog
         run: |
-          cd ${{ env.BUILD }}/${{ env.O2C_PREFIX }}
+          cd circle-mlir/${{ env.O2C_PREFIX }}
           cp -rf ../../infra/debian/onnx2circle ./debian
           export DEBFULLNAME="${{ inputs.deb_fullname }}"
           export DEBEMAIL="${{ inputs.deb_email }}"
@@ -147,12 +147,11 @@ jobs:
 
       - name: Create original tarball
         run: |
-          cd ${{ env.BUILD }}
           tar -caf ${{ steps.prepare.outputs.tarball_file }} ${{ env.O2C_PREFIX }}
 
       - name: Signing with debuild and debsign
         run: |
-          cd ${{ env.BUILD }}/${{ env.O2C_PREFIX }}
+          cd circle-mlir/${{ env.O2C_PREFIX }}
           rm -rf ~/.gnupg
           echo -n "${{ secrets.GPG_NNFW_SIGNING_KEY }}" | base64 --decode | gpg --import
           # get fingerprint
@@ -163,7 +162,7 @@ jobs:
 
       - name: Upload to Launchpad
         run: |
-          cd ${{ env.BUILD }}
+          cd circle-mlir
           mkdir -p ~/.ssh
           echo "${{ secrets.LAUNCHPAD_NNFW_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
@@ -175,7 +174,7 @@ jobs:
           name: onnx2circle_${{ steps.prepare.outputs.VERSION }}
           retention-days: 3
           path: |
-            ${{ env.BUILD }}/${{ steps.prepare.outputs.tarball_file }}
+            circle-mlir/${{ steps.prepare.outputs.tarball_file }}
 
   # create-changelog-artifact:
   #   needs: [ configure, debian-release ]
