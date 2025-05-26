@@ -25,7 +25,7 @@ override_dh_auto_test:
 override_dh_auto_install:
 	# copy the bin file
 	mkdir -p ${DEBIAN_PREFIX}/bin
-	cp ${NNCC_INSTALL_PREFIX}/circle-interpreter ${DEBIAN_PREFIX}/bin/
+	cp ${NNCC_INSTALL_PREFIX}/onnx2circle ${DEBIAN_PREFIX}/bin/
 
 override_dh_shlibdeps:
 	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
