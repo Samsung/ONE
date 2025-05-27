@@ -316,8 +316,10 @@ def _convert(args):
             options = onnx_legalizer.LegalizeOptions
             options.unroll_rnn = oneutils.is_valid_attr(args, 'unroll_rnn')
             options.unroll_lstm = oneutils.is_valid_attr(args, 'unroll_lstm')
-            onnx_legalizer.legalize(onnx_model, options)
-            model_updated = True
+            if options.unroll_rnn or options.unroll_lstm:
+                onnx_legalizer.legalize(onnx_model, options)
+                model_updated = True
+
         if oneutils.is_valid_attr(args, 'keep_io_order'):
             _remap_io_names(onnx_model)
             model_updated = True
