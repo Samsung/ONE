@@ -1,5 +1,0 @@
-onnx2circle (0.2.0~202505190000~jammy) jammy; urgency=medium
-
-  * First onnx2circle Debian package release for developers.
-
- -- On-device AI developers <nnfw@samsung.com>  Mon, 26 May 2025 00:00:00 +0000
