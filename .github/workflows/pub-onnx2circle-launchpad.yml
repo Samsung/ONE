@@ -126,8 +126,7 @@ jobs:
         run: |
           cd circle-mlir
           cmake --build build/${{ env.O2C_BUILDTYPE }} -j4
-          # TODO enable test
-          # CTEST_OUTPUT_ON_FAILURE=1 cmake --build build/${{ env.O2C_BUILDTYPE }} --verbose -- test
+          CTEST_OUTPUT_ON_FAILURE=1 cmake --build build/${{ env.O2C_BUILDTYPE }} --verbose -- test
           cmake --build build/${{ env.O2C_BUILDTYPE }} -j4 -- install
 
       - name: Gather files
