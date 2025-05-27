@@ -325,17 +325,11 @@ def _convert(args):
             model_updated = True
 
         run_default_import = True
-        ext_alt_onnx_path = None
         if ext_path:
-            # save onnx_model to temporary alt file
-            ext_alt_onnx_path = os.path.join(tmpdir,
-                                             os.path.splitext(basename)[0] + '-alt.onnx')
-            onnx.save(onnx_model, ext_alt_onnx_path)
-
             if _force_ext(args):
                 run_default_import = False
 
-        if model_updated:
+        if model_updated or ext_path != None:
             fixed_path = os.path.join(tmpdir, os.path.splitext(basename)[0] + '~.onnx')
             onnx.save(onnx_model, fixed_path)
             onnx_to_convert_path = fixed_path
@@ -409,7 +403,7 @@ def _convert(args):
                     ext_cmd.append('--save_intermediate')
                 if oneutils.is_valid_attr(args, 'keep_io_order'):
                     ext_cmd.append('--keep_io_order')
-                ext_cmd.append(ext_alt_onnx_path)
+                ext_cmd.append(onnx_to_convert_path)
                 ext_cmd.append(getattr(args, 'output_path'))
                 res_conv = oneutils.run_ret(ext_cmd, logfile=f)
 
