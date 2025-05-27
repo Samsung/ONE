@@ -15,9 +15,17 @@
 # limitations under the License.
 
 # test for experimental_disable_batchmatmul_unfold option
+# NOTE
+# - for onnx2circle, experimental_disable_batchmatmul_unfold is ignored
+#   and functionally works like ON as default.
+#   that is, batchatmatmul exist as-is.
+# - this test is disabled for this reason.
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
+
+echo "${filename_ext} SKIPPED"
+exit 0
 
 trap_err_onexit()
 {
