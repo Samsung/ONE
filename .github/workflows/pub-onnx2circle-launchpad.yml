@@ -1,0 +1,103 @@
+name: Publish onnx2circle to Launchpad
+
+on:
+  # TODO turn on schedule
+  #schedule:
+  #  # 05:00 AM (KST, UTC+9:00) Mon-Fri
+  #  - cron: '00 20 * * 0-4'
+  workflow_dispatch:
+    inputs:
+      o2c_version:
+        description: 'The version of onnx2circle'
+        required: true
+        default: '0.2.0'
+      o2c_description:
+        description: 'Description of changelog for onnx2circle'
+        required: true
+      deb_fullname:
+        description: 'Full name of Debian package author'
+        required: false
+        default: 'On-device AI developers'
+      deb_email:
+        description: 'Email address of Debian package author'
+        required: false
+        default: 'nnfw@samsung.com'
+      is_release:
+        description: 'Is this a release version?
+          Set to false to append date-based subversion.
+          (true/false)'
+        required: false
+        default: 'false'
+
+defaults:
+  run:
+    shell: bash
+
+# Cancel previous running jobs when pull request is updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  # TODO implement the configure job
+  configure:
+    if: github.repository_owner == 'Samsung'
+    name: Set current date and time
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set date and time
+        run: |
+          echo "Set date and time"
+
+  # TODO implement the debian-release job
+  debian-release:
+    needs: configure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure
+        run: |
+          echo "Configure"
+
+      - name: Build, test & install
+        run: |
+          echo "Build, test & install"cd circle-mlir
+
+      - name: Update changelog
+        run: |
+          echo "Update changelog"
+
+      - name: Signing with debuild and debsign
+        run: |
+          echo "Signing with debuild and debsign"
+
+      - name: Upload to Launchpad
+        run: |
+          echo "Upload to Launchpad"
+
+  # TODO implement the create-changelog-artifact job
+  create-changelog-artifact:
+    needs: [ configure, debian-release ]
+    if: ${{ success() && github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy changelogs
+        run: |
+          echo "Copy changelogs"
+
+  # TODO implement the create-pr-on-success job
+  create-pr-on-success:
+    needs: [ configure, create-changelog-artifact ]
+    if: ${{ success() && github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update the changelog file
+        run: |
+          echo "Update the changelog file"
+
+      - name: Create PR branch and commit changelog
+        run: |
+          echo "Create PR branch and commit changelog"
+
+      - name: Create PR
+        run: |
+          echo "Create PR"
