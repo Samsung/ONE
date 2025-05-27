@@ -298,12 +298,15 @@ def _convert(args):
     # get import onnx extension path
     ext_path = _check_ext()
 
+    onnx_to_convert_path = getattr(args, 'input_path')
+    basename = os.path.basename(onnx_to_convert_path)
+
     with open(logfile_path, 'wb') as f, tempfile.TemporaryDirectory() as tmpdir:
         # save intermediate
         if oneutils.is_valid_attr(args, 'save_intermediate'):
             tmpdir = os.path.dirname(logfile_path)
         # convert onnx to tf saved model
-        onnx_model = onnx.load(getattr(args, 'input_path'))
+        onnx_model = onnx.load(onnx_to_convert_path)
         _sanitize_io_names(onnx_model)
         if _onnx_legalizer_enabled:
             options = onnx_legalizer.LegalizeOptions
@@ -313,16 +316,15 @@ def _convert(args):
         if oneutils.is_valid_attr(args, 'keep_io_order'):
             _remap_io_names(onnx_model)
             if oneutils.is_valid_attr(args, 'save_intermediate'):
-                basename = os.path.basename(getattr(args, 'input_path'))
                 fixed_path = os.path.join(tmpdir,
                                           os.path.splitext(basename)[0] + '~.onnx')
                 onnx.save(onnx_model, fixed_path)
+                onnx_to_convert_path = fixed_path
 
         run_default_import = True
         ext_alt_onnx_path = None
         if ext_path:
             # save onnx_model to temporary alt file
-            basename = os.path.basename(getattr(args, 'input_path'))
             ext_alt_onnx_path = os.path.join(tmpdir,
                                              os.path.splitext(basename)[0] + '-alt.onnx')
             onnx.save(onnx_model, ext_alt_onnx_path)
