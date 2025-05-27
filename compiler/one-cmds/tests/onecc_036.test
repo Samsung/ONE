@@ -15,6 +15,8 @@
 # limitations under the License.
 
 # run a workflow where one-import-onnx generates intermediate files
+# NOTE
+# - intermediate tflite is not generated anymore with onnx2circle
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -29,19 +31,14 @@ trap trap_err_onexit ERR
 
 workflowfile="onecc_036.workflow.json"
 outputfile="test_onnx_model.circle"
-intermfile="test_onnx_model.tflite"
 
 rm -rf ${outputfile}
-rm -rf ${intermfile}
 rm -f ${filename}.log
 
 # run test
 onecc -W ${workflowfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
-  trap_err_onexit
-fi
-if [[ ! -s "${intermfile}" ]]; then
   trap_err_onexit
 fi
 
