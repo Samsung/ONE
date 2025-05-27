@@ -1,0 +1,37 @@
+#!/usr/bin/make -f
+
+export NNCC_INSTALL_PREFIX=$(CURDIR)
+export DEBIAN_PREFIX=$(CURDIR)/debian/tmp
+
+%:
+	dh $@
+
+override_dh_auto_clean:
+	# Nothing to clean
+	true
+
+override_dh_auto_configure:
+	# No configure step needed
+	true
+
+override_dh_auto_build:
+	# No build step needed
+	true
+
+override_dh_auto_test:
+	# No test step needed
+	true
+
+override_dh_auto_install:
+	# copy the bin file
+	mkdir -p ${DEBIAN_PREFIX}/bin
+	cp ${NNCC_INSTALL_PREFIX}/onnx2circle ${DEBIAN_PREFIX}/bin/
+
+override_dh_shlibdeps:
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
+
+override_dh_strip:
+	dh_strip --no-automatic-dbgsym
+
+override_dh_builddeb:
+	dh_builddeb
