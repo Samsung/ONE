@@ -139,7 +139,7 @@ jobs:
       - name: Update changelog
         run: |
           cd circle-mlir/${{ env.O2C_PREFIX }}
-          cp -rf ../../infra/debian/onnx2circle ./debian
+          cp -rf ../infra/debian/onnx2circle ./debian
           export DEBFULLNAME="${{ inputs.deb_fullname }}"
           export DEBEMAIL="${{ inputs.deb_email }}"
           dch -v "${{ steps.prepare.outputs.VERSION }}" \
@@ -253,7 +253,7 @@ jobs:
 
       - name: Update the changelog file
         run: |
-          cp changelog infra/debian/onnx2circle/
+          cp changelog circle-mlir/infra/debian/onnx2circle/
 
       - name: Create PR branch and commit changelog
         env:
@@ -261,8 +261,8 @@ jobs:
         run: |
           BRANCH=auto/update-o2c-changelog-${BR_VERSION}
           git checkout -b ${BRANCH}
-          git add infra/debian/onnx2circle/changelog
-          git commit -m "[infra/debian] Update changelog for onnx2circle" \
+          git add circle-mlir/infra/debian/onnx2circle/changelog
+          git commit -m "[circle-mlir/infra] Update changelog for onnx2circle" \
             -m "This updates the changelog for onnx2circle_${{ steps.prepare.outputs.VERSION }}." \
             -m "It is auto-generated PR from github workflow." \
             -m "" \
@@ -275,7 +275,7 @@ jobs:
         run: |
           BRANCH=auto/update-o2c-changelog-${BR_VERSION}
           gh pr create \
-            --title "[infra/debian] Update changelog for onnx2circle" \
+            --title "[circle-mlir/infra] Update changelog for onnx2circle" \
             --body "$(cat <<EOF
           This updates the changelog for onnx2circle_${{ steps.prepare.outputs.VERSION }}.
           This PR includes updated changelog after successful debian build.
