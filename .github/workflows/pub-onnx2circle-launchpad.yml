@@ -66,8 +66,39 @@ jobs:
   # TODO implement the debian-release job
   debian-release:
     needs: configure
+    strategy:
+      matrix:
+        include:
+        # TODO activate noble
+        - ubuntu_code: focal
+          ubuntu_vstr: u2004
+        - ubuntu_code: jammy
+          ubuntu_vstr: u2204
+    name: onnx2circle ubuntu ${{ matrix.ubuntu_code }}
     runs-on: ubuntu-latest
+    container:
+      image: nnfw/circle-mlir-build-${{ matrix.ubuntu_vstr }}:latest
+      options: --user root
+      credentials:
+        username: ${{ secrets.NNFW_DOCKER_USERNAME }}
+        password: ${{ secrets.NNFW_DOCKER_TOKEN }}
     steps:
+      - name: Prepare, set distro versions
+        id: prepare
+        run: |
+          VERSION="${{ needs.configure.outputs.version }}~${{ matrix.ubuntu_code }}"
+          changes_file="onnx2circle_${VERSION}_source.changes"
+          tarball_file="onnx2circle_${VERSION}.orig.tar.xz"
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          echo "changes_file=${changes_file}" >> $GITHUB_OUTPUT
+          echo "tarball_file=${tarball_file}" >> $GITHUB_OUTPUT
+
+      - name: Install circle-interpreter
+        run: |
+          add-apt-repository ppa:circletools/nightly
+          apt update
+          apt install circle-interpreter
+
       - name: Configure
         run: |
           echo "Configure"
