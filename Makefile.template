@@ -37,7 +37,7 @@ endif
 # the toolchain file, only for cross build
 ifeq ($(CROSS_BUILD),1)
 	TOOLCHAIN_FILE=cmake/buildtool/cross/toolchain_$(TARGET_ARCH_LC)-$(TARGET_OS).cmake
-	OPTIONS+= -DCMAKE_TOOLCHAIN_FILE=../infra/nnfw/$(TOOLCHAIN_FILE)
+	OPTIONS+= -DCMAKE_TOOLCHAIN_FILE=infra/$(TOOLCHAIN_FILE)
 	OPTIONS_NNCC+= -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN_FILE)
 endif
 
