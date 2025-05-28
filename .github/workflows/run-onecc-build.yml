@@ -147,6 +147,8 @@ jobs:
       - name: Upload log
         uses: actions/upload-artifact@v4
         if: failure()
+        env:
+          NNCC_INSTALL_PATH : ${{ env.NNCC_WORKSPACE }}/${{ env.NNCC_INSTALL_PREFIX }}
         with:
           name: fail-${{ matrix.ubuntu_code }}-${{ matrix.type }}
           path: |
