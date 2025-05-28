@@ -64,6 +64,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install onnx2circle
+        run: |
+          apt update
+          apt-get -qqy install software-properties-common
+          add-apt-repository ppa:circletools/nightly
+          apt-get -qqy install onnx2circle
+
+      - name: Install python3.10 for focal
+        if: matrix.ubuntu_code == 'focal'
+        run: |
+          add-apt-repository ppa:deadsnakes/ppa
+          apt-get -qqy install python3.10 python3.10-dev python3.10-venv
+
       # dalgona uses pybind11, but pybind11 cannot bind packages in virtualenv.
       # So we need to install packages for dalgona-test globally.
       - name: Install required packages
