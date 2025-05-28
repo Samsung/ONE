@@ -83,6 +83,7 @@ jobs:
         username: ${{ secrets.NNFW_DOCKER_USERNAME }}
         password: ${{ secrets.NNFW_DOCKER_TOKEN }}
     env:
+      O2C_PREFIX: o2c
       O2C_BUILDTYPE: Release
     steps:
       - name: Prepare, set distro versions
@@ -123,9 +124,26 @@ jobs:
           CTEST_OUTPUT_ON_FAILURE=1 cmake --build build/${{ env.O2C_BUILDTYPE }} --verbose -- test
           cmake --build build/${{ env.O2C_BUILDTYPE }} -j4 -- install
 
+      - name: Gather files
+        run: |
+          cd circle-mlir
+          mkdir -p ${{ env.O2C_PREFIX }}
+          cp -v build/${{ env.O2C_BUILDTYPE }}.install/bin/onnx2circle ./${{ env.O2C_PREFIX }}/.
+
       - name: Update changelog
         run: |
-          echo "Update changelog"
+          cd circle-mlir/${{ env.O2C_PREFIX }}
+          cp -rf ../infra/debian/onnx2circle ./debian
+          export DEBFULLNAME="${{ inputs.deb_fullname }}"
+          export DEBEMAIL="${{ inputs.deb_email }}"
+          dch -v "${{ steps.prepare.outputs.VERSION }}" \
+            --distribution "${{ matrix.ubuntu_code }}" \
+            "${{ inputs.o2c_description }}" -b
+
+      - name: Create original tarball
+        run: |
+          cd circle-mlir
+          tar -caf ${{ steps.prepare.outputs.tarball_file }} ${{ env.O2C_PREFIX }}
 
       - name: Signing with debuild and debsign
         run: |
