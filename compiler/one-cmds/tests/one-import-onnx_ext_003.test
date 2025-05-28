@@ -16,9 +16,13 @@
 
 # test for one-import-onnx to invoke extension
 # test for model that onnx-tf fails and should run extension
+# NOTE this test is not valid anymore as onnx_tf is deprecated
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
+
+echo "${filename_ext} SKIPPED"
+exit 0
 
 trap_err_onexit()
 {
