@@ -82,6 +82,8 @@ jobs:
       credentials:
         username: ${{ secrets.NNFW_DOCKER_USERNAME }}
         password: ${{ secrets.NNFW_DOCKER_TOKEN }}
+    env:
+      O2C_BUILDTYPE: Release
     steps:
       - name: Prepare, set distro versions
         id: prepare
@@ -99,13 +101,27 @@ jobs:
           apt update
           apt install circle-interpreter
 
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # NOTE Docker image has pre-installed submodules in /workdir
+      # NOTE Docker image has pre-installed python packages
       - name: Configure
         run: |
-          echo "Configure"
+          cd circle-mlir
+          Python3_ROOT_DIR=/usr/bin cmake -B build/${{ env.O2C_BUILDTYPE }} -S ./ \
+          -DCMAKE_INSTALL_PREFIX=build/${{ env.O2C_BUILDTYPE }}.install \
+          -DCMAKE_BUILD_TYPE=${{ env.O2C_BUILDTYPE }} \
+          -DCIRCLE_MLIR_WORKDIR=/workdir
 
       - name: Build, test & install
+        env:
+          ONE_COMPILER_ROOT: /usr/share/circletools
         run: |
-          echo "Build, test & install"cd circle-mlir
+          cd circle-mlir
+          cmake --build build/${{ env.O2C_BUILDTYPE }} -j4
+          CTEST_OUTPUT_ON_FAILURE=1 cmake --build build/${{ env.O2C_BUILDTYPE }} --verbose -- test
+          cmake --build build/${{ env.O2C_BUILDTYPE }} -j4 -- install
 
       - name: Update changelog
         run: |
