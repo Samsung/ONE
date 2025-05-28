@@ -18,6 +18,7 @@
 #define __ONERT_API_PYTHON_NNFW_API_WRAPPER_H__
 
 #include "nnfw.h"
+#include "nnfw_internal.h"
 #include "nnfw_experimental.h"
 
 #include <pybind11/stl.h>
@@ -149,28 +150,22 @@ public:
 
     ensure_status(nnfw_set_input(session, index, type, buffer.request().ptr, length));
   }
-  /**
-   * @brief   process output array according to data type of numpy array sent by Python
-   *          (int, float, uint8_t, bool, int64_t, int8_t, int16_t)
-   */
-  template <typename T> void set_output(uint32_t index, py::array_t<T> &buffer)
-  {
-    nnfw_tensorinfo tensor_info;
-    nnfw_output_tensorinfo(this->session, index, &tensor_info);
-    NNFW_TYPE type = tensor_info.dtype;
-    uint32_t output_elements = num_elems(&tensor_info);
-    size_t length = sizeof(T) * output_elements;
-
-    ensure_status(nnfw_set_output(session, index, type, buffer.request().ptr, length));
-  }
   uint32_t input_size();
   uint32_t output_size();
   // process the input layout by receiving a string from Python instead of NNFW_LAYOUT
   void set_input_layout(uint32_t index, const char *layout);
-  // process the output layout by receiving a string from Python instead of NNFW_LAYOUT
-  void set_output_layout(uint32_t index, const char *layout);
   tensorinfo input_tensorinfo(uint32_t index);
   tensorinfo output_tensorinfo(uint32_t index);
+
+  //////////////////////////////////////////////
+  // Internal APIs
+  //////////////////////////////////////////////
+  py::array get_dynamic_output(uint32_t index);
+
+  //////////////////////////////////////////////
+  // Experimental APIs for inference
+  //////////////////////////////////////////////
+  void set_prepare_config(NNFW_PREPARE_CONFIG config);
 
   //////////////////////////////////////////////
   // Experimental APIs for training

@@ -140,7 +140,7 @@ class BaseSession:
 
             self.inputs.append(input_array)
 
-    def set_outputs(self, size):
+    def _set_outputs(self, size):
         """
         Set the output tensors for the session.
 
@@ -159,20 +159,11 @@ class BaseSession:
         self.outputs = []
         for i in range(size):
             try:
-                output_tensorinfo = self.session.output_tensorinfo(i)
+                output_array = self.session.get_output(i)
             except ValueError:
                 raise
             except Exception as e:
-                raise OnertError(f"Failed to get output tensorinfo #{i}: {e}") from e
-            output_array = np.zeros((num_elems(output_tensorinfo)),
-                                    dtype=output_tensorinfo.dtype)
-
-            try:
-                self.session.set_output(i, output_array)
-            except ValueError:
-                raise
-            except Exception as e:
-                raise OnertError(f"Failed to set output #{i}: {e}") from e
+                raise OnertError(f"Failed to get output #{i}: {e}") from e
 
             self.outputs.append(output_array)
 
