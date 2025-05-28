@@ -179,15 +179,33 @@ jobs:
           path: |
             circle-mlir/${{ steps.prepare.outputs.tarball_file }}
 
-  # TODO implement the create-changelog-artifact job
   create-changelog-artifact:
     needs: [ configure, debian-release ]
     if: ${{ success() && github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
+    env:
+      DEFAULT_DISTRO: jammy
     steps:
+      - name: Download tarball, ${{ env.DEFAULT_DISTRO }}
+        uses: actions/download-artifact@v4
+        with:
+          name: onnx2circle_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}
+
       - name: Copy changelogs
         run: |
-          echo "Copy changelogs"
+          mkdir changelogs
+          mkdir ${{ env.DEFAULT_DISTRO }}
+          tar -axf onnx2circle_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}.orig.tar.xz \
+            -C ${{ env.DEFAULT_DISTRO }}
+          cp ${{ env.DEFAULT_DISTRO }}/o2c/debian/changelog changelogs/changelog
+
+      - name: Upload artifact, changelogs
+        uses: actions/upload-artifact@v4
+        with:
+          name: changelogs
+          retention-days: 3
+          path: |
+            changelogs
 
   # TODO implement the create-pr-on-success job
   create-pr-on-success:
