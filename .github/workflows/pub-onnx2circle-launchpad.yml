@@ -86,8 +86,6 @@ jobs:
         username: ${{ secrets.NNFW_DOCKER_USERNAME }}
         password: ${{ secrets.NNFW_DOCKER_TOKEN }}
     env:
-      BUILD: build
-      INSTALL: build/Release.install
       O2C_PREFIX: o2c
       O2C_BUILDTYPE: Release
     steps:
@@ -133,7 +131,7 @@ jobs:
         run: |
           cd circle-mlir
           mkdir -p ${{ env.O2C_PREFIX }}
-          cp -v ${{ env.INSTALL }}/bin/onnx2circle ./${{ env.O2C_PREFIX }}/.
+          cp -v build/${{ env.O2C_BUILDTYPE }}.install/bin/onnx2circle ./${{ env.O2C_PREFIX }}/.
 
       - name: Update changelog
         run: |
