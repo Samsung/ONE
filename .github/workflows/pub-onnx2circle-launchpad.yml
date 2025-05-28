@@ -145,13 +145,40 @@ jobs:
           cd circle-mlir
           tar -caf ${{ steps.prepare.outputs.tarball_file }} ${{ env.O2C_PREFIX }}
 
+      - name: Conditionally install cmake for debuild
+        run: |
+          if [ "${{ matrix.ubuntu_code }}" = "focal" ]; then
+            echo "Installing cmake for focal"
+            apt update
+            apt install -y cmake
+          fi
+
       - name: Signing with debuild and debsign
         run: |
-          echo "Signing with debuild and debsign"
+          cd circle-mlir/${{ env.O2C_PREFIX }}
+          rm -rf ~/.gnupg
+          echo -n "${{ secrets.GPG_NNFW_SIGNING_KEY }}" | base64 --decode | gpg --import
+          # get fingerprint
+          FPR=$(gpg --list-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')
+          echo "$FPR:6:" | gpg --import-ownertrust
+          debuild -S -us -uc
+          debsign -k${FPR} ../onnx2circle_*.changes
 
       - name: Upload to Launchpad
         run: |
-          echo "Upload to Launchpad"
+          cd circle-mlir
+          mkdir -p ~/.ssh
+          echo "${{ secrets.LAUNCHPAD_NNFW_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          dput ppa:circletools/nightly ${{ steps.prepare.outputs.changes_file }}
+
+      - name: Upload artifact, onnx2circle
+        uses: actions/upload-artifact@v4
+        with:
+          name: onnx2circle_${{ steps.prepare.outputs.VERSION }}
+          retention-days: 3
+          path: |
+            circle-mlir/${{ steps.prepare.outputs.tarball_file }}
 
   # TODO implement the create-changelog-artifact job
   create-changelog-artifact:
