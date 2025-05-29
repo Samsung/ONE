@@ -38,7 +38,7 @@ target_link_libraries(${RUNTIME_NNFW_API_TEST} circle_schema)
 install(TARGETS ${RUNTIME_NNFW_API_TEST} DESTINATION unittest)
 
 # Install nnpackage test model (add)
-set(NNPACKAGE_MODEL_DIR ${NNAS_PROJECT_SOURCE_DIR}/nnpackage/examples/v1.0.0/add)
+set(NNPACKAGE_MODEL_DIR ${ONE_PROJECT_SOURCE_DIR}/nnpackage/examples/v1.0.0/add)
 set(NNPACKAGE_INSTALL_TARGET unittest/nnfw_api_gtest_models)
 
 install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}/add)
@@ -48,21 +48,21 @@ set(NNPACKAGE_MODEL ${NNPACKAGE_MODEL_DIR}/add.tflite)
 install(FILES ${NNPACKAGE_MODEL} DESTINATION ${NNPACKAGE_INSTALL_TARGET}/add_no_manifest/add_no_manifest)
 
 # Install nnpackage test model (add_invalid_manifest)
-set(NNPACKAGE_MODEL_DIR ${NNAS_PROJECT_SOURCE_DIR}/nnpackage/examples/v1.0.0/add_invalid_manifest)
+set(NNPACKAGE_MODEL_DIR ${ONE_PROJECT_SOURCE_DIR}/nnpackage/examples/v1.0.0/add_invalid_manifest)
 install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}/add_invalid_manifest)
 
 # Install nnpackage test model (if)
-set(NNPACKAGE_MODEL_DIR ${NNAS_PROJECT_SOURCE_DIR}/nnpackage/examples/v1.0.0/if_dynamic)
+set(NNPACKAGE_MODEL_DIR ${ONE_PROJECT_SOURCE_DIR}/nnpackage/examples/v1.0.0/if_dynamic)
 install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}/if_dynamic)
 
 # Install nnpackage test model (while)
-set(NNPACKAGE_MODEL_DIR ${NNAS_PROJECT_SOURCE_DIR}/nnpackage/examples/v1.0.0/while_dynamic)
+set(NNPACKAGE_MODEL_DIR ${ONE_PROJECT_SOURCE_DIR}/nnpackage/examples/v1.0.0/while_dynamic)
 install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}/while_dynamic)
 
 # Install nnpackage test model (mobilenet)
-set(NNPACKAGE_MODEL_DIR ${NNAS_PROJECT_SOURCE_DIR}/runtime/contrib/TFLiteSharp/TFLiteTestApp/res/)
+set(NNPACKAGE_MODEL_DIR ${ONE_PROJECT_SOURCE_DIR}/runtime/contrib/TFLiteSharp/TFLiteTestApp/res/)
 install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}/mobilenet_v1_1.0_224)
 
 # Install nnpackage test model (conv2d)
-set(NNPACKAGE_MODEL_DIR ${NNAS_PROJECT_SOURCE_DIR}/runtime/tests/nnfw_api/res/autocompilation/)
+set(NNPACKAGE_MODEL_DIR ${ONE_PROJECT_SOURCE_DIR}/runtime/tests/nnfw_api/res/autocompilation/)
 install(DIRECTORY ${NNPACKAGE_MODEL_DIR} DESTINATION ${NNPACKAGE_INSTALL_TARGET}/conv2d)

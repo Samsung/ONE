@@ -12,12 +12,12 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 ### CMAKE_BUILD_TYPE_LC: Build type lower case
 string(TOLOWER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_LC)
 
-set(NNAS_PROJECT_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/.." CACHE
-  INTERNAL "Where to find nnas top-level source directory"
-)
+### Set source directories to use in global scope macro & function
+set(ONE_PROJECT_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/..")
+set(ONERT_PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(NNAS_EXTERNALS_DIR
-  "${NNAS_PROJECT_SOURCE_DIR}/externals" CACHE
+  "${ONE_PROJECT_SOURCE_DIR}/externals" CACHE
   INTERNAL "Where to download external dependencies"
 )
 set(NNFW_OVERLAY_DIR "${CMAKE_BINARY_DIR}/overlay" CACHE
@@ -31,7 +31,7 @@ set(EXT_OVERLAY_DIR ${NNFW_OVERLAY_DIR})
 list(INSERT CMAKE_FIND_ROOT_PATH 0 "${EXT_OVERLAY_DIR}")
 
 macro(nnfw_include PREFIX)
-  include("${NNAS_PROJECT_SOURCE_DIR}/infra/nnfw/cmake/modules/${PREFIX}.cmake")
+  include("${ONERT_PROJECT_SOURCE_DIR}/infra/cmake/modules/${PREFIX}.cmake")
 endmacro(nnfw_include)
 
 # Runtime 'find_package()' wrapper to find in cmake/packages folder
@@ -43,7 +43,7 @@ endmacro(nnfw_include)
 #  nnfw_find_package(Eigen REQUIRED): Load settings but stop with error when failed
 macro(nnfw_find_package PREFIX)
   find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
-    PATHS ${NNAS_PROJECT_SOURCE_DIR}/infra/nnfw/cmake/packages
+    PATHS ${ONERT_PROJECT_SOURCE_DIR}/infra/cmake/packages
     ${ARGN}
   )
 endmacro(nnfw_find_package)
@@ -63,7 +63,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 nnfw_include(IdentifyPlatform)
 
 # Configuration flags
-include("${NNAS_PROJECT_SOURCE_DIR}/infra/nnfw/cmake/CfgOptionFlags.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/infra/cmake/CfgOptionFlags.cmake")
 # and besides CfgOptionFlags.cmake that can be given outside
 #   COVERAGE_BUILD: build boolean flag that enables converage test
 #   ROOTFS_DIR: rootfs path for cross building
@@ -73,7 +73,7 @@ include("${NNAS_PROJECT_SOURCE_DIR}/infra/nnfw/cmake/CfgOptionFlags.cmake")
 # apply compilation flags
 # NOTE This should be placed after cmake/CfgOptionFlags.cmake files include
 #      because compile flag setting can be decided using option (ex. ENABLE_COVERAGE)
-include("${NNAS_PROJECT_SOURCE_DIR}/infra/nnfw/cmake/ApplyCompileFlags.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/infra/cmake/ApplyCompileFlags.cmake")
 
 nnfw_find_package(GTest QUIET)
 
@@ -112,7 +112,7 @@ nnfw_include(AddSubdirectories)
 # TODO: Better way to handle this
 if(ENABLE_TEST)
   add_library(arser INTERFACE)
-  target_include_directories(arser INTERFACE ${NNAS_PROJECT_SOURCE_DIR}/compiler/arser/include/)
+  target_include_directories(arser INTERFACE ${ONE_PROJECT_SOURCE_DIR}/compiler/arser/include/)
 endif(ENABLE_TEST)
 
 add_subdirectory(3rdparty)
