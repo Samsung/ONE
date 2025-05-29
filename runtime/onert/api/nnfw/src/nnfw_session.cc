@@ -1942,6 +1942,9 @@ NNFW_STATUS nnfw_session::set_prepare_config(const NNFW_PREPARE_CONFIG key, cons
     case NNFW_PREPARE_CONFIG_PROFILE:
       _coptions->he_profiling_mode = true;
       break;
+    case NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC:
+      _coptions->internal_output_alloc = true;
+      break;
     default:
       return NNFW_STATUS_ERROR;
   }

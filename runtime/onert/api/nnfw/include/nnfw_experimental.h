@@ -624,6 +624,10 @@ typedef enum
    * TODO: Use workspace
    */
   NNFW_PREPARE_CONFIG_PROFILE,
+  /**
+   * Enable internal allocation for model outputs instead of using external buffer
+   */
+  NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC,
 } NNFW_PREPARE_CONFIG;
 
 /**
