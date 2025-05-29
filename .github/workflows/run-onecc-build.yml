@@ -61,11 +61,6 @@ jobs:
     name: onecc ubuntu ${{ matrix.ubuntu_ver }} ${{ matrix.type }} test
 
     steps:
-      - name: Temporary update to use deb https://
-        run: |
-          cd /etc/apt
-          sed -i 's|deb http://|deb https://|g' sources.list
-
       - name: Checkout
         uses: actions/checkout@v4
 
