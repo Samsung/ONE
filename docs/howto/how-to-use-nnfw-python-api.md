@@ -12,7 +12,7 @@ Use the [nnpackage examples](https://github.com/Samsung/ONE/tree/master/nnpackag
 
 ## Install nnfw python API
 
-Please see [nnfw python api](https://github.com/SAMSUNG/ONE/tree/master/infra/nnfw/python) for installing nnfw python api.
+Please see [nnfw python api](https://github.com/SAMSUNG/ONE/tree/master/runtime/infra/python) for installing nnfw python api.
 
 1. Initialize nnfw_session
 
