@@ -33,9 +33,8 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
     assert(tensors.empty());
     for (auto &&ind : ind_seq)
     {
-      backend::ITensor *tensor = tensor_regs.getITensor(ind);
-      assert(tensor != nullptr);
-      auto io_tensor = nnfw::misc::polymorphic_downcast<backend::builtin::IOTensor *>(tensor);
+      backend::builtin::IOTensor *io_tensor = tensor_regs.getIOTensor(ind);
+      assert(io_tensor != nullptr);
       tensors.push_back(io_tensor);
     }
   };
@@ -67,19 +66,30 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
 
   assert(outputs.size() == _graph.getOutputs().size());
   assert(outputs.size() == _output_tensors.size());
-  for (uint32_t n = 0; n < outputs.size(); ++n)
+
+  if (!options.skip_set_output_user_tensor)
   {
-    const auto output = outputs[n];
-    assert(output->buffer() != nullptr || output->get_info().total_size() == 0);
-    auto output_tensor = _output_tensors[n];
-    assert(output_tensor != nullptr);
-    output_tensor->setTensor(output);
+    for (uint32_t n = 0; n < outputs.size(); ++n)
+    {
+      const auto output = outputs[n];
+      assert(output->buffer() != nullptr || output->get_info().total_size() == 0);
+      auto output_tensor = _output_tensors[n];
+      assert(output_tensor != nullptr);
+      output_tensor->setTensor(output);
+    }
   }
 
   // Create observee
   ExecutionObservee subject(_observers, options);
 
   executeImpl(subject);
+
+  for (uint32_t n = 0; n < outputs.size(); ++n)
+  {
+    auto output_tensor = _output_tensors[n];
+    assert(output_tensor != nullptr);
+    output_tensor->syncInfoFromDynamicTensor();
+  }
 }
 
 bool ExecutorBase::hasDynamicInput()

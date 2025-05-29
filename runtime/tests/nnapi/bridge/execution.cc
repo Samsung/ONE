@@ -47,6 +47,8 @@ int ANeuralNetworksExecution_create(ANeuralNetworksCompilation *compilation,
     return ANEURALNETWORKS_BAD_STATE;
   }
 
+  const auto coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
+
   *execution = new (std::nothrow) ANeuralNetworksExecution{executors};
   if (*execution == nullptr)
   {

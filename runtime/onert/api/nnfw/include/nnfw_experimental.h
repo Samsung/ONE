@@ -624,6 +624,7 @@ typedef enum
    * TODO: Use workspace
    */
   NNFW_PREPARE_CONFIG_PROFILE,
+  NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC,
 } NNFW_PREPARE_CONFIG;
 
 /**

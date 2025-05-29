@@ -50,3 +50,10 @@ NNFW_STATUS nnfw_train_export_circleplus(nnfw_session *session, const char *path
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->train_export_circleplus(path);
 }
+
+NNFW_STATUS nnfw_get_dynamic_output(nnfw_session *session, uint32_t index,
+                                    nnfw_tensorinfo *out_info, const void **out_buffer)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->get_dynamic_output(index, out_info, out_buffer);
+}

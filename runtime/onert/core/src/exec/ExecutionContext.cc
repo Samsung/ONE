@@ -26,6 +26,9 @@ void ExecutionOptions::fromGlobalConfig(ExecutionOptions &options)
   options.dump_minmax = util::getConfigBool(util::config::MINMAX_DUMP);
   options.trace = util::getConfigBool(util::config::TRACING_MODE);
   options.profile = util::getConfigBool(util::config::PROFILING_MODE);
+
+  // Assumes that the executors(in the Execution)'s outputs represent the model's overall outputs
+  options.skip_set_output_user_tensor = util::getConfigBool(util::config::INTERNAL_OUTPUT_ALLOC);
 }
 
 } // namespace onert::exec

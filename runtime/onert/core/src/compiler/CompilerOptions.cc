@@ -137,6 +137,7 @@ void CompilerOptions::verboseOptions()
                     << getOpBackends(manual_scheduler_options.opcode_to_backend) << std::endl;
   VERBOSE(Compiler) << "he_scheduler             : " << he_scheduler << std::endl;
   VERBOSE(Compiler) << "he_profiling_mode        : " << he_profiling_mode << std::endl;
+  VERBOSE(Compiler) << "internal_output_alloc    : " << internal_output_alloc << std::endl;
   VERBOSE(Compiler) << "fp16_enable              : " << fp16_enable << std::endl
                     << std::noboolalpha;
 }

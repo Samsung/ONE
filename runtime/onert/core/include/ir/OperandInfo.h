@@ -78,6 +78,12 @@ public:
   OperandInfo(const OperandInfo &origin) = default;
 
   /**
+   * @brief     Assign a new OperandInfo object
+   * @param[in] origin info for copy
+   */
+  OperandInfo &operator=(const OperandInfo &origin) = default;
+
+  /**
    * @brief Create a static OperandInfo object
    */
   static OperandInfo createStaticInfo(const Shape &shape, const TypeInfo &typeInfo)

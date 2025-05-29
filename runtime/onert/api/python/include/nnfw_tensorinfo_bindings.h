@@ -29,6 +29,9 @@ namespace python
 // Declare binding tensorinfo
 void bind_tensorinfo(pybind11::module_ &m);
 
+// Declare binding enums
+void bind_nnfw_enums(pybind11::module_ &m);
+
 } // namespace python
 } // namespace api
 } // namespace onert

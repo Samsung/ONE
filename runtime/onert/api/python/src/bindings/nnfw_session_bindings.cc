@@ -117,76 +117,6 @@ void bind_nnfw_session(py::module_ &m)
       "Parameters:\n"
       "\tindex (int): Index of input to be set (0-indexed)\n"
       "\tbuffer (numpy): Raw buffer for input")
-    .def(
-      "set_output",
-      [](NNFW_SESSION &session, uint32_t index, py::array_t<float> &buffer) {
-        session.set_output<float>(index, buffer);
-      },
-      py::arg("index"), py::arg("buffer"),
-      "Set output buffer\n"
-      "Parameters:\n"
-      "\tindex (int): Index of output to be set (0-indexed)\n"
-      "\tbuffer (numpy): Raw buffer for output")
-    .def(
-      "set_output",
-      [](NNFW_SESSION &session, uint32_t index, py::array_t<int> &buffer) {
-        session.set_output<int>(index, buffer);
-      },
-      py::arg("index"), py::arg("buffer"),
-      "Set output buffer\n"
-      "Parameters:\n"
-      "\tindex (int): Index of output to be set (0-indexed)\n"
-      "\tbuffer (numpy): Raw buffer for output")
-    .def(
-      "set_output",
-      [](NNFW_SESSION &session, uint32_t index, py::array_t<uint8_t> &buffer) {
-        session.set_output<uint8_t>(index, buffer);
-      },
-      py::arg("index"), py::arg("buffer"),
-      "Set output buffer\n"
-      "Parameters:\n"
-      "\tindex (int): Index of output to be set (0-indexed)\n"
-      "\tbuffer (numpy): Raw buffer for output")
-    .def(
-      "set_output",
-      [](NNFW_SESSION &session, uint32_t index, py::array_t<bool> &buffer) {
-        session.set_output<bool>(index, buffer);
-      },
-      py::arg("index"), py::arg("buffer"),
-      "Set output buffer\n"
-      "Parameters:\n"
-      "\tindex (int): Index of output to be set (0-indexed)\n"
-      "\tbuffer (numpy): Raw buffer for output")
-    .def(
-      "set_output",
-      [](NNFW_SESSION &session, uint32_t index, py::array_t<int64_t> &buffer) {
-        session.set_output<int64_t>(index, buffer);
-      },
-      py::arg("index"), py::arg("buffer"),
-      "Set output buffer\n"
-      "Parameters:\n"
-      "\tindex (int): Index of output to be set (0-indexed)\n"
-      "\tbuffer (numpy): Raw buffer for output")
-    .def(
-      "set_output",
-      [](NNFW_SESSION &session, uint32_t index, py::array_t<int8_t> &buffer) {
-        session.set_output<int8_t>(index, buffer);
-      },
-      py::arg("index"), py::arg("buffer"),
-      "Set output buffer\n"
-      "Parameters:\n"
-      "\tindex (int): Index of output to be set (0-indexed)\n"
-      "\tbuffer (numpy): Raw buffer for output")
-    .def(
-      "set_output",
-      [](NNFW_SESSION &session, uint32_t index, py::array_t<int16_t> &buffer) {
-        session.set_output<int16_t>(index, buffer);
-      },
-      py::arg("index"), py::arg("buffer"),
-      "Set output buffer\n"
-      "Parameters:\n"
-      "\tindex (int): Index of output to be set (0-indexed)\n"
-      "\tbuffer (numpy): Raw buffer for output")
     .def("input_size", &NNFW_SESSION::input_size,
          "Get the number of inputs defined in loaded model\n"
          "Returns:\n"
@@ -201,12 +131,6 @@ void bind_nnfw_session(py::module_ &m)
          "Parameters:\n"
          "\tindex (int): Index of input to be set (0-indexed)\n"
          "\tlayout (str): Layout to set to target input")
-    .def("set_output_layout", &NNFW_SESSION::set_output_layout, py::arg("index"),
-         py::arg("layout") = "NONE",
-         "Set the layout of an output\n"
-         "Parameters:\n"
-         "\tindex (int): Index of output to be set (0-indexed)\n"
-         "\tlayout (str): Layout to set to target output")
     .def("input_tensorinfo", &NNFW_SESSION::input_tensorinfo, py::arg("index"),
          "Get i-th input tensor info\n"
          "Parameters:\n"
@@ -218,7 +142,17 @@ void bind_nnfw_session(py::module_ &m)
          "Parameters:\n"
          "\tindex (int): Index of output\n"
          "Returns:\n"
-         "\ttensorinfo: Tensor info (shape, type, etc)");
+         "\ttensorinfo: Tensor info (shape, type, etc)")
+    .def("get_output", &NNFW_SESSION::get_dynamic_output, py::arg("index"),
+         R"pbdoc(
+         Retrieve the internally-allocated dynamic output as a copy.
+
+         Parameters:
+             index (int): Index of the output tensor (0-indexed)
+
+         Returns:
+             numpy.ndarray: a read-only copy of the internal buffer
+         )pbdoc");
 }
 
 // Bind the `NNFW_SESSION` class with experimental APIs
@@ -227,6 +161,8 @@ void bind_experimental_nnfw_session(py::module_ &m)
   // Add experimental APIs for the `NNFW_SESSION` class
   m.attr("nnfw_session")
     .cast<py::class_<NNFW_SESSION>>()
+    .def("set_prepare_config", &NNFW_SESSION::set_prepare_config, py::arg("config"),
+         "Set configuration to prepare")
     .def("train_get_traininfo", &NNFW_SESSION::train_get_traininfo,
          "Retrieve training information for the model.")
     .def("train_set_traininfo", &NNFW_SESSION::train_set_traininfo, py::arg("info"),

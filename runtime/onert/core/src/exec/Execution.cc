@@ -28,18 +28,17 @@ Execution::Execution(const std::shared_ptr<IExecutors> &executors) : _executors{
   assert(executors != nullptr);
   assert(executors->entryExecutor() != nullptr);
 
-  // Initialize I/O description
-  _ctx.desc.inputs.resize(_executors->inputSize());
-  for (uint32_t i = 0; i < _executors->inputSize(); ++i)
-    _ctx.desc.inputs.at(i) = std::make_unique<InputDesc>(_executors->inputInfo(ir::IOIndex(i)));
+  initContext();
+}
 
-  _ctx.desc.outputs.resize(_executors->outputSize());
-  for (uint32_t i = 0; i < _executors->outputSize(); ++i)
-    _ctx.desc.outputs.at(i) = std::make_unique<OutputDesc>(_executors->outputInfo(ir::IOIndex(i)));
-  _ctx.shape_updated = false;
+Execution::Execution(const std::shared_ptr<IExecutors> &executors, const ExecutionOptions &options)
+  : _executors{executors}
+{
+  assert(executors != nullptr);
+  assert(executors->entryExecutor() != nullptr);
 
-  // Initialize options
-  ExecutionOptions::fromGlobalConfig(_ctx.options);
+  initContext();
+  _ctx.options = options;
 }
 
 void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_shape)
@@ -127,7 +126,7 @@ void Execution::execute()
   }
 
   // Output length validation check
-  if (!_ctx.shape_updated)
+  if (!_ctx.shape_updated && !_ctx.options.skip_set_output_user_tensor)
   {
     for (const auto &output : _ctx.desc.outputs)
     {
@@ -231,4 +230,19 @@ void *Execution::getOutputBuffer(ir::IOIndex ind)
   return _ctx.desc.outputs.at(ind.value())->buffer;
 }
 
+void Execution::initContext()
+{
+  // Initialize I/O description
+  _ctx.desc.inputs.resize(_executors->inputSize());
+  for (uint32_t i = 0; i < _executors->inputSize(); ++i)
+    _ctx.desc.inputs.at(i) = std::make_unique<InputDesc>(_executors->inputInfo(ir::IOIndex(i)));
+
+  _ctx.desc.outputs.resize(_executors->outputSize());
+  for (uint32_t i = 0; i < _executors->outputSize(); ++i)
+    _ctx.desc.outputs.at(i) = std::make_unique<OutputDesc>(_executors->outputInfo(ir::IOIndex(i)));
+  _ctx.shape_updated = false;
+
+  // Initialize options
+  ExecutionOptions::fromGlobalConfig(_ctx.options);
+}
 } // namespace onert::exec

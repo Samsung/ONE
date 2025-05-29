@@ -83,6 +83,13 @@ const ir::OperandInfo &MultiModelExecutors::outputInfo(const ir::IOIndex &index)
   return executor->outputInfo(io_index.value());
 }
 
+const void *MultiModelExecutors::outputBuffer(const ir::IOIndex &index) const
+{
+  auto const [model_index, subg_index, io_index] = _model_edges->pkg_outputs[index.value()];
+  auto const executor = at(model_index, subg_index);
+  return static_cast<const void *>(executor->outputBuffer(index.value()));
+}
+
 // Allow below edges only
 //  m1 < m2, s1 == 0 and s2 == 0 if m1:s1:o1 -> m2:s2:o2'
 void MultiModelExecutors::checkSupportedMultimodel() const
