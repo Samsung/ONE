@@ -828,6 +828,32 @@ NNFW_STATUS nnfw_session::register_custom_operation(const std::string &id,
   return NNFW_STATUS_NO_ERROR;
 }
 
+NNFW_STATUS nnfw_session::get_output(uint32_t index, nnfw_tensorinfo *ti, const void **out_buffer)
+{
+  if (ti == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::get_output : tensor info is null" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  if (out_buffer == nullptr)
+  {
+    std::cerr << "Error during nnfw_session::get_output : output buffer is null" << std::endl;
+    return NNFW_STATUS_UNEXPECTED_NULL;
+  }
+
+  if (!isStateFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::get_output : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  // TODO Get output tensorinfo and buffer
+  (void)index;
+
+  return NNFW_STATUS_NO_ERROR;
+}
+
 NNFW_STATUS nnfw_session::set_available_backends(const char *backends)
 {
   if (!isStateModelLoaded())
