@@ -24,7 +24,6 @@ import os
 import sys
 import tempfile
 import onnx
-import onnx_tf
 
 # ONNX legalizer is an optional feature
 # It enables conversion of some operations, but in experimental phase for now
@@ -288,12 +287,27 @@ def _check_ext():
     return None
 
 
+def _check_onnx2circle():
+    # check if onnx2circle exist
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    o2c_path = os.path.join(dir_path, 'onnx2circle')
+    if not os.path.isfile(o2c_path):
+        o2c_path = '/usr/share/circletools/bin/onnx2circle'
+        if not os.path.isfile(o2c_path):
+            print("one-import-onnx: onnx2circle converter not found")
+            sys.exit(1)
+    return o2c_path
+
+
 def _convert(args):
     _apply_verbosity(args.verbose)
 
     # get file path to log
     dir_path = os.path.dirname(os.path.realpath(__file__))
     logfile_path = os.path.realpath(args.output_path) + '.log'
+
+    # get default converter
+    onnx2circle_path = _check_onnx2circle()
 
     # get import onnx extension path
     ext_path = _check_ext()
@@ -306,7 +320,7 @@ def _convert(args):
         # save intermediate
         if oneutils.is_valid_attr(args, 'save_intermediate'):
             tmpdir = os.path.dirname(logfile_path)
-        # convert onnx to tf saved model
+
         onnx_model = onnx.load(onnx_to_convert_path)
         _sanitize_io_names(onnx_model)
         # TODO set model_updated to True only when sanitize updates onnx_model
@@ -340,45 +354,14 @@ def _convert(args):
                 print(
                     "onnx-import-onnx: 'force_ext' is True, "
                     "but onnx-import-onnx-ext is not installed. "
-                    "onnx-tf is used.",
+                    "default converter is used.",
                     flush=True)
-            # TODO split these to small functions
+
             try:
-                tf_savedmodel = onnx_tf.backend.prepare(onnx_model)
-
-                savedmodel_name = os.path.splitext(os.path.basename(
-                    args.output_path))[0] + '.savedmodel'
-                savedmodel_output_path = os.path.join(tmpdir, savedmodel_name)
-                tf_savedmodel.export_graph(savedmodel_output_path)
-
-                # make a command to convert from tf to tflite
-                tf2tfliteV2_path = os.path.join(dir_path, 'tf2tfliteV2.py')
-                tf2tfliteV2_output_name = os.path.splitext(
-                    os.path.basename(args.output_path))[0] + '.tflite'
-                tf2tfliteV2_output_path = os.path.join(tmpdir, tf2tfliteV2_output_name)
-
-                tf2tfliteV2_cmd = _make_cmd.make_tf2tfliteV2_cmd(
-                    args, tf2tfliteV2_path, savedmodel_output_path,
-                    tf2tfliteV2_output_path)
-
-                f.write((' '.join(tf2tfliteV2_cmd) + '\n').encode())
-
-                # convert tf to tflite
-                res_conv = oneutils.run_ret(tf2tfliteV2_cmd, logfile=f)
-
-                if res_conv == 0:
-                    # make a command to convert from tflite to circle
-                    tflite2circle_path = os.path.join(dir_path, 'tflite2circle')
-                    tflite2circle_cmd = _make_cmd.make_tflite2circle_cmd(
-                        tflite2circle_path, tf2tfliteV2_output_path,
-                        getattr(args, 'output_path'))
-
-                    f.write((' '.join(tflite2circle_cmd) + '\n').encode())
-
-                    # convert tflite to circle
-                    res_conv = oneutils.run_ret(tflite2circle_cmd,
-                                                err_prefix="tflite2circle",
-                                                logfile=f)
+                o2c_cmd = [onnx2circle_path]
+                o2c_cmd.append(onnx_to_convert_path)
+                o2c_cmd.append(getattr(args, 'output_path'))
+                res_conv = oneutils.run_ret(o2c_cmd, logfile=f)
             except:
                 res_conv = -1
 
