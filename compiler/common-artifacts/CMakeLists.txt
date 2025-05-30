@@ -16,11 +16,6 @@ if(NOT Python_Interpreter_FOUND)
   return()
 endif()
 
-if(Python_VERSION VERSION_LESS 3.8)
-  message(STATUS "Build common-artifacts: FAILED (Need Python version 3.8 or higher)")
-  return()
-endif()
-
 # NOTE assume only use 3.8.x or 3.10.x or 3.12.x
 if((Python_VERSION VERSION_GREATER_EQUAL 3.8) AND (Python_VERSION VERSION_LESS 3.9))
   set(PYTHON_VERSION_MINOR 8)
