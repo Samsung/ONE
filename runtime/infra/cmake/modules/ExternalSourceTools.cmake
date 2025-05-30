@@ -25,7 +25,7 @@ function(ExternalSource_Download PREFIX)
 
   get_filename_component(FILENAME ${URL} NAME)
 
-  set(CACHE_DIR "${NNAS_EXTERNALS_DIR}")
+  set(CACHE_DIR "${NNFW_EXTERNALS_DIR}")
   set(OUT_DIR "${CACHE_DIR}/${DIRNAME}")
   set(TMP_DIR "${CACHE_DIR}/${DIRNAME}-tmp")
 

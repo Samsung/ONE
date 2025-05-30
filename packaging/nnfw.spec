@@ -162,24 +162,34 @@ If you want to get coverage info, you should install runtime package which is bu
 %prep
 %setup -q
 cp %{SOURCE1} .
-mkdir ./externals
+mkdir ./runtime/externals
 tar -xf %{SOURCE1001} -C ./runtime/tests/nnapi/src/
-tar -xf %{SOURCE3001} -C ./externals
-tar -xf %{SOURCE3002} -C ./externals
-tar -xf %{SOURCE3003} -C ./externals
+tar -xf %{SOURCE3001} -C ./runtime/externals
+tar -xf %{SOURCE3002} -C ./runtime/externals
+tar -xf %{SOURCE3003} -C ./runtime/externals
+tar -xf %{SOURCE3004} -C ./runtime/externals
+tar -xf %{SOURCE3005} -C ./runtime/externals
+tar -xf %{SOURCE3006} -C ./runtime/externals
+tar -xf %{SOURCE3007} -C ./runtime/externals
+tar -xf %{SOURCE3008} -C ./runtime/externals
+tar -xf %{SOURCE3009} -C ./runtime/externals
+tar -xf %{SOURCE3010} -C ./runtime/externals
+tar -xf %{SOURCE3011} -C ./runtime/externals
+tar -xf %{SOURCE3012} -C ./runtime/externals
+tar -xf %{SOURCE3013} -C ./runtime/externals
+tar -xf %{SOURCE3014} -C ./runtime/externals
+tar -xf %{SOURCE3015} -C ./runtime/externals
+tar -xf %{SOURCE3016} -C ./runtime/externals
+
+%if %{odc_build} == 1
+mkdir ./externals
 tar -xf %{SOURCE3004} -C ./externals
 tar -xf %{SOURCE3005} -C ./externals
-tar -xf %{SOURCE3006} -C ./externals
-tar -xf %{SOURCE3007} -C ./externals
 tar -xf %{SOURCE3008} -C ./externals
-tar -xf %{SOURCE3009} -C ./externals
-tar -xf %{SOURCE3010} -C ./externals
-tar -xf %{SOURCE3011} -C ./externals
-tar -xf %{SOURCE3012} -C ./externals
 tar -xf %{SOURCE3013} -C ./externals
 tar -xf %{SOURCE3014} -C ./externals
 tar -xf %{SOURCE3015} -C ./externals
-tar -xf %{SOURCE3016} -C ./externals
+%endif # odc_build
 
 %build
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64

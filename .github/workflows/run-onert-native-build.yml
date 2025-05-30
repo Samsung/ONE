@@ -63,8 +63,8 @@ jobs:
       - name: Caching externals
         uses: actions/cache@v4
         with:
-          path: externals
-          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          path: runtime/externals
+          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('runtime/infra/cmake/packages/**/*.cmake') }}
           restore-keys: |
             external-onert-${{ matrix.ubuntu_code }}-
 
