@@ -74,4 +74,4 @@ jobs:
 
       - name: Build
         run: |
-          gbs -c infra/nnfw/config/gbs.conf build -A ${{ matrix.arch }} --profile ${{ matrix.profile }} --buildroot .gbs
+          gbs -c runtime/infra/gbs/gbs.conf build -A ${{ matrix.arch }} --profile ${{ matrix.profile }} --buildroot .gbs
