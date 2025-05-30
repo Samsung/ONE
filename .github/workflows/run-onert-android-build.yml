@@ -11,6 +11,9 @@ on:
       - 'Makefile.template'
       - 'runtime/**'
       - '!runtime/contrib/**'
+      - '!runtime/infra/debian/**'
+      - '!runtime/infra/gbs/**'
+      - '!runtime/infra/python/**'
       - '!**/*.md'
   pull_request:
     branches:
@@ -22,6 +25,9 @@ on:
       - 'Makefile.template'
       - 'runtime/**'
       - '!runtime/contrib/**'
+      - '!runtime/infra/debian/**'
+      - '!runtime/infra/gbs/**'
+      - '!runtime/infra/python/**'
       - '!**/*.md'
 
 defaults:
