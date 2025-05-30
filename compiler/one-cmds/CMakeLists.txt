@@ -91,24 +91,30 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
 
 endforeach(ONE_COMMAND)
 
+unset(ONNX2CIRCLE_SOURCE_PATH)
 # if ONE_ONNX2CIRCLE_PATH is set, install that file to bin folder
 if(DEFINED ENV{ONE_ONNX2CIRCLE_PATH})
-  message(STATUS "ONNX2CIRCLE from env-var $ENV{ONE_ONNX2CIRCLE_PATH}")
-  install(FILES $ENV{ONE_ONNX2CIRCLE_PATH}
+  set(ONNX2CIRCLE_SOURCE_PATH $ENV{ONE_ONNX2CIRCLE_PATH})
+else()
+  # if local build/install of circle-mlir exist, use it
+  set(ONNX2CIRCLE_PATH "${NNAS_PROJECT_SOURCE_DIR}/circle-mlir/build/install/bin/onnx2circle")
+  if (EXISTS ${ONNX2CIRCLE_PATH})
+    set(ONNX2CIRCLE_SOURCE_PATH ${ONNX2CIRCLE_PATH})
+  else()
+    # if circletools/onnx2circle package is installed, use it
+    set(ONNX2CIRCLE_PATH "/usr/share/circletools/bin/onnx2circle")
+    if (EXISTS ${ONNX2CIRCLE_PATH})
+      set(ONNX2CIRCLE_SOURCE_PATH ${ONNX2CIRCLE_PATH})
+    endif()
+  endif()
+endif()
+if(DEFINED ONNX2CIRCLE_SOURCE_PATH AND EXISTS ${ONNX2CIRCLE_SOURCE_PATH})
+  message(STATUS "ONNX2CIRCLE from ${ONNX2CIRCLE_SOURCE_PATH}")
+  install(FILES ${ONNX2CIRCLE_SOURCE_PATH}
           PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
                       GROUP_READ GROUP_EXECUTE
                       WORLD_READ WORLD_EXECUTE
           DESTINATION bin)
-else()
-  set(ONNX2CIRCLE_PATH "${NNAS_PROJECT_SOURCE_DIR}/circle-mlir/build/install/bin/onnx2circle")
-  if (EXISTS ${ONNX2CIRCLE_PATH})
-    message(STATUS "ONNX2CIRCLE from ${ONNX2CIRCLE_PATH}")
-    install(FILES ${ONNX2CIRCLE_PATH}
-            PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
-                        GROUP_READ GROUP_EXECUTE
-                        WORLD_READ WORLD_EXECUTE
-            DESTINATION bin)
-  endif()
 endif()
 
 set(ONE_UTILITY_FILES
