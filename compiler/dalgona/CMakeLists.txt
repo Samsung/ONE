@@ -16,8 +16,16 @@ if(NOT Python_Development_FOUND)
   return()
 endif()
 
-if(Python_VERSION VERSION_LESS 3.8)
-  message(STATUS "Build dalgona: FAILED (Need Python version 3.8 or higher)")
+# NOTE assume only use 3.8.x or 3.10.x or 3.12.x
+if((Python_VERSION VERSION_GREATER_EQUAL 3.8) AND (Python_VERSION VERSION_LESS 3.9))
+  set(PYTHON_VERSION_MINOR 8)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
+  set(PYTHON_VERSION_MINOR 10)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
+  set(PYTHON_VERSION_MINOR 12)
+else()
+  # TODO support more
+  message(STATUS "Build dalgona: FAILED (Unsupported python: ${Python_VERSION})")
   return()
 endif()
 
