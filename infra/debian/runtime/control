@@ -43,3 +43,9 @@ Architecture: amd64
 Multi-Arch: same
 Depends: onert, onert-dev, ${shlibs:Depends}, ${misc:Depends}
 Description: one-runtime development package
+
+Package: onert-train
+Architecture: amd64
+Multi-Arch: same
+Depends: onert, ${shlibs:Depends}, ${misc:Depends}
+Description: one-runtime train package

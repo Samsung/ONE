@@ -2,6 +2,7 @@
 # lib
 usr/lib/*.so usr/lib/
 usr/lib/nnfw/*.so usr/lib/nnfw
-usr/lib/nnfw/backend/*.so usr/lib/nnfw/backend/
+usr/lib/nnfw/backend/libbackend_cpu.so usr/lib/nnfw/backend/
+usr/lib/nnfw/backend/libbackend_ruy.so usr/lib/nnfw/backend/
 # tvn loader debian build is not supported yet
 #usr/lib/nnfw/loader/*.so usr/lib/nnfw/loader/

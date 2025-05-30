@@ -79,6 +79,22 @@ Requires: %{name}-devel = %{version}-%{release}
 %description plugin-devel
 NNFW development package for backend plugin developer
 
+%package train
+Summary: ONERT Train Package
+Requires: %{name} = %{version}-%{release}
+
+%description train
+ONERT backend package for training
+
+%if %{trix_support} == 1
+%package trix
+Summary: ONERT Trix Package
+Requires: %{name} = %{version}-%{release}
+
+%description trix
+ONERT loader and backend package for trix
+%endif # trix_support
+
 %if %{odc_build} == 1
 %package odc
 Summary: NNFW On-Device Compilation Package
@@ -300,7 +316,8 @@ install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %{_libdir}/nnfw/*.so
 %if "%{asan}" != "1"
 %{_libdir}/nnfw/backend/*.so
-%{_libdir}/nnfw/loader/*.so
+%exclude %{_libdir}/nnfw/backend/libbackend_trix.so
+%exclude %{_libdir}/nnfw/backend/libbackend_train.so
 %endif
 %exclude %{_includedir}/CL/*
 %endif
@@ -324,6 +341,23 @@ install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %{_libdir}/pkgconfig/nnfw-plugin.pc
 %{_libdir}/pkgconfig/onert-plugin.pc
 %endif
+
+%files train
+%manifest %{name}.manifest
+%defattr(-,root,root,-)
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
+%{_libdir}/nnfw/backend/libbackend_train.so
+%endif # arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
+
+%if %{trix_support} == 1
+%files trix
+%manifest %{name}.manifest
+%defattr(-,root,root,-)
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
+%{_libdir}/nnfw/loader/libtvn_loader.so
+%{_libdir}/nnfw/backend/libbackend_trix.so
+%endif # arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
+%endif # trix_support
 
 %if %{test_build} == 1
 %files test
