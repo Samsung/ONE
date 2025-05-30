@@ -16,21 +16,17 @@
  */
 
 #include "execute/OMTestUtils.h"
+
 #include "test_models/floordiv/FloatFloorDivKernel.h"
 #include "test_models/floordiv/NegFloorDivKernel.h"
 
 #include "PALFloorDiv.h"
+
 #include <array>
 #include <numeric>
 
-namespace onert_micro
+namespace onert_micro::execute::testing
 {
-namespace execute
-{
-namespace testing
-{
-
-using namespace testing;
 
 class FloorDivTest : public ::testing::Test
 {
@@ -39,26 +35,22 @@ class FloorDivTest : public ::testing::Test
 
 TEST_F(FloorDivTest, Float_P)
 {
-  // No broadcast
-  {
-    const bool is_with_broadcast = false;
-    onert_micro::test_model::TestDataFloatFloorDiv test_data_kernel(is_with_broadcast);
-    std::vector<float> output_data_vector =
-      onert_micro::execute::testing::checkKernel<float>(2, &test_data_kernel);
+  // clang-format off
 
-    EXPECT_THAT(output_data_vector,
-                FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
-  }
-  // With broadcast
+  const auto test_fn = [](const bool use_broadcast)
   {
-    const bool is_with_broadcast = true;
-    onert_micro::test_model::TestDataFloatFloorDiv test_data_kernel(is_with_broadcast);
-    std::vector<float> output_data_vector =
-      onert_micro::execute::testing::checkKernel<float>(2, &test_data_kernel);
+    test_model::TestDataFloatFloorDiv test_data_kernel(use_broadcast);
+    std::vector<float> output_data_vector = checkKernel<float>(2, &test_data_kernel);
 
-    EXPECT_THAT(output_data_vector,
-                FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
-  }
+    auto& output_data = test_data_kernel.get_output_data_by_index(0);
+
+    EXPECT_THAT(output_data_vector, FloatArrayNear(output_data, 0.0001f));
+  };
+
+  test_fn(false); // No broadcast
+  test_fn(true);  // With broadcast
+
+  // clang-format on
 }
 
 TEST_F(FloorDivTest, Wrong_Input1_Type_NEG)
@@ -102,24 +94,21 @@ TEST_F(FloorDivTest, PALFloat_P)
     const auto &input1 = test_data_kernel.get_input_data_by_index(0);
     const auto &input2 = test_data_kernel.get_input_data_by_index(1);
 
-    const int32_t shape[2] = {2, 5};
-    const int32_t shape_broadcast[2] = {2, 1};
+    using Array = std::array<int32_t, 2>;
 
-    assert(input1.size() ==
-           std::accumulate(std::begin(shape), std::end(shape), 1, std::multiplies<float>()));
-    assert(input2.size() == std::accumulate(std::begin(shape_broadcast), std::end(shape_broadcast),
-                                            1, std::multiplies<float>()));
+    const core::OMRuntimeShape shape(Array{2, 5});
+    const core::OMRuntimeShape shape_broadcast(Array{2, 1});
 
-    std::vector<float> output = std::vector<float>(
-      std::accumulate(std::begin(shape), std::end(shape), 1, std::multiplies<float>()));
-    pal::BroadcastFloorDiv4DSlow(
-      core::OMRuntimeShape{2, shape}, input1.data(), core::OMRuntimeShape{2, shape_broadcast},
-      input2.data(), core::OMRuntimeShape{2, shape}, const_cast<float *>(output.data()));
+    assert(input1.size() == shape.flatSize());
+    assert(input2.size() == shape_broadcast.flatSize());
+
+    auto output = std::vector<float>(shape.flatSize());
+
+    pal::BroadcastFloorDiv4DSlow(shape, input1.data(), shape_broadcast, input2.data(), shape,
+                                 const_cast<float *>(output.data()));
 
     EXPECT_THAT(output, FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
   }
 }
 
-} // namespace testing
-} // namespace execute
-} // namespace onert_micro
+} // namespace onert_micro::execute::testing
