@@ -1,6 +1,6 @@
 function(_Tensorflow_Import)
   if(NOT DEFINED TENSORFLOW_DIR)
-    set(TENSORFLOW_DIR ${NNAS_EXTERNALS_DIR}/tensorflow)
+    set(TENSORFLOW_DIR ${NNFW_EXTERNALS_DIR}/tensorflow)
   endif(NOT DEFINED TENSORFLOW_DIR)
 
   if(NOT DEFINED NSYNC_ARCH)
