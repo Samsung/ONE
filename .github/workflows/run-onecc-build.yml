@@ -76,6 +76,7 @@ jobs:
         run: |
           add-apt-repository ppa:deadsnakes/ppa
           apt-get -qqy install python3.10 python3.10-dev python3.10-venv
+          python3.10 -m ensurepip --upgrade
 
       # dalgona uses pybind11, but pybind11 cannot bind packages in virtualenv.
       # So we need to install packages for dalgona-test globally.
