@@ -9,18 +9,22 @@ if(NOT Python_FOUND)
   find_package(Python 3.8 COMPONENTS Interpreter QUIET)
 endif()
 
-# tensorflow 2.12.1 supports Python 3.8 ~ 3.11
-if(Python_VERSION VERSION_GREATER_EQUAL 3.12)
-  message(STATUS "Build one-cmds: FALSE (Python version 3.12 or higher is not supported yet)")
-  return()
-endif()
-if(Python_VERSION VERSION_LESS 3.8)
-  message(STATUS "Build one-cmds: FAILED (Install Python version 3.8 or 3.10)")
+if(NOT Python_Interpreter_FOUND)
+  message(STATUS "Build one-cmds: FAILED (Python3 is missing)")
   return()
 endif()
 
-if(NOT Python_Interpreter_FOUND)
-  message(STATUS "Build one-cmds: FAILED (Python3 is missing)")
+# NOTE assume only use 3.8.x or 3.10.x or 3.12.x
+# NOTE PYTHON_VERSION_MINOR is not used but added for consistancy with common-artifacts and dalgona
+if((Python_VERSION VERSION_GREATER_EQUAL 3.8) AND (Python_VERSION VERSION_LESS 3.9))
+  set(PYTHON_VERSION_MINOR 8)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
+  set(PYTHON_VERSION_MINOR 10)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
+  set(PYTHON_VERSION_MINOR 12)
+else()
+  # TODO support more
+  message(STATUS "Build one-cmds: FAILED (Unsupported python: ${Python_VERSION})")
   return()
 endif()
 
