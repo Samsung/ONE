@@ -1,6 +1,6 @@
 Source: one
-Section: devel
-Priority: extra
+Section: libs
+Priority: optional
 Maintainer: Neural Network Acceleration Solution Developers <nnfw@samsung.com>
 Build-Depends: cmake, debhelper (>=9)
 Standards-Version: 3.9.8
@@ -43,3 +43,9 @@ Architecture: amd64
 Multi-Arch: same
 Depends: onert, onert-dev, ${shlibs:Depends}, ${misc:Depends}
 Description: one-runtime development package
+
+Package: onert-train
+Architecture: amd64
+Multi-Arch: same
+Depends: onert, ${shlibs:Depends}, ${misc:Depends}
+Description: one-runtime train package
