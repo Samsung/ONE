@@ -15,6 +15,11 @@ set(FME_DETECT_BIN "${FME_DETECT_BIN_PATH}/fme-detect")
 set(DALGONA_BIN "${DALGONA_BIN_PATH}/dalgona")
 set(FME_APPLY_BIN "${FME_APPLY_BIN_PATH}/fme-apply")
 
+if (NOT DEFINED ONE_PYTHON_VERSION_MINOR)
+  message(STATUS "Error: ONE_PYTHON_VERSION_MINOR not set")
+endif()
+set(PYTHON_SITE_PACKAGES "${VIRTUALENV}/lib/python3.${ONE_PYTHON_VERSION_MINOR}/site-packages")
+
 macro(eval RECIPE)
   set(CIRCLE_FILE "${RECIPE}.circle")
   set(CIRCLE_PATH "${ARTIFACTS_BIN_PATH}/${CIRCLE_FILE}")
@@ -32,14 +37,6 @@ macro(eval RECIPE)
   set(AFETR_PATTERN_FILE "${RECIPE}.after.json")
   set(AFTER_CIRCLE_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${AFTER_CIRCLE_FILE}")
   set(AFTER_CIRCLE_PATTERN_PATH "${CMAKE_CURRENT_BINARY_DIR}/${AFETR_PATTERN_FILE}")
-
-  execute_process(
-    COMMAND ${VIRTUALENV}/bin/python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')"
-    OUTPUT_VARIABLE PYTHON_VERSION
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
-
-  set(PYTHON_SITE_PACKAGES "${NNCC_OVERLAY_DIR}/venv/lib/python${PYTHON_VERSION}/site-packages")
 
   # Apply fm-equalize
   add_custom_command(OUTPUT ${AFTER_CIRCLE_OUTPUT_PATH} ${AFTER_CIRCLE_PATTERN_PATH}
