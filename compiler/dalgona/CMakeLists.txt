@@ -6,7 +6,10 @@
 #   refer https://github.com/Samsung/ONE/issues/9962
 # NOTE Require same python version of common-artifacts
 # find python 3.8 or above
-find_package(Python 3.8 COMPONENTS Development QUIET)
+find_package(Python 3.8 EXACT COMPONENTS Interpreter Development QUIET)
+if(NOT Python_FOUND)
+  find_package(Python 3.8 COMPONENTS Interpreter Development QUIET)
+endif()
 
 if(NOT Python_Development_FOUND)
   message(STATUS "Build dalgona: FAILED (Python3 development package is missing)")
