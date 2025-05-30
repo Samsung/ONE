@@ -6,7 +6,10 @@
 #   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
 # find python 3.8 or above
-find_package(Python 3.8 COMPONENTS Interpreter QUIET)
+find_package(Python 3.8 EXACT COMPONENTS Interpreter QUIET)
+if(NOT Python_FOUND)
+  find_package(Python 3.8 COMPONENTS Interpreter QUIET)
+endif()
 
 if(NOT Python_Interpreter_FOUND)
   message(STATUS "Build common-artifacts: FAILED (Python3 is missing)")
