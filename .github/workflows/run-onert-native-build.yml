@@ -7,12 +7,8 @@ on:
       - release/*
     paths:
       - '.github/workflows/run-onert-native-build.yml'
-      - 'nn*'
+      - 'nnfw'
       - 'Makefile.template'
-      - 'infra/buildtool/**'
-      - 'infra/cmake/**'
-      - 'infra/nncc/**'
-      - 'infra/nnfw/**'
       - 'runtime/**'
       - '!runtime/contrib/**'
       - '!**/*.md'
@@ -22,12 +18,8 @@ on:
       - release/*
     paths:
       - '.github/workflows/run-onert-native-build.yml'
-      - 'nn*'
+      - 'nnfw'
       - 'Makefile.template'
-      - 'infra/buildtool/**'
-      - 'infra/cmake/**'
-      - 'infra/nncc/**'
-      - 'infra/nnfw/**'
       - 'runtime/**'
       - '!runtime/contrib/**'
       - '!**/*.md'
