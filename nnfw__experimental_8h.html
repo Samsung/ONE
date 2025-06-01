@@ -167,6 +167,7 @@ Enumerations</h2></td></tr>
 <tr class="memdesc:a6b579b96cb876a738cb8ccfd174c0b19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Preference for target-dependent code generation.  <a href="nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19">More...</a><br /></td></tr>
 <tr class="separator:a6b579b96cb876a738cb8ccfd174c0b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae580e8c93ff80d9d50b0dc355c6fa581" id="r_ae580e8c93ff80d9d50b0dc355c6fa581"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">NNFW_PREPARE_CONFIG</a> { <a class="el" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98">NNFW_PREPARE_CONFIG_PROFILE</a>
+, <a class="el" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a1814ee5facd497c238f2af696ddf3d61">NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC</a>
  }</td></tr>
 <tr class="memdesc:ae580e8c93ff80d9d50b0dc355c6fa581"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configuration key for prepare (compile and schedule)  <a href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">More...</a><br /></td></tr>
 <tr class="separator:ae580e8c93ff80d9d50b0dc355c6fa581"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -379,14 +380,18 @@ Functions</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98" name="ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98"></a>NNFW_PREPARE_CONFIG_PROFILE&#160;</td><td class="fielddoc"><p>Prepare to dump execution time profile file (not require value setting) TODO: Use workspace </p>
 </td></tr>
+<tr><td class="fieldname"><a id="ae580e8c93ff80d9d50b0dc355c6fa581a1814ee5facd497c238f2af696ddf3d61" name="ae580e8c93ff80d9d50b0dc355c6fa581a1814ee5facd497c238f2af696ddf3d61"></a>NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC&#160;</td><td class="fielddoc"><p>Enable internal allocation for model outputs instead of using external buffer </p>
+</td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00620">620</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  621</span>{</div>
 <div class="line"><span class="lineno">  626</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98">NNFW_PREPARE_CONFIG_PROFILE</a>,</div>
-<div class="line"><span class="lineno">  627</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">NNFW_PREPARE_CONFIG</a>;</div>
+<div class="line"><span class="lineno">  630</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a1814ee5facd497c238f2af696ddf3d61">NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC</a>,</div>
+<div class="line"><span class="lineno">  631</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">NNFW_PREPARE_CONFIG</a>;</div>
 <div class="ttc" id="annfw__experimental_8h_html_ae580e8c93ff80d9d50b0dc355c6fa581"><div class="ttname"><a href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">NNFW_PREPARE_CONFIG</a></div><div class="ttdeci">NNFW_PREPARE_CONFIG</div><div class="ttdoc">Configuration key for prepare (compile and schedule)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00620">nnfw_experimental.h:621</a></div></div>
 <div class="ttc" id="annfw__experimental_8h_html_ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98"><div class="ttname"><a href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98">NNFW_PREPARE_CONFIG_PROFILE</a></div><div class="ttdeci">@ NNFW_PREPARE_CONFIG_PROFILE</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00626">nnfw_experimental.h:626</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_ae580e8c93ff80d9d50b0dc355c6fa581a1814ee5facd497c238f2af696ddf3d61"><div class="ttname"><a href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a1814ee5facd497c238f2af696ddf3d61">NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC</a></div><div class="ttdeci">@ NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00630">nnfw_experimental.h:630</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -474,16 +479,16 @@ Functions</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00657">657</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  658</span>{</div>
-<div class="line"><span class="lineno">  660</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3">NNFW_RUN_CONFIG_DUMP_MINMAX</a>,</div>
-<div class="line"><span class="lineno">  662</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da92718964cae6b8bbae600889898390ad">NNFW_RUN_CONFIG_TRACE</a>,</div>
-<div class="line"><span class="lineno">  671</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da7d08a8a63ae58e28a48bb7b43595afca">NNFW_RUN_CONFIG_PROFILE</a>,</div>
-<div class="line"><span class="lineno">  672</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013d">NNFW_RUN_CONFIG</a>;</div>
-<div class="ttc" id="annfw__experimental_8h_html_aa184da9db1560ca26dd7ee889bd1013d"><div class="ttname"><a href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013d">NNFW_RUN_CONFIG</a></div><div class="ttdeci">NNFW_RUN_CONFIG</div><div class="ttdoc">Configuration key for execution.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00657">nnfw_experimental.h:658</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_aa184da9db1560ca26dd7ee889bd1013da7d08a8a63ae58e28a48bb7b43595afca"><div class="ttname"><a href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da7d08a8a63ae58e28a48bb7b43595afca">NNFW_RUN_CONFIG_PROFILE</a></div><div class="ttdeci">@ NNFW_RUN_CONFIG_PROFILE</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00671">nnfw_experimental.h:671</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_aa184da9db1560ca26dd7ee889bd1013da92718964cae6b8bbae600889898390ad"><div class="ttname"><a href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da92718964cae6b8bbae600889898390ad">NNFW_RUN_CONFIG_TRACE</a></div><div class="ttdeci">@ NNFW_RUN_CONFIG_TRACE</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00662">nnfw_experimental.h:662</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3"><div class="ttname"><a href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3">NNFW_RUN_CONFIG_DUMP_MINMAX</a></div><div class="ttdeci">@ NNFW_RUN_CONFIG_DUMP_MINMAX</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00660">nnfw_experimental.h:660</a></div></div>
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00661">661</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  662</span>{</div>
+<div class="line"><span class="lineno">  664</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3">NNFW_RUN_CONFIG_DUMP_MINMAX</a>,</div>
+<div class="line"><span class="lineno">  666</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da92718964cae6b8bbae600889898390ad">NNFW_RUN_CONFIG_TRACE</a>,</div>
+<div class="line"><span class="lineno">  675</span>  <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da7d08a8a63ae58e28a48bb7b43595afca">NNFW_RUN_CONFIG_PROFILE</a>,</div>
+<div class="line"><span class="lineno">  676</span>} <a class="code hl_enumeration" href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013d">NNFW_RUN_CONFIG</a>;</div>
+<div class="ttc" id="annfw__experimental_8h_html_aa184da9db1560ca26dd7ee889bd1013d"><div class="ttname"><a href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013d">NNFW_RUN_CONFIG</a></div><div class="ttdeci">NNFW_RUN_CONFIG</div><div class="ttdoc">Configuration key for execution.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00661">nnfw_experimental.h:662</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa184da9db1560ca26dd7ee889bd1013da7d08a8a63ae58e28a48bb7b43595afca"><div class="ttname"><a href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da7d08a8a63ae58e28a48bb7b43595afca">NNFW_RUN_CONFIG_PROFILE</a></div><div class="ttdeci">@ NNFW_RUN_CONFIG_PROFILE</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00675">nnfw_experimental.h:675</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa184da9db1560ca26dd7ee889bd1013da92718964cae6b8bbae600889898390ad"><div class="ttname"><a href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013da92718964cae6b8bbae600889898390ad">NNFW_RUN_CONFIG_TRACE</a></div><div class="ttdeci">@ NNFW_RUN_CONFIG_TRACE</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00666">nnfw_experimental.h:666</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3"><div class="ttname"><a href="nnfw__experimental_8h.html#aa184da9db1560ca26dd7ee889bd1013dabfabb72f6003e307549c0d21b796d2f3">NNFW_RUN_CONFIG_DUMP_MINMAX</a></div><div class="ttdeci">@ NNFW_RUN_CONFIG_DUMP_MINMAX</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00664">nnfw_experimental.h:664</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

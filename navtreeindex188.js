@@ -1,5 +1,14 @@
 var NAVTREEINDEX188 =
 {
+"compiler_2tflchef_2core_2src_2_op_2_reshape_8h_source.html":[41,0,0,131,0,1,1,159],
+"compiler_2tflchef_2core_2src_2_op_2_resize_bilinear_8cpp.html":[41,0,0,131,0,1,1,160],
+"compiler_2tflchef_2core_2src_2_op_2_resize_bilinear_8cpp_source.html":[41,0,0,131,0,1,1,160],
+"compiler_2tflchef_2core_2src_2_op_2_resize_bilinear_8h.html":[41,0,0,131,0,1,1,161],
+"compiler_2tflchef_2core_2src_2_op_2_resize_bilinear_8h_source.html":[41,0,0,131,0,1,1,161],
+"compiler_2tflchef_2core_2src_2_op_2_resize_nearest_neighbor_8cpp.html":[41,0,0,131,0,1,1,162],
+"compiler_2tflchef_2core_2src_2_op_2_resize_nearest_neighbor_8cpp_source.html":[41,0,0,131,0,1,1,162],
+"compiler_2tflchef_2core_2src_2_op_2_resize_nearest_neighbor_8h.html":[41,0,0,131,0,1,1,163],
+"compiler_2tflchef_2core_2src_2_op_2_resize_nearest_neighbor_8h_source.html":[41,0,0,131,0,1,1,163],
 "compiler_2tflchef_2core_2src_2_op_2_reverse_v2_8cpp.html":[41,0,0,131,0,1,1,166],
 "compiler_2tflchef_2core_2src_2_op_2_reverse_v2_8cpp_source.html":[41,0,0,131,0,1,1,166],
 "compiler_2tflchef_2core_2src_2_op_2_reverse_v2_8h.html":[41,0,0,131,0,1,1,167],
@@ -240,14 +249,5 @@ var NAVTREEINDEX188 =
 "compiler_2tflchef_2tflite_2src_2_op_2_resize_nearest_neighbor_8cpp_source.html":[41,0,0,131,2,1,0,80],
 "compiler_2tflchef_2tflite_2src_2_op_2_reverse_v2_8cpp.html":[41,0,0,131,2,1,0,82],
 "compiler_2tflchef_2tflite_2src_2_op_2_reverse_v2_8cpp_source.html":[41,0,0,131,2,1,0,82],
-"compiler_2tflchef_2tflite_2src_2_op_2_round_8cpp.html":[41,0,0,131,2,1,0,83],
-"compiler_2tflchef_2tflite_2src_2_op_2_round_8cpp_source.html":[41,0,0,131,2,1,0,83],
-"compiler_2tflchef_2tflite_2src_2_op_2_rsqrt_8cpp.html":[41,0,0,131,2,1,0,84],
-"compiler_2tflchef_2tflite_2src_2_op_2_rsqrt_8cpp_source.html":[41,0,0,131,2,1,0,84],
-"compiler_2tflchef_2tflite_2src_2_op_2_s_v_d_f_8cpp.html":[41,0,0,131,2,1,0,105],
-"compiler_2tflchef_2tflite_2src_2_op_2_s_v_d_f_8cpp_source.html":[41,0,0,131,2,1,0,105],
-"compiler_2tflchef_2tflite_2src_2_op_2_select_v2_8cpp.html":[41,0,0,131,2,1,0,88],
-"compiler_2tflchef_2tflite_2src_2_op_2_select_v2_8cpp_source.html":[41,0,0,131,2,1,0,88],
-"compiler_2tflchef_2tflite_2src_2_op_2_shape_8cpp.html":[41,0,0,131,2,1,0,89],
-"compiler_2tflchef_2tflite_2src_2_op_2_shape_8cpp_source.html":[41,0,0,131,2,1,0,89]
+"compiler_2tflchef_2tflite_2src_2_op_2_round_8cpp.html":[41,0,0,131,2,1,0,83]
 };

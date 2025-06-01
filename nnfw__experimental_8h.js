@@ -15,7 +15,8 @@ var nnfw__experimental_8h =
       [ "NNFW_CODEGEN_PREF_COMPILE_TIME_FIRST", "nnfw__experimental_8h.html#a6b579b96cb876a738cb8ccfd174c0b19ab26f858cf7b87eeaabc7e9621cec39b1", null ]
     ] ],
     [ "NNFW_PREPARE_CONFIG", "nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581", [
-      [ "NNFW_PREPARE_CONFIG_PROFILE", "nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98", null ]
+      [ "NNFW_PREPARE_CONFIG_PROFILE", "nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98", null ],
+      [ "NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC", "nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a1814ee5facd497c238f2af696ddf3d61", null ]
     ] ],
     [ "NNFW_QUANTIZE_TYPE", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7", [
       [ "NNFW_QUANTIZE_TYPE_NOT_SET", "nnfw__experimental_8h.html#aa01eff0d1a154931c2f7e071f1b0e2e7ab42180c09056cbfc71d9df506dc490fe", null ],

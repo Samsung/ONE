@@ -1,5 +1,14 @@
 var NAVTREEINDEX181 =
 {
+"compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3c":[41,0,0,52,0,0,1,10,0],
+"compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca115dca124dc6423c7a400b8a8a0270cc":[41,0,0,52,0,0,1,10,0,10],
+"compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca139882c654db8a57f7c3092de1dd0b02":[41,0,0,52,0,0,1,10,0,13],
+"compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca25a6f403a0d3bf903029ff1cb36263a0":[41,0,0,52,0,0,1,10,0,16],
+"compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca31d65cccd6593e4101db93fb878abcaa":[41,0,0,52,0,0,1,10,0,5],
+"compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca59857de52941e35130b7887199e72122":[41,0,0,52,0,0,1,10,0,17],
+"compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca63b588d5559f64f89a416e656880b949":[41,0,0,52,0,0,1,10,0,15],
+"compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca6669348b484e3008dca2bfa8e85e40b5":[41,0,0,52,0,0,1,10,0,2],
+"compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca6e0b0886efb94aec797f6b830329b72c":[41,0,0,52,0,0,1,10,0,8],
 "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca7a7e060fbac468049775df37d8dfa511":[41,0,0,52,0,0,1,10,0,1],
 "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca88183b946cc5f0e8c96b2e66e1c74a7e":[41,0,0,52,0,0,1,10,0,0],
 "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html#ad30d86ce5bd365deae8ef4398fb16d3ca967d280b5c16d95f2947647dd2ca6cc2":[41,0,0,52,0,0,1,10,0,12],
@@ -240,14 +249,5 @@ var NAVTREEINDEX181 =
 "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_mul_8h_source.html":[41,0,0,62,1,2,12],
 "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_neg_8h.html":[41,0,0,62,1,2,13],
 "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_neg_8h_source.html":[41,0,0,62,1,2,13],
-"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_quantize_8h.html":[41,0,0,62,1,2,14],
-"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_quantize_8h_source.html":[41,0,0,62,1,2,14],
-"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_bilinear_8h.html":[41,0,0,62,1,2,16],
-"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_bilinear_8h_source.html":[41,0,0,62,1,2,16],
-"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_nearest_neighbor_8h.html":[41,0,0,62,1,2,17],
-"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_nearest_neighbor_8h_source.html":[41,0,0,62,1,2,17],
-"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_s_v_d_f_8h.html":[41,0,0,62,1,2,22],
-"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_s_v_d_f_8h_source.html":[41,0,0,62,1,2,22],
-"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_softmax_8h.html":[41,0,0,62,1,2,18],
-"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_softmax_8h_source.html":[41,0,0,62,1,2,18]
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_quantize_8h.html":[41,0,0,62,1,2,14]
 };

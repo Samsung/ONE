@@ -8,6 +8,7 @@ var structonert_1_1compiler_1_1_compiler_options =
     [ "graph_dump_level", "structonert_1_1compiler_1_1_compiler_options.html#aaaa6d3e4777fa9fb9da5e8290ea7824f", null ],
     [ "he_profiling_mode", "structonert_1_1compiler_1_1_compiler_options.html#a3198bc45de7dd1d045620ec8304e2990", null ],
     [ "he_scheduler", "structonert_1_1compiler_1_1_compiler_options.html#ab0bb53a4162e142588224b0ed6a5e28d", null ],
+    [ "internal_output_alloc", "structonert_1_1compiler_1_1_compiler_options.html#a507858b51a4a40c619770617a0ed8652", null ],
     [ "manual_scheduler_options", "structonert_1_1compiler_1_1_compiler_options.html#a5e47be4c12200fbd54157a0912e2a661", null ],
     [ "workspace_dir", "structonert_1_1compiler_1_1_compiler_options.html#ad358220bfb6825f15249a67bb5f02e66", null ]
 ];

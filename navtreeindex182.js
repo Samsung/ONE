@@ -1,5 +1,14 @@
 var NAVTREEINDEX182 =
 {
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_quantize_8h_source.html":[41,0,0,62,1,2,14],
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_bilinear_8h.html":[41,0,0,62,1,2,16],
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_bilinear_8h_source.html":[41,0,0,62,1,2,16],
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_nearest_neighbor_8h.html":[41,0,0,62,1,2,17],
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_resize_nearest_neighbor_8h_source.html":[41,0,0,62,1,2,17],
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_s_v_d_f_8h.html":[41,0,0,62,1,2,22],
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_s_v_d_f_8h_source.html":[41,0,0,62,1,2,22],
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_softmax_8h.html":[41,0,0,62,1,2,18],
+"compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_softmax_8h_source.html":[41,0,0,62,1,2,18],
 "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_space_to_batch_n_d_8h.html":[41,0,0,62,1,2,19],
 "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_space_to_batch_n_d_8h_source.html":[41,0,0,62,1,2,19],
 "compiler_2luci-interpreter_2pal_2mcu_2_p_a_l_space_to_depth_8h.html":[41,0,0,62,1,2,20],
@@ -240,14 +249,5 @@ var NAVTREEINDEX182 =
 "compiler_2luci-interpreter_2src_2kernels_2_rsqrt_8cpp.html":[41,0,0,62,2,2,143],
 "compiler_2luci-interpreter_2src_2kernels_2_rsqrt_8cpp_source.html":[41,0,0,62,2,2,143],
 "compiler_2luci-interpreter_2src_2kernels_2_s_v_d_f_8cpp.html":[41,0,0,62,2,2,179],
-"compiler_2luci-interpreter_2src_2kernels_2_s_v_d_f_8cpp_source.html":[41,0,0,62,2,2,179],
-"compiler_2luci-interpreter_2src_2kernels_2_select_8h.html":[41,0,0,62,2,2,146],
-"compiler_2luci-interpreter_2src_2kernels_2_select_8h_source.html":[41,0,0,62,2,2,146],
-"compiler_2luci-interpreter_2src_2kernels_2_select_v2_8cpp.html":[41,0,0,62,2,2,147],
-"compiler_2luci-interpreter_2src_2kernels_2_select_v2_8cpp_source.html":[41,0,0,62,2,2,147],
-"compiler_2luci-interpreter_2src_2kernels_2_shape_8cpp.html":[41,0,0,62,2,2,149],
-"compiler_2luci-interpreter_2src_2kernels_2_shape_8cpp_source.html":[41,0,0,62,2,2,149],
-"compiler_2luci-interpreter_2src_2kernels_2_shape_8h.html":[41,0,0,62,2,2,150],
-"compiler_2luci-interpreter_2src_2kernels_2_shape_8h_source.html":[41,0,0,62,2,2,150],
-"compiler_2luci-interpreter_2src_2kernels_2_sin_8cpp.html":[41,0,0,62,2,2,151]
+"compiler_2luci-interpreter_2src_2kernels_2_s_v_d_f_8cpp_source.html":[41,0,0,62,2,2,179]
 };

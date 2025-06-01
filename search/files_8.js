@@ -15,7 +15,7 @@ var searchData=
   ['help_2dcompile_2ecpp_12',['help-compile.cpp',['../help-compile_8cpp.html',1,'']]],
   ['help_2dinfer_2ecpp_13',['help-infer.cpp',['../help-infer_8cpp.html',1,'']]],
   ['help_2dprofile_2ecpp_14',['help-profile.cpp',['../help-profile_8cpp.html',1,'']]],
-  ['helper_2ecpp_15',['helper.cpp',['../mio-tflite260_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-tflite280_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-tflite2121_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle08_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle07_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle06_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle05_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle04_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle_2src_2_helper_8cpp.html',1,'(Global Namespace)']]],
+  ['helper_2ecpp_15',['helper.cpp',['../mio-tflite2121_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-tflite280_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-tflite260_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle08_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle07_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle06_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle05_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle04_2src_2_helper_8cpp.html',1,'(Global Namespace)'],['../mio-circle_2src_2_helper_8cpp.html',1,'(Global Namespace)']]],
   ['helper_2eh_16',['helper.h',['../mio-circle04_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)'],['../mio-tflite280_2include_2mio__tflite280_2_helper_8h.html',1,'(Global Namespace)'],['../mio-tflite260_2include_2mio__tflite260_2_helper_8h.html',1,'(Global Namespace)'],['../mio-tflite2121_2include_2mio__tflite2121_2_helper_8h.html',1,'(Global Namespace)'],['../mio-circle_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)'],['../mio-circle08_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)'],['../mio-circle05_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)'],['../mio-circle07_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)'],['../mio-circle06_2include_2mio__circle_2_helper_8h.html',1,'(Global Namespace)']]],
   ['helperpath_2ecpp_17',['HelperPath.cpp',['../_helper_path_8cpp.html',1,'']]],
   ['helperpath_2eh_18',['HelperPath.h',['../_helper_path_8h.html',1,'']]],
@@ -48,6 +48,7 @@ var searchData=
   ['how_2dto_2duse_2dnnfw_2dapi_2emd_45',['how-to-use-nnfw-api.md',['../how-to-use-nnfw-api_8md.html',1,'']]],
   ['how_2dto_2duse_2dnnfw_2dpython_2dapi_2emd_46',['how-to-use-nnfw-python-api.md',['../how-to-use-nnfw-python-api_8md.html',1,'']]],
   ['how_2dto_2duse_2dspecific_2dbackend_2emd_47',['how-to-use-specific-backend.md',['../how-to-use-specific-backend_8md.html',1,'']]],
-  ['hwclayout_2ecpp_48',['HWCLayout.cpp',['../_h_w_c_layout_8cpp.html',1,'']]],
-  ['hwclayout_2eh_49',['HWCLayout.h',['../_h_w_c_layout_8h.html',1,'']]]
+  ['html_5freport_5ftemplate_2eg_2eh_2b_2b_48',['html_report_template.g.h++',['../html__report__template_8g_8h_09_09.html',1,'']]],
+  ['hwclayout_2ecpp_49',['HWCLayout.cpp',['../_h_w_c_layout_8cpp.html',1,'']]],
+  ['hwclayout_2eh_50',['HWCLayout.h',['../_h_w_c_layout_8h.html',1,'']]]
 ];

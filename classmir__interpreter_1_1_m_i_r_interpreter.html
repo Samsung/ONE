@@ -287,12 +287,13 @@ Protected Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   90</span>  <span class="keyword">const</span> <span class="keyword">auto</span> it = _tensors.find(output);</div>
 <div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (it == _tensors.end())</div>
 <div class="line"><span class="lineno">   92</span>  {</div>
-<div class="line"><span class="lineno">   93</span>    <span class="keyword">const</span> std::string &amp;name = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;getName();</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keyword">const</span> std::string &amp;<a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;getName();</div>
 <div class="line"><span class="lineno">   94</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Can&#39;t find data for tensor \&quot;&quot;</span> + name + <span class="stringliteral">&quot;\&quot;.&quot;</span>);</div>
 <div class="line"><span class="lineno">   95</span>  }</div>
 <div class="line"><span class="lineno">   96</span>  <span class="keywordflow">return</span> it-&gt;second;</div>
 <div class="line"><span class="lineno">   97</span>}</div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
+<div class="ttc" id="anamespacesetup_html_ab3a7a0638d76a01367c5bc3cc699447f"><div class="ttname"><a href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">setup.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00149">setup.py:149</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -329,7 +330,7 @@ Protected Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   69</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = _tensors.emplace(output, std::move(tensor));</div>
 <div class="line"><span class="lineno">   70</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>.second)</div>
 <div class="line"><span class="lineno">   71</span>  {</div>
-<div class="line"><span class="lineno">   72</span>    <span class="keyword">const</span> std::string &amp;name = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;getName();</div>
+<div class="line"><span class="lineno">   72</span>    <span class="keyword">const</span> std::string &amp;<a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;getName();</div>
 <div class="line"><span class="lineno">   73</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Attempt to overwrite data for tensor \&quot;&quot;</span> + name + <span class="stringliteral">&quot;\&quot;.&quot;</span>);</div>
 <div class="line"><span class="lineno">   74</span>  }</div>
 <div class="line"><span class="lineno">   75</span>}</div>

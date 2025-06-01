@@ -213,7 +213,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  640</span> </div>
 <div class="line"><span class="lineno">  641</span>  <span class="keywordflow">for</span> (uint32_t output_idx = 0; output_idx &lt; _intermediate.size(); output_idx++)</div>
 <div class="line"><span class="lineno">  642</span>  {</div>
-<div class="line"><span class="lineno">  643</span>    <span class="keyword">const</span> <span class="keyword">auto</span> name = _output_names.at(output_idx);</div>
+<div class="line"><span class="lineno">  643</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = _output_names.at(output_idx);</div>
 <div class="line"><span class="lineno">  644</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;inter = _intermediate.at(output_idx);</div>
 <div class="line"><span class="lineno">  645</span>    assert(inter.dtype() == loco::DataType::FLOAT32); <span class="comment">// FIX_ME_UNLESS</span></div>
 <div class="line"><span class="lineno">  646</span>    <span class="keyword">const</span> <span class="keyword">auto</span> elem_count = inter.size&lt;loco::DataType::FLOAT32&gt;();</div>
@@ -226,9 +226,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  653</span>    mse = mse / elem_count;</div>
 <div class="line"><span class="lineno">  654</span>    mse = mse / _num_data;</div>
 <div class="line"><span class="lineno">  655</span> </div>
-<div class="line"><span class="lineno">  656</span>    os &lt;&lt; <span class="stringliteral">&quot;MSE for &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; mse &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  656</span>    os &lt;&lt; <span class="stringliteral">&quot;MSE for &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; mse &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  657</span>  }</div>
 <div class="line"><span class="lineno">  658</span>}</div>
+<div class="ttc" id="anamespacesetup_html_ab3a7a0638d76a01367c5bc3cc699447f"><div class="ttname"><a href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">setup.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00149">setup.py:149</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

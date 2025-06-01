@@ -295,7 +295,7 @@ Typedefs</h2></td></tr>
 <div class="line"><span class="lineno">  174</span> </div>
 <div class="line"><span class="lineno">  175</span>  <span class="keywordflow">for</span> (uint32_t output_idx = 0; output_idx &lt; _intermediate.size(); output_idx++)</div>
 <div class="line"><span class="lineno">  176</span>  {</div>
-<div class="line"><span class="lineno">  177</span>    <span class="keyword">const</span> <span class="keyword">auto</span> name = _output_names.at(output_idx);</div>
+<div class="line"><span class="lineno">  177</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = _output_names.at(output_idx);</div>
 <div class="line"><span class="lineno">  178</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;inter = _intermediate.at(output_idx);</div>
 <div class="line"><span class="lineno">  179</span>    assert(inter.dtype() == loco::DataType::FLOAT32); <span class="comment">// FIX_ME_UNLESS</span></div>
 <div class="line"><span class="lineno">  180</span>    <span class="keyword">const</span> <span class="keyword">auto</span> elem_count = inter.size&lt;loco::DataType::FLOAT32&gt;();</div>
@@ -308,7 +308,7 @@ Typedefs</h2></td></tr>
 <div class="line"><span class="lineno">  187</span>    mae = mae / elem_count;</div>
 <div class="line"><span class="lineno">  188</span>    mae = mae / _num_data;</div>
 <div class="line"><span class="lineno">  189</span> </div>
-<div class="line"><span class="lineno">  190</span>    os &lt;&lt; <span class="stringliteral">&quot;MAE for &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; mae &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  190</span>    os &lt;&lt; <span class="stringliteral">&quot;MAE for &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; mae &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  191</span>  }</div>
 <div class="line"><span class="lineno">  192</span>}</div>
 <div class="line"><span class="lineno">  193</span> </div>
@@ -398,7 +398,7 @@ Typedefs</h2></td></tr>
 <div class="line"><span class="lineno">  277</span> </div>
 <div class="line"><span class="lineno">  278</span>  <span class="keywordflow">for</span> (uint32_t output_idx = 0; output_idx &lt; _intermediate.size(); output_idx++)</div>
 <div class="line"><span class="lineno">  279</span>  {</div>
-<div class="line"><span class="lineno">  280</span>    <span class="keyword">const</span> <span class="keyword">auto</span> name = _output_names.at(output_idx);</div>
+<div class="line"><span class="lineno">  280</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = _output_names.at(output_idx);</div>
 <div class="line"><span class="lineno">  281</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;inter = _intermediate.at(output_idx);</div>
 <div class="line"><span class="lineno">  282</span>    assert(inter.dtype() == loco::DataType::FLOAT32); <span class="comment">// FIX_ME_UNLESS</span></div>
 <div class="line"><span class="lineno">  283</span>    <span class="keyword">const</span> <span class="keyword">auto</span> elem_count = inter.size&lt;loco::DataType::FLOAT32&gt;();</div>
@@ -412,7 +412,7 @@ Typedefs</h2></td></tr>
 <div class="line"><span class="lineno">  291</span>    mape = mape / _num_data;</div>
 <div class="line"><span class="lineno">  292</span>    mape *= 100.0;</div>
 <div class="line"><span class="lineno">  293</span> </div>
-<div class="line"><span class="lineno">  294</span>    os &lt;&lt; <span class="stringliteral">&quot;MAPE for &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; mape &lt;&lt; <span class="stringliteral">&quot;%&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  294</span>    os &lt;&lt; <span class="stringliteral">&quot;MAPE for &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; mape &lt;&lt; <span class="stringliteral">&quot;%&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  295</span>  }</div>
 <div class="line"><span class="lineno">  296</span>}</div>
 <div class="line"><span class="lineno">  297</span> </div>
@@ -510,13 +510,13 @@ Typedefs</h2></td></tr>
 <div class="line"><span class="lineno">  389</span> </div>
 <div class="line"><span class="lineno">  390</span>  <span class="keywordflow">for</span> (uint32_t output_idx = 0; output_idx &lt; _intermediate.size(); output_idx++)</div>
 <div class="line"><span class="lineno">  391</span>  {</div>
-<div class="line"><span class="lineno">  392</span>    <span class="keyword">const</span> <span class="keyword">auto</span> name = _output_names.at(output_idx);</div>
+<div class="line"><span class="lineno">  392</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = _output_names.at(output_idx);</div>
 <div class="line"><span class="lineno">  393</span>    <span class="keyword">const</span> <span class="keyword">auto</span> sum_of_peir = _intermediate.at(output_idx);</div>
 <div class="line"><span class="lineno">  394</span> </div>
 <div class="line"><span class="lineno">  395</span>    <span class="comment">// Compute MPEIR</span></div>
 <div class="line"><span class="lineno">  396</span>    <span class="keywordtype">float</span> mpeir = sum_of_peir / _num_data;</div>
 <div class="line"><span class="lineno">  397</span> </div>
-<div class="line"><span class="lineno">  398</span>    os &lt;&lt; <span class="stringliteral">&quot;MPEIR for &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; mpeir &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  398</span>    os &lt;&lt; <span class="stringliteral">&quot;MPEIR for &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; mpeir &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  399</span>  }</div>
 <div class="line"><span class="lineno">  400</span>}</div>
 <div class="line"><span class="lineno">  401</span> </div>
@@ -670,13 +670,13 @@ Typedefs</h2></td></tr>
 <div class="line"><span class="lineno">  549</span>    <span class="keywordflow">if</span> (in_skip_list(output_idx))</div>
 <div class="line"><span class="lineno">  550</span>      <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">  551</span> </div>
-<div class="line"><span class="lineno">  552</span>    <span class="keyword">const</span> <span class="keyword">auto</span> name = _output_names.at(output_idx);</div>
+<div class="line"><span class="lineno">  552</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = _output_names.at(output_idx);</div>
 <div class="line"><span class="lineno">  553</span>    <span class="keyword">const</span> <span class="keyword">auto</span> sum_of_topk_accuracy = _intermediate.at(output_idx);</div>
 <div class="line"><span class="lineno">  554</span> </div>
 <div class="line"><span class="lineno">  555</span>    <span class="comment">// Compute TopKMatch</span></div>
 <div class="line"><span class="lineno">  556</span>    <span class="keywordtype">float</span> mean_topk = sum_of_topk_accuracy / _num_data;</div>
 <div class="line"><span class="lineno">  557</span> </div>
-<div class="line"><span class="lineno">  558</span>    os &lt;&lt; <span class="stringliteral">&quot;Mean Top-&quot;</span> &lt;&lt; _k &lt;&lt; <span class="stringliteral">&quot; match ratio for &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; mean_topk &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  558</span>    os &lt;&lt; <span class="stringliteral">&quot;Mean Top-&quot;</span> &lt;&lt; _k &lt;&lt; <span class="stringliteral">&quot; match ratio for &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; mean_topk &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  559</span>  }</div>
 <div class="line"><span class="lineno">  560</span>}</div>
 <div class="line"><span class="lineno">  561</span> </div>
@@ -760,7 +760,7 @@ Typedefs</h2></td></tr>
 <div class="line"><span class="lineno">  639</span> </div>
 <div class="line"><span class="lineno">  640</span>  <span class="keywordflow">for</span> (uint32_t output_idx = 0; output_idx &lt; _intermediate.size(); output_idx++)</div>
 <div class="line"><span class="lineno">  641</span>  {</div>
-<div class="line"><span class="lineno">  642</span>    <span class="keyword">const</span> <span class="keyword">auto</span> name = _output_names.at(output_idx);</div>
+<div class="line"><span class="lineno">  642</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = _output_names.at(output_idx);</div>
 <div class="line"><span class="lineno">  643</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;inter = _intermediate.at(output_idx);</div>
 <div class="line"><span class="lineno">  644</span>    assert(inter.dtype() == loco::DataType::FLOAT32); <span class="comment">// FIX_ME_UNLESS</span></div>
 <div class="line"><span class="lineno">  645</span>    <span class="keyword">const</span> <span class="keyword">auto</span> elem_count = inter.size&lt;loco::DataType::FLOAT32&gt;();</div>
@@ -773,7 +773,7 @@ Typedefs</h2></td></tr>
 <div class="line"><span class="lineno">  652</span>    mse = mse / elem_count;</div>
 <div class="line"><span class="lineno">  653</span>    mse = mse / _num_data;</div>
 <div class="line"><span class="lineno">  654</span> </div>
-<div class="line"><span class="lineno">  655</span>    os &lt;&lt; <span class="stringliteral">&quot;MSE for &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; mse &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  655</span>    os &lt;&lt; <span class="stringliteral">&quot;MSE for &quot;</span> &lt;&lt; <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> &lt;&lt; <span class="stringliteral">&quot; is &quot;</span> &lt;&lt; mse &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  656</span>  }</div>
 <div class="line"><span class="lineno">  657</span>}</div>
 <div class="line"><span class="lineno">  658</span> </div>
@@ -805,6 +805,7 @@ Typedefs</h2></td></tr>
 <div class="ttc" id="anamespacehermes_html_a19175e20ab4f2e8c15810424b0611b46"><div class="ttname"><a href="namespacehermes.html#a19175e20ab4f2e8c15810424b0611b46">hermes::error</a></div><div class="ttdeci">Severity error(void)</div><div class="ttdef"><b>Definition</b> <a href="_severity_8h_source.html#l00076">Severity.h:76</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1"><div class="ttname"><a href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">jpeg2hdf5.b</a></div><div class="ttdeci">b</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
+<div class="ttc" id="anamespacesetup_html_ab3a7a0638d76a01367c5bc3cc699447f"><div class="ttname"><a href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">setup.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00149">setup.py:149</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00038">CircleNodeDecl.h:41</a></div></div>
 </div><!-- fragment -->
 </div>

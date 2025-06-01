@@ -163,7 +163,7 @@ Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  143</span>{</div>
 <div class="line"><span class="lineno">  144</span>  <span class="comment">// parsed data</span></div>
 <div class="line"><span class="lineno">  145</span>  ParsedTensor::Kind kind;</div>
-<div class="line"><span class="lineno">  146</span>  std::string name;</div>
+<div class="line"><span class="lineno">  146</span>  std::string <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a>;</div>
 <div class="line"><span class="lineno">  147</span>  <a class="code hl_enumeration" href="namespacennkit_1_1support_1_1tftestinfo.html#a54f0e10a637f6da6ee89c5b0e390e9a8">TF_DataType</a> <a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a>;</div>
 <div class="line"><span class="lineno">  148</span>  std::vector&lt;int32_t&gt; shape;</div>
 <div class="line"><span class="lineno">  149</span> </div>
@@ -183,7 +183,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  163</span>  trimmed = trim(tok);</div>
 <div class="line"><span class="lineno">  164</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#ab6600705a0b14541b6d64b699207b586">validate_name</a>(trimmed))</div>
 <div class="line"><span class="lineno">  165</span>    <span class="keywordflow">throw</span> <a class="code hl_class" href="classoops_1_1_user_exn.html">oops::UserExn</a>(<span class="stringliteral">&quot;Tensor name in wrong format&quot;</span>, <span class="stringliteral">&quot;name&quot;</span>, tok);</div>
-<div class="line"><span class="lineno">  166</span>  name.assign(trimmed);</div>
+<div class="line"><span class="lineno">  166</span>  <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a>.assign(trimmed);</div>
 <div class="line"><span class="lineno">  167</span> </div>
 <div class="line"><span class="lineno">  168</span>  <a class="code hl_define" href="_tensor_info_parser_8cpp.html#aabc27baaa0f4e6aeffc4798fe4c78f6b">CHECK_NOT_NULL</a>(std::getline(line_stream, tok, <span class="charliteral">&#39;,&#39;</span>)); <span class="comment">// data type</span></div>
 <div class="line"><span class="lineno">  169</span>  <a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a> = get_dtype(trim(tok));</div>
@@ -255,6 +255,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="anamespacennkit_1_1support_1_1tftestinfo_html_a2e9d8da79653a1be522c28a5fe3ba306"><div class="ttname"><a href="namespacennkit_1_1support_1_1tftestinfo.html#a2e9d8da79653a1be522c28a5fe3ba306">nnkit::support::tftestinfo::parse</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; ParsedTensor &gt; &gt; parse(const char *info_path)</div><div class="ttdoc">Function to parse test.info.</div><div class="ttdef"><b>Definition</b> <a href="_tensor_info_parser_8cpp_source.html#l00204">TensorInfoParser.cpp:204</a></div></div>
 <div class="ttc" id="anamespacennkit_1_1support_1_1tftestinfo_html_a54f0e10a637f6da6ee89c5b0e390e9a8"><div class="ttname"><a href="namespacennkit_1_1support_1_1tftestinfo.html#a54f0e10a637f6da6ee89c5b0e390e9a8">nnkit::support::tftestinfo::DataType</a></div><div class="ttdeci">DataType</div><div class="ttdoc">Supported Data Types.</div><div class="ttdef"><b>Definition</b> <a href="_parsed_tensor_8h_source.html#l00038">ParsedTensor.h:39</a></div></div>
 <div class="ttc" id="anamespacennkit_1_1support_1_1tftestinfo_html_a8bbf3a9858df3571f03ed5e2ac342c2b"><div class="ttname"><a href="namespacennkit_1_1support_1_1tftestinfo.html#a8bbf3a9858df3571f03ed5e2ac342c2b">nnkit::support::tftestinfo::parse_line</a></div><div class="ttdeci">std::unique_ptr&lt; ParsedTensor &gt; parse_line(std::string &amp;line)</div><div class="ttdoc">Function to parse a line of test.info file Examples:</div><div class="ttdef"><b>Definition</b> <a href="_tensor_info_parser_8cpp_source.html#l00143">TensorInfoParser.cpp:143</a></div></div>
+<div class="ttc" id="anamespacesetup_html_ab3a7a0638d76a01367c5bc3cc699447f"><div class="ttname"><a href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">setup.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00149">setup.py:149</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -408,7 +408,7 @@ $(document).ready(function(){initNavTree('tflchef_2core_2src_2_model_chef_8cpp_s
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>      shape = _flatbuffer_builder-&gt;CreateVector(dims);</div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    }</div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    <span class="keyword">auto</span> name = _flatbuffer_builder-&gt;CreateString(operand.name());</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = _flatbuffer_builder-&gt;CreateString(operand.name());</div>
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span> </div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    buffer_index = 0;</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
@@ -744,7 +744,7 @@ $(document).ready(function(){initNavTree('tflchef_2core_2src_2_model_chef_8cpp_s
 <div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span><span class="keywordtype">void</span> ModelChef::cook_operations(<span class="keyword">const</span> T &amp;graph, std::map&lt;std::string, int32_t&gt; &amp;symbol_table)</div>
 <div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>{</div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>  <span class="keyword">auto</span> lookup = [&amp;](<span class="keyword">const</span> std::string &amp;name) {</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>  <span class="keyword">auto</span> lookup = [&amp;](<span class="keyword">const</span> std::string &amp;<a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a>) {</div>
 <div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>    <span class="keywordflow">if</span> (symbol_table.find(name) != symbol_table.end())</div>
 <div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>      <span class="keywordflow">return</span> symbol_table.at(name);</div>
 <div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (name == <span class="stringliteral">&quot;&quot;</span>)</div>
@@ -829,7 +829,7 @@ $(document).ready(function(){initNavTree('tflchef_2core_2src_2_model_chef_8cpp_s
 <div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.has_name())</div>
 <div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>    _graph_name = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a>.name();</div>
 <div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span> </div>
-<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>  <span class="keyword">auto</span> lookup = [&amp;](<span class="keyword">const</span> std::string &amp;name) {</div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>  <span class="keyword">auto</span> lookup = [&amp;](<span class="keyword">const</span> std::string &amp;<a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a>) {</div>
 <div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>    <span class="keywordflow">if</span> (symbol_table.find(name) != symbol_table.end())</div>
 <div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>      <span class="keywordflow">return</span> symbol_table.at(name);</div>
 <div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (name == <span class="stringliteral">&quot;&quot;</span>)</div>
@@ -865,7 +865,7 @@ $(document).ready(function(){initNavTree('tflchef_2core_2src_2_model_chef_8cpp_s
 <div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a> = _flatbuffer_builder-&gt;CreateVector(input_vec);</div>
 <div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>  <span class="keyword">auto</span> outputs = _flatbuffer_builder-&gt;CreateVector(output_vec);</div>
 <div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>  <span class="keyword">auto</span> operators = _flatbuffer_builder-&gt;CreateVector(_operator_vec);</div>
-<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>  <span class="keyword">auto</span> name = _flatbuffer_builder-&gt;CreateString(_graph_name);</div>
+<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = _flatbuffer_builder-&gt;CreateString(_graph_name);</div>
 <div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span> </div>
 <div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>  tflite::SubGraphBuilder subgraph_builder{*_flatbuffer_builder};</div>
 <div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span> </div>
@@ -959,7 +959,7 @@ $(document).ready(function(){initNavTree('tflchef_2core_2src_2_model_chef_8cpp_s
 <div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>    {</div>
 <div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span>      <span class="comment">// recipe for input TensorMap</span></div>
 <div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;rec_tm_input = rec_signature_def.inputs(si);</div>
-<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>      <span class="keyword">auto</span> name = _flatbuffer_builder-&gt;CreateString(rec_tm_input.name());</div>
+<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = _flatbuffer_builder-&gt;CreateString(rec_tm_input.name());</div>
 <div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>      uint32_t tensor_index = 0;</div>
 <div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>      <span class="comment">// either tensor or tensor_index should exist</span></div>
 <div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span>      assert(rec_tm_input.has_tensor() || rec_tm_input.has_tensor_index());</div>
@@ -984,7 +984,7 @@ $(document).ready(function(){initNavTree('tflchef_2core_2src_2_model_chef_8cpp_s
 <div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> so = 0; so &lt; rec_signature_def.outputs_size(); ++so)</div>
 <div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>    {</div>
 <div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;rec_tm_output = rec_signature_def.outputs(so);</div>
-<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>      <span class="keyword">auto</span> name = _flatbuffer_builder-&gt;CreateString(rec_tm_output.name());</div>
+<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>      <span class="keyword">auto</span> <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = _flatbuffer_builder-&gt;CreateString(rec_tm_output.name());</div>
 <div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>      uint32_t tensor_index = 0;</div>
 <div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>      assert(rec_tm_output.has_tensor() || rec_tm_output.has_tensor_index());</div>
 <div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>      <span class="keywordflow">if</span> (rec_tm_output.has_tensor())</div>
@@ -1123,7 +1123,7 @@ $(document).ready(function(){initNavTree('tflchef_2core_2src_2_model_chef_8cpp_s
 <div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span>  <span class="keyword">auto</span> signdefs = _flatbuffer_builder-&gt;CreateVector(_signdef_vec);</div>
 <div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span>  <span class="keyword">auto</span> operator_codes = _flatbuffer_builder-&gt;CreateVector(_code_vec);</div>
 <div class="line"><a id="l01028" name="l01028"></a><span class="lineno"> 1028</span>  <span class="keyword">auto</span> subgraphs = _flatbuffer_builder-&gt;CreateVector(_subgraph_vec);</div>
-<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span>  <span class="keyword">auto</span> description = _flatbuffer_builder-&gt;CreateString(<span class="stringliteral">&quot;Generated by tflchef&quot;</span>);</div>
+<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacesetup.html#aedf461ec52a946bda975938ba0b93ec0">description</a> = _flatbuffer_builder-&gt;CreateString(<span class="stringliteral">&quot;Generated by tflchef&quot;</span>);</div>
 <div class="line"><a id="l01030" name="l01030"></a><span class="lineno"> 1030</span> </div>
 <div class="line"><a id="l01031" name="l01031"></a><span class="lineno"> 1031</span>  <span class="comment">// Create &quot;Model&quot;</span></div>
 <div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span>  tflite::ModelBuilder model_builder{*_flatbuffer_builder};</div>
@@ -1245,6 +1245,8 @@ $(document).ready(function(){initNavTree('tflchef_2core_2src_2_model_chef_8cpp_s
 <div class="ttc" id="anamespaceluci_html_a1f8d6d558e2564aad695229f57f552dd"><div class="ttname"><a href="namespaceluci.html#a1f8d6d558e2564aad695229f57f552dd">luci::circle_custom_options</a></div><div class="ttdeci">flatbuffers::Offset&lt; flatbuffers::Vector&lt; uint8_t &gt; &gt; circle_custom_options(flatbuffers::FlatBufferBuilder &amp;fb, const luci::CircleNode *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2export_2src_2_circle_exporter_utils_8cpp_source.html#l00216">CircleExporterUtils.cpp:216</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a4438f6b29d02d97c6d8aef9a31481cb9"><div class="ttname"><a href="namespaceluci.html#a4438f6b29d02d97c6d8aef9a31481cb9">luci::tensor_name</a></div><div class="ttdeci">const char * tensor_name(const circle::Tensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00029">CircleReader.cpp:29</a></div></div>
 <div class="ttc" id="anamespaceonnx__legalizer_html_a5f63ff6f9c0c3e7103c2b9b88021555e"><div class="ttname"><a href="namespaceonnx__legalizer.html#a5f63ff6f9c0c3e7103c2b9b88021555e">onnx_legalizer.options</a></div><div class="ttdeci">options</div><div class="ttdef"><b>Definition</b> <a href="onnx__legalizer_8py_source.html#l01070">onnx_legalizer.py:1070</a></div></div>
+<div class="ttc" id="anamespacesetup_html_ab3a7a0638d76a01367c5bc3cc699447f"><div class="ttname"><a href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">setup.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00149">setup.py:149</a></div></div>
+<div class="ttc" id="anamespacesetup_html_aedf461ec52a946bda975938ba0b93ec0"><div class="ttname"><a href="namespacesetup.html#aedf461ec52a946bda975938ba0b93ec0">setup.description</a></div><div class="ttdeci">description</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00151">setup.py:151</a></div></div>
 <div class="ttc" id="anamespacesouschef_html"><div class="ttname"><a href="namespacesouschef.html">souschef</a></div><div class="ttdoc">This file provides string &lt;-&gt; number cast helpers.</div><div class="ttdef"><b>Definition</b> <a href="souschef_2include_2souschef_2_arguments_8h_source.html#l00023">Arguments.h:24</a></div></div>
 <div class="ttc" id="anamespacesouschef_html_a10d51f2d9d0d47521dab1a8eee903de4"><div class="ttname"><a href="namespacesouschef.html#a10d51f2d9d0d47521dab1a8eee903de4">souschef::as_dims</a></div><div class="ttdeci">Dims&lt; int32_t &gt; as_dims(const SHAPETYPE &amp;shape)</div><div class="ttdef"><b>Definition</b> <a href="souschef_2include_2souschef_2_dims_8h_source.html#l00030">Dims.h:30</a></div></div>
 <div class="ttc" id="anamespacesouschef_html_a14f03678710b5635dcf43e5b35c3d27f"><div class="ttname"><a href="namespacesouschef.html#a14f03678710b5635dcf43e5b35c3d27f">souschef::as_dataset</a></div><div class="ttdeci">Dataset&lt; T &gt; as_dataset(const ::google::protobuf::RepeatedPtrField&lt; T &gt; &amp;field)</div><div class="ttdef"><b>Definition</b> <a href="_dataset_8h_source.html#l00072">Dataset.h:72</a></div></div>

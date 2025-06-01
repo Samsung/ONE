@@ -116,7 +116,7 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-build-runtime-t
 </div><!-- fragment --><p>(4) Build</p>
 <div class="fragment"><div class="line">$ cd ONE</div>
 <div class="line"> </div>
-<div class="line">$ gbs -c infra/nnfw/config/gbs.conf build --include-all -A aarch64 --define &#39;test_build 1&#39;</div>
+<div class="line">$ gbs -c runtime/infra/gbs/gbs.conf build --include-all -A aarch64 --define &#39;test_build 1&#39;</div>
 </div><!-- fragment --><ul>
 <li><code>-A aarch64</code> is to set architecture to AARCH64. Use <code>arm32</code> for ARM32 target.</li>
 <li>&lsquo;--define 'test_build 1&rsquo;<code>is to enable test build so that we can use</code>onert_run`</li>

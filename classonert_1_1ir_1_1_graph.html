@@ -277,13 +277,14 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00121">121</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  122</span>{</div>
-<div class="line"><span class="lineno">  123</span>  <span class="keywordflow">if</span> (!name.empty())</div>
+<div class="line"><span class="lineno">  123</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a>.empty())</div>
 <div class="line"><span class="lineno">  124</span>    _name_to_input.emplace(name, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">IOIndex</a>{_inputs.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">size</a>()});</div>
 <div class="line"><span class="lineno">  125</span>  _inputs.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a9e8f537f480cdb2cc219452180ca3036">append</a>(ind);</div>
 <div class="line"><span class="lineno">  126</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_index_sequence_html_a21198772782368109e672c63800268e1"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">onert::ir::OperandIndexSequence::size</a></div><div class="ttdeci">uint32_t size() const</div><div class="ttdef"><b>Definition</b> <a href="_operand_index_sequence_8h_source.html#l00047">OperandIndexSequence.h:47</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_index_sequence_html_a9e8f537f480cdb2cc219452180ca3036"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_index_sequence.html#a9e8f537f480cdb2cc219452180ca3036">onert::ir::OperandIndexSequence::append</a></div><div class="ttdeci">void append(const OperandIndex &amp;index)</div><div class="ttdef"><b>Definition</b> <a href="_operand_index_sequence_8h_source.html#l00043">OperandIndexSequence.h:43</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a4c948b78203567852dfbc65ee63ec940"><div class="ttname"><a href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">onert::ir::IOIndex</a></div><div class="ttdeci">::onert::util::Index&lt; uint32_t, IOIndexTag &gt; IOIndex</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_index_8h_source.html#l00036">Index.h:36</a></div></div>
+<div class="ttc" id="anamespacesetup_html_ab3a7a0638d76a01367c5bc3cc699447f"><div class="ttname"><a href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">setup.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00149">setup.py:149</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00043">onert::ir::OperandIndexSequence::append()</a>, and <a class="el" href="_operand_index_sequence_8h_source.html#l00047">onert::ir::OperandIndexSequence::size()</a>.</p>
 
@@ -494,7 +495,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_graph_8cc_source.html#l00128">128</a> of file <a class="el" href="_graph_8cc_source.html">Graph.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  129</span>{</div>
-<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">if</span> (!name.empty())</div>
+<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a>.empty())</div>
 <div class="line"><span class="lineno">  131</span>    _name_to_output.emplace(name, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">IOIndex</a>{_outputs.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a21198772782368109e672c63800268e1">size</a>()});</div>
 <div class="line"><span class="lineno">  132</span>  _outputs.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_index_sequence.html#a9e8f537f480cdb2cc219452180ca3036">append</a>(ind);</div>
 <div class="line"><span class="lineno">  133</span>}</div>

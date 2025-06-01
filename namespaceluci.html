@@ -6649,7 +6649,7 @@ template&lt;typename Permutation &gt; </div>
 <div class="line"><span class="lineno">  169</span>                                   <span class="stringliteral">&quot;. Check layer names in the quantization configuration file.&quot;</span>);</div>
 <div class="line"><span class="lineno">  170</span>        }</div>
 <div class="line"><span class="lineno">  171</span> </div>
-<div class="line"><span class="lineno">  172</span>        info_by_name[name] = <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>;</div>
+<div class="line"><span class="lineno">  172</span>        info_by_name[<a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a>] = <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>;</div>
 <div class="line"><span class="lineno">  173</span>        found = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  174</span>        <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">  175</span>      }</div>
@@ -6667,6 +6667,7 @@ template&lt;typename Permutation &gt; </div>
 <div class="line"><span class="lineno">  187</span>}</div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a37237b7e9b6c3618aac7e14c9c19687d"><div class="ttname"><a href="namespaceluci.html#a37237b7e9b6c3618aac7e14c9c19687d">luci::LayerInfoMap</a></div><div class="ttdeci">std::unordered_map&lt; std::string, luci::LayerInfo &gt; LayerInfoMap</div><div class="ttdef"><b>Definition</b> <a href="_layer_info_map_8h_source.html#l00027">LayerInfoMap.h:27</a></div></div>
+<div class="ttc" id="anamespacesetup_html_ab3a7a0638d76a01367c5bc3cc699447f"><div class="ttname"><a href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">setup.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00149">setup.py:149</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>.</p>
 
@@ -10332,7 +10333,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  376</span>      <span class="keywordflow">if</span> (node-&gt;accept(&amp;d))</div>
 <div class="line"><span class="lineno">  377</span>        <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">  378</span> </div>
-<div class="line"><span class="lineno">  379</span>      <span class="keyword">auto</span> name = node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>();</div>
+<div class="line"><span class="lineno">  379</span>      <span class="keyword">auto</span> name = node-&gt;name();</div>
 <div class="line"><span class="lineno">  380</span>      <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;Node: &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; (uint32_t)(node-&gt;opcode()) &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  381</span>      <span class="keyword">auto</span> it = names_col.find(name);</div>
 <div class="line"><span class="lineno">  382</span>      <span class="keywordflow">if</span> (it != names_col.end())</div>
