@@ -5,6 +5,12 @@ endif(NOT ENABLE_TEST)
 set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv")
 set(TEST_LIST_FILE "test.lst")
 
+if (NOT DEFINED ONE_PYTHON_VERSION_MINOR)
+  message(STATUS "Warning: ONE_PYTHON_VERSION_MINOR not set")
+  return()
+endif()
+set(PYTHON_SITE_PACKAGES "${VIRTUALENV}/lib/python3.${ONE_PYTHON_VERSION_MINOR}/site-packages")
+
 get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 get_target_property(FM_EQUALIZE_BIN_PATH fm-equalize BINARY_DIR)
 get_target_property(FME_DETECT_BIN_PATH fme-detect BINARY_DIR)
@@ -32,14 +38,6 @@ macro(eval RECIPE)
   set(AFETR_PATTERN_FILE "${RECIPE}.after.json")
   set(AFTER_CIRCLE_OUTPUT_PATH "${CMAKE_CURRENT_BINARY_DIR}/${AFTER_CIRCLE_FILE}")
   set(AFTER_CIRCLE_PATTERN_PATH "${CMAKE_CURRENT_BINARY_DIR}/${AFETR_PATTERN_FILE}")
-
-  execute_process(
-    COMMAND ${VIRTUALENV}/bin/python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')"
-    OUTPUT_VARIABLE PYTHON_VERSION
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
-
-  set(PYTHON_SITE_PACKAGES "${NNCC_OVERLAY_DIR}/venv/lib/python${PYTHON_VERSION}/site-packages")
 
   # Apply fm-equalize
   add_custom_command(OUTPUT ${AFTER_CIRCLE_OUTPUT_PATH} ${AFTER_CIRCLE_PATTERN_PATH}
