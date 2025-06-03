@@ -29,6 +29,10 @@ else()
   return()
 endif()
 
+# NOTE ONE_PYTHON_VERSION_MINOR is to provide current python3.x minor version
+# number to modules that use common artifacts.
+set(ONE_PYTHON_VERSION_MINOR ${PYTHON_VERSION_MINOR} PARENT_SCOPE)
+
 set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 
 # Create python virtual environment
