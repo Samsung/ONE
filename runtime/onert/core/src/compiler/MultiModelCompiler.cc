@@ -48,36 +48,38 @@ CompilerOptions MultiModelCompiler::optionForSingleModel(const ir::ModelIndex &m
   CompilerOptions opts = CompilerOptions(*_options); // Copy options
   opts.input_layout.clear();
   opts.output_layout.clear();
-  opts.input_float.clear();
-  opts.output_float.clear();
+  opts.input_type.clear();
+  opts.output_type.clear();
 
-  for (const auto &[key, value] : _options->input_layout)
-  {
-    const auto &io_desc = _nnpkg->input(key);
-    if (std::get<ir::ModelIndex>(io_desc) == model_index)
-      opts.input_layout[std::get<ir::IOIndex>(io_desc).value()] = value;
-  }
-
-  for (const auto &[key, value] : _options->output_layout)
-  {
-    const auto &io_desc = _nnpkg->output(key);
-    if (std::get<ir::ModelIndex>(io_desc) == model_index)
-      opts.output_layout[std::get<ir::IOIndex>(io_desc).value()] = value;
-  }
-
-  for (const uint32_t &index : _options->input_float)
+  for (const auto &[index, layout] : _options->input_layout)
   {
     const auto &io_desc = _nnpkg->input(index);
     if (std::get<ir::ModelIndex>(io_desc) == model_index)
-      opts.input_float.insert(std::get<ir::IOIndex>(io_desc).value());
+      opts.input_layout.insert_or_assign(std::get<ir::IOIndex>(io_desc).value(), layout);
   }
 
-  for (const uint32_t &index : _options->output_float)
+  for (const auto &[index, layout] : _options->output_layout)
   {
     const auto &io_desc = _nnpkg->output(index);
     if (std::get<ir::ModelIndex>(io_desc) == model_index)
-      opts.output_float.insert(std::get<ir::IOIndex>(io_desc).value());
+      opts.output_layout.insert_or_assign(std::get<ir::IOIndex>(io_desc).value(), layout);
   }
+
+  for (const auto &[index, type] : _options->input_type)
+  {
+    const auto &io_desc = _nnpkg->input(index);
+    if (std::get<ir::ModelIndex>(io_desc) == model_index)
+      opts.input_type.insert_or_assign(std::get<ir::IOIndex>(io_desc).value(), type);
+  }
+
+  for (const auto &[index, type] : _options->output_type)
+  {
+    const auto &io_desc = _nnpkg->output(index);
+    if (std::get<ir::ModelIndex>(io_desc) == model_index)
+      opts.output_type.insert_or_assign(std::get<ir::IOIndex>(io_desc).value(), type);
+  }
+
+  return opts;
 }
 
 std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
@@ -149,6 +151,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
   std::unordered_map<ir::ModelIndex,
                      std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>>
     lowered_subgs;
+  std::unordered_map<ir::ModelIndex, CompilerOptions> model_options;
 
   for (uint16_t i = 0; i < model_count; i++)
   {
@@ -161,9 +164,9 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       dot_dumper.dump(subg,
                       nnfw::misc::str("before_lower_model-", i, "-subg-", subg_index.value()));
       // Lower: Assign backend
-      auto model_option = optionForSingleModel(model_index);
+      model_options[model_index] = std::move(optionForSingleModel(model_index));
       lowered_subgs[model_index][subg_index] =
-        std::make_unique<compiler::LoweredGraph>(subg, model_option);
+        std::make_unique<compiler::LoweredGraph>(subg, model_options[model_index]);
       // Set tracing_ctx for copied graph
       if (tracing_ctx != nullptr)
         tracing_ctx->setSubgraphIndex(&(lowered_subgs[model_index][subg_index]->graph()),
@@ -241,7 +244,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
 
       ExecutorFactoryArgs args;
       args.tracing_ctx = tracing_ctx.get();
-      args.options = _options;
+      args.options = &model_options[model_index];
       args.model_index = model_index;
       args.custom_kernel_builder = custom_kernel_builders[model_index];
       if (_options->internal_output_alloc)

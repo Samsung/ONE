@@ -30,50 +30,53 @@ namespace pass
 void PermutationIOPass::run()
 {
   if (_options.input_layout.size() == 0 && _options.output_layout.size() == 0 &&
-      _options.input_float.size() == 0 && _options.output_float.size() == 0)
+      _options.input_type.size() == 0 && _options.output_type.size() == 0)
     return;
 
   for (uint32_t i = 0; i < _graph.getInputs().size(); i++)
   {
-    if (_options.input_layout.count(i) == 0 && _options.input_float.count(i) == 0)
+    if (_options.input_layout.count(i) == 0 && _options.input_type.count(i) == 0)
       continue;
 
     const auto index = _graph.getInputs().at(i);
-    const bool use_float = _options.input_float.count(i) > 0;
+    const auto &type = _options.input_type.count(i) > 0 ? _options.input_type.at(i)
+                                                        : _graph.operands().at(index).typeInfo();
     const auto layout =
       _options.input_layout.count(i) > 0 ? _options.input_layout.at(i) : ir::Layout::NHWC;
 
-    insertInputPermute(index, use_float, layout);
+    insertInputPermute(index, type, layout);
   }
 
   for (uint32_t i = 0; i < _graph.getOutputs().size(); i++)
   {
-    if (_options.input_layout.count(i) == 0 && _options.input_float.count(i) == 0)
+    if (_options.output_layout.count(i) == 0 && _options.output_type.count(i) == 0)
       continue;
 
     const auto index = _graph.getOutputs().at(i);
-    const bool use_float = _options.output_float.count(i) > 0;
+    const auto &type = _options.output_type.count(i) > 0 ? _options.output_type.at(i)
+                                                         : _graph.operands().at(index).typeInfo();
     const auto layout =
       _options.output_layout.count(i) > 0 ? _options.output_layout.at(i) : ir::Layout::NHWC;
 
-    insertOutputPermute(index, use_float, layout);
+    insertOutputPermute(index, type, layout);
   }
 }
 
-void PermutationIOPass::insertInputPermute(const ir::OperandIndex &index, const bool use_float,
+void PermutationIOPass::insertInputPermute(const ir::OperandIndex &index, const ir::TypeInfo &type,
                                            const ir::Layout &from_layout)
 {
   assert(from_layout == ir::Layout::NCHW || from_layout == ir::Layout::NHWC);
   const auto &origin_operand = _graph.operands().at(index);
-  if (origin_operand.typeInfo().type() == ir::DataType::FLOAT32 && from_layout == ir::Layout::NHWC)
+
+  // Check nothing to permute
+  if (origin_operand.typeInfo() == type && from_layout == ir::Layout::NHWC)
     return;
 
   // Update graph operand
-  auto input_typeinfo = use_float ? ir::TypeInfo{ir::DataType::FLOAT32} : origin_operand.typeInfo();
   auto input_shape = from_layout == ir::Layout::NCHW
                        ? ir::convertShape(origin_operand.shape(), ir::PermuteType::NHWC_TO_NCHW)
                        : origin_operand.shape();
-  auto input_operand_index = _graph.addOperand(input_shape, input_typeinfo);
+  auto input_operand_index = _graph.addOperand(input_shape, type);
   _graph.getInputs().replace(index, input_operand_index);
 
   // Update graph operation
@@ -104,21 +107,21 @@ void PermutationIOPass::insertInputPermute(const ir::OperandIndex &index, const 
   VERBOSE(PermuteIOPass) << "  - Output(original) Operand : " << index << std::endl;
 }
 
-void PermutationIOPass::insertOutputPermute(const ir::OperandIndex &index, const bool use_float,
+void PermutationIOPass::insertOutputPermute(const ir::OperandIndex &index, const ir::TypeInfo &type,
                                             const ir::Layout &to_layout)
 {
   assert(to_layout == ir::Layout::NCHW || to_layout == ir::Layout::NHWC);
   auto &origin_operand = _graph.operands().at(index);
-  if (origin_operand.typeInfo().type() == ir::DataType::FLOAT32 && to_layout == ir::Layout::NHWC)
+
+  // Check nothing to permute
+  if (origin_operand.typeInfo() == type && to_layout == ir::Layout::NHWC)
     return;
 
   // Update graph operand
-  auto output_typeinfo =
-    use_float ? ir::TypeInfo{ir::DataType::FLOAT32} : origin_operand.typeInfo();
   auto output_shape = to_layout == ir::Layout::NCHW
                         ? ir::convertShape(origin_operand.shape(), ir::PermuteType::NHWC_TO_NCHW)
                         : origin_operand.shape();
-  auto output_operand_index = _graph.addOperand(output_shape, output_typeinfo);
+  auto output_operand_index = _graph.addOperand(output_shape, type);
   _graph.getOutputs().replace(index, output_operand_index);
 
   // Update graph operation

@@ -20,6 +20,7 @@
 #include "ir/OpCode.h"
 #include "ir/Index.h"
 #include "ir/Layout.h"
+#include "ir/TypeInfo.h"
 
 #include <memory>
 #include <set>
@@ -67,8 +68,8 @@ struct CompilerOptions
   std::vector<std::string> backend_list;
   std::unordered_map<uint32_t, ir::Layout> input_layout;
   std::unordered_map<uint32_t, ir::Layout> output_layout;
-  std::set<uint32_t> input_float;
-  std::set<uint32_t> output_float;
+  std::unordered_map<uint32_t, ir::TypeInfo> input_type;
+  std::unordered_map<uint32_t, ir::TypeInfo> output_type;
 
   // OPTIONS ONLY FOR DEBUGGING/PROFILING
   int graph_dump_level; //< Graph dump level, values between 0 and 2 are valid

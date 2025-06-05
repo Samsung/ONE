@@ -668,7 +668,8 @@ NNFW_STATUS nnfw_session::set_input_type(uint32_t index, NNFW_TYPE type)
       return NNFW_STATUS_ERROR;
     }
 
-    _coptions->input_float.insert(index);
+    _coptions->input_type.insert_or_assign(index,
+                                           onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
   }
   catch (const std::exception &e)
   {
@@ -726,7 +727,8 @@ NNFW_STATUS nnfw_session::set_output_type(uint32_t index, NNFW_TYPE type)
       return NNFW_STATUS_ERROR;
     }
 
-    _coptions->output_float.insert(index);
+    _coptions->output_type.insert_or_assign(index,
+                                            onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
   }
   catch (const std::exception &e)
   {
