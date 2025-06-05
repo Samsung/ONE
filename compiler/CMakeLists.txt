@@ -92,6 +92,11 @@ function(add_compiler_directory DIR)
     message(STATUS "Configure ${PREFIX}")
     add_subdirectory(${DIR})
     message(STATUS "Configure ${PREFIX} - Done")
+    # NOTE ONE_PYTHON_VERSION_MINOR is to provide python3.x minor version number
+    # to modules that use common artifacts.
+    if(DEFINED ONE_PYTHON_VERSION_MINOR)
+      set(ONE_PYTHON_VERSION_MINOR ${ONE_PYTHON_VERSION_MINOR} PARENT_SCOPE)
+    endif()
   endif(ENABLE)
 endfunction(add_compiler_directory)
 
