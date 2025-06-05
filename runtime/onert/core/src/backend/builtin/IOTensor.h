@@ -53,7 +53,6 @@ public:
 
 public:
   uint8_t *buffer() const override { return _tensor->buffer(); }
-  ir::Layout layout() const { return _orig->layout(); }
   void set_dynamic() override
   {
     _info.setDynamic();

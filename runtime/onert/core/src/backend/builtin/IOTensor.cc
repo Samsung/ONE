@@ -27,7 +27,7 @@ IOTensor::~IOTensor() {}
 
 IOTensor::IOTensor(const ir::OperandInfo &info)
   : IPortableTensor{info}, _tensor{nullptr},
-    _orig{std::make_unique<UserTensor>(info, ir::Layout::NHWC, (uint8_t *)nullptr, 0)}
+    _orig{std::make_unique<UserTensor>(info, (uint8_t *)nullptr, 0)}
 {
   _tensor = _orig.get();
 }
