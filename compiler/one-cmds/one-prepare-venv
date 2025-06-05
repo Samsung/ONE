@@ -68,6 +68,7 @@ VER_TORCH="2.1.2+cpu"
 VER_PROTOBUF=4.23.3
 VER_NUMPY=1.24.3
 
+# TODO remove by DISTRIB_CODENAME
 echo "Setting version for '$DISTRIB_CODENAME'"
 if [[ "$DISTRIB_CODENAME" == "bionic" ]]; then
   : # use as is
@@ -79,6 +80,19 @@ elif [[ "$DISTRIB_CODENAME" == "noble" ]]; then
   : # TODO change vesions
 else
   echo "Error one-prepare-venv: Unsupported codename $DISTRIB_CODENAME"
+  exit 1
+fi
+
+PYTHON_VER=$(${PYTHON3_EXEC} -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
+echo "Setting package version for python $PYTHON_VER"
+if [[ "$PYTHON_VER" == "3.8" ]]; then
+  : # use as is
+elif [[ "$PYTHON_VER" == "3.10" ]]; then
+  : # TODO change vesions
+elif [[ "$PYTHON_VER" == "3.12" ]]; then
+  : # TODO change vesions
+else
+  echo "Error one-prepare-venv: Unsupported python $PYTHON_VER"
   exit 1
 fi
 
