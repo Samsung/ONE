@@ -8,6 +8,9 @@ on:
     paths:
       - '.github/workflows/run-circle-mlir-build.yml'
       - 'circle-mlir/**'
+    paths-ignore:
+      - 'circle-mlir/infra/debian/**'
+      - 'circle-mlir/infra/docker/**'
   pull_request:
     branches:
       - master
@@ -15,6 +18,9 @@ on:
     paths:
       - '.github/workflows/run-circle-mlir-build.yml'
       - 'circle-mlir/**'
+    paths-ignore:
+      - 'circle-mlir/infra/debian/**'
+      - 'circle-mlir/infra/docker/**'
 
 defaults:
   run:
