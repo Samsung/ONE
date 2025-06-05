@@ -1,5 +1,3 @@
-# Default control file for Debian packaging starting point
-# It will be overwritten by the override_dh_clean in debian/rules
 Source: one
 Section: devel
 Priority: extra
@@ -45,3 +43,9 @@ Architecture: amd64
 Multi-Arch: same
 Depends: onert, onert-dev, ${shlibs:Depends}, ${misc:Depends}
 Description: one-runtime development package
+
+Package: onert-train
+Architecture: amd64
+Multi-Arch: same
+Depends: onert, ${shlibs:Depends}, ${misc:Depends}
+Description: one-runtime train package
