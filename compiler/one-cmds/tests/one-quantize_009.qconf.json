@@ -4,6 +4,9 @@
     "layers" : [
         {
             "name" : "InceptionV3/InceptionV3/Conv2d_2b_3x3/Relu;InceptionV3/InceptionV3/Conv2d_2b_3x3/BatchNorm/FusedBatchNorm;InceptionV3/InceptionV3/Mixed_6a/Branch_1/Conv2d_0a_1x1/Conv2D;InceptionV3/InceptionV3/Conv2d_2b_3x3/Conv2D",
+            "alternate": {
+                "tf2190": "InceptionV3/InceptionV3/Conv2d_2b_3x3/Relu;InceptionV3/InceptionV3/Conv2d_2b_3x3/BatchNorm/FusedBatchNorm;InceptionV3/InceptionV3/Conv2d_2b_3x3/Conv2D"
+            },
             "dtype" : "int16",
             "granularity" : "channel"
         },

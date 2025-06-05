@@ -116,6 +116,71 @@ $ NNCC_WORKSPACE=build/release ./nncc build
 ```
 will build release version in `build/release` folder.
 
+## Local install and command line tests
+
+Local install test is to make an local installation in `build/install` path,
+check the build artifacts and run compiler command line tests of `onecc`
+and others.
+
+### Prepare onnx2circle
+
+`one-import-onnx` tool now uses `onnx2circle` tool from `circle-mlir`.
+
+`onnx2cicle` tool can be prepared with (1) build from source or (2) install
+from [launchpad.net](https://launchpad.net/~circletools).
+
+Please read [README.md](../circle-mlir/README.md) for details how to build.
+
+As `circle-mlir/externals` uses lots of storage(about 150~200GB) and time,
+we recommand to use build with Docker image as described in above README file.
+
+To use Debian package from [launchpad.net](https://launchpad.net/~circletools),
+```
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo -E add-apt-repository ppa:circletools/nightly
+sudo apt-get install onnx2circle
+```
+- this will install `onnx2circle` tool to `/usr/share/circletools` folder
+
+`one-cmds/CMakeLists.txt` will install `onnx2circle` from (1) or (2) to
+`buid/install` as conversion tool of `one-import-onnx` command.
+
+### How to make local installation
+```
+NNAS_BUILD_PREFIX=build/setup \
+BUILD_TYPE=Release \
+./nnas create-package --preset 20230907 --prefix build/install
+```
+This will configure and build necessary modules and install files in
+`build/install` path.
+
+### Local command line tests
+
+To run local command line tests, python virtual envirnment is necessary with
+test models.
+
+Prepare python virtual environment:
+```
+pushd build/install/bin
+bash ./one-prepare-venv
+popd
+```
+
+Download test models:
+```
+pushd build/install/test
+bash ./prepare_test_materials.sh
+popd
+```
+
+Run command line tests:
+```
+pushd build/install/test
+bash ./runtestall.sh
+popd
+```
+
 ## Build for Windows
 
 To build for Windows, we use MinGW(Minimalist GNU for Windows). [Here](https://github.com/git-for-windows/build-extra/releases) you can download a tool that includes it.
