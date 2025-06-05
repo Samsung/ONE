@@ -26,14 +26,20 @@ bool operator==(const TypeInfo &lhs, const TypeInfo &rhs)
     return false;
   }
 
-  if (lhs.zero_point() != rhs.zero_point())
-  {
+  if (lhs.zero_points().size() != rhs.zero_points().size())
     return false;
-  }
 
-  if (lhs.scale() != rhs.scale())
+  if (lhs.zero_points().size() != 0)
   {
-    return false;
+    if (lhs.zero_point() != rhs.zero_point())
+    {
+      return false;
+    }
+
+    if (lhs.scale() != rhs.scale())
+    {
+      return false;
+    }
   }
 
   return true;

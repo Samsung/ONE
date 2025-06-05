@@ -69,13 +69,6 @@ public:
     return _output_tensors[index]->get_info();
   }
 
-  ir::Layout inputLayout(uint32_t index) const override { return _input_tensors[index]->layout(); }
-
-  ir::Layout outputLayout(uint32_t index) const override
-  {
-    return _output_tensors[index]->layout();
-  }
-
   const uint8_t *outputBuffer(uint32_t index) const final
   {
     return _output_tensors[index]->buffer();

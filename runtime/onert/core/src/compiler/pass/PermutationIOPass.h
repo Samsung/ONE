@@ -41,9 +41,9 @@ public:
   void run() override;
 
 private:
-  void insertInputPermute(const ir::OperandIndex &index, const bool use_float,
+  void insertInputPermute(const ir::OperandIndex &index, const ir::TypeInfo &type,
                           const ir::Layout &from_layout);
-  void insertOutputPermute(const ir::OperandIndex &index, const bool use_float,
+  void insertOutputPermute(const ir::OperandIndex &index, const ir::TypeInfo &type,
                            const ir::Layout &to_layout);
 
 private:

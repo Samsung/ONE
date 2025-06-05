@@ -107,28 +107,6 @@ void Execution::setOutput(const ir::IOIndex &index, const ir::Shape &shape, void
   setOutput(index, buffer, length);
 }
 
-void Execution::setInputLayout(const ir::IOIndex &index, ir::Layout layout)
-{
-  _ctx.desc.inputs.at(index.value())->layout = layout;
-}
-
-void Execution::setOutputLayout(const ir::IOIndex &index, ir::Layout layout)
-{
-  _ctx.desc.outputs.at(index.value())->layout = layout;
-}
-
-void Execution::setInputType(const ir::IOIndex &index, const ir::TypeInfo &typeInfo)
-{
-  _ctx.desc.inputs.at(index.value())->info.typeInfo(typeInfo);
-  _ctx.shape_updated = true;
-}
-
-void Execution::setOutputType(const ir::IOIndex &index, const ir::TypeInfo &typeInfo)
-{
-  _ctx.desc.outputs.at(index.value())->info.typeInfo(typeInfo);
-  _ctx.shape_updated = true;
-}
-
 void Execution::execute()
 {
   VERBOSE(Execution) << "Start execution" << std::endl;

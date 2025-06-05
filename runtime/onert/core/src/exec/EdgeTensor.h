@@ -27,14 +27,12 @@ namespace onert::exec
 class EdgeTensor : public backend::IPortableTensor
 {
 public:
-  EdgeTensor(const ir::OperandInfo &info, ir::Layout layout)
-    : IPortableTensor(info), _layout{layout}, _buffer{nullptr}, _ref_count{0}
+  EdgeTensor(const ir::OperandInfo &info) : IPortableTensor(info), _buffer{nullptr}, _ref_count{0}
   {
   }
   ~EdgeTensor() = default;
 
   uint8_t *buffer() const override { return _buffer.get(); }
-  ir::Layout layout() const { return _layout; }
   void set_dynamic() override { _info.setDynamic(); }
   bool applyShape(const ir::Shape &new_shape) override;
   void setShape(const ir::Shape &new_shape) override { _info.shape(new_shape); }
@@ -59,7 +57,6 @@ public:
   }
 
 private:
-  ir::Layout _layout;
   std::unique_ptr<uint8_t[]> _buffer;
   int32_t _ref_count;
 };

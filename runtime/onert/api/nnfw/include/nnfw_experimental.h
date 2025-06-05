@@ -164,6 +164,40 @@ NNFW_STATUS nnfw_push_pipeline_input(nnfw_session *session, void *inputs, void *
 NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs);
 
 /**
+ * @brief Set the type of an input
+ *
+ * User can call this function to set the type of an input. Then user can pass input data of that
+ * type. If it is not called, runtime will infer the type from the model.
+ * This function should be called after {@link nnfw_load_model_from_file} and
+ * before {@link nnfw_prepare}.
+ * Now only NNFW_TYPE_FLOAT32 is supported. If other types are passed, runtime will return error.
+ *
+ * @param[in] session session from input is to be extracted
+ * @param[in] index   index of input to be set (0-indexed)
+ * @param[in] type    type to set to target input. This can be NNFW_TYPE_FLOAT32 only.
+ *
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_input_type(nnfw_session *session, uint32_t index, NNFW_TYPE type);
+
+/**
+ * @brief Set the type of an output
+ *
+ * User can call this function to set the type of an output. Then user can pass output data of that
+ * type. If it is not called, runtime will output the type from the model.
+ * This function should be called after {@link nnfw_load_model_from_file} and
+ * before {@link nnfw_prepare}.
+ * Now only NNFW_TYPE_FLOAT32 is supported. If other types are passed, runtime will return error.
+ *
+ * @param[in] session session from output is to be extracted
+ * @param[in] index   index of output to be set (0-indexed)
+ * @param[in] type    type to set to target output. This can be NNFW_TYPE_FLOAT32 only.
+ *
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_output_type(nnfw_session *session, uint32_t index, NNFW_TYPE type);
+
+/**
  *  Training C APIs
  *
  * Training APIs are designed to be used in the following order for training
