@@ -43,6 +43,43 @@ MultiModelCompiler::MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
   // DO NOTHING
 }
 
+CompilerOptions MultiModelCompiler::optionForSingleModel(const ir::ModelIndex &model_index)
+{
+  CompilerOptions opts = CompilerOptions(*_options); // Copy options
+  opts.input_layout.clear();
+  opts.output_layout.clear();
+  opts.input_float.clear();
+  opts.output_float.clear();
+
+  for (const auto &[key, value] : _options->input_layout)
+  {
+    const auto &io_desc = _nnpkg->input(key);
+    if (std::get<ir::ModelIndex>(io_desc) == model_index)
+      opts.input_layout[std::get<ir::IOIndex>(io_desc).value()] = value;
+  }
+
+  for (const auto &[key, value] : _options->output_layout)
+  {
+    const auto &io_desc = _nnpkg->output(key);
+    if (std::get<ir::ModelIndex>(io_desc) == model_index)
+      opts.output_layout[std::get<ir::IOIndex>(io_desc).value()] = value;
+  }
+
+  for (const uint32_t &index : _options->input_float)
+  {
+    const auto &io_desc = _nnpkg->input(index);
+    if (std::get<ir::ModelIndex>(io_desc) == model_index)
+      opts.input_float.insert(std::get<ir::IOIndex>(io_desc).value());
+  }
+
+  for (const uint32_t &index : _options->output_float)
+  {
+    const auto &io_desc = _nnpkg->output(index);
+    if (std::get<ir::ModelIndex>(io_desc) == model_index)
+      opts.output_float.insert(std::get<ir::IOIndex>(io_desc).value());
+  }
+}
+
 std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
 {
   /***************************************************
@@ -124,8 +161,9 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       dot_dumper.dump(subg,
                       nnfw::misc::str("before_lower_model-", i, "-subg-", subg_index.value()));
       // Lower: Assign backend
+      auto model_option = optionForSingleModel(model_index);
       lowered_subgs[model_index][subg_index] =
-        std::make_unique<compiler::LoweredGraph>(subg, *_options);
+        std::make_unique<compiler::LoweredGraph>(subg, model_option);
       // Set tracing_ctx for copied graph
       if (tracing_ctx != nullptr)
         tracing_ctx->setSubgraphIndex(&(lowered_subgs[model_index][subg_index]->graph()),
