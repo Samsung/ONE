@@ -1,6 +1,6 @@
 onnx2circle (0.3.0~202506050531~jammy) jammy; urgency=medium
 
-  * Revised Mul to Div
+  * Revised Div to Mul
 
  -- On-device AI developers <nnfw@samsung.com>  Thu, 05 Jun 2025 05:41:50 +0000
 
