@@ -30,10 +30,10 @@ namespace
 
 using namespace onert::ir;
 
-class CompiledMockUpModel
+class MockUpModel
 {
 public:
-  CompiledMockUpModel()
+  MockUpModel()
   {
     // Model: two elementwise add operation
     // model input: lhs, rhs1
@@ -77,24 +77,39 @@ public:
     graph->addOutput(operand_result2);
     graph->verify();
 
-    // Compile
-    auto model = std::make_shared<onert::ir::Model>();
+    model = std::make_shared<Model>();
     model->push(onert::ir::SubgraphIndex{0}, graph);
+  }
+
+public:
+  std::shared_ptr<Model> model;
+  std::shared_ptr<Graph> graph;
+};
+
+class CompiledMockUpModel
+{
+public:
+  CompiledMockUpModel()
+  {
+    model = std::make_shared<MockUpModel>();
+    graph = model->graph;
     coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-    onert::compiler::Compiler compiler{model, coptions.get()};
+
+    onert::compiler::Compiler compiler{model->model, coptions.get()};
     artifact = compiler.compile();
   }
 
 public:
+  std::shared_ptr<MockUpModel> model;
   std::shared_ptr<Graph> graph;
   std::unique_ptr<onert::compiler::CompilerOptions> coptions;
   std::shared_ptr<onert::compiler::CompilerArtifact> artifact;
 };
 
-class CompiledMockUpMultiModel
+class MockUpMultiModel
 {
 public:
-  CompiledMockUpMultiModel()
+  MockUpMultiModel()
   {
     // Model0: a float elementwise add operation
     // Model0 input: lhs0, rhs0
@@ -114,6 +129,9 @@ public:
     // result2 <= (result0 + result1)
     // lhs0, rhs0, rh1, result0, result1, result2 shape: {1, 2, 2, 1}
     // activation: none (constant)
+
+    // Multimodel's input: lhs0, rhs0
+    // Multimodel's output: result2
 
     // Update edge information
     edges.pkg_inputs.emplace_back(ModelIndex{0}, SubgraphIndex{0}, IOIndex{0});
@@ -198,22 +216,13 @@ public:
     graphs[2]->addOperation(
       std::make_unique<operation::BinaryArithmetic>(input_set2, output_set2, param2));
 
-    // Model1's inputs/outputs
+    // Model2's inputs/outputs
     graphs[2]->addInput(operand_lhs2);
     graphs[2]->addInput(operand_rhs2);
     graphs[2]->addOutput(operand_result2);
     graphs[2]->verify();
 
-    // Compile
-    compile();
-  }
-
-public:
-  void compile()
-  {
-    auto nnpkg = std::make_shared<onert::ir::NNPkg>();
-    coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-
+    nnpkg = std::make_shared<NNPkg>();
     for (uint16_t i = 0; i < graphs.size(); ++i)
     {
       auto model = std::make_shared<onert::ir::Model>();
@@ -233,12 +242,39 @@ public:
     {
       nnpkg->addEdge(edge.from, edge.to);
     }
+  }
+
+public:
+  std::shared_ptr<NNPkg> nnpkg;
+  std::vector<std::shared_ptr<Graph>> graphs;
+  ModelEdges edges;
+};
+
+class CompiledMockUpMultiModel
+{
+public:
+  CompiledMockUpMultiModel()
+  {
+    multimodel = std::make_shared<MockUpMultiModel>();
+    graphs = multimodel->graphs;
+    edges = multimodel->edges;
+
+    // Compile
+    compile();
+  }
+
+public:
+  void compile()
+  {
+    auto nnpkg = multimodel->nnpkg;
+    coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
+
     auto compiler = onert::compiler::CompilerFactory::get().create(nnpkg, coptions.get());
-    nnpkg.reset();
     artifact = compiler->compile();
   }
 
 public:
+  std::shared_ptr<MockUpMultiModel> multimodel;
   std::vector<std::shared_ptr<Graph>> graphs;
   std::unique_ptr<onert::compiler::CompilerOptions> coptions;
   std::shared_ptr<onert::compiler::CompilerArtifact> artifact;
@@ -477,9 +513,16 @@ TEST(ExecInstance, twoExecution)
 
 TEST(ExecInstance, quantModel_floatIO)
 {
-  auto mockup = CompiledMockUpQuantModel();
+  auto mockup = MockUpModel();
+  auto compile_option = onert::compiler::CompilerOptions::fromGlobalConfig();
+  compile_option->input_type.insert_or_assign(0, onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
+  compile_option->input_type.insert_or_assign(1, onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
+  compile_option->output_type.insert_or_assign(0,
+                                               onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
+  auto artifact = onert::compiler::Compiler{mockup.model, compile_option.get()}.compile();
+
   auto graph = mockup.graph;
-  auto executors = mockup.artifact->_executors;
+  auto executors = artifact->_executors;
 
   auto input1 = IOIndex{0};
   auto input2 = IOIndex{1};
@@ -495,9 +538,6 @@ TEST(ExecInstance, quantModel_floatIO)
   execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
   execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
   execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
-  execution.setInputType(input1, onert::ir::TypeInfo{onert::ir::DataType::FLOAT32});
-  execution.setInputType(input2, onert::ir::TypeInfo{onert::ir::DataType::FLOAT32});
-  execution.setOutputType(output, onert::ir::TypeInfo{onert::ir::DataType::FLOAT32});
   execution.execute();
 
   EXPECT_EQ(output_buffer[0], output_expected[0]);
@@ -744,8 +784,19 @@ TEST(ExecInstance, multi_model_async)
 
 TEST(ExecInstance, multi_model_dequant_input_quant_output)
 {
-  auto mockup = CompiledMockUpMultiModel();
-  auto executors = mockup.artifact->_executors;
+  auto mockup = MockUpMultiModel();
+  auto compile_option = onert::compiler::CompilerOptions::fromGlobalConfig();
+
+  float scale = 0.1;
+  int32_t zero_point = 128;
+  onert::ir::TypeInfo type_info{onert::ir::DataType::QUANT_UINT8_ASYMM, scale, zero_point};
+  compile_option->input_type.insert_or_assign(0, type_info);
+  compile_option->input_type.insert_or_assign(1, type_info);
+  compile_option->output_type.insert_or_assign(0, type_info);
+  auto compiler =
+    onert::compiler::CompilerFactory::get().create(mockup.nnpkg, compile_option.get());
+  auto artifact = compiler->compile();
+  auto executors = artifact->_executors;
 
   auto input1 = IOIndex{0};
   auto input2 = IOIndex{1};
@@ -755,19 +806,13 @@ TEST(ExecInstance, multi_model_dequant_input_quant_output)
   const uint8_t input2_buffer[4] = {138, 98, 148, 88};   // {1, -3, 2, -4}
   uint8_t output_buffer[4] = {};
   const uint8_t output_expected[4] = {198, 78, 138, 58}; // {7, -5, 1, -7}
-  float scale = 0.1;
-  int32_t zero_point = 128;
 
   onert::exec::Execution execution{executors};
 
-  onert::ir::TypeInfo type_info{onert::ir::DataType::QUANT_UINT8_ASYMM, scale, zero_point};
-  execution.setInputType(input1, type_info);
   execution.setInput(input1, execution.getInputShape(input1),
                      reinterpret_cast<const void *>(input1_buffer), 4);
-  execution.setInputType(input2, type_info);
   execution.setInput(input2, execution.getInputShape(input2),
                      reinterpret_cast<const void *>(input2_buffer), 4);
-  execution.setOutputType(output, type_info);
   execution.setOutput(output, execution.getOutputShape(output),
                       reinterpret_cast<void *>(output_buffer), 4);
   execution.execute();
