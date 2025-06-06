@@ -46,6 +46,8 @@ DirectoryIterator::DirectoryIterator(const std::string &dir_path, luci::Module *
     _entries.emplace_back(entry);
   }
 
+  closedir(dir);
+
   auto input_nodes = loco::input_nodes(module->graph());
   for (auto input_node : input_nodes)
   {
