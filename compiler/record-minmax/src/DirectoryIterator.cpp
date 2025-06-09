@@ -32,21 +32,19 @@ namespace record_minmax
 DirectoryIterator::DirectoryIterator(const std::string &dir_path, luci::Module *module)
   : _dir_path(dir_path)
 {
-  auto dir = opendir(dir_path.c_str());
-  if (not dir)
+  _dir = opendir(dir_path.c_str());
+  if (not _dir)
     throw std::runtime_error("Cannot open directory. Please check \"" + _dir_path +
                              "\" is a directory.\n");
 
   dirent *entry = nullptr;
-  while ((entry = readdir(dir)))
+  while ((entry = readdir(_dir)))
   {
     if (entry->d_type != DT_REG)
       continue;
 
     _entries.emplace_back(entry);
   }
-
-  closedir(dir);
 
   auto input_nodes = loco::input_nodes(module->graph());
   for (auto input_node : input_nodes)
@@ -55,6 +53,12 @@ DirectoryIterator::DirectoryIterator(const std::string &dir_path, luci::Module *
     _input_nodes.emplace_back(cnode);
   }
 }
+
+DirectoryIterator::~DirectoryIterator()
+{
+  if (_dir)
+    closedir(_dir);
+};
 
 bool DirectoryIterator::hasNext() const { return _curr_idx < _entries.size(); }
 
