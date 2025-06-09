@@ -616,24 +616,33 @@ NNFW_STATUS nnfw_odc_delete_minmax_file(nnfw_session *session);
 /**
  * @brief  Run inference with auto compilation
  *
- * <p>This function runs inference with automatic compilation and replaces
- *  the original model with a quantized or compiled model inside.
- * During the inference the minmax statistics is collected and after that quantization is performed.
- * If quantization was successful, try to code generating for target backend, otherwise run original
- float model.
- * If compilation was successful, run compiled model, otherwise run quantized model.
- * On-device compiler (ODC) provides quantization and compilation functionality.
- * Function should be called after model is loaded by {@link nnfw_load_model_from_file},
- * session is prepared for inference by {@link nnfw_prepare}, set input and output buffers
- * by {@link nnfw_set_input} and {@link nnfw_set_output}.
+ * This function runs inference float model with automatic compilation and
+ * replaces the original model with a quantized or compiled model inside.
  *
- * Additionally the following parameters should be set up :
+ * During the inference, the minmax statistics is collected and after that quantization is
+ performed.
+ * If quantization was successful, try to code generating for target backend,
+ * otherwise run original float model.
+ *
+ * If compilation was successful, run compiled model, otherwise run quantized model.
+ *
+ * Auto compilation uses on-device compiler (ODC), and ODC provides
+ * quantization and compilation functionality.
+ * ODC functions should be called after model is loaded by {@link nnfw_load_model_from_file}.
+ * Belows are ODC functions to set parameters :
+ *
  * 1. Quantization type {@link nnfw_set_quantization_type }
- * 2. Quantizated model path {@link  nnfw_set_quantized_model_path }
+ * 2. Quantizated model path {@link nnfw_set_quantized_model_path }
  * 3. Minmax records threshold for quantization {@link nnfw_set_odc_param_minmax_records_count }
  * 3. File with minMax statistics can be removed by {@link nnfw_odc_delete_minmax_file}
- * 4. Compiled model path {@link  nnfw_set_codegen_model_path}
- * </p>
+ * 4. Compiled model path {@link nnfw_set_codegen_model_path}
+ *
+ * Session is prepared for inference by {@link nnfw_prepare}, set input and output float buffers
+ * by {@link nnfw_set_input} and {@link nnfw_set_output}. This function should be called after those
+ * functions.
+ *
+ * After auto compilation, quantized model uses float input/output buffer
+ * and cast them to quantized type in runtime automatically.
  *
  * @param[in] session nnfw_session
  * @param[in] target  Target backend to generate code as in {@link nnfw_codegen}

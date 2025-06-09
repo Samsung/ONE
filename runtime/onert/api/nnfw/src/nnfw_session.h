@@ -89,7 +89,7 @@ private:
   {
     INITIAL_STATE,          //< Initial state
     QUANTIZED_MODEL_LOADED, //< Qunatized model is loaded
-    COMPILED_MODEL_LOADED   //< Compiled model is loaded
+    COMPILED_MODEL_LOADED,  //< Compiled model is loaded
   };
 
 public:

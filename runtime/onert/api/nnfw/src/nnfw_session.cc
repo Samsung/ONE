@@ -2278,7 +2278,7 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
       std::vector<const void *> _input_buffers;
       std::vector<void *> _output_buffers;
 
-      // Save Inputs buffers
+      // Save Inputs buffers, set compile option to use float type
       for (size_t input_index = 0; input_index < input_size; input_index++)
       {
         auto io_input_index = onert::ir::IOIndex(input_index);
@@ -2286,6 +2286,8 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
         auto input_buffer = _execution->getInputBuffer(io_input_index);
 
         _input_buffers.push_back(input_buffer);
+        _coptions->input_type.insert_or_assign(input_index,
+                                               onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
       }
 
       // Save Outputs buffers
@@ -2297,6 +2299,8 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
         auto output_buffer = _execution->getOutputBuffer(io_output_index);
 
         _output_buffers.push_back(output_buffer);
+        _coptions->output_type.insert_or_assign(output_index,
+                                                onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
       }
 
       // Save execution options
@@ -2355,9 +2359,7 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
         if (status != NNFW_STATUS_NO_ERROR)
           return status;
 
-        ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
         auto input_size_in_bytes = getBufSize(&ti);
-
         status = set_input(input_index, ti.dtype, _input_buffers[input_index], input_size_in_bytes);
 
         if (status != NNFW_STATUS_NO_ERROR)
@@ -2373,10 +2375,7 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
         if (status != NNFW_STATUS_NO_ERROR)
           return status;
 
-        ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
-
         uint64_t output_size_in_bytes = getBufSize(&ti);
-
         status =
           set_output(output_index, ti.dtype, _output_buffers[output_index], output_size_in_bytes);
         if (status != NNFW_STATUS_NO_ERROR)
