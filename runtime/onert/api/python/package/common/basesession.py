@@ -131,6 +131,18 @@ class BaseSession:
                 input_array = np.zeros((num_elems(input_tensorinfo)),
                                        dtype=input_tensorinfo.dtype)
 
+            # Check if the shape of input_array matches the dims of input_tensorinfo
+            if input_array.shape != tuple(input_tensorinfo.dims):
+                # If not, set the input tensor info to match the input_array shape
+                try:
+                    print(input_array.shape)
+                    print(tuple(input_tensorinfo.dims))
+                    input_tensorinfo.rank = len(input_array)
+                    input_tensorinfo.dims = list(input_array.shape)
+                    self.session.set_input_tensorinfo(i, input_tensorinfo)
+                except Exception as e:
+                    raise OnertError(f"Failed to set input tensor info #{i}: {e}") from e
+
             try:
                 self.session.set_input(i, input_array)
             except ValueError:

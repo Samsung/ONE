@@ -95,6 +95,8 @@ void LoweredGraph::lowerGraph(const CompilerOptions &options)
   // Optimization passes (optional)
   pass::PassRunner{}.append(std::make_unique<pass::PermutationEliminationPass>(*this)).run();
 
+  dumpLowerInfo();
+
   VERBOSE(LoweredGraph) << "Dump after all the passes" << std::endl;
   for (auto &&operand : _graph.getInputs())
     VERBOSE(LoweredGraph) << "Graph Input : " << operand << std::endl;

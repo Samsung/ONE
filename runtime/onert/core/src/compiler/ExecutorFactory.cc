@@ -261,13 +261,18 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
 }
 
 void bindInternalOutputTensors(const compiler::ILoweredGraph &lgraph,
-                               compiler::TensorRegistries &tensor_regs)
+                               const backend::BackendContexts &backend_contexts)
 {
+  compiler::TensorRegistries tensor_regs{backend_contexts, true};
+
   for (const auto &output :
        lgraph.graph().getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
   {
-    if (auto output_tensor =
-          dynamic_cast<backend::IPortableTensor *>(tensor_regs.getITensor(output));
+    const auto backend = lgraph.lower_info().operand.at(output).def_backends().getOnlyElement();
+    auto &backend_ctx = backend_contexts.at(backend);
+
+    if (auto output_tensor = dynamic_cast<backend::IPortableTensor *>(
+          backend_ctx->tensor_registry->getITensor(output));
         output_tensor == nullptr)
       throw std::runtime_error(
         "When outputs are allocated internally, output tensor must be IPortableTensor");
@@ -443,7 +448,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   prepareMigrantTensors(*lowered_graph, backend_contexts);
 
   if (!is_output_external_tensor)
-    bindInternalOutputTensors(*lowered_graph, tensor_regs);
+    bindInternalOutputTensors(*lowered_graph, backend_contexts);
 
   // Give some runtime objects to builtin KernelGenerator
   prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);
@@ -573,7 +578,7 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
   prepareMigrantTensors(*lowered_graph, backend_contexts);
 
   if (!is_output_external_tensor)
-    bindInternalOutputTensors(*lowered_graph, tensor_regs);
+    bindInternalOutputTensors(*lowered_graph, backend_contexts);
 
   // Give some runtime objects to builtin KernelGenerator
   prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);

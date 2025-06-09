@@ -80,6 +80,18 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
       out_operand_obj.setDef(op_ind);
     });
 
+    // Move lower info
+    {
+      auto &operand_li_map = _lowered_graph.lower_info().operand;
+      auto out_li = operand_li_map.getRawPtr(out_operand);
+      const auto out_def_backends = out_li->def_backends();
+      for (const auto backend : out_def_backends)
+        out_li->removeDefBackend(backend);
+      const auto in_def_backends = operand_li_map.getRawPtr(in_operand)->def_backends();
+      for (const auto backend : in_def_backends)
+        out_li->addDefBackend(backend);
+    }
+
     // Remove Permute operation and the operand
     {
       _graph.removeOperand(in_operand);
@@ -111,6 +123,18 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
       op.replaceInputs(out_operand, in_operand);
       in_operand_obj.insertUse(op_ind);
     });
+
+    // Move lower info
+    {
+      auto &operand_li_map = _lowered_graph.lower_info().operand;
+      auto in_li = operand_li_map.getRawPtr(in_operand);
+      const auto in_use_backends = in_li->use_backends();
+      for (const auto backend : in_use_backends)
+        in_li->removeUseBackend(backend);
+      const auto out_li = operand_li_map.getRawPtr(out_operand);
+      for (const auto backend : out_li->use_backends())
+        in_li->addUseBackend(backend);
+    }
 
     // Remove the Permute operation and out_operand
     {

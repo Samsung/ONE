@@ -84,11 +84,14 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
 
   executeImpl(subject);
 
-  for (uint32_t n = 0; n < outputs.size(); ++n)
+  if (options.skip_set_output_user_tensor)
   {
-    auto output_tensor = _output_tensors[n];
-    assert(output_tensor != nullptr);
-    output_tensor->syncInfoFromDynamicTensor();
+    for (uint32_t n = 0; n < outputs.size(); ++n)
+    {
+      auto output_tensor = _output_tensors[n];
+      assert(output_tensor != nullptr);
+      output_tensor->syncInfoFromDynamicTensor();
+    }
   }
 }
 

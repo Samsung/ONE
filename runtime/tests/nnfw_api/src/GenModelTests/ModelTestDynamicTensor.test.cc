@@ -485,14 +485,15 @@ TEST(TestDynamicTensor, get_dynamic_output_buffer)
   NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
 
   // Enable internal dynamic output allocation
-  nnfw_tensorinfo shape_tensorinfo;
-  NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(session, 0, &shape_tensorinfo));
-  shape_tensorinfo.dims[0] = 3;
-  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &shape_tensorinfo));
   NNFW_ENSURE_SUCCESS(nnfw_set_prepare_config(session, NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC, "true"));
   NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
 
   // Set input shape and data
+  nnfw_tensorinfo shape_tensorinfo;
+  NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(session, 0, &shape_tensorinfo));
+  shape_tensorinfo.rank = 1;
+  shape_tensorinfo.dims[0] = 3;
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &shape_tensorinfo));
   std::vector<int> shape_dims = {1, 3, 2};
   NNFW_ENSURE_SUCCESS(nnfw_set_input(session, 0, nnfw_type<int>::dtype, shape_dims.data(),
                                      sizeof(int) * shape_dims.size()));
