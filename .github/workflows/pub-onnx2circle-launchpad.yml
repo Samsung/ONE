@@ -10,7 +10,7 @@ on:
       o2c_version:
         description: 'The version of onnx2circle'
         required: true
-        default: '0.3.0'
+        default: '0.4.0'
       o2c_description:
         description: 'Description of changelog for onnx2circle'
         required: true
