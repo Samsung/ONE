@@ -32,6 +32,7 @@
 #include "opt/ConvertDivToMul.h"
 #include "opt/ConvertMirrorPadPad32.h"
 #include "opt/ConvertReshapeShape32.h"
+#include "opt/ConvertResizeBilinearSize32.h"
 #include "opt/ConvertResizeNearestSize32.h"
 #include "opt/ConvertSqrtDivToRsqrt.h"
 #include "opt/FuseAddRelu.h"
@@ -107,6 +108,7 @@ void RewriteCirclePass::applyActivationFusion()
   patterns.add<ConvertDivToMul>(context);
   patterns.add<ConvertMirrorPadPad32>(context);
   patterns.add<ConvertReshapeShape32>(context);
+  patterns.add<ConvertResizeBilinearSize32>(context);
   patterns.add<ConvertResizeNearestSize32>(context);
   patterns.add<ConvertSqrtDivToRsqrt>(context);
 
