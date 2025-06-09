@@ -145,7 +145,7 @@ list(APPEND CMAKE_PREFIX_PATH ${PB_INSTALL_DIR})
 # build ONNX-MLIR
 ExternalProject_Add(externals-onnx-mlir
   GIT_REPOSITORY "https://github.com/onnx/onnx-mlir.git"
-  GIT_TAG        "660bd8efa664bd2d05801a7a793fe29925313b4b" # v0.5.0.0
+  GIT_TAG        "d050bf35a2f186e45b0a4037c0a1d0727c69e7e6" # v0.5.0.0
   GIT_SUBMODULES_RECURSE True
   SOURCE_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/onnx-mlir"
   BINARY_DIR     "${OM_BUILD_DIR}"
