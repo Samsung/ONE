@@ -41,7 +41,10 @@ public:
 
   bool check_type_shape() const override;
 
+  ~DirectoryIterator();
+
 private:
+  DIR *_dir = nullptr;
   std::vector<dirent *> _entries;
   uint32_t _curr_idx = 0;
   std::string _dir_path;
