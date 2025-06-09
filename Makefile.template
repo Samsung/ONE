@@ -148,7 +148,7 @@ $(WORKSPACE):
 	mkdir -p $@
 
 prepare_buildtool_internal: $(WORKSPACE)
-	cmake -S infra/buildtool -B $(BUILDTOOL_WORKSPACE)/obj -DBUILDTOOL_PATH=$(BUILDTOOL_PATH)
+	cmake -S runtime/infra/buildtool -B $(BUILDTOOL_WORKSPACE)/obj -DBUILDTOOL_PATH=$(BUILDTOOL_PATH)
 	cmake --build $(BUILDTOOL_WORKSPACE)/obj/ -j$(NPROCS)
 prepare_nncc_internal: $(WORKSPACE)
 ifeq (,$(findstring android,$(TARGET_OS)))
