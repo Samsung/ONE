@@ -319,6 +319,7 @@ def _check_onnx2circle():
             sys.exit(1)
     return o2c_path
 
+
 def _extract_origin_tensor_shapes(tensors):
     shapes_map = {}
     for tensor in tensors:
@@ -331,6 +332,7 @@ def _extract_origin_tensor_shapes(tensors):
             else:
                 shapes_map[tensor.name].append(-1)  # dynamic
     return shapes_map
+
 
 def _parse_shapes(shape_str, origin_tensor_shapes_map):
     user_shapes_map = {}
@@ -361,6 +363,7 @@ def _parse_shapes(shape_str, origin_tensor_shapes_map):
             )
     return user_shapes_map
 
+
 def _convert(args):
     _apply_verbosity(args.verbose)
 
@@ -390,20 +393,20 @@ def _convert(args):
         if input_shape_provided or output_shape_provided:  # any shape arg provided
             input_shapes_map = _extract_origin_tensor_shapes(onnx_model.graph.input)
             if input_shape_provided:
-                input_shapes_map = _parse_shapes(
-                    getattr(args, 'input_shapes'), input_shapes_map)
+                input_shapes_map = _parse_shapes(getattr(args, 'input_shapes'),
+                                                 input_shapes_map)
                 delattr(args, 'input_shapes'
                         )  # avoid argument colision with tf2tflite conversion step
             output_shapes_map = _extract_origin_tensor_shapes(onnx_model.graph.output)
             if output_shape_provided:
-                output_shapes_map = _parse_shapes(
-                    getattr(args, 'output_shapes'), output_shapes_map)
+                output_shapes_map = _parse_shapes(getattr(args, 'output_shapes'),
+                                                  output_shapes_map)
             onnx_model = update_model_dims.update_inputs_outputs_dims(
                 onnx_model, input_shapes_map, output_shapes_map)
             try:
                 print(onnx.__file__)
-                onnx_model = onnx.shape_inference.infer_shapes(
-                    onnx_model, strict_mode=True)
+                onnx_model = onnx.shape_inference.infer_shapes(onnx_model,
+                                                               strict_mode=True)
             except Exception as e:
                 raise RuntimeError(
                     f'Exception with message="{e}" raised from external onnx library during shape inference'
