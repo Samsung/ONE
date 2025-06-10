@@ -1,11 +1,11 @@
 # Default control file for Debian packaging starting point
 # It will be overwritten by the override_dh_clean in debian/rules
 Source: one
-Section: devel
-Priority: extra
+Section: libs
+Priority: optional
 Maintainer: Neural Network Acceleration Solution Developers <nnfw@samsung.com>
 Build-Depends: cmake, debhelper (>=9)
-Standards-Version: 3.9.8
+Standards-Version: 4.0.1
 Homepage: https://github.com/Samsung/ONE
 
 Package: onert
