@@ -55,7 +55,7 @@ mlir::ArrayAttr duplicate(mlir::PatternRewriter &rewriter, mlir::ArrayAttr input
   size_t size = input.size();
   for (size_t i = 0; i < size; i++)
   {
-    auto val = input[i].dyn_cast<IntegerAttr>().getInt();
+    auto val = mlir::dyn_cast<IntegerAttr>(input[i]).getInt();
     temp_v.push_back(val);
     temp_v.push_back(val);
   }
@@ -122,7 +122,7 @@ struct CompactReshapeConvReshape : public OpRewritePattern<mlir::ONNXReshapeOp>
     if (!bis_const)
       return mlir::failure();
     mlir::Value const_w_op = cast<mlir::ONNXConstantOp>(is_conv_w);
-    auto w_type = const_w_op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    auto w_type = mlir::dyn_cast_or_null<mlir::RankedTensorType>(const_w_op.getType());
     if (!w_type.getElementType().isF32())
       return mlir::failure();
     auto w_shape = w_type.getShape();

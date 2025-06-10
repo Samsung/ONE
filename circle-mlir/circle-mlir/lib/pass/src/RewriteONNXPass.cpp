@@ -65,7 +65,7 @@ void RewriteONNXPass::runOnOperation()
   patterns.add<CompactReshapeConvReshape>(context); // remove unnecessary reshapes
   // TODO add more patterns
 
-  (void)applyPatternsAndFoldGreedily(func, std::move(patterns));
+  (void)applyPatternsGreedily(func, std::move(patterns));
 }
 
 std::unique_ptr<mlir::Pass> createRewriteONNXPass(void)
