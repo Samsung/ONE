@@ -236,7 +236,6 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
 
     for (const auto &index : internal_io_indexes)
     {
-      auto &external_operands = data.external_operands;
       if (external_operands.contains(index))
         external_operands.remove(index);
     }
