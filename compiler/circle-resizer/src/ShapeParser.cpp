@@ -25,7 +25,6 @@ using namespace circle_resizer;
 
 namespace
 {
-
 bool is_blank(const std::string &s)
 {
   return !s.empty() && std::find_if(s.begin(), s.end(),
