@@ -40,6 +40,7 @@ set(ONE_COMMAND_FILES
     one-import-tf
     one-import-tflite
     one-import-onnx
+    one-resize
     one-optimize
     one-quantize
     one-pack

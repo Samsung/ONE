@@ -135,6 +135,21 @@ if [[ ! -s "onnx_conv2d_conv2d_split.onnx" ]]; then
     # https://github.com/Samsung/ONE/issues/11280#issuecomment-1732852295
 fi
 
+# prepare models to test circle-resizer
+if [[ ! -s "dyn_llama2_query.circle" ]]; then
+    rm -rf dyn_llama2_query.zip
+    wget -nv https://github.com/user-attachments/files/19584809/dyn_llama2_query.zip
+    unzip dyn_llama2_query.zip
+    # https://github.com/Samsung/ONE/issues/14791#issue-2902255581
+fi
+
+if [[ ! -s "dyn_llama2_norm.circle" ]]; then
+    rm -rf dyn_llama2_norm.zip
+    wget -nv https://github.com/user-attachments/files/19584810/dyn_llama2_norm.zip
+    unzip dyn_llama2_norm.zip
+    # https://github.com/Samsung/ONE/issues/14791#issue-2902255581
+fi
+
 if [[ ! -s "Add_000.inputs.txt" ]]; then
     rm -rf Add_000.inputs.txt
     echo "Add_000.circle.input0 Add_000.circle.input1" >> Add_000.inputs.txt

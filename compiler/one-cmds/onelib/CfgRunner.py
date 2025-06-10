@@ -27,8 +27,8 @@ def _simple_warning(message, category, filename, lineno, file=None, line=None):
 
 class CfgRunner:
     driver_sequence = [
-        'one-optimize', 'one-quantize', 'one-pack', 'one-codegen', 'one-profile',
-        'one-partition', 'one-infer'
+        'one-optimize', 'one-resize', 'one-quantize', 'one-pack', 'one-codegen',
+        'one-profile', 'one-partition', 'one-infer'
     ]
 
     def __init__(self, path):
