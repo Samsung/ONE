@@ -1,0 +1,5 @@
+# To check if dynamic dimension properly inferred if squeezed dimension is unknown
+
+RULE    "VERIFY_FILE_FORMAT"    $(verify_file_format) '=' 1
+
+RULE    "SQUEEZE_SHAPE"         $(tensor_shape ofm) '=' [3,4,5]

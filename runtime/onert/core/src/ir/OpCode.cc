@@ -18,9 +18,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 const char *toString(OpCode opcode)
@@ -35,6 +33,8 @@ const char *toString(OpCode opcode)
 
 OpCode toOpCode(const std::string str)
 {
+  // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+  //       to use `std::string_view` with lookup functions in unordered containers
   static const std::unordered_map<std::string, OpCode> map{
 #define OP(Name) {#Name, OpCode::Name},
 #include "ir/Operations.lst"
@@ -43,5 +43,4 @@ OpCode toOpCode(const std::string str)
   return map.at(str);
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

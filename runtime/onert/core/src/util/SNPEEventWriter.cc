@@ -127,6 +127,8 @@ void SNPEWriter::flush(const std::vector<std::unique_ptr<EventRecorder>> &record
   {
     // NOTE This assumes _duration_events is sorted by "ts" ascending
 
+    // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+    //       to use `std::string_view` with lookup functions in unordered containers
     // 2D keys : stats[tid][name]
     std::unordered_map<std::string, std::unordered_map<std::string, Stat>> stats;
     std::unordered_map<std::string, std::unordered_map<std::string, uint64_t>> begin_timestamps;

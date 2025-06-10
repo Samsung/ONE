@@ -21,14 +21,11 @@
 #include "ir/OperationVisitor.h"
 #include "ir/Operation.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 std::unique_ptr<Operation> clone(const IOperation &operation);
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_OPERATION_CLONER_H__

@@ -24,13 +24,7 @@
 #include <cker/operation/LogicalOr.h>
 #include <cker/operation/MaxMin.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 namespace
@@ -232,7 +226,4 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
 
 void ElementwiseBinaryLayer::run() { _kernel(_lhs, _rhs, _output); }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

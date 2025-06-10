@@ -16,17 +16,11 @@
 #include "ir/operation/If.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 void If::accept(OperationVisitor &v) const { v.visit(*this); }
 If::If(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs, const Param &param)
   : Operation{OperandConstraint::createAny(), inputs, outputs}, _param{param}
 {
 }
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

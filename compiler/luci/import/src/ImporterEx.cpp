@@ -21,9 +21,34 @@
 
 #include <memory>
 #include <iostream>
+#include <stdexcept>
 
 namespace luci
 {
+
+namespace
+{
+
+// limitation of current flatbuffers file size
+inline constexpr uint64_t FLATBUFFERS_SIZE_MAX = 2147483648UL; // 2GB
+
+} // namespace
+
+ImporterEx::ImporterEx()
+  : _error_handler{[](const std::exception &e) { std::cerr << e.what() << std::endl; }}
+{
+}
+
+ImporterEx::ImporterEx(const std::function<void(const std::exception &)> &error_handler)
+  : _error_handler{error_handler}
+{
+  if (!error_handler)
+  {
+    throw std::runtime_error{"The error handler passed to ImporterEx is invalid"};
+  }
+}
+
+ImporterEx::ImporterEx(const GraphBuilderSource *source) : ImporterEx{} { _source = source; }
 
 std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_path) const
 {
@@ -36,26 +61,34 @@ std::unique_ptr<Module> ImporterEx::importVerifyModule(const std::string &input_
   }
   catch (const std::runtime_error &err)
   {
-    std::cerr << err.what() << std::endl;
+    _error_handler(err);
     return nullptr;
   }
 
-  flatbuffers::Verifier verifier{reinterpret_cast<uint8_t *>(model_data.data()), model_data.size()};
-  if (!circle::VerifyModelBuffer(verifier))
+  auto data_data = reinterpret_cast<uint8_t *>(model_data.data());
+  auto data_size = model_data.size();
+
+  if (data_size < FLATBUFFERS_SIZE_MAX)
   {
-    std::cerr << "ERROR: Invalid input file '" << input_path << "'" << std::endl;
-    return nullptr;
+    flatbuffers::Verifier verifier{data_data, data_size};
+    if (!circle::VerifyModelBuffer(verifier))
+    {
+      _error_handler(std::runtime_error{"ERROR: Invalid input file '" + input_path + "'"});
+      return nullptr;
+    }
   }
 
-  const circle::Model *circle_model = circle::GetModel(model_data.data());
-  if (circle_model == nullptr)
-  {
-    std::cerr << "ERROR: Failed to load circle '" << input_path << "'" << std::endl;
-    return nullptr;
-  }
+  Importer importer(_source);
+  return importer.importModule(data_data, data_size);
+}
 
-  Importer importer;
-  return importer.importModule(circle_model);
+std::unique_ptr<Module> ImporterEx::importModule(const std::vector<char> &model_data) const
+{
+  auto data_data = reinterpret_cast<const uint8_t *>(model_data.data());
+  auto data_size = model_data.size();
+
+  Importer importer(_source);
+  return importer.importModule(data_data, data_size);
 }
 
 } // namespace luci

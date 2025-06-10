@@ -18,13 +18,7 @@
 
 #include "kernel/PermuteLayer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace train
+namespace onert::backend::builtin::train
 {
 
 KernelGenerator::KernelGenerator(const ir::train::TrainableGraph &tgraph,
@@ -61,11 +55,16 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
 
   std::vector<ITensor *> output_back_prop_tensors;
   std::vector<ITensor *> input_back_prop_tensors;
+  std::vector<ir::PermuteType> permute_types;
 
   auto input_back_prop_tensor = getBackPropTensor(input_index);
   auto output_back_prop_tensor = getBackPropTensor(output_index);
   output_back_prop_tensors.emplace_back(output_back_prop_tensor);
   input_back_prop_tensors.emplace_back(input_back_prop_tensor);
+
+  // Layout in graph is always NHWC, so layout is not changed
+  for (uint32_t i = 0; i < input_tensors.size(); i++)
+    permute_types.emplace_back(ir::PermuteType::COPY);
 
   // NOTE The output buffers of IOTensors are not essential for training. If there
   //      is no output buffer provided by the user, permute is not performed.
@@ -77,7 +76,7 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
   }
 
   auto fn = std::make_unique<kernel::PermuteLayer>(
-    input_tensors, output_tensors, input_back_prop_tensors, output_back_prop_tensors,
+    input_tensors, output_tensors, input_back_prop_tensors, output_back_prop_tensors, permute_types,
     ignore_forward_in_training, _external_context);
 
   _return_fn = std::move(fn);
@@ -98,7 +97,4 @@ backend::ITensor *KernelGenerator::getBackPropTensor(const ir::OperandIndex &ind
   return ret;
 }
 
-} // namespace train
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::train

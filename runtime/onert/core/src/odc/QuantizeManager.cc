@@ -20,9 +20,7 @@
 #include <iostream>
 #include <mutex>
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 bool QuantizeManager::quantize(const std::string &model_path)
@@ -46,5 +44,40 @@ bool QuantizeManager::quantize(const std::string &model_path)
   return (result == 0);
 }
 
-} // namespace odc
-} // namespace onert
+bool QuantizeManager::setMinMaxRecordsThreshold(uint32_t value)
+{
+  auto &quantize_loader = QuantizerLoader::instance();
+  if (quantize_loader.loadLibrary() != 0)
+    return false;
+
+  auto quantizer = quantize_loader.get();
+  quantizer->setMinMaxRecordsThreshold(value);
+
+  return true;
+}
+
+bool QuantizeManager::readyForQuantize()
+{
+  auto &quantize_loader = QuantizerLoader::instance();
+  if (quantize_loader.loadLibrary() != 0)
+    return false;
+
+  auto quantizer = quantize_loader.get();
+  bool result = quantizer->readyForQuantize();
+
+  return result;
+}
+
+bool QuantizeManager::deleteMinMaxFile()
+{
+  auto &quantize_loader = QuantizerLoader::instance();
+  if (quantize_loader.loadLibrary() != 0)
+    return false;
+
+  auto quantizer = quantize_loader.get();
+  bool result = quantizer->deleteMinMaxFile();
+
+  return result;
+}
+
+} // namespace onert::odc

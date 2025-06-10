@@ -1,14 +1,8 @@
 # here I write how I run model on my computer
 
-sections: 
-a) goal of this script
-b) examples of code running in author's local machine
-c) parametrs and short comment
-____
 ## goal of this script
 
 Here the author has attempted to implement a program capable of running any of the 4 models (caffe, caffe2, tflite, onnx) in a simple and user-friendly manner. The goal of the program is to get the file containing the output of the computation graph at the program output.
-_______
 
 ## examples of code running in author's local machine
 The purpose of the examples below is to demonstrate which arguments and in which order you should use to run this script correctly.
@@ -32,7 +26,7 @@ $ python model_runner.py  -m onnx_runer/model.onnx -i RANDOM.hdf5
 
  ------
  
- ## parametrs and short comment
+ ## parameters and short comment
  
  -m mean pre learned model which you run
  -i mean model's input

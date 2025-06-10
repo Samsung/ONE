@@ -49,7 +49,7 @@ void PlaceholderGraphBuilder::build(const tensorflow::NodeDef &node,
   SymbolTable *tensor_names = context->tensor_names();
 
   loco::DataType dtype = plier::tf::as_loco_datatype(plier::tf::get_datatype_attr(node, "dtype"));
-  const auto &shape = plier::tf::get_shape_attr(node, "shape");
+  const auto shape = plier::tf::get_shape_attr(node, "shape");
   // TODO handle for unknown rank
   assert(!shape.unknown_rank());
   int64_t num_dims = shape.dim_size();

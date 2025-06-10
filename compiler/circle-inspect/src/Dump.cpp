@@ -24,9 +24,9 @@
 namespace circleinspect
 {
 
-void DumpOperators::run(std::ostream &os, const circle::Model *model)
+void DumpOperators::run(std::ostream &os, const circle::Model *model, const std::vector<char> *data)
 {
-  mio::circle::Reader reader(model);
+  mio::circle::Reader reader(model, data);
 
   const uint32_t subgraph_size = reader.num_subgraph();
 
@@ -82,8 +82,9 @@ size_t tensor_buffer_size(mio::circle::Reader &reader, const int32_t tensor_id)
 
   auto tensor = tensors->Get(tensor_id);
   auto buffer_id = tensor->buffer();
+  bool ext_offset = false;
 
-  size_t size = reader.buffer_info(buffer_id, nullptr);
+  size_t size = reader.buffer_info(buffer_id, nullptr, ext_offset);
 
   return size;
 }
@@ -93,9 +94,10 @@ size_t tensor_buffer_size(mio::circle::Reader &reader, const int32_t tensor_id)
 namespace circleinspect
 {
 
-void DumpConv2DWeight::run(std::ostream &os, const circle::Model *model)
+void DumpConv2DWeight::run(std::ostream &os, const circle::Model *model,
+                           const std::vector<char> *data)
 {
-  mio::circle::Reader reader(model);
+  mio::circle::Reader reader(model, data);
 
   const uint32_t subgraph_size = reader.num_subgraph();
 
@@ -145,11 +147,12 @@ void DumpConv2DWeight::run(std::ostream &os, const circle::Model *model)
 namespace circleinspect
 {
 
-void DumpOperatorVersion::run(std::ostream &os, const circle::Model *model)
+void DumpOperatorVersion::run(std::ostream &os, const circle::Model *model,
+                              const std::vector<char> *data)
 {
   std::map<std::string, int32_t> op_version_map;
 
-  mio::circle::Reader reader(model);
+  mio::circle::Reader reader(model, data);
 
   // This assert is subject to be changed later
   assert(reader.num_subgraph() == 1);
@@ -181,9 +184,10 @@ void DumpOperatorVersion::run(std::ostream &os, const circle::Model *model)
 namespace circleinspect
 {
 
-void DumpTensorDType::run(std::ostream &os, const circle::Model *model)
+void DumpTensorDType::run(std::ostream &os, const circle::Model *model,
+                          const std::vector<char> *data)
 {
-  mio::circle::Reader reader(model);
+  mio::circle::Reader reader(model, data);
 
   const uint32_t subgraph_size = reader.num_subgraph();
 
@@ -206,9 +210,9 @@ void DumpTensorDType::run(std::ostream &os, const circle::Model *model)
 namespace circleinspect
 {
 
-void DumpConstants::run(std::ostream &os, const circle::Model *model)
+void DumpConstants::run(std::ostream &os, const circle::Model *model, const std::vector<char> *data)
 {
-  mio::circle::Reader reader(model);
+  mio::circle::Reader reader(model, data);
 
   const uint32_t subgraph_size = reader.num_subgraph();
 
@@ -224,12 +228,48 @@ void DumpConstants::run(std::ostream &os, const circle::Model *model)
         continue;
 
       auto const buffer_id = tensor->buffer();
+      bool ext_offset = false;
 
-      auto const buffer_size = reader.buffer_info(buffer_id, nullptr);
+      auto const buffer_size = reader.buffer_info(buffer_id, nullptr, ext_offset);
       if (buffer_size == 0)
         continue;
 
       os << reader.tensor_name(tensor) << std::endl;
+    }
+  }
+}
+
+} // namespace circleinspect
+
+namespace circleinspect
+{
+
+void DumpTensorShape::run(std::ostream &os, const circle::Model *model,
+                          const std::vector<char> *data)
+{
+  mio::circle::Reader reader(model, data);
+
+  const uint32_t subgraph_size = reader.num_subgraph();
+
+  for (uint32_t g = 0; g < subgraph_size; g++)
+  {
+    reader.select_subgraph(g);
+    auto tensors = reader.tensors();
+
+    for (uint32_t i = 0; i < tensors->size(); ++i)
+    {
+      const auto tensor = tensors->Get(i);
+      auto shape = tensor->shape_signature() ? tensor->shape_signature() : tensor->shape();
+      os << reader.tensor_name(tensor) << " [";
+      for (uint32_t i = 0; i < shape->size(); i++)
+      {
+        os << shape->Get(i);
+        if (i != shape->size() - 1)
+        {
+          os << ",";
+        }
+      }
+      os << "]" << std::endl;
     }
   }
 }

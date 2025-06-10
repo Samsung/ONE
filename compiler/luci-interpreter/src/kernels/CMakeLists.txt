@@ -25,6 +25,12 @@ target_link_libraries(${LUCI_INTERPRETER_KERNELS} PRIVATE nncc_common)
 
 add_pal_to_target(${LUCI_INTERPRETER_KERNELS})
 
+# Disable array-bounds error from tensorflow lite header.
+# "target_include_directories(luci_interpreter_linux_pal SYSTEM PRIVATE ${TensorFlowSource_DIR})"
+# in add_pal_to_target does not resolve array-bounds error.
+# TODO Find way to remove this option in future.
+target_compile_options(${LUCI_INTERPRETER_KERNELS} PRIVATE -Wno-error=array-bounds)
+
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)

@@ -22,17 +22,11 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 using UseDefChains = std::unordered_map<TrainingOperandIndex, UseDefChain>;
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
 #endif // __ONERT_IR_TRAIN_USEDEFCHAINS_H__

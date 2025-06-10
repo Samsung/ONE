@@ -19,9 +19,7 @@
 
 #include <cstdint>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 enum class Activation
@@ -53,7 +51,6 @@ enum class FullyConnectedWeightsFormat
   Shuffled16x1Float32 = 127
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_INTERNAL_TYPE_H__

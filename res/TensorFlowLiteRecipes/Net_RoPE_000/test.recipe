@@ -1,0 +1,214 @@
+# For testing RoPE op, `SIN` and `COS` values are given as tables with 80 items,
+# input range from 0.0 to 2*PI(3.141592..) resulting -1.0f to 1.0f
+
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 80 }
+}
+operand {
+  name: "strided_slice"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 40 }
+}
+operand {
+  name: "strided_slice_neg"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 40 }
+}
+operand {
+  name: "neg"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 40 }
+}
+operand {
+  name: "concat"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 80 }
+}
+operand {
+  name: "sin_table"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 80 }
+  filler {
+    tag: "explicit"
+    arg: "0.0f" arg: "0.07846f" arg: "0.15643f" arg: "0.23345f" arg: "0.30902f"
+    arg: "0.38268f" arg: "0.45399f" arg: "0.5225f" arg: "0.58779f" arg: "0.64945f"
+    arg: "0.70711f" arg: "0.76041f" arg: "0.80902f" arg: "0.85264f" arg: "0.89101f"
+    arg: "0.92388f" arg: "0.95106f" arg: "0.97237f" arg: "0.98769f" arg: "0.99692f"
+    arg: "1.0f" arg: "0.99692f" arg: "0.98769f" arg: "0.97237f" arg: "0.95106f"
+    arg: "0.92388f" arg: "0.89101f" arg: "0.85264f" arg: "0.80902f" arg: "0.76041f"
+    arg: "0.70711f" arg: "0.64945f" arg: "0.58779f" arg: "0.5225f" arg: "0.45399f"
+    arg: "0.38268f" arg: "0.30902f" arg: "0.23345f" arg: "0.15643f" arg: "0.07846f"
+    arg: "0.0f" arg: "-0.07846f" arg: "-0.15643f" arg: "-0.23345f" arg: "-0.30902f"
+    arg: "-0.38268f" arg: "-0.45399f" arg: "-0.5225f" arg: "-0.58779f" arg: "-0.64945f"
+    arg: "-0.70711f" arg: "-0.76041f" arg: "-0.80902f" arg: "-0.85264f" arg: "-0.89101f"
+    arg: "-0.92388f" arg: "-0.95106f" arg: "-0.97237f" arg: "-0.98769f" arg: "-0.99692f"
+    arg: "-1.0f" arg: "-0.99692f" arg: "-0.98769f" arg: "-0.97237f" arg: "-0.95106f"
+    arg: "-0.92388f" arg: "-0.89101f" arg: "-0.85264f" arg: "-0.80902f" arg: "-0.76041f"
+    arg: "-0.70711f" arg: "-0.64945f" arg: "-0.58779f" arg: "-0.5225f" arg: "-0.45399f"
+    arg: "-0.38268f" arg: "-0.30902f" arg: "-0.23345f" arg: "-0.15643f" arg: "-0.07846f"    
+  }
+}
+operand {
+  name: "cos_table"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 80 }
+  filler {
+    tag: "explicit"
+    arg: "1.0f" arg: "0.99692f" arg: "0.98769f" arg: "0.97237f" arg: "0.95106f"
+    arg: "0.92388f" arg: "0.89101f" arg: "0.85264f" arg: "0.80902f" arg: "0.76041f"
+    arg: "0.70711f" arg: "0.64945f" arg: "0.58779f" arg: "0.5225f" arg: "0.45399f"
+    arg: "0.38268f" arg: "0.30902f" arg: "0.23345f" arg: "0.15643f" arg: "0.07846f"
+    arg: "0.0f" arg: "-0.07846f" arg: "-0.15643f" arg: "-0.23345f" arg: "-0.30902f"
+    arg: "-0.38268f" arg: "-0.45399f" arg: "-0.5225f" arg: "-0.58779f" arg: "-0.64945f"
+    arg: "-0.70711f" arg: "-0.76041f" arg: "-0.80902f" arg: "-0.85264f" arg: "-0.89101f"
+    arg: "-0.92388f" arg: "-0.95106f" arg: "-0.97237f" arg: "-0.98769f" arg: "-0.99692f"
+    arg: "-1.0f" arg: "-0.99692f" arg: "-0.98769f" arg: "-0.97237f" arg: "-0.95106f"
+    arg: "-0.92388f" arg: "-0.89101f" arg: "-0.85264f" arg: "-0.80902f" arg: "-0.76041f"
+    arg: "-0.70711f" arg: "-0.64945f" arg: "-0.58779f" arg: "-0.5225f" arg: "-0.45399f"
+    arg: "-0.38268f" arg: "-0.30902f" arg: "-0.23345f" arg: "-0.15643f" arg: "-0.07846f"
+    arg: "-0.0f" arg: "0.07846f" arg: "0.15643f" arg: "0.23345f" arg: "0.30902f"
+    arg: "0.38268f" arg: "0.45399f" arg: "0.5225f" arg: "0.58779f" arg: "0.64945f"
+    arg: "0.70711f" arg: "0.76041f" arg: "0.80902f" arg: "0.85264f" arg: "0.89101f"
+    arg: "0.92388f" arg: "0.95106f" arg: "0.97237f" arg: "0.98769f" arg: "0.99692f"	    
+  }
+}
+operand {
+  name: "mul_sin"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 80 }
+}
+operand {
+  name: "mul_cos"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 80 }
+}
+operand {
+  name: "add_ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 80 }
+}
+
+# strided slice
+operand {
+  name: "begin"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "0" arg: "0" arg: "0"
+  }
+}
+operand {
+  name: "end"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "1" arg: "1" arg: "40"
+  }
+}
+operand {
+  name: "strides"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "1" arg: "1" arg: "1"
+  }
+}
+# strided slice -> neg
+operand {
+  name: "begin_neg"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "0" arg: "0" arg: "40"
+  }
+}
+operand {
+  name: "end_neg"
+  type: INT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "1" arg: "1" arg: "80"
+  }
+}
+
+operation {
+  type: "StridedSlice"
+  strided_slice_options {
+    begin_mask: 0
+    end_mask: 0
+    ellipsis_mask: 0
+    new_axis_mask: 0
+    shrink_axis_mask: 0
+  }
+  input: "ifm"
+  input: "begin"
+  input: "end"
+  input: "strides"
+  output: "strided_slice"
+}
+operation {
+  type: "StridedSlice"
+  strided_slice_options {
+    begin_mask: 0
+    end_mask: 0
+    ellipsis_mask: 0
+    new_axis_mask: 0
+    shrink_axis_mask: 0
+  }
+  input: "ifm"
+  input: "begin_neg"
+  input: "end_neg"
+  input: "strides"
+  output: "strided_slice_neg"
+}
+operation {
+  type: "Neg"
+  input: "strided_slice_neg"
+  output: "neg"
+}
+operation {
+  type: "Concatenation"
+  concatenation_options {
+    axis: 3
+    activation: NONE
+  }  
+  input: "neg"
+  input: "strided_slice"  
+  output: "concat"
+}
+operation {
+  type: "Mul"
+  input: "concat"
+  input: "sin_table"  
+  output: "mul_sin"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "ifm"
+  input: "cos_table"
+  output: "mul_cos"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "mul_cos"
+  input: "mul_sin"
+  output: "add_ofm"
+  add_options {
+    activation: NONE
+  }  
+}
+input: "ifm"
+output: "add_ofm"

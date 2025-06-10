@@ -46,11 +46,7 @@ inline size_t alignedSize(const size_t size, const uint64_t align)
 
 } // namespace
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 TensorManager::TensorManager(const std::shared_ptr<TensorRegistry> &reg, uint32_t optim_vars_count)
@@ -58,7 +54,8 @@ TensorManager::TensorManager(const std::shared_ptr<TensorRegistry> &reg, uint32_
     _trainable_mgr{new TrainableMemoryManager(optim_vars_count)},
     _back_prop_mgr{new MemoryManager()}, _gradient_mgr{new MemoryManager()},
     // TODO Find a suitable planner of disposable tensors to reduce peak memory usage
-    _disposable_back_prop_mgr{new DisposableMemoryManager()}, _tensors{reg}
+    _disposable_back_prop_mgr{new DisposableMemoryManager()},
+    _layer_scope_mgr{new LayerScopeMemoryManager()}, _tensors{reg}
 {
   // DO NOTHING
 }
@@ -104,6 +101,12 @@ void TensorManager::allocateDisposableBackPropTensors()
 {
   allocateMemory(_disposable_back_prop_mgr.get(), _tensors->disposable_back_prop_tensors(),
                  std::string{"DISPOSABLE BACK_PROP TENSOR "});
+}
+
+void TensorManager::allocateLayerScopeTensors()
+{
+  allocateMemory(_layer_scope_mgr.get(), _tensors->layerscope_tensors(),
+                 std::string{"   LAYERSCOPE TENSOR "});
 }
 
 void TensorManager::claimNonConstPlan(const ir::OperandIndex &index)
@@ -187,6 +190,18 @@ void TensorManager::releaseDisposableBackPropPlan(const DisposableTensorIndex &i
   _disposable_back_prop_mgr->releasePlan(index);
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+void TensorManager::claimLayerScopePlan(const LayerScopeTensorIndex &index)
+{
+  const auto tensor = _tensors->getLayerScopeTensor(index);
+
+  auto size = alignedSize(tensor->total_size(), _align);
+  _layer_scope_mgr->claimPlan(index, size);
+}
+
+void TensorManager::releaseLayerScopePlan(const LayerScopeTensorIndex &index)
+{
+  assert(_tensors->getLayerScopeTensor(index));
+  _layer_scope_mgr->releasePlan(index);
+}
+
+} // namespace onert::backend::train

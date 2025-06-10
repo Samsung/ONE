@@ -17,11 +17,7 @@
 #include "ir/operation/FullyConnected.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void FullyConnected::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ FullyConnected::FullyConnected(const OperandIndexSequence &inputs,
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

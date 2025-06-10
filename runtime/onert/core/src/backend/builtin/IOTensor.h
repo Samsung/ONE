@@ -20,11 +20,7 @@
 #include "backend/IPortableTensor.h"
 #include "UserTensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 /**
@@ -57,7 +53,7 @@ public:
 
 public:
   uint8_t *buffer() const override { return _tensor->buffer(); }
-  ir::Layout layout() const override { return _orig->layout(); }
+  ir::Layout layout() const { return _orig->layout(); }
   void set_dynamic() override
   {
     _info.setDynamic();
@@ -107,8 +103,6 @@ private:
   std::unique_ptr<UserTensor> _orig; //< If it is a user tensor, it is managed by this object
 };
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin
 
 #endif // __ONERT_BACKEND_BUILTIN_IO_TENSOR_H__

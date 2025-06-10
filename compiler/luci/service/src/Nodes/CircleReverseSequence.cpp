@@ -22,7 +22,6 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::OPQR>::visit(const luci::CircleReverseSequence *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleReverseSequence>();
-  if (cloned != nullptr)
   {
     cloned->seq_axis(node->seq_axis());
     cloned->batch_axis(node->batch_axis());

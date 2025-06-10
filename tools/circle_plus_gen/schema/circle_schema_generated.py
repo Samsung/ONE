@@ -5,6 +5,7 @@
 
 import flatbuffers
 from flatbuffers.compat import import_numpy
+
 np = import_numpy()
 
 
@@ -861,8 +862,10 @@ class CustomQuantization(object):
 
     @classmethod
     def CustomQuantizationBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # CustomQuantization
     def Init(self, buf, pos):
@@ -990,8 +993,10 @@ class QuantizationParameters(object):
 
     @classmethod
     def QuantizationParametersBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # QuantizationParameters
     def Init(self, buf, pos):
@@ -1337,8 +1342,10 @@ class Int32Vector(object):
 
     @classmethod
     def Int32VectorBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # Int32Vector
     def Init(self, buf, pos):
@@ -1466,8 +1473,10 @@ class Uint16Vector(object):
 
     @classmethod
     def Uint16VectorBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # Uint16Vector
     def Init(self, buf, pos):
@@ -1595,8 +1604,10 @@ class Uint8Vector(object):
 
     @classmethod
     def Uint8VectorBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # Uint8Vector
     def Init(self, buf, pos):
@@ -1724,8 +1735,10 @@ class DimensionMetadata(object):
 
     @classmethod
     def DimensionMetadataBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # DimensionMetadata
     def Init(self, buf, pos):
@@ -1897,8 +1910,10 @@ class SparsityParameters(object):
 
     @classmethod
     def SparsityParametersBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SparsityParameters
     def Init(self, buf, pos):
@@ -2136,8 +2151,10 @@ class VariantSubType(object):
 
     @classmethod
     def VariantSubTypeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # VariantSubType
     def Init(self, buf, pos):
@@ -2294,8 +2311,10 @@ class Tensor(object):
 
     @classmethod
     def TensorBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # Tensor
     def Init(self, buf, pos):
@@ -2652,8 +2671,10 @@ class StablehloGatherOptions(object):
 
     @classmethod
     def StablehloGatherOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloGatherOptions
     def Init(self, buf, pos):
@@ -2985,8 +3006,10 @@ class StablehloTransposeOptions(object):
                                                      buf,
                                                      offset,
                                                      size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloTransposeOptions
     def Init(self, buf, pos):
@@ -3118,8 +3141,10 @@ class StablehloDotGeneralOptions(object):
                                                       buf,
                                                       offset,
                                                       size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloDotGeneralOptions
     def Init(self, buf, pos):
@@ -3500,8 +3525,10 @@ class StablehloReduceWindowOptions(object):
                                                         buf,
                                                         offset,
                                                         size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloReduceWindowOptions
     def Init(self, buf, pos):
@@ -3877,8 +3904,10 @@ class StablehloWhileOptions(object):
 
     @classmethod
     def StablehloWhileOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloWhileOptions
     def Init(self, buf, pos):
@@ -3972,8 +4001,10 @@ class StablehloSortOptions(object):
 
     @classmethod
     def StablehloSortOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloSortOptions
     def Init(self, buf, pos):
@@ -4086,8 +4117,10 @@ class StablehloConcatenateOptions(object):
                                                        buf,
                                                        offset,
                                                        size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloConcatenateOptions
     def Init(self, buf, pos):
@@ -4170,8 +4203,10 @@ class StablehloBroadcastInDimOptions(object):
                                                           buf,
                                                           offset,
                                                           size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloBroadcastInDimOptions
     def Init(self, buf, pos):
@@ -4304,8 +4339,10 @@ class StablehloCompareOptions(object):
 
     @classmethod
     def StablehloCompareOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloCompareOptions
     def Init(self, buf, pos):
@@ -4402,8 +4439,10 @@ class StablehloDynamicSliceOptions(object):
                                                         buf,
                                                         offset,
                                                         size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloDynamicSliceOptions
     def Init(self, buf, pos):
@@ -4532,8 +4571,10 @@ class StablehloPadOptions(object):
 
     @classmethod
     def StablehloPadOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloPadOptions
     def Init(self, buf, pos):
@@ -4776,8 +4817,10 @@ class StablehloIotaOptions(object):
 
     @classmethod
     def StablehloIotaOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloIotaOptions
     def Init(self, buf, pos):
@@ -4860,8 +4903,10 @@ class StablehloCustomCallOptions(object):
                                                       buf,
                                                       offset,
                                                       size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloCustomCallOptions
     def Init(self, buf, pos):
@@ -5116,8 +5161,10 @@ class StablehloReduceOptions(object):
 
     @classmethod
     def StablehloReduceOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloReduceOptions
     def Init(self, buf, pos):
@@ -5259,8 +5306,10 @@ class StablehloSliceOptions(object):
 
     @classmethod
     def StablehloSliceOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloSliceOptions
     def Init(self, buf, pos):
@@ -5505,8 +5554,10 @@ class StablehloConvolutionOptions(object):
                                                        buf,
                                                        offset,
                                                        size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloConvolutionOptions
     def Init(self, buf, pos):
@@ -6233,8 +6284,10 @@ class StablehloScatterOptions(object):
 
     @classmethod
     def StablehloScatterOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloScatterOptions
     def Init(self, buf, pos):
@@ -6548,8 +6601,10 @@ class StablehloRngBitGeneratorOptions(object):
                                                            buf,
                                                            offset,
                                                            size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StablehloRngBitGeneratorOptions
     def Init(self, buf, pos):
@@ -6629,8 +6684,10 @@ class Conv2DOptions(object):
 
     @classmethod
     def Conv2DOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # Conv2DOptions
     def Init(self, buf, pos):
@@ -6794,8 +6851,10 @@ class Conv3DOptions(object):
 
     @classmethod
     def Conv3DOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # Conv3DOptions
     def Init(self, buf, pos):
@@ -6973,8 +7032,10 @@ class Pool2DOptions(object):
 
     @classmethod
     def Pool2DOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # Pool2DOptions
     def Init(self, buf, pos):
@@ -7124,8 +7185,10 @@ class DepthwiseConv2DOptions(object):
 
     @classmethod
     def DepthwiseConv2DOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # DepthwiseConv2DOptions
     def Init(self, buf, pos):
@@ -7290,8 +7353,10 @@ class ConcatEmbeddingsOptions(object):
 
     @classmethod
     def ConcatEmbeddingsOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ConcatEmbeddingsOptions
     def Init(self, buf, pos):
@@ -7498,8 +7563,10 @@ class LSHProjectionOptions(object):
 
     @classmethod
     def LSHProjectionOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # LSHProjectionOptions
     def Init(self, buf, pos):
@@ -7579,8 +7646,10 @@ class SVDFOptions(object):
 
     @classmethod
     def SVDFOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SVDFOptions
     def Init(self, buf, pos):
@@ -7689,8 +7758,10 @@ class RNNOptions(object):
 
     @classmethod
     def RNNOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # RNNOptions
     def Init(self, buf, pos):
@@ -7785,8 +7856,10 @@ class SequenceRNNOptions(object):
 
     @classmethod
     def SequenceRNNOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SequenceRNNOptions
     def Init(self, buf, pos):
@@ -7901,8 +7974,10 @@ class BidirectionalSequenceRNNOptions(object):
                                                            buf,
                                                            offset,
                                                            size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # BidirectionalSequenceRNNOptions
     def Init(self, buf, pos):
@@ -8033,8 +8108,10 @@ class FullyConnectedOptions(object):
 
     @classmethod
     def FullyConnectedOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # FullyConnectedOptions
     def Init(self, buf, pos):
@@ -8174,8 +8251,10 @@ class SoftmaxOptions(object):
 
     @classmethod
     def SoftmaxOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SoftmaxOptions
     def Init(self, buf, pos):
@@ -8255,8 +8334,10 @@ class ConcatenationOptions(object):
 
     @classmethod
     def ConcatenationOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ConcatenationOptions
     def Init(self, buf, pos):
@@ -8351,8 +8432,10 @@ class AddOptions(object):
 
     @classmethod
     def AddOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # AddOptions
     def Init(self, buf, pos):
@@ -8447,8 +8530,10 @@ class MulOptions(object):
 
     @classmethod
     def MulOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # MulOptions
     def Init(self, buf, pos):
@@ -8528,8 +8613,10 @@ class L2NormOptions(object):
 
     @classmethod
     def L2NormOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # L2NormOptions
     def Init(self, buf, pos):
@@ -8612,8 +8699,10 @@ class LocalResponseNormalizationOptions(object):
                                                              buf,
                                                              offset,
                                                              size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # LocalResponseNormalizationOptions
     def Init(self, buf, pos):
@@ -8735,8 +8824,10 @@ class LSTMOptions(object):
 
     @classmethod
     def LSTMOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # LSTMOptions
     def Init(self, buf, pos):
@@ -8876,8 +8967,10 @@ class UnidirectionalSequenceLSTMOptions(object):
                                                              buf,
                                                              offset,
                                                              size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # UnidirectionalSequenceLSTMOptions
     def Init(self, buf, pos):
@@ -9042,8 +9135,10 @@ class BidirectionalSequenceLSTMOptions(object):
                                                             buf,
                                                             offset,
                                                             size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # BidirectionalSequenceLSTMOptions
     def Init(self, buf, pos):
@@ -9202,8 +9297,10 @@ class ResizeBilinearOptions(object):
 
     @classmethod
     def ResizeBilinearOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ResizeBilinearOptions
     def Init(self, buf, pos):
@@ -9302,8 +9399,10 @@ class ResizeNearestNeighborOptions(object):
                                                         buf,
                                                         offset,
                                                         size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ResizeNearestNeighborOptions
     def Init(self, buf, pos):
@@ -9399,8 +9498,10 @@ class CallOptions(object):
 
     @classmethod
     def CallOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # CallOptions
     def Init(self, buf, pos):
@@ -9480,8 +9581,10 @@ class PadOptions(object):
 
     @classmethod
     def PadOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # PadOptions
     def Init(self, buf, pos):
@@ -9548,8 +9651,10 @@ class PadV2Options(object):
 
     @classmethod
     def PadV2OptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # PadV2Options
     def Init(self, buf, pos):
@@ -9616,8 +9721,10 @@ class ReshapeOptions(object):
 
     @classmethod
     def ReshapeOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ReshapeOptions
     def Init(self, buf, pos):
@@ -9745,8 +9852,10 @@ class SpaceToBatchNDOptions(object):
 
     @classmethod
     def SpaceToBatchNDOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SpaceToBatchNDOptions
     def Init(self, buf, pos):
@@ -9813,8 +9922,10 @@ class BatchToSpaceNDOptions(object):
 
     @classmethod
     def BatchToSpaceNDOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # BatchToSpaceNDOptions
     def Init(self, buf, pos):
@@ -9881,8 +9992,10 @@ class SkipGramOptions(object):
 
     @classmethod
     def SkipGramOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SkipGramOptions
     def Init(self, buf, pos):
@@ -9991,8 +10104,10 @@ class SpaceToDepthOptions(object):
 
     @classmethod
     def SpaceToDepthOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SpaceToDepthOptions
     def Init(self, buf, pos):
@@ -10072,8 +10187,10 @@ class DepthToSpaceOptions(object):
 
     @classmethod
     def DepthToSpaceOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # DepthToSpaceOptions
     def Init(self, buf, pos):
@@ -10153,8 +10270,10 @@ class SubOptions(object):
 
     @classmethod
     def SubOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SubOptions
     def Init(self, buf, pos):
@@ -10249,8 +10368,10 @@ class DivOptions(object):
 
     @classmethod
     def DivOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # DivOptions
     def Init(self, buf, pos):
@@ -10330,8 +10451,10 @@ class TopKV2Options(object):
 
     @classmethod
     def TopKV2OptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # TopKV2Options
     def Init(self, buf, pos):
@@ -10401,8 +10524,10 @@ class EmbeddingLookupSparseOptions(object):
                                                         buf,
                                                         offset,
                                                         size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # EmbeddingLookupSparseOptions
     def Init(self, buf, pos):
@@ -10482,8 +10607,10 @@ class GatherOptions(object):
 
     @classmethod
     def GatherOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # GatherOptions
     def Init(self, buf, pos):
@@ -10577,8 +10704,10 @@ class TransposeOptions(object):
 
     @classmethod
     def TransposeOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # TransposeOptions
     def Init(self, buf, pos):
@@ -10645,8 +10774,10 @@ class ExpOptions(object):
 
     @classmethod
     def ExpOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ExpOptions
     def Init(self, buf, pos):
@@ -10713,8 +10844,10 @@ class CosOptions(object):
 
     @classmethod
     def CosOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # CosOptions
     def Init(self, buf, pos):
@@ -10781,8 +10914,10 @@ class ReducerOptions(object):
 
     @classmethod
     def ReducerOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ReducerOptions
     def Init(self, buf, pos):
@@ -10863,8 +10998,10 @@ class SqueezeOptions(object):
 
     @classmethod
     def SqueezeOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SqueezeOptions
     def Init(self, buf, pos):
@@ -10992,8 +11129,10 @@ class SplitOptions(object):
 
     @classmethod
     def SplitOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SplitOptions
     def Init(self, buf, pos):
@@ -11073,8 +11212,10 @@ class SplitVOptions(object):
 
     @classmethod
     def SplitVOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SplitVOptions
     def Init(self, buf, pos):
@@ -11154,8 +11295,10 @@ class StridedSliceOptions(object):
 
     @classmethod
     def StridedSliceOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # StridedSliceOptions
     def Init(self, buf, pos):
@@ -11306,8 +11449,10 @@ class LogSoftmaxOptions(object):
 
     @classmethod
     def LogSoftmaxOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # LogSoftmaxOptions
     def Init(self, buf, pos):
@@ -11374,8 +11519,10 @@ class CastOptions(object):
 
     @classmethod
     def CastOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # CastOptions
     def Init(self, buf, pos):
@@ -11469,8 +11616,10 @@ class DequantizeOptions(object):
 
     @classmethod
     def DequantizeOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # DequantizeOptions
     def Init(self, buf, pos):
@@ -11537,8 +11686,10 @@ class MaximumMinimumOptions(object):
 
     @classmethod
     def MaximumMinimumOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # MaximumMinimumOptions
     def Init(self, buf, pos):
@@ -11605,8 +11756,10 @@ class TileOptions(object):
 
     @classmethod
     def TileOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # TileOptions
     def Init(self, buf, pos):
@@ -11673,8 +11826,10 @@ class ArgMaxOptions(object):
 
     @classmethod
     def ArgMaxOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ArgMaxOptions
     def Init(self, buf, pos):
@@ -11754,8 +11909,10 @@ class ArgMinOptions(object):
 
     @classmethod
     def ArgMinOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ArgMinOptions
     def Init(self, buf, pos):
@@ -11835,8 +11992,10 @@ class GreaterOptions(object):
 
     @classmethod
     def GreaterOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # GreaterOptions
     def Init(self, buf, pos):
@@ -11903,8 +12062,10 @@ class GreaterEqualOptions(object):
 
     @classmethod
     def GreaterEqualOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # GreaterEqualOptions
     def Init(self, buf, pos):
@@ -11971,8 +12132,10 @@ class LessOptions(object):
 
     @classmethod
     def LessOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # LessOptions
     def Init(self, buf, pos):
@@ -12039,8 +12202,10 @@ class LessEqualOptions(object):
 
     @classmethod
     def LessEqualOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # LessEqualOptions
     def Init(self, buf, pos):
@@ -12107,8 +12272,10 @@ class NegOptions(object):
 
     @classmethod
     def NegOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # NegOptions
     def Init(self, buf, pos):
@@ -12175,8 +12342,10 @@ class SelectOptions(object):
 
     @classmethod
     def SelectOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SelectOptions
     def Init(self, buf, pos):
@@ -12243,8 +12412,10 @@ class SliceOptions(object):
 
     @classmethod
     def SliceOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SliceOptions
     def Init(self, buf, pos):
@@ -12311,8 +12482,10 @@ class TransposeConvOptions(object):
 
     @classmethod
     def TransposeConvOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # TransposeConvOptions
     def Init(self, buf, pos):
@@ -12449,8 +12622,10 @@ class ExpandDimsOptions(object):
 
     @classmethod
     def ExpandDimsOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ExpandDimsOptions
     def Init(self, buf, pos):
@@ -12517,8 +12692,10 @@ class SparseToDenseOptions(object):
 
     @classmethod
     def SparseToDenseOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SparseToDenseOptions
     def Init(self, buf, pos):
@@ -12599,8 +12776,10 @@ class EqualOptions(object):
 
     @classmethod
     def EqualOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # EqualOptions
     def Init(self, buf, pos):
@@ -12667,8 +12846,10 @@ class NotEqualOptions(object):
 
     @classmethod
     def NotEqualOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # NotEqualOptions
     def Init(self, buf, pos):
@@ -12735,8 +12916,10 @@ class ShapeOptions(object):
 
     @classmethod
     def ShapeOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ShapeOptions
     def Init(self, buf, pos):
@@ -12816,8 +12999,10 @@ class RankOptions(object):
 
     @classmethod
     def RankOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # RankOptions
     def Init(self, buf, pos):
@@ -12884,8 +13069,10 @@ class PowOptions(object):
 
     @classmethod
     def PowOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # PowOptions
     def Init(self, buf, pos):
@@ -12952,8 +13139,10 @@ class FakeQuantOptions(object):
 
     @classmethod
     def FakeQuantOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # FakeQuantOptions
     def Init(self, buf, pos):
@@ -13076,8 +13265,10 @@ class PackOptions(object):
 
     @classmethod
     def PackOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # PackOptions
     def Init(self, buf, pos):
@@ -13171,8 +13362,10 @@ class LogicalOrOptions(object):
 
     @classmethod
     def LogicalOrOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # LogicalOrOptions
     def Init(self, buf, pos):
@@ -13239,8 +13432,10 @@ class OneHotOptions(object):
 
     @classmethod
     def OneHotOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # OneHotOptions
     def Init(self, buf, pos):
@@ -13320,8 +13515,10 @@ class AbsOptions(object):
 
     @classmethod
     def AbsOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # AbsOptions
     def Init(self, buf, pos):
@@ -13388,8 +13585,10 @@ class HardSwishOptions(object):
 
     @classmethod
     def HardSwishOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # HardSwishOptions
     def Init(self, buf, pos):
@@ -13456,8 +13655,10 @@ class LogicalAndOptions(object):
 
     @classmethod
     def LogicalAndOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # LogicalAndOptions
     def Init(self, buf, pos):
@@ -13524,8 +13725,10 @@ class LogicalNotOptions(object):
 
     @classmethod
     def LogicalNotOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # LogicalNotOptions
     def Init(self, buf, pos):
@@ -13592,8 +13795,10 @@ class UnpackOptions(object):
 
     @classmethod
     def UnpackOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # UnpackOptions
     def Init(self, buf, pos):
@@ -13687,8 +13892,10 @@ class FloorDivOptions(object):
 
     @classmethod
     def FloorDivOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # FloorDivOptions
     def Init(self, buf, pos):
@@ -13755,8 +13962,10 @@ class SquareOptions(object):
 
     @classmethod
     def SquareOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SquareOptions
     def Init(self, buf, pos):
@@ -13823,8 +14032,10 @@ class ZerosLikeOptions(object):
 
     @classmethod
     def ZerosLikeOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ZerosLikeOptions
     def Init(self, buf, pos):
@@ -13891,8 +14102,10 @@ class FillOptions(object):
 
     @classmethod
     def FillOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # FillOptions
     def Init(self, buf, pos):
@@ -13959,8 +14172,10 @@ class FloorModOptions(object):
 
     @classmethod
     def FloorModOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # FloorModOptions
     def Init(self, buf, pos):
@@ -14027,8 +14242,10 @@ class RangeOptions(object):
 
     @classmethod
     def RangeOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # RangeOptions
     def Init(self, buf, pos):
@@ -14095,8 +14312,10 @@ class LeakyReluOptions(object):
 
     @classmethod
     def LeakyReluOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # LeakyReluOptions
     def Init(self, buf, pos):
@@ -14175,10 +14394,14 @@ class SquaredDifferenceOptions(object):
         return cls.GetRootAs(buf, offset)
 
     @classmethod
-    def SquaredDifferenceOptionsBufferHasIdentifier(cls, buf, offset,
+    def SquaredDifferenceOptionsBufferHasIdentifier(cls,
+                                                    buf,
+                                                    offset,
                                                     size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SquaredDifferenceOptions
     def Init(self, buf, pos):
@@ -14245,8 +14468,10 @@ class MirrorPadOptions(object):
 
     @classmethod
     def MirrorPadOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # MirrorPadOptions
     def Init(self, buf, pos):
@@ -14326,8 +14551,10 @@ class UniqueOptions(object):
 
     @classmethod
     def UniqueOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # UniqueOptions
     def Init(self, buf, pos):
@@ -14407,8 +14634,10 @@ class ReverseV2Options(object):
 
     @classmethod
     def ReverseV2OptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ReverseV2Options
     def Init(self, buf, pos):
@@ -14475,8 +14704,10 @@ class AddNOptions(object):
 
     @classmethod
     def AddNOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # AddNOptions
     def Init(self, buf, pos):
@@ -14543,8 +14774,10 @@ class GatherNdOptions(object):
 
     @classmethod
     def GatherNdOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # GatherNdOptions
     def Init(self, buf, pos):
@@ -14611,8 +14844,10 @@ class WhereOptions(object):
 
     @classmethod
     def WhereOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # WhereOptions
     def Init(self, buf, pos):
@@ -14679,8 +14914,10 @@ class ReverseSequenceOptions(object):
 
     @classmethod
     def ReverseSequenceOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ReverseSequenceOptions
     def Init(self, buf, pos):
@@ -14774,8 +15011,10 @@ class MatrixDiagOptions(object):
 
     @classmethod
     def MatrixDiagOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # MatrixDiagOptions
     def Init(self, buf, pos):
@@ -14842,8 +15081,10 @@ class QuantizeOptions(object):
 
     @classmethod
     def QuantizeOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # QuantizeOptions
     def Init(self, buf, pos):
@@ -14910,8 +15151,10 @@ class MatrixSetDiagOptions(object):
 
     @classmethod
     def MatrixSetDiagOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # MatrixSetDiagOptions
     def Init(self, buf, pos):
@@ -14978,8 +15221,10 @@ class IfOptions(object):
 
     @classmethod
     def IfOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # IfOptions
     def Init(self, buf, pos):
@@ -15073,8 +15318,10 @@ class CallOnceOptions(object):
 
     @classmethod
     def CallOnceOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # CallOnceOptions
     def Init(self, buf, pos):
@@ -15154,8 +15401,10 @@ class WhileOptions(object):
 
     @classmethod
     def WhileOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # WhileOptions
     def Init(self, buf, pos):
@@ -15252,8 +15501,10 @@ class NonMaxSuppressionV4Options(object):
                                                       buf,
                                                       offset,
                                                       size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # NonMaxSuppressionV4Options
     def Init(self, buf, pos):
@@ -15323,8 +15574,10 @@ class NonMaxSuppressionV5Options(object):
                                                       buf,
                                                       offset,
                                                       size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # NonMaxSuppressionV5Options
     def Init(self, buf, pos):
@@ -15391,8 +15644,10 @@ class ScatterNdOptions(object):
 
     @classmethod
     def ScatterNdOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ScatterNdOptions
     def Init(self, buf, pos):
@@ -15459,8 +15714,10 @@ class SelectV2Options(object):
 
     @classmethod
     def SelectV2OptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SelectV2Options
     def Init(self, buf, pos):
@@ -15527,8 +15784,10 @@ class DensifyOptions(object):
 
     @classmethod
     def DensifyOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # DensifyOptions
     def Init(self, buf, pos):
@@ -15595,8 +15854,10 @@ class SegmentSumOptions(object):
 
     @classmethod
     def SegmentSumOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SegmentSumOptions
     def Init(self, buf, pos):
@@ -15663,8 +15924,10 @@ class BatchMatMulOptions(object):
 
     @classmethod
     def BatchMatMulOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # BatchMatMulOptions
     def Init(self, buf, pos):
@@ -15776,8 +16039,10 @@ class CumsumOptions(object):
 
     @classmethod
     def CumsumOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # CumsumOptions
     def Init(self, buf, pos):
@@ -15873,8 +16138,10 @@ class BroadcastToOptions(object):
 
     @classmethod
     def BroadcastToOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # BroadcastToOptions
     def Init(self, buf, pos):
@@ -15941,8 +16208,10 @@ class Rfft2dOptions(object):
 
     @classmethod
     def Rfft2dOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # Rfft2dOptions
     def Init(self, buf, pos):
@@ -16009,8 +16278,10 @@ class HashtableOptions(object):
 
     @classmethod
     def HashtableOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # HashtableOptions
     def Init(self, buf, pos):
@@ -16118,8 +16389,10 @@ class HashtableFindOptions(object):
 
     @classmethod
     def HashtableFindOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # HashtableFindOptions
     def Init(self, buf, pos):
@@ -16186,8 +16459,10 @@ class HashtableImportOptions(object):
 
     @classmethod
     def HashtableImportOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # HashtableImportOptions
     def Init(self, buf, pos):
@@ -16254,8 +16529,10 @@ class HashtableSizeOptions(object):
 
     @classmethod
     def HashtableSizeOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # HashtableSizeOptions
     def Init(self, buf, pos):
@@ -16322,8 +16599,10 @@ class VarHandleOptions(object):
 
     @classmethod
     def VarHandleOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # VarHandleOptions
     def Init(self, buf, pos):
@@ -16425,8 +16704,10 @@ class ReadVariableOptions(object):
 
     @classmethod
     def ReadVariableOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ReadVariableOptions
     def Init(self, buf, pos):
@@ -16493,8 +16774,10 @@ class AssignVariableOptions(object):
 
     @classmethod
     def AssignVariableOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # AssignVariableOptions
     def Init(self, buf, pos):
@@ -16561,8 +16844,10 @@ class RandomOptions(object):
 
     @classmethod
     def RandomOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # RandomOptions
     def Init(self, buf, pos):
@@ -16656,8 +16941,10 @@ class BucketizeOptions(object):
 
     @classmethod
     def BucketizeOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # BucketizeOptions
     def Init(self, buf, pos):
@@ -16785,8 +17072,10 @@ class GeluOptions(object):
 
     @classmethod
     def GeluOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # GeluOptions
     def Init(self, buf, pos):
@@ -16870,8 +17159,10 @@ class DynamicUpdateSliceOptions(object):
                                                      buf,
                                                      offset,
                                                      size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # DynamicUpdateSliceOptions
     def Init(self, buf, pos):
@@ -16941,8 +17232,10 @@ class UnsortedSegmentProdOptions(object):
                                                       buf,
                                                       offset,
                                                       size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # UnsortedSegmentProdOptions
     def Init(self, buf, pos):
@@ -17012,8 +17305,10 @@ class UnsortedSegmentMaxOptions(object):
                                                      buf,
                                                      offset,
                                                      size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # UnsortedSegmentMaxOptions
     def Init(self, buf, pos):
@@ -17083,8 +17378,10 @@ class UnsortedSegmentSumOptions(object):
                                                      buf,
                                                      offset,
                                                      size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # UnsortedSegmentSumOptions
     def Init(self, buf, pos):
@@ -17151,8 +17448,10 @@ class ATan2Options(object):
 
     @classmethod
     def ATan2OptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ATan2Options
     def Init(self, buf, pos):
@@ -17222,8 +17521,10 @@ class UnsortedSegmentMinOptions(object):
                                                      buf,
                                                      offset,
                                                      size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # UnsortedSegmentMinOptions
     def Init(self, buf, pos):
@@ -17290,8 +17591,10 @@ class SignOptions(object):
 
     @classmethod
     def SignOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SignOptions
     def Init(self, buf, pos):
@@ -17358,8 +17661,10 @@ class BitcastOptions(object):
 
     @classmethod
     def BitcastOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # BitcastOptions
     def Init(self, buf, pos):
@@ -17426,8 +17731,10 @@ class BitwiseXorOptions(object):
 
     @classmethod
     def BitwiseXorOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # BitwiseXorOptions
     def Init(self, buf, pos):
@@ -17494,8 +17801,10 @@ class RightShiftOptions(object):
 
     @classmethod
     def RightShiftOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # RightShiftOptions
     def Init(self, buf, pos):
@@ -17562,8 +17871,10 @@ class DilateOptions(object):
 
     @classmethod
     def DilateOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # DilateOptions
     def Init(self, buf, pos):
@@ -17630,8 +17941,10 @@ class ReduceWindowOptions(object):
 
     @classmethod
     def ReduceWindowOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ReduceWindowOptions
     def Init(self, buf, pos):
@@ -17711,8 +18024,10 @@ class GRUOptions(object):
 
     @classmethod
     def GRUOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # GRUOptions
     def Init(self, buf, pos):
@@ -17822,8 +18137,10 @@ class BCQGatherOptions(object):
 
     @classmethod
     def BCQGatherOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # BCQGatherOptions
     def Init(self, buf, pos):
@@ -17916,10 +18233,14 @@ class BCQFullyConnectedOptions(object):
         return cls.GetRootAs(buf, offset)
 
     @classmethod
-    def BCQFullyConnectedOptionsBufferHasIdentifier(cls, buf, offset,
+    def BCQFullyConnectedOptionsBufferHasIdentifier(cls,
+                                                    buf,
+                                                    offset,
                                                     size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # BCQFullyConnectedOptions
     def Init(self, buf, pos):
@@ -18014,8 +18335,10 @@ class InstanceNormOptions(object):
 
     @classmethod
     def InstanceNormOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # InstanceNormOptions
     def Init(self, buf, pos):
@@ -18110,8 +18433,10 @@ class OperatorCode(object):
 
     @classmethod
     def OperatorCodeBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # OperatorCode
     def Init(self, buf, pos):
@@ -18237,8 +18562,10 @@ class Operator(object):
 
     @classmethod
     def OperatorBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # Operator
     def Init(self, buf, pos):
@@ -18720,8 +19047,10 @@ class SubGraph(object):
 
     @classmethod
     def SubGraphBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SubGraph
     def Init(self, buf, pos):
@@ -19027,8 +19356,10 @@ class Buffer(object):
 
     @classmethod
     def BufferBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # Buffer
     def Init(self, buf, pos):
@@ -19184,8 +19515,10 @@ class Metadata(object):
 
     @classmethod
     def MetadataBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # Metadata
     def Init(self, buf, pos):
@@ -19283,8 +19616,10 @@ class TensorMap(object):
 
     @classmethod
     def TensorMapBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # TensorMap
     def Init(self, buf, pos):
@@ -19382,8 +19717,10 @@ class SignatureDef(object):
 
     @classmethod
     def SignatureDefBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SignatureDef
     def Init(self, buf, pos):
@@ -19591,8 +19928,10 @@ class Model(object):
 
     @classmethod
     def ModelBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x49\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x49\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # Model
     def Init(self, buf, pos):

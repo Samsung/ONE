@@ -26,9 +26,7 @@
       throw std::runtime_error("OperationValidator failed at line " + std::to_string(__LINE__)); \
   } while (0)
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 OperationValidator::OperationValidator(const Graph &graph)
@@ -119,8 +117,10 @@ void OperationValidator::visit(const operation::BatchMatMul &node)
   const auto rhs_index(node.getInputs().at(operation::BatchMatMul::Input::RHS));
   const auto output_index(node.getOutputs().at(0));
 
-  // Constant lhs and rhs is not implemented yet
-  OP_REQUIRES(!isConstant(lhs_index) && !isConstant(rhs_index));
+  // RHS can be constant, but LHS is not constant
+  // If one of inputs is constant, it must be RHS
+  // If two inputs are constant, BatchMatMul is optimized into constant by compiler
+  OP_REQUIRES(!isConstant(lhs_index));
 
   // Allow hybrid quantization (lhs: float / rhs: qint8 / out: float)
   OP_REQUIRES(isValidType(
@@ -147,6 +147,16 @@ void OperationValidator::visit(const operation::BinaryArithmetic &node)
 
   OP_REQUIRES(isSameType(lhs_index, rhs_index));
   OP_REQUIRES(isSameType(lhs_index, output_index));
+}
+
+void OperationValidator::visit(const operation::BroadcastTo &node)
+{
+  const auto input_index(node.getInputs().at(operation::BroadcastTo::Input::INPUT));
+  const auto shape_index(node.getInputs().at(operation::BroadcastTo::Input::SHAPE));
+  const auto output_index(node.getOutputs().at(0));
+
+  OP_REQUIRES(isSameType(input_index, output_index));
+  OP_REQUIRES(isValidType(shape_index, {DataType::INT32, DataType::INT64}));
 }
 
 void OperationValidator::visit(const operation::Comparison &node)
@@ -253,6 +263,7 @@ void OperationValidator::visit(const operation::ElementwiseActivation &node)
   switch (node.param().op_type)
   {
     case operation::ElementwiseActivation::Type::ELU:
+    case operation::ElementwiseActivation::Type::GELU:
       OP_REQUIRES(isValidType(input_index, DataType::FLOAT32));
       break;
     case operation::ElementwiseActivation::Type::LEAKY_RELU:
@@ -363,6 +374,21 @@ void OperationValidator::visit(const operation::Fill &node)
                           {DataType::FLOAT32, DataType::INT32, DataType::INT64, DataType::BOOL8}));
 }
 
+void OperationValidator::visit(const operation::Gather &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(operation::Gather::INPUT)};
+  const auto indices_index{node.getInputs().at(operation::Gather::INDICES)};
+
+  const auto input_type = operandType(input_index);
+  if (input_type == DataType::QUANT_GGML_Q4_0 || input_type == DataType::QUANT_GGML_Q8_0)
+    OP_REQUIRES(isValidType(output_index, {DataType::FLOAT32}));
+  else
+    OP_REQUIRES(isSameType(output_index, input_index));
+
+  OP_REQUIRES(isValidType(indices_index, {DataType::INT32, DataType::INT64}));
+}
+
 void OperationValidator::visit(const operation::HashtableLookup &node)
 {
   const auto hits_index{node.getOutputs().at(operation::HashtableLookup::Output::HITS)};
@@ -434,6 +460,19 @@ void OperationValidator::visit(const operation::Reverse &node)
 
   OP_REQUIRES(isValidType(axis_index, DataType::INT32));
   OP_REQUIRES(isSameType(output_index, input_index));
+}
+
+void OperationValidator::visit(const operation::RoPE &node)
+{
+  const auto input_index{node.getInputs().at(operation::RoPE::Input::INPUT)};
+  const auto sin_index{node.getInputs().at(operation::RoPE::Input::SIN_TABLE)};
+  const auto cos_index{node.getInputs().at(operation::RoPE::Input::COS_TABLE)};
+  const auto output_index{node.getOutputs().at(operation::RoPE::Output::OUTPUT)};
+
+  OP_REQUIRES(isValidType(input_index, DataType::FLOAT32));
+  OP_REQUIRES(isValidType(sin_index, DataType::FLOAT32));
+  OP_REQUIRES(isValidType(cos_index, DataType::FLOAT32));
+  OP_REQUIRES(isSameType(input_index, output_index));
 }
 
 void OperationValidator::visit(const operation::Select &node)
@@ -525,6 +564,14 @@ void OperationValidator::visit(const operation::StridedSlice &node)
   OP_REQUIRES(isSameType(output_index, input_index));
 }
 
+void OperationValidator::visit(const operation::Transpose &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(operation::Transpose::Input::INPUT)};
+
+  OP_REQUIRES(isSameType(output_index, input_index));
+}
+
 void OperationValidator::visit(const operation::TransposeConv &node)
 {
   OP_REQUIRES((node.param().padding.type == PaddingType::SAME) ||
@@ -542,5 +589,4 @@ void OperationValidator::visit(const operation::While &node)
   OP_REQUIRES(node.getInputs().size() == node.getOutputs().size());
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

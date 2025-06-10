@@ -21,13 +21,7 @@
 #include <cker/operation/BinaryArithmeticOps.h>
 #include <util/CalculateActivationRange.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 BackPropAccumulator::BackPropAccumulator(const IPortableTensor *disposable_tensor,
@@ -57,7 +51,4 @@ void BackPropAccumulator::backward()
     getBuffer<float>(_back_prop_tensor));
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

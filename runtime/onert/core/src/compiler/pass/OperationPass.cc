@@ -20,11 +20,7 @@
 #include "ir/IOperation.h"
 #include "ir/Graph.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 void OperationPass::run()
@@ -33,6 +29,4 @@ void OperationPass::run()
     [&](const ir::OperationIndex &index, ir::IOperation &node) { callback(index, node); });
 }
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass

@@ -1,6 +1,6 @@
 Name:    nnfw
 Summary: nnfw
-Version: 1.29.0
+Version: 1.30.0
 Release: 1
 Group:   Development
 License: Apache-2.0 and MIT and BSD-2-Clause and MPL-2.0
@@ -8,8 +8,8 @@ License: Apache-2.0 and MIT and BSD-2-Clause and MPL-2.0
 Source0: %{name}-%{version}.tar.gz
 Source1: %{name}.manifest
 Source1001: nnapi_test_generated.tar.gz
-Source2001: nnfw.pc.in
-Source2002: nnfw-plugin.pc.in
+Source2001: onert.pc.in
+Source2002: onert-plugin.pc.in
 Source3001: ABSEIL.tar.gz
 Source3002: CPUINFO.tar.gz
 Source3003: FARMHASH.tar.gz
@@ -79,6 +79,22 @@ Requires: %{name}-devel = %{version}-%{release}
 %description plugin-devel
 NNFW development package for backend plugin developer
 
+%package train
+Summary: ONERT Train Package
+Requires: %{name} = %{version}-%{release}
+
+%description train
+ONERT backend package for training
+
+%if %{trix_support} == 1
+%package trix
+Summary: ONERT Trix Package
+Requires: %{name} = %{version}-%{release}
+
+%description trix
+ONERT loader and backend package for trix
+%endif # trix_support
+
 %if %{odc_build} == 1
 %package odc
 Summary: NNFW On-Device Compilation Package
@@ -86,12 +102,6 @@ Summary: NNFW On-Device Compilation Package
 %description odc
 NNFW package for on-device compilation
 %endif # odc_build
-
-%package minimal-app
-Summary: Minimal test binary for VD manual test
-
-%description minimal-app
-Minimal test binary for VD manual test
 
 %if %{test_build} == 1
 %package test
@@ -157,7 +167,7 @@ If you want to get coverage info, you should install runtime package which is bu
 %endif # coverage_build
 
 %define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen \\\
-        -DEXTERNALS_BUILD_THREAD=%{nproc} -DBUILD_MINIMAL_SAMPLE=ON -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
+        -DEXTERNALS_BUILD_THREAD=%{nproc} -DBUILD_MINIMAL_SAMPLE=OFF -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
         %{option_test} %{option_coverage} %{option_config} %{extra_option}
 
 %define strip_options %{nil}
@@ -168,24 +178,34 @@ If you want to get coverage info, you should install runtime package which is bu
 %prep
 %setup -q
 cp %{SOURCE1} .
+mkdir ./runtime/externals
+tar -xf %{SOURCE1001} -C ./runtime/tests/nnapi/src/
+tar -xf %{SOURCE3001} -C ./runtime/externals
+tar -xf %{SOURCE3002} -C ./runtime/externals
+tar -xf %{SOURCE3003} -C ./runtime/externals
+tar -xf %{SOURCE3004} -C ./runtime/externals
+tar -xf %{SOURCE3005} -C ./runtime/externals
+tar -xf %{SOURCE3006} -C ./runtime/externals
+tar -xf %{SOURCE3007} -C ./runtime/externals
+tar -xf %{SOURCE3008} -C ./runtime/externals
+tar -xf %{SOURCE3009} -C ./runtime/externals
+tar -xf %{SOURCE3010} -C ./runtime/externals
+tar -xf %{SOURCE3011} -C ./runtime/externals
+tar -xf %{SOURCE3012} -C ./runtime/externals
+tar -xf %{SOURCE3013} -C ./runtime/externals
+tar -xf %{SOURCE3014} -C ./runtime/externals
+tar -xf %{SOURCE3015} -C ./runtime/externals
+tar -xf %{SOURCE3016} -C ./runtime/externals
+
+%if %{odc_build} == 1
 mkdir ./externals
-tar -xf %{SOURCE1001} -C ./tests/nnapi/src/
-tar -xf %{SOURCE3001} -C ./externals
-tar -xf %{SOURCE3002} -C ./externals
-tar -xf %{SOURCE3003} -C ./externals
 tar -xf %{SOURCE3004} -C ./externals
 tar -xf %{SOURCE3005} -C ./externals
-tar -xf %{SOURCE3006} -C ./externals
-tar -xf %{SOURCE3007} -C ./externals
 tar -xf %{SOURCE3008} -C ./externals
-tar -xf %{SOURCE3009} -C ./externals
-tar -xf %{SOURCE3010} -C ./externals
-tar -xf %{SOURCE3011} -C ./externals
-tar -xf %{SOURCE3012} -C ./externals
 tar -xf %{SOURCE3013} -C ./externals
 tar -xf %{SOURCE3014} -C ./externals
 tar -xf %{SOURCE3015} -C ./externals
-tar -xf %{SOURCE3016} -C ./externals
+%endif # odc_build
 
 %build
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
@@ -196,15 +216,18 @@ tar -xf %{SOURCE3016} -C ./externals
 	-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle08;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str"
 %{nncc_env} ./nncc build %{build_jobs}
 cmake --install %{nncc_workspace} %{strip_options}
-%endif # odc_build
 
 # install angkor TensorIndex and oops InternalExn header (TODO: Remove this)
 mkdir -p %{overlay_path}/include/nncc/core/ADT/tensor
 mkdir -p %{overlay_path}/include/oops
 mkdir -p %{overlay_path}/include/luci/IR
+mkdir -p %{overlay_path}/include/mio/circle
 cp compiler/angkor/include/nncc/core/ADT/tensor/Index.h %{overlay_path}/include/nncc/core/ADT/tensor
 cp compiler/oops/include/oops/InternalExn.h %{overlay_path}/include/oops
 cp compiler/luci/lang/include/luci/IR/CircleNodes.lst %{overlay_path}/include/luci/IR
+cp %{nncc_workspace}/compiler/mio-circle08/gen/mio/circle/schema_generated.h %{overlay_path}/include/mio/circle
+cp -r %{nncc_workspace}/overlay/include/flatbuffers %{overlay_path}/include
+%endif # odc_build
 
 # runtime build
 %{build_env} ./nnfw configure %{build_options}
@@ -215,7 +238,7 @@ cp compiler/luci/lang/include/luci/IR/CircleNodes.lst %{overlay_path}/include/lu
 
 %if %{test_build} == 1
 %if %{coverage_build} == 1
-pwd > tests/scripts/build_path.txt
+pwd > runtime/tests/scripts/build_path.txt
 %endif # coverage_build
 tar -zcf test-suite.tar.gz infra/scripts
 %endif # test_build
@@ -229,9 +252,14 @@ mkdir -p %{buildroot}%{_libdir}/nnfw/loader
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_includedir}
 install -m 644 build/out/lib/*.so %{buildroot}%{_libdir}
-install -m 644 build/out/lib/nnfw/backend/*.so %{buildroot}%{_libdir}/nnfw/backend
-install -m 644 build/out/lib/nnfw/loader/*.so %{buildroot}%{_libdir}/nnfw/loader
-install -m 755 build/out/bin/onert-minimal-app %{buildroot}%{_bindir}
+install -m 644 build/out/lib/nnfw/*.so %{buildroot}%{_libdir}/nnfw/
+%if "%{asan}" == "1"
+ install -m 644 build/out/lib/nnfw/backend/*.so %{buildroot}%{_libdir}
+ install -m 644 build/out/lib/nnfw/loader/*.so %{buildroot}%{_libdir}
+%else
+ install -m 644 build/out/lib/nnfw/backend/*.so %{buildroot}%{_libdir}/nnfw/backend
+ install -m 644 build/out/lib/nnfw/loader/*.so %{buildroot}%{_libdir}/nnfw/loader
+%endif
 cp -r build/out/include/* %{buildroot}%{_includedir}/
 
 # For developer
@@ -239,13 +267,17 @@ cp %{SOURCE2001} .
 cp %{SOURCE2002} .
 sed -i 's:@libdir@:%{_libdir}:g
         s:@includedir@:%{_includedir}:g
-        s:@version@:%{version}:g' ./nnfw.pc.in
+        s:@version@:%{version}:g' ./onert.pc.in
 sed -i 's:@libdir@:%{_libdir}:g
         s:@includedir@:%{_includedir}:g
-        s:@version@:%{version}:g' ./nnfw-plugin.pc.in
+        s:@version@:%{version}:g' ./onert-plugin.pc.in
 mkdir -p %{buildroot}%{_libdir}/pkgconfig
-install -m 0644 ./nnfw.pc.in %{buildroot}%{_libdir}/pkgconfig/nnfw.pc
-install -m 0644 ./nnfw-plugin.pc.in %{buildroot}%{_libdir}/pkgconfig/nnfw-plugin.pc
+install -m 0644 ./onert.pc.in %{buildroot}%{_libdir}/pkgconfig/onert.pc
+install -m 0644 ./onert-plugin.pc.in %{buildroot}%{_libdir}/pkgconfig/onert-plugin.pc
+pushd %{buildroot}%{_libdir}/pkgconfig
+ln -sf onert.pc nnfw.pc
+ln -sf onert-plugin.pc nnfw-plugin.pc
+popd
 
 %if %{test_build} == 1
 mkdir -p %{test_install_path}/bin
@@ -263,14 +295,14 @@ cp -r build/out/test/* %{test_install_path}/test
 cp -r build/out/unittest/nnfw_api_gtest_models %{test_install_path}/unittest
 
 # Share test script with ubuntu (ignore error if there is no list for target)
-cp tests/nnapi/nnapi_gtest.skip.%{target_arch}-* %{test_install_path}/nnapi-gtest/.
+cp runtime/tests/nnapi/nnapi_gtest.skip.%{target_arch}-* %{test_install_path}/nnapi-gtest/.
 cp %{test_install_path}/nnapi-gtest/nnapi_gtest.skip.%{target_arch}-linux.cpu %{test_install_path}/nnapi-gtest/nnapi_gtest.skip
 tar -zxf test-suite.tar.gz -C %{buildroot}%{test_install_home}
 
 %if %{coverage_build} == 1
 mkdir -p %{buildroot}%{test_install_home}/gcov
 find %{nnfw_workspace} -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. \;
-install -m 0644 ./tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/test/build_path.txt
+install -m 0644 ./runtime/tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/test/build_path.txt
 %endif # coverage_build
 %endif # test_build
 
@@ -291,8 +323,12 @@ install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %defattr(-,root,root,-)
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %{_libdir}/*.so
+%{_libdir}/nnfw/*.so
+%if "%{asan}" != "1"
 %{_libdir}/nnfw/backend/*.so
-%{_libdir}/nnfw/loader/*.so
+%exclude %{_libdir}/nnfw/backend/libbackend_trix.so
+%exclude %{_libdir}/nnfw/backend/libbackend_train.so
+%endif
 %exclude %{_includedir}/CL/*
 %endif
 
@@ -303,6 +339,7 @@ install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %dir %{_includedir}/nnfw
 %{_includedir}/nnfw/*
 %{_libdir}/pkgconfig/nnfw.pc
+%{_libdir}/pkgconfig/onert.pc
 %endif
 
 %files plugin-devel
@@ -312,14 +349,25 @@ install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %dir %{_includedir}/onert
 %{_includedir}/onert/*
 %{_libdir}/pkgconfig/nnfw-plugin.pc
+%{_libdir}/pkgconfig/onert-plugin.pc
 %endif
 
-%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
-%files minimal-app
+%files train
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
-%{_bindir}/onert-minimal-app
-%endif
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
+%{_libdir}/nnfw/backend/libbackend_train.so
+%endif # arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
+
+%if %{trix_support} == 1
+%files trix
+%manifest %{name}.manifest
+%defattr(-,root,root,-)
+%ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
+%{_libdir}/nnfw/loader/libtvn_loader.so
+%{_libdir}/nnfw/backend/libbackend_trix.so
+%endif # arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
+%endif # trix_support
 
 %if %{test_build} == 1
 %files test

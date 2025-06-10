@@ -24,19 +24,13 @@
 
 #include <type_traits>
 
-namespace onert
-{
-namespace ir
-{
-namespace train
-{
-namespace operation
+namespace onert::ir::train::operation
 {
 
 // `UntrainableOperation` wraps operations that are not yet supported for training.
 // This class can be removed if all operations are supported for training.
 template <typename OperationType,
-          typename = std::enable_if_t<std::is_base_of<Operation, OperationType>::value>>
+          std::enable_if_t<std::is_base_of_v<Operation, OperationType>, bool> = true>
 class UntrainableOperation : public OperationType, public TrainableOperation
 {
 public:
@@ -51,14 +45,11 @@ public:
   void accept(OperationVisitor &v) const override { v.visit(*this); }
   void accept(TrainableOperationVisitor &) const override
   {
-    throw std::runtime_error(OperationType::name() + "operation is not trainable yet");
+    throw std::runtime_error(OperationType::name() + " operation is not trainable yet");
   }
   bool hasTrainableParameter() const override { return false; }
 };
 
-} // namespace operation
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train::operation
 
 #endif // __ONERT_IR_TRAIN_OPERATION_UNTRAINABLE_OPERATION_H__

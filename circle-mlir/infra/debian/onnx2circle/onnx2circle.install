@@ -1,0 +1,3 @@
+# {FILES_TO_INSTALL} {DEST_DIR}
+# bin
+bin/onnx2circle usr/share/circletools/bin/

@@ -19,13 +19,7 @@
 #include "cker/PortableTensorUtils.h"
 #include <cker/operation/DepthwiseConv.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 void DepthwiseConvolutionLayer::convFloat32()
@@ -44,6 +38,20 @@ void DepthwiseConvolutionLayer::convFloat32()
   op_params.float_activation_min = output_activation_min;
   op_params.float_activation_max = output_activation_max;
 
+  // TODO: Use the following call if TensorBuilder manages padded_filter_data
+  //       and filter_buffers_data:
+  //
+  //         void DepthwiseConvOp(
+  //           const DepthwiseConvParams &params,
+  //           const Shape &input_shape,    const float *input_data,
+  //           const Shape &filter_shape,   const float *filter_data,
+  //           const Shape &bias_shape,     const float *bias_data,
+  //           float *padded_filter_data,    bool pad_filter,
+  //           float *filter_buffers_data,
+  //           const Shape &output_shape,    float *output_data
+  //         );
+  //
+  //       See https://github.com/Samsung/ONE/pull/13669 for an example of using DepthwiseConvOp
   nnfw::cker::DepthwiseConv<float, float>(
     op_params, getShape(_input), getBuffer<float>(_input), getShape(_kernel),
     getBuffer<float>(_kernel), getShape(_bias), getBuffer<float>(_bias), getShape(_output),
@@ -313,7 +321,4 @@ void DepthwiseConvolutionLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

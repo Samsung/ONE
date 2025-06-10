@@ -117,6 +117,27 @@ struct GetFusability final : public luci::CircleNodeMutableVisitor<Fusability>
     }
     return f;
   }
+
+  Fusability visit(luci::CircleFullyConnected *node)
+  {
+    Fusability f;
+    {
+      f.pre_scale = true;
+      if (node->fusedActivationFunction() == luci::FusedActFunc::NONE)
+      {
+        f.post_scale = true;
+        f.post_shift = true;
+      }
+      // Negative scale is not fusable across ReLU, but fme-detect does not
+      // know the scale value. So, we assume that the scale is positive.
+      // NOTE If a pattern has negative scales, fm-equalize rejects the pattern
+      else if (node->fusedActivationFunction() == luci::FusedActFunc::RELU)
+      {
+        f.post_scale = true;
+      }
+    }
+    return f;
+  }
 };
 
 Fusability fusability(luci::CircleNode *node)
@@ -135,6 +156,7 @@ struct Forwardable
 };
 
 // Return Forwardable of node
+// Note that the degree of effect may vary from layer to layer.
 Forwardable forwardable(luci::CircleNode *node)
 {
   if (node == nullptr)
@@ -145,10 +167,13 @@ Forwardable forwardable(luci::CircleNode *node)
     case luci::CircleOpcode::PAD:
       return {true, false};
     case luci::CircleOpcode::MAX_POOL_2D:
-      // Assumption: all scale values are positive.
       return {true, true};
-    case luci::CircleOpcode::SLICE:
-      return {true, true};
+    case luci::CircleOpcode::RELU:
+      return {true, false};
+    case luci::CircleOpcode::LEAKY_RELU:
+      return {true, false};
+    case luci::CircleOpcode::GELU:
+      return {false, false};
     default:
       return {false, false};
   }
@@ -161,33 +186,52 @@ void match(luci::CircleNode *front, std::vector<EqualizePattern> &res)
     throw std::invalid_argument("front");
 
   auto front_fusability = fusability(front);
-
-  for (auto succ : loco::succs(front))
+  auto succs = loco::succs(front);
+  // TODO Support multiple successors.
+  if (succs.size() != 1)
+    return;
+  for (auto succ : succs)
   {
     // Check succ fusability
     auto back = loco::must_cast<luci::CircleNode *>(succ);
     auto back_fusability = fusability(back);
 
-    // If 'back' is not fusable with PreScale/Shift, we check if PreScale/Shift
+    // If 'back' is not fusable with PreScale, we check if PreScale
     // can forward across 'back'
     // TODO Generalize this code to support multiple forwardable Ops
-    if ((not back_fusability.pre_scale) and (not back_fusability.pre_shift))
+    if (not back_fusability.pre_scale)
     {
       auto f = forwardable(back);
-      if (f.scale_forwardable or f.shift_forwardable)
+      if (f.scale_forwardable)
       {
-        auto succ_succs = loco::succs(back);
+        auto back_succs = loco::succs(back);
         // Only support single successor for simplicity
-        if (succ_succs.size() != 1)
+        if (back_succs.size() != 1)
           continue;
-        auto next_succ = *succ_succs.begin();
-        auto next_back = loco::must_cast<luci::CircleNode *>(next_succ);
-        back_fusability = fusability(next_back);
-        back_fusability.pre_scale &= f.scale_forwardable;
-        back_fusability.pre_shift &= f.shift_forwardable;
+        back = loco::must_cast<luci::CircleNode *>(*back_succs.begin());
+        back_fusability = fusability(back);
+        if (not back_fusability.pre_scale)
+        {
+          f = forwardable(back);
+          if (f.scale_forwardable)
+          {
+            back_succs = loco::succs(back);
+            if (back_succs.size() != 1)
+              continue;
+            back = loco::must_cast<luci::CircleNode *>(*back_succs.begin());
+            back_fusability = fusability(back);
+          }
+        }
       }
     }
 
+    if (front_fusability.post_scale and back_fusability.pre_scale)
+    {
+      res.emplace_back(front->name(), back->name(), EqualizePattern::Type::ScaleOnly);
+    }
+
+    // TODO Let's consider "shift" when it is necessary.
+#if 0
     // Create EqualizePattern based on fusability
     // ScaleShift
     //   front: fusable_post_shift and fusable_post_scale
@@ -211,6 +255,7 @@ void match(luci::CircleNode *front, std::vector<EqualizePattern> &res)
     {
       res.emplace_back(front->name(), back->name(), EqualizePattern::Type::ScaleOnly);
     }
+#endif
   }
 }
 

@@ -20,11 +20,7 @@
 #include "BackendContext.h"
 #include "TensorBuilder.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
+namespace onert::backend::acl_cl
 {
 
 class Optimizer
@@ -39,8 +35,6 @@ private:
   std::shared_ptr<TensorBuilder> _tensor_builder;
 };
 
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl
 
 #endif // __ONERT_BACKEND_ACL_CL_OPTIMIZER_H__

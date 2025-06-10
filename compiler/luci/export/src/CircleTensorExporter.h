@@ -39,6 +39,11 @@ void prepareModelData(flatbuffers::FlatBufferBuilder &builder, SerializedModelDa
 void exportOpDefinedTensors(loco::Graph *g, flatbuffers::FlatBufferBuilder &builder,
                             SerializedModelData &md, SerializedGraphData &gd);
 
+/**
+ * @brief clear temporary export information annotated to graph nodes
+ */
+void clearExportInfo(loco::Graph *g);
+
 } // namespace luci
 
 #endif // __CIRCLE_TENSOR_EXPORTER_H__

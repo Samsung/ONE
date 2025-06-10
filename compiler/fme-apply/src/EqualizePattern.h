@@ -35,8 +35,8 @@ struct EqualizePattern
   std::string front;
   std::string back;
   Type type = Type::Invalid;
-  std::vector<float> scale; // channel-wise scale
-  std::vector<float> shift; // channel-wise shift
+  std::vector<float> act_scale; // activation channel scales
+  std::vector<float> scale;     // channel-wise scale
 };
 
 } // namespace fme_apply

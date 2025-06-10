@@ -22,13 +22,7 @@
 
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 enum class ArithmeticType
@@ -61,9 +55,6 @@ protected:
   std::function<void(const IPortableTensor *, const IPortableTensor *, IPortableTensor *)> _kernel;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_BINARYARITHMETICLAYER_H__

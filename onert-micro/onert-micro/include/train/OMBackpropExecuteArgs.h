@@ -37,7 +37,9 @@ struct OMBackpropExecuteArgs
   core::OMRuntimeStorage &backward_storage;
   core::OMRuntimeContext &backward_context;
   bool is_last_layer;
+  bool is_trainable_layer;
   uint16_t kernel_index;
+  core::OpTrainableRankType train_rank_type;
 };
 
 } // namespace train

@@ -1,0 +1,52 @@
+name: Run tools/model-explorer-circle build
+
+on:
+  push:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-tools-mec-build.yml'
+      - 'tools/model_explorer_circle/**'
+      - '!**/*.md'
+  pull_request:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-tools-mec-build.yml'
+      - 'tools/model_explorer_circle/**'
+      - '!**/*.md'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    if: github.repository_owner == 'Samsung'
+    strategy:
+      matrix:
+        # TODO add more versions
+        python: ['3.10']
+        # TODO add more platforms
+        platform: [ubuntu-latest]
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install test dependencies
+        run: python -m pip install --upgrade nox
+
+      - name: Test
+        run: |
+          cd tools/model_explorer_circle
+          python -m nox -s tests-${{ matrix.python }}

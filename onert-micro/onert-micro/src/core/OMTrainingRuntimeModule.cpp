@@ -16,9 +16,14 @@
 
 #include "core/OMTrainingRuntimeModule.h"
 #include "import/OMExecutionPlanCreator.h"
+#include "import/OMDynamicShapesHandler.h"
 #include "train/OMBackpropExecute.h"
 #include "core/train/OMCheckpointSaver.h"
 #include "core/train/OMCheckpointLoader.h"
+
+#ifdef OM_MEMORY_ESTIMATE
+#include "core/memory/OMMemoryManager.h"
+#endif // OM_MEMORY_ESTIMATE
 
 using namespace onert_micro::core;
 using namespace onert_micro;
@@ -54,11 +59,21 @@ OMStatus OMTrainingRuntimeModule::importTrainModel(char *model_ptr, const OMConf
     if (config.wof_ptr != nullptr)
       runtime_context.setWofFile(config.wof_ptr);
 
+    // Parse and validate Train Config File if it is exists
+    // WARNING: setTrainConfigFile method of RuntimeContext should follow after setModel.
+    if (config.train_mode and config.training_context.training_config_info_data != nullptr)
+      runtime_context.setTrainConfigFile(config.training_context.training_config_info_data);
+
     // AllocDeallocPlan backward graph creation
     status = import::OMExecutionPlanCreator::createBackwardExecutionPlan(
       runtime_storage, runtime_context, runtime_allocator, config);
     if (status != Ok)
       return status;
+
+    // Set tensor to train rank type
+    auto &train_storage = _training_handler.getTrainingStorage();
+    import::OMDynamicShapesHandler::importDynamicShapesFromTrainConfig(
+      runtime_storage, runtime_context, train_storage);
   }
 
   // Set current optimizer
@@ -111,7 +126,7 @@ OMStatus OMTrainingRuntimeModule::trainSingleStep(OMConfig &config)
 
     //  b. Run forward graph
     {
-      status = run();
+      status = run(config);
       assert(status == Ok);
       if (status != Ok)
         return status;
@@ -144,7 +159,7 @@ OMStatus OMTrainingRuntimeModule::trainSingleStep(OMConfig &config)
       //  d. Run backward graph
       {
         onert_micro::train::OMBackpropExecuteArgs backprop_execute_args = {
-          forward_storage, backward_storage, backward_context, false, 0};
+          forward_storage, backward_storage, backward_context, false, false, 0, ALL};
 
         status = onert_micro::train::OMBackpropExecute::runBackward(
           config, backprop_execute_args, backward_graph.getRuntimeAllocator());
@@ -173,7 +188,8 @@ OMStatus OMTrainingRuntimeModule::trainSingleStep(OMConfig &config)
     // Get backward context
     OMRuntimeGraph &backward_graph = _backward_graphs.at(i);
     OMRuntimeContext &backward_context = backward_graph.getRuntimeContext();
-    status = _training_handler.updateWeights(config, backward_context);
+    OMRuntimeStorage &backward_storage = backward_graph.getRuntimeStorage();
+    status = _training_handler.updateWeights(config, backward_context, backward_storage);
   }
 
   return status;
@@ -187,8 +203,8 @@ OMStatus OMTrainingRuntimeModule::trainSingleStep(OMConfig &config)
  *              after calculation for current batch_num (the sequence number of the current sample)
  *              this value is added to metric_val
  */
-OMStatus OMTrainingRuntimeModule::evaluateMetric(OMMetrics metric, void *metric_val,
-                                                 uint32_t test_size)
+OMStatus OMTrainingRuntimeModule::evaluateMetric(const OMConfig &config, OMMetrics metric,
+                                                 void *metric_val, uint32_t test_size)
 {
   OMStatus status = Ok;
   OMRuntimeGraph &forward_main_graph = _graphs.at(0);
@@ -218,7 +234,7 @@ OMStatus OMTrainingRuntimeModule::evaluateMetric(OMMetrics metric, void *metric_
 
     //  b. Run forward graph
     {
-      status = run();
+      status = run(config);
       assert(status == Ok);
       if (status != Ok)
         return status;
@@ -260,8 +276,13 @@ OMStatus OMTrainingRuntimeModule::reset()
   {
     graph.reset();
   }
-
+#ifdef OM_MEMORY_ESTIMATE
+  auto &context = _backward_graphs.begin()->getRuntimeContext();
+  auto &storage = _backward_graphs.begin()->getRuntimeStorage();
+  _training_handler.reset(context, storage);
+#else
   _training_handler.reset();
+#endif // OM_MEMORY_ESTIMATE
 
   return status;
 }
@@ -307,3 +328,18 @@ void *OMTrainingRuntimeModule::getInputData(int32_t index)
 {
   return _training_handler.getInputData(index);
 }
+
+#ifdef OM_MEMORY_ESTIMATE
+
+size_t OMTrainingRuntimeModule::getPeakFootprintMemory()
+{
+  return std::max(memory::OMMemoryManager::peak_memory_allocated,
+                  memory::OMMemoryManager::cur_memory_allocated);
+}
+
+size_t OMTrainingRuntimeModule::getCurrentFootprintMemory()
+{
+  return memory::OMMemoryManager::cur_memory_allocated;
+}
+
+#endif // OM_MEMORY_ESTIMATE

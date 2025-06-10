@@ -26,9 +26,7 @@
 #include <cassert>
 #include <memory>
 
-namespace onert
-{
-namespace util
+namespace onert::util
 {
 
 using namespace nnfw::misc;
@@ -68,6 +66,8 @@ static IConfigSource *config_source()
 
 static std::string getConfigOrDefault(const std::string &key)
 {
+  // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+  //       to use `std::string_view` with lookup functions in unordered containers
   static std::unordered_map<std::string, std::string> defaults;
   if (defaults.empty())
   {
@@ -129,14 +129,9 @@ int getConfigInt(const std::string &key)
 
 std::string getConfigString(const std::string &key) { return getConfigOrDefault(key); }
 
-} // namespace util
-} // namespace onert
+} // namespace onert::util
 
-namespace onert
-{
-namespace util
-{
-namespace config
+namespace onert::util::config
 {
 
 #define CONFIG(Name, Type, Default) const char *Name = #Name;
@@ -145,6 +140,4 @@ namespace config
 
 #undef CONFIG
 
-} // namespace config
-} // namespace util
-} // namespace onert
+} // namespace onert::util::config

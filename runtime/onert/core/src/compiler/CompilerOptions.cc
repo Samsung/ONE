@@ -47,9 +47,7 @@ std::string getOpBackends(std::unordered_map<ir::OpCode, std::string> &opcode_to
 
 } // namespace
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 void ManualSchedulerOptions::setBackendMap(const std::string &str)
@@ -143,5 +141,4 @@ void CompilerOptions::verboseOptions()
                     << std::noboolalpha;
 }
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler

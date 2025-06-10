@@ -20,11 +20,7 @@
 #include <cassert>
 #include <ir/Layout.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 class ARMComputeAxis
@@ -103,8 +99,6 @@ template <typename T> inline T ReorderBits(T in, size_t numOfBits)
   return out;
 }
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_SWIZZLE_H__

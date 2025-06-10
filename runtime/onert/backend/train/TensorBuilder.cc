@@ -18,11 +18,7 @@
 
 #include "Tensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
@@ -95,6 +91,27 @@ void TensorBuilder::registerDisposableBackwardTensorInfo(const DisposableTensorI
   _disposable_backprops.add(index);
 }
 
+void TensorBuilder::registerLayerScopeTensor(const LayerScopeTensorIndex &index,
+                                             std::shared_ptr<LayerScopeTensor> &tensor)
+{
+  const auto op_idx = index.op_index();
+
+  const auto pair = _operation_to_layerscope.find(op_idx);
+  if (pair == _operation_to_layerscope.end())
+  {
+    util::Set<LayerScopeTensorIndex> tensor_indices;
+    tensor_indices.add(index);
+    _operation_to_layerscope[op_idx] = tensor_indices;
+  }
+  else
+  {
+    assert(!pair->second.contains(index));
+    pair->second.add(index);
+  }
+
+  _tensor_reg->setLayerScopeTensor(index, tensor);
+}
+
 void TensorBuilder::notifyFirstUse(const ir::OperandIndex &index)
 {
   // TODO Support momory plan
@@ -155,6 +172,16 @@ void TensorBuilder::notifyDisposableBackPropLastUse(const DisposableTensorIndex 
   _tensor_mgr->releaseDisposableBackPropPlan(index);
 }
 
+void TensorBuilder::notifyLayerScopeFirstUse(const LayerScopeTensorIndex &index)
+{
+  _tensor_mgr->claimLayerScopePlan(index);
+}
+
+void TensorBuilder::notifyLayerScopeLastUse(const LayerScopeTensorIndex &index)
+{
+  _tensor_mgr->releaseLayerScopePlan(index);
+}
+
 bool TensorBuilder::isRegistered(const ir::OperandIndex &index) const
 {
   return _tensor_info_map.find(index) != _tensor_info_map.end();
@@ -170,6 +197,29 @@ bool TensorBuilder::isRegisteredDisposableBackwardTensor(const DisposableTensorI
   return _disposable_backprops.contains(index);
 }
 
+bool TensorBuilder::isRegisteredLayerScopeTensor(const ir::OperationIndex &index) const
+{
+  const auto pair = _operation_to_layerscope.find(index);
+  return (pair != _operation_to_layerscope.end());
+}
+
+const util::Set<LayerScopeTensorIndex> &
+TensorBuilder::getRegisteredLayerScopeTensorIndices(const ir::OperationIndex &index) const
+{
+  const auto pair = _operation_to_layerscope.find(index);
+  assert(pair != _operation_to_layerscope.end());
+
+  return pair->second;
+}
+
+LayerScopeTensorLifeTime
+TensorBuilder::getLayerScopeTensorLifeTime(const LayerScopeTensorIndex &index) const
+{
+  const auto &ls_tensors = _tensor_reg->layerscope_tensors();
+  const auto &tensor = ls_tensors.at(index);
+  return tensor->lifetime();
+}
+
 void TensorBuilder::allocate(void)
 {
   _tensor_mgr->allocateNonConstTensors();
@@ -183,6 +233,6 @@ void TensorBuilder::allocateBackward(void)
   _tensor_mgr->allocateDisposableBackPropTensors();
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+void TensorBuilder::allocateLayerScope(void) { _tensor_mgr->allocateLayerScopeTensors(); }
+
+} // namespace onert::backend::train

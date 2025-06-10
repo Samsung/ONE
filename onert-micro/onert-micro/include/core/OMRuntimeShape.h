@@ -19,126 +19,156 @@
 
 #include "core/reader/OMCircleReader.h"
 
-#include <cstring>
 #include <cstdint>
 #include <cassert>
+#include <algorithm>
+#include <numeric>
 
-namespace onert_micro
+namespace onert_micro::core
 {
-namespace core
-{
-
-static constexpr int maxTensorShapeSize = 6;
 
 class OMRuntimeShape
 {
+  static const size_t kMaxDimsCount = 6;
+
 private:
-  int32_t _size = 0;
-  int32_t _dims[maxTensorShapeSize] = {0};
+  size_t _size = 0;
+  std::array<int32_t, kMaxDimsCount> _dims = {0};
+  bool _is_scalar = false;
 
 public:
-  OMRuntimeShape(const OMRuntimeShape &other) : _size(other.dimensionsCount())
+  OMRuntimeShape() = default;
+
+  // clang-format off
+
+  OMRuntimeShape(const OMRuntimeShape &other)
+    : _size(other._size)
+    , _dims(other._dims)
+  {}
+
+  explicit OMRuntimeShape(size_t dimensions_count)
   {
-    std::memcpy(dimsData(), other.dimsData(), sizeof(int32_t) * _size);
+    resize(dimensions_count);
   }
+
+  template <size_t DimsCount>
+  explicit OMRuntimeShape(const std::array<int32_t, DimsCount> &source_dims)
+  {
+    resize(DimsCount);
+    std::copy(source_dims.cbegin(), source_dims.cend(), _dims.begin());
+  }
+
+  // clang-format on
 
   OMRuntimeShape(const circle::Tensor *tensor)
   {
-    if (tensor == nullptr or tensor->shape() == nullptr)
+    if (tensor == nullptr)
       return;
 
-    _size = tensor->shape()->size();
-    std::memcpy(_dims, tensor->shape()->data(), sizeof(int32_t) * _size);
-  }
+    auto shape = tensor->shape();
 
-  // Returns the total count of elements, that is the size when flattened into a
-  // vector.
-  inline int flatSize() const
-  {
-    int buffer_size = 1;
-    const int *dims_data = reinterpret_cast<const int *>(dimsData());
-    for (int i = 0; i < _size; i++)
+    if (shape == nullptr || shape->size() == 0)
     {
-      buffer_size *= dims_data[i];
+      _is_scalar = true;
+      _size = 1;
+      _dims[0] = 1;
+
+      return;
     }
-    return buffer_size;
+
+    _size = shape->size();
+    std::copy(shape->cbegin(), shape->cend(), _dims.begin());
   }
 
-  inline int32_t *dimsData() { return _dims; }
-  inline const int32_t *dimsData() const { return _dims; }
-
-  OMRuntimeShape() : _size(0) {}
-
-  explicit OMRuntimeShape(int dimensions_count) : _size(dimensions_count)
+  OMRuntimeShape(size_t new_shape_size, const OMRuntimeShape &shape, int32_t pad_value)
   {
-    assert(dimensions_count <= maxTensorShapeSize);
-    assert(dimensions_count >= 0);
-  }
-
-  OMRuntimeShape(int dimensions_count, const int32_t *dims_data) : _size(0)
-  {
-    resize(dimensions_count);
-    int32_t *dst_dims = dimsData();
-    std::memcpy(dst_dims, dims_data, dimensions_count * sizeof(int32_t));
-  }
-
-  OMRuntimeShape(int new_shape_size, const OMRuntimeShape &shape, int pad_value) : _size(0)
-  {
+    assert(new_shape_size >= shape._size);
     resize(new_shape_size);
-    const int size_increase = new_shape_size - shape.dimensionsCount();
-    for (int i = 0; i < size_increase; ++i)
+
+    const size_t size_increase = new_shape_size - shape._size;
+
+    for (auto i = 0u; i < size_increase; ++i)
     {
       setDim(i, pad_value);
     }
-    std::memcpy(dimsData() + size_increase, shape.dimsData(),
-                sizeof(int32_t) * shape.dimensionsCount());
+
+    auto from = shape._dims.cbegin();
+    auto to = _dims.begin() + size_increase;
+
+    std::copy(from, from + shape._size, to);
   }
 
-  OMRuntimeShape(int shape_size, int32_t value) : _size(0)
+  OMRuntimeShape(size_t shape_size, int32_t value)
   {
     resize(shape_size);
-    for (int i = 0; i < shape_size; ++i)
+
+    for (auto i = 0u; i < shape_size; ++i)
     {
       setDim(i, value);
     }
   }
 
-  inline static OMRuntimeShape extendedShape(int new_shape_size, const OMRuntimeShape &shape)
+  static OMRuntimeShape extendedShape(size_t new_shape_size, const OMRuntimeShape &shape)
   {
     return OMRuntimeShape(new_shape_size, shape, 1);
   }
 
-  bool operator==(const OMRuntimeShape &comp) const
+  bool operator==(const OMRuntimeShape &other) const
   {
-    return this->_size == comp._size &&
-           std::memcmp(dimsData(), comp.dimsData(), _size * sizeof(int32_t)) == 0;
+    return _size == other._size && _dims == other._dims;
   }
 
-  inline int32_t dimensionsCount() const { return _size; }
+  size_t flatSize() const
+  {
+    if (_size == 0)
+      return 0;
 
-  inline int32_t dims(int i) const
+    auto it = _dims.cbegin();
+
+    return std::accumulate(it, it + _size, 1u, std::multiplies<size_t>());
+  }
+
+  // clang-format off
+
+  bool isScalar() const
+  {
+    return _is_scalar;
+  }
+
+  int32_t *dimsData()
+  {
+    return _dims.data();
+  }
+
+  const int32_t *dimsData() const
+  {
+    return _dims.data();
+  }
+
+  size_t dimensionsCount() const
+  {
+    return _size;
+  }
+
+  int32_t dims(size_t i) const
   {
     assert(i <= _size);
-    assert(i >= 0);
     return _dims[i];
   }
 
-  inline void setDim(int i, int32_t val)
+  void setDim(size_t i, int32_t val)
   {
     assert(i <= _size);
-    assert(i >= 0);
     _dims[i] = val;
   }
 
-  inline void resize(int dimensions_count)
+  void resize(size_t dimensions_count)
   {
-    assert(dimensions_count <= maxTensorShapeSize);
-    assert(dimensions_count >= 0);
+    assert(dimensions_count <= kMaxDimsCount);
     _size = dimensions_count;
   }
 };
 
-} // namespace core
-} // namespace onert_micro
+} // namespace onert_micro::core
 
 #endif // ONERT_MICRO_CORE_RUNTIME_SHAPE_H

@@ -67,10 +67,12 @@ int entry(int argc, char **argv)
   auto flatbuffer_builder = std::make_unique<flatbuffers::FlatBufferBuilder>(1024);
 
   // convert tflite to circle
-  tflite2circle::CircleModel circle_model{flatbuffer_builder};
+  const std::vector<char> &raw_data = tfl_model.raw_data();
+  tflite2circle::CircleModel circle_model{flatbuffer_builder, raw_data};
 
   circle_model.load_offsets(tfl_model.get_model());
   circle_model.model_build();
+  circle_model.finalize();
 
   std::ofstream outfile{circle_path, std::ios::binary};
 

@@ -21,9 +21,7 @@
 
 #include "ir/InternalType.h"
 
-namespace onert
-{
-namespace util
+namespace onert::util
 {
 
 template <typename T>
@@ -60,7 +58,6 @@ void CalculateActivationRange(ir::Activation activation, T *activation_min, T *a
   }
 }
 
-} // namespace util
-} // namespace onert
+} // namespace onert::util
 
 #endif // __ONERT_UTIL_CALCULATE_ACTIVATION_RANGE_H__

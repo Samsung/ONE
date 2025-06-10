@@ -58,3 +58,46 @@ TEST(SupportMiscTest, copy_shape_to_null_NEG)
 
   EXPECT_ANY_THROW(copy_shape(from, nullptr));
 }
+
+TEST(SupportMiscTest, get_input_simple)
+{
+  loco::Graph g;
+
+  auto input_node = g.nodes()->create<luci::CircleCustom>(2, 1);
+
+  auto node = g.nodes()->create<luci::CircleConv2D>();
+  node->shape({1, 2, 3, 4});
+  node->input(input_node);
+
+  auto ret = get_input(node);
+  EXPECT_EQ(ret, input_node);
+}
+
+TEST(SupportMiscTest, set_input_simple)
+{
+  loco::Graph g;
+
+  auto input_node = g.nodes()->create<luci::CircleCustom>(2, 1);
+
+  auto node = g.nodes()->create<luci::CircleConv2D>();
+  node->shape({1, 2, 3, 4});
+
+  set_input(node, input_node);
+  EXPECT_EQ(node->input(), input_node);
+}
+
+TEST(SupportMiscTest, find_arg_with_name_simple)
+{
+  loco::Graph g;
+
+  auto input_node = g.nodes()->create<luci::CircleCustom>(2, 1);
+  input_node->name("input_node");
+
+  auto node = g.nodes()->create<luci::CircleConv2D>();
+  node->shape({1, 2, 3, 4});
+  node->input(input_node);
+
+  auto ret = find_arg_with_name(node, "input_node");
+
+  EXPECT_EQ(ret, input_node);
+}

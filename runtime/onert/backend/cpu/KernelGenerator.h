@@ -27,11 +27,7 @@
 #include <ir/Operands.h>
 #include <ir/Operations.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 class KernelGenerator : public basic::KernelGeneratorBase
@@ -56,7 +52,6 @@ public:
   void visit(const ir::operation::Custom &node) override;
   void visit(const ir::operation::DepthToSpace &) override;
   void visit(const ir::operation::DepthwiseConv2D &) override;
-  void visit(const ir::operation::Einsum &) override;
   void visit(const ir::operation::ElementwiseActivation &) override;
   void visit(const ir::operation::ElementwiseBinary &) override;
   void visit(const ir::operation::ElementwiseUnary &) override;
@@ -68,7 +63,6 @@ public:
   void visit(const ir::operation::L2Normalization &) override;
   void visit(const ir::operation::LogSoftmax &) override;
   void visit(const ir::operation::LSTM &) override;
-  void visit(const ir::operation::MatrixBandPart &) override;
   void visit(const ir::operation::DetectionPostProcess &) override;
   void visit(const ir::operation::OneHot &) override;
   void visit(const ir::operation::Pack &) override;
@@ -81,6 +75,8 @@ public:
   void visit(const ir::operation::Reshape &) override;
   void visit(const ir::operation::ResizeBilinear &node) override;
   void visit(const ir::operation::Reverse &) override;
+  void visit(const ir::operation::RmsNorm &) override;
+  void visit(const ir::operation::RoPE &) override;
   void visit(const ir::operation::Select &) override;
   void visit(const ir::operation::Shape &) override;
   void visit(const ir::operation::Slice &) override;
@@ -106,8 +102,6 @@ private:
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu
 
 #endif // __ONERT_BACKEND_CPU_KERNEL_GENERATOR_H__

@@ -16,9 +16,7 @@
 
 #include "ir/TypeInfo.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 bool operator==(const TypeInfo &lhs, const TypeInfo &rhs)
@@ -43,5 +41,4 @@ bool operator==(const TypeInfo &lhs, const TypeInfo &rhs)
 
 bool operator!=(const TypeInfo &lhs, const TypeInfo &rhs) { return !(lhs == rhs); }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

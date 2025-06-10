@@ -52,7 +52,7 @@ clean_envir()
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummy-profile
+  clean_envir
   exit 255
 }
 

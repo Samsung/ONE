@@ -174,6 +174,7 @@ Current transformation options are
 - fuse_mul_to_fullyconnected_weights : This fuses Mul operator to following FullyConnected operator weights
 - fuse_mul_with_conv: This fuses Mul with a preceding Convolution op if possible.
 - fuse_mul_with_div: This fuses Mul and Div op as Div.
+- fuse_mul_with_fullyconnected: This fuses Mul operator with the preceding FullyConnected operator if possible.
 - fuse_slice_with_tconv: This fuses Slice with a preceding TConv if possible.
 - fuse_bcq: This enables Binary-Coded-bases Quantized DNNs
    - read https://arxiv.org/abs/2005.09904 for detailed information
@@ -186,6 +187,8 @@ Current transformation options are
 - fuse_mean_with_mean: This fuses two consecutive ReduceMean operations into one.
 - fuse_transpose_with_mean: This fuses ReduceMean with a preceding Transpose under certain conditions.
 - fuse_horizontal_fc_layers: This fuses horizontal FullyConnected layers under certain conditions.
+- fuse_rmsnorm: This will convert rms normalization related operators to
+  one RmsNormalization operator that our onert provides for faster execution.
 - make_batchnorm_gamma_positive: This makes negative gamma of batch normalization into a small positive value (1e-10).
   Note that this pass can change the execution result of the model.
   So, use it only when the impact is known to be acceptable.
@@ -199,6 +202,7 @@ Current transformation options are
 - remove_redundant_reshape : This fuses or removes redundant reshape operators.
 - remove_redundant_transpose : This fuses or removes redundant transpose operators.
 - remove_unnecessary_add : This removes unnecessary add operators.
+- remove_unnecessary_cast : This will remove unnecessary cast with the same input and output type.
 - remove_unnecessary_reshape : This removes unnecessary reshape operators.
 - remove_unnecessary_slice : This removes unnecessary slice operators.
 - remove_unnecessary_strided_slice : This removes unnecessary strided slice operators.
@@ -214,6 +218,7 @@ Current transformation options are
   to net of builtin operators.
 - shuffle_weight_to_16x1float32 : This will convert weight format of FullyConnected to SHUFFLED16x1FLOAT32.
   Note that it only converts weights whose row is a multiple of 16.
+- substitute_expand_dims_to_reshape : This will convert ExpandDims with constant axis to Reshape.
 - substitute_pack_to_reshape : This will convert single input Pack to Reshape.
 - substitute_padv2_to_pad : This will convert certain condition PadV2 to Pad.
 - substitute_splitv_to_split : This will convert certain condition SplitV to Split.

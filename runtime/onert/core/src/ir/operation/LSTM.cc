@@ -17,11 +17,7 @@
 #include "ir/operation/LSTM.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void LSTM::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -40,6 +36,4 @@ std::string LSTM::name() const
     return Operation::name();
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

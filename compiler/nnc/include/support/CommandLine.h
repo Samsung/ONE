@@ -23,6 +23,7 @@
 #include <set>
 #include <type_traits>
 #include <cassert>
+#include <cstdint>
 #include <limits>
 #include <iostream>
 

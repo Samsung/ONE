@@ -24,21 +24,12 @@
 #include <functional>
 #include <memory>
 
-namespace nnfw
-{
-namespace cker
+namespace nnfw::cker
 {
 class FusedBatchNorm;
-}
-} // namespace nnfw
+} // namespace nnfw::cker
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 class FusedBatchNormLayer : public ::onert::exec::IFunction
@@ -65,9 +56,6 @@ private:
   std::unique_ptr<nnfw::cker::FusedBatchNorm> _fusedbatchnorm_kernel;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_FUSEDBATCHNORM_LAYER_H__

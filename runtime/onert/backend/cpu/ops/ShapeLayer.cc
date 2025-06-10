@@ -18,13 +18,7 @@
 
 #include "OperationUtils.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 ShapeLayer::ShapeLayer() : _input(nullptr), _output(nullptr)
@@ -67,7 +61,4 @@ void ShapeLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

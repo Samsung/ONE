@@ -31,9 +31,17 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::import::configure_kernel_CircleL2Normalize(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleL2Normalize(const OMConfigureArgs &config_args)
 {
   OMStatus status = onert_micro::import::helpers::configure_SISO_kernel(config_args);
 
   return status;
 }
+
+} // namespace import
+} // namespace onert_micro

@@ -70,6 +70,8 @@ public:
     _execution_plan_table[node_id] = execution_plan_inform;
   }
 
+  void clear(void);
+
 public:
   const std::vector<uint8_t> encoded_source_table(void);
   const std::vector<uint8_t> encoded_op_table(void);
@@ -121,10 +123,21 @@ struct SerializedModelData final
 
   std::unordered_map<OpCode, uint32_t> _operator_codes;
   std::vector<flatbuffers::Offset<circle::Buffer>> _buffers;
+  flatbuffers::Offset<circle::Buffer> _empty_buffer;
   CircleExportMetadata _metadata;
 
   // This is used for removing buffers with same values
   std::map<luci::CircleConst *, uint32_t> _cached_buffer_id;
+
+  // flag to use extended Buffer mode for file size > 2G
+  bool _ext_buffer = false;
+  // flag to indicate flatbuffer area got size > 2G
+  bool _require_ext_buffer = false;
+
+  using BufferData = std::vector<uint8_t>;
+  using MapBufferData = std::map<int32_t, BufferData>;
+  // temporary store for BufferData to put after flatbuffers area
+  MapBufferData _buffer_data_map;
 
   /**
    * @brief if opcode is not registered in table of opcodes add it
@@ -133,13 +146,15 @@ struct SerializedModelData final
    */
   uint32_t registerBuiltinOpcode(circle::BuiltinOperator builtin_code,
                                  const std::string &custom_code, const int32_t op_version);
+
+  void clear(void);
 };
 
 // Prerequisites for circle::Model object creation
 struct SerializedGraphData final : public SubGraphContext
 {
   SerializedGraphData() = default;
-  SerializedGraphData(const SerializedModelData &) = delete;
+  SerializedGraphData(const SerializedGraphData &) = delete;
 
   std::vector<flatbuffers::Offset<circle::Operator>> _operators;
   std::vector<flatbuffers::Offset<circle::Tensor>> _tensors;

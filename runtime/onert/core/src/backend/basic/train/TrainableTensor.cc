@@ -16,13 +16,7 @@
 
 #include <backend/basic/train/TrainableTensor.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
-{
-namespace train
+namespace onert::backend::basic::train
 {
 
 std::vector<ITensor *> TrainableTensor::optVars()
@@ -43,7 +37,4 @@ void TrainableTensor::fillBuffer(const std::shared_ptr<ir::Data> &data)
   std::memcpy(buffer, data->base(), data->size());
 }
 
-} // namespace train
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic::train

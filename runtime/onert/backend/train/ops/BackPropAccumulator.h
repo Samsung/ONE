@@ -21,13 +21,7 @@
 #include <cker/Types.h>
 #include <exec/train/ITrainableFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 // TODO Introduce IFunction for only backwarding
@@ -47,9 +41,6 @@ private:
   nnfw::cker::BinaryArithmeticOpParam _op_params;
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_BACKPROP_ACCUMULATOR_H__

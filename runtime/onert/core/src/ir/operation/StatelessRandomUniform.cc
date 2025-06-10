@@ -17,11 +17,7 @@
 #include "ir/operation/StatelessRandomUniform.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 void StatelessRandomUniform::accept(OperationVisitor &v) const { v.visit(*this); }
 
@@ -31,6 +27,4 @@ StatelessRandomUniform::StatelessRandomUniform(const OperandIndexSequence &input
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

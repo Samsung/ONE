@@ -1,0 +1,64 @@
+name: Run tools/onnx-subgraph Ubuntu Build
+
+on:
+  push:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-tools-onnx-subgr-build.yml'
+      - 'tools/onnx_subgraph/**'
+      - '!**/*.md'
+  pull_request:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-tools-onnx-subgr-build.yml'
+      - 'tools/onnx_subgraph/**'
+      - '!**/*.md'
+
+defaults:
+  run:
+    shell: bash
+
+# Cancel previous running jobs when pull request is updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  circle-mlir-test:
+    if: github.repository_owner == 'Samsung'
+    strategy:
+      matrix:
+        type: [ Debug, Release ]
+        ubuntu_code: [ jammy ]
+        include:
+          - ubuntu_code: jammy
+            ubuntu_vstr: u2204
+
+    runs-on: ubuntu-latest
+
+    container:
+      image: nnfw/onnx-subgraph-build-${{ matrix.ubuntu_vstr }}:latest
+      options: --user root
+
+    name: tools/onnx-subgraph ${{ matrix.ubuntu_vstr }} ${{ matrix.type }} test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure
+        run: |
+          cd tools/onnx_subgraph
+          cmake -B build/${{ matrix.type }} -S ./ \
+          -DCMAKE_INSTALL_PREFIX=build/${{ matrix.type }}.install \
+          -DCMAKE_BUILD_TYPE=${{ matrix.type }}
+
+      # TODO enable test
+      - name: Build
+        run: |
+          cd tools/onnx_subgraph
+          cmake --build build/${{ matrix.type }}

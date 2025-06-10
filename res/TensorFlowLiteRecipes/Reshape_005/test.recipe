@@ -1,0 +1,48 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 2 dim: 3 dim: 4 }
+}
+operand {
+  name: "add_const_1"
+  type: INT32
+  shape: { dim: 2 }
+  filler: {
+    tag: "explicit"
+    arg: "5"
+    arg: "3"
+  }
+}
+operand {
+  name: "add_const_2"
+  type: INT32
+  shape: { }
+  filler: { tag: "explicit" arg: "1" }
+}
+operand {
+  name: "add_out"
+  type: INT32
+  shape: { dim: 2 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 6 dim: 4 }
+}
+operation {
+  type: "Add"
+  input: "add_const_1"
+  input: "add_const_2"
+  output: "add_out"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Reshape"
+  input: "ifm"
+  input: "add_out"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

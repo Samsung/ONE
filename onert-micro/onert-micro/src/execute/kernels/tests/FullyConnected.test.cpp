@@ -41,6 +41,15 @@ TEST_F(FullyConnectedTest, Float_P)
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
+// test hybrid kernel input:float32 + weight:int8
+TEST_F(FullyConnectedTest, FloatWQInt8_P)
+{
+  onert_micro::test_model::TestDataFloatWQInt8FullyConnected test_data_kernel;
+  std::vector<float> output_data_vector =
+    onert_micro::execute::testing::checkKernel<float>(1, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
 TEST_F(FullyConnectedTest, S8_P)
 {
   onert_micro::test_model::TestDataS8FullyConnected test_data_kernel;

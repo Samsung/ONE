@@ -507,6 +507,25 @@ void QuantizeWeights::visit(luci::CircleInstanceNorm *node)
   }
 }
 
+void QuantizeWeights::visit(luci::CircleRmsNorm *node)
+{
+  LOGGER(l);
+  INFO(l) << "QuantizeWeights QuantizeWeights::visit node: " << node->name() << std::endl;
+
+  auto gamma = loco::must_cast<luci::CircleConst *>(node->gamma());
+
+  if (!is_quantized(gamma))
+  {
+    assert(gamma->dtype() == loco::DataType::FLOAT32);
+    auto new_gamma = luci::clone(gamma);
+    if (granularity == QuantizationGranularity::LayerWise)
+      quant_const(new_gamma, output_type);
+    else if (granularity == QuantizationGranularity::ChannelWise)
+      quant_const_per_channel(new_gamma, output_type);
+    node->gamma(new_gamma);
+  }
+}
+
 void QuantizeWeights::visit(luci::CirclePRelu *node)
 {
   LOGGER(l);

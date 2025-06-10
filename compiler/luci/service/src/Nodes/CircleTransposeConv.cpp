@@ -25,7 +25,6 @@ luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleTransposeConv 
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleTransposeConv>();
-  if (cloned != nullptr)
   {
     cloned->padding(node->padding());
     cloned->stride()->h(node->stride()->h());

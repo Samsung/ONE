@@ -16,14 +16,10 @@
 
 #include "ExecutorBase.h"
 
-#include "ShapeConverter.h"
-
 #include "util/ConfigSource.h"
 #include <misc/polymorphic_downcast.h>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_graph,
@@ -96,5 +92,4 @@ bool ExecutorBase::hasDynamicInput()
   return false;
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

@@ -1,0 +1,4 @@
+# {FILES_TO_INSTALL} {DEST_DIR}
+# lib
+usr/lib/nnfw/loader/libtvn_loader.so usr/lib/nnfw/loader/
+usr/lib/nnfw/backend/libbackend_trix.so usr/lib/nnfw/backend/

@@ -19,11 +19,7 @@
 
 #include "ir/Operation.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 class DetectionPostProcess : public Operation
@@ -83,8 +79,6 @@ private:
   Param _param;
 };
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation
 
 #endif // __NEURUN_MODEL_OPERATION_DETECTION_POST_PROCESS_NODE_H__

@@ -20,11 +20,7 @@
 #include <ir/Index.h>
 #include <ir/Coordinates.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cl_common
+namespace onert::backend::cl_common
 {
 
 /**
@@ -36,8 +32,6 @@ struct ParentInfo
   ir::Coordinates coordinates;
 };
 
-} // namespace cl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cl_common
 
 #endif // __ONERT_BACKEND_CL_COMMON_PARENT_INFO_H__

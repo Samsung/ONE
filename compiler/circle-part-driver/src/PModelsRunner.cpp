@@ -19,7 +19,7 @@
 #include <luci/IR/Nodes/CircleInput.h>
 #include <luci/IR/Nodes/CircleOutput.h>
 #include <luci/IR/DataTypeHelper.h>
-#include <luci/Importer.h>
+#include <luci/ImporterEx.h>
 #include <luci/Log.h>
 #include <luci_interpreter/Interpreter.h>
 
@@ -48,15 +48,11 @@ void write_file(const std::string &filename, const char *data, size_t data_size)
 
 std::unique_ptr<luci::Module> import_circle(const std::string &filename)
 {
-  std::ifstream fs(filename, std::ifstream::binary);
-  if (fs.fail())
-  {
+  luci::ImporterEx importer;
+  auto module = importer.importVerifyModule(filename);
+  if (module == nullptr)
     throw std::runtime_error("Cannot open model file \"" + filename + "\".\n");
-  }
-  std::vector<char> model_data((std::istreambuf_iterator<char>(fs)),
-                               std::istreambuf_iterator<char>());
-
-  return luci::Importer().importModule(circle::GetModel(model_data.data()));
+  return module;
 }
 
 void save_shape(const std::string &shape_filename, const luci::CircleOutput *output_node)

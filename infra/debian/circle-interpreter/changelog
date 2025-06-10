@@ -1,0 +1,11 @@
+circle-interpreter (1.30.0~202505191026~jammy) jammy; urgency=medium
+
+  * The first debian package release to the Launchpad.
+
+ -- On-device AI developers <nnfw@samsung.com>  Mon, 19 May 2025 10:36:00 +0000
+
+circle-interpreter (1.30.0~202505190000~jammy) jammy; urgency=medium
+
+  * First circle-interpreter Debian package release for developers.
+
+ -- On-device AI developers <nnfw@samsung.com>  Mon, 19 May 2025 00:00:00 +0000

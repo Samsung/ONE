@@ -42,6 +42,7 @@ enum OMMetrics
   CROSS_ENTROPY_METRICS,
   ACCURACY,
   SPARSE_CROSS_ENTROPY_ACCURACY,
+  NONE,
 };
 
 /*
@@ -67,6 +68,8 @@ enum OMLoss
  * beta_squares - used by ADAM optimizer
  * epsilon - used by ADAM optimizer
  * num_Step - used by ADAM optimizer
+ * training_config_info_data - pointer to the training config data, to store training specific
+ * scenario (default null)
  */
 struct OMTrainingContext
 {
@@ -81,6 +84,8 @@ struct OMTrainingContext
   uint32_t num_step = 0;
   uint32_t num_epoch = 0;
   uint32_t epochs = 0;
+
+  char *training_config_info_data = nullptr;
 };
 
 /*

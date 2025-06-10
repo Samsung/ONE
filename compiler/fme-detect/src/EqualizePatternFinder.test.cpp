@@ -447,7 +447,7 @@ TEST(EqualizePatternFinderTest, conv_pad_conv)
 
   EXPECT_EQ(1, res.size());
   EXPECT_EQ("conv1", res[0].front);
-  EXPECT_EQ("pad", res[0].back);
+  EXPECT_EQ("conv2", res[0].back);
   EXPECT_EQ(EqualizePattern::Type::ScaleOnly, res[0].type);
 }
 
@@ -483,7 +483,7 @@ TEST(EqualizePatternFinderTest, conv_maxpool_conv)
 
   EXPECT_EQ(1, res.size());
   EXPECT_EQ("conv1", res[0].front);
-  EXPECT_EQ("maxpool", res[0].back);
+  EXPECT_EQ("conv2", res[0].back);
   EXPECT_EQ(EqualizePattern::Type::ScaleOnly, res[0].type);
 }
 
@@ -503,7 +503,7 @@ TEST(EqualizePatternFinderTest, conv_relu_pad_conv)
 
   EXPECT_EQ(1, res.size());
   EXPECT_EQ("conv1", res[0].front);
-  EXPECT_EQ("pad", res[0].back);
+  EXPECT_EQ("conv2", res[0].back);
   EXPECT_EQ(EqualizePattern::Type::ScaleOnly, res[0].type);
 }
 
@@ -541,25 +541,6 @@ TEST(EqualizePatternFinderTest, conv_tanh_pad_conv_NEG)
   EXPECT_EQ(0, res.size());
 }
 
-TEST(EqualizePatternFinderTest, tconv_slice_instnorm)
-{
-  EqualizePatternFinder::Context ctx;
-  {
-    ctx._allow_dup_op = true;
-  }
-  EqualizePatternFinder epf(ctx);
-
-  TConvSliceInstnormGraph g;
-  g.init();
-
-  auto res = epf.find(g.g());
-
-  EXPECT_EQ(1, res.size());
-  EXPECT_EQ("tconv", res[0].front);
-  EXPECT_EQ("slice", res[0].back);
-  EXPECT_EQ(EqualizePattern::Type::ShiftOnly, res[0].type);
-}
-
 TEST(EqualizePatternFinderTest, tconv_slice_NEG)
 {
   EqualizePatternFinder::Context ctx;
@@ -575,28 +556,6 @@ TEST(EqualizePatternFinderTest, tconv_slice_NEG)
   auto res = epf.find(g.g());
 
   EXPECT_EQ(0, res.size());
-}
-
-TEST(EqualizePatternFinderTest, dup_op)
-{
-  EqualizePatternFinder::Context ctx;
-  {
-    ctx._allow_dup_op = true;
-  }
-  EqualizePatternFinder epf(ctx);
-
-  ConvConvINGraph g;
-  g.init();
-
-  auto res = epf.find(g.g());
-
-  EXPECT_EQ(2, res.size());
-  EXPECT_EQ("conv1", res[0].front);
-  EXPECT_EQ("instnorm", res[0].back);
-  EXPECT_EQ(EqualizePattern::Type::ShiftOnly, res[0].type);
-  EXPECT_EQ("conv1", res[1].front);
-  EXPECT_EQ("conv2", res[1].back);
-  EXPECT_EQ(EqualizePattern::Type::ScaleOnly, res[1].type);
 }
 
 TEST(EqualizePatternFinderTest, dup_op_NEG)

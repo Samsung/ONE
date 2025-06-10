@@ -54,12 +54,18 @@ def _get_parser():
     converter_group = parser.add_argument_group('converter arguments')
 
     # input and output path.
-    converter_group.add_argument(
-        '-i', '--input_path', type=str, help='full filepath of the input file')
-    converter_group.add_argument(
-        '-p', '--python_path', type=str, help='full filepath of the python model file')
-    converter_group.add_argument(
-        '-o', '--output_path', type=str, help='full filepath of the output file')
+    converter_group.add_argument('-i',
+                                 '--input_path',
+                                 type=str,
+                                 help='full filepath of the input file')
+    converter_group.add_argument('-p',
+                                 '--python_path',
+                                 type=str,
+                                 help='full filepath of the python model file')
+    converter_group.add_argument('-o',
+                                 '--output_path',
+                                 type=str,
+                                 help='full filepath of the output file')
 
     # input arrays.
     converter_group.add_argument(
@@ -81,14 +87,14 @@ def _get_parser():
     tf2tflite_group.add_argument('--converter_version', default='v2')
 
     parser.add_argument('--unroll_rnn', action='store_true', help='Unroll RNN operators')
-    parser.add_argument(
-        '--unroll_lstm', action='store_true', help='Unroll LSTM operators')
+    parser.add_argument('--unroll_lstm',
+                        action='store_true',
+                        help='Unroll LSTM operators')
 
     # save intermediate file(s)
-    parser.add_argument(
-        '--save_intermediate',
-        action='store_true',
-        help='Save intermediate files to output folder')
+    parser.add_argument('--save_intermediate',
+                        action='store_true',
+                        help='Save intermediate files to output folder')
 
     return parser
 
@@ -175,7 +181,8 @@ def _merge_module(module):
 
 def _list_classes_from_module(module):
     # Parsing the module to get all defined classes
-    is_member = lambda member: inspect.isclass(member) and member.__module__ == module.__name__
+    is_member = lambda member: inspect.isclass(member
+                                               ) and member.__module__ == module.__name__
     classes = [cls[1] for cls in inspect.getmembers(module, is_member)]
     return classes
 
@@ -227,8 +234,8 @@ def _extract_torchscript_model(log_file, input_path):
     except RuntimeError as e:
         log_file.write((str(e) + '\n').encode())
         log_file.write(
-            'Failed to import input file. Maybe this it contains only weights? Try pass "python_path" argument\n'.
-            encode())
+            'Failed to import input file. Maybe this it contains only weights? Try pass "python_path" argument\n'
+            .encode())
         raise
     log_file.write(('TorchScript model is loaded\n').encode())
 
@@ -293,12 +300,11 @@ def _convert(args):
             f.write(('Trying to save onnx model using opset version ' +
                      str(onnx_opset_version) + '\n').encode())
             try:
-                torch.onnx.export(
-                    pytorch_model,
-                    tuple(sample_inputs),
-                    onnx_output_path,
-                    example_outputs=sample_outputs,
-                    opset_version=onnx_opset_version)
+                torch.onnx.export(pytorch_model,
+                                  tuple(sample_inputs),
+                                  onnx_output_path,
+                                  example_outputs=sample_outputs,
+                                  opset_version=onnx_opset_version)
                 onnx_saved = True
                 break
             except:
@@ -329,8 +335,9 @@ def _convert(args):
         tf2tfliteV2_output_path = os.path.join(tmpdir, tf2tfliteV2_output_name)
 
         del args.input_shapes
-        tf2tfliteV2_cmd = _make_cmd.make_tf2tfliteV2_cmd(
-            args, tf2tfliteV2_path, savedmodel_output_path, tf2tfliteV2_output_path)
+        tf2tfliteV2_cmd = _make_cmd.make_tf2tfliteV2_cmd(args, tf2tfliteV2_path,
+                                                         savedmodel_output_path,
+                                                         tf2tfliteV2_output_path)
 
         f.write((' '.join(tf2tfliteV2_cmd) + '\n').encode())
 

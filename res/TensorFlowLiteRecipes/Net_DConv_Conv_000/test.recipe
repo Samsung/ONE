@@ -1,0 +1,86 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 8 dim: 2 }
+}
+operand {
+  name: "ker"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 4 }
+}
+operation {
+  type: "DepthwiseConv2D"
+  depthwiseconv2d_options {
+    padding: VALID
+    stride_w: 2
+    stride_h: 2
+    dilation_w_factor: 1
+    dilation_h_factor: 1
+    depth_multiplier: 2
+    activation : NONE
+  }
+  input: "ifm"
+  input: "ker"
+  input: "bias"
+  output: "ofm"
+}
+operand {
+  name: "ker_1"
+  type: FLOAT32
+  shape { dim: 3 dim: 2 dim: 2 dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias_1"
+  type: FLOAT32
+  shape { dim: 3 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm_1"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 dim: 3 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: SAME
+    stride_w: 2
+    stride_h: 2
+    activation: NONE
+  }
+  input: "ofm"
+  input: "ker_1"
+  input: "bias_1"
+  output: "ofm_1"
+}
+input: "ifm"
+output: "ofm_1"

@@ -1,0 +1,30 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 4 dim: 4}
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 4 dim: 1}
+  filler {
+    tag: "explicit"
+    arg: "1" arg: "2" arg: "-3" arg: "-4"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 4 dim: 4}
+}
+operation {
+  type: "Add"
+  input: "ifm1"
+  input: "ifm2"
+  output: "ofm"
+  add_options {
+    activation: NONE
+  }
+}
+input: "ifm1"
+output: "ofm"

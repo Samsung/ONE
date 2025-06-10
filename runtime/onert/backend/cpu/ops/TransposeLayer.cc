@@ -21,13 +21,7 @@
 #include <cker/operation/Transpose.h>
 #include <numeric>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 TransposeLayer::TransposeLayer() : _input(nullptr), _perm(nullptr), _output(nullptr)
@@ -105,7 +99,4 @@ void TransposeLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

@@ -22,22 +22,12 @@
 #include "ir/train/UseDefChains.h"
 #include "ir/train/Operations.Include.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 class TrainableGraph;
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 struct UseDefGeneratorBase : public TrainableOperationVisitor
@@ -90,8 +80,6 @@ private:
   UseDefChains _training_usedefs;
 };
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
 #endif // __ONERT_IR_TRAIN_USEDEFINITIALIZER_H__

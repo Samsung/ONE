@@ -21,17 +21,13 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace loader
+namespace onert::loader
 {
 
-// TODO change this line to use inline variable after C++17
-extern const char *const TRAININFO_METADATA_NAME;
+inline const char *const TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
 
 std::unique_ptr<ir::train::TrainingInfo> loadTrainingInfo(const uint8_t *buffer, const size_t size);
 
-} // namespace loader
-} // namespace onert
+} // namespace onert::loader
 
 #endif // __ONERT_LOADER_CIRCLE_TRAININFO_LOADER_H__

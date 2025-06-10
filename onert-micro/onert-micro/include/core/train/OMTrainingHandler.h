@@ -77,7 +77,8 @@ public:
                                 OMRuntimeContext &context);
 
   // Handle with updating weights with current optimizer
-  OMStatus updateWeights(const OMConfig &config, OMRuntimeContext &context);
+  OMStatus updateWeights(const OMConfig &config, OMRuntimeContext &context,
+                         OMRuntimeStorage &storage);
 
   // Evaluate metric and save result in metric_val
   // Warning: 1) assume that all metric_val for all OMMetrics types actually are float values.
@@ -95,6 +96,13 @@ public:
 
   // Reset and deallocate all internal states
   void reset();
+
+#ifdef OM_MEMORY_ESTIMATE
+
+  // Reset and deallocate all states
+  void reset(core::OMRuntimeContext &context, core::OMRuntimeStorage &storage);
+
+#endif // OM_MEMORY_ESTIMATE
 };
 
 } // namespace train

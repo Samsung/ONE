@@ -48,6 +48,7 @@
 #include "luci/Pass/FuseMeanWithMeanPass.h"
 #include "luci/Pass/FuseMulWithConvPass.h"
 #include "luci/Pass/FuseMulWithDivPass.h"
+#include "luci/Pass/FuseMulWithFullyConnectedPass.h"
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "luci/Pass/FusePReluPass.h"
 #include "luci/Pass/FuseGeluPass.h"
@@ -55,6 +56,8 @@
 #include "luci/Pass/FuseSliceWithTConvPass.h"
 #include "luci/Pass/FuseHorizontalFullyConnectedPass.h"
 #include "luci/Pass/FuseTransposeWithMeanPass.h"
+#include "luci/Pass/FuseRmsNormPass.h"
+#include "luci/Pass/FuseRoPEPass.h"
 #include "luci/Pass/MakeBatchNormGammaPositivePass.h"
 #include "luci/Pass/RemoveDuplicateConstPass.h"
 #include "luci/Pass/RemoveFakeQuantPass.h"
@@ -65,6 +68,7 @@
 #include "luci/Pass/RemoveRedundantTransposePass.h"
 #include "luci/Pass/RemoveRedundantQuantizePass.h"
 #include "luci/Pass/RemoveUnnecessaryAddPass.h"
+#include "luci/Pass/RemoveUnnecessaryCastPass.h"
 #include "luci/Pass/RemoveUnnecessaryReshapePass.h"
 #include "luci/Pass/RemoveUnnecessaryReshapeNetPass.h"
 #include "luci/Pass/RemoveUnnecessarySlicePass.h"
@@ -83,6 +87,7 @@
 #include "luci/Pass/ResolveFormerCustomOpPass.h"
 #include "luci/Pass/SparsifyTensorPass.h"
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
+#include "luci/Pass/SubstituteExpandDimsToReshapePass.h"
 #include "luci/Pass/SubstitutePackToReshapePass.h"
 #include "luci/Pass/SubstitutePadV2ToPadPass.h"
 #include "luci/Pass/SubstituteSplitVToSplitPass.h"
@@ -251,6 +256,11 @@ void CircleOptimizer::optimize(luci::Module *m) const
   phase_runner.run(phase);
 }
 
+template <typename T> std::unique_ptr<logo::Pass> createPassInstance(void)
+{
+  return std::make_unique<T>();
+}
+
 void CircleOptimizer::optimize(loco::Graph *g) const
 {
   canonicalize(g);
@@ -278,258 +288,17 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
   phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
 
-  if (_options->query(Options::Algorithm::CommonSubExpressionElimination))
+  // Forward Reshape/Transpose is done after
+  // 1. SubstituteXXXToReshape
+  // 2. RemoveRedundantReshape/Transpose
+  // See https://github.com/Samsung/ONE/pull/10596 for more details
+  if (_options->query(Options::Algorithm::SubstituteExpandDimsToReshape))
   {
-    phase.emplace_back(std::make_unique<luci::CommonSubExpressionEliminationPass>());
-  }
-  if (_options->query(Options::Algorithm::ResolveCustomOpAdd))
-  {
-    phase.emplace_back(std::make_unique<luci::ResolveCustomOpAddPass>());
-  }
-  if (_options->query(Options::Algorithm::ResolveCustomOpBatchMatMul))
-  {
-    phase.emplace_back(std::make_unique<luci::ResolveCustomOpBatchMatMulPass>());
-  }
-  if (_options->query(Options::Algorithm::ResolveCustomOpMatMul))
-  {
-    phase.emplace_back(std::make_unique<luci::ResolveCustomOpMatMulPass>());
-  }
-  if (_options->query(Options::Algorithm::ResolveFormerCustomOp))
-  {
-    phase.emplace_back(std::make_unique<luci::ResolveFormerCustomOpPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseMeanWithMean))
-  {
-    phase.emplace_back(std::make_unique<FuseMeanWithMeanPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseMulWithConv))
-  {
-    phase.emplace_back(std::make_unique<FuseMulWithConvPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseMulWithDiv))
-  {
-    phase.emplace_back(std::make_unique<FuseMulWithDivPass>());
-  }
-  if (_options->query(Options::Algorithm::ResolveCustomOpMaxPoolWithArgmax))
-  {
-    phase.emplace_back(std::make_unique<luci::ResolveCustomOpMaxPoolWithArgmaxPass>());
-  }
-  if (_options->query(Options::Algorithm::ResolveCustomOpSplitV))
-  {
-    phase.emplace_back(std::make_unique<luci::ResolveCustomOpSplitVPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseInstanceNorm))
-  {
-    phase.emplace_back(std::make_unique<FuseInstanceNormPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseBatchNormWithConv))
-  {
-    phase.emplace_back(std::make_unique<FuseBatchNormWithConvPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseBatchNormWithDwConv))
-  {
-    phase.emplace_back(std::make_unique<FuseBatchNormWithDwConvPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseBatchNormWithTConv))
-  {
-    phase.emplace_back(std::make_unique<FuseBatchNormWithTConvPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseSliceWithTConv))
-  {
-    phase.emplace_back(std::make_unique<FuseSliceWithTConvPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseAddToFullyConnectedBias))
-  {
-    phase.emplace_back(std::make_unique<FuseAddToFullyConnectedBiasPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseAddWithConv))
-  {
-    phase.emplace_back(std::make_unique<FuseAddWithConvPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseAddWithFullyConnected))
-  {
-    phase.emplace_back(std::make_unique<FuseAddWithFullyConnectedPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseAddWithTConv))
-  {
-    phase.emplace_back(std::make_unique<FuseAddWithTConvPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseActivationFunction))
-  {
-    phase.emplace_back(std::make_unique<FuseActivationFunctionPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseMulToFullyConnectedWeights))
-  {
-    phase.emplace_back(std::make_unique<FuseMulToFullyConnectedWeightsPass>());
-  }
-  if (_options->query(Options::Algorithm::FusePRelu))
-  {
-    phase.emplace_back(std::make_unique<FusePReluPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseGelu))
-  {
-    phase.emplace_back(std::make_unique<FuseGeluPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseRsqrt))
-  {
-    phase.emplace_back(std::make_unique<FuseRsqrtPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseHorizontalFullyConnected))
-  {
-    phase.emplace_back(std::make_unique<FuseHorizontalFullyConnectedPass>());
-  }
-  if (_options->query(Options::Algorithm::FuseTransposeWithMean))
-  {
-    phase.emplace_back(std::make_unique<FuseTransposeWithMeanPass>());
-  }
-  if (_options->query(Options::Algorithm::FoldAddV2))
-  {
-    phase.emplace_back(std::make_unique<luci::FoldAddV2Pass>());
-  }
-  if (_options->query(Options::Algorithm::FoldCast))
-  {
-    phase.emplace_back(std::make_unique<luci::FoldCastPass>());
-  }
-  if (_options->query(Options::Algorithm::FoldDensify))
-  {
-    phase.emplace_back(std::make_unique<luci::FoldDensifyPass>());
-  }
-  if (_options->query(Options::Algorithm::FoldDepthwiseConv2D))
-  {
-    phase.emplace_back(std::make_unique<luci::FoldDepthwiseConv2DPass>());
-  }
-  if (_options->query(Options::Algorithm::FoldDequantize))
-  {
-    phase.emplace_back(std::make_unique<luci::FoldDequantizePass>());
-  }
-  if (_options->query(Options::Algorithm::FoldFullyConnected))
-  {
-    phase.emplace_back(std::make_unique<luci::FoldFullyConnectedPass>());
-  }
-  if (_options->query(Options::Algorithm::FoldGather))
-  {
-    phase.emplace_back(std::make_unique<luci::FoldGatherPass>());
-  }
-  if (_options->query(Options::Algorithm::FoldMul))
-  {
-    phase.emplace_back(std::make_unique<luci::FoldMulPass>());
-  }
-  if (_options->query(Options::Algorithm::FoldReshape))
-  {
-    phase.emplace_back(std::make_unique<luci::FoldReshapePass>());
-  }
-  if (_options->query(Options::Algorithm::FoldShape))
-  {
-    phase.emplace_back(std::make_unique<luci::FoldShapePass>());
-  }
-  if (_options->query(Options::Algorithm::FoldSparseToDense))
-  {
-    phase.emplace_back(std::make_unique<luci::FoldSparseToDensePass>());
-  }
-  if (_options->query(Options::Algorithm::FoldSqueeze))
-  {
-    phase.emplace_back(std::make_unique<luci::FoldSqueezePass>());
-  }
-  if (_options->query(Options::Algorithm::FusePreActivationBatchNorm))
-  {
-    phase.emplace_back(std::make_unique<luci::FusePreActivationBatchNormPass>());
-  }
-  if (_options->query(Options::Algorithm::MakeBatchNormGammaPositive))
-  {
-    phase.emplace_back(std::make_unique<luci::MakeBatchNormGammaPositivePass>());
-  }
-  if (_options->query(Options::Algorithm::ShuffleWeightTo16x1Float32))
-  {
-    phase.emplace_back(std::make_unique<luci::ShuffleWeightTo16x1Float32Pass>());
-  }
-  if (_options->query(Options::Algorithm::ExpandBroadcastConst))
-  {
-    phase.emplace_back(std::make_unique<luci::ExpandBroadcastConstPass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveDuplicateConst))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveDuplicateConstPass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveFakeQuant))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveFakeQuantPass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveGatherGuard))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveGatherGuardPass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveQDQForMixedPrecisionOp))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveQDQForMixedPrecisionOpPass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveQuantDequantSeq))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveQuantDequantSeqPass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveUnnecessaryAdd))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveUnnecessaryAddPass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveUnnecessaryReshape))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveUnnecessaryReshapePass>());
-    phase.emplace_back(std::make_unique<luci::RemoveUnnecessaryReshapeNetPass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveUnnecessarySlice))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveUnnecessarySlicePass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveUnnecessaryStridedSlice))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveUnnecessaryStridedSlicePass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveUnnecessarySplit))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveUnnecessarySplitPass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveUnnecessaryTranspose))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveUnnecessaryTransposeNetPass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveRedundantReshape))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveRedundantReshapePass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveRedundantTranspose))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveRedundantTransposePass>());
-  }
-  if (_options->query(Options::Algorithm::RemoveRedundantQuantize))
-  {
-    phase.emplace_back(std::make_unique<luci::RemoveRedundantQuantizePass>());
-  }
-  if (_options->query(Options::Algorithm::ReplaceNonConstFCWithBatchMatMul))
-  {
-    phase.emplace_back(std::make_unique<luci::ReplaceNonConstFCWithBatchMatMulPass>());
-  }
-  if (_options->query(Options::Algorithm::ReplaceMulAddWithDepthwiseConv))
-  {
-    phase.emplace_back(std::make_unique<luci::ReplaceMulAddWithDepthwiseConvPass>());
-  }
-  if (_options->query(Options::Algorithm::ReplaceSubWithAdd))
-  {
-    phase.emplace_back(std::make_unique<luci::ReplaceSubWithAddPass>());
-  }
-  if (_options->query(Options::Algorithm::ReplaceWithFCGeluFC))
-  {
-    phase.emplace_back(std::make_unique<luci::ReplaceWithFCGeluFCPass>());
+    phase.emplace_back(std::make_unique<luci::SubstituteExpandDimsToReshapePass>());
   }
   if (_options->query(Options::Algorithm::SubstitutePackToReshape))
   {
     phase.emplace_back(std::make_unique<luci::SubstitutePackToReshapePass>());
-  }
-  if (_options->query(Options::Algorithm::SubstitutePadV2ToPad))
-  {
-    phase.emplace_back(std::make_unique<luci::SubstitutePadV2ToPadPass>());
-  }
-  if (_options->query(Options::Algorithm::SubstituteSplitVToSplit))
-  {
-    phase.emplace_back(std::make_unique<luci::SubstituteSplitVToSplitPass>());
   }
   if (_options->query(Options::Algorithm::SubstituteSqueezeToReshape))
   {
@@ -543,49 +312,107 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   {
     phase.emplace_back(std::make_unique<luci::SubstituteTransposeToReshapePass>());
   }
-  if (_options->query(Options::Algorithm::TransformMinMaxToRelu6Pass))
+  if (_options->query(Options::Algorithm::RemoveRedundantReshape))
   {
-    phase.emplace_back(std::make_unique<luci::TransformMinMaxToRelu6Pass>());
+    phase.emplace_back(std::make_unique<luci::RemoveRedundantReshapePass>());
   }
-  if (_options->query(Options::Algorithm::TransformMinReluToRelu6Pass))
+  if (_options->query(Options::Algorithm::RemoveRedundantTranspose))
   {
-    phase.emplace_back(std::make_unique<luci::TransformMinReluToRelu6Pass>());
-  }
-  if (_options->query(Options::Algorithm::TransformSqrtDivToRsqrtMul))
-  {
-    phase.emplace_back(std::make_unique<luci::TransformSqrtDivToRsqrtMulPass>());
-  }
-  if (_options->query(Options::Algorithm::DecomposeHardSwishPass))
-  {
-    phase.emplace_back(std::make_unique<luci::DecomposeHardSwishPass>());
-  }
-  if (_options->query(Options::Algorithm::DecomposeSoftmaxPass))
-  {
-    phase.emplace_back(std::make_unique<luci::DecomposeSoftmaxPass>());
-  }
-  if (_options->query(Options::Algorithm::UnrollUnidirSeqLSTM))
-  {
-    phase.emplace_back(std::make_unique<luci::UnrollUnidirectionalSequenceLSTMPass>());
+    phase.emplace_back(std::make_unique<luci::RemoveRedundantTransposePass>());
   }
 
+  // clang-format off
+  std::map<Options::Algorithm, std::unique_ptr<logo::Pass> (*)(void)> option_to_pass;
+
+  option_to_pass[Options::Algorithm::CommonSubExpressionElimination] = &createPassInstance<luci::CommonSubExpressionEliminationPass>;
+  option_to_pass[Options::Algorithm::ResolveCustomOpAdd] = &createPassInstance<luci::ResolveCustomOpAddPass>;
+  option_to_pass[Options::Algorithm::ResolveCustomOpBatchMatMul] = &createPassInstance<luci::ResolveCustomOpBatchMatMulPass>;
+  option_to_pass[Options::Algorithm::ResolveCustomOpMatMul] = &createPassInstance<luci::ResolveCustomOpMatMulPass>;
+  option_to_pass[Options::Algorithm::ResolveFormerCustomOp] = &createPassInstance<luci::ResolveFormerCustomOpPass>;
+  option_to_pass[Options::Algorithm::FuseMeanWithMean] = &createPassInstance<luci::FuseMeanWithMeanPass>;
+  option_to_pass[Options::Algorithm::FuseMulWithConv] = &createPassInstance<luci::FuseMulWithConvPass>;
+  option_to_pass[Options::Algorithm::FuseMulWithDiv] = &createPassInstance<luci::FuseMulWithDivPass>;
+  option_to_pass[Options::Algorithm::FuseMulWithFullyConnected] = &createPassInstance<luci::FuseMulWithFullyConnectedPass>;
+  option_to_pass[Options::Algorithm::ResolveCustomOpMaxPoolWithArgmax] = &createPassInstance<luci::ResolveCustomOpMaxPoolWithArgmaxPass>;
+  option_to_pass[Options::Algorithm::ResolveCustomOpSplitV] = &createPassInstance<luci::ResolveCustomOpSplitVPass>;
+  option_to_pass[Options::Algorithm::FuseInstanceNorm] = &createPassInstance<luci::FuseInstanceNormPass>;
+  option_to_pass[Options::Algorithm::FuseBatchNormWithConv] = &createPassInstance<luci::FuseBatchNormWithConvPass>;
+  option_to_pass[Options::Algorithm::FuseBatchNormWithDwConv] = &createPassInstance<luci::FuseBatchNormWithDwConvPass>;
+  option_to_pass[Options::Algorithm::FuseBatchNormWithTConv] = &createPassInstance<luci::FuseBatchNormWithTConvPass>;
+  option_to_pass[Options::Algorithm::FuseSliceWithTConv] = &createPassInstance<luci::FuseSliceWithTConvPass>;
+  option_to_pass[Options::Algorithm::FuseAddToFullyConnectedBias] = &createPassInstance<luci::FuseAddToFullyConnectedBiasPass>;
+  option_to_pass[Options::Algorithm::FuseAddWithConv] = &createPassInstance<luci::FuseAddWithConvPass>;
+  option_to_pass[Options::Algorithm::FuseAddWithFullyConnected] = &createPassInstance<luci::FuseAddWithFullyConnectedPass>;
+  option_to_pass[Options::Algorithm::FuseAddWithTConv] = &createPassInstance<luci::FuseAddWithTConvPass>;
+  option_to_pass[Options::Algorithm::FuseActivationFunction] = &createPassInstance<luci::FuseActivationFunctionPass>;
+  option_to_pass[Options::Algorithm::FuseMulToFullyConnectedWeights] = &createPassInstance<luci::FuseMulToFullyConnectedWeightsPass>;
+  option_to_pass[Options::Algorithm::FusePRelu] = &createPassInstance<luci::FusePReluPass>;
+  option_to_pass[Options::Algorithm::FuseGelu] = &createPassInstance<luci::FuseGeluPass>;
+  option_to_pass[Options::Algorithm::FuseRsqrt] = &createPassInstance<luci::FuseRsqrtPass>;
+  option_to_pass[Options::Algorithm::FuseHorizontalFullyConnected] = &createPassInstance<luci::FuseHorizontalFullyConnectedPass>;
+  option_to_pass[Options::Algorithm::FuseTransposeWithMean] = &createPassInstance<luci::FuseTransposeWithMeanPass>;
+  option_to_pass[Options::Algorithm::FuseRmsNorm] = &createPassInstance<luci::FuseRmsNormPass>;
+  option_to_pass[Options::Algorithm::FuseRoPE] = &createPassInstance<luci::FuseRoPEPass>;
+  option_to_pass[Options::Algorithm::FoldAddV2] = &createPassInstance<luci::FoldAddV2Pass>;
+  option_to_pass[Options::Algorithm::FoldCast] = &createPassInstance<luci::FoldCastPass>;
+  option_to_pass[Options::Algorithm::FoldDensify] = &createPassInstance<luci::FoldDensifyPass>;
+  option_to_pass[Options::Algorithm::FoldDepthwiseConv2D] = &createPassInstance<luci::FoldDepthwiseConv2DPass>;
+  option_to_pass[Options::Algorithm::FoldDequantize] = &createPassInstance<luci::FoldDequantizePass>;
+  option_to_pass[Options::Algorithm::FoldFullyConnected] = &createPassInstance<luci::FoldFullyConnectedPass>;
+  option_to_pass[Options::Algorithm::FoldGather] = &createPassInstance<luci::FoldGatherPass>;
+  option_to_pass[Options::Algorithm::FoldMul] = &createPassInstance<luci::FoldMulPass>;
+  option_to_pass[Options::Algorithm::FoldReshape] = &createPassInstance<luci::FoldReshapePass>;
+  option_to_pass[Options::Algorithm::FoldShape] = &createPassInstance<luci::FoldShapePass>;
+  option_to_pass[Options::Algorithm::FoldSparseToDense] = &createPassInstance<luci::FoldSparseToDensePass>;
+  option_to_pass[Options::Algorithm::FoldSqueeze] = &createPassInstance<luci::FoldSqueezePass>;
+  option_to_pass[Options::Algorithm::FusePreActivationBatchNorm] = &createPassInstance<luci::FusePreActivationBatchNormPass>;
+  option_to_pass[Options::Algorithm::MakeBatchNormGammaPositive] = &createPassInstance<luci::MakeBatchNormGammaPositivePass>;
+  option_to_pass[Options::Algorithm::ShuffleWeightTo16x1Float32] = &createPassInstance<luci::ShuffleWeightTo16x1Float32Pass>;
+  option_to_pass[Options::Algorithm::ExpandBroadcastConst] = &createPassInstance<luci::ExpandBroadcastConstPass>;
+  option_to_pass[Options::Algorithm::RemoveDuplicateConst] = &createPassInstance<luci::RemoveDuplicateConstPass>;
+  option_to_pass[Options::Algorithm::RemoveFakeQuant] = &createPassInstance<luci::RemoveFakeQuantPass>;
+  option_to_pass[Options::Algorithm::RemoveGatherGuard] = &createPassInstance<luci::RemoveGatherGuardPass>;
+  option_to_pass[Options::Algorithm::RemoveQDQForMixedPrecisionOp] = &createPassInstance<luci::RemoveQDQForMixedPrecisionOpPass>;
+  option_to_pass[Options::Algorithm::RemoveQuantDequantSeq] = &createPassInstance<luci::RemoveQuantDequantSeqPass>;
+  option_to_pass[Options::Algorithm::RemoveUnnecessaryAdd] = &createPassInstance<luci::RemoveUnnecessaryAddPass>;
+  option_to_pass[Options::Algorithm::RemoveUnnecessaryCast] = &createPassInstance<luci::RemoveUnnecessaryCastPass>;
+  option_to_pass[Options::Algorithm::RemoveUnnecessarySlice] = &createPassInstance<luci::RemoveUnnecessarySlicePass>;
+  option_to_pass[Options::Algorithm::RemoveUnnecessaryStridedSlice] = &createPassInstance<luci::RemoveUnnecessaryStridedSlicePass>;
+  option_to_pass[Options::Algorithm::RemoveUnnecessarySplit] = &createPassInstance<luci::RemoveUnnecessarySplitPass>;
+  option_to_pass[Options::Algorithm::RemoveUnnecessaryTranspose] = &createPassInstance<luci::RemoveUnnecessaryTransposeNetPass>;
+  option_to_pass[Options::Algorithm::RemoveRedundantQuantize] = &createPassInstance<luci::RemoveRedundantQuantizePass>;
+  option_to_pass[Options::Algorithm::ReplaceNonConstFCWithBatchMatMul] = &createPassInstance<luci::ReplaceNonConstFCWithBatchMatMulPass>;
+  option_to_pass[Options::Algorithm::ReplaceMulAddWithDepthwiseConv] = &createPassInstance<luci::ReplaceMulAddWithDepthwiseConvPass>;
+  option_to_pass[Options::Algorithm::ReplaceSubWithAdd] = &createPassInstance<luci::ReplaceSubWithAddPass>;
+  option_to_pass[Options::Algorithm::ReplaceWithFCGeluFC] = &createPassInstance<luci::ReplaceWithFCGeluFCPass>;
+  option_to_pass[Options::Algorithm::SubstitutePadV2ToPad] = &createPassInstance<luci::SubstitutePadV2ToPadPass>;
+  option_to_pass[Options::Algorithm::SubstituteSplitVToSplit] = &createPassInstance<luci::SubstituteSplitVToSplitPass>;
+  option_to_pass[Options::Algorithm::TransformMinMaxToRelu6Pass] = &createPassInstance<luci::TransformMinMaxToRelu6Pass>;
+  option_to_pass[Options::Algorithm::TransformMinReluToRelu6Pass] = &createPassInstance<luci::TransformMinReluToRelu6Pass>;
+  option_to_pass[Options::Algorithm::TransformSqrtDivToRsqrtMul] = &createPassInstance<luci::TransformSqrtDivToRsqrtMulPass>;
+  option_to_pass[Options::Algorithm::DecomposeHardSwishPass] = &createPassInstance<luci::DecomposeHardSwishPass>;
+  option_to_pass[Options::Algorithm::DecomposeSoftmaxPass] = &createPassInstance<luci::DecomposeSoftmaxPass>;
+  option_to_pass[Options::Algorithm::UnrollUnidirSeqLSTM] = &createPassInstance<luci::UnrollUnidirectionalSequenceLSTMPass>;
   // NOTE Experimental options; these will be removed someday
   //      Add experimental options here
-  if (_options->query(Options::Algorithm::XpSepActFromTransposeConv))
+  option_to_pass[Options::Algorithm::XpSepActFromTransposeConv] = &createPassInstance<luci::XpSepActFromTransposeConvPass>;
+  option_to_pass[Options::Algorithm::ForwardReshapeToUnaryOp] = &createPassInstance<luci::ForwardReshapeToUnaryOpPass>;
+  option_to_pass[Options::Algorithm::ForwardTransposeOp] = &createPassInstance<luci::ForwardTransposeOpPass>;
+  // clang-format on 
+
+  for (auto const &m : option_to_pass)
   {
-    phase.emplace_back(std::make_unique<luci::XpSepActFromTransposeConvPass>());
+    if (_options->query(m.first))
+    {
+      phase.emplace_back(m.second());
+    }
   }
 
-  // Forward Reshape/Transpose is done after
-  // 1. SubstituteXXXToReshape
-  // 2. RemoveRedundantReshape/Transpose
-  // See https://github.com/Samsung/ONE/pull/10596 for more details
-  if (_options->query(Options::Algorithm::ForwardReshapeToUnaryOp))
+  // TODO Extend `option_to_pass` to be able to instantiate two or more pass objects.
+  if (_options->query(Options::Algorithm::RemoveUnnecessaryReshape))
   {
-    phase.emplace_back(std::make_unique<luci::ForwardReshapeToUnaryOpPass>());
-  }
-  if (_options->query(Options::Algorithm::ForwardTransposeOp))
-  {
-    phase.emplace_back(std::make_unique<luci::ForwardTransposeOpPass>());
+    phase.emplace_back(std::make_unique<luci::RemoveUnnecessaryReshapePass>());
+    phase.emplace_back(std::make_unique<luci::RemoveUnnecessaryReshapeNetPass>());
   }
 
   /* TRANSFORM DECLARATION END */

@@ -31,13 +31,12 @@ def get_parser():
     """Create and return given the argument parser"""
     parser = argparse.ArgumentParser(
         description='command line tool to convert data files to hdf5 file')
-    parser.add_argument(
-        "-i",
-        "--input_data_format",
-        type=str,
-        help="Input data format of either rawdata or numpy",
-        choices=['rawdata', 'numpy'],
-        required=True)
+    parser.add_argument("-i",
+                        "--input_data_format",
+                        type=str,
+                        help="Input data format of either rawdata or numpy",
+                        choices=['rawdata', 'numpy'],
+                        required=True)
     parser.add_argument(
         "-l",
         "--data_list",
@@ -47,8 +46,11 @@ def get_parser():
         "For a multi-input model, input data files for the same inference call " + \
         "have to be separated by space in the same line.",
         required=True)
-    parser.add_argument(
-        "-p", "--output_path", type=str, help="Path to the output file.", required=True)
+    parser.add_argument("-p",
+                        "--output_path",
+                        type=str,
+                        help="Path to the output file.",
+                        required=True)
     return parser
 
 

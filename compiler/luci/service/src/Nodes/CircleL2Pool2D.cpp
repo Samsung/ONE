@@ -27,7 +27,6 @@ luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleL2Pool2D *node
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleL2Pool2D>();
-  if (cloned != nullptr)
   {
     cloned->fusedActivationFunction(node->fusedActivationFunction());
     cloned->padding(node->padding());

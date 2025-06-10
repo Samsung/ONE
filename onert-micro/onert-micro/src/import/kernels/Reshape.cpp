@@ -32,7 +32,12 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::import::configure_kernel_CircleReshape(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleReshape(const OMConfigureArgs &config_args)
 {
   OMRuntimeContext &runtime_context = config_args.runtime_context;
   uint16_t op_index = config_args.kernel_index;
@@ -75,8 +80,8 @@ OMStatus onert_micro::import::configure_kernel_CircleReshape(const OMConfigureAr
     if (status != Ok)
       return status;
 
-    runtime_storage.setDynamicTensorSize(runtime_kernel.outputs_index[outputTensorIdx],
-                                         input_shape_size);
+    runtime_storage.setDynamicRuntimeShape(runtime_kernel.outputs_index[outputTensorIdx],
+                                           input_shape);
   }
   else
   {
@@ -95,3 +100,6 @@ OMStatus onert_micro::import::configure_kernel_CircleReshape(const OMConfigureAr
 
   return status;
 }
+
+} // namespace import
+} // namespace onert_micro

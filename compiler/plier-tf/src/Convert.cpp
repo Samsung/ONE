@@ -44,68 +44,60 @@ tensorflow::DataType get_datatype_attr(const tensorflow::NodeDef &node,
                                        const std::string &attr_name)
 {
   assert(has_attr(node, attr_name));
-  const auto &attr = node.attr().at(attr_name);
-  assert(attr.value_case() == tensorflow::AttrValue::kType);
-  return attr.type();
+  assert(node.attr().at(attr_name).value_case() == tensorflow::AttrValue::kType);
+  return node.attr().at(attr_name).type();
 }
 
 const tensorflow::TensorShapeProto &get_shape_attr(const tensorflow::NodeDef &node,
                                                    const std::string &attr_name)
 {
   assert(has_attr(node, attr_name));
-  const auto &attr = node.attr().at(attr_name);
-  assert(attr.value_case() == tensorflow::AttrValue::kShape);
-  return attr.shape();
+  assert(node.attr().at(attr_name).value_case() == tensorflow::AttrValue::kShape);
+  return node.attr().at(attr_name).shape();
 }
 
 const tensorflow::TensorProto &get_tensor_attr(const tensorflow::NodeDef &node,
                                                const std::string &attr_name)
 {
   assert(has_attr(node, attr_name));
-  const auto &attr = node.attr().at(attr_name);
-  assert(attr.value_case() == tensorflow::AttrValue::kTensor);
-  return attr.tensor();
+  assert(node.attr().at(attr_name).value_case() == tensorflow::AttrValue::kTensor);
+  return node.attr().at(attr_name).tensor();
 }
 
 const ::tensorflow::AttrValue_ListValue &get_list_attr(const tensorflow::NodeDef &node,
                                                        const std::string &attr_name)
 {
   assert(has_attr(node, attr_name));
-  const auto &attr = node.attr().at(attr_name);
-  assert(attr.value_case() == tensorflow::AttrValue::kList);
-  return attr.list();
+  assert(node.attr().at(attr_name).value_case() == tensorflow::AttrValue::kList);
+  return node.attr().at(attr_name).list();
 }
 
 const std::string &get_string_attr(const tensorflow::NodeDef &node, const std::string &attr_name)
 {
   assert(has_attr(node, attr_name));
-  const auto &attr = node.attr().at(attr_name);
-  assert(attr.value_case() == tensorflow::AttrValue::kS);
-  return attr.s();
+  assert(node.attr().at(attr_name).value_case() == tensorflow::AttrValue::kS);
+  return node.attr().at(attr_name).s();
 }
 
 int64_t get_int_attr(const tensorflow::NodeDef &node, const std::string &attr_name)
 {
   assert(has_attr(node, attr_name));
-  const auto &attr = node.attr().at(attr_name);
-  assert(attr.value_case() == tensorflow::AttrValue::kI);
-  return attr.i();
+  assert(node.attr().at(attr_name).value_case() == tensorflow::AttrValue::kI);
+  return node.attr().at(attr_name).i();
 }
 
 float get_float_attr(const tensorflow::NodeDef &node, const std::string &attr_name)
 {
   assert(has_attr(node, attr_name));
-  const auto &attr = node.attr().at(attr_name);
-  assert(attr.value_case() == tensorflow::AttrValue::kF);
-  return attr.f();
+  assert(node.attr().at(attr_name).value_case() == tensorflow::AttrValue::kF);
+  return node.attr().at(attr_name).f();
 }
 
 bool get_bool_attr(const tensorflow::NodeDef &node, const std::string &attr_name)
 {
   assert(has_attr(node, attr_name));
-  const auto &attr = node.attr().at(attr_name);
-  assert(attr.value_case() == tensorflow::AttrValue::kB);
-  return attr.b();
+  assert(node.attr().at(attr_name).value_case() == tensorflow::AttrValue::kB);
+  return node.attr().at(attr_name).b();
 }
 
 std::vector<int64_t> as_int64_list(const tensorflow::AttrValue_ListValue &lv)

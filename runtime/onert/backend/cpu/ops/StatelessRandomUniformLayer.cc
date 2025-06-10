@@ -18,13 +18,7 @@
 
 #include <cker/operation/StatelessRandomUniform.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 StatelessRandomUniformLayer::StatelessRandomUniformLayer()
@@ -61,7 +55,4 @@ void StatelessRandomUniformLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

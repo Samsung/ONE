@@ -2,19 +2,35 @@
 #   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
 #   Ubuntu20.04; default python3.8
 #   Ubuntu22.04; default python3.10
+#   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
-find_package(PythonInterp 3.8 QUIET)
-find_package(PythonLibs 3.8 QUIET)
+# NOTE Require same python version of common-artifacts
+# find python 3.8 or above
+find_package(Python 3.8 EXACT COMPONENTS Interpreter Development QUIET)
+if(NOT Python_FOUND)
+  find_package(Python 3.8 COMPONENTS Interpreter Development QUIET)
+endif()
 
-if(NOT ${PYTHONINTERP_FOUND})
-  message(STATUS "Build dalgona: FAILED (Python3 is missing)")
+if(NOT Python_Development_FOUND)
+  message(STATUS "Build dalgona: FAILED (Python3 development package is missing)")
   return()
 endif()
 
-if(${PYTHON_VERSION_MINOR} LESS 8)
-  message(STATUS "Build dalgona: FAILED (Install Python version higher than or equal to 3.8)")
+# NOTE assume only use 3.8.x or 3.10.x or 3.12.x
+if((Python_VERSION VERSION_GREATER_EQUAL 3.8) AND (Python_VERSION VERSION_LESS 3.9))
+  set(PYTHON_VERSION_MINOR 8)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
+  set(PYTHON_VERSION_MINOR 10)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
+  set(PYTHON_VERSION_MINOR 12)
+else()
+  # TODO support more
+  message(STATUS "Build dalgona: FAILED (Unsupported python: ${Python_VERSION})")
   return()
 endif()
+
+set(PYTHON_INCLUDE_DIRS ${Python_INCLUDE_DIRS})
+set(PYTHON_LIBRARIES ${Python_LIBRARIES})
 
 nnas_find_package(Pybind11)
 if(NOT Pybind11_FOUND)

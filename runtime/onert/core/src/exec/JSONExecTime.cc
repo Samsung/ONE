@@ -18,9 +18,7 @@
 
 #include <fstream>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 /**
  * @brief Helper function for reading string from stream
@@ -55,7 +53,7 @@ void readBool(bool &quant, std::ifstream &stream)
   stream.get(buf);
 }
 
-void printString(const std::string &str, std::ofstream &stream) { stream << "\"" << str << "\""; }
+void printString(std::string_view str, std::ofstream &stream) { stream << "\"" << str << "\""; }
 
 void printBool(bool quant, std::ofstream &stream) { stream << "\"" << quant << "\""; }
 
@@ -228,5 +226,4 @@ void JSON::loadOperationsExecTime()
   }
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

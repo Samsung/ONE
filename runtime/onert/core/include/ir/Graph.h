@@ -25,20 +25,11 @@
 #include "ir/Operands.h"
 #include "ir/Operations.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 class Graph : public IGraph
 {
-private:
-  enum class Phase
-  {
-    BUILDING,
-    MODEL
-  };
-
 public:
   explicit Graph(void);
   explicit Graph(const Graph &);
@@ -123,11 +114,12 @@ private:
   Operands _operands;
   OperandIndexSequence _inputs;
   OperandIndexSequence _outputs;
+  // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+  //       to use `std::string_view` with lookup functions in unordered containers
   std::unordered_map<std::string, IOIndex> _name_to_input;
   std::unordered_map<std::string, IOIndex> _name_to_output;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_GRAPH_H__

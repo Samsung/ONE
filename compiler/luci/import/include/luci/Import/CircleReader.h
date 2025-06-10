@@ -23,6 +23,7 @@
 #include <luci/IR/AttrPadding.h>
 #include <luci/IR/CircleNode.h>
 #include <luci/IR/CircleQuantParam.h>
+#include <luci/IR/CircleMXQuantParam.h>
 #include <luci/IR/SparsityParam.h>
 
 #include <loco.h>
@@ -42,10 +43,12 @@ loco::DataType luci_datatype(circle::TensorType type);
 FusedActFunc luci_actfunc(const circle::ActivationFunctionType type);
 Padding luci_padding(const circle::Padding padding);
 MirrorPadMode luci_mirrorpad_mode(const circle::MirrorPadMode mode);
+RoPEMode luci_rope_mode(const circle::RoPEMode mode);
 luci::CircleFullyConnected::WeightsFormat
 luci_weights_format(const circle::FullyConnectedOptionsWeightsFormat weights_format);
 std::unique_ptr<CircleQuantParam>
 luci_quantparam(const circle::QuantizationParameters *quantization);
+std::unique_ptr<CircleMXQuantParam> luci_mx_quantparam(const circle::MXQuantization *quantization);
 
 /// @brief Copy common tensor attributes such as name, type, etc. to node.
 void copy_tensor_attributes(const circle::Tensor *tensor, CircleNode *node);
@@ -115,11 +118,19 @@ public: // direct API
 
 public:
   bool parse(const circle::Model *model);
+  bool parse(const circle::Model *model, const uint8_t *data, const size_t size);
   bool select_subgraph(uint32_t subgraph);
+
+public:
+  // to access raw file data for Buffer outside of flatbuffer range
+  const uint8_t *file_data(uint64_t offset) const;
+  size_t file_size(void) const { return _file_size; }
 
 private:
   const circle::Model *_model{nullptr};
   const circle::SubGraph *_current_subgraph{nullptr};
+  const uint8_t *_file_data{nullptr};
+  size_t _file_size{0};
 };
 
 } // namespace luci

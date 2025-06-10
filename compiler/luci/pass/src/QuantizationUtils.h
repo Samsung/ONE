@@ -63,6 +63,9 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2);
 // Return true if the node is quantized
 bool is_quantized(const CircleNode *node);
 
+// Cast a floating-point number to an unsigned 8-bit integer
+uint8_t fp32_to_uint8_cast(float f);
+
 // Return true if the node is fp32
 bool is_fp32(const CircleNode *node);
 

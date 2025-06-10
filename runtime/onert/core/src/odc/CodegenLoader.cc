@@ -27,9 +27,7 @@ static const char *SHARED_LIB_EXT =
   ".so";
 #endif
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 CodegenLoader &CodegenLoader::instance()
@@ -87,5 +85,4 @@ void CodegenLoader::unloadLibrary()
   _dlhandle.reset(nullptr);
 }
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc

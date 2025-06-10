@@ -29,11 +29,7 @@
 #include "ir/Index.h"
 #include "util/TracingCtx.h"
 
-namespace onert
-{
-namespace exec
-{
-namespace train
+namespace onert::exec::train
 {
 
 class TrainableExecutor : public IExecutor
@@ -82,6 +78,11 @@ public:
   ir::Layout outputLayout(uint32_t index) const override
   {
     return _output_tensors[index]->layout();
+  }
+
+  const uint8_t *outputBuffer(uint32_t index) const final
+  {
+    return _output_tensors[index]->buffer();
   }
 
   void forward(const std::vector<backend::IPortableTensor *> &inputs,
@@ -136,8 +137,6 @@ private:
   ExecutionOptions _current_options;
 };
 
-} // namespace train
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::train
 
 #endif // __ONERT_EXEC_TRAIN_TRAINABLE_EXECUTOR_H_

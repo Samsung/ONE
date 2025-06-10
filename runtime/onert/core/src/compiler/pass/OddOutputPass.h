@@ -22,11 +22,7 @@
 #include "Pass.h"
 #include "ir/Index.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 /**
@@ -82,8 +78,6 @@ private:
   ir::OperandIndex insertPermute(ir::OperandIndex input);
 };
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass
 
 #endif // __ONERT_COMPILER_PASS_ODD_OUTPUT_PASS_H__

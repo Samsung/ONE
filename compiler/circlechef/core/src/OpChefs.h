@@ -20,8 +20,12 @@
 #include "Op/BatchMatMul.h"
 #include "Op/BCQFullyConnected.h"
 #include "Op/BCQGather.h"
+#include "Op/Dequantize.h"
 #include "Op/FullyConnected.h"
 #include "Op/GRU.h"
 #include "Op/InstanceNorm.h"
+#include "Op/RmsNorm.h"
+#include "Op/RoPE.h"
+#include "Op/Quantize.h"
 
 #endif // __OP_CHEFS_H__

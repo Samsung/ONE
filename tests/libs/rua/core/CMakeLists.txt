@@ -1,3 +1,0 @@
-add_library(nnfw_lib_rua_core INTERFACE)
-target_include_directories(nnfw_lib_rua_core INTERFACE include)
-target_link_libraries(nnfw_lib_rua_core INTERFACE nnfw_lib_nnapi)

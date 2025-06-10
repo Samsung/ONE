@@ -115,7 +115,8 @@ OMStatus OMTrainingHandler::handleError(const OMConfig &config, OMRuntimeStorage
 /*
  * Update weights with current optimizer logic
  */
-OMStatus OMTrainingHandler::updateWeights(const OMConfig &config, OMRuntimeContext &context)
+OMStatus OMTrainingHandler::updateWeights(const OMConfig &config, OMRuntimeContext &context,
+                                          OMRuntimeStorage &storage)
 {
   OMStatus status = Ok;
 
@@ -129,10 +130,15 @@ OMStatus OMTrainingHandler::updateWeights(const OMConfig &config, OMRuntimeConte
       if (sgd_optimizer == nullptr)
         return UnknownError;
 
-      status = sgd_optimizer->updateWeights(config.training_context, context);
+      status = sgd_optimizer->updateWeights(config.training_context, context, storage,
+                                            _training_storage.getTensorIndexToRankTypeTable());
       assert(status == Ok);
       // Reset values
+#ifdef OM_MEMORY_ESTIMATE
+      sgd_optimizer->reset(context, storage);
+#else
       sgd_optimizer->reset();
+#endif // OM_MEMORY_ESTIMATE
       break;
     }
     case ADAM:
@@ -141,11 +147,15 @@ OMStatus OMTrainingHandler::updateWeights(const OMConfig &config, OMRuntimeConte
       assert(adam_optimizer != nullptr);
       if (adam_optimizer == nullptr)
         return UnknownError;
-
-      status = adam_optimizer->updateWeights(config.training_context, context);
+      status = adam_optimizer->updateWeights(config.training_context, context, storage,
+                                             _training_storage.getTensorIndexToRankTypeTable());
       assert(status == Ok);
       // Reset values
+#ifdef OM_MEMORY_ESTIMATE
+      adam_optimizer->reset(context, storage);
+#else
       adam_optimizer->reset();
+#endif // OM_MEMORY_ESTIMATE
       break;
     }
     default:
@@ -179,7 +189,7 @@ OMStatus OMTrainingHandler::updateOptimizerState(const OMConfig &config,
       if (sgd_optimizer == nullptr)
         return UnknownError;
 
-      sgd_optimizer->handle(backward_storage, context);
+      sgd_optimizer->handle(backward_storage, context, backward_storage);
       break;
     }
     case ADAM:
@@ -189,7 +199,7 @@ OMStatus OMTrainingHandler::updateOptimizerState(const OMConfig &config,
       if (adam_optimizer == nullptr)
         return UnknownError;
 
-      adam_optimizer->handle(backward_storage, context);
+      adam_optimizer->handle(backward_storage, context, backward_storage);
       break;
     }
     default:
@@ -203,6 +213,13 @@ OMStatus OMTrainingHandler::updateOptimizerState(const OMConfig &config,
 }
 
 void OMTrainingHandler::reset() { _training_storage.reset(); }
+
+#ifdef OM_MEMORY_ESTIMATE
+void OMTrainingHandler::reset(core::OMRuntimeContext &context, core::OMRuntimeStorage &storage)
+{
+  _training_storage.reset(context, storage);
+}
+#endif // OM_MEMORY_ESTIMATE
 
 /*
  * Evaluate metric according OMMetrics and save it into metric_val

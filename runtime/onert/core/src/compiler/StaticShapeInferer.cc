@@ -23,9 +23,7 @@
 #include <sstream>
 #include <stdexcept>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 void OperandObserver::updateShapes(const std::vector<ir::OperandInfo> &changed_operands_info,
                                    bool unpredictable)
@@ -60,6 +58,17 @@ void StaticShapeInferer::infer()
   for (const auto &op_idx : _lowered_subg->graph().topolSortOperations())
   {
     const auto &op = _lowered_subg->graph().operations().at(op_idx);
+
+    // Automatically mark any input with a dynamic dimension (-1)
+    // so its shape is computed at execution time.
+    for (const auto &idx : op.getUsedInputSet())
+    {
+      auto &input = _lowered_subg->graph().operands().at(idx);
+      const auto &shape = input.info().shape();
+      if (shape.hasUnspecifiedDims())
+        input.info().setDynamic();
+    }
+
     bool has_dynamic_tensor = false;
     const auto opcode = op.opcode();
     // IF: requires shape inference for then, else
@@ -102,7 +111,7 @@ void StaticShapeInferer::infer()
 bool StaticShapeInferer::checkDynamicInput(const ir::IOperation &op)
 {
   const auto &operands = _lowered_subg->graph().operands();
-  for (auto &&input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  for (auto &&input_idx : op.getUsedInputSet())
   {
     if (operands.at(input_idx).info().isDynamic())
     {
@@ -745,11 +754,6 @@ void StaticShapeInferer::visit(const ir::operation::LSTM &op)
       scratch_buffer.info().shape(ir::Shape{n_batch, n_cell * 3});
     }
   }
-}
-
-void StaticShapeInferer::visit(const ir::operation::MatrixBandPart &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::Input::INPUT));
 }
 
 void StaticShapeInferer::visit(const ir::operation::OneHot &op)
@@ -1478,6 +1482,4 @@ void StaticShapeInferer::visit(const ir::operation::Bulk &op)
   output.info().shape(new_shape);
 }
 
-} // namespace compiler
-
-} // namespace onert
+} // namespace onert::compiler

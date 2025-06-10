@@ -24,9 +24,7 @@
 #include <vector>
 #include <algorithm>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 /**
@@ -70,8 +68,9 @@ struct FeatureShape
 struct Shape
 {
 public:
-  static int32_t const kUnspecifiedDim;
-  static int32_t const kMaxRank;
+  static inline int32_t const kUnspecifiedDim = -1;
+  // NNFW_MAX_RANK is 6
+  static inline int32_t const kMaxRank = 6;
 
   Shape() = default;
 
@@ -137,7 +136,13 @@ private:
 inline bool operator==(const Shape &lhs, const Shape &rhs) { return lhs.dims() == rhs.dims(); }
 inline bool operator!=(const Shape &lhs, const Shape &rhs) { return lhs.dims() != rhs.dims(); }
 
-Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_layout);
+/**
+ * @brief   Converts shape when its rank is 4
+ *
+ * @return  Return a shape based on permutation type.
+ *          If rank is not 4, input shape is returned without conversion.
+ */
+Shape convertShape(const Shape &shape, const PermuteType &type);
 
 /**
  * @brief Find out if tha rank in this shape is "maybe" unspecified.
@@ -146,7 +151,6 @@ Shape permuteShape(const Shape &shape, Layout frontend_layout, Layout backend_la
  */
 inline bool rankMaybeUnspecified(const ir::Shape &shape) { return (shape.rank() == 0); }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_SHAPE_H__

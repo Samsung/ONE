@@ -1,0 +1,5 @@
+# To check if dynamic dimension properly inferred if option has dynamic shape
+
+RULE    "VERIFY_FILE_FORMAT"    $(verify_file_format) '=' 1
+
+RULE    "RESHAPE_SHAPE"         $(tensor_shape ofm) '=' [6,4]

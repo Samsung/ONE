@@ -22,7 +22,6 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::OPQR>::visit(const luci::CircleResizeBilinear *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleResizeBilinear>();
-  if (cloned != nullptr)
   {
     cloned->align_corners(node->align_corners());
     cloned->half_pixel_centers(node->half_pixel_centers());

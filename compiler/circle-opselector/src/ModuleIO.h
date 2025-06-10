@@ -25,7 +25,6 @@
 namespace opselector
 {
 
-std::unique_ptr<luci::Module> getModule(std::string &input_path);
 bool exportModule(luci::Module *module, std::string &output_path);
 
 } // namespace opselector

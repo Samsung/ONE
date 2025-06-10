@@ -17,21 +17,15 @@
 #include "TrainableOperationConverter.h"
 
 #include "ir/train/Operations.Include.h"
-#include "util/Utils.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 TrainableOperationConverter::TrainableOperationConverter(
   ir::train::TrainableGraph &tgraph, const ir::train::TrainingInfo *training_info)
   : UntrainableOperationConverter{tgraph}, _training_info{training_info}
 {
-  // Avoid unused-private-field error
-  UNUSED_RELEASE(_training_info);
+  // DO NOTHING
 }
 
 void TrainableOperationConverter::visit(const ir::operation::BinaryArithmetic &node)
@@ -66,11 +60,6 @@ void TrainableOperationConverter::visit(const ir::operation::FullyConnected &nod
   _return_op = std::make_unique<ir::train::operation::FullyConnected>(node);
 }
 
-void TrainableOperationConverter::visit(const ir::operation::Loss &node)
-{
-  _return_op = std::make_unique<ir::train::operation::Loss>(node, _training_info->lossInfo());
-}
-
 void TrainableOperationConverter::visit(const ir::operation::Pad &node)
 {
   _return_op = std::make_unique<ir::train::operation::Pad>(node);
@@ -101,6 +90,4 @@ void TrainableOperationConverter::visit(const ir::operation::Softmax &node)
   _return_op = std::make_unique<ir::train::operation::Softmax>(node);
 }
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train

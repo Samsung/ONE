@@ -25,13 +25,7 @@
 #include <cker/operation/LogicalNot.h>
 #include <cker/operation/Round.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 namespace
@@ -396,7 +390,4 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
 
 void ElementwiseUnaryLayer::run() { _kernel(_input, _output); }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

@@ -1,4 +1,0 @@
-add_library(nnfw_lib_rua_shim INTERFACE)
-target_include_directories(nnfw_lib_rua_shim INTERFACE include)
-target_link_libraries(nnfw_lib_rua_shim INTERFACE nnfw_lib_rua_core)
-target_link_libraries(nnfw_lib_rua_shim INTERFACE nnfw_lib_rua_anchor)

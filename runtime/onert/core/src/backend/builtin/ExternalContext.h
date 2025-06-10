@@ -26,23 +26,19 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 // TODO Unify this with cpu::ExternalContext
 class ExternalContext
 {
 private:
-  static const int kDefaultNumThreadpoolThreads = 1;
+  static inline const int kDefaultNumThreadpoolThreads = 1;
 
 public:
   ExternalContext() : _ruy_context(std::make_unique<ruy::Context>())
   {
-    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
+    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::NUM_THREADS));
     initPerThreadState();
   }
 
@@ -72,8 +68,6 @@ private:
   const std::unique_ptr<ruy::Context> _ruy_context;
 };
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin
 
 #endif // __ONERT_BACKEND_BUILTIN_EXTERNAL_CONTEXT_H__

@@ -101,14 +101,7 @@ std::vector<EqualizePattern> read(const std::string &filename)
       switch (p.type)
       {
         case EqualizePattern::Type::ScaleOnly:
-          p.scale = get_fp32_array("scale");
-          break;
-        case EqualizePattern::Type::ShiftOnly:
-          p.shift = get_fp32_array("shift");
-          break;
-        case EqualizePattern::Type::ScaleShift:
-          p.scale = get_fp32_array("scale");
-          p.shift = get_fp32_array("shift");
+          p.act_scale = get_fp32_array("act_scale");
           break;
         default:
           throw std::runtime_error("Unsupported EqualizePattern type");

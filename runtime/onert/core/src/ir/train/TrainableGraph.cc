@@ -18,7 +18,6 @@
 
 #include "ir/OperandIndexMap.h"
 #include "UseDefGenerator.h"
-#include "util/Utils.h"
 #include "util/Set.h"
 #include "../verifier/Verifier.h"
 
@@ -55,7 +54,7 @@ void disableUnusedBackwardNodes(const UseDefChains &training_usedefs, TrainableG
       });
 
     // NOTE Backward op does not define any incoming operand in backwarding
-    const auto &inputs = node.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+    const auto &inputs = node.getUsedInputSet();
     const bool is_backward_op_def =
       std::any_of(inputs.begin(), inputs.end(), [&](const OperandIndex &input) {
         const auto training_op_index = TrainingOperationIndex{op_index, false};
@@ -73,11 +72,7 @@ void disableUnusedBackwardNodes(const UseDefChains &training_usedefs, TrainableG
 
 } // namespace
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 TrainableGraph::TrainableGraph() : _graph{} {}
@@ -159,7 +154,8 @@ void TrainableGraph::verify(void) const
   operations().iterate([](const onert::ir::OperationIndex &, const onert::ir::IOperation &op) {
     try
     {
-      UNUSED_RELEASE(dynamic_cast<const onert::ir::train::ITrainableOperation &>(op));
+      [[maybe_unused]] const auto &casted_op =
+        dynamic_cast<const onert::ir::train::ITrainableOperation &>(op);
     }
     catch (const std::bad_cast &)
     {
@@ -227,7 +223,7 @@ void TrainableGraph::validateTopologicalOrder(std::vector<ir::OperationIndex> or
 
     uint32_t p = position[index];
 
-    for (const auto &output : op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &output : op.getUsedOutputSet())
     {
       const auto &operand = operands().at(output);
       for (const auto &use : operand.getUses())
@@ -292,7 +288,7 @@ std::vector<ir::OperationIndex> TrainableGraph::btopolSortOperations() const
       return;
     unvisited.remove(index);
 
-    for (const auto &input : op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &input : op.getUsedInputSet())
     {
       const auto &operand = operands().at(input);
       const auto &def = operand.getDef();
@@ -389,6 +385,4 @@ void TrainableGraph::updateGraphDependency()
   verifyTrainingUseDefs();
 }
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train

@@ -64,9 +64,8 @@ def GetStringOptions(op_name, options):
     if (op_name == "AVERAGE_POOL_2D" or op_name == "MAX_POOL_2D"):
         return "{}, {}, {}".format(
             "Filter W:H = {}:{}".format(options.FilterWidth(), options.FilterHeight()),
-            "Stride W:H = {}:{}".format(options.StrideW(),
-                                        options.StrideH()), "Padding = {}".format(
-                                            GetStringPadding(options)))
+            "Stride W:H = {}:{}".format(options.StrideW(), options.StrideH()),
+            "Padding = {}".format(GetStringPadding(options)))
     elif (op_name == "CONV_2D"):
         return "{}, {}, {}".format(
             "Stride W:H = {}:{}".format(options.StrideW(), options.StrideH()),

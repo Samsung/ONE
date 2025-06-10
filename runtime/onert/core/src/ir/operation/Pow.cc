@@ -17,11 +17,7 @@
 #include "ir/operation/Pow.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Pow::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -31,6 +27,4 @@ Pow::Pow(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

@@ -20,11 +20,14 @@
 using namespace onert_micro;
 using namespace onert_micro::core;
 
-OMStatus onert_micro::execute::createConvParams(core::ConvQuant &params,
-                                                const circle::Tensor *input,
-                                                const circle::Tensor *filter,
-                                                const circle::Tensor *output,
-                                                circle::ActivationFunctionType act_type)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus createConvParams(core::ConvQuant &params, const circle::Tensor *input,
+                          const circle::Tensor *filter, const circle::Tensor *output,
+                          circle::ActivationFunctionType act_type)
 {
   assert(input->quantization() != nullptr);  // Fix caller
   assert(filter->quantization() != nullptr); // Fix caller
@@ -93,3 +96,6 @@ OMStatus onert_micro::execute::createConvParams(core::ConvQuant &params,
 
   return Ok;
 }
+
+} // namespace execute
+} // namespace onert_micro

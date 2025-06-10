@@ -20,18 +20,12 @@
 #include <backend/basic/Tensor.h>
 #include <ir/Data.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 using Tensor = basic::Tensor;
 using ExternalTensor = basic::ExternalTensor;
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu
 
 #endif // __ONERT_BACKEND_CPU_TENSOR_H__

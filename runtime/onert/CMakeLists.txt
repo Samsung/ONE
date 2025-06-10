@@ -1,7 +1,3 @@
-if(NOT BUILD_ONERT)
-  return()
-endif(NOT BUILD_ONERT)
-
 add_subdirectory(api)
 add_subdirectory(backend)
 add_subdirectory(core)

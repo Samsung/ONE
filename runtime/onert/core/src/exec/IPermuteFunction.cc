@@ -36,9 +36,6 @@ using namespace onert;
 inline nnfw::cker::Shape getShape(const backend::ITensor *tensor)
 {
   const ir::Shape shape = tensor->getShape();
-
-  assert(tensor->layout() == ir::Layout::NHWC);
-
   auto rank = shape.rank();
   nnfw::cker::Shape ret(rank);
   auto data = ret.DimsData();
@@ -51,7 +48,8 @@ inline nnfw::cker::Shape getShape(const backend::ITensor *tensor)
 
 // Quantize per element
 template <typename InputT, typename OutputT>
-void elementwiseQuantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor)
+void elementwiseQuantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor,
+                         const ir::PermuteType &type)
 {
   const auto scale = dst_tensor->data_scale();
   const auto zero_point = dst_tensor->data_zero_point();
@@ -60,17 +58,14 @@ void elementwiseQuantize(const backend::ITensor *src_tensor, backend::ITensor *d
   int max_val = std::numeric_limits<OutputT>::max();
 
   auto loop_shape = src_tensor->getShape();
-  const auto src_layout = src_tensor->layout();
-  const auto dst_layout = dst_tensor->layout();
-  const bool is_permutation = src_layout != dst_layout && loop_shape.rank() == 4;
+  const bool is_permutation = type != ir::PermuteType::COPY && loop_shape.rank() == 4;
   ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
     const InputT *input_data =
       reinterpret_cast<const InputT *>(src_tensor->buffer() + src_tensor->calcOffset(coords));
     int32_t unclamped = static_cast<int32_t>(round(*input_data / scale)) + zero_point;
     int32_t clamped = std::min(std::max(unclamped, min_val), max_val);
 
-    ir::Coordinates dst_coords =
-      is_permutation ? ir::convertCoordinates(coords, src_layout, dst_layout) : coords;
+    ir::Coordinates dst_coords = is_permutation ? ir::convertCoordinates(coords, type) : coords;
     OutputT *output_data =
       reinterpret_cast<OutputT *>(dst_tensor->buffer() + dst_tensor->calcOffset(dst_coords));
     *output_data = clamped;
@@ -79,10 +74,11 @@ void elementwiseQuantize(const backend::ITensor *src_tensor, backend::ITensor *d
 
 // TODO Optimize the case where tensors has the same layout
 template <typename InputT, typename OutputT>
-void quantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor)
+void quantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor,
+              const ir::PermuteType &type)
 {
-  if (!src_tensor->has_padding() && !dst_tensor->has_padding() &&
-      src_tensor->layout() == dst_tensor->layout() && !src_tensor->is_dynamic())
+  if (!src_tensor->has_padding() && !dst_tensor->has_padding() && type == ir::PermuteType::COPY &&
+      !src_tensor->is_dynamic())
   {
     assert(!dst_tensor->is_dynamic());
 
@@ -94,28 +90,26 @@ void quantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor)
   }
   else
   {
-    elementwiseQuantize<InputT, OutputT>(src_tensor, dst_tensor);
+    elementwiseQuantize<InputT, OutputT>(src_tensor, dst_tensor, type);
   }
 }
 
 // Dequantize per element
 template <typename InputT, typename OutputT>
-void elementwiseDequantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor)
+void elementwiseDequantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor,
+                           const ir::PermuteType &type)
 {
   const auto scale = src_tensor->data_scale();
   const auto zero_point = src_tensor->data_zero_point();
 
   auto loop_shape = src_tensor->getShape();
-  const auto src_layout = src_tensor->layout();
-  const auto dst_layout = dst_tensor->layout();
-  const bool is_permutation = src_layout != dst_layout && loop_shape.rank() == 4;
+  const bool is_permutation = type != ir::PermuteType::COPY && loop_shape.rank() == 4;
   ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
     const InputT *input_data =
       reinterpret_cast<const InputT *>(src_tensor->buffer() + src_tensor->calcOffset(coords));
     const OutputT result = static_cast<OutputT>(scale * (*input_data - zero_point));
 
-    ir::Coordinates dst_coords =
-      is_permutation ? ir::convertCoordinates(coords, src_layout, dst_layout) : coords;
+    ir::Coordinates dst_coords = is_permutation ? ir::convertCoordinates(coords, type) : coords;
     OutputT *output_data =
       reinterpret_cast<OutputT *>(dst_tensor->buffer() + dst_tensor->calcOffset(dst_coords));
     *output_data = result;
@@ -124,10 +118,11 @@ void elementwiseDequantize(const backend::ITensor *src_tensor, backend::ITensor 
 
 // TODO Optimize the case where tensors has the same layout
 template <typename InputT, typename OutputT>
-void dequantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor)
+void dequantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor,
+                const ir::PermuteType &type)
 {
-  if (!src_tensor->has_padding() && !dst_tensor->has_padding() &&
-      src_tensor->layout() == dst_tensor->layout() && !src_tensor->is_dynamic())
+  if (!src_tensor->has_padding() && !dst_tensor->has_padding() && type == ir::PermuteType::COPY &&
+      !src_tensor->is_dynamic())
   {
     assert(!dst_tensor->is_dynamic());
 
@@ -139,15 +134,15 @@ void dequantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor
   }
   else
   {
-    elementwiseDequantize<InputT, OutputT>(src_tensor, dst_tensor);
+    elementwiseDequantize<InputT, OutputT>(src_tensor, dst_tensor, type);
   }
 }
 
 template <typename SRC_T, typename DST_T,
-          std::enable_if_t<std::is_base_of<backend::ITensor, SRC_T>::value &&
-                             std::is_base_of<backend::ITensor, DST_T>::value,
+          std::enable_if_t<std::is_base_of_v<backend::ITensor, SRC_T> &&
+                             std::is_base_of_v<backend::ITensor, DST_T>,
                            bool> = true>
-void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor)
+void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor, const ir::PermuteType &type)
 {
   // TODO Support other types
   if (src_tensor->data_type() == ir::DataType::FLOAT32)
@@ -156,17 +151,17 @@ void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor)
     {
       case ir::DataType::QUANT_UINT8_ASYMM:
       {
-        quantize<float, uint8_t>(src_tensor, dst_tensor);
+        quantize<float, uint8_t>(src_tensor, dst_tensor, type);
         break;
       }
       case ir::DataType::QUANT_INT8_SYMM:
       {
-        quantize<float, int8_t>(src_tensor, dst_tensor);
+        quantize<float, int8_t>(src_tensor, dst_tensor, type);
         break;
       }
       case ir::DataType::QUANT_INT16_SYMM:
       {
-        quantize<float, int16_t>(src_tensor, dst_tensor);
+        quantize<float, int16_t>(src_tensor, dst_tensor, type);
         break;
       }
       default:
@@ -182,17 +177,17 @@ void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor)
     {
       case ir::DataType::QUANT_UINT8_ASYMM:
       {
-        dequantize<uint8_t, float>(src_tensor, dst_tensor);
+        dequantize<uint8_t, float>(src_tensor, dst_tensor, type);
         break;
       }
       case ir::DataType::QUANT_INT8_SYMM:
       {
-        dequantize<int8_t, float>(src_tensor, dst_tensor);
+        dequantize<int8_t, float>(src_tensor, dst_tensor, type);
         break;
       }
       case ir::DataType::QUANT_INT16_SYMM:
       {
-        dequantize<int16_t, float>(src_tensor, dst_tensor);
+        dequantize<int16_t, float>(src_tensor, dst_tensor, type);
         break;
       }
       default:
@@ -210,9 +205,7 @@ void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor)
 
 } // namespace
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 void IPermuteFunction::IPermuteFunction::run()
@@ -233,17 +226,19 @@ void IPermuteFunction::IPermuteFunction::run()
     auto dst_tensor = _dst_tensors.at(i);
     auto &src_offsets = _src_tensors_offsets.at(i);
     auto &dst_offsets = _dst_tensors_offsets.at(i);
+    auto permute_type = _permute_types.at(i);
     if (src_tensor != dst_tensor)
     {
       const auto rank = src_tensor->getShape().rank();
-      permute(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
     }
   }
 }
 
 void IPermuteFunction::permute(backend::ITensor *src_tensor, backend::ITensor *dst_tensor,
                                size_t rank, std::vector<size_t> &src_offsets,
-                               std::vector<size_t> &dst_offsets)
+                               std::vector<size_t> &dst_offsets,
+                               const ir::PermuteType &permute_type)
 {
   if (src_tensor->total_size() == 0)
   {
@@ -254,35 +249,35 @@ void IPermuteFunction::permute(backend::ITensor *src_tensor, backend::ITensor *d
   assert(src_tensor != dst_tensor);
   if (underlying_type(src_tensor->data_type()) != underlying_type(dst_tensor->data_type()))
   {
-    typeAwareQuantize(src_tensor, dst_tensor);
+    typeAwareQuantize(src_tensor, dst_tensor, permute_type);
     return;
   }
 
   switch (src_tensor->data_type())
   {
     case ir::DataType::FLOAT32:
-      permute<float>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<float>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     case ir::DataType::INT32:
-      permute<int32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<int32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     case ir::DataType::UINT32:
-      permute<uint32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<uint32_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     case ir::DataType::BOOL8:
     case ir::DataType::QUANT_UINT8_ASYMM:
     case ir::DataType::UINT8:
-      permute<uint8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<uint8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     case ir::DataType::QUANT_INT8_ASYMM:
     case ir::DataType::QUANT_INT8_SYMM:
-      permute<int8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<int8_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     case ir::DataType::INT64:
-      permute<int64_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<int64_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     case ir::DataType::QUANT_INT16_SYMM:
-      permute<int16_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets);
+      permute<int16_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     default:
       throw std::runtime_error("IPermuteFunction: Not supported data type");
@@ -316,5 +311,4 @@ const std::type_info &IPermuteFunction::underlying_type(ir::DataType type) const
   }
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

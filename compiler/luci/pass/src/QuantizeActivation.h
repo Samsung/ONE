@@ -75,6 +75,7 @@ private:
   SKIP(luci::CircleFullyConnected)
   SKIP(luci::CircleInstanceNorm)
   SKIP(luci::CirclePRelu)
+  SKIP(luci::CircleRmsNorm)
   SKIP(luci::CircleTransposeConv)
 
   // Handled in PropagateQParamBackwardPass
@@ -97,10 +98,12 @@ private:
   void visit(luci::CircleAbs *node);
   void visit(luci::CircleArgMax *node);
   void visit(luci::CircleArgMin *node);
+  void visit(luci::CircleBroadcastTo *node);
   void visit(luci::CircleBatchToSpaceND *node);
   void visit(luci::CircleDepthToSpace *node);
   void visit(luci::CircleElu *node);
   void visit(luci::CircleExp *node);
+  void visit(luci::CircleExpandDims *node);
   void visit(luci::CircleFloor *node);
   void visit(luci::CircleGather *node);
   void visit(luci::CircleGelu *node);

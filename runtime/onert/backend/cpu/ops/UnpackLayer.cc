@@ -20,13 +20,7 @@
 
 #include <cker/operation/Unpack.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 UnpackLayer::UnpackLayer() : _input(nullptr), _outputs(), _axis(0), _num_output(0)
@@ -85,7 +79,4 @@ void UnpackLayer::run()
     throw std::runtime_error{"Unpack: Unsupported data type"};
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

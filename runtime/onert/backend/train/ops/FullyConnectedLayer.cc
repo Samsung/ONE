@@ -43,13 +43,7 @@ createTransposedTensor(const backend::IPortableTensor *origin_tensor)
 
 } // namespace
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 FullyConnectedLayer::FullyConnectedLayer()
@@ -195,7 +189,4 @@ void FullyConnectedLayer::backwardFloat32()
   }
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

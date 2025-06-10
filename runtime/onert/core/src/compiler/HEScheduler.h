@@ -165,6 +165,8 @@ private:
   // whether it should assign these backends to these nodes:
   // * It stores false for unsupported nodes
   // * During rank calculation with enabled profiling mode it stores true for supported nodes
+  // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+  //       to use `std::string_view` with lookup functions in unordered containers
   std::unordered_map<const backend::Backend *, std::unordered_map<std::string, bool>> _is_supported;
   // Finishing and starting time of each backend
   std::unordered_map<const backend::Backend *, std::map<int64_t, int64_t>> _backends_avail_time;

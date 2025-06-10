@@ -21,13 +21,7 @@
 
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 class SoftMaxLayer : public ::onert::exec::IFunction
@@ -56,9 +50,6 @@ private:
   uint8_t _uint8_table2[256];
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_SOFTMAXLAYER_H__

@@ -24,13 +24,7 @@
 #include "../ExternalContext.h"
 #include <exec/train/ITrainableFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 class DepthwiseConvolutionLayer : public ::onert::exec::train::ITrainableFunction,
@@ -56,15 +50,13 @@ private:
 
   // TODO Consider if these tensors should be built in TensorBuilder
   std::unique_ptr<BackPropTensor> _act_back_prop_output;
+
   bool _use_padded_filter;
   std::unique_ptr<Tensor> _padded_filter;
   std::unique_ptr<Tensor> _filter_buffers;
   std::unique_ptr<Tensor> _filter_dim_buffers;
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_DEPTHWISECONVOLUTIONLAYER_H__

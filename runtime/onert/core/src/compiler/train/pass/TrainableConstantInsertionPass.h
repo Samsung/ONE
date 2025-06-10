@@ -19,13 +19,7 @@
 
 #include "../../pass/LoweredOperationPass.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
-{
-namespace pass
+namespace onert::compiler::train::pass
 {
 
 // TODO Consider to insert trainable constants only when the correspoding constant is a training
@@ -47,9 +41,6 @@ private:
                     const ir::OperationIndex &node_index);
 };
 
-} // namespace pass
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train::pass
 
 #endif // __ONERT_COMPILER_TRAIN_PASS_TRAINABLE_CONSTANT_INSERTION_PASS_H__

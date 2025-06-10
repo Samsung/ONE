@@ -18,9 +18,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 ThreadPool::ThreadPool(uint32_t num_threads)
@@ -61,5 +59,4 @@ void ThreadPool::finish()
   join();
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

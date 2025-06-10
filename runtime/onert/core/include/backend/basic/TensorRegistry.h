@@ -20,17 +20,11 @@
 #include "backend/ITensorRegistry.h"
 #include "Tensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 using TensorRegistry = PortableTensorRegistryTemplate<basic::Tensor>;
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 #endif // __ONERT_BACKEND_BASIC_TENSOR_REGISTRY__

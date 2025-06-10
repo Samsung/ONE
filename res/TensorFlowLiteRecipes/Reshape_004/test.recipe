@@ -1,0 +1,31 @@
+# Test model of Reshape with 0 in shape.
+# May not work in interpreter.
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 2 dim: 3 }
+}
+operand {
+  name: "shape"
+  type: INT32
+  shape { dim: 3 }
+  filler { tag: "explicit" arg: "0" arg: "3" arg: "-1" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 6 }
+}
+operation {
+  type: "Reshape"
+  reshape_options {
+    new_shape: 0
+    new_shape: 3
+    new_shape: -1
+  }
+  input: "ifm"
+  input: "shape"
+  output: "ofm"
+}
+input: "ifm"
+output: "ofm"

@@ -25,7 +25,6 @@ luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSVDF *node)
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleSVDF>();
-  if (cloned != nullptr)
   {
     cloned->fusedActivationFunction(node->fusedActivationFunction());
     cloned->asymmetric_quantize_inputs(node->asymmetric_quantize_inputs());

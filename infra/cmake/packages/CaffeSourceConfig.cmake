@@ -10,7 +10,7 @@ function(_CaffeSource_import)
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(CAFFE_URL ${EXTERNAL_DOWNLOAD_SERVER}/BVLC/caffe/archive/1.0.tar.gz)
 
-  ExternalSource_Download(CAFFE ${CAFFE_URL})
+  ExternalSource_Download(CAFFE ${CAFFE_URL} PATCH ${CMAKE_CURRENT_LIST_DIR}/CaffeSource.patch)
 
   set(CaffeSource_DIR ${CAFFE_SOURCE_DIR} PARENT_SCOPE)
   set(CaffeSource_FOUND ${DOWNLOAD_CAFFE} PARENT_SCOPE)

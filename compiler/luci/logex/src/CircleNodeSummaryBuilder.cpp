@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "CircleNodeSummaryBuilder.h"
-#include "CircleNodeSummaryBuilders.h"
+#include "luci/CircleNodeSummaryBuilder.h"
+#include "luci/CircleNodeSummaryBuilders.h"
 
 #include <luci/IR/CircleDialect.h>
 
@@ -223,6 +223,8 @@ CircleNodeSummaryBuilder::create_builder(const luci::CircleNode *node)
     CIRCLE_NODE(RESIZE_NEAREST_NEIGHBOR, CircleResizeNearestNeighborSummaryBuilder)
     CIRCLE_NODE(REVERSE_SEQUENCE, CircleReverseSequenceSummaryBuilder)
     CIRCLE_NODE(REVERSE_V2, CircleReverseV2SummaryBuilder)
+    CIRCLE_NODE(RMS_NORM, CircleRmsNormSummaryBuilder)
+    CIRCLE_NODE(ROPE, CircleRoPESummaryBuilder)
     CIRCLE_NODE(ROUND, CircleRoundSummaryBuilder)
     CIRCLE_NODE(RSQRT, CircleRsqrtSummaryBuilder)
     CIRCLE_NODE(SCATTER_ND, CircleScatterNdSummaryBuilder)

@@ -25,11 +25,7 @@
 #include <memory>
 #include <unordered_map>
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 /**
@@ -73,8 +69,6 @@ private:
   compiler::train::LoweredTrainableGraph *_lowered_subg;
 };
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train
 
 #endif // __ONERT_COMPILER_TRAIN_STATIC_BACKWARD_SHAPE_INFERER_H__

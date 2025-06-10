@@ -15,7 +15,7 @@ def to_camel_case(string: str):
 
 
 def _generate_optimizer(
-        opt_type: utils.OPTIM_OPTIONS_T, args: dict
+    opt_type: utils.OPTIM_OPTIONS_T, args: dict
 ) -> Tuple[ctr_gen.Optimizer, ctr_gen.OptimizerOptions, utils.OPTIM_OPTIONS_T]:
 
     options_t_str: str = opt_type.__name__  # e.g. SGDOptionsT
@@ -38,7 +38,7 @@ def _generate_optimizer(
 
 
 def load_optimizer(
-        opt_obj: dict
+    opt_obj: dict
 ) -> Tuple[ctr_gen.Optimizer, ctr_gen.OptimizerOptions, utils.OPTIM_OPTIONS_T]:
     ''' 
     Return objects for circle_traininfo_generated.ModelTrainingT.[optimizer, optimizerOptType, OptimizerOpt]

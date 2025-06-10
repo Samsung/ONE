@@ -20,13 +20,7 @@
 #include <ruy/operation/FullyConnected.h>
 #include <ruy/TensorUtils.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
-{
-namespace ops
+namespace onert::backend::ruy::ops
 {
 
 FullyConnectedLayer::FullyConnectedLayer()
@@ -60,11 +54,9 @@ void FullyConnectedLayer::fullyConnectedFloat32()
 
 void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortableTensor *weights,
                                     const IPortableTensor *bias, ir::Activation activation,
-                                    ir::FullyConnectedWeightsFormat weights_format,
                                     IPortableTensor *output,
                                     const std::shared_ptr<ExternalContext> &external_context)
 {
-  UNUSED_RELEASE(weights_format);
   _input = input;
   _weights = weights;
   _bias = bias;
@@ -97,7 +89,4 @@ void FullyConnectedLayer::prepare()
   }
 }
 
-} // namespace ops
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy::ops

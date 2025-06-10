@@ -18,15 +18,13 @@
 #define __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY__
 
 #include <backend/train/ITensorRegistry.h>
+#include <backend/train/LayerScopeTensor.h>
 
 #include "DisposableTensorIndex.h"
+#include "LayerScopeTensorIndex.h"
 #include "Tensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 class TensorRegistry
@@ -60,13 +58,39 @@ public:
     return _disposable_back_prop;
   }
 
+  std::shared_ptr<LayerScopeTensor> getLayerScopeTensor(const LayerScopeTensorIndex &index)
+  {
+    auto itr = _layer_scope.find(index);
+    if (itr != _layer_scope.end())
+      return itr->second;
+
+    return nullptr;
+  }
+
+  void setLayerScopeTensor(const LayerScopeTensorIndex &index,
+                           std::shared_ptr<LayerScopeTensor> &tensor)
+  {
+    assert(tensor != nullptr);
+    auto itr = _layer_scope.find(index);
+    if (itr != _layer_scope.end())
+      throw std::runtime_error{
+        "Tried to set a layer scope tensor but another layer scope tensor already exists."};
+
+    _layer_scope[index] = tensor;
+  }
+
+  const std::unordered_map<LayerScopeTensorIndex, std::shared_ptr<LayerScopeTensor>> &
+  layerscope_tensors()
+  {
+    return _layer_scope;
+  }
+
 private:
   // Disposable Tensors to be accumulated to BackPropTensor
   std::unordered_map<DisposableTensorIndex, std::unique_ptr<BackPropTensor>> _disposable_back_prop;
+  std::unordered_map<LayerScopeTensorIndex, std::shared_ptr<LayerScopeTensor>> _layer_scope;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY__

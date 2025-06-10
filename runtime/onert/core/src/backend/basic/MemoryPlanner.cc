@@ -18,11 +18,7 @@
 #include "util/logging.h"
 #include <cassert>
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 void BumpPlanner::claim(const ir::OperandIndex &ind, size_t size)
@@ -198,6 +194,4 @@ WICPlanner::MemoryPlans &WICPlanner::memory_plans()
   return _mem_plans;
 }
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic

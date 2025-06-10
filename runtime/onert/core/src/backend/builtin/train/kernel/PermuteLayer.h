@@ -21,15 +21,7 @@
 
 #include "exec/train/ITrainableFunction.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace train
-{
-namespace kernel
+namespace onert::backend::builtin::train::kernel
 {
 
 class PermuteLayer : public builtin::kernel::PermuteLayer, public exec::train::ITrainableFunction
@@ -38,7 +30,7 @@ public:
   PermuteLayer(const std::vector<ITensor *> &src_tensors, const std::vector<ITensor *> &dst_tensors,
                const std::vector<ITensor *> &input_back_prop_tensors,
                const std::vector<ITensor *> &output_back_prop_tensors,
-               bool ignore_forward_in_training,
+               const std::vector<ir::PermuteType> &types, bool ignore_forward_in_training,
                const std::shared_ptr<ExternalContext> &external_context);
 
   void optimize() override;
@@ -52,10 +44,6 @@ private:
   bool _ignore_forward_in_training;
 };
 
-} // namespace kernel
-} // namespace train
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::train::kernel
 
 #endif // __ONERT_BACKEND_BUILTIN_TRAIN_KERNEL_PERMUTELAYER_H__

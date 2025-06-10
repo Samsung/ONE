@@ -20,13 +20,7 @@
 
 #include <cker/operation/Fill.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 FillLayer::FillLayer() : _value(nullptr), _output(nullptr)
@@ -65,7 +59,4 @@ void FillLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

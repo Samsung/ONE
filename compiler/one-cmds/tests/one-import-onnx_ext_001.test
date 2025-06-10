@@ -15,6 +15,7 @@
 # limitations under the License.
 
 # test for one-import-onnx to invoke extension
+# default should execute and not one-import-onnx-ext
 
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
@@ -43,7 +44,7 @@ one-import-onnx \
 --input_path ${inputfile} \
 --output_path ${outputfile} > ${logfile} 2>&1
 
-if ! grep -q "one-import-onnx-ext dummy output!!!" "${logfile}"; then
+if grep -q "one-import-onnx-ext dummy output!!!" "${logfile}"; then
   trap_err_onexit
 fi
 

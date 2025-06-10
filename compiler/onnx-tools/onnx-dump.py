@@ -29,8 +29,8 @@ def _data_type_str(data_type):
 
 def _get_attribute_value(attr):
     if attr.type == AttributeProto.TENSOR:
-        return "{}, {}".format(
-            _data_type_str(attr.t.data_type), numpy_helper.to_array(attr.t))
+        return "{}, {}".format(_data_type_str(attr.t.data_type),
+                               numpy_helper.to_array(attr.t))
     if attr.type == AttributeProto.GRAPH:
         # TODO revise when graph node is available
         return "<graph>"
@@ -41,6 +41,28 @@ def _get_attribute_value(attr):
         # TODO revise when graph node is available
         return "<graphs>..."
     return helper.get_attribute_value(attr)
+
+
+def _gather_value_infos(onnx_model):
+    vis = dict()
+
+    for mod_input in onnx_model.graph.input:
+        vis[mod_input.name] = mod_input.type
+
+    for mod_output in onnx_model.graph.output:
+        vis[mod_output.name] = mod_output.type
+
+    for vi in onnx_model.graph.value_info:
+        vis[vi.name] = vi.type
+
+    return vis
+
+
+def _type_format(type):
+    dtstr = _data_type_str(type.tensor_type.elem_type)
+    shape = type.tensor_type.shape
+    shape_ar = [dim.dim_value for dim in shape.dim]
+    return '{} {}'.format(dtstr, shape_ar)
 
 
 def _dump_header(onnx_model):
@@ -59,8 +81,13 @@ def _dump_operators(onnx_model):
             opcodes_dict[node.op_type] = 1
 
     print("[Operators] ---------------------------")
+    total_nodes = 0
     for opcode_key in opcodes_dict:
         print("{:>5} {}".format(opcodes_dict[opcode_key], opcode_key))
+        total_nodes = total_nodes + opcodes_dict[opcode_key]
+
+    print("----- -----")
+    print("{:>5} {}".format(total_nodes, 'Total'))
 
     print("")
 
@@ -78,6 +105,8 @@ def _dump_initializers(onnx_model):
 def _dump_nodes(onnx_model):
     print("[Nodes] -------------------------------")
 
+    vis = _gather_value_infos(onnx_model)
+
     for node in onnx_model.graph.node:
         print('{0}("{1}")'.format(node.op_type, node.name))
 
@@ -91,9 +120,17 @@ def _dump_nodes(onnx_model):
             print('    A {0}'.format(attribute))
 
         for inp in node.input:
-            print('    I "{0}"'.format(inp))
+            inp_vi_str = ''
+            if inp in vis:
+                inp_vi = vis[inp]
+                inp_vi_str = _type_format(inp_vi)
+            print('    I "{0}" {1}'.format(inp, inp_vi_str))
         for out in node.output:
-            print('    O "{0}"'.format(out))
+            out_vi_str = ''
+            if out in vis:
+                out_vi = vis[out]
+                out_vi_str = _type_format(out_vi)
+            print('    O "{0}" {1}'.format(out, out_vi_str))
 
     print("")
 

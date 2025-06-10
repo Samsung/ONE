@@ -31,11 +31,17 @@ namespace import
 struct OMExecutionPlanCreator
 {
 
-  // Create execution plan for forward graph
+  // Create execution plan for graph for non-train mode
   static OMStatus createExecutionPlan(core::OMRuntimeStorage &runtime_storage,
                                       core::OMRuntimeContext &runtime_context,
                                       core::memory::OMRuntimeAllocator &allocator,
                                       const OMConfig &configs);
+
+  // Create execution plan for forward graph for train mode
+  static OMStatus createForwardExecutionPlan(core::OMRuntimeStorage &runtime_storage,
+                                             core::OMRuntimeContext &runtime_context,
+                                             core::memory::OMRuntimeAllocator &allocator,
+                                             const OMConfig &configs);
 
   // Create execution plan for backward graph
   static OMStatus createBackwardExecutionPlan(core::OMRuntimeStorage &runtime_storage,

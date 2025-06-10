@@ -29,14 +29,9 @@
 #include "ir/InternalType.h"
 #include "exec/NopFunction.h"
 #include "util/logging.h"
-#include "util/Utils.h"
 #include "AclKernelGen.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
+namespace onert::backend::acl_neon
 {
 
 using ::onert::backend::acl_common::asAclFunction;
@@ -118,12 +113,16 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
 
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
-  auto block_size_tensor = _tensor_reg->getAclTensor(block_size_index);
 
-  assert(_ctx.at(block_size_index).data());
+  if (!_ctx.at(block_size_index).data())
+    throw std::runtime_error("ACL NEON does not support dynamic block size for BatchToSpaceND");
+
+  auto block = _ctx.at(block_size_index).asVector<int32_t>();
+  int32_t height = block[0];
+  int32_t width = block[1];
 
   auto fn = acl_common::generateLayer<arm_compute::NEBatchToSpaceLayer>(
-    ifm_tensor->handle(), block_size_tensor->handle(), ofm_tensor->handle());
+    ifm_tensor->handle(), width, height, ofm_tensor->handle());
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -145,6 +144,10 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
   {
     case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
     {
+      arm_compute::NEArithmeticAddition::validate(lhs_tensor->info(), rhs_tensor->info(),
+                                                  ofm_tensor->info(),
+                                                  arm_compute::ConvertPolicy::SATURATE)
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::NEArithmeticAddition>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
         arm_compute::ConvertPolicy::SATURATE);
@@ -152,6 +155,10 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::SUB:
     {
+      arm_compute::NEArithmeticSubtraction::validate(lhs_tensor->info(), rhs_tensor->info(),
+                                                     ofm_tensor->info(),
+                                                     arm_compute::ConvertPolicy::SATURATE)
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::NEArithmeticSubtraction>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
         arm_compute::ConvertPolicy::SATURATE);
@@ -159,6 +166,10 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::MUL:
     {
+      arm_compute::NEPixelWiseMultiplication::validate(
+        lhs_tensor->info(), rhs_tensor->info(), ofm_tensor->info(), 1.0,
+        arm_compute::ConvertPolicy::SATURATE, arm_compute::RoundingPolicy::TO_ZERO)
+        .throw_if_error();
       // RoundingPolicy for scale:1.0 is only allowed RoundingPolicy::TO_ZERO
       fn = acl_common::generateLayer<arm_compute::NEPixelWiseMultiplication>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(), 1.0, // scale
@@ -167,6 +178,9 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
     {
+      arm_compute::NEElementwiseDivision::validate(lhs_tensor->info(), rhs_tensor->info(),
+                                                   ofm_tensor->info())
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::NEElementwiseDivision>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle());
       break;
@@ -732,8 +746,7 @@ void KernelGenerator::visit(const ir::operation::Pad &node)
     padding_list[axis] = ::arm_compute::PaddingInfo{from[0], from[1]};
   }
 
-  const auto input_type = _ctx.at(input_index).typeInfo();
-  UNUSED_RELEASE(input_type);
+  [[maybe_unused]] const auto input_type = _ctx.at(input_index).typeInfo();
   assert(input->info()->data_type() == acl_common::asDataType(input_type.type()));
   assert(input->info()->quantization_info() ==
          ::arm_compute::QuantizationInfo(input_type.scale(), input_type.zero_point()));
@@ -1022,13 +1035,10 @@ void KernelGenerator::visit(const ir::operation::Slice &node)
   {
     auto beginData_base = _ctx.at(begins_index).data()->base();
     auto sizeData_base = _ctx.at(sizes_index).data()->base();
-    const int beginData_size = _ctx.at(begins_index).shape().num_elements();
-    const int sizeData_size = _ctx.at(sizes_index).shape().num_elements();
+    [[maybe_unused]] const int beginData_size = _ctx.at(begins_index).shape().num_elements();
+    [[maybe_unused]] const int sizeData_size = _ctx.at(sizes_index).shape().num_elements();
 
     using ir::DataType;
-
-    UNUSED_RELEASE(beginData_size);
-    UNUSED_RELEASE(sizeData_size);
 
     assert(_ctx.at(begins_index).typeInfo().type() == DataType::INT32);
     assert(_ctx.at(sizes_index).typeInfo().type() == DataType::INT32);
@@ -1086,15 +1096,11 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
     auto startData_base = _ctx.at(starts_index).data()->base();
     auto endData_base = _ctx.at(ends_index).data()->base();
     auto stridesData_base = _ctx.at(strides_index).data()->base();
-    const int startData_size = _ctx.at(starts_index).shape().num_elements();
-    const int endData_size = _ctx.at(ends_index).shape().num_elements();
-    const int stridesData_size = _ctx.at(strides_index).shape().num_elements();
+    [[maybe_unused]] const int startData_size = _ctx.at(starts_index).shape().num_elements();
+    [[maybe_unused]] const int endData_size = _ctx.at(ends_index).shape().num_elements();
+    [[maybe_unused]] const int stridesData_size = _ctx.at(strides_index).shape().num_elements();
 
     using ir::DataType;
-
-    UNUSED_RELEASE(startData_size);
-    UNUSED_RELEASE(endData_size);
-    UNUSED_RELEASE(stridesData_size);
 
     assert(_ctx.at(starts_index).typeInfo().type() == DataType::INT32);
     assert(_ctx.at(ends_index).typeInfo().type() == DataType::INT32);
@@ -1338,6 +1344,4 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   _return_fn = asAclFunction(std::move(fn));
 }
 
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon

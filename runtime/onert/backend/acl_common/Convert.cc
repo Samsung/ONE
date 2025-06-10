@@ -21,11 +21,7 @@
 #include "ir/operation/ElementwiseActivation.h"
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 ::arm_compute::TensorShape asTensorShape(const ir::Shape &shape, bool apply_dim_correction)
@@ -252,19 +248,6 @@ std::unique_ptr<AclFunction> asAclFunction(std::unique_ptr<::arm_compute::IFunct
   return std::make_unique<AclFunction>(std::move(layer));
 }
 
-ir::Layout asRuntimeLayout(::arm_compute::DataLayout data_layout)
-{
-  switch (data_layout)
-  {
-    case ::arm_compute::DataLayout::NHWC:
-      return ir::Layout::NHWC;
-    case ::arm_compute::DataLayout::NCHW:
-      return ir::Layout::NCHW;
-    default:
-      return ir::Layout::UNKNOWN;
-  }
-}
-
 ir::DataType asRuntimeDataType(::arm_compute::DataType data_type)
 {
   switch (data_type)
@@ -352,6 +335,4 @@ arm_compute::Size2D asDilation(uint32_t dilation_width, uint32_t dilation_height
   return arm_compute::Size2D(dilation_width, dilation_height);
 }
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common

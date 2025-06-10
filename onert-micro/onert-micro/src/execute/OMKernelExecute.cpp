@@ -81,7 +81,11 @@ OMStatus OMKernelExecute::runForward(OMExecuteArgs &execute_args,
     if (status != Ok)
       return status;
 
+#ifdef OM_MEMORY_ESTIMATE
+    status = allocator.deallocate(i, &storage, &context);
+#else
     status = allocator.deallocate(i, &storage);
+#endif // OM_MEMORY_ESTIMATE
   }
 
   return status;

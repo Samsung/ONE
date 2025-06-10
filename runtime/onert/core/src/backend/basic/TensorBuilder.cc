@@ -20,24 +20,26 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
-TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg)
+TensorBuilder::TensorBuilder(
+  const std::shared_ptr<TensorRegistry> &tensor_reg,
+  const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes)
   : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)},
-    _static_tensor_mgr{new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get())}
+    _static_tensor_mgr{new StaticTensorManager(_tensor_reg, _dynamic_tensor_mgr.get(),
+                                               shared_memory_operand_indexes)},
+    _shared_memory_operand_indexes{shared_memory_operand_indexes}
 {
   /* empty */
 }
 
-TensorBuilder::TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
-                             const std::string planner_id)
+TensorBuilder::TensorBuilder(
+  const std::shared_ptr<TensorRegistry> &tensor_reg, const std::string planner_id,
+  const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes)
   : _tensor_reg{tensor_reg}, _dynamic_tensor_mgr{new DynamicTensorManager(_tensor_reg)},
-    _static_tensor_mgr{new StaticTensorManager(_tensor_reg, planner_id, _dynamic_tensor_mgr.get())}
+    _static_tensor_mgr{new StaticTensorManager(_tensor_reg, planner_id, _dynamic_tensor_mgr.get(),
+                                               shared_memory_operand_indexes)}
 {
   /* empty */
 }
@@ -83,6 +85,9 @@ bool TensorBuilder::isRegistered(const ir::OperandIndex &ind) const
 
 void TensorBuilder::allocate(void) { _static_tensor_mgr->allocateNonconsts(); }
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+const ir::OperandIndexMap<ir::OperandIndex> &TensorBuilder::getSharedMemoryOperandIndexes() const
+{
+  return _shared_memory_operand_indexes;
+}
+
+} // namespace onert::backend::basic

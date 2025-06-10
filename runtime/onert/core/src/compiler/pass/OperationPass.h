@@ -25,19 +25,12 @@
 #include "Pass.h"
 #include "ir/Index.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 struct IOperation;
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 /**
@@ -70,8 +63,6 @@ public:
   void run() final;
 };
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass
 
 #endif // __ONERT_COMPILER_PASS_OPERATION_PASS_H__

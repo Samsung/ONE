@@ -328,8 +328,8 @@ public:
   ArtifactVariable(std::string type_name, std::string var_name,
                    std::list<std::shared_ptr<ArtifactExpr>> dimensions = {},
                    std::list<std::shared_ptr<ArtifactExpr>> initializers = {})
-    : _typeName(std::move(type_name)), _dimensions(std::move(dimensions)),
-      _initializers(std::move(initializers)), ArtifactNamed(std::move(var_name))
+    : ArtifactNamed(std::move(var_name)), _typeName(std::move(type_name)),
+      _dimensions(std::move(dimensions)), _initializers(std::move(initializers))
   {
   }
 

@@ -18,11 +18,7 @@
 
 #include "util/logging.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 Allocator::Allocator(uint32_t capacity)
@@ -33,6 +29,4 @@ Allocator::Allocator(uint32_t capacity)
   VERBOSE(ALLOC) << "base pointer: " << static_cast<void *>(_base.get()) << std::endl;
 }
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic

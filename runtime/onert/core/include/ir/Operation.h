@@ -23,9 +23,7 @@
 #include "ir/Operand.h"
 #include "ir/OperandConstraint.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 // NOTE Virtual inheritance is introduced because trainable operations inherit
@@ -52,7 +50,9 @@ public:
   void replaceOutputs(const OperandIndex &from, const OperandIndex &to) override;
   OperandIndexSequence &getInputs() { return _inputs; }
   const OperandIndexSequence &getInputs() const override { return _inputs; }
+  OperandIndexSequence getUsedInputSet() const override;
   const OperandIndexSequence &getOutputs() const override { return _outputs; }
+  OperandIndexSequence getUsedOutputSet() const override;
   // It's for only input/output tensors but const data.
   void setInputs(const OperandIndexSequence &indexes);
   void setOutputs(const OperandIndexSequence &indexes);
@@ -64,7 +64,6 @@ private:
   OperandIndexSequence _outputs;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_OPERATION_H__

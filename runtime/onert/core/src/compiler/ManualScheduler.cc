@@ -24,9 +24,7 @@
 #include "util/logging.h"
 #include "misc/string_helpers.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 ManualScheduler::ManualScheduler(const std::vector<const backend::Backend *> &backends,
@@ -104,7 +102,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   return backend_resolver;
 }
 
-const backend::Backend *ManualScheduler::resolveBackend(const std::string &id,
+const backend::Backend *ManualScheduler::resolveBackend(std::string_view id,
                                                         const backend::Backend *fallback)
 {
   // Ensure if the backend is available in the current backend context
@@ -116,5 +114,4 @@ const backend::Backend *ManualScheduler::resolveBackend(const std::string &id,
   return backend;
 }
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler

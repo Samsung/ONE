@@ -1,0 +1,332 @@
+#
+# InstanceNorm - LeakyRelu - Conv2D
+#
+
+operand {
+  name: "Input"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 8
+    dim: 6
+    dim: 12
+  }
+  quant {
+    min: 0
+    max: 255
+  }
+}
+operand {
+  name: "InstanceNorm/beta/read"
+  type: FLOAT32
+  shape {
+    dim: 12
+  }
+  filler {
+    tag: "explicit"
+    arg: "1.9714"
+    arg: "1.4517"
+    arg: "1.20315"
+    arg: "0.287979"
+    arg: "0.161815"
+    arg: "-0.281398"
+    arg: "2.70276"
+    arg: "-0.166962"
+    arg: "0.266389"
+    arg: "0.890943"
+    arg: "-0.279833"
+    arg: "1.82808"
+  }
+}
+operand {
+  name: "InstanceNorm/gamma/read"
+  type: FLOAT32
+  shape {
+    dim: 12
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.574708"
+    arg: "0.387735"
+    arg: "0.8995"
+    arg: "0.484296"
+    arg: "2.35851"
+    arg: "1.06661"
+    arg: "0.343602"
+    arg: "2.27583"
+    arg: "1.14559"
+    arg: "0.690169"
+    arg: "1.2044"
+    arg: "0.350952"
+  }
+}
+operand {
+  name: "InstanceNorm/instancenorm/Rsqrt"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 12
+  }
+}
+operand {
+  name: "InstanceNorm/instancenorm/add"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 12
+  }
+}
+operand {
+  name: "InstanceNorm/instancenorm/add/y"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "0.001"
+  }
+}
+operand {
+  name: "InstanceNorm/instancenorm/mul"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 12
+  }
+}
+operand {
+  name: "InstanceNorm/instancenorm/mul_1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 8
+    dim: 6
+    dim: 12
+  }
+}
+operand {
+  name: "InstanceNorm/instancenorm/mul_2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 12
+  }
+}
+operand {
+  name: "InstanceNorm/instancenorm/sub"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 12
+  }
+}
+operand {
+  name: "InstanceNorm/moments/SquaredDifference"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 8
+    dim: 6
+    dim: 12
+  }
+}
+operand {
+  name: "InstanceNorm/moments/mean"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 12
+  }
+}
+operand {
+  name: "InstanceNorm/moments/mean/reduction_indices"
+  type: INT32
+  shape {
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "2"
+  }
+}
+operand {
+  name: "InstanceNorm/moments/variance"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+    dim: 12
+  }
+}
+operand {
+  name: "InstanceNorm/moments/variance/reduction_indices"
+  type: INT32
+  shape {
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+    arg: "2"
+  }
+}
+operand {
+  name: "InstanceNorm_out"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 8
+    dim: 6
+    dim: 12
+  }
+}
+operation {
+  type: "Mean"
+  input: "Input"
+  input: "InstanceNorm/moments/mean/reduction_indices"
+  output: "InstanceNorm/moments/mean"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "SquaredDifference"
+  input: "Input"
+  input: "InstanceNorm/moments/mean"
+  output: "InstanceNorm/moments/SquaredDifference"
+}
+operation {
+  type: "Mean"
+  input: "InstanceNorm/moments/SquaredDifference"
+  input: "InstanceNorm/moments/variance/reduction_indices"
+  output: "InstanceNorm/moments/variance"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "Add"
+  input: "InstanceNorm/moments/variance"
+  input: "InstanceNorm/instancenorm/add/y"
+  output: "InstanceNorm/instancenorm/add"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Rsqrt"
+  input: "InstanceNorm/instancenorm/add"
+  output: "InstanceNorm/instancenorm/Rsqrt"
+}
+operation {
+  type: "Mul"
+  input: "InstanceNorm/instancenorm/Rsqrt"
+  input: "InstanceNorm/gamma/read"
+  output: "InstanceNorm/instancenorm/mul"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "Input"
+  input: "InstanceNorm/instancenorm/mul"
+  output: "InstanceNorm/instancenorm/mul_1"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "InstanceNorm/moments/mean"
+  input: "InstanceNorm/instancenorm/mul"
+  output: "InstanceNorm/instancenorm/mul_2"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Sub"
+  input: "InstanceNorm/beta/read"
+  input: "InstanceNorm/instancenorm/mul_2"
+  output: "InstanceNorm/instancenorm/sub"
+  sub_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Add"
+  input: "InstanceNorm/instancenorm/mul_1"
+  input: "InstanceNorm/instancenorm/sub"
+  output: "InstanceNorm_out"
+  add_options {
+    activation: NONE
+  }
+}
+operand {
+  name: "LeakyRelu"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 6 dim: 12 }
+}
+operation {
+  type: "LeakyRelu"
+  leaky_relu_options {
+    alpha: 2.0
+  }
+  input: "InstanceNorm_out"
+  output: "LeakyRelu"
+}
+operand {
+  name: "Conv2D/ker"
+  type: FLOAT32
+  shape { dim: 3 dim: 1 dim: 1 dim: 12 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "Conv2D/bias"
+  type: FLOAT32
+  shape { dim: 3 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "Conv2D/ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 6 dim: 3 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: SAME
+    stride_w: 1
+    stride_h: 1
+    activation: NONE
+  }
+  input: "LeakyRelu"
+  input: "Conv2D/ker"
+  input: "Conv2D/bias"
+  output: "Conv2D/ofm"
+}
+input: "Input"
+output: "Conv2D/ofm"

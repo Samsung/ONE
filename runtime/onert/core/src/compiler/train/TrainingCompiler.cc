@@ -38,11 +38,7 @@
 #include <misc/polymorphic_downcast.h>
 #include <misc/string_helpers.h>
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 TrainingCompiler::TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts,
@@ -120,8 +116,8 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
               min_trainable_op_idx = op_index;
             }
           }
-          auto gen_index = trainable_subg->replaceOperation(op_index, std::move(trainable_op));
-          UNUSED_RELEASE(gen_index);
+          [[maybe_unused]] auto gen_index =
+            trainable_subg->replaceOperation(op_index, std::move(trainable_op));
           assert(gen_index == op_index);
         });
 
@@ -185,7 +181,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       auto &input = trainable_subg->operands().at(ind);
       auto new_shape = input.info().shape();
       // TODO Consider batch size index
-      if (new_shape.dim(0) != 1)
+      if (new_shape.dim(0) != 1 && new_shape.dim(0) != ir::Shape::kUnspecifiedDim)
         throw std::runtime_error("the first dim is not 1. It is not supported yet.");
       new_shape.dim(0) = _training_info.batchSize();
       input.info().shape(new_shape);
@@ -226,9 +222,9 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       if (!obj.isConstant())
       {
         auto bwd_operand = std::make_unique<ir::Operand>(obj);
-        const auto gen_index = tgraph.addBackwardOperand(index, std::move(bwd_operand));
+        [[maybe_unused]] const auto gen_index =
+          tgraph.addBackwardOperand(index, std::move(bwd_operand));
         assert(gen_index == index);
-        UNUSED_RELEASE(gen_index);
       }
     });
   }
@@ -300,6 +296,4 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   return std::make_shared<CompilerArtifact>(executors, std::move(tracing_ctx));
 }
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train

@@ -18,12 +18,11 @@
 #define __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__
 
 #include <cstdint>
+#include <optional>
 
-namespace onert
-{
-namespace exec
-{
-namespace train
+#include "backend/train/LayerScopeTensor.h"
+
+namespace onert::exec::train
 {
 
 class ITrainableFunction
@@ -32,10 +31,14 @@ public:
   virtual ~ITrainableFunction() = default;
   virtual void forward(bool training) = 0;
   virtual void backward() = 0;
+
+  // Implement this if LayerScopeTensors is necessary
+  virtual std::optional<backend::train::LayerScopeTensors> registerLayerScopeTensors()
+  {
+    return std::nullopt;
+  }
 };
 
-} // namespace train
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::train
 
 #endif // __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__

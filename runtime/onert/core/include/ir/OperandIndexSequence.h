@@ -22,9 +22,7 @@
 
 #include "ir/Index.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 enum class Remove
@@ -90,7 +88,6 @@ private:
   std::vector<OperandIndex> _vec;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_MODEL_OPERAND_INDEX_SET_H__

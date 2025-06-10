@@ -16,14 +16,10 @@
 
 #include "ir/Padding.h"
 
-#include "util/Utils.h"
-
 #include <stdexcept>
 #include <cassert>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 namespace
 {
@@ -84,19 +80,17 @@ inline ExplicitPadding samePaddingUsingIFM(const FeatureShape &ifm_shape, const 
   return padding;
 }
 
-inline ExplicitPadding samePadding(const FeatureShape &ifm_shape, const FeatureShape &ofm_shape,
+inline ExplicitPadding samePadding(const FeatureShape &ifm_shape,
+                                   [[maybe_unused]] const FeatureShape &ofm_shape,
                                    const Stride &stride, uint32_t kw, uint32_t kh, uint32_t dwf,
                                    uint32_t dhf)
 {
-  const int32_t vertical_expected_output = (ifm_shape.H + stride.vertical - 1) / stride.vertical;
-  const int32_t horizontal_expected_output =
+  [[maybe_unused]] const int32_t vertical_expected_output =
+    (ifm_shape.H + stride.vertical - 1) / stride.vertical;
+  [[maybe_unused]] const int32_t horizontal_expected_output =
     (ifm_shape.W + stride.horizontal - 1) / stride.horizontal;
   assert(vertical_expected_output == ofm_shape.H);
   assert(horizontal_expected_output == ofm_shape.W);
-
-  UNUSED_RELEASE(ofm_shape);
-  UNUSED_RELEASE(vertical_expected_output);
-  UNUSED_RELEASE(horizontal_expected_output);
 
   return samePaddingUsingIFM(ifm_shape, stride, kw, kh, dwf, dhf);
 }
@@ -156,5 +150,4 @@ const ExplicitPadding calculatePadding(const Padding &padding, const FeatureShap
   }
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

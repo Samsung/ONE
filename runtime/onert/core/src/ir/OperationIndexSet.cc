@@ -18,9 +18,7 @@
 
 #include <algorithm>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 OperationIndexSet::OperationIndexSet(std::initializer_list<OperationIndex> list) : _set(list)
@@ -33,5 +31,4 @@ bool OperationIndexSet::contains(const OperationIndex &index) const
   return std::find(_set.begin(), _set.end(), index) != _set.end();
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

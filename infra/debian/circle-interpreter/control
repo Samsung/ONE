@@ -1,0 +1,15 @@
+Source: circle-interpreter
+Section: devel
+Priority: optional
+Build-Depends: debhelper (>= 12), cmake
+Maintainer: Neural Network Acceleration Solution Developers <nnfw@samsung.com>
+Standards-Version: 4.5.0
+Homepage: https://github.com/Samsung/ONE
+
+Package: circle-interpreter
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Interpreter for circle model
+ Circle is a lightweight neural network model format developed in the ONE project.
+ This package provides the 'circle-interpreter' tool, which runs inference on
+ Circle models for validation and testing purposes.

@@ -17,9 +17,7 @@
 #ifndef __ONERT_EXEC_I_FUNCTION_H__
 #define __ONERT_EXEC_I_FUNCTION_H__
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class IFunction
@@ -30,7 +28,6 @@ public:
   virtual void prepare() {}
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_I_FUNCTION_H__

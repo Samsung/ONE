@@ -18,11 +18,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 std::string toString(OptimizerCode code)
@@ -34,6 +30,4 @@ std::string toString(OptimizerCode code)
   return map.at(code);
 }
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train

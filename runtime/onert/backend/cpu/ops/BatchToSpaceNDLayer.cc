@@ -18,13 +18,7 @@
 
 #include <cker/operation/BatchToSpaceND.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 BatchToSpaceNDLayer::BatchToSpaceNDLayer()
@@ -76,7 +70,4 @@ void BatchToSpaceNDLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

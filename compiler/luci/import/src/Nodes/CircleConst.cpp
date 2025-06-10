@@ -16,6 +16,8 @@
 
 #include "luci/Import/Nodes/CircleConst.h"
 
+#include "luci/Import/CircleReader.h"
+
 #include <luci/IR/Nodes/CircleConst.h>
 #include <luci/Log.h>
 
@@ -23,9 +25,12 @@
 #include <oops/UserExn.h>
 
 #include <cassert>
+#include <limits>
 #include <ostream>
 #include <string>
 #include <vector>
+
+#include <string.h>
 
 namespace
 {
@@ -156,8 +161,58 @@ CircleNode *CircleConstNodeBuilder::build(TensorIndex tensor_index,
     return nullptr;
   }
 
-  assert(reader->buffers()[const_tensor->buffer()] != nullptr);
-  const auto buffer = wrap(reader->buffers()[const_tensor->buffer()]->data());
+  const auto r_buffers = reader->buffers();
+  const auto c_buffer = const_tensor->buffer();
+  const auto r_buffer = r_buffers[c_buffer];
+  assert(r_buffer != nullptr);
+  if (r_buffer->offset() == 1 || r_buffer->size() == 1)
+  {
+    // NOTE this shouldn't happen
+    throw std::runtime_error("CircleConst: Circle file with invalid extended Buffer.");
+  }
+  // temporary buffer to provide raw data from file
+  // must have life time same or longer than 'buffer' variable
+  std::vector<uint8_t> temp_buffer;
+  luci::VectorWrapper<uint8_t> buffer(nullptr);
+  if (r_buffer->offset() > 1)
+  {
+    if (r_buffer->size() >= std::numeric_limits<uint32_t>::max())
+    {
+      // NOTE uint32_t limit is to match "uoffset_t flatbuffers::Vector::size()"
+      throw std::runtime_error("CircleConst: Circle file with invalid extended Buffer.");
+    }
+    uint32_t r_size = static_cast<uint32_t>(r_buffer->size());
+    // match binary level to flatbuffers::Vector
+    temp_buffer.resize(r_size + sizeof(uint32_t));
+
+    uint8_t *t_data = temp_buffer.data();
+    const uint8_t *f_data = reader->file_data(r_buffer->offset());
+    if (f_data == nullptr)
+    {
+      // NOTE this shouldn't happen
+      assert(false);
+      return nullptr;
+    }
+    memcpy(t_data, &r_size, sizeof(r_size));
+    t_data = t_data + sizeof(r_size);
+    if (r_buffer->offset() + r_buffer->size() > reader->file_size())
+    {
+      // NOTE this shouldn't happen
+      assert(false);
+      return nullptr;
+    }
+    memcpy(t_data, f_data, r_buffer->size());
+
+    using fbv_t = flatbuffers::Vector<uint8_t>;
+    const fbv_t *v_data = reinterpret_cast<const fbv_t *>(temp_buffer.data());
+    buffer = wrap(v_data);
+
+    context->ext_buffer(true);
+  }
+  else
+  {
+    buffer = wrap(r_buffer->data());
+  }
   const auto const_dims = wrap(const_tensor->shape()); // in NHWC
   if (const_dims.size() == 0 && buffer.empty())
   {

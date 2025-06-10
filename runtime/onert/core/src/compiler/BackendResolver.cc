@@ -16,10 +16,7 @@
 
 #include "compiler/BackendResolver.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler

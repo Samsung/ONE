@@ -33,6 +33,8 @@ struct OMExecuteArgs
   core::OMRuntimeContext &runtime_context;
   uint16_t kernel_index;
   core::OMRuntimeModule &runtime_module;
+  uint32_t num_train_layers = 0;
+  bool is_train_mode = false;
 };
 
 } // namespace execute

@@ -1,0 +1,39 @@
+#!/bin/bash
+
+INVALID_EXIT=0
+
+# Files to check copyright headers
+# TODO Check python files as well
+FILE_PATTERNS=(*.h *.hpp *.cpp *.cc *.c *.cl)
+
+# Manually ignore checking - 3rd party, generated files
+# Pattern should start with ':!' to exclude pattern
+FILE_EXCLUDE_PATTERN=(
+  :!compiler/ann-api
+  :!onert-micro/externals
+  :!runtime/3rdparty
+  :!runtime/tests/nnapi
+)
+
+check_copyright() {
+  CORRECT_COPYRIGHT="Copyright \(c\) [0-9\-]+ Samsung Electronics Co\., Ltd\. All Rights Reserved"
+  FILES_TO_CHECK_COPYRIGHTS=$(git ls-files -c --exclude-standard -- ${FILE_PATTERNS[@]} ${FILE_EXCLUDE_PATTERN[@]})
+
+  if [[ ${#FILES_TO_CHECK_COPYRIGHTS} -ne 0 ]]; then
+    for f in ${FILES_TO_CHECK_COPYRIGHTS[@]}; do
+      if ! grep -qE "$CORRECT_COPYRIGHT" $f; then
+        CREATED_YEAR=$(git log --follow --format=%aD $f | tail -1 | awk '{print $4}')
+        EXAMPLE_COPYRIGHT="Copyright (c) $CREATED_YEAR Samsung Electronics Co., Ltd. All Rights Reserved"
+        echo "Copyright format of $f is incorrect: recommend \"$EXAMPLE_COPYRIGHT\""
+        INVALID_EXIT=1
+      fi
+    done
+  fi
+}
+
+check_copyright
+
+if [[ $INVALID_EXIT -ne 0 ]]; then
+    echo "[FAILED] Invalid copyright check exit."
+    exit 1
+fi

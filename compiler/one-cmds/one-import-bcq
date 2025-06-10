@@ -47,33 +47,34 @@ def _get_parser():
 
     # converter version
     converter_version = tf2tfliteV2_group.add_mutually_exclusive_group()
-    converter_version.add_argument(
-        '--v1',
-        action='store_const',
-        dest='converter_version_cmd',
-        const='--v1',
-        help='use TensorFlow Lite Converter 1.x')
-    converter_version.add_argument(
-        '--v2',
-        action='store_const',
-        dest='converter_version_cmd',
-        const='--v2',
-        help='use TensorFlow Lite Converter 2.x')
+    converter_version.add_argument('--v1',
+                                   action='store_const',
+                                   dest='converter_version_cmd',
+                                   const='--v1',
+                                   help='use TensorFlow Lite Converter 1.x')
+    converter_version.add_argument('--v2',
+                                   action='store_const',
+                                   dest='converter_version_cmd',
+                                   const='--v2',
+                                   help='use TensorFlow Lite Converter 2.x')
 
     parser.add_argument('--converter_version', type=str, help=argparse.SUPPRESS)
 
     # input and output path.
-    tf2tfliteV2_group.add_argument(
-        '-i', '--input_path', type=str, help='full filepath of the input file')
-    tf2tfliteV2_group.add_argument(
-        '-o', '--output_path', type=str, help='full filepath of the output file')
+    tf2tfliteV2_group.add_argument('-i',
+                                   '--input_path',
+                                   type=str,
+                                   help='full filepath of the input file')
+    tf2tfliteV2_group.add_argument('-o',
+                                   '--output_path',
+                                   type=str,
+                                   help='full filepath of the output file')
 
     # input and output arrays.
-    tf2tfliteV2_group.add_argument(
-        '-I',
-        '--input_arrays',
-        type=str,
-        help='names of the input arrays, comma-separated')
+    tf2tfliteV2_group.add_argument('-I',
+                                   '--input_arrays',
+                                   type=str,
+                                   help='names of the input arrays, comma-separated')
     tf2tfliteV2_group.add_argument(
         '-s',
         '--input_shapes',
@@ -81,11 +82,10 @@ def _get_parser():
         help=
         'shapes corresponding to --input_arrays, colon-separated (ex:"1,4,4,3:1,20,20,3")'
     )
-    tf2tfliteV2_group.add_argument(
-        '-O',
-        '--output_arrays',
-        type=str,
-        help='names of the output arrays, comma-separated')
+    tf2tfliteV2_group.add_argument('-O',
+                                   '--output_arrays',
+                                   type=str,
+                                   help='names of the output arrays, comma-separated')
 
     return parser
 

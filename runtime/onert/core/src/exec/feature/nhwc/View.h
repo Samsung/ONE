@@ -26,13 +26,7 @@
 #include "ir/Shape.h"
 #include "util/Utils.h"
 
-namespace onert
-{
-namespace exec
-{
-namespace feature
-{
-namespace nhwc
+namespace onert::exec::feature::nhwc
 {
 
 template <typename T> class View final : public Reader<T>
@@ -64,9 +58,6 @@ public:
   }
 };
 
-} // namespace nhwc
-} // namespace feature
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::feature::nhwc
 
 #endif // __ONERT_EXEC_FEATURE_NHWC_VIEW_H__

@@ -26,11 +26,7 @@
 #include <thread>
 #include <vector>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 /**
@@ -122,8 +118,6 @@ private:
   bool _stop_all;
 };
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix
 
 #endif // __ONERT_BACKEND_TRIX_BATCH_THREAD_POOL_H__

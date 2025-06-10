@@ -1,0 +1,81 @@
+name: Run ONERT Tizen GBS Build
+
+on:
+  push:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-onert-gbs-build.yml'
+      - 'nncc'
+      - 'nnfw'
+      - 'compiler/luci/**'
+      - 'compiler/loco/**'
+      - 'compiler/logo/**'
+      - 'infra/cmake/**'
+      - 'runtime/**'
+      - '!runtime/infra/debian/**'
+      - '!runtime/infra/python/**'
+      - '!runtime/contrib/**'
+      - 'packaging/**'
+      - '!**.md'
+  pull_request:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-onert-gbs-build.yml'
+      - 'nncc'
+      - 'nnfw'
+      - 'compiler/luci/**'
+      - 'compiler/loco/**'
+      - 'compiler/logo/**'
+      - 'infra/cmake/**'
+      - 'runtime/**'
+      - '!runtime/infra/debian/**'
+      - '!runtime/infra/python/**'
+      - '!runtime/contrib/**'
+      - 'packaging/**'
+      - '!**.md'
+
+defaults:
+  run:
+    shell: bash
+
+# Cancel previous running jobs when pull request is updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: github.repository_owner == 'Samsung'
+    strategy:
+      matrix:
+        arch: ['armv7l'] # TODO: Add aarch64, x86_64, etc
+        profile: ['tizen_8'] # TODO: Add tizen_9, etc
+    runs-on: ubuntu-22.04
+    steps:
+      # Install binfmt support for gbs
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Install GBS
+        run: |
+          sudo apt-get update && sudo add-apt-repository -y 'deb [trusted=yes] http://download.tizen.org/tools/latest-release/Ubuntu_22.04/ /'
+          sudo apt-get update && sudo apt-get -qqy install gbs
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Caching GBS repository
+        uses: actions/cache@v4
+        with:
+          path: .gbs/local/cache
+          key: gbs-repo-${{ matrix.profile }}-${{ matrix.arch }}-${{ hashFiles('packaging/*.spec') }}
+          restore-keys: |
+            gbs-repo-${{ matrix.profile }}-${{ matrix.arch }}-
+
+      - name: Build
+        run: |
+          gbs -c runtime/infra/gbs/gbs.conf build -A ${{ matrix.arch }} --profile ${{ matrix.profile }} --buildroot .gbs

@@ -19,6 +19,8 @@
 #include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
 
+#include "import/OMUtils.h"
+
 using namespace onert_micro;
 using namespace onert_micro::core;
 
@@ -31,25 +33,20 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::import::configure_kernel_CircleGreater(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
 {
 
-  OMRuntimeContext &runtime_context = config_args.runtime_context;
-  uint16_t op_index = config_args.kernel_index;
+OMStatus configure_kernel_CircleGreater(const OMConfigureArgs &config_args)
+{
+  const circle::Tensor *input1;
+  const circle::Tensor *input2;
+  const circle::Tensor *output;
 
-  onert_micro::execute::OMRuntimeKernel runtime_kernel;
+  TISOHeader(config_args, &input1, &input2, &output);
 
-  OMStatus status = runtime_kernel.readKernel(op_index, runtime_context);
-  if (status != Ok)
-    return status;
-
-  const circle::Tensor *input1 = runtime_kernel.inputs[input1TensorIdx];
-  const circle::Tensor *input2 = runtime_kernel.inputs[input2TensorIdx];
-  const circle::Tensor *output = runtime_kernel.outputs[outputTensorIdx];
-
-  assert(input1 != nullptr);
-  assert(input2 != nullptr);
-  assert(output != nullptr);
+  OMStatus status;
 
   status = utils::checkCondition(input1->type() == input2->type());
   if (status != Ok)
@@ -61,3 +58,6 @@ OMStatus onert_micro::import::configure_kernel_CircleGreater(const OMConfigureAr
 
   return status;
 }
+
+} // namespace import
+} // namespace onert_micro

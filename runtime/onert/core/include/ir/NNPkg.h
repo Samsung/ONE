@@ -24,9 +24,7 @@
 #include "ir/Index.h"
 #include "ir/Model.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 using IODesc = std::tuple<ModelIndex, SubgraphIndex, IOIndex>;
@@ -49,17 +47,21 @@ struct ModelEdgeHash
 {
   size_t operator()(const ::onert::ir::ModelEdge &edge) const noexcept
   {
-    unsigned long long h1 = (std::get<0>(edge.from).value() << 24) |
-                            (std::get<1>(edge.from).value() << 16) | std::get<2>(edge.from).value();
-    unsigned long long h2 = (std::get<0>(edge.to).value() << 24) |
-                            (std::get<1>(edge.to).value() << 16) | std::get<2>(edge.to).value();
+    const auto &[from_model_index, from_sug_index, from_io_index] = edge.from;
+    unsigned long long h1 =
+      (from_model_index.value() << 24) | (from_sug_index.value() << 16) | from_io_index.value();
+
+    const auto &[to_model_index, to_sug_index, to_io_index] = edge.to;
+    unsigned long long h2 =
+      (to_model_index.value() << 24) | (to_sug_index.value() << 16) | to_io_index.value();
     return h1 + h2;
   }
 };
 
 inline std::ostream &operator<<(std::ostream &o, const IODesc &od)
 {
-  o << std::get<0>(od).value() << ":" << std::get<1>(od).value() << ":" << std::get<2>(od).value();
+  const auto &[m, s, i] = od;
+  o << m.value() << ":" << s.value() << ":" << i.value();
   return o;
 }
 
@@ -297,8 +299,7 @@ private:
   ModelEdges _edges;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 namespace std
 {
@@ -307,8 +308,8 @@ template <> struct hash<onert::ir::IODesc>
 {
   size_t operator()(const ::onert::ir::IODesc &iodesc) const noexcept
   {
-    return (std::get<0>(iodesc).value() << 24) | (std::get<1>(iodesc).value() << 16) |
-           std::get<2>(iodesc).value();
+    auto [m, s, i] = iodesc;
+    return (m.value() << 24) | (s.value() << 16) | i.value();
   }
 };
 

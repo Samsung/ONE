@@ -15,14 +15,18 @@
  */
 
 #include "CircleExporterImpl.h"
-#include "Optimize.h"
 #include "CircleExportMetadata.h"
 #include "CircleTensorExporter.h"
 #include "CircleOperationExporter.h"
 #include "CircleExporterUtils.h"
+#include "ProgressReporter.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Pass/CircleShapeInferencePass.h>
+#include <luci/Pass/CircleTypeInferencePass.h>
 
+#include <loco.h>
+#include <logo/Phase.h>
 #include <oops/InternalExn.h>
 #include <mio/circle/schema_generated.h>
 #include <flatbuffers/flatbuffers.h>
@@ -100,13 +104,35 @@ encodeOperatorCodes(FlatBufferBuilder &builder, std::unordered_map<luci::OpCode,
 
 } // namespace
 
+namespace
+{
+
+void optimize(loco::Graph *g)
+{
+  logo::Phase phase;
+  {
+    // prepare type and shape before optimization
+    phase.emplace_back(std::make_unique<luci::CircleShapeInferencePass>());
+    phase.emplace_back(std::make_unique<luci::CircleTypeInferencePass>());
+
+    // TODO add more optimization passes (with a knob)
+  }
+
+  logo::PhaseRunner<logo::PhaseStrategy::Restart> phase_runner{g};
+
+  luci::ProgressReporter prog(g, logo::PhaseStrategy::Restart);
+  phase_runner.attach(&prog);
+  phase_runner.run(phase);
+}
+
+} // namespace
+
 namespace luci
 {
 
 using namespace circle;
 using namespace flatbuffers;
 
-CircleExporterImpl::CircleExporterImpl(loco::Graph *graph) { exportGraph(graph); }
 CircleExporterImpl::CircleExporterImpl(Module *module) { exportModule(module); }
 
 ::flatbuffers::Offset<::circle::SubGraph>
@@ -121,61 +147,6 @@ CircleExporterImpl::exportSubgraph(SerializedGraphData &gd)
   return subgraph;
 }
 
-void CircleExporterImpl::exportGraph(loco::Graph *graph)
-{
-  // do graph optimization
-  optimize(graph);
-
-  _builder.Clear();
-
-  SerializedModelData md;
-  SerializedGraphData gd;
-
-  // This version is taken from comment in fbs
-  constexpr uint32_t version = 0;
-
-  // set Subgraph name
-  gd._name = graph->name();
-
-  // TODO set this value properly
-  gd._data_format = circle::DataFormat::DataFormat_CHANNELS_LAST;
-
-  // prepare model data
-  prepareModelData(_builder, md);
-
-  // parse graph into SerializedModelData structure
-  exportOpDefinedTensors(graph, _builder, md, gd);
-
-  // NOTE Invoke these register functions only after each node is annotated with its tensor_index
-  registerGraphInputTensors(graph, gd);
-  registerGraphOutputTensors(graph, gd);
-
-  exportNodes(graph, _builder, md, gd);
-
-  // encode operator codes
-  auto operator_codes = encodeOperatorCodes(_builder, md._operator_codes);
-
-  // Subgraphs
-  Offset<SubGraph> subgraph = exportSubgraph(gd);
-  auto subgraphs = _builder.CreateVector(std::vector<Offset<SubGraph>>{subgraph});
-
-  // Description
-  std::string description_str = "nnpackage";
-  auto description = _builder.CreateString(description_str);
-
-  // Metadata
-  auto metadata_vec = createCircleMetadataVector(_builder, md);
-  auto metadata = _builder.CreateVector(std::vector<Offset<Metadata>>(metadata_vec));
-
-  // create array of buffers
-  auto buffers = _builder.CreateVector(md._buffers);
-
-  // Model
-  auto model_offset = CreateModel(_builder, version, operator_codes, subgraphs, description,
-                                  buffers, 0 /* metadata_buffer */, metadata);
-  FinishModelBuffer(_builder, model_offset);
-}
-
 void CircleExporterImpl::exportModule(Module *module)
 {
   assert(module->size() > 0);
@@ -188,6 +159,32 @@ void CircleExporterImpl::exportModule(Module *module)
   // prepare model data
   prepareModelData(_builder, md);
 
+  // if source is extended buffer mode, force export to use extended buffer
+  md._ext_buffer = module->ext_buffer();
+
+  if (!exportModuleData(module, md) && md._require_ext_buffer)
+  {
+    assert(md._ext_buffer == false);
+
+    // do some cleanups for re-run
+    _builder.Clear();
+    for (size_t g = 0; g < module->size(); ++g)
+    {
+      auto graph = module->graph(g);
+      clearExportInfo(graph);
+    }
+    prepareModelData(_builder, md);
+
+    // run again with ext_buffer mode
+    md._ext_buffer = true;
+    exportModuleData(module, md);
+  }
+
+  finalizeWithExtendedBuffer(md);
+}
+
+bool CircleExporterImpl::exportModuleData(Module *module, SerializedModelData &md)
+{
   std::vector<flatbuffers::Offset<circle::SubGraph>> subgraph_vec;
 
   for (size_t g = 0; g < module->size(); ++g)
@@ -221,7 +218,7 @@ void CircleExporterImpl::exportModule(Module *module)
   auto operator_codes = encodeOperatorCodes(_builder, md._operator_codes);
 
   // Description
-  std::string description_str = "nnpackage";
+  std::string description_str = "ONE-luci/export";
   auto description = _builder.CreateString(description_str);
 
   // Metadata
@@ -232,6 +229,13 @@ void CircleExporterImpl::exportModule(Module *module)
   // create array of buffers
   auto buffers = _builder.CreateVector(md._buffers);
 
+  // check current total size exceeds limit
+  if (check_size_limit(_builder, 0))
+  {
+    md._require_ext_buffer = true;
+    return false;
+  }
+
   // This version is taken from comment in fbs
   constexpr uint32_t version = 0;
 
@@ -239,13 +243,83 @@ void CircleExporterImpl::exportModule(Module *module)
   auto model_offset = CreateModel(_builder, version, operator_codes, subgraphs, description,
                                   buffers, 0 /* metadata_buffer */, metadata);
   FinishModelBuffer(_builder, model_offset);
+
+  return true;
+}
+
+void CircleExporterImpl::finalizeWithExtendedBuffer(SerializedModelData &md)
+{
+  _ext_buffer = md._ext_buffer;
+  if (!_ext_buffer)
+    return;
+
+  _fb_data_with_ext.clear();
+
+  auto align16 = [](size_t &v) {
+    while (v % 16 != 0)
+      v++;
+  };
+
+  // get total memory for flatbuffer + all buffer_data
+  size_t result_size = _builder.GetSize();
+  align16(result_size);
+  for (auto &it : md._buffer_data_map)
+  {
+    SerializedModelData::BufferData &buffer_data = it.second;
+    result_size += buffer_data.size();
+    align16(result_size);
+  }
+  align16(result_size);
+  result_size += 16; // for safety
+
+  std::string result;
+  const char *buff_ptr = reinterpret_cast<const char *>(_builder.GetBufferPointer());
+
+  auto padalign16 = [](std::string &str) {
+    while (str.size() % 16 != 0)
+      str += '\0';
+  };
+
+  result.reserve(result_size);
+  result.append(buff_ptr, _builder.GetSize());
+
+  auto mutable_model = circle::GetMutableModel(result.data());
+  auto mutable_buffers = mutable_model->mutable_buffers();
+
+  // pad to be 16 bytes aligned
+  padalign16(result);
+  for (auto &it : md._buffer_data_map)
+  {
+    int32_t buffer_index = it.first;
+    SerializedModelData::BufferData &buffer_data = it.second;
+    uint64_t offset = result.size();
+    uint64_t size = buffer_data.size();
+
+    circle::Buffer *mutable_buffer = mutable_buffers->GetMutableObject(buffer_index);
+    mutable_buffer->mutate_offset(offset);
+    mutable_buffer->mutate_size(size);
+
+    result.append(buffer_data.begin(), buffer_data.end());
+    padalign16(result);
+  }
+  padalign16(result);
+
+  // use final result
+  _fb_data_with_ext = result;
 }
 
 const char *CircleExporterImpl::getBufferPointer() const
 {
+  if (_ext_buffer)
+    return reinterpret_cast<const char *>(_fb_data_with_ext.data());
   return reinterpret_cast<const char *>(_builder.GetBufferPointer());
 }
 
-size_t CircleExporterImpl::getBufferSize() const { return _builder.GetSize(); }
+size_t CircleExporterImpl::getBufferSize() const
+{
+  if (_ext_buffer)
+    return _fb_data_with_ext.size();
+  return _builder.GetSize();
+}
 
 } // namespace luci

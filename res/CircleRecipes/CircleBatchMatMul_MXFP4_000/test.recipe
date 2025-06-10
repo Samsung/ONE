@@ -1,0 +1,62 @@
+operand {
+  name: "ifm1"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 32 dim: 32 }
+}
+operand {
+  name: "ifm2"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 32 dim: 32 }
+}
+operand {
+  name: "ifm1_mxfp4"
+  type: MXFP4
+  shape { dim: 1 dim: 1 dim: 32 dim: 32 }
+  mx_quant { axis: -1 }
+}
+operand {
+  name: "ifm2_mxfp4"
+  type: MXFP4
+  shape { dim: 1 dim: 1 dim: 32 dim: 32 }
+  mx_quant { axis: -2 }
+}
+operand {
+  name: "ofm_mxfp4"
+  type: MXFP4
+  shape { dim: 1 dim: 1 dim: 32 dim: 32 }
+  mx_quant { axis: -1 }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 32 dim: 32 }
+}
+operation {
+  type: "Quantize"
+  input: "ifm1"
+  output: "ifm1_mxfp4"
+}
+operation {
+  type: "Quantize"
+  input: "ifm2"
+  output: "ifm2_mxfp4"
+}
+operation {
+  type: "BatchMatMul"
+  input: "ifm1_mxfp4"
+  input: "ifm2_mxfp4"
+  output: "ofm_mxfp4"
+  batch_matmul_options {
+    adjoint_lhs: false
+    adjoint_rhs: false
+  }
+}
+operation {
+  type: "Dequantize"
+  input: "ofm_mxfp4"
+  output: "ofm"
+}
+input: "ifm1"
+input: "ifm2"
+output: "ofm"
+

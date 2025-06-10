@@ -3,7 +3,6 @@
 INVALID_EXIT=0
 FILES_TO_CHECK=()
 DIRECTORIES_TO_BE_TESTED=()
-DIRECTORIES_NOT_TO_BE_TESTED=()
 DEFAULT_CLANG_VERSION="16"
 CLANG_FORMAT_CANDIDATE=clang-format-$DEFAULT_CLANG_VERSION
 PATCH_FILE=format.patch
@@ -78,12 +77,7 @@ function check_newline() {
   #   .svg: xml type ML for vector graphic
   FILES_TO_CHECK_EOF=`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep -v '((\.caffemodel)|(\.png)|(\.pdf)|(\.h5)|(\.pdf)|(\.tar.gz)|(\.tflite)|(\.pdf)|(\.bmp)|(\.svg))$'`
 
-  for f in ${FILES_TO_CHECK_EOF[@]}; do
-    # Check no new line at end of file
-    if diff /dev/null "$f" | tail -1 | grep '^\\ No newline' > /dev/null; then
-      echo >> "$f"
-    fi
-  done
+  echo "${FILES_TO_CHECK_EOF[@]}" | xargs -P $(nproc) -I {} bash -c "if diff /dev/null '{}' | tail -1 | grep -q '\\ No newline'; then echo >> '{}'; fi"
 }
 
 function check_permission() {
@@ -92,7 +86,7 @@ function check_permission() {
   FILES_TO_CHECK_PERMISSION=$(git ls-files -c -s --exclude-standard ${FILES_TO_CHECK[@]} | egrep '^100755' | cut -f2)
   FILES_TO_CHECK_PERMISSION=`echo "$FILES_TO_CHECK_PERMISSION" | tr ' ' '\n' | egrep -v '((^nnas)|(^nnfw)|(^nncc)|(\.sh)|(\.py)|(/gradlew))$'`
   FILES_TO_CHECK_PERMISSION=`echo "$FILES_TO_CHECK_PERMISSION" | egrep -v '((^infra/debian/compiler/rules)|(^infra/debian/runtime/rules))$'`
-  FILES_TO_CHECK_PERMISSION+=`echo && echo "$FILES_TO_CHECK" | egrep '^tests/nnapi/specs/.*.py$'`
+  FILES_TO_CHECK_PERMISSION+=`echo && echo "$FILES_TO_CHECK" | egrep '^runtime/tests/nnapi/specs/.*.py$'`
   # Transform to array
   FILES_TO_CHECK_PERMISSION=($FILES_TO_CHECK_PERMISSION)
 
@@ -124,15 +118,8 @@ function check_cpp_files() {
 
   # Check c++ files: replace ' ' with newline, check with grep
   FILES_TO_CHECK_CPP=`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '((\.c[cl]?)|(\.cpp)|(\.h(pp)?))$'`
-  # Manually ignore style checking
-  FILES_TO_CHECK_CPP=`echo "$FILES_TO_CHECK_CPP" | egrep -v '((/NeuralNetworks\.h)|(/NeuralNetworksExtensions\.h))$'`
   # Transform to array
   FILES_TO_CHECK_CPP=($FILES_TO_CHECK_CPP)
-
-  # Skip by '.FORMATDENY' file
-  for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
-    FILES_TO_CHECK_CPP=(${FILES_TO_CHECK_CPP[*]/$s*/})
-  done
 
   if [[ ${#FILES_TO_CHECK_CPP} -ne 0 ]]; then
     ${CLANG_FORMAT} -i ${FILES_TO_CHECK_CPP[@]}
@@ -166,13 +153,8 @@ function check_python_files() {
   # Exceptional case: fm-equalize doesn't have '.py' extension.
   FILES_TO_CHECK_PYTHON+=(`echo "$FILES_TO_CHECK" | tr ' ' '\n' | egrep '^compiler/fm-equalize/fm-equalize$'`)
 
-  for s in ${DIRECTORIES_NOT_TO_BE_TESTED[@]}; do
-    skip=${s#'.'/}/
-    FILES_TO_CHECK_PYTHON=(${FILES_TO_CHECK_PYTHON[*]/$skip*/})
-  done
-
   if [[ ${#FILES_TO_CHECK_PYTHON} -ne 0 ]]; then
-    yapf -i ${FILES_TO_CHECK_PYTHON[@]}
+    yapf -p -i ${FILES_TO_CHECK_PYTHON[@]}
     EXIT_CODE=$?
     if [[ ${EXIT_CODE} -ne 0 ]]; then
       INVALID_EXIT=${EXIT_CODE}
@@ -214,10 +196,6 @@ if [[ "${CHECK_DIFF_ONLY}" = "1" ]]; then
     FILES_TO_CHECK=$(git ls-files -c -s --exclude-standard ${FILES_TO_CHECK[@]} | egrep -v '^1[26]0000' | cut -f2)
   fi
 fi
-
-for DIR_NOT_TO_BE_TESTED in $(git ls-files -co --exclude-standard '*/.FORMATDENY'); do
-  DIRECTORIES_NOT_TO_BE_TESTED+=($(dirname "${DIR_NOT_TO_BE_TESTED}"))
-done
 
 check_newline
 check_permission

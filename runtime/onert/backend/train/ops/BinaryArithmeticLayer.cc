@@ -24,13 +24,7 @@
 #include <cker/train/operation/BinaryArithmetic.h>
 #include <cker/train/operation/ReLU.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 BinaryArithmeticLayer::BinaryArithmeticLayer()
@@ -87,7 +81,4 @@ void BinaryArithmeticLayer::backward()
     static_cast<nnfw::cker::train::ArithmeticType>(_arithmetic_type));
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

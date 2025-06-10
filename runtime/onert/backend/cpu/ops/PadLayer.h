@@ -22,13 +22,7 @@
 
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 // Note, this is pad with mode=`CONSTANT`: it doesn't support `REFLECT` and
@@ -54,9 +48,6 @@ protected:
   ConstDataPtr _constantValueData;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_PADLAYER_H__

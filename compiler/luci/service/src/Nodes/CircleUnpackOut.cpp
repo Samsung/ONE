@@ -22,8 +22,7 @@ namespace luci
 luci::CircleNode *CloneNode::visit(const luci::CircleUnpackOut *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleUnpackOut>();
-  if (cloned != nullptr)
-    cloned->index(node->index());
+  cloned->index(node->index());
   return cloned;
 }
 

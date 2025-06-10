@@ -26,9 +26,7 @@
 #include <cassert>
 #include <unordered_set>
 
-namespace onert
-{
-namespace util
+namespace onert::util
 {
 
 /**
@@ -170,7 +168,6 @@ private:
   std::unordered_set<Element> _set;
 };
 
-} // namespace util
-} // namespace onert
+} // namespace onert::util
 
 #endif // __ONERT_UTIL_SET_H__

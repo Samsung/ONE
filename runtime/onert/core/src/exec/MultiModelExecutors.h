@@ -31,15 +31,14 @@ template <> struct hash<std::pair<::onert::ir::ModelIndex, ::onert::ir::Subgraph
   size_t operator()(
     const std::pair<::onert::ir::ModelIndex, ::onert::ir::SubgraphIndex> &pair) const noexcept
   {
-    return (hash<uint32_t>()(pair.first.value()) << 16) ^ hash<uint32_t>()(pair.second.value());
+    const auto &[model, subgraph] = pair;
+    return (hash<uint32_t>()(model.value()) << 16) ^ hash<uint32_t>()(subgraph.value());
   }
 };
 
 } // namespace std
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /**
@@ -78,6 +77,8 @@ public:
   const ir::OperandInfo &inputInfo(const ir::IOIndex &index) const override;
 
   const ir::OperandInfo &outputInfo(const ir::IOIndex &index) const override;
+
+  const void *outputBuffer(const ir::IOIndex &index) const final;
 
   void execute(const ExecutionContext &ctx) override;
 
@@ -146,7 +147,6 @@ private:
   std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::UserTensor>> _pkg_output_tensors;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_EXECUTORS_H__

@@ -15,7 +15,9 @@ endif(NOT TensorFlowSource_FOUND)
 message(STATUS "Build mio-tflite2121: TRUE")
 message(STATUS "Build mio-tflite2121: with ${TensorFlowSource_DIR}")
 
-set(SCHEMA_FILE "${TensorFlowSource_DIR}/tensorflow/lite/schema/schema.fbs")
+# TODO rollback to use TensorFlowSource_DIR after upgrade
+#set(SCHEMA_FILE "${TensorFlowSource_DIR}/tensorflow/lite/schema/schema.fbs")
+set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/res/TensorFlowLiteSchema/2.16.1/schema.fbs")
 
 # NOTE Use copy of schema.fbs as to provide unified way for circle also
 add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
@@ -24,7 +26,7 @@ add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
   DEPENDS "${SCHEMA_FILE}"
 )
 
-FlatBuffers_Target(mio_tflite2121
+FlatBuffersMuteable_Target(mio_tflite2121
   OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen/mio/tflite"
   INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen"
   SCHEMA_DIR "${CMAKE_CURRENT_BINARY_DIR}"

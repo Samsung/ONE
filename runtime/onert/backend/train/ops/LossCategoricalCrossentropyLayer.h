@@ -20,13 +20,7 @@
 #include "LossLayer.h"
 #include "../Tensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 class LossCategoricalCrossentropyLayer : public LossLayer
@@ -35,19 +29,18 @@ public:
   LossCategoricalCrossentropyLayer() = default;
 
   void configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
-                 IPortableTensor *output, IPortableTensor *back_prop_y_pred, int32_t axis,
-                 float label_smoothing);
+                 IPortableTensor *output, IPortableTensor *back_prop_y_pred,
+                 ir::train::LossReductionType reduction_type, int32_t axis, float label_smoothing,
+                 bool is_normalization_required);
   void forward(bool training) override;
   void backward() override;
 
 private:
   int32_t _axis{-1};
   float _label_smoothing{0.0f};
+  bool _is_normalization_required{false};
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_LOSS_CATEGORICALCROSSENTROPY_LAYER_H__

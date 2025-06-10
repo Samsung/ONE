@@ -1,0 +1,90 @@
+operand {
+  name: "in"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 }
+}
+operand {
+  name: "weight"
+  type: FLOAT32
+  shape { dim: 16 dim: 16 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias"
+  type: FLOAT32
+  shape { dim: 16 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "out"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 }
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: RELU
+  }
+  input: "in"
+  input: "weight"
+  input: "bias"
+  output: "out"
+}
+operand {
+  name: "gelu_out"
+  type: FLOAT32
+  shape { dim: 1 dim: 16 }
+}
+operation {
+  type: "Gelu"
+  gelu_options {
+    approximate: false
+  }
+  input: "out"
+  output: "gelu_out"
+}
+operand {
+  name: "weight_2"
+  type: FLOAT32
+  shape { dim: 4 dim: 16 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias_2"
+  type: FLOAT32
+  shape { dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "out_2"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 }
+}
+operation {
+  type: "FullyConnected"
+  fullyconnected_options {
+    activation: RELU
+  }
+  input: "gelu_out"
+  input: "weight_2"
+  input: "bias_2"
+  output: "out_2"
+}
+input: "in"
+output: "out_2"

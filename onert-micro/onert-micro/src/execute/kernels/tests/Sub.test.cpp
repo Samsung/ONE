@@ -18,6 +18,7 @@
 #include "test_models/sub/FloatSubKernel.h"
 #include "test_models/sub/NegSubKernel.h"
 #include "test_models/sub/IntSubKernel.h"
+#include "test_models/sub/S8SubKernel.h"
 
 namespace onert_micro
 {
@@ -50,6 +51,18 @@ TEST_F(SubTest, INT_P)
     std::vector<int32_t> output_data_vector =
       onert_micro::execute::testing::checkKernel<int32_t>(2, &test_data_add_with_broadcasting);
     EXPECT_THAT(output_data_vector, test_data_add_with_broadcasting.get_output_data_by_index(0));
+  }
+}
+
+TEST_F(SubTest, S8_P)
+{
+  // No broadcast
+  {
+    const bool is_with_broadcast = false;
+    test_model::TestDataS8Sub test_data_add_no_broadcasting(is_with_broadcast);
+    std::vector<int8_t> output_data_vector =
+      onert_micro::execute::testing::checkKernel<int8_t>(2, &test_data_add_no_broadcasting);
+    EXPECT_THAT(output_data_vector, test_data_add_no_broadcasting.get_output_data_by_index(0));
   }
 }
 

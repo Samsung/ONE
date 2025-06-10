@@ -31,7 +31,7 @@ class PassData
 public:
   /* implicit */ PassData(std::nullptr_t data)
     : // NOLINT(google-explicit-constructor, hicpp-explicit-conversions)
-      _dataContainer{.unknown = data}, _dataType(PDT::UNKNOWN)
+      _dataType(PDT::UNKNOWN), _dataContainer{.unknown = data}
   {
   }
 
@@ -40,7 +40,7 @@ public:
    */
   /* implicit */ PassData(mir::Graph *graph)
     : // NOLINT(google-explicit-constructor, hicpp-explicit-conversions)
-      _dataContainer{.graph = graph}, _dataType(PDT::GRAPH)
+      _dataType(PDT::GRAPH), _dataContainer{.graph = graph}
   {
   }
 
@@ -59,7 +59,7 @@ public:
    */
   /* implicit */ PassData(mir::TensorVariant *tv)
     : // NOLINT(google-explicit-constructor, hicpp-explicit-conversions)
-      _dataContainer{.tensorVariant = tv}, _dataType(PDT::TENSOR_VARIANT)
+      _dataType(PDT::TENSOR_VARIANT), _dataContainer{.tensorVariant = tv}
   {
   }
 

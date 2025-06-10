@@ -42,6 +42,7 @@ usr/bin/onelib/Command.py usr/share/one/bin/onelib/
 usr/bin/onelib/utils.py usr/share/one/bin/onelib/
 usr/bin/onelib/export_constant.py usr/share/one/bin/onelib/
 usr/bin/onnx_legalizer.py usr/share/one/bin/
+usr/bin/onnx2circle usr/share/one/bin/
 usr/bin/rawdata2hdf5 usr/share/one/bin/
 usr/bin/record-minmax usr/share/one/bin/
 usr/bin/tf2nnpkg usr/share/one/bin/

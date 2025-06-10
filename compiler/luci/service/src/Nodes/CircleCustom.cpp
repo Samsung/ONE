@@ -24,7 +24,6 @@ luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleCustom *node)
   uint32_t num_in = node->numInputs();
   uint32_t num_out = node->numOutputs();
   auto *cloned = _graph->nodes()->create<luci::CircleCustom>(num_in, num_out);
-  if (cloned != nullptr)
   {
     cloned->custom_options(node->custom_options());
     cloned->custom_code(node->custom_code());

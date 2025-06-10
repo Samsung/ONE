@@ -40,6 +40,11 @@ if (DIS_FLOAT)
     add_definitions(-DDIS_FLOAT)
 endif()
 
+# To enable memory estimate
+if (OM_MEMORY_ESTIMATE)
+    add_definitions(-DOM_MEMORY_ESTIMATE)
+endif()
+
 # To enable training part
 if (ENABLE_TRAINING)
     add_definitions(-DENABLE_TRAINING)

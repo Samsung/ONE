@@ -19,9 +19,7 @@
 
 #include "IExecutor.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /**
@@ -86,13 +84,19 @@ public:
   virtual const ir::OperandInfo &outputInfo(const ir::IOIndex &index) const = 0;
 
   /**
+   * @brief     Return NN package output buffer
+   * @param[in] index Output index
+   * @return    Buffer of output
+   */
+  virtual const void *outputBuffer(const ir::IOIndex &index) const = 0;
+
+  /**
    * @brief     Execute NN package executor set
    * @param[in] ctx  Execution context
    */
   virtual void execute(const ExecutionContext &ctx) = 0;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_I_EXECUTORS_H__

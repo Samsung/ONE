@@ -20,13 +20,7 @@
 
 #include <cker/operation/Concatenation.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 ConcatLayer::ConcatLayer() : _inputs(), _output(nullptr), _axis(0)
@@ -138,7 +132,4 @@ void ConcatLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

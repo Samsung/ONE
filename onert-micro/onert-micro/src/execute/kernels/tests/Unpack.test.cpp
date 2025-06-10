@@ -16,6 +16,7 @@
 
 #include "execute/OMTestUtils.h"
 #include "test_models/unpack/FloatUnpackKernel.h"
+#include "test_models/unpack/S8UnpackKernel.h"
 #include "test_models/unpack/NegUnpackKernel.h"
 
 namespace onert_micro
@@ -37,6 +38,14 @@ TEST_F(UnpackTest, Float_P)
   onert_micro::test_model::TestDataFloatUnpack test_data_kernel;
   std::vector<float> output_data_vector =
     onert_micro::execute::testing::checkKernel<float>(1, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
+TEST_F(UnpackTest, S8_P)
+{
+  onert_micro::test_model::TestDataS8Unpack test_data_kernel;
+  std::vector<int8_t> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int8_t>(1, &test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 

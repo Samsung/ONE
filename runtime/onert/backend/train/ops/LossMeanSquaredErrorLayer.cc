@@ -19,20 +19,15 @@
 
 #include <cker/train/operation/Loss.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 void LossMeanSquaredErrorLayer::configure(const IPortableTensor *y_pred,
                                           const IPortableTensor *y_true, IPortableTensor *output,
-                                          IPortableTensor *back_prop_y_pred)
+                                          IPortableTensor *back_prop_y_pred,
+                                          ir::train::LossReductionType reduction_type)
 {
-  LossLayer::configure(y_pred, y_true, output, back_prop_y_pred);
+  LossLayer::configure(y_pred, y_true, output, back_prop_y_pred, reduction_type);
 }
 
 void LossMeanSquaredErrorLayer::forward(bool)
@@ -53,11 +48,12 @@ void LossMeanSquaredErrorLayer::backward()
 {
   assert(_back_prop_y_pred != nullptr);
 
+  const auto reduction_type = convertLossReductionType(_reduction_type);
   if (_y_pred->data_type() == OperandType::FLOAT32)
   {
     nnfw::cker::train::MSEGrad(getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true),
                                getBuffer<float>(_y_true), getShape(_back_prop_y_pred),
-                               getBuffer<float>(_back_prop_y_pred));
+                               getBuffer<float>(_back_prop_y_pred), reduction_type);
   }
   else
   {
@@ -65,7 +61,4 @@ void LossMeanSquaredErrorLayer::backward()
   }
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

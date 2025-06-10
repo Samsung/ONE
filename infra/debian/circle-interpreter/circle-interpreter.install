@@ -1,0 +1,13 @@
+# {FILES_TO_INSTALL} {DEST_DIR}
+# bin
+bin/circle-interpreter usr/share/circletools/bin/
+# lib
+libloco.so usr/share/circletools/bin/
+libluci_env.so usr/share/circletools/bin/
+libluci_import.so usr/share/circletools/bin/
+libluci_interpreter.so usr/share/circletools/bin/
+libluci_lang.so usr/share/circletools/bin/
+libluci_logex.so usr/share/circletools/bin/
+libluci_log.so usr/share/circletools/bin/
+libluci_plan.so usr/share/circletools/bin/
+libluci_profile.so usr/share/circletools/bin/

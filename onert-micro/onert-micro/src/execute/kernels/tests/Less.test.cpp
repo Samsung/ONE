@@ -19,6 +19,7 @@
 #include "test_models/less/FloatLessKernel.h"
 #include "test_models/less/IntLessKernel.h"
 #include "test_models/less/QuantLessKernel.h"
+#include "test_models/less/S8LessKernel.h"
 #include "test_models/less/NegTestDataLessKernel.h"
 
 namespace onert_micro
@@ -122,6 +123,26 @@ TEST_F(LessTest, Quant_P)
     onert_micro::execute::testing::checkKernel<uint8_t, bool>(2, &test_data_kernel);
 
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
+TEST_F(LessTest, S8_P)
+{
+  const bool is_with_broadcast = false;
+  onert_micro::test_model::TestDataS8Less test_data_kernel(is_with_broadcast, false);
+
+  std::vector<bool> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int8_t, bool>(2, &test_data_kernel);
+
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
+TEST_F(LessTest, S8_NEG)
+{
+  const bool is_with_broadcast = false;
+  onert_micro::test_model::TestDataS8Less test_data_kernel(is_with_broadcast, true);
+
+  EXPECT_DEATH((onert_micro::execute::testing::checkKernel<int8_t, bool>(2, &test_data_kernel)),
+               "");
 }
 
 TEST_F(LessTest, Quant_NEG)

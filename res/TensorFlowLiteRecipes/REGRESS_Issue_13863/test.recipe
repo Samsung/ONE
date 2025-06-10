@@ -1,0 +1,258 @@
+# This recipe was created using tflchef-reverse with badDead.zip
+# from the How_to_reproduce section of Issue_13863.
+# In the model, the dim value was changed to a single digit value,
+# and the shape_signature was removed.
+# https://github.com/Samsung/ONE/issues/13863
+
+operand {
+  name: "serving_default_input:0"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 4
+    dim: 4
+    dim: 3
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Const"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "2"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "Const_1"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "4"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "model/tf.split/split/split_dim"
+  type: INT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "1"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "model/flatten/Const"
+  type: INT32
+  shape {
+    dim: 2
+  }
+  filler {
+    tag: "explicit"
+    arg: "-1"
+    arg: "48"
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "PartitionedCall:3"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 4
+    dim: 4
+    dim: 3
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "model/flatten/Reshape"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 48
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "PartitionedCall:0"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "model/tf.split/split"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "model/tf.split/split1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 16
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "model/tf.compat.v1.math.scalar_mul_1/Mul"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 48
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "PartitionedCall:2"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 48
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "model/tf.compat.v1.math.scalar_mul/Mul"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 48
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operand {
+  name: "PartitionedCall:1"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 48
+  }
+  quant {
+    quantized_dimension: 0
+  }
+  is_variable: false
+}
+operation {
+  type: "Pack"
+  input: "serving_default_input:0"
+  output: "PartitionedCall:3"
+  pack_options {
+    values_count: 1
+    axis: 0
+  }
+}
+operation {
+  type: "Reshape"
+  input: "serving_default_input:0"
+  input: "model/flatten/Const"
+  output: "model/flatten/Reshape"
+}
+operation {
+  type: "Split"
+  input: "model/tf.split/split/split_dim"
+  input: "model/flatten/Reshape"
+  output: "PartitionedCall:0"
+  output: "model/tf.split/split"
+  output: "model/tf.split/split1"
+  split_options {
+    num_splits: 3
+  }
+}
+operation {
+  type: "Mul"
+  input: "model/flatten/Reshape"
+  input: "Const_1"
+  output: "model/tf.compat.v1.math.scalar_mul_1/Mul"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Pack"
+  input: "model/tf.compat.v1.math.scalar_mul_1/Mul"
+  output: "PartitionedCall:2"
+  pack_options {
+    values_count: 1
+    axis: 0
+  }
+}
+operation {
+  type: "Mul"
+  input: "model/flatten/Reshape"
+  input: "Const"
+  output: "model/tf.compat.v1.math.scalar_mul/Mul"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Pack"
+  input: "model/tf.compat.v1.math.scalar_mul/Mul"
+  output: "PartitionedCall:1"
+  pack_options {
+    values_count: 1
+    axis: 0
+  }
+}
+input: "serving_default_input:0"
+output: "PartitionedCall:2"
+output: "PartitionedCall:1"
+output: "PartitionedCall:3"
+output: "PartitionedCall:0"

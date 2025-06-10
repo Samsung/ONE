@@ -58,7 +58,8 @@ void Conv2DBiasGrad(const core::OMRuntimeShape &dloss_doutput_shape,
 void Conv2DWeightGrad(const core::FloatConv2D &params, const core::OMRuntimeShape &input_shape,
                       const float *input_data, const core::OMRuntimeShape &dloss_doutput_shape,
                       const float *dloss_doutput_data,
-                      const core::OMRuntimeShape &dloss_dweight_shape, float *dloss_dweight_data)
+                      const core::OMRuntimeShape &dloss_dweight_shape, float *dloss_dweight_data,
+                      core::OpTrainableRankType rank)
 {
   const int stride_width = params.stride_w;
   const int stride_height = params.stride_h;
@@ -77,8 +78,11 @@ void Conv2DWeightGrad(const core::FloatConv2D &params, const core::OMRuntimeShap
   const int dloss_dweight_h = dloss_dweight_shape.dims(1);
   const int dloss_dweight_w = dloss_dweight_shape.dims(2);
   const int dloss_dweight_d = dloss_dweight_shape.dims(3);
+  const int dloss_dweight_o = dloss_dweight_shape.dims(0);
 
-  for (uint32_t oc = 0; oc < dloss_doutput_d; ++oc)
+  auto depth_bounds = execute::pal::getUpLowerWeightTensorDepth(rank, dloss_doutput_d);
+
+  for (uint32_t oc = 0; oc < dloss_dweight_o; ++oc)
   {
     for (uint32_t ic = 0; ic < input_d; ++ic)
     {

@@ -22,11 +22,7 @@
 
 #include "exec/FunctionSequence.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 KernelGenerator::KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,
@@ -36,9 +32,7 @@ KernelGenerator::KernelGenerator(const ir::Graph &graph, DynamicTensorManager *d
     _tensor_reg{tensor_reg}, _tensor_registries{}, _executors{nullptr}, _model_index{},
     _external_context{external_context}
 {
-  UNUSED_RELEASE(_graph);
-  UNUSED_RELEASE(_tensor_registries);
-  UNUSED_RELEASE(_executors);
+  // DO NOTHING
 }
 
 std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationIndex ind)
@@ -52,8 +46,7 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
   auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
   {
     dyn_ctx->op = &_graph.operations().at(ind);
-    dyn_ctx->dynamic_shape_inferer =
-      std::make_unique<exec::DynamicShapeInferer>(_graph.operands(), _tensor_reg);
+    dyn_ctx->dynamic_shape_inferer = std::make_unique<exec::DynamicShapeInferer>(_tensor_reg);
   }
   ret->dynamic_tensor_ctx(dyn_ctx);
 
@@ -103,9 +96,14 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   // Add PermuteLayer
   std::vector<ITensor *> output_tensors{getTensor(output_index)};
   std::vector<ITensor *> input_tensors{getTensor(input_index)};
+  std::vector<ir::PermuteType> permute_types;
 
-  auto fn =
-    std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, _external_context);
+  // Layout in graph is always NHWC, so layout is not changed
+  for (uint32_t i = 0; i < input_tensors.size(); i++)
+    permute_types.emplace_back(ir::PermuteType::COPY);
+
+  auto fn = std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, permute_types,
+                                                   _external_context);
   _return_fn = std::move(fn);
 }
 
@@ -154,6 +152,4 @@ backend::IPortableTensor *KernelGenerator::getPortableTensor(const ir::OperandIn
   return ret;
 }
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin

@@ -40,11 +40,7 @@
 
 #include <set>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 ::arm_compute::TensorShape asTensorShape(const ir::Shape &shape, bool apply_dim_correction = true);
@@ -73,7 +69,6 @@ std::unique_ptr<T_Function> asFunction(std::unique_ptr<::arm_compute::IFunction>
   return std::make_unique<T_Function>(std::move(fn));
 }
 
-ir::Layout asRuntimeLayout(::arm_compute::DataLayout data_layout);
 ir::DataType asRuntimeDataType(::arm_compute::DataType data_type);
 
 arm_compute::PoolingType convertPoolType(ir::operation::Pool2D::PoolType pool_type_ir);
@@ -82,8 +77,6 @@ arm_compute::ReductionOperation convertReduceType(ir::operation::Reduce::ReduceT
 arm_compute::PixelValue asPixelValue(const ir::Operand &operand);
 arm_compute::Size2D asDilation(uint32_t dilation_width, uint32_t dilation_height);
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_CONVERT_H__

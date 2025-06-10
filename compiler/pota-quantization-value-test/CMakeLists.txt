@@ -34,7 +34,7 @@ get_target_property(ARTIFACTS_BIN_PATH testDataGenerator BINARY_DIR)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/gen_h5_explicit_inputs_all.py"
                "${CMAKE_CURRENT_BINARY_DIR}/gen_h5_explicit_inputs_all.py" COPYONLY)
 
-set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_2_12_1")
+set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv")
 
 ###
 ### Generate test.config

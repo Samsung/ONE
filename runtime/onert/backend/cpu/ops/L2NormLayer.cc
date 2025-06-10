@@ -21,13 +21,7 @@
 #include <cker/operation/L2Normalize.h>
 #include <cker/Types.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 void L2NormLayer::configure(const IPortableTensor *input, IPortableTensor *output)
@@ -63,7 +57,4 @@ void L2NormLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

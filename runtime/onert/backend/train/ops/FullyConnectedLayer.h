@@ -23,13 +23,7 @@
 #include <exec/train/ITrainableFunction.h>
 #include <ops/FullyConnectedLayer.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 class FullyConnectedLayer : public exec::train::ITrainableFunction,
@@ -65,9 +59,6 @@ private:
   std::unique_ptr<Tensor> _act_back_prop_output;
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_FULLYCONNECTEDLAYER_H__

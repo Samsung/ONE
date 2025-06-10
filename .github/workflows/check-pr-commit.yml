@@ -18,9 +18,9 @@ defaults:
 jobs:
   check-commit-message:
     name: Check commit message
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     # Skip on draft, check on draft -> ready
-    if: github.event.pull_request.draft == false
+    if: github.repository_owner == 'Samsung' && github.event.pull_request.draft == false
 
     steps:
       - name: Checkout
@@ -42,6 +42,7 @@ jobs:
           # Check string starting from "Signed-off-by:"
           count=$(cat commit_body.txt | grep 'Signed-off-by:' | wc -l)
           if [[ ! "$count" -ge "1" ]]; then
+            echo "Your commit message does not contain the expected signoff information."
             exit 1
           fi
 
@@ -54,5 +55,7 @@ jobs:
           count=$(cat commit_body.txt | sed '/Signed-off-by:/d' | wc -w)
           echo "Commit body word check: $count words"
           if [[ "$count" -lt "5" ]]; then
+            echo "The body of your commit does not satisfy this repository requirements."
+            echo "The body needs to contain at least 5 words."
             exit 1
           fi

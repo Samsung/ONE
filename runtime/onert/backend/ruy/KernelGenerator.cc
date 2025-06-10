@@ -28,11 +28,7 @@
 
 #include <stdexcept>
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
+namespace onert::backend::ruy
 {
 
 std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationIndex ind)
@@ -46,7 +42,7 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
   auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
   {
     dyn_ctx->op = &_operations_ctx.at(ind);
-    dyn_ctx->dynamic_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_ctx, _tensor_reg);
+    dyn_ctx->dynamic_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_tensor_reg);
   }
   ret->dynamic_tensor_ctx(dyn_ctx);
 
@@ -57,12 +53,6 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
 
   for (const auto &ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
-    auto portable_tensor = _tensor_reg->getPortableTensor(ind);
-    if (portable_tensor)
-    {
-      assert(portable_tensor->layout() == ir::Layout::NHWC);
-    }
-
     auto tensor = _tensor_reg->getNativeTensor(ind);
     if (tensor)
     {
@@ -143,6 +133,8 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
   const auto bias_index{node.getInputs().at(FullyConnected::Input::BIAS)};
   const auto activation = node.param().activation;
   const auto weights_format = node.param().weights_format;
+  if (weights_format != ir::FullyConnectedWeightsFormat::Default)
+    throw std::runtime_error("Unsupported FullyConnected Weights Format");
 
   auto output_tensor = _tensor_reg->getPortableTensor(output_index);
   auto input_tensor = _tensor_reg->getPortableTensor(input_index);
@@ -151,12 +143,10 @@ void KernelGenerator::visit(const ir::operation::FullyConnected &node)
 
   auto fn = std::make_unique<ops::FullyConnectedLayer>();
 
-  fn->configure(input_tensor, weight_tensor, bias_tensor, activation, weights_format, output_tensor,
+  fn->configure(input_tensor, weight_tensor, bias_tensor, activation, output_tensor,
                 _external_context);
 
   _return_fn = std::move(fn);
 }
 
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy

@@ -1,0 +1,51 @@
+#!/usr/bin/make -f
+
+# x64 only
+# TODO: Support more architectures
+DEBVER := $(shell dpkg-parsechangelog -SVersion)
+NPROC ?= $(shell nproc)
+TRIX_PKG ?= 0
+
+export DH_VERBOSE = 1
+export NNFW_WORKSPACE = build/onert
+export NNFW_INSTALL_PREFIX = $(CURDIR)/debian/tmp/usr/
+
+%:
+	dh $@
+
+override_dh_auto_clean:
+	rm -rf ${NNFW_WORKSPACE}
+
+override_dh_clean:
+	dh_clean $@
+ifeq ($(TRIX_PKG),1)
+	cp debian/control.trix debian/control
+else
+	cp debian/control.default debian/control
+endif
+
+override_dh_auto_configure:
+	test -d externals || mkdir -p externals
+	find packaging/ -type f -name "*.tar.gz" | xargs -i tar xf {} -C externals
+	mkdir -p $(NNFW_WORKSPACE)
+	./nnfw configure -DCMAKE_BUILD_TYPE=Release -DEXTERNALS_BUILD_THREADS=$(NPROC) \
+	  -DDOWNLOAD_GTEST=OFF -DENABLE_TEST=OFF \
+		-DBUILD_PYTHON_BINDING=OFF -DBUILD_MINIMAL_SAMPLE=OFF
+
+override_dh_auto_build:
+	./nnfw build -j$(NPROC)
+
+override_dh_auto_install:
+	./nnfw install --prefix $(NNFW_INSTALL_PREFIX) --strip
+
+override_dh_install:
+	install -d $(NNFW_INSTALL_PREFIX)/lib/pkgconfig
+	install -m 0644 packaging/onert.pc.in -T $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert.pc
+	install -m 0644 packaging/onert-plugin.pc.in -T $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert-plugin.pc
+	sed -i 's:@libdir@:\/usr\/lib:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert.pc
+	sed -i 's:@includedir@:\/usr\/include:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert.pc
+	sed -i 's:@version@:${DEBVER}:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert.pc
+	sed -i 's:@libdir@:\/usr\/lib:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert-plugin.pc
+	sed -i 's:@includedir@:\/usr\/include:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert-plugin.pc
+	sed -i 's:@version@:${DEBVER}:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert-plugin.pc
+	dh_install

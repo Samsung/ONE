@@ -1,0 +1,66 @@
+# Generate root file system for CI/CD cross build
+name: 'Generate RootFS'
+
+on:
+  pull_request:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/generate-rootfs.yml'
+      - 'tools/cross/**'
+  push:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/generate-rootfs.yml'
+      - 'tools/cross/**'
+  schedule:
+    # Every 1st day of the month at midnight (KST, UTC+9:00)
+    - cron: '0 15 1 * *'
+  workflow_dispatch:
+
+# Cancel previous running jobs when pull request is updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  gen-rootfs:
+    if: github.repository_owner == 'Samsung'
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        os: [ focal, jammy, noble ]
+        arch: [ arm, aarch64 ]
+      fail-fast: false
+
+    steps:
+      - name: Install qemu
+        uses: docker/setup-qemu-action@v3
+
+      - name: Install debootstrap
+        run: sudo apt-get update && sudo apt-get install -y debootstrap
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate RootFS
+        run: |
+          pushd tools/cross
+          sudo ./install_rootfs.sh ${{ matrix.arch }} ${{ matrix.os }} --skipunmount
+          sudo umount --recursive rootfs || true
+          sudo chown -R $(id -u):$(id -g) rootfs/${{ matrix.arch }}
+          tar -zcvf rootfs_${{ matrix.arch }}_${{ matrix.os }}.tar.gz -C rootfs \
+            ${{ matrix.arch }}/usr ${{ matrix.arch }}/etc
+          popd
+          mv tools/cross/rootfs_${{ matrix.arch }}_${{ matrix.os }}.tar.gz .
+
+      - name: Archive RootFS for PR
+        uses: actions/upload-artifact@v4
+        with:
+          name: rootfs_${{ matrix.arch }}_${{ matrix.os }}
+          # Set short-lived artifacts for PRs only to avoid cluttering the storage.
+          retention-days: ${{ github.event_name == 'pull_request' && '3' || '60' }}
+          path: rootfs_${{ matrix.arch }}_${{ matrix.os }}.tar.gz

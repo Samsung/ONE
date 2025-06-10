@@ -19,11 +19,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 class TrainableBackendContext;
@@ -35,8 +31,6 @@ struct ITrainableBackend
   virtual std::unique_ptr<TrainableBackendContext> newContext(TrainableContextData &&) const = 0;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_ITRAINABLE_BACKEND_H__

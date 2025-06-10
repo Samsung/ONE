@@ -91,7 +91,7 @@ eval(MaxPool2D_000)
 eval(MaxPool2D_U8_000)
 eval(Mean_000)
 eval(Mean_001)
-eval(Mean_U8_000)
+#eval(Mean_U8_000) --> test with tolerance
 eval(Minimum_000)
 eval(MirrorPad_000)
 eval(Mul_000)
@@ -207,5 +207,7 @@ eval(SVDF_001 8e-3 8e-3)
 # TODO fix Conv2D_U8_000 to test without tolerenace
 # refer https://github.com/Samsung/ONE/issues/11255#issuecomment-1685424361
 eval(Conv2D_U8_000 5 5)
+# refer https://github.com/Samsung/ONE/issues/15329
+eval(Mean_U8_000 1 1)
 # refer https://github.com/Samsung/ONE/issues/10438
 eval(YUV_TO_RGB_U8_000 1 1)

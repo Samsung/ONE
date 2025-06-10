@@ -1,0 +1,13 @@
+# To check if this network is converted to circle InstanceNorm op
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "INSTANCE_NORM_EXIST"     $(op_count INSTANCE_NORM) '=' 1
+RULE    "NO_ADD"                  $(op_count ADD) '=' 0
+RULE    "NO_MUL"                  $(op_count MUL) '=' 0
+RULE    "NO_POW"                  $(op_count POW) '=' 0
+RULE    "NO_DIV"                  $(op_count DIV) '=' 0
+RULE    "NO_SQUARED_DIFF"         $(op_count SQUARED_DIFFERENCE) '=' 0
+RULE    "NO_MEAN"                 $(op_count MEAN) '=' 0
+RULE    "NO_RSQRT"                $(op_count RSQRT) '=' 0
+RULE    "NO_SUB"                  $(op_count SUB) '=' 0

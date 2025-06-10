@@ -32,12 +32,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('graph_def', type=str, help='path to graph_def (pb)')
     parser.add_argument('input_names', type=str, help='input tensor names separated by ,')
-    parser.add_argument(
-        'output_names', type=str, help='output tensor names separated by ,')
-    parser.add_argument(
-        'graph_outname', type=str, help='graph_def base name for selected subgraph')
-    parser.add_argument(
-        '-o', '--output', action='store', dest="out_dir", help="output directory")
+    parser.add_argument('output_names',
+                        type=str,
+                        help='output tensor names separated by ,')
+    parser.add_argument('graph_outname',
+                        type=str,
+                        help='graph_def base name for selected subgraph')
+    parser.add_argument('-o',
+                        '--output',
+                        action='store',
+                        dest="out_dir",
+                        help="output directory")
     args = parser.parse_args()
 
     filename = args.graph_def

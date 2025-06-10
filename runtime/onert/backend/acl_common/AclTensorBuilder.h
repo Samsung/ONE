@@ -32,11 +32,7 @@
 #include <memory>
 #include <queue>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor> class AclTensorBuilder
@@ -107,9 +103,7 @@ private:
   ir::OperandIndexMap<cl_common::ParentInfo> _parent_map;
 };
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #include <cassert>
 #include <stack>
@@ -118,11 +112,7 @@ private:
 
 #include "util/logging.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 template <typename T_ITensor, typename T_Tensor, typename T_SubTensor>
@@ -327,8 +317,6 @@ AclTensorBuilder<T_ITensor, T_Tensor, T_SubTensor>::findRootParent(ir::OperandIn
   return findRootParent(parent_ind);
 }
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_TEMPL_TENSOR_BUILDER_H__

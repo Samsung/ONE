@@ -17,11 +17,7 @@
 #include "ir/operation/BCQGather.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void BCQGather::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ BCQGather::BCQGather(const OperandIndexSequence &inputs, const OperandIndexSeque
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

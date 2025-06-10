@@ -22,13 +22,7 @@
 
 #include <exec/train/ITrainableFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 enum class ElementwiseActivationType
@@ -58,9 +52,6 @@ private:
     _backward_kernel;
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_ELEMENTWISEACTIVATIONLAYER_H__

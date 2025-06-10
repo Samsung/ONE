@@ -7,10 +7,10 @@ endif
 
 # libnnfw
 include $(CLEAR_VARS)
-LOCAL_MODULE := nnfw-dev
-PREBUILT_LIB += nnfw-dev
+LOCAL_MODULE := onert
+PREBUILT_LIB += onert
 LOCAL_SRC_FILES := \
-		$(ONERT_PREBUILT_LIB_DIR)/libnnfw-dev.so
+		$(ONERT_PREBUILT_LIB_DIR)/libonert.so
 include $(PREBUILT_SHARED_LIBRARY)
 
 # libonert_core
@@ -18,7 +18,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := onert_core
 PREBUILT_LIB += onert_core
 LOCAL_SRC_FILES := \
-		$(ONERT_PREBUILT_LIB_DIR)/libonert_core.so
+		$(ONERT_PREBUILT_LIB_DIR)/nnfw/libonert_core.so
 include $(PREBUILT_SHARED_LIBRARY)
 
 # backend_cpu

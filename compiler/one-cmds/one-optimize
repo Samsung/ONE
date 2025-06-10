@@ -40,11 +40,10 @@ def _get_parser():
     ## utility arguments
     utility_group = parser.add_argument_group('arguments for utility')
 
-    utility_group.add_argument(
-        '-p',
-        '--generate_profile_data',
-        action='store_true',
-        help='generate profiling data')
+    utility_group.add_argument('-p',
+                               '--generate_profile_data',
+                               action='store_true',
+                               help='generate profiling data')
 
     utility_group.add_argument(
         '--change_outputs',
@@ -55,10 +54,14 @@ def _get_parser():
     circle2circle_group = parser.add_argument_group('arguments for optimization')
 
     # input and output path.
-    circle2circle_group.add_argument(
-        '-i', '--input_path', type=str, help='full filepath of the input file')
-    circle2circle_group.add_argument(
-        '-o', '--output_path', type=str, help='full filepath of the output file')
+    circle2circle_group.add_argument('-i',
+                                     '--input_path',
+                                     type=str,
+                                     help='full filepath of the input file')
+    circle2circle_group.add_argument('-o',
+                                     '--output_path',
+                                     type=str,
+                                     help='full filepath of the output file')
 
     # optimization pass
     for opt in _constant.CONSTANT.OPTIMIZATION_OPTS:

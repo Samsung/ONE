@@ -16,14 +16,11 @@
 
 #include "backend/ITensor.h"
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 
 // `dynamic_cast` not working across library boundaries on NDK
 // With this as a key function, `dynamic_cast` works across dl
 ITensor::~ITensor() {}
 
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend

@@ -21,13 +21,7 @@
 
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 class ResizeBilinearLayer : public ::onert::exec::IFunction
@@ -54,9 +48,6 @@ private:
   bool _half_pixel_centers;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_RESIZEBILINEAR_H__

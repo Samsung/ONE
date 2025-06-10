@@ -21,28 +21,22 @@
 
 #include <string>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
-class MemoryPlannerFactory
+template <typename Index> class MemoryPlannerFactory
 {
 public:
-  static MemoryPlannerFactory &get();
+  static MemoryPlannerFactory<Index> &get();
 
 private:
   MemoryPlannerFactory() = default;
 
 public:
   // Currently, only the memory planner for DisposableTensor is supported
-  basic::IMemoryPlanner<DisposableTensorIndex> *create(const std::string &key);
+  basic::IMemoryPlanner<Index> *create(std::string_view key);
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_MEMORY_PLANNER_FACTORY_H__

@@ -20,13 +20,7 @@
 
 #include <cker/operation/Reverse.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 void ReverseLayer::run()
@@ -61,7 +55,4 @@ void ReverseLayer::configure(const IPortableTensor *input, const IPortableTensor
   _output = output;
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

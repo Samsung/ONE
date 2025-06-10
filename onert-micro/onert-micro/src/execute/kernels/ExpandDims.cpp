@@ -20,7 +20,15 @@ using namespace onert_micro;
 using namespace onert_micro::execute;
 
 // NOTE: doesnt currently support dynamic shapes
-OMStatus onert_micro::execute::execute_kernel_CircleExpandDims(const OMExecuteArgs &execute_args)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_kernel_CircleExpandDims(const OMExecuteArgs &execute_args)
 {
   return execute_reshape_common(execute_args);
 }
+
+} // namespace execute
+} // namespace onert_micro

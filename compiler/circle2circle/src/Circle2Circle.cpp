@@ -118,6 +118,10 @@ int entry(int argc, char **argv)
              "This will fuse Mul operation with a preceding Conv if possible.");
   add_switch(arser, "--fuse_mul_with_div",
              "This will fuse Mul operation with a Div operation whose numerator is const.");
+  add_switch(arser, "--fuse_mul_with_fullyconnected",
+             "This will fuse Mul operator with a preceding FullyConnected operator.");
+  add_switch(arser, "--fuse_rmsnorm", "This will fuse operators to RmsNorm operator");
+  add_switch(arser, "--fuse_rope", "This will fuse operators to rope operator");
   add_switch(arser, "--fuse_slice_with_tconv",
              "This will fuse Slice operation with a preceding TConv if possible.");
   add_switch(arser, "--fuse_transpose_with_mean",
@@ -146,6 +150,8 @@ int entry(int argc, char **argv)
              "This will fuse or remove subsequent Transpose operators");
   add_switch(arser, "--remove_unnecessary_add",
              "This will remove unnecessary add of zero constant");
+  add_switch(arser, "--remove_unnecessary_cast",
+             "This will remove unnecessary cast with the same input and output type.");
   add_switch(arser, "--remove_unnecessary_reshape",
              "This will remove unnecessary reshape operators");
   add_switch(arser, "--remove_unnecessary_slice", "This will remove unnecessary slice operators");
@@ -175,6 +181,8 @@ int entry(int argc, char **argv)
              "it only converts weights whose row is a multiple of 16");
   add_switch(arser, "--replace_non_const_fc_with_batch_matmul",
              "Replace FullyConnected with BatchMatMul when its weight is non-constant");
+  add_switch(arser, "--substitute_expand_dims_to_reshape",
+             "This will convert ExpandDims with constant axis to Reshape");
   add_switch(arser, "--substitute_pack_to_reshape",
              "This will convert single input Pack to Reshape");
   add_switch(arser, "--substitute_padv2_to_pad",
@@ -260,162 +268,101 @@ int entry(int argc, char **argv)
     return 255;
   }
 
+  // clang-format off
+  std::map<std::string /* option string */, Algorithms /* option enum */> option_str_to_enum;
+  option_str_to_enum["fold_add_v2"] = Algorithms::FoldAddV2;
+  option_str_to_enum["fold_cast"] = Algorithms::FoldCast;
+  option_str_to_enum["fold_densify"] = Algorithms::FoldDensify;
+  option_str_to_enum["fold_dequantize"] = Algorithms::FoldDequantize;
+  option_str_to_enum["fold_dwconv"] = Algorithms::FoldDepthwiseConv2D;
+  option_str_to_enum["fold_fully_connected"] = Algorithms::FoldFullyConnected;
+  option_str_to_enum["fold_gather"] = Algorithms::FoldGather;
+  option_str_to_enum["fold_mul"] = Algorithms::FoldMul;
+  option_str_to_enum["fold_reshape"] = Algorithms::FoldReshape;
+  option_str_to_enum["fold_shape"] = Algorithms::FoldShape;
+  option_str_to_enum["fold_sparse_to_dense"] = Algorithms::FoldSparseToDense;
+  option_str_to_enum["fold_squeeze"] = Algorithms::FoldSqueeze;
+  option_str_to_enum["forward_reshape_to_unaryop"] = Algorithms::ForwardReshapeToUnaryOp;
+  option_str_to_enum["forward_transpose_op"] = Algorithms::ForwardTransposeOp;
+  option_str_to_enum["fuse_activation_function"] = Algorithms::FuseActivationFunction;
+  option_str_to_enum["fuse_horizontal_fc_layers"] = Algorithms::FuseHorizontalFullyConnected;
+  option_str_to_enum["fuse_batchnorm_with_conv"] = Algorithms::FuseBatchNormWithConv;
+  option_str_to_enum["fuse_add_to_fullyconnected_bias"] = Algorithms::FuseAddToFullyConnectedBias;
+  option_str_to_enum["fuse_add_with_conv"] = Algorithms::FuseAddWithConv;
+  option_str_to_enum["fuse_add_with_fully_connected"] = Algorithms::FuseAddWithFullyConnected;
+  option_str_to_enum["fuse_add_with_tconv"] = Algorithms::FuseAddWithTConv;
+  option_str_to_enum["fuse_batchnorm_with_dwconv"] = Algorithms::FuseBatchNormWithDwConv;
+  option_str_to_enum["fuse_batchnorm_with_tconv"] = Algorithms::FuseBatchNormWithTConv;
+  option_str_to_enum["fuse_mul_to_fullyconnected_weights"] = Algorithms::FuseMulToFullyConnectedWeights;
+  option_str_to_enum["fuse_slice_with_tconv"] = Algorithms::FuseSliceWithTConv;
+  option_str_to_enum["fuse_bcq"] = Algorithms::FuseBCQ;
+  option_str_to_enum["fuse_instnorm"] = Algorithms::FuseInstanceNorm;
+  option_str_to_enum["fuse_mean_with_mean"] = Algorithms::FuseMeanWithMean;
+  option_str_to_enum["fuse_mul_with_conv"] = Algorithms::FuseMulWithConv;
+  option_str_to_enum["fuse_mul_with_div"] = Algorithms::FuseMulWithDiv;
+  option_str_to_enum["fuse_mul_with_fullyconnected"] = Algorithms::FuseMulWithFullyConnected;
+  option_str_to_enum["make_batchnorm_gamma_positive"] = Algorithms::MakeBatchNormGammaPositive;
+  option_str_to_enum["fuse_preactivation_batchnorm"] = Algorithms::FusePreActivationBatchNorm;
+  option_str_to_enum["fuse_prelu"] = Algorithms::FusePRelu;
+  option_str_to_enum["fuse_gelu"] = Algorithms::FuseGelu;
+  option_str_to_enum["fuse_rmsnorm"] = Algorithms::FuseRmsNorm;
+  option_str_to_enum["fuse_rope"] = Algorithms::FuseRoPE;
+  option_str_to_enum["fuse_rsqrt"] = Algorithms::FuseRsqrt;
+  option_str_to_enum["fuse_transpose_with_mean"] = Algorithms::FuseTransposeWithMean;
+  option_str_to_enum["remove_duplicate_const"] = Algorithms::RemoveDuplicateConst;
+  option_str_to_enum["remove_fakequant"] = Algorithms::RemoveFakeQuant;
+  option_str_to_enum["remove_gather_guard"] = Algorithms::RemoveGatherGuard;
+  option_str_to_enum["remove_qdq_for_mpo"] = Algorithms::RemoveQDQForMixedPrecisionOp;
+  option_str_to_enum["remove_quantdequant"] = Algorithms::RemoveQuantDequantSeq;
+  option_str_to_enum["remove_redundant_quantize"] = Algorithms::RemoveRedundantQuantize;
+  option_str_to_enum["remove_redundant_reshape"] = Algorithms::RemoveRedundantReshape;
+  option_str_to_enum["remove_redundant_transpose"] = Algorithms::RemoveRedundantTranspose;
+  option_str_to_enum["remove_unnecessary_add"] = Algorithms::RemoveUnnecessaryAdd;
+  option_str_to_enum["remove_unnecessary_cast"] = Algorithms::RemoveUnnecessaryCast;
+  option_str_to_enum["remove_unnecessary_reshape"] = Algorithms::RemoveUnnecessaryReshape;
+  option_str_to_enum["remove_unnecessary_slice"] = Algorithms::RemoveUnnecessarySlice;
+  option_str_to_enum["remove_unnecessary_strided_slice"] = Algorithms::RemoveUnnecessaryStridedSlice;
+  option_str_to_enum["remove_unnecessary_split"] = Algorithms::RemoveUnnecessarySplit;
+  option_str_to_enum["remove_unnecessary_transpose"] = Algorithms::RemoveUnnecessaryTranspose;
+  option_str_to_enum["replace_cw_mul_add_with_depthwise_conv"] = Algorithms::ReplaceMulAddWithDepthwiseConv;
+  option_str_to_enum["replace_sub_with_add"] = Algorithms::ReplaceSubWithAdd;
+  option_str_to_enum["replace_with_fc_gelu_fc"] = Algorithms::ReplaceWithFCGeluFC;
+  option_str_to_enum["resolve_customop_add"] = Algorithms::ResolveCustomOpAdd;
+  option_str_to_enum["resolve_customop_batchmatmul"] = Algorithms::ResolveCustomOpBatchMatMul;
+  option_str_to_enum["resolve_customop_matmul"] = Algorithms::ResolveCustomOpMatMul;
+  option_str_to_enum["resolve_customop_max_pool_with_argmax"] = Algorithms::ResolveCustomOpMaxPoolWithArgmax;
+  option_str_to_enum["resolve_customop_splitv"] = Algorithms::ResolveCustomOpSplitV;
+  option_str_to_enum["resolve_former_customop"] = Algorithms::ResolveFormerCustomOp;
+  option_str_to_enum["shuffle_weight_to_16x1float32"] = Algorithms::ShuffleWeightTo16x1Float32;
+  option_str_to_enum["replace_non_const_fc_with_batch_matmul"] = Algorithms::ReplaceNonConstFCWithBatchMatMul;
+  option_str_to_enum["substitute_expand_dims_to_reshape"] = Algorithms::SubstituteExpandDimsToReshape;
+  option_str_to_enum["substitute_pack_to_reshape"] = Algorithms::SubstitutePackToReshape;
+  option_str_to_enum["substitute_padv2_to_pad"] = Algorithms::SubstitutePadV2ToPad;
+  option_str_to_enum["substitute_splitv_to_split"] = Algorithms::SubstituteSplitVToSplit;
+  option_str_to_enum["substitute_squeeze_to_reshape"] = Algorithms::SubstituteSqueezeToReshape;
+  option_str_to_enum["substitute_strided_slice_to_reshape"] = Algorithms::SubstituteStridedSliceToReshape;
+  option_str_to_enum["substitute_transpose_to_reshape"] = Algorithms::SubstituteTransposeToReshape;
+  option_str_to_enum["transform_min_max_to_relu6"] = Algorithms::TransformMinMaxToRelu6Pass;
+  option_str_to_enum["transform_min_relu_to_relu6"] = Algorithms::TransformMinReluToRelu6Pass;
+  option_str_to_enum["transform_sqrt_div_to_rsqrt_mul"] = Algorithms::TransformSqrtDivToRsqrtMul;
+  option_str_to_enum["common_subexpression_elimination"] = Algorithms::CommonSubExpressionElimination;
+  option_str_to_enum["decompose_hardswish"] = Algorithms::DecomposeHardSwishPass;
+  option_str_to_enum["decompose_softmax"] = Algorithms::DecomposeSoftmaxPass;
+  option_str_to_enum["expand_broadcast_const"] = Algorithms::ExpandBroadcastConst;
+  option_str_to_enum["unroll_unidirseqlstm"] = Algorithms::UnrollUnidirSeqLSTM;
+  // clang-format on
+
   if (arser.get<bool>("--verbose"))
   {
     // The third parameter of setenv means REPLACE.
     // If REPLACE is zero, it does not overwrite an existing value.
     setenv("LUCI_LOG", "100", 0);
   }
-  if (arser.get<bool>("--fold_add_v2"))
-    options->enable(Algorithms::FoldAddV2);
-  if (arser.get<bool>("--fold_cast"))
-    options->enable(Algorithms::FoldCast);
-  if (arser.get<bool>("--fold_densify"))
-    options->enable(Algorithms::FoldDensify);
-  if (arser.get<bool>("--fold_dequantize"))
-    options->enable(Algorithms::FoldDequantize);
-  if (arser.get<bool>("--fold_dwconv"))
-    options->enable(Algorithms::FoldDepthwiseConv2D);
-  if (arser.get<bool>("--fold_fully_connected"))
-    options->enable(Algorithms::FoldFullyConnected);
-  if (arser.get<bool>("--fold_gather"))
-    options->enable(Algorithms::FoldGather);
-  if (arser.get<bool>("--fold_mul"))
-    options->enable(Algorithms::FoldMul);
-  if (arser.get<bool>("--fold_reshape"))
-    options->enable(Algorithms::FoldReshape);
-  if (arser.get<bool>("--fold_shape"))
-    options->enable(Algorithms::FoldShape);
-  if (arser.get<bool>("--fold_sparse_to_dense"))
-    options->enable(Algorithms::FoldSparseToDense);
-  if (arser.get<bool>("--fold_squeeze"))
-    options->enable(Algorithms::FoldSqueeze);
-  if (arser.get<bool>("--forward_reshape_to_unaryop"))
-    options->enable(Algorithms::ForwardReshapeToUnaryOp);
-  if (arser.get<bool>("--forward_transpose_op"))
-    options->enable(Algorithms::ForwardTransposeOp);
-  if (arser.get<bool>("--fuse_activation_function"))
-    options->enable(Algorithms::FuseActivationFunction);
-  if (arser.get<bool>("--fuse_horizontal_fc_layers"))
-    options->enable(Algorithms::FuseHorizontalFullyConnected);
-  if (arser.get<bool>("--fuse_batchnorm_with_conv"))
-    options->enable(Algorithms::FuseBatchNormWithConv);
-  if (arser.get<bool>("--fuse_add_to_fullyconnected_bias"))
-    options->enable(Algorithms::FuseAddToFullyConnectedBias);
-  if (arser.get<bool>("--fuse_add_with_conv"))
-    options->enable(Algorithms::FuseAddWithConv);
-  if (arser.get<bool>("--fuse_add_with_fully_connected"))
-    options->enable(Algorithms::FuseAddWithFullyConnected);
-  if (arser.get<bool>("--fuse_add_with_tconv"))
-    options->enable(Algorithms::FuseAddWithTConv);
-  if (arser.get<bool>("--fuse_batchnorm_with_dwconv"))
-    options->enable(Algorithms::FuseBatchNormWithDwConv);
-  if (arser.get<bool>("--fuse_batchnorm_with_tconv"))
-    options->enable(Algorithms::FuseBatchNormWithTConv);
-  if (arser.get<bool>("--fuse_mul_to_fullyconnected_weights"))
-    options->enable(Algorithms::FuseMulToFullyConnectedWeights);
-  if (arser.get<bool>("--fuse_slice_with_tconv"))
-    options->enable(Algorithms::FuseSliceWithTConv);
-  if (arser.get<bool>("--fuse_bcq"))
-    options->enable(Algorithms::FuseBCQ);
-  if (arser.get<bool>("--fuse_instnorm"))
-    options->enable(Algorithms::FuseInstanceNorm);
-  if (arser.get<bool>("--fuse_mean_with_mean"))
-    options->enable(Algorithms::FuseMeanWithMean);
-  if (arser.get<bool>("--fuse_mul_with_conv"))
-    options->enable(Algorithms::FuseMulWithConv);
-  if (arser.get<bool>("--fuse_mul_with_div"))
-    options->enable(Algorithms::FuseMulWithDiv);
-  if (arser.get<bool>("--make_batchnorm_gamma_positive"))
-    options->enable(Algorithms::MakeBatchNormGammaPositive);
-  if (arser.get<bool>("--fuse_preactivation_batchnorm"))
-    options->enable(Algorithms::FusePreActivationBatchNorm);
-  if (arser.get<bool>("--fuse_prelu"))
-    options->enable(Algorithms::FusePRelu);
-  if (arser.get<bool>("--fuse_gelu"))
-    options->enable(Algorithms::FuseGelu);
-  if (arser.get<bool>("--fuse_rsqrt"))
-    options->enable(Algorithms::FuseRsqrt);
-  if (arser.get<bool>("--fuse_transpose_with_mean"))
-    options->enable(Algorithms::FuseTransposeWithMean);
-  if (arser.get<bool>("--remove_duplicate_const"))
-    options->enable(Algorithms::RemoveDuplicateConst);
-  if (arser.get<bool>("--remove_fakequant"))
-    options->enable(Algorithms::RemoveFakeQuant);
-  if (arser.get<bool>("--remove_gather_guard"))
-    options->enable(Algorithms::RemoveGatherGuard);
-  if (arser.get<bool>("--remove_qdq_for_mpo"))
-    options->enable(Algorithms::RemoveQDQForMixedPrecisionOp);
-  if (arser.get<bool>("--remove_quantdequant"))
-    options->enable(Algorithms::RemoveQuantDequantSeq);
-  if (arser.get<bool>("--remove_redundant_quantize"))
-    options->enable(Algorithms::RemoveRedundantQuantize);
-  if (arser.get<bool>("--remove_redundant_reshape"))
-    options->enable(Algorithms::RemoveRedundantReshape);
-  if (arser.get<bool>("--remove_redundant_transpose"))
-    options->enable(Algorithms::RemoveRedundantTranspose);
-  if (arser.get<bool>("--remove_unnecessary_add"))
-    options->enable(Algorithms::RemoveUnnecessaryAdd);
-  if (arser.get<bool>("--remove_unnecessary_reshape"))
-    options->enable(Algorithms::RemoveUnnecessaryReshape);
-  if (arser.get<bool>("--remove_unnecessary_slice"))
-    options->enable(Algorithms::RemoveUnnecessarySlice);
-  if (arser.get<bool>("--remove_unnecessary_strided_slice"))
-    options->enable(Algorithms::RemoveUnnecessaryStridedSlice);
-  if (arser.get<bool>("--remove_unnecessary_split"))
-    options->enable(Algorithms::RemoveUnnecessarySplit);
-  if (arser.get<bool>("--remove_unnecessary_transpose"))
-    options->enable(Algorithms::RemoveUnnecessaryTranspose);
-  if (arser.get<bool>("--replace_cw_mul_add_with_depthwise_conv"))
-    options->enable(Algorithms::ReplaceMulAddWithDepthwiseConv);
-  if (arser.get<bool>("--replace_sub_with_add"))
-    options->enable(Algorithms::ReplaceSubWithAdd);
-  if (arser.get<bool>("--replace_with_fc_gelu_fc"))
-    options->enable(Algorithms::ReplaceWithFCGeluFC);
-  if (arser.get<bool>("--resolve_customop_add"))
-    options->enable(Algorithms::ResolveCustomOpAdd);
-  if (arser.get<bool>("--resolve_customop_batchmatmul"))
-    options->enable(Algorithms::ResolveCustomOpBatchMatMul);
-  if (arser.get<bool>("--resolve_customop_matmul"))
-    options->enable(Algorithms::ResolveCustomOpMatMul);
-  if (arser.get<bool>("--resolve_customop_max_pool_with_argmax"))
-    options->enable(Algorithms::ResolveCustomOpMaxPoolWithArgmax);
-  if (arser.get<bool>("--resolve_customop_splitv"))
-    options->enable(Algorithms::ResolveCustomOpSplitV);
-  if (arser.get<bool>("--resolve_former_customop"))
-    options->enable(Algorithms::ResolveFormerCustomOp);
-  if (arser.get<bool>("--shuffle_weight_to_16x1float32"))
-    options->enable(Algorithms::ShuffleWeightTo16x1Float32);
-  if (arser.get<bool>("--replace_non_const_fc_with_batch_matmul"))
-    options->enable(Algorithms::ReplaceNonConstFCWithBatchMatMul);
-  if (arser.get<bool>("--substitute_pack_to_reshape"))
-    options->enable(Algorithms::SubstitutePackToReshape);
-  if (arser.get<bool>("--substitute_padv2_to_pad"))
-    options->enable(Algorithms::SubstitutePadV2ToPad);
-  if (arser.get<bool>("--substitute_splitv_to_split"))
-    options->enable(Algorithms::SubstituteSplitVToSplit);
-  if (arser.get<bool>("--substitute_squeeze_to_reshape"))
-    options->enable(Algorithms::SubstituteSqueezeToReshape);
-  if (arser.get<bool>("--substitute_strided_slice_to_reshape"))
-    options->enable(Algorithms::SubstituteStridedSliceToReshape);
-  if (arser.get<bool>("--substitute_transpose_to_reshape"))
-    options->enable(Algorithms::SubstituteTransposeToReshape);
-  if (arser.get<bool>("--transform_min_max_to_relu6"))
-    options->enable(Algorithms::TransformMinMaxToRelu6Pass);
-  if (arser.get<bool>("--transform_min_relu_to_relu6"))
-    options->enable(Algorithms::TransformMinReluToRelu6Pass);
-  if (arser.get<bool>("--transform_sqrt_div_to_rsqrt_mul"))
-    options->enable(Algorithms::TransformSqrtDivToRsqrtMul);
-  if (arser.get<bool>("--common_subexpression_elimination"))
-    options->enable(Algorithms::CommonSubExpressionElimination);
-  if (arser.get<bool>("--decompose_hardswish"))
-    options->enable(Algorithms::DecomposeHardSwishPass);
-  if (arser.get<bool>("--decompose_softmax"))
-    options->enable(Algorithms::DecomposeSoftmaxPass);
-  if (arser.get<bool>("--expand_broadcast_const"))
-    options->enable(Algorithms::ExpandBroadcastConst);
-  if (arser.get<bool>("--unroll_unidirseqlstm"))
-    options->enable(Algorithms::UnrollUnidirSeqLSTM);
+  for (auto const &x : option_str_to_enum)
+  {
+    if (arser.get<bool>("--" + x.first))
+      options->enable(x.second);
+  }
 
   // NOTE Experimental options; these will be removed someday
   //      Add experimental options here

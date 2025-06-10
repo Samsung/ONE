@@ -18,13 +18,7 @@
 #include <arm_compute/runtime/MemoryRegion.h>
 #include "NETensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
-{
-namespace operand
+namespace onert::backend::acl_neon::operand
 {
 
 NETensor::NETensor(const arm_compute::TensorInfo &info, size_t rank, size_t num_uses)
@@ -39,7 +33,4 @@ arm_compute::Tensor *NETensor::handle() { return _ne_tensor.get(); }
 
 arm_compute::TensorAllocator *NETensor::allocator() { return _ne_tensor->allocator(); }
 
-} // namespace operand
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon::operand

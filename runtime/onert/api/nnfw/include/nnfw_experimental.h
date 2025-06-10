@@ -237,7 +237,13 @@ typedef struct nnfw_train_info
   float learning_rate = 0.001f;
   /** Batch size */
   uint32_t batch_size = 1;
-  /** loss info */
+  /** loss info
+   * Note that you don't need to worry about whether the model you use does not include softmax
+   * when you try to use NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY. Using
+   * NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY will ensure that the predicted input of loss is
+   * the result of performing softmax once regardless of whether the output of the model is
+   * the result of softmax or not.
+   */
   nnfw_loss_info loss_info{.loss = NNFW_TRAIN_LOSS_MEAN_SQUARED_ERROR,
                            .reduction_type = NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE};
   /** optimizer type */
@@ -374,6 +380,28 @@ NNFW_STATUS nnfw_train_get_loss(nnfw_session *session, uint32_t index, float *lo
  * @return @c NNFW_STATUS_NO_ERROR if successful
  */
 NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path);
+
+/**
+ * @brief Import circle checkpoint
+ * @note  This function should be called on training mode
+ *        This function should be called before {@link nnfw_train}
+ *
+ * @param[in] session The session to export a checkpoint
+ * @param[in] path    The path to export a checkpoint
+ * @return @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_train_import_checkpoint(nnfw_session *session, const char *path);
+
+/**
+ * @brief Export circle checkpoint
+ * @note  This function should be called on training mode
+ *        This function should be called after {@link nnfw_train}
+ *
+ * @param[in] session The session to export a checkpoint
+ * @param[in] path    The path to export a checkpoint
+ * @return @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_train_export_checkpoint(nnfw_session *session, const char *path);
 
 //////////////////////////////////////////////
 // Optional APIs for training
@@ -530,6 +558,58 @@ NNFW_STATUS nnfw_set_codegen_model_path(nnfw_session *session, const char *path)
  */
 NNFW_STATUS nnfw_codegen(nnfw_session *session, const char *target, NNFW_CODEGEN_PREF pref);
 
+/**
+ * @brief  Set MinMax records count in auto compilation mode with on-device compiler
+ *
+ * This function set MinMax records count for quantization in auto compilation mode.
+ * To enable automatic compilation mode, use  {@link nnfw_run_with_auto_compilation}
+ *
+ * @param[in] session nnfw_session
+ * @param[in] minmax_records_count    minmax records count
+ * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_set_odc_param_minmax_records_count(nnfw_session *session,
+                                                    int minmax_records_count);
+
+/**
+ * @brief  Delete MinMax file for on-device compiler
+ *
+ * @param[in] session nnfw_session
+ * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_odc_delete_minmax_file(nnfw_session *session);
+
+/**
+ * @brief  Run inference with auto compilation
+ *
+ * <p>This function runs inference with automatic compilation and replaces
+ *  the original model with a quantized or compiled model inside.
+ * During the inference the minmax statistics is collected and after that quantization is performed.
+ * If quantization was successful, try to code generating for target backend, otherwise run original
+ float model.
+ * If compilation was successful, run compiled model, otherwise run quantized model.
+ * On-device compiler (ODC) provides quantization and compilation functionality.
+ * Function should be called after model is loaded by {@link nnfw_load_model_from_file},
+ * session is prepared for inference by {@link nnfw_prepare}, set input and output buffers
+ * by {@link nnfw_set_input} and {@link nnfw_set_output}.
+ *
+ * Additionally the following parameters should be set up :
+ * 1. Quantization type {@link nnfw_set_quantization_type }
+ * 2. Quantizated model path {@link  nnfw_set_quantized_model_path }
+ * 3. Minmax records threshold for quantization {@link nnfw_set_odc_param_minmax_records_count }
+ * 3. File with minMax statistics can be removed by {@link nnfw_odc_delete_minmax_file}
+ * 4. Compiled model path {@link  nnfw_set_codegen_model_path}
+ * </p>
+ *
+ * @param[in] session nnfw_session
+ * @param[in] target  Target backend to generate code as in {@link nnfw_codegen}
+ * @param[in] pref @c NNFW_CODEGEN_PREF
+
+ * @return    @c NNFW_STATUS_NO_ERROR if successful, otherwise return @c NNFW_STATUS_ERROR
+ */
+NNFW_STATUS nnfw_run_with_auto_compilation(nnfw_session *session, const char *target,
+                                           NNFW_CODEGEN_PREF pref);
+
 //////////////////////////////////////////////
 // APIs for configuration
 //////////////////////////////////////////////
@@ -544,6 +624,10 @@ typedef enum
    * TODO: Use workspace
    */
   NNFW_PREPARE_CONFIG_PROFILE,
+  /**
+   * Enable internal allocation for model outputs instead of using external buffer
+   */
+  NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC,
 } NNFW_PREPARE_CONFIG;
 
 /**

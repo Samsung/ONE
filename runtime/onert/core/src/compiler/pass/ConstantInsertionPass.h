@@ -17,17 +17,13 @@
 #ifndef __ONERT_COMPILER_PASS_CONSTANT_INSERTION_PASS_H__
 #define __ONERT_COMPILER_PASS_CONSTANT_INSERTION_PASS_H__
 
-#include <compiler/PermuteFactor.h>
-#include <ir/Index.h>
 #include "LoweredOperationPass.h"
-#include <unordered_map>
-#include <utility>
+#include "backend/Backend.h"
+#include "ir/Index.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+#include <unordered_map>
+
+namespace onert::compiler::pass
 {
 
 class ConstantInsertionPass : public LoweredOperationPass
@@ -42,35 +38,10 @@ public:
   void callback(const ir::OperationIndex &index, ir::IOperation &node) final;
 
 private:
-  struct ReplaceKey
-  {
-    ir::OperandIndex index;
-    PermuteFactor factor;
-
-    bool operator==(const ReplaceKey &other) const
-    {
-      return index == other.index && factor == other.factor;
-    }
-  };
-
-  /**
-   * @brief Structure that provides hash function of ReplaceKey
-   */
-  struct KeyHasher
-  {
-    std::size_t operator()(const ReplaceKey &key) const noexcept
-    {
-      using std::hash;
-      return hash<ir::OperandIndex>()(key.index) ^ (hash<PermuteFactor>()(key.factor) << 1);
-    }
-  };
-
-  std::unordered_map<ReplaceKey, ir::OperandIndex, KeyHasher> _replace_operands_map;
-  std::unordered_map<ir::OperandIndex, PermuteFactor> _keep_operands_map;
+  std::unordered_map<const backend::Backend *, ir::OperandIndex> _replace_operands_map;
+  std::unordered_map<ir::OperandIndex, const backend::Backend *> _keep_operands_map;
 };
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass
 
 #endif // __ONERT_COMPILER_PASS_CONSTANT_INSERTION_PASS_H__

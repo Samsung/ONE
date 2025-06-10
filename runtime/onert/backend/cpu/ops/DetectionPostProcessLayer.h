@@ -21,13 +21,7 @@
 
 #include "OperationUtils.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 class DetectionPostProcessLayer : public ::onert::exec::IFunction
@@ -97,9 +91,6 @@ private:
   Allocations _allocations;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_DPP_H__

@@ -17,11 +17,7 @@
 #include "ir/operation/SpaceToDepth.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void SpaceToDepth::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ SpaceToDepth::SpaceToDepth(const OperandIndexSequence &inputs, const OperandInde
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

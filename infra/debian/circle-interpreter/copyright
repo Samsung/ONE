@@ -1,0 +1,13 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: circle-interpreter
+Source: https://github.com/Samsung/ONE
+Comment: These binaries are built from the ONE project.
+
+Files: *
+Copyright: 2025 Samsung Electronics., Ltd.
+License: Apache-2.0
+ This package is licensed under the Apache License, Version 2.0.
+ .
+ On Debian systems, the full text of the Apache License Version 2.0
+ can be found in:
+ /usr/share/common-licenses/Apache-2.0

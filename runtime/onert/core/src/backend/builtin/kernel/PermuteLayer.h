@@ -22,19 +22,14 @@
 
 #include <ruy/thread_pool.h> // from @ruy
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace kernel
+namespace onert::backend::builtin::kernel
 {
 
 class PermuteLayer : public onert::exec::IPermuteFunction
 {
 public:
   PermuteLayer(const std::vector<ITensor *> &src_tensors, const std::vector<ITensor *> &dst_tensors,
+               const std::vector<ir::PermuteType> &types,
                const std::shared_ptr<ExternalContext> &external_context);
 
   void optimize() override;
@@ -46,7 +41,8 @@ private:
 
 private:
   void appendPermuteTasks(const ITensor *src_tensor, ITensor *dst_tensor,
-                          const ir::Shape &loop_shape, size_t size);
+                          const ir::Shape &loop_shape, size_t size,
+                          const ir::PermuteType &permute_type);
 
   void runPermuteTasks(backend::ITensor *src, uint8_t *dst_buffer);
 
@@ -55,25 +51,23 @@ private:
     using Strides = ir::Coordinates;
 
     PermuteWorkerTask(const ITensor &src_tensor, ITensor &dst_tensor,
-                      const ir::Coordinates &start_coords, const ir::Shape &loop_shape, size_t size)
+                      const ir::Coordinates &start_coords, const ir::Shape &loop_shape, size_t size,
+                      const ir::PermuteType &permute_type)
       : _src_buffer{src_tensor.buffer()}, _dst_buffer{dst_tensor.buffer()},
         _src_start_offset{src_tensor.calcOffset(start_coords)},
         _dst_start_offset{dst_tensor.calcOffset(start_coords)}, _src_strides{}, _dst_strides{},
-        _loop_shape{loop_shape}, _size{size}, _src_layout{src_tensor.layout()},
-        _dst_layout{dst_tensor.layout()}, _is_permutation{true}
+        _loop_shape{loop_shape}, _size{size}, _permute_type{permute_type}
     {
       // Set strides
       setStrides(src_tensor, &_src_strides);
       setStrides(dst_tensor, &_dst_strides);
-
-      _is_permutation = (_src_layout != _dst_layout && loop_shape.rank() == 4);
     }
     // Constructor for a copy
     PermuteWorkerTask(const uint8_t *src_buffer, uint8_t *dst_buffer, uint32_t src_start_offset,
                       uint32_t dst_start_offset, size_t size)
       : _src_buffer{src_buffer}, _dst_buffer{dst_buffer}, _src_start_offset{src_start_offset},
         _dst_start_offset{dst_start_offset}, _src_strides{0}, _dst_strides{0}, _loop_shape{1},
-        _size{size}, _src_layout{}, _dst_layout{}, _is_permutation{false}
+        _size{size}, _permute_type{ir::PermuteType::COPY}
     {
       // DO NOTHING
     }
@@ -89,9 +83,9 @@ private:
         size_t dst_offset = _dst_start_offset;
         assert(static_cast<size_t>(_loop_shape.rank()) == coords.size());
         ir::Coordinates dst_coords = coords;
-        if (_is_permutation)
+        if (_permute_type != ir::PermuteType::COPY && _loop_shape.rank() == 4)
         {
-          dst_coords = ir::convertCoordinates(coords, _src_layout, _dst_layout);
+          dst_coords = ir::convertCoordinates(coords, _permute_type);
         }
         for (auto i = 0; i < _loop_shape.rank(); ++i)
         {
@@ -135,16 +129,11 @@ private:
     Strides _dst_strides;
     const ir::Shape _loop_shape;
     const size_t _size;
-    const ir::Layout _src_layout;
-    const ir::Layout _dst_layout;
-    bool _is_permutation;
+    const ir::PermuteType _permute_type;
   };
   std::unordered_map<const ITensor *, std::vector<PermuteWorkerTask>> _tasks_map;
 };
 
-} // namespace kernel
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::kernel
 
 #endif // __ONERT_BACKEND_BUILTIN_KERNEL_PERMUTELAYER_H__

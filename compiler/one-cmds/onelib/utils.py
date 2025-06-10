@@ -59,18 +59,16 @@ def one_cmd_list():
 
 def add_default_arg(parser):
     # version
-    parser.add_argument(
-        '-v',
-        '--version',
-        action='store_true',
-        help='show program\'s version number and exit')
+    parser.add_argument('-v',
+                        '--version',
+                        action='store_true',
+                        help='show program\'s version number and exit')
 
     # verbose
-    parser.add_argument(
-        '-V',
-        '--verbose',
-        action='store_true',
-        help='output additional information to stdout or stderr')
+    parser.add_argument('-V',
+                        '--verbose',
+                        action='store_true',
+                        help='output additional information to stdout or stderr')
 
     # configuration file
     parser.add_argument('-C', '--config', type=str, help='run with configuation file')
@@ -83,18 +81,16 @@ def add_default_arg_no_CS(parser):
     This adds -v -V args only (no -C nor -S)
     """
     # version
-    parser.add_argument(
-        '-v',
-        '--version',
-        action='store_true',
-        help='show program\'s version number and exit')
+    parser.add_argument('-v',
+                        '--version',
+                        action='store_true',
+                        help='show program\'s version number and exit')
 
     # verbose
-    parser.add_argument(
-        '-V',
-        '--verbose',
-        action='store_true',
-        help='output additional information to stdout or stderr')
+    parser.add_argument('-V',
+                        '--verbose',
+                        action='store_true',
+                        help='output additional information to stdout or stderr')
 
 
 def is_accumulated_arg(arg, driver):
@@ -187,6 +183,48 @@ def safemain(main, mainpath):
         sys.exit(255)
 
 
+def run_ret(cmd, *, one_cmd: str = None, err_prefix=None, logfile=None):
+    """Execute command in subprocess
+
+    Args:
+        one_cmd: subtool name to execute with given `cmd`
+        cmd: command to be executed in subprocess
+        err_prefix: prefix to be put before every stderr lines
+        logfile: file stream to which both of stdout and stderr lines will be written
+    Return:
+        Process execution return code; 0 if success and others for error.
+    """
+    if one_cmd:
+        assert one_cmd in one_cmd_list(), f'Invalid ONE COMMAND: {one_cmd}'
+        dir_path = os.path.dirname(os.path.dirname(
+            os.path.realpath(__file__)))  # bin = onelib/../
+        driver_path = os.path.join(dir_path, f'one-{one_cmd}')
+        cmd = [driver_path] + cmd
+
+    with subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as p:
+        import select
+        inputs = set([p.stdout, p.stderr])
+        while inputs:
+            readable, _, _ = select.select(inputs, [], [])
+            for x in readable:
+                line = x.readline()
+                if len(line) == 0:
+                    inputs.discard(x)
+                    continue
+                if x == p.stdout:
+                    out = sys.stdout
+                if x == p.stderr:
+                    out = sys.stderr
+                    if err_prefix:
+                        line = f"{err_prefix}: ".encode() + line
+                out.buffer.write(line)
+                out.buffer.flush()
+                if logfile != None:
+                    logfile.write(line)
+    return p.returncode
+
+
+# TODO make run call run_ret
 def run(cmd, *, one_cmd: str = None, err_prefix=None, logfile=None):
     """Execute command in subprocess
 

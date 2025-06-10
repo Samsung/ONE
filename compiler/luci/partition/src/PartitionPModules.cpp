@@ -96,7 +96,8 @@ std::unique_ptr<loco::Graph> clone_graph(loco::Graph *graph_org, luci::CloneCont
 
   // clone inputs
   auto inputs = graph_org->inputs();
-  assert(inputs);
+  if (inputs == nullptr)
+    throw std::runtime_error("clone_graph: graph has no inputs");
   for (uint32_t n = 0; n < inputs->size(); ++n)
   {
     auto input_org = luci::input_node(graph_org, n);

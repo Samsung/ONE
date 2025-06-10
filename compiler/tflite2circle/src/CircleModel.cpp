@@ -43,15 +43,49 @@ template <> void Offset<BufferLink>::build(const TFLFlatBufVec *tflite_flatbuffe
   for (auto it : *tflite_flatbuffer_vec)
   {
     flatbuffers::Offset<flatbuffers::Vector<uint8_t>> buffer_data;
-    if (it->data())
+    const auto *tflbuff_data = it->data();
+    const auto tflbuff_offset = it->offset();
+    const auto tflbuff_size = it->size();
+    // NOTE Current imlementation assumes "size of tflite >= size of circle"
+    // so that if tflite uses offset field, circle will use it too.
+    // this assumption is chosen cause (a) expereince with the file size showed this result,
+    // (b) to reduce code changes. if not, we will have to go in two pass, (1) produce flatbuffers
+    // and check size and if size > 2G then (2) restart produce flatbuffres with setting offset,
+    // size attributes.
+    // NOTE we cannot use offset/size as-is from tflite as "tflite size" != "circle size"
+    if (tflbuff_offset > 1)
     {
-      std::vector<uint8_t> data_vec{it->data()->begin(), it->data()->end()};
-      buffer_data = _fb->CreateVector(data_vec);
+      assert(_buffer_data_map && _file_raw);
+      if (_buffer_data_map && _file_raw)
+      {
+        int32_t buffer_index = buffers_vec.size();
+
+        auto *file_data_ptr = reinterpret_cast<const uint8_t *>(_file_raw->data()) + tflbuff_offset;
+        std::vector<uint8_t> buffer_data(file_data_ptr, file_data_ptr + tflbuff_size);
+        _buffer_data_map->emplace(buffer_index, buffer_data);
+
+        // NOTE about below 0, 1, 1
+        //   0 is to indicate that this data is dummy and real one will be saved after flatbuffers
+        //   area. 1, 1 will be updated at finilize() method below, after all flatbuffers data
+        //   are generated, so that we can then get the valid offset of this Buffer data.
+        //   if we meet offset as 1 then update failed and this file is invalid.
+        auto buffer = circle::CreateBuffer(*_fb.get(), 0 /* data */, 1 /* offset */, 1 /* size */);
+        buffers_vec.emplace_back(buffer);
+      }
     }
-    circle::BufferBuilder circle_buffer_builder{*_fb};
-    circle_buffer_builder.add_data(buffer_data);
-    auto circle_buffers = circle_buffer_builder.Finish();
-    buffers_vec.emplace_back(circle_buffers);
+    else
+    {
+      assert(tflbuff_offset != 1);
+      if (tflbuff_data)
+      {
+        std::vector<uint8_t> data_vec{tflbuff_data->begin(), tflbuff_data->end()};
+        buffer_data = _fb->CreateVector(data_vec);
+      }
+      circle::BufferBuilder circle_buffer_builder{*_fb};
+      circle_buffer_builder.add_data(buffer_data);
+      auto circle_buffers = circle_buffer_builder.Finish();
+      buffers_vec.emplace_back(circle_buffers);
+    }
   }
   _circle_flatbuffer_vec_offset = _fb->CreateVector(buffers_vec);
 }
@@ -376,8 +410,8 @@ template <> void Offset<OperatorCodeLink>::build(const TFLFlatBufVec *tflite_fla
   _circle_flatbuffer_vec_offset = _fb->CreateVector(operator_code_vec);
 }
 
-CircleModel::CircleModel(FlatBufBuilder &fb)
-  : _version{0}, _description{fb->CreateString("ONE-tflite2circle")}, _fb{fb}
+CircleModel::CircleModel(FlatBufBuilder &fb, const std::vector<char> &fr)
+  : _version{0}, _description{fb->CreateString("ONE-tflite2circle")}, _fb{fb}, _file_raw{fr}
 {
   // NOTHING TODO
 }
@@ -390,6 +424,8 @@ void CircleModel::load_offsets(const tflite::Model *tfl_model)
   _metadata_buffer_offset = std::make_unique<Offset<MetaDataBufferLink>>(_fb);
 
   _subGraphs_offset->set_signature_defs(tfl_model->signature_defs());
+  _buffers_offset->set_buffer_data_map(&_buffer_data_map);
+  _buffers_offset->set_file_raw(&_file_raw);
 
   _operator_codes_offset->build(tfl_model->operator_codes());
   _subGraphs_offset->build(tfl_model->subgraphs());
@@ -412,11 +448,76 @@ void CircleModel::model_build(void) const
   circle::FinishModelBuffer(*_fb, model);
 }
 
-const char *CircleModel::base(void) const
+void CircleModel::finalize(void)
 {
-  return reinterpret_cast<const char *>(_fb->GetBufferPointer());
+  if (_buffer_data_map.empty())
+    return;
+
+  auto align16 = [](size_t &v) {
+    while (v % 16 != 0)
+      v++;
+  };
+
+  // get total memory for flatbuffer + all buffer_data
+  size_t result_size = _fb->GetSize();
+  align16(result_size);
+  for (auto &it : _buffer_data_map)
+  {
+    BufferData &buffer_data = it.second;
+    result_size += buffer_data.size();
+    align16(result_size);
+  }
+  align16(result_size);
+  result_size += 16; // for safety
+
+  std::string result;
+  const char *buff_ptr = reinterpret_cast<const char *>(_fb->GetBufferPointer());
+
+  auto padalign16 = [](std::string &str) {
+    while (str.size() % 16 != 0)
+      str += '\0';
+  };
+
+  result.reserve(result_size);
+  result.append(buff_ptr, _fb->GetSize());
+
+  auto mutable_model = circle::GetMutableModel(result.data());
+  auto mutable_buffers = mutable_model->mutable_buffers();
+
+  // pad to be 16 bytes aligned
+  padalign16(result);
+  for (auto &it : _buffer_data_map)
+  {
+    int32_t buffer_index = it.first;
+    BufferData &buffer_data = it.second;
+    uint64_t offset = result.size();
+    uint64_t size = buffer_data.size();
+
+    circle::Buffer *mutable_buffer = mutable_buffers->GetMutableObject(buffer_index);
+    mutable_buffer->mutate_offset(offset);
+    mutable_buffer->mutate_size(size);
+
+    result.append(buffer_data.begin(), buffer_data.end());
+    padalign16(result);
+  }
+  padalign16(result);
+
+  // use final result
+  _fb_data_with_ext = result;
 }
 
-size_t CircleModel::size(void) const { return _fb->GetSize(); }
+const char *CircleModel::base(void) const
+{
+  if (_buffer_data_map.empty())
+    return reinterpret_cast<const char *>(_fb->GetBufferPointer());
+  return reinterpret_cast<const char *>(_fb_data_with_ext.data());
+}
+
+size_t CircleModel::size(void) const
+{
+  if (_buffer_data_map.empty())
+    return _fb->GetSize();
+  return _fb_data_with_ext.size();
+}
 
 } // namespace tflite2circle

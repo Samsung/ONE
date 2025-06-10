@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+#include <luci/Service/CircleShapeInference.h>
+
+#include "CircleShapeInferenceHelper.h"
+
 #include "CircleCloneNode.h"
 
 namespace luci
@@ -25,9 +29,23 @@ luci::CircleNode *CloneNodeLet<CN::ABC>::visit(const luci::CircleAdd *node)
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleAdd>();
-  if (cloned != nullptr)
-    cloned->fusedActivationFunction(node->fusedActivationFunction());
+  cloned->fusedActivationFunction(node->fusedActivationFunction());
   return cloned;
 }
 
+namespace sinf
+{
+
+loco::TensorShape Algorithm::visit(const luci::CircleAdd *node)
+{
+  const auto x = loco::must_cast<luci::CircleNode *>(node->x());
+  const auto y = loco::must_cast<luci::CircleNode *>(node->y());
+
+  const auto x_shape = circle_shape(x);
+  const auto y_shape = circle_shape(y);
+
+  return broadcast_shape(x_shape, y_shape);
+}
+
+} // namespace sinf
 } // namespace luci

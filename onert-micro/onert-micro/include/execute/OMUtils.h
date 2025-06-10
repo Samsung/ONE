@@ -21,6 +21,10 @@
 #include "OMStatus.h"
 #include "core/reader/OMCircleReader.h"
 #include "core/OMRuntimeShape.h"
+#include "core/OMKernelData.h"
+
+#include "execute/OMKernelExecutionBuilder.h"
+#include "execute/OMRuntimeKernel.h"
 
 namespace onert_micro
 {
@@ -150,6 +154,28 @@ inline void computePaddingHeightWidth(int32_t stride_height, int32_t stride_widt
     computePadding(stride_height, dilation_rate_height, in_height, filter_height, out_height);
 
   *padding_w = computePadding(stride_width, dilation_rate_width, in_width, filter_width, out_width);
+}
+
+void calculateQuantParams(core::ArithmeticQuantParams &params, const circle::Tensor *input1,
+                          const circle::Tensor *input2, const circle::Tensor *output,
+                          circle::ActivationFunctionType act);
+
+OMStatus SISOHeader(const OMExecuteArgs &execute_args, const circle::Tensor **input,
+                    const circle::Tensor **output, uint8_t **input_data, uint8_t **output_data);
+
+OMStatus TISOHeader(const OMExecuteArgs &execute_args, const circle::Tensor **input1,
+                    const circle::Tensor **input2, const circle::Tensor **output,
+                    OMRuntimeKernel *runtime_kernel);
+
+inline int calculateInputRadius(int input_integer_bits, int input_left_shift, int total_signed_bits)
+{
+  const double max_input_rescaled = 1.0 * ((1 << input_integer_bits) - 1) *
+                                    (1LL << (total_signed_bits - input_integer_bits)) /
+                                    (1LL << input_left_shift);
+  // Tighten bound using floor.  Suppose that we could use the exact value.
+  // After scaling the difference, the result would be at the maximum.  Thus we
+  // must ensure that our value has lower magnitude.
+  return static_cast<int>(std::floor(max_input_rescaled));
 }
 
 } // namespace execute

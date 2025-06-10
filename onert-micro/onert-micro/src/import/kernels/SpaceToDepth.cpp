@@ -30,8 +30,13 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::import::configure_kernel_CircleSpaceToDepth(
-  const onert_micro::import::OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus
+configure_kernel_CircleSpaceToDepth(const onert_micro::import::OMConfigureArgs &config_args)
 {
   OMRuntimeContext &runtime_context = config_args.runtime_context;
   uint16_t op_index = config_args.kernel_index;
@@ -53,6 +58,7 @@ OMStatus onert_micro::import::configure_kernel_CircleSpaceToDepth(
     return status;
 
   OMRuntimeShape input_shape(input);
+  OMRuntimeShape output_shape(output);
 
   const auto *options = runtime_kernel.first_operator->builtin_options_as_SpaceToDepthOptions();
   const int32_t block_size = options->block_size();
@@ -66,8 +72,8 @@ OMStatus onert_micro::import::configure_kernel_CircleSpaceToDepth(
 
   const int input_height = input_shape.dims(kHeightRank);
   const int input_width = input_shape.dims(kWidthRank);
-  int output_height = input_height / block_size;
-  int output_width = input_width / block_size;
+  int output_height = output_shape.dims(kHeightRank);
+  int output_width = output_shape.dims(kWidthRank);
 
   status = utils::checkCondition(input_height == output_height * block_size);
   if (status != Ok)
@@ -78,3 +84,6 @@ OMStatus onert_micro::import::configure_kernel_CircleSpaceToDepth(
     return status;
   return status;
 }
+
+} // namespace import
+} // namespace onert_micro

@@ -24,20 +24,8 @@
 #include <libnpuhost.h>
 #include <type_traits>
 
-namespace onert
+namespace onert::backend::trix
 {
-namespace backend
-{
-namespace trix
-{
-
-/**
- * @brief Convert type of layout from onert type to npu type
- *
- * @param layout Layout type in onert
- * @return data_layout Layout type in npu
- */
-data_layout convertDataLayout(const ir::Layout layout);
 
 /**
  * @brief Convert type of data from onert type to npu type
@@ -54,14 +42,14 @@ data_type convertDataType(const ir::DataType type);
  * @param tensors Tensors that have data information
  * @param info    tensors_data_info to be set
  */
-template <typename T, std::enable_if_t<std::is_base_of<IPortableTensor, T>::value, bool> = true>
+template <typename T, std::enable_if_t<std::is_base_of_v<IPortableTensor, T>, bool> = true>
 void setDataInfo(const std::vector<T *> &tensors, tensors_data_info *info)
 {
   info->num_info = static_cast<uint32_t>(tensors.size());
 
   for (uint32_t idx = 0; idx < info->num_info; ++idx)
   {
-    info->info[idx].layout = convertDataLayout(tensors[idx]->layout());
+    info->info[idx].layout = DATA_LAYOUT_NHWC;
     info->info[idx].type = convertDataType(tensors[idx]->data_type());
   }
 }
@@ -73,7 +61,7 @@ void setDataInfo(const std::vector<T *> &tensors, tensors_data_info *info)
  * @param tensors Tensors that have buffer information
  * @param buf     generic_buffers to be set
  */
-template <typename T, std::enable_if_t<std::is_base_of<IPortableTensor, T>::value, bool> = true>
+template <typename T, std::enable_if_t<std::is_base_of_v<IPortableTensor, T>, bool> = true>
 void setBuffers(const std::vector<T *> &tensors, generic_buffers *buf)
 {
   buf->num_buffers = static_cast<uint32_t>(tensors.size());
@@ -86,8 +74,6 @@ void setBuffers(const std::vector<T *> &tensors, generic_buffers *buf)
   }
 }
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix
 
 #endif // __ONERT_BACKEND_TRIX_CONVERT_H__

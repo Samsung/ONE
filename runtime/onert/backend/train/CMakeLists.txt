@@ -14,7 +14,7 @@ target_link_libraries(${LIB_ONERT_BACKEND_TRAIN} PRIVATE nnfw_coverage)
 
 set_target_properties(${LIB_ONERT_BACKEND_TRAIN} PROPERTIES
   OUTPUT_NAME backend_train
-  INSTALL_RPATH "$ORIGIN:$ORIGIN/../..")
+  INSTALL_RPATH "$ORIGIN:$ORIGIN/..")
 
 install(TARGETS ${LIB_ONERT_BACKEND_TRAIN} DESTINATION lib/nnfw/backend)
 
@@ -35,7 +35,7 @@ target_link_libraries(${TEST_ONERT_TRAIN_BACKEND} gtest gtest_main dl ${LIB_PTHR
 
 # Set install rpath to find onert_core, onert_backend_train, etc
 set_target_properties(${TEST_ONERT_TRAIN_BACKEND} PROPERTIES
-  INSTALL_RPATH "$ORIGIN:$ORIGIN/../lib:$ORIGIN/../lib/nnfw/backend")
+  INSTALL_RPATH "$ORIGIN/../lib/nnfw:$ORIGIN/../lib/nnfw/backend")
 
 add_test(${TEST_ONERT_TRAIN_BACKEND} ${TEST_ONERT_TRAIN_BACKEND})
 install(TARGETS ${TEST_ONERT_TRAIN_BACKEND} DESTINATION unittest)

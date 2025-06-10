@@ -30,11 +30,7 @@
 #include "ir/Operand.h"
 #include "ir/Index.h"
 
-namespace onert
-{
-namespace dumper
-{
-namespace dot
+namespace onert::dumper::dot
 {
 
 /**
@@ -53,10 +49,10 @@ public:
   };
 
 public:
-  static const std::string INPUT_SHAPE;
-  static const std::string OUTPUT_SHAPE;
-  static const std::string OPERAND_SHAPE;
-  static const std::string BG_COLOR_SCHEME;
+  static inline const std::string INPUT_SHAPE = "doublecircle";
+  static inline const std::string OUTPUT_SHAPE = "doublecircle";
+  static inline const std::string OPERAND_SHAPE = "ellipse";
+  static inline const std::string BG_COLOR_SCHEME = "set18";
 
 public:
   /**
@@ -71,8 +67,6 @@ private:
   void addBackendLabel();
 };
 
-} // namespace dot
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::dot
 
 #endif // __ONERT_DUMPER_DOT_DOT_OPERAND_INFO_H__

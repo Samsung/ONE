@@ -25,9 +25,7 @@
 #include "ir/DataType.h"
 #include "ir/Sparsity.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 struct Quantization
@@ -85,7 +83,6 @@ private:
 bool operator==(const TypeInfo &lhs, const TypeInfo &rhs);
 bool operator!=(const TypeInfo &lhs, const TypeInfo &rhs);
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_TYPEINFO_H__

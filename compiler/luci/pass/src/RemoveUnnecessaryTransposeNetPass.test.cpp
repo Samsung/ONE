@@ -15,6 +15,7 @@
  */
 
 #include "luci/Pass/RemoveUnnecessaryTransposeNetPass.h"
+#include "luci/Pass/CircleShapeInferencePass.h"
 
 #include <luci/IR/CircleNode.h>
 
@@ -77,6 +78,7 @@ public:
     }
 
     output()->from(_back_transpose);
+    _shape_inf.run(g());
   }
 
   // create input-transpose-transpose-output graph
@@ -112,6 +114,7 @@ public:
     }
 
     output()->from(_back_transpose);
+    _shape_inf.run(g());
   }
 
 private:
@@ -145,6 +148,8 @@ private:
 
   luci::CircleTranspose *_back_transpose = nullptr;
   luci::CircleConst *_back_perm = nullptr;
+
+  luci::CircleShapeInferencePass _shape_inf;
 };
 
 bool is_transpose_removed(loco::Graph *g)
@@ -347,13 +352,133 @@ TEST(RemoveUnnecessaryTransposeNetPass, incomplete_reshape_pattern2_NEG)
    *     |
    * (1, 14, 10, 10)
    *      |
-   * (1, 14, -1, -1)  # unexpected shape
+   * (1, 14, -1, 50)  # (1, 14, 2, 50)
    *      |
    * (1, 14, 50, 2)
    */
-  g.init_whole_graph(/*in*/ {1, 10, 10, 14}, /*perm*/ {0, 3, 1, 2}, /*reshape*/ {1, 14, -1, -1},
+  g.init_whole_graph(/*in*/ {1, 10, 10, 14}, /*perm*/ {0, 3, 1, 2}, /*reshape*/ {1, 14, -1, 50},
                      /*perm*/ {0, 1, 3, 2}, /*out*/ {1, 14, 50, 2});
 
+  EXPECT_FALSE(pass.run(g.g()));
+  EXPECT_FALSE(is_transpose_removed(g.g()));
+}
+
+TEST(RemoveUnnecessaryTransposeNetPass, rank_expansion_pattern1)
+{
+  TransposeReshapeTransposeGraph g;
+  luci::RemoveUnnecessaryTransposeNetPass pass;
+
+  /**
+   * (1, 16384, 512)
+   *      |
+   * (1, 512, 16384)
+   *      |
+   * (1, 512, 128, 128)
+   *      |
+   * (1, 128, 128, 512)
+   */
+  g.init_whole_graph(/*in*/ {1, 16384, 512}, /*perm*/ {0, 2, 1}, /*reshape*/ {1, 512, 128, 128},
+                     /*perm*/ {0, 2, 3, 1}, /*out*/ {1, 128, 128, 512});
+  EXPECT_TRUE(pass.run(g.g()));
+  EXPECT_TRUE(is_transpose_removed(g.g()));
+}
+
+TEST(RemoveUnnecessaryTransposeNetPass, rank_expansion_pattern2)
+{
+  TransposeReshapeTransposeGraph g;
+  luci::RemoveUnnecessaryTransposeNetPass pass;
+
+  /**
+   * (1, 1, 10, 1)
+   *      |
+   * (1, 10, 1, 1)
+   *      |
+   * (2, 1, 5, 1)
+   *      |
+   * (2, 5, 1, 1)
+   */
+  g.init_whole_graph(/*in*/ {1, 1, 10, 1}, /*perm*/ {0, 3, 1, 2}, /*reshape*/ {2, 1, 5, 1},
+                     /*perm*/ {0, 2, 1, 3}, /*out*/ {2, 5, 1, 1});
+  EXPECT_TRUE(pass.run(g.g()));
+  EXPECT_TRUE(is_transpose_removed(g.g()));
+}
+
+TEST(RemoveUnnecessaryTransposeNetPass, eff_rank_expansion_pattern3)
+{
+  TransposeReshapeTransposeGraph g;
+  luci::RemoveUnnecessaryTransposeNetPass pass;
+
+  /**
+   * (2, 1, 12, 1)
+   *      |
+   * (2, 12, 1, 1)
+   *      |
+   * (1, 2, 3, 4)
+   *      |
+   * (2, 1, 3, 4)
+   */
+  g.init_whole_graph(/*in*/ {2, 1, 12, 1}, /*perm*/ {0, 2, 1, 3}, /*reshape*/ {1, 2, 3, 4},
+                     /*perm*/ {1, 0, 2, 3}, /*out*/ {2, 1, 3, 4});
+  EXPECT_TRUE(pass.run(g.g()));
+  EXPECT_TRUE(is_transpose_removed(g.g()));
+}
+
+TEST(RemoveUnnecessaryTransposeNetPass, rank_expansion_pattern1_NEG)
+{
+  TransposeReshapeTransposeGraph g;
+  luci::RemoveUnnecessaryTransposeNetPass pass;
+
+  /**
+   * (1, 6, 49)
+   *      |
+   * (1, 49, 6)
+   *      |
+   * (1, 7, 6, 7)
+   *      |
+   * (7, 1, 6, 7)
+   */
+  g.init_whole_graph(/*in*/ {1, 6, 7}, /*perm*/ {0, 2, 1}, /*reshape*/ {1, 7, 6, 7},
+                     /*perm*/ {1, 0, 2, 3}, /*out*/ {7, 1, 6, 7});
+  EXPECT_FALSE(pass.run(g.g()));
+  EXPECT_FALSE(is_transpose_removed(g.g()));
+}
+
+TEST(RemoveUnnecessaryTransposeNetPass, rank_expansion_pattern2_NEG)
+{
+  TransposeReshapeTransposeGraph g;
+  luci::RemoveUnnecessaryTransposeNetPass pass;
+
+  /**
+   * (1, 1, 10, 1)
+   *      |
+   * (10, 1, 1, 1)
+   *      |
+   * (5, 2, 1, 1)
+   *      |
+   * (2, 5, 1, 1)
+   */
+  g.init_whole_graph(/*in*/ {1, 1, 10, 1}, /*perm*/ {2, 0, 1, 3}, /*reshape*/ {5, 2, 1, 1},
+                     /*perm*/ {1, 0, 2, 3}, /*out*/ {2, 5, 1, 1});
+  EXPECT_FALSE(pass.run(g.g()));
+  EXPECT_FALSE(is_transpose_removed(g.g()));
+}
+
+TEST(RemoveUnnecessaryTransposeNetPass, rank_expansion_pattern3_NEG)
+{
+  TransposeReshapeTransposeGraph g;
+  luci::RemoveUnnecessaryTransposeNetPass pass;
+
+  /**
+   * (7, 10)
+   *      |
+   * (10, 7)
+   *      |
+   * (2, 5, 7)
+   *      |
+   * (2, 7, 5)
+   */
+  g.init_whole_graph(/*in*/ {7, 10}, /*perm*/ {1, 0}, /*reshape*/ {2, 5, 7},
+                     /*perm*/ {0, 2, 1}, /*out*/ {2, 7, 5});
   EXPECT_FALSE(pass.run(g.g()));
   EXPECT_FALSE(is_transpose_removed(g.g()));
 }

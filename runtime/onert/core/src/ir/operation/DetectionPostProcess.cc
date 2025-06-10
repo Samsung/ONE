@@ -17,11 +17,7 @@
 #include "ir/operation/DetectionPostProcess.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 DetectionPostProcess::DetectionPostProcess(const OperandIndexSequence &inputs,
@@ -32,6 +28,4 @@ DetectionPostProcess::DetectionPostProcess(const OperandIndexSequence &inputs,
 
 void DetectionPostProcess::accept(OperationVisitor &v) const { v.visit(*this); }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

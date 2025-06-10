@@ -7,15 +7,13 @@ on:
       - release/*
     paths:
       - '.github/workflows/run-onert-android-build.yml'
-      - 'nn*'
+      - 'nnfw'
       - 'Makefile.template'
-      - 'compute/**'
-      - 'infra/buildtool/**'
-      - 'infra/cmake/**'
-      - 'infra/nncc/**'
-      - 'infra/nnfw/**'
       - 'runtime/**'
-      - 'tests/**'
+      - '!runtime/contrib/**'
+      - '!runtime/infra/debian/**'
+      - '!runtime/infra/gbs/**'
+      - '!runtime/infra/python/**'
       - '!**/*.md'
   pull_request:
     branches:
@@ -23,24 +21,31 @@ on:
       - release/*
     paths:
       - '.github/workflows/run-onert-android-build.yml'
-      - 'nn*'
+      - 'nnfw'
       - 'Makefile.template'
-      - 'compute/**'
-      - 'infra/buildtool/**'
-      - 'infra/cmake/**'
-      - 'infra/nncc/**'
-      - 'infra/nnfw/**'
       - 'runtime/**'
-      - 'tests/**'
+      - '!runtime/contrib/**'
+      - '!runtime/infra/debian/**'
+      - '!runtime/infra/gbs/**'
+      - '!runtime/infra/python/**'
       - '!**/*.md'
 
 defaults:
   run:
     shell: bash
 
+# Cancel previous running jobs when pull request is updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    if: github.repository_owner == 'Samsung'
+    runs-on: one-x64-linux
+    container:
+      image: samsungonedev.azurecr.io/nnfw/one-devtools:android-sdk
+      options: --user root
     env:
       TARGET_ARCH: aarch64
       TARGET_OS: android
@@ -53,13 +58,10 @@ jobs:
       - name: Caching externals
         uses: actions/cache@v4
         with:
-          path: externals
-          key: external-onert-ndk26-${{ hashFiles('infra/cmake/packages/**/*.cmake') }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          path: runtime/externals
+          key: external-onert-ndk-${{ hashFiles('runtime/infra/cmake/packages/**/*.cmake') }}
           restore-keys: |
-            external-onert-ndk26-
-            external-onert-ndk
-            external-onert-
-            external-
+            external-onert-ndk-
 
       # numpy: test build
       # scons: arm compute library build
@@ -68,8 +70,7 @@ jobs:
           pip3 install numpy
           sudo apt-get update && sudo apt-get -qqy install scons
 
-      # Use NDK 26.3.11579264
+      # Use NDK Default - path set by containe envrionment variable
       - name: Build onert
         run: |
-          export NDK_DIR=/usr/local/lib/android/sdk/ndk/26.3.11579264
           make -f Makefile.template

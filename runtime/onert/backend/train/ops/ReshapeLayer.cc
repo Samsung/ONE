@@ -16,13 +16,7 @@
 
 #include "ReshapeLayer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 ReshapeLayer::ReshapeLayer()
@@ -58,7 +52,4 @@ void ReshapeLayer::forward(bool) { reshapeGeneric(_input, _output); }
 
 void ReshapeLayer::backward() { reshapeGeneric(_back_prop_output, _back_prop_input); }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

@@ -16,11 +16,7 @@
 
 #include "ir/train/UseDefChain.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 void UseDefChain::insertTrainingUse(const TrainingOperationIndex &idx) { _uses.insert(idx); }
@@ -47,6 +43,4 @@ bool UseDefChain::operator==(const UseDefChain &other) const
   return &_operand == &other._operand && _uses == other._uses && _defs == other._defs;
 }
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train

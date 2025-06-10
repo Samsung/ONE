@@ -17,11 +17,7 @@
 #include "ir/operation/SplitV.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 void SplitV::accept(OperationVisitor &v) const { v.visit(*this); }
 SplitV::SplitV(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
@@ -29,6 +25,4 @@ SplitV::SplitV(const OperandIndexSequence &inputs, const OperandIndexSequence &o
   : Operation{OperandConstraint::createExact(3u), inputs, outputs}, _param{param}
 {
 }
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

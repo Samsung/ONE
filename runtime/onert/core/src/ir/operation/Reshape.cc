@@ -17,11 +17,7 @@
 #include "ir/operation/Reshape.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Reshape::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ Reshape::Reshape(const OperandIndexSequence &inputs, const OperandIndexSequence 
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

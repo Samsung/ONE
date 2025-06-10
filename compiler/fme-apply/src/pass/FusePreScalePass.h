@@ -25,21 +25,17 @@ namespace fme_apply
 {
 
 /**
- * @brief Pass to fuse CircleCustom(PreScale) to succeeding Ops
+ * @brief Pass to fuse CircleCustom(PreScale) to preceding Ops
  *
  * BEFORE
  *
- *      [Node]
- *        |
  *    [PreScale]
  *        |
- *       [Op]
+ *      [Node]
  *
  * AFTER
  *
- *      [Node]
- *        |
- *      [Op'] (Weights are updated)
+ *     [Node'] (Weights are updated)
  *
  */
 class FusePreScalePass : public logo::Pass

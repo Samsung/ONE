@@ -18,11 +18,7 @@
 #include "Convert.h"
 #include "Swizzle.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 size_t IACLTensor::calcOffset(const ir::Coordinates &coords) const
@@ -40,8 +36,6 @@ size_t IACLTensor::calcOffset(const ir::Coordinates &coords) const
 
   return info()->offset_element_in_bytes(acl_coords);
 }
-
-ir::Layout IACLTensor::layout() const { return acl_common::asRuntimeLayout(info()->data_layout()); }
 
 ir::DataType IACLTensor::data_type() const
 {
@@ -70,6 +64,4 @@ const std::vector<int32_t> &IACLTensor::data_zero_points() const
   throw std::runtime_error("IACLTensor::data_zero_points() is not supported.");
 }
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common

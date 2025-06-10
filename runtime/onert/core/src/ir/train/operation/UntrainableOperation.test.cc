@@ -164,14 +164,6 @@ operation::DetectionPostProcess generateDetectionPostProcess()
                                          param};
 }
 
-operation::Einsum generateEinsum()
-{
-  operation::Einsum::Param param;
-  param.equation = "";
-
-  return operation::Einsum{OperandIndexSequence{1}, OperandIndexSequence{0}, param};
-}
-
 operation::ElementwiseActivation generateElementwiseActivation()
 {
   operation::ElementwiseActivation::Param param;
@@ -303,11 +295,6 @@ operation::LSTM generateLSTM()
     OperandIndexSequence{0}, param};
 }
 
-operation::MatrixBandPart generateMatrixBandPart()
-{
-  return operation::MatrixBandPart{OperandIndexSequence{1, 2, 3}, OperandIndexSequence{0}};
-}
-
 operation::OneHot generateOneHot()
 {
   operation::OneHot::Param param;
@@ -410,6 +397,14 @@ operation::ResizeNearestNeighbor generateResizeNearestNeighbor()
 operation::Reverse generateReverse()
 {
   return operation::Reverse{OperandIndexSequence{1, 2}, OperandIndexSequence{0}};
+}
+
+operation::RmsNorm generateRmsNorm()
+{
+  operation::RmsNorm::Param param;
+  param.epsilon = 0.f;
+
+  return operation::RmsNorm{OperandIndexSequence{1, 2}, OperandIndexSequence{0}, param};
 }
 
 operation::RNN generateRNN()
@@ -654,9 +649,6 @@ TEST(UntrainableOperation, testAllOps)
   const auto detection = generateDetectionPostProcess();
   verifyOp(detection);
 
-  const auto einsum = generateEinsum();
-  verifyOp(einsum);
-
   const auto activation = generateElementwiseActivation();
   verifyOp(activation);
 
@@ -705,9 +697,6 @@ TEST(UntrainableOperation, testAllOps)
   const auto lstm = generateLSTM();
   verifyOp(lstm);
 
-  const auto maxrix_band_part = generateMatrixBandPart();
-  verifyOp(maxrix_band_part);
-
   const auto one_hot = generateOneHot();
   verifyOp(one_hot);
 
@@ -749,6 +738,9 @@ TEST(UntrainableOperation, testAllOps)
 
   const auto reverse = generateReverse();
   verifyOp(reverse);
+
+  const auto rms_norm = generateRmsNorm();
+  verifyOp(rms_norm);
 
   const auto rnn = generateRNN();
   verifyOp(rnn);
@@ -932,12 +924,6 @@ TEST(UntrainableOperation, neg_TrainableOperationVisitor)
   }
 
   {
-    const auto einsum = generateEinsum();
-    auto untrainable = generateUntrainableOperation(einsum);
-    EXPECT_ANY_THROW(visitor.invoke(*untrainable));
-  }
-
-  {
     const auto activation = generateElementwiseActivation();
     auto untrainable = generateUntrainableOperation(activation);
     EXPECT_ANY_THROW(visitor.invoke(*untrainable));
@@ -1034,12 +1020,6 @@ TEST(UntrainableOperation, neg_TrainableOperationVisitor)
   }
 
   {
-    const auto matrix_band_part = generateMatrixBandPart();
-    auto untrainable = generateUntrainableOperation(matrix_band_part);
-    EXPECT_ANY_THROW(visitor.invoke(*untrainable));
-  }
-
-  {
     const auto one_hot = generateOneHot();
     auto untrainable = generateUntrainableOperation(one_hot);
     EXPECT_ANY_THROW(visitor.invoke(*untrainable));
@@ -1120,6 +1100,12 @@ TEST(UntrainableOperation, neg_TrainableOperationVisitor)
   {
     const auto reverse = generateReverse();
     auto untrainable = generateUntrainableOperation(reverse);
+    EXPECT_ANY_THROW(visitor.invoke(*untrainable));
+  }
+
+  {
+    const auto rms_norm = generateRmsNorm();
+    auto untrainable = generateUntrainableOperation(rms_norm);
     EXPECT_ANY_THROW(visitor.invoke(*untrainable));
   }
 

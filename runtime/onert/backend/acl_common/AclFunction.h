@@ -21,11 +21,7 @@
 #include <arm_compute/runtime/IFunction.h>
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 class AclFunction : public ::onert::exec::IFunction
@@ -47,8 +43,6 @@ private:
   std::unique_ptr<::arm_compute::IFunction> _func;
 };
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_KERNEL_ACL_FUNCTION_H__

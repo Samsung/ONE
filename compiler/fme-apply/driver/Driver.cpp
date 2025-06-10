@@ -21,7 +21,6 @@
 #include <foder/FileLoader.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
-#include <luci/Importer.h>
 #include <luci/ImporterEx.h>
 #include <luci/Service/Validate.h>
 
@@ -29,39 +28,6 @@
 #include <string>
 
 using namespace fme_apply;
-
-namespace
-{
-
-// Return luci::Module from model_path
-std::unique_ptr<luci::Module> import(const std::string &model_path)
-{
-  // Load model from the file
-  foder::FileLoader loader{model_path};
-  std::vector<char> model_data = loader.load();
-
-  // Verify flatbuffers
-  flatbuffers::Verifier verifier{reinterpret_cast<const uint8_t *>(model_data.data()),
-                                 model_data.size()};
-  if (not circle::VerifyModelBuffer(verifier))
-  {
-    throw std::runtime_error("Failed to verify circle '" + model_path + "'");
-  }
-
-  auto circle_model = circle::GetModel(model_data.data());
-
-  if (not circle_model)
-    throw std::runtime_error("Failed to load '" + model_path + "'");
-
-  auto module = luci::Importer().importModule(circle_model);
-
-  if (not module)
-    throw std::runtime_error("Failed to load '" + model_path + "'");
-
-  return module;
-}
-
-} // namespace
 
 int entry(int argc, char **argv)
 {
@@ -99,7 +65,8 @@ int entry(int argc, char **argv)
   const std::string fme_patterns_path = arser.get<std::string>("--fme_patterns");
   const std::string output_path = arser.get<std::string>("--output");
 
-  auto module = import(input_path);
+  luci::ImporterEx importerex;
+  auto module = importerex.importVerifyModule(input_path);
   assert(module != nullptr); // FIX_ME_UNLESS
 
   auto patterns = fme_apply::read(fme_patterns_path);

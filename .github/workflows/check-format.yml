@@ -17,7 +17,8 @@ defaults:
 jobs:
   check-format:
     name: Check format
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
+    if: github.repository_owner == 'Samsung'
 
     steps:
       - name: Checkout
@@ -29,15 +30,11 @@ jobs:
           python-version: '3.x'
 
       # C format: clang-format-16
-      # Python format: yapf==0.22.0
+      # Python format: yapf==0.43.0
       - name: Install packages
         run: |
-          sudo apt-get install -y gnupg2 software-properties-common
-          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-          sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main"
           sudo apt-get update && sudo apt-get install -qqy clang-format-16
-          python -m pip install --upgrade pip
-          pip install yapf==0.22.0
+          pip install yapf==0.43.0
 
       - name: Check
         run: ./nnas format
@@ -53,7 +50,8 @@ jobs:
 
   check-copyright:
     name: Check copyright
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
+    if: github.repository_owner == 'Samsung'
 
     steps:
       - name: Checkout

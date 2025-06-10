@@ -18,11 +18,11 @@ tar -zxf ${ARCHIVE_PATH}/coverage-suite.tar.gz -C ./
 
 CheckTestPrepared
 
-if [[ ! -e $ROOT_PATH/tests/scripts/build_path_depth.txt ]]; then
+if [[ ! -e $ROOT_PATH/runtime/tests/scripts/build_path_depth.txt ]]; then
   echo "Cannot find prefix strip file"
   exit 1
 fi
-export GCOV_PREFIX_STRIP=`cat $ROOT_PATH/tests/scripts/build_path_depth.txt`
+export GCOV_PREFIX_STRIP=`cat $ROOT_PATH/runtime/tests/scripts/build_path_depth.txt`
 
 TENSOR_LOGGING=trace_log.txt ./infra/scripts/test_ubuntu_runtime.sh --backend acl_cl --nnapi-frontend
 ./infra/scripts/test_ubuntu_runtime.sh --backend acl_neon

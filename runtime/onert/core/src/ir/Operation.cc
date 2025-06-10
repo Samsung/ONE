@@ -18,9 +18,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 Operation::Operation(OperandConstraint input_constr, const OperandIndexSequence &inputs,
@@ -52,6 +50,16 @@ void Operation::setOutputs(const OperandIndexSequence &indexes)
   _outputs = indexes;
 }
 
+OperandIndexSequence Operation::getUsedInputSet() const
+{
+  return _inputs | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+}
+
+OperandIndexSequence Operation::getUsedOutputSet() const
+{
+  return _outputs | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+}
+
 void Operation::replaceInputs(const OperandIndex &from, const OperandIndex &to)
 {
   _inputs.replace(from, to);
@@ -62,5 +70,4 @@ void Operation::replaceOutputs(const OperandIndex &from, const OperandIndex &to)
   _outputs.replace(from, to);
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

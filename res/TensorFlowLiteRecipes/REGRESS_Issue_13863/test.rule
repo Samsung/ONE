@@ -1,0 +1,7 @@
+# Verify that the pack operation has been successfully removed
+# Check that the reshape operation exists (substitute_pack_to_reshape pass applied)
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "NO_PACK"                 $(op_count PACK) '=' 0
+RULE    "RESHAPE_EXIST"           $(op_count RESHAPE) '=' 4

@@ -30,14 +30,9 @@
 #include "exec/NopFunction.h"
 #include "exec/FunctionSequence.h"
 #include "util/logging.h"
-#include "util/Utils.h"
 #include "AclKernelGen.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
+namespace onert::backend::acl_cl
 {
 
 using ::onert::backend::acl_common::asAclFunction;
@@ -92,12 +87,16 @@ void KernelGenerator::visit(const ir::operation::BatchToSpaceND &node)
 
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
-  auto block_size_tensor = _tensor_reg->getAclTensor(block_size_index);
 
-  assert(_ctx.at(block_size_index).data());
+  if (!_ctx.at(block_size_index).data())
+    throw std::runtime_error("ACL CL does not support dynamic block size for BatchToSpaceND");
+
+  auto block = _ctx.at(block_size_index).asVector<int32_t>();
+  int32_t height = block[0];
+  int32_t width = block[1];
 
   auto fn = acl_common::generateLayer<arm_compute::CLBatchToSpaceLayer>(
-    ifm_tensor->handle(), block_size_tensor->handle(), ofm_tensor->handle());
+    ifm_tensor->handle(), width, height, ofm_tensor->handle());
 
   _return_fn = asAclFunction(std::move(fn));
 }
@@ -121,6 +120,10 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
   {
     case ir::operation::BinaryArithmetic::ArithmeticType::ADD:
     {
+      arm_compute::CLArithmeticAddition::validate(lhs_tensor->info(), rhs_tensor->info(),
+                                                  ofm_tensor->info(),
+                                                  arm_compute::ConvertPolicy::SATURATE, act_info)
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::CLArithmeticAddition>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
         arm_compute::ConvertPolicy::SATURATE, act_info);
@@ -128,6 +131,10 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::SUB:
     {
+      arm_compute::CLArithmeticSubtraction::validate(lhs_tensor->info(), rhs_tensor->info(),
+                                                     ofm_tensor->info(),
+                                                     arm_compute::ConvertPolicy::SATURATE, act_info)
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::CLArithmeticSubtraction>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(),
         arm_compute::ConvertPolicy::SATURATE, act_info);
@@ -135,6 +142,11 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::MUL:
     {
+      arm_compute::CLPixelWiseMultiplication::validate(
+        lhs_tensor->info(), rhs_tensor->info(), ofm_tensor->info(), 1.0,
+        arm_compute::ConvertPolicy::SATURATE, arm_compute::RoundingPolicy::TO_NEAREST_EVEN,
+        act_info)
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::CLPixelWiseMultiplication>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(), 1.0, // scale
         arm_compute::ConvertPolicy::SATURATE, arm_compute::RoundingPolicy::TO_NEAREST_EVEN,
@@ -143,6 +155,9 @@ void KernelGenerator::visit(const ir::operation::BinaryArithmetic &node)
     }
     case ir::operation::BinaryArithmetic::ArithmeticType::DIV:
     {
+      arm_compute::CLArithmeticDivision::validate(lhs_tensor->info(), rhs_tensor->info(),
+                                                  ofm_tensor->info(), act_info)
+        .throw_if_error();
       fn = acl_common::generateLayer<arm_compute::CLArithmeticDivision>(
         lhs_tensor->handle(), rhs_tensor->handle(), ofm_tensor->handle(), act_info);
       break;
@@ -399,13 +414,10 @@ void KernelGenerator::visit(const ir::operation::Slice &node)
     assert(_ctx.at(sizes_index).data());
     auto beginData_base = _ctx.at(begins_index).data()->base();
     auto sizeData_base = _ctx.at(sizes_index).data()->base();
-    const int beginData_size = _ctx.at(begins_index).shape().num_elements();
-    const int sizeData_size = _ctx.at(sizes_index).shape().num_elements();
+    [[maybe_unused]] const int beginData_size = _ctx.at(begins_index).shape().num_elements();
+    [[maybe_unused]] const int sizeData_size = _ctx.at(sizes_index).shape().num_elements();
 
     using ir::DataType;
-
-    UNUSED_RELEASE(beginData_size);
-    UNUSED_RELEASE(sizeData_size);
 
     assert(_ctx.at(begins_index).typeInfo().type() == DataType::INT32);
     assert(_ctx.at(sizes_index).typeInfo().type() == DataType::INT32);
@@ -466,15 +478,11 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
     auto startData_base = _ctx.at(starts_index).data()->base();
     auto endData_base = _ctx.at(ends_index).data()->base();
     auto stridesData_base = _ctx.at(strides_index).data()->base();
-    const int startData_size = _ctx.at(starts_index).shape().num_elements();
-    const int endData_size = _ctx.at(ends_index).shape().num_elements();
-    const int stridesData_size = _ctx.at(strides_index).shape().num_elements();
+    [[maybe_unused]] const int startData_size = _ctx.at(starts_index).shape().num_elements();
+    [[maybe_unused]] const int endData_size = _ctx.at(ends_index).shape().num_elements();
+    [[maybe_unused]] const int stridesData_size = _ctx.at(strides_index).shape().num_elements();
 
     using ir::DataType;
-
-    UNUSED_RELEASE(startData_size);
-    UNUSED_RELEASE(endData_size);
-    UNUSED_RELEASE(stridesData_size);
 
     assert(_ctx.at(starts_index).typeInfo().type() == DataType::INT32);
     assert(_ctx.at(ends_index).typeInfo().type() == DataType::INT32);
@@ -1262,7 +1270,7 @@ void KernelGenerator::visit(const ir::operation::ArgMinMax &node)
   auto acl_axis = acl_common::ToARMComputeAxis(ifm_rank, axis_value).value();
   auto reduce_type = node.param().is_arg_max ? ::arm_compute::ReductionOperation::ARG_IDX_MAX
                                              : ::arm_compute::ReductionOperation::ARG_IDX_MIN;
-  auto fn = acl_common::generateLayer<arm_compute::CLArgMinMaxLayerEx>(
+  auto fn = acl_common::generateLayer<arm_compute::CLArgMinMaxLayer>(
     ifm_tensor->handle(), acl_axis, ofm_tensor->handle(), reduce_type);
 
   _return_fn = asAclFunction(std::move(fn));
@@ -1529,11 +1537,9 @@ void KernelGenerator::visit(const ir::operation::Reverse &node)
   }
 
   auto fn = acl_common::generateLayer<arm_compute::CLReverse>(
-    ifm_tensor->handle(), ofm_tensor->handle(), axis_tensor->handle());
+    ifm_tensor->handle(), ofm_tensor->handle(), axis_tensor->handle(), false);
 
   _return_fn = asAclFunction(std::move(fn));
 }
 
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl

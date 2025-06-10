@@ -20,13 +20,7 @@
 #include <cker/train/operation/ReLU.h>
 #include <cker/train/operation/ReLU6.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 nnfw::cker::Shape getShape(const IPortableTensor *tensor)
@@ -37,9 +31,6 @@ nnfw::cker::Shape getShape(const IPortableTensor *tensor)
   assert(!tensor->is_dynamic() && "Dynamic tensor is not supported yet");
 
   const ir::Shape &shape = tensor->get_info().shape();
-
-  assert(tensor->layout() == ir::Layout::NHWC);
-
   auto rank = shape.rank();
   nnfw::cker::Shape ret(rank);
   auto data = ret.DimsData();
@@ -100,7 +91,17 @@ void biasGrad(const IPortableTensor *input_backprop, IPortableTensor *bias_grad)
                                            bias_grad_buffer, bias_grad_shape);
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+nnfw::cker::train::LossReductionType convertLossReductionType(ir::train::LossReductionType type)
+{
+  switch (type)
+  {
+    case ir::train::LossReductionType::SumOverBatchSize:
+      return nnfw::cker::train::LossReductionType::SUM_OVER_BATCH_SIZE;
+    case ir::train::LossReductionType::Sum:
+      return nnfw::cker::train::LossReductionType::SUM;
+    default:
+      throw std::runtime_error("Unsupported LossReductionType");
+  }
+}
+
+} // namespace onert::backend::train::ops

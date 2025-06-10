@@ -16,13 +16,7 @@
 
 #include "CLSubTensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
-{
-namespace operand
+namespace onert::backend::acl_cl::operand
 {
 
 CLSubTensor::CLSubTensor(ICLTensor *parent, const arm_compute::TensorShape &tensor_shape,
@@ -37,7 +31,4 @@ const arm_compute::CLSubTensor *CLSubTensor::handle() const { return _cl_sub_ten
 
 arm_compute::CLSubTensor *CLSubTensor::handle() { return _cl_sub_tensor.get(); }
 
-} // namespace operand
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl::operand

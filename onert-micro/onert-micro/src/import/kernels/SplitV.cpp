@@ -33,7 +33,12 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::import::configure_kernel_CircleSplitV(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleSplitV(const OMConfigureArgs &config_args)
 {
   OMRuntimeContext &runtime_context = config_args.runtime_context;
   OMRuntimeStorage &runtime_storage = config_args.runtime_storage;
@@ -104,3 +109,6 @@ OMStatus onert_micro::import::configure_kernel_CircleSplitV(const OMConfigureArg
 
   return status;
 }
+
+} // namespace import
+} // namespace onert_micro

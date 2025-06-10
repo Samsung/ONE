@@ -186,16 +186,29 @@ bool forward_reshape(luci::CircleReshape *reshape, luci::CircleMul *div,
   if (not new_reshape)
     return false;
 
+  const auto prev = loco::must_cast<luci::CircleNode *>(reshape->tensor());
+
+  // Reshape can change rank of tensor, so we need to update constant value accordingly.
+  assert(const_value->size<loco::DataType::FLOAT32>() == 1);
+  auto cloned_const = clone(const_value);
+  cloned_const->rank(prev->rank());
+  for (uint32_t i = 0; i < prev->rank(); ++i)
+  {
+    cloned_const->dim(i).set(1);
+  }
+
   // reconnect network
   loco::replace(div).with(new_reshape);
   if (div->x() == const_value)
   {
+    div->x(cloned_const);
     div->y(reshape->tensor());
   }
   else
   {
     assert(div->y() == const_value);
     div->x(reshape->tensor());
+    div->y(cloned_const);
   }
   new_reshape->tensor(div);
 

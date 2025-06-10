@@ -21,9 +21,7 @@
 
 #include <string>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 // Because IOMinMaxMap and OpMinMaxMap does not have the ordering and size information,
@@ -69,7 +67,6 @@ private:
   std::string _filename;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_MINMAX_DATA_H__

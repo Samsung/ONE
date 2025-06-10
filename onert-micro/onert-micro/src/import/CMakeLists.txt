@@ -4,12 +4,15 @@ set(SOURCES
         OMExecutionPlanCreator.cpp
         OMKernelConfiguration.cpp
         OMKernelConfigureBuilder.cpp
+        OMDynamicShapesHandler.cpp
+        OMUtils.cpp
         helpers/OMConfigureSISOKernel.cpp
         helpers/OMPadCommon.cpp
         helpers/OMConfigureTISOKernel.cpp
         helpers/OMSpacesBatchesNDCommon.cpp
         helpers/OMPoolingCommon.cpp
         helpers/OMArgCommon.cpp
+        helpers/OMFloorCommon.cpp
         )
 
 # Add configure kernels

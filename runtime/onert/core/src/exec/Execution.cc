@@ -20,9 +20,7 @@
 #include "train/TrainableExecutors.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 Execution::Execution(const std::shared_ptr<IExecutors> &executors) : _executors{executors}
@@ -223,5 +221,14 @@ size_t Execution::getOutputTotalSize(ir::IOIndex ind) const
   return _ctx.desc.outputs.at(ind.value())->info.total_size();
 }
 
-} // namespace exec
-} // namespace onert
+const void *Execution::getInputBuffer(ir::IOIndex ind) const
+{
+  return _ctx.desc.inputs.at(ind.value())->buffer;
+}
+
+void *Execution::getOutputBuffer(ir::IOIndex ind)
+{
+  return _ctx.desc.outputs.at(ind.value())->buffer;
+}
+
+} // namespace onert::exec

@@ -20,13 +20,7 @@
 #include "ir/operation/Pool2D.h"
 #include "ir/train/TrainableOperation.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace train
-{
-namespace operation
+namespace onert::ir::train::operation
 {
 
 class Pool2D : public ir::operation::Pool2D, public TrainableOperation
@@ -44,9 +38,6 @@ public:
   bool hasTrainableParameter() const override { return false; }
 };
 
-} // namespace operation
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train::operation
 
 #endif // __ONERT_IR_TRAIN_OPERATION_POOL2D_H__

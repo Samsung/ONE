@@ -24,14 +24,9 @@
 #include <cker/operation/ReLU.h>
 #include <cker/operation/ReLU6.h>
 #include <cker/operation/Tanh.h>
+#include <cker/operation/GELU.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 ElementwiseActivationLayer::ElementwiseActivationLayer()
@@ -85,7 +80,7 @@ void ElementwiseActivationLayer::EvalUsingLookupTable(const IPortableTensor *inp
 }
 
 void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortableTensor *output,
-                                           float alpha, float beta,
+                                           float alpha, float beta, bool approximate,
                                            ElementwiseActivationType op_type)
 {
   _input = input;
@@ -186,6 +181,19 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
         throw std::runtime_error{"ElementwiseActivationLayer(LeakyReLU): unsupported data type"};
       }
       break;
+    case ElementwiseActivationType::kGELU:
+      if (_input->data_type() == OperandType::FLOAT32)
+      {
+        _kernel = [approximate](const IPortableTensor *input, IPortableTensor *output) {
+          nnfw::cker::GELU(nnfw::cker::GELUParams{approximate}, getShape(input),
+                           getBuffer<float>(input), getShape(output), getBuffer<float>(output));
+        };
+      }
+      else
+      {
+        throw std::runtime_error{"ElementwiseActivationLayer(GELU): unsupported data type"};
+      }
+      break;
     default:
       throw std::runtime_error("ElementwiseActivationLayer: unsupported op type");
   }
@@ -193,7 +201,4 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
 
 void ElementwiseActivationLayer::run() { _kernel(_input, _output); }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

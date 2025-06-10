@@ -21,13 +21,7 @@
 
 #include <misc/polymorphic_downcast.h>
 
-namespace onert
-{
-namespace ir
-{
-namespace train
-{
-namespace operation
+namespace onert::ir::train::operation
 {
 
 std::unique_ptr<ITrainableOperation> Loss::clone() const { return std::make_unique<Loss>(*this); }
@@ -36,13 +30,11 @@ void Loss::accept(OperationVisitor &v) const { v.visit(*this); }
 
 void Loss::accept(TrainableOperationVisitor &v) const { v.visit(*this); }
 
-Loss::Loss(const OperationType &operation, const LossInfo &param)
-  : OperationType{operation.getInputs(), operation.getOutputs()}, _param{param}
+Loss::Loss(const OperationType &operation, const LossInfo &param, ir::OpCode y_pred_op_code)
+  : OperationType{operation.getInputs(), operation.getOutputs()}, _param{param},
+    _y_pred_op_code{y_pred_op_code}
 {
   // DO NOTHING
 }
 
-} // namespace operation
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train::operation

@@ -21,11 +21,7 @@
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
 
-namespace onert
-{
-namespace exec
-{
-namespace train
+namespace onert::exec::train
 {
 
 /**
@@ -67,6 +63,8 @@ public:
 
   const ir::OperandInfo &outputInfo(const ir::IOIndex &index) const override;
 
+  const void *outputBuffer(const ir::IOIndex &index) const final;
+
   void execute(const ExecutionContext &ctx) override;
 
   /**
@@ -97,8 +95,6 @@ private:
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<TrainableExecutor>> _executors;
 };
 
-} // namespace train
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::train
 
 #endif // __ONERT_EXEC_TRAIN_TRAINABLE_EXECUTORS_H__

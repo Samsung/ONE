@@ -22,11 +22,7 @@
 
 #include "util/ConfigSource.h"
 
-namespace onert
-{
-namespace util
-{
-namespace logging
+namespace onert::util::logging
 {
 
 class Context
@@ -51,7 +47,7 @@ private:
   bool _enabled;
 };
 
-static Context &ctx = Context::get();
+static inline Context &ctx = Context::get();
 
 inline std::string decorated_name(const char *input)
 {
@@ -64,9 +60,7 @@ inline std::string decorated_name(const char *input)
   return (len_prefix % 2 ? "[ " : "[") + spaces + prefix + spaces + "] ";
 }
 
-} // namespace logging
-} // namespace util
-} // namespace onert
+} // namespace onert::util::logging
 
 #define VERBOSE(name)                        \
   if (::onert::util::logging::ctx.enabled()) \

@@ -28,7 +28,6 @@ class Gen(base.BaseFreezer):
     '''
     class to generate tflite files for MUL
     '''
-
     def __init__(self, path):
         super(Gen, self).__init__(path)
 
@@ -63,10 +62,9 @@ class Gen(base.BaseFreezer):
         x_tensor = self.createTFInput(test_case_tensor[0], input_list)
         y_tensor = self.createTFInput(test_case_tensor[1], input_list)
 
-        output_node = tf.logical_and(
-            tf.greater(x_tensor, tf.constant(0.0)),
-            tf.less(y_tensor, tf.constant(1.0)),
-            name=tc_name)
+        output_node = tf.logical_and(tf.greater(x_tensor, tf.constant(0.0)),
+                                     tf.less(y_tensor, tf.constant(1.0)),
+                                     name=tc_name)
 
         # ------ modify UNTIL here for your model -------#
 
@@ -74,8 +72,9 @@ class Gen(base.BaseFreezer):
         # The next lines insert such (CONST) to prevent such error.
         # So, Graph.pb/pbtxt contains this garbage info,
         # but this garbage info will be removed in Graph_frozen.pb/pbtxt
-        garbage = tf.get_variable(
-            "garbage", [1], dtype=tf.float32, initializer=tf.zeros_initializer())
+        garbage = tf.get_variable("garbage", [1],
+                                  dtype=tf.float32,
+                                  initializer=tf.zeros_initializer())
         init_op = tf.global_variables_initializer()
         garbage_value = [0]
         sess.run(tf.assign(garbage, garbage_value))

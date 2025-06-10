@@ -17,6 +17,7 @@
 #include "mio_circle/Reader.h"
 #include "mio_circle/Helper.h"
 
+#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -45,6 +46,28 @@ Reader::Reader(const ::circle::Model *model)
   }
 }
 
+Reader::Reader(const ::circle::Model *model, const std::vector<char> *rawdata)
+{
+  if (model == nullptr)
+  {
+    throw std::runtime_error("Invalid model");
+  }
+
+  _rawdata = rawdata;
+
+  _version = model->version();
+  _subgraphs = model->subgraphs();
+  _buffers = model->buffers();
+  _metadata = model->metadata();
+  _signature_defs = model->signature_defs();
+
+  auto opcodes = model->operator_codes();
+  for (const ::circle::OperatorCode *opcode : *opcodes)
+  {
+    _op_codes.push_back(opcode);
+  }
+}
+
 size_t Reader::buffer_info(uint32_t buf_idx, const uint8_t **buff_data)
 {
   if (buff_data != nullptr)
@@ -57,6 +80,8 @@ size_t Reader::buffer_info(uint32_t buf_idx, const uint8_t **buff_data)
 
   if (auto *buffer = (*_buffers)[buf_idx])
   {
+    assert(buffer->offset() == 0);
+
     if (auto *array = buffer->data())
     {
       if (size_t size = array->size())
@@ -66,6 +91,57 @@ size_t Reader::buffer_info(uint32_t buf_idx, const uint8_t **buff_data)
           *buff_data = reinterpret_cast<const uint8_t *>(array->data());
         }
         return size;
+      }
+    }
+  }
+
+  return 0;
+}
+
+size_t Reader::buffer_info(uint32_t buf_idx, const uint8_t **buff_data, bool &ext_offset)
+{
+  ext_offset = false;
+
+  if (buff_data != nullptr)
+  {
+    *buff_data = nullptr;
+  }
+
+  if (buf_idx == 0)
+    return 0;
+
+  if (auto *buffer = (*_buffers)[buf_idx])
+  {
+    auto buffer_offset = buffer->offset();
+    if (buffer_offset > 1)
+    {
+      assert(_rawdata); // make debug break for invalid case
+      if (_rawdata == nullptr)
+        return 0;
+
+      ext_offset = true;
+      if (buff_data != nullptr)
+      {
+        *buff_data = reinterpret_cast<const uint8_t *>(&_rawdata->at(buffer_offset));
+      }
+      return buffer->size();
+    }
+    else if (auto *array = buffer->data())
+    {
+      if (size_t size = array->size())
+      {
+        if (buff_data != nullptr)
+        {
+          *buff_data = reinterpret_cast<const uint8_t *>(array->data());
+        }
+        return size;
+      }
+    }
+    else
+    {
+      if (buffer->offset() == 1 && buffer->size() == 1)
+      {
+        std::cerr << "Buffer " << buf_idx << " has invalid offset/size." << std::endl;
       }
     }
   }

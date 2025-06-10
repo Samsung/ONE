@@ -68,6 +68,8 @@
 #include <kernels/ResizeBilinear.h>
 #include <kernels/ResizeNearestNeighbor.h>
 #include <kernels/ReverseV2.h>
+#include <kernels/RmsNorm.h>
+#include <kernels/RoPE.h>
 #include <kernels/Rsqrt.h>
 #include <kernels/Sin.h>
 #include <kernels/Slice.h>
@@ -1092,6 +1094,45 @@ TEST_F(KernelBuilderTest, ReverseV2)
 
   checkTensor(kernel->input(), input);
   checkTensor(kernel->axes(), axes);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, RmsNorm)
+{
+  auto *input = createInputNode();
+  auto *gamma = createInputNode();
+
+  auto *op = createNode<luci::CircleRmsNorm>();
+  op->input(input);
+  op->gamma(gamma);
+  op->epsilon(1e-06);
+
+  auto kernel = buildKernel<kernels::RmsNorm>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->gamma(), gamma);
+  checkTensor(kernel->output(), op);
+  EXPECT_THAT(kernel->params().epsilon, Eq(op->epsilon()));
+}
+
+TEST_F(KernelBuilderTest, RoPE)
+{
+  auto *input = createInputNode();
+  auto *sin_table = createInputNode();
+  auto *cos_table = createInputNode();
+
+  auto *op = createNode<luci::CircleRoPE>();
+  op->input(input);
+  op->sin_table(sin_table);
+  op->cos_table(cos_table);
+
+  auto kernel = buildKernel<kernels::RoPE>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
+  checkTensor(kernel->sin_table(), sin_table);
+  checkTensor(kernel->cos_table(), cos_table);
   checkTensor(kernel->output(), op);
 }
 

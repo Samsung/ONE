@@ -62,8 +62,14 @@ OperationIndex addLossOperation(train::TrainableGraph &tgraph, const OperandInde
                                 const OperandIndexSequence outputs)
 {
   // Add "Loss" operation
+  const auto &y_pred_index = inputs.at(0);
+  const auto &y_pred = tgraph.operands().at(y_pred_index);
+  const auto &y_pred_node = tgraph.operations().at(y_pred.getDef());
+  const auto y_pred_op_code = y_pred_node.opcode();
+
   auto loss_op = operation::Loss(inputs, outputs);
-  return tgraph.addOperation(std::make_unique<train::operation::Loss>(loss_op, train::LossInfo{}));
+  return tgraph.addOperation(
+    std::make_unique<train::operation::Loss>(loss_op, train::LossInfo{}, y_pred_op_code));
 }
 
 TEST(TrainableGraph, topological_sort_linear)

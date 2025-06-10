@@ -17,6 +17,7 @@
 #include "Quantizer.h"
 
 #include "Embedder.h"
+#include "MinMaxReader.h"
 
 #include <util/ConfigSource.h>
 #include <luci/ImporterEx.h>
@@ -29,9 +30,7 @@
 extern "C" onert::odc::IQuantizer *create_quantizer() { return new onert::odc::Quantizer(); }
 extern "C" void destroy_quantizer(onert::odc::IQuantizer *quantizer) { delete quantizer; }
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 using QuantizerOptions = luci::CircleQuantizer::Options;
@@ -76,6 +75,11 @@ void fillQuantizeOptionParam(QuantizerOptions *options, QuantizeType qtype)
   }
 }
 
+std::string getMinMaxFilePath()
+{
+  return util::getConfigString(util::config::WORKSPACE_DIR) + "/minmax.bin";
+}
+
 } // namespace
 
 int Quantizer::quantize(const char *in, const char *out, QuantizeType qtype)
@@ -111,8 +115,7 @@ int Quantizer::quantize(const char *in, const char *out, QuantizeType qtype)
     }
 
     // Record minmax by minmax-embedder
-    // TODO use workspace to find minmax file
-    auto minmax_path = util::getConfigString(util::config::WORKSPACE_DIR) + "/minmax.bin";
+    auto minmax_path = getMinMaxFilePath();
     Embedder().embed(module.get(), minmax_path, {1.f, 99.f});
   }
 
@@ -153,5 +156,32 @@ int Quantizer::quantize(const char *in, const char *out, QuantizeType qtype)
   return 0;
 }
 
-} // namespace odc
-} // namespace onert
+bool Quantizer::readyForQuantize()
+{
+  std::string minmax_path = getMinMaxFilePath();
+
+  MinMaxReader mmr{minmax_path};
+
+  uint32_t numRuns = mmr.readNumRuns();
+  if (_minmax_threshold != 0 && numRuns >= _minmax_threshold)
+    return true;
+  else
+    return false;
+}
+
+bool Quantizer::deleteMinMaxFile()
+{
+  int result = 0;
+
+  std::string minmax_path = getMinMaxFilePath();
+  result = std::remove(minmax_path.c_str());
+
+  if (!result)
+  {
+    return true;
+  }
+  else
+    return false;
+}
+
+} // namespace onert::odc

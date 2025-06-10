@@ -24,11 +24,7 @@
 #include <backend/BackendContext.h>
 #include <compiler/GraphLowerInfo.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
+namespace onert::backend::ruy
 {
 
 class BackendContext : public onert::backend::BackendContext
@@ -65,8 +61,6 @@ private:
   std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy
 
 #endif // __ONERT_BACKEND_RUY_BACKEND_CONTEXT_H__

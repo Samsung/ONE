@@ -2,7 +2,7 @@ if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
 
-set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv_2_12_1")
+set(VIRTUALENV "${NNCC_OVERLAY_DIR}/venv")
 set(TEST_LIST_FILE "test.lst")
 
 nncc_find_resource(TensorFlowLiteRecipes)

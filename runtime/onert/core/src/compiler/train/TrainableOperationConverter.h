@@ -21,11 +21,7 @@
 
 #include "ir/train/TrainingInfo.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 class TrainableOperationConverter : public UntrainableOperationConverter
@@ -42,7 +38,7 @@ private:
   void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::ElementwiseActivation &) override;
   void visit(const ir::operation::FullyConnected &) override;
-  void visit(const ir::operation::Loss &node) override;
+  // ir::operation::Loss is inserted and converted only by LossInsertionPass
   void visit(const ir::operation::Pad &node) override;
   void visit(const ir::operation::Permute &node) override;
   void visit(const ir::operation::Pool2D &node) override;
@@ -51,11 +47,9 @@ private:
   void visit(const ir::operation::Softmax &) override;
 
 private:
-  const ir::train::TrainingInfo *_training_info;
+  [[maybe_unused]] const ir::train::TrainingInfo *_training_info;
 };
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train
 
 #endif // __ONERT_COMPILER_TRAIN_TRAINABLE_OPERATION_CONVERTER_H__

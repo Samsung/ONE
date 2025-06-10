@@ -23,9 +23,7 @@
 #include <ostream>
 #include <sstream>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 struct OperationIndexTag;
@@ -86,7 +84,6 @@ inline std::ostream &operator<<(std::ostream &o, const OriginIndex &i)
 {
   return _index_print_impl(o, "", i);
 }
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_INDEX_H__

@@ -19,22 +19,13 @@
 
 #include <backend/basic/train/TrainableTensor.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace train
+namespace onert::backend::builtin::train
 {
 
 using TrainableTensor = basic::train::TrainableTensor;
 using BackPropTensor = basic::Tensor;
 using GradientTensor = basic::Tensor;
 
-} // namespace train
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::train
 
 #endif // __ONERT_BACKEND_BUILTIN_TRAIN_TRAINABLE_TENSOR_H__

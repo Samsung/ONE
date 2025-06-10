@@ -33,55 +33,16 @@ constexpr uint32_t input1TensorIdx = 0;
 constexpr uint32_t input2TensorIdx = 1;
 constexpr uint32_t outputTensorIdx = 0;
 
-void calculateQuantParams(core::ArithmeticQuantParams &params, const circle::Tensor *input1,
-                          const circle::Tensor *input2, const circle::Tensor *output,
-                          circle::ActivationFunctionType act)
-{
-  long input1_zp;
-  long input2_zp;
-  long output_zp;
-
-  float input1_scale;
-  float input2_scale;
-  float output_scale;
-
-  // Read input1 quant params
-  readQuantParams(input1, input1_zp, input1_scale);
-  // Read input2 quant params
-  readQuantParams(input2, input2_zp, input2_scale);
-  // Read output quant params
-  readQuantParams(output, output_zp, output_scale);
-
-  params.input1_offset = -static_cast<int32_t>(input1_zp);
-  params.input2_offset = -static_cast<int32_t>(input2_zp);
-  params.output_offset = static_cast<int32_t>(output_zp);
-  params.left_shift = (output->type() == circle::TensorType_INT16) ? 15 : 20;
-  const double twice_max_input_scale =
-    2 * static_cast<double>(std::max(input1_scale, input2_scale));
-  const double real_input1_multiplier = static_cast<double>(input1_scale) / twice_max_input_scale;
-  const double real_input2_multiplier = static_cast<double>(input2_scale) / twice_max_input_scale;
-  const double real_output_multiplier =
-    twice_max_input_scale / ((1 << params.left_shift) * static_cast<double>(output_scale));
-
-  quantizeMultiplierSmallerThanOneExp(real_input1_multiplier, &params.input1_multiplier,
-                                      &params.input1_shift);
-
-  quantizeMultiplierSmallerThanOneExp(real_input2_multiplier, &params.input2_multiplier,
-                                      &params.input2_shift);
-
-  quantizeMultiplierSmallerThanOneExp(real_output_multiplier, &params.output_multiplier,
-                                      &params.output_shift);
-
-  calculateActivationRangeQuantized(act, output_zp, output_scale, output->type(),
-                                    &params.quantized_activation_min,
-                                    &params.quantized_activation_max);
-}
-
 } // namespace
 
 // NOTE: doesnt currently support dynamic shapes
 // TODO: reduce code duplication with Mul, Sub
-OMStatus onert_micro::execute::execute_kernel_CircleAdd(const OMExecuteArgs &execute_args)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_kernel_CircleAdd(const OMExecuteArgs &execute_args)
 {
   core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
   core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
@@ -134,11 +95,15 @@ OMStatus onert_micro::execute::execute_kernel_CircleAdd(const OMExecuteArgs &exe
 
 #ifndef DIS_DYN_SHAPES
   // Check dynamic shapes
-  if (runtime_storage.getDynamicTensorSize(input1_index) != -1)
-    input1_shape = output_shape;
+  {
+    auto input_1_dynamic_shape = runtime_storage.getDynamicRuntimeShape(input1_index);
+    if (input_1_dynamic_shape.flatSize() != 0)
+      input1_shape = input_1_dynamic_shape;
 
-  if (runtime_storage.getDynamicTensorSize(input2_index) != -1)
-    input2_shape = output_shape;
+    auto input_2_dynamic_shape = runtime_storage.getDynamicRuntimeShape(input2_index);
+    if (input_2_dynamic_shape.flatSize() != 0)
+      input2_shape = input_2_dynamic_shape;
+  }
 #endif // DIS_DYN_SHAPES
 
   // Check broadcast property
@@ -244,3 +209,6 @@ OMStatus onert_micro::execute::execute_kernel_CircleAdd(const OMExecuteArgs &exe
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

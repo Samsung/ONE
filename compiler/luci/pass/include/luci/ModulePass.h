@@ -14,24 +14,36 @@
  * limitations under the License.
  */
 
-#ifndef __MODULE_PASS_H__
-#define __MODULE_PASS_H__
+#ifndef __LUCI_PASS_MODULE_PASS_H__
+#define __LUCI_PASS_MODULE_PASS_H__
 
 #include <loco.h>
 #include <logo/Pass.h>
 
 #include <luci/IR/Module.h>
 
+#include <stdexcept>
+
 namespace luci
 {
 
-class Pass : public logo::Pass
+class ModulePass
 {
 public:
   // Run module pass and return false if there was nothing changed
   virtual bool run(luci::Module *) = 0;
 };
 
+class Pass : public logo::Pass, public ModulePass
+{
+public:
+  // NOTE adding dummy run() to make compiler happy with "-Werror=overloaded-virtual="
+  // clang-format off
+  bool run(loco::Graph *) override { throw std::runtime_error("Must inherit"); }
+  bool run(luci::Module *) override { throw std::runtime_error("Must inherit"); }
+  // clang-format on
+};
+
 } // namespace luci
 
-#endif // __MODULE_PASS_H__
+#endif // __LUCI_PASS_MODULE_PASS_H__

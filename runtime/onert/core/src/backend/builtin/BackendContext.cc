@@ -19,11 +19,7 @@
 #include "KernelGenerator.h"
 #include "backend/basic/BackendContextHelpers.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 ITensorRegistry *BackendContext::genTensors() { return basic::genTensors(*this); }
@@ -53,6 +49,4 @@ FunctionMap BackendContext::genKernels()
   return ret;
 }
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin

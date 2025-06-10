@@ -30,7 +30,12 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::execute::execute_spaces_batches_nd_common(
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_spaces_batches_nd_common(
   const OMExecuteArgs &execute_args,
   const std::function<
     OMStatus(const core::OMRuntimeShape &unextended_input1_shape, const float *input1_data,
@@ -107,3 +112,6 @@ OMStatus onert_micro::execute::execute_spaces_batches_nd_common(
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

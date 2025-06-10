@@ -24,11 +24,7 @@
 
 #include "Pass.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 /**
@@ -47,8 +43,6 @@ public:
   void run() final;
 };
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass
 
 #endif // __ONERT_COMPILER_PASS_UNUSED_OPERAND_ELIMINATION_PASS_H__

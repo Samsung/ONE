@@ -17,7 +17,7 @@ add_custom_command(
   OUTPUT ${CIRCLE_SCHEMA_PYTHON_DIR}
   COMMAND "$<TARGET_FILE:flatbuffers::flatc>" --python
           -o "${CMAKE_CURRENT_BINARY_DIR}" "${SCHEMA_BIN_PATH}/schema.fbs"
-  DEPENDS flatbuffers::flatc
+  DEPENDS flatbuffers::flatc mio_circle08
   COMMENT "Generate python interface for circle schema"
 )
 

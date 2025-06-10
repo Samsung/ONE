@@ -19,11 +19,7 @@
 
 #include "ir/Operation.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 class ElementwiseActivation : public Operation
@@ -40,14 +36,21 @@ public:
     LOGISTIC,
     RELU,
     TANH,
-    LEAKY_RELU
+    LEAKY_RELU,
+    GELU
   };
 
   struct Param
   {
     Type op_type;
-    float alpha;
-    float beta;
+    union {
+      struct
+      {
+        float alpha;
+        float beta;
+      };
+      bool approximate;
+    };
     Param() : op_type(Type::ELU), alpha(0.0f), beta(0.0f) {}
   };
 
@@ -64,14 +67,12 @@ public:
   const Param &param() const { return _param; }
 
 public:
-  static float infinity;
+  static inline float infinity = std::numeric_limits<float>::infinity();
 
 private:
   Param _param;
 };
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation
 
 #endif // __ONERT_IR_OPERATION_ELEMENTWISE_ACTIVATION_H__

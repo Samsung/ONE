@@ -22,11 +22,7 @@
 #include "util/logging.h"
 #include "misc/string_helpers.h"
 
-namespace onert
-{
-namespace dumper
-{
-namespace text
+namespace onert::dumper::text
 {
 
 namespace
@@ -103,6 +99,4 @@ void dumpLoweredGraph(const compiler::train::LoweredTrainableGraph &lgraph)
   dumpGraph(lgraph.graph());
 }
 
-} // namespace text
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::text

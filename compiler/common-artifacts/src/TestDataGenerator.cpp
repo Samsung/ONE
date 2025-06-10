@@ -17,7 +17,7 @@
 #include <arser/arser.h>
 #include <foder/FileLoader.h>
 #include <luci/IR/DataTypeHelper.h>
-#include <luci/Importer.h>
+#include <luci/ImporterEx.h>
 #include <luci_interpreter/Interpreter.h>
 
 #include <H5Cpp.h>
@@ -169,18 +169,13 @@ int entry(int argc, char **argv)
 
   std::string circle_file = arser.get<std::string>("circle");
 
-  // load circle file
-  foder::FileLoader file_loader{circle_file};
-  std::vector<char> model_data = file_loader.load();
-  const circle::Model *circle_model = circle::GetModel(model_data.data());
-  if (circle_model == nullptr)
+  luci::ImporterEx importer;
+  auto module = importer.importVerifyModule(circle_file);
+  if (module == nullptr)
   {
     std::cerr << "ERROR: Failed to load circle '" << circle_file << "'" << std::endl;
     return EXIT_FAILURE;
   }
-
-  // load luci module
-  std::unique_ptr<luci::Module> module = luci::Importer().importModule(circle_model);
   luci_interpreter::Interpreter interpreter(module.get());
 
   /**

@@ -21,9 +21,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 enum class Layout
@@ -31,6 +29,13 @@ enum class Layout
   UNKNOWN = 0,
   NHWC,
   NCHW
+};
+
+enum class PermuteType
+{
+  NHWC_TO_NCHW,
+  NCHW_TO_NHWC,
+  COPY
 };
 
 inline std::string to_string(Layout layout)
@@ -48,8 +53,7 @@ inline std::string to_string(Layout layout)
   }
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 namespace std
 {

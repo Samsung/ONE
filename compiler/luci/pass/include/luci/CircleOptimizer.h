@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __LUCI_CIRCLE_OPTIMIZER_H__
-#define __LUCI_CIRCLE_OPTIMIZER_H__
+#ifndef __LUCI_PASS_CIRCLE_OPTIMIZER_H__
+#define __LUCI_PASS_CIRCLE_OPTIMIZER_H__
 
 #include <loco.h>
 
@@ -49,6 +49,7 @@ public:
       FuseMeanWithMean,
       FuseMulWithConv,
       FuseMulWithDiv,
+      FuseMulWithFullyConnected,
       FuseTransposeWithMean,
       ResolveCustomOpAdd,
       ResolveCustomOpBatchMatMul,
@@ -77,12 +78,15 @@ public:
       FusePRelu,
       FuseGelu,
       FuseRsqrt,
+      FuseRmsNorm,
+      FuseRoPE,
       ShuffleWeightTo16x1Float32,
       RemoveRedundantTranspose,
       ReplaceMulAddWithDepthwiseConv,
       ReplaceNonConstFCWithBatchMatMul,
       ReplaceSubWithAdd,
       ReplaceWithFCGeluFC,
+      SubstituteExpandDimsToReshape,
       SubstitutePackToReshape,
       SubstitutePadV2ToPad,
       SubstituteSplitVToSplit,
@@ -91,6 +95,7 @@ public:
       ConvertNCHWToNHWC,
       CommonSubExpressionElimination,
       RemoveUnnecessaryAdd,
+      RemoveUnnecessaryCast,
       RemoveUnnecessarySlice,
       RemoveUnnecessaryStridedSlice,
       RemoveUnnecessarySplit,
@@ -155,4 +160,4 @@ private:
 
 } // namespace luci
 
-#endif // __LUCI_CIRCLE_OPTIMIZER_H__
+#endif // __LUCI_PASS_CIRCLE_OPTIMIZER_H__

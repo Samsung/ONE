@@ -17,11 +17,7 @@
 #include "ir/operation/RNN.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void RNN::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ RNN::RNN(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

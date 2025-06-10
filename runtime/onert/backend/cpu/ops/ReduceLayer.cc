@@ -21,13 +21,7 @@
 #include "cker/neon/neon_check.h"
 #include <cker/operation/Reduce.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 namespace
@@ -221,7 +215,4 @@ void ReduceLayer::run()
   _kernel(_input, _output, axes);
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

@@ -33,11 +33,7 @@
 
 #include "util/logging.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
+namespace onert::backend::acl_cl
 {
 
 using MemoryManager =
@@ -71,8 +67,6 @@ inline TensorManager *createTensorManager(bool is_linear_executor)
   }
 }
 
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl
 
 #endif // __ONERT_BACKEND_ACL_CL_TENSOR_MANAGER_H__

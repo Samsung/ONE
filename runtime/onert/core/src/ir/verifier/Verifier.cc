@@ -78,11 +78,7 @@ extractNodeOutputs(const train::UseDefChains &training_usedefs)
 
 } // namespace
 
-namespace onert
-{
-namespace ir
-{
-namespace verifier
+namespace onert::ir::verifier
 {
 
 //
@@ -297,6 +293,4 @@ bool EdgeChecker::verify(const train::UseDefChains &training_usedefs) const noex
   return errors == 0;
 }
 
-} // namespace verifier
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::verifier

@@ -1,0 +1,5 @@
+add_library(cirmlir_coverage INTERFACE)
+if(ENABLE_COVERAGE)
+  target_compile_options(cirmlir_coverage INTERFACE -g -O0 -fprofile-arcs -ftest-coverage)
+  target_link_libraries(cirmlir_coverage INTERFACE gcov)
+endif()

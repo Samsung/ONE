@@ -19,11 +19,7 @@
 
 #include <string>
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 enum class LossCode
@@ -41,8 +37,6 @@ enum class LossCode
  */
 std::string toString(LossCode opcode);
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
 #endif // __ONERT_IR_TRAIN_LOSS_CODE_H__

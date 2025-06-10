@@ -24,9 +24,7 @@
 #include <unordered_map>
 #include <mutex>
 
-namespace onert
-{
-namespace util
+namespace onert::util
 {
 
 /**
@@ -71,11 +69,10 @@ private:
 private:
   std::unordered_map<const ir::Graph *, ir::SubgraphIndex> _subgraph_indices;
   uint32_t _session_id;
-  static std::mutex _session_id_mutex;
-  static uint32_t _next_session_id;
+  static inline std::mutex _session_id_mutex;
+  static inline uint32_t _next_session_id = 0;
 };
 
-} // namespace util
-} // namespace onert
+} // namespace onert::util
 
 #endif // __ONERT_UTIL_TRACING_CTX_H__

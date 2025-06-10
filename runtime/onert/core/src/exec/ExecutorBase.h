@@ -32,9 +32,7 @@
 #include <mutex>
 #include <vector>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class ExecutorBase : public IExecutor
@@ -78,6 +76,11 @@ public:
     return _output_tensors[index]->layout();
   }
 
+  const uint8_t *outputBuffer(uint32_t index) const final
+  {
+    return _output_tensors[index]->buffer();
+  }
+
   // Used only in Dataflow and Parallel Executors
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>> ranks) final
   {
@@ -118,7 +121,6 @@ protected:
   ExecutionOptions _current_options;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_EXECUTOR_BASE_H__

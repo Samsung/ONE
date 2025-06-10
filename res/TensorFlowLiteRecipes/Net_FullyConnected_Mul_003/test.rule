@@ -1,0 +1,13 @@
+# This checks if:
+#   Mul(FC(input, weights, _), other)
+# is converted to:
+#   FC(input, Mul(weights, other), _)
+# and then Mul is fused to:
+#   FC(input, weights', _)
+# Here the bias is empty/excluded "_".
+# Thus Mul is only fused with weights.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "NO_MUL"                  $(op_count MUL) '=' 0
+RULE    "FC_EXIST"                $(op_count FULLY_CONNECTED) '=' 1

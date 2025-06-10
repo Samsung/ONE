@@ -42,7 +42,6 @@ class InputOutputPath:
     After calling enter_new_section(),
     output path in section k will be used as input path of section k+1
     '''
-
     def __init__(self, initial_input_path: str):
         self._first_step = True
         self._input_path = initial_input_path
@@ -74,7 +73,6 @@ class CommentableConfigParser(configparser.ConfigParser):
     value is None.
     Ref: https://stackoverflow.com/questions/6620637/writing-comments-to-files-with-configparser
     """
-
     def __init__(self):
         # allow_no_value=True to add comment
         # ref: https://stackoverflow.com/a/19432072
@@ -116,17 +114,20 @@ def _get_parser(backends_list):
 
     oneutils.add_default_arg_no_CS(parser)
 
-    parser.add_argument(
-        '-i', '--input_path', type=str, help='full filepath of the input model file')
-    parser.add_argument(
-        '-o', '--output_path', type=str, help='full filepath of the output cfg file')
-    parser.add_argument(
-        '-m',
-        '--model_type',
-        type=str,
-        help=('type of input model: "onnx", "tflite". '
-              'If the file extension passed to --input_path is '
-              '".tflite" or ".onnx", this arg can be omitted.'))
+    parser.add_argument('-i',
+                        '--input_path',
+                        type=str,
+                        help='full filepath of the input model file')
+    parser.add_argument('-o',
+                        '--output_path',
+                        type=str,
+                        help='full filepath of the output cfg file')
+    parser.add_argument('-m',
+                        '--model_type',
+                        type=str,
+                        help=('type of input model: "onnx", "tflite". '
+                              'If the file extension passed to --input_path is '
+                              '".tflite" or ".onnx", this arg can be omitted.'))
 
     onnx_group = parser.add_argument_group('arguments when model type is onnx')
     onnx_group.add_argument(

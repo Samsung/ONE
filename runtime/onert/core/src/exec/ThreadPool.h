@@ -23,9 +23,7 @@
 
 #include "WorkQueue.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class ThreadPool
@@ -67,7 +65,6 @@ private:
   std::vector<std::thread> _threads;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_THREAD_POOL_H__

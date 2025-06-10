@@ -22,17 +22,11 @@
 
 #include <backend/basic/DynamicTensorManager.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 using DynamicTensorManager = basic::DynamicTensorManager;
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin
 
 #endif // __ONERT_BACKEND_BUILTIN_DYNAMICTENSOR_MANAGER_H__

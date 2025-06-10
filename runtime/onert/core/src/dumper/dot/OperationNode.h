@@ -28,11 +28,7 @@
 #include "ir/IOperation.h"
 #include "ir/Index.h"
 
-namespace onert
-{
-namespace dumper
-{
-namespace dot
+namespace onert::dumper::dot
 {
 
 /**
@@ -42,8 +38,8 @@ namespace dot
 class Operation : public Node
 {
 public:
-  static const std::string OPERATION_SHAPE;
-  static const std::string BG_COLOR_SCHEME;
+  static inline const std::string OPERATION_SHAPE = "rect";
+  static inline const std::string BG_COLOR_SCHEME = "pastel18";
 
 public:
   /**
@@ -55,8 +51,6 @@ public:
   Operation(const ir::OperationIndex &index, const ir::IOperation &node);
 };
 
-} // namespace dot
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::dot
 
 #endif // __ONERT_DUMPER_DOT_DOT_NODE_INFO_H__

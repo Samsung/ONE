@@ -53,6 +53,8 @@ OMStatus onert_micro::train::train_kernel_CircleFullyConnected(const OMBackpropE
   const circle::Tensor *weight;
   const circle::Tensor *output;
 
+  int32_t weight_tensor_index = -1;
+
   uint8_t *input_data;
   uint8_t *dloss_dinput_data;
 
@@ -79,6 +81,9 @@ OMStatus onert_micro::train::train_kernel_CircleFullyConnected(const OMBackpropE
     // Bias can be nullptr
     assert(output != nullptr);
 
+    weight_tensor_index = runtime_kernel.inputs_index[weightTensorIdx];
+    assert(weight_tensor_index != -1);
+
     // Read forward storage
     {
       runtime_kernel.getDataFromStorage(op_index, forward_storage, context);
@@ -89,7 +94,7 @@ OMStatus onert_micro::train::train_kernel_CircleFullyConnected(const OMBackpropE
       output_data = runtime_kernel.outputs_data[outputTensorIdx];
       // Bias_data can be nullptr
       // Output_data can be nullptr
-      assert(input_data != nullptr);
+      // Input_data can be nullptr
       assert(weight_data != nullptr);
     }
 
@@ -133,23 +138,44 @@ OMStatus onert_micro::train::train_kernel_CircleFullyConnected(const OMBackpropE
     }
   }
 
-  // 2. Calculate weight gradient
-  pal::FullyConnectedWeightGrad(core::utils::castInputData<float>(dloss_doutput_data), output_shape,
-                                core::utils::castInputData<float>(input_data), input_shape,
-                                core::utils::castOutputData<float>(dloss_dweight_data));
-
-  // 3. Calculate bias gradient
-  // Just copy dloss_doutput_data to dloss_dbias_data
-  // TODO: introduce training inplace
-  if (dloss_dbias_data)
+  if (args.is_trainable_layer)
   {
-    assert(bias_data != nullptr);
-    if (bias_data == nullptr)
-      return UnknownError;
+    // Check is only bias updating
+    if (args.train_rank_type != ONLY_BIAS)
+    {
+      assert(input_data != nullptr); // FIX memory planner then
 
-    std::memcpy(dloss_dbias_data, dloss_doutput_data,
-                sizeof(OMDataType(output->type())) *
-                  output_shape.dims(output_shape.dimensionsCount() - 1));
+      // Get weight shape
+      OMRuntimeShape weight_shape(weight);
+      OMRuntimeShape dynamic_shapes = backward_storage.getDynamicRuntimeShape(weight_tensor_index);
+      if (dynamic_shapes.flatSize() != 0)
+        weight_shape = dynamic_shapes;
+
+      // 2. Calculate weight gradient
+      // Init weight grads with zeros
+      const auto kDlossSizeInBytes = output_shape.dims(1) * input_shape.dims(1) * sizeof(float);
+      for (int i = 0; i < kDlossSizeInBytes; i += sizeof(float))
+        *static_cast<float *>(static_cast<void *>(dloss_dweight_data + i)) = 0;
+
+      pal::FullyConnectedWeightGrad(
+        core::utils::castInputData<float>(dloss_doutput_data), output_shape,
+        core::utils::castInputData<float>(input_data), input_shape,
+        core::utils::castOutputData<float>(dloss_dweight_data), weight_shape, args.train_rank_type);
+    }
+
+    // 3. Calculate bias gradient
+    // Just copy dloss_doutput_data to dloss_dbias_data
+    // TODO: introduce training inplace
+    if (dloss_dbias_data)
+    {
+      assert(bias_data != nullptr);
+      if (bias_data == nullptr)
+        return UnknownError;
+
+      std::memcpy(dloss_dbias_data, dloss_doutput_data,
+                  sizeof(OMDataType(output->type())) *
+                    output_shape.dims(output_shape.dimensionsCount() - 1));
+    }
   }
 
   // 4. Calculate (if needed) input grad

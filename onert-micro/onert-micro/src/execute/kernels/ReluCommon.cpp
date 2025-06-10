@@ -15,7 +15,7 @@
  */
 
 #include "execute/kernels/ReluCommon.h"
-#include "PALReluCommon.h"
+#include "PALRelu.h"
 
 using namespace onert_micro;
 using namespace onert_micro::execute;
@@ -29,8 +29,12 @@ constexpr uint32_t outputTensorIdx = 0;
 } // namespace
 
 // NOTE: doesnt currently support dynamic shapes
-OMStatus onert_micro::execute::execute_relu_common(const OMExecuteArgs &execute_args,
-                                                   bool is_relu_6)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_relu_common(const OMExecuteArgs &execute_args, bool is_relu_6)
 {
   core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
   core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
@@ -86,6 +90,23 @@ OMStatus onert_micro::execute::execute_relu_common(const OMExecuteArgs &execute_
     }
     break;
 #endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+    {
+      core::OMRuntimeShape input_shape(input);
+      core::OMRuntimeShape output_shape(output);
+
+      const auto *input_data_int8 = core::utils::castInputData<int8_t>(input_data);
+      auto *output_data_int8 = core::utils::castOutputData<int8_t>(output_data);
+
+      assert(output_data_int8);
+      const int flat_size = input_shape.flatSize();
+
+      status = pal::ReLUCommon(flat_size, input_data_int8, output_data_int8, alpha, is_relu_6);
+    }
+    break;
+#endif // DIS_QUANT
+
     default:
     {
       status = UnsupportedType;
@@ -96,3 +117,6 @@ OMStatus onert_micro::execute::execute_relu_common(const OMExecuteArgs &execute_
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

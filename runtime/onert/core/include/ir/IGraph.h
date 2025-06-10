@@ -20,9 +20,7 @@
 #include "ir/Operands.h"
 #include "ir/Operations.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 struct IGraph
@@ -41,7 +39,6 @@ struct IGraph
   virtual void changeShape(const OperandIndex &index, const ir::Shape &new_shape) = 0;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_IGRAPH_H__

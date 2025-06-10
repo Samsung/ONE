@@ -16,11 +16,7 @@
 
 #include "BatchThreadPool.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 BatchThreadPool::BatchThreadPool(size_t num_threads) : _num_threads(num_threads), _stop_all(false)
@@ -64,6 +60,4 @@ BatchThreadPool::~BatchThreadPool()
   }
 }
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix

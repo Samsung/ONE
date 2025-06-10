@@ -49,6 +49,10 @@ enum class DataType
 
   // WARNING STRING is NOT fully supported yet
   STRING, // String
+
+  // Microscaling data type
+  MXFP4,
+  MXINT8,
 };
 
 } // namespace loco

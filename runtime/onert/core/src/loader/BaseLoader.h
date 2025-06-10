@@ -34,9 +34,7 @@
 #include <unistd.h>
 #include <util/logging.h>
 
-namespace onert
-{
-namespace loader
+namespace onert::loader
 {
 
 template <typename LoaderDomain> class BaseLoader
@@ -94,7 +92,7 @@ protected:
 
   // Helper functions
   ir::Activation convertActivation(ActivationFunctionType type);
-  ir::DataType tensorTypeToDataType(TensorType type);
+  virtual ir::DataType tensorTypeToDataType(const TensorType type);
   ir::OperandIndex tensorIdxToOperandIdx(int32_t tensorIdx);
   flexbuffers::Map getCustomOpAttrMap(const Operator *op);
 
@@ -129,9 +127,7 @@ private:
   template <typename OpIR, typename... Args>
   const OpIR *loadOperationTo(const Operator *op, ir::Graph &subg, Args &&...args);
 
-  void loadAddV2(const Operator *op, ir::Graph &subg);
   void loadArgMinMax(const Operator *op, ir::Graph &subg, bool is_argmax);
-  void loadBatchMatMul(const Operator *op, ir::Graph &subg);
   void loadBinaryArithmetic(const Operator *op, ir::Graph &subg,
                             ir::operation::BinaryArithmetic::ArithmeticType op_type);
   void loadComparison(const Operator *op, ir::Graph &subg);
@@ -140,7 +136,6 @@ private:
   void loadCustom(const Operator *op, ir::Graph &subg);
   void loadDepthToSpace(const Operator *op, ir::Graph &subg);
   void loadDepthwiseConv2D(const Operator *op, ir::Graph &subg);
-  void loadEinsum(const Operator *op, ir::Graph &subg);
   void loadElementwiseActivation(const Operator *op, ir::Graph &subg,
                                  ir::operation::ElementwiseActivation::Type op_type,
                                  float alpha = 0.f, float beta = 0.f);
@@ -151,6 +146,7 @@ private:
   void loadFC(const Operator *op, ir::Graph &subg);
   void loadFusedBatchNorm(const Operator *op, ir::Graph &subg);
   void loadGather(const Operator *op, ir::Graph &subg);
+  void loadGELU(const Operator *op, ir::Graph &subg);
   void loadIf(const Operator *op, ir::Graph &subg);
   void loadLeakyRelu(const Operator *op, ir::Graph &subg);
   void loadLogSoftmax(const Operator *op, ir::Graph &subg);
@@ -160,7 +156,6 @@ private:
   void loadPool2D(const Operator *op, ir::Graph &subg, ir::operation::Pool2D::PoolType op_type);
   void loadReduce(const Operator *op, ir::Graph &subg,
                   ir::operation::Reduce::ReduceType reduce_type);
-  void loadReduceAll(const Operator *op, ir::Graph &subg);
   void loadReshape(const Operator *op, ir::Graph &subg);
   void loadResizeBilinear(const Operator *op, ir::Graph &subg);
   void loadResizeNearestNeighbor(const Operator *op, ir::Graph &subg);
@@ -364,7 +359,8 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
 {
   ir::Shape shape;
   // Shape
-  const auto *tensor_shape = tensor->shape();
+  const auto *tensor_shape =
+    tensor->shape_signature() ? tensor->shape_signature() : tensor->shape();
   if (tensor_shape != nullptr)
   {
     for (const auto &dim : *tensor_shape)
@@ -817,27 +813,6 @@ void BaseLoader<LoaderDomain>::loadFC(const Operator *op, ir::Graph &subg)
 }
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadAddV2(const Operator *op, ir::Graph &subg)
-{
-  ir::operation::BinaryArithmetic::Param param;
-  param.arithmetic_type = ir::operation::BinaryArithmetic::ArithmeticType::ADD;
-
-  if (op->custom_options() == nullptr)
-  {
-    param.activation = ir::Activation::NONE;
-  }
-  else
-  {
-    const auto attr_map = getCustomOpAttrMap(op);
-    const auto fused_activation_func = static_cast<typename LoaderDomain::ActivationFunctionType>(
-      attr_map["fused_activation_function"].AsInt8());
-    param.activation = convertActivation(fused_activation_func);
-  }
-
-  loadOperationTo<ir::operation::BinaryArithmetic>(op, subg, param);
-}
-
-template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadDepthToSpace(const Operator *op, ir::Graph &subg)
 {
   ir::operation::DepthToSpace::Param param;
@@ -951,24 +926,6 @@ void BaseLoader<LoaderDomain>::loadReduce(const Operator *op, ir::Graph &subg,
 }
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadReduceAll(const Operator *op, ir::Graph &subg)
-{
-  ir::operation::Reduce::Param param;
-  param.reduce_type = ir::operation::Reduce::ReduceType::ALL;
-  if (op->custom_options() == nullptr)
-  {
-    param.keep_dims = false;
-  }
-  else
-  {
-    const auto attr_map = getCustomOpAttrMap(op);
-    param.keep_dims = attr_map["keep_dims"].AsBool();
-  }
-
-  loadOperationTo<ir::operation::Reduce>(op, subg, param);
-}
-
-template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadElementwiseBinary(
   const Operator *op, ir::Graph &subg,
   ir::operation::ElementwiseBinary::ElementwiseBinaryType op_type)
@@ -1011,6 +968,16 @@ void BaseLoader<LoaderDomain>::loadGather(const Operator *op, ir::Graph &subg)
 }
 
 template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadGELU(const Operator *op, ir::Graph &subg)
+{
+  ir::operation::ElementwiseActivation::Param param{};
+  param.op_type = ir::operation::ElementwiseActivation::Type::GELU;
+  param.approximate = op->builtin_options_as_GeluOptions()->approximate();
+
+  loadOperationTo<ir::operation::ElementwiseActivation>(op, subg, param);
+}
+
+template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadDetectionPostProcess(const Operator *op, ir::Graph &subg)
 {
   const auto &m = getCustomOpAttrMap(op);
@@ -1049,44 +1016,6 @@ void BaseLoader<LoaderDomain>::loadDetectionPostProcess(const Operator *op, ir::
 }
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadBatchMatMul(const Operator *op, ir::Graph &subg)
-{
-  ir::operation::BatchMatMul::Param param;
-
-  const auto builtin_op = getBuiltinOperator(op);
-
-  switch (builtin_op)
-  {
-    case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
-      // Handled on each loader: different option name
-      //  Circle: adjoint_lhs, adjoint_rhs
-      //  TFLite: adj_x, adj_y
-      throw std::runtime_error(
-        std::string("Cannot handle here: ").append(EnumNameBuiltinOperator(builtin_op)) + " as " +
-        EnumNameBuiltinOperator(BuiltinOperator::BuiltinOperator_BATCH_MATMUL));
-    case BuiltinOperator::BuiltinOperator_CUSTOM:
-      if (op->custom_options() == nullptr)
-      {
-        param.adj_x = false;
-        param.adj_y = false;
-      }
-      else
-      {
-        const auto attr_map = getCustomOpAttrMap(op);
-        param.adj_x = attr_map["adj_x"].AsBool();
-        param.adj_y = attr_map["adj_y"].AsBool();
-      }
-      break;
-    default:
-      throw std::runtime_error(
-        std::string("Wrong loaded operation: ").append(EnumNameBuiltinOperator(builtin_op)) +
-        " as " + EnumNameBuiltinOperator(BuiltinOperator::BuiltinOperator_BATCH_MATMUL));
-  }
-
-  loadOperationTo<ir::operation::BatchMatMul>(op, subg, param);
-}
-
-template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadSpaceToDepth(const Operator *op, ir::Graph &subg)
 {
   ir::operation::SpaceToDepth::Param param;
@@ -1110,12 +1039,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
 
   enum class BuiltinOP
   {
-    AddV2,
-    ReduceAll,
-    MatrixBandPart,
-    BatchMatMul,
-    Einsum,
-    BroadcastTo,
     FusedBatchNorm,
     StatelessRandomUniform,
     Erf,
@@ -1124,13 +1047,7 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
 
   // Mapping from custom op name string to BuiltinOP enum
   std::map<std::string, BuiltinOP> builtin_map = {
-    {"AddV2", BuiltinOP::AddV2},
-    {"All", BuiltinOP::ReduceAll},
-    {"MatrixBandPart", BuiltinOP::MatrixBandPart},
-    {"BatchMatMulV2", BuiltinOP::BatchMatMul},
-    {"Einsum", BuiltinOP::Einsum},
     {"FusedBatchNormV3", BuiltinOP::FusedBatchNorm},
-    {"BroadcastTo", BuiltinOP::BroadcastTo},
     {"StatelessRandomUniform", BuiltinOP::StatelessRandomUniform},
     {"Erf", BuiltinOP::Erf},
     {"TFLite_Detection_PostProcess", BuiltinOP::DetectionPostProcess},
@@ -1142,24 +1059,6 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
     auto custom_op_id = builtin_map.at(custom_op_name);
     switch (custom_op_id)
     {
-      case BuiltinOP::AddV2:
-        loadAddV2(op, subg);
-        break;
-      case BuiltinOP::ReduceAll:
-        loadReduceAll(op, subg);
-        break;
-      case BuiltinOP::MatrixBandPart:
-        loadOperationTo<ir::operation::MatrixBandPart>(op, subg);
-        break;
-      case BuiltinOP::BatchMatMul:
-        loadBatchMatMul(op, subg);
-        break;
-      case BuiltinOP::Einsum:
-        loadEinsum(op, subg);
-        break;
-      case BuiltinOP::BroadcastTo:
-        loadOperationTo<ir::operation::BroadcastTo>(op, subg);
-        break;
       case BuiltinOP::FusedBatchNorm:
         loadFusedBatchNorm(op, subg);
         break;
@@ -1297,26 +1196,6 @@ void BaseLoader<LoaderDomain>::loadComparison(const Operator *op, ir::Graph &sub
   loadOperationTo<ir::operation::Comparison>(op, subg, param);
 }
 
-template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::loadEinsum(const Operator *op, ir::Graph &subg)
-{
-  ir::operation::Einsum::Param param;
-  if (op->custom_options() == nullptr)
-  {
-    throw std::runtime_error{"Einsum: empty equation"};
-  }
-  else
-  {
-    const auto attr_map = getCustomOpAttrMap(op);
-    param.equation = attr_map["equation"].ToString();
-  }
-
-  const auto es = loadOperationTo<ir::operation::Einsum>(op, subg, param);
-  if (es->getInputs().size() != 2)
-  {
-    throw std::runtime_error{"Einsum: NYI input - only support two inputs"};
-  }
-}
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadFusedBatchNorm(const Operator *op, ir::Graph &subg)
 {
@@ -1563,6 +1442,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_REDUCE_MAX:
       loadReduce(op, subg, ir::operation::Reduce::ReduceType::MAX);
       return;
+    case BuiltinOperator::BuiltinOperator_REDUCE_ALL:
+      loadReduce(op, subg, ir::operation::Reduce::ReduceType::ALL);
+      return;
     case BuiltinOperator::BuiltinOperator_REVERSE_V2:
       loadOperationTo<ir::operation::Reverse>(op, subg);
       return;
@@ -1581,6 +1463,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       return;
     case BuiltinOperator::BuiltinOperator_GATHER:
       loadGather(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_GELU:
+      loadGELU(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_SPACE_TO_BATCH_ND:
       loadOperationTo<ir::operation::SpaceToBatchND>(op, subg);
@@ -1705,8 +1590,12 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_RANGE:
       loadOperationTo<ir::operation::Range>(op, subg);
       return;
-    case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
-      loadBatchMatMul(op, subg);
+    // case BuiltinOperator::BuiltinOperator_BATCH_MATMUL:
+    //   Handled on each loader: different option name
+    //     Circle: adjoint_lhs, adjoint_rhs
+    //     TFLite: adj_x, adj_y
+    case BuiltinOperator::BuiltinOperator_BROADCAST_TO:
+      loadOperationTo<ir::operation::BroadcastTo>(op, subg);
       return;
     case BuiltinOperator::BuiltinOperator_LOG_SOFTMAX:
       loadLogSoftmax(op, subg);
@@ -1788,7 +1677,6 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
   _model = std::move(model);
 }
 
-} // namespace loader
-} // namespace onert
+} // namespace onert::loader
 
 #endif //__ONERT_LOADER_BASE_LOADER_H__

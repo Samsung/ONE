@@ -18,13 +18,7 @@
 
 #include <cker/train/operation/Pad.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 PadLayer::PadLayer() : cpu::ops::PadLayer(), _back_prop_input{nullptr}, _back_prop_output{nullptr}
@@ -70,7 +64,4 @@ void PadLayer::backward()
   }
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

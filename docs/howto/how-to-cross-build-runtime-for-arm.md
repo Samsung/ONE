@@ -5,7 +5,7 @@
 Install required packages
 
 ```
-$ sudo apt-get install qemu qemu-user-static binfmt-support debootstrap
+$ sudo apt-get install qemu-user-static binfmt-support debootstrap
 ```
 
 Use `install_rootfs.sh` script to prepare Root File System. You should have `sudo`
@@ -25,7 +25,7 @@ RootFS will be prepared at `tools/cross/rootfs/arm` or `tools/cross/rootfs/aarch
 
 ***\* CAUTION: The OS version of rootfs must match the OS version of execution target device. On the other hand, you need to match the Ubuntu version of the development PC with the Ubuntu version of rootfs to be used for cross-build. Otherwise, unexpected build errors may occur.***
 
-If you are using Ubuntu 20.04 LTS, select `focal`, if you are using Ubuntu 22.04 LTS, select `jammy`. You can check your Ubuntu code name in the following way.
+If you are using Ubuntu 20.04 LTS, select `focal`, if you are using Ubuntu 22.04 LTS, select `jammy`, for Ubuntu 24.04 LTS, select `noble`. You can check your Ubuntu code name in the following way.
 
 ```
 $ cat /etc/lsb-release
@@ -81,7 +81,7 @@ If you select specific version, update symbolic link for build toolchain.
 Otherwise, you should set your custom cmake crossbuild toolchain. You can find cmake toolchain files in `infra/nnfw/cmake/buildtool/cross/`.
 
 ```
-$ update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc-10 80 \
+$ sudo update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc-10 80 \
     --slave /usr/bin/arm-linux-gnueabihf-g++ arm-linux-gnueabihf-g++ /usr/bin/arm-linux-gnueabihf-g++-10 \
     --slave /usr/bin/arm-linux-gnueabihf-gcov arm-linux-gnueabihf-gcov /usr/bin/arm-linux-gnueabihf-gcov-10
 ```
@@ -104,17 +104,27 @@ ACL source will be automatically installed in `externals/ARMCOMPUTE` when you bu
 
 You can check ACL source information in `infra/cmake/packages/ARMComputeSourceConfig.cmake`
 
+## Install numpy
+
+Python package `numpy` is needed for build. Please use [this guide](how-to-build-runtime.md##install-python-packages) to install it.
+
 ## Cross build for ARM by using Makefile.template
 
 Give `TARGET_ARCH` variable to set the target architecture.
 
 If you used `ROOTFS_DIR` to prepare in alternative folder, you should also give this to makefile.
 
+Remember to activate venv if you didn't activate it already:
+
 ```
-$ CROSS_BUILD=1 TARGET_ARCH=armv7l make -f Makefile.template
+$ source .venv/bin/activate
+```
+
+```
+(.venv)$ CROSS_BUILD=1 TARGET_ARCH=armv7l make -f Makefile.template
 
 # If ROOTFS_DIR is in alternative folder
-$ ROOTFS_DIR=/path/to/your/rootfs/arm \
+(.venv)$ ROOTFS_DIR=/path/to/your/rootfs/arm \
 CROSS_BUILD=1 TARGET_ARCH=armv7l make
 ```
 
@@ -124,10 +134,10 @@ the `TARGET_ARCH` are differs from the hostarchitecture, the make script automat
 normal build and cross build as follows.
 
 ```
-$ export ROOTFS_DIR=xxx
+(.venv)$ export ROOTFS_DIR=xxx
 ...
-$ make -f Makefile.template                     # do normal build
-$ TARGET_ARCH=armv7l make -f Makefile.template  # do cross build
+(.venv)$ make -f Makefile.template                     # do normal build
+(.venv)$ TARGET_ARCH=armv7l make -f Makefile.template  # do cross build
 ```
 
 Makefile.template will pass crossbuild toolchain setting to cmake automatically by parsing variables.

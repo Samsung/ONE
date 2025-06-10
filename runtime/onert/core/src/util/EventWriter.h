@@ -53,10 +53,8 @@ public:
 class ChromeTracingWriter : public EventFormatWriter
 {
 public:
-  ChromeTracingWriter(const std::string &filepath) : EventFormatWriter(filepath)
-  { /* empty */
-  }
-  ~ChromeTracingWriter() {}
+  ChromeTracingWriter(const std::string &filepath);
+  ~ChromeTracingWriter();
 
   void flush(const std::vector<std::unique_ptr<EventRecorder>> &) override;
 
@@ -130,7 +128,7 @@ private:
   void flush(WriteFormat write_format);
 
 private:
-  static std::mutex _mutex;
+  static inline std::mutex _mutex;
 
   // number of observer of an executor that want to write profiling data
   int32_t _ref_count;

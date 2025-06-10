@@ -23,9 +23,7 @@
 
 #include "IFunction.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /**
@@ -42,7 +40,6 @@ public:
   }
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_NOP_FUNCTION_H_

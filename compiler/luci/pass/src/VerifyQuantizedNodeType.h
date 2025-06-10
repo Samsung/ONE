@@ -20,6 +20,8 @@
 #include <luci/IR/CircleNodes.h>
 #include <luci/IR/CircleNodeVisitor.h>
 
+#include <stdexcept>
+
 namespace luci
 {
 
@@ -110,6 +112,7 @@ private:
   bool visit(const luci::CircleReshape *node);
   bool visit(const luci::CircleResizeBilinear *node);
   bool visit(const luci::CircleResizeNearestNeighbor *node);
+  bool visit(const luci::CircleRmsNorm *node);
   bool visit(const luci::CircleRsqrt *node);
   bool visit(const luci::CircleSlice *node);
   bool visit(const luci::CircleSpaceToBatchND *node);
@@ -128,9 +131,12 @@ private:
 
   // NOTE below nodes has differnent implementation for Qtype/Btype and
   //      implementations exist in VerifyQuantizedNodeU8Type, VerifyQuantizedNodeS16Type
-  // bool visit(const luci::CircleLogistic *node);
-  // bool visit(const luci::CircleSoftmax *node);
-  // bool visit(const luci::CircleTanh *node);
+  // NOTE adding dummy visit() to make compiler happy with "-Werror=overloaded-virtual="
+  // clang-format off
+  bool visit(const luci::CircleLogistic *) { throw std::runtime_error("Must inherit"); }
+  bool visit(const luci::CircleSoftmax *) { throw std::runtime_error("Must inherit"); }
+  bool visit(const luci::CircleTanh *) { throw std::runtime_error("Must inherit"); }
+  // clang-format on
 
   // TODO: Implement more Ops
 

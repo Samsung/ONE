@@ -21,13 +21,7 @@
 
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 class MeanLayer : public ::onert::exec::IFunction
@@ -52,9 +46,6 @@ protected:
   bool _keep_dims;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_MEANLAYER_H__

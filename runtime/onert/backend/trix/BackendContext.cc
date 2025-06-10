@@ -24,11 +24,7 @@
 #include "ir/OperandIndexSequence.h"
 #include "backend/basic/BackendContextHelpers.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 ITensorRegistry *BackendContext::genTensors() { return basic::genTensors(*this); }
@@ -59,6 +55,4 @@ FunctionMap BackendContext::genKernels()
   return ret;
 }
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix

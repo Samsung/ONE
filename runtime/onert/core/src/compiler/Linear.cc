@@ -22,9 +22,7 @@
 
 #include <sstream>
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 // TODO(easy) Change the LoweredGraph param to Graph
@@ -47,5 +45,4 @@ void Linear::dump(const compiler::ILoweredGraph &lowered_graph,
   }
 }
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler

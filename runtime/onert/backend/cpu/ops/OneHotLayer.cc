@@ -20,13 +20,7 @@
 
 #include <cker/operation/OneHot.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 template <typename T> void OneHotLayer::oneHotImpl()
@@ -61,7 +55,4 @@ void OneHotLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

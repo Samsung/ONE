@@ -23,15 +23,8 @@
 
 #include "backend/ITensor.h"
 #include "ir/Shape.h"
-#include "util/Utils.h"
 
-namespace onert
-{
-namespace exec
-{
-namespace feature
-{
-namespace nhwc
+namespace onert::exec::feature::nhwc
 {
 
 template <typename T> class Reader : public feature::Reader<T>
@@ -42,7 +35,6 @@ public:
   Reader(const ir::FeatureShape &shape, const Strides &strides, const T *ptr, size_t len)
     : _shape{shape}, _strides{strides}, _ptr{reinterpret_cast<const uint8_t *>(ptr)}, _len{len}
   {
-    UNUSED_RELEASE(len); // Workaround for unused variable in release mode
     assert(len == static_cast<size_t>(strides.N != 0   ? shape.N * strides.N
                                       : strides.H != 0 ? shape.H * strides.H
                                       : strides.W != 0 ? shape.W * strides.W
@@ -53,8 +45,6 @@ public:
   Reader(const backend::ITensor *tensor)
     : _ptr{tensor->buffer() + tensor->calcOffset({0, 0, 0, 0})}, _len{tensor->total_size()}
   {
-    assert(tensor->layout() == ir::Layout::NHWC);
-
     const auto start_offset = tensor->calcOffset({0, 0, 0, 0});
     auto shape = tensor->getShape();
     _strides.C = shape.dim(3) == 1 ? 0 : tensor->calcOffset({0, 0, 0, 1}) - start_offset;
@@ -110,9 +100,6 @@ private:
   size_t _len;
 };
 
-} // namespace nhwc
-} // namespace feature
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::feature::nhwc
 
 #endif // __ONERT_EXEC_FEATURE_NHWC_READER_H__

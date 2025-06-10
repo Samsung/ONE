@@ -3,31 +3,49 @@
 #   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
 #   Ubuntu20.04; default python3.8
 #   Ubuntu22.04; default python3.10
+#   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
-find_package(PythonInterp 3.8 QUIET)
-find_package(PythonLibs 3.8 QUIET)
+# find python 3.8 or above
+find_package(Python 3.8 EXACT COMPONENTS Interpreter QUIET)
+if(NOT Python_FOUND)
+  find_package(Python 3.8 COMPONENTS Interpreter QUIET)
+endif()
 
-if(NOT ${PYTHONINTERP_FOUND})
-  message(STATUS "Build common-artifacts: FALSE (Python3 is missing)")
+if(NOT Python_Interpreter_FOUND)
+  message(STATUS "Build common-artifacts: FAILED (Python3 is missing)")
   return()
 endif()
 
-if(${PYTHON_VERSION_MINOR} LESS 8)
-  message(STATUS "Build common-artifacts: FALSE (You need to install Python version higher than 3.8)")
+# NOTE assume only use 3.8.x or 3.10.x or 3.12.x
+if((Python_VERSION VERSION_GREATER_EQUAL 3.8) AND (Python_VERSION VERSION_LESS 3.9))
+  set(PYTHON_VERSION_MINOR 8)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
+  set(PYTHON_VERSION_MINOR 10)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
+  set(PYTHON_VERSION_MINOR 12)
+else()
+  # TODO support more
+  message(STATUS "Build common-artifacts: FAILED (Unsupported python: ${Python_VERSION})")
   return()
 endif()
 
-# Create python virtual environment with tensorflow 2.12.1
-set(VIRTUALENV_OVERLAY_TF_2_12_1 "${NNCC_OVERLAY_DIR}/venv_2_12_1")
+# NOTE ONE_PYTHON_VERSION_MINOR is to provide current python3.x minor version
+# number to modules that use common artifacts.
+set(ONE_PYTHON_VERSION_MINOR ${PYTHON_VERSION_MINOR} PARENT_SCOPE)
+
+set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
+
+# Create python virtual environment
+set(VIRTUALENV_OVERLAY "${NNCC_OVERLAY_DIR}/venv")
 
 add_custom_command(
-  OUTPUT ${VIRTUALENV_OVERLAY_TF_2_12_1}
-  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY_TF_2_12_1}
+  OUTPUT ${VIRTUALENV_OVERLAY}
+  COMMAND ${PYTHON_EXECUTABLE} -m venv ${VIRTUALENV_OVERLAY}
 )
 
 # Create requirements.txt and install required pip packages
 set(REQUIREMENTS_FILE "requirements.txt")
-set(REQUIREMENTS_OVERLAY_PATH_TF_2_12_1 "${VIRTUALENV_OVERLAY_TF_2_12_1}/${REQUIREMENTS_FILE}")
+set(REQUIREMENTS_OVERLAY_PATH "${VIRTUALENV_OVERLAY}/${REQUIREMENTS_FILE}")
 
 set(PYTHON_OVERLAY python3)
 if(PYTHON_EXECUTABLE MATCHES python3.8)
@@ -40,42 +58,87 @@ if(DEFINED ENV{ONE_PIP_OPTION_TRUST_HOST})
   set(PIP_OPTION_TRUSTED_HOST --trusted-host pypi.python.org --trusted-host files.pythonhosted.org --trusted-host pypi.org)
 endif()
 
-if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  # NOTE `tensorflow-cpu` package is not available for aarch64, so we use `tensorflow` package.
+# NOTE `tensorflow-cpu` package is not available for aarch64, so we use `tensorflow` package.
+# NOTE refer https://github.com/Samsung/ONE/issues/15226 for versions
+set(PY_PKG_LIST )
+if (PYTHON_VERSION_MINOR EQUAL 8)
+  # python3.8; Ubuntu 18.04, 20.04
+  if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow==2.12.1")
+  else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow-cpu==2.12.1")
+  endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+  list(APPEND PY_PKG_LIST "flatbuffers==23.5.26")
+  list(APPEND PY_PKG_LIST "protobuf==4.23.3")
+  list(APPEND PY_PKG_LIST "pydot==1.4.2")
+  list(APPEND PY_PKG_LIST "pytest==7.4.3")
+  list(APPEND PY_PKG_LIST "h5py==3.11.0")
+  list(APPEND PY_PKG_LIST "cffi==1.16.0")
+  list(APPEND PY_PKG_LIST "numpy==1.24.3")
+elseif (PYTHON_VERSION_MINOR EQUAL 10)
+  # python 3.10; Ubuntu 22.04
+  # TF2.19.0 release at 2025-03-12
+  if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow==2.19.0")
+  else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow-cpu==2.19.0")
+  endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+  list(APPEND PY_PKG_LIST "flatbuffers==24.3.25")
+  list(APPEND PY_PKG_LIST "protobuf==4.23.3")
+  list(APPEND PY_PKG_LIST "pydot==1.4.2")
+  list(APPEND PY_PKG_LIST "pytest==7.4.3")
+  list(APPEND PY_PKG_LIST "h5py==3.11.0")
+  list(APPEND PY_PKG_LIST "cffi==1.16.0")
+  list(APPEND PY_PKG_LIST "numpy==1.26.4")
+elseif (PYTHON_VERSION_MINOR EQUAL 12)
+  # python 3.12; Ubuntu 24.04
+  # TF2.19.0 release at 2025-03-12
+  if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow==2.19.0")
+  else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+    list(APPEND PY_PKG_LIST "tensorflow-cpu==2.19.0")
+  endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+  list(APPEND PY_PKG_LIST "flatbuffers==24.3.25")
+  list(APPEND PY_PKG_LIST "protobuf==4.23.3")
+  list(APPEND PY_PKG_LIST "pydot==1.4.2")
+  list(APPEND PY_PKG_LIST "pytest==7.4.3")
+  list(APPEND PY_PKG_LIST "h5py==3.11.0")
+  list(APPEND PY_PKG_LIST "cffi==1.16.0")
+  list(APPEND PY_PKG_LIST "numpy==1.26.4")
+else()
+  # should not enter here
+  message(FATAL_ERROR "Build common-artifacts: FAILED (Invalid pyhon version)")
+endif()
+
+add_custom_command(
+  OUTPUT REQUIREMENTS_OVERLAY_PATH_clean
+  COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH}
+  DEPENDS ${VIRTUALENV_OVERLAY}
+)
+
+set(PY_PKG_LIST_DEPENDS_PREV REQUIREMENTS_OVERLAY_PATH_clean)
+foreach(PKG_VER IN LISTS PY_PKG_LIST)
   add_custom_command(
-    OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "tensorflow==2.12.1" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==23.5.26" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "protobuf==4.23.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "pydot==1.4.2" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "pytest==7.4.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
-            ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
-    COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
-            ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1} --upgrade
-    DEPENDS ${VIRTUALENV_OVERLAY_TF_2_12_1}
+    OUTPUT ${PKG_VER}_py_item ${REQUIREMENTS_OVERLAY_PATH}
+    COMMAND ${CMAKE_COMMAND} -E echo "${PKG_VER}" >> ${REQUIREMENTS_OVERLAY_PATH}
+    DEPENDS ${VIRTUALENV_OVERLAY_TF} ${PY_PKG_LIST_DEPENDS_PREV}
   )
-else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  add_custom_command(
-    OUTPUT ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E remove -f ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "tensorflow-cpu==2.12.1" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "flatbuffers==23.5.26" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "protobuf==4.23.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "pydot==1.4.2" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${CMAKE_COMMAND} -E echo "pytest==7.4.3" >> ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
-    COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
-            ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
-    COMMAND ${VIRTUALENV_OVERLAY_TF_2_12_1}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
-            ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1} --upgrade
-    DEPENDS ${VIRTUALENV_OVERLAY_TF_2_12_1}
-  )
-endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
+  set(PY_PKG_LIST_DEPENDS_PREV ${PKG_VER}_py_item)
+endforeach()
+
+add_custom_command(
+  OUTPUT VIRTUALENV_OVERLAY_installed
+  COMMAND ${VIRTUALENV_OVERLAY}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
+          ${PIP_OPTION_TRUSTED_HOST} install --upgrade pip setuptools
+  COMMAND ${VIRTUALENV_OVERLAY}/bin/${PYTHON_OVERLAY} -m pip --default-timeout=1000
+          ${PIP_OPTION_TRUSTED_HOST} install -r ${REQUIREMENTS_OVERLAY_PATH} --upgrade
+  DEPENDS ${VIRTUALENV_OVERLAY} ${PY_PKG_LIST_DEPENDS_PREV}
+)
 
 add_custom_target(common_artifacts_python_deps ALL
-  DEPENDS ${VIRTUALENV_OVERLAY_TF_2_12_1}
-          ${REQUIREMENTS_OVERLAY_PATH_TF_2_12_1}
+  DEPENDS ${VIRTUALENV_OVERLAY}
+          ${REQUIREMENTS_OVERLAY_PATH}
+          VIRTUALENV_OVERLAY_installed
 )
 
 #[[ Generate common resources ]]

@@ -21,13 +21,7 @@
 
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 enum class ElementwiseActivationType
@@ -36,7 +30,8 @@ enum class ElementwiseActivationType
   kLogistic,
   kReLU,
   kTanh,
-  kLeakyReLU
+  kLeakyReLU,
+  kGELU
 };
 
 class ElementwiseActivationLayer : public ::onert::exec::IFunction
@@ -46,7 +41,7 @@ public:
 
 public:
   void configure(const IPortableTensor *input, IPortableTensor *output, float alpha, float beta,
-                 const ElementwiseActivationType op_type);
+                 bool approximate, const ElementwiseActivationType op_type);
 
   void run() override;
 
@@ -61,9 +56,6 @@ protected:
   std::function<void(const IPortableTensor *input, IPortableTensor *output)> _kernel;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_ElementwiseActivationLAYER_H__

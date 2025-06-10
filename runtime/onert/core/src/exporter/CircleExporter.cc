@@ -18,15 +18,14 @@
 
 #include "exec/Execution.h"
 #include "ir/train/TrainingInfo.h"
+#include "loader/TrainInfoLoader.h"
 #include "circle_schema_generated.h"
 #include "TrainInfoBuilder.h"
 
 #include <fstream>
 #include <iostream>
 
-namespace onert
-{
-namespace exporter
+namespace onert::exporter
 {
 
 CircleExporter::CircleExporter(const std::string &source, const std::string &path)
@@ -98,13 +97,11 @@ void CircleExporter::updateWeight(const std::unique_ptr<exec::Execution> &exec)
 
 void CircleExporter::updateMetadata(const std::unique_ptr<ir::train::TrainingInfo> &training_info)
 {
-  const char *const TRAININFO_METADATA_NAME = "CIRCLE_TRAINING";
-
   TrainInfoBuilder tbuilder(training_info);
   bool found = false;
   for (const auto &meta : _model->metadata)
   {
-    if (meta->name == std::string{TRAININFO_METADATA_NAME})
+    if (meta->name == std::string{loader::TRAININFO_METADATA_NAME})
     {
       std::lock_guard<std::mutex> guard(_mutex);
       const uint32_t buf_idx = meta->buffer;
@@ -131,7 +128,7 @@ void CircleExporter::updateMetadata(const std::unique_ptr<ir::train::TrainingInf
     memcpy(buffer->data.data(), tbuilder.get(), buffer->size);
 
     auto meta = std::make_unique<::circle::MetadataT>();
-    meta->name = std::string{TRAININFO_METADATA_NAME};
+    meta->name = std::string{loader::TRAININFO_METADATA_NAME};
     meta->buffer = _model->buffers.size();
 
     _model->buffers.push_back(std::move(buffer));
@@ -149,5 +146,4 @@ void CircleExporter::finish()
             static_cast<std::streamsize>(builder.GetSize()));
   dst.close();
 }
-} // namespace exporter
-} // namespace onert
+} // namespace onert::exporter

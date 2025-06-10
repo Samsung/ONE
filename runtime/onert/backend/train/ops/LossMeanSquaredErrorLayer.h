@@ -19,13 +19,7 @@
 
 #include "LossLayer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 class LossMeanSquaredErrorLayer : public LossLayer
@@ -34,14 +28,12 @@ public:
   LossMeanSquaredErrorLayer() = default;
 
   void configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
-                 IPortableTensor *output, IPortableTensor *back_prop_y_pred);
+                 IPortableTensor *output, IPortableTensor *back_prop_y_pred,
+                 ir::train::LossReductionType reduction_type);
   void forward(bool training) override;
   void backward() override;
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_LOSS_MEANSQUAREDERROR_LAYER_H__

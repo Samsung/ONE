@@ -22,7 +22,6 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::DEF>::visit(const luci::CircleFakeQuant *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleFakeQuant>();
-  if (cloned != nullptr)
   {
     cloned->min(node->min());
     cloned->max(node->max());

@@ -21,14 +21,9 @@
 #include <ops/ElementwiseActivationLayer.h>
 
 #include <exec/train/ITrainableFunction.h>
+#include <ir/train/LossInfo.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 enum class LossType
@@ -42,18 +37,17 @@ public:
   LossLayer();
 
   void configure(const IPortableTensor *y_pred, const IPortableTensor *y_true,
-                 IPortableTensor *output, IPortableTensor *back_prop_y_pred);
+                 IPortableTensor *output, IPortableTensor *back_prop_y_pred,
+                 ir::train::LossReductionType reduction_type);
 
 protected:
   const IPortableTensor *_y_pred;
   const IPortableTensor *_y_true;
   IPortableTensor *_output;
   IPortableTensor *_back_prop_y_pred;
+  ir::train::LossReductionType _reduction_type;
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_LOSSLAYER_H__

@@ -17,7 +17,6 @@ class Mnist():
 
     def preprocess_input(image, label):
         """Preprocess input data for Mnist."""
-
         def _normalize_img(image):
             """Normalize images: `uint8` -> `float32`."""
             return tf.cast(image, tf.float32) / 255.
@@ -35,7 +34,6 @@ class MobileNetV2():
 
     def preprocess_input(image, label):
         """Preprocess input data for MobileNetV2."""
-
         def _resize_img(image):
             _image = tf.cast(image, tf.float32) / 255.
             _image = tf.image.resize_with_crop_or_pad(_image, 224, 224)
@@ -48,7 +46,6 @@ class DatasetLoader():
     '''
     Loader of tensorflow datasets
     '''
-
     def load(self, dataset_name, splits, model_name):
         ds_dict, ds_info = tfds.load(
             dataset_name,

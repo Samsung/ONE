@@ -32,7 +32,12 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::import::configure_kernel_CircleGather(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleGather(const OMConfigureArgs &config_args)
 {
   OMRuntimeContext &runtime_context = config_args.runtime_context;
   uint16_t op_index = config_args.kernel_index;
@@ -71,6 +76,20 @@ OMStatus onert_micro::import::configure_kernel_CircleGather(const OMConfigureArg
   if (status != Ok)
     return status;
 
+#ifndef DIS_QUANT
+  if (input_type == circle::TensorType_INT8)
+  {
+    status = utils::checkCondition(*output->quantization()->scale()->begin() ==
+                                   *input->quantization()->scale()->begin());
+    if (status != Ok)
+      return status;
+    status = utils::checkCondition(*output->quantization()->zero_point()->begin() ==
+                                   *input->quantization()->zero_point()->begin());
+    if (status != Ok)
+      return status;
+  }
+#endif // DIS_QUANT
+
   int32_t axis = options->axis();
 
   core::OMRuntimeShape input_shape(input);
@@ -108,3 +127,6 @@ OMStatus onert_micro::import::configure_kernel_CircleGather(const OMConfigureArg
 
   return status;
 }
+
+} // namespace import
+} // namespace onert_micro

@@ -21,6 +21,7 @@ Models (input of test) exist in *model repo*, where
 The following metric functions are provided:
 - `all_op_count` : the count of operations inside a compiled tflite file
 - `file_size` : the size of compiled tflite file
+- `tensor_shape` : The shape of a specific node in a compiled tflite file. The format looks like `[1,-1,7,2]`(without spaces).
 - In addition, `op_count`, `conv2d_weight_not_constant`, etc.
 - Please , refer to [`rule-lib.sh`](rule-lib.sh) for metric functions
 

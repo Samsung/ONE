@@ -18,6 +18,7 @@
 #include "test_models/concatenation/FloatConcatenationKernel.h"
 #include "test_models/concatenation/NegConcatenationKernel.h"
 #include "test_models/concatenation/IntConcatenationKernel.h"
+#include "test_models/concatenation/S8ConcatenationKernel.h"
 
 namespace onert_micro
 {
@@ -32,6 +33,14 @@ class ConcatenationTest : public ::testing::Test
 {
   // Do nothing
 };
+
+TEST_F(ConcatenationTest, S8_P)
+{
+  test_model::TestDataS8Concatenation test_data_kernel;
+  std::vector<int8_t> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int8_t>(2, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
 
 TEST_F(ConcatenationTest, INT64_P)
 {

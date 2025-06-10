@@ -119,7 +119,8 @@ OMStatus onert_micro::train::train_kernel_CircleMaxPool2D(const OMBackpropExecut
   params.filter_w = options->filter_width();
 
   // Set input grad to zero
-  std::memset(dloss_dinput_data, 0, sizeof(OMDataType(output->type())) * input_shape.flatSize());
+  for (size_t i = 0; i < input_shape.flatSize() * sizeof(float); i += sizeof(float))
+    *static_cast<float *>(static_cast<void *>(dloss_dinput_data + i)) = 0;
 
   // Calculate input grad
   pal::MaxPool2D(params, input_shape, core::utils::castInputData<float>(input_data), output_shape,

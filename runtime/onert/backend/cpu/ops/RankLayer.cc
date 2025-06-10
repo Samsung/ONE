@@ -18,13 +18,7 @@
 
 #include "OperationUtils.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 RankLayer::RankLayer() : _input(nullptr), _output(nullptr)
@@ -44,7 +38,4 @@ void RankLayer::run()
   output_data[0] = _input->getShape().rank();
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

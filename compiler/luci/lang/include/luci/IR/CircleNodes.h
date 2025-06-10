@@ -141,6 +141,8 @@
 #include "Nodes/CircleBCQGather.h"
 #include "Nodes/CircleGRU.h"
 #include "Nodes/CircleInstanceNorm.h"
+#include "Nodes/CircleRmsNorm.h"
+#include "Nodes/CircleRoPE.h"
 // Virtual nodes
 #include "Nodes/CircleConst.h"
 #include "Nodes/CircleInput.h"

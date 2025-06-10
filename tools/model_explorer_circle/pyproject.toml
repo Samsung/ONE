@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "model-explorer-circle"
+version = "0.1.4"
+maintainers = [
+  { name="NNFW", email="nnfw@samsung.com" },
+]
+description = "Model Explorer Circle Adaptor"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "Apache Software License (Apache 2.0)" }
+keywords = ["circle", "model-explorer", "visualization"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "ai-edge-model-explorer",
+    "flatbuffers"
+]
+
+[project.urls]
+"Repository" = "https://github.com/Samsung/ONE/tree/master/tools/model_explorer_circle/"
+"Bug Reports" = "https://github.com/Samsung/ONE/issues"

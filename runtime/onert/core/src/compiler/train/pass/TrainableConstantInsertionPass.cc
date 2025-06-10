@@ -19,19 +19,13 @@
 #include "ir/Graph.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
-{
-namespace pass
+namespace onert::compiler::train::pass
 {
 
 void TrainableConstantInsertionPass::callback(const ir::OperationIndex &node_index,
                                               ir::IOperation &node)
 {
-  for (const auto &input : node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+  for (const auto &input : node.getUsedInputSet())
   {
     auto &object = _graph.operands().at(input);
 
@@ -40,7 +34,7 @@ void TrainableConstantInsertionPass::callback(const ir::OperationIndex &node_ind
       continue;
 
     // Insert new operands for shared constant except for the current node.
-    const auto uses = object.getUses();
+    const auto uses(object.getUses());
     for (const auto &use_index : uses)
     {
       if (use_index == node_index)
@@ -90,7 +84,4 @@ void TrainableConstantInsertionPass::updateUseDef(const ir::OperandIndex &old_in
   old_object.removeUse(node_index);
 }
 
-} // namespace pass
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train::pass

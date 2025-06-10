@@ -25,7 +25,6 @@
 #include "ops/ConvolutionLayer.h"
 #include "ops/DepthToSpaceLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
-#include "ops/EinsumLayer.h"
 #include "ops/ElementwiseActivationLayer.h"
 #include "ops/ElementwiseBinaryLayer.h"
 #include "ops/ElementwiseUnaryLayer.h"
@@ -49,6 +48,7 @@
 #include "ops/ReshapeLayer.h"
 #include "ops/ResizeBilinearLayer.h"
 #include "ops/ReverseLayer.h"
+#include "ops/RoPELayer.h"
 #include "ops/SelectLayer.h"
 #include "ops/ShapeLayer.h"
 #include "ops/SliceLayer.h"
@@ -63,12 +63,12 @@
 #include "ops/UnpackLayer.h"
 #include "ops/SquaredDiffLayer.h"
 #include "ops/L2NormLayer.h"
-#include "ops/MatrixBandPartLayer.h"
 #include "ops/BatchMatMulLayer.h"
 #include "ops/BroadcastToLayer.h"
 #include "ops/FusedBatchNormLayer.h"
 #include "ops/LogSoftMaxLayer.h"
 #include "ops/StatelessRandomUniformLayer.h"
+#include "ops/RmsNormLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -79,11 +79,7 @@
 
 #include <stdexcept>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 namespace
@@ -121,6 +117,8 @@ convertElementwiseActivationType(ir::operation::ElementwiseActivation::Type type
       return ops::ElementwiseActivationType::kTanh;
     case ir::operation::ElementwiseActivation::Type::LEAKY_RELU:
       return ops::ElementwiseActivationType::kLeakyReLU;
+    case ir::operation::ElementwiseActivation::Type::GELU:
+      return ops::ElementwiseActivationType::kGELU;
     default:
       throw std::runtime_error("cpu KernelGenerator : Not supported operation yet");
   }
@@ -249,7 +247,7 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
   auto dyn_ctx = std::make_shared<exec::FunctionSequence::DynamicTensorCtx>();
   {
     dyn_ctx->op = &_operations_ctx.at(ind);
-    dyn_ctx->dynamic_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_ctx, _tensor_reg);
+    dyn_ctx->dynamic_shape_inferer = std::make_shared<exec::DynamicShapeInferer>(_tensor_reg);
   }
   ret->dynamic_tensor_ctx(dyn_ctx);
 
@@ -260,12 +258,6 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
 
   for (auto &&ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
-    auto portable_tensor = _tensor_reg->getPortableTensor(ind);
-    if (portable_tensor)
-    {
-      assert(portable_tensor->layout() == ir::Layout::NHWC);
-    }
-
     auto tensor = _tensor_reg->getNativeTensor(ind);
     if (tensor)
     {
@@ -577,7 +569,7 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
 
   auto fn = std::make_unique<ops::GatherLayer>();
 
-  fn->configure(input_tensor, indices_tensor, output_tensor, axis);
+  fn->configure(input_tensor, indices_tensor, output_tensor, axis, _external_context.get());
 
   _return_fn = std::move(fn);
 }
@@ -604,24 +596,6 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   auto fn = std::make_unique<ops::OneHotLayer>();
 
   fn->configure(indices_tensor, depth_tensor, onvalue_tensor, offvalue_tensor, output_tensor, axis);
-
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::Einsum &node)
-{
-  const auto ofm_index{node.getOutputs().at(0)};
-
-  auto output_tensor = _tensor_reg->getPortableTensor(ofm_index);
-  std::vector<const IPortableTensor *> input_tensors;
-  for (const auto &ifm_idx : node.getInputs())
-    input_tensors.emplace_back(_tensor_reg->getPortableTensor(ifm_idx));
-
-  const auto &equation = node.param().equation;
-
-  auto fn = std::make_unique<ops::EinsumLayer>();
-
-  fn->configure(input_tensors, equation, output_tensor);
 
   _return_fn = std::move(fn);
 }
@@ -664,7 +638,7 @@ void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
   auto fn = std::make_unique<ops::ElementwiseActivationLayer>();
 
   fn->configure(input_tensor, output_tensor, node.param().alpha, node.param().beta,
-                convertElementwiseActivationType(node.param().op_type));
+                node.param().approximate, convertElementwiseActivationType(node.param().op_type));
 
   _return_fn = std::move(fn);
 }
@@ -1107,6 +1081,24 @@ void KernelGenerator::visit(const ir::operation::Rank &node)
   _return_fn = std::move(fn);
 }
 
+void KernelGenerator::visit(const ir::operation::RmsNorm &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::RmsNorm::Input::INPUT)};
+  const auto gamma_index{node.getInputs().at(ir::operation::RmsNorm::Input::GAMMA)};
+
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index);
+  auto gamma_tensor = _tensor_reg->getPortableTensor(gamma_index);
+  auto epsilon = node.param().epsilon;
+
+  auto fn = std::make_unique<ops::RmsNormLayer>();
+
+  fn->configure(ifm_tensor, gamma_tensor, epsilon, ofm_tensor);
+
+  _return_fn = std::move(fn);
+}
+
 void KernelGenerator::visit(const ir::operation::SquaredDifference &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
@@ -1136,24 +1128,6 @@ void KernelGenerator::visit(const ir::operation::Tile &node)
   auto fn = std::make_unique<ops::TileLayer>();
 
   fn->configure(input_tensor, multiples_tensor, output_tensor);
-  _return_fn = std::move(fn);
-}
-
-void KernelGenerator::visit(const ir::operation::MatrixBandPart &node)
-{
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::MatrixBandPart::INPUT)};
-  const auto num_lower_index{node.getInputs().at(ir::operation::MatrixBandPart::NUM_LOWER_DIAG)};
-  const auto num_upper_index{node.getInputs().at(ir::operation::MatrixBandPart::NUM_UPPER_DIAG)};
-
-  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
-  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
-  auto num_lower_tensor = _tensor_reg->getPortableTensor(num_lower_index);
-  auto num_upper_tensor = _tensor_reg->getPortableTensor(num_upper_index);
-
-  auto fn = std::make_unique<ops::MatrixBandPartLayer>();
-
-  fn->configure(input_tensor, num_lower_tensor, num_upper_tensor, output_tensor);
   _return_fn = std::move(fn);
 }
 
@@ -1549,6 +1523,24 @@ void KernelGenerator::visit(const ir::operation::LSTM &node)
   _return_fn = std::move(fn);
 }
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+void KernelGenerator::visit(const ir::operation::RoPE &node)
+{
+  const auto input_index{node.getInputs().at(ir::operation::RoPE::Input::INPUT)};
+  const auto sin_table{node.getInputs().at(ir::operation::RoPE::Input::SIN_TABLE)};
+  const auto cos_table{node.getInputs().at(ir::operation::RoPE::Input::COS_TABLE)};
+  const auto output_index{node.getOutputs().at(ir::operation::RoPE::Output::OUTPUT)};
+
+  auto mode = ops::getRoPEMode(node.param().mode);
+
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto sin_tensor = _tensor_reg->getPortableTensor(sin_table);
+  auto cos_tensor = _tensor_reg->getPortableTensor(cos_table);
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+
+  auto fn = std::make_unique<ops::RoPELayer>();
+
+  fn->configure(input_tensor, sin_tensor, cos_tensor, mode, output_tensor);
+  _return_fn = std::move(fn);
+}
+
+} // namespace onert::backend::cpu

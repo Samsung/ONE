@@ -42,7 +42,7 @@ namespace
 {
 
 void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &reader,
-                   loco::Graph *graph)
+                   loco::Graph *graph, bool &ext_buffer)
 {
   LOGGER(l);
 
@@ -242,6 +242,8 @@ void convert_graph(const luci::GraphBuilderSource &source, luci::CircleReader &r
     auto dtype = luci::luci_datatype(tensor->type());
     graph_output->dtype(dtype);
   }
+
+  ext_buffer = gb_context.ext_buffer();
 }
 
 class ValidateCollector final : public loco::ErrorListener
@@ -264,45 +266,12 @@ Importer::Importer()
   // DO NOTHING
 }
 
-std::unique_ptr<loco::Graph> Importer::import(const circle::Model *model) const
-{
-  auto graph = loco::make_graph();
-
-  const GraphBuilderSource *source_ptr = &GraphBuilderRegistry::get();
-
-  if (_source != nullptr)
-  {
-    // Use user-defined GraphBuilderSource
-    source_ptr = _source;
-  }
-
-  CircleReader reader;
-  if (!reader.parse(model))
-    return nullptr;
-
-  if (reader.num_subgraph() != 1)
-  {
-    INTERNAL_EXN("Use 'importModule()' for multiple subgraphs");
-  }
-  if (!reader.select_subgraph(0))
-    return nullptr;
-
-  // Convert circle::Model to loco::Graph
-  convert_graph(*source_ptr, reader, graph.get());
-
-  LOGGER(l);
-  VERBOSE(l, 3) << "--- graph dump begin -------------------------------------------";
-  VERBOSE(l, 3) << "Name: " << graph->name();
-  VERBOSE(l, 3) << fmt(graph.get());
-  VERBOSE(l, 3) << "--- graph dump end ---------------------------------------------";
-
-  assert(loco::valid(graph.get(), std::make_unique<ValidateCollector>()));
-
-  return graph;
-}
-
 std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
 {
+  assert(model);
+  assert(_file_data);
+  assert(_file_size);
+
   auto module = make_module();
 
   const GraphBuilderSource *source_ptr = &GraphBuilderRegistry::get();
@@ -314,7 +283,7 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
   }
 
   CircleReader reader;
-  if (!reader.parse(model))
+  if (!reader.parse(model, _file_data, _file_size))
     return nullptr;
 
   for (uint32_t g = 0; g < reader.num_subgraph(); ++g)
@@ -327,7 +296,8 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
     graph->name(reader.name());
 
     // Convert circle::Model to loco::Graph
-    convert_graph(*source_ptr, reader, graph.get());
+    bool graph_ext_buffer = false;
+    convert_graph(*source_ptr, reader, graph.get(), graph_ext_buffer);
 
     LOGGER(l);
     VERBOSE(l, 3) << "--- graph dump begin -------------------------------------------";
@@ -338,6 +308,9 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
     assert(loco::valid(graph.get(), std::make_unique<ValidateCollector>()));
 
     module->add(std::move(graph));
+
+    if (graph_ext_buffer)
+      module->ext_buffer(true);
   }
 
   post_import_graph(module.get(), reader);
@@ -396,6 +369,21 @@ std::unique_ptr<Module> Importer::importModule(const circle::Model *model) const
   }
 
   return module;
+}
+
+std::unique_ptr<Module> Importer::importModule(const uint8_t *data, size_t size)
+{
+  if (data == nullptr || size == 0)
+    return nullptr;
+
+  _file_data = data;
+  _file_size = size;
+
+  const circle::Model *circle_model = circle::GetModel(_file_data);
+  if (circle_model == nullptr)
+    return nullptr;
+
+  return importModule(circle_model);
 }
 
 } // namespace luci

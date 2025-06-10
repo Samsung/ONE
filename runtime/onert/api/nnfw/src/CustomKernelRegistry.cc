@@ -18,9 +18,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace api
+namespace onert::api
 {
 
 class KernelBuilder : public backend::custom::IKernelBuilder
@@ -63,5 +61,4 @@ std::unique_ptr<CustomKernel> CustomKernelRegistry::buildKernelForOp(const std::
   return std::make_unique<CustomKernel>(it->second);
 }
 
-} // namespace api
-} // namespace onert
+} // namespace onert::api

@@ -22,8 +22,7 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::GHIJ>::visit(const luci::CircleGelu *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleGelu>();
-  if (cloned != nullptr)
-    cloned->approximate(node->approximate());
+  cloned->approximate(node->approximate());
   return cloned;
 }
 

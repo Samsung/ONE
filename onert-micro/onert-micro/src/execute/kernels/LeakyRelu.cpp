@@ -20,8 +20,16 @@ using namespace onert_micro;
 using namespace onert_micro::execute;
 
 // NOTE: doesnt currently support dynamic shapes
-OMStatus onert_micro::execute::execute_kernel_CircleLeakyRelu(const OMExecuteArgs &execute_args)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_kernel_CircleLeakyRelu(const OMExecuteArgs &execute_args)
 {
   bool is_relu_6 = false;
   return execute_relu_common(execute_args, is_relu_6);
 }
+
+} // namespace execute
+} // namespace onert_micro

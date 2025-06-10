@@ -16,25 +16,8 @@
 
 #include "Convert.h"
 
-namespace onert
+namespace onert::backend::trix
 {
-namespace backend
-{
-namespace trix
-{
-
-data_layout convertDataLayout(const ir::Layout layout)
-{
-  switch (layout)
-  {
-    case ir::Layout::NCHW:
-      return DATA_LAYOUT_NCHW;
-    case ir::Layout::NHWC:
-      return DATA_LAYOUT_NHWC;
-    default:
-      throw std::runtime_error("Unknown Layout");
-  }
-}
 
 data_type convertDataType(const ir::DataType type)
 {
@@ -49,6 +32,4 @@ data_type convertDataType(const ir::DataType type)
   }
 }
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix

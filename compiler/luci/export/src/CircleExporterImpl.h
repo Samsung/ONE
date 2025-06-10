@@ -38,7 +38,6 @@ public:
   CircleExporterImpl() = delete;
   ~CircleExporterImpl() = default;
 
-  explicit CircleExporterImpl(loco::Graph *graph);
   explicit CircleExporterImpl(Module *module);
 
   /**
@@ -60,19 +59,25 @@ private:
   flatbuffers::Offset<circle::SubGraph> exportSubgraph(SerializedGraphData &gd);
 
   /**
-   * @brief root function that writes graph into internal buffer
-   * @param graph
-   */
-  void exportGraph(loco::Graph *graph);
-
-  /**
    * @brief root function that writes Module into internal buffer
    * @param module
    */
   void exportModule(Module *module);
 
+  /**
+   * @brief implementation that writes Module into internal buffer
+   */
+  bool exportModuleData(Module *module, SerializedModelData &md);
+
+  /**
+   * @brief finalizes file stream with extended buffer from internal buffer
+   */
+  void finalizeWithExtendedBuffer(SerializedModelData &md);
+
 private:
   flatbuffers::FlatBufferBuilder _builder;
+  bool _ext_buffer = false;
+  std::string _fb_data_with_ext;
 };
 
 } // namespace luci

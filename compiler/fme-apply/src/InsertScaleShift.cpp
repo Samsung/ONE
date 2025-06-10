@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
+#include <algorithm>
+#include <cassert>
+#include <cmath>
+
 #include "InsertScaleShift.h"
 #include "EqualizePattern.h"
+#include "Support.Misc.h"
 
 #include <luci/IR/CircleNode.h>
 #include <luci/IR/CircleNodeVisitor.h>
@@ -30,61 +35,6 @@ using namespace fme_apply;
 namespace
 {
 
-/**
- * Create Scale/Shift Op
- *
- * @param node input of the created Scale/Shift Op
- * @param val value of Scale/Shift parameter (channel-wise const)
- * @param code One of PreScale/PostScale/PreShift/PostShift
- * @return CircleCustom node with code
- */
-luci::CircleCustom *create_scale_or_shift(luci::CircleNode *node, const std::vector<float> &val,
-                                          const std::string &code)
-{
-  assert(node); // FIX_CALLER_UNLESS
-
-  THROW_UNLESS(node->rank() == 4, "Node rank is not four");
-
-  // Assume NHWC (index of C: 3)
-  auto channel_size = node->dim(3).value();
-  THROW_UNLESS(val.size() == channel_size, "Channel and scale/shift size mismatch");
-
-  // Create parameter
-  auto param = node->graph()->nodes()->create<luci::CircleConst>();
-  {
-    param->name(node->name() + "_" + code + "_param");
-    param->dtype(loco::DataType::FLOAT32);
-    param->rank(1);
-    param->dim(0).set(channel_size);
-    param->size<loco::DataType::FLOAT32>(channel_size);
-    for (uint32_t i = 0; i < channel_size; i++)
-    {
-      param->at<loco::DataType::FLOAT32>(i) = val[i];
-    }
-    param->shape_status(luci::ShapeStatus::VALID);
-    luci::add_origin(param, luci::get_origin(node));
-  }
-
-  // Create Scale/Shift Op
-  auto ss = node->graph()->nodes()->create<luci::CircleCustom>(2, 1);
-  {
-    ss->name(node->name() + "_" + code);
-    ss->dtype(loco::DataType::FLOAT32);
-    ss->rank(node->rank());
-    for (uint32_t i = 0; i < node->rank(); i++)
-      ss->dim(i).set(node->dim(i).value());
-    ss->custom_code(code);
-
-    ss->inputs(0, node);
-    ss->inputs(1, param);
-
-    ss->shape_status(luci::ShapeStatus::VALID);
-    luci::add_origin(ss, luci::get_origin(node));
-  }
-
-  return ss;
-}
-
 std::vector<float> reciprocal(const std::vector<float> &val)
 {
   std::vector<float> res(val.size());
@@ -98,134 +48,286 @@ std::vector<float> reciprocal(const std::vector<float> &val)
   return res;
 }
 
-std::vector<float> minus(const std::vector<float> &val)
+bool calculate_smooth_quant_scale(luci::CircleNode *node, EqualizePattern *p)
 {
-  std::vector<float> res(val.size());
-  for (uint32_t i = 0; i < res.size(); i++)
+  if (p->scale.size() != 0)
   {
-    res[i] = -val[i];
+    throw std::runtime_error("scale should be empty at this moment.");
   }
-  return res;
-}
 
-// Create PreScale and insert it after node
-luci::CircleCustom *create_pre_scale(luci::CircleNode *node, const EqualizePattern *p)
-{
-  auto param = reciprocal(p->scale);
+  luci::CircleConst *weight = nullptr;
+  switch (node->opcode())
+  {
+    case luci::CircleOpcode::CONV_2D:
+    {
+      auto conv = loco::must_cast<luci::CircleConv2D *>(node);
+      weight = dynamic_cast<luci::CircleConst *>(conv->filter());
+      break;
+    }
+    case luci::CircleOpcode::DEPTHWISE_CONV_2D:
+    {
+      auto conv = loco::must_cast<luci::CircleDepthwiseConv2D *>(node);
+      weight = dynamic_cast<luci::CircleConst *>(conv->filter());
+      break;
+    }
+    case luci::CircleOpcode::FULLY_CONNECTED:
+    {
+      auto fc = loco::must_cast<luci::CircleFullyConnected *>(node);
+      weight = dynamic_cast<luci::CircleConst *>(fc->weights());
+      break;
+    }
+    case luci::CircleOpcode::TRANSPOSE_CONV:
+    {
+      auto conv = loco::must_cast<luci::CircleTransposeConv *>(node);
+      weight = dynamic_cast<luci::CircleConst *>(conv->filter());
+      break;
+    }
+    default:
+    {
+      throw std::runtime_error("(calculate_smooth_quant_scale) NYI operator: " + node->name());
+    }
+  }
 
-  return create_scale_or_shift(node, param, "PreScale");
-}
+  if (not weight)
+    return false;
+  if (weight->dtype() != loco::DataType::FLOAT32)
+    return false;
 
-// Create PostScale and insert it after node
-luci::CircleCustom *create_post_scale(luci::CircleNode *node, const EqualizePattern *p)
-{
-  return create_scale_or_shift(node, p->scale, "PostScale");
-}
+  auto act_scale = p->act_scale;
+  switch (node->opcode())
+  {
+    case luci::CircleOpcode::CONV_2D:
+    case luci::CircleOpcode::DEPTHWISE_CONV_2D:
+    case luci::CircleOpcode::TRANSPOSE_CONV:
+    {
+      auto weight_rank = weight->rank();
+      if (weight_rank != 4)
+        return false;
 
-// Create PreShift and insert it after node
-luci::CircleCustom *create_pre_shift(luci::CircleNode *node, const EqualizePattern *p)
-{
-  auto param = minus(p->shift);
+      if (act_scale.size() != weight->dim(3).value())
+      {
+        throw std::runtime_error(
+          "Mismatch between 'act_scale' size and 'filter' input channel size" +
+          std::to_string(act_scale.size()) + " != " + std::to_string(weight->dim(3).value()));
+      }
 
-  return create_scale_or_shift(node, param, "PreShift");
-}
+      // Find filter max along with In-channel dimension
+      auto weight_size = weight->size<loco::DataType::FLOAT32>();
+      const auto weight_O = weight->dim(0).value();
+      const auto weight_H = weight->dim(1).value();
+      const auto weight_W = weight->dim(2).value();
+      const auto weight_I = weight->dim(3).value();
+      const auto norm_dim = weight_O * weight_H * weight_W;
+      std::vector<float> weight_max(weight_I, std::numeric_limits<float>::min());
+      uint32_t cur = 0;
+      for (uint32_t i = 0; i < weight_I; i++)
+      {
+        cur = i;
+        for (uint32_t j = 0; j < norm_dim; j++)
+        {
+          weight_max.at(i) =
+            std::max(weight_max.at(i), std::abs(weight->at<loco::DataType::FLOAT32>(cur)));
+          cur += weight_I;
+        }
+      }
+      // Check if it properly iterates the filter.
+      assert(cur - weight_I == weight_size - 1);
 
-// Create PostShift and insert it after node
-luci::CircleCustom *create_post_shift(luci::CircleNode *node, const EqualizePattern *p)
-{
-  return create_scale_or_shift(node, p->shift, "PostShift");
+      // TODO parameterize "alpha"
+      auto alpha = 0.5f;
+      assert(p->act_scale.size() == weight_max.size());
+      for (uint32_t i = 0; i < p->act_scale.size(); i++)
+      {
+        p->scale.push_back(std::max(
+          std::pow(p->act_scale.at(i), alpha) / std::pow(weight_max.at(i), (1 - alpha)), 1e-5f));
+      }
+      break;
+    }
+    case luci::CircleOpcode::FULLY_CONNECTED:
+    {
+      auto weight_rank = weight->rank();
+      if (weight_rank != 2)
+        return false;
+
+      if (act_scale.size() != weight->dim(1).value())
+      {
+        throw std::runtime_error(
+          "Mismatch between 'act_scale' size and 'filter' input channel size" +
+          std::to_string(act_scale.size()) + " != " + std::to_string(weight->dim(1).value()));
+      }
+
+      // Find filter max along with In-channel dimension
+      auto weight_size = weight->size<loco::DataType::FLOAT32>();
+      const auto weight_O = weight->dim(0).value();
+      const auto weight_I = weight->dim(1).value();
+      std::vector<float> weight_max(weight_I, std::numeric_limits<float>::min());
+      uint32_t cur = 0;
+      for (uint32_t i = 0; i < weight_I; i++)
+      {
+        cur = i;
+        for (uint32_t j = 0; j < weight_O; j++)
+        {
+          weight_max.at(i) =
+            std::max(weight_max.at(i), std::abs(weight->at<loco::DataType::FLOAT32>(cur)));
+          cur += weight_I;
+        }
+      }
+      // Check if it properly iterates the filter.
+      assert(cur - weight_I == weight_size - 1);
+
+      // TODO parameterize "alpha"
+      auto alpha = 0.5f;
+      assert(p->act_scale.size() == weight_max.size());
+      for (uint32_t i = 0; i < p->act_scale.size(); i++)
+      {
+        p->scale.push_back(std::max(
+          std::pow(p->act_scale.at(i), alpha) / std::pow(weight_max.at(i), (1 - alpha)), 1e-5f));
+      }
+      break;
+    }
+    default:
+    {
+      throw std::runtime_error("(calculate_smooth_quant_scale) NYI operator: " + node->name());
+    }
+  }
+
+  return true;
 }
 
 struct InsertScaleShiftVisitor final : public luci::CircleNodeMutableVisitor<void>
 {
-  InsertScaleShiftVisitor(const EqualizePattern *p) : _pattern(p)
+  InsertScaleShiftVisitor(EqualizePattern *p) : _pattern(p)
   {
     // DO NOTHING
   }
 
 private:
-  const EqualizePattern *_pattern = nullptr;
+  EqualizePattern *_pattern = nullptr;
 
 private:
-  // Generate scale/shift Ops and return the last one
-  // lnode: 'front' of EqualizePattern
-  // Never return nullptr
-  luci::CircleCustom *gen_scale_shift(loco::Node *lnode) const
+  void insert_scale_before(luci::CircleNode *node, const std::vector<float> &scale)
   {
-    auto node = loco::must_cast<luci::CircleNode *>(lnode);
+    assert(node);
+    auto previous_node = loco::must_cast<luci::CircleNode *>(get_input(node));
 
-    assert(node->name() == _pattern->front); // FIX_CALLER_UNLESS
-
-    luci::CircleCustom *bottom = nullptr;
-
-    switch (_pattern->type)
+    // Create const for scale
+    auto param = node->graph()->nodes()->create<luci::CircleConst>();
     {
-      case EqualizePattern::Type::ScaleOnly:
+      param->name(node->name() + "_scale_const");
+      param->dtype(loco::DataType::FLOAT32);
+      param->rank(1);
+      param->dim(0).set(scale.size());
+      param->size<loco::DataType::FLOAT32>(scale.size());
+      for (uint32_t i = 0; i < scale.size(); i++)
       {
-        auto post_scale = create_post_scale(node, _pattern);
-        bottom = create_pre_scale(post_scale, _pattern);
-        break;
+        param->at<loco::DataType::FLOAT32>(i) = scale.at(i);
       }
-      case EqualizePattern::Type::ShiftOnly:
-      {
-        auto post_shift = create_post_shift(node, _pattern);
-        bottom = create_pre_shift(post_shift, _pattern);
-        break;
-      }
-      case EqualizePattern::Type::ScaleShift:
-      {
-        auto post_scale = create_post_scale(node, _pattern);
-        auto post_shift = create_post_shift(post_scale, _pattern);
-        auto pre_shift = create_pre_shift(post_shift, _pattern);
-        bottom = create_pre_scale(pre_shift, _pattern);
-        break;
-      }
-      default:
-        throw std::runtime_error("Unsupported EqualizePattern type");
+      param->shape_status(luci::ShapeStatus::VALID);
+      luci::add_origin(param, luci::get_origin(node));
     }
 
-    assert(bottom != nullptr); // FIX_ME_UNLESS
+    // Create Scale Op
+    auto ss = node->graph()->nodes()->create<luci::CircleCustom>(2, 1);
+    {
+      ss->name(node->name() + "_scale");
+      ss->dtype(loco::DataType::FLOAT32);
+      ss->rank(previous_node->rank());
+      for (uint32_t i = 0; i < previous_node->rank(); i++)
+        ss->dim(i).set(previous_node->dim(i).value());
+      ss->custom_code("scale");
 
-    return bottom;
+      ss->inputs(0, previous_node);
+      ss->inputs(1, param);
+
+      ss->shape_status(luci::ShapeStatus::VALID);
+      luci::add_origin(ss, luci::get_origin(node));
+    }
+    set_input(node, ss);
   }
 
+  void insert_scale_after(luci::CircleNode *node, const std::vector<float> &scale)
+  {
+    if (not node)
+    {
+      throw std::runtime_error("(insert_scale_after) Invalid node.");
+    }
+
+    // Create const for scale
+    auto param = node->graph()->nodes()->create<luci::CircleConst>();
+    {
+      param->name(node->name() + "_scale_const");
+      param->dtype(loco::DataType::FLOAT32);
+      param->rank(1);
+      param->dim(0).set(scale.size());
+      param->size<loco::DataType::FLOAT32>(scale.size());
+      for (uint32_t i = 0; i < scale.size(); i++)
+      {
+        param->at<loco::DataType::FLOAT32>(i) = scale.at(i);
+      }
+      param->shape_status(luci::ShapeStatus::VALID);
+      luci::add_origin(param, luci::get_origin(node));
+    }
+
+    // NOTE. Get a node user before setting CircleCustom("scale")'s input.
+    auto uses = loco::succs(node);
+    if (uses.size() != 1)
+    {
+      throw std::runtime_error("Not support multiple output nodes.");
+    }
+
+    // Create Scale Op
+    auto ss = node->graph()->nodes()->create<luci::CircleCustom>(2, 1);
+    {
+      ss->name(node->name() + "_scale");
+      ss->dtype(loco::DataType::FLOAT32);
+      ss->rank(node->rank());
+      for (uint32_t i = 0; i < node->rank(); i++)
+        ss->dim(i).set(node->dim(i).value());
+      ss->custom_code("scale");
+
+      ss->inputs(0, node);
+      ss->inputs(1, param);
+
+      ss->shape_status(luci::ShapeStatus::VALID);
+      luci::add_origin(ss, luci::get_origin(node));
+    }
+
+    set_input(loco::must_cast<luci::CircleNode *>(*uses.begin()), ss);
+  }
+
+private:
+  void insert(luci::CircleNode *node)
+  {
+    assert(_pattern->scale.size() ==
+           0); // scale for smooth qaunt is not calculated yet at this moment.
+    auto valid = ::calculate_smooth_quant_scale(node, _pattern);
+    auto back_node = node;
+    // Find front node.
+    const auto support_depth = 3;
+    auto front_node = find_arg_with_name(node, _pattern->front, support_depth);
+    if (not front_node)
+    {
+      throw std::runtime_error("Cannot find front node: " + _pattern->front);
+    }
+    insert_scale_after(front_node, reciprocal(_pattern->scale));
+    insert_scale_before(back_node, _pattern->scale);
+  }
+
+private:
   void visit(luci::CircleOutput *) {}
 
-  void visit(luci::CircleNode *node) { throw std::runtime_error("NYI operator: " + node->name()); }
-
-  void visit(luci::CircleConv2D *node)
+  void visit(luci::CircleNode *node)
   {
-    auto bottom = gen_scale_shift(node->input());
-    node->input(bottom);
+    throw std::runtime_error("(InsertScaleShiftVisitor) NYI operator: " + node->name());
   }
 
-  void visit(luci::CircleDepthwiseConv2D *node)
-  {
-    auto bottom = gen_scale_shift(node->input());
-    node->input(bottom);
-  }
+  void visit(luci::CircleConv2D *node) { insert(node); }
 
-  void visit(luci::CircleTransposeConv *node)
-  {
-    auto bottom = gen_scale_shift(node->outBackprop());
-    node->outBackprop(bottom);
-  }
+  void visit(luci::CircleDepthwiseConv2D *node) { insert(node); }
 
-  void visit(luci::CircleInstanceNorm *node)
-  {
-    auto bottom = gen_scale_shift(node->input());
-    node->input(bottom);
-  }
-  void visit(luci::CirclePad *node)
-  {
-    auto bottom = gen_scale_shift(node->input());
-    node->input(bottom);
-  }
-  void visit(luci::CircleSlice *node)
-  {
-    auto bottom = gen_scale_shift(node->input());
-    node->input(bottom);
-  }
+  void visit(luci::CircleFullyConnected *node) { insert(node); }
+
+  void visit(luci::CircleTransposeConv *node) { insert(node); }
 };
 
 } // namespace
@@ -238,9 +340,9 @@ void InsertScaleShift::run(loco::Graph *g)
   // Create a map for pattern matching
   // { back(string) -> EqualizationPattern*}
   // This assumes that each EqualizePattern has a unique 'back'
-  std::map<std::string, const EqualizePattern *> pattern_by_back;
+  std::map<std::string, EqualizePattern *> pattern_by_back;
   {
-    for (const auto &pattern : _patterns)
+    for (auto &pattern : _patterns)
     {
       auto back = pattern.back;
       pattern_by_back[back] = &pattern;

@@ -19,11 +19,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void Pool2D::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -44,6 +40,4 @@ std::string Pool2D::name() const
   return name_map.at(_param.op_type);
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

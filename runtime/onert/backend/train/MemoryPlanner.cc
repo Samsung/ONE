@@ -16,18 +16,17 @@
 
 #include "MemoryPlanner.h"
 
+#include "DisposableTensorIndex.h"
+#include "LayerScopeTensorIndex.h"
+
 #include <util/logging.h>
 
 #include <cassert>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
-void BumpPlanner::claim(const DisposableTensorIndex &ind, size_t size)
+template <typename Index> void BumpPlanner<Index>::claim(const Index &ind, size_t size)
 {
   basic::Block blk{_capacity, size};
   _mem_plans[ind] = blk;
@@ -36,7 +35,7 @@ void BumpPlanner::claim(const DisposableTensorIndex &ind, size_t size)
   VERBOSE(BP_PLANNER) << "CLAIM(" << ind << "): " << blk.offset << ", " << blk.size << std::endl;
 }
 
-void BumpPlanner::release(const DisposableTensorIndex &ind)
+template <typename Index> void BumpPlanner<Index>::release(const Index &ind)
 {
   VERBOSE(BP_PLANNER) << "RELEASE(" << ind << "): "
                       << "NOTHING does" << std::endl;
@@ -56,7 +55,7 @@ void BumpPlanner::release(const DisposableTensorIndex &ind)
 //       point in time, it means the place at the offset can be claimed.
 // 2. In the loop for _claim_table, we can assume the current claim_base_offset value is bigger than
 //    the previous claim_base_offset.
-void FirstFitPlanner::claim(const DisposableTensorIndex &ind, size_t size)
+template <typename Index> void FirstFitPlanner<Index>::claim(const Index &ind, size_t size)
 {
   // Find the right position for claiming
   uint32_t next_offset = 0;
@@ -88,7 +87,7 @@ void FirstFitPlanner::claim(const DisposableTensorIndex &ind, size_t size)
   }
 }
 
-void FirstFitPlanner::release(const DisposableTensorIndex &ind)
+template <typename Index> void FirstFitPlanner<Index>::release(const Index &ind)
 {
   for (auto it = _claim_table.cbegin(); it != _claim_table.cend(); ++it)
   {
@@ -107,14 +106,15 @@ void FirstFitPlanner::release(const DisposableTensorIndex &ind)
   assert(!"Cannot release for given index. It has been not claimed or released already.");
 }
 
-WICPlanner::WICPlanner()
+template <typename Index>
+WICPlanner<Index>::WICPlanner()
   : _initialized(false), _capacity(0), _mem_plans(), _live_indices(), _interference_graph(),
     _indices()
 {
   // DO NOTHING
 }
 
-void WICPlanner::claim(const DisposableTensorIndex &ind, size_t size)
+template <typename Index> void WICPlanner<Index>::claim(const Index &ind, size_t size)
 {
   _indices.emplace(size, ind);
   _interference_graph[ind].insert(_interference_graph[ind].end(), _live_indices.cbegin(),
@@ -128,7 +128,7 @@ void WICPlanner::claim(const DisposableTensorIndex &ind, size_t size)
   VERBOSE(WIC_PLANNER) << "claim(" << ind << "): [" << size << "sz]" << std::endl;
 }
 
-void WICPlanner::release(const DisposableTensorIndex &ind)
+template <typename Index> void WICPlanner<Index>::release(const Index &ind)
 {
   _live_indices.erase(ind);
   VERBOSE(WIC_PLANNER) << "release(" << ind << ")" << std::endl;
@@ -143,7 +143,8 @@ void WICPlanner::release(const DisposableTensorIndex &ind)
  * 3. Allocate memory block for sorted operands
  *   - Find free memory block which does not overlap with interfered operands
  */
-void WICPlanner::buildMemoryPlans()
+
+template <typename Index> void WICPlanner<Index>::buildMemoryPlans()
 {
   for (const auto &[size, ind] : _indices)
   {
@@ -194,13 +195,20 @@ void WICPlanner::buildMemoryPlans()
   _indices.clear();
 }
 
-std::unordered_map<DisposableTensorIndex, basic::Block> &WICPlanner::memory_plans()
+template <typename Index> typename WICPlanner<Index>::MemoryPlans &WICPlanner<Index>::memory_plans()
 {
   if (!_initialized)
     buildMemoryPlans();
   return _mem_plans;
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+template class BumpPlanner<DisposableTensorIndex>;
+template class BumpPlanner<LayerScopeTensorIndex>;
+
+template class FirstFitPlanner<DisposableTensorIndex>;
+template class FirstFitPlanner<LayerScopeTensorIndex>;
+
+template class WICPlanner<DisposableTensorIndex>;
+template class WICPlanner<LayerScopeTensorIndex>;
+
+} // namespace onert::backend::train

@@ -21,14 +21,11 @@
 
 #include "ir/Index.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 template <typename T> using OperandIndexMap = std::unordered_map<OperandIndex, T>;
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_OPERAND_INDEX_MAP_H__

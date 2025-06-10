@@ -17,16 +17,11 @@
 #include "ConstantLoweringPass.h"
 
 #include "backend/Backend.h"
-#include <ir/Graph.h>
-#include <compiler/PermuteFactor.h>
-#include <util/Utils.h>
+#include "ir/Graph.h"
 #include "util/logging.h"
+#include "util/Utils.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::IOperation &node)
@@ -34,13 +29,13 @@ void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::IO
   const auto backend = _lowered_graph.lower_info().operation.at(node_index);
 
   // Now this runtime does not support the node making output of operation as constant
-  for (const auto &input : node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+  for (const auto &input : node.getUsedInputSet())
   {
     auto &object = _graph.operands().at(input);
     if (object.isConstant())
     {
       // All constant operand are already assinged at each backend by ContantInsertionPass. So a
-      // constant has `def` and `use` as the same PermuteFactor
+      // constant has `def` and `use` as the same backend
       auto operand_li = std::make_unique<compiler::OperandLowerInfo>();
       operand_li->addDefBackend(backend);
       operand_li->addUseBackend(backend);
@@ -49,6 +44,4 @@ void ConstantLoweringPass::callback(const ir::OperationIndex &node_index, ir::IO
   }
 }
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass

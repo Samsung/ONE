@@ -19,8 +19,16 @@
 using namespace onert_micro;
 using namespace onert_micro::core;
 
-OMStatus onert_micro::import::configure_kernel_CircleBatchToSpaceND(
-  const onert_micro::import::OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus
+configure_kernel_CircleBatchToSpaceND(const onert_micro::import::OMConfigureArgs &config_args)
 {
   return helpers::configure_spaces_batches_nd_kernel_common(config_args);
 }
+
+} // namespace import
+} // namespace onert_micro

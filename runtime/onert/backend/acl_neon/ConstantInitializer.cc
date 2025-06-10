@@ -16,11 +16,7 @@
 
 #include "ConstantInitializer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
+namespace onert::backend::acl_neon
 {
 
 ConstantInitializer::ConstantInitializer(const ir::Operands &operands,
@@ -71,6 +67,4 @@ void ConstantInitializer::visit(const ir::operation::SpaceToBatchND &node)
   }
 }
 
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon

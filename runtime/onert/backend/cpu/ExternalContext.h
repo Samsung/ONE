@@ -19,42 +19,33 @@
 
 #include <util/ConfigSource.h>
 #include <ruy/context.h>
+#include <ggml.h>
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 class ExternalContext
 {
-private:
-  static const int kDefaultNumThreadpoolThreads = 1;
+public:
+  ExternalContext();
 
 public:
-  ExternalContext() : _ruy_context(new ruy::Context)
-  {
-    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
-  }
+  void setMaxNumThreads(int max_num_threads);
 
-  void setMaxNumThreads(int max_num_threads)
-  {
-    const int target_num_threads =
-      max_num_threads > -1 ? max_num_threads : kDefaultNumThreadpoolThreads;
-    _ruy_context->set_max_num_threads(target_num_threads);
-  }
+  int32_t maxNumThreads() const { return _max_num_threads; }
+
+  void initGgmlContext();
 
   ruy::Context *ruy_context() const { return _ruy_context.get(); }
 
 private:
+  int32_t _max_num_threads;
   const std::unique_ptr<ruy::Context> _ruy_context;
+  std::unique_ptr<ggml_context, decltype(&ggml_free)> _ggml_context{nullptr, &ggml_free};
 };
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu
 
 #endif // __ONERT_BACKEND_CPU_EXTERNAL_CONTEXT_H__

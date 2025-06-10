@@ -23,9 +23,7 @@
 #include "exec/FunctionSequence.h"
 #include "CodeMap.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 class ExecutionBuilder
@@ -42,7 +40,6 @@ private:
   CodeMap _code_map;
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_EXECUTION_BUILDER_H__

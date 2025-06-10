@@ -1,0 +1,80 @@
+name: Run Circle-MLIR Ubuntu Build
+
+on:
+  push:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-circle-mlir-build.yml'
+      - 'circle-mlir/**'
+      - '!circle-mlir/infra/debian/**'
+      - '!circle-mlir/infra/docker/**'
+  pull_request:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-circle-mlir-build.yml'
+      - 'circle-mlir/**'
+      - '!circle-mlir/infra/debian/**'
+      - '!circle-mlir/infra/docker/**'
+
+defaults:
+  run:
+    shell: bash
+
+# Cancel previous running jobs when pull request is updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  circle-mlir-test:
+    if: github.repository_owner == 'Samsung'
+    strategy:
+      matrix:
+        type: [ Debug, Release ]
+        ubuntu_code: [ focal, jammy ]
+        include:
+          - ubuntu_code: focal
+            ubuntu_vstr: u2004
+          - ubuntu_code: jammy
+            ubuntu_vstr: u2204
+
+    runs-on: ubuntu-latest
+
+    container:
+      image: nnfw/circle-mlir-build-${{ matrix.ubuntu_vstr }}:latest
+      options: --user root
+
+    name: circle-mlir ${{ matrix.ubuntu_vstr }} ${{ matrix.type }} test
+
+    steps:
+      - name: Install circle-interpreter
+        run: |
+          add-apt-repository ppa:circletools/nightly
+          apt update
+          apt install circle-interpreter
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # NOTE Docker image has pre-installed submodules in /workdir
+      # NOTE Docker image has pre-installed python packages
+      - name: Configure
+        run: |
+          cd circle-mlir
+          Python3_ROOT_DIR=/usr/bin cmake -B build/${{ matrix.type }} -S ./ \
+          -DCMAKE_INSTALL_PREFIX=build/${{ matrix.type }}.install \
+          -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
+          -DCIRCLE_MLIR_WORKDIR=/workdir
+
+      - name: Build, test & install
+        env:
+          ONE_COMPILER_ROOT: /usr/share/circletools
+        run: |
+          cd circle-mlir
+          cmake --build build/${{ matrix.type }} -j4
+          CTEST_OUTPUT_ON_FAILURE=1 cmake --build build/${{ matrix.type }} --verbose -- test
+          cmake --build build/${{ matrix.type }} -j4 -- install

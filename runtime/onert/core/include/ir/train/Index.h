@@ -23,11 +23,7 @@
 #include <cstdint>
 #include <utility>
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 /**
@@ -141,9 +137,7 @@ inline std::ostream &operator<<(std::ostream &o, const TrainingOperandIndex &i)
   return operator<<(o, i.index());
 }
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
 namespace std
 {

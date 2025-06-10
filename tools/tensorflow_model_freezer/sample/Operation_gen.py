@@ -50,8 +50,9 @@ class GenFloor(base.BaseFreezer):
         # The next lines insert such (CONST) to prevent such error.
         # So, Graph.pb/pbtxt contains this garbage info,
         # but this garbage info will be removed in Graph_frozen.pb/pbtxt
-        garbage = tf.get_variable(
-            "garbage", [1], dtype=tf.float32, initializer=tf.zeros_initializer())
+        garbage = tf.get_variable("garbage", [1],
+                                  dtype=tf.float32,
+                                  initializer=tf.zeros_initializer())
         init_op = tf.global_variables_initializer()
         garbage_value = [0]
         sess.run(tf.assign(garbage, garbage_value))
@@ -95,8 +96,9 @@ class GenPad(base.BaseFreezer):
         # The next lines insert such (CONST) to prevent such error.
         # So, Graph.pb/pbtxt contains this garbage info,
         # but this garbage info will be removed in Graph_frozen.pb/pbtxt
-        garbage = tf.get_variable(
-            "garbage", [1], dtype=tf.float32, initializer=tf.zeros_initializer())
+        garbage = tf.get_variable("garbage", [1],
+                                  dtype=tf.float32,
+                                  initializer=tf.zeros_initializer())
         init_op = tf.global_variables_initializer()
         garbage_value = [0]
         sess.run(tf.assign(garbage, garbage_value))
@@ -134,8 +136,9 @@ class GenSqueeze(base.BaseFreezer):
         # The next lines insert such (CONST) to prevent such error.
         # So, Graph.pb/pbtxt contains this garbage info,
         # but this garbage info will be removed in Graph_frozen.pb/pbtxt
-        garbage = tf.get_variable(
-            "garbage", [1], dtype=tf.float32, initializer=tf.zeros_initializer())
+        garbage = tf.get_variable("garbage", [1],
+                                  dtype=tf.float32,
+                                  initializer=tf.zeros_initializer())
         init_op = tf.global_variables_initializer()
         garbage_value = [0]
         sess.run(tf.assign(garbage, garbage_value))
@@ -173,8 +176,9 @@ class GenTranspose(base.BaseFreezer):
         # The next lines insert such (CONST) to prevent such error.
         # So, Graph.pb/pbtxt contains this garbage info,
         # but this garbage info will be removed in Graph_frozen.pb/pbtxt
-        garbage = tf.get_variable(
-            "garbage", [1], dtype=tf.float32, initializer=tf.zeros_initializer())
+        garbage = tf.get_variable("garbage", [1],
+                                  dtype=tf.float32,
+                                  initializer=tf.zeros_initializer())
         init_op = tf.global_variables_initializer()
         garbage_value = [0]
         sess.run(tf.assign(garbage, garbage_value))

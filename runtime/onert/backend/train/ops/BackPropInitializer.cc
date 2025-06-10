@@ -16,13 +16,7 @@
 
 #include "BackPropInitializer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 BackPropInitializer::BackPropInitializer(const std::vector<BackPropTensor *> back_props)
@@ -46,7 +40,4 @@ void BackPropInitializer::backward()
   }
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

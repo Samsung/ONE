@@ -18,9 +18,7 @@
 
 #include "OperationCloner.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 Operations::Operations(const Operations &obj)
@@ -30,5 +28,4 @@ Operations::Operations(const Operations &obj)
   _next_index = obj._next_index;
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

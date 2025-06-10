@@ -22,13 +22,7 @@
 #include <exec/IFunction.h>
 #include "../ExternalContext.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace kernel
+namespace onert::backend::builtin::kernel
 {
 
 class IfLayer : public ::onert::exec::IFunction
@@ -55,9 +49,6 @@ private:
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace kernel
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::kernel
 
 #endif // __ONERT_BACKEND_BUILTIN_KERNEL_IF_LAYER_H__

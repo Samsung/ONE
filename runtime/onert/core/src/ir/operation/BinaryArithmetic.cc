@@ -19,11 +19,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void BinaryArithmetic::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -45,6 +41,4 @@ std::string BinaryArithmetic::name() const
   return name_map.at(_param.arithmetic_type);
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

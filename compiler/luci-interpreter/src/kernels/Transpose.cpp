@@ -39,7 +39,7 @@ void Transpose::configure()
   int dims = input()->shape().num_dims();
   const int32_t *perm_data = getTensorData<int32_t>(perm());
 
-  assert(input()->shape().num_dims() <= 4);
+  assert(input()->shape().num_dims() <= 5);
   assert(input()->element_type() == output()->element_type());
 
   assert(perm()->shape().num_dims() == 1);

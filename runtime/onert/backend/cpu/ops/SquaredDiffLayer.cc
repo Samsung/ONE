@@ -20,13 +20,7 @@
 
 #include <cker/operation/SqDiff.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 SqDiffLayer::SqDiffLayer() : _input1(nullptr), _input2(nullptr), _output(nullptr)
@@ -59,7 +53,4 @@ void SqDiffLayer::run()
     throw std::runtime_error{"SquaredDiff: unsupported data type"};
   }
 }
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

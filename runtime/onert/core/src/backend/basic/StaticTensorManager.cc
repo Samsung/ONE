@@ -14,32 +14,34 @@
  * limitations under the License.
  */
 
+#include <algorithm>
+
 #include "backend/basic/StaticTensorManager.h"
 
 #include "backend/basic/DynamicTensorManager.h"
 #include "backend/basic/Tensor.h"
 #include <util/logging.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
-StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
-                                         DynamicTensorManager *dynamic_tensor_manager)
+StaticTensorManager::StaticTensorManager(
+  const std::shared_ptr<TensorRegistry> &reg, DynamicTensorManager *dynamic_tensor_manager,
+  const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes)
   : _nonconst_mgr{new MemoryManager()}, _tensors{reg},
-    _dynamic_tensor_manager{dynamic_tensor_manager}
+    _dynamic_tensor_manager{dynamic_tensor_manager},
+    _shared_memory_operand_indexes{shared_memory_operand_indexes}
 {
   // DO NOTHING
 }
 
-StaticTensorManager::StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
-                                         const std::string planner_id,
-                                         DynamicTensorManager *dynamic_tensor_manager)
+StaticTensorManager::StaticTensorManager(
+  const std::shared_ptr<TensorRegistry> &reg, const std::string planner_id,
+  DynamicTensorManager *dynamic_tensor_manager,
+  const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes)
   : _nonconst_mgr{new MemoryManager(planner_id)}, _tensors{reg},
-    _dynamic_tensor_manager{dynamic_tensor_manager}
+    _dynamic_tensor_manager{dynamic_tensor_manager},
+    _shared_memory_operand_indexes{shared_memory_operand_indexes}
 {
   // DO NOTHING
 }
@@ -50,9 +52,10 @@ void StaticTensorManager::allocateNonconsts(void)
 
   for (auto &&[ind, tensor] : _tensors->native_tensors())
   {
-    if (!_as_constants[ind] && !tensor->is_dynamic())
+    const auto adjusted_ind = adjustWithMemorySourceOperand(ind);
+    if (!_as_constants[adjusted_ind] && !tensor->is_dynamic())
     {
-      auto *buffer = _nonconst_mgr->getBuffer(ind);
+      auto *buffer = _nonconst_mgr->getBuffer(adjusted_ind);
       tensor->setBuffer(buffer);
 
       VERBOSE(CPU_StaticTensorManager)
@@ -88,8 +91,20 @@ void StaticTensorManager::claimPlan(const ir::OperandIndex &ind, uint32_t size)
   // This method is called only when a tensor has proper shape
   assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
-  if (!_as_constants[ind])
-    _nonconst_mgr->claimPlan(ind, size);
+  const auto claim_ind = adjustWithMemorySourceOperand(ind);
+  if (_as_constants[claim_ind])
+  {
+    return;
+  }
+  if (isSharedMemoryOperand(claim_ind))
+  {
+    ++_source_operand_inds_ref_counter[claim_ind];
+    if (_source_operand_inds_ref_counter[claim_ind] > 1)
+    {
+      return; // claimPlan should be called only for the first usage
+    }
+  }
+  _nonconst_mgr->claimPlan(claim_ind, size);
 }
 
 void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
@@ -99,8 +114,23 @@ void StaticTensorManager::releasePlan(const ir::OperandIndex &ind)
   // This method is called only when a tensor has proper shape
   assert(!_tensors->getNativeTensor(ind)->is_dynamic());
 
-  if (!_as_constants[ind])
-    _nonconst_mgr->releasePlan(ind);
+  const auto release_ind = adjustWithMemorySourceOperand(ind);
+  if (_as_constants[release_ind])
+  {
+    return;
+  }
+  if (isSharedMemoryOperand(release_ind))
+  {
+    if (_source_operand_inds_ref_counter[release_ind] > 0) // sanity check
+    {
+      --_source_operand_inds_ref_counter[release_ind];
+    }
+    if (_source_operand_inds_ref_counter[release_ind] > 0)
+    {
+      return; // releasePlan should be called only for the first usage
+    }
+  }
+  _nonconst_mgr->releasePlan(release_ind);
 }
 
 void StaticTensorManager::iterate(const std::function<void(const ir::OperandIndex &)> &fn)
@@ -109,6 +139,28 @@ void StaticTensorManager::iterate(const std::function<void(const ir::OperandInde
     fn(it.first);
 }
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+ir::OperandIndex
+StaticTensorManager::adjustWithMemorySourceOperand(const ir::OperandIndex &ind) const
+{
+  const auto shared_operand_ind = _shared_memory_operand_indexes.find(ind);
+  if (shared_operand_ind != std::end(_shared_memory_operand_indexes))
+  {
+    return shared_operand_ind->second;
+  }
+  // source memory operand not found
+  return ind;
+}
+
+bool StaticTensorManager::isSharedMemoryOperand(const ir::OperandIndex &ind) const
+{
+  for (const auto &[shared_ind, source_ind] : _shared_memory_operand_indexes)
+  {
+    if (shared_ind == ind || source_ind == ind)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+} // namespace onert::backend::basic

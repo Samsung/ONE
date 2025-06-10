@@ -18,13 +18,7 @@
 
 #include <exec/train/optimizer/Optimizer.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 GradientApplier::GradientApplier() : _optimizer{nullptr}, _gradient_tensor{}, _trainable_tensor{}
@@ -46,7 +40,4 @@ void GradientApplier::applyGradient(uint32_t training_step)
     std::forward_as_tuple(*_gradient_tensor, *_trainable_tensor, training_step));
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

@@ -33,12 +33,12 @@ public:
   SampleGraphContract() : luci::CircleExporter::Contract(), _buffer(new std::vector<char>)
   {
     // create needed entities
-    _g = loco::make_graph();
-    auto graph_input = _g->inputs()->create();
-    auto graph_output = _g->outputs()->create();
-    input_node = _g->nodes()->create<luci::CircleInput>();
-    output_node = _g->nodes()->create<luci::CircleOutput>();
-    relu_node = _g->nodes()->create<luci::CircleRelu>();
+    auto g = loco::make_graph();
+    auto graph_input = g->inputs()->create();
+    auto graph_output = g->outputs()->create();
+    input_node = g->nodes()->create<luci::CircleInput>();
+    output_node = g->nodes()->create<luci::CircleOutput>();
+    relu_node = g->nodes()->create<luci::CircleRelu>();
 
     // link nodes and link them to graph
     relu_node->features(input_node);
@@ -57,9 +57,12 @@ public:
 
     graph_output->shape({1, 2, 3, 4});
     graph_output->dtype(loco::DataType::FLOAT32);
+
+    _m = std::unique_ptr<luci::Module>{new luci::Module};
+    _m->add(std::move(g));
   }
 
-  loco::Graph *graph(void) const override { return _g.get(); }
+  luci::Module *module(void) const override { return _m.get(); }
 
 public:
   bool store(const char *ptr, const size_t size) const override
@@ -77,7 +80,7 @@ public:
   luci::CircleRelu *relu_node;
 
 private:
-  std::unique_ptr<loco::Graph> _g;
+  std::unique_ptr<luci::Module> _m;
   std::unique_ptr<std::vector<char>> _buffer;
 };
 

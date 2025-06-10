@@ -16,18 +16,14 @@
 
 #include "FullyConnectedLayer.h"
 
+#include "GGMLHelper.h"
+
 #include "../Tensor.h"
 #include <cker/operation/FullyConnected.h>
 #include <cker/TensorUtils.h>
 #include <misc/polymorphic_downcast.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 FullyConnectedLayer::FullyConnectedLayer()
@@ -177,6 +173,39 @@ void FullyConnectedLayer::fullyConnectedSparseWeight()
     throw std::runtime_error{"FullyConnected: unsupported sparsity"};
 }
 
+void FullyConnectedLayer::fullyConnectedGGMLWeight()
+{
+  if (_bias)
+    throw std::runtime_error{"FullyConnected: GGML weights format does not support bias yet."};
+
+  // convert tensor
+  auto input = getGGMLTensor(_input);
+  auto weights = getGGMLTensor(_weights);
+  auto output = getGGMLTensor(_output);
+  {
+    output.op = GGML_OP_MUL_MAT;
+    output.src[0] = &weights;
+    output.src[1] = &input;
+  }
+  auto *nodes = &output;
+
+  // create graph
+  struct ggml_cgraph graph;
+  {
+    memset(&graph, 0, sizeof(graph));
+    graph.n_nodes = 1;
+    graph.nodes = &nodes;
+  }
+
+  // get cplan
+  auto cplan = ggml_graph_plan(&graph, _external_context->maxNumThreads());
+  std::vector<uint8_t> buf(cplan.work_size);
+  cplan.work_data = buf.data();
+
+  // compute
+  ggml_graph_compute(&graph, &cplan);
+}
+
 void FullyConnectedLayer::fullyConnected16x1Float32()
 {
 #if defined(__aarch64__) && defined(USE_NEON)
@@ -217,6 +246,10 @@ void FullyConnectedLayer::configure(const IPortableTensor *input, const IPortabl
   }
 #endif
   _external_context = external_context;
+
+  if (_weights->data_type() == OperandType::QUANT_GGML_Q4_0 ||
+      _weights->data_type() == OperandType::QUANT_GGML_Q8_0)
+    _external_context->initGgmlContext();
 }
 
 void FullyConnectedLayer::run()
@@ -228,6 +261,11 @@ void FullyConnectedLayer::run()
   else if (_weights->sparsity())
   {
     fullyConnectedSparseWeight();
+  }
+  else if (_weights->data_type() == OperandType::QUANT_GGML_Q4_0 ||
+           _weights->data_type() == OperandType::QUANT_GGML_Q8_0)
+  {
+    fullyConnectedGGMLWeight();
   }
   else if (_input->data_type() == OperandType::FLOAT32)
   {
@@ -282,7 +320,4 @@ void FullyConnectedLayer::prepare()
 #endif
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

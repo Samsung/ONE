@@ -1,0 +1,4 @@
+Makefile
+dist
+venv
+src/*.egg-info/

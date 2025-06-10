@@ -27,26 +27,15 @@
 #include "ir/Operations.h"
 #include "backend/ITensorRegistry.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class FunctionSequence : public IFunction
 {
 public:
-  template <typename... Args> FunctionSequence(Args &&...args) { initialize(std::move(args)...); }
-
-private:
-  void initialize()
+  template <typename... Args> FunctionSequence(Args &&...args)
   {
-    // Template base case : do nothing
-  }
-
-  template <typename T, typename... Args> void initialize(std::unique_ptr<T> &&fn, Args &&...args)
-  {
-    _functions.emplace_back(std::move(fn));
-    initialize(std::move(args)...);
+    (_functions.emplace_back(std::move(args)), ...);
   }
 
 public:
@@ -123,7 +112,6 @@ protected:
   std::shared_ptr<DynamicTensorCtx> _dynamic_tensor_ctx = nullptr;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_FUNCTION_SEQUENCE_H__

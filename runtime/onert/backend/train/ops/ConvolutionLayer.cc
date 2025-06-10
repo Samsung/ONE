@@ -47,13 +47,7 @@ std::unique_ptr<Tensor> createTransposedWeights(const backend::IPortableTensor *
 
 } // namespace
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 ConvolutionLayer::ConvolutionLayer()
@@ -189,7 +183,4 @@ void ConvolutionLayer::backwardFloat32()
   }
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

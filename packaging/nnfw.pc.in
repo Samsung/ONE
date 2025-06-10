@@ -1,5 +1,0 @@
-Name: nnfw
-Description: onert API
-Version: @version@
-Libs: -L@libdir@ -lnnfw-dev
-Cflags: -I@includedir@/nnfw

@@ -21,13 +21,7 @@
 
 #include "backend/basic/Tensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
-{
-namespace train
+namespace onert::backend::basic::train
 {
 
 class TrainableTensor : public backend::train::ITrainableTensor
@@ -51,7 +45,6 @@ public:
 
 public:
   uint8_t *buffer() const override { return _tensor.buffer(); }
-  ir::Layout layout() const override { return _tensor.layout(); }
 
 public:
   std::vector<ITensor *> optVars() override;
@@ -71,9 +64,6 @@ protected:
   std::vector<std::unique_ptr<Tensor>> _opt_vars; //< Optimizer variables
 };
 
-} // namespace train
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic::train
 
 #endif // __ONERT_BACKEND_BASIC_TRAIN_TRAINABLE_TENSOR_H__

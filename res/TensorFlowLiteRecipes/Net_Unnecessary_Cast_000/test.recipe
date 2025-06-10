@@ -1,0 +1,69 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 4 dim: 4 }
+}
+operand {
+  name: "add_const_0"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 4 dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "add_output_0"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 4 dim: 4 }
+}
+operation {
+  type: "Add"
+  input: "ifm"
+  input: "add_const_0"
+  output: "add_output_0"
+  add_options {
+    activation: RELU
+  }
+}
+operand {
+  name: "cast_output"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 4 dim: 4 }
+}
+operation {
+  type: "Cast"
+  cast_options {
+    in_data_type: FLOAT32
+    out_data_type: FLOAT32
+  }
+  input: "add_output_0"
+  output: "cast_output"
+}
+operand {
+  name: "add_const_1"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 4 dim: 4 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 4 dim: 4 }
+}
+operation {
+  type: "Add"
+  input: "cast_output"
+  input: "add_const_1"
+  output: "ofm"
+  add_options {
+    activation: NONE
+  }
+}
+input: "ifm"
+output: "ofm"

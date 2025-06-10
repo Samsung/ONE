@@ -16,6 +16,8 @@
 
 #include "ReadModule.h"
 
+#include "luci/Importer.h"
+
 #include <luci/Pass/CircleShapeInferencePass.h>
 #include <luci/Pass/CircleTypeInferencePass.h>
 #include <luci/Service/Validate.h>
@@ -31,15 +33,15 @@ std::unique_ptr<luci::Module> ReadModule(std::string &input_path)
   // Load model from the file
   foder::FileLoader file_loader{input_path};
   std::vector<char> model_data = file_loader.load();
-  const circle::Model *circle_model = circle::GetModel(model_data.data());
-  if (circle_model == nullptr)
+
+  auto *data_data = reinterpret_cast<uint8_t *>(model_data.data());
+  luci::Importer importer;
+  auto module = importer.importModule(data_data, model_data.size());
+  if (module == nullptr)
   {
     std::cerr << "ERROR: Failed to load circle '" << input_path << "'" << std::endl;
     return nullptr;
   }
-
-  luci::Importer importer;
-  auto module = importer.importModule(circle_model);
   assert(module->size() > 0);
 
   for (size_t g = 0; g < module->size(); ++g)

@@ -49,13 +49,13 @@ nnfw_find_package(Boost REQUIRED)
 
 add_library(android_benchmark_native SHARED cpp/ndk_main.cpp)
 target_compile_definitions(android_benchmark_native PRIVATE MODEL_NAME="${TFLITE_MODEL_FILENAME}")
-target_include_directories(android_benchmark_native PRIVATE ${NNAS_EXTERNALS_DIR}/tensorflow)
+target_include_directories(android_benchmark_native PRIVATE ${NNFW_EXTERNALS_DIR}/tensorflow)
 target_include_directories(android_benchmark_native PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(android_benchmark_native nnfw_lib_tflite)
 target_link_libraries(android_benchmark_native nnfw_lib_misc)
 target_link_libraries(android_benchmark_native log)
 
-nnas_find_package(FlatBuffersSource EXACT 2.0 REQUIRED)
+nnfw_find_package(FlatBuffersSource REQUIRED)
 target_include_directories(android_benchmark_native PUBLIC ${FlatBuffersSource_DIR}/include .)
 
 add_custom_target(android-benchmark-apk ALL

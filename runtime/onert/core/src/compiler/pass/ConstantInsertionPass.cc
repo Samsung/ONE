@@ -16,24 +16,17 @@
 
 #include "ConstantInsertionPass.h"
 
-#include "backend/Backend.h"
 #include "ir/Graph.h"
-#include "util/Utils.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::IOperation &node)
 {
   const auto backend = _lowered_graph.lower_info().operation.at(node_index);
-  const auto factor = PermuteFactor{backend, ir::Layout::NHWC};
 
-  for (const auto &input : node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+  for (const auto &input : node.getUsedInputSet())
   {
     auto &object = _graph.operands().at(input);
 
@@ -42,34 +35,33 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::I
       continue;
 
     // 1st use of shared constant operand. Keep using original operand without insertion of new one
-    // Register original operand into keep_operand map for later reuse on same PermuteFactor
+    // Register original operand into keep_operand map for later reuse on same backend
     if (_keep_operands_map.find(input) == _keep_operands_map.end())
     {
-      _keep_operands_map.emplace(input, factor);
+      _keep_operands_map.emplace(input, backend);
       continue;
     }
 
     // Same PermuteFactor with original operand usage. Keep using original operand
-    if (_keep_operands_map.at(input) == factor)
+    if (_keep_operands_map.at(input) == backend)
       continue;
 
-    // Different PermuteFactor with original operand
+    // Different backend with original operand
 
     // Check operand is already created for current input's PermuteFactor
     // If not, create new operand and register to _replace_operands_map
-    const auto key = ReplaceKey{input, factor};
-    if (_replace_operands_map.count(key) == 0)
+    if (_replace_operands_map.count(backend) == 0)
     {
       ir::Operand new_object(object);
       new_object.clearDefUse();
       const auto new_index = _graph.operands().emplace(new_object);
-      _replace_operands_map[key] = new_index;
+      _replace_operands_map[backend] = new_index;
     }
 
-    const auto replaced_input = _replace_operands_map[key];
+    const auto replaced_input = _replace_operands_map[backend];
 
     // Update the same inputs of a node at once because inputs of an operation have the same
-    // PermuteFactor
+    // backend
     node.replaceInputs(input, replaced_input);
 
     // Update operand
@@ -77,7 +69,7 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::I
     replaced_object.insertUse(node_index);
 
     VERBOSE(ConstInsertPass) << "New operand " << replaced_input << " added(copy of " << input
-                             << ") for " << factor << std::endl;
+                             << ") for " << backend->config()->id() << std::endl;
     // Remove this node from uses of origin operand
     // Constant operand has no def.
     assert(!object.getDef().valid());
@@ -88,13 +80,10 @@ void ConstantInsertionPass::callback(const ir::OperationIndex &node_index, ir::I
   }
 
   // Now this runtime does not support the node making output as constant
-  for (const auto &output : node.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+  for ([[maybe_unused]] const auto &output : node.getUsedOutputSet())
   {
-    UNUSED_RELEASE(output);
     assert(!_graph.operands().at(output).isConstant());
   }
 }
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass

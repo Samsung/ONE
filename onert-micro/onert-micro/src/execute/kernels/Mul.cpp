@@ -34,9 +34,10 @@ constexpr uint32_t input1TensorIdx = 0;
 constexpr uint32_t input2TensorIdx = 1;
 constexpr uint32_t outputTensorIdx = 0;
 
-void calculateQuantParams(core::ArithmeticQuantParams &params, const circle::Tensor *input1,
-                          const circle::Tensor *input2, const circle::Tensor *output,
-                          circle::ActivationFunctionType act)
+// TODO: Remove duplicated code with Sub,Add
+void calculateQuantParamsForMul(core::ArithmeticQuantParams &params, const circle::Tensor *input1,
+                                const circle::Tensor *input2, const circle::Tensor *output,
+                                circle::ActivationFunctionType act)
 {
   long input1_zp;
   long input2_zp;
@@ -71,7 +72,12 @@ void calculateQuantParams(core::ArithmeticQuantParams &params, const circle::Ten
 
 // NOTE: doesnt currently support dynamic shapes
 // TODO: reduce code duplication with Add, Sub
-OMStatus onert_micro::execute::execute_kernel_CircleMul(const OMExecuteArgs &execute_args)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_kernel_CircleMul(const OMExecuteArgs &execute_args)
 {
   core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
   core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
@@ -194,8 +200,8 @@ OMStatus onert_micro::execute::execute_kernel_CircleMul(const OMExecuteArgs &exe
     {
       core::ArithmeticQuantParams add_params{};
 
-      calculateQuantParams(add_params, input1, input2, output,
-                           options->fused_activation_function());
+      calculateQuantParamsForMul(add_params, input1, input2, output,
+                                 options->fused_activation_function());
 
       if (need_broadcast)
       {
@@ -225,3 +231,6 @@ OMStatus onert_micro::execute::execute_kernel_CircleMul(const OMExecuteArgs &exe
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

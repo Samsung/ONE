@@ -1,0 +1,17 @@
+## EXAMPLE
+#
+# AddModel(test_model)
+#
+
+AddModel(Net_AddReLU_F32_R4)
+AddModel(Net_AddReLUConcat_F32_R4)
+AddModel(Net_AddReLUSub_F32_R4)
+AddModel(Net_Conv2dReLU_F32_R4)
+AddModel(Net_Conv2dReLUSub_F32_R4)
+AddModel(Net_DivErf_F32_R4)
+AddModel(Net_FullyConnectedAdd_F32_R4)
+AddModel(Net_FullyConnectedAdd_F32_R4_s)
+Addmodel(Net_ReshapeConcat_F32_R4)
+AddModel(Net_ReshapeConv1dReshape_F32_R4)
+AddModel(Net_Resize_nearest_Conv_F32_R4)
+AddModel(Net_SqrtDiv_F32_R4)

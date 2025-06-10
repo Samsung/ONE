@@ -113,6 +113,22 @@ TEST_F(ReshapeTest, SupportS16_NEG)
   EXPECT_ANY_THROW(kernel.configure());
 }
 
+TEST_F(ReshapeTest, NumElementsMismatch_NEG)
+{
+  Shape input_shape{1, 2, 3};
+  std::vector<float> input_data{1, 2, 3, 4, 5, 6};
+  Shape shape_shape{2};
+  std::vector<int32_t> shape_data{1, 7};
+  Tensor input_tensor =
+    makeInputTensor<DataType::FLOAT32>(input_shape, input_data, _memory_manager.get());
+  Tensor shape_tensor =
+    makeInputTensor<DataType::S32>(shape_shape, shape_data, _memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::FLOAT32);
+
+  Reshape kernel(&input_tensor, &shape_tensor, &output_tensor);
+  EXPECT_ANY_THROW(kernel.configure());
+}
+
 } // namespace
 } // namespace kernels
 } // namespace luci_interpreter

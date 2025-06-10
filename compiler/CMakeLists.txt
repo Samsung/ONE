@@ -14,6 +14,8 @@ endif()
 
 if(${ONE_UBUNTU_CODENAME} STREQUAL "bionic")
   set(ONE_UBUNTU_CODENAME_BIONIC TRUE)
+elseif(${ONE_UBUNTU_CODENAME} STREQUAL "noble")
+  set(ONE_UBUNTU_CODENAME_NOBLE TRUE)
 endif()
 
 # TODO Validate the argument of "requires"
@@ -90,6 +92,11 @@ function(add_compiler_directory DIR)
     message(STATUS "Configure ${PREFIX}")
     add_subdirectory(${DIR})
     message(STATUS "Configure ${PREFIX} - Done")
+    # NOTE ONE_PYTHON_VERSION_MINOR is to provide python3.x minor version number
+    # to modules that use common artifacts.
+    if(DEFINED ONE_PYTHON_VERSION_MINOR)
+      set(ONE_PYTHON_VERSION_MINOR ${ONE_PYTHON_VERSION_MINOR} PARENT_SCOPE)
+    endif()
   endif(ENABLE)
 endfunction(add_compiler_directory)
 

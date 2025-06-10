@@ -21,13 +21,7 @@
 
 #include <exec/IFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 class ArgMinMaxLayer : public ::onert::exec::IFunction
@@ -48,9 +42,6 @@ private:
   bool _is_arg_max;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_ARGMINMAXLAYER_H__

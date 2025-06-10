@@ -35,7 +35,12 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::import::configure_kernel_CircleGatherND(const OMConfigureArgs &config_args)
+namespace onert_micro
+{
+namespace import
+{
+
+OMStatus configure_kernel_CircleGatherND(const OMConfigureArgs &config_args)
 {
 
   OMRuntimeContext &runtime_context = config_args.runtime_context;
@@ -95,3 +100,6 @@ OMStatus onert_micro::import::configure_kernel_CircleGatherND(const OMConfigureA
 
   return Ok;
 }
+
+} // namespace import
+} // namespace onert_micro

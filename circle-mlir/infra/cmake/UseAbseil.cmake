@@ -1,0 +1,27 @@
+if(NOT CIRCLE_MLIR_WORKDIR)
+  if(NOT CIRCLE_MLIR_LOCALINST)
+    # for local build
+    set(ABSEIL_INST_DIR "${EXTERNALS_BIN_DIR}/abseil-cpp-install")
+  else()
+    set(ABSEIL_INST_DIR "${CIRCLE_MLIR_LOCALINST}/abseil-cpp-install")
+  endif()
+else()
+  # for CI or with Docker build
+  set(ABSEIL_INST_DIR "${CIRCLE_MLIR_WORKDIR}")
+endif()
+set(ABSEIL_INST_INC "${ABSEIL_INST_DIR}/include")
+
+link_directories(${ABSEIL_INST_DIR}/lib)
+
+add_library(abseil_cpp INTERFACE)
+target_include_directories(abseil_cpp INTERFACE ${ABSEIL_INST_INC})
+target_link_libraries(abseil_cpp INTERFACE absl_base)
+target_link_libraries(abseil_cpp INTERFACE absl_hash)
+target_link_libraries(abseil_cpp INTERFACE absl_strings)
+target_link_libraries(abseil_cpp INTERFACE absl_strings_internal)
+target_link_libraries(abseil_cpp INTERFACE absl_raw_hash_set)
+target_link_libraries(abseil_cpp INTERFACE absl_log_severity)
+target_link_libraries(abseil_cpp INTERFACE absl_low_level_hash)
+target_link_libraries(abseil_cpp INTERFACE absl_city)
+target_link_libraries(abseil_cpp INTERFACE absl_raw_logging_internal)
+target_link_libraries(abseil_cpp INTERFACE absl_throw_delegate)

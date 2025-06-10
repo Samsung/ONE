@@ -22,9 +22,7 @@
 #include <stdint.h>
 #include <string>
 
-namespace onert
-{
-namespace util
+namespace onert::util
 {
 
 /**
@@ -38,7 +36,7 @@ namespace util
 template <typename T, typename DummyTag> class Index
 {
 private:
-  static const T UNDEFINED = std::numeric_limits<T>::max();
+  static inline const T UNDEFINED = std::numeric_limits<T>::max();
 
 public:
   /**
@@ -151,8 +149,7 @@ private:
   T _index;
 };
 
-} // namespace util
-} // namespace onert
+} // namespace onert::util
 
 namespace std
 {

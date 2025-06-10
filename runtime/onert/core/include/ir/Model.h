@@ -24,20 +24,12 @@
 #include "ir/Index.h"
 #include "util/ObjectManager.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace custom
+namespace onert::backend::custom
 {
 class IKernelBuilder;
-} // namespace custom
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::custom
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 class Model
@@ -146,7 +138,7 @@ public:
    *
    * @return true if the model has only typename Graph, otherwise false
    */
-  template <typename Graph, std::enable_if_t<std::is_base_of<IGraph, Graph>::value, bool> = true>
+  template <typename Graph, std::enable_if_t<std::is_base_of_v<IGraph, Graph>, bool> = true>
   bool hasOnly()
   {
     for (const auto &e : _subgraphs)
@@ -201,9 +193,10 @@ public:
   }
 
 private:
+  // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+  //       to use `std::string_view` with lookup functions in unordered containers
   std::unordered_map<std::string, std::unique_ptr<const ir::Data>> _metadatas;
 };
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_MODEL_H__

@@ -1,5 +1,5 @@
 # Exclude from git language statistics
-tests/nnapi/specs/** linguist-detectable=false
+runtime/tests/nnapi/specs/** linguist-detectable=false
 res/** linguist-detectable=false
 
 # Default: text file

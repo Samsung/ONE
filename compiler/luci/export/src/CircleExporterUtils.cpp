@@ -77,6 +77,11 @@ circle::TensorType to_circle_tensortype(loco::DataType type)
     case loco::DataType::STRING:
       return circle::TensorType_STRING;
 
+    case loco::DataType::MXFP4:
+      return circle::TensorType_MXFP4;
+    case loco::DataType::MXINT8:
+      return circle::TensorType_MXINT8;
+
     default:
       INTERNAL_EXN_V("failed to convert unsupported loco::DataType", oops::to_uint32(type));
   }
@@ -92,6 +97,19 @@ circle::MirrorPadMode to_circle_mirrorpadmode(luci::MirrorPadMode mode)
       return circle::MirrorPadMode::MirrorPadMode_SYMMETRIC;
     default:
       INTERNAL_EXN_V("trying to convert unsupported luci::MirrorPadMode", oops::to_uint32(mode));
+  }
+}
+
+circle::RoPEMode to_circle_rope(luci::RoPEMode mode)
+{
+  switch (mode)
+  {
+    case luci::RoPEMode::GPT_NEOX:
+      return circle::RoPEMode::RoPEMode_GPT_NEOX;
+    case luci::RoPEMode::GPT_J:
+      return circle::RoPEMode::RoPEMode_GPT_J;
+    default:
+      INTERNAL_EXN_V("trying to convert unsupported luci::RoPEMode", oops::to_uint32(mode));
   }
 }
 
@@ -291,6 +309,12 @@ void set_tensor_index(loco::Node *node, const CircleTensorIndex &tensor_id)
 {
   assert(node->annot<CircleTensorIndexAnnotation>() == nullptr);
   node->annot(std::make_unique<CircleTensorIndexAnnotation>(tensor_id));
+}
+
+void clear_tensor_index(loco::Node *node)
+{
+  if (node->annot<CircleTensorIndexAnnotation>() != nullptr)
+    node->annot<CircleTensorIndexAnnotation>(nullptr);
 }
 
 CircleTensorIndex get_tensor_index(loco::Node *node)

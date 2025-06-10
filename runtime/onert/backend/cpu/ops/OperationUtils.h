@@ -21,6 +21,7 @@
 #include <ir/DataType.h>
 #include <ir/Operand.h>
 #include <ir/Padding.h>
+#include <ir/operation/RoPE.h>
 #include <util/CalculateActivationRange.h>
 
 #include <cker/Shape.h>
@@ -32,13 +33,7 @@
 using OperandType = onert::ir::DataType;
 using namespace onert::util;
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 union DataPtr {
@@ -97,9 +92,6 @@ inline nnfw::cker::Shape getShape(const IPortableTensor *tensor)
     return nnfw::cker::Shape();
 
   const ir::Shape &shape = tensor->get_info().shape();
-
-  assert(tensor->layout() == ir::Layout::NHWC);
-
   auto rank = shape.rank();
   nnfw::cker::Shape ret(rank);
   auto data = ret.DimsData();
@@ -172,6 +164,8 @@ nnfw::cker::PaddingType getPaddingType(ir::PaddingType ir_padding_type);
 
 std::vector<int32_t> getReducerAxes(const IPortableTensor *axes);
 
+nnfw::cker::RoPEMode getRoPEMode(ir::operation::RoPE::RoPEMode rope_mode);
+
 template <typename T> const T *getBuffer(const IPortableTensor *tensor)
 {
   return reinterpret_cast<const T *>(tensor->buffer());
@@ -194,9 +188,6 @@ template <> inline bool *getBuffer(IPortableTensor *tensor)
   return reinterpret_cast<bool *>(tensor->buffer());
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __NNFW_SUPPORT_NNAPI_OPERATION_UTILS_H__

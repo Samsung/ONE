@@ -20,11 +20,7 @@
 #include "OperationPass.h"
 #include "compiler/ILoweredGraph.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 class LoweredOperationPass : public OperationPass
@@ -45,8 +41,6 @@ protected:
   ILoweredGraph &_lowered_graph;
 };
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass
 
 #endif // __ONERT_IR_PASS_LOWERED_OPERATION_PASS_H__

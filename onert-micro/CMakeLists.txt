@@ -7,7 +7,6 @@ find_program(ARM_C_COMPILER_PATH ${ARM_C_COMPILER})
 
 if (NOT ARM_C_COMPILER_PATH)
     message(STATUS "Build onert-micro failed: ARM compiler is NOT FOUND")
-    return()
 endif ()
 
 set(OM_CIRCLE_SCHEMA onert_micro_circle_schema)
@@ -61,16 +60,22 @@ if (NOT_BUILD_EXTERNALS)
 else ()
     message(STATUS "DOWNLOAD AND BUILD EXTERNALS")
 
-    nnas_find_package(FlatBuffers EXACT 2.0 QUIET)
+    nnas_find_package(FlatBuffers EXACT 23.5.26 QUIET)
 
     if (NOT FlatBuffers_FOUND)
-        message(STATUS "Build onert-micro failed: FlatBuffers 2.0 NOT FOUND")
+        message(STATUS "Build onert-micro failed: FlatBuffers 23.5.26 NOT FOUND")
         return()
     endif (NOT FlatBuffers_FOUND)
 
     message(STATUS "FOUND FlatBuffers")
 
-    set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/res/CircleSchema/0.6/circle_schema.fbs")
+    set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/res/CircleSchema/0.8/circle_schema.fbs")
+
+    # need patch to circle schema 0.8 to resolve SAM issue
+    set(PATCH_FILE ${CMAKE_CURRENT_SOURCE_DIR}/remove_stablehlo_from_cir0.8.patch)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E chdir ${NNAS_PROJECT_SOURCE_DIR} git apply ${PATCH_FILE}
+            WORKING_DIRECTORY "${NNAS_PROJECT_SOURCE_DIR}"
+            )
 
     # NOTE Copy circle_schema.fbs as schema.fbs to generate "schema_generated.fbs" instead of "circle_schema_generated.fbs"
     add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
@@ -174,7 +179,14 @@ endif ()
 if (DIS_DYN_SHAPES)
     message(STATUS "ONERT-MICRO will not use dynamic shapes")
     add_definitions(-DDIS_DYN_SHAPES)
-endif ()
+    list(APPEND CMAKE_ARM_OPTIONS "-DDIS_DYN_SHAPES=ON")
+endif()
+
+if (OM_MEMORY_ESTIMATE)
+    message(STATUS "ONERT-MICRO will use memory estimation")
+    add_definitions(-DOM_MEMORY_ESTIMATE)
+    list(APPEND CMAKE_ARM_OPTIONS "-DOM_MEMORY_ESTIMATE=ON")
+endif()
 
 set(MICRO_ARM_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/standalone_arm")
 file(MAKE_DIRECTORY "${MICRO_ARM_BUILD_DIR}")
@@ -197,6 +209,7 @@ unset(KERNELS CACHE)
 unset(USE_STATIC_KERNEL CACHE)
 unset(DIS_QUANT CACHE)
 unset(DIS_FLOAT CACHE)
+unset(OM_MEMORY_ESTIMATE CACHE)
 unset(ENABLE_ONERT_MICRO_TEST CACHE)
 unset(NOT_BUILD_EXTERNALS CACHE)
 
@@ -213,6 +226,7 @@ add_custom_command(
 add_custom_target(onert_micro_arm DEPENDS "${MICRO_ARM_BINARY}")
 
 add_subdirectory(eval-driver)
+add_subdirectory(training-configure-tool)
 
 # Should be after add_subdirectory
 unset(ENABLE_ONERT_MICRO_TRAINING CACHE)

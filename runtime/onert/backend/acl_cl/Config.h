@@ -22,11 +22,7 @@
 #include <backend/IConfig.h>
 #include <arm_compute/runtime/CL/CLScheduler.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
+namespace onert::backend::acl_cl
 {
 
 class Config : public IConfig
@@ -42,8 +38,6 @@ public:
   std::unique_ptr<util::ITimer> timer() override { return std::make_unique<CLTimer>(); }
 };
 
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl
 
 #endif // __ONERT_BACKEND_ACL_CL_CONFIG_H__

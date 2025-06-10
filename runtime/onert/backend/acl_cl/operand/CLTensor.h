@@ -23,13 +23,7 @@
 #include "arm_compute/runtime/CL/CLTensorAllocator.h"
 #include "ICLTensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
-{
-namespace operand
+namespace onert::backend::acl_cl::operand
 {
 
 class CLTensor : public ICLTensor
@@ -61,9 +55,6 @@ private:
   size_t _num_uses;
 };
 
-} // namespace operand
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl::operand
 
 #endif // __ONERT_BACKEND_ACL_CL_OPERAND_CL_TENSOR_H__

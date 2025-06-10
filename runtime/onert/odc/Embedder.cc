@@ -17,9 +17,6 @@
 #include "Embedder.h"
 #include "MinMaxReader.h"
 
-#include <luci/CircleExporter.h>
-#include <luci/CircleFileExpContract.h>
-#include <luci/ImporterEx.h>
 #include <luci/IR/CircleNode.h>
 #include <luci/IR/CircleQuantParam.h>
 #include <luci/Profile/CircleNodeID.h>
@@ -69,9 +66,7 @@ float getNthPercentile(std::vector<float> &vector, float percentile)
 
 } // namespace
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 void Embedder::embed(luci::Module *module, const std::string &minmax_path,
@@ -129,5 +124,4 @@ void Embedder::embed(luci::Module *module, const std::string &minmax_path,
   }
 }
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc

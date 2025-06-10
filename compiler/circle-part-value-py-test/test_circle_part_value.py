@@ -57,24 +57,20 @@ def part_eval(test_name, bin_dir, circle_part_driver):
     for i in range(num_inputs):
         input_details = interpreter.get_input_details()[i]
         if input_details["dtype"] == np.float32:
-            input_data = np.array(
-                np.random.random_sample(input_details["shape"]), input_details["dtype"])
+            input_data = np.array(np.random.random_sample(input_details["shape"]),
+                                  input_details["dtype"])
         elif input_details["dtype"] == np.uint8:
-            input_data = np.array(
-                np.random.randint(0, 256, size=input_details["shape"]),
-                input_details["dtype"])
+            input_data = np.array(np.random.randint(0, 256, size=input_details["shape"]),
+                                  input_details["dtype"])
         elif input_details["dtype"] == np.int16:
-            input_data = np.array(
-                np.random.randint(0, 100, size=input_details["shape"]),
-                input_details["dtype"])
+            input_data = np.array(np.random.randint(0, 100, size=input_details["shape"]),
+                                  input_details["dtype"])
         elif input_details["dtype"] == np.int32:
-            input_data = np.array(
-                np.random.randint(0, 100, size=input_details["shape"]),
-                input_details["dtype"])
+            input_data = np.array(np.random.randint(0, 100, size=input_details["shape"]),
+                                  input_details["dtype"])
         elif input_details["dtype"] == np.int64:
-            input_data = np.array(
-                np.random.randint(0, 100, size=input_details["shape"]),
-                input_details["dtype"])
+            input_data = np.array(np.random.randint(0, 100, size=input_details["shape"]),
+                                  input_details["dtype"])
         elif input_details["dtype"] == np.bool_:
             input_data = np.array(
                 np.random.choice(a=[True, False], size=input_details["shape"]),

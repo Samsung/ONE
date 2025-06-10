@@ -22,11 +22,7 @@
 #include <ir/train/TrainableGraph.h>
 #include <util/Set.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 class TensorPlanner
@@ -45,6 +41,7 @@ public:
   void planBackPropTensors(TensorBuilder *tensor_builder);
   void planGradientTensors(TensorBuilder *tensor_builder);
   void planDisposableBackPropTensors(TensorBuilder *tensor_builder);
+  void planLayerScopeTensors(TensorBuilder *tensor_builder);
 
 private:
   ir::OperandIndexSequence getOutgoingBackPropSeq(const ir::OperationIndex &op_index,
@@ -55,8 +52,6 @@ private:
   const util::Set<ir::OperandIndex> &_external_operands;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_TENSOR_PLANNER_H__

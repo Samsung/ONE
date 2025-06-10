@@ -26,11 +26,7 @@
 #include "ir/train/TrainableGraph.h"
 #include "util/Set.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 using FunctionMap =
@@ -76,8 +72,7 @@ public:
 
   std::shared_ptr<ITensorRegistry> tensor_registry() { return _tensor_registry; }
 
-  virtual backend::ITensorRegistry *genTensors() = 0;
-  virtual FunctionMap genKernels() = 0;
+  virtual FunctionMap gen() = 0;
 
 private:
   const ITrainableBackend *_backend{nullptr};
@@ -92,8 +87,6 @@ protected:
 using TrainableBackendContexts =
   std::unordered_map<const Backend *, std::unique_ptr<TrainableBackendContext>>;
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_BACKEND_TRAIN_TRAINABLE_CONTEXT_H__

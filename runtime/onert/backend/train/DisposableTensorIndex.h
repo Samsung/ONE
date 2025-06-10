@@ -23,11 +23,7 @@
 
 #include "ir/Index.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 /**
@@ -88,16 +84,12 @@ private:
   ir::OperandIndex _operand_index;
 };
 
-template <typename T> using DisposableTensorIndexMap = std::unordered_map<DisposableTensorIndex, T>;
-
 inline std::ostream &operator<<(std::ostream &o, const DisposableTensorIndex &i)
 {
   return operator<<(o, i.operand_index());
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 namespace std
 {

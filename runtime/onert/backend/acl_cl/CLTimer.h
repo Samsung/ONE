@@ -24,11 +24,7 @@
 #include <list>
 #include <sstream>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
+namespace onert::backend::acl_cl
 {
 
 /**
@@ -101,8 +97,6 @@ private:
   std::list<::cl::Event> _measured_events;
 };
 
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl
 
 #endif // __ONERT_BACKEND_ACL_CL_CLTIMER_H__

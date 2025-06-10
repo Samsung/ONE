@@ -72,9 +72,7 @@ void checkHeader(FILE *file)
 
 } // namespace
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 MinMaxReader::MinMaxReader(const std::string &filepath) : _filepath(filepath)
@@ -236,5 +234,22 @@ MinMaxVectors MinMaxReader::readInput(uint32_t model_idx, uint32_t subg_idx,
   return mmv;
 }
 
-} // namespace odc
-} // namespace onert
+uint32_t MinMaxReader::readNumRuns() const
+{
+  // Find file to read
+  auto file = std::fopen(_filepath.c_str(), "rb");
+  if (!file)
+    throw std::runtime_error("Cannot open file: " + _filepath);
+
+  checkHeader(file);
+
+  // Read num_run
+  uint32_t num_run = 0;
+  readMMFile(&num_run, sizeof(uint32_t), 1, file, "Cannot read num_run from file");
+
+  std::fclose(file);
+
+  return num_run;
+}
+
+} // namespace onert::odc

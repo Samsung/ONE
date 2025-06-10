@@ -12,8 +12,9 @@ def get_cmd_args():
     )
 
     parser.add_argument('input', help='input circle file')
-    parser.add_argument(
-        'hyperparameters', nargs='?', help='training hyperparameters json file')
+    parser.add_argument('hyperparameters',
+                        nargs='?',
+                        help='training hyperparameters json file')
     parser.add_argument(
         'output',
         nargs='?',

@@ -17,6 +17,7 @@
 #ifndef __OOPS_INTERNAL_EXN_H__
 #define __OOPS_INTERNAL_EXN_H__
 
+#include <cstdint>
 #include <exception>
 #include <string>
 

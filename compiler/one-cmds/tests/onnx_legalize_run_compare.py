@@ -58,8 +58,9 @@ def _run_model(model, inputs):
     options.intra_op_num_threads = 4
     # NOTE set `providers` for https://github.com/microsoft/onnxruntime/issues/17631
     providers = rt.get_available_providers()
-    session = rt.InferenceSession(
-        model.SerializeToString(), sess_options=options, providers=providers)
+    session = rt.InferenceSession(model.SerializeToString(),
+                                  sess_options=options,
+                                  providers=providers)
     outputs = session.run(output_names, inputs)
     return outputs
 

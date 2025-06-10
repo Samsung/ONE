@@ -23,11 +23,7 @@
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 // TODO Remove this class if ExecutorFactory creates trainable context only once instead of
@@ -68,15 +64,14 @@ public:
   BackendContext &operator=(const BackendContext &) = delete;
 
 public:
-  backend::ITensorRegistry *genTensors() override;
+  FunctionMap gen() override;
 
 private:
   void planForwardTensors();
   void planBackwardTensors();
+  void planLayerScopeTensors(const FunctionMap &fn_map);
 
 public:
-  FunctionMap genKernels() override;
-
   std::shared_ptr<ExternalContext> external_context() { return _external_context; }
 
   const exec::train::optimizer::Optimizer *optimizer() const { return _optimizer.get(); }
@@ -101,8 +96,6 @@ private:
   std::unique_ptr<exec::train::optimizer::Optimizer> _optimizer;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_BACKEND_CONTEXT_H__

@@ -34,10 +34,14 @@ defaults:
   run:
     shell: bash
 
+# Cancel previous running jobs when pull request is updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   onecc-test:
-    # Tested ubuntu version is decided by docker image, not runner
-    runs-on: ubuntu-latest
+    if: github.repository_owner == 'Samsung'
     strategy:
       matrix:
         type: [ Debug, Release ]
@@ -47,8 +51,9 @@ jobs:
             ubuntu_ver: 20.04
           - ubuntu_code: jammy
             ubuntu_ver: 22.04
+    runs-on: one-x64-linux
     container:
-      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}
+      image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}
       options: --user root
     env:
       NNCC_WORKSPACE : build
@@ -59,6 +64,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install onnx2circle
+        run: |
+          apt update
+          apt-get -qqy install software-properties-common
+          add-apt-repository ppa:circletools/nightly
+          apt-get -qqy install onnx2circle
+
+      - name: Install python3.10 for focal
+        if: matrix.ubuntu_code == 'focal'
+        run: |
+          add-apt-repository ppa:deadsnakes/ppa
+          apt-get -qqy install python3.10 python3.10-dev python3.10-venv
+          python3.10 -m ensurepip --upgrade
+
       - name: Caching externals
         uses: actions/cache@v4
         with:
@@ -68,7 +87,7 @@ jobs:
             external-onecc-
             external-
 
-      - name: Caching externals
+      - name: Caching overlay
         uses: actions/cache@v4
         with:
           path: ${{ env.NNCC_WORKSPACE }}/overlay
@@ -118,3 +137,15 @@ jobs:
           ## onecc workflows
           bash onecc_032.test
           bash onecc_041.test
+
+      # Upload log if failed
+      - name: Upload log
+        uses: actions/upload-artifact@v4
+        if: failure()
+        env:
+          NNCC_INSTALL_PATH : ${{ env.NNCC_WORKSPACE }}/${{ env.NNCC_INSTALL_PREFIX }}
+        with:
+          name: fail-${{ matrix.ubuntu_code }}-${{ matrix.type }}
+          path: |
+            ${{ env.NNCC_WORKSPACE }}/compiler/**/*.log
+            ${{ env.NNCC_INSTALL_PATH }}/test/**/*.log

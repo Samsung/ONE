@@ -28,7 +28,15 @@ constexpr uint32_t outputTensorIdx = 0;
 } // namespace
 
 // NOTE: doesnt currently support dynamic shapes
-OMStatus onert_micro::execute::execute_kernel_CircleReshape(const OMExecuteArgs &execute_args)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_kernel_CircleReshape(const OMExecuteArgs &execute_args)
 {
   return execute_reshape_common(execute_args);
 }
+
+} // namespace execute
+} // namespace onert_micro

@@ -39,8 +39,10 @@ def _get_parser():
     oneutils.add_default_arg(parser)
 
     # input and output path.
-    parser.add_argument(
-        '-i', '--input_path', type=str, help='full filepath of the input circle model')
+    parser.add_argument('-i',
+                        '--input_path',
+                        type=str,
+                        help='full filepath of the input circle model')
     parser.add_argument(
         '-d',
         '--input_data',
@@ -55,24 +57,21 @@ def _get_parser():
         """file format of input data. h5/hdf5 (default), list/filelist (a text file where
         a file path of input data is written in each line), or dir/directory (a directory
         where input data are saved)""")
-    parser.add_argument(
-        '-o',
-        '--output_path',
-        type=str,
-        help='full filepath of the output quantized model')
+    parser.add_argument('-o',
+                        '--output_path',
+                        type=str,
+                        help='full filepath of the output quantized model')
 
     # argument for profiling
-    parser.add_argument(
-        '-p',
-        '--generate_profile_data',
-        action='store_true',
-        help='generate profiling data')
+    parser.add_argument('-p',
+                        '--generate_profile_data',
+                        action='store_true',
+                        help='generate profiling data')
 
     # save intermediate file(s)
-    parser.add_argument(
-        '--save_intermediate',
-        action='store_true',
-        help='Save intermediate files to output folder')
+    parser.add_argument('--save_intermediate',
+                        action='store_true',
+                        help='Save intermediate files to output folder')
 
     ## arguments for quantization
     quantization_group = parser.add_argument_group('arguments for quantization')
@@ -151,16 +150,18 @@ def _get_parser():
         help="""Save min/max of each tensor. NOTE: Min/max valuse are clipped according to
         calibration algorithms, such as percentile or moving average. Nudge adjustment is
         not applied.""")
-    quantization_group.add_argument(
-        '--quant_config', type=str, help="Path to the quantization configuration file.")
+    quantization_group.add_argument('--quant_config',
+                                    type=str,
+                                    help="Path to the quantization configuration file.")
     quantization_group.add_argument(
         '--evaluate_result',
         action='store_true',
         help=
         """Evaluate accuracy of quantized model. Run inference for both fp32 model and the
         quantized model, and compare the inference results.""")
-    quantization_group.add_argument(
-        '--test_data', type=str, help="Path to the test data used for evaluation.")
+    quantization_group.add_argument('--test_data',
+                                    type=str,
+                                    help="Path to the test data used for evaluation.")
     quantization_group.add_argument(
         '--print_mae',
         action='store_true',
@@ -208,12 +209,18 @@ def _get_parser():
         help=
         'overwrite quantparam (scale, zero_point) to the specified tensor in the quantized model.'
     )
-    force_quantparam_group.add_argument(
-        '--tensor_name', type=str, action='append', help='tensor name (string)')
-    force_quantparam_group.add_argument(
-        '--scale', type=float, action='append', help='scale (float)')
-    force_quantparam_group.add_argument(
-        '--zero_point', type=int, action='append', help='zero point (int)')
+    force_quantparam_group.add_argument('--tensor_name',
+                                        type=str,
+                                        action='append',
+                                        help='tensor name (string)')
+    force_quantparam_group.add_argument('--scale',
+                                        type=float,
+                                        action='append',
+                                        help='scale (float)')
+    force_quantparam_group.add_argument('--zero_point',
+                                        type=int,
+                                        action='append',
+                                        help='zero point (int)')
 
     # arguments for copy_quantparam option
     copy_quantparam_group = parser.add_argument_group(
@@ -223,10 +230,14 @@ def _get_parser():
         '--copy_quantparam',
         action='store_true',
         help='copy quantparam (scale, zero_point) of a tensor to another tensor.')
-    copy_quantparam_group.add_argument(
-        '--src_tensor_name', type=str, action='append', help='tensor name (string)')
-    copy_quantparam_group.add_argument(
-        '--dst_tensor_name', type=str, action='append', help='tensor name (string)')
+    copy_quantparam_group.add_argument('--src_tensor_name',
+                                       type=str,
+                                       action='append',
+                                       help='tensor name (string)')
+    copy_quantparam_group.add_argument('--dst_tensor_name',
+                                       type=str,
+                                       action='append',
+                                       help='tensor name (string)')
 
     # arguments for fake_quant option
     fake_quant_group = parser.add_argument_group('arguments for fake_quantize option')
@@ -248,19 +259,23 @@ def _get_parser():
     # arguments for ampq option
     ampq_quant_group = parser.add_argument_group('arguments for ampq option')
     # ampq
-    ampq_quant_group.add_argument(
-        '--ampq', action='store_true', help='quantize model using ampq solver.')
+    ampq_quant_group.add_argument('--ampq',
+                                  action='store_true',
+                                  help='quantize model using ampq solver.')
 
     # ampq_qerror_ratio
-    ampq_quant_group.add_argument(
-        '--ampq_qerror_ratio', type=str, help='quantization error ratio ([0, 1])')
+    ampq_quant_group.add_argument('--ampq_qerror_ratio',
+                                  type=str,
+                                  help='quantization error ratio ([0, 1])')
 
     # ampq_algorithm
-    ampq_quant_group.add_argument(
-        '--ampq_algorithm', type=str, help='type of algorithm (bisection, pattern)')
+    ampq_quant_group.add_argument('--ampq_algorithm',
+                                  type=str,
+                                  help='type of algorithm (bisection, pattern)')
 
-    ampq_quant_group.add_argument(
-        '--bisection_type', type=str, help="one of 'auto', 'i16_front', 'i16_back'")
+    ampq_quant_group.add_argument('--bisection_type',
+                                  type=str,
+                                  help="one of 'auto', 'i16_front', 'i16_back'")
 
     ampq_quant_group.add_argument(
         '--u8_layernorm_with_s16_variance',
@@ -273,10 +288,9 @@ def _get_parser():
         help='Use int16 for computing Sub and Exp nodes in uint8 Softmax')
 
     # ampq_bisection_visq
-    ampq_quant_group.add_argument(
-        '--ampq_bisection_visq',
-        type=str,
-        help='.visq.json file path with quantization errors')
+    ampq_quant_group.add_argument('--ampq_bisection_visq',
+                                  type=str,
+                                  help='.visq.json file path with quantization errors')
 
     return parser
 
@@ -747,8 +761,9 @@ def _ampq_solve(args):
                 f.write((' '.join(circle_quantizer_cmd) + '\n').encode())
 
                 # run circle-quantizer
-                oneutils.run(
-                    circle_quantizer_cmd, err_prefix="circle_quantizer", logfile=f)
+                oneutils.run(circle_quantizer_cmd,
+                             err_prefix="circle_quantizer",
+                             logfile=f)
 
                 # compute visq file
                 visq_path = os.path.join(dir_path, 'visq')

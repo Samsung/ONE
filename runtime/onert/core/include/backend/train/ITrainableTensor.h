@@ -19,11 +19,7 @@
 
 #include "backend/IPortableTensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 /**
@@ -46,8 +42,6 @@ public:
   virtual std::vector<ITensor *> optVars() = 0;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_ITRAINABLE_TENSOR_H__

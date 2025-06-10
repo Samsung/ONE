@@ -26,11 +26,7 @@
  * @brief This file contains UnusedOperandEliminationPass class implementation
  */
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 void UnusedOperandEliminationPass::run()
@@ -59,6 +55,4 @@ void UnusedOperandEliminationPass::run()
   });
 }
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass

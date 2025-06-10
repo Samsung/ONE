@@ -39,6 +39,20 @@ TEST_F(ReshapeTest, MainTest_P)
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
+TEST_F(ReshapeTest, S8_P)
+{
+  onert_micro::test_model::TestDataS8ReshapeKernel test_data_kernel(false);
+  std::vector<int8_t> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int8_t>(1, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
+TEST_F(ReshapeTest, UNMATCHED_IOTYPE_NEG)
+{
+  onert_micro::test_model::TestDataS8ReshapeKernel test_data_kernel(true);
+  EXPECT_DEATH(checkKernel(1, &test_data_kernel), "");
+}
+
 TEST_F(ReshapeTest, MainTest_NEG)
 {
   onert_micro::test_model::TestDataReshapeKernel<float> test_data_kernel(true);

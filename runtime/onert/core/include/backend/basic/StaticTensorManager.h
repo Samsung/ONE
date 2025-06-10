@@ -24,11 +24,7 @@
 #include "ir/OperandInfo.h"
 #include "TensorRegistry.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 class DynamicTensorManager;
@@ -37,9 +33,11 @@ class StaticTensorManager
 {
 public:
   StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg,
-                      DynamicTensorManager *dynamic_tensor_manager);
+                      DynamicTensorManager *dynamic_tensor_manager,
+                      const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes);
   StaticTensorManager(const std::shared_ptr<TensorRegistry> &reg, const std::string planner_id,
-                      DynamicTensorManager *dynamic_tensor_manager);
+                      DynamicTensorManager *dynamic_tensor_manager,
+                      const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes);
   virtual ~StaticTensorManager() = default;
 
   void allocateNonconsts(void);
@@ -53,14 +51,22 @@ public:
   void iterate(const std::function<void(const ir::OperandIndex &)> &fn);
 
 private:
+  // Update source operand index if source memory operand exist.
+  // Otherwise, return unchanged.
+  ir::OperandIndex adjustWithMemorySourceOperand(const ir::OperandIndex &ind) const;
+  // Return true if given ind is shared index or source index of shared memory operands map.
+  // Otherwise, return false.
+  bool isSharedMemoryOperand(const ir::OperandIndex &ind) const;
+
+private:
   std::unique_ptr<MemoryManager> _nonconst_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
   ir::OperandIndexMap<bool> _as_constants;
   DynamicTensorManager *_dynamic_tensor_manager;
+  ir::OperandIndexMap<ir::OperandIndex> _shared_memory_operand_indexes;
+  ir::OperandIndexMap<uint32_t> _source_operand_inds_ref_counter;
 };
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 #endif // __ONERT_BACKEND_BASIC_STATICTENSOR_MANAGER_H__

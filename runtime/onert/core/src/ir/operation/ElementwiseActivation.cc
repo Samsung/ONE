@@ -19,11 +19,7 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void ElementwiseActivation::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -61,12 +57,9 @@ std::string ElementwiseActivation::name() const
     {ElementwiseActivationType::LOGISTIC, "Logistic"},
     {ElementwiseActivationType::RELU, "ReLU"},
     {ElementwiseActivationType::TANH, "Tanh"},
-    {ElementwiseActivationType::LEAKY_RELU, "LeakyRelu"}};
+    {ElementwiseActivationType::LEAKY_RELU, "LeakyRelu"},
+    {ElementwiseActivationType::GELU, "GELU"}};
   return name_map.at(_param.op_type);
 }
 
-float ElementwiseActivation::infinity = std::numeric_limits<float>::infinity();
-
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

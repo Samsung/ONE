@@ -24,11 +24,7 @@
 #include "ir/train/ITrainableOperation.h"
 #include "ir/train/UseDefChains.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+namespace onert::ir::train
 {
 
 // TODO Add Phase enum
@@ -170,8 +166,6 @@ private:
   std::unordered_map<IOIndex, OperandIndex> _losses;
 };
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
 #endif // __ONERT_IR_TRAIN_TRAINABLE_GRAPH_H__

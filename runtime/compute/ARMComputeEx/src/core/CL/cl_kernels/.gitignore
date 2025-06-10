@@ -1,0 +1,3 @@
+# ignore the embeded cl_kernels
+*.clembed
+*.hembed

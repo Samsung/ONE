@@ -72,6 +72,10 @@ circle::TensorType as_circle_tensortype(const circlechef::TensorType &value)
       return circle::TensorType_STRING;
     case circlechef::BOOL:
       return circle::TensorType_BOOL;
+    case circlechef::MXFP4:
+      return circle::TensorType_MXFP4;
+    case circlechef::MXINT8:
+      return circle::TensorType_MXINT8;
     default:
       break;
   }

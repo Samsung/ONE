@@ -24,11 +24,7 @@
 #include <ir/OperandIndexMap.h>
 #include <ir/OperandInfo.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 class TensorManager
@@ -49,6 +45,7 @@ public:
   void allocateBackPropTensors();
   void allocateGradientTensors();
   void allocateDisposableBackPropTensors();
+  void allocateLayerScopeTensors();
   // TODO Add member functions to deallocate tensors
 
   void claimNonConstPlan(const ir::OperandIndex &ind);
@@ -61,6 +58,8 @@ public:
   void releaseGradientPlan(const ir::OperandIndex &ind);
   void claimDisposableBackPropPlan(const DisposableTensorIndex &ind);
   void releaseDisposableBackPropPlan(const DisposableTensorIndex &ind);
+  void claimLayerScopePlan(const LayerScopeTensorIndex &ind);
+  void releaseLayerScopePlan(const LayerScopeTensorIndex &ind);
 
 private:
   std::unique_ptr<MemoryManager> _nonconst_mgr;
@@ -68,11 +67,10 @@ private:
   std::unique_ptr<MemoryManager> _back_prop_mgr;
   std::unique_ptr<MemoryManager> _gradient_mgr;
   std::unique_ptr<DisposableMemoryManager> _disposable_back_prop_mgr;
+  std::unique_ptr<LayerScopeMemoryManager> _layer_scope_mgr;
   const std::shared_ptr<TensorRegistry> _tensors;
 };
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_TENSOR_MANAGER_H__

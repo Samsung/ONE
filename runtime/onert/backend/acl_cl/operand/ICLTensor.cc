@@ -19,13 +19,7 @@
 #include <arm_compute/runtime/CL/CLScheduler.h>
 #include <arm_compute/core/CL/OpenCL.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
-{
-namespace operand
+namespace onert::backend::acl_cl::operand
 {
 
 void ICLTensor::access(const std::function<void(ITensor &tensor)> &fn)
@@ -54,7 +48,4 @@ void ICLTensor::enqueueReadBuffer(void *ptr, bool blocking)
   queue.enqueueReadBuffer(handle()->cl_buffer(), blocking ? CL_TRUE : CL_FALSE, 0,
                           info()->total_size(), ptr);
 }
-} // namespace operand
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl::operand

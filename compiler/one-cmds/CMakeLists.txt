@@ -2,19 +2,33 @@
 #   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
 #   Ubuntu20.04; default python3.8
 #   Ubuntu22.04; default python3.10
+#   Ubuntu24.04; explicitly installed python3.8 (default is python3.12)
 #   refer https://github.com/Samsung/ONE/issues/9962
-find_package(PythonInterp 3.8 QUIET)
-find_package(PythonLibs 3.8 QUIET)
+find_package(Python 3.8 EXACT COMPONENTS Interpreter QUIET)
+if(NOT Python_FOUND)
+  find_package(Python 3.8 COMPONENTS Interpreter QUIET)
+endif()
 
-if(NOT ${PYTHONINTERP_FOUND})
-  message(STATUS "Build one-cmds: FALSE (Python3 is missing)")
+if(NOT Python_Interpreter_FOUND)
+  message(STATUS "Build one-cmds: FAILED (Python3 is missing)")
   return()
 endif()
 
-if(${PYTHON_VERSION_MINOR} LESS 8)
-  message(STATUS "Build one-cmds: FALSE (You need to install Python version higher than 3.8)")
+# NOTE assume only use 3.8.x or 3.10.x or 3.12.x
+# NOTE PYTHON_VERSION_MINOR is not used but added for consistancy with common-artifacts and dalgona
+if((Python_VERSION VERSION_GREATER_EQUAL 3.8) AND (Python_VERSION VERSION_LESS 3.9))
+  set(PYTHON_VERSION_MINOR 8)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
+  set(PYTHON_VERSION_MINOR 10)
+elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
+  set(PYTHON_VERSION_MINOR 12)
+else()
+  # TODO support more
+  message(STATUS "Build one-cmds: FAILED (Unsupported python: ${Python_VERSION})")
   return()
 endif()
+
+set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 
 # NOTE these files should not have extensions.
 #      below code will remove extension when copy and install.
@@ -42,13 +56,13 @@ if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
   #      and install build/../one-prepare-venv file
   list(APPEND ONE_COMMAND_FILES one-prepare-venv.aarch64)
 else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  if(ONE_UBUNTU_CODENAME_BIONIC)
-    # NOTE copy one-prepare-venv.u1804 as build/../one-prepare-venv
+  if(ONE_UBUNTU_CODENAME_NOBLE)
+    # NOTE copy one-prepare-venv.u2404 as build/../one-prepare-venv
     #      and install build/../one-prepare-venv file
-    list(APPEND ONE_COMMAND_FILES one-prepare-venv.u1804)
-  else(ONE_UBUNTU_CODENAME_BIONIC)
+    list(APPEND ONE_COMMAND_FILES one-prepare-venv.u2404)
+  else()
     list(APPEND ONE_COMMAND_FILES one-prepare-venv)
-  endif(ONE_UBUNTU_CODENAME_BIONIC)
+  endif()
 endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
 
 # pytorch importer is an experimental feature, it is not used in default configuration
@@ -78,8 +92,34 @@ foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
                       GROUP_READ GROUP_EXECUTE
                       WORLD_READ WORLD_EXECUTE
           DESTINATION bin)
-          
+
 endforeach(ONE_COMMAND)
+
+unset(ONNX2CIRCLE_SOURCE_PATH)
+# if ONE_ONNX2CIRCLE_PATH is set, install that file to bin folder
+if(DEFINED ENV{ONE_ONNX2CIRCLE_PATH})
+  set(ONNX2CIRCLE_SOURCE_PATH $ENV{ONE_ONNX2CIRCLE_PATH})
+else()
+  # if local build/install of circle-mlir exist, use it
+  set(ONNX2CIRCLE_PATH "${NNAS_PROJECT_SOURCE_DIR}/circle-mlir/build/install/bin/onnx2circle")
+  if (EXISTS ${ONNX2CIRCLE_PATH})
+    set(ONNX2CIRCLE_SOURCE_PATH ${ONNX2CIRCLE_PATH})
+  else()
+    # if circletools/onnx2circle package is installed, use it
+    set(ONNX2CIRCLE_PATH "/usr/share/circletools/bin/onnx2circle")
+    if (EXISTS ${ONNX2CIRCLE_PATH})
+      set(ONNX2CIRCLE_SOURCE_PATH ${ONNX2CIRCLE_PATH})
+    endif()
+  endif()
+endif()
+if(DEFINED ONNX2CIRCLE_SOURCE_PATH AND EXISTS ${ONNX2CIRCLE_SOURCE_PATH})
+  message(STATUS "ONNX2CIRCLE from ${ONNX2CIRCLE_SOURCE_PATH}")
+  install(FILES ${ONNX2CIRCLE_SOURCE_PATH}
+          PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+                      GROUP_READ GROUP_EXECUTE
+                      WORLD_READ WORLD_EXECUTE
+          DESTINATION bin)
+endif()
 
 set(ONE_UTILITY_FILES
     one-build.template.cfg
@@ -172,7 +212,7 @@ add_custom_command(OUTPUT ${O1_CFG_FILE_BIN}
           --constant ${O1_OPTION}
           --format cfg
           --output_path ${O1_CFG_FILE_BIN}
-  DEPENDS ${CONSTANT_EXPORTING_SCRIPT} ${CONSTANT_SCRIPT}
+  DEPENDS ${CONSTANT_EXPORTING_SCRIPT} ${CONSTANT_SCRIPT} ${ONE_PYTHON_DIR_BIN}
   COMMENT "Generate ${O1_CFG_FILE}"
 )
 

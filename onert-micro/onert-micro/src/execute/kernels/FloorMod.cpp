@@ -25,7 +25,12 @@ using namespace onert_micro;
 using namespace onert_micro::core;
 
 // NOTE: doesnt currently support dynamic shapes
-OMStatus onert_micro::execute::execute_kernel_CircleFloorMod(const OMExecuteArgs &execute_args)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_kernel_CircleFloorMod(const OMExecuteArgs &execute_args)
 {
   uint8_t *input_data1;
   uint8_t *input_data2;
@@ -74,3 +79,6 @@ OMStatus onert_micro::execute::execute_kernel_CircleFloorMod(const OMExecuteArgs
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

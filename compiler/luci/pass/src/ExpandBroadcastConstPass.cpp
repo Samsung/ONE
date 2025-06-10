@@ -15,6 +15,7 @@
  */
 
 #include "luci/Pass/ExpandBroadcastConstPass.h"
+#include "helpers/ArrayIndex.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <luci/Log.h>
@@ -41,9 +42,15 @@ luci::CircleConst *create_expanded_constant(luci::CircleConst *node, luci::Circl
       broadcast_dims.push_back(dim);
   }
 
-  if (broadcast_dims.size() != 1 || broadcast_dims.back() != node->rank() - 1)
+  if (broadcast_dims.size() != 1)
   {
-    WARN(l) << "NYI: Only depth broadcast removal is supported";
+    WARN(l) << "NYI: Only single dimension broadcast is supported";
+    return nullptr;
+  }
+
+  if (successor->rank() < 2 || successor->rank() > 4)
+  {
+    WARN(l) << "NYI: Only 2D/3D/4D tensor broadcast removal is supported";
     return nullptr;
   }
 
@@ -53,7 +60,6 @@ luci::CircleConst *create_expanded_constant(luci::CircleConst *node, luci::Circl
   constant->rank(node->rank());
   constant->shape_status(luci::ShapeStatus::VALID);
 
-  uint32_t node_size = node->size<loco::DataType::FLOAT32>();
   uint32_t constant_size = 1;
   for (uint32_t i = 0; i < successor->rank(); ++i)
   {
@@ -65,9 +71,37 @@ luci::CircleConst *create_expanded_constant(luci::CircleConst *node, luci::Circl
   auto const node_data = &node->at<loco::DataType::FLOAT32>(0);
   auto const constant_data = &constant->at<loco::DataType::FLOAT32>(0);
 
-  auto const successor_depth = successor->dim(successor->rank() - 1).value();
-  for (uint32_t d = 0; d < successor_depth; ++d)
-    std::copy(node_data, node_data + node_size, constant_data + d * node_size);
+  assert(successor->rank() >= 2 && successor->rank() <= 4);
+
+  // Virtually extend the constant node to 4D to support all cases
+  // (Only for index calculation)
+  // Example. (2, 4) -> (1, 1, 2, 4)
+  auto const D0 = (successor->rank() < 4) ? 1 : successor->dim(successor->rank() - 4).value();
+  auto const D1 = (successor->rank() < 3) ? 1 : successor->dim(successor->rank() - 3).value();
+  auto const D2 = (successor->rank() < 2) ? 1 : successor->dim(successor->rank() - 2).value();
+  auto const D3 = successor->dim(successor->rank() - 1).value();
+
+  auto idx = luci::Array4DIndex(D0, D1, D2, D3);
+
+  auto const D0_orig = (node->rank() < 4) ? 1 : node->dim(node->rank() - 4).value();
+  auto const D1_orig = (node->rank() < 3) ? 1 : node->dim(node->rank() - 3).value();
+  auto const D2_orig = (node->rank() < 2) ? 1 : node->dim(node->rank() - 2).value();
+  auto const D3_orig = node->dim(node->rank() - 1).value();
+
+  auto idx_orig = luci::Array4DIndex(D0_orig, D1_orig, D2_orig, D3_orig);
+
+  for (uint32_t d0 = 0; d0 < D0; ++d0)
+    for (uint32_t d1 = 0; d1 < D1; ++d1)
+      for (uint32_t d2 = 0; d2 < D2; ++d2)
+        for (uint32_t d3 = 0; d3 < D3; ++d3)
+        {
+          auto const d0_orig = (D0_orig == 1) ? 0 : d0;
+          auto const d1_orig = (D1_orig == 1) ? 0 : d1;
+          auto const d2_orig = (D2_orig == 1) ? 0 : d2;
+          auto const d3_orig = (D3_orig == 1) ? 0 : d3;
+          constant_data[idx(d0, d1, d2, d3)] =
+            node_data[idx_orig(d0_orig, d1_orig, d2_orig, d3_orig)];
+        }
 
   return constant;
 }

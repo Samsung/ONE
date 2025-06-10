@@ -23,27 +23,37 @@
 #include "ir/OperandIndexMap.h"
 #include "ir/OperandIndexSequence.h"
 #include "backend/basic/BackendContextHelpers.h"
+#include "backend/basic/TensorRegistry.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+#include <misc/polymorphic_downcast.h>
+
+namespace onert::backend::cpu
 {
 
-ITensorRegistry *BackendContext::genTensors() { return basic::genTensors(*this); }
+ITensorRegistry *BackendContext::genTensors()
+{
+  return basic::genTensors(tensor_builder, *graph(), external_operands(), tensor_registry,
+                           data().op_order, tensor_builder->getSharedMemoryOperandIndexes());
+}
 
 FunctionMap BackendContext::genKernels()
 {
   FunctionMap ret;
+
+  basic::initConsts(graph()->operands(), external_operands(), tensor_registry.get(),
+                    tensor_builder->getSharedMemoryOperandIndexes());
+
+  // TODO: Change type of tensor_registry field to TensorRegistry
+  auto tensor_registry_concreted =
+    nnfw::misc::polymorphic_downcast<basic::TensorRegistry *>(tensor_registry.get());
+  basic::initSharedMemoryConsts(graph()->operands(), external_operands(), tensor_registry_concreted,
+                                tensor_builder->getSharedMemoryOperandIndexes());
 
   for (auto &&op_ind : _data.op_order)
   {
     auto fn_seq = kernel_gen->generate(op_ind);
     ret.emplace(op_ind, std::move(fn_seq));
   }
-
-  basic::initConsts(*this);
 
   // NOTE For memory optimization, we want to free some operand data
   const_cast<ir::Graph &>(*_data.graph)
@@ -59,6 +69,4 @@ FunctionMap BackendContext::genKernels()
   return ret;
 }
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu

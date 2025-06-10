@@ -1,0 +1,3 @@
+runtime/3rdparty/**/*
+runtime/tests/nnapi/nnapi_test_generator/**/*
+runtime/tests/nnapi/specs/**/*

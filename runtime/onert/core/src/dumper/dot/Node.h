@@ -29,11 +29,7 @@
 #include <vector>
 #include <unordered_map>
 
-namespace onert
-{
-namespace dumper
-{
-namespace dot
+namespace onert::dumper::dot
 {
 
 enum BGCOLORS : int
@@ -55,9 +51,10 @@ enum BGCOLORS : int
 class Node
 {
 public:
-  const static std::string DEFAULT_FILLCOLOR;
-  const static std::string DEFAULT_COLORSCHEME;
-  const static std::string BG_COLORS[8];
+  const static inline std::string DEFAULT_FILLCOLOR = "x11";
+  const static inline std::string DEFAULT_COLORSCHEME = "white";
+  // RED, BLUE, GREEN, PURPLE, ORANGE, YELLOW, BROWN, PINK
+  const static inline std::string BG_COLORS[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
 
 public:
   /**
@@ -116,12 +113,12 @@ public:
 
 private:
   std::string _id;
+  // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+  //       to use `std::string_view` with lookup functions in unordered containers
   std::unordered_map<std::string, std::string> _attributes;
   std::vector<Node *> _out_edges;
 };
 
-} // namespace dot
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::dot
 
 #endif // __ONERT_DUMPER_DOT_NODE_H__

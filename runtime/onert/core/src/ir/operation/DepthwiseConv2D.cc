@@ -17,11 +17,7 @@
 #include "ir/operation/DepthwiseConv2D.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void DepthwiseConv2D::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ DepthwiseConv2D::DepthwiseConv2D(const OperandIndexSequence &inputs,
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

@@ -19,9 +19,7 @@
 #include "ruy/profiler/instrumentation.h"
 #endif
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 void LinearExecutor::executeImpl(const ExecutionObservee &subject)
@@ -74,5 +72,4 @@ void LinearExecutor::executeImpl(const ExecutionObservee &subject)
   }
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

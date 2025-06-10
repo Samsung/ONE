@@ -89,9 +89,13 @@ void calculateOpDataFullyConnected(const circle::Tensor *input, const circle::Te
 
 } // namespace
 
+namespace onert_micro
+{
+namespace execute
+{
+
 // NOTE: doesnt currently support dynamic shapes
-OMStatus
-onert_micro::execute::execute_kernel_CircleFullyConnected(const OMExecuteArgs &execute_args)
+OMStatus execute_kernel_CircleFullyConnected(const OMExecuteArgs &execute_args)
 {
   core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
   core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
@@ -147,11 +151,35 @@ onert_micro::execute::execute_kernel_CircleFullyConnected(const OMExecuteArgs &e
       if (status != Ok)
         return status;
 
-      status =
-        pal::FullyConnected(params, core::utils::castInputData<float>(input_data),
-                            OMRuntimeShape(weight), core::utils::castInputData<float>(weight_data),
-                            core::utils::castInputData<float>(bias_data), OMRuntimeShape(output),
-                            core::utils::castOutputData<float>(output_data));
+      switch (weight->type())
+      {
+        case circle::TensorType_FLOAT32:
+        {
+
+          status = pal::FullyConnected(
+            params, core::utils::castInputData<float>(input_data), OMRuntimeShape(weight),
+            core::utils::castInputData<float>(weight_data),
+            core::utils::castInputData<float>(bias_data), OMRuntimeShape(output),
+            core::utils::castOutputData<float>(output_data));
+        }
+        break;
+        case circle::TensorType_INT8:
+        {
+          // weight quantized INT8 mode
+          params.weights_scales =
+            reinterpret_cast<const float *>(weight->quantization()->scale()->data());
+          params.is_channel_wise_quant = weight->quantization()->scale()->size() > 1;
+
+          status = pal::FullyConnected(
+            params, core::utils::castInputData<float>(input_data), OMRuntimeShape(weight),
+            core::utils::castInputData<int8_t>(weight_data),
+            core::utils::castInputData<float>(bias_data), OMRuntimeShape(output),
+            core::utils::castOutputData<float>(output_data));
+        }
+        break;
+        default:
+          assert(false && "Unsupported hybrid weight type");
+      }
     }
     break;
 #endif // DIS_FLOAT
@@ -194,3 +222,6 @@ onert_micro::execute::execute_kernel_CircleFullyConnected(const OMExecuteArgs &e
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

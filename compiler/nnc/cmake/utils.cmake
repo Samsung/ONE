@@ -41,7 +41,8 @@ endfunction()
 # add nnc library as target
 function(nnc_add_library)
   add_library(${ARGV})
-  target_link_libraries(${ARGV0} PRIVATE nncc_common)
+  # to prevent _GLIBCXX17_DEPRECATED warning as error
+  # target_link_libraries(${ARGV0} PRIVATE nncc_common)
   target_link_libraries(${ARGV0} PUBLIC nncc_coverage)
 
   get_target_property(LIBS ${NNC_TARGET_EXECUTABLE} LINK_LIBRARIES)

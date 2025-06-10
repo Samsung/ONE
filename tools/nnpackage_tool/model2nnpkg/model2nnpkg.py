@@ -98,36 +98,36 @@ def _get_args():
       %(prog)s -o out -p addpkg -m a1.tflite a2.tflite -i a1.json a2.json
         => create nnpkg "addpkg" with models a1.tflite and a2.tflite in out/
   ''')
-    parser.add_argument(
-        '-o',
-        '--outdir',
-        type=str,
-        default=os.getcwd(),
-        metavar='output_directory',
-        help='set nnpkg output directory')
-    parser.add_argument(
-        '-p',
-        '--nnpkg-name',
-        type=str,
-        metavar='nnpkg_name',
-        help='set nnpkg output name (default=[1st modelfile name])')
-    parser.add_argument(
-        '-c',
-        '--config',
-        type=str,
-        nargs='+',
-        default='',
-        metavar='conf',
-        help='provide configuration files')
-    parser.add_argument(
-        '-m',
-        '--models',
-        type=str,
-        nargs='+',
-        metavar='model',
-        help='provide model files')
-    parser.add_argument(
-        '-i', '--io-info', type=str, nargs='+', metavar='io_info', help='provide io info')
+    parser.add_argument('-o',
+                        '--outdir',
+                        type=str,
+                        default=os.getcwd(),
+                        metavar='output_directory',
+                        help='set nnpkg output directory')
+    parser.add_argument('-p',
+                        '--nnpkg-name',
+                        type=str,
+                        metavar='nnpkg_name',
+                        help='set nnpkg output name (default=[1st modelfile name])')
+    parser.add_argument('-c',
+                        '--config',
+                        type=str,
+                        nargs='+',
+                        default='',
+                        metavar='conf',
+                        help='provide configuration files')
+    parser.add_argument('-m',
+                        '--models',
+                        type=str,
+                        nargs='+',
+                        metavar='model',
+                        help='provide model files')
+    parser.add_argument('-i',
+                        '--io-info',
+                        type=str,
+                        nargs='+',
+                        metavar='io_info',
+                        help='provide io info')
 
     args = parser.parse_args()
 

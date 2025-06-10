@@ -20,11 +20,7 @@
 
 #include <misc/polymorphic_downcast.h>
 
-namespace onert
-{
-namespace exec
-{
-namespace train
+namespace onert::exec::train
 {
 
 void TrainableExecutors::emplace(const ir::ModelIndex &, const ir::SubgraphIndex &subg_index,
@@ -53,6 +49,11 @@ const ir::OperandInfo &TrainableExecutors::inputInfo(const ir::IOIndex &index) c
 const ir::OperandInfo &TrainableExecutors::outputInfo(const ir::IOIndex &index) const
 {
   return entryExecutor()->outputInfo(index.value());
+}
+
+const void *TrainableExecutors::outputBuffer(const ir::IOIndex &index) const
+{
+  return static_cast<const void *>(entryExecutor()->outputBuffer(index.value()));
 }
 
 void TrainableExecutors::execute(const ExecutionContext &ctx)
@@ -137,6 +138,4 @@ void TrainableExecutors::iterateTrainableTensors(
   return entryExecutor()->iterateTrainableTensors(fn);
 }
 
-} // namespace train
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::train

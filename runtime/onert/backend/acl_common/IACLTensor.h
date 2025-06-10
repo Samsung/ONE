@@ -21,11 +21,7 @@
 #include <arm_compute/core/ITensor.h>
 #include "Swizzle.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 /**
@@ -49,7 +45,6 @@ public:
   uint8_t *buffer() const final { return handle()->buffer(); }
   size_t total_size() const final { return info()->total_size(); }
   size_t calcOffset(const ir::Coordinates &coords) const final;
-  ir::Layout layout() const final;
   ir::DataType data_type() const final;
   float data_scale() const override;
   int32_t data_zero_point() const override;
@@ -89,8 +84,6 @@ protected:
   size_t _rank; // Actual rank (reflects extended rank)
 };
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif //__ONERT_BACKEND_ACL_COMMON_I_ACL_TENSOR_H__

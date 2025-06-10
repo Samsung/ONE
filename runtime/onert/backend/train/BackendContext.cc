@@ -26,11 +26,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 namespace
@@ -60,8 +56,7 @@ void AddBackPropInitializers(const ir::train::TrainableGraph &tgraph, TensorRegi
     // The function added latest is executed first in a sequence during backwarding.
     std::vector<BackPropTensor *> back_props;
     const auto &op = tgraph.operation(op_index);
-    for (const auto &back_prop_index :
-         op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+    for (const auto &back_prop_index : op.getUsedInputSet())
     {
       assert(op.isRequiredForBackward());
       if (unvisited.contains(back_prop_index))
@@ -93,8 +88,7 @@ getBackwardTensorList(const ir::train::TrainableGraph &tgraph,
     const auto &trainable_op = tgraph.operation(op_index);
     assert(trainable_op.isRequiredForBackward());
     // This assumes that back-propagated tensors of loss outputs are not used
-    for (const auto &ind :
-         trainable_op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &ind : trainable_op.getUsedInputSet())
     {
       if (external_operands.contains(ind))
         continue;
@@ -136,7 +130,7 @@ getDisposableBackPropTensorList(const ir::train::TrainableGraph &tgraph,
 }
 } // namespace
 
-backend::ITensorRegistry *BackendContext::genTensors()
+FunctionMap BackendContext::gen()
 {
   planForwardTensors();
   planBackwardTensors();
@@ -144,7 +138,47 @@ backend::ITensorRegistry *BackendContext::genTensors()
   _tensor_builder->allocate();
   _tensor_builder->allocateBackward();
 
-  return _tensor_registry.get();
+  auto fn_map = generateFunctionMap();
+
+  // Initialize TrainableTensors
+  trainable_graph()->operands().iterate(
+    [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
+      if (external_operands().contains(ind) || !operand.isConstant())
+        return;
+
+      auto tensor = tensor_registry()->getNativeITensor(ind);
+      assert(tensor != nullptr);
+
+      VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;
+
+      auto data = operand.shareData();
+      assert(data && data->base());
+      auto trainable_tensor = dynamic_cast<TrainableTensor *>(tensor);
+
+      if (trainable_tensor == nullptr)
+        throw std::runtime_error{"This tensor is not trainable tensor"};
+
+      trainable_tensor->fillBuffer(data);
+    });
+
+  // NOTE For memory optimization, we want to free some operand data
+  const_cast<ir::train::TrainableGraph &>(*_tdata->tgraph)
+    .operands()
+    .iterate([&](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
+
+  // TODO Enable
+  // for (auto &&it : ret)
+  // {
+  //   auto &fn_seq = it.second;
+  //   fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
+  // }
+
+  // NOTE: Since LayerScopeTensors is defined in each kernel(layer),
+  //       It should be planned and allocated after the kernels generated.
+  planLayerScopeTensors(fn_map);
+  _tensor_builder->allocateLayerScope();
+
+  return fn_map;
 }
 
 void BackendContext::planForwardTensors()
@@ -202,46 +236,6 @@ void BackendContext::planBackwardTensors()
   tensor_planner.planDisposableBackPropTensors(tensor_builder.get());
 }
 
-FunctionMap BackendContext::genKernels()
-{
-  auto ret = generateFunctionMap();
-
-  // Initialize TrainableTensors
-  trainable_graph()->operands().iterate(
-    [&](const ir::OperandIndex &ind, const ir::Operand &operand) {
-      if (external_operands().contains(ind) || !operand.isConstant())
-        return;
-
-      auto tensor = tensor_registry()->getNativeITensor(ind);
-      assert(tensor != nullptr);
-
-      VERBOSE(FillOperandData) << "Fill data for " << ind << std::endl;
-
-      auto data = operand.shareData();
-      assert(data && data->base());
-      auto trainable_tensor = dynamic_cast<TrainableTensor *>(tensor);
-
-      if (trainable_tensor == nullptr)
-        throw std::runtime_error{"This tensor is not trainable tensor"};
-
-      trainable_tensor->fillBuffer(data);
-    });
-
-  // NOTE For memory optimization, we want to free some operand data
-  const_cast<ir::train::TrainableGraph &>(*_tdata->tgraph)
-    .operands()
-    .iterate([&](const ir::OperandIndex &, ir::Operand &obj) { obj.releaseData(); });
-
-  // TODO Enable
-  // for (auto &&it : ret)
-  // {
-  //   auto &fn_seq = it.second;
-  //   fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
-  // }
-
-  return ret;
-}
-
 FunctionMap BackendContext::generateFunctionMap()
 {
   train::FunctionMap ret;
@@ -260,6 +254,50 @@ FunctionMap BackendContext::generateFunctionMap()
   return ret;
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+void BackendContext::planLayerScopeTensors([[maybe_unused]] const FunctionMap &fn_map)
+{
+  const auto &ops = trainable_graph()->operations();
+
+  auto register_tensors = [this](const ir::OperationIndex &op_idx,
+                                 std::optional<LayerScopeTensors> &&tensors) {
+    if (not tensors.has_value())
+      return;
+
+    auto ls_tensors = tensors.value();
+    for (auto i = 0u; i < ls_tensors.size(); ++i)
+    {
+      LayerScopeTensorIndex tensor_idx(op_idx, i);
+      _tensor_builder->registerLayerScopeTensor(tensor_idx, ls_tensors[i]);
+
+      VERBOSE(BackendContext) << "(idx:" << tensor_idx << ") registered" << std::endl;
+    }
+    return;
+  };
+
+  for (auto &pair : fn_map)
+  {
+    const auto &op_idx = pair.first;
+    auto &fn_seq = pair.second;
+
+    const ir::IOperation *op = &ops.at(op_idx);
+    const auto trainable_op = dynamic_cast<const ir::train::TrainableOperation *>(op);
+    assert(trainable_op != nullptr);
+
+    if (not trainable_op->isRequiredForBackward())
+      continue;
+
+    VERBOSE(BackendContext) << "register layerscope tensor for " << trainable_op->name()
+                            << std::endl;
+
+    fn_seq->iterate([&](exec::train::ITrainableFunction &fn) {
+      register_tensors(op_idx, (&fn)->registerLayerScopeTensors());
+    });
+  }
+
+  const auto ctx_data = data();
+  TensorPlanner tensor_planner{*ctx_data->tgraph.get(), ctx_data->external_operands};
+  tensor_planner.planLayerScopeTensors(_tensor_builder.get());
+  return;
+}
+
+} // namespace onert::backend::train

@@ -186,6 +186,8 @@ struct FullyConnectedParams
   int32_t weights_offset;
   int32_t output_offset;
   int32_t output_multiplier;
+  const float *weights_scales;
+  bool is_channel_wise_quant;
   int output_shift;
   // uint8_t, etc, activation params.
   int32_t quantized_activation_min;
@@ -226,6 +228,18 @@ struct SliceParams
   int32_t begin[5];
   int8_t size_count;
   int32_t size[5];
+};
+
+struct SVDFQuantParams
+{
+  int32_t input_zero_point;
+  int32_t output_zero_point;
+  int32_t activation_state_zero_point;
+  int32_t effective_scale_1_a;
+  int effective_scale_1_b;
+  int32_t effective_scale_2_a;
+  int effective_scale_2_b;
+  int rank;
 };
 
 } // namespace core

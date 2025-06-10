@@ -28,9 +28,7 @@
 #include "ir/Index.h"
 #include "util/TracingCtx.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /**
@@ -65,7 +63,6 @@ private:
   std::vector<compiler::CodeAndInfo> _code;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_EXECUTOR_H_

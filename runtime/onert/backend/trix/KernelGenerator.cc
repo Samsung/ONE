@@ -27,11 +27,7 @@
 
 #include <stdexcept>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 KernelGenerator::KernelGenerator(const ir::Graph &graph,
@@ -77,6 +73,4 @@ void KernelGenerator::visit(const ir::operation::Bulk &node)
   _return_fn = std::move(fn);
 }
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix

@@ -111,7 +111,6 @@ void Conv2DInputGrad(const core::FloatConv2D &params, const core::OMRuntimeShape
                                          filter_y * weight_w * dloss_dinput_d +
                                          ic * weight_w * dloss_dinput_d * weight_h;
                 assert(input_offset < dloss_doutput_shape.flatSize());
-                assert(filter_offset < weight_shape.flatSize());
                 float input_value = dloss_doutput_data[input_offset];
                 float filter_value = n_c_weight_data[filter_offset];
                 total += (input_value * filter_value);

@@ -68,8 +68,11 @@ done
 
 # Exclude test files from coverage report
 # Exclude flatbuffer generated files from coverage report
+# Exclude external source from coverage report
 "${LCOV_PATH}" -r "${EXTRACTED_COVERAGE_INFO_PATH}" -o "${EXCLUDED_COVERAGE_INFO_PATH}" \
-  '*.test.cpp' '*.test.cc' '*/test/*' '*/tests/*' '*_generated.h' '.test.h' '*/test_models/*'
+  '*.test.cpp' '*.test.cc' '*/test/*' '*/tests/*' '.test.h' '*/test_models/*' \
+  '*_generated.h' \
+  '*/externals/*' '*/3rdparty/*'
 
 # Final coverage data
 cp -v ${EXCLUDED_COVERAGE_INFO_PATH} ${COVERAGE_INFO_PATH}

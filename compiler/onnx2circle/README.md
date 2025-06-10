@@ -1,3 +1,3 @@
 # onnx2circle
 
-_onnx2circle_ is a ONNX-to-Circle model converter.
+_onnx2circle_ is an ONNX-to-Circle model converter.

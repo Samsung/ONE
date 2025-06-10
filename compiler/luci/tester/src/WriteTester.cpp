@@ -42,11 +42,6 @@ void show_error_message(const char *progname, std::ostream &os, const std::strin
 struct CircleExpContract : public luci::CircleExporter::Contract
 {
 public:
-  CircleExpContract(loco::Graph *graph, const std::string &filename)
-    : _graph(graph), _filepath(filename)
-  {
-    // NOTHING TO DO
-  }
   CircleExpContract(luci::Module *module, const std::string &filename)
     : _module(module), _filepath(filename)
   {
@@ -55,15 +50,12 @@ public:
   virtual ~CircleExpContract() = default;
 
 public:
-  loco::Graph *graph(void) const final { return _graph; }
-
   luci::Module *module(void) const final { return _module; }
 
 public:
   bool store(const char *ptr, const size_t size) const final;
 
 private:
-  loco::Graph *_graph{nullptr};
   luci::Module *_module{nullptr};
   const std::string _filepath;
 };

@@ -1,0 +1,241 @@
+name: Build and publish docker image for CI/CD infra
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # Use github action for build and push test image to docker hub
+  build-docker-image:
+    if: github.repository_owner == 'Samsung'
+    runs-on: one-x64-linux
+    strategy:
+      matrix:
+        version: [ 'android-sdk', 'focal', 'jammy', 'noble', 'focal-cross', 'jammy-cross', 'noble-cross' ]
+        include:
+          - version: 'focal'
+            platform-add: ',linux/arm64'
+          - version: 'jammy'
+            platform-add: ',linux/arm64'
+          - version: 'noble'
+            platform-add: ',linux/arm64'
+      fail-fast: false
+
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Install Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          file: ./infra/docker/${{ matrix.version }}/Dockerfile
+          push: true
+          tags: nnfw/one-devtools:${{ matrix.version }}-test
+          platforms: linux/amd64${{ matrix.platform-add }}
+          cache-from: type=gha,scope=${{ matrix.version }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.version }}
+
+  test-cross-image:
+    if: github.repository_owner == 'Samsung'
+    needs: build-docker-image
+    strategy:
+      matrix:
+        # TODO: noble (not supported rootfs yet)
+        ubuntu_code: [ 'focal', 'jammy']
+      fail-fast: false
+    runs-on: one-x64-linux
+    container:
+      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}-cross-test
+      options: --user root
+      credentials:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    env:
+      TARGET_ARCH: armv7l
+      BUILD_TYPE: release
+      CROSS_BUILD: 1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Caching externals
+        uses: actions/cache@v4
+        with:
+          path: externals
+          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onert-${{ matrix.ubuntu_code }}-
+
+      - name: Download rootfs for cross build
+        uses: dawidd6/action-download-artifact@v7
+        with:
+          workflow: generate-rootfs.yml
+          branch: master
+          name: rootfs_arm_${{ matrix.ubuntu_code }}
+
+      # Workaround: symlink for rootfs checker in cmake toolchain file
+      - name: Install rootfs for cross build and build
+        run: |
+          mkdir -p tools/cross/rootfs
+          tar -zxf rootfs_arm_${{ matrix.ubuntu_code }}.tar.gz -C tools/cross/rootfs
+          pushd tools/cross/rootfs/arm
+          ln -sf usr/lib lib
+          popd
+          make -f Makefile.template
+
+  test-x64-image:
+    if: github.repository_owner == 'Samsung'
+    needs: build-docker-image
+    strategy:
+      matrix:
+        ubuntu_code: [ 'focal', 'jammy', 'noble' ]
+      fail-fast: false
+    runs-on: one-x64-linux
+    container:
+      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}-test
+      options: --user root
+      credentials:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    env:
+      BUILD_TYPE: release
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Caching externals
+        uses: actions/cache@v4
+        with:
+          path: externals
+          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onert-${{ matrix.ubuntu_code }}-
+
+      - name: Build
+        run: make -f Makefile.template
+
+  test-android-sdk-image:
+    if: github.repository_owner == 'Samsung'
+    needs: build-docker-image
+    runs-on: one-x64-linux
+    container:
+      image: nnfw/one-devtools:android-sdk-test
+      options: --user root
+      credentials:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    env:
+      BUILD_TYPE: release
+      CROSS_BUILD: 1
+      TARGET_OS: android
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Caching externals
+        uses: actions/cache@v4
+        with:
+          path: externals
+          key: external-onert-ndk-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onert-ndk-
+
+      - name: Build onert
+        run: make -f Makefile.template
+
+  test-arm64-image:
+    if: github.repository_owner == 'Samsung'
+    needs: build-docker-image
+    strategy:
+      matrix:
+        ubuntu_code: [ 'focal', 'jammy', 'noble' ]
+      fail-fast: false
+    runs-on: one-arm-linux
+    container:
+      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}-test
+      options: --user root
+      credentials:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    env:
+      BUILD_TYPE: release
+      TARGET_ARCH: aarch64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Caching externals
+        uses: actions/cache@v4
+        with:
+          path: externals
+          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('infra/nnfw/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onert-${{ matrix.ubuntu_code }}-
+
+      - name: Build onert
+        run: |
+          make -f Makefile.template
+
+  publish-image:
+    if: github.repository_owner == 'Samsung'
+    needs: [ test-cross-image, test-x64-image, test-android-sdk-image, test-arm64-image ]
+    strategy:
+      matrix:
+        version: [ 'android-sdk', 'focal', 'jammy', 'noble', 'focal-cross', 'jammy-cross', 'noble-cross' ]
+        include:
+          - version: 'focal'
+            platform-add: ',linux/arm64'
+          - version: 'jammy'
+            platform-add: ',linux/arm64'
+          - version: 'noble'
+            platform-add: ',linux/arm64'
+      fail-fast: false
+    runs-on: one-x64-linux
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Login to Azure Repository
+        uses: docker/login-action@v3
+        with:
+          registry: samsungonedev.azurecr.io
+          username: ${{ secrets.AZDOCKER_WRITE_ID }}
+          password: ${{ secrets.AZDOCKER_WRITE_PWD }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Install Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          file: ./infra/docker/${{ matrix.version }}/Dockerfile
+          push: true
+          platforms: linux/amd64${{ matrix.platform-add }}
+          cache-from: type=gha,scope=${{ matrix.version }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.version }}
+          tags: |
+            nnfw/one-devtools:${{ matrix.version }}
+            samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.version }}

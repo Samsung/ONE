@@ -1,0 +1,6 @@
+# To check if the model is resized properly
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "IN_SHAPE"                $(tensor_shape in) '=' [2,16]
+RULE    "OUT_2_SHAPE"             $(tensor_shape out_2) '=' [2,4]

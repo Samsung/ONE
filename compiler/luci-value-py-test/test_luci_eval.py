@@ -33,28 +33,24 @@ def luci_eval_verify(test_name, artifacts, eval_driver, rtolf32=1e-5, atolf32=1e
     for i in range(num_inputs):
         input_details = interpreter.get_input_details()[i]
         if input_details["dtype"] == np.float32:
-            input_data = np.array(
-                np.random.random_sample(input_details["shape"]), input_details["dtype"])
+            input_data = np.array(np.random.random_sample(input_details["shape"]),
+                                  input_details["dtype"])
             input_dtype = "float32"
         elif input_details["dtype"] == np.uint8:
-            input_data = np.array(
-                np.random.randint(0, 256, size=input_details["shape"]),
-                input_details["dtype"])
+            input_data = np.array(np.random.randint(0, 256, size=input_details["shape"]),
+                                  input_details["dtype"])
             input_dtype = "uint8"
         elif input_details["dtype"] == np.int16:
-            input_data = np.array(
-                np.random.randint(0, 100, size=input_details["shape"]),
-                input_details["dtype"])
+            input_data = np.array(np.random.randint(0, 100, size=input_details["shape"]),
+                                  input_details["dtype"])
             input_dtype = "int16"
         elif input_details["dtype"] == np.int32:
-            input_data = np.array(
-                np.random.randint(0, 100, size=input_details["shape"]),
-                input_details["dtype"])
+            input_data = np.array(np.random.randint(0, 100, size=input_details["shape"]),
+                                  input_details["dtype"])
             input_dtype = "int32"
         elif input_details["dtype"] == np.int64:
-            input_data = np.array(
-                np.random.randint(0, 100, size=input_details["shape"]),
-                input_details["dtype"])
+            input_data = np.array(np.random.randint(0, 100, size=input_details["shape"]),
+                                  input_details["dtype"])
             input_dtype = "int64"
         elif input_details["dtype"] == np.bool_:
             input_data = np.array(
@@ -66,8 +62,8 @@ def luci_eval_verify(test_name, artifacts, eval_driver, rtolf32=1e-5, atolf32=1e
 
         interpreter.set_tensor(input_details["index"], input_data)
         input_data.tofile(circle_model + ".input" + str(i))
-        input_details["shape"].tofile(
-            circle_model + ".input" + str(i) + ".shape", sep=',')
+        input_details["shape"].tofile(circle_model + ".input" + str(i) + ".shape",
+                                      sep=',')
         with open(circle_model + ".input" + str(i) + ".dtype", 'w') as dtype_file:
             dtype_file.write(input_dtype)
 
@@ -75,12 +71,11 @@ def luci_eval_verify(test_name, artifacts, eval_driver, rtolf32=1e-5, atolf32=1e
     interpreter.invoke()
 
     # Execute luci interpreter.
-    subprocess.run(
-        [
-            eval_driver, circle_model,
-            str(num_inputs), circle_model + ".input", circle_model + ".output"
-        ],
-        check=True)
+    subprocess.run([
+        eval_driver, circle_model,
+        str(num_inputs), circle_model + ".input", circle_model + ".output"
+    ],
+                   check=True)
 
     # Compare the results.
     inpt_output_details = interpreter.get_output_details()
@@ -97,28 +92,38 @@ def luci_eval_verify(test_name, artifacts, eval_driver, rtolf32=1e-5, atolf32=1e
         intp_output_data = interpreter.get_tensor(output_tensor)
         err_msg = "Execution result of " + tflite_model + " does not match with " + circle_model
         if output_details["dtype"] == np.uint8:
-            assert np.allclose(
-                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint), err_msg
+            assert np.allclose(luci_output_data,
+                               intp_output_data,
+                               rtol=rtolint,
+                               atol=atolint), err_msg
             output_dtype = "uint8"
         elif output_details["dtype"] == np.float32:
-            assert np.allclose(
-                luci_output_data, intp_output_data, rtol=rtolf32, atol=atolf32), err_msg
+            assert np.allclose(luci_output_data,
+                               intp_output_data,
+                               rtol=rtolf32,
+                               atol=atolf32), err_msg
             output_dtype = "float32"
         elif output_details["dtype"] == np.int64:
-            assert np.allclose(
-                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint), err_msg
+            assert np.allclose(luci_output_data,
+                               intp_output_data,
+                               rtol=rtolint,
+                               atol=atolint), err_msg
             output_dtype = "int64"
         elif output_details["dtype"] == np.int32:
-            assert np.allclose(
-                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint), err_msg
+            assert np.allclose(luci_output_data,
+                               intp_output_data,
+                               rtol=rtolint,
+                               atol=atolint), err_msg
             output_dtype = "int32"
         elif output_details["dtype"] == np.int16:
-            assert np.allclose(
-                luci_output_data, intp_output_data, rtol=rtolint, atol=atolint), err_msg
+            assert np.allclose(luci_output_data,
+                               intp_output_data,
+                               rtol=rtolint,
+                               atol=atolint), err_msg
             output_dtype = "int16"
         elif output_details["dtype"] == np.bool_:
-            assert np.allclose(
-                luci_output_data, intp_output_data, rtol=0, atol=0), err_msg
+            assert np.allclose(luci_output_data, intp_output_data, rtol=0,
+                               atol=0), err_msg
             output_dtype = "bool"
         else:
             assert False, "Unsupported data type: " + output_details["dtype"]

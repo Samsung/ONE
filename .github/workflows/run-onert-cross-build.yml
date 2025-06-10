@@ -1,0 +1,138 @@
+name: Run ONERT Ubuntu Cross Build
+
+on:
+  push:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-onert-cross-build.yml'
+      - 'nnfw'
+      - 'Makefile.template'
+      - 'runtime/**'
+      - '!runtime/contrib/**'
+      - '!runtime/infra/debian/**'
+      - '!runtime/infra/gbs/**'
+      - '!runtime/infra/python/**'
+      - '!**/*.md'
+  pull_request:
+    branches:
+      - master
+      - release/*
+    paths:
+      - '.github/workflows/run-onert-cross-build.yml'
+      - 'nnfw'
+      - 'Makefile.template'
+      - 'runtime/**'
+      - '!runtime/contrib/**'
+      - '!runtime/infra/debian/**'
+      - '!runtime/infra/gbs/**'
+      - '!runtime/infra/python/**'
+      - '!**/*.md'
+
+defaults:
+  run:
+    shell: bash
+
+# Cancel previous running jobs when pull request is updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: github.repository_owner == 'Samsung'
+    strategy:
+      # Debug build test on ubuntu arm32 only
+      matrix:
+        type: [ debug, release ]
+        ubuntu_code: [ jammy ]
+        arch: [ armv7l ]
+        include:
+          - arch: armv7l
+            platform: arm
+    runs-on: one-x64-linux
+    container:
+      image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}-cross
+      options: --user root
+    env:
+      TARGET_ARCH: ${{ matrix.arch }}
+      BUILD_TYPE: ${{ matrix.type }}
+      CROSS_BUILD: 1
+      OPTIONS: "-DBUILD_ARMCOMPUTE=OFF" # Disable arm compute library
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Caching externals
+        uses: actions/cache@v4
+        with:
+          path: runtime/externals
+          key: external-onert-${{ matrix.ubuntu_code }}-${{ hashFiles('runtime/infra/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onert-${{ matrix.ubuntu_code }}-
+
+      - name: Download rootfs for cross build
+        uses: dawidd6/action-download-artifact@v7
+        with:
+          workflow: generate-rootfs.yml
+          branch: master
+          name: rootfs_${{ matrix.platform }}_${{ matrix.ubuntu_code }}
+
+      # Workaround: symlink for rootfs checker in cmake toolchain file
+      - name: Install rootfs for cross build
+        run: |
+          mkdir -p tools/cross/rootfs
+          tar -zxf rootfs_${{ matrix.platform }}_${{ matrix.ubuntu_code }}.tar.gz -C tools/cross/rootfs
+          pushd tools/cross/rootfs/${{ matrix.platform }}
+          ln -sf usr/lib lib
+          popd
+
+      - name: Build onert
+        run: |
+          make -f Makefile.template create-testsuite
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: matrix.type == 'release'
+        with:
+          name: onert-${{ matrix.arch }}-${{ matrix.ubuntu_code }}
+          path: Product/out/test-suite.tar.gz
+          retention-days: ${{ github.event_name == 'pull_request' && '3' || '7' }}
+
+  test_cross:
+    if: github.repository_owner == 'Samsung'
+    needs: build
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        ubuntu_code: [ jammy ]
+        arch: [ armv7l ]
+        include:
+          - arch: armv7l
+            platform: linux/arm/v7
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: onert-${{ matrix.arch }}-${{ matrix.ubuntu_code }}
+
+      - name: Unzip artifacts
+        run: |
+          tar -xvf test-suite.tar.gz
+
+      - name: QEMU for cross build
+        uses: docker/setup-qemu-action@v3
+
+      - name: Run test on cross build
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ubuntu:${{ matrix.ubuntu_code }}
+          shell: bash
+          options: |
+            --platform ${{ matrix.platform }}
+            -v ${{ github.workspace }}:/work -w /work
+          run: |
+            set -eo pipefail
+            ./Product/out/test/onert-test unittest
+            ./Product/out/test/onert-test unittest --unittestdir=./Product/out/nnapi-gtest

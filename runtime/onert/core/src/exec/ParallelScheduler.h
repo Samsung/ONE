@@ -24,9 +24,7 @@
 #include "BackendSet.h"
 #include "ThreadPool.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class ParallelScheduler
@@ -54,7 +52,6 @@ private:
   std::unordered_map<const backend::Backend *, std::unique_ptr<ThreadPool>> _thread_pools;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_PARALLEL_SCHEDULER_H__

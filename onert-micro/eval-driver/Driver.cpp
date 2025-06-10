@@ -114,7 +114,7 @@ int entry(int argc, char **argv)
     }
 
     // Do inference.
-    interpreter.run();
+    interpreter.run(config);
   }
 
   // Get output.

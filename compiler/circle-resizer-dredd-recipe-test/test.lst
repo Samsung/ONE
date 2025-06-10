@@ -1,0 +1,19 @@
+## EXAMPLE
+#
+# Add(RECIPE_DIR NEW_INPUTS_SIZES [1,2,3])
+#
+
+## TFLITE RECIPE
+
+# two inputs, one output
+Add(PRelu_002 NEW_INPUTS_SIZES [1,4,4,5],[1,1,5])
+# scalar output
+Add(ReduceAny_dynamic_004 NEW_INPUTS_SIZES [4,5,6])
+# change rank
+Add(GreaterEqual_001 NEW_INPUTS_SIZES [1,2,3],[1,2,3])
+# one inputs, two outputs
+Add(Split_001 NEW_INPUTS_SIZES [8,1,2])
+# bigger graph
+Add(Net_FullyConnected_Gelu_001 NEW_INPUTS_SIZES [2,16])
+# from dynamic to static
+Add(Inf_StridedSlice_002 NEW_INPUTS_SIZES [1,10,10,5])

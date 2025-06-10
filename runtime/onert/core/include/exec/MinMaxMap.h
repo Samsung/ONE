@@ -20,9 +20,7 @@
 #include "ir/Index.h"
 #include "util/MinMaxMap.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /*
@@ -54,7 +52,6 @@ struct IOMinMaxHash
   }
 };
 using IOMinMaxMap = util::MinMaxMap<std::pair<ir::SubgraphIndex, ir::IOIndex>, IOMinMaxHash>;
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_MINMAX_MAP_H__

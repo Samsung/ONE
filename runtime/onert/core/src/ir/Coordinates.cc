@@ -18,33 +18,31 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
-Coordinates convertCoordinates(const Coordinates &from_coordinates, Layout from_layout,
-                               Layout to_layout)
+Coordinates convertCoordinates(const Coordinates &coords, const PermuteType &type)
 {
-  assert(from_coordinates.size() == 4);
-  Coordinates to{from_coordinates};
-  if (from_layout == Layout::NHWC && to_layout == Layout::NCHW)
+  assert(coords.size() == 4);
+  Coordinates to{coords};
+  if (type == PermuteType::COPY)
+    return to;
+
+  if (type == PermuteType::NHWC_TO_NCHW)
   {
-    to.set(0, from_coordinates[0]);
-    to.set(1, from_coordinates[3]);
-    to.set(2, from_coordinates[1]);
-    to.set(3, from_coordinates[2]);
+    to.set(1, coords[3]);
+    to.set(2, coords[1]);
+    to.set(3, coords[2]);
   }
-  else if (from_layout == Layout::NCHW && to_layout == Layout::NHWC)
+  else
   {
-    to.set(0, from_coordinates[0]);
-    to.set(1, from_coordinates[2]);
-    to.set(2, from_coordinates[3]);
-    to.set(3, from_coordinates[1]);
+    assert(type == PermuteType::NCHW_TO_NHWC);
+    to.set(1, coords[2]);
+    to.set(2, coords[3]);
+    to.set(3, coords[1]);
   }
 
   return to;
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

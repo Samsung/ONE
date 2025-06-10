@@ -20,16 +20,13 @@
 #include "BackendContext.h"
 #include "Config.h"
 #include "KernelGenerator.h"
+#include "SharedMemoryOperands.h"
 
 #include <backend/Backend.h>
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 class Backend : public ::onert::backend::Backend
@@ -45,7 +42,7 @@ public:
     auto &graph = *data.graph;
     auto context = std::make_unique<BackendContext>(this, std::move(data));
     auto tr = std::make_shared<basic::TensorRegistry>();
-    auto tb = std::make_shared<TensorBuilder>(tr);
+    auto tb = std::make_shared<TensorBuilder>(tr, findSharedMemoryOperandIndexes(graph));
     context->tensor_registry = tr;
     context->tensor_builder = tb;
     context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb, tr, custom_kernel_builder,
@@ -57,8 +54,6 @@ private:
   std::shared_ptr<IConfig> _config;
 };
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu
 
 #endif // __ONERT_BACKEND_CPU_BACKEND_H__

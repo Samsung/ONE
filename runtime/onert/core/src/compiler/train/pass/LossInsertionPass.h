@@ -21,13 +21,7 @@
 
 #include "ir/Index.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
-{
-namespace pass
+namespace onert::compiler::train::pass
 {
 
 class LossInsertionPass : public Pass
@@ -48,9 +42,6 @@ private:
   ir::SubgraphIndex _subg_index;
 };
 
-} // namespace pass
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train::pass
 
 #endif // __ONERT_COMPILER_TRAIN_PASS_LOSS_INSERTION_PASS_H__

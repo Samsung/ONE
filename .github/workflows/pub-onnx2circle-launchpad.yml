@@ -1,0 +1,274 @@
+name: Publish onnx2circle to Launchpad
+
+on:
+  # TODO turn on schedule
+  #schedule:
+  #  # 05:00 AM (KST, UTC+9:00) Mon-Fri
+  #  - cron: '00 20 * * 0-4'
+  workflow_dispatch:
+    inputs:
+      o2c_version:
+        description: 'The version of onnx2circle'
+        required: true
+        default: '0.4.0'
+      o2c_description:
+        description: 'Description of changelog for onnx2circle'
+        required: true
+      deb_fullname:
+        description: 'Full name of Debian package author'
+        required: false
+        default: 'On-device AI developers'
+      deb_email:
+        description: 'Email address of Debian package author'
+        required: false
+        default: 'nnfw@samsung.com'
+      is_release:
+        description: 'Is this a release version?
+          Set to false to append date-based subversion.
+          (true/false)'
+        required: false
+        default: 'false'
+
+defaults:
+  run:
+    shell: bash
+
+# Cancel previous running jobs when pull request is updated
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  configure:
+    if: github.repository_owner == 'Samsung'
+    name: Set current date and time
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set-datetime.outputs.version }}
+      br_version: ${{ steps.set-datetime.outputs.br_version }}
+    steps:
+      - name: Set date and time
+        id: set-datetime
+        run: |
+          base_version="${{ inputs.o2c_version }}"
+          is_release="${{ inputs.is_release }}"
+          if [[ "$is_release" == "true" ]]; then
+            version="${base_version}"
+            br_version="${base_version}"
+          else
+            release_date=$(date +%Y%m%d%H%M)
+            version="${base_version}~${release_date}"
+            br_version="${base_version}-${release_date}"
+          fi
+          echo "version=${version}" >> $GITHUB_OUTPUT
+          echo "br_version=${br_version}" >> $GITHUB_OUTPUT
+
+  debian-release:
+    needs: configure
+    strategy:
+      matrix:
+        include:
+        # TODO activate noble
+        - ubuntu_code: focal
+          ubuntu_vstr: u2004
+        - ubuntu_code: jammy
+          ubuntu_vstr: u2204
+    name: onnx2circle ubuntu ${{ matrix.ubuntu_code }}
+    runs-on: ubuntu-latest
+    container:
+      image: nnfw/circle-mlir-build-${{ matrix.ubuntu_vstr }}:latest
+      options: --user root
+      credentials:
+        username: ${{ secrets.NNFW_DOCKER_USERNAME }}
+        password: ${{ secrets.NNFW_DOCKER_TOKEN }}
+    env:
+      O2C_PREFIX: o2c
+      O2C_BUILDTYPE: Release
+    steps:
+      - name: Prepare, set distro versions
+        id: prepare
+        run: |
+          VERSION="${{ needs.configure.outputs.version }}~${{ matrix.ubuntu_code }}"
+          changes_file="onnx2circle_${VERSION}_source.changes"
+          tarball_file="onnx2circle_${VERSION}.orig.tar.xz"
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          echo "changes_file=${changes_file}" >> $GITHUB_OUTPUT
+          echo "tarball_file=${tarball_file}" >> $GITHUB_OUTPUT
+
+      - name: Install circle-interpreter
+        run: |
+          add-apt-repository ppa:circletools/nightly
+          apt update
+          apt install circle-interpreter
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # NOTE Docker image has pre-installed submodules in /workdir
+      # NOTE Docker image has pre-installed python packages
+      - name: Configure
+        run: |
+          cd circle-mlir
+          Python3_ROOT_DIR=/usr/bin cmake -B build/${{ env.O2C_BUILDTYPE }} -S ./ \
+          -DCMAKE_INSTALL_PREFIX=build/${{ env.O2C_BUILDTYPE }}.install \
+          -DCMAKE_BUILD_TYPE=${{ env.O2C_BUILDTYPE }} \
+          -DCIRCLE_MLIR_WORKDIR=/workdir
+
+      - name: Build, test & install
+        env:
+          ONE_COMPILER_ROOT: /usr/share/circletools
+        run: |
+          cd circle-mlir
+          cmake --build build/${{ env.O2C_BUILDTYPE }} -j4
+          CTEST_OUTPUT_ON_FAILURE=1 cmake --build build/${{ env.O2C_BUILDTYPE }} --verbose -- test
+          cmake --build build/${{ env.O2C_BUILDTYPE }} -j4 -- install
+
+      - name: Gather files
+        run: |
+          cd circle-mlir
+          mkdir -p ${{ env.O2C_PREFIX }}
+          cp -v build/${{ env.O2C_BUILDTYPE }}.install/bin/onnx2circle ./${{ env.O2C_PREFIX }}/.
+
+      - name: Update changelog
+        run: |
+          cd circle-mlir/${{ env.O2C_PREFIX }}
+          cp -rf ../infra/debian/onnx2circle ./debian
+          export DEBFULLNAME="${{ inputs.deb_fullname }}"
+          export DEBEMAIL="${{ inputs.deb_email }}"
+          dch -v "${{ steps.prepare.outputs.VERSION }}" \
+            --distribution "${{ matrix.ubuntu_code }}" \
+            "${{ inputs.o2c_description }}" -b
+
+      - name: Create original tarball
+        run: |
+          cd circle-mlir
+          tar -caf ${{ steps.prepare.outputs.tarball_file }} ${{ env.O2C_PREFIX }}
+
+      - name: Conditionally install cmake for debuild
+        run: |
+          if [ "${{ matrix.ubuntu_code }}" = "focal" ]; then
+            echo "Installing cmake for focal"
+            apt update
+            apt install -y cmake
+          fi
+
+      - name: Signing with debuild and debsign
+        run: |
+          cd circle-mlir/${{ env.O2C_PREFIX }}
+          rm -rf ~/.gnupg
+          echo -n "${{ secrets.GPG_NNFW_SIGNING_KEY }}" | base64 --decode | gpg --import
+          # get fingerprint
+          FPR=$(gpg --list-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')
+          echo "$FPR:6:" | gpg --import-ownertrust
+          debuild -S -us -uc
+          debsign -k${FPR} ../onnx2circle_*.changes
+
+      - name: Upload to Launchpad
+        run: |
+          cd circle-mlir
+          mkdir -p ~/.ssh
+          echo "${{ secrets.LAUNCHPAD_NNFW_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          dput ppa:circletools/nightly ${{ steps.prepare.outputs.changes_file }}
+
+      - name: Upload artifact, onnx2circle
+        uses: actions/upload-artifact@v4
+        with:
+          name: onnx2circle_${{ steps.prepare.outputs.VERSION }}
+          retention-days: 3
+          path: |
+            circle-mlir/${{ steps.prepare.outputs.tarball_file }}
+
+  create-changelog-artifact:
+    needs: [ configure, debian-release ]
+    if: ${{ success() && github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    env:
+      DEFAULT_DISTRO: jammy
+    steps:
+      - name: Download tarball, ${{ env.DEFAULT_DISTRO }}
+        uses: actions/download-artifact@v4
+        with:
+          name: onnx2circle_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}
+
+      - name: Copy changelogs
+        run: |
+          mkdir changelogs
+          mkdir ${{ env.DEFAULT_DISTRO }}
+          tar -axf onnx2circle_${{ needs.configure.outputs.version }}~${{ env.DEFAULT_DISTRO }}.orig.tar.xz \
+            -C ${{ env.DEFAULT_DISTRO }}
+          cp ${{ env.DEFAULT_DISTRO }}/o2c/debian/changelog changelogs/changelog
+
+      - name: Upload artifact, changelogs
+        uses: actions/upload-artifact@v4
+        with:
+          name: changelogs
+          retention-days: 3
+          path: |
+            changelogs
+
+  # TODO implement the create-pr-on-success job
+  create-pr-on-success:
+    needs: [ configure, create-changelog-artifact ]
+    if: ${{ success() && github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    env:
+      BR_VERSION: ${{ needs.configure.outputs.br_version }}
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Prepare, set distro versions
+        id: prepare
+        run: |
+          VERSION="${{ needs.configure.outputs.version }}"
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "Seungho Henry Park"
+          git config --global user.email "shs.park@samsung.com"
+
+      - name: Download tarball
+        uses: actions/download-artifact@v4
+        with:
+          name: changelogs
+
+      - name: Update the changelog file
+        run: |
+          cp changelog circle-mlir/infra/debian/onnx2circle/
+
+      - name: Create PR branch and commit changelog
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH=auto/update-o2c-changelog-${BR_VERSION}
+          git checkout -b ${BRANCH}
+          git add circle-mlir/infra/debian/onnx2circle/changelog
+          git commit -m "[circle-mlir/infra] Update changelog for onnx2circle" \
+            -m "This updates the changelog for onnx2circle_${{ steps.prepare.outputs.VERSION }}." \
+            -m "It is auto-generated PR from github workflow." \
+            -m "" \
+            -m "ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>"
+          git push origin ${BRANCH}
+
+      - name: Create PR
+        env:
+          GH_TOKEN: ${{ secrets.SHSPARK_GITHUB_TOKEN }}
+        run: |
+          BRANCH=auto/update-o2c-changelog-${BR_VERSION}
+          gh pr create \
+            --title "[circle-mlir/infra] Update changelog for onnx2circle" \
+            --body "$(cat <<EOF
+          This updates the changelog for onnx2circle_${{ steps.prepare.outputs.VERSION }}.
+          This PR includes updated changelog after successful debian build.
+          It is auto-generated PR from github workflow.
+
+          ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>
+          EOF
+          )" \
+            --head "${BRANCH}" \
+            --base "master"

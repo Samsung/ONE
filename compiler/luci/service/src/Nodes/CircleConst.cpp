@@ -46,7 +46,6 @@ luci::CircleConst *clone_circleconst(const luci::CircleConst *node, loco::Graph 
 {
   auto cloned = graph->nodes()->create<luci::CircleConst>();
 
-  if (cloned != nullptr)
   {
     // dtype/shape
     cloned->dtype(node->dtype());

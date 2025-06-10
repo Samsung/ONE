@@ -21,13 +21,7 @@
 
 #include <exec/train/ITrainableFunction.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 class ReshapeLayer : public ::onert::exec::train::ITrainableFunction
@@ -54,9 +48,6 @@ private:
   const IPortableTensor *_back_prop_output;
 };
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops
 
 #endif // __ONERT_BACKEND_TRAIN_OPS_RESHAPELAYER_H__

@@ -914,7 +914,7 @@ void Fp32ToFp16Converter::deleteContiguousOpSequences(
     VERBOSE(Fp32ToFp16Converter) << "Delete Node " << first_node_ind << std::endl;
 
     // Uses
-    for (const auto &ind : first_node.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &ind : first_node.getUsedInputSet())
     {
       auto &obj = operands.at(ind);
       obj.removeUse(first_node_ind);
@@ -923,7 +923,7 @@ void Fp32ToFp16Converter::deleteContiguousOpSequences(
     }
 
     // Def
-    for (const auto &ind : first_node.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &ind : first_node.getUsedOutputSet())
     {
       auto &obj = operands.at(ind);
       assert(obj.getDef() == first_node_ind);

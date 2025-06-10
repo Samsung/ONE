@@ -20,13 +20,7 @@
 
 #include <cker/operation/Select.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 SelectLayer::SelectLayer()
@@ -82,7 +76,4 @@ void SelectLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

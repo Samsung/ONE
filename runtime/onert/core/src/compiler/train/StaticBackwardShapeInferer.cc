@@ -23,11 +23,7 @@
 #include <sstream>
 #include <stdexcept>
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 void StaticBackwardShapeInferer::infer()
@@ -60,7 +56,7 @@ void StaticBackwardShapeInferer::dump()
 bool StaticBackwardShapeInferer::checkDynamicInput(const ir::IOperation &op)
 {
   const auto &operands = _lowered_subg->graph().operands();
-  for (const auto &input_idx : op.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  for (const auto &input_idx : op.getUsedInputSet())
   {
     if (operands.at(input_idx).info().isDynamic())
     {
@@ -74,7 +70,7 @@ bool StaticBackwardShapeInferer::checkDynamicInput(const ir::IOperation &op)
 void StaticBackwardShapeInferer::checkOutput(const ir::IOperation &op)
 {
   const auto &bwd_operands = _lowered_subg->trainable_graph().backward_operands();
-  for (const auto &output_idx : op.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+  for (const auto &output_idx : op.getUsedOutputSet())
   {
     if (!bwd_operands.exist(output_idx))
     {
@@ -96,10 +92,9 @@ void StaticBackwardShapeInferer::setShape(const ir::OperandIndex &index, const i
   {
     // NOTE This code assumes the types are always the same, but I'm not sure.
     const auto &type = tgraph.operands().at(index).typeInfo();
-    const auto new_index =
+    [[maybe_unused]] const auto new_index =
       tgraph.addBackwardOperand(index, std::make_unique<ir::Operand>(shape, type));
     assert(new_index == index);
-    UNUSED_RELEASE(new_index);
   }
 }
 
@@ -146,6 +141,4 @@ void StaticBackwardShapeInferer::visit(const ir::train::operation::Softmax &)
   // NYI
 }
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train

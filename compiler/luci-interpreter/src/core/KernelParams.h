@@ -20,6 +20,7 @@
 #include <luci/IR/AttrPadding.h>
 #include <luci/IR/AttrFusedActFunc.h>
 #include <luci/IR/AttrMirrorPadMode.h>
+#include <luci/IR/AttrRoPEMode.h>
 #include <luci_interpreter/core/DataType.h>
 
 #include <cstdint>
@@ -32,6 +33,7 @@ namespace luci_interpreter
 using Activation = luci::FusedActFunc;
 using Padding = luci::Padding;
 using MirrorPadMode = luci::MirrorPadMode;
+using RoPEMode = luci::RoPEMode;
 
 struct AddParams
 {
@@ -109,6 +111,13 @@ struct GeluParams
   bool approximate;
 };
 
+struct GRUParams
+{
+  Activation fused_act_function = Activation::NONE;
+  bool return_sequences = false;
+  bool time_major = false;
+};
+
 struct InstanceNormParams
 {
   float epsilon;
@@ -179,6 +188,16 @@ struct ResizeNearestNeighborParams
 {
   bool align_corners;
   bool half_pixel_centers;
+};
+
+struct RmsNormParams
+{
+  float epsilon;
+};
+
+struct RoPEParams
+{
+  RoPEMode mode;
 };
 
 struct ShapeParams

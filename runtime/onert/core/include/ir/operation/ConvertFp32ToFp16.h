@@ -19,11 +19,7 @@
 
 #include "ir/Operation.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 class ConvertFp32ToFp16 : public Operation
@@ -42,8 +38,6 @@ public:
   OpCode opcode() const final { return OpCode::ConvertFp32ToFp16; }
 };
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation
 
 #endif // __ONERT_IR_OPERATION_CONVERT_FP32_TO_FP16_H__

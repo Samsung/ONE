@@ -31,9 +31,7 @@
 #include "backend/ITensor.h"
 #include "backend/ITensorRegistry.h"
 
-namespace onert
-{
-namespace shape_inference
+namespace onert::shape_inference
 {
 
 using Shapes = std::vector<ir::Shape>;
@@ -113,11 +111,11 @@ ir::Shape inferSqueezeShape(const ir::Shape &in_shape, const ir::operation::Sque
 struct StridedSliceParams
 {
   int8_t start_indices_count;
-  int16_t start_indices[4];
+  int32_t start_indices[5];
   int8_t stop_indices_count;
-  int16_t stop_indices[4];
+  int32_t stop_indices[5];
   int8_t strides_count;
-  int16_t strides[4];
+  int32_t strides[5];
 
   int16_t begin_mask;
   int16_t ellipsis_mask;
@@ -142,7 +140,6 @@ ir::Shape inferTransposeShape(const ir::Shape &in_shape, const int32_t *perm_buf
 
 ir::Shape inferUnpackShape(const ir::Shape &input_shape, int axis, int rank);
 
-} // namespace shape_inference
-} // namespace onert
+} // namespace onert::shape_inference
 
 #endif // __ONERT_GRAPH_SHAPE_INFERENCE_H__

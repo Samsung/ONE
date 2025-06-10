@@ -8,4 +8,4 @@ Since jsoncpp on tizen does not support static jsoncpp library, nnfw project wil
 
 # Version
 
-- 1.9.5 : https://github.com/open-source-parsers/jsoncpp/archive/1.9.5.tar.gz
+- 1.9.6 : https://github.com/open-source-parsers/jsoncpp/archive/1.9.6.tar.gz

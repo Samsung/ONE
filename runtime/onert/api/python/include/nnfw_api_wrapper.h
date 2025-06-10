@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
+#ifndef __ONERT_API_PYTHON_NNFW_API_WRAPPER_H__
+#define __ONERT_API_PYTHON_NNFW_API_WRAPPER_H__
+
 #include "nnfw.h"
+#include "nnfw_experimental.h"
+#include "nnfw_internal.h"
 
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
+
+namespace onert
+{
+namespace api
+{
+namespace python
+{
 
 namespace py = pybind11;
 
@@ -120,6 +132,7 @@ public:
 
   void close_session();
   void set_input_tensorinfo(uint32_t index, const tensorinfo *tensor_info);
+  void prepare();
   void run();
   void run_async();
   void wait();
@@ -159,4 +172,72 @@ public:
   void set_output_layout(uint32_t index, const char *layout);
   tensorinfo input_tensorinfo(uint32_t index);
   tensorinfo output_tensorinfo(uint32_t index);
+
+  //////////////////////////////////////////////
+  // Internal APIs
+  //////////////////////////////////////////////
+  py::array get_output(uint32_t index);
+
+  //////////////////////////////////////////////
+  // Experimental APIs for inference
+  //////////////////////////////////////////////
+  void set_prepare_config(NNFW_PREPARE_CONFIG config);
+
+  //////////////////////////////////////////////
+  // Experimental APIs for training
+  //////////////////////////////////////////////
+  nnfw_train_info train_get_traininfo();
+  void train_set_traininfo(const nnfw_train_info *info);
+
+  template <typename T> void train_set_input(uint32_t index, py::array_t<T> &buffer)
+  {
+    nnfw_tensorinfo tensor_info;
+    nnfw_input_tensorinfo(this->session, index, &tensor_info);
+
+    py::buffer_info buf_info = buffer.request();
+    const auto buf_shape = buf_info.shape;
+    assert(tensor_info.rank == static_cast<int32_t>(buf_shape.size()) && buf_shape.size() > 0);
+    tensor_info.dims[0] = static_cast<int32_t>(buf_shape.at(0));
+
+    ensure_status(nnfw_train_set_input(this->session, index, buffer.request().ptr, &tensor_info));
+  }
+  template <typename T> void train_set_expected(uint32_t index, py::array_t<T> &buffer)
+  {
+    nnfw_tensorinfo tensor_info;
+    nnfw_output_tensorinfo(this->session, index, &tensor_info);
+
+    py::buffer_info buf_info = buffer.request();
+    const auto buf_shape = buf_info.shape;
+    assert(tensor_info.rank == static_cast<int32_t>(buf_shape.size()) && buf_shape.size() > 0);
+    tensor_info.dims[0] = static_cast<int32_t>(buf_shape.at(0));
+
+    ensure_status(
+      nnfw_train_set_expected(this->session, index, buffer.request().ptr, &tensor_info));
+  }
+  template <typename T> void train_set_output(uint32_t index, py::array_t<T> &buffer)
+  {
+    nnfw_tensorinfo tensor_info;
+    nnfw_output_tensorinfo(this->session, index, &tensor_info);
+    NNFW_TYPE type = tensor_info.dtype;
+    uint32_t output_elements = num_elems(&tensor_info);
+    size_t length = sizeof(T) * output_elements;
+
+    ensure_status(nnfw_train_set_output(session, index, type, buffer.request().ptr, length));
+  }
+
+  void train_prepare();
+  void train(bool update_weights);
+  float train_get_loss(uint32_t index);
+
+  void train_export_circle(const py::str &path);
+  void train_import_checkpoint(const py::str &path);
+  void train_export_checkpoint(const py::str &path);
+
+  // TODO Add other apis
 };
+
+} // namespace python
+} // namespace api
+} // namespace onert
+
+#endif // __ONERT_API_PYTHON_NNFW_API_WRAPPER_H__

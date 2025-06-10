@@ -1,73 +1,75 @@
 # How to Build Compiler
 
-This document is based on the system where Ubuntu Desktop Linux 18.04 LTS is installed with default
-settings, and can be applied in other environments without much difference. For reference, the
-development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.
-As of now, to build in 16.04, please use gcc 7.x or above.
+This document is based on the system where Ubuntu Desktop Linux 20.04 LTS is installed with default
+settings, and can be applied in other environments without much difference.
+For example, Ubuntu Desktop Linux 18.04 LTS environment is also supported but some additional steps may be required.
 
 ## Build Requires
 
 If you are going to build this project, the following modules must be installed on your system:
 
 - CMake
-- Boost C++ libraries
+- GNU C/C++ compiler (gcc, g++) - the recommended version is GCC 11 or higher. Please check
+the [known issues](#known-issues) section for the explanation.
 
 In the Ubuntu, you can easily install it with the following command.
 
 ```
-$ sudo apt-get install cmake libboost-all-dev
+$ sudo apt-get install cmake gcc g++
 ```
 
 If your linux system does not have the basic development configuration, you will need to install
 more packages. A list of all packages needed to configure the development environment can be found
-in the https://github.com/Samsung/ONE/blob/master/infra/docker/Dockerfile.1804 file.
+in the https://github.com/Samsung/ONE/blob/master/infra/docker/focal/Dockerfile file.
 
 Here is a summary of it
 
 ```
 $ sudo apt-get install \
 build-essential \
-clang-format-8 \
 cmake \
-doxygen \
 git \
-hdf5-tools \
-lcov \
-libatlas-base-dev \
 libboost-all-dev \
 libgflags-dev \
 libgoogle-glog-dev \
-libgtest-dev \
+libatlas-base-dev \
 libhdf5-dev \
 libprotobuf-dev \
 protobuf-compiler \
-pylint \
+wget \
+zip \
+unzip \
 python3 \
 python3-pip \
 python3-venv \
-scons \
-software-properties-common \
-unzip \
-wget
-
-$ mkdir /tmp/gtest
-$ cd /tmp/gtest
-$ cmake /usr/src/gtest
-$ make
-$ sudo mv *.a /usr/lib
-
-$ pip install yapf==0.22.0 numpy
+python3-dev \
+hdf5-tools \
+curl
+$ pip install numpy flatbuffers
 ```
 
-Additional install python3.8 if you are using Ubuntu 18.04.
+If you are using python3.12 or upper (ex. Ubuntu 24.04), or python 3.6 or under (ex. Ubuntu 18.04), as there is no TensorFlow2.12.1 package for python version, build may fail.
+Please install python3.8-venv additionally.
+
+Additional install python3.8 if you are using Ubuntu 18.04
 ```
-$ sudo apt-get install \
-python3.8 \
-python3.8-dev \
-python3.8-venv
+$ sudo apt-get install python3.8 python3.8-dev python3.8-venv
 ```
 
-If you get `Unable to locate package clang-format-8` then just use `clang-format`.
+Additional install python 3.8 if you are using Ubuntu 24.04
+```
+$ sudo apt-get install software-properties-common
+$ sudo add-apt-repository ppa:deadsnakes/ppa
+$ sudo apt-get update && sudo apt-get install python3.8 python3.8-dev python3.8-venv
+```
+
+Additional install libtsan_preinit.o manually if you are using Ubuntu 20.04 and gcc-9 (refer https://github.com/Samsung/ONE/issues/11202)
+```
+$ apt-get download libgcc-10-dev
+$ dpkg -x libgcc-10-dev_*_amd64.deb libgcc/
+$ sudo cp -f libgcc/usr/lib/gcc/x86_64-linux-gnu/10/libtsan_preinit.o /usr/lib/gcc/x86_64-linux-gnu/9/
+$ rm -rf libgcc-10-dev_*_amd64.deb libgcc/
+```
 
 ## Build for Ubuntu
 
@@ -104,20 +106,15 @@ debug and release builds.
 
 ```
 $ NNCC_WORKSPACE=build/debug ./nncc configure
-$ ./nncc build
+$ NNCC_WORKSPACE=build/debug ./nncc build
 ```
 will build debug version in `build/debug` folder, and
 
 ```
 $ NNCC_WORKSPACE=build/release ./nncc configure -DCMAKE_BUILD_TYPE=Release
-$ ./nncc build
+$ NNCC_WORKSPACE=build/release ./nncc build
 ```
 will build release version in `build/release` folder.
-
-### Trouble shooting
-
-If you are using python3.8, as there is no TensorFlow1.13.2 package for python3.8, build may fail.
-Please install python3.7 or lower versions as default python3.
 
 ## Build for Windows
 
@@ -212,3 +209,36 @@ NOTE: this assumes
 - host and target have same directoy structure
 - should copy `build` folder to target or
 - mounting `ONE` folder with NFS on the target would be simple
+
+## Known issues
+There's a potential known build error when attempting to cross-compile for ARM32 using GCC 10.5.
+You might encounter an error:
+`comparison of unsigned expression in ‘< 0’ is always false [-Werror=type-limits]` reported from
+the `CircleNodeMixins.h` file. This is likely GCC's bug in this specific version.
+There's a workaround for it though - you can apply the following changes to both for loops
+in the `CircleNodeMixins.h`:
+
+```
+FixedArityNode()
+{
+  if constexpr (N > 0)
+  {
+    _args.resize(N);
+    for (uint32_t n = 0; n < N; ++n)
+    {
+    _args[n] = std::make_unique<loco::Use>(this);
+    }
+  }
+}
+
+void drop(void) final
+{
+  if constexpr (N > 0)
+  {
+    for (uint32_t n = 0; n < N; ++n)
+    {
+      _args.at(n)->node(nullptr);
+    }
+  }
+}
+```

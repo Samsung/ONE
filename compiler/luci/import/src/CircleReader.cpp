@@ -70,6 +70,10 @@ loco::DataType luci_datatype(const circle::TensorType type)
       return loco::DataType::S8;
     case circle::TensorType_INT4:
       return loco::DataType::S4;
+    case circle::TensorType_MXFP4:
+      return loco::DataType::MXFP4;
+    case circle::TensorType_MXINT8:
+      return loco::DataType::MXINT8;
     default:
       break;
   }
@@ -124,6 +128,19 @@ MirrorPadMode luci_mirrorpad_mode(const circle::MirrorPadMode mode)
   }
   assert(false);
   return MirrorPadMode::UNDEFINED;
+}
+
+RoPEMode luci_rope_mode(const circle::RoPEMode mode)
+{
+  switch (mode)
+  {
+    case circle::RoPEMode::RoPEMode_GPT_NEOX:
+      return RoPEMode::GPT_NEOX;
+    case circle::RoPEMode::RoPEMode_GPT_J:
+      return RoPEMode::GPT_J;
+  }
+  assert(false);
+  return RoPEMode::UNDEFINED;
 }
 
 luci::CircleFullyConnected::WeightsFormat
@@ -210,6 +227,16 @@ luci_quantparam(const circle::QuantizationParametersT *quantization)
   return nullptr;
 }
 
+std::unique_ptr<CircleMXQuantParam> luci_mx_quantparam(const circle::MXQuantizationT *quantization)
+{
+  const auto &axis = quantization->axis;
+
+  auto quantparam = std::make_unique<CircleMXQuantParam>();
+  quantparam->axis = axis;
+
+  return quantparam;
+}
+
 std::unique_ptr<CircleQuantParam> luci_quantparam(const circle::QuantizationParameters *qparams)
 {
   // create temporary unpacked API object
@@ -218,6 +245,16 @@ std::unique_ptr<CircleQuantParam> luci_quantparam(const circle::QuantizationPara
   qparams->UnPackTo(&quantization);
 
   return luci_quantparam(&quantization);
+}
+
+std::unique_ptr<CircleMXQuantParam> luci_mx_quantparam(const circle::MXQuantization *qparams)
+{
+  // create temporary unpacked API object
+  assert(qparams != nullptr);
+  circle::MXQuantizationT quantization;
+  qparams->UnPackTo(&quantization);
+
+  return luci_mx_quantparam(&quantization);
 }
 
 std::unique_ptr<SparsityParam> luci_sparsityparam(const circle::SparsityParametersT *sparsity)
@@ -277,9 +314,22 @@ void copy_tensor_attributes(const circle::Tensor *tensor, CircleNode *node)
   const auto quantization = tensor->quantization();
   if (quantization != nullptr)
   {
+    if (quantization->details_type() ==
+        circle::QuantizationDetails::QuantizationDetails_MXQuantization)
+    {
+      const auto qdetails = quantization->details_as_MXQuantization();
+      auto mx_quantparam = luci_mx_quantparam(qdetails);
+      if (mx_quantparam)
+        node->mx_quantparam(std::move(mx_quantparam));
+    }
+    else
+    {
+      // clang-format off
     auto quantparam = luci_quantparam(quantization);
     if (quantparam)
       node->quantparam(std::move(quantparam));
+      // clang-format on
+    }
   }
 
   const auto sparsity = tensor->sparsity();
@@ -331,6 +381,21 @@ bool CircleReader::parse(const circle::Model *model)
   return true;
 }
 
+bool CircleReader::parse(const circle::Model *model, const uint8_t *data, const size_t size)
+{
+  assert(model != nullptr);
+  assert(data != nullptr);
+  assert(size > 0);
+
+  // for direct pointer access
+  _model = model;
+
+  _file_data = data;
+  _file_size = size;
+
+  return true;
+}
+
 bool CircleReader::select_subgraph(uint32_t sgindex)
 {
   if (num_subgraph() <= sgindex)
@@ -347,6 +412,15 @@ bool CircleReader::select_subgraph(uint32_t sgindex)
   assert(_current_subgraph != nullptr);
 
   return true;
+}
+
+// NOTE need caution not to access beyond _file_data + _file_size.
+// current method doesn't have this guard.
+const uint8_t *CircleReader::file_data(uint64_t offset) const
+{
+  assert(_file_data);
+  assert(offset < _file_size);
+  return (_file_data == nullptr) ? nullptr : _file_data + offset;
 }
 
 template <typename T>

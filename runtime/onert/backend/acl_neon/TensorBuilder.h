@@ -22,18 +22,12 @@
 #include "operand/NETensor.h"
 #include "operand/NESubTensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
+namespace onert::backend::acl_neon
 {
 
 using TensorBuilder =
   acl_common::AclTensorBuilder<operand::INETensor, operand::NETensor, operand::NESubTensor>;
 
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon
 
 #endif // __ONERT_BACKEND_ACL_NEON_TENSOR_BUILDER_H__

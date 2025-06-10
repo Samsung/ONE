@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "CircleNodeSummaryBuilder.h"
+#include "luci/CircleNodeSummaryBuilder.h"
 
 #include <luci/IR/CircleNodes.h>
 #include <locop/NodeSummary.h>
@@ -277,6 +277,20 @@ TEST_F(CircleNodeSummaryBuilderTest, Mul_validate_fused_NEG)
 {
   luci::CircleMul node;
   node.fusedActivationFunction(luci::FusedActFunc::UNDEFINED);
+  EXPECT_FALSE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, RoPE_validate)
+{
+  luci::CircleRoPE node;
+  node.mode(luci::RoPEMode::GPT_NEOX);
+  EXPECT_TRUE(mock_build(&node));
+}
+
+TEST_F(CircleNodeSummaryBuilderTest, RoPE_validate_NEG)
+{
+  luci::CircleRoPE node;
+  node.mode(luci::RoPEMode::UNDEFINED);
   EXPECT_FALSE(mock_build(&node));
 }
 

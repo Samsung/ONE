@@ -22,13 +22,7 @@
 #include <exec/IFunction.h>
 #include <ir/operation/Comparison.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 class CompareLayer : public ::onert::exec::IFunction
@@ -49,9 +43,6 @@ private:
   ir::operation::Comparison::ComparisonType _op_type;
 };
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_COMPARELAYER_H__

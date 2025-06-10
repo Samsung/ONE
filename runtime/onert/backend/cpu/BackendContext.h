@@ -22,11 +22,7 @@
 #include "KernelGenerator.h"
 #include "ExternalContext.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 class BackendContext : public onert::backend::BackendContext
@@ -58,8 +54,6 @@ private:
   std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu
 
 #endif // __ONERT_BACKEND_CPU_BACKEND_CONTEXT_H__

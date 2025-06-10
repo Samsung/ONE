@@ -19,11 +19,7 @@
 #include "backend/Backend.h"
 #include "util/logging.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 void PermutationEliminationPass::callback(const ir::OperationIndex &ind, ir::IOperation &node)
@@ -128,6 +124,4 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
   }
 }
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass

@@ -101,6 +101,56 @@ protected:
   luci::CircleConst *_reshape_shape = nullptr;
 };
 
+class ReshapeMulGraphlet
+{
+public:
+  ReshapeMulGraphlet() = default;
+
+public:
+  void init(loco::Graph *g, const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    std::vector<uint32_t> shape_out_v = shape_out;
+
+    _reshape_shape = g->nodes()->create<luci::CircleConst>();
+    _reshape = g->nodes()->create<luci::CircleReshape>();
+    _mul = g->nodes()->create<luci::CircleMul>();
+    _const = g->nodes()->create<luci::CircleConst>();
+
+    _reshape_shape->dtype(loco::DataType::S32);
+    _reshape_shape->rank(1);
+    _reshape_shape->dim(0).set(shape_out_v.size());
+    _reshape_shape->shape_status(luci::ShapeStatus::VALID);
+
+    // values
+    const auto size = shape_out_v.size();
+    _reshape_shape->size<loco::DataType::S32>(size);
+    for (uint32_t i = 0; i < size; i++)
+      _reshape_shape->at<loco::DataType::S32>(i) = shape_out_v[i];
+
+    _const->dtype(loco::DataType::FLOAT32);
+    _const->rank(size);
+    uint32_t numel = 1;
+    for (uint32_t i = 0; i < size; i++)
+    {
+      _const->dim(i).set(1);
+    }
+    _const->size<loco::DataType::FLOAT32>(1);
+    _const->at<loco::DataType::FLOAT32>(0) = 1.0;
+    _const->shape_status(luci::ShapeStatus::VALID);
+
+    _reshape_shape->name("reshape_shape");
+    _reshape->name("reshape");
+    _mul->name("mul");
+    _const->name("const");
+  }
+
+protected:
+  luci::CircleReshape *_reshape = nullptr;
+  luci::CircleMul *_mul = nullptr;
+  luci::CircleConst *_const = nullptr;
+  luci::CircleConst *_reshape_shape = nullptr;
+};
+
 class ForwardReshapeToNegGraph : public TestIOGraph, public ReshapeNegGraphlet
 {
 public:
@@ -141,6 +191,27 @@ public:
   }
 };
 
+class ForwardReshapeToMulGraph : public TestIOGraph, public ReshapeMulGraphlet
+{
+public:
+  ForwardReshapeToMulGraph() = default;
+
+public:
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    ReshapeMulGraphlet::init(g(), shape_in, shape_out);
+
+    // connect network
+    _reshape->tensor(input());
+    _reshape->shape(_reshape_shape);
+    _mul->x(_reshape);
+    _mul->y(_const);
+
+    output()->from(_mul);
+  }
+};
+
 class ForwardReshapeToNegGraphTest : public ::testing::Test
 {
 public:
@@ -170,6 +241,22 @@ public:
 
 protected:
   ForwardReshapeToLogisticGraph _graph;
+  luci::ForwardReshapeToUnaryOpPass _pass;
+};
+
+class ForwardReshapeToMulGraphTest : public ::testing::Test
+{
+public:
+  ForwardReshapeToMulGraphTest() = default;
+
+  void run_pass(void)
+  {
+    while (_pass.run(_graph.g()))
+      ;
+  }
+
+protected:
+  ForwardReshapeToMulGraph _graph;
   luci::ForwardReshapeToUnaryOpPass _pass;
 };
 
@@ -316,6 +403,25 @@ TEST_F(ForwardReshapeToLogisticGraphTest, forward)
   ASSERT_EQ(nullptr, log);
   log = dynamic_cast<luci::CircleLogistic *>(reshape->tensor());
   ASSERT_NE(nullptr, log);
+}
+
+TEST_F(ForwardReshapeToMulGraphTest, forward_rank_update)
+{
+  _graph.init({1, 2, 3}, {1, 1, 2, 3});
+
+  run_pass();
+
+  auto reshape = dynamic_cast<luci::CircleReshape *>(_graph.output()->from());
+  ASSERT_NE(nullptr, reshape);
+
+  auto mul = dynamic_cast<luci::CircleMul *>(reshape->tensor());
+  ASSERT_NE(nullptr, mul);
+
+  // Check mul's const rank == input rank (3)
+  auto const_mul = dynamic_cast<luci::CircleConst *>(mul->y());
+  ASSERT_NE(nullptr, const_mul);
+
+  ASSERT_EQ(3, const_mul->rank());
 }
 
 TEST(FuseMulWithDivPassTest, forward_reshape_to_mean_pattern)

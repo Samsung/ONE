@@ -18,11 +18,7 @@
 
 #include <util/logging.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 TensorPlanner::TensorPlanner(const ir::train::TrainableGraph &tgraph,
@@ -30,14 +26,11 @@ TensorPlanner::TensorPlanner(const ir::train::TrainableGraph &tgraph,
   : _tgraph{tgraph}, _external_operands{external_operands}
 {
   // DO NOTHING
-  // TODO Remove the following lines
-  UNUSED_RELEASE(_tgraph);
-  UNUSED_RELEASE(_external_operands);
 }
 
 void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
 {
-  VERBOSE(BackendContext) << "Start planning non-constant tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Start planning non-constant tensors" << std::endl;
 
   const auto &training_usedefs = _tgraph.trainingUseDefs();
 
@@ -91,8 +84,8 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
   for (const auto &op_index : order)
   {
     const auto &op = _tgraph.operations().at(op_index);
-    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
-    auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_inputs = op.getUsedInputSet();
+    auto op_outputs = op.getUsedOutputSet();
 
     // Define outputs
     for (const auto &output : op_outputs)
@@ -158,8 +151,8 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
   for (const auto &op_index : border)
   {
     const auto &op = _tgraph.operations().at(op_index);
-    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
-    auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_inputs = op.getUsedInputSet();
+    auto op_outputs = op.getUsedOutputSet();
 
     for (const auto &index : op_inputs + op_outputs)
     {
@@ -207,12 +200,12 @@ void TensorPlanner::planNonConstTensors(TensorBuilder *tensor_builder)
     defs_map.begin(), defs_map.end(),
     [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
 
-  VERBOSE(BackendContext) << "Finish planning non-constant tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Finish planning non-constant tensors" << std::endl;
 }
 
 void TensorPlanner::planTrainableTensors(TensorBuilder *tensor_builder)
 {
-  VERBOSE(BackendContext) << "Start planning constant tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Start planning constant tensors" << std::endl;
 
   const auto &training_usedefs = _tgraph.trainingUseDefs();
 
@@ -221,10 +214,8 @@ void TensorPlanner::planTrainableTensors(TensorBuilder *tensor_builder)
   std::vector<ir::train::TrainingOperandIndex> constants;
 
   // Prepare scanning
-  for (const auto &pair : training_usedefs)
+  for (const auto &[operand_index, operand_usedefs] : training_usedefs)
   {
-    const auto &operand_index = pair.first;
-    const auto &operand_usedefs = pair.second;
     const auto &operand = operand_usedefs.operand();
 
     if (!operand_index.valid())
@@ -272,12 +263,12 @@ void TensorPlanner::planTrainableTensors(TensorBuilder *tensor_builder)
     defs_map.begin(), defs_map.end(),
     [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
 
-  VERBOSE(BackendContext) << "Finish planning constant tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Finish planning constant tensors" << std::endl;
 }
 
 void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
 {
-  VERBOSE(BackendContext) << "Start planning back-propagated tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Start planning back-propagated tensors" << std::endl;
 
   std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> uses_map;
   std::unordered_map<ir::train::TrainingOperandIndex, uint32_t> defs_map;
@@ -324,8 +315,8 @@ void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
   for (const auto &op_ind : border)
   {
     const auto &op = _tgraph.operations().at(op_ind);
-    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
-    auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_inputs = op.getUsedInputSet();
+    auto op_outputs = op.getUsedOutputSet();
 
     // Allocate back-propagated tensors in first def
     for (const auto &outgoing : op_inputs)
@@ -409,12 +400,12 @@ void TensorPlanner::planBackPropTensors(TensorBuilder *tensor_builder)
     defs_map.begin(), defs_map.end(),
     [](std::pair<const ir::train::TrainingOperandIndex, uint32_t> it) { return it.second == 0; }));
 
-  VERBOSE(BackendContext) << "Finish planning back-propagated tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Finish planning back-propagated tensors" << std::endl;
 }
 
 void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
 {
-  VERBOSE(BackendContext) << "Start planning gradient tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Start planning gradient tensors" << std::endl;
 
   // TODO Use DisposableTensor instead of GradientTensor to plan them together if possible
   //      Backward layers and the corresponding GradientApplier exist in the same back-propagated
@@ -424,7 +415,7 @@ void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
     std::vector<ir::train::TrainingOperandIndex> cur_seq;
     const auto &op = _tgraph.operations().at(op_index);
     const auto backwarding_op_index = ir::train::TrainingOperationIndex{op_index, false};
-    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_inputs = op.getUsedInputSet();
 
     // Only inputs can be candidates for def of backwarding tensors
     for (const auto &input : op_inputs)
@@ -453,12 +444,12 @@ void TensorPlanner::planGradientTensors(TensorBuilder *tensor_builder)
     }
   }
 
-  VERBOSE(BackendContext) << "Finish planning gradient tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Finish planning gradient tensors" << std::endl;
 }
 
 void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *tensor_builder)
 {
-  VERBOSE(BackendContext) << "Start planning disposable back-prop tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Start planning disposable back-prop tensors" << std::endl;
 
   for (const auto &op_index : _tgraph.essentialBackwardOrder())
   {
@@ -487,7 +478,7 @@ void TensorPlanner::planDisposableBackPropTensors(TensorBuilder *tensor_builder)
     }
   }
 
-  VERBOSE(BackendContext) << "Finish planning disposable back-prop tensors" << std::endl;
+  VERBOSE(TensorPlanner) << "Finish planning disposable back-prop tensors" << std::endl;
 }
 
 ir::OperandIndexSequence TensorPlanner::getOutgoingBackPropSeq(const ir::OperationIndex &op_index,
@@ -496,7 +487,7 @@ ir::OperandIndexSequence TensorPlanner::getOutgoingBackPropSeq(const ir::Operati
   ir::OperandIndexSequence ret;
 
   const auto &op = _tgraph.operation(op_index);
-  for (const auto &input : (op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED))
+  for (const auto &input : op.getUsedInputSet())
   {
     if (_external_operands.contains(input))
       continue;
@@ -519,6 +510,51 @@ ir::OperandIndexSequence TensorPlanner::getOutgoingBackPropSeq(const ir::Operati
   return ret;
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+void TensorPlanner::planLayerScopeTensors(TensorBuilder *tensor_builder)
+{
+  VERBOSE(TensorPlanner) << "Start planning layer scope tensors" << std::endl;
+
+  // forwading order
+  const auto f_order = _tgraph.topolSortOperations();
+  for (const auto &op_index : f_order)
+  {
+    if (not tensor_builder->isRegisteredLayerScopeTensor(op_index))
+      continue;
+
+    const auto &indices = tensor_builder->getRegisteredLayerScopeTensorIndices(op_index);
+    for (const auto &idx : indices)
+    {
+      const auto lt = tensor_builder->getLayerScopeTensorLifeTime(idx);
+      if (lt == LayerScopeTensorLifeTime::FORWARD_TO_BACKWARD)
+        tensor_builder->notifyLayerScopeFirstUse(idx);
+    }
+  }
+
+  // backwarding order
+  const auto b_order = _tgraph.essentialBackwardOrder();
+  for (const auto &op_index : b_order)
+  {
+    if (not tensor_builder->isRegisteredLayerScopeTensor(op_index))
+      continue;
+
+    const auto &indices = tensor_builder->getRegisteredLayerScopeTensorIndices(op_index);
+
+    for (const auto &idx : indices)
+    {
+      const auto lt = tensor_builder->getLayerScopeTensorLifeTime(idx);
+      if (lt == LayerScopeTensorLifeTime::BACKWARD)
+        tensor_builder->notifyLayerScopeFirstUse(idx);
+    }
+    for (const auto &idx : indices)
+    {
+      const auto lt = tensor_builder->getLayerScopeTensorLifeTime(idx);
+      if (lt == LayerScopeTensorLifeTime::FORWARD_TO_BACKWARD ||
+          lt == LayerScopeTensorLifeTime::BACKWARD)
+        tensor_builder->notifyLayerScopeLastUse(idx);
+    }
+  }
+
+  VERBOSE(TensorPlanner) << "Finish planning layerscope tensors" << std::endl;
+}
+
+} // namespace onert::backend::train

@@ -25,11 +25,7 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace trix
+namespace onert::backend::trix
 {
 
 class Backend : public ::onert::backend::Backend
@@ -55,8 +51,6 @@ private:
   std::shared_ptr<IConfig> _config;
 };
 
-} // namespace trix
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::trix
 
 #endif // __ONERT_BACKEND_TRIX_BACKEND_H__

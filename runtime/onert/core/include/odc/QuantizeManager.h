@@ -23,9 +23,7 @@
 #include <functional>
 #include <string>
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 class Quantize;
@@ -69,12 +67,29 @@ public:
    */
   bool quantize(const std::string &model_path);
 
+  /**
+   * @brief Set the number of minmax records enough for quantization
+   * @return    @c true if success, otherwise @c false
+   */
+  bool setMinMaxRecordsThreshold(uint32_t value);
+
+  /**
+   * @brief     checking minmax recording count and threshold for quantization
+   * @return    @c true if ready, otherwise @c false
+   */
+  bool readyForQuantize();
+
+  /**
+   * @brief     Delete MinMax File of on-device compiler
+   * @return    Return true if file removed successfully
+   */
+  bool deleteMinMaxFile();
+
 private:
   std::string _export_model_path = "";
   QuantizeType _qtype = ODC_QTYPE_NOT_SET;
 };
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc
 
 #endif // __ONERT_ODC_QUANTIZE_MANAGER_H__

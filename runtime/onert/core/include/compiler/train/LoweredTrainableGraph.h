@@ -23,11 +23,7 @@
 #include "compiler/ILoweredGraph.h"
 #include "ir/train/TrainableGraph.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 // TODO Unify with LoweredGraph
@@ -73,8 +69,6 @@ private:
   compiler::GraphLowerInfo _lower_info_map;
 };
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train
 
 #endif // __ONERT_COMPILER_TRAIN_LOWERED_TRAINABLE_GRAPH_H__

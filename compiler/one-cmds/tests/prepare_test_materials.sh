@@ -233,4 +233,12 @@ if [[ ! -s ${outputfile} ]]; then
   --output_path ${outputfile}
 fi
 
+# prepare onnx_tf_error_model.onnx for one-import-onnx-ext test
+if [[ ! -s "onnx_tf_error_model.onnx" ]]; then
+    rm -rf onnx_tf_error_model.zip
+    wget -nv https://github.com/user-attachments/files/16856219/onnx_tf_error_model.zip
+    unzip onnx_tf_error_model.zip
+    # https://github.com/Samsung/ONE/issues/13491#issuecomment-2327458991
+fi
+
 popd > /dev/null

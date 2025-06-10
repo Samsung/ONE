@@ -68,6 +68,8 @@ py::array numpyArray(const Tensor *tensor)
       return py::array_t<int64_t, py::array::c_style>(shape, tensor->data<int64_t>());
     case loco::DataType::U8:
       return py::array_t<uint8_t, py::array::c_style>(shape, tensor->data<uint8_t>());
+    case loco::DataType::BOOL:
+      return py::array_t<bool, py::array::c_style>(shape, tensor->data<bool>());
     default:
       throw std::runtime_error("Unsupported data type");
   }

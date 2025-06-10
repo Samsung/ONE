@@ -21,13 +21,7 @@
 #include <cker/operation/AddN.h>
 #include <assert.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 void AddNLayer::configure(std::vector<const IPortableTensor *> &&inputs, IPortableTensor *output)
@@ -63,7 +57,4 @@ void AddNLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

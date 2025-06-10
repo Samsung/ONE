@@ -22,7 +22,6 @@ namespace luci
 luci::CircleNode *CloneNode::visit(const luci::CircleBCQGather *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleBCQGather>();
-  if (cloned != nullptr)
   {
     cloned->axis(node->axis());
     cloned->input_hidden_size(node->input_hidden_size());

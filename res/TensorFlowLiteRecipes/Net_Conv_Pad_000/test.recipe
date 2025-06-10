@@ -1,0 +1,107 @@
+# Conv - Pad - Conv
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 8 dim: 1 }
+}
+operand {
+  name: "ker_1"
+  type: FLOAT32
+  shape { dim: 1 dim: 2 dim: 2 dim: 1 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias_1"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm_1"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 1 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: SAME
+    stride_w: 2
+    stride_h: 2
+    activation: RELU
+  }
+  input: "ifm"
+  input: "ker_1"
+  input: "bias_1"
+  output: "ofm_1"
+}
+operand {
+  name: "pad"
+  type: INT32
+  shape { dim: 4 dim: 2 }
+  filler {
+    tag: "explicit"
+    arg: "0" arg: "0"
+    arg: "2" arg: "2"
+    arg: "2" arg: "2"
+    arg: "0" arg: "0"
+  }
+}
+operand {
+  name: "pad_ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 8 dim: 8 dim: 1 }
+}
+operation {
+  type: "Pad"
+  input: "ofm_1"
+  input: "pad"
+  output: "pad_ofm"
+}
+operand {
+  name: "ker_2"
+  type: FLOAT32
+  shape { dim: 1 dim: 1 dim: 1 dim: 1 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "bias_2"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler {
+    tag: "gaussian"
+    arg: "0.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm_2"
+  type: FLOAT32
+  shape { dim: 1 dim: 4 dim: 4 dim: 1 }
+}
+operation {
+  type: "Conv2D"
+  conv2d_options {
+    padding: SAME
+    stride_w: 2
+    stride_h: 2
+    activation: RELU
+  }
+  input: "pad_ofm"
+  input: "ker_2"
+  input: "bias_2"
+  output: "ofm_2"
+}
+input: "ifm"
+output: "ofm_2"

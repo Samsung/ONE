@@ -16,9 +16,7 @@
 
 #include "EdgeTensor.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 bool EdgeTensor::applyShape(const ir::Shape &new_shape)
@@ -51,5 +49,4 @@ bool EdgeTensor::applyShape(const ir::Shape &new_shape)
   return true;
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

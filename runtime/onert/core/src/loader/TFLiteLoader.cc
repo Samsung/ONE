@@ -19,9 +19,7 @@
 #include "BaseLoader.h"
 #include "tflite_schema_generated.h"
 
-namespace onert
-{
-namespace loader
+namespace onert::loader
 {
 
 namespace
@@ -163,5 +161,4 @@ std::unique_ptr<ir::Model> loadTFLiteModel(const std::string &filename)
   return model;
 }
 
-} // namespace loader
-} // namespace onert
+} // namespace onert::loader

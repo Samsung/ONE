@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright 2020 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +21,6 @@
 
 #include "ir/Graph.h"
 #include "util/logging.h"
-#include "util/Utils.h"
 
 #define OP_REQUIRES(EXP)                                                                     \
   do                                                                                         \
@@ -29,9 +29,7 @@
       throw std::runtime_error("ShapeValidator failed at line " + std::to_string(__LINE__)); \
   } while (0)
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 ShapeValidator::ShapeValidator(const ir::Graph &graph) : _graph{graph} {}
@@ -159,6 +157,29 @@ void ShapeValidator::visit(const ir::operation::BCQGather &node)
   OP_REQUIRES(operands.at(input_clusters_index).shape().dim(1) == 2);
 
   // more shape validation will be done inside kernel.
+}
+
+void ShapeValidator::visit(const ir::operation::BroadcastTo &node)
+{
+  const auto &operands = _graph.operands();
+  const auto output_index{node.getOutputs().at(0)};
+  if (operands.at(output_index).info().isDynamic())
+    return;
+
+  const auto input_index{node.getInputs().at(ir::operation::BroadcastTo::Input::INPUT)};
+  const auto shape_index{node.getInputs().at(ir::operation::BroadcastTo::Input::SHAPE)};
+  const auto &input_shape = operands.at(input_index).shape();
+  const auto &output_shape_vec = operands.at(shape_index).asVector<int32_t>();
+  int input_num_dims = input_shape.rank();
+  int output_num_dims = output_shape_vec.size();
+  OP_REQUIRES(input_num_dims <= output_num_dims);
+
+  int extending_dims = output_num_dims - input_num_dims;
+  for (int idx = 0; idx < input_num_dims; ++idx)
+  {
+    OP_REQUIRES(input_shape.dim(idx) == 1 ||
+                input_shape.dim(idx) == output_shape_vec.at(extending_dims + idx));
+  }
 }
 
 void ShapeValidator::visit(const ir::operation::Conv2D &node)
@@ -566,9 +587,8 @@ void ShapeValidator::visit(const ir::operation::Gather &node)
   const auto &indices_shape = operands.at(indices_index).shape();
   const auto &ofm_shape = operands.at(ofm_index).shape();
 
-  OP_REQUIRES(ifm_shape.rank() <= 4);
-  OP_REQUIRES(indices_shape.rank() <= 3);
-  OP_REQUIRES(ofm_shape.rank() <= 4);
+  // Since gather implementation is general enough, we do not restrict max rank
+  OP_REQUIRES(ifm_shape.rank() + indices_shape.rank() - 1 == ofm_shape.rank());
 }
 
 void ShapeValidator::visit(const ir::operation::DepthToSpace &node)
@@ -946,7 +966,7 @@ void ShapeValidator::visit(const ir::operation::StridedSlice &node)
   if (operands.at(output_index).info().isDynamic())
     return;
 
-  OP_REQUIRES(operands.at(input_index).shape().rank() <= 4);
+  OP_REQUIRES(operands.at(input_index).shape().rank() <= 5);
 }
 
 void ShapeValidator::visit(const ir::operation::Split &node)
@@ -975,8 +995,7 @@ void ShapeValidator::visit(const ir::operation::Shape &node)
   if (operands.at(output_index).info().isDynamic())
     return;
 
-  const auto input_index{node.getInputs().at(0)};
-  UNUSED_RELEASE(input_index);
+  [[maybe_unused]] const auto input_index{node.getInputs().at(0)};
   OP_REQUIRES(operands.at(output_index).shape().rank() == 1);
 }
 
@@ -1092,25 +1111,6 @@ void ShapeValidator::visit(const ir::operation::Range &node)
   OP_REQUIRES(operands.at(delta_index).shape().rank() == 0);
 }
 
-void ShapeValidator::visit(const ir::operation::MatrixBandPart &node)
-{
-  const auto &operands = _graph.operands();
-  const auto output_index{node.getOutputs().at(0)};
-  const auto input_index{node.getInputs().at(ir::operation::MatrixBandPart::Input::INPUT)};
-  const auto num_lower_index{
-    node.getInputs().at(ir::operation::MatrixBandPart::Input::NUM_LOWER_DIAG)};
-  const auto num_upper_index{
-    node.getInputs().at(ir::operation::MatrixBandPart::Input::NUM_UPPER_DIAG)};
-
-  // Check for dimension constraints
-  if (operands.at(output_index).info().isDynamic())
-    return;
-
-  OP_REQUIRES(operands.at(input_index).shape().rank() >= 2); // input must be more than 2 dim matrix
-  OP_REQUIRES(operands.at(num_upper_index).shape().rank() == 0); // num_lower must be scalar
-  OP_REQUIRES(operands.at(num_lower_index).shape().rank() == 0); // num_upper must be scalar
-}
-
 void ShapeValidator::visit(const ir::operation::LogSoftmax &node)
 {
   const auto &operands = _graph.operands();
@@ -1123,5 +1123,42 @@ void ShapeValidator::visit(const ir::operation::LogSoftmax &node)
   OP_REQUIRES(operands.at(output_index).shape().rank() == operands.at(input_index).shape().rank());
 }
 
-} // namespace compiler
-} // namespace onert
+void ShapeValidator::visit(const ir::operation::RmsNorm &node)
+{
+  const auto &operands = _graph.operands();
+  const auto ofm_index{node.getOutputs().at(0)};
+  if (operands.at(ofm_index).info().isDynamic())
+    return;
+
+  const auto ifm_index{node.getInputs().at(ir::operation::RmsNorm::Input::INPUT)};
+  const auto gamma_index{node.getInputs().at(ir::operation::RmsNorm::Input::GAMMA)};
+
+  const auto &ifm_shape = operands.at(ifm_index).shape();
+  const auto &ofm_shape = operands.at(ofm_index).shape();
+  const auto &gamma_shape = operands.at(gamma_index).shape();
+
+  OP_REQUIRES(ifm_shape.rank() == 3 || ifm_shape.rank() == 4);
+  OP_REQUIRES(ifm_shape == ofm_shape);
+  OP_REQUIRES(gamma_shape.rank() == 1);
+  OP_REQUIRES((gamma_shape.dim(0) == 1) ||
+              (gamma_shape.dim(0) == ifm_shape.dim(ifm_shape.rank() - 1)));
+}
+
+void ShapeValidator::visit(const ir::operation::RoPE &node)
+{
+  const auto &operands = _graph.operands();
+  const auto ofm_index{node.getOutputs().at(0)};
+  if (operands.at(ofm_index).info().isDynamic())
+    return;
+
+  const auto ifm_index{node.getInputs().at(ir::operation::RoPE::Input::INPUT)};
+  const auto sin_table_index{node.getInputs().at(ir::operation::RoPE::Input::SIN_TABLE)};
+  const auto cos_table_index{node.getInputs().at(ir::operation::RoPE::Input::COS_TABLE)};
+
+  OP_REQUIRES(operands.at(ifm_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(ifm_index).shape() == operands.at(ofm_index).shape());
+  OP_REQUIRES(operands.at(sin_table_index).shape().rank() == 4);
+  OP_REQUIRES(operands.at(cos_table_index).shape().rank() == 4);
+}
+
+} // namespace onert::compiler

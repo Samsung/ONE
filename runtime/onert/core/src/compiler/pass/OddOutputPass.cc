@@ -19,13 +19,8 @@
 #include "ir/Graph.h"
 #include "ir/operation/Permute.h"
 #include "util/logging.h"
-#include "util/Utils.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 void OddOutputPass::run()
@@ -48,7 +43,6 @@ void OddOutputPass::run()
   std::unordered_set<ir::OperandIndex> occurence;
   for (auto &&ind : outputs)
   {
-    auto &obj = _graph.operands().at(ind);
     if (occurence.count(ind) == 0)
     {
       occurence.insert(ind);
@@ -56,7 +50,7 @@ void OddOutputPass::run()
     }
 
     // Panic when it is const, it must have been handled earlier in another pass
-    UNUSED_RELEASE(obj);
+    [[maybe_unused]] auto &obj = _graph.operands().at(ind);
     assert(!obj.isConstant());
 
     auto permute_output_ind = insertPermute(ind);
@@ -85,6 +79,4 @@ ir::OperandIndex OddOutputPass::insertPermute(ir::OperandIndex ind)
   return output_ind;
 }
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass

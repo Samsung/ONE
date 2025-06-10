@@ -8,9 +8,7 @@ endif(NOT FlatBuffers_FOUND)
 message(STATUS "Build mio-circle08: TRUE")
 
 # TODO Find a better way
-# TODO use nnpackage
-# set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/nnpackage/schema/circle_schema.fbs")
-set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/res/CircleSchema/0.8/circle_schema.fbs")
+set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/nnpackage/schema/circle_schema.fbs")
 
 # NOTE Copy circle_schema.fbs as schema.fbs to generate "schema_generated.fbs" instead of "circle_schema_generated.fbs"
 add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
@@ -19,7 +17,7 @@ add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
   DEPENDS "${SCHEMA_FILE}"
 )
 
-FlatBuffers_Target(mio_circle08
+FlatBuffersMuteable_Target(mio_circle08
   OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen/mio/circle"
   INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen"
   SCHEMA_DIR "${CMAKE_CURRENT_BINARY_DIR}"

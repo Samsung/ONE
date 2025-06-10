@@ -19,19 +19,12 @@
 
 #include "ir/Operation.h"
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 class BackendContext;
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 /**
@@ -62,8 +55,6 @@ public:
   Permute(const OperandIndex &input, const OperandIndex &output);
 };
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation
 
 #endif // __ONERT_IR_OPERATION_PERMUTE_H__

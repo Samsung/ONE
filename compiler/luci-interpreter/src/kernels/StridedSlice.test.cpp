@@ -18,6 +18,8 @@
 #include "kernels/TestUtils.h"
 #include "luci_interpreter/TestMemoryManager.h"
 
+#include <numeric>
+
 namespace luci_interpreter
 {
 namespace kernels
@@ -103,6 +105,48 @@ TEST(StridedSliceTest, Uint8)
 
   std::vector<int32_t> output_shape{3, 2};
   std::vector<float> output_data{1, 2, 3, 4, 5, 6};
+  EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(output_data));
+  EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
+}
+
+TEST(StridedSliceTest, 5DCase)
+{
+  std::unique_ptr<IMemoryManager> memory_manager = std::make_unique<TestMemoryManager>();
+
+  Shape input_shape{2, 3, 2, 2, 3};
+  std::vector<float> input_data(input_shape.num_elements());
+  std::iota(std::begin(input_data), std::end(input_data), 0);
+  Shape begin_shape{5};
+  std::vector<int32_t> begin_data{0, 0, 0, 0, 0};
+  Shape end_shape{5};
+  std::vector<int32_t> end_data{2, 3, 2, 2, 1};
+  Shape strides_shape{5};
+  std::vector<int32_t> strides_data{1, 1, 1, 1, 1};
+  Tensor input_tensor =
+    makeInputTensor<DataType::U8>(input_shape, 1.0f, 0, input_data, memory_manager.get());
+  Tensor begin_tensor =
+    makeInputTensor<DataType::S32>(begin_shape, begin_data, memory_manager.get());
+  Tensor end_tensor = makeInputTensor<DataType::S32>(end_shape, end_data, memory_manager.get());
+  Tensor strides_tensor =
+    makeInputTensor<DataType::S32>(strides_shape, strides_data, memory_manager.get());
+  Tensor output_tensor = makeOutputTensor(DataType::U8, 1.0f, 0);
+
+  StridedSliceParams params{};
+  params.begin_mask = 0;
+  params.end_mask = 0;
+  params.ellipsis_mask = 0;
+  params.new_axis_mask = 0;
+  params.shrink_axis_mask = 0;
+
+  StridedSlice kernel(&input_tensor, &begin_tensor, &end_tensor, &strides_tensor, &output_tensor,
+                      params);
+  kernel.configure();
+  memory_manager->allocate_memory(output_tensor);
+  kernel.execute();
+
+  std::vector<int32_t> output_shape{2, 3, 2, 2, 1};
+  std::vector<float> output_data{0,  3,  6,  9,  12, 15, 18, 21, 24, 27, 30, 33,
+                                 36, 39, 42, 45, 48, 51, 54, 57, 60, 63, 66, 69};
   EXPECT_THAT(dequantizeTensorData(output_tensor), FloatArrayNear(output_data));
   EXPECT_THAT(extractTensorShape(output_tensor), ::testing::ElementsAreArray(output_shape));
 }

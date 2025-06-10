@@ -23,11 +23,7 @@
 #include <ir/operation/LSTM.h>
 #include <arm_compute/runtime/CL/CLFunctions.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 void enableDimCorrection(IACLTensor *tensor)
@@ -238,9 +234,8 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
 
   const auto input_rank = operands.at(input_index).shape().rank();
 
-  const auto output_size =
+  [[maybe_unused]] const auto output_size =
     operands.at(output_index).shape().dim(operands.at(output_index).shape().rank() - 1);
-  UNUSED_RELEASE(output_size);
   assert(bias_index.undefined() || operands.at(bias_index).shape().dim(0) == output_size);
   assert(operands.at(weight_index).shape().dim(0) == output_size);
   const auto batch_size =
@@ -254,13 +249,12 @@ kernelGenFullyConnected(const ir::operation::FullyConnected &node, const ir::Ope
   if (input_rank == 3 || input_rank == 4)
   {
     const auto &ifm_shape = operands.at(input_index).shape();
-    auto feature_size = 1;
+    [[maybe_unused]] auto feature_size = 1;
     for (int i = 0; i < ifm_shape.rank(); ++i)
     {
       feature_size *= ifm_shape.dim(i);
     }
 
-    UNUSED_RELEASE(feature_size);
     assert(feature_size == batch_size * input_size);
 
     // for reshaping
@@ -332,8 +326,6 @@ kernelGenPool2D(const T_PoolOp &node, const ir::Operands &operands,
   return fn;
 }
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_ACL_KERNEL_GEN_H_

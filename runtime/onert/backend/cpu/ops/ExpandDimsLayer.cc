@@ -16,13 +16,7 @@
 
 #include "ExpandDimsLayer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 ExpandDimsLayer::ExpandDimsLayer() : _input(nullptr), _output(nullptr)
@@ -38,11 +32,12 @@ void ExpandDimsLayer::configure(const IPortableTensor *input, IPortableTensor *o
 
 void ExpandDimsLayer::run()
 {
-  size_t count = _input->total_size();
-  memcpy(_output->buffer(), _input->buffer(), count);
+  // output buffer equals to input buffer means that copy is not needed
+  if (_output->buffer() != _input->buffer())
+  {
+    size_t count = _input->total_size();
+    memcpy(_output->buffer(), _input->buffer(), count);
+  }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

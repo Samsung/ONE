@@ -27,18 +27,16 @@
 
 #include <unordered_map>
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 class TensorBuilder
 {
 public:
-  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg);
-  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg, const std::string planner_id);
+  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg,
+                const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes = {});
+  TensorBuilder(const std::shared_ptr<TensorRegistry> &tensor_reg, const std::string planner_id,
+                const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_indexes = {});
 
   /**
    * @brief     Register tensor information to allocate on CPU backend
@@ -54,6 +52,8 @@ public:
 
   void allocate(void);
 
+  const ir::OperandIndexMap<ir::OperandIndex> &getSharedMemoryOperandIndexes() const;
+
   DynamicTensorManager *dynamicTensorManager(void) { return _dynamic_tensor_mgr.get(); }
 
 private:
@@ -61,10 +61,9 @@ private:
   std::unique_ptr<DynamicTensorManager> _dynamic_tensor_mgr;
   std::unique_ptr<StaticTensorManager> _static_tensor_mgr;
   ir::OperandIndexMap<ir::OperandInfo> _tensor_info_map;
+  ir::OperandIndexMap<ir::OperandIndex> _shared_memory_operand_indexes;
 };
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 #endif // __ONERT_BACKEND_BASIC_TENSOR_BUILDER_H__

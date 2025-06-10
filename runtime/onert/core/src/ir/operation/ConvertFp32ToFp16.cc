@@ -17,11 +17,7 @@
 #include "ir/operation/ConvertFp32ToFp16.h"
 #include "ir/OperationVisitor.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 void ConvertFp32ToFp16::accept(OperationVisitor &v) const { v.visit(*this); }
@@ -32,6 +28,4 @@ ConvertFp32ToFp16::ConvertFp32ToFp16(const OperandIndexSequence &inputs,
 {
 }
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation

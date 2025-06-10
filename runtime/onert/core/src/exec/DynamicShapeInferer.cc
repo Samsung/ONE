@@ -18,9 +18,7 @@
 #include "util/ShapeInference.h"
 #include <assert.h>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 void DynamicShapeInferer::handleBinaryArithmeticOp(const ir::Operation &op,
@@ -339,6 +337,31 @@ void DynamicShapeInferer::visit(const ir::operation::Conv2D &op)
   assert(output->buffer() != nullptr);
 }
 
+void DynamicShapeInferer::visit(const ir::operation::DepthwiseConv2D &op)
+{
+  // check if input is not dynamic
+  auto input_ind = op.getInputs().at(ir::operation::DepthwiseConv2D::INPUT);
+  auto input = _tensor_registry->getITensor(input_ind);
+
+  auto ker_ind = op.getInputs().at(ir::operation::DepthwiseConv2D::KERNEL);
+  auto ker = _tensor_registry->getITensor(ker_ind);
+
+  if ((!input->is_dynamic()) && (!ker->is_dynamic()))
+    return;
+
+  ir::Shape input_shape = input->getShape();
+  ir::Shape ker_shape = ker->getShape();
+
+  auto output_ind = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_ind);
+
+  ir::Shape output_shape =
+    shape_inference::inferDepthwiseConv2DShape(input_shape, ker_shape, op.param());
+
+  output->applyShape(output_shape);
+  assert(output->buffer() != nullptr);
+}
+
 void DynamicShapeInferer::visit(const ir::operation::ElementwiseActivation &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ElementwiseActivation::INPUT));
@@ -594,11 +617,6 @@ void DynamicShapeInferer::visit(const ir::operation::LSTM &op)
     }
     assert(scratch_buffer->buffer() != nullptr);
   }
-}
-
-void DynamicShapeInferer::visit(const ir::operation::MatrixBandPart &op)
-{
-  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::MatrixBandPart::INPUT));
 }
 
 void DynamicShapeInferer::visit(const ir::operation::DetectionPostProcess & /* op */)
@@ -1274,5 +1292,4 @@ void DynamicShapeInferer::visit(const ir::operation::Unpack &op)
   }
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

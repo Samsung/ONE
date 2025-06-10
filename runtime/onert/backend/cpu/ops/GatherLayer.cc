@@ -17,25 +17,24 @@
 #include "GatherLayer.h"
 
 #include "OperationUtils.h"
+#include "GGMLHelper.h"
 
 #include <cker/operation/Gather.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 void GatherLayer::configure(const IPortableTensor *input, const IPortableTensor *indices,
-                            IPortableTensor *output, int32_t axis)
+                            IPortableTensor *output, int32_t axis, ExternalContext *ctx)
 {
   _input = input;
   _indices = indices;
   _axis = axis;
   _output = output;
+  _ctx = ctx;
+
+  if (_input->data_type() == OperandType::QUANT_GGML_Q4_0)
+    ctx->initGgmlContext();
 }
 
 template <typename InputType> void GatherLayer::runByInputType()
@@ -69,6 +68,53 @@ template <typename InputType> void GatherLayer::runByInputType()
   }
 }
 
+void GatherLayer::runByGGMLQuantInputType()
+{
+  // Supporting condition
+  // Input: rank 2
+  // Indice: rank < 4 or rank 4 with dim(0) = 1, INT32
+  // Axis: 0
+  if (getShape(_input).DimensionsCount() != 2)
+    throw std::runtime_error("Gather: block quantized input tensor must be rank 2");
+
+  if (getShape(_indices).DimensionsCount() >= 4 &&
+      (getShape(_indices).DimensionsCount() != 4 || getShape(_indices).Dims(0) != 1))
+    throw std::runtime_error("Gather: invalid indices tensor shape");
+
+  if (_indices->data_type() != ir::DataType::INT32)
+    throw std::runtime_error("Gather: indices tensor must be int32 type");
+
+  if (_axis != 0)
+    throw std::runtime_error("Gather: axis must be 0");
+
+  // convert tensor
+  auto input = getGGMLTensor(_input);
+  auto indices = getGGMLTensor(_indices);
+  auto output = getGGMLTensor(_output);
+  {
+    output.op = GGML_OP_GET_ROWS;
+    output.src[0] = &input;
+    output.src[1] = &indices;
+  }
+  auto *nodes = &output;
+
+  // create graph
+  struct ggml_cgraph graph;
+  {
+    memset(&graph, 0, sizeof(graph));
+    graph.n_nodes = 1;
+    graph.nodes = &nodes;
+  }
+
+  // get cplan
+  auto cplan = ggml_graph_plan(&graph, _ctx->maxNumThreads());
+  std::vector<uint8_t> buf(cplan.work_size);
+  cplan.work_data = buf.data();
+
+  // compute
+  ggml_graph_compute(&graph, &cplan);
+}
+
 void GatherLayer::run()
 {
   switch (_input->data_type())
@@ -82,12 +128,12 @@ void GatherLayer::run()
     case OperandType::INT32:
       runByInputType<int32_t>();
       break;
+    case OperandType::QUANT_GGML_Q4_0:
+      runByGGMLQuantInputType();
+      break;
     default:
       throw std::runtime_error("Gather: unsupported input data type");
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

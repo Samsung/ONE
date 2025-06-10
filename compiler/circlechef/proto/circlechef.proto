@@ -12,8 +12,10 @@ package circlechef;
 //  - Added name, version(default as 1), graph in ModelRecipe
 //
 
-// This enum value corresponds to TensorType in TensorFlow Lite schema
+// This enum value corresponds to TensorType in Circle schema
 enum TensorType {
+  MXINT8 = -7;
+  MXFP4 = -6;
   UINT4 = -1;
   FLOAT32 = 0;
   INT32 = 2;
@@ -46,6 +48,10 @@ message TensorQuantization {
   optional int32 quantized_dimension = 5 [default = 0];
 }
 
+message TensorMXQuantization {
+  optional int32 axis = 1 [default = 0];
+}
+
 message Operand {
   optional string name = 1;
   optional TensorType type = 2;
@@ -53,6 +59,8 @@ message Operand {
   optional TensorFiller filler = 4;
   optional TensorQuantization quant = 5;
   optional ShapeSignature shape_signature = 8;
+
+  optional TensorMXQuantization mx_quant = 100;
 }
 
 // This enum value corresponds to Padding in TensorFlow Lite schema
@@ -99,6 +107,14 @@ message BCQGatherOptions {
   optional int32 axis = 2 [default = 0];
 }
 
+message RmsNormOptions {
+  optional float epsilon = 1 [default = 1e-06];
+}
+
+message RoPEOptions {
+  optional int32 mode = 1 [default = 0];;
+}
+
 message Operation {
   optional string type = 1;
   repeated string input = 2;
@@ -112,6 +128,8 @@ message Operation {
   optional BCQGatherOptions bcq_gather_options = 103;
   optional GRUOptions gru_options = 104;
   optional FullyConnectedOptions fullyconnected_options = 105;
+  optional RmsNormOptions rms_norm_options = 106;
+  optional RoPEOptions rope_options = 107;  
 }
 
 // For additional subgraphs

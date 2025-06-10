@@ -21,9 +21,7 @@
 
 #include "util/Set.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 Graph::Graph() = default;
@@ -44,8 +42,8 @@ OperandIndex Graph::addOperand(OperandIndex index, std::unique_ptr<Operand> &&op
 
 bool Graph::checkOperandsForOperation(const IOperation &operation)
 {
-  auto inputs = operation.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
-  auto outputs = operation.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+  auto inputs = operation.getUsedInputSet();
+  auto outputs = operation.getUsedOutputSet();
   for (auto &&input : inputs)
     if (!operands().exist(input))
       return false;
@@ -57,8 +55,8 @@ bool Graph::checkOperandsForOperation(const IOperation &operation)
 
 void Graph::linkOperandToOperation(OperationIndex index, const IOperation &operation)
 {
-  auto inputs = operation.getInputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
-  auto outputs = operation.getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED;
+  auto inputs = operation.getUsedInputSet();
+  auto outputs = operation.getUsedOutputSet();
 
   for (auto &&input : inputs)
     operands().at(input).insertUse(index);
@@ -194,7 +192,7 @@ std::vector<ir::OperationIndex> Graph::topolSortOperations() const
       return;
     unvisited.remove(index);
 
-    for (const auto &output : op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED)
+    for (const auto &output : op.getUsedOutputSet())
     {
       const auto &operand = operands().at(output);
       for (const auto &use : operand.getUses())
@@ -212,5 +210,4 @@ std::vector<ir::OperationIndex> Graph::topolSortOperations() const
   return ret;
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

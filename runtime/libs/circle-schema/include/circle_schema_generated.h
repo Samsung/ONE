@@ -667,6 +667,14 @@ struct InstanceNormOptions;
 struct InstanceNormOptionsBuilder;
 struct InstanceNormOptionsT;
 
+struct RmsNormOptions;
+struct RmsNormOptionsBuilder;
+struct RmsNormOptionsT;
+
+struct RoPEOptions;
+struct RoPEOptionsBuilder;
+struct RoPEOptionsT;
+
 struct OperatorCode;
 struct OperatorCodeBuilder;
 struct OperatorCodeT;
@@ -701,6 +709,10 @@ struct ModelT;
 
 enum TensorType : int8_t
 {
+  TensorType_GGML_Q8_1 = -5,
+  TensorType_GGML_Q8_0 = -4,
+  TensorType_GGML_Q4_1 = -3,
+  TensorType_GGML_Q4_0 = -2,
   TensorType_UINT4 = -1,
   TensorType_FLOAT32 = 0,
   TensorType_FLOAT16 = 1,
@@ -720,35 +732,37 @@ enum TensorType : int8_t
   TensorType_UINT32 = 15,
   TensorType_UINT16 = 16,
   TensorType_INT4 = 17,
-  TensorType_MIN = TensorType_UINT4,
+  TensorType_MIN = TensorType_GGML_Q8_1,
   TensorType_MAX = TensorType_INT4
 };
 
-inline const TensorType (&EnumValuesTensorType())[19]
+inline const TensorType (&EnumValuesTensorType())[23]
 {
   static const TensorType values[] = {
-    TensorType_UINT4,      TensorType_FLOAT32,   TensorType_FLOAT16,  TensorType_INT32,
-    TensorType_UINT8,      TensorType_INT64,     TensorType_STRING,   TensorType_BOOL,
-    TensorType_INT16,      TensorType_COMPLEX64, TensorType_INT8,     TensorType_FLOAT64,
-    TensorType_COMPLEX128, TensorType_UINT64,    TensorType_RESOURCE, TensorType_VARIANT,
+    TensorType_GGML_Q8_1,  TensorType_GGML_Q8_0, TensorType_GGML_Q4_1, TensorType_GGML_Q4_0,
+    TensorType_UINT4,      TensorType_FLOAT32,   TensorType_FLOAT16,   TensorType_INT32,
+    TensorType_UINT8,      TensorType_INT64,     TensorType_STRING,    TensorType_BOOL,
+    TensorType_INT16,      TensorType_COMPLEX64, TensorType_INT8,      TensorType_FLOAT64,
+    TensorType_COMPLEX128, TensorType_UINT64,    TensorType_RESOURCE,  TensorType_VARIANT,
     TensorType_UINT32,     TensorType_UINT16,    TensorType_INT4};
   return values;
 }
 
 inline const char *const *EnumNamesTensorType()
 {
-  static const char *const names[20] = {"UINT4",   "FLOAT32", "FLOAT16",    "INT32",  "UINT8",
-                                        "INT64",   "STRING",  "BOOL",       "INT16",  "COMPLEX64",
-                                        "INT8",    "FLOAT64", "COMPLEX128", "UINT64", "RESOURCE",
-                                        "VARIANT", "UINT32",  "UINT16",     "INT4",   nullptr};
+  static const char *const names[24] = {
+    "GGML_Q8_1", "GGML_Q8_0", "GGML_Q4_1", "GGML_Q4_0", "UINT4",      "FLOAT32",
+    "FLOAT16",   "INT32",     "UINT8",     "INT64",     "STRING",     "BOOL",
+    "INT16",     "COMPLEX64", "INT8",      "FLOAT64",   "COMPLEX128", "UINT64",
+    "RESOURCE",  "VARIANT",   "UINT32",    "UINT16",    "INT4",       nullptr};
   return names;
 }
 
 inline const char *EnumNameTensorType(TensorType e)
 {
-  if (::flatbuffers::IsOutRange(e, TensorType_UINT4, TensorType_INT4))
+  if (::flatbuffers::IsOutRange(e, TensorType_GGML_Q8_1, TensorType_INT4))
     return "";
-  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(TensorType_UINT4);
+  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(TensorType_GGML_Q8_1);
   return EnumNamesTensorType()[index];
 }
 
@@ -1061,8 +1075,38 @@ bool VerifySparseIndexVectorVector(::flatbuffers::Verifier &verifier,
                                    const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values,
                                    const ::flatbuffers::Vector<uint8_t> *types);
 
+enum CompressionType : int8_t
+{
+  CompressionType_NONE = 0,
+  CompressionType_HUFFMAN = 1,
+  CompressionType_MIN = CompressionType_NONE,
+  CompressionType_MAX = CompressionType_HUFFMAN
+};
+
+inline const CompressionType (&EnumValuesCompressionType())[2]
+{
+  static const CompressionType values[] = {CompressionType_NONE, CompressionType_HUFFMAN};
+  return values;
+}
+
+inline const char *const *EnumNamesCompressionType()
+{
+  static const char *const names[3] = {"NONE", "HUFFMAN", nullptr};
+  return names;
+}
+
+inline const char *EnumNameCompressionType(CompressionType e)
+{
+  if (::flatbuffers::IsOutRange(e, CompressionType_NONE, CompressionType_HUFFMAN))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesCompressionType()[index];
+}
+
 enum BuiltinOperator : int32_t
 {
+  BuiltinOperator_ROPE = -7,
+  BuiltinOperator_RMS_NORM = -6,
   BuiltinOperator_GRU = -5,
   BuiltinOperator_BCQ_GATHER = -4,
   BuiltinOperator_BCQ_FULLY_CONNECTED = -3,
@@ -1273,13 +1317,15 @@ enum BuiltinOperator : int32_t
   BuiltinOperator_DILATE = 203,
   BuiltinOperator_STABLEHLO_RNG_BIT_GENERATOR = 204,
   BuiltinOperator_REDUCE_WINDOW = 205,
-  BuiltinOperator_MIN = BuiltinOperator_GRU,
+  BuiltinOperator_MIN = BuiltinOperator_ROPE,
   BuiltinOperator_MAX = BuiltinOperator_REDUCE_WINDOW
 };
 
-inline const BuiltinOperator (&EnumValuesBuiltinOperator())[210]
+inline const BuiltinOperator (&EnumValuesBuiltinOperator())[212]
 {
-  static const BuiltinOperator values[] = {BuiltinOperator_GRU,
+  static const BuiltinOperator values[] = {BuiltinOperator_ROPE,
+                                           BuiltinOperator_RMS_NORM,
+                                           BuiltinOperator_GRU,
                                            BuiltinOperator_BCQ_GATHER,
                                            BuiltinOperator_BCQ_FULLY_CONNECTED,
                                            BuiltinOperator_INSTANCE_NORM,
@@ -1494,7 +1540,9 @@ inline const BuiltinOperator (&EnumValuesBuiltinOperator())[210]
 
 inline const char *const *EnumNamesBuiltinOperator()
 {
-  static const char *const names[212] = {"GRU",
+  static const char *const names[214] = {"ROPE",
+                                         "RMS_NORM",
+                                         "GRU",
                                          "BCQ_GATHER",
                                          "BCQ_FULLY_CONNECTED",
                                          "INSTANCE_NORM",
@@ -1711,9 +1759,9 @@ inline const char *const *EnumNamesBuiltinOperator()
 
 inline const char *EnumNameBuiltinOperator(BuiltinOperator e)
 {
-  if (::flatbuffers::IsOutRange(e, BuiltinOperator_GRU, BuiltinOperator_REDUCE_WINDOW))
+  if (::flatbuffers::IsOutRange(e, BuiltinOperator_ROPE, BuiltinOperator_REDUCE_WINDOW))
     return "";
-  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(BuiltinOperator_GRU);
+  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(BuiltinOperator_ROPE);
   return EnumNamesBuiltinOperator()[index];
 }
 
@@ -1846,6 +1894,8 @@ enum BuiltinOptions : uint8_t
   BuiltinOptions_BitcastOptions = 124,
   BuiltinOptions_BitwiseXorOptions = 125,
   BuiltinOptions_RightShiftOptions = 126,
+  BuiltinOptions_RoPEOptions = 249,
+  BuiltinOptions_RmsNormOptions = 250,
   BuiltinOptions_GRUOptions = 251,
   BuiltinOptions_BCQGatherOptions = 252,
   BuiltinOptions_BCQFullyConnectedOptions = 253,
@@ -1854,7 +1904,7 @@ enum BuiltinOptions : uint8_t
   BuiltinOptions_MAX = BuiltinOptions_InstanceNormOptions
 };
 
-inline const BuiltinOptions (&EnumValuesBuiltinOptions())[131]
+inline const BuiltinOptions (&EnumValuesBuiltinOptions())[133]
 {
   static const BuiltinOptions values[] = {BuiltinOptions_NONE,
                                           BuiltinOptions_Conv2DOptions,
@@ -1983,6 +2033,8 @@ inline const BuiltinOptions (&EnumValuesBuiltinOptions())[131]
                                           BuiltinOptions_BitcastOptions,
                                           BuiltinOptions_BitwiseXorOptions,
                                           BuiltinOptions_RightShiftOptions,
+                                          BuiltinOptions_RoPEOptions,
+                                          BuiltinOptions_RmsNormOptions,
                                           BuiltinOptions_GRUOptions,
                                           BuiltinOptions_BCQGatherOptions,
                                           BuiltinOptions_BCQFullyConnectedOptions,
@@ -2241,8 +2293,8 @@ inline const char *const *EnumNamesBuiltinOptions()
                                          "",
                                          "",
                                          "",
-                                         "",
-                                         "",
+                                         "RoPEOptions",
+                                         "RmsNormOptions",
                                          "GRUOptions",
                                          "BCQGatherOptions",
                                          "BCQFullyConnectedOptions",
@@ -2892,6 +2944,16 @@ template <> struct BuiltinOptionsTraits<circle::BitwiseXorOptions>
 template <> struct BuiltinOptionsTraits<circle::RightShiftOptions>
 {
   static const BuiltinOptions enum_value = BuiltinOptions_RightShiftOptions;
+};
+
+template <> struct BuiltinOptionsTraits<circle::RoPEOptions>
+{
+  static const BuiltinOptions enum_value = BuiltinOptions_RoPEOptions;
+};
+
+template <> struct BuiltinOptionsTraits<circle::RmsNormOptions>
+{
+  static const BuiltinOptions enum_value = BuiltinOptions_RmsNormOptions;
 };
 
 template <> struct BuiltinOptionsTraits<circle::GRUOptions>
@@ -3547,6 +3609,16 @@ template <> struct BuiltinOptionsUnionTraits<circle::BitwiseXorOptionsT>
 template <> struct BuiltinOptionsUnionTraits<circle::RightShiftOptionsT>
 {
   static const BuiltinOptions enum_value = BuiltinOptions_RightShiftOptions;
+};
+
+template <> struct BuiltinOptionsUnionTraits<circle::RoPEOptionsT>
+{
+  static const BuiltinOptions enum_value = BuiltinOptions_RoPEOptions;
+};
+
+template <> struct BuiltinOptionsUnionTraits<circle::RmsNormOptionsT>
+{
+  static const BuiltinOptions enum_value = BuiltinOptions_RmsNormOptions;
 };
 
 template <> struct BuiltinOptionsUnionTraits<circle::GRUOptionsT>
@@ -5066,6 +5138,29 @@ struct BuiltinOptionsUnion
              ? reinterpret_cast<const circle::RightShiftOptionsT *>(value)
              : nullptr;
   }
+  circle::RoPEOptionsT *AsRoPEOptions()
+  {
+    return type == BuiltinOptions_RoPEOptions ? reinterpret_cast<circle::RoPEOptionsT *>(value)
+                                              : nullptr;
+  }
+  const circle::RoPEOptionsT *AsRoPEOptions() const
+  {
+    return type == BuiltinOptions_RoPEOptions
+             ? reinterpret_cast<const circle::RoPEOptionsT *>(value)
+             : nullptr;
+  }
+  circle::RmsNormOptionsT *AsRmsNormOptions()
+  {
+    return type == BuiltinOptions_RmsNormOptions
+             ? reinterpret_cast<circle::RmsNormOptionsT *>(value)
+             : nullptr;
+  }
+  const circle::RmsNormOptionsT *AsRmsNormOptions() const
+  {
+    return type == BuiltinOptions_RmsNormOptions
+             ? reinterpret_cast<const circle::RmsNormOptionsT *>(value)
+             : nullptr;
+  }
   circle::GRUOptionsT *AsGRUOptions()
   {
     return type == BuiltinOptions_GRUOptions ? reinterpret_cast<circle::GRUOptionsT *>(value)
@@ -6107,6 +6202,34 @@ inline const char *EnumNameReduceWindowFunction(ReduceWindowFunction e)
   return EnumNamesReduceWindowFunction()[index];
 }
 
+enum RoPEMode : int32_t
+{
+  RoPEMode_GPT_NEOX = 0,
+  RoPEMode_GPT_J = 1,
+  RoPEMode_MIN = RoPEMode_GPT_NEOX,
+  RoPEMode_MAX = RoPEMode_GPT_J
+};
+
+inline const RoPEMode (&EnumValuesRoPEMode())[2]
+{
+  static const RoPEMode values[] = {RoPEMode_GPT_NEOX, RoPEMode_GPT_J};
+  return values;
+}
+
+inline const char *const *EnumNamesRoPEMode()
+{
+  static const char *const names[3] = {"GPT_NEOX", "GPT_J", nullptr};
+  return names;
+}
+
+inline const char *EnumNameRoPEMode(RoPEMode e)
+{
+  if (::flatbuffers::IsOutRange(e, RoPEMode_GPT_NEOX, RoPEMode_GPT_J))
+    return "";
+  const size_t index = static_cast<size_t>(e);
+  return EnumNamesRoPEMode()[index];
+}
+
 enum CustomOptionsFormat : int8_t
 {
   CustomOptionsFormat_FLEXBUFFERS = 0,
@@ -7056,6 +7179,7 @@ struct TensorT : public ::flatbuffers::NativeTable
   std::vector<int32_t> shape_signature{};
   bool has_rank = false;
   std::vector<std::unique_ptr<circle::VariantSubTypeT>> variant_tensors{};
+  circle::CompressionType compression_type = circle::CompressionType_NONE;
   TensorT() = default;
   TensorT(const TensorT &o);
   TensorT(TensorT &&) FLATBUFFERS_NOEXCEPT = default;
@@ -7077,7 +7201,8 @@ struct Tensor FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
     VT_SPARSITY = 16,
     VT_SHAPE_SIGNATURE = 18,
     VT_HAS_RANK = 20,
-    VT_VARIANT_TENSORS = 22
+    VT_VARIANT_TENSORS = 22,
+    VT_COMPRESSION_TYPE = 24
   };
   const ::flatbuffers::Vector<int32_t> *shape() const
   {
@@ -7112,6 +7237,10 @@ struct Tensor FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
     return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<circle::VariantSubType>> *>(
       VT_VARIANT_TENSORS);
   }
+  circle::CompressionType compression_type() const
+  {
+    return static_cast<circle::CompressionType>(GetField<int8_t>(VT_COMPRESSION_TYPE, 0));
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const
   {
     return VerifyTableStart(verifier) && VerifyOffset(verifier, VT_SHAPE) &&
@@ -7124,7 +7253,8 @@ struct Tensor FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
            VerifyOffset(verifier, VT_SHAPE_SIGNATURE) && verifier.VerifyVector(shape_signature()) &&
            VerifyField<uint8_t>(verifier, VT_HAS_RANK, 1) &&
            VerifyOffset(verifier, VT_VARIANT_TENSORS) && verifier.VerifyVector(variant_tensors()) &&
-           verifier.VerifyVectorOfTables(variant_tensors()) && verifier.EndTable();
+           verifier.VerifyVectorOfTables(variant_tensors()) &&
+           VerifyField<int8_t>(verifier, VT_COMPRESSION_TYPE, 1) && verifier.EndTable();
   }
   TensorT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
   void UnPackTo(TensorT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
@@ -7177,6 +7307,10 @@ struct TensorBuilder
   {
     fbb_.AddOffset(Tensor::VT_VARIANT_TENSORS, variant_tensors);
   }
+  void add_compression_type(circle::CompressionType compression_type)
+  {
+    fbb_.AddElement<int8_t>(Tensor::VT_COMPRESSION_TYPE, static_cast<int8_t>(compression_type), 0);
+  }
   explicit TensorBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
   {
     start_ = fbb_.StartTable();
@@ -7198,7 +7332,8 @@ inline ::flatbuffers::Offset<Tensor> CreateTensor(
   ::flatbuffers::Offset<circle::SparsityParameters> sparsity = 0,
   ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> shape_signature = 0, bool has_rank = false,
   ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<circle::VariantSubType>>>
-    variant_tensors = 0)
+    variant_tensors = 0,
+  circle::CompressionType compression_type = circle::CompressionType_NONE)
 {
   TensorBuilder builder_(_fbb);
   builder_.add_variant_tensors(variant_tensors);
@@ -7208,6 +7343,7 @@ inline ::flatbuffers::Offset<Tensor> CreateTensor(
   builder_.add_name(name);
   builder_.add_buffer(buffer);
   builder_.add_shape(shape);
+  builder_.add_compression_type(compression_type);
   builder_.add_has_rank(has_rank);
   builder_.add_is_variable(is_variable);
   builder_.add_type(type);
@@ -7221,7 +7357,8 @@ inline ::flatbuffers::Offset<Tensor> CreateTensorDirect(
   ::flatbuffers::Offset<circle::QuantizationParameters> quantization = 0, bool is_variable = false,
   ::flatbuffers::Offset<circle::SparsityParameters> sparsity = 0,
   const std::vector<int32_t> *shape_signature = nullptr, bool has_rank = false,
-  const std::vector<::flatbuffers::Offset<circle::VariantSubType>> *variant_tensors = nullptr)
+  const std::vector<::flatbuffers::Offset<circle::VariantSubType>> *variant_tensors = nullptr,
+  circle::CompressionType compression_type = circle::CompressionType_NONE)
 {
   auto shape__ = shape ? _fbb.CreateVector<int32_t>(*shape) : 0;
   auto name__ = name ? _fbb.CreateString(name) : 0;
@@ -7231,7 +7368,8 @@ inline ::flatbuffers::Offset<Tensor> CreateTensorDirect(
       ? _fbb.CreateVector<::flatbuffers::Offset<circle::VariantSubType>>(*variant_tensors)
       : 0;
   return circle::CreateTensor(_fbb, shape__, type, buffer, name__, quantization, is_variable,
-                              sparsity, shape_signature__, has_rank, variant_tensors__);
+                              sparsity, shape_signature__, has_rank, variant_tensors__,
+                              compression_type);
 }
 
 ::flatbuffers::Offset<Tensor>
@@ -17731,6 +17869,132 @@ inline ::flatbuffers::Offset<InstanceNormOptions> CreateInstanceNormOptions(
 CreateInstanceNormOptions(::flatbuffers::FlatBufferBuilder &_fbb, const InstanceNormOptionsT *_o,
                           const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
+struct RmsNormOptionsT : public ::flatbuffers::NativeTable
+{
+  typedef RmsNormOptions TableType;
+  float epsilon = 0.0f;
+};
+
+struct RmsNormOptions FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
+{
+  typedef RmsNormOptionsT NativeTableType;
+  typedef RmsNormOptionsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE
+  {
+    VT_EPSILON = 4
+  };
+  float epsilon() const { return GetField<float>(VT_EPSILON, 0.0f); }
+  bool Verify(::flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) && VerifyField<float>(verifier, VT_EPSILON, 4) &&
+           verifier.EndTable();
+  }
+  RmsNormOptionsT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(RmsNormOptionsT *_o,
+                const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<RmsNormOptions>
+  Pack(::flatbuffers::FlatBufferBuilder &_fbb, const RmsNormOptionsT *_o,
+       const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+};
+
+struct RmsNormOptionsBuilder
+{
+  typedef RmsNormOptions Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_epsilon(float epsilon)
+  {
+    fbb_.AddElement<float>(RmsNormOptions::VT_EPSILON, epsilon, 0.0f);
+  }
+  explicit RmsNormOptionsBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RmsNormOptions> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RmsNormOptions>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RmsNormOptions>
+CreateRmsNormOptions(::flatbuffers::FlatBufferBuilder &_fbb, float epsilon = 0.0f)
+{
+  RmsNormOptionsBuilder builder_(_fbb);
+  builder_.add_epsilon(epsilon);
+  return builder_.Finish();
+}
+
+::flatbuffers::Offset<RmsNormOptions>
+CreateRmsNormOptions(::flatbuffers::FlatBufferBuilder &_fbb, const RmsNormOptionsT *_o,
+                     const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+
+struct RoPEOptionsT : public ::flatbuffers::NativeTable
+{
+  typedef RoPEOptions TableType;
+  circle::RoPEMode mode = circle::RoPEMode_GPT_NEOX;
+};
+
+struct RoPEOptions FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
+{
+  typedef RoPEOptionsT NativeTableType;
+  typedef RoPEOptionsBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE
+  {
+    VT_MODE = 4
+  };
+  circle::RoPEMode mode() const
+  {
+    return static_cast<circle::RoPEMode>(GetField<int32_t>(VT_MODE, 0));
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) && VerifyField<int32_t>(verifier, VT_MODE, 4) &&
+           verifier.EndTable();
+  }
+  RoPEOptionsT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(RoPEOptionsT *_o,
+                const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<RoPEOptions>
+  Pack(::flatbuffers::FlatBufferBuilder &_fbb, const RoPEOptionsT *_o,
+       const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+};
+
+struct RoPEOptionsBuilder
+{
+  typedef RoPEOptions Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_mode(circle::RoPEMode mode)
+  {
+    fbb_.AddElement<int32_t>(RoPEOptions::VT_MODE, static_cast<int32_t>(mode), 0);
+  }
+  explicit RoPEOptionsBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RoPEOptions> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RoPEOptions>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RoPEOptions>
+CreateRoPEOptions(::flatbuffers::FlatBufferBuilder &_fbb,
+                  circle::RoPEMode mode = circle::RoPEMode_GPT_NEOX)
+{
+  RoPEOptionsBuilder builder_(_fbb);
+  builder_.add_mode(mode);
+  return builder_.Finish();
+}
+
+::flatbuffers::Offset<RoPEOptions>
+CreateRoPEOptions(::flatbuffers::FlatBufferBuilder &_fbb, const RoPEOptionsT *_o,
+                  const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+
 struct OperatorCodeT : public ::flatbuffers::NativeTable
 {
   typedef OperatorCode TableType;
@@ -18649,6 +18913,18 @@ struct Operator FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
   {
     return builtin_options_type() == circle::BuiltinOptions_RightShiftOptions
              ? static_cast<const circle::RightShiftOptions *>(builtin_options())
+             : nullptr;
+  }
+  const circle::RoPEOptions *builtin_options_as_RoPEOptions() const
+  {
+    return builtin_options_type() == circle::BuiltinOptions_RoPEOptions
+             ? static_cast<const circle::RoPEOptions *>(builtin_options())
+             : nullptr;
+  }
+  const circle::RmsNormOptions *builtin_options_as_RmsNormOptions() const
+  {
+    return builtin_options_type() == circle::BuiltinOptions_RmsNormOptions
+             ? static_cast<const circle::RmsNormOptions *>(builtin_options())
              : nullptr;
   }
   const circle::GRUOptions *builtin_options_as_GRUOptions() const
@@ -19672,6 +19948,18 @@ inline const circle::RightShiftOptions *
 Operator::builtin_options_as<circle::RightShiftOptions>() const
 {
   return builtin_options_as_RightShiftOptions();
+}
+
+template <>
+inline const circle::RoPEOptions *Operator::builtin_options_as<circle::RoPEOptions>() const
+{
+  return builtin_options_as_RoPEOptions();
+}
+
+template <>
+inline const circle::RmsNormOptions *Operator::builtin_options_as<circle::RmsNormOptions>() const
+{
+  return builtin_options_as_RmsNormOptions();
 }
 
 template <>
@@ -21275,7 +21563,7 @@ inline TensorT::TensorT(const TensorT &o)
     quantization((o.quantization) ? new circle::QuantizationParametersT(*o.quantization) : nullptr),
     is_variable(o.is_variable),
     sparsity((o.sparsity) ? new circle::SparsityParametersT(*o.sparsity) : nullptr),
-    shape_signature(o.shape_signature), has_rank(o.has_rank)
+    shape_signature(o.shape_signature), has_rank(o.has_rank), compression_type(o.compression_type)
 {
   variant_tensors.reserve(o.variant_tensors.size());
   for (const auto &variant_tensors_ : o.variant_tensors)
@@ -21297,6 +21585,7 @@ inline TensorT &TensorT::operator=(TensorT o) FLATBUFFERS_NOEXCEPT
   std::swap(shape_signature, o.shape_signature);
   std::swap(has_rank, o.has_rank);
   std::swap(variant_tensors, o.variant_tensors);
+  std::swap(compression_type, o.compression_type);
   return *this;
 }
 
@@ -21421,6 +21710,10 @@ inline void Tensor::UnPackTo(TensorT *_o, const ::flatbuffers::resolver_function
       _o->variant_tensors.resize(0);
     }
   }
+  {
+    auto _e = compression_type();
+    _o->compression_type = _e;
+  }
 }
 
 inline ::flatbuffers::Offset<Tensor>
@@ -21463,8 +21756,10 @@ CreateTensor(::flatbuffers::FlatBufferBuilder &_fbb, const TensorT *_o,
           },
           &_va)
       : 0;
+  auto _compression_type = _o->compression_type;
   return circle::CreateTensor(_fbb, _shape, _type, _buffer, _name, _quantization, _is_variable,
-                              _sparsity, _shape_signature, _has_rank, _variant_tensors);
+                              _sparsity, _shape_signature, _has_rank, _variant_tensors,
+                              _compression_type);
 }
 
 inline StablehloGatherOptionsT *
@@ -28944,6 +29239,91 @@ CreateInstanceNormOptions(::flatbuffers::FlatBufferBuilder &_fbb, const Instance
   return circle::CreateInstanceNormOptions(_fbb, _epsilon, _fused_activation_function);
 }
 
+inline RmsNormOptionsT *
+RmsNormOptions::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const
+{
+  auto _o = std::unique_ptr<RmsNormOptionsT>(new RmsNormOptionsT());
+  UnPackTo(_o.get(), _resolver);
+  return _o.release();
+}
+
+inline void RmsNormOptions::UnPackTo(RmsNormOptionsT *_o,
+                                     const ::flatbuffers::resolver_function_t *_resolver) const
+{
+  (void)_o;
+  (void)_resolver;
+  {
+    auto _e = epsilon();
+    _o->epsilon = _e;
+  }
+}
+
+inline ::flatbuffers::Offset<RmsNormOptions>
+RmsNormOptions::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const RmsNormOptionsT *_o,
+                     const ::flatbuffers::rehasher_function_t *_rehasher)
+{
+  return CreateRmsNormOptions(_fbb, _o, _rehasher);
+}
+
+inline ::flatbuffers::Offset<RmsNormOptions>
+CreateRmsNormOptions(::flatbuffers::FlatBufferBuilder &_fbb, const RmsNormOptionsT *_o,
+                     const ::flatbuffers::rehasher_function_t *_rehasher)
+{
+  (void)_rehasher;
+  (void)_o;
+  struct _VectorArgs
+  {
+    ::flatbuffers::FlatBufferBuilder *__fbb;
+    const RmsNormOptionsT *__o;
+    const ::flatbuffers::rehasher_function_t *__rehasher;
+  } _va = {&_fbb, _o, _rehasher};
+  (void)_va;
+  auto _epsilon = _o->epsilon;
+  return circle::CreateRmsNormOptions(_fbb, _epsilon);
+}
+
+inline RoPEOptionsT *RoPEOptions::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const
+{
+  auto _o = std::unique_ptr<RoPEOptionsT>(new RoPEOptionsT());
+  UnPackTo(_o.get(), _resolver);
+  return _o.release();
+}
+
+inline void RoPEOptions::UnPackTo(RoPEOptionsT *_o,
+                                  const ::flatbuffers::resolver_function_t *_resolver) const
+{
+  (void)_o;
+  (void)_resolver;
+  {
+    auto _e = mode();
+    _o->mode = _e;
+  }
+}
+
+inline ::flatbuffers::Offset<RoPEOptions>
+RoPEOptions::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const RoPEOptionsT *_o,
+                  const ::flatbuffers::rehasher_function_t *_rehasher)
+{
+  return CreateRoPEOptions(_fbb, _o, _rehasher);
+}
+
+inline ::flatbuffers::Offset<RoPEOptions>
+CreateRoPEOptions(::flatbuffers::FlatBufferBuilder &_fbb, const RoPEOptionsT *_o,
+                  const ::flatbuffers::rehasher_function_t *_rehasher)
+{
+  (void)_rehasher;
+  (void)_o;
+  struct _VectorArgs
+  {
+    ::flatbuffers::FlatBufferBuilder *__fbb;
+    const RoPEOptionsT *__o;
+    const ::flatbuffers::rehasher_function_t *__rehasher;
+  } _va = {&_fbb, _o, _rehasher};
+  (void)_va;
+  auto _mode = _o->mode;
+  return circle::CreateRoPEOptions(_fbb, _mode);
+}
+
 inline OperatorCodeT *
 OperatorCode::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const
 {
@@ -30778,6 +31158,16 @@ inline bool VerifyBuiltinOptions(::flatbuffers::Verifier &verifier, const void *
       auto ptr = reinterpret_cast<const circle::RightShiftOptions *>(obj);
       return verifier.VerifyTable(ptr);
     }
+    case BuiltinOptions_RoPEOptions:
+    {
+      auto ptr = reinterpret_cast<const circle::RoPEOptions *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case BuiltinOptions_RmsNormOptions:
+    {
+      auto ptr = reinterpret_cast<const circle::RmsNormOptions *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
     case BuiltinOptions_GRUOptions:
     {
       auto ptr = reinterpret_cast<const circle::GRUOptions *>(obj);
@@ -31458,6 +31848,16 @@ inline void *BuiltinOptionsUnion::UnPack(const void *obj, BuiltinOptions type,
       auto ptr = reinterpret_cast<const circle::RightShiftOptions *>(obj);
       return ptr->UnPack(resolver);
     }
+    case BuiltinOptions_RoPEOptions:
+    {
+      auto ptr = reinterpret_cast<const circle::RoPEOptions *>(obj);
+      return ptr->UnPack(resolver);
+    }
+    case BuiltinOptions_RmsNormOptions:
+    {
+      auto ptr = reinterpret_cast<const circle::RmsNormOptions *>(obj);
+      return ptr->UnPack(resolver);
+    }
     case BuiltinOptions_GRUOptions:
     {
       auto ptr = reinterpret_cast<const circle::GRUOptions *>(obj);
@@ -32119,6 +32519,16 @@ BuiltinOptionsUnion::Pack(::flatbuffers::FlatBufferBuilder &_fbb,
     {
       auto ptr = reinterpret_cast<const circle::RightShiftOptionsT *>(value);
       return CreateRightShiftOptions(_fbb, ptr, _rehasher).Union();
+    }
+    case BuiltinOptions_RoPEOptions:
+    {
+      auto ptr = reinterpret_cast<const circle::RoPEOptionsT *>(value);
+      return CreateRoPEOptions(_fbb, ptr, _rehasher).Union();
+    }
+    case BuiltinOptions_RmsNormOptions:
+    {
+      auto ptr = reinterpret_cast<const circle::RmsNormOptionsT *>(value);
+      return CreateRmsNormOptions(_fbb, ptr, _rehasher).Union();
     }
     case BuiltinOptions_GRUOptions:
     {
@@ -32839,6 +33249,16 @@ inline BuiltinOptionsUnion::BuiltinOptionsUnion(const BuiltinOptionsUnion &u)
     {
       value =
         new circle::RightShiftOptionsT(*reinterpret_cast<circle::RightShiftOptionsT *>(u.value));
+      break;
+    }
+    case BuiltinOptions_RoPEOptions:
+    {
+      value = new circle::RoPEOptionsT(*reinterpret_cast<circle::RoPEOptionsT *>(u.value));
+      break;
+    }
+    case BuiltinOptions_RmsNormOptions:
+    {
+      value = new circle::RmsNormOptionsT(*reinterpret_cast<circle::RmsNormOptionsT *>(u.value));
       break;
     }
     case BuiltinOptions_GRUOptions:
@@ -33626,6 +34046,18 @@ inline void BuiltinOptionsUnion::Reset()
     case BuiltinOptions_RightShiftOptions:
     {
       auto ptr = reinterpret_cast<circle::RightShiftOptionsT *>(value);
+      delete ptr;
+      break;
+    }
+    case BuiltinOptions_RoPEOptions:
+    {
+      auto ptr = reinterpret_cast<circle::RoPEOptionsT *>(value);
+      delete ptr;
+      break;
+    }
+    case BuiltinOptions_RmsNormOptions:
+    {
+      auto ptr = reinterpret_cast<circle::RmsNormOptionsT *>(value);
       delete ptr;
       break;
     }

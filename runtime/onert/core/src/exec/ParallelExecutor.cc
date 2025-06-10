@@ -21,9 +21,7 @@
 #include "util/logging.h"
 #include "exec/IFunction.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 class HookFunction : public IFunction
@@ -156,5 +154,4 @@ void ParallelExecutor::executeImpl(const ExecutionObservee &subject)
   _input_info = _initial_input_info;
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

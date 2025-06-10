@@ -1,0 +1,94 @@
+#!/bin/bash
+
+# Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# NOTE this file is used to prepare venv for local circle-mlir development.
+
+set -e
+
+DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ -z "$VENV_NAME" ]]; then
+  VENV_NAME="venv"
+fi
+
+VENV_ACTIVATE=${DRIVER_PATH}/${VENV_NAME}/bin/activate
+# NOTE please use venv's python instead of python after `source activation`.
+VENV_PYTHON=${DRIVER_PATH}/${VENV_NAME}/bin/python
+
+if [ ! -f ${VENV_ACTIVATE} ]; then
+  # Create python virtual enviornment
+  python3 -m venv "${DRIVER_PATH}/${VENV_NAME}"
+fi
+
+# NOTE version
+# - https://github.com/onnx/onnx/blob/master/docs/Versioning.md
+# - https://github.com/Samsung/ONE/issues/15226#issuecomment-2829062592
+
+VER_TORCH=2.4.1+cpu
+VER_ONNX=1.17.0
+VER_ONNXRUNTIME=1.18.0
+VER_NUMPY=1.24.3
+
+PYTHON_VERSION=$($VENV_PYTHON -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
+echo "python3 version is $PYTHON_VERSION"
+
+if [[ "$PYTHON_VERSION" == "3.8" ]]; then
+  # Ubuntu 20.04 is python3.8
+  : # use as is
+elif [[ "$PYTHON_VERSION" == "3.10" ]]; then
+  # Ubuntu 22.04 is python3.10
+  VER_TORCH=2.7.0+cpu
+  VER_ONNX=1.17.0
+  VER_ONNXRUNTIME=1.21.1
+  VER_NUMPY=1.26.4
+elif [[ "$PYTHON_VERSION" == "3.12" ]]; then
+  # Ubuntu 24.04 is python3.12
+  VER_TORCH=2.7.0+cpu
+  VER_ONNX=1.17.0
+  VER_ONNXRUNTIME=1.21.1
+  VER_NUMPY=1.26.4
+else
+  echo "Error prepare-venv: Unsupported python version: $PYTHON_VERSION"
+  exit 1
+fi
+
+PIP_TRUSTED_HOST="--trusted-host pypi.org "
+PIP_TRUSTED_HOST+="--trusted-host pypi.python.org "
+PIP_TRUSTED_HOST+="--trusted-host files.pythonhosted.org "
+PIP_TRUSTED_HOST+="--trusted-host download.pytorch.org "
+
+PIP_TIMEOUT="--default-timeout=1000 "
+
+PIP_OPTIONS="${PIP_TIMEOUT} ${PIP_TRUSTED_HOST}"
+
+# NOTE $PREPVENV_PIP_OPTION is to provide additional PIP options
+# such as ceritificate file behind firewall
+# ex) PREPVENV_PIP_OPTION="--cert SomePrivateCetificate.crt" ./prepare-venv
+if [[ ! -z "$PREPVENV_PIP_OPTION" ]]; then
+  PIP_OPTIONS+=" ${PREPVENV_PIP_OPTION} "
+fi
+
+PYTHON_PACKAGES="torch==${VER_TORCH} "
+PYTHON_PACKAGES+="onnx==${VER_ONNX} "
+PYTHON_PACKAGES+="onnxruntime==${VER_ONNXRUNTIME} "
+PYTHON_PACKAGES+="h5py==3.8.0 "
+PYTHON_PACKAGES+="einops "
+PYTHON_PACKAGES+="numpy==${VER_NUMPY} "
+
+TORCH_SOURCE_OPTION="-f https://download.pytorch.org/whl/torch"
+
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade pip setuptools
+
+${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade ${PYTHON_PACKAGES} ${TORCH_SOURCE_OPTION}

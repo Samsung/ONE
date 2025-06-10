@@ -20,13 +20,7 @@
 
 #include <cker/operation/SoftMax.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 SoftMaxLayer::SoftMaxLayer() : _input(nullptr), _output(nullptr), _beta(0.0)
@@ -124,7 +118,4 @@ void SoftMaxLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

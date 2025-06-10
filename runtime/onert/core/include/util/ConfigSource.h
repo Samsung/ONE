@@ -20,11 +20,11 @@
 #include <string>
 #include <unordered_map>
 
-namespace onert
-{
-namespace util
+namespace onert::util
 {
 
+// TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+//       to use `std::string_view` with lookup functions in unordered containers
 using CfgKeyValues = std::unordered_map<std::string, std::string>;
 
 void setConfigKeyValues(const CfgKeyValues &keyValues);
@@ -36,14 +36,9 @@ bool getConfigBool(const std::string &key);
 int getConfigInt(const std::string &key);
 std::string getConfigString(const std::string &key);
 
-} // namespace util
-} // namespace onert
+} // namespace onert::util
 
-namespace onert
-{
-namespace util
-{
-namespace config
+namespace onert::util::config
 {
 
 #define CONFIG(Name, Type, Default) extern const char *Name;
@@ -52,8 +47,6 @@ namespace config
 
 #undef CONFIG
 
-} // namespace config
-} // namespace util
-} // namespace onert
+} // namespace onert::util::config
 
 #endif // __ONERT_UTIL_CONFIG_SOURCE_H__

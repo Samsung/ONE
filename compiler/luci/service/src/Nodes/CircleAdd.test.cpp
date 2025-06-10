@@ -56,6 +56,235 @@ TEST(ShapeRuleTest, different_input_shapes_add)
   ASSERT_EQ(5, shape.dim(2).value());
 }
 
+TEST(ShapeRuleTest, add_dynamic_shape_non_1)
+{
+  luci::CircleInput input_1;
+  luci::CircleInput input_2;
+  luci::CircleAdd add;
+
+  input_1.shape({1, 4, 3, 1});
+  input_1.shape_status(luci::ShapeStatus::VALID);
+
+  input_2.shape({1, 1, 1});
+  input_2.shape_status(luci::ShapeStatus::VALID);
+  input_2.dim(0).unset();
+
+  add.x(&input_1);
+  add.y(&input_2);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&add, shape));
+  ASSERT_EQ(4, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_TRUE(shape.dim(2).known());
+  ASSERT_TRUE(shape.dim(3).known());
+  ASSERT_EQ(1, shape.dim(0).value());
+  ASSERT_EQ(4, shape.dim(1).value());
+  ASSERT_EQ(3, shape.dim(2).value());
+  ASSERT_EQ(1, shape.dim(3).value());
+}
+
+TEST(ShapeRuleTest, add_dynamic_shape_1)
+{
+  luci::CircleInput input_1;
+  luci::CircleInput input_2;
+  luci::CircleAdd add;
+
+  input_1.shape({1, 4, 3, 1});
+  input_1.shape_status(luci::ShapeStatus::VALID);
+
+  input_2.shape({1, 1, 1});
+  input_2.shape_status(luci::ShapeStatus::VALID);
+  input_2.dim(2).unset();
+
+  add.x(&input_1);
+  add.y(&input_2);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&add, shape));
+  ASSERT_EQ(4, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_TRUE(shape.dim(2).known());
+  ASSERT_FALSE(shape.dim(3).known());
+  ASSERT_EQ(1, shape.dim(0).value());
+  ASSERT_EQ(4, shape.dim(1).value());
+  ASSERT_EQ(3, shape.dim(2).value());
+  ASSERT_EQ(0, shape.dim(3).value());
+}
+
+TEST(ShapeRuleTest, add_dynamic_shape_both)
+{
+  luci::CircleInput input_1;
+  luci::CircleInput input_2;
+  luci::CircleAdd add;
+
+  input_1.shape({1, 4, 3, 1});
+  input_1.shape_status(luci::ShapeStatus::VALID);
+  input_1.dim(3).unset();
+
+  input_2.shape({1, 1, 1});
+  input_2.shape_status(luci::ShapeStatus::VALID);
+  input_2.dim(2).unset();
+
+  add.x(&input_1);
+  add.y(&input_2);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&add, shape));
+  ASSERT_EQ(4, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_TRUE(shape.dim(2).known());
+  ASSERT_FALSE(shape.dim(3).known());
+  ASSERT_EQ(1, shape.dim(0).value());
+  ASSERT_EQ(4, shape.dim(1).value());
+  ASSERT_EQ(3, shape.dim(2).value());
+  ASSERT_EQ(0, shape.dim(3).value());
+}
+
+TEST(ShapeRuleTest, add_scalar)
+{
+  luci::CircleInput input_1;
+  luci::CircleInput input_2;
+  luci::CircleAdd add;
+
+  input_1.shape({1, 4, 3, 1});
+  input_1.shape_status(luci::ShapeStatus::VALID);
+
+  input_2.shape({});
+  input_2.shape_status(luci::ShapeStatus::VALID);
+
+  add.x(&input_1);
+  add.y(&input_2);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_TRUE(shape_inf_rule.infer(&add, shape));
+  ASSERT_EQ(4, shape.rank());
+  ASSERT_TRUE(shape.dim(0).known());
+  ASSERT_TRUE(shape.dim(1).known());
+  ASSERT_TRUE(shape.dim(2).known());
+  ASSERT_TRUE(shape.dim(3).known());
+  ASSERT_EQ(1, shape.dim(0).value());
+  ASSERT_EQ(4, shape.dim(1).value());
+  ASSERT_EQ(3, shape.dim(2).value());
+  ASSERT_EQ(1, shape.dim(3).value());
+}
+
+TEST(ShapeRuleTest, add_not_broadcastable_NEG)
+{
+  luci::CircleInput input_1;
+  luci::CircleInput input_2;
+  luci::CircleAdd add;
+
+  input_1.shape({1, 4, 3, 1});
+  input_1.shape_status(luci::ShapeStatus::VALID);
+
+  input_2.shape({1, 2, 1});
+  input_2.shape_status(luci::ShapeStatus::VALID);
+
+  add.x(&input_1);
+  add.y(&input_2);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&add, shape));
+}
+
+TEST(ShapeRuleTest, add_not_broadcastable_2_NEG)
+{
+  luci::CircleInput input_1;
+  luci::CircleInput input_2;
+  luci::CircleAdd add;
+
+  input_1.shape({1, 4, 3, 1});
+  input_1.shape_status(luci::ShapeStatus::VALID);
+
+  input_2.shape({2, 1, 1});
+  input_2.shape_status(luci::ShapeStatus::VALID);
+
+  add.x(&input_1);
+  add.y(&input_2);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&add, shape));
+}
+
+TEST(ShapeRuleTest, add_not_broadcastable_3_NEG)
+{
+  luci::CircleInput input_1;
+  luci::CircleInput input_2;
+  luci::CircleAdd add;
+
+  input_1.shape({1, 4, 3, 1});
+  input_1.shape_status(luci::ShapeStatus::VALID);
+
+  input_2.shape({2, 3, 1});
+  input_2.shape_status(luci::ShapeStatus::VALID);
+
+  add.x(&input_1);
+  add.y(&input_2);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&add, shape));
+}
+
+TEST(ShapeRuleTest, add_not_broadcastable_4_NEG)
+{
+  luci::CircleInput input_1;
+  luci::CircleInput input_2;
+  luci::CircleAdd add;
+
+  input_1.shape({1, 4, 3, 1});
+  input_1.shape_status(luci::ShapeStatus::VALID);
+
+  input_2.shape({2, 3, 2});
+  input_2.shape_status(luci::ShapeStatus::VALID);
+
+  add.x(&input_1);
+  add.y(&input_2);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&add, shape));
+}
+
+TEST(ShapeRuleTest, add_not_broadcastable_5_NEG)
+{
+  luci::CircleInput input_1;
+  luci::CircleInput input_2;
+  luci::CircleAdd add;
+
+  input_1.shape({1, 4, 3, 1});
+  input_1.shape_status(luci::ShapeStatus::VALID);
+
+  input_2.shape({3, 2, 3, 2});
+  input_2.shape_status(luci::ShapeStatus::VALID);
+
+  add.x(&input_1);
+  add.y(&input_2);
+
+  loco::TensorShape shape;
+  luci::sinf::Rule shape_inf_rule;
+
+  ASSERT_ANY_THROW(shape_inf_rule.infer(&add, shape));
+}
+
 TEST(CloneNodeTest, clone_Add)
 {
   auto g = loco::make_graph();

@@ -26,11 +26,7 @@
 #include <memory>
 #include <unordered_set>
 
-namespace onert
-{
-namespace compiler
-{
-namespace train
+namespace onert::compiler::train
 {
 
 class TensorRegistries
@@ -107,8 +103,6 @@ private:
   std::shared_ptr<backend::builtin::train::TensorRegistry> _builtin_tensor_reg;
 };
 
-} // namespace train
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::train
 
 #endif // __ONERT_COMPILER_TRAIN_TENSOR_REGISTRIES_H__

@@ -14,24 +14,15 @@
 
 FROM ubuntu:jammy
 
-# Install 'add-apt-repository'
-RUN apt-get update && apt-get -qqy install software-properties-common
-
 # Build tool
-RUN apt-get update && apt-get -qqy install build-essential cmake scons git
+RUN apt-get update && apt-get -qqy install build-essential cmake scons git pkg-config
 
 # Additonal tools
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive \
-    apt-get -qqy install doxygen graphviz wget zip unzip python3 python3-pip python3-venv python3-dev hdf5-tools pylint curl
+    apt-get -qqy install wget zip unzip python3 python3-pip python3-venv python3-dev hdf5-tools curl
 RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install yapf==0.22.0 numpy flatbuffers
-
-# Install clang-format
-RUN apt-get install -qqy gnupg2
-RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
-RUN add-apt-repository "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main"
-RUN apt-get update && apt-get install -qqy clang-format-16
+RUN python3 -m pip install numpy flatbuffers
 
 # Install java for gradle and android sdk (and file for NDK internally used)
 ARG OPENJDK_VERSION=11
@@ -49,9 +40,10 @@ RUN echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
 
-# Set user to the one we just created
+# Create directory to install android tools and set user to the one we just created
+RUN mkdir -p /opt/android-tools && chown -R ${USER_ID}:${GROUP_ID} /opt/android-tools
 USER ${USER_ID}
-WORKDIR /home/ubuntu
+WORKDIR /opt/android-tools
 
 # download and install Gradle
 # https://services.gradle.org/distributions/
@@ -64,7 +56,7 @@ RUN wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-$
 
 # download and install Android SDK
 # https://developer.android.com/studio#command-tools
-ENV ANDROID_HOME /home/ubuntu/android-sdk
+ENV ANDROID_HOME /opt/android-tools/android-sdk
 RUN wget -q -O commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-linux-6514223_latest.zip
 
 # Unzip bootstrap cmdline-tools (old version) to tmp dir and install cmdline-tools (latest openjdk supporting version)
@@ -82,8 +74,10 @@ RUN ${ANDROID_HOME}/cmdline-tools/${CMDTOOLS_VERSION}/bin/sdkmanager --sdk_root=
 
 # Env variable for android build (ndk, gradle)
 ENV NDK_DIR ${ANDROID_HOME}/ndk/${NDK_VERSION}
-ENV GRADLE_HOME /home/ubuntu/gradle
+ENV GRADLE_HOME /opt/android-tools/gradle
 ENV PATH ${PATH}:${GRADLE_HOME}/bin:${ANDROID_HOME}/cmdline-tools/${CMDTOOLS_VERSION}/bin:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
 
 # setup adb server
 EXPOSE 5037
+
+WORKDIR /home/ubuntu

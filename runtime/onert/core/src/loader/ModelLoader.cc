@@ -20,9 +20,7 @@
 
 #include <dlfcn.h>
 
-namespace onert
-{
-namespace loader
+namespace onert::loader
 {
 
 std::unique_ptr<ir::Model> loadModel(const std::string &filename, const std::string &type)
@@ -81,5 +79,4 @@ std::unique_ptr<ir::Model> loadModel(const std::string &filename, const std::str
   throw std::runtime_error("Failed to load model " + filename);
 }
 
-} // namespace loader
-} // namespace onert
+} // namespace onert::loader

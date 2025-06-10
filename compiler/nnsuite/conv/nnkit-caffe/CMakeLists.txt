@@ -10,6 +10,10 @@ add_library(nnsuite_conv_caffe SHARED ${SOURCES})
 target_link_libraries(nnsuite_conv_caffe nnsuite_conv)
 target_link_libraries(nnsuite_conv_caffe nnkit_support_caffe)
 
+if(NOT ENABLE_TEST)
+  return()
+endif(NOT ENABLE_TEST)
+
 nnas_find_package(GTest QUIET)
 
 if(NOT GTest_FOUND)

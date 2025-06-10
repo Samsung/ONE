@@ -19,11 +19,10 @@
 
 #include "LossCode.h"
 
-namespace onert
-{
-namespace ir
-{
-namespace train
+#include <variant>
+#include <utility>
+
+namespace onert::ir::train
 {
 
 enum class LossReductionType
@@ -43,19 +42,15 @@ struct LossInfo
 {
   LossCode loss_code;
   LossReductionType reduction_type;
-  union LossParam {
-    CategoricalCrossentropyParam cce;
-  } loss_param;
+  std::variant<std::monostate, CategoricalCrossentropyParam> loss_param;
 
   LossInfo()
     : loss_code{LossCode::Undefined}, reduction_type{LossReductionType::Undefined},
-      loss_param{-1, 0.0f}
+      loss_param{CategoricalCrossentropyParam{-1, 0.0f}}
   {
   }
 };
 
-} // namespace train
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::train
 
 #endif // __ONERT_IR_TRAIN_LOSS_INFO_H__

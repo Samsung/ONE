@@ -22,8 +22,7 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::GHIJ>::visit(const luci::CircleGather *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleGather>();
-  if (cloned != nullptr)
-    cloned->axis(node->axis());
+  cloned->axis(node->axis());
   return cloned;
 }
 

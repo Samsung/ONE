@@ -23,9 +23,7 @@
 #include "ir/Index.h"
 #include "compiler/ILoweredGraph.h"
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 class Linear
@@ -36,7 +34,6 @@ public:
                    const std::vector<ir::OperationIndex> &order);
 };
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler
 
 #endif // __ONERT_COMPILER_LINEAR_H__

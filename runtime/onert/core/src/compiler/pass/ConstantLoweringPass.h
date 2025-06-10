@@ -20,11 +20,7 @@
 #include <ir/Index.h>
 #include "LoweredOperationPass.h"
 
-namespace onert
-{
-namespace compiler
-{
-namespace pass
+namespace onert::compiler::pass
 {
 
 class ConstantLoweringPass : public LoweredOperationPass
@@ -39,8 +35,6 @@ public:
   void callback(const ir::OperationIndex &index, ir::IOperation &node) final;
 };
 
-} // namespace pass
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler::pass
 
 #endif // __ONERT_COMPILER_PASS_CONSTANT_LOWERING_PASS_H__

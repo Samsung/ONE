@@ -16,13 +16,7 @@
 
 #include "ReshapeLayer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 ReshapeLayer::ReshapeLayer() : _input(nullptr), _shape(nullptr), _output(nullptr)
@@ -32,8 +26,12 @@ ReshapeLayer::ReshapeLayer() : _input(nullptr), _shape(nullptr), _output(nullptr
 
 void ReshapeLayer::reshapeGeneric()
 {
-  size_t count = _input->total_size();
-  memcpy(_output->buffer(), _input->buffer(), count);
+  // output buffer equals to input buffer means that copy is not needed
+  if (_output->buffer() != _input->buffer())
+  {
+    size_t count = _input->total_size();
+    memcpy(_output->buffer(), _input->buffer(), count);
+  }
 }
 
 void ReshapeLayer::configure(const IPortableTensor *input, const IPortableTensor *shape,
@@ -47,7 +45,4 @@ void ReshapeLayer::configure(const IPortableTensor *input, const IPortableTensor
 
 void ReshapeLayer::run() { reshapeGeneric(); }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

@@ -29,11 +29,7 @@
 using Operation = onert::ir::Operation;
 using Object = onert::ir::Operand;
 
-namespace onert
-{
-namespace dumper
-{
-namespace dot
+namespace onert::dumper::dot
 {
 
 class DotBuilder
@@ -53,8 +49,6 @@ private:
   std::stringstream _dot;
 };
 
-} // namespace dot
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::dot
 
 #endif // __ONERT_DUMPER_DOT_DOT_BUILDER_H__

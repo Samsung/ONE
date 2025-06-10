@@ -41,11 +41,10 @@ one-infer provides post-processing after invoking backend inference driver
 use python script and its arguments to '--post-process' argument as below
 one-infer -d dummy-infer --post-process "script.py arg1 arg2" -- [arguments for dummy-infer]
 """
-    parser = argparse.ArgumentParser(
-        description='command line tool to infer model',
-        usage=infer_usage,
-        epilog=infer_detail,
-        formatter_class=argparse.RawTextHelpFormatter)
+    parser = argparse.ArgumentParser(description='command line tool to infer model',
+                                     usage=infer_usage,
+                                     epilog=infer_detail,
+                                     formatter_class=argparse.RawTextHelpFormatter)
 
     oneutils.add_default_arg(parser)
 

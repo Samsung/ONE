@@ -28,11 +28,7 @@
 #include "TensorManager.h"
 #include "Optimizer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_neon
+namespace onert::backend::acl_neon
 {
 
 class Backend : public ::onert::backend::Backend
@@ -64,8 +60,6 @@ private:
   std::shared_ptr<IConfig> _config;
 };
 
-} // namespace acl_neon
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_neon
 
 #endif // __ONERT_BACKEND_ACL_NEON_BACKEND_H__

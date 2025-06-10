@@ -19,17 +19,11 @@
 
 #include <backend/basic/TensorBuilder.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
+namespace onert::backend::ruy
 {
 
 using TensorBuilder = basic::TensorBuilder;
 
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy
 
 #endif // __ONERT_BACKEND_RUY_TENSOR_BUILDER_H__

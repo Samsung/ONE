@@ -27,10 +27,8 @@ int32_t find_input_index(const std::vector<ir::IODesc> &pkg_inputs,
 {
   for (size_t i = 0; i < pkg_inputs.size(); i++)
   {
-    auto &input_desc = pkg_inputs[i];
-    if ((std::get<ir::ModelIndex>(input_desc) == model_index) &&
-        (std::get<ir::SubgraphIndex>(input_desc) == subg_index) &&
-        (std::get<ir::IOIndex>(input_desc) == io_index))
+    const auto &[m, s, io] = pkg_inputs[i];
+    if ((m == model_index) && (s == subg_index) && (io == io_index))
       return static_cast<int32_t>(i);
   }
   return -1;
@@ -42,10 +40,8 @@ int32_t find_output_index(const std::vector<ir::IODesc> &pkg_outputs,
 {
   for (size_t i = 0; i < pkg_outputs.size(); i++)
   {
-    auto &input_desc = pkg_outputs[i];
-    if ((std::get<ir::ModelIndex>(input_desc) == model_index) &&
-        (std::get<ir::SubgraphIndex>(input_desc) == subg_index) &&
-        (std::get<ir::IOIndex>(input_desc) == io_index))
+    const auto &[m, s, io] = pkg_outputs[i];
+    if ((m == model_index) && (s == subg_index) && (io == io_index))
       return static_cast<int32_t>(i);
   }
   return -1;
@@ -53,9 +49,7 @@ int32_t find_output_index(const std::vector<ir::IODesc> &pkg_outputs,
 
 } // namespace
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 void MultiModelExecutors::emplace(const ir::ModelIndex &model_index,
@@ -77,22 +71,23 @@ uint32_t MultiModelExecutors::outputSize() const { return _model_edges->pkg_outp
 
 const ir::OperandInfo &MultiModelExecutors::inputInfo(const ir::IOIndex &index) const
 {
-  auto const desc = _model_edges->pkg_inputs[index.value()];
-  auto const model_index = std::get<0>(desc);
-  auto const subg_index = std::get<1>(desc);
-  auto const io_index = std::get<2>(desc);
+  auto const [model_index, subg_index, io_index] = _model_edges->pkg_inputs[index.value()];
   auto const executor = at(model_index, subg_index);
   return executor->inputInfo(io_index.value());
 }
 
 const ir::OperandInfo &MultiModelExecutors::outputInfo(const ir::IOIndex &index) const
 {
-  auto const desc = _model_edges->pkg_outputs[index.value()];
-  auto const model_index = std::get<0>(desc);
-  auto const subg_index = std::get<1>(desc);
-  auto const io_index = std::get<2>(desc);
+  auto const [model_index, subg_index, io_index] = _model_edges->pkg_outputs[index.value()];
   auto const executor = at(model_index, subg_index);
   return executor->outputInfo(io_index.value());
+}
+
+const void *MultiModelExecutors::outputBuffer(const ir::IOIndex &index) const
+{
+  auto const [model_index, subg_index, io_index] = _model_edges->pkg_outputs[index.value()];
+  auto const executor = at(model_index, subg_index);
+  return static_cast<const void *>(executor->outputBuffer(index.value()));
 }
 
 // Allow below edges only
@@ -128,11 +123,10 @@ void MultiModelExecutors::checkSupportedMultimodel() const
   {
     auto first_executor = at(ir::ModelIndex{0}, ir::SubgraphIndex{0});
     auto search_first_model = [&](const ir::IOIndex &input_index) {
-      for (const auto &input : _model_edges->pkg_inputs)
+      for (const auto &[model_index, subg_index, io_index] : _model_edges->pkg_inputs)
       {
-        if ((std::get<ir::ModelIndex>(input) == ir::ModelIndex{0}) ||
-            (std::get<ir::SubgraphIndex>(input) == ir::SubgraphIndex{0}) ||
-            (std::get<ir::IOIndex>(input) == input_index))
+        if ((model_index == ir::ModelIndex{0}) || (subg_index == ir::SubgraphIndex{0}) ||
+            (io_index == input_index))
           return true;
       }
 
@@ -169,13 +163,11 @@ void MultiModelExecutors::createEdgeQuantLayers()
   for (const auto &pair : _edge_map)
   {
     const auto &from_iodesc = pair.first;
-    const auto &from_model_index = std::get<ir::ModelIndex>(from_iodesc);
-    const auto &from_subg_index = std::get<ir::SubgraphIndex>(from_iodesc);
-    const auto &from_io_index = std::get<ir::IOIndex>(from_iodesc);
+    const auto &[from_model_index, from_subg_index, from_io_index] = from_iodesc;
 
     const auto from_executor = _executors.at({from_model_index, from_subg_index}).get();
-    const auto &from_info = from_executor->inputInfo(from_io_index.value());
-    const auto from_layout = from_executor->inputLayout(from_io_index.value());
+    const auto &from_info = from_executor->outputInfo(from_io_index.value());
+    const auto from_layout = from_executor->outputLayout(from_io_index.value());
     _edge_tensors[from_iodesc] = std::make_unique<EdgeTensor>(from_info, from_layout);
   }
 
@@ -186,6 +178,7 @@ void MultiModelExecutors::createEdgeQuantLayers()
 
     std::vector<backend::ITensor *> inputs;
     std::vector<backend::ITensor *> outputs;
+    std::vector<ir::PermuteType> permute_types;
     for (const auto &[from_iodesc, to_list] : _edge_map)
     {
       if (std::get<ir::ModelIndex>(from_iodesc) == model_index &&
@@ -195,9 +188,7 @@ void MultiModelExecutors::createEdgeQuantLayers()
 
         for (const auto &to_iodesc : to_list)
         {
-          const auto &to_model_index = std::get<ir::ModelIndex>(to_iodesc);
-          const auto &to_subg_index = std::get<ir::SubgraphIndex>(to_iodesc);
-          const auto &to_io_index = std::get<ir::IOIndex>(to_iodesc);
+          const auto &[to_model_index, to_subg_index, to_io_index] = to_iodesc;
 
           const auto to_executor = _executors.at({to_model_index, to_subg_index}).get();
           const auto &to_info = to_executor->inputInfo(to_io_index.value());
@@ -212,13 +203,16 @@ void MultiModelExecutors::createEdgeQuantLayers()
             auto type_aware_quant_tensor = std::make_unique<EdgeTensor>(to_info, to_layout);
             outputs.emplace_back(type_aware_quant_tensor.get());
 
+            // No layout change on edge
+            permute_types.emplace_back(ir::PermuteType::COPY);
+
             _edge_quant_tensors[to_iodesc] = std::move(type_aware_quant_tensor);
           }
         }
       }
     }
 
-    auto layer = std::make_unique<PermuteLayer>(inputs, outputs);
+    auto layer = std::make_unique<PermuteLayer>(inputs, outputs, permute_types);
     layer->prepare();
     _edge_quant_layers[{model_index, subg_index}] = std::move(layer);
   }
@@ -231,9 +225,7 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
   for (const auto &pkg_input : _model_edges->pkg_inputs)
   {
     // Create IOTensor for nnpkg inputs
-    const auto &model_index = std::get<ir::ModelIndex>(pkg_input);
-    const auto &subg_index = std::get<ir::SubgraphIndex>(pkg_input);
-    const auto &io_index = std::get<ir::IOIndex>(pkg_input);
+    const auto &[model_index, subg_index, io_index] = pkg_input;
     const auto input_pkg_index =
       find_input_index(_model_edges->pkg_inputs, model_index, subg_index, io_index);
     if (input_pkg_index == -1)
@@ -249,9 +241,7 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
   for (const auto &pkg_output : _model_edges->pkg_outputs)
   {
     // Create IOTensor for nnpkg outputs
-    const auto &model_index = std::get<ir::ModelIndex>(pkg_output);
-    const auto &subg_index = std::get<ir::SubgraphIndex>(pkg_output);
-    const auto &io_index = std::get<ir::IOIndex>(pkg_output);
+    const auto &[model_index, subg_index, io_index] = pkg_output;
     const auto output_pkg_index =
       find_output_index(_model_edges->pkg_outputs, model_index, subg_index, io_index);
     if (output_pkg_index == -1)
@@ -282,6 +272,7 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
     }
     std::vector<backend::ITensor *> src_tensors;
     std::vector<backend::ITensor *> dst_tensors;
+    std::vector<ir::PermuteType> permute_types;
     for (const auto &pkg_input : pkg_inputs)
     {
       const auto &io_index = std::get<ir::IOIndex>(pkg_input);
@@ -294,7 +285,8 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
       // Create EdgeTensor for nnpkg input if type is different
       const auto &orig_info = executor->inputInfo(io_index.value());
       const auto orig_layout = executor->inputLayout(io_index.value());
-      if (input_desc->info.typeInfo().type() != orig_info.typeInfo().type())
+      if ((input_desc->info.typeInfo().type() != orig_info.typeInfo().type()) ||
+          (input_desc->layout == ir::Layout::NCHW))
       {
         auto pkg_input_edge_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
         _pkg_input_quant_tensors[pkg_input] = std::move(pkg_input_edge_tensor);
@@ -302,11 +294,16 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
         // Append type-aware quantization layer's inputs/outputs
         src_tensors.emplace_back(_pkg_input_tensors[pkg_input].get());
         dst_tensors.emplace_back(_pkg_input_quant_tensors[pkg_input].get());
+
+        if (input_desc->layout == ir::Layout::NCHW)
+          permute_types.emplace_back(ir::PermuteType::NCHW_TO_NHWC);
+        else
+          permute_types.emplace_back(ir::PermuteType::COPY);
       }
     }
 
     // Create type-aware quantization layer for nnpkg inputs
-    auto pkg_input_layer = std::make_unique<PermuteLayer>(src_tensors, dst_tensors);
+    auto pkg_input_layer = std::make_unique<PermuteLayer>(src_tensors, dst_tensors, permute_types);
     pkg_input_layer->prepare();
     _pkg_input_quant_layers[{model_index, subg_index}] = std::move(pkg_input_layer);
 
@@ -322,6 +319,7 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
     }
     src_tensors.clear();
     dst_tensors.clear();
+    permute_types.clear();
     // Create Tensors of nnpkg outputs for type-aware quantization
     for (const auto &pkg_output : pkg_outputs)
     {
@@ -335,7 +333,8 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
       // Create EdgeTensor for nnpkg output if type is different
       const auto &orig_info = executor->outputInfo(io_index.value());
       const auto orig_layout = executor->outputLayout(io_index.value());
-      if (output_desc->info.typeInfo().type() != orig_info.typeInfo().type())
+      if ((output_desc->info.typeInfo().type() != orig_info.typeInfo().type()) ||
+          (output_desc->layout == ir::Layout::NCHW))
       {
         auto pkg_output_edge_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
         _pkg_output_quant_tensors[pkg_output] = std::move(pkg_output_edge_tensor);
@@ -343,11 +342,16 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
         // Append type-aware quantization layer's inputs/outputs
         src_tensors.emplace_back(_pkg_output_quant_tensors[pkg_output].get());
         dst_tensors.emplace_back(_pkg_output_tensors[pkg_output].get());
+
+        if (output_desc->layout == ir::Layout::NCHW)
+          permute_types.emplace_back(ir::PermuteType::NHWC_TO_NCHW);
+        else
+          permute_types.emplace_back(ir::PermuteType::COPY);
       }
     }
 
     // Create type-aware quantization layer for nnpkg outputs
-    auto pkg_output_layer = std::make_unique<PermuteLayer>(src_tensors, dst_tensors);
+    auto pkg_output_layer = std::make_unique<PermuteLayer>(src_tensors, dst_tensors, permute_types);
     pkg_output_layer->prepare();
     _pkg_output_quant_layers[{model_index, subg_index}] = std::move(pkg_output_layer);
   }
@@ -578,5 +582,4 @@ uint16_t MultiModelExecutors::modelCount() const
   return model_count;
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

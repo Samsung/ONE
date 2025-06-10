@@ -19,32 +19,22 @@
 #include "backend/basic/train/TrainableBackendContextHelpers.h"
 #include "exec/FunctionSequence.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
-{
-namespace train
+namespace onert::backend::builtin::train
 {
 
-backend::ITensorRegistry *BackendContext::genTensors()
+backend::train::FunctionMap BackendContext::gen()
 {
   // For now, there is no need to generate tensors for forwarding and backwarding.
   // builtin train backend handles 3 operators: `Permute`, `IF`, `WHILE`.
   // `Permute`: Tensor generation is not required.
   // `IF`, `WHILE`: Not supported yet
-  return tensor_registry().get();
-}
 
-backend::train::FunctionMap BackendContext::genKernels()
-{
-  backend::train::FunctionMap ret;
+  backend::train::FunctionMap fn_map;
 
   for (auto &&op_ind : _tdata->op_order)
   {
     auto tn_seq = kernel_gen->generate(op_ind);
-    ret.emplace(op_ind, std::move(tn_seq));
+    fn_map.emplace(op_ind, std::move(tn_seq));
   }
 
   trainable_graph()->operands().iterate(
@@ -57,16 +47,13 @@ backend::train::FunctionMap BackendContext::genKernels()
     });
 
   // TODO Enable prepare()
-  // for (auto &&it : ret)
+  // for (auto &&it : fn_map)
   // {
   //   auto &fn_seq = it.second;
   //   fn_seq->iterate([&](exec::IFunction &ifunc) { ifunc.prepare(); });
   // }
 
-  return ret;
+  return fn_map;
 }
 
-} // namespace train
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin::train

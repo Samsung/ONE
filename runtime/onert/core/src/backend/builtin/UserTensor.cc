@@ -19,11 +19,7 @@
 #include "util/Exceptions.h"
 #include "ir/DataType.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 bool UserTensor::applyShape(const ir::Shape &new_shape)
@@ -36,6 +32,4 @@ bool UserTensor::applyShape(const ir::Shape &new_shape)
   return true;
 }
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin

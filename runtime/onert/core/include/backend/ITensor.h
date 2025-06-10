@@ -26,11 +26,8 @@
 #include "ir/Layout.h"
 #include "ir/Shape.h"
 #include "ir/Coordinates.h"
-#include "util/Utils.h"
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 
 class ITensor
@@ -42,7 +39,6 @@ public:
   virtual uint8_t *buffer() const = 0;
   virtual size_t total_size() const = 0;
   virtual size_t calcOffset(const ir::Coordinates &coords) const = 0;
-  virtual ir::Layout layout() const = 0;
   virtual ir::DataType data_type() const = 0;
   virtual float data_scale() const = 0;
   virtual int32_t data_zero_point() const = 0;
@@ -97,9 +93,8 @@ public:
    * @brief Set the shape of tenser to new_shape
    * @note  Higer dimension will be placed on front.
    */
-  virtual void setShape(const ir::Shape &new_shape)
+  virtual void setShape(const ir::Shape &)
   {
-    UNUSED_RELEASE(new_shape);
     throw std::runtime_error("This backend does not support dynamic setShape");
   }
 
@@ -121,7 +116,6 @@ public:
   }
 };
 
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend
 
 #endif // __ONERT_BACKEND_OPERAND_I_TENSOR_H__

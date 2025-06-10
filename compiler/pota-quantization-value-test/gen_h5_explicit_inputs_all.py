@@ -37,21 +37,18 @@ def toNumpyType(circle_type):
 # 4, 5, 6
 #
 parser = argparse.ArgumentParser()
-parser.add_argument(
-    '--output_dir',
-    type=str,
-    required=True,
-    help='Output directory where the inputs are generated')
-parser.add_argument(
-    '--artifact_dir',
-    type=str,
-    required=True,
-    help='Artifact directory where test files exist')
-parser.add_argument(
-    '--input_dir',
-    type=str,
-    required=True,
-    help='Input directory where input text files exist')
+parser.add_argument('--output_dir',
+                    type=str,
+                    required=True,
+                    help='Output directory where the inputs are generated')
+parser.add_argument('--artifact_dir',
+                    type=str,
+                    required=True,
+                    help='Artifact directory where test files exist')
+parser.add_argument('--input_dir',
+                    type=str,
+                    required=True,
+                    help='Input directory where input text files exist')
 parser.add_argument(
     '--test_param',
     type=str,

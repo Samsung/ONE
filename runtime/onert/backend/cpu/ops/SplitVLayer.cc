@@ -20,13 +20,7 @@
 
 #include <cker/operation/SplitV.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 SplitVLayer::SplitVLayer()
@@ -93,7 +87,4 @@ void SplitVLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

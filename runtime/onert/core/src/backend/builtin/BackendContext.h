@@ -23,11 +23,7 @@
 #include "backend/BackendContext.h"
 #include "compiler/GraphLowerInfo.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace builtin
+namespace onert::backend::builtin
 {
 
 class BackendContext : public onert::backend::BackendContext
@@ -65,8 +61,6 @@ private:
   std::shared_ptr<ExternalContext> _external_context;
 };
 
-} // namespace builtin
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::builtin
 
 #endif // __ONERT_BACKEND_BUILTIN_BACKEND_CONTEXT_H__

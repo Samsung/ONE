@@ -19,17 +19,11 @@
 
 #include <ExternalContext.h> // From cpu backend
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 using ExternalContext = cpu::ExternalContext;
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train
 
 #endif // __ONERT_BACKEND_TRAIN_EXTERNAL_CONTEXT_H__

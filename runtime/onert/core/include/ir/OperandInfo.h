@@ -26,9 +26,7 @@
 #include "ir/Shape.h"
 #include "ir/TypeInfo.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 /**
@@ -120,7 +118,7 @@ public:
    * @brief   Return size of tensor (bytes)
    * @return  Tensor size
    */
-  size_t total_size() const { return _shape.num_elements() * sizeOfDataType(_typeInfo.type()); }
+  size_t total_size() const;
 
   MemAllocType memAllocType() const { return _alloc_type; }
   void setAsConstant() { _const = true; }
@@ -153,7 +151,6 @@ private:
   OriginIndex _origin;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_OPERAND_INFO_H__

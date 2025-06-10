@@ -25,13 +25,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace exec
-{
-namespace feature
-{
-namespace nchw
+namespace onert::exec::feature::nchw
 {
 
 template <typename T> class View final : public Reader<T>
@@ -63,9 +57,6 @@ public:
   }
 };
 
-} // namespace nchw
-} // namespace feature
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::feature::nchw
 
 #endif // __ONERT_EXEC_FEATURE_NCHW_VIEW_H__

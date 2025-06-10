@@ -37,9 +37,14 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus
-onert_micro::import::configure_kernel_CircleFullyConnected(const OMConfigureArgs &config_args)
+namespace onert_micro
 {
+namespace import
+{
+
+OMStatus configure_kernel_CircleFullyConnected(const OMConfigureArgs &config_args)
+{
+
   OMRuntimeContext &runtime_context = config_args.runtime_context;
   uint16_t op_index = config_args.kernel_index;
   OMRuntimeStorage &runtime_storage = config_args.runtime_storage;
@@ -50,7 +55,6 @@ onert_micro::import::configure_kernel_CircleFullyConnected(const OMConfigureArgs
   const circle::Tensor *input = runtime_kernel.inputs[inputTensorIdx];
   const circle::Tensor *weight = runtime_kernel.inputs[weightTensorIdx];
   const circle::Tensor *bias = runtime_kernel.inputs[biasTensorIdx];
-
   const circle::Tensor *output = runtime_kernel.outputs[outputTensorIdx];
 
   assert(input != nullptr);
@@ -60,13 +64,65 @@ onert_micro::import::configure_kernel_CircleFullyConnected(const OMConfigureArgs
 
   OMStatus status = Ok;
 
-  if ((input->type() == circle::TensorType_FLOAT32 &&
-       weight->type() != circle::TensorType_FLOAT32) or
-      (input->type() == circle::TensorType_INT8 && weight->type() != circle::TensorType_INT8) or
-      (input->type() == circle::TensorType_INT16 && weight->type() != circle::TensorType_INT16))
+#ifndef DIS_FLOAT
+  if (weight->type() == circle::TensorType_FLOAT32)
   {
-    return UnsupportedType;
+
+    status = utils::checkCondition(input->type() == circle::TensorType_FLOAT32 and
+                                   output->type() == circle::TensorType_FLOAT32 and
+                                   (!bias or bias->type() == circle::TensorType_FLOAT32));
+    if (status != Ok)
+      return status;
   }
+#endif // DIS_FLOAT
+#ifndef DIS_QUANT
+  if (weight->type() == circle::TensorType_UINT8)
+  {
+
+    status = utils::checkCondition(input->type() == circle::TensorType_UINT8 and
+                                   output->type() == circle::TensorType_UINT8 and
+                                   (!bias or bias->type() == circle::TensorType_INT32));
+    if (status != Ok)
+      return status;
+  }
+  else if (weight->type() == circle::TensorType_INT8)
+  {
+    status = utils::checkCondition(input->type() == circle::TensorType_INT8 or
+                                   input->type() == circle::TensorType_FLOAT32);
+    if (status != Ok)
+      return status;
+
+    status = utils::checkCondition(output->type() == circle::TensorType_INT8 or
+                                   output->type() == circle::TensorType_FLOAT32);
+    if (status != Ok)
+      return status;
+
+    status = utils::checkCondition(!bias or bias->type() == circle::TensorType_INT32 or
+                                   bias->type() == circle::TensorType_INT64 or
+                                   bias->type() == circle::TensorType_FLOAT32);
+    if (status != Ok)
+      return status;
+
+    if (input->type() == circle::TensorType_FLOAT32)
+    {
+      // hybrid mode
+      // Check it is channel wise quantization
+      status = utils::checkCondition(weight->quantization() != nullptr and
+                                     weight->quantization()->scale() != nullptr);
+      if (status != Ok)
+        return status;
+    }
+  }
+  else if (weight->type() == circle::TensorType_INT16)
+  {
+
+    status = utils::checkCondition(input->type() == circle::TensorType_INT16 and
+                                   output->type() == circle::TensorType_INT16 and
+                                   (!bias or bias->type() == circle::TensorType_INT32));
+    if (status != Ok)
+      return status;
+  }
+#endif // DIS_QUANT
 
   core::OMRuntimeShape weight_shape(weight);
   core::OMRuntimeShape bias_shape(bias);
@@ -80,9 +136,9 @@ onert_micro::import::configure_kernel_CircleFullyConnected(const OMConfigureArgs
   if (input_shape.flatSize() == 1 and output_shape.flatSize() != 1)
   {
 #ifndef DIS_DYN_SHAPES
-    int32_t dynamic_tensor_size =
-      runtime_storage.getDynamicTensorSize(runtime_kernel.inputs_index[inputTensorIdx]);
-    if (dynamic_tensor_size == -1)
+    input_shape =
+      runtime_storage.getDynamicRuntimeShape(runtime_kernel.inputs_index[inputTensorIdx]);
+    if (input_shape.flatSize() == 0)
       return UnsupportedDynamicShapeCase;
 #else
     return UnsupportedDynamicShapeCase;
@@ -119,3 +175,6 @@ onert_micro::import::configure_kernel_CircleFullyConnected(const OMConfigureArgs
 
   return status;
 }
+
+} // namespace import
+} // namespace onert_micro

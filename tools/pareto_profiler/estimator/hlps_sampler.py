@@ -66,30 +66,29 @@ if __name__ == "__main__":
     parser = ProfileArgs(
         "hlps_on_device.py",
         description="On-Device Optimizing Profiler for TensorFlowLite Models")
-    parser.add_argument(
-        '--iterations',
-        type=int,
-        default=3,
-        help='Number of iterations, less than 10 should be enough')
-    parser.add_argument(
-        '--samples', type=int, default=2000, help='Number of samples per iteration')
-    parser.add_argument(
-        '--offline',
-        type=bool,
-        default=False,
-        help='Set to True for running over profiled data')
+    parser.add_argument('--iterations',
+                        type=int,
+                        default=3,
+                        help='Number of iterations, less than 10 should be enough')
+    parser.add_argument('--samples',
+                        type=int,
+                        default=2000,
+                        help='Number of samples per iteration')
+    parser.add_argument('--offline',
+                        type=bool,
+                        default=False,
+                        help='Set to True for running over profiled data')
     parser.add_argument('--profiled_data', type=str, help='Profile file with path')
 
     args = parser.parse_args()
 
-    hlps_profiler(
-        args.model,
-        args.run_folder,
-        num_backends=args.backends,
-        mode=args.mode,
-        nruns=args.iterations,
-        num_samples=args.samples,
-        dumpfile=args.dumpfile)
+    hlps_profiler(args.model,
+                  args.run_folder,
+                  num_backends=args.backends,
+                  mode=args.mode,
+                  nruns=args.iterations,
+                  num_samples=args.samples,
+                  dumpfile=args.dumpfile)
     t_end = time.time()
     with open(args.dumpfile, "r") as ifile:
         dumpdata = json.load(ifile)

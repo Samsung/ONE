@@ -34,17 +34,12 @@
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
 #include <memory>
-#include <util/Utils.h>
 #include <util/logging.h>
 #include <exec/DynamicShapeInferer.h>
 
 #include <stdexcept>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
+namespace onert::backend::train
 {
 
 namespace
@@ -68,6 +63,8 @@ ops::PoolType convertPoolType(ir::operation::Pool2D::PoolType type_ir)
     // TODO Implement AVG PoolType
     case ir::operation::Pool2D::PoolType::MAX:
       return ops::PoolType::kMax;
+    case ir::operation::Pool2D::PoolType::AVG:
+      return ops::PoolType::kAvg;
     default:
       throw std::runtime_error("train KernelGenerator : Not supported operation yet");
   }
@@ -133,11 +130,6 @@ std::unique_ptr<exec::train::TrainableFnSequence> KernelGenerator::generate(ir::
 
   for (auto &&ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
-    auto portable_tensor = _tensor_reg->getPortableTensor(ind);
-    if (portable_tensor)
-    {
-      assert(portable_tensor->layout() == ir::Layout::NHWC);
-    }
     auto tensor = _tensor_reg->getNonConstTensor(ind);
     if (tensor)
     {
@@ -332,7 +324,7 @@ void KernelGenerator::visit(const ir::train::operation::ElementwiseActivation &n
   };
 
   fn->configure(input_tensor, output_tensor, node.param().alpha, node.param().beta,
-                convertToInferActivationType(node.param().op_type));
+                node.param().approximate, convertToInferActivationType(node.param().op_type));
 
   if (node.isRequiredForBackward())
   {
@@ -408,29 +400,39 @@ void KernelGenerator::visit(const ir::train::operation::Loss &node)
   //      loss
   auto back_prop_y_pred_tensor = getBackPropIn(node, y_pred_index);
 
-  auto loss_code = node.param().loss_code;
-  auto loss_param = node.param().loss_param;
+  const auto loss_code = node.param().loss_code;
+  const auto &loss_param = node.param().loss_param;
+  const auto reduction_type = node.param().reduction_type;
 
   switch (loss_code)
   {
     case ir::train::LossCode::MeanSquaredError:
     {
       auto fn = std::make_unique<ops::LossMeanSquaredErrorLayer>();
-      fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor);
+      fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,
+                    reduction_type);
       _return_fn = std::move(fn);
       break;
     }
     case ir::train::LossCode::CategoricalCrossentropy:
     {
+      const auto y_pred_op_code = node.y_pred_op_code();
+      bool is_normalization_required = (y_pred_op_code != ir::OpCode::Softmax);
+      const auto cce_params = std::get_if<ir::train::CategoricalCrossentropyParam>(&loss_param);
+      if (!cce_params)
+      {
+        throw std::runtime_error("LossLayer: Expected loss_param to be "
+                                 "CategoricalCrossentropyParam but found a different type.");
+      }
       auto fn = std::make_unique<ops::LossCategoricalCrossentropyLayer>();
       fn->configure(y_pred_tensor, y_true_tensor, output_tensor, back_prop_y_pred_tensor,
-                    loss_param.cce.axis, loss_param.cce.label_smoothing);
+                    reduction_type, cce_params->axis, cce_params->label_smoothing,
+                    is_normalization_required);
       _return_fn = std::move(fn);
       break;
     }
     default:
       throw std::runtime_error("LossLayer: unsupported loss type");
-      break;
   }
 }
 
@@ -499,6 +501,8 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
     {
       case train::ops::PoolType::kMax:
         return cpu::ops::PoolType::kMax;
+      case train::ops::PoolType::kAvg:
+        return cpu::ops::PoolType::kAvg;
       default:
         throw std::runtime_error("PoolLayer: Unsupported pool type yet");
     }
@@ -618,8 +622,8 @@ IPortableTensor *KernelGenerator::getBackPropIn(const ir::IOperation &node,
     _tensor_reg->getDisposableBackPropTensor(DisposableTensorIndex{op_index, operand_index});
   if (disposable_tensor != nullptr)
   {
-    const auto &training_usedefs = _tgraph.trainingUseDefs().at(backwarding_operand_index);
-    UNUSED_RELEASE(training_usedefs);
+    [[maybe_unused]] const auto &training_usedefs =
+      _tgraph.trainingUseDefs().at(backwarding_operand_index);
     assert(std::count_if(training_usedefs.getTrainingDefs().begin(),
                          training_usedefs.getTrainingDefs().end(),
                          [&](const ir::train::TrainingOperationIndex &op_index) {
@@ -637,6 +641,4 @@ IPortableTensor *KernelGenerator::getBackPropOut(const ir::OperandIndex &output_
   return _tensor_reg->getBackPropTensor(output_index);
 }
 
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train

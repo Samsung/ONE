@@ -16,11 +16,7 @@
 
 #include "AclConstantInitializer.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 AclConstantInitializer::AclConstantInitializer(const ir::Operands &operands,
@@ -162,6 +158,4 @@ void AclConstantInitializer::registerCopyInitializer(const ir::OperandIndex &ind
   }
 }
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common

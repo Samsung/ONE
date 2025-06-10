@@ -21,6 +21,8 @@
 #include "execute/kernels/ComparisonCommon.h"
 #include "PALComparisons.h"
 
+#include "execute/OMUtils.h"
+
 using namespace onert_micro;
 using namespace onert_micro::core;
 using namespace onert_micro::execute;
@@ -34,12 +36,13 @@ constexpr uint32_t outputTensorIdx = 0;
 
 } // namespace
 
-OMStatus onert_micro::execute::execute_kernel_CircleLess(const OMExecuteArgs &execute_args)
+namespace onert_micro
 {
-  core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
-  core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
-  uint16_t op_index = execute_args.kernel_index;
+namespace execute
+{
 
+OMStatus execute_kernel_CircleLess(const OMExecuteArgs &execute_args)
+{
   OMStatus status = Ok;
 
   const circle::Tensor *input1 = nullptr;
@@ -47,19 +50,8 @@ OMStatus onert_micro::execute::execute_kernel_CircleLess(const OMExecuteArgs &ex
   const circle::Tensor *output = nullptr;
 
   OMRuntimeKernel runtime_kernel;
-  runtime_kernel.readKernel(op_index, runtime_context);
 
-  status = runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
-  if (status != Ok)
-    return status;
-
-  input1 = runtime_kernel.inputs[input1TensorIdx];
-  input2 = runtime_kernel.inputs[input2TensorIdx];
-  output = runtime_kernel.outputs[outputTensorIdx];
-
-  assert(input1 != nullptr);
-  assert(input2 != nullptr);
-  assert(output != nullptr);
+  TISOHeader(execute_args, &input1, &input2, &output, &runtime_kernel);
 
   switch (input1->type())
   {
@@ -73,7 +65,12 @@ OMStatus onert_micro::execute::execute_kernel_CircleLess(const OMExecuteArgs &ex
       break;
 #ifndef DIS_QUANT
     case circle::TensorType_UINT8:
-      evalQuantizedComparisonGeneric<uint8_t>(&runtime_kernel, onert_micro::execute::pal::LessFn);
+      evalQuantizedComparisonGeneric<uint8_t, int32_t>(&runtime_kernel,
+                                                       onert_micro::execute::pal::LessFn);
+      break;
+    case circle::TensorType_INT8:
+      evalQuantizedComparisonGeneric<int8_t, int32_t>(&runtime_kernel,
+                                                      onert_micro::execute::pal::LessFn);
       break;
 #endif // DIS_QUANT
 
@@ -89,3 +86,6 @@ OMStatus onert_micro::execute::execute_kernel_CircleLess(const OMExecuteArgs &ex
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

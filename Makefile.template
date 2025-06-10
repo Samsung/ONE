@@ -37,7 +37,7 @@ endif
 # the toolchain file, only for cross build
 ifeq ($(CROSS_BUILD),1)
 	TOOLCHAIN_FILE=cmake/buildtool/cross/toolchain_$(TARGET_ARCH_LC)-$(TARGET_OS).cmake
-	OPTIONS+= -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN_FILE)
+	OPTIONS+= -DCMAKE_TOOLCHAIN_FILE=infra/$(TOOLCHAIN_FILE)
 	OPTIONS_NNCC+= -DCMAKE_TOOLCHAIN_FILE=$(TOOLCHAIN_FILE)
 endif
 
@@ -49,11 +49,6 @@ else
 	else
 		OPTIONS+= -DENABLE_COVERAGE=OFF
 	endif
-endif
-
-ifneq ($(EXTERNAL_VOLUME),)
-	OPTIONS+= -DNNAS_EXTERNALS_DIR=$(EXTERNAL_VOLUME)
-	OPTIONS_NNCC+= -DNNAS_EXTERNALS_DIR=$(EXTERNAL_VOLUME)
 endif
 
 ifeq ($(TARGET_OS),android)
@@ -144,7 +139,7 @@ clean:
 distclean:
 	rm -rf Product
 	rm -rf externals
-	rm -rf tests/nnapi/src/generated/
+	rm -rf runtime/tests/nnapi/src/generated/
 
 ###
 ### Command (internal)
@@ -153,7 +148,7 @@ $(WORKSPACE):
 	mkdir -p $@
 
 prepare_buildtool_internal: $(WORKSPACE)
-	cmake -S infra/buildtool -B $(BUILDTOOL_WORKSPACE)/obj -DBUILDTOOL_PATH=$(BUILDTOOL_PATH)
+	cmake -S runtime/infra/buildtool -B $(BUILDTOOL_WORKSPACE)/obj -DBUILDTOOL_PATH=$(BUILDTOOL_PATH)
 	cmake --build $(BUILDTOOL_WORKSPACE)/obj/ -j$(NPROCS)
 prepare_nncc_internal: $(WORKSPACE)
 ifeq (,$(findstring android,$(TARGET_OS)))
@@ -167,9 +162,12 @@ ifeq (,$(findstring android,$(TARGET_OS)))
 	@mkdir -p ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
 	@mkdir -p ${OVERLAY_FOLDER}/include/oops
 	@mkdir -p ${OVERLAY_FOLDER}/include/luci/IR
+	@mkdir -p ${OVERLAY_FOLDER}/include/mio/circle
 	@cp compiler/angkor/include/nncc/core/ADT/tensor/Index.h ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
 	@cp compiler/oops/include/oops/InternalExn.h ${OVERLAY_FOLDER}/include/oops
 	@cp compiler/luci/lang/include/luci/IR/CircleNodes.lst ${OVERLAY_FOLDER}/include/luci/IR
+	@cp ${NNCC_WORKSPACE}/compiler/mio-circle08/gen/mio/circle/schema_generated.h ${OVERLAY_FOLDER}/include/mio/circle
+	@cp -r ${NNCC_WORKSPACE}/overlay/include/flatbuffers ${OVERLAY_FOLDER}/include
 	@echo "Done prepare-nncc"
 endif
 
@@ -199,7 +197,7 @@ runtime_tar_internal:
 	tar -zcf $(WORKSPACE)/onert-test-package.tar.gz -C $(INSTALL_PATH) $(shell ls $(INSTALL_PATH) -I lib -I include)
 
 acl_tar_internal:
-	tar -zcf $(WORKSPACE)/onert-acl.tar.gz -C ${OVERLAY_FOLDER} lib/libarm_compute.so lib/libarm_compute_core.so lib/libarm_compute_graph.so
+	tar -zcf $(WORKSPACE)/onert-acl.tar.gz -C ${OVERLAY_FOLDER} lib/libarm_compute.so lib/libarm_compute_graph.so
 
 install_acl_internal:
 # Workaround to install acl for test (ignore error when there is no file to copy)
@@ -218,14 +216,14 @@ test_suite_internal: install_all_internal
 	@echo "packaging test suite"
 	@rm -rf $(INSTALL_PATH)/test-suite.tar.gz
 # TODO Divide runtime package, external library package, and test suite
-	@tar -zcf test-suite.tar.gz tests/scripts infra Product/out --dereference
+	@tar -zcf test-suite.tar.gz infra Product/out --dereference
 	@mv test-suite.tar.gz $(INSTALL_PATH)/.
 
 coverage_suite_internal: install_all_internal
 	@echo "packaging test-coverage suite"
 	@rm -rf $(INSTALL_PATH)/coverage-suite.tar.gz
 	@find Product -name "*.gcno" > include_lists.txt
-	@pwd | grep -o '/' | wc -l > tests/scripts/build_path_depth.txt
-	@tar -zcf coverage-suite.tar.gz tests/scripts infra Product/out --dereference -T include_lists.txt
-	@rm -rf include_lists.txt tests/scripts/build_path_depth.txt
+	@pwd | grep -o '/' | wc -l > runtime/tests/scripts/build_path_depth.txt
+	@tar -zcf coverage-suite.tar.gz runtime/tests/scripts infra Product/out --dereference -T include_lists.txt
+	@rm -rf include_lists.txt runtime/tests/scripts/build_path_depth.txt
 	@mv coverage-suite.tar.gz $(INSTALL_PATH)/.

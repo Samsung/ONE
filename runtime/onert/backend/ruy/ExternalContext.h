@@ -22,22 +22,18 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace backend
-{
-namespace ruy
+namespace onert::backend::ruy
 {
 
 class ExternalContext
 {
 private:
-  static const int kDefaultNumThreadpoolThreads = 4;
+  static inline const int kDefaultNumThreadpoolThreads = 4;
 
 public:
   ExternalContext() : _ruy_context(new ::ruy::Context)
   {
-    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::RUY_THREADS));
+    setMaxNumThreads(onert::util::getConfigInt(onert::util::config::NUM_THREADS));
   }
 
   void setMaxNumThreads(int max_num_threads)
@@ -53,8 +49,6 @@ private:
   const std::unique_ptr<::ruy::Context> _ruy_context;
 };
 
-} // namespace ruy
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::ruy
 
 #endif // __ONERT_BACKEND_RUY_EXTERNAL_CONTEXT_H__

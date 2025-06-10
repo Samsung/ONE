@@ -22,11 +22,7 @@
 #include <ir/OperationVisitor.h>
 #include <ir/Graph.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_common
+namespace onert::backend::acl_common
 {
 
 /**
@@ -110,8 +106,6 @@ private:
   bool usePadding{false};
 };
 
-} // namespace acl_common
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_common
 
 #endif // __ONERT_BACKEND_ACL_COMMON_ACL_SUB_TENSOR_ANALYZER_H__

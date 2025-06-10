@@ -12,18 +12,16 @@ Use the [nnpackage examples](https://github.com/Samsung/ONE/tree/master/nnpackag
 
 ## Install nnfw python API
 
-Please see [nnfw python api](https://github.com/SAMSUNG/ONE/tree/master/infra/nnfw/python) for installing nnfw python api.
+Please see [nnfw python api](https://github.com/SAMSUNG/ONE/tree/master/runtime/infra/python) for installing nnfw python api.
 
 1. Initialize nnfw_session
 
 ```python
+import onert
+
 # Create session and load nnpackage
-# operations is optional to assign a specific backends to each operation.
 # The default value of backends is "cpu".
-if operations:
-    session = nnfw_session(nnpackage_path, backends, operations)
-else:
-    session = nnfw_session(nnpackage_path, backends)
+session = onert.infer.session(nnpackage_path, backends)
 ```
 
 2. Prepare Input

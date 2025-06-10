@@ -25,8 +25,7 @@ luci::CircleNode *CloneNodeLet<CN::KLMN>::visit(const luci::CircleMirrorPad *nod
     return nullptr;
 
   auto *cloned = _graph->nodes()->create<luci::CircleMirrorPad>();
-  if (cloned != nullptr)
-    cloned->mode(node->mode());
+  cloned->mode(node->mode());
   return cloned;
 }
 

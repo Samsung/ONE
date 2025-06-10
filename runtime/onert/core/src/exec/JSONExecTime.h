@@ -24,11 +24,11 @@
 #include "backend/Backend.h"
 #include "backend/IConfig.h"
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
+// TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+//       to use `std::string_view` with lookup functions in unordered containers
 /**
  * @brief table, that contains execution time of an operation on some backend for different input
  * sizes and transfer time from one backend to another for various input sizes (permutation time)
@@ -61,6 +61,8 @@ public:
 private:
   ///@brief file containing measurements
   std::string _measurement_file;
+  // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
+  //       to use `std::string_view` with lookup functions in unordered containers
   std::unordered_map<std::string, const backend::Backend *> _backends;
   MeasurementData &_measurements;
 
@@ -89,7 +91,6 @@ private:
   void loadOperationsExecTime();
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_JSON_EXEC_TIME_H__

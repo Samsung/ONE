@@ -1,4 +1,4 @@
-// Copyright (c) 2019~2023 Samsung Electronics Co., Ltd. All Rights Reserved
+// Copyright (c) 2019~2024 Samsung Electronics Co., Ltd. All Rights Reserved
 // Copyright 2017 The TensorFlow Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,6 +33,9 @@
 // Version 0.6: Base up to TensorFlow Lite v2.13.0 schema.
 // Version 0.7: Base up to TensorFlow Lite v2.15.0 schema, deprecate data_format in Subgraph table
 // Version 0.8: GRU op is added. UINT4 is added.
+// Version 0.9: GGML_Q{X}_{Y} types are added. Weight compression option is added.
+//              ROPE op is added. MXFP4, MXINT8 types are added.
+//              MXQuantization is added.
 
 namespace circle;
 
@@ -46,7 +49,6 @@ file_extension "circle";
 
 // The type of data stored in a tensor.
 enum TensorType : byte {
-  UINT4 = -1,
   FLOAT32 = 0,
   FLOAT16 = 1,
   INT32 = 2,
@@ -68,6 +70,19 @@ enum TensorType : byte {
   UINT32 = 15,
   UINT16 = 16,
   INT4 = 17,
+
+  // Belows are using negative value to represent not existing TensorType on TensorFlow Lite schema
+
+  UINT4 = -1,
+  // GGML_Q{X}_{Y} are follow ggml quantization spec (https://github.com/ggerganov/ggml)
+  GGML_Q4_0 = -2,
+  GGML_Q4_1 = -3,
+  GGML_Q8_0 = -4,
+  GGML_Q8_1 = -5,
+
+  // MX dtypes
+  MXFP4 = -6,
+  MXINT8 = -7,
 }
 
 // Custom quantization parameters for experimenting with new quantization
@@ -76,9 +91,16 @@ table CustomQuantization {
   custom:[ubyte] (force_align: 16);
 }
 
+// Parameters for MX (Microscaling) quantization
+table MXQuantization {
+  // axis of mx quantization
+  axis:int;
+}
+
 // Represents a specific quantization technique's parameters.
 union QuantizationDetails {
   CustomQuantization,
+  MXQuantization,
 }
 
 // Parameters for converting a quantized tensor back to float.
@@ -221,6 +243,11 @@ table VariantSubType {
   has_rank: bool = false;
 }
 
+enum CompressionType : byte {
+  NONE = 0,
+  HUFFMAN = 1
+}
+
 table Tensor {
   // The tensor shape. The meaning of each entry is operator-specific but
   // builtin ops use: [batch size, height, width, number of channels] (That's
@@ -262,6 +289,8 @@ table Tensor {
   // Currently only 1 subtype is supported. The field is defined as an array for
   // flexibility of supporting multiple subtypes in the future.
   variant_tensors:[VariantSubType];
+
+  compression_type:CompressionType = NONE;
 }
 
 // A list of builtin operators. Builtin operators are slightly faster than custom
@@ -270,6 +299,8 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
+  ROPE = -7,
+  RMS_NORM = -6,
   GRU = -5,
   BCQ_GATHER = -4,
   BCQ_FULLY_CONNECTED = -3,
@@ -619,6 +650,8 @@ union BuiltinOptions {
   BitcastOptions,
   BitwiseXorOptions,
   RightShiftOptions,
+  RoPEOptions = 249,
+  RmsNormOptions = 250,
   GRUOptions = 251,
   BCQGatherOptions = 252,
   BCQFullyConnectedOptions = 253,
@@ -1501,6 +1534,19 @@ table BCQFullyConnectedOptions {
 table InstanceNormOptions {
   epsilon:float;
   fused_activation_function:ActivationFunctionType;
+}
+
+table RmsNormOptions {
+  epsilon:float;
+}
+
+enum RoPEMode : int {
+  GPT_NEOX,
+  GPT_J,
+}
+
+table RoPEOptions {
+  mode: RoPEMode;
 }
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a

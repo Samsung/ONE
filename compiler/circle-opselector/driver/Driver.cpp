@@ -18,6 +18,7 @@
 #include "OpSelector.h"
 
 #include <luci/ConnectNode.h>
+#include <luci/ImporterEx.h>
 #include <luci/Profile/CircleNodeID.h>
 #include <luci/Service/CircleNodeClone.h>
 
@@ -77,7 +78,8 @@ int entry(int argc, char **argv)
   }
 
   // Import original circle file.
-  auto module = opselector::getModule(input_path);
+  luci::ImporterEx importerex;
+  auto module = importerex.importVerifyModule(input_path);
 
   // TODO support two or more subgraphs
   if (module.get()->size() > 1)

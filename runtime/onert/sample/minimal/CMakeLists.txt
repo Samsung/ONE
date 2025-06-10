@@ -5,6 +5,6 @@ endif(NOT BUILD_MINIMAL_SAMPLE)
 list(APPEND MINIMAL_SRCS "src/minimal.cc")
 
 add_executable(onert-minimal-app ${MINIMAL_SRCS})
-target_link_libraries(onert-minimal-app nnfw-dev pthread dl)
+target_link_libraries(onert-minimal-app nnfw-dev)
 
 install(TARGETS onert-minimal-app DESTINATION bin)

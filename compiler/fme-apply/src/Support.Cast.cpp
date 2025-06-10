@@ -19,64 +19,19 @@
 namespace fme_apply
 {
 
-luci::CircleCustom *to_pre_scale(loco::Node *node)
+luci::CircleCustom *to_scale(loco::Node *node)
 {
-  auto pre_scale = dynamic_cast<luci::CircleCustom *>(node);
-  if (not pre_scale)
+  auto scale = dynamic_cast<luci::CircleCustom *>(node);
+  if (not scale)
     return nullptr;
 
-  if (pre_scale->custom_code() != "PreScale")
+  if (scale->custom_code() != "scale")
     return nullptr;
 
   // TODO Return false?
-  assert(pre_scale->numInputs() == 2); // FIX_PreScale_UNLESS
+  assert(scale->numInputs() == 2); // FIX_PreScale_UNLESS
 
-  return pre_scale;
-}
-
-luci::CircleCustom *to_post_scale(loco::Node *node)
-{
-  auto post_scale = dynamic_cast<luci::CircleCustom *>(node);
-  if (not post_scale)
-    return nullptr;
-
-  if (post_scale->custom_code() != "PostScale")
-    return nullptr;
-
-  // TODO Return false?
-  assert(post_scale->numInputs() == 2); // FIX_PostScale_UNLESS
-
-  return post_scale;
-}
-
-luci::CircleCustom *to_pre_shift(loco::Node *node)
-{
-  auto pre_shift = dynamic_cast<luci::CircleCustom *>(node);
-  if (not pre_shift)
-    return nullptr;
-
-  if (pre_shift->custom_code() != "PreShift")
-    return nullptr;
-
-  // TODO Return false?
-  assert(pre_shift->numInputs() == 2); // FIX_PreShift_UNLESS
-
-  return pre_shift;
-}
-
-luci::CircleCustom *to_post_shift(loco::Node *node)
-{
-  auto post_shift = dynamic_cast<luci::CircleCustom *>(node);
-  if (not post_shift)
-    return nullptr;
-
-  if (post_shift->custom_code() != "PostShift")
-    return nullptr;
-
-  // TODO Return false?
-  assert(post_shift->numInputs() == 2); // FIX_PostShift_UNLESS
-
-  return post_shift;
+  return scale;
 }
 
 } // namespace fme_apply

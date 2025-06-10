@@ -16,9 +16,7 @@
 
 #include "ir/Operand.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 size_t Operand::operandSize(void) const
@@ -52,5 +50,4 @@ void Operand::clearDefUse()
   _uses.clear();
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

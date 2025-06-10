@@ -20,7 +20,12 @@
 using namespace onert_micro;
 using namespace onert_micro::execute;
 
-OMStatus onert_micro::execute::execute_kernel_CircleArgMax(const OMExecuteArgs &execute_args)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_kernel_CircleArgMax(const OMExecuteArgs &execute_args)
 {
   auto arg_max_float_lambda = [](const core::OMRuntimeShape &input1_shape, const float *input1_data,
                                  const int *input2_data, const core::OMRuntimeShape &output_shape,
@@ -31,3 +36,6 @@ OMStatus onert_micro::execute::execute_kernel_CircleArgMax(const OMExecuteArgs &
 
   return execute_arg_common(execute_args, arg_max_float_lambda);
 }
+
+} // namespace execute
+} // namespace onert_micro

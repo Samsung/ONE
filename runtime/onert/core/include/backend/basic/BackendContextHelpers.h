@@ -24,29 +24,25 @@
 #include "util/logging.h"
 #include "backend/ITensorRegistry.h"
 #include "backend/BackendContext.h"
+#include "backend/basic/TensorRegistry.h"
 #include "Tensor.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace basic
+namespace onert::backend::basic
 {
 
 // TODO Remove the template param BackendContext once unification of cpu backend context is done
-template <typename T_BackendContext> void planTensors(const T_BackendContext &ctx)
+template <typename T_TensorBuilder>
+void planTensors(const std::shared_ptr<T_TensorBuilder> &tensor_builder, const ir::Graph &graph,
+                 const util::Set<ir::OperandIndex> &external_operands,
+                 const std::vector<onert::ir::OperationIndex> &op_order)
 {
-  const ir::Graph &graph = *ctx.graph();
-  const auto &order = ctx.data().op_order;
-  auto tensor_builder = ctx.tensor_builder;
-
   ir::OperandIndexMap<uint32_t> uses_map;
   ir::OperandIndexMap<uint32_t> def_map;
   ir::OperandIndexSequence constants;
 
   // Prepare scanning
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
-    if (ctx.external_operands().contains(ind))
+    if (external_operands.contains(ind))
       return;
 
     // TODO Check if we need to handle unused tensors
@@ -95,16 +91,16 @@ template <typename T_BackendContext> void planTensors(const T_BackendContext &ct
   // 1. Scan DEF of outputs. If the DEF, allocate it
   // 2. Scan DEF of inputs. If variable tensor, allocate it
   // 3. Scan USE of inputs. Decrease the USE and deallocate if the USE is 0
-  for (const auto &op_ind : order)
+  for (const auto &op_ind : op_order)
   {
     const auto &op = graph.operations().at(op_ind);
-    auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
-    auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+    auto op_inputs = op.getUsedInputSet();
+    auto op_outputs = op.getUsedOutputSet();
 
     // Define outputs
     for (const auto &ind : op_outputs)
     {
-      if (ctx.external_operands().contains(ind))
+      if (external_operands.contains(ind))
         continue;
       if (!tensor_builder->isRegistered(ind))
         continue;
@@ -121,7 +117,7 @@ template <typename T_BackendContext> void planTensors(const T_BackendContext &ct
     // non-constant because of less memory usage by memory planning in here
     for (const auto &ind : op_inputs)
     {
-      if (ctx.external_operands().contains(ind))
+      if (external_operands.contains(ind))
         continue;
       if (!tensor_builder->isRegistered(ind))
         continue;
@@ -138,7 +134,7 @@ template <typename T_BackendContext> void planTensors(const T_BackendContext &ct
 
     for (const auto &ind : op_inputs)
     {
-      if (ctx.external_operands().contains(ind))
+      if (external_operands.contains(ind))
         continue;
       if (!tensor_builder->isRegistered(ind))
         continue;
@@ -177,13 +173,40 @@ template <typename T_BackendContext> void planTensors(const T_BackendContext &ct
                 [](std::pair<const ir::OperandIndex, uint32_t> it) { return it.second == 0; }));
 }
 
-template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContext &ctx)
+template <typename T_TensorBuilder>
+util::Set<ir::OperandIndex> register_source_memory_tensors(
+  const std::shared_ptr<T_TensorBuilder> &tensor_builder, const ir::Graph &graph,
+  const util::Set<ir::OperandIndex> &external_operands,
+  const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_idx)
 {
-  const ir::Graph &graph = *ctx.graph();
-  auto tensor_builder = ctx.tensor_builder;
+  // process source tensors that share memory at first
+  util::Set<ir::OperandIndex> registered_source_ind;
+  for (const auto &[_, source_ind] : shared_memory_operand_idx)
+  {
+    if (external_operands.contains(source_ind))
+      continue;
+    if (tensor_builder->isRegistered(source_ind)) // some tensors can have the same source
+      continue;
+    tensor_builder->registerTensorInfo(source_ind, graph.operands().at(source_ind).info());
+    registered_source_ind.add(source_ind);
+  }
+  return registered_source_ind;
+}
 
+template <typename T_TensorBuilder>
+ITensorRegistry *genTensors(const std::shared_ptr<T_TensorBuilder> &tensor_builder,
+                            const ir::Graph &graph,
+                            const util::Set<ir::OperandIndex> &external_operands,
+                            const std::shared_ptr<ITensorRegistry> &tensor_registry,
+                            const std::vector<onert::ir::OperationIndex> &op_order,
+                            const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operand_idx)
+{
+  const auto registered_source_ind = register_source_memory_tensors(
+    tensor_builder, graph, external_operands, shared_memory_operand_idx);
   graph.operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &obj) {
-    if (ctx.external_operands().contains(ind))
+    if (external_operands.contains(ind))
+      return;
+    if (registered_source_ind.contains(ind)) // skip tensors already registered
       return;
     tensor_builder->registerTensorInfo(ind, obj.info());
   });
@@ -191,7 +214,7 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
   // TODO Get compiler options from compiler, and use it rather than getting it from Env
   if (util::getConfigString(util::config::EXECUTOR) == "Linear")
   {
-    basic::planTensors(ctx);
+    basic::planTensors(tensor_builder, graph, external_operands, op_order);
   }
   else
   {
@@ -205,16 +228,54 @@ template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContex
 
   tensor_builder->allocate();
 
-  return ctx.tensor_registry.get();
+  return tensor_registry.get();
+}
+
+template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContext &ctx)
+{
+  return genTensors(ctx.tensor_builder, *ctx.graph(), ctx.external_operands(), ctx.tensor_registry,
+                    ctx.data().op_order, {});
+}
+
+inline void
+initSharedMemoryConsts(const ir::Operands &operands,
+                       const util::Set<ir::OperandIndex> &external_operands,
+                       TensorRegistry *tensor_registry,
+                       const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operands_map)
+{
+  operands.iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
+    if (external_operands.contains(ind))
+      return;
+    const auto shared_mem_it = shared_memory_operands_map.find(ind);
+    if (shared_mem_it == std::end(shared_memory_operands_map))
+      return; // no shared memory source
+    if (!operands.at(shared_mem_it->second).isConstant())
+      return; // source operand not a constant
+
+    VERBOSE(FillOperandData) << "Fill shared data for " << ind << std::endl;
+
+    const auto &source_operand_ind = operands.at(shared_mem_it->second);
+    auto memory_source_data = source_operand_ind.shareData();
+    assert(memory_source_data && memory_source_data->base());
+    auto tensor = tensor_registry->getNativeTensor(ind);
+    assert(tensor != nullptr);
+    tensor->setBuffer(const_cast<uint8_t *>(memory_source_data->base()));
+  });
 }
 
 inline void initConsts(const ir::Operands &operands,
                        const util::Set<ir::OperandIndex> &external_operands,
-                       ITensorRegistry *tensor_registry)
+                       ITensorRegistry *tensor_registry,
+                       const ir::OperandIndexMap<ir::OperandIndex> &shared_memory_operands_map)
 {
   operands.iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
     if (external_operands.contains(ind) || !operand.isConstant())
       return;
+    const bool has_const_shared_source =
+      shared_memory_operands_map.find(ind) != std::end(shared_memory_operands_map) &&
+      operands.at(shared_memory_operands_map.at(ind)).isConstant();
+    if (has_const_shared_source)
+      return; // tensors with shared memory are processed in initSharedMemoryConsts
 
     auto tensor = tensor_registry->getNativeITensor(ind);
     assert(tensor != nullptr);
@@ -234,11 +295,9 @@ inline void initConsts(const ir::Operands &operands,
 
 inline void initConsts(BackendContext &ctx)
 {
-  initConsts(ctx.graph()->operands(), ctx.external_operands(), ctx.tensor_registry.get());
+  initConsts(ctx.graph()->operands(), ctx.external_operands(), ctx.tensor_registry.get(), {});
 }
 
-} // namespace basic
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::basic
 
 #endif // __ONERT_BACKEND_BASIC_BACKEND_CONTEXT_HELPERS_H__

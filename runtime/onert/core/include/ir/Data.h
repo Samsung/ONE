@@ -20,9 +20,7 @@
 #include <algorithm>
 #include <sys/mman.h>
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 struct Data
@@ -101,7 +99,6 @@ private:
   std::ptrdiff_t _offset;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_DATA_H__

@@ -21,13 +21,10 @@
 
 #include <memory>
 
-namespace onert
-{
-namespace loader
+namespace onert::loader
 {
 std::unique_ptr<ir::Model> loadCircleModel(const std::string &filename);
 std::unique_ptr<ir::Model> loadCircleModel(uint8_t *buffer, size_t size);
-} // namespace loader
-} // namespace onert
+} // namespace onert::loader
 
 #endif // __ONERT_LOADER_CIRCLE_LOADER_H__

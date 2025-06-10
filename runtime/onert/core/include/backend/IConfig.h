@@ -24,9 +24,7 @@
 #include <memory>
 #include <string>
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 
 struct IConfig
@@ -63,7 +61,6 @@ struct IConfig
   virtual bool supportFP16() = 0;
 };
 
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend
 
 #endif // __ONERT_BACKEND_ICONFIG_H__

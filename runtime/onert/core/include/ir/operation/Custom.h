@@ -20,11 +20,7 @@
 
 #include <cstring>
 
-namespace onert
-{
-namespace ir
-{
-namespace operation
+namespace onert::ir::operation
 {
 
 class Custom : public Operation
@@ -69,7 +65,5 @@ private:
   Userdata _userdata;
 };
 
-} // namespace operation
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir::operation
 #endif // __ONERT_IR_OPERATION_CUSTOM_H__

@@ -6,21 +6,26 @@ Supported Architecture : AARCH64 only (ARM32 is not supported yet)
 
 ## Prepare Android NDK
 
+There are two ways to get Android NDK: install Android NDK on your PC or use docker image which already has Android NDK installed.
+
+### Install Android NDK
+
 Use `tools/cross/install_android_ndk.sh` script to prepare Android NDK. This is recommended way to build Android NDK.
 
 Or you can use `tools/cross/install_android_sdk.sh` script to prepare Android SDK including NDK. You can find NDK in `{android-sdk-dir}/ndk/{ndk-version}` directory.
 
-## Build
+CMake 3.6.0 or later is required for Android NDK r26d CMake support.
 
 ### Host Environment Requirements
 
-CMake 3.6.0 or later is required for Android NDK r26d CMake support.
-So if you want to use Docker, please use `infra/docker/android-sdk/Dockerfile`.
+If you want to use docker image, please use `infra/docker/android-sdk/Dockerfile` of our repository or pull the image `nnfw/one-devtools:android-sdk` from `DockerHub`. It includes Android SDK and NDK.
 
+You can build the docker image with following command:
 ```
-$ ./nnas build-docker-image --codename android-sdk -t nnfw/one-devtools:android-sdk
+$ docker build -t nnfw/one-devtools:android-sdk -f infra/docker/android-sdk/Dockerfile .
 ```
 
+## Build
 
 ### Build and install the runtime
 
@@ -30,6 +35,8 @@ Please refer to `infra/nnfw/cmake/options/options_aarch64-android.cmake` for det
 Different from cross build for linux,
 
 - `NDK_DIR` is required
+
+If you are using docker image `nnfw/one-devtools:android-sdk`, you don't need to specify `NDK_DIR` because it is already set in the image.
 
 Here is an example of using Makefile.
 

@@ -19,25 +19,19 @@
 
 #include <cker/train/operation/Loss.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
-void LossCategoricalCrossentropyLayer::configure(const IPortableTensor *y_pred,
-                                                 const IPortableTensor *y_true,
-                                                 IPortableTensor *output,
-                                                 IPortableTensor *back_prop_y_pred, int32_t axis,
-                                                 float label_smoothing)
+void LossCategoricalCrossentropyLayer::configure(
+  const IPortableTensor *y_pred, const IPortableTensor *y_true, IPortableTensor *output,
+  IPortableTensor *back_prop_y_pred, ir::train::LossReductionType reduction_type, int32_t axis,
+  float label_smoothing, bool is_normalization_required)
 {
-  LossLayer::configure(y_pred, y_true, output, back_prop_y_pred);
+  LossLayer::configure(y_pred, y_true, output, back_prop_y_pred, reduction_type);
 
   _axis = axis;
   _label_smoothing = label_smoothing;
+  _is_normalization_required = is_normalization_required;
 }
 
 void LossCategoricalCrossentropyLayer::forward(bool)
@@ -60,9 +54,21 @@ void LossCategoricalCrossentropyLayer::backward()
 
   if (_y_pred->data_type() == OperandType::FLOAT32)
   {
-    nnfw::cker::train::CategoricalCrossEntropyGrad(
-      getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true), getBuffer<float>(_y_true),
-      getShape(_back_prop_y_pred), getBuffer<float>(_back_prop_y_pred));
+    const auto reduction_type = convertLossReductionType(_reduction_type);
+    if (_is_normalization_required)
+    {
+      // TODO Eliminate duplicate calculations for output
+      nnfw::cker::train::CategoricalCrossEntropyWithLogits(
+        getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true), getBuffer<float>(_y_true),
+        getShape(_output), getBuffer<float>(_output), getShape(_back_prop_y_pred),
+        getBuffer<float>(_back_prop_y_pred), reduction_type);
+    }
+    else
+    {
+      nnfw::cker::train::CategoricalCrossEntropyGrad(
+        getShape(_y_pred), getBuffer<float>(_y_pred), getShape(_y_true), getBuffer<float>(_y_true),
+        getShape(_back_prop_y_pred), getBuffer<float>(_back_prop_y_pred), reduction_type);
+    }
   }
   else
   {
@@ -70,7 +76,4 @@ void LossCategoricalCrossentropyLayer::backward()
   }
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

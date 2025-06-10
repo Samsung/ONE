@@ -25,9 +25,7 @@
 #include <memory>
 #include <unordered_map>
 
-namespace onert
-{
-namespace util
+namespace onert::util
 {
 
 /**
@@ -249,7 +247,6 @@ protected:
   uint32_t _next_index;
 };
 
-} // namespace util
-} // namespace onert
+} // namespace onert::util
 
 #endif // __ONERT_UTIL_OBJECT_MANAGER_H__

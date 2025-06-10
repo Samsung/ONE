@@ -1,0 +1,33 @@
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 4 }
+}
+operand {
+  name: "gamma"
+  type: FLOAT32
+  shape { dim: 4 }
+  filler {
+    tag: "explicit"
+    arg: "1.0"
+    arg: "1.0"
+    arg: "1.0"
+    arg: "1.0"
+  }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 1 dim: 3 dim: 3 dim: 4 }
+}
+operation {
+  type: "RmsNorm"
+  input: "ifm"
+  input: "gamma"
+  output: "ofm"
+  rms_norm_options {
+    epsilon: 0.0001
+  }
+}
+input: "ifm"
+output: "ofm"

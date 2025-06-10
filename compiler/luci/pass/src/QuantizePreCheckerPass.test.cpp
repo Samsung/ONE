@@ -192,6 +192,46 @@ private:
   luci::CircleOutput *output = nullptr;
 };
 
+class SimpleRmsNormGraph
+{
+public:
+  SimpleRmsNormGraph(bool make_valid)
+  {
+    rms_norm_node = g.nodes()->create<luci::CircleRmsNorm>();
+    input_1 = g.nodes()->create<luci::CircleInput>();
+
+    rms_norm_node->input(input_1);
+
+    if (make_valid)
+    {
+      gamma = g.nodes()->create<luci::CircleConst>();
+      rms_norm_node->gamma(gamma);
+    }
+    else
+    {
+      input_2 = g.nodes()->create<luci::CircleInput>();
+      rms_norm_node->gamma(input_2);
+    }
+
+    output = g.nodes()->create<luci::CircleOutput>();
+
+    auto graph_output = g.outputs()->create();
+    output->index(graph_output->index());
+
+    output->from(rms_norm_node);
+  }
+
+public:
+  loco::Graph g;
+
+private:
+  luci::CircleRmsNorm *rms_norm_node = nullptr;
+  luci::CircleInput *input_1 = nullptr;
+  luci::CircleInput *input_2 = nullptr;
+  luci::CircleConst *gamma = nullptr;
+  luci::CircleOutput *output = nullptr;
+};
+
 class SimpleTransposeConvGraph
 {
 public:
@@ -357,6 +397,25 @@ TEST(QuantizePreCheckerPassTest, instance_norm)
 TEST(QuantizePreCheckerPassTest, instance_norm_NEG)
 {
   SimpleInstanceNormGraph invalid_graph(false);
+
+  luci::QuantizePreCheckerPass checker{};
+
+  EXPECT_ANY_THROW(checker.run(&invalid_graph.g));
+}
+
+// Test RmsNorm
+TEST(QuantizePreCheckerPassTest, rms_norm)
+{
+  SimpleRmsNormGraph valid_graph(true);
+
+  luci::QuantizePreCheckerPass checker{};
+
+  EXPECT_NO_THROW(checker.run(&valid_graph.g));
+}
+
+TEST(QuantizePreCheckerPassTest, rms_norm_NEG)
+{
+  SimpleRmsNormGraph invalid_graph(false);
 
   luci::QuantizePreCheckerPass checker{};
 

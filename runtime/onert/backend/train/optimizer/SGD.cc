@@ -20,13 +20,7 @@
 
 #include <cker/train/optimizer/SGD.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace optimizer
+namespace onert::backend::train::optimizer
 {
 
 double SGD::getLearningRate(uint32_t) const
@@ -58,7 +52,4 @@ void SGD::applyGradient(const UpdateFactors &factors) const
   }
 }
 
-} // namespace optimizer
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::optimizer

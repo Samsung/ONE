@@ -1,0 +1,16 @@
+#
+# Format:
+#   eval(MODEL)
+# MODEL: tflite model file name in build/compiler/common-artifacts folder.
+#
+
+eval(Conv2D_007)
+eval(FullyConnected_010)
+eval(Net_Conv_TConv_000)
+eval(Net_DConv_Conv_000)
+eval(Net_InstNorm_Conv_000)
+eval(Net_Conv_Pad_000)
+
+# Values could be mismatch according to input ranges.
+# eval(Net_Conv_Gelu_000)
+# eval(Net_FullyConnected_Gelu_000)

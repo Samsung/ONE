@@ -16,11 +16,7 @@
 
 #include "exec/train/TrainableFnSequence.h"
 
-namespace onert
-{
-namespace exec
-{
-namespace train
+namespace onert::exec::train
 {
 
 void TrainableFnSequence::forward(bool training)
@@ -64,6 +60,4 @@ void TrainableFnSequence::iterate(const std::function<void(ITrainableFunction &)
   }
 }
 
-} // namespace train
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec::train

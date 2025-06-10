@@ -155,3 +155,113 @@ void onert_micro::execute::readQuantParams(const circle::Tensor *tensor, long &z
   // read scale
   scale = tensor->quantization()->scale()->operator[](0);
 }
+
+OMStatus onert_micro::execute::SISOHeader(const OMExecuteArgs &execute_args,
+                                          const circle::Tensor **input,
+                                          const circle::Tensor **output, uint8_t **input_data,
+                                          uint8_t **output_data)
+{
+  OMStatus status;
+
+  core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
+  core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
+  uint16_t op_index = execute_args.kernel_index;
+
+  {
+    OMRuntimeKernel runtime_kernel;
+    runtime_kernel.readKernel(op_index, runtime_context);
+
+    *input = runtime_kernel.inputs[0];
+    *output = runtime_kernel.outputs[0];
+
+    assert(*input != nullptr);
+    assert(*output != nullptr);
+
+    status = runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
+    if (status != Ok)
+      return status;
+
+    *input_data = runtime_kernel.inputs_data[0];
+    *output_data = runtime_kernel.outputs_data[0];
+  }
+
+  assert(*input_data != nullptr);
+  assert(*output_data != nullptr);
+
+  return status;
+}
+
+void onert_micro::execute::calculateQuantParams(core::ArithmeticQuantParams &params,
+                                                const circle::Tensor *input1,
+                                                const circle::Tensor *input2,
+                                                const circle::Tensor *output,
+                                                circle::ActivationFunctionType act)
+{
+  long input1_zp;
+  long input2_zp;
+  long output_zp;
+
+  float input1_scale;
+  float input2_scale;
+  float output_scale;
+
+  // Read input1 quant params
+  readQuantParams(input1, input1_zp, input1_scale);
+  // Read input2 quant params
+  readQuantParams(input2, input2_zp, input2_scale);
+  // Read output quant params
+  readQuantParams(output, output_zp, output_scale);
+
+  params.input1_offset = -static_cast<int32_t>(input1_zp);
+  params.input2_offset = -static_cast<int32_t>(input2_zp);
+  params.output_offset = static_cast<int32_t>(output_zp);
+  params.left_shift = (output->type() == circle::TensorType_INT16) ? 15 : 20;
+  const double twice_max_input_scale =
+    2 * static_cast<double>(std::max(input1_scale, input2_scale));
+  const double real_input1_multiplier = static_cast<double>(input1_scale) / twice_max_input_scale;
+  const double real_input2_multiplier = static_cast<double>(input2_scale) / twice_max_input_scale;
+  const double real_output_multiplier =
+    twice_max_input_scale / ((1 << params.left_shift) * static_cast<double>(output_scale));
+
+  quantizeMultiplierSmallerThanOneExp(real_input1_multiplier, &params.input1_multiplier,
+                                      &params.input1_shift);
+
+  quantizeMultiplierSmallerThanOneExp(real_input2_multiplier, &params.input2_multiplier,
+                                      &params.input2_shift);
+
+  quantizeMultiplierSmallerThanOneExp(real_output_multiplier, &params.output_multiplier,
+                                      &params.output_shift);
+
+  calculateActivationRangeQuantized(act, output_zp, output_scale, output->type(),
+                                    &params.quantized_activation_min,
+                                    &params.quantized_activation_max);
+}
+
+OMStatus onert_micro::execute::TISOHeader(const OMExecuteArgs &execute_args,
+                                          const circle::Tensor **input1,
+                                          const circle::Tensor **input2,
+                                          const circle::Tensor **output,
+                                          OMRuntimeKernel *runtime_kernel)
+{
+  OMStatus status;
+
+  core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
+  core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
+  uint16_t op_index = execute_args.kernel_index;
+
+  status = runtime_kernel->readKernel(op_index, runtime_context);
+
+  *input1 = runtime_kernel->inputs[0];
+  *input2 = runtime_kernel->inputs[1];
+  *output = runtime_kernel->outputs[0];
+
+  assert(*input1 != nullptr);
+  assert(*input2 != nullptr);
+  assert(*output != nullptr);
+
+  status = runtime_kernel->getDataFromStorage(op_index, runtime_storage, runtime_context);
+  if (status != Ok)
+    return status;
+
+  return status;
+}

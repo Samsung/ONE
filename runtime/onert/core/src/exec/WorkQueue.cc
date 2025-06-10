@@ -18,9 +18,7 @@
 
 #include <cassert>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 WorkQueue::~WorkQueue()
@@ -100,5 +98,4 @@ uint32_t WorkQueue::numJobsInQueue()
   return _functions.size();
 }
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec

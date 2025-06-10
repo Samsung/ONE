@@ -43,60 +43,55 @@ def _get_parser():
         description=("Command line tool to run TensorFlow Lite Converter."))
 
     # Verbose
-    parser.add_argument(
-        "-V",
-        "--verbose",
-        action="store_true",
-        help="output additional information to stdout or stderr")
+    parser.add_argument("-V",
+                        "--verbose",
+                        action="store_true",
+                        help="output additional information to stdout or stderr")
 
     # Converter version.
     converter_version = parser.add_mutually_exclusive_group(required=True)
-    converter_version.add_argument(
-        "--v1", action="store_true", help="Use TensorFlow Lite Converter 1.x")
-    converter_version.add_argument(
-        "--v2", action="store_true", help="Use TensorFlow Lite Converter 2.x")
+    converter_version.add_argument("--v1",
+                                   action="store_true",
+                                   help="Use TensorFlow Lite Converter 1.x")
+    converter_version.add_argument("--v2",
+                                   action="store_true",
+                                   help="Use TensorFlow Lite Converter 2.x")
 
     # Input model format
     model_format_arg = parser.add_mutually_exclusive_group()
-    model_format_arg.add_argument(
-        "--graph_def",
-        action="store_const",
-        dest="model_format",
-        const="graph_def",
-        help="Use graph def file(default)")
-    model_format_arg.add_argument(
-        "--saved_model",
-        action="store_const",
-        dest="model_format",
-        const="saved_model",
-        help="Use saved model")
-    model_format_arg.add_argument(
-        "--keras_model",
-        action="store_const",
-        dest="model_format",
-        const="keras_model",
-        help="Use keras model")
+    model_format_arg.add_argument("--graph_def",
+                                  action="store_const",
+                                  dest="model_format",
+                                  const="graph_def",
+                                  help="Use graph def file(default)")
+    model_format_arg.add_argument("--saved_model",
+                                  action="store_const",
+                                  dest="model_format",
+                                  const="saved_model",
+                                  help="Use saved model")
+    model_format_arg.add_argument("--keras_model",
+                                  action="store_const",
+                                  dest="model_format",
+                                  const="keras_model",
+                                  help="Use keras model")
 
     # Input and output path.
-    parser.add_argument(
-        "-i",
-        "--input_path",
-        type=str,
-        help="Full filepath of the input file.",
-        required=True)
-    parser.add_argument(
-        "-o",
-        "--output_path",
-        type=str,
-        help="Full filepath of the output file.",
-        required=True)
+    parser.add_argument("-i",
+                        "--input_path",
+                        type=str,
+                        help="Full filepath of the input file.",
+                        required=True)
+    parser.add_argument("-o",
+                        "--output_path",
+                        type=str,
+                        help="Full filepath of the output file.",
+                        required=True)
 
     # Input and output arrays.
-    parser.add_argument(
-        "-I",
-        "--input_arrays",
-        type=str,
-        help="Names of the input arrays, comma-separated.")
+    parser.add_argument("-I",
+                        "--input_arrays",
+                        type=str,
+                        help="Names of the input arrays, comma-separated.")
     parser.add_argument(
         "-s",
         "--input_shapes",
@@ -104,17 +99,15 @@ def _get_parser():
         help=
         "Shapes corresponding to --input_arrays, colon-separated.(ex:\"1,4,4,3:1,20,20,3\")"
     )
-    parser.add_argument(
-        "-O",
-        "--output_arrays",
-        type=str,
-        help="Names of the output arrays, comma-separated.")
+    parser.add_argument("-O",
+                        "--output_arrays",
+                        type=str,
+                        help="Names of the output arrays, comma-separated.")
 
     # experimental options
-    parser.add_argument(
-        "--experimental_disable_batchmatmul_unfold",
-        action="store_true",
-        help="Experimental disable BatchMatMul unfold")
+    parser.add_argument("--experimental_disable_batchmatmul_unfold",
+                        action="store_true",
+                        help="Experimental disable BatchMatMul unfold")
 
     # Set default value
     parser.set_defaults(model_format="graph_def")

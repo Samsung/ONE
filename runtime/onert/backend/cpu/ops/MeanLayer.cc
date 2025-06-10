@@ -20,13 +20,7 @@
 
 #include <cker/operation/ReduceMean.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
-{
-namespace ops
+namespace onert::backend::cpu::ops
 {
 
 MeanLayer::MeanLayer() : _input(nullptr), _axes(nullptr), _output(nullptr), _keep_dims(false)
@@ -90,7 +84,4 @@ void MeanLayer::run()
   }
 }
 
-} // namespace ops
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu::ops

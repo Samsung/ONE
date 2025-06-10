@@ -174,8 +174,8 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
     auto new_operand = std::make_unique<ir::Operand>(operand);
     new_operand->clearDefUse();
     operand.releaseData(); // Deref data of LoweredGraph
-    auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
-    UNUSED_RELEASE(new_operand_ind);
+    [[maybe_unused]] auto new_operand_ind =
+      partial_graph.addOperand(operand_ind, std::move(new_operand));
     assert(new_operand_ind == operand_ind);
   });
   // Separate operations into partial graphs
@@ -202,15 +202,14 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
           const auto &operand = whole_graph.operands().at(operand_ind);
           auto new_operand = std::make_unique<ir::Operand>(operand);
           new_operand->clearDefUse();
-          auto new_operand_ind = partial_graph.addOperand(operand_ind, std::move(new_operand));
-          UNUSED_RELEASE(new_operand_ind);
+          [[maybe_unused]] auto new_operand_ind =
+            partial_graph.addOperand(operand_ind, std::move(new_operand));
           assert(new_operand_ind == operand_ind);
 
           external_operands.add(operand_ind);
         }
 
-        auto new_op_ind = partial_graph.addOperation(op_ind, clone(operation));
-        UNUSED_RELEASE(new_op_ind);
+        [[maybe_unused]] auto new_op_ind = partial_graph.addOperation(op_ind, clone(operation));
         assert(new_op_ind == op_ind);
       }
     });
@@ -268,12 +267,25 @@ std::deque<std::pair<const backend::Backend *, Context *>> orderBackendContext(
   return ordered_contexts;
 }
 
+void generateCodes(backend::train::FunctionMap &codes,
+                   const compiler::train::LoweredTrainableGraph *lowered_graph,
+                   compiler::train::TrainableCodeMap &code_map)
+{
+  for (auto &&[op_ind, tn_seq] : codes)
+  {
+    auto &op = lowered_graph->trainable_graph().operation(op_ind);
+    const auto backend = lowered_graph->lower_info().operation.at(op_ind);
+
+    assert(code_map.find(op_ind) == code_map.end());
+    code_map.insert(
+      {op_ind, compiler::train::TrainableCodeAndInfo{op_ind, &op, backend, std::move(tn_seq)}});
+  }
+}
+
 } // namespace
 } // namespace onert
 
-namespace onert
-{
-namespace compiler
+namespace onert::compiler
 {
 
 ExecutorFactory &ExecutorFactory::get()
@@ -428,8 +440,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
     for (const auto &op_ind : order)
     {
       const auto &op = graph.operations().at(op_ind);
-      auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
-      auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+      auto op_inputs = op.getUsedInputSet();
+      auto op_outputs = op.getUsedOutputSet();
 
       for (const auto &ind : op_inputs)
       {
@@ -634,7 +646,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                                                            const onert::ir::IOperation &op) {
     try
     {
-      UNUSED_RELEASE(dynamic_cast<const ir::train::ITrainableOperation &>(op));
+      [[maybe_unused]] const auto &casted_op =
+        dynamic_cast<const ir::train::ITrainableOperation &>(op);
     }
     catch (std::bad_cast &)
     {
@@ -648,9 +661,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     createBackendContexts(*lowered_graph, true, custom_kernel_builder);
 
   // Replace BackendContext with TrainbleBackendContext
-  for (auto &&pair : base_backend_contexts)
+  for (auto &&[backend, ctx] : base_backend_contexts)
   {
-    auto ctx = pair.second.get();
     const auto &data = ctx->data();
 
     // Create partial and trainable graphs
@@ -659,8 +671,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       [&](const onert::ir::OperationIndex &op_index, const onert::ir::IOperation &) {
         const auto &orig_tgraph = lowered_graph->trainable_graph();
         const auto &trainable_op = orig_tgraph.operation(op_index);
-        auto gen_index = tgraph->replaceOperation(op_index, trainable_op.clone());
-        UNUSED_RELEASE(gen_index);
+        [[maybe_unused]] auto gen_index = tgraph->replaceOperation(op_index, trainable_op.clone());
         assert(gen_index == op_index);
       });
     data.graph->operands().iterate([&](const ir::OperandIndex &index, const ir::Operand &) {
@@ -669,8 +680,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       {
         const auto &bwd_operand = orig_tgraph.backward_operands().at(index);
         auto new_bwd_operand = std::make_unique<ir::Operand>(bwd_operand);
-        auto gen_index = tgraph->addBackwardOperand(index, std::move(new_bwd_operand));
-        UNUSED_RELEASE(gen_index);
+        [[maybe_unused]] auto gen_index =
+          tgraph->addBackwardOperand(index, std::move(new_bwd_operand));
         assert(gen_index == index);
       }
     });
@@ -683,7 +694,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
         external_operands.remove(index);
     }
 
-    const auto backend = pair.first;
     // NOTE The builtin backend does not yet support initializing UseDefs for training
     //      because it's graph does not have loss operation
     //      Without loss opeartion, we cannot call btopolSortOperations() or
@@ -734,9 +744,17 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   VERBOSE(ExecutorFactory) << "Linearize for backwarding order" << std::endl;
   Linear::dump(*lowered_graph, backward_order);
 
-  for (auto &&pair : tbackend_contexts)
+  train::TrainableCodeMap code_map;
+  // Generate tensors and kernels
+  for (auto &&[backend, context] : tbackend_contexts)
   {
-    pair.second->genTensors();
+    // builtin backend's kernel generator requires access to tensors in other backends.
+    // So, the other backends must be generated first.
+    if (backend->config()->id() == "builtin")
+      continue;
+
+    auto fn_map = context->gen();
+    generateCodes(fn_map, lowered_graph.get(), code_map);
   }
 
   prepareMigrantTensors(*lowered_graph, tbackend_contexts);
@@ -751,6 +769,16 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       auto builtin_kernel_gen = builtin_context->kernel_gen;
       builtin_kernel_gen->setTensorRegistries(tensor_regs);
       builtin_kernel_gen->setWholeGraphOutputs(lowered_graph->trainable_graph().getOutputs());
+    }
+  }
+
+  // Generate tensors and kernels for only builtin backend
+  for (auto &&[backend, context] : tbackend_contexts)
+  {
+    if (backend->config()->id() == "builtin")
+    {
+      auto fn_map = context->gen();
+      generateCodes(fn_map, lowered_graph.get(), code_map);
     }
   }
 
@@ -785,8 +813,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     for (const auto &op_ind : order)
     {
       const auto &op = graph.operations().at(op_ind);
-      auto op_inputs = op.getInputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
-      auto op_outputs = op.getOutputs() | ir::Remove::DUPLICATED | ir::Remove::UNDEFINED;
+      auto op_inputs = op.getUsedInputSet();
+      auto op_outputs = op.getUsedOutputSet();
 
       for (const auto &ind : op_inputs)
       {
@@ -832,22 +860,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
                        }));
   }
 
-  train::TrainableCodeMap code_map;
-  // Generate kernels
-  for (auto &&pair : ordered_contexts)
-  {
-    auto codes = pair.second->genKernels();
-    for (auto &&[op_ind, tn_seq] : codes)
-    {
-      auto &op = lowered_graph->trainable_graph().operation(op_ind);
-      const auto backend = lowered_graph->lower_info().operation.at(op_ind);
-
-      assert(code_map.find(op_ind) == code_map.end());
-      code_map.insert(
-        {op_ind, train::TrainableCodeAndInfo{op_ind, &op, backend, std::move(tn_seq)}});
-    }
-  }
-
   if (order.size() != code_map.size())
   {
     throw std::runtime_error("ExecutorFactory: Some kernels are not generated");
@@ -867,10 +879,9 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     exec->addObserver(
       std::make_unique<exec::TracingObserver>(options->workspace_dir, exec->graph(), tracing_ctx));
   }
-  // TODO Support MINMAX_H5DUMPER
+  // TODO Support MINMAX_DUMPER
 
   return exec;
 }
 
-} // namespace compiler
-} // namespace onert
+} // namespace onert::compiler

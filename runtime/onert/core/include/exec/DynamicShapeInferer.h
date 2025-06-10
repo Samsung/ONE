@@ -24,9 +24,7 @@
 
 #include <map>
 
-namespace onert
-{
-namespace exec
+namespace onert::exec
 {
 
 /**
@@ -36,12 +34,10 @@ namespace exec
 class DynamicShapeInferer : public ir::OperationVisitor
 {
 public:
-  DynamicShapeInferer(const ir::Operands &operands,
-                      const std::shared_ptr<backend::ITensorRegistry> &tensor_registry)
-    : _operands(operands), _tensor_registry(tensor_registry)
+  DynamicShapeInferer(const std::shared_ptr<backend::ITensorRegistry> &tensor_registry)
+    : _tensor_registry(tensor_registry)
   {
-    UNUSED_RELEASE(_operands);
-    UNUSED_RELEASE(_tensor_registry);
+    // DO NOTHING
   }
 
 public:
@@ -56,6 +52,7 @@ public:
   void visit(const ir::operation::Comparison &op) override;
   void visit(const ir::operation::Concat &op) override;
   void visit(const ir::operation::Conv2D &op) override;
+  void visit(const ir::operation::DepthwiseConv2D &op) override;
   void visit(const ir::operation::ElementwiseActivation &op) override;
   void visit(const ir::operation::ElementwiseBinary &op) override;
   void visit(const ir::operation::ElementwiseUnary &op) override;
@@ -66,7 +63,6 @@ public:
   void visit(const ir::operation::Gather &op) override;
   void visit(const ir::operation::L2Normalization &op) override;
   void visit(const ir::operation::LSTM &op) override;
-  void visit(const ir::operation::MatrixBandPart &op) override;
   void visit(const ir::operation::DetectionPostProcess &op) override;
   void visit(const ir::operation::OneHot &op) override;
   void visit(const ir::operation::Pack &op) override;
@@ -121,16 +117,11 @@ private:
 
 private:
   /**
-   * @brief To get operand-level info, e.g., ir::Operand::isConstant()
-   */
-  const ir::Operands &_operands;
-  /**
    * @brief To get tensor object and access tensor-level info, e.g., ITensor::buffer()
    */
   std::shared_ptr<backend::ITensorRegistry> _tensor_registry;
 };
 
-} // namespace exec
-} // namespace onert
+} // namespace onert::exec
 
 #endif // __ONERT_EXEC_DYNAMIC_SHAPE_INFERER_H__

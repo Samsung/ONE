@@ -25,11 +25,7 @@
 
 #include "Config.h"
 
-namespace onert
-{
-namespace backend
-{
-namespace acl_cl
+namespace onert::backend::acl_cl
 {
 
 bool Config::initialize()
@@ -47,6 +43,4 @@ bool Config::initialize()
   return true;
 }
 
-} // namespace acl_cl
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::acl_cl

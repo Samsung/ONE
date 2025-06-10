@@ -21,9 +21,7 @@
 #include <string>
 #include <vector>
 
-namespace onert
-{
-namespace odc
+namespace onert::odc
 {
 
 // File structure
@@ -72,11 +70,17 @@ public:
    */
   MinMaxVectors readInput(uint32_t model_idx, uint32_t subg_idx, uint32_t input_idx) const;
 
+  /**
+   * @brief Returns minmax recording count
+   *
+   * @return minmax recording count
+   */
+  uint32_t readNumRuns() const;
+
 private:
   std::string _filepath;
 };
 
-} // namespace odc
-} // namespace onert
+} // namespace onert::odc
 
 #endif // __ONERT_ODC_MINMAX_READER_H__

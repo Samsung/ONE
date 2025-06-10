@@ -16,9 +16,7 @@
 
 #include "backend/IPortableTensor.h"
 
-namespace onert
-{
-namespace backend
+namespace onert::backend
 {
 
 // `dynamic_cast` not working across library boundaries on NDK
@@ -40,5 +38,4 @@ size_t IPortableTensor::calcOffset(const ir::Coordinates &coords) const
   return offset;
 }
 
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend

@@ -21,18 +21,13 @@
 #include "ir/Operations.h"
 #include "ir/Operands.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 class Graph;
 class Operands;
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 class OperationValidator : public OperationVisitor
@@ -50,6 +45,7 @@ public:
   void visit(const operation::BatchMatMul &node) override;
   void visit(const operation::BatchToSpaceND &node) override;
   void visit(const operation::BinaryArithmetic &node) override;
+  void visit(const operation::BroadcastTo &node) override;
   void visit(const operation::Comparison &node) override;
   void visit(const operation::Concat &node) override;
   void visit(const operation::Conv2D &node) override;
@@ -62,12 +58,14 @@ public:
   void visit(const operation::EmbeddingLookup &node) override;
   void visit(const operation::ExpandDims &node) override;
   void visit(const operation::Fill &node) override;
+  void visit(const operation::Gather &node) override;
   void visit(const operation::HashtableLookup &node) override;
   void visit(const operation::Pack &node) override;
   void visit(const operation::Pad &node) override;
   void visit(const operation::Rank &node) override;
   void visit(const operation::ResizeBilinear &node) override;
   void visit(const operation::Reverse &node) override;
+  void visit(const operation::RoPE &node) override;
   void visit(const operation::Select &node) override;
   void visit(const operation::Shape &node) override;
   void visit(const operation::Slice &node) override;
@@ -78,6 +76,7 @@ public:
   void visit(const operation::SquaredDifference &node) override;
   void visit(const operation::StatelessRandomUniform &node) override;
   void visit(const operation::StridedSlice &node) override;
+  void visit(const operation::Transpose &node) override;
   void visit(const operation::TransposeConv &node) override;
   void visit(const operation::Unpack &node) override;
   void visit(const operation::While &node) override;
@@ -95,7 +94,6 @@ private:
   const Operands &_operands;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_IR_OPERATION_VALIDATOR_H__

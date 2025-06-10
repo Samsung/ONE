@@ -22,6 +22,7 @@
 #include "core/memory/OMMemoryManager.h"
 
 #include "execute/OMKernelExecutionBuilder.h"
+#include "execute/OMUtils.h"
 #include "execute/OMRuntimeKernel.h"
 
 #include "PALSVDF.h"
@@ -41,9 +42,46 @@ constexpr int inputActivationStateTensorIdx =
   4; // This is a variable tensor, and will be modified by this op.
 constexpr int outputTensorIdx = 0;
 
+void prepareQuantParams(core::SVDFQuantParams &params, const circle::Tensor *input,
+                        const circle::Tensor *weights_feature, const circle::Tensor *weights_time,
+                        const circle::Tensor *activation_state, const circle::Tensor *output)
+{
+  assert(input->quantization() != nullptr);
+  assert(output->quantization() != nullptr);
+  assert(weights_feature->quantization() != nullptr);
+  assert(weights_time->quantization() != nullptr);
+  assert(activation_state->quantization() != nullptr);
+
+  // Write zero points
+  params.input_zero_point =
+    static_cast<int32_t>(input->quantization()->zero_point()->operator[](0));
+  params.output_zero_point =
+    static_cast<int32_t>(output->quantization()->zero_point()->operator[](0));
+  params.activation_state_zero_point =
+    static_cast<int32_t>(activation_state->quantization()->zero_point()->operator[](0));
+
+  // Calculate effective scales
+  const float effective_scale_1 = (input->quantization()->scale()->operator[](0) *
+                                   weights_feature->quantization()->scale()->operator[](0)) /
+                                  (activation_state->quantization()->scale()->operator[](0));
+  const float effective_scale_2 = (activation_state->quantization()->scale()->operator[](0) *
+                                   weights_time->quantization()->scale()->operator[](0)) /
+                                  (output->quantization()->scale()->operator[](0));
+
+  execute::quantizeMultiplier(effective_scale_1, &params.effective_scale_1_a,
+                              &params.effective_scale_1_b);
+  execute::quantizeMultiplier(effective_scale_2, &params.effective_scale_2_a,
+                              &params.effective_scale_2_b);
+}
+
 } // namespace
 
-OMStatus onert_micro::execute::execute_kernel_CircleSVDF(const OMExecuteArgs &execute_args)
+namespace onert_micro
+{
+namespace execute
+{
+
+OMStatus execute_kernel_CircleSVDF(const OMExecuteArgs &execute_args)
 {
   core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
   core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
@@ -130,20 +168,20 @@ OMStatus onert_micro::execute::execute_kernel_CircleSVDF(const OMExecuteArgs &ex
     return status;
 
   std::memset(activation_state_data, 0, activation_state_size);
-  // Temporary buffer
-  uint8_t *scratch_buffer;
-  status = core::memory::OMMemoryManager::allocateMemory(
-    batch_size * num_filters * sizeof(core::OMDataType(output->type())), &scratch_buffer);
-
-  assert(status == Ok);
-  if (status != Ok)
-    return status;
 
   switch (input->type())
   {
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:
     {
+      // Temporary buffer
+      uint8_t *scratch_buffer;
+      status = core::memory::OMMemoryManager::allocateMemory(
+        batch_size * num_filters * sizeof(core::OMDataType(output->type())), &scratch_buffer);
+
+      assert(status == Ok);
+      if (status != Ok)
+        return status;
       status = pal::SVDF(
         utils::castInputData<float>(input_data), utils::castInputData<float>(weights_feature_data),
         utils::castInputData<float>(weights_time_data), utils::castInputData<float>(bias_data),
@@ -151,9 +189,29 @@ OMStatus onert_micro::execute::execute_kernel_CircleSVDF(const OMExecuteArgs &ex
         utils::castOutputData<float>(scratch_buffer), utils::castOutputData<float>(output_data),
         rank, input_size, batch_size, num_filters, num_units, memory_size,
         options->fused_activation_function());
+
+      status = core::memory::OMMemoryManager::deallocateMemory(scratch_buffer);
     }
     break;
 #endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+    {
+      core::SVDFQuantParams params{};
+      prepareQuantParams(params, input, weights_feature, weights_time, activation_state, output);
+
+      params.rank = rank;
+
+      status = pal::SVDF(
+        params, utils::castInputData<int8_t>(input_data),
+        utils::castInputData<int8_t>(weights_feature_data),
+        utils::castInputData<int8_t>(weights_time_data), utils::castInputData<int32_t>(bias_data),
+        utils::castOutputData<int8_t>(activation_state_data),
+        utils::castOutputData<int8_t>(output_data), input_shape, weights_feature_shape,
+        weights_time_shape, core::OMRuntimeShape(bias), output_shape);
+    }
+    break;
+#endif // DIS_QUANT
     default:
     {
       status = UnsupportedActivation;
@@ -163,7 +221,9 @@ OMStatus onert_micro::execute::execute_kernel_CircleSVDF(const OMExecuteArgs &ex
   }
 
   status = core::memory::OMMemoryManager::deallocateMemory(activation_state_data);
-  status = core::memory::OMMemoryManager::deallocateMemory(scratch_buffer);
 
   return status;
 }
+
+} // namespace execute
+} // namespace onert_micro

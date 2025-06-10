@@ -1,0 +1,6 @@
+# {FILES_TO_INSTALL} {DEST_DIR}
+# lib
+usr/lib/*.so usr/lib/
+usr/lib/nnfw/*.so usr/lib/nnfw
+usr/lib/nnfw/backend/libbackend_cpu.so usr/lib/nnfw/backend/
+usr/lib/nnfw/backend/libbackend_ruy.so usr/lib/nnfw/backend/

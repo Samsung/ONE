@@ -18,7 +18,7 @@
 #include <luci_interpreter/Interpreter.h>
 
 #include <luci/IR/DataTypeHelper.h>
-#include <luci/Importer.h>
+#include <luci/ImporterEx.h>
 
 #include <cstdlib>
 #include <fstream>
@@ -136,15 +136,15 @@ int entry(int argc, char **argv)
   }
 
   // create constant circle model
-  const std::vector<char> model_buffer((std::istreambuf_iterator<char>(fs)),
-                                       std::istreambuf_iterator<char>());
-  const auto circle_model = circle::GetModel(model_buffer.data());
+  std::vector<char> model_buffer((std::istreambuf_iterator<char>(fs)),
+                                 std::istreambuf_iterator<char>());
 
   // create random model's inputs
   std::vector<std::vector<uint8_t>> inputs_data;
   {
     // model inputs
-    auto model = luci::Importer(nullptr).importModule(circle_model);
+    luci::ImporterEx importer(nullptr);
+    auto model = importer.importModule(model_buffer);
     const auto inputs = loco::input_nodes(model->graph());
 
     // create random data for each input
@@ -196,7 +196,8 @@ int entry(int argc, char **argv)
   std::vector<std::vector<uint8_t>> outputs_data_1;
   {
     const auto default_source = &luci::GraphBuilderRegistry::get();
-    const auto module = luci::Importer(default_source).importModule(circle_model);
+    luci::ImporterEx importer(default_source);
+    const auto module = importer.importModule(model_buffer);
     if (not module)
     {
       std::cerr << "Fail to import model with constant copying." << std::endl;
@@ -210,7 +211,8 @@ int entry(int argc, char **argv)
   std::vector<std::vector<uint8_t>> outputs_data_2;
   {
     const auto optimized_source = luci_interpreter::source_without_constant_copying();
-    const auto module = luci::Importer(optimized_source.get()).importModule(circle_model);
+    luci::ImporterEx importer(optimized_source.get());
+    const auto module = importer.importModule(model_buffer);
     if (not module)
     {
       std::cerr << "Fail to import model without constant copying." << std::endl;

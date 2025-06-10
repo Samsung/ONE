@@ -19,17 +19,8 @@
 #include "OperandNode.h"
 #include "ir/Graph.h"
 
-namespace onert
+namespace onert::dumper::dot
 {
-namespace dumper
-{
-namespace dot
-{
-
-const std::string Operand::INPUT_SHAPE = "doublecircle";
-const std::string Operand::OUTPUT_SHAPE = "doublecircle";
-const std::string Operand::OPERAND_SHAPE = "ellipse";
-const std::string Operand::BG_COLOR_SCHEME = "set18";
 
 Operand::Operand(const ir::OperandIndex &index, Type type)
   : Node{"operand" + std::to_string(index.value())}
@@ -54,6 +45,4 @@ Operand::Operand(const ir::OperandIndex &index, Type type)
   setAttribute("colorscheme", BG_COLOR_SCHEME);
 }
 
-} // namespace dot
-} // namespace dumper
-} // namespace onert
+} // namespace onert::dumper::dot

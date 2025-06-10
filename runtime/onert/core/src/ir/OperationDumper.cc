@@ -20,9 +20,7 @@
 
 #include "util/logging.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 using namespace operation;
@@ -132,6 +130,10 @@ void OperationDumper::visit(const ElementwiseActivation &node)
   else if (node.param().op_type == ElementwiseActivation::Type::LEAKY_RELU)
   {
     params = " alpha value(" + std::to_string(node.param().alpha) + ")";
+  }
+  else if (node.param().op_type == ElementwiseActivation::Type::GELU)
+  {
+    params = " approximate(" + std::to_string(node.param().approximate) + ")";
   }
   dumpOpGeneric(node, params);
 }
@@ -318,6 +320,13 @@ void OperationDumper::visit(const Reverse &node)
   dumpUnaryInputOp(node, axis);
 }
 
+void OperationDumper::visit(const RmsNorm &node)
+{
+  std::string inputs =
+    "Gamma(" + std::to_string(node.getInputs().at(RmsNorm::Input::GAMMA).value()) + ")";
+  dumpUnaryInputOp(node, inputs);
+}
+
 void OperationDumper::visit(const RNN &node)
 {
   VERBOSE(LIR) << "* RNN" << std::endl;
@@ -451,5 +460,4 @@ void OperationDumper::visit(const While &node)
   VERBOSE(LIR) << "  - Output : Outputs(" << node.getOutputs() << ")" << std::endl;
 }
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir

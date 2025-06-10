@@ -89,12 +89,11 @@ def luci_eval_verify(test_name, binary_path, eval_driver, rtolf32=1e-5, atolf32=
     assert num_ouputs > 0, "No valid reference output file"
 
     # Execute luci interpreter.
-    subprocess.run(
-        [
-            eval_driver, circle_model,
-            str(num_inputs), circle_model + ".input", circle_model + ".output"
-        ],
-        check=True)
+    subprocess.run([
+        eval_driver, circle_model,
+        str(num_inputs), circle_model + ".input", circle_model + ".output"
+    ],
+                   check=True)
 
     # Compare the results.
     for idx in range(num_ouputs):

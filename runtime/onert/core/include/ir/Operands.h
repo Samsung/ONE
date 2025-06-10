@@ -24,9 +24,7 @@
 #include "ir/Index.h"
 #include "util/ObjectManager.h"
 
-namespace onert
-{
-namespace ir
+namespace onert::ir
 {
 
 class Operands : public util::ObjectManager<OperandIndex, Operand>
@@ -40,7 +38,6 @@ public:
   ~Operands() = default;
 };
 
-} // namespace ir
-} // namespace onert
+} // namespace onert::ir
 
 #endif // __ONERT_MODEL_OPERAND_SET_H__

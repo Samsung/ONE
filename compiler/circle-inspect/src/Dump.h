@@ -30,7 +30,7 @@ public:
   virtual ~DumpInterface() = default;
 
 public:
-  virtual void run(std::ostream &os, const circle::Model *model) = 0;
+  virtual void run(std::ostream &os, const circle::Model *model, const std::vector<char> *data) = 0;
 };
 
 class DumpOperators final : public DumpInterface
@@ -39,7 +39,7 @@ public:
   DumpOperators() = default;
 
 public:
-  void run(std::ostream &os, const circle::Model *model);
+  void run(std::ostream &os, const circle::Model *model, const std::vector<char> *data);
 };
 
 class DumpConv2DWeight final : public DumpInterface
@@ -48,7 +48,7 @@ public:
   DumpConv2DWeight() = default;
 
 public:
-  void run(std::ostream &os, const circle::Model *model);
+  void run(std::ostream &os, const circle::Model *model, const std::vector<char> *data);
 };
 
 class DumpOperatorVersion final : public DumpInterface
@@ -57,7 +57,7 @@ public:
   DumpOperatorVersion() = default;
 
 public:
-  void run(std::ostream &os, const circle::Model *model);
+  void run(std::ostream &os, const circle::Model *model, const std::vector<char> *data);
 };
 
 class DumpTensorDType final : public DumpInterface
@@ -66,7 +66,7 @@ public:
   DumpTensorDType() = default;
 
 public:
-  void run(std::ostream &os, const circle::Model *model);
+  void run(std::ostream &os, const circle::Model *model, const std::vector<char> *data);
 };
 
 class DumpConstants final : public DumpInterface
@@ -75,7 +75,16 @@ public:
   DumpConstants() = default;
 
 public:
-  void run(std::ostream &os, const circle::Model *model);
+  void run(std::ostream &os, const circle::Model *model, const std::vector<char> *data);
+};
+
+class DumpTensorShape final : public DumpInterface
+{
+public:
+  DumpTensorShape() = default;
+
+public:
+  void run(std::ostream &os, const circle::Model *model, const std::vector<char> *data);
 };
 
 } // namespace circleinspect

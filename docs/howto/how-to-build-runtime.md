@@ -1,6 +1,6 @@
 # How to Build Runtime
 
-This document is based on the system where Ubuntu Desktop Linux 20.04 LTS is installed with default settings, and can be applied in other environments without much difference. For reference, the development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.
+This document is based on the system where Ubuntu Desktop Linux 22.04 LTS is installed with default settings, and can be applied in other environments without much difference. For reference, the development of our project started in the Ubuntu Desktop Linux 16.04 LTS environment.
 
 ## Build requirements
 
@@ -15,61 +15,103 @@ In the Ubuntu, you can easily install it with the following command.
 $ sudo apt-get install cmake
 ```
 
-If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in https://github.com/Samsung/ONE/blob/master/infra/docker/focal/Dockerfile.
+If your linux system does not have the basic development configuration, you will need to install more packages. A list of all packages needed to configure the development environment can be found in `infra/docker/<ubuntu_code>/Dockerfile` of our repository.
 
 Here is a summary of it for runtime and related tools
 
 ```
 $ sudo apt install \
 build-essential \
-clang-format-8 \
 cmake \
-doxygen \
 git \
 graphviz \
-hdf5-tools \
 lcov \
 libhdf5-dev \
 python3 \
 python3-pip \
+python3-dev \
 scons \
 software-properties-common \
 unzip \
-wget
-
-$ pip3 install yapf==0.22.0 numpy
-
+wget \
+curl
 ```
 
-## Build from source code, for Ubuntu
+## Get ONE source code
 
-In a typical linux development environment, including Ubuntu, you can build the runtime with a simple command like this:
+Getting code is as simple as
 
 ```
 $ git clone https://github.com/Samsung/ONE.git one
 $ cd one
-$ ./nnfw configure
-$ ./nnfw build
-$ ./nnfw install
+```
+
+## Install python packages
+
+Python package `numpy` is needed for build. It's recommended to always install python packages in virtualenv.
+To do this, at first you need to install python venv package:
+
+```
+$ sudo apt-get install python3-venv
+```
+Next, create virtualenv in `.venv` directory (make sure that you are in ONE directory):
+
+```
+$ python3 -m venv .venv
+```
+
+and activate it (please keep in mind that you will have to activate it always before build)
+
+```
+$ source .venv/bin/activate
+```
+
+Next, just in case upgrade pip package:
+
+```
+(.venv)$ pip install -U pip
+```
+
+and finally install `numpy`:
+
+```
+(.venv)$ pip install numpy
+```
+
+Additionally, package `yapf` is needed in specific version:
+
+```
+(.venv)$ pip install yapf==0.40.2
+```
+
+## Build from source code, for Ubuntu
+
+In a typical linux development environment, including Ubuntu, you can build the runtime with a simple command like this (make sure that you are in ONE directory):
+
+```
+$ source .venv/bin/activate
+(.venv)$ ./nnfw configure
+(.venv)$ ./nnfw build
+(.venv)$ ./nnfw install
 ```
 
 For easy build process, we provides `Makefile.template` makefile.
 
 ```
-$ make -f Makefile.template
+(.venv)$ make -f Makefile.template
 ```
 
 To release build the runtime, add the environment variable `BUILD_TYPE=release` to the build command as follows.
 
 ```
-$ export BUILD_TYPE=release
-$ make -f Makefile.template
+(.venv)$ export BUILD_TYPE=release
+(.venv)$ make -f Makefile.template
 ```
 
 Or you can simply do something like this:
 
 ```
-$ BUILD_TYPE=release make -f Makefile.template
+(.venv)$ BUILD_TYPE=release make -f Makefile.template
 ```
 
 The build method described here is a `native build` in which the build environment and execution environment are same. So, this command creates a runtime binary targeting the current build architecture, probably x86_64, as the execution environment. You can find the build output in the ./Product folder as follows:

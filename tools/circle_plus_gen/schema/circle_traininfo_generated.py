@@ -5,6 +5,7 @@
 
 import flatbuffers
 from flatbuffers.compat import import_numpy
+
 np = import_numpy()
 
 
@@ -78,8 +79,10 @@ class SGDOptions(object):
 
     @classmethod
     def SGDOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x54\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x54\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SGDOptions
     def Init(self, buf, pos):
@@ -159,8 +162,10 @@ class AdamOptions(object):
 
     @classmethod
     def AdamOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x54\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x54\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # AdamOptions
     def Init(self, buf, pos):
@@ -283,8 +288,10 @@ class SparseCategoricalCrossentropyOptions(object):
     @classmethod
     def SparseCategoricalCrossentropyOptionsBufferHasIdentifier(
             cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x54\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x54\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # SparseCategoricalCrossentropyOptions
     def Init(self, buf, pos):
@@ -369,8 +376,10 @@ class CategoricalCrossentropyOptions(object):
                                                           buf,
                                                           offset,
                                                           size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x54\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x54\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # CategoricalCrossentropyOptions
     def Init(self, buf, pos):
@@ -451,8 +460,10 @@ class MeanSquaredErrorOptions(object):
 
     @classmethod
     def MeanSquaredErrorOptionsBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x54\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x54\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # MeanSquaredErrorOptions
     def Init(self, buf, pos):
@@ -519,8 +530,10 @@ class ModelTraining(object):
 
     @classmethod
     def ModelTrainingBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
-        return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x43\x54\x52\x30", size_prefixed=size_prefixed)
+        return flatbuffers.util.BufferHasIdentifier(buf,
+                                                    offset,
+                                                    b"\x43\x54\x52\x30",
+                                                    size_prefixed=size_prefixed)
 
     # ModelTraining
     def Init(self, buf, pos):

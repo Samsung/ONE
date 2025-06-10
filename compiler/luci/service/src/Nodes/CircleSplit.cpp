@@ -22,8 +22,7 @@ namespace luci
 luci::CircleNode *CloneNodeLet<CN::STUV>::visit(const luci::CircleSplit *node)
 {
   auto *cloned = _graph->nodes()->create<luci::CircleSplit>();
-  if (cloned != nullptr)
-    cloned->num_split(node->num_split());
+  cloned->num_split(node->num_split());
   return cloned;
 }
 

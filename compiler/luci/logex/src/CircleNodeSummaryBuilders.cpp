@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "CircleNodeSummaryBuilders.h"
+#include "luci/CircleNodeSummaryBuilders.h"
 
 #include <luci/IR/CircleNode.h>
 #include <luci/IR/CircleNodes.h>
@@ -61,6 +61,11 @@ std::string to_str(loco::DataType type)
 
     case loco::DataType::BOOL:
       return "BOOL";
+
+    case loco::DataType::MXFP4:
+      return "MXFP4";
+    case loco::DataType::MXINT8:
+      return "MXINT8";
 
     default:
       return "Error";
@@ -130,6 +135,19 @@ std::string to_str(luci::MirrorPadMode mode)
       return "REFLECT";
     case luci::MirrorPadMode::SYMMETRIC:
       return "SYMMETRIC";
+    default:
+      return "Error";
+  }
+}
+
+std::string to_str(luci::RoPEMode mode)
+{
+  switch (mode)
+  {
+    case luci::RoPEMode::GPT_NEOX:
+      return "GPT_NEOX";
+    case luci::RoPEMode::GPT_J:
+      return "GPT_J";
     default:
       return "Error";
   }
@@ -888,6 +906,38 @@ void CircleReverseSequenceSummaryBuilder::build_attributes(const luci::CircleNod
 std::vector<std::string> CircleReverseV2SummaryBuilder::get_input_names(const luci::CircleNode *)
 {
   return {"tensor", "axis"};
+}
+
+std::vector<std::string> CircleRmsNormSummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "gamma"};
+}
+
+void CircleRmsNormSummaryBuilder::build_attributes(const luci::CircleNode *node,
+                                                   locop::NodeSummary &s)
+{
+  auto rmsnorm = loco::must_cast<const luci::CircleRmsNorm *>(node);
+  s.args().append("epsilon", std::to_string(rmsnorm->epsilon()));
+}
+
+bool CircleRoPESummaryBuilder::validate(const luci::CircleNode *node)
+{
+  auto rope = loco::must_cast<const luci::CircleRoPE *>(node);
+  if (rope->mode() == luci::RoPEMode::UNDEFINED)
+    return false;
+
+  return true;
+}
+
+std::vector<std::string> CircleRoPESummaryBuilder::get_input_names(const luci::CircleNode *)
+{
+  return {"input", "sin_table", "cos_table"};
+}
+
+void CircleRoPESummaryBuilder::build_attributes(const luci::CircleNode *node, locop::NodeSummary &s)
+{
+  auto rope = loco::must_cast<const luci::CircleRoPE *>(node);
+  s.args().append("mode", to_str(rope->mode()));
 }
 
 std::vector<std::string> CircleScatterNdSummaryBuilder::get_input_names(const luci::CircleNode *)

@@ -17,6 +17,7 @@
 #include "luci/Pass/ShuffleWeightTo16x1Float32Pass.h"
 
 #include <luci/IR/CircleNodes.h>
+#include <luci/Profile/CircleNodeOrigin.h>
 
 #include <cassert>
 #include <vector>
@@ -86,6 +87,7 @@ luci::CircleConst *shuffle_weight(luci::CircleFullyConnected *fc)
     new_weights->dim(r).set(the_weights->dim(r).value());
   }
   new_weights->name(name + "/shuffle_weight");
+  luci::add_origin(new_weights, luci::get_origin(the_weights));
 
   // suffle weight
   const uint32_t MULTIPLE = 16;

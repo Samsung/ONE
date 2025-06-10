@@ -67,7 +67,7 @@ git clone https://github.com/Samsung/ONE.git
 ```
 $ cd ONE
 
-$ gbs -c infra/nnfw/config/gbs.conf build --include-all -A aarch64 --define 'test_build 1'
+$ gbs -c runtime/infra/gbs/gbs.conf build --include-all -A aarch64 --define 'test_build 1'
 ```
 - `-A aarch64` is to set architecture to AARCH64. Use `arm32` for ARM32 target.
 - `--define 'test_build 1'` is to enable test build so that we can use `onert_run`

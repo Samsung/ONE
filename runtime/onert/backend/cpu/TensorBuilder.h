@@ -19,17 +19,11 @@
 
 #include <backend/basic/TensorBuilder.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace cpu
+namespace onert::backend::cpu
 {
 
 using TensorBuilder = basic::TensorBuilder;
 
-} // namespace cpu
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::cpu
 
 #endif // __ONERT_BACKEND_CPU_TENSOR_BUILDER_H__

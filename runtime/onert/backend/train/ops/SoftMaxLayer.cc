@@ -20,13 +20,7 @@
 
 #include <cker/train/operation/SoftMax.h>
 
-namespace onert
-{
-namespace backend
-{
-namespace train
-{
-namespace ops
+namespace onert::backend::train::ops
 {
 
 SoftMaxLayer::SoftMaxLayer()
@@ -62,7 +56,4 @@ void SoftMaxLayer::backward()
   }
 }
 
-} // namespace ops
-} // namespace train
-} // namespace backend
-} // namespace onert
+} // namespace onert::backend::train::ops

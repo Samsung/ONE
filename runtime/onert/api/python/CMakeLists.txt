@@ -30,6 +30,7 @@ file(GLOB_RECURSE NNFW_API_PYBIND_SOURCES "src/*.cc")
 pybind11_add_module(nnfw_api_pybind ${NNFW_API_PYBIND_SOURCES})
 target_include_directories(nnfw_api_pybind PRIVATE include)
 target_link_libraries(nnfw_api_pybind PRIVATE nnfw-dev)
+target_link_libraries(nnfw_api_pybind PRIVATE nnfw_common nnfw_coverage)
 
 # Install the Python module
 install(TARGETS nnfw_api_pybind DESTINATION lib)
