@@ -115,6 +115,13 @@ struct IExecutor
   virtual ir::Layout outputLayout(uint32_t index) const = 0;
 
   /**
+   * @brief     Get output buffer at index
+   * @param[in] index Index of output
+   * @return    Output buffer
+   */
+  virtual const uint8_t *outputBuffer(uint32_t index) const = 0;
+
+  /**
    * @brief   Return current execution configuration
    * @return  Current execution configuration
    */

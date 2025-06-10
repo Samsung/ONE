@@ -84,6 +84,13 @@ public:
   virtual const ir::OperandInfo &outputInfo(const ir::IOIndex &index) const = 0;
 
   /**
+   * @brief     Return NN package output buffer
+   * @param[in] index Output index
+   * @return    Buffer of output
+   */
+  virtual const void *outputBuffer(const ir::IOIndex &index) const = 0;
+
+  /**
    * @brief     Execute NN package executor set
    * @param[in] ctx  Execution context
    */
