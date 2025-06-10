@@ -39,6 +39,7 @@ struct ExecutorFactoryArgs
   const compiler::CompilerOptions *options;
   ir::ModelIndex model_index;
   std::shared_ptr<backend::custom::IKernelBuilder> custom_kernel_builder;
+  util::Set<ir::OperandIndex> internal_io_indexes;
 };
 
 class ExecutorFactory
