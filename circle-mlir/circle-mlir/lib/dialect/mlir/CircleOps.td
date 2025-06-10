@@ -53,9 +53,9 @@ class CIR_OperandsHaveSameShapesOrBroadcastableShape<
 // Returns true if the n-th operand has unknown rank or at least rank m.
 class CIR_OperandHasAtleastRank<int n, int m> :
   PredOpTrait<"operand " # n # " is " # m # "-D",
-    Or<[CPred<"$_op.getOperand(" # n # ").getType().isa<UnrankedTensorType>()">,
-      CPred<"$_op.getOperand(" # n #
-        ").getType().cast<ShapedType>().getRank() >= " # m>]>>;
+    Or<[CPred<"mlir::isa<UnrankedTensorType>($_op.getOperand(" # n # ").getType())">,
+      CPred<"mlir::cast<ShapedType>($_op.getOperand(" # n #
+        ").getType()).getRank() >= " # m>]>>;
 
 // CIR Runtime type predicate.
 class CIR_RuntimeType<TypeConstraint t> {
@@ -104,7 +104,7 @@ class CIR_1DTensorOfOrNone<list<Type> allowedRuntimeTypes, string description = 
 //===----------------------------------------------------------------------===//
 
 class CIR_OperandIsUnrankedPred<int n> :
-  CPred<"$_op.getOperand(" # n # ").getType().isa<UnrankedTensorType>()">;
+  CPred<"mlir::isa<UnrankedTensorType>($_op.getOperand(" # n # ").getType())">;
 
 // TODO: Some of these could be generalized and/or moved to more general
 // location.
@@ -112,8 +112,8 @@ class CIR_OperandIsUnrankedPred<int n> :
 class CIR_OperandHasRank<int n, int m> :
   PredOpTrait<"operand " # n # " is " # m # "-D",
     Or<[CIR_OperandIsUnrankedPred<n>,
-      CPred<"$_op.getOperand(" # n #
-      ").getType().cast<ShapedType>().getRank() == " # m>]>>;
+      CPred<"mlir::cast<ShapedType>($_op.getOperand(" # n #
+      ").getType()).getRank() == " # m>]>>;
 
 class CIR_TFTypesWithSameBits<int i, int j, int num> :
   And<[CPred<"getElementTypeOrSelf($_op.getResult(" # i # ")).isUnsignedInteger(" # num # ")">,
@@ -128,32 +128,32 @@ class CIR_TFOperandTypesWithSameBits<int i, int j, int num> :
 
 class CIR_OperandHasRankAtMostPred<int n, int m> :
   Or<[CIR_OperandIsUnrankedPred<n>,
-    CPred<"$_op.getOperand(" # n #
-    ").getType().cast<ShapedType>().getRank() <= " # m>]>;
+    CPred<"mlir::cast<ShapedType>($_op.getOperand(" # n #
+    ").getType()).getRank() <= " # m>]>;
 
 // True if operand n is ranked and has a rank > dim.
 class CIR_OperandIsRankedAndHasDimPred<int n, int dim> : And<[
-  CPred<"$_op.getOperand(" # n # ").getType().isa<RankedTensorType>()">,
-  CPred<"$_op.getOperand(" # n # ").getType().cast<ShapedType>().getRank() > "
+  CPred<"mlir::isa<RankedTensorType>($_op.getOperand(" # n # ").getType())">,
+  CPred<"mlir::cast<ShapedType>($_op.getOperand(" # n # ").getType()).getRank() > "
   # dim>]>;
 
 // Returns true if the n-th operand is ranked and has a dimension length <=
 // size at the rank dim.
 class CIR_OperandDimIsAtMost<int n, int dim, int size> : And<[
   CIR_OperandIsRankedAndHasDimPred<n, dim>,
-  CPred<"$_op.getOperand(" # n # ").getType().cast<ShapedType>()"
+  CPred<"mlir::cast<ShapedType>($_op.getOperand(" # n # ").getType())"
       ".getShape()[" # dim # " ] <= " # size>]>;
 
 class CIR_OperandRankEquals1DimOfOperand<int x, int y> :
   PredOpTrait<"operand " # x # "'s rank equals operand " # y # "'s size",
     Or<[CIR_OperandIsUnrankedPred<x>,
         CIR_OperandIsUnrankedPred<y>,
-        CPred<"!$_op.getOperand(" # y #
-          ").getType().cast<ShapedType>().hasStaticShape()">,
-        CPred<"$_op.getOperand(" # x #
-          ").getType().cast<ShapedType>().getRank() == "
-          "$_op.getOperand(" # y #
-          ").getType().cast<ShapedType>().getShape()[0]">]>>;
+        CPred<"!mlir::cast<ShapedType>($_op.getOperand(" # y #
+          ").getType()).hasStaticShape()">,
+        CPred<"mlir::cast<ShapedType>($_op.getOperand(" # x #
+          ").getType()).getRank() == "
+          "mlir::cast<ShapedType>($_op.getOperand(" # y #
+          ").getType()).getShape()[0]">]>>;
 
 class CIR_OperandHasRankAtMost<int n, int m> :
   PredOpTrait<"operand " # n # " is at most " # m # "-D",
@@ -162,12 +162,12 @@ class CIR_OperandHasRankAtMost<int n, int m> :
 class CIR_OperandHasRankAtLeast<int n, int m> :
   PredOpTrait<"operand " # n # " is at least " # m # "-D",
     Or<[CIR_OperandIsUnrankedPred<n>,
-      CPred<"$_op.getOperand(" # n #
-      ").getType().cast<ShapedType>().getRank() >= " # m>]>>;
+      CPred<"mlir::cast<ShapedType>($_op.getOperand(" # n #
+      ").getType()).getRank() >= " # m>]>>;
 
 // Ensures the array attribute's size is within the given maximum size.
 class CIR_ArrayMaxCount<int n> : AttrConstraint<
-    CPred<"$_self.isa<ArrayAttr>() && $_self.cast<ArrayAttr>().size() <= " # n>,
+    CPred<"mlir::isa<ArrayAttr>($_self) && mlir::cast<ArrayAttr>($_self).size() <= " # n>,
     "whose size is at most " # n>;
 
 // This is a quantization-aware version of TCresVTEtIsSameAsOp
@@ -355,11 +355,11 @@ def CIR_ArgMaxOp : CIR_Op<"arg_max", [
   let hasOptions = 1;
 
   DerivedCircleTypeAttr output_type = DerivedCircleTypeAttr<[{
-    return getResult().getType().cast<TensorType>().getElementType().
-        cast<IntegerType>().getWidth() > 32 ? circle::TensorType_INT64 :
+    return mlir::cast<IntegerType>(mlir::cast<TensorType>(getResult().getType()).
+            getElementType()).getWidth() > 32 ? circle::TensorType_INT64 :
             circle::TensorType_INT32;
     }], [{
-      TypeAttr::get(getResult().getType().cast<TensorType>().getElementType())
+      TypeAttr::get(mlir::cast<TensorType>(getResult().getType()).getElementType())
     }]>;
 }
 
@@ -1920,7 +1920,7 @@ def CIR_ShapeOp: CIR_Op<"shape", [
   let results = (outs CIR_TensorOf<[I32, I64]>:$output);
 
   DerivedTypeAttr out_type = DerivedTypeAttr<[{
-    return getResult().getType().cast<TensorType>().getElementType();
+    return mlir::cast<TensorType>(getResult().getType()).getElementType();
   }]>;
 
   let hasOptions = 1;

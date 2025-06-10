@@ -153,6 +153,11 @@ def _get_parser():
         'Ensure generated circle model preserves the I/O order of the original onnx model.'
     )
 
+    parser.add_argument(
+        '--dynamic_batch_to_single_batch',
+        action='store_true',
+        help='Convert dynamic batch size (first dimension) of inputs to 1.')
+
     # NOTE How one-import-onnx-ext is called;
     # - applies only when one-import-onnx-ext is installed
     # - default onnx-tf is called for conversion
@@ -341,6 +346,8 @@ def _convert(args):
 
             try:
                 o2c_cmd = [onnx2circle_path]
+                if oneutils.is_valid_attr(args, 'dynamic_batch_to_single_batch'):
+                    o2c_cmd.append('--dynamic_batch_to_single_batch')
                 o2c_cmd.append(onnx_to_convert_path)
                 o2c_cmd.append(getattr(args, 'output_path'))
                 res_conv = oneutils.run_ret(o2c_cmd, logfile=f)

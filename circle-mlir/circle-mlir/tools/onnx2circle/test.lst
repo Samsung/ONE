@@ -84,3 +84,6 @@ ValidateDynaShapeInf(Sin_F32_R4_ds.circle.mlir)
 ValidateDynaShapeInf(Slice_F32_R2_ds.circle.mlir)
 ValidateDynaShapeInf(Sqrt_F32_R4_ds.circle.mlir)
 ValidateDynaShapeInf(StridedSlice_F32_R2_ds.circle.mlir)
+
+# dynamic batch to single batch validation
+ValidateDynaBatchToSingle(Logistics_F32_R4_db.circle.mlir)
