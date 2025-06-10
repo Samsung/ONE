@@ -97,6 +97,8 @@ TEST_F(GenModelTest, neg_OneOp_Gather_Q4_0_InvalidOutType)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"cpu"});
   _context->expectFailModelLoad();
+
+  SUCCEED();
 }
 
 TEST_F(GenModelTest, neg_OneOp_Gather_Q4_0_shape)
@@ -115,4 +117,6 @@ TEST_F(GenModelTest, neg_OneOp_Gather_Q4_0_shape)
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->setBackends({"cpu"});
   _context->expectFailCompile();
+
+  SUCCEED();
 }
