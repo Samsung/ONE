@@ -1,3 +1,9 @@
+onnx2circle (0.4.0~202506100012~jammy) jammy; urgency=medium
+
+  * Fix ResizeBilinear with int64
+
+ -- On-device AI developers <nnfw@samsung.com>  Tue, 10 Jun 2025 00:22:23 +0000
+
 onnx2circle (0.3.0~202506050623~jammy) jammy; urgency=medium
 
   * Added ConvertDivToMul in pass
