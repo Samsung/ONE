@@ -220,6 +220,46 @@ tensorinfo NNFW_SESSION::output_tensorinfo(uint32_t index)
 }
 
 //////////////////////////////////////////////
+// Internal APIs
+//////////////////////////////////////////////
+py::array NNFW_SESSION::get_output(uint32_t index)
+{
+  // First call into the C API
+  nnfw_tensorinfo out_info = {};
+  const void *out_buffer = nullptr;
+  ensure_status(nnfw_get_output(session, index, &out_info, &out_buffer));
+
+  // Convert nnfw_tensorinfo to our python-visible struct
+  size_t num_elements = 1;
+  std::vector<ssize_t> shape;
+  shape.reserve(out_info.rank);
+  for (int i = 0; i < out_info.rank; ++i)
+  {
+    shape.push_back(static_cast<ssize_t>(out_info.dims[i]));
+    num_elements *= static_cast<size_t>(out_info.dims[i]);
+  }
+
+  // Wrap the raw buffer in a numpy array;
+  auto np = py::module_::import("numpy");
+  py::dtype dt = np.attr("dtype")(py::str(getStringType(out_info.dtype))).cast<py::dtype>();
+  size_t itemsize = dt.attr("itemsize").cast<size_t>();
+
+  py::array arr(dt, shape);
+  std::memcpy(arr.mutable_data(), out_buffer, num_elements * itemsize);
+  arr.attr("flags").attr("writeable") = false;
+
+  return arr;
+}
+
+//////////////////////////////////////////////
+// Experimental APIs for inference
+//////////////////////////////////////////////
+void NNFW_SESSION::set_prepare_config(NNFW_PREPARE_CONFIG config)
+{
+  ensure_status(nnfw_set_prepare_config(session, config, "true"));
+}
+
+//////////////////////////////////////////////
 // Experimental APIs for training
 //////////////////////////////////////////////
 nnfw_train_info NNFW_SESSION::train_get_traininfo()
