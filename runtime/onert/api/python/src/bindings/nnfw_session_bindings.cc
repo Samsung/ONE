@@ -218,7 +218,17 @@ void bind_nnfw_session(py::module_ &m)
          "Parameters:\n"
          "\tindex (int): Index of output\n"
          "Returns:\n"
-         "\ttensorinfo: Tensor info (shape, type, etc)");
+         "\ttensorinfo: Tensor info (shape, type, etc)")
+    .def("get_output", &NNFW_SESSION::get_output, py::arg("index"),
+         R"pbdoc(
+         Retrieve the internally-allocated dynamic output as a copy.
+         Parameters:
+             index (int): Index of the output tensor (0-indexed)
+         Returns:
+             numpy.ndarray: a copy of the internal buffer
+         )pbdoc")
+    .def("set_prepare_config", &NNFW_SESSION::set_prepare_config, py::arg("config"),
+         "Set configuration to prepare");
 }
 
 // Bind the `NNFW_SESSION` class with experimental APIs

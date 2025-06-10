@@ -37,4 +37,12 @@ void bind_tensorinfo(py::module_ &m)
       "The dimension of tensor. Maximum rank is 6 (NNFW_MAX_RANK).");
 }
 
+void bind_nnfw_enums(py::module_ &m)
+{
+  // Bind NNFW_TRAIN_LOSS
+  py::enum_<NNFW_PREPARE_CONFIG>(m, "prepare_config", py::module_local())
+    .value("PREPARE_CONFIG_PROFILE", NNFW_PREPARE_CONFIG_PROFILE)
+    .value("ENABLE_INTERNAL_OUTPUT_ALLOC", NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC);
+}
+
 } // namespace onert::api::python

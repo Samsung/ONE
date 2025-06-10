@@ -19,6 +19,7 @@
 
 #include "nnfw.h"
 #include "nnfw_experimental.h"
+#include "nnfw_internal.h"
 
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
@@ -171,6 +172,16 @@ public:
   void set_output_layout(uint32_t index, const char *layout);
   tensorinfo input_tensorinfo(uint32_t index);
   tensorinfo output_tensorinfo(uint32_t index);
+
+  //////////////////////////////////////////////
+  // Internal APIs
+  //////////////////////////////////////////////
+  py::array get_output(uint32_t index);
+
+  //////////////////////////////////////////////
+  // Experimental APIs for inference
+  //////////////////////////////////////////////
+  void set_prepare_config(NNFW_PREPARE_CONFIG config);
 
   //////////////////////////////////////////////
   // Experimental APIs for training

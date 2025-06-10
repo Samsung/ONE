@@ -48,6 +48,9 @@ PYBIND11_MODULE(libnnfw_api_pybind, m)
   // Bind common `tensorinfo` class
   bind_tensorinfo(m);
 
+  // Bind enums
+  bind_nnfw_enums(m);
+
   m.doc() = "NNFW Python Bindings for Training";
 
   // Bind training enums
