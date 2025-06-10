@@ -225,7 +225,7 @@ void bind_nnfw_session(py::module_ &m)
          Parameters:
              index (int): Index of the output tensor (0-indexed)
          Returns:
-             numpy.ndarray: a read-only copy of the internal buffer
+             numpy.ndarray: a copy of the internal buffer
          )pbdoc")
     .def("set_prepare_config", &NNFW_SESSION::set_prepare_config, py::arg("config"),
          "Set configuration to prepare");
