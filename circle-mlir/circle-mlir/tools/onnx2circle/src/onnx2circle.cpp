@@ -198,7 +198,7 @@ int convertToCircle(const O2Cparam &param)
 } // namespace onnx2circle
 
 // NOTE sync version number with 'infra/debian/*/changelog' for upgrade
-const char *__version = "0.3.0";
+const char *__version = "0.4.0";
 
 int entry(const O2Cparam &param)
 {
