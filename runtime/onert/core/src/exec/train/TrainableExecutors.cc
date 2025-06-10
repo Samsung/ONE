@@ -51,6 +51,11 @@ const ir::OperandInfo &TrainableExecutors::outputInfo(const ir::IOIndex &index) 
   return entryExecutor()->outputInfo(index.value());
 }
 
+const void *TrainableExecutors::outputBuffer(const ir::IOIndex &index) const
+{
+  return static_cast<const void *>(entryExecutor()->outputBuffer(index.value()));
+}
+
 void TrainableExecutors::execute(const ExecutionContext &ctx)
 {
   if (_executors.size() > 1)

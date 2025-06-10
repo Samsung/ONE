@@ -49,6 +49,11 @@ const ir::OperandInfo &SingleModelExecutors::outputInfo(const ir::IOIndex &index
   return entryExecutor()->outputInfo(index.value());
 }
 
+const void *SingleModelExecutors::outputBuffer(const ir::IOIndex &index) const
+{
+  return static_cast<const void *>(entryExecutor()->outputBuffer(index.value()));
+}
+
 void SingleModelExecutors::execute(const ExecutionContext &ctx)
 {
   // UserTensor for Input/Output
