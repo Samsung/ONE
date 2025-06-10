@@ -848,8 +848,38 @@ NNFW_STATUS nnfw_session::get_output(uint32_t index, nnfw_tensorinfo *ti, const 
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  // TODO Get output tensorinfo and buffer
-  (void)index;
+  try
+  {
+    if (index >= getOutputSize())
+    {
+      std::cerr << "Error during nnfw_session::get_output, index " << index
+                << " is out of range. (output count: " << getOutputSize() << ")" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    if (!_coptions->internal_output_alloc)
+    {
+      std::cerr << "Error during nnfw_session::get_output: "
+                << "internal output allocation is not enabled. "
+                << "Call nnfw_set_prepare_config(session, "
+                   "NNFW_PREPARE_CONFIG_ENABLE_INTERNAL_OUTPUT_ALLOC, \"true\") "
+                << "before nnfw_prepare()." << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    auto io_index = onert::ir::IOIndex{index};
+    const auto &info = _compiler_artifact->_executors->outputInfo(io_index);
+    const auto &shape = info.shape();
+    const auto &dtype = info.typeInfo().type();
+    fillTensorInfo(ti, shape, dtype);
+
+    *out_buffer = _compiler_artifact->_executors->outputBuffer(io_index);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::get_output : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
 
   return NNFW_STATUS_NO_ERROR;
 }
