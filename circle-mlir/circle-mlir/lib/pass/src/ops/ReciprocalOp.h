@@ -44,7 +44,7 @@ public:
     auto op_name = GetOperationName(op.getOperation());
 
     // create scalar 1.0 ConstOp
-    auto in_dtype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    auto in_dtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     // TODO support other types
     if (not in_dtype.getElementType().isF32())
       return mlir::failure();

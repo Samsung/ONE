@@ -56,8 +56,8 @@ public:
         llvm::dbgs() << "ConvShape end: " << end.value() << "\n";
     });
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
-    mlir::RankedTensorType outtype = op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
 
     rewriter.replaceOpWithNewOp<ShapeOp>(op, op.getType(), input);
 

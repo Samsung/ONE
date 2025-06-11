@@ -61,16 +61,17 @@ public:
     auto op_name = GetOperationName(op.getOperation());
     LLVM_DEBUG({ llvm::dbgs() << "ConvResize name: " << op_name << "\n"; });
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvResize intype: " << intype << "\n"; });
     // TODO support other ranks
     CHECK_VALID_RANK_4(intype);
 
-    mlir::RankedTensorType outtype = op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvResize outtype: " << outtype << "\n"; });
     CHECK_VALID_RANK_4(outtype);
 
-    mlir::RankedTensorType sizestype = sizes.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType sizestype =
+      mlir::dyn_cast_or_null<mlir::RankedTensorType>(sizes.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvResize sizestype: " << sizestype << "\n"; });
 
     if (notYetImplemented(op, adaptor))
@@ -111,7 +112,7 @@ public:
       std::vector<float> scales_values;
       if (ExtractConstantValues(scales, scales_values))
       {
-        auto shaped_type = intype.dyn_cast<mlir::ShapedType>();
+        auto shaped_type = mlir::dyn_cast<mlir::ShapedType>(intype);
         if (shaped_type.hasStaticShape())
         {
           auto inshape = intype.getShape();

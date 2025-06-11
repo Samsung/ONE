@@ -47,8 +47,8 @@ public:
     mlir::Value input = adaptor.getData();
     mlir::Value shape = adaptor.getShape();
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
-    mlir::RankedTensorType outtype = op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
     auto op_name = GetOperationName(op.getOperation());
     LLVM_DEBUG({ llvm::dbgs() << "ConvReshape name: " << op_name << "\n"; });
     LLVM_DEBUG({ llvm::dbgs() << "ConvReshape intype: " << intype << "\n"; });

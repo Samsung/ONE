@@ -50,7 +50,7 @@ public:
     auto op_name = GetOperationName(op.getOperation());
     LLVM_DEBUG({ llvm::dbgs() << "ConvTranspose name: " << op_name << "\n"; });
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvTranspose intype: " << intype << "\n"; });
 
     auto inshape = intype.getShape();

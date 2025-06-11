@@ -49,10 +49,10 @@ public:
 
     mlir::Location opLoc = op->getLoc();
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
-    mlir::RankedTensorType xtype = X.getType().dyn_cast_or_null<mlir::RankedTensorType>();
-    mlir::RankedTensorType ytype = Y.getType().dyn_cast_or_null<mlir::RankedTensorType>();
-    mlir::RankedTensorType outtype = op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
+    mlir::RankedTensorType xtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(X.getType());
+    mlir::RankedTensorType ytype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(Y.getType());
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
 
     if (isSelectOp(intype, xtype, ytype))
     {
