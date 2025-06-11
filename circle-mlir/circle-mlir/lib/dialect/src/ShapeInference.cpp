@@ -112,6 +112,72 @@ void AddOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// BatchMatMulOp
+//===----------------------------------------------------------------------===//
+
+void BatchMatMulOp::inferShapes(void)
+{
+  // referenced from tensorflow/compiler/mlir/lite/ir/tfl_ops.cc BatchMatMulOp::verify()
+  // and compiler/luci/service/src/Nodes/CircleBatchMatMul.cpp
+
+  BatchMatMulOp op = *this;
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
+  if (output_type.hasStaticShape())
+    return;
+
+  // batch size in lhs and rhs must be broadcastable
+  mlir::RankedTensorType x_ty = mlir::dyn_cast<mlir::RankedTensorType>(op.getX().getType());
+  mlir::RankedTensorType y_ty = mlir::dyn_cast<mlir::RankedTensorType>(op.getY().getType());
+  if (!x_ty || !y_ty)
+    return;
+
+  if (not y_ty.hasStaticShape())
+    return;
+  if (not x_ty.hasStaticShape())
+    return;
+
+  mlir::ArrayRef<int64_t> x_shape = x_ty.getShape();
+  mlir::ArrayRef<int64_t> y_shape = y_ty.getShape();
+
+  llvm::SmallVector<int64_t, 4> result_batch_shape;
+  llvm::ArrayRef<int64_t> x_batches = x_shape.drop_back(2);
+  llvm::ArrayRef<int64_t> y_batches = y_shape.drop_back(2);
+
+  if (!mlir::OpTrait::util::getBroadcastedShape(x_batches, y_batches, result_batch_shape))
+  {
+    op.emitOpError() << "found incompatible broadcast batch dimensions for lhs shape " << x_ty
+                     << " and rhs shape " << y_ty;
+    return;
+  }
+
+  const auto adj_x = op.getAdjointLhs();
+  const auto adj_y = op.getAdjointRhs();
+  const auto x_rank = x_shape.size();
+  const auto y_rank = y_shape.size();
+
+  auto x_lhs = adj_x ? x_shape[x_rank - 1] : x_shape[x_rank - 2];
+  auto x_rhs = adj_x ? x_shape[x_rank - 2] : x_shape[x_rank - 1];
+  auto y_lhs = adj_y ? y_shape[y_rank - 1] : y_shape[y_rank - 2];
+  auto y_rhs = adj_y ? y_shape[y_rank - 2] : y_shape[y_rank - 1];
+
+  if (x_rhs != y_lhs)
+  {
+    op.emitOpError() << "found incompatible size for x_rhs " << x_rhs << " and y_lhs shape "
+                     << y_lhs;
+    return;
+  }
+
+  llvm::SmallVector<int64_t, 4> inferred(result_batch_shape.begin(), result_batch_shape.end());
+  inferred.push_back(x_lhs);
+  inferred.push_back(y_rhs);
+
+  dumpShape<BatchMatMulOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, output_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // CastOp
 //===----------------------------------------------------------------------===//
 

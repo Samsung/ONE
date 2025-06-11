@@ -392,6 +392,7 @@ def CIR_AveragePool2DOp:
 
 def CIR_BatchMatMulOp : CIR_Op<"batch_matmul", [
    Pure,
+   DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
    CIR_OperandHasAtleastRank<0, 2>,
    CIR_OperandHasAtleastRank<1, 2>,
    /* TODO enable QuantizableResult, */
