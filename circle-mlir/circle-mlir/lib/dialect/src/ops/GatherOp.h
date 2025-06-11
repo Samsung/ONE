@@ -54,11 +54,11 @@ OpFoldResult GatherOp::fold(FoldAdaptor adaptor)
   if (!IsI64ShapedType(getType()))
     return nullptr;
 
-  auto params_type = getParams().getType().cast<ShapedType>();
+  auto params_type = mlir::cast<ShapedType>(getParams().getType());
   if (!params_type.hasStaticShape())
     return nullptr;
 
-  auto indices_type = getIndices().getType().cast<ShapedType>();
+  auto indices_type = mlir::cast<ShapedType>(getIndices().getType());
   if (!indices_type.hasStaticShape())
     return nullptr;
 
@@ -86,7 +86,7 @@ OpFoldResult GatherOp::fold(FoldAdaptor adaptor)
     assert(0 <= idx && idx < params_v.size());
     result.push_back(params_v[idx]);
   }
-  auto result_type = getType().cast<ShapedType>();
+  auto result_type = mlir::cast<ShapedType>(getType());
   return DenseElementsAttr::get<int64_t>(result_type, result);
 }
 

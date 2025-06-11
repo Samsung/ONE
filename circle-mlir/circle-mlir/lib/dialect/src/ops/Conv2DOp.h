@@ -63,8 +63,8 @@ LogicalResult Conv2DOp::inferReturnTypes(MLIRContext *, std::optional<Location> 
   const Value input = op.getInput();
   const Value filter = op.getFilter();
 
-  const RankedTensorType input_ty = input.getType().dyn_cast_or_null<RankedTensorType>();
-  const RankedTensorType filter_ty = filter.getType().dyn_cast_or_null<RankedTensorType>();
+  const RankedTensorType input_ty = mlir::dyn_cast_or_null<RankedTensorType>(input.getType());
+  const RankedTensorType filter_ty = mlir::dyn_cast_or_null<RankedTensorType>(filter.getType());
   // If indeed both input type & filter type are ranked type and have ranks.
   // We will need to check their ranks are valid.
   if ((input_ty && input_ty.hasRank() && input_ty.getRank() != 4) ||
@@ -78,7 +78,7 @@ LogicalResult Conv2DOp::inferReturnTypes(MLIRContext *, std::optional<Location> 
   if (!input_ty || !filter_ty || !input_ty.hasRank() || !filter_ty.hasRank())
   {
     Type result_type;
-    result_type = UnrankedTensorType::get(input.getType().cast<ShapedType>().getElementType());
+    result_type = UnrankedTensorType::get(mlir::cast<ShapedType>(input.getType()).getElementType());
     inferredReturnTypes.assign({result_type});
     return success();
   }

@@ -82,8 +82,8 @@ template <class AttrElementT, class ElementValueT = typename AttrElementT::Value
 Attribute ConstFoldBinaryOpDenseDense(Type result_type, DenseElementsAttr lhs,
                                       DenseElementsAttr rhs, const CalculationT &calculate)
 {
-  auto type =
-    OpTrait::util::getBroadcastedType(lhs.getType(), rhs.getType()).dyn_cast_or_null<ShapedType>();
+  auto type = mlir::dyn_cast_or_null<ShapedType>(
+    OpTrait::util::getBroadcastedType(lhs.getType(), rhs.getType()));
   if (!type)
   {
     return {};
@@ -146,8 +146,8 @@ template <class AttrElementT, class ElementValueT = typename AttrElementT::Value
 Attribute ConstFoldBinaryOp(Type result_type, Attribute operand1, Attribute operand2,
                             const CalculationT &calculate)
 {
-  if (operand1.dyn_cast_or_null<DenseElementsAttr>() &&
-      operand2.dyn_cast_or_null<DenseElementsAttr>())
+  if (mlir::dyn_cast_or_null<DenseElementsAttr>(operand1) &&
+      mlir::dyn_cast_or_null<DenseElementsAttr>(operand2))
   {
     return ConstFoldBinaryOpDenseDense<AttrElementT, ElementValueT>(
       result_type, mlir::cast<DenseElementsAttr>(operand1), mlir::cast<DenseElementsAttr>(operand2),
@@ -224,7 +224,7 @@ template <typename T> bool getAsConstant(mlir::Value &input, std::vector<T> &val
     return false;
 
   if (auto constOp = dyn_cast<mlir::Circle::ConstOp>(input.getDefiningOp()))
-    dataAttr = constOp.getValueAttr().dyn_cast<mlir::DenseElementsAttr>();
+    dataAttr = mlir::dyn_cast<mlir::DenseElementsAttr>(constOp.getValueAttr());
   else
     return false;
 
