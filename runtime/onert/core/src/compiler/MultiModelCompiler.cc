@@ -206,6 +206,20 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       args.options = _options;
       args.model_index = model_index;
       args.custom_kernel_builder = custom_kernel_builders[model_index];
+      if (_options->internal_output_alloc)
+      {
+        const auto &pkg_outputs = _nnpkg->model_edges().pkg_outputs;
+        for (const auto &desc : pkg_outputs)
+        {
+          // Only outputs of this entry
+          if (const auto &[m, s, io] = desc; m == model_index && s == subg_index)
+          {
+            // Map IOIndex to OperandIndex
+            auto idx = lowered_subg->graph().getOutputs().at(io);
+            args.internal_io_indexes.add(idx);
+          }
+        }
+      }
       auto executor = std::unique_ptr<exec::IExecutor>{
         ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
       executor->setIndexedRanks(indexed_ranks);

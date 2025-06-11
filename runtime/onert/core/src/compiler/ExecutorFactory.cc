@@ -145,7 +145,8 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
 
 backend::BackendContexts
 createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
-                      std::shared_ptr<backend::custom::IKernelBuilder> custom_kernel_builder)
+                      std::shared_ptr<backend::custom::IKernelBuilder> custom_kernel_builder,
+                      const util::Set<ir::OperandIndex> &internal_io_indexes)
 {
   backend::BackendContexts contexts;
   std::unordered_map<const backend::Backend *, backend::ContextData> context_data_map;
@@ -232,6 +233,13 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
       if (whole_graph.getOutputs().contains(ind) || operand.getUses().size() == 0)
         graph->addOutput(ind);
     });
+
+    for (const auto &index : internal_io_indexes)
+    {
+      if (external_operands.contains(index))
+        external_operands.remove(index);
+    }
+
     VERBOSE(ExecutorFactory) << "createBackendContexts: partial graph for backend="
                              << backend->config()->id() << std::endl;
     dumper::text::dumpGraph(*data.graph);
@@ -385,8 +393,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   auto custom_kernel_builder = args.custom_kernel_builder;
   auto &graph = lowered_graph->graph();
 
-  backend::BackendContexts backend_contexts =
-    createBackendContexts(*lowered_graph, options->executor == "Linear", custom_kernel_builder);
+  backend::BackendContexts backend_contexts = createBackendContexts(
+    *lowered_graph, options->executor == "Linear", custom_kernel_builder, args.internal_io_indexes);
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -405,6 +413,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   }
 
   prepareMigrantTensors(*lowered_graph, backend_contexts);
+
+  // TODO: Bind internal output tensor with IOTensor
 
   // Give some runtime objects to builtin KernelGenerator
   prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);
@@ -513,8 +523,8 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
   const auto tracing_ctx = args.tracing_ctx;
   auto custom_kernel_builder = args.custom_kernel_builder;
 
-  backend::BackendContexts backend_contexts =
-    createBackendContexts(*lowered_graph, options->executor == "Linear", custom_kernel_builder);
+  backend::BackendContexts backend_contexts = createBackendContexts(
+    *lowered_graph, options->executor == "Linear", custom_kernel_builder, args.internal_io_indexes);
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -529,6 +539,8 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
   }
 
   prepareMigrantTensors(*lowered_graph, backend_contexts);
+
+  // TODO: Bind internal output tensor with IOTensor
 
   // Give some runtime objects to builtin KernelGenerator
   prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);
@@ -658,7 +670,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   // TODO Create context only once instead of replacing
   backend::train::TrainableBackendContexts tbackend_contexts;
   backend::BackendContexts base_backend_contexts =
-    createBackendContexts(*lowered_graph, true, custom_kernel_builder);
+    createBackendContexts(*lowered_graph, true, custom_kernel_builder, args.internal_io_indexes);
 
   // Replace BackendContext with TrainbleBackendContext
   for (auto &&[backend, ctx] : base_backend_contexts)
@@ -686,14 +698,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       }
     });
 
-    // Remove outputs of whole graph from external_operands
-    auto external_operands = data.external_operands;
-    for (const auto &index : lowered_graph->trainable_graph().getOutputs())
-    {
-      if (external_operands.contains(index))
-        external_operands.remove(index);
-    }
-
     // NOTE The builtin backend does not yet support initializing UseDefs for training
     //      because it's graph does not have loss operation
     //      Without loss opeartion, we cannot call btopolSortOperations() or
@@ -711,7 +715,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     backend::train::TrainableContextData tdata;
     tdata.tgraph = std::move(tgraph);
     tdata.op_order = std::move(data.op_order);
-    tdata.external_operands = std::move(external_operands);
+    tdata.external_operands = std::move(data.external_operands);
     tdata.custom_kernel_builder = std::move(data.custom_kernel_builder);
     tdata.is_linear_executor = data.is_linear_executor;
     tdata.optim_info = training_info.optimizerInfo();
@@ -733,6 +737,8 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     *lowered_graph, tbackend_contexts,
     (lowered_graph->graph().getInputs() + lowered_graph->graph().getOutputs()) |
       ir::Remove::DUPLICATED | ir::Remove::UNDEFINED);
+
+  // TODO: Bind internal output tensor with IOTensor
 
   // linearize for forwarding
   auto order = Linear::linearize(*lowered_graph);

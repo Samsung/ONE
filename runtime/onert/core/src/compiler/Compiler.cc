@@ -170,6 +170,11 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     args.options = _options;
     args.model_index = model_index;
     args.custom_kernel_builder = custom_kernel_builder;
+    const bool is_entry_executor = subg_index == ir::SubgraphIndex{0} ? true : false;
+    if (is_entry_executor && _options->internal_output_alloc)
+      for (const auto &output :
+           lowered_subg->graph().getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
+        args.internal_io_indexes.add(output);
     auto executor = std::unique_ptr<exec::IExecutor>{
       ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
     executor->setIndexedRanks(indexed_ranks);
