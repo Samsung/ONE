@@ -36,14 +36,35 @@ public:
     std::vector<std::string> token(std::istream_iterator<std::string>{iss},
                                    std::istream_iterator<std::string>());
     _arg = std::move(token);
+    updateArgv();
+  }
+  int argc(void) const { return _argv.size(); }
+  char **argv(void) { return _argv.data(); }
+
+  // Manually set arguments from a list of strings.
+  // This is for testing space-included strings.
+  void set_arguments(const std::vector<std::string> &args)
+  {
+    _arg = args;
+    updateArgv();
+  }
+
+  void set_arguments(std::initializer_list<std::string> args)
+  {
+    _arg = std::vector<std::string>(args);
+    updateArgv();
+  }
+
+private:
+  void updateArgv(void)
+  {
+    _argv.clear();
     _argv.reserve(_arg.size());
     for (const auto &t : _arg)
     {
       _argv.push_back(const_cast<char *>(t.data()));
     }
   }
-  int argc(void) const { return _argv.size(); }
-  char **argv(void) { return _argv.data(); }
 
 private:
   std::vector<char *> _argv;

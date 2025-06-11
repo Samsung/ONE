@@ -49,6 +49,8 @@ template <typename T> T lexical_cast(const std::string &str)
   return data;
 }
 
+template <> inline std::string lexical_cast(const std::string &str) { return str; }
+
 template <> inline bool lexical_cast(const std::string &str)
 {
   bool data = true;
