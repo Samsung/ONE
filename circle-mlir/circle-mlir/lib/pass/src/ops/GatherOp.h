@@ -55,7 +55,7 @@ public:
     // A) element-wise floormod(add(x, y), y) = (x + y) - floor((x + y) / y) * y, if x is an element
     // and y is size of dimension to gather
     mlir::RankedTensorType ranked_input_type =
-      input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+      mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvGather ranked_input_type: " << ranked_input_type << "\n"; });
 
     // Assume input have shape
@@ -71,7 +71,7 @@ public:
       }
 
       mlir::RankedTensorType ranked_indices_type =
-        indices.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+        mlir::dyn_cast_or_null<mlir::RankedTensorType>(indices.getType());
       LLVM_DEBUG(
         { llvm::dbgs() << "ConvGather ranked_indices_type: " << ranked_indices_type << "\n"; });
       const auto const_type = mlir::RankedTensorType::get(ranked_indices_type.getShape(),
@@ -86,7 +86,7 @@ public:
       // Add operators that correct invalid indices values to valid indices values if indices is not
       // constant
       mlir::RankedTensorType ranked_indices_type =
-        indices.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+        mlir::dyn_cast_or_null<mlir::RankedTensorType>(indices.getType());
       mlir::RankedTensorType scalar_type =
         mlir::RankedTensorType::get({}, ranked_indices_type.getElementType());
       mlir::Location y_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/y"));

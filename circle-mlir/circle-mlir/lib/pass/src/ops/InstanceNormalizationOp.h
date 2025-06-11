@@ -55,10 +55,10 @@ public:
 
     // TODO support other ranks for I/O
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     CHECK_VALID_RANK_3_4(intype);
 
-    mlir::RankedTensorType outtype = op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
     CHECK_VALID_RANK_3_4(outtype);
 
     auto epsilon = adaptor.getEpsilon();

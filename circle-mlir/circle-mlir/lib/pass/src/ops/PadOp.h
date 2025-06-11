@@ -52,10 +52,10 @@ public:
     auto op_mode = op.getModeAttr();
     LLVM_DEBUG({ llvm::dbgs() << "ConvPad mode: " << op_mode.str() << "\n"; });
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvPad intype: " << intype << "\n"; });
 
-    mlir::RankedTensorType outtype = op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvPad outtype: " << outtype << "\n"; });
 
     if (not(op_mode.str() == "reflect" || op_mode.str() == "constant"))
@@ -89,7 +89,8 @@ public:
     else
     {
       // reshape [8] to [2,4]
-      auto pads_type = pads.getType().dyn_cast_or_null<mlir::RankedTensorType>().getElementType();
+      auto pads_type =
+        mlir::dyn_cast_or_null<mlir::RankedTensorType>(pads.getType()).getElementType();
       std::vector<int32_t> reshape_sh{2, 4};
       mlir::Value reshape_dims = CreateI32Const(rewriter, opLoc, reshape_sh);
       mlir::RankedTensorType res_type = RankedTensorType::get({2, 4}, pads_type);

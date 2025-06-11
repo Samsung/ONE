@@ -58,14 +58,14 @@ public:
     LLVM_DEBUG({ llvm::dbgs() << "ConvHardsigmoid name: " << op_name << "\n"; });
 
     mlir::Value alpha2 = CreateConst(rewriter, alpha.convertToFloat(), op_name + "/alpha");
-    if (alpha2.getType().isa<mlir::NoneType>())
+    if (mlir::isa<mlir::NoneType>(alpha2.getType()))
       return mlir::failure();
     mlir::Value beta2 = CreateConst(rewriter, beta.convertToFloat(), op_name + "/beta");
-    if (beta2.getType().isa<mlir::NoneType>())
+    if (mlir::isa<mlir::NoneType>(beta2.getType()))
       return mlir::failure();
 
     mlir::Value v_one = CreateConst(rewriter, 1.0f, op_name + "/one");
-    if (v_one.getType().isa<mlir::NoneType>())
+    if (mlir::isa<mlir::NoneType>(v_one.getType()))
       return mlir::failure();
 
     mlir::Value mul_a_x = rewriter.create<MulOp>(opLoc, op.getType(), input, alpha2, "NONE");
