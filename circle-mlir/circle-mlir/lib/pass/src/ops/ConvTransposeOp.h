@@ -67,7 +67,7 @@ public:
     mlir::Value input = adaptor.getX();
     mlir::Value filter = adaptor.getW();
     mlir::Value bias = adaptor.getB();
-    // NOTE bias.getType().isa<NoneType>() is true if there is no bias
+    // NOTE mlir::isa<NoneType>(bias.getType()) is true if there is no bias
 
     auto filter_name = GetOperationName(filter.getDefiningOp());
     if (filter_name.empty())
@@ -77,11 +77,11 @@ public:
 
     // TODO support other ranks for I/O
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvConvTranspose intype: " << intype << "\n"; });
     CHECK_VALID_RANK_4(intype);
 
-    mlir::RankedTensorType outtype = op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvConvTranspose outtype: " << outtype << "\n"; });
     CHECK_VALID_RANK_4(outtype);
 
@@ -93,7 +93,8 @@ public:
     // input shape
     auto inshape = intype.getShape();
     // filter shape
-    mlir::RankedTensorType filtertype = filter.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType filtertype =
+      mlir::dyn_cast_or_null<mlir::RankedTensorType>(filter.getType());
     auto filtershape = filtertype.getShape(); // IOHW
 
     int32_t stride_h = 1;

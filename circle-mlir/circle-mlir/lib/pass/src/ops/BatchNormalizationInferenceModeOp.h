@@ -53,10 +53,10 @@ public:
 
     mlir::Location opLoc = op->getLoc();
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     CHECK_VALID_RANK_2_4(intype);
 
-    mlir::RankedTensorType outtype = op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
     CHECK_VALID_RANK_2_4(outtype);
 
     auto op_name = GetOperationName(op.getOperation());
@@ -87,8 +87,8 @@ public:
     mlir::Value const_momentum = CreateConst(rewriter, mean, momentum_val, op_name + "/momentum");
     mlir::Value const_1_momentum =
       CreateConst(rewriter, mean, 1.0f - momentum_val, op_name + "/1_momentum");
-    assert(not const_momentum.getType().isa<mlir::NoneType>());
-    assert(not const_1_momentum.getType().isa<mlir::NoneType>());
+    assert(not mlir::isa<mlir::NoneType>(const_momentum.getType()));
+    assert(not mlir::isa<mlir::NoneType>(const_1_momentum.getType()));
 
     // mul_mm = mean * momentum
     mlir::Location mul_mm_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/mul_mm"));
@@ -126,7 +126,7 @@ public:
 
     mlir::Value const_epsilon =
       CreateConst(rewriter, running_variance, epsilon_val, op_name + "/epsilon");
-    assert(not const_epsilon.getType().isa<mlir::NoneType>());
+    assert(not mlir::isa<mlir::NoneType>(const_epsilon.getType()));
     // add_ve = variance + epsilon
     mlir::Location add_ve_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/add_ve"));
     mlir::Value add_ve = rewriter.create<AddOp>(add_ve_loc, running_variance.getType(),

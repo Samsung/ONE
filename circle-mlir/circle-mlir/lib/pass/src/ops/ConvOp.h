@@ -62,19 +62,19 @@ public:
     mlir::Value input = adaptor.getX();
     mlir::Value filter = adaptor.getW();
     mlir::Value bias = adaptor.getB();
-    bool biasNone = bias.getType().isa<mlir::NoneType>();
+    bool biasNone = mlir::isa<mlir::NoneType>(bias.getType());
 
     mlir::Location opLoc = op->getLoc();
 
     // TODO support other ranks for I/O
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvConv intype: " << intype << "\n"; });
     if (intype.getRank() != 4)
       assert(false);
     CHECK_VALID_RANK_4(intype);
 
-    mlir::RankedTensorType outtype = op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvConv outtype: " << outtype << "\n"; });
     if (outtype.getRank() != 4)
       assert(false);
@@ -143,7 +143,7 @@ public:
     // onnx-tensorflow works like (2) so we follow this.
     if (biasNone)
     {
-      auto ftype = filter.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+      auto ftype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(filter.getType());
       assert(ftype.getElementType().isF32());
       auto shape = ftype.getShape();
       int32_t num = shape[0]; // dim 0 from OIHW

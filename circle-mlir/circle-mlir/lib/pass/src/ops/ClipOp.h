@@ -50,9 +50,9 @@ public:
 
     auto op_name = GetOperationName(op.getOperation());
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
-    mlir::RankedTensorType mintype = imin.getType().dyn_cast_or_null<mlir::RankedTensorType>();
-    mlir::RankedTensorType maxtype = imax.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
+    mlir::RankedTensorType mintype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(imin.getType());
+    mlir::RankedTensorType maxtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(imax.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvClip name: " << op_name << "\n"; });
     LLVM_DEBUG({ llvm::dbgs() << "ConvClip intype: " << intype << "\n"; });
     LLVM_DEBUG({ llvm::dbgs() << "ConvClip mintype: " << mintype << "\n"; });
