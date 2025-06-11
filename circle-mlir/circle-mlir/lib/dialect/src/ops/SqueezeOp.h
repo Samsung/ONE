@@ -34,8 +34,8 @@ namespace Circle
 OpFoldResult SqueezeOp::fold(FoldAdaptor adaptor)
 {
   auto operands = adaptor.getOperands();
-  auto input_ty = getInput().getType().dyn_cast<RankedTensorType>();
-  auto result_ty = getType().dyn_cast<RankedTensorType>();
+  auto input_ty = mlir::dyn_cast<RankedTensorType>(getInput().getType());
+  auto result_ty = mlir::dyn_cast<RankedTensorType>(getType());
 
   if (!input_ty || !result_ty)
     return {};

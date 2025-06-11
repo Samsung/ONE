@@ -58,8 +58,8 @@ OpFoldResult SelectV2Op::fold(FoldAdaptor adaptor)
 
   // check x and y are same type
   // support i64/i32 for now
-  auto x_type = in_x.getType().dyn_cast_or_null<mlir::RankedTensorType>();
-  auto y_type = in_y.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+  auto x_type = mlir::dyn_cast_or_null<mlir::RankedTensorType>(in_x.getType());
+  auto y_type = mlir::dyn_cast_or_null<mlir::RankedTensorType>(in_y.getType());
   mlir::Type x_etype = x_type.getElementType();
   mlir::Type y_etype = y_type.getElementType();
   if (!(x_etype.isSignlessInteger(64) || x_etype.isSignlessInteger(32)))
@@ -78,7 +78,7 @@ OpFoldResult SelectV2Op::fold(FoldAdaptor adaptor)
   if (!getAsConstant(in_y, at_y))
     return {};
 
-  ShapedType out_type = op.getOutput().getType().cast<ShapedType>();
+  ShapedType out_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (x_etype.isSignlessInteger(64))
     return GetSelectedDenseElementAttr<int64_t>(out_type, at_c, at_x, at_y);
   else if (x_etype.isSignlessInteger(32))

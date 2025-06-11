@@ -49,7 +49,7 @@ struct ConvertResizeOnnxOpToResizeOp : public OpRewritePattern<ResizeOnnxOp>
     auto input = adaptor.getInput();
     auto scales = adaptor.getScales();
     llvm::StringRef mode = adaptor.getMode();
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
 
     auto inshape = intype.getShape();
     if (inshape.size() != 4)

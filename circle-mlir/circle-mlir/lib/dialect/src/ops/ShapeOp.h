@@ -32,12 +32,12 @@ namespace Circle
 OpFoldResult ShapeOp::fold(FoldAdaptor adaptor)
 {
   auto operands = adaptor.getOperands();
-  auto input_type = getInput().getType().cast<ShapedType>();
+  auto input_type = mlir::cast<ShapedType>(getInput().getType());
   if (!input_type.hasStaticShape())
     return nullptr;
 
   ArrayRef<int64_t> shape = input_type.getShape();
-  auto result_type = getType().cast<ShapedType>();
+  auto result_type = mlir::cast<ShapedType>(getType());
   if (result_type.getElementType().isInteger(64))
   {
     return DenseElementsAttr::get<int64_t>(result_type, shape);
