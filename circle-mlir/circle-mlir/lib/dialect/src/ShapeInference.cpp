@@ -812,6 +812,29 @@ void PReluOp::inferShapes()
 }
 
 //===----------------------------------------------------------------------===//
+// ReluOp
+//===----------------------------------------------------------------------===//
+
+void ReluOp::inferShapes()
+{
+  ReluOp op = *this;
+  auto output_type = mlir::cast<ShapedType>(op.getY().getType());
+  if (output_type.hasStaticShape())
+    return;
+
+  // if input is dynamic, skip shape infer
+  auto input_op = op.getX();
+  auto input_type = mlir::cast<TensorType>(input_op.getType());
+  auto input_shape = input_type.getShape();
+  llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
+
+  dumpShape<ReluOp>(op, inferred);
+
+  RankedTensorType inferred_type = RankedTensorType::get(inferred, input_type.getElementType());
+  getResult().setType(inferred_type);
+}
+
+//===----------------------------------------------------------------------===//
 // ReshapeOp
 //===----------------------------------------------------------------------===//
 

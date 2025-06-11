@@ -1655,6 +1655,7 @@ def CIR_ReluOp: CIR_Op<"relu", [
     PredOpTrait<"x and y must have same element type",
       CIR_TCresVTEtIsSameAsOp<0, 0>>,
     Pure,
+    DeclareOpInterfaceMethods<CIR_ShapeInferenceOpInterface>,
     /*QuantizableResult,*/
     SameOperandsAndResultShape]> {
   let summary = "Relu operator";
