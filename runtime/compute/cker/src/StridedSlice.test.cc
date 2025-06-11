@@ -84,4 +84,6 @@ TEST(CKer_Operation, neg_StridedSliceNotSupportedDims)
       nnfw::cker::StridedSlice(op_params, input_shape, input.data(), output_shape, output.data());
     },
     ".*");
+
+  SUCCEED();
 }

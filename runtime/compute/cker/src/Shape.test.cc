@@ -201,6 +201,8 @@ TEST(ShapeTest, neg_DimsAccessOutOfRange)
 {
   Shape s{1, 2, 3};
   EXPECT_EXIT_BY_ABRT_DEBUG_ONLY({ s.Dims(3); }, ".*");
+
+  SUCCEED();
 }
 
 // Test that setting a dimension out of range triggers an assertion.
@@ -208,6 +210,8 @@ TEST(ShapeTest, neg_SetDimOutOfRange)
 {
   Shape s{1, 2, 3};
   EXPECT_EXIT_BY_ABRT_DEBUG_ONLY({ s.SetDim(3, 10); }, ".*");
+
+  SUCCEED();
 }
 
 // Test that accessing a dimension using a negative index triggers an assertion.
@@ -215,6 +219,8 @@ TEST(ShapeTest, neg_DimsAccessNegativeIndex)
 {
   Shape s{1, 2, 3};
   EXPECT_EXIT_BY_ABRT_DEBUG_ONLY({ s.Dims(-1); }, ".*");
+
+  SUCCEED();
 }
 
 // Test that setting a dimension using a negative index triggers an assertion.
@@ -222,6 +228,8 @@ TEST(ShapeTest, neg_SetDimNegativeIndex)
 {
   Shape s{1, 2, 3};
   EXPECT_EXIT_BY_ABRT_DEBUG_ONLY({ s.SetDim(-1, 10); }, ".*");
+
+  SUCCEED();
 }
 
 // Test that creating an extended shape with new_shape_size less than the base's dimension count
@@ -230,6 +238,8 @@ TEST(ShapeTest, neg_ExtendedShapeInvalid)
 {
   Shape base{4, 5, 6};
   EXPECT_EXIT_BY_ABRT_DEBUG_ONLY({ Shape::ExtendedShape(2, base); }, ".*");
+
+  SUCCEED();
 }
 
 // Test that mismatched dimensions for MatchingDim triggers an assertion.
@@ -238,6 +248,8 @@ TEST(ShapeTest, neg_MatchingDimMismatch)
   Shape s1{2, 3, 4};
   Shape s2{2, 3, 5};
   EXPECT_EXIT_BY_ABRT_DEBUG_ONLY({ MatchingDim(s1, 2, s2, 2); }, ".*");
+
+  SUCCEED();
 }
 
 // Test that mismatched shapes for MatchingFlatSize triggers an assertion.
@@ -246,6 +258,8 @@ TEST(ShapeTest, neg_MatchingFlatSizeMismatch)
   Shape s1{2, 3, 4};
   Shape s2{2, 3, 5};
   EXPECT_EXIT_BY_ABRT_DEBUG_ONLY({ MatchingFlatSize(s1, s2); }, ".*");
+
+  SUCCEED();
 }
 
 // Test that using an out-of-bound skip dimension for MatchingFlatSizeSkipDim triggers an
@@ -254,6 +268,8 @@ TEST(ShapeTest, neg_MatchingFlatSizeSkipDimOutOfBound)
 {
   Shape s{2, 3, 4};
   EXPECT_EXIT_BY_ABRT_DEBUG_ONLY({ MatchingFlatSizeSkipDim(s, 3, s); }, ".*");
+
+  SUCCEED();
 }
 
 // Test that calling ReplaceWith with an invalid (null) pointer triggers an assertion.
@@ -261,6 +277,8 @@ TEST(ShapeTest, neg_ReplaceWithInvalidDimensions)
 {
   Shape s{3};
   EXPECT_EXIT_BY_ABRT_DEBUG_ONLY({ s.ReplaceWith(3, nullptr); }, ".*");
+
+  SUCCEED();
 }
 
 // Test that constructing a Shape with a negative number of dimensions triggers an assertion.
@@ -272,6 +290,8 @@ TEST(ShapeTest, neg_ConstructorWithNegativeDimensions)
       s.DimensionsCount();
     },
     ".*");
+
+  SUCCEED();
 }
 
 // Test that calling Offset on a 4D shape with a negative index triggers an assertion.
@@ -284,6 +304,8 @@ TEST(ShapeTest, neg_Offset4DNegativeIndex)
       (void)offset;
     },
     ".*");
+
+  SUCCEED();
 }
 
 // Test that calling Offset on a 5D shape with a negative index triggers an assertion.
@@ -296,6 +318,8 @@ TEST(ShapeTest, neg_Offset5DNegativeIndex)
       (void)offset;
     },
     ".*");
+
+  SUCCEED();
 }
 
 // Test that calling Offset on a 6D shape with an out-of-range index triggers an assertion.
@@ -308,6 +332,8 @@ TEST(ShapeTest, neg_Offset6DIndexOutOfRange)
       (void)offset;
     },
     ".*");
+
+  SUCCEED();
 }
 
 // Test that calling Offset on a 6D shape with a negative index triggers an assertion.
@@ -320,6 +346,8 @@ TEST(ShapeTest, neg_Offset6DNegativeIndex)
       (void)offset;
     },
     ".*");
+
+  SUCCEED();
 }
 
 // Test that calling MatchingFlatSizeSkipDim with a negative skip dimension triggers an assertion.
@@ -332,6 +360,8 @@ TEST(ShapeTest, neg_MatchingFlatSizeSkipDimNegative)
       (void)flat;
     },
     ".*");
+
+  SUCCEED();
 }
 
 int main(int argc, char **argv)
