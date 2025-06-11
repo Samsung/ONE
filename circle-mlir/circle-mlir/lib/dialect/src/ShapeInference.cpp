@@ -865,7 +865,7 @@ void PReluOp::inferShapes()
   if (output_type.hasStaticShape())
     return;
 
-  // if input is dynamic, skip shape infer
+  // if output shape is dynamic, infer shape from input
   auto input_op = getOperand(0);
   auto input_type = input_op.getType().cast<TensorType>();
   auto input_shape = input_type.getShape();
@@ -888,7 +888,7 @@ void ReluOp::inferShapes()
   if (output_type.hasStaticShape())
     return;
 
-  // if input is dynamic, skip shape infer
+  // if output shape is dynamic, infer shape from input
   auto input_op = op.getX();
   auto input_type = mlir::cast<TensorType>(input_op.getType());
   auto input_shape = input_type.getShape();
