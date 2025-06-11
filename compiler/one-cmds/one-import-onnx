@@ -133,6 +133,15 @@ def _get_parser():
 
     oneutils.add_default_arg(parser)
 
+    parser.add_argument('-i',
+                        '--input_path',
+                        type=str,
+                        help='full filepath of the input file')
+    parser.add_argument('-o',
+                        '--output_path',
+                        type=str,
+                        help='full filepath of the output file')
+
     parser.add_argument('--unroll_rnn', action='store_true', help='Unroll RNN operators')
     parser.add_argument('--unroll_lstm',
                         action='store_true',
