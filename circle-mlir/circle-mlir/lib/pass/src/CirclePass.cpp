@@ -47,6 +47,22 @@ template <> int safecast<int>(const char *s, const int &value)
 
 } // namespace
 
+int dynamicBatchToSingleBatch(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module)
+{
+  mlir::PassManager pm(module.get()->getName(), mlir::OpPassManager::Nesting::Implicit);
+
+  int result = 0;
+  pm.addPass(createDynamicBatchToSingleBatchPass());
+  auto runres = pm.run(*module);
+  if (mlir::failed(runres))
+  {
+    // TODO show error message if needed
+    result = -1;
+  }
+
+  return result;
+}
+
 int preprocessONNX(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module)
 {
   mlir::PassManager pm(module.get()->getName(), mlir::OpPassManager::Nesting::Implicit);
