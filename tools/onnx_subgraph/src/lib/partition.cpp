@@ -230,6 +230,61 @@ void DFS(const onnx::GraphProto &g, onnx::GraphProto &subgraph, std::vector<int>
   }
 }
 
+/**
+ * @brief     Perform a depth-first search (DFS) to build a CPU subgraph from a given starting node.
+ *
+ * @param     [in] g The original ONNX graph from which the subgraph will be extracted.
+ * @param     [out] subgraph The subgraph being constructed.
+ * @param     [out] sugraph_nodeIndex A vector to store indices of nodes included in the subgraph.
+ * @param     [in,out] visited An array to keep track of visited nodes.
+ * @param     [in] startNode The starting node for the DFS.
+ * @param     [in] nodeIndex The index of the starting node in the original graph.
+ * @param     [in] adjacencyList The adjacency list representing the graph's structure.
+ * @param     [in] depthIn The current depth of the DFS.
+ * @param     [in,out] graphSize The cumulative size of the nodes in the subgraph.
+ * @param     [in] maxGraphSize The maximum allowed size for the subgraph.
+ *
+ * @pre       The graph `g` and `adjacencyList` should be properly initialized.
+ * @pre       The `visited` array should be initialized to zero.
+ * @pre       `graphSize` should be initialized to zero before the first call to this function.
+ *
+ * @post      The `subgraph` will contain the nodes visited during the DFS.
+ * @post      The `sugraph_nodeIndex` will contain the indices of the nodes in the subgraph.
+ * @post      The `visited` array will reflect the nodes that have been visited.
+ * @post      The `graphSize` will reflect the cumulative size of the nodes in the subgraph.
+ *
+ * @exception None
+ *
+ * @return    None
+ */
+void DFSOther(const onnx::GraphProto &g, onnx::GraphProto &subgraph,
+              std::vector<int> &sugraphNodeIndex, int *visited, const onnx::NodeProto &startNode,
+              int nodeIndex, std::vector<GraphAdjacencyNode> &adjacencyList, int depthIn,
+              float &graphSize, float maxGraphSize)
+{
+  int depth_out = depthIn + 1;
+  *subgraph.add_node() = startNode;
+  visited[nodeIndex] = 1;
+  sugraphNodeIndex.push_back(nodeIndex);
+  float node_size = CalculateNodeSize(g, nodeIndex);
+  graphSize += node_size;
+
+  if (graphSize > maxGraphSize)
+  {
+    std::cout << "graph size exceed max size!" << graphSize << " " << maxGraphSize << std::endl;
+  }
+
+  for (int i = 0; i < int(adjacencyList[nodeIndex].outputNodeIndex.size()); i++)
+  {
+    int next_nodeIndex = adjacencyList[nodeIndex].outputNodeIndex[i];
+    const auto &next_node = g.node(next_nodeIndex);
+    // do deep first search for each successor node
+    if (!visited[next_nodeIndex] && (depth_out < MAX_DEPTH) && (graphSize < maxGraphSize))
+      DFSOther(g, subgraph, sugraphNodeIndex, visited, next_node, next_nodeIndex, adjacencyList,
+               depth_out, graphSize, maxGraphSize);
+  }
+}
+
 void PartitionGraph(const onnx::GraphProto &g, Device &d, PartitionStrategy strategy,
                     const std::unordered_map<std::string, NodeIOSize> &node_io_size)
 {
