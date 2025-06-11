@@ -133,33 +133,6 @@ def _get_parser():
 
     oneutils.add_default_arg(parser)
 
-    ## tf2tfliteV2 arguments
-    tf2tfliteV2_group = parser.add_argument_group('converter arguments')
-
-    # input and output path.
-    tf2tfliteV2_group.add_argument('-i',
-                                   '--input_path',
-                                   type=str,
-                                   help='full filepath of the input file')
-    tf2tfliteV2_group.add_argument('-o',
-                                   '--output_path',
-                                   type=str,
-                                   help='full filepath of the output file')
-
-    # input and output arrays.
-    tf2tfliteV2_group.add_argument('-I',
-                                   '--input_arrays',
-                                   type=str,
-                                   help='names of the input arrays, comma-separated')
-    tf2tfliteV2_group.add_argument('-O',
-                                   '--output_arrays',
-                                   type=str,
-                                   help='names of the output arrays, comma-separated')
-
-    # fixed options
-    tf2tfliteV2_group.add_argument('--model_format', default='saved_model')
-    tf2tfliteV2_group.add_argument('--converter_version', default='v2')
-
     parser.add_argument('--unroll_rnn', action='store_true', help='Unroll RNN operators')
     parser.add_argument('--unroll_lstm',
                         action='store_true',
