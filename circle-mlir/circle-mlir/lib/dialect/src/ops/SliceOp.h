@@ -34,9 +34,9 @@ namespace Circle
 mlir::LogicalResult SliceOp::verify()
 {
   SliceOp op = *this;
-  auto input_type = op.getInput().getType().cast<mlir::ShapedType>();
-  auto begin_type = op.getBegin().getType().cast<mlir::ShapedType>();
-  auto size_type = op.getSize().getType().cast<mlir::ShapedType>();
+  auto input_type = mlir::cast<mlir::ShapedType>(op.getInput().getType());
+  auto begin_type = mlir::cast<mlir::ShapedType>(op.getBegin().getType());
+  auto size_type = mlir::cast<mlir::ShapedType>(op.getSize().getType());
   if (input_type.hasStaticShape() && begin_type.hasStaticShape() && size_type.hasStaticShape())
   {
     if (input_type.getRank() != begin_type.getNumElements())
@@ -139,8 +139,8 @@ struct CastDownInt64BeginEndToInt32 : public mlir::OpRewritePattern<SliceOp>
   {
     auto begin = slice_op.getBegin();
     auto size = slice_op.getSize();
-    auto begin_type = begin.getType().dyn_cast_or_null<mlir::RankedTensorType>();
-    auto size_type = size.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    auto begin_type = mlir::dyn_cast_or_null<mlir::RankedTensorType>(begin.getType());
+    auto size_type = mlir::dyn_cast_or_null<mlir::RankedTensorType>(size.getType());
     auto begin_op = begin.getDefiningOp();
     auto size_op = size.getDefiningOp();
 

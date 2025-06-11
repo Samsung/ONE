@@ -85,7 +85,7 @@ mlir::LogicalResult SplitVOp::verify()
     return success();
 
   // If 'input' is not a ranked tensor, there are no other checks.
-  auto input_type = op.getValue().getType().dyn_cast<RankedTensorType>();
+  auto input_type = mlir::dyn_cast<RankedTensorType>(op.getValue().getType());
   if (!input_type)
     return success();
 
@@ -109,7 +109,7 @@ mlir::LogicalResult SplitVOp::verify()
 
   if (static_cast<int64_t>(size_splits_attr.getNumElements()) != num_splits)
   {
-    auto size_splits_type = op.getSizeSplits().getType().cast<RankedTensorType>();
+    auto size_splits_type = mlir::cast<RankedTensorType>(op.getSizeSplits().getType());
     RankedTensorType expected_size_splits_type =
       mlir::Circle::GetTypeFromTensorShape({num_splits}, size_splits_type.getElementType());
     return op.emitOpError("'size_splits' should be ") << expected_size_splits_type;

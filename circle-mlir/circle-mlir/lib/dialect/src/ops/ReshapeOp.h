@@ -80,7 +80,7 @@ struct ConvertShapeTo1D : public OpRewritePattern<ReshapeOp>
   LogicalResult rewriteNegInput(ReshapeOp reshape, PatternRewriter &rewriter) const
   {
     // input shape of ReshapeOp must be static
-    auto input_type = reshape.getOperand(0).getType().dyn_cast_or_null<ShapedType>();
+    auto input_type = mlir::dyn_cast_or_null<ShapedType>(reshape.getOperand(0).getType());
     if (not input_type)
       return failure();
     for (int64_t dim : input_type.getShape())
@@ -118,7 +118,7 @@ struct ConvertShapeTo1D : public OpRewritePattern<ReshapeOp>
     if (!shape_data.empty() && shape_data.back() == -1)
     {
       int64_t inferred_dim = 1;
-      auto input_type = reshape.getOperand(0).getType().cast<ShapedType>();
+      auto input_type = mlir::cast<ShapedType>(reshape.getOperand(0).getType());
       for (int64_t dim : input_type.getShape())
       {
         inferred_dim *= dim;
@@ -188,19 +188,19 @@ OpFoldResult ReshapeOp::fold(FoldAdaptor adaptor)
 {
   auto operands = adaptor.getOperands();
   // Remove identity reshape with both static result and input shape.
-  auto result_type = getType().cast<ShapedType>();
-  auto input_type = getOperand(0).getType().cast<ShapedType>();
+  auto result_type = mlir::cast<ShapedType>(getType());
+  auto input_type = mlir::cast<ShapedType>(getOperand(0).getType());
   if (InputOutputHasSameShape(input_type, result_type))
     return getInput();
 
   // Constant folding
-  if (auto dense_elements = operands[0].dyn_cast_or_null<DenseElementsAttr>())
+  if (auto dense_elements = mlir::dyn_cast_or_null<DenseElementsAttr>(operands[0]))
   {
     // If the result type isn't static, tries to derive the result type from
     // the #2 operand.
     if (!result_type.hasStaticShape())
     {
-      auto shape_elements = operands[1].dyn_cast_or_null<DenseElementsAttr>();
+      auto shape_elements = mlir::dyn_cast_or_null<DenseElementsAttr>(operands[1]);
       if (!shape_elements)
         return nullptr;
 
@@ -227,11 +227,11 @@ using ReshapeErrorHandler = llvm::function_ref<LogicalResult(const llvm::Twine &
 LogicalResult GetReshapeOutputType(Value input, Value shape, ReshapeErrorHandler error_handler,
                                    TensorType &output_ty)
 {
-  auto input_ty = input.getType().cast<TensorType>();
+  auto input_ty = mlir::cast<TensorType>(input.getType());
   auto element_ty = input_ty.getElementType();
   output_ty = UnrankedTensorType::get(element_ty);
 
-  auto shape_ty = shape.getType().dyn_cast<RankedTensorType>();
+  auto shape_ty = mlir::dyn_cast<RankedTensorType>(shape.getType());
   if (!shape_ty)
     return success();
   if (shape_ty.getRank() != 1)
@@ -345,10 +345,10 @@ mlir::LogicalResult ReshapeOp::verify()
   if (failed(GetReshapeOutputType(op.getInput(), op.getShape(), error_handler, expected_ty)))
     return failure();
 
-  auto output_ty = op.getType().dyn_cast<RankedTensorType>();
+  auto output_ty = mlir::dyn_cast<RankedTensorType>(op.getType());
   if (!output_ty)
     return success();
-  auto input_ty = op.getInput().getType().cast<TensorType>();
+  auto input_ty = mlir::cast<TensorType>(op.getInput().getType());
   if (output_ty.hasStaticShape() && input_ty.hasStaticShape())
   {
     const int64_t output_ty_size = output_ty.getNumElements();
@@ -390,7 +390,7 @@ LogicalResult ReshapeOp::inferReturnTypes(MLIRContext *context, std::optional<Lo
     return success();
   }
   Type result_type;
-  result_type = UnrankedTensorType::get(input.getType().cast<ShapedType>().getElementType());
+  result_type = UnrankedTensorType::get(mlir::cast<ShapedType>(input.getType()).getElementType());
   inferredReturnTypes.assign({result_type});
   return success();
 }

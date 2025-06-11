@@ -37,14 +37,14 @@ OpFoldResult SelectOp::fold(FoldAdaptor adaptor)
   assert(operands.size() == 3);
 
   SelectOp op = *this;
-  ShapedType out_type = op.getOutput().getType().cast<ShapedType>();
+  ShapedType out_type = mlir::cast<ShapedType>(op.getOutput().getType());
   auto in_c = op.getCondition();
   auto in_x = op.getX();
   auto in_y = op.getY();
 
   // we can assume x and y are same type
   // support i64 for now
-  auto x_type = in_x.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+  auto x_type = mlir::dyn_cast_or_null<mlir::RankedTensorType>(in_x.getType());
   mlir::Type x_etype = x_type.getElementType();
   if (!x_etype.isSignlessInteger(64))
     return {};

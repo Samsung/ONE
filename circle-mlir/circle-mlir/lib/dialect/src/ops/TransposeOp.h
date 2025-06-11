@@ -71,14 +71,14 @@ OpFoldResult TransposeOp::fold(FoldAdaptor adaptor)
 {
   auto operands = adaptor.getOperands();
   assert(operands.size() == 2);
-  auto input_tensor = operands[0].dyn_cast_or_null<ElementsAttr>();
-  auto perm_tensor = operands[1].dyn_cast_or_null<ElementsAttr>();
+  auto input_tensor = mlir::dyn_cast_or_null<ElementsAttr>(operands[0]);
+  auto perm_tensor = mlir::dyn_cast_or_null<ElementsAttr>(operands[1]);
   if (!input_tensor || !perm_tensor)
     return nullptr;
 
   // Do not try to fold elements attr of a quant type because
   // DenseElementsAttr does not support it.
-  if (!getType().cast<ShapedType>().getElementType().isSignlessIntOrFloat())
+  if (!mlir::cast<ShapedType>(getType()).getElementType().isSignlessIntOrFloat())
     return nullptr;
 
   assert(perm_tensor.getShapedType().getRank() == 1);
@@ -86,7 +86,7 @@ OpFoldResult TransposeOp::fold(FoldAdaptor adaptor)
   assert(perm_tensor.getShapedType().getNumElements() == num_dimensions);
 
   ArrayRef<int64_t> input_shape = input_tensor.getShapedType().getShape();
-  auto output_type = getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(getType());
 
   SmallVector<int32_t, 4> perm;
   SmallVector<int64_t, 4> output_shape;
@@ -112,9 +112,9 @@ OpFoldResult TransposeOp::fold(FoldAdaptor adaptor)
 mlir::LogicalResult TransposeOp::verify()
 {
   TransposeOp op = *this;
-  auto input_type = op.getInput().getType().cast<ShapedType>();
-  auto perm_type = op.getPerm().getType().cast<ShapedType>();
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto input_type = mlir::cast<ShapedType>(op.getInput().getType());
+  auto perm_type = mlir::cast<ShapedType>(op.getPerm().getType());
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (input_type.hasStaticShape() && perm_type.hasStaticShape())
   {
     if (perm_type.getNumElements() != input_type.getRank())
@@ -170,7 +170,7 @@ mlir::LogicalResult TransposeOp::verify()
 static void BuildTransposeOp(OpBuilder *builder, OperationState &result, Value input, Value perm)
 {
   // Output size is only known if input is ranked and perm is a constant.
-  auto input_type = input.getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(input.getType());
   mlir::DenseIntElementsAttr perm_const;
   if (!input_type.hasRank() || !matchPattern(perm, m_Constant(&perm_const)) || perm_const.empty())
   {

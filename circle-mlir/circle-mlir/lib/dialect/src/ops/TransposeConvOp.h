@@ -34,8 +34,8 @@ namespace Circle
 mlir::LogicalResult TransposeConvOp::verify()
 {
   TransposeConvOp op = *this;
-  ShapedType output_type = op.getOutput().getType().cast<ShapedType>();
-  ShapedType output_shape_type = op.getOutputShape().getType().cast<ShapedType>();
+  ShapedType output_type = mlir::cast<ShapedType>(op.getOutput().getType());
+  ShapedType output_shape_type = mlir::cast<ShapedType>(op.getOutputShape().getType());
   if (output_type.hasRank() && output_shape_type.hasStaticShape())
   {
     if (output_type.getRank() != output_shape_type.getDimSize(0))

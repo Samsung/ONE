@@ -45,7 +45,7 @@ struct RewriteZeroEnds : public OpRewritePattern<StridedSliceOp>
         op.getNewAxisMask() != 0 || op.getShrinkAxisMask() != 0)
       return failure();
 
-    auto input_type = op.getInput().getType().dyn_cast<RankedTensorType>();
+    auto input_type = mlir::dyn_cast<RankedTensorType>(op.getInput().getType());
     if (!input_type)
       return failure();
     if (!input_type.hasStaticShape())
@@ -119,14 +119,14 @@ void StridedSliceOp::getCanonicalizationPatterns(RewritePatternSet &results, MLI
 LogicalResult StridedSliceOp::verify()
 {
   StridedSliceOp op = *this;
-  auto ranked_input_type = op.getInput().getType().dyn_cast<RankedTensorType>();
+  auto ranked_input_type = mlir::dyn_cast<RankedTensorType>(op.getInput().getType());
 
   // If input is unranked, there is nothing else to be verified.
   if (!ranked_input_type)
     return success();
   int num_input_dims = ranked_input_type.getRank();
 
-  if (auto begin_type = op.getBegin().getType().dyn_cast<RankedTensorType>())
+  if (auto begin_type = mlir::dyn_cast<RankedTensorType>(op.getBegin().getType()))
   {
     if (begin_type.getRank() != 1)
       return failure();
@@ -134,7 +134,7 @@ LogicalResult StridedSliceOp::verify()
       return failure();
   }
 
-  if (auto end_type = op.getEnd().getType().dyn_cast<RankedTensorType>())
+  if (auto end_type = mlir::dyn_cast<RankedTensorType>(op.getEnd().getType()))
   {
     if (end_type.getRank() != 1)
       return failure();
@@ -142,7 +142,7 @@ LogicalResult StridedSliceOp::verify()
       return failure();
   }
 
-  if (auto strides_type = op.getStrides().getType().dyn_cast<RankedTensorType>())
+  if (auto strides_type = mlir::dyn_cast<RankedTensorType>(op.getStrides().getType()))
   {
     if (strides_type.getRank() != 1)
       return failure();
@@ -169,7 +169,7 @@ LogicalResult StridedSliceOp::verify()
 
 OpFoldResult StridedSliceOp::foldOneDimension()
 {
-  auto input_type = getInput().getType().dyn_cast_or_null<RankedTensorType>();
+  auto input_type = mlir::dyn_cast_or_null<RankedTensorType>(getInput().getType());
 
   int64_t stride = 1;
   DenseIntElementsAttr stride_dense_elem_attr;
@@ -241,7 +241,7 @@ OpFoldResult StridedSliceOp::foldReverseInput()
 {
   // TODO Currently we only support rank is 2,
   // also need to cover when this rank is greater than 2.
-  auto input_type = getInput().getType().dyn_cast_or_null<RankedTensorType>();
+  auto input_type = mlir::dyn_cast_or_null<RankedTensorType>(getInput().getType());
   if (input_type.getRank() != 2)
     return {};
 
@@ -293,7 +293,7 @@ OpFoldResult StridedSliceOp::fold(FoldAdaptor adaptor)
       getShrinkAxisMask() != 0)
     return {};
 
-  auto input_type = getInput().getType().dyn_cast_or_null<RankedTensorType>();
+  auto input_type = mlir::dyn_cast_or_null<RankedTensorType>(getInput().getType());
   if (!input_type || !input_type.hasStaticShape())
     return {};
 
