@@ -16,6 +16,7 @@
 
 #include "circle-mlir/pass/CirclePass.h"
 
+#include "DynamicBatchToSingleBatchPass.h"
 #include "ConvertONNXToCirclePass.h"
 #include "RewriteCirclePass.h"
 #include "RewriteONNXPass.h"

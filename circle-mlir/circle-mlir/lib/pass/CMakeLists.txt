@@ -3,6 +3,7 @@ set(SRC
   src/ConvertONNXToCirclePass.cpp
   src/ConvertHelper.cpp
   src/RewriteCirclePass.cpp
+  src/DynamicBatchToSingleBatchPass.cpp
   src/RewriteONNXPass.cpp
   src/DumpCircleOpsPass.cpp
   src/RuntimeVerifyPass.cpp
