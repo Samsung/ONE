@@ -209,6 +209,26 @@ TEST(BasicTest, MultipleStringValue)
   EXPECT_THROW(arser.get<std::vector<std::string>>("--color"), std::runtime_error);
 }
 
+TEST(BasicTest, SpaceIncludedString)
+{
+  /* arrange */
+  Arser arser;
+
+  arser.add_argument("--input_sentence")
+    .nargs(1)
+    .type(arser::DataType::STR)
+    .help("insert your sentence");
+
+  test::Prompt prompt("");
+  prompt.set_arguments({"./translate", "--input_sentence", "hello world!!"});
+  /* act */
+  arser.parse(prompt.argc(), prompt.argv());
+  /* assert */
+  EXPECT_TRUE(arser["--input_sentence"]);
+  std::string value = arser.get<std::string>("--input_sentence");
+  EXPECT_EQ("hello world!!", value);
+}
+
 void printBiography(void) { std::cerr << "When I was young.." << std::endl; }
 
 TEST(BasicTest, ExitWithFunctionCall)
