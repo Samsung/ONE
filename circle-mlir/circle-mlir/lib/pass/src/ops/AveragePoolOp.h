@@ -44,9 +44,9 @@ public:
     mlir::Value input = adaptor.getX();
     mlir::Location opLoc = op->getLoc();
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
 
-    mlir::RankedTensorType outtype = op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
     CHECK_VALID_RANK_4(outtype);
 
     auto op_name = GetOperationName(op.getOperation());

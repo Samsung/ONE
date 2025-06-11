@@ -39,10 +39,10 @@ public:
   mlir::LogicalResult matchAndRewrite(mlir::ONNXConstantOp op, OpAdaptor adaptor,
                                       mlir::ConversionPatternRewriter &rewriter) const override
   {
-    auto valueAttr = op.getValueAttr().dyn_cast_or_null<mlir::DenseElementsAttr>();
+    auto valueAttr = mlir::dyn_cast_or_null<mlir::DenseElementsAttr>(op.getValueAttr());
     if (valueAttr == nullptr)
     {
-      auto disValueAttr = op.getValueAttr().dyn_cast_or_null<mlir::DisposableElementsAttr>();
+      auto disValueAttr = mlir::dyn_cast_or_null<mlir::DisposableElementsAttr>(op.getValueAttr());
       if (disValueAttr)
       {
         // TODO revise this: not sure using toDenseElementsAttr is good or not

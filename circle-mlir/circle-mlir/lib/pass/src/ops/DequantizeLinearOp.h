@@ -45,7 +45,7 @@ public:
     int64_t Axis = adaptor.getAxis();
 
     // if XZeroPoint (or XScale) is scalar, no need to add axis
-    auto zp_dtype = XZeroPoint.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    auto zp_dtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(XZeroPoint.getType());
 
     llvm::StringRef op_name = "ONNXDequantizeLinear";
 

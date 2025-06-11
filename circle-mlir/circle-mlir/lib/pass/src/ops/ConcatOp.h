@@ -49,7 +49,8 @@ public:
     for (size_t i = 0; i < inputs.size(); ++i)
     {
       mlir::Value input = inputs[i];
-      mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+      mlir::RankedTensorType intype =
+        mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
       LLVM_DEBUG({ llvm::dbgs() << "ConvConcat [" << i << "] intype: " << intype << "\n"; });
     }
 

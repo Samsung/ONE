@@ -72,7 +72,7 @@ public:
 
     mlir::Location opLoc = op->getLoc();
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvConstantOfShape intype: " << intype << "\n"; });
 
     if (!op.getValue().has_value())
@@ -81,10 +81,10 @@ public:
       return mlir::failure();
     }
     mlir::Attribute valueAttr = op.getValue().value();
-    auto valueDens = valueAttr.dyn_cast_or_null<mlir::DenseElementsAttr>();
+    auto valueDens = mlir::dyn_cast_or_null<mlir::DenseElementsAttr>(valueAttr);
     if (!valueDens)
     {
-      auto disValueAttr = valueAttr.dyn_cast_or_null<mlir::DisposableElementsAttr>();
+      auto disValueAttr = mlir::dyn_cast_or_null<mlir::DisposableElementsAttr>(valueAttr);
       if (!disValueAttr)
       {
         LLVM_DEBUG({ llvm::dbgs() << "ConvConstantOfShape value not dense\n"; });

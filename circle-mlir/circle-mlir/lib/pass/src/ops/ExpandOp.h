@@ -46,13 +46,13 @@ public:
 
     mlir::Location opLoc = op->getLoc();
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvExpandOp intype: " << intype << "\n"; });
 
-    mlir::RankedTensorType shtype = shape.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType shtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(shape.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvExpandOp shtype: " << shtype << "\n"; });
 
-    mlir::RankedTensorType outtype = op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvExpandOp outtype: " << outtype << "\n"; });
 
     rewriter.replaceOpWithNewOp<ExpandOnnxOp>(op, op.getType(), input, shape);
