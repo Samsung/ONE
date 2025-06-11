@@ -64,7 +64,7 @@ public:
     mlir::Value input = adaptor.getA();
     mlir::Value filter = adaptor.getB();
     mlir::Value bias = adaptor.getC();
-    bool biasNone = bias.getType().isa<mlir::NoneType>();
+    bool biasNone = mlir::isa<mlir::NoneType>(bias.getType());
     auto alpha = op.getAlpha().convertToFloat();
     auto beta = op.getBeta().convertToFloat();
     auto transA = op.getTransA();
@@ -74,11 +74,11 @@ public:
 
     // TODO support other ranks for I/O
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvGemm intype: " << intype << "\n"; });
     CHECK_VALID_RANK_2(intype);
 
-    mlir::RankedTensorType outtype = op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvGemm outtype: " << outtype << "\n"; });
     CHECK_VALID_RANK_2(outtype);
 

@@ -46,9 +46,10 @@ public:
     mlir::Value input = adaptor.getA();
     mlir::Value filter = adaptor.getB();
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
-    mlir::RankedTensorType filtertype = filter.getType().dyn_cast_or_null<mlir::RankedTensorType>();
-    mlir::RankedTensorType outtype = op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
+    mlir::RankedTensorType filtertype =
+      mlir::dyn_cast_or_null<mlir::RankedTensorType>(filter.getType());
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
     auto op_name = GetOperationName(op.getOperation());
 
     LLVM_DEBUG({ llvm::dbgs() << "ConvMatMul name: " << op_name << "\n"; });

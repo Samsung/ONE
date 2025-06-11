@@ -45,7 +45,7 @@ public:
     int64_t Axis = adaptor.getAxis();
 
     // if YZeroPoint (or YScale) is scalar, no need to add axis
-    auto zp_dtype = YZeroPoint.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    auto zp_dtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(YZeroPoint.getType());
 
     circle::TensorType ttype = circle::TensorType_FLOAT32; // just init with 0
     auto zpet = zp_dtype.getElementType();
