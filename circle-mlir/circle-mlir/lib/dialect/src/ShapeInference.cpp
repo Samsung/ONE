@@ -42,10 +42,10 @@ namespace
 bool extractElements(ConstOp &const_op, std::vector<int64_t> &values)
 {
   mlir::DenseElementsAttr dataAttr =
-    const_op.getValueAttr().dyn_cast_or_null<mlir::DenseElementsAttr>();
+    mlir::dyn_cast_or_null<mlir::DenseElementsAttr>(const_op.getValueAttr());
   if (dataAttr == nullptr)
     return false;
-  if (!dataAttr.getElementType().isa<mlir::IntegerType>())
+  if (!mlir::isa<mlir::IntegerType>(dataAttr.getElementType()))
     return false;
 
   for (auto value : dataAttr.getValues<llvm::APInt>())
@@ -75,14 +75,14 @@ namespace
 
 template <typename BINOP> bool inferBinShapes(BINOP &op, SmallVector<int64_t, 4> &inferred)
 {
-  auto out_type = op.getOutput().getType().template cast<ShapedType>();
+  auto out_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (out_type.hasStaticShape())
     return false;
 
   auto inp0_op = op.getOperand(0);
-  auto inp0_type = inp0_op.getType().template cast<TensorType>();
+  auto inp0_type = mlir::cast<TensorType>(inp0_op.getType());
   auto inp1_op = op.getOperand(1);
-  auto inp1_type = inp1_op.getType().template cast<TensorType>();
+  auto inp1_type = mlir::cast<TensorType>(inp1_op.getType());
 
   if (!OpTrait::util::getBroadcastedShape(inp0_type.getShape(), inp1_type.getShape(), inferred))
     return false;
@@ -106,7 +106,7 @@ void AddOp::inferShapes()
     return;
 
   auto input0_op = getOperand(0);
-  auto input0_type = input0_op.getType().cast<TensorType>();
+  auto input0_type = mlir::cast<TensorType>(input0_op.getType());
   RankedTensorType inferred_type = RankedTensorType::get(inferred, input0_type.getElementType());
   getResult().setType(inferred_type);
 }
@@ -184,12 +184,12 @@ void BatchMatMulOp::inferShapes(void)
 void CastOp::inferShapes(void)
 {
   CastOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (output_type.hasStaticShape())
     return;
 
   // follow input shape
-  auto input_type = op.getInput().getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(op.getInput().getType());
   auto input_shape = input_type.getShape();
   llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
 
@@ -206,7 +206,7 @@ void CastOp::inferShapes(void)
 
 int64_t GetConcatenationOpAxis(ConcatenationOp op)
 {
-  auto output_type = op.getOutput().getType().cast<RankedTensorType>();
+  auto output_type = mlir::cast<RankedTensorType>(op.getOutput().getType());
   int32_t axis = op.getAxis();
   if (axis < 0)
     axis += output_type.getRank();
@@ -216,7 +216,7 @@ int64_t GetConcatenationOpAxis(ConcatenationOp op)
 void ConcatenationOp::inferShapes()
 {
   ConcatenationOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   auto operands = op.getOperands();
   int64_t rank = -1;
   const int64_t axis = GetConcatenationOpAxis(op);
@@ -226,7 +226,7 @@ void ConcatenationOp::inferShapes()
 
   for (auto operand : operands)
   {
-    auto shaped_type = operand.getType().cast<ShapedType>();
+    auto shaped_type = mlir::cast<ShapedType>(operand.getType());
     if (!shaped_type.hasRank())
     {
       return;
@@ -246,7 +246,7 @@ void ConcatenationOp::inferShapes()
   SmallVector<int64_t, 4> new_shape(rank, ShapedType::kDynamic);
   for (auto operand : operands)
   {
-    auto shaped_type = operand.getType().cast<ShapedType>();
+    auto shaped_type = mlir::cast<ShapedType>(operand.getType());
     for (int64_t i = 0; i < rank; ++i)
     {
       if (i == axis)
@@ -268,7 +268,7 @@ void ConcatenationOp::inferShapes()
   int64_t axis_dim_size = 0;
   for (auto operand : operands)
   {
-    auto shaped_type = operand.getType().cast<ShapedType>();
+    auto shaped_type = mlir::cast<ShapedType>(operand.getType());
     int64_t dim_size = shaped_type.getDimSize(axis);
     if (ShapedType::isDynamic(dim_size))
       axis_dim_size = ShapedType::kDynamic;
@@ -291,18 +291,18 @@ void ConcatenationOp::inferShapes()
 void Conv2DOp::inferShapes()
 {
   Conv2DOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (output_type.hasStaticShape())
     return;
 
   // if input is dynamic, skip shape infer
   auto input_op = getOperand(0);
-  auto input_ty = input_op.getType().dyn_cast_or_null<RankedTensorType>();
+  auto input_ty = mlir::dyn_cast_or_null<RankedTensorType>(input_op.getType());
   if (!input_ty.hasStaticShape())
     return;
 
   auto filter_op = getOperand(1);
-  auto filter_ty = filter_op.getType().dyn_cast_or_null<RankedTensorType>();
+  auto filter_ty = mlir::dyn_cast_or_null<RankedTensorType>(filter_op.getType());
   // If indeed both input type & filter type are ranked type and have ranks.
   // We will need to check their ranks are valid.
   if ((input_ty && input_ty.hasRank() && input_ty.getRank() != 4) ||
@@ -378,12 +378,12 @@ void Conv2DOp::inferShapes()
 void CosOp::inferShapes(void)
 {
   CosOp op = *this;
-  auto output_type = op.getY().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getY().getType());
   if (output_type.hasStaticShape())
     return;
 
   // follow input shape
-  auto input_type = op.getX().getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(op.getX().getType());
   auto input_shape = input_type.getShape();
   llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
 
@@ -404,7 +404,7 @@ void CustomOp::inferShapes()
   bool all_static = true;
   for (auto output : outputs)
   {
-    auto output_type = output.getType().cast<ShapedType>();
+    auto output_type = mlir::cast<ShapedType>(output.getType());
     if (not output_type.hasStaticShape())
     {
       all_static = false;
@@ -420,7 +420,7 @@ void CustomOp::inferShapes()
     assert(op.getOutput().size() == 1);
 
     auto input_op = getOperand(0);
-    auto input_type = input_op.getType().cast<TensorType>();
+    auto input_type = mlir::cast<TensorType>(input_op.getType());
     auto input_shape = input_type.getShape();
     llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
 
@@ -438,18 +438,18 @@ void CustomOp::inferShapes()
 void DepthwiseConv2DOp::inferShapes()
 {
   DepthwiseConv2DOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (output_type.hasStaticShape())
     return;
 
   // if input is dynamic, skip shape infer
   auto input_op = getOperand(0);
-  auto input_ty = input_op.getType().dyn_cast_or_null<RankedTensorType>();
+  auto input_ty = mlir::dyn_cast_or_null<RankedTensorType>(input_op.getType());
   if (!input_ty.hasStaticShape())
     return;
 
   auto filter = getOperand(1);
-  auto filter_ty = filter.getType().dyn_cast_or_null<RankedTensorType>();
+  auto filter_ty = mlir::dyn_cast_or_null<RankedTensorType>(filter.getType());
   // If indeed both input type & filter type are ranked type and have ranks.
   // We will need to check their ranks are valid.
   if ((input_ty && input_ty.hasRank() && input_ty.getRank() != 4) ||
@@ -530,7 +530,7 @@ void DivOp::inferShapes()
     return;
 
   auto input0_op = getOperand(0);
-  auto input0_type = input0_op.getType().cast<TensorType>();
+  auto input0_type = mlir::cast<TensorType>(input0_op.getType());
   RankedTensorType inferred_type = RankedTensorType::get(inferred, input0_type.getElementType());
   getResult().setType(inferred_type);
 }
@@ -542,16 +542,16 @@ void DivOp::inferShapes()
 void FullyConnectedOp::inferShapes(void)
 {
   FullyConnectedOp op = *this;
-  auto output_type = (*op.getOutput().begin()).getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>((*op.getOutput().begin()).getType());
   if (output_type.hasStaticShape())
     return;
 
-  auto filter_type = op.getFilter().getType().cast<TensorType>();
+  auto filter_type = mlir::cast<TensorType>(op.getFilter().getType());
   if (not filter_type.hasStaticShape())
     return;
   auto filter_shape = filter_type.getShape();
 
-  auto input_type = op.getInput().getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(op.getInput().getType());
   auto input_shape = input_type.getShape();
   llvm::SmallVector<int64_t, 4> inferred;
 
@@ -590,13 +590,13 @@ void FullyConnectedOp::inferShapes(void)
 void InstanceNormOp::inferShapes()
 {
   InstanceNormOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (output_type.hasStaticShape())
     return;
 
   // if input is dynamic, skip shape infer
   auto input_op = getOperand(0);
-  auto input_type = input_op.getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(input_op.getType());
   if (!input_type.hasStaticShape())
     return;
 
@@ -616,11 +616,11 @@ void InstanceNormOp::inferShapes()
 void LogisticOp::inferShapes()
 {
   LogisticOp op = *this;
-  auto output_type = op.getY().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getY().getType());
   if (output_type.hasStaticShape())
     return;
 
-  auto input_type = op.getX().getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(op.getX().getType());
   auto input_shape = input_type.getShape();
   llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
 
@@ -637,13 +637,13 @@ void LogisticOp::inferShapes()
 void MaxPool2DOp::inferShapes()
 {
   MaxPool2DOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (output_type.hasStaticShape())
     return;
 
   // if input is dynamic, skip shape infer
   auto input_op = getOperand();
-  auto input_type = input_op.getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(input_op.getType());
   if (!input_type.hasStaticShape() || input_type.getRank() != 4)
     return;
   auto input_shape = input_type.getShape();
@@ -694,13 +694,13 @@ void MaxPool2DOp::inferShapes()
 void MeanOp::inferShapes()
 {
   MeanOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (output_type.hasStaticShape())
     return;
 
   // if input is dynamic, skip shape infer
   auto input_op = getOperand(0);
-  auto input_type = input_op.getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(input_op.getType());
   if (!input_type.hasStaticShape())
     return;
 
@@ -756,13 +756,13 @@ void MeanOp::inferShapes()
 void MirrorPadOp::inferShapes()
 {
   MirrorPadOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (output_type.hasStaticShape())
     return;
 
   // if input is dynamic, skip shape infer
   auto input_op = getOperand(0);
-  auto input_type = input_op.getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(input_op.getType());
   if (!input_type.hasStaticShape())
     return;
 
@@ -805,7 +805,7 @@ void MulOp::inferShapes()
     return;
 
   auto input0_op = getOperand(0);
-  auto input0_type = input0_op.getType().cast<TensorType>();
+  auto input0_type = mlir::cast<TensorType>(input0_op.getType());
   RankedTensorType inferred_type = RankedTensorType::get(inferred, input0_type.getElementType());
   getResult().setType(inferred_type);
 }
@@ -817,13 +817,13 @@ void MulOp::inferShapes()
 void PadOp::inferShapes()
 {
   PadOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (output_type.hasStaticShape())
     return;
 
   // if input is dynamic, skip shape infer
   auto input_op = getOperand(0);
-  auto input_type = input_op.getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(input_op.getType());
   if (!input_type.hasStaticShape())
     return;
 
@@ -861,13 +861,13 @@ void PadOp::inferShapes()
 void PReluOp::inferShapes()
 {
   PReluOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (output_type.hasStaticShape())
     return;
 
   // if output shape is dynamic, infer shape from input
   auto input_op = getOperand(0);
-  auto input_type = input_op.getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(input_op.getType());
   auto input_shape = input_type.getShape();
   llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
 
@@ -906,9 +906,9 @@ void ReluOp::inferShapes()
 
 bool GetReshapeOutputType(const Value input, const Value shape, RankedTensorType &output_ty)
 {
-  auto input_ty = input.getType().cast<TensorType>();
+  auto input_ty = mlir::cast<TensorType>(input.getType());
   auto element_ty = input_ty.getElementType();
-  auto shape_ty = shape.getType().dyn_cast<RankedTensorType>();
+  auto shape_ty = mlir::dyn_cast<RankedTensorType>(shape.getType());
   if (!shape_ty)
     return false;
 
@@ -1030,7 +1030,7 @@ bool GetReshapeOutputType(const Value input, const Value shape, RankedTensorType
 void ReshapeOp::inferShapes()
 {
   ReshapeOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (output_type.hasStaticShape())
     return;
 
@@ -1054,13 +1054,13 @@ void ReshapeOp::inferShapes()
 void ResizeNearestNeighborOp::inferShapes()
 {
   ResizeNearestNeighborOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (output_type.hasStaticShape())
     return;
 
   // if input is dynamic, skip shape infer
   auto input_op = getOperand(0);
-  auto input_type = input_op.getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(input_op.getType());
   if (!input_type.hasStaticShape())
     return;
 
@@ -1114,12 +1114,12 @@ void ResizeNearestNeighborOp::inferShapes()
 void SinOp::inferShapes(void)
 {
   SinOp op = *this;
-  auto output_type = op.getY().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getY().getType());
   if (output_type.hasStaticShape())
     return;
 
   // follow input shape
-  auto input_type = op.getX().getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(op.getX().getType());
   auto input_shape = input_type.getShape();
   llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
 
@@ -1136,11 +1136,11 @@ void SinOp::inferShapes(void)
 void SqrtOp::inferShapes()
 {
   SqrtOp op = *this;
-  auto output_type = op.getY().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getY().getType());
   if (output_type.hasStaticShape())
     return;
 
-  auto input_type = op.getX().getType().cast<TensorType>();
+  auto input_type = mlir::cast<TensorType>(op.getX().getType());
   auto input_shape = input_type.getShape();
   llvm::SmallVector<int64_t, 4> inferred(input_shape.begin(), input_shape.end());
 
@@ -1157,7 +1157,7 @@ void SqrtOp::inferShapes()
 void StridedSliceOp::inferShapes()
 {
   StridedSliceOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (output_type.hasStaticShape())
     return;
 
@@ -1231,7 +1231,7 @@ void SubOp::inferShapes()
     return;
 
   auto input0_op = getOperand(0);
-  auto input0_type = input0_op.getType().cast<TensorType>();
+  auto input0_type = mlir::cast<TensorType>(input0_op.getType());
   RankedTensorType inferred_type = RankedTensorType::get(inferred, input0_type.getElementType());
   getResult().setType(inferred_type);
 }
@@ -1243,12 +1243,12 @@ void SubOp::inferShapes()
 void TransposeOp::inferShapes()
 {
   TransposeOp op = *this;
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
   if (output_type.hasStaticShape())
     return;
 
-  auto input_type = op.getInput().getType().cast<ShapedType>();
-  auto perm_type = op.getPerm().getType().cast<ShapedType>();
+  auto input_type = mlir::cast<ShapedType>(op.getInput().getType());
+  auto perm_type = mlir::cast<ShapedType>(op.getPerm().getType());
 
   if (input_type.hasStaticShape() && perm_type.hasStaticShape())
   {
