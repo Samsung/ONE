@@ -285,7 +285,7 @@ template <typename T> bool ExtractConstantIntValues(mlir::Value &input, std::vec
   mlir::DenseElementsAttr dataAttr;
 
   if (auto constOp2 = dyn_cast_or_null<mlir::Circle::ConstOp>(input.getDefiningOp()))
-    dataAttr = constOp2.getValueAttr().dyn_cast_or_null<mlir::DenseElementsAttr>();
+    dataAttr = mlir::dyn_cast_or_null<mlir::DenseElementsAttr>(constOp2.getValueAttr());
   else
     return false;
 

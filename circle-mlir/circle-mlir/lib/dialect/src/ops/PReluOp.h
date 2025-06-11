@@ -34,9 +34,9 @@ namespace Circle
 mlir::LogicalResult PReluOp::verify()
 {
   PReluOp op = *this;
-  auto input_type = op.getInput().getType().cast<ShapedType>();
-  auto alpha_type = op.getAlpha().getType().cast<ShapedType>();
-  auto output_type = op.getOutput().getType().cast<ShapedType>();
+  auto input_type = mlir::cast<ShapedType>(op.getInput().getType());
+  auto alpha_type = mlir::cast<ShapedType>(op.getAlpha().getType());
+  auto output_type = mlir::cast<ShapedType>(op.getOutput().getType());
 
   if (input_type.hasStaticShape() && alpha_type.hasStaticShape())
   {

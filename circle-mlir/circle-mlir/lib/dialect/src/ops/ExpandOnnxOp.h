@@ -47,7 +47,7 @@ struct ConvertExpandOnnxOp2MulOp : public OpRewritePattern<ExpandOnnxOp>
       return failure();
 
     auto input = adaptor.getInput();
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     auto inshape = intype.getShape();
 
     mlir::Location opLoc = expand->getLoc();
@@ -74,7 +74,8 @@ struct ConvertExpandOnnxOp2MulOp : public OpRewritePattern<ExpandOnnxOp>
       inidx++;
     }
 
-    mlir::RankedTensorType outtype = expand.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType outtype =
+      mlir::dyn_cast_or_null<mlir::RankedTensorType>(expand.getType());
 
     mlir::Value mulOnes;
     mlir::Type outeletype = outtype.getElementType();
@@ -139,7 +140,7 @@ LogicalResult ExpandOnnxOp::verify()
   // Get operands.
   auto shape = operandAdaptor.getShape();
   // Check input.
-  auto shapeType = shape.getType().dyn_cast_or_null<ShapedType>();
+  auto shapeType = mlir::dyn_cast_or_null<ShapedType>(shape.getType());
   if (shapeType && shapeType.hasRank())
   {
     if (shapeType.getRank() != 1)

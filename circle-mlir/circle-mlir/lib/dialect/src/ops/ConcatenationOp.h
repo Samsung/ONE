@@ -37,7 +37,7 @@ namespace
 
 int64_t GetConcatenationOpAxis(ConcatenationOp op)
 {
-  auto output_type = op.getOutput().getType().cast<RankedTensorType>();
+  auto output_type = mlir::cast<RankedTensorType>(op.getOutput().getType());
   int32_t axis = op.getAxis();
   if (axis < 0)
     axis += output_type.getRank();
@@ -75,7 +75,7 @@ LogicalResult VerifyConcatenationOpTypes(Operation *op, RankedTensorType output_
 
   for (const auto &operand : llvm::enumerate(operand_types))
   {
-    auto operand_type = operand.value().dyn_cast<RankedTensorType>();
+    auto operand_type = mlir::dyn_cast<RankedTensorType>(operand.value());
     if (!operand_type)
     {
       result_dim_sizes[axis] = ShapedType::kDynamic;
@@ -172,11 +172,11 @@ DenseElementsAttr ConstFoldConcatenateOpDense(ArrayRef<Attribute> operands,
   {
     for (auto op : operands)
     {
-      auto typed_attr = op.cast<TypedAttr>();
-      const int64_t dim_size = typed_attr.getType().cast<RankedTensorType>().getDimSize(axis);
+      auto typed_attr = mlir::cast<TypedAttr>(op);
+      const int64_t dim_size = mlir::cast<RankedTensorType>(typed_attr.getType()).getDimSize(axis);
       const int64_t inner_size = dim_size * base_inner_size;
 
-      auto input_attrs = op.cast<DenseElementsAttr>().getValues<Attribute>();
+      auto input_attrs = mlir::cast<DenseElementsAttr>(op).getValues<Attribute>();
       auto input_iter = input_attrs.begin() + outer * inner_size;
       for (int64_t inner = 0; inner < inner_size; ++inner)
         out_attrs[out++] = *input_iter++;
@@ -191,7 +191,7 @@ DenseElementsAttr ConstFoldConcatenateOpDense(ArrayRef<Attribute> operands,
 LogicalResult ConcatenationOp::verify()
 {
   ConcatenationOp op = *this;
-  auto output_type = op.getOutput().getType().dyn_cast<RankedTensorType>();
+  auto output_type = mlir::dyn_cast<RankedTensorType>(op.getOutput().getType());
 
   // If the output type is unranked, there is nothing else to be verified.
   if (!output_type)
@@ -203,7 +203,7 @@ LogicalResult ConcatenationOp::verify()
 
   SmallVector<TensorType, 4> operand_types;
   for (Value operand : op.getValues())
-    operand_types.push_back(operand.getType().cast<TensorType>());
+    operand_types.push_back(mlir::cast<TensorType>(operand.getType()));
 
   return VerifyConcatenationOpTypes(op.getOperation(), output_type, operand_types, axis);
 }
@@ -213,7 +213,7 @@ OpFoldResult ConcatenationOp::fold(FoldAdaptor adaptor)
   auto operands = adaptor.getOperands();
   if (getFusedActivationFunction() == "NONE")
   {
-    if (auto output_type = getOutput().getType().dyn_cast<RankedTensorType>())
+    if (auto output_type = mlir::dyn_cast<RankedTensorType>(getOutput().getType()))
     {
       const int64_t axis = GetConcatenationOpAxis(*this);
       if (IsConcatenationOpConstFoldable(*this, operands, output_type, axis))
@@ -225,7 +225,7 @@ OpFoldResult ConcatenationOp::fold(FoldAdaptor adaptor)
   SmallVector<Value, 4> non_empty_values;
   for (Value value : this->getValues())
   {
-    const auto shaped_type = value.getType().cast<ShapedType>();
+    const auto shaped_type = mlir::cast<ShapedType>(value.getType());
     if (shaped_type.hasStaticShape() && shaped_type.getNumElements() == 0)
     {
       continue;

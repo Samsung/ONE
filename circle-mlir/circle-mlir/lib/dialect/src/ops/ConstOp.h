@@ -43,7 +43,7 @@ struct FoldPseudoConstOp : public OpRewritePattern<ConstOp>
     if (NoValueOp::isBuildableWith(const_op.getValue(), const_op.getType()))
     {
       rewriter.replaceOpWithNewOp<NoValueOp>(const_op, rewriter.getNoneType(),
-                                             const_op.getValue().cast<UnitAttr>());
+                                             mlir::cast<UnitAttr>(const_op.getValue()));
       return success();
     }
     return failure();
@@ -79,7 +79,7 @@ bool ConstOp::isCompatibleReturnTypes(TypeRange l, TypeRange r)
 bool ConstOp::isBuildableWith(Attribute value, Type type)
 {
   // The value's type must be the same as the provided type.
-  auto typedAttr = value.dyn_cast<TypedAttr>();
+  auto typedAttr = mlir::dyn_cast<TypedAttr>(value);
   if (!typedAttr || typedAttr.getType() != type)
     return false;
   // Integer values must be signless.

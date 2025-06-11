@@ -68,7 +68,7 @@ OpFoldResult MulOp::fold(FoldAdaptor adaptor)
   // more efficiently.
 
   // Specialization for f32 type.
-  if (getType().cast<ShapedType>().getElementType().isF32())
+  if (mlir::cast<ShapedType>(getType()).getElementType().isF32())
   {
     return ConstFoldBinaryOp<FloatAttr, float>(getType(), operands[0], operands[1],
                                                [](float a, float b) { return a * b; });

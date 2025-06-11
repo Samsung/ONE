@@ -34,8 +34,8 @@ namespace Circle
 LogicalResult FullyConnectedOp::verify()
 {
   FullyConnectedOp op = *this;
-  ShapedType input_type = op.getInput().getType().cast<ShapedType>();
-  ShapedType filter_type = op.getFilter().getType().cast<ShapedType>();
+  ShapedType input_type = mlir::cast<ShapedType>(op.getInput().getType());
+  ShapedType filter_type = mlir::cast<ShapedType>(op.getFilter().getType());
   if (filter_type.hasRank() && filter_type.getRank() != 2)
   {
     return op.emitOpError("expect 2d filter, got ") << filter_type;
@@ -60,7 +60,7 @@ LogicalResult FullyConnectedOp::verify()
   // format.
   if (op.getWeightsFormat() == "DEFAULT")
   {
-    ShapedType output_type = (*op.getOutput().begin()).getType().cast<ShapedType>();
+    ShapedType output_type = mlir::cast<ShapedType>((*op.getOutput().begin()).getType());
     if (!output_type.hasStaticShape())
     {
       return mlir::success();
@@ -108,11 +108,11 @@ LogicalResult FullyConnectedOp::fold(FoldAdaptor adaptor, SmallVectorImpl<OpFold
   }
 
   // Get the tensor types.
-  const auto input_type = input_tensor.getType().cast<ShapedType>();
-  const auto weights_type = weights_tensor.getType().cast<ShapedType>();
-  const auto bias_type = has_bias ? bias_tensor.getType().cast<ShapedType>() : ShapedType{};
+  const auto input_type = mlir::cast<ShapedType>(input_tensor.getType());
+  const auto weights_type = mlir::cast<ShapedType>(weights_tensor.getType());
+  const auto bias_type = has_bias ? mlir::cast<ShapedType>(bias_tensor.getType()) : ShapedType{};
 
-  const auto output_type = getType(0).cast<ShapedType>();
+  const auto output_type = mlir::cast<ShapedType>(getType(0));
 
   // Folding only implemented for float tensors.
   if (!input_type.getElementType().isF32() || !weights_type.getElementType().isF32() ||

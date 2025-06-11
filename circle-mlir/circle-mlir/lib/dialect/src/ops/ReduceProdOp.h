@@ -30,10 +30,10 @@ namespace Circle
 
 OpFoldResult ReduceProdOp::fold(FoldAdaptor adaptor)
 {
-  auto input_type = getInput().getType().cast<ShapedType>();
+  auto input_type = mlir::cast<ShapedType>(getInput().getType());
   if (!input_type.hasStaticShape())
     return nullptr;
-  auto axes_type = getAxes().getType().cast<ShapedType>();
+  auto axes_type = mlir::cast<ShapedType>(getAxes().getType());
   if (!axes_type.hasStaticShape())
     return nullptr;
 
@@ -72,7 +72,7 @@ OpFoldResult ReduceProdOp::fold(FoldAdaptor adaptor)
   for (const auto &v : inputs_v)
     result *= v;
 
-  auto result_type = getType().cast<ShapedType>();
+  auto result_type = mlir::cast<ShapedType>(getType());
   return DenseElementsAttr::get<int64_t>(result_type, result);
 }
 
