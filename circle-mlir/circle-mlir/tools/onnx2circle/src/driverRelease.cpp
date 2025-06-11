@@ -59,6 +59,12 @@ int safe_main(int argc, char *argv[])
     .default_value(false)
     .help(__opt_save_ops);
 
+  arser.add_argument("--dynamic_batch_to_single_batch")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help(__opt_dynamic_batch_to_single_batch);
+
   arser.add_argument("--unroll_rnn")
     .nargs(0)
     .required(false)
@@ -112,6 +118,7 @@ int safe_main(int argc, char *argv[])
   param.sourcefile = arser.get<std::string>("onnx");
   param.targetfile = arser.get<std::string>("circle");
   param.save_ops = arser.get<bool>("--save_ops");
+  param.dynamic_batch_to_single_batch = arser.get<bool>("--dynamic_batch_to_single_batch");
   param.unroll_rnn = arser.get<bool>("--unroll_rnn");
   param.unroll_lstm = arser.get<bool>("--unroll_lstm");
   param.unfold_batchmatmul = !arser.get<bool>("--experimental_disable_batchmatmul_unfold");

@@ -21,6 +21,8 @@ namespace opts
 {
 
 inline const char *__opt_save_ops = "Save operators list instead of .circle ";
+inline const char *__opt_dynamic_batch_to_single_batch =
+  "Convert dynamic batch size (first dimension) of inputs to 1";
 inline const char *__opt_unroll_rnn_d = "Unroll RNN Op if exist";
 inline const char *__opt_unroll_lstm_d = "Unroll LSTM Op if exist";
 inline const char *__opt_edbuf_d = "Tensorflow experimental_disable_batchmatmul_unfold";
