@@ -77,16 +77,17 @@ template <typename T> bool ExtractConstantIntValues(mlir::Value &input, std::vec
 
   if (auto constOp = dyn_cast_or_null<mlir::ONNXConstantOp>(input.getDefiningOp()))
   {
-    dataAttr = constOp.getValueAttr().dyn_cast_or_null<mlir::DenseElementsAttr>();
+    dataAttr = mlir::dyn_cast_or_null<mlir::DenseElementsAttr>(constOp.getValueAttr());
     if (dataAttr == nullptr)
     {
-      auto disValueAttr = constOp.getValueAttr().dyn_cast_or_null<mlir::DisposableElementsAttr>();
+      auto disValueAttr =
+        mlir::dyn_cast_or_null<mlir::DisposableElementsAttr>(constOp.getValueAttr());
       if (disValueAttr)
         dataAttr = disValueAttr.toDenseElementsAttr();
     }
   }
   else if (auto constOp2 = dyn_cast_or_null<mlir::Circle::ConstOp>(input.getDefiningOp()))
-    dataAttr = constOp2.getValueAttr().dyn_cast_or_null<mlir::DenseElementsAttr>();
+    dataAttr = mlir::dyn_cast_or_null<mlir::DenseElementsAttr>(constOp2.getValueAttr());
   else
     return false;
 
@@ -109,16 +110,17 @@ template <typename T> bool ExtractConstantFloatValues(mlir::Value &input, std::v
 
   if (auto constOp = dyn_cast_or_null<mlir::ONNXConstantOp>(input.getDefiningOp()))
   {
-    dataAttr = constOp.getValueAttr().dyn_cast_or_null<mlir::DenseElementsAttr>();
+    dataAttr = mlir::dyn_cast_or_null<mlir::DenseElementsAttr>(constOp.getValueAttr());
     if (dataAttr == nullptr)
     {
-      auto disValueAttr = constOp.getValueAttr().dyn_cast_or_null<mlir::DisposableElementsAttr>();
+      auto disValueAttr =
+        mlir::dyn_cast_or_null<mlir::DisposableElementsAttr>(constOp.getValueAttr());
       if (disValueAttr)
         dataAttr = disValueAttr.toDenseElementsAttr();
     }
   }
   else if (auto constOp2 = dyn_cast_or_null<mlir::Circle::ConstOp>(input.getDefiningOp()))
-    dataAttr = constOp2.getValueAttr().dyn_cast_or_null<mlir::DenseElementsAttr>();
+    dataAttr = mlir::dyn_cast_or_null<mlir::DenseElementsAttr>(constOp2.getValueAttr());
   else
     return false;
 
@@ -270,7 +272,7 @@ mlir::Value CreateConst(mlir::ConversionPatternRewriter &rewriter, float value,
 mlir::Value CreateConst(mlir::ConversionPatternRewriter &rewriter, mlir::Location &opLoc,
                         mlir::Value &reference, float value)
 {
-  auto rtype = reference.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+  auto rtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(reference.getType());
   if (not rtype)
     return {};
   if (not rtype.getElementType().isF32())
@@ -358,7 +360,7 @@ mlir::Value CreateI32Const(mlir::ConversionPatternRewriter &rewriter, mlir::Loca
   if (!ExtractConstantValues(source, values))
     return {};
 
-  mlir::RankedTensorType stype = source.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+  mlir::RankedTensorType stype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(source.getType());
   mlir::Type i32 = rewriter.getI32Type();
   mlir::RankedTensorType si16stype = RankedTensorType::get(stype.getShape(), i32);
   return rewriter.create<ConstOp>(opLoc, DenseIntElementsAttr::get(si16stype, values));
@@ -380,13 +382,13 @@ mlir::Value CreateConstBroadcastChn(mlir::ConversionPatternRewriter &rewriter,
   // TODO revise to better form when known
 
   // check reference is rank4, F32
-  auto rtype = reference.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+  auto rtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(reference.getType());
   auto rshape = rtype.getShape();
   if (not(rtype.getElementType().isF32() && rshape.size() == 4))
     return source;
 
   // check source is rank1, F32, same number of elements
-  auto stype = source.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+  auto stype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(source.getType());
   auto sshape = stype.getShape();
   if (sshape.size() == rshape.size())
     return source;
@@ -398,16 +400,17 @@ mlir::Value CreateConstBroadcastChn(mlir::ConversionPatternRewriter &rewriter,
   mlir::DenseElementsAttr dataAttr;
   if (auto constOp = dyn_cast<mlir::ONNXConstantOp>(source.getDefiningOp()))
   {
-    dataAttr = constOp.getValueAttr().dyn_cast_or_null<mlir::DenseElementsAttr>();
+    dataAttr = mlir::dyn_cast_or_null<mlir::DenseElementsAttr>(constOp.getValueAttr());
     if (dataAttr == nullptr)
     {
-      auto disValueAttr = constOp.getValueAttr().dyn_cast_or_null<mlir::DisposableElementsAttr>();
+      auto disValueAttr =
+        mlir::dyn_cast_or_null<mlir::DisposableElementsAttr>(constOp.getValueAttr());
       if (disValueAttr)
         dataAttr = disValueAttr.toDenseElementsAttr();
     }
   }
   else if (auto constOp2 = dyn_cast<mlir::Circle::ConstOp>(source.getDefiningOp()))
-    dataAttr = constOp2.getValueAttr().dyn_cast_or_null<mlir::DenseElementsAttr>();
+    dataAttr = mlir::dyn_cast_or_null<mlir::DenseElementsAttr>(constOp2.getValueAttr());
   else
     return source;
   if (dataAttr == nullptr)

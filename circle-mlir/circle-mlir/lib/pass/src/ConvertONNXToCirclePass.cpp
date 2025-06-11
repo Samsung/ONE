@@ -133,12 +133,12 @@ namespace
 
 inline bool isCircleFloat(mlir::Type type)
 {
-  return type.isa<mlir::Float16Type, mlir::Float32Type, mlir::Float64Type>();
+  return mlir::isa<mlir::Float16Type, mlir::Float32Type, mlir::Float64Type>(type);
 }
 
 inline bool isCircleInt(mlir::Type type)
 {
-  mlir::IntegerType intType = type.dyn_cast<mlir::IntegerType>();
+  mlir::IntegerType intType = mlir::dyn_cast<mlir::IntegerType>(type);
   if (intType)
   {
     std::set<unsigned> intWidth{1, 8, 16, 32, 64};
@@ -184,7 +184,7 @@ void ConvertONNXToCirclePass::runOnOperation()
   typeConverter.addConversion([](Type type) -> std::optional<Type> {
     // TODO support mode dtypes
     // NOTE Conv2D without bias is NoneType
-    if (isCircleFloat(type) || isCircleInt(type) || type.isa<mlir::NoneType>())
+    if (isCircleFloat(type) || isCircleInt(type) || mlir::isa<mlir::NoneType>(type))
       return type;
     LLVM_DEBUG({ llvm::dbgs() << "TypeConverter Type None\n"; });
     return std::nullopt;
