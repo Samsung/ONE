@@ -48,6 +48,7 @@ ConvertUnitModelNEG(Custom_F32.circle.neg.mlir)
 # shape inference validation
 
 ValidateShapeInf(Add_F32_us.circle.mlir)
+ValidateShapeInf(BatchMatMul_F32_us.circle.mlir)
 ValidateShapeInf(Concat_F32_R4_us.circle.mlir)
 ValidateShapeInf(Conv2d_F32_R4_us.circle.mlir)
 ValidateShapeInf(DepthwiseConv2d_F32_R4_us.circle.mlir)
