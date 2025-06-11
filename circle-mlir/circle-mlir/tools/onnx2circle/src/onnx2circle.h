@@ -25,6 +25,7 @@ struct O2Cparam
   std::string targetfile;
 
   bool save_ops = false;
+  bool dynamic_batch_to_single_batch = false;
   bool unroll_rnn = false;
   bool unroll_lstm = false;
   bool unfold_batchmatmul = false;

@@ -137,6 +137,13 @@ int convertToCircle(const O2Cparam &param)
   if (result != 0)
     return result;
 
+  if (param.dynamic_batch_to_single_batch)
+  {
+    result = mlir::Circle::dynamicBatchToSingleBatch(context, module);
+    if (result != 0)
+      return result;
+  }
+
   result = mlir::Circle::preprocessONNX(context, module);
   if (result != 0)
     return result;
