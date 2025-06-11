@@ -293,6 +293,33 @@ void generateCodes(backend::train::FunctionMap &codes,
   }
 }
 
+void bindInternalOutputTensors(const compiler::ILoweredGraph &lgraph,
+                               const backend::BackendContexts &backend_contexts,
+                               const util::Set<ir::OperandIndex> &internal_io_indexes)
+{
+  compiler::TensorRegistries tensor_regs{backend_contexts, true};
+
+  for (const auto idx : internal_io_indexes)
+  {
+    // There is currently no reason for internal I/O tensors to exist other than outputs.
+    assert(lgraph.graph().getOutputs().contains(idx));
+
+    const auto backend = lgraph.lower_info().operand.at(idx).def_backends().getOnlyElement();
+    auto &backend_ctx = backend_contexts.at(backend);
+
+    if (auto backend_tensor =
+          dynamic_cast<backend::IPortableTensor *>(backend_ctx->tensor_registry->getITensor(idx));
+        backend_tensor == nullptr)
+      throw std::runtime_error("When io tensors are allocated internally, io tensor must be "
+                               "present and IPortableTensor");
+    else
+    {
+      auto io_tensor = tensor_regs.getIOTensor(idx);
+      io_tensor->setTensor(backend_tensor);
+    }
+  }
+}
+
 } // namespace
 } // namespace onert
 
@@ -417,7 +444,7 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 
   prepareMigrantTensors(*lowered_graph, backend_contexts);
 
-  // TODO: Bind internal output tensor with IOTensor
+  bindInternalOutputTensors(*lowered_graph, backend_contexts, args.internal_io_indexes);
 
   // Give some runtime objects to builtin KernelGenerator
   prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);
@@ -543,7 +570,7 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
 
   prepareMigrantTensors(*lowered_graph, backend_contexts);
 
-  // TODO: Bind internal output tensor with IOTensor
+  bindInternalOutputTensors(*lowered_graph, backend_contexts, args.internal_io_indexes);
 
   // Give some runtime objects to builtin KernelGenerator
   prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);
