@@ -158,6 +158,9 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
     data.graph = std::move(graph);
   };
 
+  // Append builtin context
+  init_context_data(compiler::BackendManager::get().getBuiltin());
+
   auto &whole_graph = lgraph.graph();
   // Separate operands into partial graphs
   whole_graph.operands().iterate([&](const ir::OperandIndex &operand_ind, ir::Operand &operand) {
