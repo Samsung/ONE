@@ -50,6 +50,11 @@ static llvm::cl::opt<std::string> OutputFilename(llvm::cl::Positional, llvm::cl:
 static llvm::cl::opt<bool> OptSaveOPS("save_ops", llvm::cl::desc(__opt_save_ops),
                                       llvm::cl::init(false), llvm::cl::cat(O2CirCat));
 
+static llvm::cl::opt<bool>
+  OptDynamicBatchToSingleBatch("dynamic_batch_to_single_batch",
+                               llvm::cl::desc(__opt_dynamic_batch_to_single_batch),
+                               llvm::cl::init(false), llvm::cl::cat(O2CirCat));
+
 static llvm::cl::opt<bool> RunSingleInstance("o2c-single", llvm::cl::desc("run single instance"),
                                              llvm::cl::init(false), llvm::cl::cat(O2CirCat));
 
@@ -154,6 +159,7 @@ int main(int argc, char *argv[])
   param.sourcefile = opts::InputFilename;
   param.targetfile = opts::OutputFilename;
   param.save_ops = opts::OptSaveOPS;
+  param.dynamic_batch_to_single_batch = opts::OptDynamicBatchToSingleBatch;
   param.unroll_rnn = opts::OptUnrollRNN;
   param.unroll_lstm = opts::OptUnrollLSTM;
   param.unfold_batchmatmul = !opts::OptExpDisBMMUnfold;
