@@ -26,6 +26,8 @@ namespace mlir
 namespace Circle
 {
 
+int dynamicBatchToSingleBatch(mlir::MLIRContext &context,
+                              mlir::OwningOpRef<mlir::ModuleOp> &module);
 int preprocessONNX(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module);
 int shapeInferenceONNX(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module);
 int convertToCircle(mlir::MLIRContext &context, mlir::OwningOpRef<mlir::ModuleOp> &module);
