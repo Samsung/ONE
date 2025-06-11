@@ -157,7 +157,7 @@ struct ShapeInferencePass
 
     return llvm::any_of(op->getResultTypes(), [](Type resultType) {
       // Checks whether each dimension is all dynamic if it is ShapedType.
-      if (ShapedType shapedType = resultType.dyn_cast<ShapedType>())
+      if (ShapedType shapedType = mlir::dyn_cast<ShapedType>(resultType))
       {
         if (not shapedType.hasRank())
           return true;
@@ -200,7 +200,7 @@ struct ShapeValidatePass
   static bool returnsDynamicShape(Operation *op)
   {
     return llvm::any_of(op->getResultTypes(), [](Type resultType) {
-      if (ShapedType shapedType = resultType.dyn_cast<ShapedType>())
+      if (ShapedType shapedType = mlir::dyn_cast<ShapedType>(resultType))
       {
         int rank = shapedType.getRank();
         for (int i = 0; i < rank; ++i)
@@ -237,7 +237,7 @@ struct AnyShapeValidatePass
   static bool returnsFullDynamicShape(Operation *op)
   {
     return llvm::any_of(op->getResultTypes(), [](Type resultType) {
-      if (ShapedType shapedType = resultType.dyn_cast<ShapedType>())
+      if (ShapedType shapedType = mlir::dyn_cast<ShapedType>(resultType))
       {
         int rank = shapedType.getRank();
         for (int i = 0; i < rank; ++i)

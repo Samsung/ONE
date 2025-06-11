@@ -125,7 +125,7 @@ mlir::Value CreateConstBroadcastChn(mlir::ConversionPatternRewriter &rewriter,
 // Get integer value of array[index]
 template <typename TYPE> TYPE GetIntValue(mlir::ArrayAttr array, int index)
 {
-  return static_cast<TYPE>(array.getValue()[index].cast<IntegerAttr>().getInt());
+  return static_cast<TYPE>(mlir::cast<IntegerAttr>(array.getValue()[index]).getInt());
 }
 
 // Get value from pads if available as return true
