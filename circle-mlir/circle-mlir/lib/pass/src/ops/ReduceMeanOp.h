@@ -55,7 +55,7 @@ public:
 
     mlir::Location opLoc = op->getLoc();
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvReduceMean intype: " << intype << "\n"; });
 
     auto keep_dims =
@@ -70,7 +70,7 @@ public:
     if (getNoopWithEmptyAxes == 0)
     {
       // default behavior
-      if (op_axes.getType().isa<mlir::NoneType>())
+      if (mlir::isa<mlir::NoneType>(op_axes.getType()))
       {
         std::vector<int32_t> axesValue;
         // set default values from 0 to dim - 1
@@ -112,7 +112,7 @@ public:
 
     mlir::Location opLoc = op->getLoc();
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvReduceMeanV13 intype: " << intype << "\n"; });
 
     auto keep_dims =

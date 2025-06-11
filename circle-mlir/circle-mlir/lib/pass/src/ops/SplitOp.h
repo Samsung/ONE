@@ -57,16 +57,16 @@ public:
 
     LLVM_DEBUG({ llvm::dbgs() << "ConvSplit axis: " << axis << "\n"; });
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
-    mlir::RankedTensorType outtype = op.getType(0).dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
+    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType(0));
 
     mlir::Value size_splits = CreateI32Const(rewriter, split, op_name + "/size");
-    if (size_splits.getType().isa<mlir::NoneType>())
+    if (mlir::isa<mlir::NoneType>(size_splits.getType()))
       return mlir::failure();
 
     mlir::Value split_dim = CreateI32Const(rewriter, axis, op_name + "/axis");
 
-    mlir::RankedTensorType sptype = split.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType sptype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(split.getType());
     auto spshape = sptype.getShape();
     assert(spshape.size() == 1);
     uint32_t num_splits = spshape[0];

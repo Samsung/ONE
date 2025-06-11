@@ -54,24 +54,24 @@ public:
     auto op_name = GetOperationName(op.getOperation());
     LLVM_DEBUG({ llvm::dbgs() << "ConvSlice name: " << op_name << "\n"; });
 
-    auto intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    auto intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     auto inshape = intype.getShape();
     LLVM_DEBUG({ llvm::dbgs() << "ConvSlice intype: " << intype << "\n"; });
     LLVM_DEBUG({
       llvm::dbgs() << "ConvSlice starts: "
-                   << starts.getType().dyn_cast_or_null<mlir::RankedTensorType>() << "\n";
+                   << mlir::dyn_cast_or_null<mlir::RankedTensorType>(starts.getType()) << "\n";
     });
     LLVM_DEBUG({
       llvm::dbgs() << "ConvSlice ends: "
-                   << ends.getType().dyn_cast_or_null<mlir::RankedTensorType>() << "\n";
+                   << mlir::dyn_cast_or_null<mlir::RankedTensorType>(ends.getType()) << "\n";
     });
     LLVM_DEBUG({
       llvm::dbgs() << "ConvSlice axes: "
-                   << axes.getType().dyn_cast_or_null<mlir::RankedTensorType>() << "\n";
+                   << mlir::dyn_cast_or_null<mlir::RankedTensorType>(axes.getType()) << "\n";
     });
     LLVM_DEBUG({
       llvm::dbgs() << "ConvSlice steps: "
-                   << steps.getType().dyn_cast_or_null<mlir::RankedTensorType>() << "\n";
+                   << mlir::dyn_cast_or_null<mlir::RankedTensorType>(steps.getType()) << "\n";
     });
 
     // Only covers when both axes and steps are constants

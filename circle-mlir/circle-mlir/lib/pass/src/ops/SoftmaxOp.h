@@ -45,7 +45,7 @@ public:
     mlir::Location opLoc = op->getLoc();
 
     mlir::RankedTensorType ranked_input_type =
-      input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+      mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvSoftmax ranked_input_type: " << ranked_input_type << "\n"; });
 
     // Input must have shape
@@ -57,7 +57,7 @@ public:
     }
 
     mlir::RankedTensorType ranked_output_type =
-      op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+      mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
 
     const auto beta = rewriter.getF32FloatAttr(1.f);
     rewriter.replaceOpWithNewOp<SoftmaxOp>(op, op.getType(), input, beta);
@@ -81,7 +81,7 @@ public:
     mlir::Location opLoc = op->getLoc();
 
     mlir::RankedTensorType ranked_input_type =
-      input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+      mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG(
       { llvm::dbgs() << "ConvSoftmaxV11 ranked_input_type: " << ranked_input_type << "\n"; });
 
@@ -97,7 +97,7 @@ public:
     CHECK_VALID_RANK_ATLEAST(ranked_input_type, 2);
 
     mlir::RankedTensorType ranked_output_type =
-      op.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+      mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType());
     CHECK_VALID_RANK_ATLEAST(ranked_output_type, 2);
 
     const auto beta = rewriter.getF32FloatAttr(1.f);

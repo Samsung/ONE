@@ -60,7 +60,7 @@ public:
 
     mlir::Location opLoc = op->getLoc();
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvReduceSum intype: " << intype << "\n"; });
 
     auto keep_dims =
@@ -82,7 +82,7 @@ private:
                    std::vector<int32_t> &values) const
   {
     mlir::Value op_axes = op.getAxes();
-    bool axesNone = op_axes.getType().isa<mlir::NoneType>();
+    bool axesNone = mlir::isa<mlir::NoneType>(op_axes.getType());
 
     if (axesNone)
     {
@@ -135,7 +135,7 @@ public:
 
     mlir::Location opLoc = op->getLoc();
 
-    mlir::RankedTensorType intype = input.getType().dyn_cast_or_null<mlir::RankedTensorType>();
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
     LLVM_DEBUG({ llvm::dbgs() << "ConvReduceSumV11 intype: " << intype << "\n"; });
 
     auto keep_dims =
