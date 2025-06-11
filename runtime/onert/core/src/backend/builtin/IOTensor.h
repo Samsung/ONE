@@ -50,6 +50,7 @@ public:
 
 public:
   void setTensor(IPortableTensor *tensor);
+  void setBackendTensor(IPortableTensor *tensor);
 
 public:
   uint8_t *buffer() const override { return _tensor->buffer(); }
@@ -95,12 +96,32 @@ public:
     return return_val;
   }
 
+  /**
+   * @brief Return whether the tensor member has backend tensor
+   */
+  bool hasBackendTensor() const { return _has_backend_tensor; }
+
+  /**
+   * @brief Synchronize this IOTensor's operand info from the backend tensor
+   *        Copies the full OperandInfo from _tensor to _info if the backend tensor is dynamic
+   */
+  void syncInfoFromBackendTensor()
+  {
+    assert(_tensor != nullptr);
+    assert(_has_backend_tensor);
+    if (_tensor->is_dynamic())
+    {
+      _info = _tensor->get_info();
+    }
+  }
+
 private:
   IPortableTensor *_tensor{nullptr}; //< The actual tensor that is indirected
   // "_orig" has UserTensor type original tensor's info with nullptr buffer and layout,
   // and "_tensor" points to "_user_tensor".
   // After 1st setTensor(tensor) call, "_tensor" is updated to actual tensor
   std::unique_ptr<UserTensor> _orig; //< If it is a user tensor, it is managed by this object
+  bool _has_backend_tensor;
 };
 
 } // namespace onert::backend::builtin

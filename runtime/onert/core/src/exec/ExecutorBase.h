@@ -81,6 +81,11 @@ public:
     return _output_tensors[index]->buffer();
   }
 
+  const backend::IPortableTensor *outputTensor(uint32_t index) const final
+  {
+    return _output_tensors[index];
+  }
+
   // Used only in Dataflow and Parallel Executors
   void setIndexedRanks(std::shared_ptr<ir::OperationIndexMap<int64_t>> ranks) final
   {

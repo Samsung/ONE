@@ -27,7 +27,8 @@ IOTensor::~IOTensor() {}
 
 IOTensor::IOTensor(const ir::OperandInfo &info)
   : IPortableTensor{info}, _tensor{nullptr},
-    _orig{std::make_unique<UserTensor>(info, ir::Layout::NHWC, (uint8_t *)nullptr, 0)}
+    _orig{std::make_unique<UserTensor>(info, ir::Layout::NHWC, (uint8_t *)nullptr, 0)},
+    _has_backend_tensor{false}
 {
   _tensor = _orig.get();
 }
@@ -36,6 +37,7 @@ void IOTensor::setTensor(IPortableTensor *tensor)
 {
   assert(tensor);
   assert(tensor != this);
+  assert(!_has_backend_tensor);
   _tensor = tensor;
   if (_info.shape() != tensor->getShape())
   {
@@ -48,6 +50,12 @@ void IOTensor::setTensor(IPortableTensor *tensor)
     // we may need to reset it as static for each setTensor call.
     _info.setDynamic();
   }
+}
+
+void IOTensor::setBackendTensor(IPortableTensor *tensor)
+{
+  setTensor(tensor);
+  _has_backend_tensor = true;
 }
 
 } // namespace onert::backend::builtin

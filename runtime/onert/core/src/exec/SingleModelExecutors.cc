@@ -54,6 +54,11 @@ const void *SingleModelExecutors::outputBuffer(const ir::IOIndex &index) const
   return static_cast<const void *>(entryExecutor()->outputBuffer(index.value()));
 }
 
+const backend::IPortableTensor *SingleModelExecutors::outputTensor(const ir::IOIndex &index) const
+{
+  return entryExecutor()->outputTensor(index.value());
+}
+
 void SingleModelExecutors::execute(const ExecutionContext &ctx)
 {
   // UserTensor for Input/Output
@@ -85,6 +90,7 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
     if (desc->buffer == nullptr && (desc->size != 0 || desc->info.total_size() != 0))
       throw std::runtime_error{"Input " + std::to_string(i) + "'s buffer is not set."};
 
+    // TODO: Create UserTensor only that will be set into IOTensor
     tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
       desc->info, desc->layout, const_cast<uint8_t *>(static_cast<const uint8_t *>(desc->buffer)),
       desc->size));
@@ -117,9 +123,11 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
   for (uint32_t i = 0; i < outputs.size(); i++)
   {
     auto &desc = ctx.desc.outputs[i];
+    bool skip_set_output = ctx.desc.is_internal_output_tensor[i];
 
     // Output is optional if buffer is nullptr, and optional output's size is 0
-    if (desc->buffer == nullptr && (desc->size != 0 || desc->info.total_size() != 0))
+    if (desc->buffer == nullptr && (desc->size != 0 || desc->info.total_size() != 0) &&
+        !skip_set_output)
       throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
 
     tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
@@ -131,6 +139,10 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
     if ((user_type != model_type && user_type == ir::DataType::FLOAT32) ||
         (desc->layout == ir::Layout::NCHW))
     {
+      if (skip_set_output)
+        std::runtime_error("When outputs are allocated internally, backend-aware quantization is "
+                           "not yet supported.");
+
       auto quantized_info = desc->info;
       quantized_info.typeInfo(model_info);
       qtensorpool.emplace_back(
