@@ -69,8 +69,8 @@ void DynamicBatchToSingleBatchPass::runOnOperation()
 
     if (auto rankedTensorTy = mlir::dyn_cast<mlir::RankedTensorType>(argTy))
     {
-      // NOTE we can just origDims[0] = 1 but the loop is to for future testing
-      // of setting 1 to all dynamic dims.
+      // NOTE although we only modify origDims[0], this loop is prepared
+      // for potential extension to modify all dynamic dimensions.
       mlir::ArrayRef<int64_t> origDims = rankedTensorTy.getShape();
       mlir::SmallVector<int64_t, 4> staticDims;
       for (uint64_t i = 0; i < origDims.size(); ++i)
