@@ -32,13 +32,9 @@ struct InputDesc
   ir::OperandInfo info;
   const void *buffer;
   size_t size;
-  ir::Layout layout;
 
   InputDesc(void) = delete;
-  InputDesc(const ir::OperandInfo &info)
-    : info(info), buffer(nullptr), size(0), layout(ir::Layout::NHWC)
-  {
-  }
+  InputDesc(const ir::OperandInfo &info) : info(info), buffer(nullptr), size(0) {}
 };
 
 struct OutputDesc
@@ -46,13 +42,9 @@ struct OutputDesc
   ir::OperandInfo info;
   void *buffer;
   size_t size;
-  ir::Layout layout;
 
   OutputDesc(void) = delete;
-  OutputDesc(const ir::OperandInfo &info)
-    : info(info), buffer(nullptr), size(0), layout(ir::Layout::NHWC)
-  {
-  }
+  OutputDesc(const ir::OperandInfo &info) : info(info), buffer(nullptr), size(0) {}
 };
 
 struct IODescription

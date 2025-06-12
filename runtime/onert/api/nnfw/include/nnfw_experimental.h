@@ -164,6 +164,40 @@ NNFW_STATUS nnfw_push_pipeline_input(nnfw_session *session, void *inputs, void *
 NNFW_STATUS nnfw_pop_pipeline_output(nnfw_session *session, void *outputs);
 
 /**
+ * @brief Set the type of an input
+ *
+ * User can call this function to set the type of an input. Then user can pass input data of that
+ * type. If it is not called, runtime will infer the type from the model.
+ * This function should be called after {@link nnfw_load_model_from_file} and
+ * before {@link nnfw_prepare}.
+ * Now only NNFW_TYPE_FLOAT32 is supported. If other types are passed, runtime will return error.
+ *
+ * @param[in] session session from input is to be extracted
+ * @param[in] index   index of input to be set (0-indexed)
+ * @param[in] type    type to set to target input. This can be NNFW_TYPE_FLOAT32 only.
+ *
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_input_type(nnfw_session *session, uint32_t index, NNFW_TYPE type);
+
+/**
+ * @brief Set the type of an output
+ *
+ * User can call this function to set the type of an output. Then user can pass output data of that
+ * type. If it is not called, runtime will output the type from the model.
+ * This function should be called after {@link nnfw_load_model_from_file} and
+ * before {@link nnfw_prepare}.
+ * Now only NNFW_TYPE_FLOAT32 is supported. If other types are passed, runtime will return error.
+ *
+ * @param[in] session session from output is to be extracted
+ * @param[in] index   index of output to be set (0-indexed)
+ * @param[in] type    type to set to target output. This can be NNFW_TYPE_FLOAT32 only.
+ *
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_output_type(nnfw_session *session, uint32_t index, NNFW_TYPE type);
+
+/**
  *  Training C APIs
  *
  * Training APIs are designed to be used in the following order for training
@@ -582,24 +616,33 @@ NNFW_STATUS nnfw_odc_delete_minmax_file(nnfw_session *session);
 /**
  * @brief  Run inference with auto compilation
  *
- * <p>This function runs inference with automatic compilation and replaces
- *  the original model with a quantized or compiled model inside.
- * During the inference the minmax statistics is collected and after that quantization is performed.
- * If quantization was successful, try to code generating for target backend, otherwise run original
- float model.
- * If compilation was successful, run compiled model, otherwise run quantized model.
- * On-device compiler (ODC) provides quantization and compilation functionality.
- * Function should be called after model is loaded by {@link nnfw_load_model_from_file},
- * session is prepared for inference by {@link nnfw_prepare}, set input and output buffers
- * by {@link nnfw_set_input} and {@link nnfw_set_output}.
+ * This function runs inference float model with automatic compilation and
+ * replaces the original model with a quantized or compiled model inside.
  *
- * Additionally the following parameters should be set up :
+ * During the inference, the minmax statistics is collected and after that quantization is
+ performed.
+ * If quantization was successful, try to code generating for target backend,
+ * otherwise run original float model.
+ *
+ * If compilation was successful, run compiled model, otherwise run quantized model.
+ *
+ * Auto compilation uses on-device compiler (ODC), and ODC provides
+ * quantization and compilation functionality.
+ * ODC functions should be called after model is loaded by {@link nnfw_load_model_from_file}.
+ * Belows are ODC functions to set parameters :
+ *
  * 1. Quantization type {@link nnfw_set_quantization_type }
- * 2. Quantizated model path {@link  nnfw_set_quantized_model_path }
+ * 2. Quantizated model path {@link nnfw_set_quantized_model_path }
  * 3. Minmax records threshold for quantization {@link nnfw_set_odc_param_minmax_records_count }
  * 3. File with minMax statistics can be removed by {@link nnfw_odc_delete_minmax_file}
- * 4. Compiled model path {@link  nnfw_set_codegen_model_path}
- * </p>
+ * 4. Compiled model path {@link nnfw_set_codegen_model_path}
+ *
+ * Session is prepared for inference by {@link nnfw_prepare}, set input and output float buffers
+ * by {@link nnfw_set_input} and {@link nnfw_set_output}. This function should be called after those
+ * functions.
+ *
+ * After auto compilation, quantized model uses float input/output buffer
+ * and cast them to quantized type in runtime automatically.
  *
  * @param[in] session nnfw_session
  * @param[in] target  Target backend to generate code as in {@link nnfw_codegen}
