@@ -67,16 +67,12 @@ jobs:
     needs: configure
     strategy:
       matrix:
-        include:
         # TODO activate noble
-        - ubuntu_code: focal
-          ubuntu_vstr: u2004
-        - ubuntu_code: jammy
-          ubuntu_vstr: u2204
+        ubuntu_code: [ focal, jammy ]
     name: onnx2circle ubuntu ${{ matrix.ubuntu_code }}
     runs-on: ubuntu-latest
     container:
-      image: nnfw/circle-mlir-build-${{ matrix.ubuntu_vstr }}:latest
+      image: nnfw/circle-mlir-build:${{ matrix.ubuntu_code }}
       options: --user root
       credentials:
         username: ${{ secrets.NNFW_DOCKER_USERNAME }}
