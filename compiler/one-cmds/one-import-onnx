@@ -155,9 +155,9 @@ def _get_parser():
 
     # NOTE How one-import-onnx-ext is called;
     # - applies only when one-import-onnx-ext is installed
-    # - default onnx-tf is called for conversion
-    # - if onnx-tf fails, one-import-onnx-ext is called
-    # - if 'force_ext' is given, skip onnx-tf and call one-import-onnx-ext
+    # - default onnx2circle is called for conversion
+    # - if onnx2circle fails, one-import-onnx-ext is called
+    # - if 'force_ext' is given, skip onnx2circle and call one-import-onnx-ext
     # - if 'disable_ext' is given, one-import-onnx-ext is not called
     # - both 'force_ext', 'disable_ext' should not be set
 
@@ -352,7 +352,7 @@ def _convert(args):
             if res_conv != 0:
                 if run_default_import:
                     print(
-                        "onnx-import-onnx: Conversion with onnx-tf failed. "
+                        "onnx-import-onnx: Conversion with onnx2circle failed. "
                         "Fallback to use one-import-onnx-ext",
                         flush=True)
                 # call extension with options
