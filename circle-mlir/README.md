@@ -110,7 +110,7 @@ You can build within Docker image, with pre-built `externals`.
 
 Pull Docker image
 ```
-docker pull nnfw/circle-mlir-build-u2204
+docker pull nnfw/circle-mlir-build:jammy
 ```
 NOTE there is only Ubuntu22.04 version, as of writing this.
 
@@ -122,7 +122,7 @@ docker run \
 -it \
 -v $HOME:/home/circlemlir \
 -w /home/circlemlir \
-nnfw/circle-mlir-build-u2204
+nnfw/circle-mlir-build:jammy
 ```
 
 Inside the Docker image shell, cd to `circle-mlir`
