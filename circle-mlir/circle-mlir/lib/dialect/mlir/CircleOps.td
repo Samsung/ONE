@@ -1920,7 +1920,7 @@ def CIR_ShapeOp: CIR_Op<"shape", [
   let results = (outs CIR_TensorOf<[I32, I64]>:$output);
 
   DerivedTypeAttr out_type = DerivedTypeAttr<[{
-    return getResult().getType().cast<TensorType>().getElementType();
+    return mlir::cast<TensorType>(getResult().getType()).getElementType();
   }]>;
 
   let hasOptions = 1;
