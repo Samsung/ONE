@@ -427,7 +427,10 @@ Attribute ConstBytesAttr::parse(AsmParser &parser, Type type)
   }
 
   std::string bytes_data;
-  absl::HexStringToBytes(data.substr(2), &bytes_data);
+  if (not absl::HexStringToBytes(data.substr(2), &bytes_data))
+  {
+    return nullptr;
+  }
   return ConstBytesAttr::get(parser.getBuilder().getContext(), bytes_data);
 }
 
