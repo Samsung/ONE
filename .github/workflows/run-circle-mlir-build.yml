@@ -36,19 +36,14 @@ jobs:
       matrix:
         type: [ Debug, Release ]
         ubuntu_code: [ focal, jammy ]
-        include:
-          - ubuntu_code: focal
-            ubuntu_vstr: u2004
-          - ubuntu_code: jammy
-            ubuntu_vstr: u2204
 
     runs-on: ubuntu-latest
 
     container:
-      image: nnfw/circle-mlir-build-${{ matrix.ubuntu_vstr }}:latest
+      image: nnfw/circle-mlir-build:${{ matrix.ubuntu_code }}
       options: --user root
 
-    name: circle-mlir ${{ matrix.ubuntu_vstr }} ${{ matrix.type }} test
+    name: circle-mlir ${{ matrix.ubuntu_code }} ${{ matrix.type }} test
 
     steps:
       - name: Install circle-interpreter
