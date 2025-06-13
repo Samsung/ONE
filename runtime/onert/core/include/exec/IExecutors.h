@@ -91,6 +91,13 @@ public:
   virtual const void *outputBuffer(const ir::IOIndex &index) const = 0;
 
   /**
+   * @brief     Return NN package output tensor
+   * @param[in] index Output index
+   * @return    Tensor of output
+   */
+  virtual const backend::IPortableTensor *outputTensor(const ir::IOIndex &index) const = 0;
+
+  /**
    * @brief     Execute NN package executor set
    * @param[in] ctx  Execution context
    */

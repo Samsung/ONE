@@ -16,9 +16,12 @@
 
 #include "exec/Execution.h"
 
+#include "../backend/builtin/IOTensor.h"
 #include "ir/DataType.h"
 #include "train/TrainableExecutors.h"
 #include "util/logging.h"
+
+#include <memory>
 
 namespace onert::exec
 {
@@ -37,6 +40,14 @@ Execution::Execution(const std::shared_ptr<IExecutors> &executors) : _executors{
   for (uint32_t i = 0; i < _executors->outputSize(); ++i)
     _ctx.desc.outputs.at(i) = std::make_unique<OutputDesc>(_executors->outputInfo(ir::IOIndex(i)));
   _ctx.shape_updated = false;
+
+  _is_internal_output_tensor.resize(_executors->outputSize());
+  for (uint32_t i = 0; i < _executors->outputSize(); ++i)
+  {
+    const auto output_tensor =
+      dynamic_cast<const backend::builtin::IOTensor *>(executors->outputTensor(ir::IOIndex{i}));
+    _is_internal_output_tensor.at(i) = output_tensor->hasBackendTensor();
+  }
 
   // Initialize options
   ExecutionOptions::fromGlobalConfig(_ctx.options);
@@ -129,9 +140,12 @@ void Execution::execute()
   // Output length validation check
   if (!_ctx.shape_updated)
   {
-    for (const auto &output : _ctx.desc.outputs)
+    assert(_ctx.desc.outputs.size() == _is_internal_output_tensor.size());
+    for (uint32_t i = 0; i < _ctx.desc.outputs.size(); ++i)
     {
-      if (output->info.total_size() > output->size)
+      const bool is_managed_internally = _is_internal_output_tensor.at(i);
+      const auto &output = _ctx.desc.outputs.at(i);
+      if (!is_managed_internally && output->info.total_size() > output->size)
         throw std::runtime_error{"Too small output buffer length"};
     }
   }
