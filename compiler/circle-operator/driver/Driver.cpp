@@ -42,6 +42,7 @@ int entry(int argc, char **argv)
     "circle-operator allows users to retrieve operator information from a Circle model file"};
   arser.add_argument("--name").nargs(0).help("Dump operators name in circle file");
   arser.add_argument("--code").nargs(0).help("Dump operators code in circle file");
+  arser.add_argument("--shapes").nargs(0).help("Dump shapes");
   arser.add_argument("--output_path").help("Save output to file (default output is console)");
   arser.add_argument("circle").help("Circle file to dump");
 
@@ -59,6 +60,7 @@ int entry(int argc, char **argv)
   cirops::DumpOption option;
   option.names = arser["--name"];
   option.codes = arser["--code"];
+  option.shapes = arser["--shapes"];
 
   std::ofstream oFstream;
   std::ostream *oStream = &std::cout;

@@ -24,6 +24,7 @@ import os
 import sys
 import tempfile
 import onnx
+from onnx.tools import update_model_dims
 
 # ONNX legalizer is an optional feature
 # It enables conversion of some operations, but in experimental phase for now
@@ -191,6 +192,26 @@ def _get_parser():
                         action='store_true',
                         help='Experimental disable BatchMatMul unfold')
 
+    # set static input shape
+    parser.add_argument(
+        '--input_shapes',
+        type=str,
+        help=
+        'Set static shape for input tensors in comma-separated list format, like \'[1,2,3]\'.'
+        'If the model has multiple inputs, tensor names should be provided as well.'
+        'In such a case, the argument should be in the following format: \'a[1,2,3],b[4,5,6],c[7,8]\'.'
+    )
+
+    # set static output shape
+    parser.add_argument(
+        '--output_shapes',
+        type=str,
+        help=
+        'Set static shape for output tensors in comma-separated list format, like \'[1,2,3]\'.'
+        'If the model has multiple outputs, tensor names should be provided as well.'
+        'In such a case, the argument should be in the following format: \'a[1,2,3],b[4,5,6],c[7,8]\'.'
+    )
+
     return parser
 
 
@@ -286,6 +307,50 @@ def _check_onnx2circle():
     return o2c_path
 
 
+def _extract_origin_tensor_shapes(tensors):
+    shapes_map = {}
+    for tensor in tensors:
+        shapes_map[tensor.name] = []
+        for dim_proto in tensor.type.tensor_type.shape.dim:
+            if dim_proto.HasField("dim_value"):
+                shapes_map[tensor.name].append(dim_proto.dim_value)
+            elif dim_proto.HasField("dim_param"):
+                shapes_map[tensor.name].append(dim_proto.dim_param)
+            else:
+                shapes_map[tensor.name].append(-1)  # dynamic
+    return shapes_map
+
+
+def _parse_shapes(shape_str, origin_tensor_shapes_map):
+    user_shapes_map = {}
+    for idx, single_shape in enumerate(shape_str.split(']')):
+        if single_shape:
+            tensor_name, single_shape = single_shape.split('[')
+            if not tensor_name:
+                # using tensor name model allowed only for single input models
+                if idx == 0 and len(origin_tensor_shapes_map) == 1:
+                    tensor_name = next(iter(origin_tensor_shapes_map.keys()))
+                else:
+                    raise ValueError(
+                        'You must provide tenors name for the model with multiple inputs/outputs'
+                    )
+            tensor_name = tensor_name.replace(',', '')
+            user_shapes_map[tensor_name] = []
+            for dim in single_shape.split(','):
+                user_shapes_map[tensor_name].append(int(dim))
+    for tensor_name in user_shapes_map.keys():
+        if tensor_name not in origin_tensor_shapes_map:
+            raise ValueError(
+                f'Tensor with name={tensor_name} do NOT match any input/output of the model'
+            )
+        if len(user_shapes_map[tensor_name]) != len(
+                origin_tensor_shapes_map[tensor_name]):
+            raise ValueError(
+                f'Rank of provided shape must be compatible with the origin tensor={tensor_name} from the model'
+            )
+    return user_shapes_map
+
+
 def _convert(args):
     _apply_verbosity(args.verbose)
 
@@ -310,6 +375,29 @@ def _convert(args):
 
         onnx_model = onnx.load(onnx_to_convert_path)
         _sanitize_io_names(onnx_model)
+        input_shape_provided = oneutils.is_valid_attr(args, 'input_shapes')
+        output_shape_provided = oneutils.is_valid_attr(args, 'output_shapes')
+        if input_shape_provided or output_shape_provided:  # any shape arg provided
+            input_shapes_map = _extract_origin_tensor_shapes(onnx_model.graph.input)
+            if input_shape_provided:
+                input_shapes_map = _parse_shapes(getattr(args, 'input_shapes'),
+                                                 input_shapes_map)
+                delattr(args, 'input_shapes'
+                        )  # avoid argument colision with tf2tflite conversion step
+            output_shapes_map = _extract_origin_tensor_shapes(onnx_model.graph.output)
+            if output_shape_provided:
+                output_shapes_map = _parse_shapes(getattr(args, 'output_shapes'),
+                                                  output_shapes_map)
+            onnx_model = update_model_dims.update_inputs_outputs_dims(
+                onnx_model, input_shapes_map, output_shapes_map)
+            try:
+                print(onnx.__file__)
+                onnx_model = onnx.shape_inference.infer_shapes(onnx_model,
+                                                               strict_mode=True)
+            except Exception as e:
+                raise RuntimeError(
+                    f'Exception with message="{e}" raised from external onnx library during shape inference'
+                )
         # TODO set model_updated to True only when sanitize updates onnx_model
         # NOTE with onnx2circle, we may not need sanitize(this needs verification)
         model_updated = True

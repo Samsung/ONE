@@ -179,6 +179,19 @@ if files_missing "${NEG_TEST_RECCURENT_MODELS[@]}"; then
     # https://github.com/Samsung/ONE/issues/8395#issuecomment-1050364375
 fi
 
+declare -a DYN_SHAPES_MODELS=(\
+  "abs_concat_dynamic_inputs_and_outputs.onnx" "abs_dynamic_batch.onnx" \
+  "abs_dynamic_input.onnx" "abs_reshape_dynamic_inputs_and_output.onnx" \
+  "reshape_static_inputs_dynamic_output.onnx" "shape_not_provided_abs.onnx"
+)
+
+if files_missing "${DYN_SHAPES_MODELS[@]}"; then
+    rm -rf onnx_dyn_shapes_models.zip
+    wget -nv https://github.com/user-attachments/files/16560918/onnx_dyn_shapes_models.zip
+    unzip onnx_dyn_shapes_models.zip
+    # https://github.com/Samsung/ONE/issues/13636#issuecomment-2277704651
+fi
+
 declare -a ADD_000_MODEL_AND_INPUTS=("Add_000.circle" "Add_000.circle.input0" "Add_000.circle.input1")
 
 if files_missing "${ADD_000_MODEL_AND_INPUTS}"; then
