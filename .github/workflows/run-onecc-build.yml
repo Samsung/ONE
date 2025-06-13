@@ -46,11 +46,6 @@ jobs:
       matrix:
         type: [ Debug, Release ]
         ubuntu_code: [ focal, jammy ]
-        include:
-          - ubuntu_code: focal
-            ubuntu_ver: 20.04
-          - ubuntu_code: jammy
-            ubuntu_ver: 22.04
     runs-on: one-x64-linux
     container:
       image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}
@@ -58,7 +53,7 @@ jobs:
     env:
       NNCC_WORKSPACE : build
       NNCC_INSTALL_PREFIX : install
-    name: onecc ubuntu ${{ matrix.ubuntu_ver }} ${{ matrix.type }} test
+    name: onecc ubuntu ${{ matrix.ubuntu_code }} ${{ matrix.type }} test
 
     steps:
       - name: Checkout
