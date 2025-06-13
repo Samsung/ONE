@@ -32,13 +32,22 @@ rm -f ${filename}.log
 rm -rf ${outputfile}
 
 # run test
+# NOTE TF2.19.0 generates with "InceptionV3/Logits/SpatialSqueeze"
 one-optimize --resolve_customop_add \
---change_outputs InceptionV3/Logits/SpatialSqueeze1 \
+--change_outputs InceptionV3/Logits/SpatialSqueeze \
 --input_path ${inputfile} \
 --output_path ${outputfile} > ${filename}.log 2>&1
 
 if [[ ! -s "${outputfile}" ]]; then
-  trap_err_onexit
+  # TODO remove change_outputs with old TF2.12.1
+  one-optimize --resolve_customop_add \
+  --change_outputs InceptionV3/Logits/SpatialSqueeze1 \
+  --input_path ${inputfile} \
+  --output_path ${outputfile} > ${filename}.log 2>&1
+
+  if [[ ! -s "${outputfile}" ]]; then
+    trap_err_onexit
+  fi
 fi
 
 echo "${filename_ext} SUCCESS"
