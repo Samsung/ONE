@@ -295,10 +295,9 @@ void generateCodes(backend::train::FunctionMap &codes,
 
 void bindInternalOutputTensors(const compiler::ILoweredGraph &lgraph,
                                const backend::BackendContexts &backend_contexts,
-                               const util::Set<ir::OperandIndex> &internal_io_indexes)
+                               const util::Set<ir::OperandIndex> &internal_io_indexes,
+                               const compiler::TensorRegistries &tensor_regs)
 {
-  compiler::TensorRegistries tensor_regs{backend_contexts, true};
-
   for (const auto idx : internal_io_indexes)
   {
     // There is currently no reason for internal I/O tensors to exist other than outputs.
@@ -444,7 +443,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
 
   prepareMigrantTensors(*lowered_graph, backend_contexts);
 
-  bindInternalOutputTensors(*lowered_graph, backend_contexts, args.internal_io_indexes);
+  bindInternalOutputTensors(*lowered_graph, backend_contexts, args.internal_io_indexes,
+                            tensor_regs);
 
   // Give some runtime objects to builtin KernelGenerator
   prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);
@@ -570,7 +570,8 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
 
   prepareMigrantTensors(*lowered_graph, backend_contexts);
 
-  bindInternalOutputTensors(*lowered_graph, backend_contexts, args.internal_io_indexes);
+  bindInternalOutputTensors(*lowered_graph, backend_contexts, args.internal_io_indexes,
+                            tensor_regs);
 
   // Give some runtime objects to builtin KernelGenerator
   prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);
