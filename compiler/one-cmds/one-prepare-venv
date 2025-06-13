@@ -69,13 +69,26 @@ VER_PROTOBUF=4.23.3
 VER_NUMPY=1.24.3
 
 PYTHON_VER=$(${PYTHON3_EXEC} -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
-echo "Setting package version for python $PYTHON_VER"
-if [[ "$PYTHON_VER" == "3.8" ]]; then
-  : # use as is
-elif [[ "$PYTHON_VER" == "3.10" ]]; then
-  : # TODO change vesions
+if [[ "$PYTHON_VER" == "3.10" ]]; then
+  VER_TENSORFLOW=2.19.0
+  VER_ONNX=1.18.0
+  VER_ONNXRUNTIME=1.21.1
+  VER_TORCH="2.7.0+cpu"
+  VER_NUMPY="1.26.4"
+  VER_PROTOBUF="5.29.4"
+  VER_TF_PROB=0
+  VER_TF_ADON=0
+  VER_ONNX_TF=0
 elif [[ "$PYTHON_VER" == "3.12" ]]; then
-  : # TODO change vesions
+  VER_TENSORFLOW=2.19.0
+  VER_ONNX=1.18.0
+  VER_ONNXRUNTIME=1.21.1
+  VER_TORCH="2.7.0+cpu"
+  VER_NUMPY="1.26.4"
+  VER_PROTOBUF="5.29.4"
+  VER_TF_PROB=0
+  VER_TF_ADON=0
+  VER_ONNX_TF=0
 else
   echo "Error one-prepare-venv: Unsupported python $PYTHON_VER"
   exit 1
@@ -110,15 +123,22 @@ ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade pip setuptools
 
 PYTHON_PACKAGES="tensorflow-cpu==${VER_TENSORFLOW} "
 PYTHON_PACKAGES+="Pillow "
-PYTHON_PACKAGES+="tensorflow_probability==${VER_TF_PROB} "
-PYTHON_PACKAGES+="tensorflow_addons==${VER_TF_ADON} "
 PYTHON_PACKAGES+="torch==${VER_TORCH} "
 PYTHON_PACKAGES+="onnx==${VER_ONNX} "
 PYTHON_PACKAGES+="onnxruntime==${VER_ONNXRUNTIME} "
-PYTHON_PACKAGES+="onnx-tf==${VER_ONNX_TF} "
 PYTHON_PACKAGES+="protobuf==${VER_PROTOBUF} "
 PYTHON_PACKAGES+="fsspec==2024.6.1 "
 PYTHON_PACKAGES+="pydot==${VER_PYDOT} "
 PYTHON_PACKAGES+="numpy==${VER_NUMPY} "
+
+if [[ "${VER_TF_PROB}" != "0" ]]; then
+  PYTHON_PACKAGES+="tensorflow_probability==${VER_TF_PROB} "
+fi
+if [[ "${VER_TF_ADON}" != "0" ]]; then
+  PYTHON_PACKAGES+="tensorflow_addons==${VER_TF_ADON} "
+fi
+if [[ "${VER_ONNX_TF}" != "0" ]]; then
+  PYTHON_PACKAGES+="onnx-tf==${VER_ONNX_TF} "
+fi
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade ${PYTHON_PACKAGES} ${TORCH_SOURCE_OPTION}
