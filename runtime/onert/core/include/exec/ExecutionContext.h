@@ -59,7 +59,6 @@ struct IODescription
 {
   std::vector<std::unique_ptr<InputDesc>> inputs;
   std::vector<std::unique_ptr<OutputDesc>> outputs;
-  std::vector<bool> is_internal_output_tensor;
 };
 
 struct ExecutionOptions

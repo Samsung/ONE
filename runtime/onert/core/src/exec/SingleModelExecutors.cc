@@ -19,6 +19,7 @@
 #include "EdgeTensor.h"
 #include "IPermuteFunction.h"
 #include "../backend/builtin/UserTensor.h"
+#include "../backend/builtin/IOTensor.h"
 
 namespace onert::exec
 {
@@ -123,7 +124,9 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
   for (uint32_t i = 0; i < outputs.size(); i++)
   {
     auto &desc = ctx.desc.outputs[i];
-    bool skip_set_output = ctx.desc.is_internal_output_tensor[i];
+    bool skip_set_output =
+      dynamic_cast<const backend::builtin::IOTensor *>(outputTensor(ir::IOIndex{i}))
+        ->hasBackendTensor();
 
     // Output is optional if buffer is nullptr, and optional output's size is 0
     if (desc->buffer == nullptr && (desc->size != 0 || desc->info.total_size() != 0) &&

@@ -199,6 +199,7 @@ private:
   ExecutionContext _ctx;
   std::unique_ptr<std::thread> _exec_thread;
   bool finished{false};
+  std::vector<bool> _is_internal_output_tensor;
 };
 
 } // namespace onert::exec
