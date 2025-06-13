@@ -309,7 +309,8 @@ def _convert(args):
             tmpdir = os.path.dirname(logfile_path)
 
         onnx_model = onnx.load(onnx_to_convert_path)
-        _sanitize_io_names(onnx_model)
+        # TODO delete sanitize if comment out works OK
+        # _sanitize_io_names(onnx_model)
         # TODO set model_updated to True only when sanitize updates onnx_model
         # NOTE with onnx2circle, we may not need sanitize(this needs verification)
         model_updated = True
@@ -321,9 +322,10 @@ def _convert(args):
                 onnx_legalizer.legalize(onnx_model, options)
                 model_updated = True
 
-        if oneutils.is_valid_attr(args, 'keep_io_order'):
-            _remap_io_names(onnx_model)
-            model_updated = True
+        # TODO delete remap_io if comment out works OK
+        # if oneutils.is_valid_attr(args, 'keep_io_order'):
+        #    _remap_io_names(onnx_model)
+        #    model_updated = True
 
         run_default_import = True
         if ext_path:
