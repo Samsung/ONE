@@ -9,7 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [ 'u2204' ]
+        include:
+        - ubuntu_code: jammy
+          ubuntu_vstr: u2204
     steps:
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -23,6 +25,6 @@ jobs:
       - name: Build Docker Image
         uses: docker/build-push-action@v6
         with:
-          file: ./tools/onnx_subgraph/docker/Dockerfile.${{ matrix.version }}
+          file: ./tools/onnx_subgraph/docker/Dockerfile.${{ matrix.ubuntu_vstr }}
           push: true
-          tags: nnfw/onnx-subgraph-build-${{ matrix.version }}
+          tags: nnfw/onnx-subgraph-build:${{ matrix.ubuntu_code }}
