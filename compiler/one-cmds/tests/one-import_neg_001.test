@@ -30,6 +30,11 @@ trap_err_onexit()
     echo "${filename_ext} SUCCESS"
     exit 0
   fi
+  # TF 2.19.0: error report has changed
+  if grep -q "Unable to parse input file" "${filename}.log"; then
+    echo "${filename_ext} SUCCESS"
+    exit 0
+  fi
 
   echo "${filename_ext} FAILED"
   exit 255
