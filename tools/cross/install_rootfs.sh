@@ -81,7 +81,7 @@ for i in "$@" ; do
     esac
 done
 
-set -x
+set -eo pipefail
 
 __RootfsDir="$__CrossDir/rootfs/$__BuildArch"
 
@@ -91,7 +91,7 @@ fi
 
 if [ -d "$__RootfsDir" ]; then
     if [ $__SkipUnmount == 0 ]; then
-        umount $__RootfsDir/*
+        umount -qR $__RootfsDir/* || true
     fi
     rm -rf $__RootfsDir
 fi
@@ -107,11 +107,10 @@ if [[ -n $__LinuxCodeName ]]; then
     chroot $__RootfsDir apt-get update
     chroot $__RootfsDir apt-get -f -y install
     chroot $__RootfsDir apt-get -y install $__UbuntuPackages
-    machine=$(chroot $__RootfsDir gcc -dumpmachine)
     chroot $__RootfsDir symlinks -cr /usr
 
     if [ $__SkipUnmount == 0 ]; then
-        umount $__RootfsDir/*
+        umount -qR $__RootfsDir/* || true
     fi
 else
     echo "Unsupported target platform."
