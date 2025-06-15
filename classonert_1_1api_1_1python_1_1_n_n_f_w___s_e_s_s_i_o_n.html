@@ -135,6 +135,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a31813a17f1e559577ed4e524b4e6c68f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee98605a538f8ef71c106bcd4c9d3b01" id="r_aee98605a538f8ef71c106bcd4c9d3b01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structonert_1_1api_1_1python_1_1tensorinfo.html">tensorinfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html#aee98605a538f8ef71c106bcd4c9d3b01">output_tensorinfo</a> (uint32_t index)</td></tr>
 <tr class="separator:aee98605a538f8ef71c106bcd4c9d3b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23c23826ac81ca4944f05f4d63f0de26" id="r_a23c23826ac81ca4944f05f4d63f0de26"><td class="memItemLeft" align="right" valign="top">py::array&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html#a23c23826ac81ca4944f05f4d63f0de26">get_output</a> (uint32_t index)</td></tr>
+<tr class="separator:a23c23826ac81ca4944f05f4d63f0de26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adea88e8630d49648c93535b2f545d8e7" id="r_adea88e8630d49648c93535b2f545d8e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html#adea88e8630d49648c93535b2f545d8e7">set_prepare_config</a> (<a class="el" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">NNFW_PREPARE_CONFIG</a> config)</td></tr>
+<tr class="separator:adea88e8630d49648c93535b2f545d8e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12133e7989a18b357e71e889c6e828e8" id="r_a12133e7989a18b357e71e889c6e828e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structnnfw__train__info.html">nnfw_train_info</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html#a12133e7989a18b357e71e889c6e828e8">train_get_traininfo</a> ()</td></tr>
 <tr class="separator:a12133e7989a18b357e71e889c6e828e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9652a4fedbd11924070eccac86f5c9d" id="r_aa9652a4fedbd11924070eccac86f5c9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html#aa9652a4fedbd11924070eccac86f5c9d">train_set_traininfo</a> (const <a class="el" href="structnnfw__train__info.html">nnfw_train_info</a> *<a class="el" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>)</td></tr>
@@ -163,7 +167,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00123">123</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00124">124</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af53686d7bcf8bb6f1957a73ff0668512" name="af53686d7bcf8bb6f1957a73ff0668512"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af53686d7bcf8bb6f1957a73ff0668512">&#9670;&#160;</a></span>NNFW_SESSION()</h2>
@@ -265,6 +269,65 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a23c23826ac81ca4944f05f4d63f0de26" name="a23c23826ac81ca4944f05f4d63f0de26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23c23826ac81ca4944f05f4d63f0de26">&#9670;&#160;</a></span>get_output()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">py::array onert::api::python::NNFW_SESSION::get_output </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">225</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  226</span>{</div>
+<div class="line"><span class="lineno">  227</span>  <span class="comment">// First call into the C API</span></div>
+<div class="line"><span class="lineno">  228</span>  <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> out_info = {};</div>
+<div class="line"><span class="lineno">  229</span>  <span class="keyword">const</span> <span class="keywordtype">void</span> *out_buffer = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  230</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="nnfw__internal_8h.html#ab2b9fa5bdb1ce95b0e95de65bb8ad968">nnfw_get_output</a>(session, index, &amp;out_info, &amp;out_buffer));</div>
+<div class="line"><span class="lineno">  231</span> </div>
+<div class="line"><span class="lineno">  232</span>  <span class="comment">// Convert nnfw_tensorinfo to our python-visible struct</span></div>
+<div class="line"><span class="lineno">  233</span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a> = 1;</div>
+<div class="line"><span class="lineno">  234</span>  std::vector&lt;ssize_t&gt; shape;</div>
+<div class="line"><span class="lineno">  235</span>  shape.reserve(out_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a>);</div>
+<div class="line"><span class="lineno">  236</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; out_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a>; ++i)</div>
+<div class="line"><span class="lineno">  237</span>  {</div>
+<div class="line"><span class="lineno">  238</span>    shape.push_back(<span class="keyword">static_cast&lt;</span>ssize_t<span class="keyword">&gt;</span>(out_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">dims</a>[i]));</div>
+<div class="line"><span class="lineno">  239</span>    <a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a> *= <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(out_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">dims</a>[i]);</div>
+<div class="line"><span class="lineno">  240</span>  }</div>
+<div class="line"><span class="lineno">  241</span> </div>
+<div class="line"><span class="lineno">  242</span>  <span class="comment">// Wrap the raw buffer in a numpy array;</span></div>
+<div class="line"><span class="lineno">  243</span>  <span class="keyword">auto</span> np = py::module_::import(<span class="stringliteral">&quot;numpy&quot;</span>);</div>
+<div class="line"><span class="lineno">  244</span>  py::dtype dt = np.attr(<span class="stringliteral">&quot;dtype&quot;</span>)(py::str(<a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a0975b728740c47252340213ce2c6b56c">getStringType</a>(out_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a2ab71fcd11fac2161eb2e704b3cd9292">dtype</a>))).cast&lt;py::dtype&gt;();</div>
+<div class="line"><span class="lineno">  245</span>  <span class="keywordtype">size_t</span> itemsize = dt.attr(<span class="stringliteral">&quot;itemsize&quot;</span>).cast&lt;<span class="keywordtype">size_t</span>&gt;();</div>
+<div class="line"><span class="lineno">  246</span> </div>
+<div class="line"><span class="lineno">  247</span>  py::array <a class="code hl_variable" href="namespaceinfer.html#aea40b298caaf11c6a391dcf92f194e5f">arr</a>(dt, shape);</div>
+<div class="line"><span class="lineno">  248</span>  std::memcpy(<a class="code hl_variable" href="namespaceinfer.html#aea40b298caaf11c6a391dcf92f194e5f">arr</a>.mutable_data(), out_buffer, num_elements * itemsize);</div>
+<div class="line"><span class="lineno">  249</span>  <a class="code hl_variable" href="namespaceinfer.html#aea40b298caaf11c6a391dcf92f194e5f">arr</a>.attr(<span class="stringliteral">&quot;flags&quot;</span>).attr(<span class="stringliteral">&quot;writeable&quot;</span>) = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  250</span> </div>
+<div class="line"><span class="lineno">  251</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceinfer.html#aea40b298caaf11c6a391dcf92f194e5f">arr</a>;</div>
+<div class="line"><span class="lineno">  252</span>}</div>
+<div class="ttc" id="anamespaceinfer_html_aea40b298caaf11c6a391dcf92f194e5f"><div class="ttname"><a href="namespaceinfer.html#aea40b298caaf11c6a391dcf92f194e5f">infer.arr</a></div><div class="ttdeci">arr</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00092">infer.py:92</a></div></div>
+<div class="ttc" id="anamespacenncc_1_1core_1_1_a_d_t_1_1feature_html_a1780a62ce2f7897524ee6a9c8967158d"><div class="ttname"><a href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">nncc::core::ADT::feature::num_elements</a></div><div class="ttdeci">uint32_t num_elements(const Shape &amp;shape)</div><div class="ttdoc">The number of elements of a feature map of a given shape.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2angkor_2include_2nncc_2core_2_a_d_t_2feature_2_shape_8h_source.html#l00059">Shape.h:59</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1api_1_1python_html_a0975b728740c47252340213ce2c6b56c"><div class="ttname"><a href="namespaceonert_1_1api_1_1python.html#a0975b728740c47252340213ce2c6b56c">onert::api::python::getStringType</a></div><div class="ttdeci">const char * getStringType(NNFW_TYPE type)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8cc_source.html#l00082">nnfw_api_wrapper.cc:82</a></div></div>
+<div class="ttc" id="annfw__internal_8h_html_ab2b9fa5bdb1ce95b0e95de65bb8ad968"><div class="ttname"><a href="nnfw__internal_8h.html#ab2b9fa5bdb1ce95b0e95de65bb8ad968">nnfw_get_output</a></div><div class="ttdeci">NNFW_STATUS nnfw_get_output(nnfw_session *session, uint32_t index, nnfw_tensorinfo *out_info, const void **out_buffer)</div><div class="ttdoc">Python-binding-only API to retrieve a read-only output buffer and its tensor info.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__internal_8cc_source.html#l00054">nnfw_internal.cc:54</a></div></div>
+<div class="ttc" id="astructnnfw__tensorinfo_html"><div class="ttname"><a href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a></div><div class="ttdoc">tensor info describes the type and shape of tensors</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00123">onert-micro.h:124</a></div></div>
+<div class="ttc" id="astructnnfw__tensorinfo_html_a2ab71fcd11fac2161eb2e704b3cd9292"><div class="ttname"><a href="structnnfw__tensorinfo.html#a2ab71fcd11fac2161eb2e704b3cd9292">nnfw_tensorinfo::dtype</a></div><div class="ttdeci">NNFW_TYPE dtype</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00126">onert-micro.h:126</a></div></div>
+<div class="ttc" id="astructnnfw__tensorinfo_html_a87b52cdfd8e93c94e21e7cba235fedab"><div class="ttname"><a href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">nnfw_tensorinfo::rank</a></div><div class="ttdeci">int32_t rank</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00128">onert-micro.h:128</a></div></div>
+<div class="ttc" id="astructnnfw__tensorinfo_html_af5150bc6daf4934c2412fb1effad9b5a"><div class="ttname"><a href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">nnfw_tensorinfo::dims</a></div><div class="ttdeci">int32_t dims[NNFW_MAX_RANK]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00133">onert-micro.h:133</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00133">nnfw_tensorinfo::dims</a>, <a class="el" href="onert-micro_8h_source.html#l00126">nnfw_tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00082">onert::api::python::getStringType()</a>, <a class="el" href="nnfw__internal_8cc_source.html#l00054">nnfw_get_output()</a>, and <a class="el" href="onert-micro_8h_source.html#l00128">nnfw_tensorinfo::rank</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="nnfw__session__bindings_8cc_source.html#l00027">onert::api::python::bind_nnfw_session()</a>.</p>
+
+</div>
+</div>
 <a id="a4890458550caaf15adb9aab103e1a973" name="a4890458550caaf15adb9aab103e1a973"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4890458550caaf15adb9aab103e1a973">&#9670;&#160;</a></span>input_size()</h2>
 
@@ -326,16 +389,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  205</span>  }</div>
 <div class="line"><span class="lineno">  206</span>  <span class="keywordflow">return</span> ti;</div>
 <div class="line"><span class="lineno">  207</span>}</div>
-<div class="ttc" id="anamespaceonert_1_1api_1_1python_html_a0975b728740c47252340213ce2c6b56c"><div class="ttname"><a href="namespaceonert_1_1api_1_1python.html#a0975b728740c47252340213ce2c6b56c">onert::api::python::getStringType</a></div><div class="ttdeci">const char * getStringType(NNFW_TYPE type)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8cc_source.html#l00082">nnfw_api_wrapper.cc:82</a></div></div>
 <div class="ttc" id="anamespacepackage_1_1common_1_1basesession_html_ab9c0c8c88a9c77697dc456df6403f5ee"><div class="ttname"><a href="namespacepackage_1_1common_1_1basesession.html#ab9c0c8c88a9c77697dc456df6403f5ee">package.common.basesession.tensorinfo</a></div><div class="ttdeci">tensorinfo()</div><div class="ttdef"><b>Definition</b> <a href="basesession_8py_source.html#l00180">basesession.py:180</a></div></div>
 <div class="ttc" id="annfw_8h_html_a47e2fc9e970a568c2cd147022e885119"><div class="ttname"><a href="nnfw_8h.html#a47e2fc9e970a568c2cd147022e885119">nnfw_input_tensorinfo</a></div><div class="ttdeci">NNFW_STATUS nnfw_input_tensorinfo(nnfw_session *session, uint32_t index, nnfw_tensorinfo *tensor_info)</div><div class="ttdoc">Get i-th input tensor info.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00134">nnfw_api.cc:134</a></div></div>
 <div class="ttc" id="aonert-micro_8h_html_ae4a6c20a576dbf5f53f34aa891089a25"><div class="ttname"><a href="onert-micro_8h.html#ae4a6c20a576dbf5f53f34aa891089a25">NNFW_MAX_RANK</a></div><div class="ttdeci">#define NNFW_MAX_RANK</div><div class="ttdoc">Maximum rank expressible with nnfw.</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00109">onert-micro.h:109</a></div></div>
-<div class="ttc" id="astructnnfw__tensorinfo_html"><div class="ttname"><a href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a></div><div class="ttdoc">tensor info describes the type and shape of tensors</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00123">onert-micro.h:124</a></div></div>
-<div class="ttc" id="astructnnfw__tensorinfo_html_a2ab71fcd11fac2161eb2e704b3cd9292"><div class="ttname"><a href="structnnfw__tensorinfo.html#a2ab71fcd11fac2161eb2e704b3cd9292">nnfw_tensorinfo::dtype</a></div><div class="ttdeci">NNFW_TYPE dtype</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00126">onert-micro.h:126</a></div></div>
-<div class="ttc" id="astructnnfw__tensorinfo_html_a87b52cdfd8e93c94e21e7cba235fedab"><div class="ttname"><a href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">nnfw_tensorinfo::rank</a></div><div class="ttdeci">int32_t rank</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00128">onert-micro.h:128</a></div></div>
-<div class="ttc" id="astructnnfw__tensorinfo_html_af5150bc6daf4934c2412fb1effad9b5a"><div class="ttname"><a href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">nnfw_tensorinfo::dims</a></div><div class="ttdeci">int32_t dims[NNFW_MAX_RANK]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00133">onert-micro.h:133</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00133">nnfw_tensorinfo::dims</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00057">onert::api::python::tensorinfo::dims</a>, <a class="el" href="onert-micro_8h_source.html#l00126">nnfw_tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00050">onert::api::python::tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00082">onert::api::python::getStringType()</a>, <a class="el" href="nnfw__api_8cc_source.html#l00134">nnfw_input_tensorinfo()</a>, <a class="el" href="onert-micro_8h_source.html#l00109">NNFW_MAX_RANK</a>, <a class="el" href="onert-micro_8h_source.html#l00128">nnfw_tensorinfo::rank</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00052">onert::api::python::tensorinfo::rank</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00133">nnfw_tensorinfo::dims</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00058">onert::api::python::tensorinfo::dims</a>, <a class="el" href="onert-micro_8h_source.html#l00126">nnfw_tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00051">onert::api::python::tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00082">onert::api::python::getStringType()</a>, <a class="el" href="nnfw__api_8cc_source.html#l00134">nnfw_input_tensorinfo()</a>, <a class="el" href="onert-micro_8h_source.html#l00109">NNFW_MAX_RANK</a>, <a class="el" href="onert-micro_8h_source.html#l00128">nnfw_tensorinfo::rank</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00053">onert::api::python::tensorinfo::rank</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__session__bindings_8cc_source.html#l00027">onert::api::python::bind_nnfw_session()</a>.</p>
 
@@ -402,7 +460,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  220</span>}</div>
 <div class="ttc" id="annfw_8h_html_a3e9e6779bb5ad5f1d5efa0549754db61"><div class="ttname"><a href="nnfw_8h.html#a3e9e6779bb5ad5f1d5efa0549754db61">nnfw_output_tensorinfo</a></div><div class="ttdeci">NNFW_STATUS nnfw_output_tensorinfo(nnfw_session *session, uint32_t index, nnfw_tensorinfo *tensor_info)</div><div class="ttdoc">Get i-th output tensor info.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00141">nnfw_api.cc:141</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00133">nnfw_tensorinfo::dims</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00057">onert::api::python::tensorinfo::dims</a>, <a class="el" href="onert-micro_8h_source.html#l00126">nnfw_tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00050">onert::api::python::tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00082">onert::api::python::getStringType()</a>, <a class="el" href="onert-micro_8h_source.html#l00109">NNFW_MAX_RANK</a>, <a class="el" href="nnfw__api_8cc_source.html#l00141">nnfw_output_tensorinfo()</a>, <a class="el" href="onert-micro_8h_source.html#l00128">nnfw_tensorinfo::rank</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00052">onert::api::python::tensorinfo::rank</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00133">nnfw_tensorinfo::dims</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00058">onert::api::python::tensorinfo::dims</a>, <a class="el" href="onert-micro_8h_source.html#l00126">nnfw_tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00051">onert::api::python::tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00082">onert::api::python::getStringType()</a>, <a class="el" href="onert-micro_8h_source.html#l00109">NNFW_MAX_RANK</a>, <a class="el" href="nnfw__api_8cc_source.html#l00141">nnfw_output_tensorinfo()</a>, <a class="el" href="onert-micro_8h_source.html#l00128">nnfw_tensorinfo::rank</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00053">onert::api::python::tensorinfo::rank</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__session__bindings_8cc_source.html#l00027">onert::api::python::bind_nnfw_session()</a>.</p>
 
@@ -521,16 +579,16 @@ template&lt;typename T &gt; </div>
 
 <p>process input array according to data type of numpy array sent by Python (int, float, uint8_t, bool, int64_t, int8_t, int16_t) </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00142">142</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  143</span>  {</div>
-<div class="line"><span class="lineno">  144</span>    <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> tensor_info;</div>
-<div class="line"><span class="lineno">  145</span>    <a class="code hl_function" href="nnfw_8h.html#a47e2fc9e970a568c2cd147022e885119">nnfw_input_tensorinfo</a>(this-&gt;session, index, &amp;tensor_info);</div>
-<div class="line"><span class="lineno">  146</span>    <a class="code hl_enumeration" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757">NNFW_TYPE</a> <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a2ab71fcd11fac2161eb2e704b3cd9292">dtype</a>;</div>
-<div class="line"><span class="lineno">  147</span>    uint32_t input_elements = <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a7e5f4e4ca00b56433a9dffe6a0a0757a">num_elems</a>(&amp;tensor_info);</div>
-<div class="line"><span class="lineno">  148</span>    <span class="keywordtype">size_t</span> length = <span class="keyword">sizeof</span>(T) * input_elements;</div>
-<div class="line"><span class="lineno">  149</span> </div>
-<div class="line"><span class="lineno">  150</span>    <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="nnfw_8h.html#a1043343aa0dc8fc8f1b09197a6b7249c">nnfw_set_input</a>(session, index, type, buffer.request().ptr, length));</div>
-<div class="line"><span class="lineno">  151</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00143">143</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  144</span>  {</div>
+<div class="line"><span class="lineno">  145</span>    <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> tensor_info;</div>
+<div class="line"><span class="lineno">  146</span>    <a class="code hl_function" href="nnfw_8h.html#a47e2fc9e970a568c2cd147022e885119">nnfw_input_tensorinfo</a>(this-&gt;session, index, &amp;tensor_info);</div>
+<div class="line"><span class="lineno">  147</span>    <a class="code hl_enumeration" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757">NNFW_TYPE</a> <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a2ab71fcd11fac2161eb2e704b3cd9292">dtype</a>;</div>
+<div class="line"><span class="lineno">  148</span>    uint32_t input_elements = <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a7e5f4e4ca00b56433a9dffe6a0a0757a">num_elems</a>(&amp;tensor_info);</div>
+<div class="line"><span class="lineno">  149</span>    <span class="keywordtype">size_t</span> length = <span class="keyword">sizeof</span>(T) * input_elements;</div>
+<div class="line"><span class="lineno">  150</span> </div>
+<div class="line"><span class="lineno">  151</span>    <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="nnfw_8h.html#a1043343aa0dc8fc8f1b09197a6b7249c">nnfw_set_input</a>(session, index, type, buffer.request().ptr, length));</div>
+<div class="line"><span class="lineno">  152</span>  }</div>
 <div class="ttc" id="anamespaceinfer_html_ab89ed5258ead024638290064e52469c8"><div class="ttname"><a href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">infer.type</a></div><div class="ttdeci">type</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00018">infer.py:18</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1api_1_1python_html_a7e5f4e4ca00b56433a9dffe6a0a0757a"><div class="ttname"><a href="namespaceonert_1_1api_1_1python.html#a7e5f4e4ca00b56433a9dffe6a0a0757a">onert::api::python::num_elems</a></div><div class="ttdeci">uint64_t num_elems(const nnfw_tensorinfo *tensor_info)</div><div class="ttdoc">Get the total number of elements in nnfw_tensorinfo-&gt;dims.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8cc_source.html#l00107">nnfw_api_wrapper.cc:107</a></div></div>
 <div class="ttc" id="annfw_8h_html_a1043343aa0dc8fc8f1b09197a6b7249c"><div class="ttname"><a href="nnfw_8h.html#a1043343aa0dc8fc8f1b09197a6b7249c">nnfw_set_input</a></div><div class="ttdeci">NNFW_STATUS nnfw_set_input(nnfw_session *session, uint32_t index, NNFW_TYPE type, const void *buffer, size_t length)</div><div class="ttdoc">Set input buffer.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00096">nnfw_api.cc:96</a></div></div>
@@ -621,7 +679,7 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="anamespaceonert_1_1api_1_1python_html_a3aa65b5a8c62b4ca02ff79c91d26a4cb"><div class="ttname"><a href="namespaceonert_1_1api_1_1python.html#a3aa65b5a8c62b4ca02ff79c91d26a4cb">onert::api::python::getType</a></div><div class="ttdeci">NNFW_TYPE getType(const char *type=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8cc_source.html#l00062">nnfw_api_wrapper.cc:62</a></div></div>
 <div class="ttc" id="annfw_8h_html_a6da6c1fa7528ff6f15dff4be7e857c89"><div class="ttname"><a href="nnfw_8h.html#a6da6c1fa7528ff6f15dff4be7e857c89">nnfw_set_input_tensorinfo</a></div><div class="ttdeci">NNFW_STATUS nnfw_set_input_tensorinfo(nnfw_session *session, uint32_t index, const nnfw_tensorinfo *tensor_info)</div><div class="ttdoc">Set input model's tensor info for resizing.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00160">nnfw_api.cc:160</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00133">nnfw_tensorinfo::dims</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00057">onert::api::python::tensorinfo::dims</a>, <a class="el" href="onert-micro_8h_source.html#l00126">nnfw_tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00050">onert::api::python::tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00062">onert::api::python::getType()</a>, <a class="el" href="onert-micro_8h_source.html#l00109">NNFW_MAX_RANK</a>, <a class="el" href="nnfw__api_8cc_source.html#l00160">nnfw_set_input_tensorinfo()</a>, <a class="el" href="onert-micro_8h_source.html#l00128">nnfw_tensorinfo::rank</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00052">onert::api::python::tensorinfo::rank</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00133">nnfw_tensorinfo::dims</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00058">onert::api::python::tensorinfo::dims</a>, <a class="el" href="onert-micro_8h_source.html#l00126">nnfw_tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00051">onert::api::python::tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00062">onert::api::python::getType()</a>, <a class="el" href="onert-micro_8h_source.html#l00109">NNFW_MAX_RANK</a>, <a class="el" href="nnfw__api_8cc_source.html#l00160">nnfw_set_input_tensorinfo()</a>, <a class="el" href="onert-micro_8h_source.html#l00128">nnfw_tensorinfo::rank</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00053">onert::api::python::tensorinfo::rank</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__session__bindings_8cc_source.html#l00027">onert::api::python::bind_nnfw_session()</a>.</p>
 
@@ -665,16 +723,16 @@ template&lt;typename T &gt; </div>
 
 <p>process output array according to data type of numpy array sent by Python (int, float, uint8_t, bool, int64_t, int8_t, int16_t) </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00156">156</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  157</span>  {</div>
-<div class="line"><span class="lineno">  158</span>    <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> tensor_info;</div>
-<div class="line"><span class="lineno">  159</span>    <a class="code hl_function" href="nnfw_8h.html#a3e9e6779bb5ad5f1d5efa0549754db61">nnfw_output_tensorinfo</a>(this-&gt;session, index, &amp;tensor_info);</div>
-<div class="line"><span class="lineno">  160</span>    <a class="code hl_enumeration" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757">NNFW_TYPE</a> <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a2ab71fcd11fac2161eb2e704b3cd9292">dtype</a>;</div>
-<div class="line"><span class="lineno">  161</span>    uint32_t output_elements = <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a7e5f4e4ca00b56433a9dffe6a0a0757a">num_elems</a>(&amp;tensor_info);</div>
-<div class="line"><span class="lineno">  162</span>    <span class="keywordtype">size_t</span> length = <span class="keyword">sizeof</span>(T) * output_elements;</div>
-<div class="line"><span class="lineno">  163</span> </div>
-<div class="line"><span class="lineno">  164</span>    <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="nnfw_8h.html#ac1af7b7a6c70fff801171904d9403dba">nnfw_set_output</a>(session, index, type, buffer.request().ptr, length));</div>
-<div class="line"><span class="lineno">  165</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00157">157</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  158</span>  {</div>
+<div class="line"><span class="lineno">  159</span>    <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> tensor_info;</div>
+<div class="line"><span class="lineno">  160</span>    <a class="code hl_function" href="nnfw_8h.html#a3e9e6779bb5ad5f1d5efa0549754db61">nnfw_output_tensorinfo</a>(this-&gt;session, index, &amp;tensor_info);</div>
+<div class="line"><span class="lineno">  161</span>    <a class="code hl_enumeration" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757">NNFW_TYPE</a> <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a2ab71fcd11fac2161eb2e704b3cd9292">dtype</a>;</div>
+<div class="line"><span class="lineno">  162</span>    uint32_t output_elements = <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a7e5f4e4ca00b56433a9dffe6a0a0757a">num_elems</a>(&amp;tensor_info);</div>
+<div class="line"><span class="lineno">  163</span>    <span class="keywordtype">size_t</span> length = <span class="keyword">sizeof</span>(T) * output_elements;</div>
+<div class="line"><span class="lineno">  164</span> </div>
+<div class="line"><span class="lineno">  165</span>    <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="nnfw_8h.html#ac1af7b7a6c70fff801171904d9403dba">nnfw_set_output</a>(session, index, type, buffer.request().ptr, length));</div>
+<div class="line"><span class="lineno">  166</span>  }</div>
 <div class="ttc" id="annfw_8h_html_ac1af7b7a6c70fff801171904d9403dba"><div class="ttname"><a href="nnfw_8h.html#ac1af7b7a6c70fff801171904d9403dba">nnfw_set_output</a></div><div class="ttdeci">NNFW_STATUS nnfw_set_output(nnfw_session *session, uint32_t index, NNFW_TYPE type, void *buffer, size_t length)</div><div class="ttdoc">Set output buffer.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00103">nnfw_api.cc:103</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00126">nnfw_tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, <a class="el" href="nnfw__api_8cc_source.html#l00141">nnfw_output_tensorinfo()</a>, <a class="el" href="nnfw__api_8cc_source.html#l00103">nnfw_set_output()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00107">onert::api::python::num_elems()</a>.</p>
@@ -720,6 +778,32 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="adea88e8630d49648c93535b2f545d8e7" name="adea88e8630d49648c93535b2f545d8e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adea88e8630d49648c93535b2f545d8e7">&#9670;&#160;</a></span>set_prepare_config()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::api::python::NNFW_SESSION::set_prepare_config </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581">NNFW_PREPARE_CONFIG</a>&#160;</td>
+          <td class="paramname"><em>config</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00257">257</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  258</span>{</div>
+<div class="line"><span class="lineno">  259</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="nnfw__experimental_8h.html#a1a4d2e7d154230ba3115b18cc556d9b2">nnfw_set_prepare_config</a>(session, config, <span class="stringliteral">&quot;true&quot;</span>));</div>
+<div class="line"><span class="lineno">  260</span>}</div>
+<div class="ttc" id="annfw__experimental_8h_html_a1a4d2e7d154230ba3115b18cc556d9b2"><div class="ttname"><a href="nnfw__experimental_8h.html#a1a4d2e7d154230ba3115b18cc556d9b2">nnfw_set_prepare_config</a></div><div class="ttdeci">NNFW_STATUS nnfw_set_prepare_config(nnfw_session *session, NNFW_PREPARE_CONFIG key, const char *value)</div><div class="ttdoc">Set prepare configuration.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00374">nnfw_api.cc:374</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, and <a class="el" href="nnfw__api_8cc_source.html#l00374">nnfw_set_prepare_config()</a>.</p>
+
+</div>
+</div>
 <a id="a7dd80e5f4ffa37af892b350cafb9b946" name="a7dd80e5f4ffa37af892b350cafb9b946"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7dd80e5f4ffa37af892b350cafb9b946">&#9670;&#160;</a></span>train()</h2>
 
@@ -736,15 +820,13 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00239">239</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  240</span>{</div>
-<div class="line"><span class="lineno">  241</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#a73e25145d65236e1dc891d19da0c4ae4">nnfw_train</a>(session, update_weights));</div>
-<div class="line"><span class="lineno">  242</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00279">279</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  280</span>{</div>
+<div class="line"><span class="lineno">  281</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#a73e25145d65236e1dc891d19da0c4ae4">nnfw_train</a>(session, update_weights));</div>
+<div class="line"><span class="lineno">  282</span>}</div>
 <div class="ttc" id="aonert-micro_8h_html_a73e25145d65236e1dc891d19da0c4ae4"><div class="ttname"><a href="onert-micro_8h.html#a73e25145d65236e1dc891d19da0c4ae4">nnfw_train</a></div><div class="ttdeci">NNFW_STATUS nnfw_train(nnfw_session *session, bool update_weights)</div><div class="ttdoc">Train the model.</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00399">onert-micro.cpp:399</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, and <a class="el" href="onert-micro_8cpp_source.html#l00399">nnfw_train()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nnfw__session__bindings_8cc_source.html#l00225">onert::api::python::bind_experimental_nnfw_session()</a>.</p>
 
 </div>
 </div>
@@ -764,16 +846,14 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00263">263</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  264</span>{</div>
-<div class="line"><span class="lineno">  265</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *c_str_path = path.cast&lt;std::string&gt;().c_str();</div>
-<div class="line"><span class="lineno">  266</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#a24e5273e85e46f0e1f3f15ed839451ad">nnfw_train_export_checkpoint</a>(session, c_str_path));</div>
-<div class="line"><span class="lineno">  267</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00303">303</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  304</span>{</div>
+<div class="line"><span class="lineno">  305</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *c_str_path = path.cast&lt;std::string&gt;().c_str();</div>
+<div class="line"><span class="lineno">  306</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#a24e5273e85e46f0e1f3f15ed839451ad">nnfw_train_export_checkpoint</a>(session, c_str_path));</div>
+<div class="line"><span class="lineno">  307</span>}</div>
 <div class="ttc" id="aonert-micro_8h_html_a24e5273e85e46f0e1f3f15ed839451ad"><div class="ttname"><a href="onert-micro_8h.html#a24e5273e85e46f0e1f3f15ed839451ad">nnfw_train_export_checkpoint</a></div><div class="ttdeci">NNFW_STATUS nnfw_train_export_checkpoint(nnfw_session *session, const char *path)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00409">onert-micro.cpp:409</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, and <a class="el" href="onert-micro_8cpp_source.html#l00409">nnfw_train_export_checkpoint()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nnfw__session__bindings_8cc_source.html#l00225">onert::api::python::bind_experimental_nnfw_session()</a>.</p>
 
 </div>
 </div>
@@ -793,16 +873,14 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00251">251</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  252</span>{</div>
-<div class="line"><span class="lineno">  253</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *c_str_path = path.cast&lt;std::string&gt;().c_str();</div>
-<div class="line"><span class="lineno">  254</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#af34150291cf5ff5d0d441ef73e623400">nnfw_train_export_circle</a>(session, c_str_path));</div>
-<div class="line"><span class="lineno">  255</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00291">291</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  292</span>{</div>
+<div class="line"><span class="lineno">  293</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *c_str_path = path.cast&lt;std::string&gt;().c_str();</div>
+<div class="line"><span class="lineno">  294</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#af34150291cf5ff5d0d441ef73e623400">nnfw_train_export_circle</a>(session, c_str_path));</div>
+<div class="line"><span class="lineno">  295</span>}</div>
 <div class="ttc" id="aonert-micro_8h_html_af34150291cf5ff5d0d441ef73e623400"><div class="ttname"><a href="onert-micro_8h.html#af34150291cf5ff5d0d441ef73e623400">nnfw_train_export_circle</a></div><div class="ttdeci">NNFW_STATUS nnfw_train_export_circle(nnfw_session *session, const char *path)</div><div class="ttdoc">Export current training model into circle model.</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00404">onert-micro.cpp:404</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, and <a class="el" href="onert-micro_8cpp_source.html#l00404">nnfw_train_export_circle()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nnfw__session__bindings_8cc_source.html#l00225">onert::api::python::bind_experimental_nnfw_session()</a>.</p>
 
 </div>
 </div>
@@ -822,17 +900,15 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00244">244</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  245</span>{</div>
-<div class="line"><span class="lineno">  246</span>  <span class="keywordtype">float</span> loss = 0.f;</div>
-<div class="line"><span class="lineno">  247</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#a1cb00110d13d3a316db8e01bc7974243">nnfw_train_get_loss</a>(session, index, &amp;loss));</div>
-<div class="line"><span class="lineno">  248</span>  <span class="keywordflow">return</span> loss;</div>
-<div class="line"><span class="lineno">  249</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00284">284</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  285</span>{</div>
+<div class="line"><span class="lineno">  286</span>  <span class="keywordtype">float</span> loss = 0.f;</div>
+<div class="line"><span class="lineno">  287</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#a1cb00110d13d3a316db8e01bc7974243">nnfw_train_get_loss</a>(session, index, &amp;loss));</div>
+<div class="line"><span class="lineno">  288</span>  <span class="keywordflow">return</span> loss;</div>
+<div class="line"><span class="lineno">  289</span>}</div>
 <div class="ttc" id="aonert-micro_8h_html_a1cb00110d13d3a316db8e01bc7974243"><div class="ttname"><a href="onert-micro_8h.html#a1cb00110d13d3a316db8e01bc7974243">nnfw_train_get_loss</a></div><div class="ttdeci">NNFW_STATUS nnfw_train_get_loss(nnfw_session *session, uint32_t index, float *loss)</div><div class="ttdoc">Get loss value for expected output.</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00433">onert-micro.cpp:433</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, and <a class="el" href="onert-micro_8cpp_source.html#l00433">nnfw_train_get_loss()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nnfw__session__bindings_8cc_source.html#l00225">onert::api::python::bind_experimental_nnfw_session()</a>.</p>
 
 </div>
 </div>
@@ -851,18 +927,16 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">225</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  226</span>{</div>
-<div class="line"><span class="lineno">  227</span>  <a class="code hl_struct" href="structnnfw__train__info.html">nnfw_train_info</a> train_info = <a class="code hl_struct" href="structnnfw__train__info.html">nnfw_train_info</a>();</div>
-<div class="line"><span class="lineno">  228</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="nnfw__experimental_8h.html#a802209c5d3a4261fd308dd34f5283b06">nnfw_train_get_traininfo</a>(session, &amp;train_info));</div>
-<div class="line"><span class="lineno">  229</span>  <span class="keywordflow">return</span> train_info;</div>
-<div class="line"><span class="lineno">  230</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00265">265</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  266</span>{</div>
+<div class="line"><span class="lineno">  267</span>  <a class="code hl_struct" href="structnnfw__train__info.html">nnfw_train_info</a> train_info = <a class="code hl_struct" href="structnnfw__train__info.html">nnfw_train_info</a>();</div>
+<div class="line"><span class="lineno">  268</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="nnfw__experimental_8h.html#a802209c5d3a4261fd308dd34f5283b06">nnfw_train_get_traininfo</a>(session, &amp;train_info));</div>
+<div class="line"><span class="lineno">  269</span>  <span class="keywordflow">return</span> train_info;</div>
+<div class="line"><span class="lineno">  270</span>}</div>
 <div class="ttc" id="annfw__experimental_8h_html_a802209c5d3a4261fd308dd34f5283b06"><div class="ttname"><a href="nnfw__experimental_8h.html#a802209c5d3a4261fd308dd34f5283b06">nnfw_train_get_traininfo</a></div><div class="ttdeci">NNFW_STATUS nnfw_train_get_traininfo(nnfw_session *session, nnfw_train_info *info)</div><div class="ttdoc">Get training information.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00238">nnfw_api.cc:238</a></div></div>
 <div class="ttc" id="astructnnfw__train__info_html"><div class="ttname"><a href="structnnfw__train__info.html">nnfw_train_info</a></div><div class="ttdoc">Training information to prepare training.</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00186">onert-micro.h:187</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, and <a class="el" href="nnfw__api_8cc_source.html#l00238">nnfw_train_get_traininfo()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nnfw__session__bindings_8cc_source.html#l00225">onert::api::python::bind_experimental_nnfw_session()</a>.</p>
 
 </div>
 </div>
@@ -882,16 +956,14 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00257">257</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  258</span>{</div>
-<div class="line"><span class="lineno">  259</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *c_str_path = path.cast&lt;std::string&gt;().c_str();</div>
-<div class="line"><span class="lineno">  260</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#ac4532bafa5aef43492fac0ae927f3ec6">nnfw_train_import_checkpoint</a>(session, c_str_path));</div>
-<div class="line"><span class="lineno">  261</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00297">297</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  298</span>{</div>
+<div class="line"><span class="lineno">  299</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *c_str_path = path.cast&lt;std::string&gt;().c_str();</div>
+<div class="line"><span class="lineno">  300</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#ac4532bafa5aef43492fac0ae927f3ec6">nnfw_train_import_checkpoint</a>(session, c_str_path));</div>
+<div class="line"><span class="lineno">  301</span>}</div>
 <div class="ttc" id="aonert-micro_8h_html_ac4532bafa5aef43492fac0ae927f3ec6"><div class="ttname"><a href="onert-micro_8h.html#ac4532bafa5aef43492fac0ae927f3ec6">nnfw_train_import_checkpoint</a></div><div class="ttdeci">NNFW_STATUS nnfw_train_import_checkpoint(nnfw_session *session, const char *path)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00414">onert-micro.cpp:414</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, and <a class="el" href="onert-micro_8cpp_source.html#l00414">nnfw_train_import_checkpoint()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nnfw__session__bindings_8cc_source.html#l00225">onert::api::python::bind_experimental_nnfw_session()</a>.</p>
 
 </div>
 </div>
@@ -910,13 +982,11 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00237">237</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  237</span>{ <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#a711e8db4d5ff39cd1373652230aa6b16">nnfw_train_prepare</a>(session)); }</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00277">277</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  277</span>{ <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#a711e8db4d5ff39cd1373652230aa6b16">nnfw_train_prepare</a>(session)); }</div>
 <div class="ttc" id="aonert-micro_8h_html_a711e8db4d5ff39cd1373652230aa6b16"><div class="ttname"><a href="onert-micro_8h.html#a711e8db4d5ff39cd1373652230aa6b16">nnfw_train_prepare</a></div><div class="ttdeci">NNFW_STATUS nnfw_train_prepare(nnfw_session *session)</div><div class="ttdoc">Prepare session to be ready for training.</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00397">onert-micro.cpp:397</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, and <a class="el" href="onert-micro_8cpp_source.html#l00397">nnfw_train_prepare()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nnfw__session__bindings_8cc_source.html#l00225">onert::api::python::bind_experimental_nnfw_session()</a>.</p>
 
 </div>
 </div>
@@ -956,19 +1026,19 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00193">193</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  194</span>  {</div>
-<div class="line"><span class="lineno">  195</span>    <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> tensor_info;</div>
-<div class="line"><span class="lineno">  196</span>    <a class="code hl_function" href="nnfw_8h.html#a3e9e6779bb5ad5f1d5efa0549754db61">nnfw_output_tensorinfo</a>(this-&gt;session, index, &amp;tensor_info);</div>
-<div class="line"><span class="lineno">  197</span> </div>
-<div class="line"><span class="lineno">  198</span>    py::buffer_info buf_info = buffer.request();</div>
-<div class="line"><span class="lineno">  199</span>    <span class="keyword">const</span> <span class="keyword">auto</span> buf_shape = buf_info.shape;</div>
-<div class="line"><span class="lineno">  200</span>    assert(tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a> == <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(buf_shape.size()) &amp;&amp; buf_shape.size() &gt; 0);</div>
-<div class="line"><span class="lineno">  201</span>    tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">dims</a>[0] = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(buf_shape.at(0));</div>
-<div class="line"><span class="lineno">  202</span> </div>
-<div class="line"><span class="lineno">  203</span>    <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(</div>
-<div class="line"><span class="lineno">  204</span>      <a class="code hl_function" href="onert-micro_8h.html#aca4cac4c6f9f0dc5aa1b006a8754d70e">nnfw_train_set_expected</a>(this-&gt;session, index, buffer.request().ptr, &amp;tensor_info));</div>
-<div class="line"><span class="lineno">  205</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00204">204</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  205</span>  {</div>
+<div class="line"><span class="lineno">  206</span>    <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> tensor_info;</div>
+<div class="line"><span class="lineno">  207</span>    <a class="code hl_function" href="nnfw_8h.html#a3e9e6779bb5ad5f1d5efa0549754db61">nnfw_output_tensorinfo</a>(this-&gt;session, index, &amp;tensor_info);</div>
+<div class="line"><span class="lineno">  208</span> </div>
+<div class="line"><span class="lineno">  209</span>    py::buffer_info buf_info = buffer.request();</div>
+<div class="line"><span class="lineno">  210</span>    <span class="keyword">const</span> <span class="keyword">auto</span> buf_shape = buf_info.shape;</div>
+<div class="line"><span class="lineno">  211</span>    assert(tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a> == <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(buf_shape.size()) &amp;&amp; buf_shape.size() &gt; 0);</div>
+<div class="line"><span class="lineno">  212</span>    tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">dims</a>[0] = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(buf_shape.at(0));</div>
+<div class="line"><span class="lineno">  213</span> </div>
+<div class="line"><span class="lineno">  214</span>    <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(</div>
+<div class="line"><span class="lineno">  215</span>      <a class="code hl_function" href="onert-micro_8h.html#aca4cac4c6f9f0dc5aa1b006a8754d70e">nnfw_train_set_expected</a>(this-&gt;session, index, buffer.request().ptr, &amp;tensor_info));</div>
+<div class="line"><span class="lineno">  216</span>  }</div>
 <div class="ttc" id="aonert-micro_8h_html_aca4cac4c6f9f0dc5aa1b006a8754d70e"><div class="ttname"><a href="onert-micro_8h.html#aca4cac4c6f9f0dc5aa1b006a8754d70e">nnfw_train_set_expected</a></div><div class="ttdeci">NNFW_STATUS nnfw_train_set_expected(nnfw_session *session, uint32_t index, void *expected, const nnfw_tensorinfo *expected_info)</div><div class="ttdoc">Set training expected output.</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00426">onert-micro.cpp:426</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00133">nnfw_tensorinfo::dims</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, <a class="el" href="nnfw__api_8cc_source.html#l00141">nnfw_output_tensorinfo()</a>, <a class="el" href="onert-micro_8cpp_source.html#l00426">nnfw_train_set_expected()</a>, and <a class="el" href="onert-micro_8h_source.html#l00128">nnfw_tensorinfo::rank</a>.</p>
@@ -1011,18 +1081,18 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00181">181</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  182</span>  {</div>
-<div class="line"><span class="lineno">  183</span>    <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> tensor_info;</div>
-<div class="line"><span class="lineno">  184</span>    <a class="code hl_function" href="nnfw_8h.html#a47e2fc9e970a568c2cd147022e885119">nnfw_input_tensorinfo</a>(this-&gt;session, index, &amp;tensor_info);</div>
-<div class="line"><span class="lineno">  185</span> </div>
-<div class="line"><span class="lineno">  186</span>    py::buffer_info buf_info = buffer.request();</div>
-<div class="line"><span class="lineno">  187</span>    <span class="keyword">const</span> <span class="keyword">auto</span> buf_shape = buf_info.shape;</div>
-<div class="line"><span class="lineno">  188</span>    assert(tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a> == <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(buf_shape.size()) &amp;&amp; buf_shape.size() &gt; 0);</div>
-<div class="line"><span class="lineno">  189</span>    tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">dims</a>[0] = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(buf_shape.at(0));</div>
-<div class="line"><span class="lineno">  190</span> </div>
-<div class="line"><span class="lineno">  191</span>    <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#a865bb2c7843c3f74b3fda145b1c6f2fc">nnfw_train_set_input</a>(this-&gt;session, index, buffer.request().ptr, &amp;tensor_info));</div>
-<div class="line"><span class="lineno">  192</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00192">192</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  193</span>  {</div>
+<div class="line"><span class="lineno">  194</span>    <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> tensor_info;</div>
+<div class="line"><span class="lineno">  195</span>    <a class="code hl_function" href="nnfw_8h.html#a47e2fc9e970a568c2cd147022e885119">nnfw_input_tensorinfo</a>(this-&gt;session, index, &amp;tensor_info);</div>
+<div class="line"><span class="lineno">  196</span> </div>
+<div class="line"><span class="lineno">  197</span>    py::buffer_info buf_info = buffer.request();</div>
+<div class="line"><span class="lineno">  198</span>    <span class="keyword">const</span> <span class="keyword">auto</span> buf_shape = buf_info.shape;</div>
+<div class="line"><span class="lineno">  199</span>    assert(tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a> == <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(buf_shape.size()) &amp;&amp; buf_shape.size() &gt; 0);</div>
+<div class="line"><span class="lineno">  200</span>    tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">dims</a>[0] = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(buf_shape.at(0));</div>
+<div class="line"><span class="lineno">  201</span> </div>
+<div class="line"><span class="lineno">  202</span>    <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#a865bb2c7843c3f74b3fda145b1c6f2fc">nnfw_train_set_input</a>(this-&gt;session, index, buffer.request().ptr, &amp;tensor_info));</div>
+<div class="line"><span class="lineno">  203</span>  }</div>
 <div class="ttc" id="aonert-micro_8h_html_a865bb2c7843c3f74b3fda145b1c6f2fc"><div class="ttname"><a href="onert-micro_8h.html#a865bb2c7843c3f74b3fda145b1c6f2fc">nnfw_train_set_input</a></div><div class="ttdeci">NNFW_STATUS nnfw_train_set_input(nnfw_session *session, uint32_t index, void *input, const nnfw_tensorinfo *input_info)</div><div class="ttdoc">Set training input.</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00419">onert-micro.cpp:419</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00133">nnfw_tensorinfo::dims</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, <a class="el" href="nnfw__api_8cc_source.html#l00134">nnfw_input_tensorinfo()</a>, <a class="el" href="onert-micro_8cpp_source.html#l00419">nnfw_train_set_input()</a>, and <a class="el" href="onert-micro_8h_source.html#l00128">nnfw_tensorinfo::rank</a>.</p>
@@ -1065,16 +1135,16 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00206">206</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  207</span>  {</div>
-<div class="line"><span class="lineno">  208</span>    <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> tensor_info;</div>
-<div class="line"><span class="lineno">  209</span>    <a class="code hl_function" href="nnfw_8h.html#a3e9e6779bb5ad5f1d5efa0549754db61">nnfw_output_tensorinfo</a>(this-&gt;session, index, &amp;tensor_info);</div>
-<div class="line"><span class="lineno">  210</span>    <a class="code hl_enumeration" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757">NNFW_TYPE</a> <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a2ab71fcd11fac2161eb2e704b3cd9292">dtype</a>;</div>
-<div class="line"><span class="lineno">  211</span>    uint32_t output_elements = <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a7e5f4e4ca00b56433a9dffe6a0a0757a">num_elems</a>(&amp;tensor_info);</div>
-<div class="line"><span class="lineno">  212</span>    <span class="keywordtype">size_t</span> length = <span class="keyword">sizeof</span>(T) * output_elements;</div>
-<div class="line"><span class="lineno">  213</span> </div>
-<div class="line"><span class="lineno">  214</span>    <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#abfbe814504a1985f6861c1da19d77c77">nnfw_train_set_output</a>(session, index, type, buffer.request().ptr, length));</div>
-<div class="line"><span class="lineno">  215</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8h_source.html#l00217">217</a> of file <a class="el" href="nnfw__api__wrapper_8h_source.html">nnfw_api_wrapper.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  218</span>  {</div>
+<div class="line"><span class="lineno">  219</span>    <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> tensor_info;</div>
+<div class="line"><span class="lineno">  220</span>    <a class="code hl_function" href="nnfw_8h.html#a3e9e6779bb5ad5f1d5efa0549754db61">nnfw_output_tensorinfo</a>(this-&gt;session, index, &amp;tensor_info);</div>
+<div class="line"><span class="lineno">  221</span>    <a class="code hl_enumeration" href="onert-micro_8h.html#ae2dabfc116ea115837d140e7db45c757">NNFW_TYPE</a> <a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a> = tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a2ab71fcd11fac2161eb2e704b3cd9292">dtype</a>;</div>
+<div class="line"><span class="lineno">  222</span>    uint32_t output_elements = <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a7e5f4e4ca00b56433a9dffe6a0a0757a">num_elems</a>(&amp;tensor_info);</div>
+<div class="line"><span class="lineno">  223</span>    <span class="keywordtype">size_t</span> length = <span class="keyword">sizeof</span>(T) * output_elements;</div>
+<div class="line"><span class="lineno">  224</span> </div>
+<div class="line"><span class="lineno">  225</span>    <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#abfbe814504a1985f6861c1da19d77c77">nnfw_train_set_output</a>(session, index, type, buffer.request().ptr, length));</div>
+<div class="line"><span class="lineno">  226</span>  }</div>
 <div class="ttc" id="aonert-micro_8h_html_abfbe814504a1985f6861c1da19d77c77"><div class="ttname"><a href="onert-micro_8h.html#abfbe814504a1985f6861c1da19d77c77">nnfw_train_set_output</a></div><div class="ttdeci">NNFW_STATUS nnfw_train_set_output(nnfw_session *session, uint32_t index, NNFW_TYPE type, void *buffer, size_t length)</div><div class="ttdoc">Set training output buffer.</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00445">onert-micro.cpp:445</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00126">nnfw_tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, <a class="el" href="nnfw__api_8cc_source.html#l00141">nnfw_output_tensorinfo()</a>, <a class="el" href="onert-micro_8cpp_source.html#l00445">nnfw_train_set_output()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00107">onert::api::python::num_elems()</a>.</p>
@@ -1097,16 +1167,14 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00232">232</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  233</span>{</div>
-<div class="line"><span class="lineno">  234</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#a7d93d951c6e59706ad69e37fc067562d">nnfw_train_set_traininfo</a>(session, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>));</div>
-<div class="line"><span class="lineno">  235</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00272">272</a> of file <a class="el" href="nnfw__api__wrapper_8cc_source.html">nnfw_api_wrapper.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  273</span>{</div>
+<div class="line"><span class="lineno">  274</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="onert-micro_8h.html#a7d93d951c6e59706ad69e37fc067562d">nnfw_train_set_traininfo</a>(session, <a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>));</div>
+<div class="line"><span class="lineno">  275</span>}</div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
 <div class="ttc" id="aonert-micro_8h_html_a7d93d951c6e59706ad69e37fc067562d"><div class="ttname"><a href="onert-micro_8h.html#a7d93d951c6e59706ad69e37fc067562d">nnfw_train_set_traininfo</a></div><div class="ttdeci">NNFW_STATUS nnfw_train_set_traininfo(nnfw_session *session, const nnfw_train_info *info)</div><div class="ttdoc">Set training information.</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8cpp_source.html#l00439">onert-micro.cpp:439</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00027">onert::api::python::ensure_status()</a>, <a class="el" href="library__info_8cc_source.html#l00017">info</a>, and <a class="el" href="onert-micro_8cpp_source.html#l00439">nnfw_train_set_traininfo()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nnfw__session__bindings_8cc_source.html#l00225">onert::api::python::bind_experimental_nnfw_session()</a>.</p>
 
 </div>
 </div>

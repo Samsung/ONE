@@ -6,6 +6,7 @@ var structnnfw__session =
     [ "codegen", "structnnfw__session.html#a90dafdf20e9ad18b1a2f14718a32ba36", null ],
     [ "delete_odc_minmax_file", "structnnfw__session.html#a1b256e5f81b2da015cd7745c0d4740ae", null ],
     [ "get_config", "structnnfw__session.html#a876d94a6d7933b3a5a74aaa5aaeacccb", null ],
+    [ "get_output", "structnnfw__session.html#aa30e9482430ab2feb38cf34c2e9fedc1", null ],
     [ "input_size", "structnnfw__session.html#a6e91db5e146ce5c13847a6c527adabbd", null ],
     [ "input_tensorindex", "structnnfw__session.html#a2ffbda05c799f860a96e47682804b1f3", null ],
     [ "input_tensorinfo", "structnnfw__session.html#a223ef63919e6822657259e34b34ff0bd", null ],

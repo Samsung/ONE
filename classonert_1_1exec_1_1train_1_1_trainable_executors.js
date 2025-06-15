@@ -14,6 +14,7 @@ var classonert_1_1exec_1_1train_1_1_trainable_executors =
     [ "iterateTrainableTensors", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#ab3dbdecb124aaa68533e6043dc134e9c", null ],
     [ "operator=", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#aef14342fc1876873d52394dbbc3bf169", null ],
     [ "operator=", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a1f55128046859e3f3548d2192c6892ab", null ],
+    [ "outputBuffer", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#ae91b1e7eeff5076353f3d795bab60dd2", null ],
     [ "outputInfo", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a2c1e93db707599f40373b46df24fabdc", null ],
     [ "outputSize", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a703e18868a43e28688a45dd168861e07", null ],
     [ "train", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a32a6af9024c438b8dcb056b61cf7e5c3", null ]

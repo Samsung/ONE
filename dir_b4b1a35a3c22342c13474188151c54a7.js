@@ -10,6 +10,6 @@ var dir_b4b1a35a3c22342c13474188151c54a7 =
     [ "Pad.h", "runtime_2compute_2cker_2include_2cker_2train_2operation_2_pad_8h.html", "runtime_2compute_2cker_2include_2cker_2train_2operation_2_pad_8h" ],
     [ "ReduceMean.h", "runtime_2compute_2cker_2include_2cker_2train_2operation_2_reduce_mean_8h.html", "runtime_2compute_2cker_2include_2cker_2train_2operation_2_reduce_mean_8h" ],
     [ "ReLU.h", "runtime_2compute_2cker_2include_2cker_2train_2operation_2_relu_8h.html", "runtime_2compute_2cker_2include_2cker_2train_2operation_2_relu_8h" ],
-    [ "ReLU6.h", "runtime_2compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h.html", "runtime_2compute_2cker_2include_2cker_2train_2operation_2_re_l_u6_8h" ],
+    [ "ReLU6.h", "runtime_2compute_2cker_2include_2cker_2train_2operation_2_relu6_8h.html", "runtime_2compute_2cker_2include_2cker_2train_2operation_2_relu6_8h" ],
     [ "SoftMax.h", "runtime_2compute_2cker_2include_2cker_2train_2operation_2_softmax_8h.html", "runtime_2compute_2cker_2include_2cker_2train_2operation_2_softmax_8h" ]
 ];

@@ -101,17 +101,21 @@ Collaboration diagram for onert::compiler::ExecutorFactoryArgs:</div>
 <div class="dyncontent">
 <div class="center"><img src="structonert_1_1compiler_1_1_executor_factory_args__coll__graph.png" border="0" usemap="#aonert_1_1compiler_1_1_executor_factory_args_coll__map" alt="Collaboration graph"/></div>
 <map name="aonert_1_1compiler_1_1_executor_factory_args_coll__map" id="aonert_1_1compiler_1_1_executor_factory_args_coll__map">
-<area shape="rect" title=" " alt="" coords="738,55,899,96"/>
+<area shape="rect" title=" " alt="" coords="776,83,937,124"/>
 <area shape="rect" href="classonert_1_1util_1_1_tracing_ctx.html" title="Class to maintain information about profiling per session." alt="" coords="452,5,594,31"/>
-<area shape="poly" title=" " alt="" coords="608,32,738,57,737,63,607,37"/>
+<area shape="poly" title=" " alt="" coords="610,31,753,64,803,80,801,85,751,69,608,36"/>
 <area shape="rect" href="structonert_1_1compiler_1_1_compiler_options.html" title=" " alt="" coords="442,55,604,96"/>
-<area shape="poly" title=" " alt="" coords="620,73,738,73,738,78,620,78"/>
+<area shape="poly" title=" " alt="" coords="620,81,776,94,776,99,619,86"/>
 <area shape="rect" href="structonert_1_1compiler_1_1_manual_scheduler_options.html" title=" " alt="" coords="5,55,217,96"/>
 <area shape="poly" title=" " alt="" coords="232,73,441,73,441,78,232,78"/>
 <area shape="rect" href="classonert_1_1util_1_1_index.html" title=" " alt="" coords="431,121,615,161"/>
-<area shape="poly" title=" " alt="" coords="630,115,737,91,738,96,631,120"/>
+<area shape="poly" title=" " alt="" coords="630,127,752,113,775,110,776,116,752,118,631,132"/>
 <area shape="rect" href="classonert_1_1util_1_1_index.html" title="A wrapper class for unsigned integral Index NOTE : Max value of the underlying type is used as the in..." alt="" coords="49,121,173,161"/>
 <area shape="poly" title=" " alt="" coords="189,138,430,138,430,144,189,144"/>
+<area shape="rect" href="classonert_1_1util_1_1_set.html" title=" " alt="" coords="453,186,593,227"/>
+<area shape="poly" title=" " alt="" coords="607,186,678,169,751,147,812,122,814,127,753,152,679,174,608,191"/>
+<area shape="rect" href="classonert_1_1util_1_1_set.html" title="Class for set of custom element &amp;." alt="" coords="27,193,195,219"/>
+<area shape="poly" title=" " alt="" coords="211,204,453,204,453,209,211,209"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -125,6 +129,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:aaec55b55509b14f375c8066b7b15e6a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a123a8adb27bdc29cffbc6d6c2bf80a74" id="r_a123a8adb27bdc29cffbc6d6c2bf80a74"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classonert_1_1backend_1_1custom_1_1_i_kernel_builder.html">backend::custom::IKernelBuilder</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1compiler_1_1_executor_factory_args.html#a123a8adb27bdc29cffbc6d6c2bf80a74">custom_kernel_builder</a></td></tr>
 <tr class="separator:a123a8adb27bdc29cffbc6d6c2bf80a74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93c0856b62d8fda73d7f1c603d9f801e" id="r_a93c0856b62d8fda73d7f1c603d9f801e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1util_1_1_set.html">util::Set</a>&lt; <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1compiler_1_1_executor_factory_args.html#a93c0856b62d8fda73d7f1c603d9f801e">internal_io_indexes</a></td></tr>
+<tr class="separator:a93c0856b62d8fda73d7f1c603d9f801e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -143,6 +149,22 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_executor_factory_8h_source.html#l00041">41</a> of file <a class="el" href="_executor_factory_8h_source.html">ExecutorFactory.h</a>.</p>
+
+</div>
+</div>
+<a id="a93c0856b62d8fda73d7f1c603d9f801e" name="a93c0856b62d8fda73d7f1c603d9f801e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93c0856b62d8fda73d7f1c603d9f801e">&#9670;&#160;</a></span>internal_io_indexes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classonert_1_1util_1_1_set.html">util::Set</a>&lt;<a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>&gt; onert::compiler::ExecutorFactoryArgs::internal_io_indexes</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_executor_factory_8h_source.html#l00042">42</a> of file <a class="el" href="_executor_factory_8h_source.html">ExecutorFactory.h</a>.</p>
 
 </div>
 </div>

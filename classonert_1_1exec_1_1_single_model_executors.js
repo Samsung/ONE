@@ -9,6 +9,7 @@ var classonert_1_1exec_1_1_single_model_executors =
     [ "execute", "classonert_1_1exec_1_1_single_model_executors.html#a3936fd502365169f16122f9c27ed57a6", null ],
     [ "inputInfo", "classonert_1_1exec_1_1_single_model_executors.html#a5c9f1224fbde840b5fcf429062def43b", null ],
     [ "inputSize", "classonert_1_1exec_1_1_single_model_executors.html#ad55997040a73a0576f8bfb1b96499b93", null ],
+    [ "outputBuffer", "classonert_1_1exec_1_1_single_model_executors.html#ada50e901e9c3d1b93227a9182e7dec0d", null ],
     [ "outputInfo", "classonert_1_1exec_1_1_single_model_executors.html#a41ef0a1684c1e8214ae57cb7ddb52333", null ],
     [ "outputSize", "classonert_1_1exec_1_1_single_model_executors.html#ad75da312346b921b97fa49b8446b9f60", null ]
 ];

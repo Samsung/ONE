@@ -135,6 +135,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a13e17083ea3b634f693d634803e0b270" id="r_a13e17083ea3b634f693d634803e0b270"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#a13e17083ea3b634f693d634803e0b270">outputLayout</a> (uint32_t index) const =0</td></tr>
 <tr class="memdesc:a13e17083ea3b634f693d634803e0b270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get output layout at index.  <br /></td></tr>
 <tr class="separator:a13e17083ea3b634f693d634803e0b270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88fbb39226b447e4e23acc07a71fc326" id="r_a88fbb39226b447e4e23acc07a71fc326"><td class="memItemLeft" align="right" valign="top">virtual const uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#a88fbb39226b447e4e23acc07a71fc326">outputBuffer</a> (uint32_t index) const =0</td></tr>
+<tr class="memdesc:a88fbb39226b447e4e23acc07a71fc326"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get output buffer at index.  <br /></td></tr>
+<tr class="separator:a88fbb39226b447e4e23acc07a71fc326"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af912a0ab9cb71c557f167442ebd5c7d4" id="r_af912a0ab9cb71c557f167442ebd5c7d4"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="structonert_1_1exec_1_1_execution_options.html">ExecutionOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_executor.html#af912a0ab9cb71c557f167442ebd5c7d4">currentOptions</a> () const =0</td></tr>
 <tr class="memdesc:af912a0ab9cb71c557f167442ebd5c7d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return current execution configuration.  <br /></td></tr>
 <tr class="separator:af912a0ab9cb71c557f167442ebd5c7d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -284,7 +287,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#a0b7d427c64d062cc29bc2d8a1bf13798">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a6ee6558102c7cf0979b9bec0b3f1f437">onert::exec::train::TrainableExecutor</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00052">onert::exec::SingleModelExecutors::execute()</a>, and <a class="el" href="_if_layer_8cc_source.html#l00035">onert::backend::builtin::kernel::IfLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00057">onert::exec::SingleModelExecutors::execute()</a>, and <a class="el" href="_if_layer_8cc_source.html#l00035">onert::backend::builtin::kernel::IfLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -355,7 +358,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#aaa5c53202691bb38603952fa8e4628cf">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a17313f5f16b979efc46ed53311a420f5">onert::exec::train::TrainableExecutor</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00052">onert::exec::SingleModelExecutors::execute()</a>, and <a class="el" href="_single_model_executors_8cc_source.html#l00042">onert::exec::SingleModelExecutors::inputInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00057">onert::exec::SingleModelExecutors::execute()</a>, and <a class="el" href="_single_model_executors_8cc_source.html#l00042">onert::exec::SingleModelExecutors::inputInfo()</a>.</p>
 
 </div>
 </div>
@@ -424,7 +427,46 @@ Public Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#a311aa7fd5a14f586ce6c1c54005be9f0">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a63fd23446555b9447f7b3e46ebed58d2">onert::exec::train::TrainableExecutor</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_multi_model_executors_8cc_source.html#l00353">onert::exec::MultiModelExecutors::execute()</a>, and <a class="el" href="_single_model_executors_8cc_source.html#l00038">onert::exec::SingleModelExecutors::inputSize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_multi_model_executors_8cc_source.html#l00360">onert::exec::MultiModelExecutors::execute()</a>, and <a class="el" href="_single_model_executors_8cc_source.html#l00038">onert::exec::SingleModelExecutors::inputSize()</a>.</p>
+
+</div>
+</div>
+<a id="a88fbb39226b447e4e23acc07a71fc326" name="a88fbb39226b447e4e23acc07a71fc326"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88fbb39226b447e4e23acc07a71fc326">&#9670;&#160;</a></span>outputBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const uint8_t * onert::exec::IExecutor::outputBuffer </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get output buffer at index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Index of output </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Output buffer </dd></dl>
+
+<p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#a3865a3bc3e66817ac0f10748751b031d">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#a68e50ffd25a57f14de6675eb3ef8d7cd">onert::exec::train::TrainableExecutor</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00052">onert::exec::SingleModelExecutors::outputBuffer()</a>.</p>
 
 </div>
 </div>
@@ -463,7 +505,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classonert_1_1exec_1_1_executor_base.html#a00d99687cfa41c95258cb1970710da9b">onert::exec::ExecutorBase</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executor.html#afd804936ac6652bb5942bef3caa26252">onert::exec::train::TrainableExecutor</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00052">onert::exec::SingleModelExecutors::execute()</a>, and <a class="el" href="_single_model_executors_8cc_source.html#l00047">onert::exec::SingleModelExecutors::outputInfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00057">onert::exec::SingleModelExecutors::execute()</a>, and <a class="el" href="_single_model_executors_8cc_source.html#l00047">onert::exec::SingleModelExecutors::outputInfo()</a>.</p>
 
 </div>
 </div>

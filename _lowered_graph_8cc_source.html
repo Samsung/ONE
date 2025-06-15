@@ -191,10 +191,10 @@ $(document).ready(function(){initNavTree('_lowered_graph_8cc_source.html',''); i
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    .append(std::make_unique&lt;pass::PermutationInsertionPass&gt;(*<span class="keyword">this</span>))</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    .run();</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  dumpLowerInfo();</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="comment">// Optimization passes (optional)</span></div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  pass::PassRunner{}.append(std::make_unique&lt;pass::PermutationEliminationPass&gt;(*<span class="keyword">this</span>)).run();</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="comment">// Optimization passes (optional)</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  pass::PassRunner{}.append(std::make_unique&lt;pass::PermutationEliminationPass&gt;(*<span class="keyword">this</span>)).run();</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  dumpLowerInfo();</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(LoweredGraph) &lt;&lt; <span class="stringliteral">&quot;Dump after all the passes&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;operand : _graph.getInputs())</div>

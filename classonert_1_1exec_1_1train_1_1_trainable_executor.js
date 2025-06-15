@@ -13,6 +13,7 @@ var classonert_1_1exec_1_1train_1_1_trainable_executor =
     [ "inputLayout", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a8dc78133db4d042b06cb5488365085e9", null ],
     [ "inputSize", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a63fd23446555b9447f7b3e46ebed58d2", null ],
     [ "iterateTrainableTensors", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a02180db1a5cab15c3d030043c5b1e63c", null ],
+    [ "outputBuffer", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a68e50ffd25a57f14de6675eb3ef8d7cd", null ],
     [ "outputInfo", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#afd804936ac6652bb5942bef3caa26252", null ],
     [ "outputLayout", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#affd4d3a12dcac266a46a86d7f5f166ae", null ],
     [ "outputSize", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9bfeb3400991ed7d4b84677d18063329", null ],

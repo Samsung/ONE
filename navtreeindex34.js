@@ -1,5 +1,6 @@
 var NAVTREEINDEX34 =
 {
+"backend_2trix_2_tensor_builder_8h.html":[41,0,3,3,1,7,15],
 "backend_2trix_2_tensor_builder_8h.html#ae5d0e2c339f567794e60a2a6249232dd":[41,0,3,3,1,7,15,0],
 "backend_2trix_2_tensor_builder_8h_source.html":[41,0,3,3,1,7,15],
 "backends_2soft__backend_2_model_analyzer_8cpp.html":[41,0,0,89,0,2,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX34 =
 "circle-quantizer_2src_2_circle_quantizer_8cpp.html#af8cfcb52c3527253aa5699daf5eddd68":[41,0,0,22,0,0,10],
 "circle-quantizer_2src_2_circle_quantizer_8cpp_source.html":[41,0,0,22,0,0],
 "circle-resizer_2include_2_circle_model_8h.html":[41,0,0,23,1,0],
-"circle-resizer_2include_2_circle_model_8h_source.html":[41,0,0,23,1,0],
-"circle-resizer_2src_2_circle_model_8cpp.html":[41,0,0,23,2,0]
+"circle-resizer_2include_2_circle_model_8h_source.html":[41,0,0,23,1,0]
 };

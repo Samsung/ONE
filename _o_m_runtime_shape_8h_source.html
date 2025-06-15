@@ -118,184 +118,213 @@ $(document).ready(function(){initNavTree('_o_m_runtime_shape_8h_source.html','')
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_circle_reader_8h.html">core/reader/OMCircleReader.h</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;cstring&gt;</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert__micro.html">onert_micro</a></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">namespace </span>core</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">int</span> maxTensorShapeSize = 6;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="foldopen" id="foldopen00033" data-start="{" data-end="};">
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">   33</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  int32_t _size = 0;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  int32_t _dims[maxTensorShapeSize] = {0};</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;numeric&gt;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert__micro_1_1core.html">onert_micro::core</a></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="};">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">   30</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> kMaxDimsCount = 6;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordtype">size_t</span> _size = 0;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  std::array&lt;int32_t, kMaxDimsCount&gt; _dims = {0};</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">bool</span> _is_scalar = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a01787d381f7dabb017e7d4141daa5dfe">   40</a></span>  <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a01787d381f7dabb017e7d4141daa5dfe">OMRuntimeShape</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;other) : _size(other.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aee48b23a20f2a510b0c17c4c85ea2d8c">dimensionsCount</a>())</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  {</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    std::memcpy(<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>(), other.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>(), <span class="keyword">sizeof</span>(int32_t) * _size);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a9c74bb032857b22fc7677cbd5634969c">   40</a></span>  <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a9c74bb032857b22fc7677cbd5634969c">OMRuntimeShape</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// clang-format off</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a01787d381f7dabb017e7d4141daa5dfe">   44</a></span>  <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a01787d381f7dabb017e7d4141daa5dfe">OMRuntimeShape</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;other)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    : _size(other._size)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    , _dims(other._dims)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  {}</div>
 </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a96ce98148bd754396f90120d0353d8d2">   45</a></span>  <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a96ce98148bd754396f90120d0353d8d2">OMRuntimeShape</a>(<span class="keyword">const</span> circle::Tensor *tensor)</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">if</span> (tensor == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="comment">// Shape is scalar</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">if</span> (tensor-&gt;shape() == <span class="keyword">nullptr</span> or tensor-&gt;shape()-&gt;size() == 0)</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    {</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      _size = 1;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      _dims[0] = 1;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>      <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    }</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    _size = tensor-&gt;shape()-&gt;size();</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    std::memcpy(_dims, tensor-&gt;shape()-&gt;data(), <span class="keyword">sizeof</span>(int32_t) * _size);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ab2a0644053b9c7df4078cb3cdc4a1c48">   49</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ab2a0644053b9c7df4078cb3cdc4a1c48">OMRuntimeShape</a>(<span class="keywordtype">size_t</span> dimensions_count)</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#abdcce5253d877271aaeead008b9dd5b1">resize</a>(dimensions_count);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  }</div>
 </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="comment">// Returns the total count of elements, that is the size when flattened into a</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="comment">// vector.</span></div>
-<div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#af21451ced7f3e19f2eb53d10e2978deb">   64</a></span>  <span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#af21451ced7f3e19f2eb53d10e2978deb">flatSize</a>()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">if</span> (_size == 0)</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>      <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordtype">int</span> buffer_size = 1;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> *dims_data = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">int</span> *<span class="keyword">&gt;</span>(<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>());</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; _size; i++)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keyword">template</span> &lt;<span class="keywordtype">size_t</span> DimsCount&gt;</div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#abcf3cde50d624f3fa6b06169bab7541a">   55</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#abcf3cde50d624f3fa6b06169bab7541a">OMRuntimeShape</a>(<span class="keyword">const</span> std::array&lt;int32_t, DimsCount&gt; &amp;source_dims)</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#abdcce5253d877271aaeead008b9dd5b1">resize</a>(DimsCount);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    std::copy(source_dims.cbegin(), source_dims.cend(), _dims.begin());</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  }</div>
+</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="comment">// clang-format on</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a96ce98148bd754396f90120d0353d8d2">   63</a></span>  <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a96ce98148bd754396f90120d0353d8d2">OMRuntimeShape</a>(<span class="keyword">const</span> circle::Tensor *tensor)</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">if</span> (tensor == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">auto</span> shape = tensor-&gt;shape();</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">if</span> (shape == <span class="keyword">nullptr</span> || shape-&gt;size() == 0)</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    {</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      buffer_size *= dims_data[i];</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    }</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">return</span> buffer_size;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      _is_scalar = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>      _size = 1;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      _dims[0] = 1;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>      <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    _size = shape-&gt;size();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    std::copy(shape-&gt;cbegin(), shape-&gt;cend(), _dims.begin());</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  }</div>
 </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">   77</a></span>  <span class="keyword">inline</span> int32_t *<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>() { <span class="keywordflow">return</span> _dims; }</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a57aecf5dcea2f51423468be2a3a78fd0">   78</a></span>  <span class="keyword">inline</span> <span class="keyword">const</span> int32_t *<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a57aecf5dcea2f51423468be2a3a78fd0">dimsData</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _dims; }</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ae678d8b2cebc9ecc5c58fb854b85db1b">   80</a></span>  <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ae678d8b2cebc9ecc5c58fb854b85db1b">OMRuntimeShape</a>() : _size(0) {}</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="foldopen" id="foldopen00082" data-start="{" data-end="}">
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a26c277755e296378266049970508cda8">   82</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a26c277755e296378266049970508cda8">OMRuntimeShape</a>(<span class="keywordtype">int</span> dimensions_count) : _size(dimensions_count)</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  {</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    assert(dimensions_count &lt;= maxTensorShapeSize);</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    assert(dimensions_count &gt;= 0);</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  }</div>
-</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="foldopen" id="foldopen00083" data-start="{" data-end="}">
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a871bd224f88f632ca494ae80e8756a2b">   83</a></span>  <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a871bd224f88f632ca494ae80e8756a2b">OMRuntimeShape</a>(<span class="keywordtype">size_t</span> new_shape_size, <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;shape, int32_t pad_value)</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  {</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    assert(new_shape_size &gt;= shape._size);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#abdcce5253d877271aaeead008b9dd5b1">resize</a>(new_shape_size);</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="foldopen" id="foldopen00088" data-start="{" data-end="}">
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa3b2c882332376e66d01c7ea2b95368f">   88</a></span>  <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa3b2c882332376e66d01c7ea2b95368f">OMRuntimeShape</a>(<span class="keywordtype">int</span> dimensions_count, <span class="keyword">const</span> int32_t *dims_data) : _size(0)</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">resize</a>(dimensions_count);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    int32_t *dst_dims = <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>();</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    std::memcpy(dst_dims, dims_data, dimensions_count * <span class="keyword">sizeof</span>(int32_t));</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  }</div>
-</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> size_increase = new_shape_size - shape._size;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = 0u; i &lt; size_increase; ++i)</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>      <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ae3bb404a5652f9d196fe1736ba75f542">setDim</a>(i, pad_value);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    }</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="foldopen" id="foldopen00095" data-start="{" data-end="}">
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a470d05f9e8babdcbe4447f00eac538d8">   95</a></span>  <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a470d05f9e8babdcbe4447f00eac538d8">OMRuntimeShape</a>(<span class="keywordtype">int</span> new_shape_size, <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;shape, <span class="keywordtype">int</span> pad_value) : _size(0)</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  {</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">resize</a>(new_shape_size);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> size_increase = new_shape_size - shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aee48b23a20f2a510b0c17c4c85ea2d8c">dimensionsCount</a>();</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; size_increase; ++i)</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    {</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a665ca051982e3b9ac18ac1282b1ba386">setDim</a>(i, pad_value);</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    }</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    std::memcpy(<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>() + size_increase, shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>(),</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                <span class="keyword">sizeof</span>(int32_t) * shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aee48b23a20f2a510b0c17c4c85ea2d8c">dimensionsCount</a>());</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  }</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keyword">auto</span> from = shape._dims.cbegin();</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keyword">auto</span> to = _dims.begin() + size_increase;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    std::copy(from, from + shape._size, to);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  }</div>
 </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="foldopen" id="foldopen00107" data-start="{" data-end="}">
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a106858b8ed5b2e76dd598b42ae8e3d77">  107</a></span>  <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a106858b8ed5b2e76dd598b42ae8e3d77">OMRuntimeShape</a>(<span class="keywordtype">int</span> shape_size, int32_t value) : _size(0)</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  {</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">resize</a>(shape_size);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; shape_size; ++i)</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    {</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a665ca051982e3b9ac18ac1282b1ba386">setDim</a>(i, value);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a889a5f0b55ff79c0116cfe57aec0d6e3">  101</a></span>  <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a889a5f0b55ff79c0116cfe57aec0d6e3">OMRuntimeShape</a>(<span class="keywordtype">size_t</span> shape_size, int32_t value)</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  {</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#abdcce5253d877271aaeead008b9dd5b1">resize</a>(shape_size);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = 0u; i &lt; shape_size; ++i)</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    {</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>      <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ae3bb404a5652f9d196fe1736ba75f542">setDim</a>(i, value);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    }</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  }</div>
+</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="foldopen" id="foldopen00111" data-start="{" data-end="}">
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aad8a01291216c921715e1b627fbd14c8">  111</a></span>  <span class="keyword">static</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aad8a01291216c921715e1b627fbd14c8">extendedShape</a>(<span class="keywordtype">size_t</span> new_shape_size, <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;shape)</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a9c74bb032857b22fc7677cbd5634969c">OMRuntimeShape</a>(new_shape_size, shape, 1);</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  }</div>
 </div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
 <div class="foldopen" id="foldopen00116" data-start="{" data-end="}">
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a1f138be3f9153b24530406a313c0b48c">  116</a></span>  <span class="keyword">inline</span> <span class="keyword">static</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a1f138be3f9153b24530406a313c0b48c">extendedShape</a>(<span class="keywordtype">int</span> new_shape_size, <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;shape)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  {</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ae678d8b2cebc9ecc5c58fb854b85db1b">OMRuntimeShape</a>(new_shape_size, shape, 1);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a858002a736383dcc3fdcac2db577046e">  116</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a858002a736383dcc3fdcac2db577046e">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;other)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">return</span> _size == other._size &amp;&amp; _dims == other._dims;</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  }</div>
 </div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
 <div class="foldopen" id="foldopen00121" data-start="{" data-end="}">
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a31d49510905f7b8554265940f612ebe5">  121</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a31d49510905f7b8554265940f612ebe5">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;comp)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#afa93963083a5896bdfb53e1781d8e040">  121</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#afa93963083a5896bdfb53e1781d8e040">flatSize</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">return</span> this-&gt;_size == comp._size &amp;&amp;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>           std::memcmp(<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>(), comp.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>(), _size * <span class="keyword">sizeof</span>(int32_t)) == 0;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  }</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">if</span> (_size == 0)</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keyword">auto</span> it = _dims.cbegin();</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordflow">return</span> std::accumulate(it, it + _size, 1u, std::multiplies&lt;size_t&gt;());</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  }</div>
 </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aee48b23a20f2a510b0c17c4c85ea2d8c">  127</a></span>  <span class="keyword">inline</span> int32_t <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aee48b23a20f2a510b0c17c4c85ea2d8c">dimensionsCount</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _size; }</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
-<div class="foldopen" id="foldopen00129" data-start="{" data-end="}">
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">  129</a></span>  <span class="keyword">inline</span> int32_t <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">dims</a>(<span class="keywordtype">int</span> i)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    assert(i &lt;= _size);</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    assert(i &gt;= 0);</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">return</span> _dims[i];</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  }</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>  <span class="comment">// clang-format off</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="foldopen" id="foldopen00133" data-start="{" data-end="}">
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a8f0befad6a1378b0d89c099179237524">  133</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a8f0befad6a1378b0d89c099179237524">isScalar</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keywordflow">return</span> _is_scalar;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  }</div>
 </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
-<div class="foldopen" id="foldopen00136" data-start="{" data-end="}">
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a665ca051982e3b9ac18ac1282b1ba386">  136</a></span>  <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a665ca051982e3b9ac18ac1282b1ba386">setDim</a>(<span class="keywordtype">int</span> i, int32_t val)</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  {</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    assert(i &lt;= _size);</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    assert(i &gt;= 0);</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    _dims[i] = val;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="foldopen" id="foldopen00138" data-start="{" data-end="}">
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">  138</a></span>  int32_t *<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>()</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  {</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordflow">return</span> _dims.data();</div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  }</div>
 </div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
 <div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">  143</a></span>  <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">resize</a>(<span class="keywordtype">int</span> dimensions_count)</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  {</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    assert(dimensions_count &lt;= maxTensorShapeSize);</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    assert(dimensions_count &gt;= 0);</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    _size = dimensions_count;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  }</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a57aecf5dcea2f51423468be2a3a78fd0">  143</a></span>  <span class="keyword">const</span> int32_t *<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a57aecf5dcea2f51423468be2a3a78fd0">dimsData</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keywordflow">return</span> _dims.data();</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>  }</div>
 </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>};</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
+<div class="foldopen" id="foldopen00148" data-start="{" data-end="}">
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a47f5dd09aa1f05ef70f9e28cd82d8580">  148</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a47f5dd09aa1f05ef70f9e28cd82d8580">dimensionsCount</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keywordflow">return</span> _size;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  }</div>
 </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>} <span class="comment">// namespace core</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>} <span class="comment">// namespace onert_micro</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_CORE_RUNTIME_SHAPE_H</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
+<div class="foldopen" id="foldopen00153" data-start="{" data-end="}">
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">  153</a></span>  int32_t <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">dims</a>(<span class="keywordtype">size_t</span> i)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    assert(i &lt;= _size);</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">return</span> _dims[i];</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  }</div>
+</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="foldopen" id="foldopen00159" data-start="{" data-end="}">
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ae3bb404a5652f9d196fe1736ba75f542">  159</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ae3bb404a5652f9d196fe1736ba75f542">setDim</a>(<span class="keywordtype">size_t</span> i, int32_t val)</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  {</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    assert(i &lt;= _size);</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    _dims[i] = val;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  }</div>
+</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="foldopen" id="foldopen00165" data-start="{" data-end="}">
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#abdcce5253d877271aaeead008b9dd5b1">  165</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#abdcce5253d877271aaeead008b9dd5b1">resize</a>(<span class="keywordtype">size_t</span> dimensions_count)</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  {</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    assert(dimensions_count &lt;= kMaxDimsCount);</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    _size = dimensions_count;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  }</div>
+</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>};</div>
+</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>} <span class="comment">// namespace onert_micro::core</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_CORE_RUNTIME_SHAPE_H</span></div>
 <div class="ttc" id="a_o_m_circle_reader_8h_html"><div class="ttname"><a href="_o_m_circle_reader_8h.html">OMCircleReader.h</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">onert_micro::core::OMRuntimeShape</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00033">OMRuntimeShape.h:34</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a01787d381f7dabb017e7d4141daa5dfe"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a01787d381f7dabb017e7d4141daa5dfe">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape(const OMRuntimeShape &amp;other)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00040">OMRuntimeShape.h:40</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a106858b8ed5b2e76dd598b42ae8e3d77"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a106858b8ed5b2e76dd598b42ae8e3d77">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape(int shape_size, int32_t value)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00107">OMRuntimeShape.h:107</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a166a4cc1a3ef3ec54191257141c81ca9"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">onert_micro::core::OMRuntimeShape::dimsData</a></div><div class="ttdeci">int32_t * dimsData()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00077">OMRuntimeShape.h:77</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a1f138be3f9153b24530406a313c0b48c"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a1f138be3f9153b24530406a313c0b48c">onert_micro::core::OMRuntimeShape::extendedShape</a></div><div class="ttdeci">static OMRuntimeShape extendedShape(int new_shape_size, const OMRuntimeShape &amp;shape)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00116">OMRuntimeShape.h:116</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a224298a3421809287e91479d7b61b69f"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a224298a3421809287e91479d7b61b69f">onert_micro::core::OMRuntimeShape::resize</a></div><div class="ttdeci">void resize(int dimensions_count)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00143">OMRuntimeShape.h:143</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a26c277755e296378266049970508cda8"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a26c277755e296378266049970508cda8">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape(int dimensions_count)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00082">OMRuntimeShape.h:82</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a31d49510905f7b8554265940f612ebe5"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a31d49510905f7b8554265940f612ebe5">onert_micro::core::OMRuntimeShape::operator==</a></div><div class="ttdeci">bool operator==(const OMRuntimeShape &amp;comp) const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00121">OMRuntimeShape.h:121</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a470d05f9e8babdcbe4447f00eac538d8"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a470d05f9e8babdcbe4447f00eac538d8">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape(int new_shape_size, const OMRuntimeShape &amp;shape, int pad_value)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00095">OMRuntimeShape.h:95</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a57aecf5dcea2f51423468be2a3a78fd0"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a57aecf5dcea2f51423468be2a3a78fd0">onert_micro::core::OMRuntimeShape::dimsData</a></div><div class="ttdeci">const int32_t * dimsData() const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00078">OMRuntimeShape.h:78</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a665ca051982e3b9ac18ac1282b1ba386"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a665ca051982e3b9ac18ac1282b1ba386">onert_micro::core::OMRuntimeShape::setDim</a></div><div class="ttdeci">void setDim(int i, int32_t val)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00136">OMRuntimeShape.h:136</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a96ce98148bd754396f90120d0353d8d2"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a96ce98148bd754396f90120d0353d8d2">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape(const circle::Tensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00045">OMRuntimeShape.h:45</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_aa3b2c882332376e66d01c7ea2b95368f"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa3b2c882332376e66d01c7ea2b95368f">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape(int dimensions_count, const int32_t *dims_data)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00088">OMRuntimeShape.h:88</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_aa5351b75c2dbb83f63423eb21afe3461"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aa5351b75c2dbb83f63423eb21afe3461">onert_micro::core::OMRuntimeShape::dims</a></div><div class="ttdeci">int32_t dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00129">OMRuntimeShape.h:129</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_ae678d8b2cebc9ecc5c58fb854b85db1b"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ae678d8b2cebc9ecc5c58fb854b85db1b">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00080">OMRuntimeShape.h:80</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_aee48b23a20f2a510b0c17c4c85ea2d8c"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aee48b23a20f2a510b0c17c4c85ea2d8c">onert_micro::core::OMRuntimeShape::dimensionsCount</a></div><div class="ttdeci">int32_t dimensionsCount() const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00127">OMRuntimeShape.h:127</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_af21451ced7f3e19f2eb53d10e2978deb"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#af21451ced7f3e19f2eb53d10e2978deb">onert_micro::core::OMRuntimeShape::flatSize</a></div><div class="ttdeci">int flatSize() const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00064">OMRuntimeShape.h:64</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_html"><div class="ttname"><a href="namespaceonert__micro.html">onert_micro</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8h_source.html#l00025">OMMemoryManager.h:26</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">onert_micro::core::OMRuntimeShape</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00030">OMRuntimeShape.h:31</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a01787d381f7dabb017e7d4141daa5dfe"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a01787d381f7dabb017e7d4141daa5dfe">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape(const OMRuntimeShape &amp;other)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00044">OMRuntimeShape.h:44</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a166a4cc1a3ef3ec54191257141c81ca9"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">onert_micro::core::OMRuntimeShape::dimsData</a></div><div class="ttdeci">int32_t * dimsData()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00138">OMRuntimeShape.h:138</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a47f5dd09aa1f05ef70f9e28cd82d8580"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a47f5dd09aa1f05ef70f9e28cd82d8580">onert_micro::core::OMRuntimeShape::dimensionsCount</a></div><div class="ttdeci">size_t dimensionsCount() const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00148">OMRuntimeShape.h:148</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a57aecf5dcea2f51423468be2a3a78fd0"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a57aecf5dcea2f51423468be2a3a78fd0">onert_micro::core::OMRuntimeShape::dimsData</a></div><div class="ttdeci">const int32_t * dimsData() const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00143">OMRuntimeShape.h:143</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a858002a736383dcc3fdcac2db577046e"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a858002a736383dcc3fdcac2db577046e">onert_micro::core::OMRuntimeShape::operator==</a></div><div class="ttdeci">bool operator==(const OMRuntimeShape &amp;other) const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00116">OMRuntimeShape.h:116</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a871bd224f88f632ca494ae80e8756a2b"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a871bd224f88f632ca494ae80e8756a2b">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape(size_t new_shape_size, const OMRuntimeShape &amp;shape, int32_t pad_value)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00083">OMRuntimeShape.h:83</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a889a5f0b55ff79c0116cfe57aec0d6e3"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a889a5f0b55ff79c0116cfe57aec0d6e3">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape(size_t shape_size, int32_t value)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00101">OMRuntimeShape.h:101</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a8f0befad6a1378b0d89c099179237524"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a8f0befad6a1378b0d89c099179237524">onert_micro::core::OMRuntimeShape::isScalar</a></div><div class="ttdeci">bool isScalar() const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00133">OMRuntimeShape.h:133</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a96ce98148bd754396f90120d0353d8d2"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a96ce98148bd754396f90120d0353d8d2">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape(const circle::Tensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00063">OMRuntimeShape.h:63</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a9c74bb032857b22fc7677cbd5634969c"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a9c74bb032857b22fc7677cbd5634969c">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape()=default</div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_aad8a01291216c921715e1b627fbd14c8"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aad8a01291216c921715e1b627fbd14c8">onert_micro::core::OMRuntimeShape::extendedShape</a></div><div class="ttdeci">static OMRuntimeShape extendedShape(size_t new_shape_size, const OMRuntimeShape &amp;shape)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00111">OMRuntimeShape.h:111</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_ab2a0644053b9c7df4078cb3cdc4a1c48"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ab2a0644053b9c7df4078cb3cdc4a1c48">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape(size_t dimensions_count)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00049">OMRuntimeShape.h:49</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_abcf3cde50d624f3fa6b06169bab7541a"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#abcf3cde50d624f3fa6b06169bab7541a">onert_micro::core::OMRuntimeShape::OMRuntimeShape</a></div><div class="ttdeci">OMRuntimeShape(const std::array&lt; int32_t, DimsCount &gt; &amp;source_dims)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00055">OMRuntimeShape.h:55</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_abdcce5253d877271aaeead008b9dd5b1"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#abdcce5253d877271aaeead008b9dd5b1">onert_micro::core::OMRuntimeShape::resize</a></div><div class="ttdeci">void resize(size_t dimensions_count)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00165">OMRuntimeShape.h:165</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_ac88876c13dc96f9077561ad9715809cd"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">onert_micro::core::OMRuntimeShape::dims</a></div><div class="ttdeci">int32_t dims(size_t i) const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00153">OMRuntimeShape.h:153</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_ae3bb404a5652f9d196fe1736ba75f542"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ae3bb404a5652f9d196fe1736ba75f542">onert_micro::core::OMRuntimeShape::setDim</a></div><div class="ttdeci">void setDim(size_t i, int32_t val)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00159">OMRuntimeShape.h:159</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_afa93963083a5896bdfb53e1781d8e040"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#afa93963083a5896bdfb53e1781d8e040">onert_micro::core::OMRuntimeShape::flatSize</a></div><div class="ttdeci">size_t flatSize() const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00121">OMRuntimeShape.h:121</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1core_html"><div class="ttname"><a href="namespaceonert__micro_1_1core.html">onert_micro::core</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8h_source.html#l00027">OMMemoryManager.h:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

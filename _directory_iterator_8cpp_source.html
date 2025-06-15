@@ -132,13 +132,13 @@ $(document).ready(function(){initNavTree('_directory_iterator_8cpp_source.html',
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classrecord__minmax_1_1_directory_iterator.html#ad37b0bef302f078bced7cd81d4346330">   32</a></span><a class="code hl_function" href="classrecord__minmax_1_1_directory_iterator.html#ad37b0bef302f078bced7cd81d4346330">DirectoryIterator::DirectoryIterator</a>(<span class="keyword">const</span> std::string &amp;dir_path, <a class="code hl_class" href="classluci_1_1_module.html">luci::Module</a> *module)</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  : _dir_path(dir_path)</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">auto</span> dir = opendir(dir_path.c_str());</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">if</span> (not dir)</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  _dir = opendir(dir_path.c_str());</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">if</span> (not _dir)</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Cannot open directory. Please check \&quot;&quot;</span> + _dir_path +</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                             <span class="stringliteral">&quot;\&quot; is a directory.\n&quot;</span>);</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  dirent *<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">while</span> ((<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = readdir(dir)))</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">while</span> ((<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = readdir(_dir)))</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  {</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_type != DT_REG)</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>      <span class="keywordflow">continue</span>;</div>
@@ -146,72 +146,79 @@ $(document).ready(function(){initNavTree('_directory_iterator_8cpp_source.html',
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    _entries.emplace_back(<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>);</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  }</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  closedir(dir);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">auto</span> input_nodes = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a>(module-&gt;graph());</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> input_node : input_nodes)</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  {</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keyword">const</span> <span class="keyword">auto</span> cnode = loco::must_cast&lt;const luci::CircleInput *&gt;(input_node);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    _input_nodes.emplace_back(cnode);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  }</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>}</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">auto</span> input_nodes = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a>(module-&gt;graph());</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> input_node : input_nodes)</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keyword">const</span> <span class="keyword">auto</span> cnode = loco::must_cast&lt;const luci::CircleInput *&gt;(input_node);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    _input_nodes.emplace_back(cnode);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
 </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classrecord__minmax_1_1_directory_iterator.html#ae79e6e503754a1cd78a60027599dae7d">   59</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classrecord__minmax_1_1_directory_iterator.html#ae79e6e503754a1cd78a60027599dae7d">DirectoryIterator::hasNext</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _curr_idx &lt; _entries.size(); }</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classrecord__minmax_1_1_directory_iterator.html#ab527ebdab8e411802a116ecb5a4d0f6d">   61</a></span>std::vector&lt;DataBuffer&gt; <a class="code hl_function" href="classrecord__minmax_1_1_directory_iterator.html#ab527ebdab8e411802a116ecb5a4d0f6d">DirectoryIterator::next</a>()</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>{</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keyword">auto</span> <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = _entries.at(_curr_idx++);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  assert(<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>); <span class="comment">// FIX_ME_UNLESS</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="comment">// Get total input size</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  uint32_t total_input_size = 0;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> input : _input_nodes)</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *input_node = loco::must_cast&lt;const luci::CircleInput *&gt;(input);</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    total_input_size += <a class="code hl_function" href="namespacerecord__minmax.html#a80ad66caa0ce59480f3b8d23b5bf6168">getTensorSize</a>(input_node);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  }</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keyword">const</span> std::string filename = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_name;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">// Read data from file to buffer</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="comment">// Assumption: For a multi-input model, the binary file should have inputs concatenated in the</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="comment">// same order with the input index.</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  std::vector&lt;char&gt; input_data(total_input_size);</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <a class="code hl_function" href="namespacerecord__minmax.html#a841b3db57c40ab8574c6d014d36dcdfb">readDataFromFile</a>(_dir_path + <span class="stringliteral">&quot;/&quot;</span> + filename, input_data, total_input_size);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  std::vector&lt;DataBuffer&gt; res;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  uint32_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> input_node : _input_nodes)</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  {</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <a class="code hl_struct" href="structrecord__minmax_1_1_data_buffer.html">DataBuffer</a> buf;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_size = <a class="code hl_function" href="namespacerecord__minmax.html#a80ad66caa0ce59480f3b8d23b5bf6168">getTensorSize</a>(input_node);</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    buf.data.resize(input_size);</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    memcpy(buf.data.data(), input_data.data() + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>, input_size);</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> += input_size;</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    res.emplace_back(buf);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  }</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keywordflow">return</span> res;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>}</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classrecord__minmax_1_1_directory_iterator.html#a9c4726b0f38f30cdf97da34ead2b61ad">   57</a></span><a class="code hl_function" href="classrecord__minmax_1_1_directory_iterator.html#a9c4726b0f38f30cdf97da34ead2b61ad">DirectoryIterator::~DirectoryIterator</a>()</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>{</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">if</span> (_dir)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    closedir(_dir);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>};</div>
 </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="classrecord__minmax_1_1_directory_iterator.html#a670adfb2256ce0a11b9bed00cd03bba7">  102</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classrecord__minmax_1_1_directory_iterator.html#a670adfb2256ce0a11b9bed00cd03bba7">DirectoryIterator::check_type_shape</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>} <span class="comment">// namespace record_minmax</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classrecord__minmax_1_1_directory_iterator.html#ae79e6e503754a1cd78a60027599dae7d">   63</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classrecord__minmax_1_1_directory_iterator.html#ae79e6e503754a1cd78a60027599dae7d">DirectoryIterator::hasNext</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _curr_idx &lt; _entries.size(); }</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="foldopen" id="foldopen00065" data-start="{" data-end="}">
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classrecord__minmax_1_1_directory_iterator.html#ab527ebdab8e411802a116ecb5a4d0f6d">   65</a></span>std::vector&lt;DataBuffer&gt; <a class="code hl_function" href="classrecord__minmax_1_1_directory_iterator.html#ab527ebdab8e411802a116ecb5a4d0f6d">DirectoryIterator::next</a>()</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>{</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keyword">auto</span> <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a> = _entries.at(_curr_idx++);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  assert(<a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>); <span class="comment">// FIX_ME_UNLESS</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="comment">// Get total input size</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  uint32_t total_input_size = 0;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> input : _input_nodes)</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *input_node = loco::must_cast&lt;const luci::CircleInput *&gt;(input);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    total_input_size += <a class="code hl_function" href="namespacerecord__minmax.html#a80ad66caa0ce59480f3b8d23b5bf6168">getTensorSize</a>(input_node);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  }</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keyword">const</span> std::string filename = <a class="code hl_function" href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a>-&gt;d_name;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">// Read data from file to buffer</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="comment">// Assumption: For a multi-input model, the binary file should have inputs concatenated in the</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="comment">// same order with the input index.</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  std::vector&lt;char&gt; input_data(total_input_size);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <a class="code hl_function" href="namespacerecord__minmax.html#a841b3db57c40ab8574c6d014d36dcdfb">readDataFromFile</a>(_dir_path + <span class="stringliteral">&quot;/&quot;</span> + filename, input_data, total_input_size);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  std::vector&lt;DataBuffer&gt; res;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  uint32_t <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> input_node : _input_nodes)</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <a class="code hl_struct" href="structrecord__minmax_1_1_data_buffer.html">DataBuffer</a> buf;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_size = <a class="code hl_function" href="namespacerecord__minmax.html#a80ad66caa0ce59480f3b8d23b5bf6168">getTensorSize</a>(input_node);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    buf.data.resize(input_size);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    memcpy(buf.data.data(), input_data.data() + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>, input_size);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> += input_size;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    res.emplace_back(buf);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  }</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}</div>
+</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="classrecord__minmax_1_1_directory_iterator.html#a670adfb2256ce0a11b9bed00cd03bba7">  106</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classrecord__minmax_1_1_directory_iterator.html#a670adfb2256ce0a11b9bed00cd03bba7">DirectoryIterator::check_type_shape</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>} <span class="comment">// namespace record_minmax</span></div>
 <div class="ttc" id="a_data_buffer_8h_html"><div class="ttname"><a href="_data_buffer_8h.html">DataBuffer.h</a></div></div>
 <div class="ttc" id="a_directory_iterator_8h_html"><div class="ttname"><a href="_directory_iterator_8h.html">DirectoryIterator.h</a></div></div>
 <div class="ttc" id="aclassluci_1_1_module_html"><div class="ttname"><a href="classluci_1_1_module.html">luci::Module</a></div><div class="ttdoc">Collection of 'loco::Graph's.</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_module_8h_source.html#l00032">Module.h:33</a></div></div>
-<div class="ttc" id="aclassrecord__minmax_1_1_directory_iterator_html_a670adfb2256ce0a11b9bed00cd03bba7"><div class="ttname"><a href="classrecord__minmax_1_1_directory_iterator.html#a670adfb2256ce0a11b9bed00cd03bba7">record_minmax::DirectoryIterator::check_type_shape</a></div><div class="ttdeci">bool check_type_shape() const override</div><div class="ttdef"><b>Definition</b> <a href="_directory_iterator_8cpp_source.html#l00102">DirectoryIterator.cpp:102</a></div></div>
-<div class="ttc" id="aclassrecord__minmax_1_1_directory_iterator_html_ab527ebdab8e411802a116ecb5a4d0f6d"><div class="ttname"><a href="classrecord__minmax_1_1_directory_iterator.html#ab527ebdab8e411802a116ecb5a4d0f6d">record_minmax::DirectoryIterator::next</a></div><div class="ttdeci">std::vector&lt; DataBuffer &gt; next() override</div><div class="ttdef"><b>Definition</b> <a href="_directory_iterator_8cpp_source.html#l00061">DirectoryIterator.cpp:61</a></div></div>
+<div class="ttc" id="aclassrecord__minmax_1_1_directory_iterator_html_a670adfb2256ce0a11b9bed00cd03bba7"><div class="ttname"><a href="classrecord__minmax_1_1_directory_iterator.html#a670adfb2256ce0a11b9bed00cd03bba7">record_minmax::DirectoryIterator::check_type_shape</a></div><div class="ttdeci">bool check_type_shape() const override</div><div class="ttdef"><b>Definition</b> <a href="_directory_iterator_8cpp_source.html#l00106">DirectoryIterator.cpp:106</a></div></div>
+<div class="ttc" id="aclassrecord__minmax_1_1_directory_iterator_html_a9c4726b0f38f30cdf97da34ead2b61ad"><div class="ttname"><a href="classrecord__minmax_1_1_directory_iterator.html#a9c4726b0f38f30cdf97da34ead2b61ad">record_minmax::DirectoryIterator::~DirectoryIterator</a></div><div class="ttdeci">~DirectoryIterator()</div><div class="ttdef"><b>Definition</b> <a href="_directory_iterator_8cpp_source.html#l00057">DirectoryIterator.cpp:57</a></div></div>
+<div class="ttc" id="aclassrecord__minmax_1_1_directory_iterator_html_ab527ebdab8e411802a116ecb5a4d0f6d"><div class="ttname"><a href="classrecord__minmax_1_1_directory_iterator.html#ab527ebdab8e411802a116ecb5a4d0f6d">record_minmax::DirectoryIterator::next</a></div><div class="ttdeci">std::vector&lt; DataBuffer &gt; next() override</div><div class="ttdef"><b>Definition</b> <a href="_directory_iterator_8cpp_source.html#l00065">DirectoryIterator.cpp:65</a></div></div>
 <div class="ttc" id="aclassrecord__minmax_1_1_directory_iterator_html_ad37b0bef302f078bced7cd81d4346330"><div class="ttname"><a href="classrecord__minmax_1_1_directory_iterator.html#ad37b0bef302f078bced7cd81d4346330">record_minmax::DirectoryIterator::DirectoryIterator</a></div><div class="ttdeci">DirectoryIterator(const std::string &amp;dir_path, luci::Module *module)</div><div class="ttdef"><b>Definition</b> <a href="_directory_iterator_8cpp_source.html#l00032">DirectoryIterator.cpp:32</a></div></div>
-<div class="ttc" id="aclassrecord__minmax_1_1_directory_iterator_html_ae79e6e503754a1cd78a60027599dae7d"><div class="ttname"><a href="classrecord__minmax_1_1_directory_iterator.html#ae79e6e503754a1cd78a60027599dae7d">record_minmax::DirectoryIterator::hasNext</a></div><div class="ttdeci">bool hasNext() const override</div><div class="ttdef"><b>Definition</b> <a href="_directory_iterator_8cpp_source.html#l00059">DirectoryIterator.cpp:59</a></div></div>
+<div class="ttc" id="aclassrecord__minmax_1_1_directory_iterator_html_ae79e6e503754a1cd78a60027599dae7d"><div class="ttname"><a href="classrecord__minmax_1_1_directory_iterator.html#ae79e6e503754a1cd78a60027599dae7d">record_minmax::DirectoryIterator::hasNext</a></div><div class="ttdeci">bool hasNext() const override</div><div class="ttdef"><b>Definition</b> <a href="_directory_iterator_8cpp_source.html#l00063">DirectoryIterator.cpp:63</a></div></div>
 <div class="ttc" id="acompiler_2circle-eval-diff_2driver_2_driver_8cpp_html_ad0f47bc81bc604e8bc1d169d370f2000"><div class="ttname"><a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp.html#ad0f47bc81bc604e8bc1d169d370f2000">entry</a></div><div class="ttdeci">int entry(const int argc, char **argv)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2circle-eval-diff_2driver_2_driver_8cpp_source.html#l00053">Driver.cpp:53</a></div></div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 <div class="ttc" id="aluci_2lang_2include_2luci_2_i_r_2_module_8h_html"><div class="ttname"><a href="luci_2lang_2include_2luci_2_i_r_2_module_8h.html">Module.h</a></div></div>

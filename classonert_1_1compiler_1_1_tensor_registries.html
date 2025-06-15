@@ -111,6 +111,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a35ab6062211652e36cc7f6b778c2e56c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a633f4b8c5ff50603e5786b1cd805469b" id="r_a633f4b8c5ff50603e5786b1cd805469b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1backend_1_1_i_tensor.html">backend::ITensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_tensor_registries.html#a633f4b8c5ff50603e5786b1cd805469b">getITensor</a> (<a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> ind) const</td></tr>
 <tr class="separator:a633f4b8c5ff50603e5786b1cd805469b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0e7e32ea69f30d822de35261e074a37" id="r_af0e7e32ea69f30d822de35261e074a37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html">backend::builtin::IOTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_tensor_registries.html#af0e7e32ea69f30d822de35261e074a37">getIOTensor</a> (<a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> ind) const</td></tr>
+<tr class="separator:af0e7e32ea69f30d822de35261e074a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -287,6 +289,37 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   66</span>  {</div>
 <div class="line"><span class="lineno">   67</span>    <span class="keywordflow">return</span> _builtin_tensor_reg;</div>
 <div class="line"><span class="lineno">   68</span>  }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="af0e7e32ea69f30d822de35261e074a37" name="af0e7e32ea69f30d822de35261e074a37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0e7e32ea69f30d822de35261e074a37">&#9670;&#160;</a></span>getIOTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html">backend::builtin::IOTensor</a> * onert::compiler::TensorRegistries::getIOTensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a>&#160;</td>
+          <td class="paramname"><em>ind</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_tensor_registries_8h_source.html#l00081">81</a> of file <a class="el" href="_tensor_registries_8h_source.html">TensorRegistries.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>  {</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">return</span> _builtin_tensor_reg-&gt;getNativeIOTensor(ind);</div>
+<div class="line"><span class="lineno">   84</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

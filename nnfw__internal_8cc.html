@@ -118,6 +118,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a50574477cc4100bfe99d17e313b99d55" id="r_a50574477cc4100bfe99d17e313b99d55"><td class="memItemLeft" align="right" valign="top"><a class="el" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__internal_8cc.html#a50574477cc4100bfe99d17e313b99d55">nnfw_train_export_circleplus</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, const char *path)</td></tr>
 <tr class="memdesc:a50574477cc4100bfe99d17e313b99d55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export circle+ model.  <br /></td></tr>
 <tr class="separator:a50574477cc4100bfe99d17e313b99d55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2b9fa5bdb1ce95b0e95de65bb8ad968" id="r_ab2b9fa5bdb1ce95b0e95de65bb8ad968"><td class="memItemLeft" align="right" valign="top"><a class="el" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nnfw__internal_8cc.html#ab2b9fa5bdb1ce95b0e95de65bb8ad968">nnfw_get_output</a> (<a class="el" href="structnnfw__session.html">nnfw_session</a> *session, uint32_t index, <a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *out_info, const void **out_buffer)</td></tr>
+<tr class="memdesc:ab2b9fa5bdb1ce95b0e95de65bb8ad968"><td class="mdescLeft">&#160;</td><td class="mdescRight">Python-binding-only API to retrieve a read-only output buffer and its tensor info.  <br /></td></tr>
+<tr class="separator:ab2b9fa5bdb1ce95b0e95de65bb8ad968"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a2254c17b16ddb9f9475d7488d6489a1c" name="a2254c17b16ddb9f9475d7488d6489a1c"></a>
@@ -199,6 +202,71 @@ Functions</h2></td></tr>
 <div class="ttc" id="annfw__internal_8cc_html_a2254c17b16ddb9f9475d7488d6489a1c"><div class="ttname"><a href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a></div><div class="ttdeci">#define NNFW_RETURN_ERROR_IF_NULL(p)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__internal_8cc_source.html#l00023">nnfw_internal.cc:23</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="nnfw__internal_8cc_source.html#l00023">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+</div>
+</div>
+<a id="ab2b9fa5bdb1ce95b0e95de65bb8ad968" name="ab2b9fa5bdb1ce95b0e95de65bb8ad968"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2b9fa5bdb1ce95b0e95de65bb8ad968">&#9670;&#160;</a></span>nnfw_get_output()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9">NNFW_STATUS</a> nnfw_get_output </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structnnfw__session.html">nnfw_session</a> *&#160;</td>
+          <td class="paramname"><em>session</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *&#160;</td>
+          <td class="paramname"><em>out_info</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void **&#160;</td>
+          <td class="paramname"><em>out_buffer</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Python-binding-only API to retrieve a read-only output buffer and its tensor info. </p>
+<p>After nnfw_run has been called, the session has already resized or allocated the internal output buffer to match the latest output dimensions. This API simply retrieves that internal buffer pointer and the corresponding tensor info without performing any allocation itself.</p>
+<p>Note: this function is intended for Python binding only. The buffer is managed internally by the session and must not be modified by the caller. In Python, wrap the pointer as a NumPy array and set array.flags.writeable = False to enforce read-only access.</p>
+<p>Important: To use this API, you must call nnfw_set_prepare_config(session, NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC, "true") before calling nnfw_prepare().</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>The session object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Output tensor index </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out_info</td><td>nnfw_tensorinfo to be filled with the latest shape/type information </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">out_buffer</td><td>Pointer to a const buffer managed by the session </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>NNFW_STATUS_NO_ERROR on success, otherwise an error code </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nnfw__internal_8cc_source.html#l00054">54</a> of file <a class="el" href="nnfw__internal_8cc_source.html">nnfw_internal.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
+<div class="line"><span class="lineno">   57</span>  <a class="code hl_define" href="nnfw__internal_8cc.html#a2254c17b16ddb9f9475d7488d6489a1c">NNFW_RETURN_ERROR_IF_NULL</a>(session);</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">session</a>-&gt;get_output(index, out_info, out_buffer);</div>
+<div class="line"><span class="lineno">   59</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="nnfw__internal_8cc_source.html#l00023">NNFW_RETURN_ERROR_IF_NULL</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">onert::api::python::NNFW_SESSION::get_output()</a>.</p>
 
 </div>
 </div>

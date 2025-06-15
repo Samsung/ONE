@@ -23,6 +23,7 @@ var arser_8h =
       [ "STR_VEC", "arser_8h.html#abbe725364b1f6a04159a827c03e01b06af2afa1ba939172df94f0dad0e91dc714", null ]
     ] ],
     [ "lexical_cast", "arser_8h.html#abb9caabe5c0a1dd97579184215299537", null ],
+    [ "lexical_cast", "arser_8h.html#a7b176a11d134e8076bd2fad036a030f8", null ],
     [ "lexical_cast", "arser_8h.html#a77c62ebf7719a674b840b1f08e356a58", null ],
     [ "make_comma_concatenated", "arser_8h.html#ab072c86a30c28e048440d4053545dc96", null ],
     [ "remove_dash", "arser_8h.html#af4b77c49b20e0190dc3ae188a1562829", null ],

@@ -144,12 +144,16 @@ Functions</h2></td></tr>
 <tr class="separator:a81dce2c684428f6f55f0d49eb0ea7e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74be3fcd518b32e2163b49ea40ceca8a" id="r_a74be3fcd518b32e2163b49ea40ceca8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html#a74be3fcd518b32e2163b49ea40ceca8a">bind_tensorinfo</a> (pybind11::module_ &amp;<a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>)</td></tr>
 <tr class="separator:a74be3fcd518b32e2163b49ea40ceca8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a987c15bcd44854042273847b5f497daa" id="r_a987c15bcd44854042273847b5f497daa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html#a987c15bcd44854042273847b5f497daa">bind_nnfw_enums</a> (pybind11::module_ &amp;<a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>)</td></tr>
+<tr class="separator:a987c15bcd44854042273847b5f497daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa356c33bec37978327ba209b95345f96" id="r_aa356c33bec37978327ba209b95345f96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html#aa356c33bec37978327ba209b95345f96">bind_nnfw_session</a> (py::module_ &amp;<a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>)</td></tr>
 <tr class="separator:aa356c33bec37978327ba209b95345f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5762ea5b6b3da6a09cc3f05c77e18b09" id="r_a5762ea5b6b3da6a09cc3f05c77e18b09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html#a5762ea5b6b3da6a09cc3f05c77e18b09">bind_experimental_nnfw_session</a> (py::module_ &amp;<a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>)</td></tr>
 <tr class="separator:a5762ea5b6b3da6a09cc3f05c77e18b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9cc399e5d4e296ae959c09a1697104a2" id="r_a9cc399e5d4e296ae959c09a1697104a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html#a9cc399e5d4e296ae959c09a1697104a2">bind_tensorinfo</a> (py::module_ &amp;<a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>)</td></tr>
 <tr class="separator:a9cc399e5d4e296ae959c09a1697104a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97f4c7bfb8cff35bb510f48f116a246e" id="r_a97f4c7bfb8cff35bb510f48f116a246e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1api_1_1python.html#a97f4c7bfb8cff35bb510f48f116a246e">bind_nnfw_enums</a> (py::module_ &amp;<a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>)</td></tr>
+<tr class="separator:a97f4c7bfb8cff35bb510f48f116a246e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a5762ea5b6b3da6a09cc3f05c77e18b09" name="a5762ea5b6b3da6a09cc3f05c77e18b09"></a>
@@ -168,49 +172,41 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nnfw__session__bindings_8cc_source.html#l00225">225</a> of file <a class="el" href="nnfw__session__bindings_8cc_source.html">nnfw_session_bindings.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  226</span>{</div>
-<div class="line"><span class="lineno">  227</span>  <span class="comment">// Add experimental APIs for the `NNFW_SESSION` class</span></div>
-<div class="line"><span class="lineno">  228</span>  <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>.attr(<span class="stringliteral">&quot;nnfw_session&quot;</span>)</div>
-<div class="line"><span class="lineno">  229</span>    .cast&lt;py::class_&lt;NNFW_SESSION&gt;&gt;()</div>
-<div class="line"><span class="lineno">  230</span>    .def(<span class="stringliteral">&quot;train_get_traininfo&quot;</span>, &amp;NNFW_SESSION::train_get_traininfo,</div>
-<div class="line"><span class="lineno">  231</span>         <span class="stringliteral">&quot;Retrieve training information for the model.&quot;</span>)</div>
-<div class="line"><span class="lineno">  232</span>    .def(<span class="stringliteral">&quot;train_set_traininfo&quot;</span>, &amp;NNFW_SESSION::train_set_traininfo, py::arg(<span class="stringliteral">&quot;info&quot;</span>),</div>
-<div class="line"><span class="lineno">  233</span>         <span class="stringliteral">&quot;Set training information for the model.&quot;</span>)</div>
-<div class="line"><span class="lineno">  234</span>    .def(<span class="stringliteral">&quot;train_prepare&quot;</span>, &amp;NNFW_SESSION::train_prepare, <span class="stringliteral">&quot;Prepare for training&quot;</span>)</div>
-<div class="line"><span class="lineno">  235</span>    .def(<span class="stringliteral">&quot;train&quot;</span>, &amp;NNFW_SESSION::train, py::arg(<span class="stringliteral">&quot;update_weights&quot;</span>) = <span class="keyword">true</span>,</div>
-<div class="line"><span class="lineno">  236</span>         <span class="stringliteral">&quot;Run a training step, optionally updating weights.&quot;</span>)</div>
-<div class="line"><span class="lineno">  237</span>    .def(<span class="stringliteral">&quot;train_get_loss&quot;</span>, &amp;NNFW_SESSION::train_get_loss, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
-<div class="line"><span class="lineno">  238</span>         <span class="stringliteral">&quot;Retrieve the training loss for a specific index.&quot;</span>)</div>
-<div class="line"><span class="lineno">  239</span>    .def(<span class="stringliteral">&quot;train_set_input&quot;</span>, &amp;NNFW_SESSION::train_set_input&lt;float&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
-<div class="line"><span class="lineno">  240</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set training input tensor for the given index (float).&quot;</span>)</div>
-<div class="line"><span class="lineno">  241</span>    .def(<span class="stringliteral">&quot;train_set_input&quot;</span>, &amp;NNFW_SESSION::train_set_input&lt;int&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
-<div class="line"><span class="lineno">  242</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set training input tensor for the given index (int).&quot;</span>)</div>
-<div class="line"><span class="lineno">  243</span>    .def(<span class="stringliteral">&quot;train_set_input&quot;</span>, &amp;NNFW_SESSION::train_set_input&lt;uint8_t&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
-<div class="line"><span class="lineno">  244</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set training input tensor for the given index (uint8).&quot;</span>)</div>
-<div class="line"><span class="lineno">  245</span>    .def(<span class="stringliteral">&quot;train_set_expected&quot;</span>, &amp;NNFW_SESSION::train_set_expected&lt;float&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
-<div class="line"><span class="lineno">  246</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set expected output tensor for the given index (float).&quot;</span>)</div>
-<div class="line"><span class="lineno">  247</span>    .def(<span class="stringliteral">&quot;train_set_expected&quot;</span>, &amp;NNFW_SESSION::train_set_expected&lt;int&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
-<div class="line"><span class="lineno">  248</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set expected output tensor for the given index (int).&quot;</span>)</div>
-<div class="line"><span class="lineno">  249</span>    .def(<span class="stringliteral">&quot;train_set_expected&quot;</span>, &amp;NNFW_SESSION::train_set_expected&lt;uint8_t&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
-<div class="line"><span class="lineno">  250</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set expected output tensor for the given index (uint8).&quot;</span>)</div>
-<div class="line"><span class="lineno">  251</span>    .def(<span class="stringliteral">&quot;train_set_output&quot;</span>, &amp;NNFW_SESSION::train_set_output&lt;float&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
-<div class="line"><span class="lineno">  252</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set output tensor for the given index (float).&quot;</span>)</div>
-<div class="line"><span class="lineno">  253</span>    .def(<span class="stringliteral">&quot;train_set_output&quot;</span>, &amp;NNFW_SESSION::train_set_output&lt;int&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
-<div class="line"><span class="lineno">  254</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set output tensor for the given index (int).&quot;</span>)</div>
-<div class="line"><span class="lineno">  255</span>    .def(<span class="stringliteral">&quot;train_set_output&quot;</span>, &amp;NNFW_SESSION::train_set_output&lt;uint8_t&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
-<div class="line"><span class="lineno">  256</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set output tensor for the given index (uint8).&quot;</span>)</div>
-<div class="line"><span class="lineno">  257</span>    .def(<span class="stringliteral">&quot;train_export_circle&quot;</span>, &amp;NNFW_SESSION::train_export_circle, py::arg(<span class="stringliteral">&quot;path&quot;</span>),</div>
-<div class="line"><span class="lineno">  258</span>         <span class="stringliteral">&quot;Export the trained model to a circle file.&quot;</span>)</div>
-<div class="line"><span class="lineno">  259</span>    .def(<span class="stringliteral">&quot;train_import_checkpoint&quot;</span>, &amp;NNFW_SESSION::train_import_checkpoint, py::arg(<span class="stringliteral">&quot;path&quot;</span>),</div>
-<div class="line"><span class="lineno">  260</span>         <span class="stringliteral">&quot;Import a training checkpoint from a file.&quot;</span>)</div>
-<div class="line"><span class="lineno">  261</span>    .def(<span class="stringliteral">&quot;train_export_checkpoint&quot;</span>, &amp;NNFW_SESSION::train_export_checkpoint, py::arg(<span class="stringliteral">&quot;path&quot;</span>),</div>
-<div class="line"><span class="lineno">  262</span>         <span class="stringliteral">&quot;Export the training checkpoint to a file.&quot;</span>);</div>
-<div class="line"><span class="lineno">  263</span>}</div>
+<p class="definition">Definition at line <a class="el" href="nnfw__session__bindings_8cc_source.html#l00229">229</a> of file <a class="el" href="nnfw__session__bindings_8cc_source.html">nnfw_session_bindings.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  236</span>{</div>
+<div class="line"><span class="lineno">  237</span>  <span class="comment">// Add experimental APIs for the `NNFW_SESSION` class</span></div>
+<div class="line"><span class="lineno">  238</span>  <a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>.attr(<span class="stringliteral">&quot;nnfw_session&quot;</span>)</div>
+<div class="line"><span class="lineno">  239</span>    .cast&lt;py::class_&lt;NNFW_SESSION&gt;&gt;()</div>
+<div class="line"><span class="lineno">  240</span>    .def(<span class="stringliteral">&quot;train_get_traininfo&quot;</span>, &amp;NNFW_SESSION::train_get_traininfo,</div>
+<div class="line"><span class="lineno">  241</span>         <span class="stringliteral">&quot;Retrieve training information for the model.&quot;</span>)</div>
+<div class="line"><span class="lineno">  242</span>    .def(<span class="stringliteral">&quot;train_set_traininfo&quot;</span>, &amp;NNFW_SESSION::train_set_traininfo, py::arg(<span class="stringliteral">&quot;info&quot;</span>),</div>
+<div class="line"><span class="lineno">  243</span>         <span class="stringliteral">&quot;Set training information for the model.&quot;</span>)</div>
+<div class="line"><span class="lineno">  244</span>    .def(<span class="stringliteral">&quot;train_prepare&quot;</span>, &amp;NNFW_SESSION::train_prepare, <span class="stringliteral">&quot;Prepare for training&quot;</span>)</div>
+<div class="line"><span class="lineno">  245</span>    .def(<span class="stringliteral">&quot;train&quot;</span>, &amp;NNFW_SESSION::train, py::arg(<span class="stringliteral">&quot;update_weights&quot;</span>) = <span class="keyword">true</span>,</div>
+<div class="line"><span class="lineno">  246</span>         <span class="stringliteral">&quot;Run a training step, optionally updating weights.&quot;</span>)</div>
+<div class="line"><span class="lineno">  247</span>    .def(<span class="stringliteral">&quot;train_get_loss&quot;</span>, &amp;NNFW_SESSION::train_get_loss, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
+<div class="line"><span class="lineno">  248</span>         <span class="stringliteral">&quot;Retrieve the training loss for a specific index.&quot;</span>)</div>
+<div class="line"><span class="lineno">  249</span>    .def(<span class="stringliteral">&quot;train_set_input&quot;</span>, &amp;NNFW_SESSION::train_set_input&lt;float&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
+<div class="line"><span class="lineno">  250</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set training input tensor for the given index (float).&quot;</span>)</div>
+<div class="line"><span class="lineno">  251</span>    .def(<span class="stringliteral">&quot;train_set_input&quot;</span>, &amp;NNFW_SESSION::train_set_input&lt;int&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
+<div class="line"><span class="lineno">  252</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set training input tensor for the given index (int).&quot;</span>)</div>
+<div class="line"><span class="lineno">  253</span>    .def(<span class="stringliteral">&quot;train_set_input&quot;</span>, &amp;NNFW_SESSION::train_set_input&lt;uint8_t&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
+<div class="line"><span class="lineno">  254</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set training input tensor for the given index (uint8).&quot;</span>)</div>
+<div class="line"><span class="lineno">  255</span>    .def(<span class="stringliteral">&quot;train_set_expected&quot;</span>, &amp;NNFW_SESSION::train_set_expected&lt;float&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
+<div class="line"><span class="lineno">  256</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set expected output tensor for the given index (float).&quot;</span>)</div>
+<div class="line"><span class="lineno">  257</span>    .def(<span class="stringliteral">&quot;train_set_expected&quot;</span>, &amp;NNFW_SESSION::train_set_expected&lt;int&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
+<div class="line"><span class="lineno">  258</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set expected output tensor for the given index (int).&quot;</span>)</div>
+<div class="line"><span class="lineno">  259</span>    .def(<span class="stringliteral">&quot;train_set_expected&quot;</span>, &amp;NNFW_SESSION::train_set_expected&lt;uint8_t&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
+<div class="line"><span class="lineno">  260</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set expected output tensor for the given index (uint8).&quot;</span>)</div>
+<div class="line"><span class="lineno">  261</span>    .def(<span class="stringliteral">&quot;train_set_output&quot;</span>, &amp;NNFW_SESSION::train_set_output&lt;float&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
+<div class="line"><span class="lineno">  262</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set output tensor for the given index (float).&quot;</span>)</div>
+<div class="line"><span class="lineno">  263</span>    .def(<span class="stringliteral">&quot;train_set_output&quot;</span>, &amp;NNFW_SESSION::train_set_output&lt;int&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
+<div class="line"><span class="lineno">  264</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set output tensor for the given index (int).&quot;</span>)</div>
+<div class="line"><span class="lineno">  265</span>    .def(<span class="stringliteral">&quot;train_set_output&quot;</span>, &amp;NNFW_SESSION::train_set_output&lt;uint8_t&gt;, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
+<div class="line"><span class="lineno">  266</span>         py::arg(<span class="stringliteral">&quot;buffer&quot;</span>), <span class="stringliteral">&quot;Set output tensor for the given index (uint8).&quot;</span>)</div>
+<div class="line"><span class="lineno">  267</span>    .def(<span class="stringliteral">&quot;train_export_circle&quot;</span>, &amp;NNFW_SESSION::train_export_circle, py::arg(<span class="stringliteral">&quot;path&quot;</span>),</div>
 <div class="ttc" id="a_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_html_aa73e018b04368e7afaded77ef0ac69db"><div class="ttname"><a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a></div><div class="ttdeci">std::mutex m</div><div class="ttdef"><b>Definition</b> <a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">NEGEMMMatrixAccumulateBiasesKernel.cpp:135</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00239">onert::api::python::NNFW_SESSION::train()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00263">onert::api::python::NNFW_SESSION::train_export_checkpoint()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00251">onert::api::python::NNFW_SESSION::train_export_circle()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00244">onert::api::python::NNFW_SESSION::train_get_loss()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">onert::api::python::NNFW_SESSION::train_get_traininfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00257">onert::api::python::NNFW_SESSION::train_import_checkpoint()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00237">onert::api::python::NNFW_SESSION::train_prepare()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00232">onert::api::python::NNFW_SESSION::train_set_traininfo()</a>.</p>
-
 </div>
 </div>
 <a id="a81dce2c684428f6f55f0d49eb0ea7e96" name="a81dce2c684428f6f55f0d49eb0ea7e96"></a>
@@ -221,6 +217,56 @@ Functions</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">void onert::api::python::bind_experimental_nnfw_session </td>
+          <td>(</td>
+          <td class="paramtype">pybind11::module_ &amp;&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper__pybind_8cc_source.html#l00027">PYBIND11_MODULE()</a>.</p>
+
+</div>
+</div>
+<a id="a97f4c7bfb8cff35bb510f48f116a246e" name="a97f4c7bfb8cff35bb510f48f116a246e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97f4c7bfb8cff35bb510f48f116a246e">&#9670;&#160;</a></span>bind_nnfw_enums() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::api::python::bind_nnfw_enums </td>
+          <td>(</td>
+          <td class="paramtype">py::module_ &amp;&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nnfw__tensorinfo__bindings_8cc_source.html#l00040">40</a> of file <a class="el" href="nnfw__tensorinfo__bindings_8cc_source.html">nnfw_tensorinfo_bindings.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
+<div class="line"><span class="lineno">   42</span>  <span class="comment">// Bind NNFW_TRAIN_LOSS</span></div>
+<div class="line"><span class="lineno">   43</span>  py::enum_&lt;NNFW_PREPARE_CONFIG&gt;(<a class="code hl_variable" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a>, <span class="stringliteral">&quot;prepare_config&quot;</span>, py::module_local())</div>
+<div class="line"><span class="lineno">   44</span>    .value(<span class="stringliteral">&quot;PREPARE_CONFIG_PROFILE&quot;</span>, <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98">NNFW_PREPARE_CONFIG_PROFILE</a>)</div>
+<div class="line"><span class="lineno">   45</span>    .value(<span class="stringliteral">&quot;ENABLE_INTERNAL_OUTPUT_ALLOC&quot;</span>, <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a1814ee5facd497c238f2af696ddf3d61">NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC</a>);</div>
+<div class="line"><span class="lineno">   46</span>}</div>
+<div class="ttc" id="annfw__experimental_8h_html_ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98"><div class="ttname"><a href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a12ee099db348147b56ef5a04bd5fff98">NNFW_PREPARE_CONFIG_PROFILE</a></div><div class="ttdeci">@ NNFW_PREPARE_CONFIG_PROFILE</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00626">nnfw_experimental.h:626</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_ae580e8c93ff80d9d50b0dc355c6fa581a1814ee5facd497c238f2af696ddf3d61"><div class="ttname"><a href="nnfw__experimental_8h.html#ae580e8c93ff80d9d50b0dc355c6fa581a1814ee5facd497c238f2af696ddf3d61">NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC</a></div><div class="ttdeci">@ NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00630">nnfw_experimental.h:630</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="nnfw__experimental_8h_source.html#l00630">NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC</a>, and <a class="el" href="nnfw__experimental_8h_source.html#l00626">NNFW_PREPARE_CONFIG_PROFILE</a>.</p>
+
+</div>
+</div>
+<a id="a987c15bcd44854042273847b5f497daa" name="a987c15bcd44854042273847b5f497daa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a987c15bcd44854042273847b5f497daa">&#9670;&#160;</a></span>bind_nnfw_enums() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::api::python::bind_nnfw_enums </td>
           <td>(</td>
           <td class="paramtype">pybind11::module_ &amp;&#160;</td>
           <td class="paramname"><em>m</em></td><td>)</td>
@@ -483,13 +529,17 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  218</span>         <span class="stringliteral">&quot;Parameters:\n&quot;</span></div>
 <div class="line"><span class="lineno">  219</span>         <span class="stringliteral">&quot;\tindex (int): Index of output\n&quot;</span></div>
 <div class="line"><span class="lineno">  220</span>         <span class="stringliteral">&quot;Returns:\n&quot;</span></div>
-<div class="line"><span class="lineno">  221</span>         <span class="stringliteral">&quot;\ttensorinfo: Tensor info (shape, type, etc)&quot;</span>);</div>
-<div class="line"><span class="lineno">  222</span>}</div>
-<div class="ttc" id="aclassonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n_html"><div class="ttname"><a href="classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html">onert::api::python::NNFW_SESSION</a></div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8h_source.html#l00123">nnfw_api_wrapper.h:124</a></div></div>
+<div class="line"><span class="lineno">  221</span>         <span class="stringliteral">&quot;\ttensorinfo: Tensor info (shape, type, etc)&quot;</span>)</div>
+<div class="line"><span class="lineno">  222</span>    .def(<span class="stringliteral">&quot;get_output&quot;</span>, &amp;NNFW_SESSION::get_output, py::arg(<span class="stringliteral">&quot;index&quot;</span>),</div>
+<div class="line"><span class="lineno">  223</span>         R<span class="stringliteral">&quot;pbdoc(</span></div>
+<div class="line"><span class="lineno">  224</span><span class="stringliteral">         Retrieve the internally-allocated dynamic output as a copy.</span></div>
+<div class="line"><span class="lineno">  225</span><span class="stringliteral">         Parameters:</span></div>
+<div class="line"><span class="lineno">  226</span><span class="stringliteral">             index (int): Index of the output tensor (0-indexed)</span></div>
+<div class="ttc" id="aclassonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n_html"><div class="ttname"><a href="classonert_1_1api_1_1python_1_1_n_n_f_w___s_e_s_s_i_o_n.html">onert::api::python::NNFW_SESSION</a></div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8h_source.html#l00124">nnfw_api_wrapper.h:125</a></div></div>
 <div class="ttc" id="anamespaceenco_html_a862eb4da6e8b0c8f2bf11c7a8df6d684"><div class="ttname"><a href="namespaceenco.html#a862eb4da6e8b0c8f2bf11c7a8df6d684">enco::session</a></div><div class="ttdeci">SessionID session(const coco::Module *m)</div><div class="ttdef"><b>Definition</b> <a href="enco_2core_2src_2_session_8cpp_source.html#l00048">Session.cpp:48</a></div></div>
 <div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00171">onert::api::python::NNFW_SESSION::input_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00195">onert::api::python::NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00178">onert::api::python::NNFW_SESSION::output_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00208">onert::api::python::NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00167">onert::api::python::NNFW_SESSION::prepare()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00168">onert::api::python::NNFW_SESSION::run()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00169">onert::api::python::NNFW_SESSION::run_async()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00185">onert::api::python::NNFW_SESSION::set_input_layout()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00156">onert::api::python::NNFW_SESSION::set_input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00190">onert::api::python::NNFW_SESSION::set_output_layout()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00170">onert::api::python::NNFW_SESSION::wait()</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">onert::api::python::NNFW_SESSION::get_output()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00171">onert::api::python::NNFW_SESSION::input_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00195">onert::api::python::NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00178">onert::api::python::NNFW_SESSION::output_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00208">onert::api::python::NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00167">onert::api::python::NNFW_SESSION::prepare()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00168">onert::api::python::NNFW_SESSION::run()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00169">onert::api::python::NNFW_SESSION::run_async()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00185">onert::api::python::NNFW_SESSION::set_input_layout()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00156">onert::api::python::NNFW_SESSION::set_input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00190">onert::api::python::NNFW_SESSION::set_output_layout()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00170">onert::api::python::NNFW_SESSION::wait()</a>.</p>
 
 </div>
 </div>
@@ -542,9 +592,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   37</span>      <span class="stringliteral">&quot;The dimension of tensor. Maximum rank is 6 (NNFW_MAX_RANK).&quot;</span>);</div>
 <div class="line"><span class="lineno">   38</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1api_1_1python_html_aa652dc981c526c117216b5174d4e8d9f"><div class="ttname"><a href="namespaceonert_1_1api_1_1python.html#aa652dc981c526c117216b5174d4e8d9f">onert::api::python::get_dims</a></div><div class="ttdeci">py::list get_dims(const tensorinfo &amp;tensor_info)</div><div class="ttdoc">Get nnfw_tensorinfo-&gt;dims.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8cc_source.html#l00117">nnfw_api_wrapper.cc:117</a></div></div>
-<div class="ttc" id="astructonert_1_1api_1_1python_1_1tensorinfo_html"><div class="ttname"><a href="structonert_1_1api_1_1python_1_1tensorinfo.html">onert::api::python::tensorinfo</a></div><div class="ttdoc">tensor info describes the type and shape of tensors</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8h_source.html#l00047">nnfw_api_wrapper.h:48</a></div></div>
+<div class="ttc" id="astructonert_1_1api_1_1python_1_1tensorinfo_html"><div class="ttname"><a href="structonert_1_1api_1_1python_1_1tensorinfo.html">onert::api::python::tensorinfo</a></div><div class="ttdoc">tensor info describes the type and shape of tensors</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8h_source.html#l00048">nnfw_api_wrapper.h:49</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api__wrapper_8h_source.html#l00050">onert::api::python::tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00117">get_dims()</a>, <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00052">onert::api::python::tensorinfo::rank</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00127">set_dims()</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api__wrapper_8h_source.html#l00051">onert::api::python::tensorinfo::dtype</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00117">get_dims()</a>, <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00053">onert::api::python::tensorinfo::rank</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00127">set_dims()</a>.</p>
 
 </div>
 </div>
@@ -631,7 +681,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00103">NNFW_STATUS_DEPRECATED_API</a>, <a class="el" href="onert-micro_8h_source.html#l00093">NNFW_STATUS_ERROR</a>, <a class="el" href="onert-micro_8h_source.html#l00101">NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE</a>, <a class="el" href="onert-micro_8h_source.html#l00097">NNFW_STATUS_INVALID_STATE</a>, <a class="el" href="onert-micro_8h_source.html#l00088">NNFW_STATUS_NO_ERROR</a>, <a class="el" href="onert-micro_8h_source.html#l00099">NNFW_STATUS_OUT_OF_MEMORY</a>, and <a class="el" href="onert-micro_8h_source.html#l00095">NNFW_STATUS_UNEXPECTED_NULL</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00151">onert::api::python::NNFW_SESSION::close_session()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00171">onert::api::python::NNFW_SESSION::input_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00195">onert::api::python::NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00136">onert::api::python::NNFW_SESSION::NNFW_SESSION()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00178">onert::api::python::NNFW_SESSION::output_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00208">onert::api::python::NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00167">onert::api::python::NNFW_SESSION::prepare()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00168">onert::api::python::NNFW_SESSION::run()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00169">onert::api::python::NNFW_SESSION::run_async()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00142">onert::api::python::NNFW_SESSION::set_input()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00185">onert::api::python::NNFW_SESSION::set_input_layout()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00156">onert::api::python::NNFW_SESSION::set_input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00156">onert::api::python::NNFW_SESSION::set_output()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00190">onert::api::python::NNFW_SESSION::set_output_layout()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00239">onert::api::python::NNFW_SESSION::train()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00263">onert::api::python::NNFW_SESSION::train_export_checkpoint()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00251">onert::api::python::NNFW_SESSION::train_export_circle()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00244">onert::api::python::NNFW_SESSION::train_get_loss()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">onert::api::python::NNFW_SESSION::train_get_traininfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00257">onert::api::python::NNFW_SESSION::train_import_checkpoint()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00237">onert::api::python::NNFW_SESSION::train_prepare()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00193">onert::api::python::NNFW_SESSION::train_set_expected()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00181">onert::api::python::NNFW_SESSION::train_set_input()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00206">onert::api::python::NNFW_SESSION::train_set_output()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00232">onert::api::python::NNFW_SESSION::train_set_traininfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00170">onert::api::python::NNFW_SESSION::wait()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00151">onert::api::python::NNFW_SESSION::close_session()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">onert::api::python::NNFW_SESSION::get_output()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00171">onert::api::python::NNFW_SESSION::input_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00195">onert::api::python::NNFW_SESSION::input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00136">onert::api::python::NNFW_SESSION::NNFW_SESSION()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00178">onert::api::python::NNFW_SESSION::output_size()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00208">onert::api::python::NNFW_SESSION::output_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00167">onert::api::python::NNFW_SESSION::prepare()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00168">onert::api::python::NNFW_SESSION::run()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00169">onert::api::python::NNFW_SESSION::run_async()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00143">onert::api::python::NNFW_SESSION::set_input()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00185">onert::api::python::NNFW_SESSION::set_input_layout()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00156">onert::api::python::NNFW_SESSION::set_input_tensorinfo()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00157">onert::api::python::NNFW_SESSION::set_output()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00190">onert::api::python::NNFW_SESSION::set_output_layout()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00257">onert::api::python::NNFW_SESSION::set_prepare_config()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00279">onert::api::python::NNFW_SESSION::train()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00303">onert::api::python::NNFW_SESSION::train_export_checkpoint()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00291">onert::api::python::NNFW_SESSION::train_export_circle()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00284">onert::api::python::NNFW_SESSION::train_get_loss()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00265">onert::api::python::NNFW_SESSION::train_get_traininfo()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00297">onert::api::python::NNFW_SESSION::train_import_checkpoint()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00277">onert::api::python::NNFW_SESSION::train_prepare()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00204">onert::api::python::NNFW_SESSION::train_set_expected()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00192">onert::api::python::NNFW_SESSION::train_set_input()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00217">onert::api::python::NNFW_SESSION::train_set_output()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00272">onert::api::python::NNFW_SESSION::train_set_traininfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00170">onert::api::python::NNFW_SESSION::wait()</a>.</p>
 
 </div>
 </div>
@@ -670,10 +720,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  123</span>  }</div>
 <div class="line"><span class="lineno">  124</span>  <span class="keywordflow">return</span> dims_list;</div>
 <div class="line"><span class="lineno">  125</span>}</div>
-<div class="ttc" id="astructonert_1_1api_1_1python_1_1tensorinfo_html_a0e7e50ec05793e58725df34aa8f61278"><div class="ttname"><a href="structonert_1_1api_1_1python_1_1tensorinfo.html#a0e7e50ec05793e58725df34aa8f61278">onert::api::python::tensorinfo::dims</a></div><div class="ttdeci">int32_t dims[NNFW_MAX_RANK]</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8h_source.html#l00057">nnfw_api_wrapper.h:57</a></div></div>
-<div class="ttc" id="astructonert_1_1api_1_1python_1_1tensorinfo_html_a45936e3deea0be2f489cded6d217041d"><div class="ttname"><a href="structonert_1_1api_1_1python_1_1tensorinfo.html#a45936e3deea0be2f489cded6d217041d">onert::api::python::tensorinfo::rank</a></div><div class="ttdeci">int32_t rank</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8h_source.html#l00052">nnfw_api_wrapper.h:52</a></div></div>
+<div class="ttc" id="astructonert_1_1api_1_1python_1_1tensorinfo_html_a0e7e50ec05793e58725df34aa8f61278"><div class="ttname"><a href="structonert_1_1api_1_1python_1_1tensorinfo.html#a0e7e50ec05793e58725df34aa8f61278">onert::api::python::tensorinfo::dims</a></div><div class="ttdeci">int32_t dims[NNFW_MAX_RANK]</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8h_source.html#l00058">nnfw_api_wrapper.h:58</a></div></div>
+<div class="ttc" id="astructonert_1_1api_1_1python_1_1tensorinfo_html_a45936e3deea0be2f489cded6d217041d"><div class="ttname"><a href="structonert_1_1api_1_1python_1_1tensorinfo.html#a45936e3deea0be2f489cded6d217041d">onert::api::python::tensorinfo::rank</a></div><div class="ttdeci">int32_t rank</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api__wrapper_8h_source.html#l00053">nnfw_api_wrapper.h:53</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api__wrapper_8h_source.html#l00057">onert::api::python::tensorinfo::dims</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00052">onert::api::python::tensorinfo::rank</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api__wrapper_8h_source.html#l00058">onert::api::python::tensorinfo::dims</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00053">onert::api::python::tensorinfo::rank</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__tensorinfo__bindings_8cc_source.html#l00027">bind_tensorinfo()</a>.</p>
 
@@ -777,7 +827,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00077">NNFW_TYPE_TENSOR_FLOAT32</a>, and <a class="el" href="onert-micro_8h_source.html#l00079">NNFW_TYPE_TENSOR_INT32</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00195">onert::api::python::NNFW_SESSION::input_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00208">onert::api::python::NNFW_SESSION::output_tensorinfo()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00225">onert::api::python::NNFW_SESSION::get_output()</a>, <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00195">onert::api::python::NNFW_SESSION::input_tensorinfo()</a>, and <a class="el" href="nnfw__api__wrapper_8cc_source.html#l00208">onert::api::python::NNFW_SESSION::output_tensorinfo()</a>.</p>
 
 </div>
 </div>
@@ -871,7 +921,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00133">nnfw_tensorinfo::dims</a>, and <a class="el" href="onert-micro_8h_source.html#l00128">nnfw_tensorinfo::rank</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8h_source.html#l00142">onert::api::python::NNFW_SESSION::set_input()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00156">onert::api::python::NNFW_SESSION::set_output()</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00206">onert::api::python::NNFW_SESSION::train_set_output()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnfw__api__wrapper_8h_source.html#l00143">onert::api::python::NNFW_SESSION::set_input()</a>, <a class="el" href="nnfw__api__wrapper_8h_source.html#l00157">onert::api::python::NNFW_SESSION::set_output()</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00217">onert::api::python::NNFW_SESSION::train_set_output()</a>.</p>
 
 </div>
 </div>
@@ -920,7 +970,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  133</span>  }</div>
 <div class="line"><span class="lineno">  134</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__api__wrapper_8h_source.html#l00057">onert::api::python::tensorinfo::dims</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00052">onert::api::python::tensorinfo::rank</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__api__wrapper_8h_source.html#l00058">onert::api::python::tensorinfo::dims</a>, and <a class="el" href="nnfw__api__wrapper_8h_source.html#l00053">onert::api::python::tensorinfo::rank</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__tensorinfo__bindings_8cc_source.html#l00027">bind_tensorinfo()</a>.</p>
 
