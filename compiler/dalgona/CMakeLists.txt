@@ -1,17 +1,14 @@
-# Temporary disable test, reenable after python upgrade is finished
-return()
-
-# NOTE find_package will try to use at least python3.8 as follows depending on platform version
-#   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
-#   Ubuntu20.04; default python3.8
+# NOTE find_package will try to use at least python3.10 as follows depending on platform version
+#   Ubuntu20.04; explictly installed python3.10 (default is python3.8)
 #   Ubuntu22.04; default python3.10
 #   Ubuntu24.04; default python3.12
 #   refer https://github.com/Samsung/ONE/issues/9962
+#   refer https://github.com/Samsung/ONE/issues/15226
 # NOTE Require same python version of common-artifacts
-# find python 3.8 or above
-find_package(Python 3.8 EXACT COMPONENTS Interpreter Development QUIET)
+# find python 3.10 or above
+find_package(Python 3.10 EXACT COMPONENTS Interpreter Development QUIET)
 if(NOT Python_FOUND)
-  find_package(Python 3.8 COMPONENTS Interpreter Development QUIET)
+  find_package(Python 3.10 COMPONENTS Interpreter Development QUIET)
 endif()
 
 if(NOT Python_Development_FOUND)
@@ -19,10 +16,8 @@ if(NOT Python_Development_FOUND)
   return()
 endif()
 
-# NOTE assume only use 3.8.x or 3.10.x or 3.12.x
-if((Python_VERSION VERSION_GREATER_EQUAL 3.8) AND (Python_VERSION VERSION_LESS 3.9))
-  set(PYTHON_VERSION_MINOR 8)
-elseif((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
+# NOTE assume only use 3.10.x or 3.12.x
+if((Python_VERSION VERSION_GREATER_EQUAL 3.10) AND (Python_VERSION VERSION_LESS 3.11))
   set(PYTHON_VERSION_MINOR 10)
 elseif((Python_VERSION VERSION_GREATER_EQUAL 3.12) AND (Python_VERSION VERSION_LESS 3.13))
   set(PYTHON_VERSION_MINOR 12)
