@@ -1,6 +1,3 @@
-# Temporary disable test, reenable after python upgrade is finished
-return()
-
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)
