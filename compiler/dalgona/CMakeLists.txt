@@ -1,3 +1,6 @@
+# Temporary disable test, reenable after python upgrade is finished
+return()
+
 # NOTE find_package will try to use at least python3.8 as follows depending on platform version
 #   Ubuntu18.04; explictly installed python3.8 (default is python3.6)
 #   Ubuntu20.04; default python3.8
