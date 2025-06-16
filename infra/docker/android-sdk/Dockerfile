@@ -27,7 +27,7 @@ RUN python3 -m pip install numpy flatbuffers
 # Install java for gradle and android sdk (and file for NDK internally used)
 ARG OPENJDK_VERSION=11
 RUN apt-get install -y openjdk-${OPENJDK_VERSION}-jdk file
-ENV JAVA_HOME /usr/lib/jvm/java-${OPENJDK_VERSION}-openjdk-amd64
+ENV JAVA_HOME=/usr/lib/jvm/java-${OPENJDK_VERSION}-openjdk-amd64
 
 # Setup user to match host user, and give superuser permissions
 ARG USER_ID=1000
@@ -56,7 +56,7 @@ RUN wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-$
 
 # download and install Android SDK
 # https://developer.android.com/studio#command-tools
-ENV ANDROID_HOME /opt/android-tools/android-sdk
+ENV ANDROID_HOME=/opt/android-tools/android-sdk
 RUN wget -q -O commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-linux-6514223_latest.zip
 
 # Unzip bootstrap cmdline-tools (old version) to tmp dir and install cmdline-tools (latest openjdk supporting version)
@@ -73,9 +73,9 @@ RUN ${ANDROID_HOME}/cmdline-tools/${CMDTOOLS_VERSION}/bin/sdkmanager --sdk_root=
 RUN ${ANDROID_HOME}/cmdline-tools/${CMDTOOLS_VERSION}/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platform-tools"
 
 # Env variable for android build (ndk, gradle)
-ENV NDK_DIR ${ANDROID_HOME}/ndk/${NDK_VERSION}
-ENV GRADLE_HOME /opt/android-tools/gradle
-ENV PATH ${PATH}:${GRADLE_HOME}/bin:${ANDROID_HOME}/cmdline-tools/${CMDTOOLS_VERSION}/bin:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
+ENV NDK_DIR=${ANDROID_HOME}/ndk/${NDK_VERSION}
+ENV GRADLE_HOME=/opt/android-tools/gradle
+ENV PATH=${PATH}:${GRADLE_HOME}/bin:${ANDROID_HOME}/cmdline-tools/${CMDTOOLS_VERSION}/bin:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
 
 # setup adb server
 EXPOSE 5037
