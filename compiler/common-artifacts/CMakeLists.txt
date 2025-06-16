@@ -59,21 +59,7 @@ endif()
 # NOTE `tensorflow-cpu` package is not available for aarch64, so we use `tensorflow` package.
 # NOTE refer https://github.com/Samsung/ONE/issues/15226 for versions
 set(PY_PKG_LIST )
-if (PYTHON_VERSION_MINOR EQUAL 8)
-  # python3.8; Ubuntu 18.04, 20.04
-  if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-    list(APPEND PY_PKG_LIST "tensorflow==2.12.1")
-  else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-    list(APPEND PY_PKG_LIST "tensorflow-cpu==2.12.1")
-  endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  list(APPEND PY_PKG_LIST "flatbuffers==23.5.26")
-  list(APPEND PY_PKG_LIST "protobuf==4.23.3")
-  list(APPEND PY_PKG_LIST "pydot==1.4.2")
-  list(APPEND PY_PKG_LIST "pytest==7.4.3")
-  list(APPEND PY_PKG_LIST "h5py==3.11.0")
-  list(APPEND PY_PKG_LIST "cffi==1.16.0")
-  list(APPEND PY_PKG_LIST "numpy==1.24.3")
-elseif (PYTHON_VERSION_MINOR EQUAL 10)
+if (PYTHON_VERSION_MINOR EQUAL 10)
   # python 3.10; Ubuntu 22.04
   # TF2.19.0 release at 2025-03-12
   if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
