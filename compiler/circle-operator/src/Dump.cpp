@@ -24,6 +24,29 @@
 namespace
 {
 
+// TODO handle multiple outputs case
+const circle::Tensor *get_output_tensor(mio::circle::Reader &reader, const circle::Operator *op)
+{
+  const auto tensors = reader.tensors();
+  const auto output_tensors = reader.outputs(op);
+  const auto output = output_tensors.at(0);
+  return tensors->Get(output);
+}
+
+void dump_shape(std::ostream &os, const ::flatbuffers::Vector<int32_t> *shape)
+{
+  os << "[";
+  for (uint32_t i = 0; i < shape->size(); ++i)
+  {
+    os << shape->Get(i);
+    if (i < shape->size() - 1)
+    {
+      os << ",";
+    }
+  }
+  os << "]";
+}
+
 void dump_ops(std::ostream &os, mio::circle::Reader &reader, const cirops::DumpOption &option)
 {
   auto ops = reader.operators();
@@ -44,19 +67,19 @@ void dump_ops(std::ostream &os, mio::circle::Reader &reader, const cirops::DumpO
       const auto op_name = reader.opcode_name(op);
       os << op_name;
     }
+
     if (option.names)
     {
-      // TODO multiple outputs?
-      const auto tensors = reader.tensors();
-      const auto output_tensors = reader.outputs(op);
-      const auto output = output_tensors.at(0);
-      const auto tensor = tensors->Get(output);
-      const std::string name = mio::circle::tensor_name(tensor);
-      if (option.codes)
-      {
-        os << ",";
-      }
-      os << name;
+      const std::string name = mio::circle::tensor_name(get_output_tensor(reader, op));
+      os << (option.codes ? "," : "") << name;
+    }
+
+    if (option.shapes)
+    {
+      os << (option.codes || option.names ? "," : "");
+      auto const out_tensor = get_output_tensor(reader, op);
+      dump_shape(os, (nullptr == out_tensor->shape_signature()) ? out_tensor->shape()
+                                                                : out_tensor->shape());
     }
     os << std::endl;
   }
