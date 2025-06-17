@@ -9,7 +9,7 @@ Markdown==3.2.1
 mock==4.0.2
 numpy==1.18.2
 pkg-resources==0.0.0
-protobuf==3.11.3
+protobuf==4.25.8
 six==1.14.0
 tensorboard==1.13.1
 tensorflow==1.13.1
