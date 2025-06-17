@@ -1,0 +1,10 @@
+# This checks if:
+#   Mul(FC(input, weights, _), other)
+# is converted to:
+#   FC(input, Mul(weights, other), _)
+# and `other` is (1x1x1x1) scalar.
+
+RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
+
+RULE    "NO_MUL"                  $(op_count MUL) '=' 0
+RULE    "FC_EXIST"                $(op_count FULLY_CONNECTED) '=' 1
