@@ -45,14 +45,6 @@ if [ ! -f ${VENV_ACTIVATE} ]; then
   ${PYTHON3_EXEC} -m venv "${DRIVER_PATH}/venv"
 fi
 
-# load DISTRIB_CODENAME value from lsb-release file.
-# this should exist for all Ubuntu.
-if [ ! -f "/etc/lsb-release" ]; then
-  echo "Error one-prepare-venv: /etc/lsb-release file not found"
-  exit 1
-fi
-source /etc/lsb-release
-
 # NOTE version
 # - https://github.com/onnx/onnx/blob/master/docs/Versioning.md
 # - https://github.com/onnx/onnx-tensorflow/blob/master/Versioning.md
