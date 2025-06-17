@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# NOTE check if we can use python3.8 for Ubuntu 18.04.
-# use +e as python3.8 may not exist in the system and 'command' will return error.
+# NOTE check if we can use python3.10 for Ubuntu 20.04.
+# use +e as python3.10 may not exist in the system and 'command' will return error.
 set +e
 
-PYTHON_CANDIDATES=("python3.12" "python3.10" "python3.8" "python3")
+PYTHON_CANDIDATES=("python3.12" "python3.10" "python3")
 for py in "${PYTHON_CANDIDATES[@]}"; do
   PYTHON3_EXEC=$(command -v "$py")
   if [[ -n "${PYTHON3_EXEC}" ]]; then
@@ -70,9 +70,7 @@ VER_NUMPY=1.24.3
 
 PYTHON_VER=$(${PYTHON3_EXEC} -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
 echo "Setting package version for python $PYTHON_VER"
-if [[ "$PYTHON_VER" == "3.8" ]]; then
-  : # use as is
-elif [[ "$PYTHON_VER" == "3.10" ]]; then
+if [[ "$PYTHON_VER" == "3.10" ]]; then
   : # TODO change vesions
 elif [[ "$PYTHON_VER" == "3.12" ]]; then
   : # TODO change vesions
