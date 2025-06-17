@@ -187,11 +187,6 @@ void NNFW_SESSION::set_input_layout(uint32_t index, const char *layout)
   NNFW_LAYOUT nnfw_layout = getLayout(layout);
   ensure_status(nnfw_set_input_layout(session, index, nnfw_layout));
 }
-void NNFW_SESSION::set_output_layout(uint32_t index, const char *layout)
-{
-  NNFW_LAYOUT nnfw_layout = getLayout(layout);
-  ensure_status(nnfw_set_output_layout(session, index, nnfw_layout));
-}
 tensorinfo NNFW_SESSION::input_tensorinfo(uint32_t index)
 {
   nnfw_tensorinfo tensor_info = nnfw_tensorinfo();
