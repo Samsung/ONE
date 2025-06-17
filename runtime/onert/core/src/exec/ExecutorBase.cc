@@ -17,6 +17,7 @@
 #include "ExecutorBase.h"
 
 #include "util/ConfigSource.h"
+#include <algorithm>
 #include <misc/polymorphic_downcast.h>
 
 namespace onert::exec
@@ -33,9 +34,8 @@ ExecutorBase::ExecutorBase(std::unique_ptr<compiler::LoweredGraph> &&lowered_gra
     assert(tensors.empty());
     for (auto &&ind : ind_seq)
     {
-      backend::ITensor *tensor = tensor_regs.getITensor(ind);
-      assert(tensor != nullptr);
-      auto io_tensor = nnfw::misc::polymorphic_downcast<backend::builtin::IOTensor *>(tensor);
+      backend::builtin::IOTensor *io_tensor = tensor_regs.getIOTensor(ind);
+      assert(io_tensor != nullptr);
       tensors.push_back(io_tensor);
     }
   };
@@ -73,13 +73,22 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
     assert(output->buffer() != nullptr || output->get_info().total_size() == 0);
     auto output_tensor = _output_tensors[n];
     assert(output_tensor != nullptr);
-    output_tensor->setTensor(output);
+    if (!output_tensor->hasBackendTensor())
+      output_tensor->setTensor(output);
   }
 
   // Create observee
   ExecutionObservee subject(_observers, options);
 
   executeImpl(subject);
+
+  for (uint32_t n = 0; n < outputs.size(); ++n)
+  {
+    auto output_tensor = _output_tensors[n];
+    assert(output_tensor != nullptr);
+    if (output_tensor->hasBackendTensor())
+      output_tensor->syncInfoFromBackendTensor();
+  }
 }
 
 bool ExecutorBase::hasDynamicInput()

@@ -56,6 +56,11 @@ const void *TrainableExecutors::outputBuffer(const ir::IOIndex &index) const
   return static_cast<const void *>(entryExecutor()->outputBuffer(index.value()));
 }
 
+const backend::IPortableTensor *TrainableExecutors::outputTensor(const ir::IOIndex &index) const
+{
+  return entryExecutor()->outputTensor(index.value());
+}
+
 void TrainableExecutors::execute(const ExecutionContext &ctx)
 {
   if (_executors.size() > 1)

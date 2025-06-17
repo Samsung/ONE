@@ -122,6 +122,13 @@ struct IExecutor
   virtual const uint8_t *outputBuffer(uint32_t index) const = 0;
 
   /**
+   * @brief     Get output tensor at index
+   * @param[in] index Index of output
+   * @return    Output tensor
+   */
+  virtual const backend::IPortableTensor *outputTensor(uint32_t index) const = 0;
+
+  /**
    * @brief   Return current execution configuration
    * @return  Current execution configuration
    */

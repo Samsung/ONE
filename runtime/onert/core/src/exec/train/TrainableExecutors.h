@@ -65,6 +65,8 @@ public:
 
   const void *outputBuffer(const ir::IOIndex &index) const final;
 
+  const backend::IPortableTensor *outputTensor(const ir::IOIndex &index) const final;
+
   void execute(const ExecutionContext &ctx) override;
 
   /**

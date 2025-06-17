@@ -16,6 +16,8 @@
 
 #include "MultiModelExecutors.h"
 
+#include "../backend/builtin/IOTensor.h"
+
 namespace
 {
 
@@ -88,6 +90,13 @@ const void *MultiModelExecutors::outputBuffer(const ir::IOIndex &index) const
   auto const [model_index, subg_index, io_index] = _model_edges->pkg_outputs[index.value()];
   auto const executor = at(model_index, subg_index);
   return static_cast<const void *>(executor->outputBuffer(index.value()));
+}
+
+const backend::IPortableTensor *MultiModelExecutors::outputTensor(const ir::IOIndex &index) const
+{
+  auto const [model_index, subg_index, io_index] = _model_edges->pkg_outputs[index.value()];
+  auto const executor = at(model_index, subg_index);
+  return executor->outputTensor(io_index.value());
 }
 
 // Allow below edges only
@@ -359,6 +368,16 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
 
 void MultiModelExecutors::execute(const ExecutionContext &ctx)
 {
+  // TODO: Enable to skip setting user tensor into IOTensor
+  for (uint32_t i = 0; i < _model_edges->pkg_outputs.size(); ++i)
+  {
+    const auto output_io_tensor =
+      dynamic_cast<const backend::builtin::IOTensor *>(outputTensor(ir::IOIndex{i}));
+    if (output_io_tensor->hasBackendTensor())
+      throw std::runtime_error(
+        "MultiModelExecutors does not support allocating output tensors internally");
+  }
+
   auto &desc = ctx.desc;
 
   // Check supported multi model package
