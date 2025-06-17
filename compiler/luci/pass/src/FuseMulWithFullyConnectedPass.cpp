@@ -29,8 +29,21 @@ namespace
   if (not(cond))                  \
     return false;
 
+inline bool is_effectively_scalar_shape(const luci::CircleConst *node)
+{
+  if (node->size<loco::DataType::FLOAT32>() != 1)
+    return false;
+  auto const rank = node->rank();
+  for (uint32_t i = 0; i < rank; i++)
+    if (node->dim(i).value() != 1)
+      return false;
+  return true;
+}
+
 inline bool is_single_element(const luci::CircleConst *node)
 {
+  if (is_effectively_scalar_shape(node))
+    return true;
   return ((node->rank() == 1 || node->rank() == 0) && node->size<loco::DataType::FLOAT32>() == 1);
 }
 
@@ -174,7 +187,8 @@ bool fuse_mul_with_fc(luci::CircleMul *mul)
     for (uint32_t i = 0; i < rank - 1; i++)
       RETURN_FALSE_UNLESS(multiplication->dim(i).value() == 1);
     // Check the last dimesion of Mul is the same with the first dimension of FullyConnected
-    RETURN_FALSE_UNLESS(multiplication->dim(rank - 1) == weights->dim(0));
+    RETURN_FALSE_UNLESS(multiplication->dim(rank - 1) == weights->dim(0) ||
+                        is_effectively_scalar_shape(multiplication));
   }
   // 1-D or scalar case:
   else if (multiplication->rank() == 1)
