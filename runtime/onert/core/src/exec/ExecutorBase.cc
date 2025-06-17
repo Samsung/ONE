@@ -70,9 +70,10 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
   for (uint32_t n = 0; n < outputs.size(); ++n)
   {
     const auto output = outputs[n];
-    assert(output->buffer() != nullptr || output->get_info().total_size() == 0);
     auto output_tensor = _output_tensors[n];
     assert(output_tensor != nullptr);
+    assert(output->buffer() != nullptr || output->get_info().total_size() == 0 ||
+           output_tensor->hasBackendTensor());
     if (!output_tensor->hasBackendTensor())
       output_tensor->setTensor(output);
   }
@@ -87,7 +88,10 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
     auto output_tensor = _output_tensors[n];
     assert(output_tensor != nullptr);
     if (output_tensor->hasBackendTensor())
+    {
+      assert(output_tensor->buffer() != nullptr);
       output_tensor->syncInfoFromBackendTensor();
+    }
   }
 }
 

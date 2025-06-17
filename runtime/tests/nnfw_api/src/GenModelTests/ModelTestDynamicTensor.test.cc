@@ -471,6 +471,113 @@ TEST(TestDynamicTensor, set_input_tensorinfo_after_compilation_neg)
   verifyOutput(session, {NNFW_TYPE_TENSOR_FLOAT32, 2, {20, 50}}, expected_output, actual_output);
 }
 
+TEST(TestDynamicTensor, get_dynamic_output_buffer)
+{
+  nnfw_session *session = nullptr;
+
+  // Build the dynamic reshape model
+  auto model_buf = build_dynamic_Reshape();
+  const std::vector<float> expected{-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
+
+  // Create and prepare session with internal output allocation
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, model_buf.buffer(), model_buf.size()));
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
+
+  // Enable internal dynamic output allocation
+  NNFW_ENSURE_SUCCESS(nnfw_set_prepare_config(session, NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC, "true"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
+
+  // Set input shape and data
+  nnfw_tensorinfo shape_tensorinfo;
+  NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(session, 0, &shape_tensorinfo));
+  shape_tensorinfo.rank = 1;
+  shape_tensorinfo.dims[0] = 3;
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &shape_tensorinfo));
+  std::vector<int> shape_dims = {1, 3, 2};
+  NNFW_ENSURE_SUCCESS(nnfw_set_input(session, 0, nnfw_type<int>::dtype, shape_dims.data(),
+                                     sizeof(int) * shape_dims.size()));
+
+  // Run inference
+  NNFW_ENSURE_SUCCESS(nnfw_run(session));
+
+  // Retrieve dynamic output buffer and info
+  nnfw_tensorinfo info;
+  const void *out_buffer = nullptr;
+  NNFW_STATUS status = nnfw_get_output(session, 0, &info, &out_buffer);
+  EXPECT_EQ(status, NNFW_STATUS_NO_ERROR);
+
+  // Buffer must not be null
+  ASSERT_NE(out_buffer, nullptr);
+
+  // Check tensorinfo matches expected reshape dimensions
+  EXPECT_EQ(info.dtype, NNFW_TYPE_TENSOR_FLOAT32);
+  EXPECT_EQ(info.rank, 3u);
+  EXPECT_EQ(info.dims[0], 1u);
+  EXPECT_EQ(info.dims[1], 3u);
+  EXPECT_EQ(info.dims[2], 2u);
+
+  // output value check
+  for (int i = 0; i < expected.size(); i++)
+  {
+    const auto actual = static_cast<const float *>(out_buffer);
+    ASSERT_FLOAT_EQ(expected[i], actual[i]);
+  }
+
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
+}
+
+TEST(TestDynamicTensor, neg_get_dynamic_output_without_internal_alloc)
+{
+  nnfw_session *session = nullptr;
+  auto model_buf = build_dynamic_Reshape();
+
+  // Create and prepare session *without* internal output alloc
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, model_buf.buffer(), model_buf.size()));
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
+
+  std::vector<int> shape_dims = {3, 2};
+  NNFW_ENSURE_SUCCESS(nnfw_set_input(session, 0, nnfw_type<int>::dtype, shape_dims.data(),
+                                     sizeof(int) * shape_dims.size()));
+
+  // Attempt to retrieve dynamic output -- should fail because we didn't enable it
+  nnfw_tensorinfo info;
+  const void *out_buffer = nullptr;
+  NNFW_STATUS status = nnfw_get_output(session, 0, &info, &out_buffer);
+  EXPECT_NE(status, NNFW_STATUS_ERROR);
+
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
+}
+
+TEST(TestDynamicTensor, neg_get_dynamic_output_out_of_range)
+{
+  nnfw_session *session = nullptr;
+  auto model_buf = build_dynamic_Reshape();
+
+  // Enable internal output alloc and run normally
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, model_buf.buffer(), model_buf.size()));
+  NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
+  NNFW_ENSURE_SUCCESS(nnfw_set_prepare_config(session, NNFW_ENABLE_INTERNAL_OUTPUT_ALLOC, "true"));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
+
+  std::vector<int> shape_dims = {3, 2};
+  NNFW_ENSURE_SUCCESS(nnfw_set_input(session, 0, nnfw_type<int>::dtype, shape_dims.data(),
+                                     sizeof(int) * shape_dims.size()));
+
+  NNFW_ENSURE_SUCCESS(nnfw_run(session));
+
+  // Attempt to retrieve with an invalid index
+  nnfw_tensorinfo info;
+  const void *out_buffer = nullptr;
+  NNFW_STATUS status = nnfw_get_output(session, /*invalid index*/ 1, &info, &out_buffer);
+  EXPECT_EQ(status, NNFW_STATUS_ERROR);
+
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
+}
+
 using TestWhileDynamicModelLoaded = ValidationTestModelLoaded<NNPackages::WHILE_DYNAMIC>;
 
 // clang-format off
