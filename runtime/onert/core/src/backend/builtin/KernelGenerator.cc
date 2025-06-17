@@ -96,11 +96,7 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
   // Add PermuteLayer
   std::vector<ITensor *> output_tensors{getTensor(output_index)};
   std::vector<ITensor *> input_tensors{getTensor(input_index)};
-  std::vector<ir::PermuteType> permute_types;
-
-  // Layout in graph is always NHWC, so layout is not changed
-  for (uint32_t i = 0; i < input_tensors.size(); i++)
-    permute_types.emplace_back(ir::PermuteType::COPY);
+  std::vector<ir::PermuteType> permute_types{node.getPermuteType()};
 
   auto fn = std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, permute_types,
                                                    _external_context);
