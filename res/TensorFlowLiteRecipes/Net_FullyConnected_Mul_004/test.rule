@@ -2,7 +2,7 @@
 #   Mul(FC(input, weights, _), other)
 # is converted to:
 #   FC(input, Mul(weights, other), _)
-# and `other` is (1x1x1x1) scalar.
+# and `other` is (1x1x1) scalar.
 
 RULE    "VERIFY_FILE_FORMAT"      $(verify_file_format) '=' 1
 
