@@ -147,6 +147,10 @@ void Execution::execute()
       const auto &output = _ctx.desc.outputs.at(i);
       if (!is_managed_internally && output->info.total_size() > output->size)
         throw std::runtime_error{"Too small output buffer length"};
+      if (is_managed_internally && output->buffer != nullptr)
+        VERBOSE(Execution) << "Warning: Output buffer was set from API even though the output "
+                              "tensor was allocated internally"
+                           << std::endl;
     }
   }
 

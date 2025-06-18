@@ -314,7 +314,7 @@ void bindInternalOutputTensors(const compiler::ILoweredGraph &lgraph,
     else
     {
       auto io_tensor = tensor_regs.getIOTensor(idx);
-      io_tensor->setTensor(backend_tensor);
+      io_tensor->setBackendTensor(backend_tensor);
     }
   }
 }
