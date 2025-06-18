@@ -63,7 +63,7 @@ def benchmark_inference(nnpackage_path: str, backends: str, input_shapes: List[L
         shape = tuple(info.dims[:info.rank])
         dummy_inputs.append(np.random.rand(*shape).astype(info.dtype))
 
-    prepare = total_io = total_run = 0.0
+    prepare = total_input = total_output = total_run = 0.0
 
     # Warmup runs
     prepare_kb = 0
@@ -78,8 +78,9 @@ def benchmark_inference(nnpackage_path: str, backends: str, input_shapes: List[L
     for _ in range(repeat):
         outputs, metrics = sess.infer(dummy_inputs, measure=True)
         del outputs
-        total_io += metrics["io_time_ms"]
+        total_input += metrics["input_time_ms"]
         total_run += metrics["run_time_ms"]
+        total_output += metrics["output_time_ms"]
 
     execute_kb = get_memory_usage_mb() * 1024 - mem_before_kb
 
@@ -87,7 +88,7 @@ def benchmark_inference(nnpackage_path: str, backends: str, input_shapes: List[L
     print(f"- Warmup runs   : 3")
     print(f"- Measured runs : {repeat}")
     print(f"- Prepare       : {prepare:.3f} ms")
-    print(f"- Avg I/O       : {total_io / repeat:.3f} ms")
+    print(f"- Avg I/O       : {(total_input + total_output) / repeat:.3f} ms")
     print(f"- Avg Run       : {total_run / repeat:.3f} ms")
     print("===================================")
     print("RSS")

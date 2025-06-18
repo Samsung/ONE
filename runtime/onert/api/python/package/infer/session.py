@@ -4,7 +4,7 @@ import time
 import warnings
 from contextlib import contextmanager
 
-from ..native.libnnfw_api_pybind import infer, tensorinfo
+from ..native.libnnfw_api_pybind import infer, prepare_config, tensorinfo
 from ..native.libnnfw_api_pybind.exception import OnertError
 from ..common.basesession import BaseSession
 
@@ -32,7 +32,7 @@ class session(BaseSession):
     ) -> Union[List[np.ndarray], Tuple[List[np.ndarray], Dict[str, float]]]:
         """
         Run a complete inference cycle:
-         - If the session has not been prepared or outputs have not been set, call prepare() and set_outputs().
+         - If the session has not been prepared or outputs have not been set, call prepare().
          - Automatically configure input buffers based on the provided numpy arrays.
          - Execute the inference session.
          - Return the output tensors with proper multi-dimensional shapes.
@@ -59,7 +59,7 @@ class session(BaseSession):
                 f"Expected {expected_input_size} input(s), but received {len(inputs_array)}."
             )
 
-        # Check if the session is prepared. If not, call prepare() and set_outputs() once.
+        # Check if the session is prepared. If not, call prepare() once.
         if not self._prepared:
             try:
                 with self._time_block(metrics, 'prepare_time_ms', measure):
@@ -93,8 +93,9 @@ class session(BaseSession):
                     # Update tensorinfo to optimize using it
                     self._update_inputs_tensorinfo(fixed_infos)
 
+                    self.session.set_prepare_config(
+                        prepare_config.ENABLE_INTERNAL_OUTPUT_ALLOC)
                     self.session.prepare()
-                    self.set_outputs(self.session.output_size())
                     self._prepared = True
             except ValueError:
                 raise
@@ -103,7 +104,7 @@ class session(BaseSession):
 
         # Configure input buffers using the current session's input size and provided data.
         try:
-            with self._time_block(metrics, 'io_time_ms', measure):
+            with self._time_block(metrics, 'input_time_ms', measure):
                 self.set_inputs(expected_input_size, inputs_array)
         except ValueError:
             raise
@@ -119,10 +120,16 @@ class session(BaseSession):
         except Exception as e:
             raise OnertError(f"Inference execution failed: {e}") from e
 
-        # TODO: Support dynamic shapes for outputs.
+        try:
+            with self._time_block(metrics, 'output_time_ms', measure):
+                self._set_outputs(self.session.output_size())
+        except ValueError:
+            raise
+        except Exception as e:
+            raise OnertError(f"Failed to bind outputs: {e}") from e
 
         # Return the output buffers.
-        return (self.outputs.copy(), metrics) if measure else self.outputs.copy()
+        return (self.outputs, metrics) if measure else self.outputs
 
     def _update_inputs_tensorinfo(self, new_infos: List[tensorinfo]) -> None:
         """

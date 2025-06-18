@@ -131,6 +131,16 @@ class BaseSession:
                 input_array = np.zeros((num_elems(input_tensorinfo)),
                                        dtype=input_tensorinfo.dtype)
 
+            # Check if the shape of input_array matches the dims of input_tensorinfo
+            if input_array.shape != tuple(input_tensorinfo.dims):
+                # If not, set the input tensor info to match the input_array shape
+                try:
+                    input_tensorinfo.rank = len(input_array)
+                    input_tensorinfo.dims = list(input_array.shape)
+                    self.session.set_input_tensorinfo(i, input_tensorinfo)
+                except Exception as e:
+                    raise OnertError(f"Failed to set input tensor info #{i}: {e}") from e
+
             try:
                 self.session.set_input(i, input_array)
             except ValueError:
@@ -140,7 +150,7 @@ class BaseSession:
 
             self.inputs.append(input_array)
 
-    def set_outputs(self, size):
+    def _set_outputs(self, size):
         """
         Set the output tensors for the session.
 
@@ -159,20 +169,11 @@ class BaseSession:
         self.outputs = []
         for i in range(size):
             try:
-                output_tensorinfo = self.session.output_tensorinfo(i)
+                output_array = self.session.get_output(i)
             except ValueError:
                 raise
             except Exception as e:
-                raise OnertError(f"Failed to get output tensorinfo #{i}: {e}") from e
-            output_array = np.zeros((num_elems(output_tensorinfo)),
-                                    dtype=output_tensorinfo.dtype)
-
-            try:
-                self.session.set_output(i, output_array)
-            except ValueError:
-                raise
-            except Exception as e:
-                raise OnertError(f"Failed to set output #{i}: {e}") from e
+                raise OnertError(f"Failed to get output #{i}: {e}") from e
 
             self.outputs.append(output_array)
 
