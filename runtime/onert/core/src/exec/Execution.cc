@@ -46,6 +46,9 @@ Execution::Execution(const std::shared_ptr<IExecutors> &executors) : _executors{
   {
     const auto output_tensor =
       dynamic_cast<const backend::builtin::IOTensor *>(executors->outputTensor(ir::IOIndex{i}));
+    if (!output_tensor)
+      throw std::runtime_error("Output tensor must be IOTensor");
+
     _is_internal_output_tensor.at(i) = output_tensor->hasBackendTensor();
   }
 

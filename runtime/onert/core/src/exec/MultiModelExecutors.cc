@@ -373,6 +373,8 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
   {
     const auto output_io_tensor =
       dynamic_cast<const backend::builtin::IOTensor *>(outputTensor(ir::IOIndex{i}));
+    if (!output_io_tensor)
+      throw std::runtime_error{"Output tensor must be IOTensor"};
     if (output_io_tensor->hasBackendTensor())
       throw std::runtime_error(
         "MultiModelExecutors does not support allocating output tensors internally");
