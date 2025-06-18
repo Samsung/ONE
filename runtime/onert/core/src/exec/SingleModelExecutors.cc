@@ -124,9 +124,11 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
   for (uint32_t i = 0; i < outputs.size(); i++)
   {
     auto &desc = ctx.desc.outputs[i];
-    bool skip_set_output =
-      dynamic_cast<const backend::builtin::IOTensor *>(outputTensor(ir::IOIndex{i}))
-        ->hasBackendTensor();
+    const auto output_io_tensor =
+      dynamic_cast<const backend::builtin::IOTensor *>(outputTensor(ir::IOIndex{i}));
+    if (!output_io_tensor)
+      throw std::runtime_error{"Output tensor must be IOTensor"};
+    bool skip_set_output = output_io_tensor->hasBackendTensor();
 
     // Output is optional if buffer is nullptr, and optional output's size is 0
     if (desc->buffer == nullptr && (desc->size != 0 || desc->info.total_size() != 0) &&
