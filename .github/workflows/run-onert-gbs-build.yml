@@ -52,8 +52,8 @@ jobs:
     if: github.repository_owner == 'Samsung'
     strategy:
       matrix:
-        arch: ['armv7l'] # TODO: Add aarch64, x86_64, etc
-        profile: ['tizen_8'] # TODO: Add tizen_9, etc
+        arch: ['armv7l']
+        profile: ['tizen_9']
     runs-on: ubuntu-22.04
     steps:
       # Install binfmt support for gbs
