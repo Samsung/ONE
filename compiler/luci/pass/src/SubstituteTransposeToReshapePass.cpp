@@ -92,6 +92,8 @@ bool substitute_transpose_to_reshape(luci::CircleTranspose *node)
   new_const_node->name(name + "/Reshape/shape");
   luci::add_origin(new_const_node, luci::get_origin(node));
 
+  luci::copy_quantparam(node, new_reshape_node);
+
   replace(node).with(new_reshape_node);
   return true;
 }
