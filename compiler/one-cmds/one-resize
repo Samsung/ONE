@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)" # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
+''''exit 255                                                                            # '''
+
+# Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import argparse
+import configparser
+import os
+import sys
+
+import onelib.utils as oneutils
+
+# TODO Find better way to suppress trackback on error
+sys.tracebacklimit = 0
+
+
+def _get_parser():
+    parser = argparse.ArgumentParser(
+        description='command line tool to change shape of model inputs')
+
+    oneutils.add_default_arg(parser)
+
+    ## model2nnpkg arguments
+    model2nnpkg_group = parser.add_argument_group('arguments for packaging')
+
+    model2nnpkg_group.add_argument('-i',
+                                   '--input_path',
+                                   type=str,
+                                   help='Path to the input model (.circle)')
+
+    model2nnpkg_group.add_argument('-o',
+                                   '--output_path',
+                                   type=str,
+                                   help='Path to the resized model (.circle)')
+
+    model2nnpkg_group.add_argument(
+        '-s',
+        '--input_shapes',
+        type=str,
+        help=
+        'New inputs shapes in in comma separated format. An example for 2 inputs: [1,2],[3,4].'
+    )
+
+    return parser
+
+
+def _parse_arg(parser):
+    args = parser.parse_args()
+    # print version
+    if args.version:
+        oneutils.print_version_and_exit(__file__)
+
+    return args
+
+
+def _verify_arg(parser, args):
+    """verify given arguments"""
+    # check if required arguments is given
+    missing = []
+    if not oneutils.is_valid_attr(args, 'input_path'):
+        missing.append('input_path')
+    if not oneutils.is_valid_attr(args, 'output_path'):
+        missing.append('output_path')
+    if not oneutils.is_valid_attr(args, 'input_shapes'):
+        missing.append('input_shapes')
+    if len(missing):
+        parser.error('The following arguments are required: ' + ' '.join(missing))
+    return
+
+
+def _resize(args):
+    bin_path = os.path.dirname(os.path.realpath(__file__))
+    cur_path = os.getcwd()
+    input_path = os.path.join(cur_path, args.input_path)
+    output_path = os.path.join(cur_path, args.output_path)
+    log_file_path = os.path.join(cur_path, output_path) + '.log'
+
+    with open(log_file_path, 'wb', buffering=0) as f:
+        circle_resizer_path = os.path.join(bin_path, 'circle-resizer')
+
+        cmd = [os.path.expanduser(circle_resizer_path)]
+
+        cmd.append('--input_path')
+        cmd.append(input_path)
+        cmd.append('--output_path')
+        cmd.append(output_path)
+        cmd.append('--input_shapes')
+        cmd.append(args.input_shapes)
+
+        f.write((' '.join(cmd) + '\n').encode())
+
+        # run circle-resizer
+        oneutils.run(cmd, err_prefix='one-resize', logfile=f)
+
+
+def main():
+    # parse arguments
+    parser = _get_parser()
+    args = _parse_arg(parser)
+
+    # parse configuration file
+    oneutils.parse_cfg(args.config, 'one-resize', args)
+
+    # verify arguments
+    _verify_arg(parser, args)
+
+    # resize the model
+    _resize(args)
+
+
+if __name__ == '__main__':
+    oneutils.safemain(main, __file__)

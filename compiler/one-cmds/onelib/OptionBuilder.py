@@ -80,9 +80,10 @@ class OptionBuilder:
         return options
 
     def build(self, commands):
-        cmd_book = dict.fromkeys(
-            ['one-import-bcq', 'one-import-tflite', 'one-pack', 'one-partition'],
-            self._build_default)
+        cmd_book = dict.fromkeys([
+            'one-import-bcq', 'one-import-tflite', 'one-resize', 'one-pack',
+            'one-partition'
+        ], self._build_default)
         cmd_book['one-codegen'] = self._build_with_unknown_command
         cmd_book['one-import-onnx'] = self._build_import
         cmd_book['one-import-pytorch'] = self._build_import
