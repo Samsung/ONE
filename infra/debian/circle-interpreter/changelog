@@ -1,3 +1,9 @@
+circle-interpreter (1.30.0~202506190655~jammy) jammy; urgency=medium
+
+  * Enable publish for noble
+
+ -- On-device AI developers <nnfw@samsung.com>  Thu, 19 Jun 2025 07:05:48 +0000
+
 circle-interpreter (1.30.0~202505191026~jammy) jammy; urgency=medium
 
   * The first debian package release to the Launchpad.
