@@ -36,29 +36,20 @@ fi
 # - https://github.com/onnx/onnx/blob/master/docs/Versioning.md
 # - https://github.com/Samsung/ONE/issues/15226#issuecomment-2829062592
 
-VER_TORCH=2.4.1+cpu
+VER_TORCH=2.7.0+cpu
 VER_ONNX=1.17.0
-VER_ONNXRUNTIME=1.18.0
-VER_NUMPY=1.24.3
+VER_ONNXRUNTIME=1.21.1
+VER_NUMPY=1.26.4
 
 PYTHON_VERSION=$($VENV_PYTHON -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
 echo "python3 version is $PYTHON_VERSION"
 
-if [[ "$PYTHON_VERSION" == "3.8" ]]; then
-  # Ubuntu 20.04 is python3.8
-  : # use as is
-elif [[ "$PYTHON_VERSION" == "3.10" ]]; then
+if [[ "$PYTHON_VERSION" == "3.10" ]]; then
   # Ubuntu 22.04 is python3.10
-  VER_TORCH=2.7.0+cpu
-  VER_ONNX=1.17.0
-  VER_ONNXRUNTIME=1.21.1
-  VER_NUMPY=1.26.4
+  : # use as is
 elif [[ "$PYTHON_VERSION" == "3.12" ]]; then
   # Ubuntu 24.04 is python3.12
-  VER_TORCH=2.7.0+cpu
-  VER_ONNX=1.17.0
-  VER_ONNXRUNTIME=1.21.1
-  VER_NUMPY=1.26.4
+  : # use as is
 else
   echo "Error prepare-venv: Unsupported python version: $PYTHON_VERSION"
   exit 1
