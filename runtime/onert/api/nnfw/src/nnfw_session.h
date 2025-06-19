@@ -89,7 +89,7 @@ private:
   {
     INITIAL_STATE,          //< Initial state
     QUANTIZED_MODEL_LOADED, //< Qunatized model is loaded
-    COMPILED_MODEL_LOADED   //< Compiled model is loaded
+    COMPILED_MODEL_LOADED,  //< Compiled model is loaded
   };
 
 public:
@@ -119,7 +119,9 @@ public:
   NNFW_STATUS output_size(uint32_t *number);
 
   NNFW_STATUS set_input_layout(uint32_t index, NNFW_LAYOUT layout);
+  NNFW_STATUS set_input_type(uint32_t index, NNFW_TYPE type);
   NNFW_STATUS set_output_layout(uint32_t index, NNFW_LAYOUT layout);
+  NNFW_STATUS set_output_type(uint32_t index, NNFW_TYPE type);
 
   NNFW_STATUS set_input_tensorinfo(uint32_t index, const nnfw_tensorinfo *ti);
 
