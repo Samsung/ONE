@@ -18,6 +18,11 @@
 filename_ext="$(basename -- $0)"
 filename="${filename_ext%.*}"
 
+# This test does not end in Ubuntu 20.04 (https://github.com/Samsung/ONE/issues/15625)
+# TODO Re-enable this test
+echo "${filename_ext} SKIPPED"
+exit 0
+
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
