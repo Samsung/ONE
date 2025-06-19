@@ -30,19 +30,19 @@ namespace onert::ir::operation
 
 /**
  * @brief Class to represent Permute operation
- * @note  Permute operation reorders the dimensions of a tensor.
+ * @note  Permute operation reorders the dimensions of a tensor and convert data types if needed
  *
  *        This operation is virtual operation, which is not used on real model, but used internally.
- *        It was introduced to support various model layout (NHWC, NCHW, etc) and backend layout.
- *        But currently, model layout and backend layout are always same as NHWC.
- *        So this operation is used for below cases.
+ *        This operation is used for below cases.
  *        1) Handle model output buffer's special case
  *          1-1) Model output is comes from model constant
  *          1-2) Model output is comes from model input
  *          1-3) Model output shares tensor with other model output(s)
- *        2) Handle shared tensor between different backend
- *        3) Handle when input and/or output layouts are different with model layout
- *        4) Handle when input and/or output data type is different with model data type
+ *        2) Handle when tensor defining backend is different with tensor using backend
+ *        3) Handle when actual input and/or output layouts are different with model layout
+ *           by user setting
+ *        4) Handle when actual input and/or output data type is different with model data type
+ *           by user setting or model connection
  *
  */
 class Permute : public Operation
@@ -52,13 +52,13 @@ public:
   OpCode opcode() const final { return OpCode::Permute; }
 
 public:
-  Permute(const OperandIndex &input, const OperandIndex &output, ir::PermuteType type);
+  Permute(const OperandIndex &input, const OperandIndex &output, PermuteType type);
 
 public:
-  ir::PermuteType getPermuteType() const { return _type; }
+  PermuteType getPermuteType() const { return _type; }
 
 private:
-  ir::PermuteType _type;
+  PermuteType _type;
 };
 
 } // namespace onert::ir::operation

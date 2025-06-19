@@ -37,7 +37,7 @@ void ConstantOutputPass::callback(const ir::OperandIndex &ind, ir::Operand &obj)
   obj.info().setAsNonConst();
 
   using ir::operation::Permute;
-  auto permute_obj = std::make_unique<Permute>(permute_input_ind, ind, ir::PermuteType::COPY);
+  auto permute_obj = std::make_unique<Permute>(permute_input_ind, ind, ir::PermuteType::SAME);
   auto permute_ind = _graph.operations().push(std::move(permute_obj));
 
   permute_input_obj.insertUse(permute_ind);

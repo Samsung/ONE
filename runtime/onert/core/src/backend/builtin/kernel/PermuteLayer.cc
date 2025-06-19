@@ -78,7 +78,7 @@ void PermuteLayer::optimize()
           // NOTE The buffer of both tensor can be nullptr in this step
           const auto data_size = ir::sizeOfDataType(src_tensor.data_type());
 
-          if (permute_type == ir::PermuteType::COPY)
+          if (permute_type == ir::PermuteType::SAME)
           {
             if ((!src_tensor.has_padding() && !dst_tensor.has_padding()))
             {
@@ -135,7 +135,7 @@ void PermuteLayer::appendPermuteTasks(const ITensor *src_tensor, ITensor *dst_te
 {
   size_t distributed_dim = 0;
   auto src_shape = src_tensor->getShape();
-  if (permute_type == ir::PermuteType::COPY)
+  if (permute_type == ir::PermuteType::SAME)
   {
     for (int i = 1; i < src_shape.rank() - 1; ++i)
     {
@@ -261,7 +261,7 @@ void PermuteLayer::run()
         // If dst is subtensor, we have to use clEnqueueMapBuffer instead of clEnqueueWirteBuffer
         else if (dst->needMemoryMap() && !dst->is_subtensor())
         {
-          if (!src->has_padding() && !dst->has_padding() && permute_type == ir::PermuteType::COPY)
+          if (!src->has_padding() && !dst->has_padding() && permute_type == ir::PermuteType::SAME)
           {
             // This is more effective than multi-threading
             src->access([&](backend::ITensor &) { dst->enqueueWriteBuffer(src->buffer(), false); });
@@ -277,7 +277,7 @@ void PermuteLayer::run()
           }
         }
         else if (src->needMemoryMap() && !src->is_subtensor() && !src->has_padding() &&
-                 !dst->has_padding() && permute_type == ir::PermuteType::COPY)
+                 !dst->has_padding() && permute_type == ir::PermuteType::SAME)
         {
           // This is more effective than multi-threading
           assert(!dst->needMemoryMap());

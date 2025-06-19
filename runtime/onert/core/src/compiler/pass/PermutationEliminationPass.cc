@@ -35,7 +35,7 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
   auto out_operand = node.getOutputs().at(0);
 
   // If permutation type is not COPY, we don't need to do anything here.
-  if (node.getPermuteType() != ir::PermuteType::COPY)
+  if (node.getPermuteType() != ir::PermuteType::SAME)
     return;
 
   // Check if the input and output are the same type

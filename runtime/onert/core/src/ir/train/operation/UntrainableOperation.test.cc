@@ -319,7 +319,7 @@ operation::Pad generatePad()
 
 operation::Permute generatePermute()
 {
-  return operation::Permute{OperandIndex{1}, OperandIndex{0}, PermuteType::COPY};
+  return operation::Permute{OperandIndex{1}, OperandIndex{0}, PermuteType::SAME};
 }
 
 operation::Pool2D generatePool2D()

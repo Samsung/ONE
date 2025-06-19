@@ -82,7 +82,7 @@ void PermutationIOPass::insertInputPermute(const ir::OperandIndex &index, const 
   // Update graph operation
   using Permute = ir::operation::Permute;
   auto permute_type =
-    from_layout == ir::Layout::NCHW ? ir::PermuteType::NCHW_TO_NHWC : ir::PermuteType::COPY;
+    from_layout == ir::Layout::NCHW ? ir::PermuteType::NCHW_TO_NHWC : ir::PermuteType::SAME;
   auto permute_node = std::make_unique<Permute>(input_operand_index, index, permute_type);
   auto node_index = _graph.operations().push(std::move(permute_node));
 
@@ -127,7 +127,7 @@ void PermutationIOPass::insertOutputPermute(const ir::OperandIndex &index, const
   // Update graph operation
   using Permute = ir::operation::Permute;
   auto permute_type =
-    to_layout == ir::Layout::NCHW ? ir::PermuteType::NHWC_TO_NCHW : ir::PermuteType::COPY;
+    to_layout == ir::Layout::NCHW ? ir::PermuteType::NHWC_TO_NCHW : ir::PermuteType::SAME;
   auto permute_node = std::make_unique<Permute>(index, output_operand_index, permute_type);
   auto node_index = _graph.operations().push(std::move(permute_node));
 

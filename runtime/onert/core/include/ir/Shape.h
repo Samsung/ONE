@@ -17,7 +17,7 @@
 #ifndef __ONERT_IR_SHAPE_H__
 #define __ONERT_IR_SHAPE_H__
 
-#include "ir/Layout.h"
+#include "Layout.h"
 
 #include <cassert>
 #include <cstdint>

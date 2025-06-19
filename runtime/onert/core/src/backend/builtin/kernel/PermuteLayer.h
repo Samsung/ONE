@@ -67,7 +67,7 @@ private:
                       uint32_t dst_start_offset, size_t size)
       : _src_buffer{src_buffer}, _dst_buffer{dst_buffer}, _src_start_offset{src_start_offset},
         _dst_start_offset{dst_start_offset}, _src_strides{0}, _dst_strides{0}, _loop_shape{1},
-        _size{size}, _permute_type{ir::PermuteType::COPY}
+        _size{size}, _permute_type{ir::PermuteType::SAME}
     {
       // DO NOTHING
     }
@@ -83,7 +83,7 @@ private:
         size_t dst_offset = _dst_start_offset;
         assert(static_cast<size_t>(_loop_shape.rank()) == coords.size());
         ir::Coordinates dst_coords = coords;
-        if (_permute_type != ir::PermuteType::COPY && _loop_shape.rank() == 4)
+        if (_permute_type != ir::PermuteType::SAME && _loop_shape.rank() == 4)
         {
           dst_coords = ir::convertCoordinates(coords, _permute_type);
         }

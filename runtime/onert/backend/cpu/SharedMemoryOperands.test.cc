@@ -34,7 +34,7 @@ namespace
 {
 void addNotOptimizedNode(Graph *graph, const OperandIndex &input, const OperandIndex &output)
 {
-  graph->addOperation(std::make_unique<operation::Permute>(input, output, PermuteType::COPY));
+  graph->addOperation(std::make_unique<operation::Permute>(input, output, PermuteType::SAME));
 }
 } // namespace
 

@@ -211,7 +211,7 @@ void MultiModelExecutors::createEdgeQuantLayers()
             outputs.emplace_back(type_aware_quant_tensor.get());
 
             // No layout change on edge
-            permute_types.emplace_back(ir::PermuteType::COPY);
+            permute_types.emplace_back(ir::PermuteType::SAME);
 
             _edge_quant_tensors[to_iodesc] = std::move(type_aware_quant_tensor);
           }

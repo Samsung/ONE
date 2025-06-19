@@ -273,7 +273,7 @@ void OperationDumper::visit(const Permute &node)
 
   switch (node.getPermuteType())
   {
-    case ir::PermuteType::COPY:
+    case ir::PermuteType::SAME:
       permute_type = "Same Layout";
       break;
     case ir::PermuteType::NHWC_TO_NCHW:
