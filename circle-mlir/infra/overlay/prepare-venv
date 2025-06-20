@@ -16,6 +16,22 @@
 
 # NOTE this file is used to prepare venv for local circle-mlir development.
 
+# NOTE check if we can use python3.10 for Ubuntu 20.04.
+# use +e as python3.10 may not exist in the system and 'command' will return error.
+set +e
+
+PYTHON_CANDIDATES=("python3.12" "python3.10" "python3")
+for py in "${PYTHON_CANDIDATES[@]}"; do
+  PYTHON3_EXEC=$(command -v "$py")
+  if [[ -n "${PYTHON3_EXEC}" ]]; then
+    break
+  fi
+done
+if [[ -z "${PYTHON3_EXEC}" ]]; then
+  echo "Error one-prepare-venv: python3 not found"
+  exit 1
+fi
+
 set -e
 
 DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -29,7 +45,7 @@ VENV_PYTHON=${DRIVER_PATH}/${VENV_NAME}/bin/python
 
 if [ ! -f ${VENV_ACTIVATE} ]; then
   # Create python virtual enviornment
-  python3 -m venv "${DRIVER_PATH}/${VENV_NAME}"
+  ${PYTHON3_EXEC} -m venv "${DRIVER_PATH}/${VENV_NAME}"
 fi
 
 # NOTE version
