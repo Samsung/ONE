@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS build
+FROM ubuntu:24.04 AS build
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -8,7 +8,7 @@ RUN apt-get update \
 
 # Build tool
 RUN apt-get update \
- && apt-get -qqy install build-essential git fakeroot autoconf automake libtool unzip wget \
+ && apt-get -qqy install build-essential cmake git fakeroot autoconf automake libtool unzip wget \
                          devscripts debmake debhelper lcov
 RUN apt-get update \
  && apt-get -qqy install zlib1g-dev pkg-config libhdf5-dev
@@ -17,15 +17,12 @@ RUN apt-get update \
 RUN apt-get update \
  && apt-get -qqy install tree tmux sudo
 
-# add ppa:deadsnakes to install python3.10
-RUN add-apt-repository ppa:deadsnakes/ppa -y
-# add ppa:circletools to install circle-interpreter
+ # add ppa:circletools to install circle-interpreter
 RUN add-apt-repository ppa:circletools/nightly -y
 
-# Python 3.10 as default
+# Python
 RUN apt-get update \
- && apt-get -qqy install python3.10 python3.10-venv python3.10-dev dh-python
-RUN python3.10 -m ensurepip --upgrade
+ && apt-get -qqy install python3 python3-pip python3-venv python3-dev dh-python
 
 # TODO upgrade
 ARG VER_TORCH=2.7.0+cpu
@@ -35,11 +32,6 @@ ARG VER_NUMPY=1.26.4
 
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
-
-# CMake 3.22
-RUN wget https://cmake.org/files/v3.22/cmake-3.22.6-linux-x86_64.sh -O ${WORK_DIR}/cmake-3.22.6-linux-x86_64.sh \
- && bash ${WORK_DIR}/cmake-3.22.6-linux-x86_64.sh --prefix=/usr/local --skip-license
-RUN rm ${WORK_DIR}/cmake-3.22.6-linux-x86_64.sh
 
 #
 # For CIRCLE-MLIR
@@ -53,9 +45,9 @@ ARG ONNX_MLIR_HASH=d050bf35a2f186e45b0a4037c0a1d0727c69e7e6
 
 WORKDIR ${WORK_DIR}
 
-# prepare python3.10 virtual-env
+# prepare python3 virtual-env
 # h5py and einops are used in test
-RUN python3.10 -m venv ${WORK_DIR}/venv
+RUN python3 -m venv ${WORK_DIR}/venv
 RUN ${WORK_DIR}/venv/bin/python3 -m pip install --upgrade pip setuptools
 RUN ${WORK_DIR}/venv/bin/python3 -m pip install numpy==${VER_NUMPY} torch==${VER_TORCH} \
     -f https://download.pytorch.org/whl/torch
@@ -186,7 +178,7 @@ RUN rm -f /usr/local/lib/libprotoc.* \
  && rm -f ./onnx-mlir-build/build.ninja
 
 # copy from build
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 
 COPY --from=build / /
 
@@ -194,6 +186,9 @@ COPY --from=build / /
 ARG USER_ACCOUNT=circlemlir
 ARG USER_ID=1000
 ARG GROUP_ID=${USER_ID}
+
+# NOTE ubuntu:24.04 already has ubuntu user/group as 1000
+RUN deluser ubuntu
 
 RUN addgroup --gid ${GROUP_ID} ${USER_ACCOUNT} \
  && adduser --disabled-password --gecos '' --uid ${USER_ID} --gid ${GROUP_ID} ${USER_ACCOUNT}  \

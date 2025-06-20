@@ -10,25 +10,25 @@ RUN apt-get update \
 RUN apt-get update \
  && apt-get -qqy install build-essential cmake git fakeroot autoconf automake libtool unzip wget \
                          devscripts debmake debhelper lcov
+                         RUN apt-get update \
+                         && apt-get -qqy install zlib1g-dev pkg-config libhdf5-dev
 
 # additonal tools
 RUN apt-get update \
- && apt-get -qqy install tree tmux
+ && apt-get -qqy install tree tmux sudo
+
+ # add ppa:circletools to install circle-interpreter
+RUN add-apt-repository ppa:circletools/nightly -y
 
 # Python
 RUN apt-get update \
- && apt-get -qqy install python3 python3-pip python3-venv python3-dev python3-all dh-python
-RUN python3 -m pip install --upgrade pip setuptools
-RUN python3 -m pip install yapf==0.43.0 h5py==3.8.0 einops
+ && apt-get -qqy install python3 python3-pip python3-venv python3-dev dh-python
 
 # TODO upgrade
-ARG VER_TORCH=2.4.1+cpu
-ARG VER_ONNX=1.17.0
-ARG VER_ONNXRUNTIME=1.18.0
-ARG VER_NUMPY=1.24.4
-
-RUN python3 -m pip install numpy==${VER_NUMPY} torch==${VER_TORCH} -f https://download.pytorch.org/whl/torch
-RUN python3 -m pip install onnx==${VER_ONNX} onnxruntime==${VER_ONNXRUNTIME}
+ARG VER_TORCH=2.7.0+cpu
+ARG VER_ONNX=1.18.0
+ARG VER_ONNXRUNTIME=1.21.1
+ARG VER_NUMPY=1.26.4
 
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
@@ -44,6 +44,15 @@ ARG LLVM_PROJECT_HASH=b270525f730be6e7196667925f5a9bfa153262e9
 ARG ONNX_MLIR_HASH=d050bf35a2f186e45b0a4037c0a1d0727c69e7e6
 
 WORKDIR ${WORK_DIR}
+
+# prepare python3 virtual-env
+# h5py and einops are used in test
+RUN python3 -m venv ${WORK_DIR}/venv
+RUN ${WORK_DIR}/venv/bin/python3 -m pip install --upgrade pip setuptools
+RUN ${WORK_DIR}/venv/bin/python3 -m pip install numpy==${VER_NUMPY} torch==${VER_TORCH} \
+    -f https://download.pytorch.org/whl/torch
+RUN ${WORK_DIR}/venv/bin/python3 -m pip install onnx==${VER_ONNX} onnxruntime==${VER_ONNXRUNTIME} \
+    h5py==3.8.0 einops
 
 # Download experimental patch file for onnx-mlir
 
@@ -136,7 +145,7 @@ RUN cd onnx-mlir \
 RUN mkdir onnx-mlir-build && cd onnx-mlir-build \
  && cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${WORK_DIR} \
     -DMLIR_DIR=${WORK_DIR}/llvm-project-build/lib/cmake/mlir \
-    -DPython3_ROOT_DIR=/usr/bin \
+    -DPython3_ROOT_DIR=${WORK_DIR}/venv/bin \
     -DCMAKE_JOB_POOL_COMPILE:STRING=compile -DCMAKE_JOB_POOL_LINK:STRING=link \
     -DCMAKE_JOB_POOLS:STRING='compile=4;link=1' \
     -DONNX_MLIR_BUILD_TESTS=OFF -DONNX_MLIR_ENABLE_STABLEHLO=OFF \
@@ -161,6 +170,8 @@ RUN cd ./lib && strip -s *.so.*git
 
 # more cleanup
 RUN rm -f /usr/local/lib/libprotoc.* \
+ && rm -rf /usr/local/man \
+ && rm -rf /usr/local/doc \
  && rm -rf ./onnx-mlir-build/docs/* \
  && rm -rf ./onnx-mlir-build/third_party/* \
  && rm -f ./onnx-mlir-build/.ninja_* \
@@ -173,9 +184,15 @@ COPY --from=build / /
 
 # Add user account
 ARG USER_ACCOUNT=circlemlir
+ARG USER_ID=1000
+ARG GROUP_ID=${USER_ID}
 
-RUN groupadd -g 1000 ${USER_ACCOUNT} \
- && useradd -r -u 1000 -g ${USER_ACCOUNT} -ms /bin/bash ${USER_ACCOUNT}
+RUN addgroup --gid ${GROUP_ID} ${USER_ACCOUNT} \
+ && adduser --disabled-password --gecos '' --uid ${USER_ID} --gid ${GROUP_ID} ${USER_ACCOUNT}  \
+ && usermod -aG sudo ${USER_ACCOUNT}
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN echo 'circlemlir ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
 USER ${USER_ACCOUNT}
 WORKDIR /home/${USER_ACCOUNT}
-CMD ["bash"]
+CMD ["bash", "-c", "source /workdir/venv/bin/activate && bash"]
