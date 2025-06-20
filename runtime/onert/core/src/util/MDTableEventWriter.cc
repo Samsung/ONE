@@ -90,7 +90,7 @@ struct MDContent
 struct Operation : public MDContent
 {
   std::string backend;
-  uint64_t graph_latency;
+  uint64_t graph_latency = 0;
 
   struct OperationCmp
   {
