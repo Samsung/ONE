@@ -13,14 +13,16 @@ jobs:
     runs-on: one-x64-linux
     strategy:
       matrix:
-        version: [ 'android-sdk', 'focal', 'jammy', 'noble', 'focal-cross', 'jammy-cross', 'noble-cross' ]
+        version: [ 'android-sdk', 'focal', 'jammy', 'noble']
         include:
           - version: 'focal'
-            platform-add: ',linux/arm64'
+            platform: 'linux/amd64,linux/arm64'
           - version: 'jammy'
-            platform-add: ',linux/arm64'
+            platform: 'linux/amd64,linux/arm64'
           - version: 'noble'
-            platform-add: ',linux/arm64'
+            platform: 'linux/amd64,linux/arm64'
+          - version: 'android-sdk'
+            platform: 'linux/amd64'
       fail-fast: false
 
     steps:
@@ -42,7 +44,7 @@ jobs:
           file: ./infra/docker/${{ matrix.version }}/Dockerfile
           push: true
           tags: nnfw/one-devtools:${{ matrix.version }}-test
-          platforms: linux/amd64${{ matrix.platform-add }}
+          platforms: ${{ matrix.platform }}
           cache-from: type=gha,scope=${{ matrix.version }}
           cache-to: type=gha,mode=max,scope=${{ matrix.version }}
 
@@ -51,12 +53,11 @@ jobs:
     needs: build-docker-image
     strategy:
       matrix:
-        # TODO: noble (not supported rootfs yet)
-        ubuntu_code: [ 'focal', 'jammy']
+        ubuntu_code: [ 'focal', 'jammy', 'noble']
       fail-fast: false
     runs-on: one-x64-linux
     container:
-      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}-cross-test
+      image: nnfw/one-devtools:${{ matrix.ubuntu_code }}-test
       options: --user root
       credentials:
         username: ${{ secrets.DOCKER_USERNAME }}
@@ -198,14 +199,16 @@ jobs:
     needs: [ test-cross-image, test-x64-image, test-android-sdk-image, test-arm64-image ]
     strategy:
       matrix:
-        version: [ 'android-sdk', 'focal', 'jammy', 'noble', 'focal-cross', 'jammy-cross', 'noble-cross' ]
+        version: [ 'android-sdk', 'focal', 'jammy', 'noble']
         include:
           - version: 'focal'
-            platform-add: ',linux/arm64'
+            platform: 'linux/amd64,linux/arm64'
           - version: 'jammy'
-            platform-add: ',linux/arm64'
+            platform: 'linux/amd64,linux/arm64'
           - version: 'noble'
-            platform-add: ',linux/arm64'
+            platform: 'linux/amd64,linux/arm64'
+          - version: 'android-sdk'
+            platform: 'linux/amd64'
       fail-fast: false
     runs-on: one-x64-linux
     steps:
@@ -233,7 +236,7 @@ jobs:
         with:
           file: ./infra/docker/${{ matrix.version }}/Dockerfile
           push: true
-          platforms: linux/amd64${{ matrix.platform-add }}
+          platforms: linux/amd64${{ matrix.platform }}
           cache-from: type=gha,scope=${{ matrix.version }}
           cache-to: type=gha,mode=max,scope=${{ matrix.version }}
           tags: |
