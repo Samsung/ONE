@@ -285,6 +285,110 @@ void DFSOther(const onnx::GraphProto &g, onnx::GraphProto &subgraph,
   }
 }
 
+/**
+ * @brief     Determine and partition subgraphs from the given ONNX graph based on DFS strategy.
+ * Compared with determine_subgraphs, this function is more stable but may produce more subgraphs
+ *
+ * @param     [out] subgraphs A vector to store the subgraphs that do not meet the preferred
+ * operation criteria.
+ * @param     [in] g The original ONNX graph to be partitioned.
+ * @param     [out] otherSubgraphs A vector to store the subgraphs that do not meet the preferred
+ * operation criteria.
+ * @param     [in] d The device object containing information about supported and preferred
+ * operations.
+ * @param     [in,out] visited An array to keep track of visited nodes.
+ * @param     [in] adjacencyList The adjacency list representing the graph's structure.
+ * @param     [in] strategy The partitioning strategy to be used (e.g., SPILTE_CPU_STRUCTURE_FIRST,
+ * SPILTE_NPU_STRUCTURE_FIRST).
+ *
+ * @pre       The graph `g` and `adjacencyList` should be properly initialized.
+ * @pre       The `visited` array should be initialized to zero.
+ * @pre       The device object `d` should be properly initialized with support and preferred
+ * operations.
+ *
+ * @post      The `otherSubgraphs` vector will contain subgraphs that do not meet the preferred
+ * operation criteria.
+ * @post      The `visited` array will reflect the nodes that have been visited.
+ *
+ * @exception None
+ *
+ * @return    None
+ */
+void DetermineSubgraphsDFS(std::vector<onnx::GraphProto> &subgraphs, const onnx::GraphProto &g,
+                           std::vector<onnx::GraphProto> &otherSubgraphs, Device &d, int *visited,
+                           std::vector<GraphAdjacencyNode> &adjacencyList,
+                           PartitionStrategy strategy)
+{
+  int maxSubgraphSize = d._max_subgraph_size;
+  std::vector<std::string> supportOp;
+  std::vector<std::string> preferOp;
+  switch (strategy)
+  {
+    case SPILTE_CPU_STRUCTURE_FIRST:
+    {
+      supportOp = d.getCPUSupportOp();
+      break;
+    }
+    case SPILTE_NPU_STRUCTURE_FIRST:
+    {
+      supportOp = d.getNPUSupportOp();
+      preferOp = d.getNPUPreferOp();
+      break;
+    }
+    default:
+      break;
+  }
+  for (int i = 0; i < g.node_size(); i++)
+  {
+    if (!visited[i] &&
+        (std::find(supportOp.begin(), supportOp.end(), g.node(i).op_type()) != supportOp.end()))
+    {
+      onnx::GraphProto subgraph;
+      std::vector<int> sugraphNodeIndex;
+      const auto &node = g.node(i);
+      int depth = 0;
+      float graphSize = 0;
+      DFS(g, subgraph, sugraphNodeIndex, visited, node, i, adjacencyList, supportOp, preferOp,
+          depth, graphSize, maxSubgraphSize);
+      std::cout << "graphSize: " << graphSize << std::endl;
+      int find_preferOp = 0;
+      for (const auto &node : subgraph.node())
+      {
+        if (std::find(preferOp.begin(), preferOp.end(), node.op_type()) != preferOp.end())
+        {
+          find_preferOp = 1;
+        }
+      }
+      if (find_preferOp)
+      {
+        subgraphs.push_back(subgraph);
+      }
+      else
+      {
+        for (const auto &index : sugraphNodeIndex)
+        {
+          visited[index] = 0;
+        }
+      }
+    }
+  }
+  for (int i = 0; i < g.node_size(); i++)
+  {
+    if (!visited[i])
+    {
+      int depth = 0;
+      float graphSize = 0;
+      onnx::GraphProto subgraphOther;
+      std::vector<int> sugraphNodeIndex;
+      const auto &node = g.node(i);
+      DFSOther(g, subgraphOther, sugraphNodeIndex, visited, node, i, adjacencyList, depth,
+               graphSize, maxSubgraphSize);
+      std::cout << "graphSize:" << graphSize << std::endl;
+      otherSubgraphs.push_back(subgraphOther);
+    }
+  }
+}
+
 void PartitionGraph(const onnx::GraphProto &g, Device &d, PartitionStrategy strategy,
                     const std::unordered_map<std::string, NodeIOSize> &node_io_size)
 {
