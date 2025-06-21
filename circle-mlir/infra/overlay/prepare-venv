@@ -53,7 +53,7 @@ fi
 # - https://github.com/Samsung/ONE/issues/15226#issuecomment-2829062592
 
 VER_TORCH=2.7.0+cpu
-VER_ONNX=1.17.0
+VER_ONNX=1.18.0
 VER_ONNXRUNTIME=1.21.1
 VER_NUMPY=1.26.4
 
