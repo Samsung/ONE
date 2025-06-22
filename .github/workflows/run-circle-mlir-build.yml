@@ -10,6 +10,7 @@ on:
       - 'circle-mlir/**'
       - '!circle-mlir/infra/debian/**'
       - '!circle-mlir/infra/docker/**'
+      - '!circle-mlir/externals/**'
   pull_request:
     branches:
       - master
@@ -19,6 +20,7 @@ on:
       - 'circle-mlir/**'
       - '!circle-mlir/infra/debian/**'
       - '!circle-mlir/infra/docker/**'
+      - '!circle-mlir/externals/**'
 
 defaults:
   run:
