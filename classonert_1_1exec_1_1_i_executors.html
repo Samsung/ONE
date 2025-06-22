@@ -128,6 +128,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2abc6d6c0f20d5887c987d2b620edf3f" id="r_a2abc6d6c0f20d5887c987d2b620edf3f"><td class="memItemLeft" align="right" valign="top">virtual const void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_executors.html#a2abc6d6c0f20d5887c987d2b620edf3f">outputBuffer</a> (const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;index) const =0</td></tr>
 <tr class="memdesc:a2abc6d6c0f20d5887c987d2b620edf3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return NN package output buffer.  <br /></td></tr>
 <tr class="separator:a2abc6d6c0f20d5887c987d2b620edf3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfbd8bbcdccc356f57e9e105be3cc86b" id="r_adfbd8bbcdccc356f57e9e105be3cc86b"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">backend::IPortableTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_executors.html#adfbd8bbcdccc356f57e9e105be3cc86b">outputTensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;index) const =0</td></tr>
+<tr class="memdesc:adfbd8bbcdccc356f57e9e105be3cc86b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return NN package output tensor.  <br /></td></tr>
+<tr class="separator:adfbd8bbcdccc356f57e9e105be3cc86b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a751f4e6c86754fbf7eb74aaa5be434f2" id="r_a751f4e6c86754fbf7eb74aaa5be434f2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_executors.html#a751f4e6c86754fbf7eb74aaa5be434f2">execute</a> (const <a class="el" href="structonert_1_1exec_1_1_execution_context.html">ExecutionContext</a> &amp;ctx)=0</td></tr>
 <tr class="memdesc:a751f4e6c86754fbf7eb74aaa5be434f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute NN package executor set.  <br /></td></tr>
 <tr class="separator:a751f4e6c86754fbf7eb74aaa5be434f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -301,7 +304,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1exec_1_1_i_executors.html#a57aa05c327c0d2795daea7ebf8341cc0">at()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00057">onert::exec::SingleModelExecutors::execute()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00042">onert::exec::SingleModelExecutors::inputInfo()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00038">onert::exec::SingleModelExecutors::inputSize()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00052">onert::exec::SingleModelExecutors::outputBuffer()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00047">onert::exec::SingleModelExecutors::outputInfo()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00040">onert::exec::SingleModelExecutors::outputSize()</a>, <a class="el" href="_if_layer_8cc_source.html#l00035">onert::backend::builtin::kernel::IfLayer::run()</a>, and <a class="el" href="_while_layer_8cc_source.html#l00044">onert::backend::builtin::kernel::WhileLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00063">onert::exec::SingleModelExecutors::execute()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00043">onert::exec::SingleModelExecutors::inputInfo()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00039">onert::exec::SingleModelExecutors::inputSize()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00053">onert::exec::SingleModelExecutors::outputBuffer()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00048">onert::exec::SingleModelExecutors::outputInfo()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00041">onert::exec::SingleModelExecutors::outputSize()</a>, <a class="el" href="_single_model_executors_8cc_source.html#l00058">onert::exec::SingleModelExecutors::outputTensor()</a>, <a class="el" href="_if_layer_8cc_source.html#l00035">onert::backend::builtin::kernel::IfLayer::run()</a>, and <a class="el" href="_while_layer_8cc_source.html#l00044">onert::backend::builtin::kernel::WhileLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -509,6 +512,43 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Number of output </dd></dl>
 
 <p>Implemented in <a class="el" href="classonert_1_1exec_1_1_multi_model_executors.html#a86f31dcb195aaf79237503e625bcaa2d">onert::exec::MultiModelExecutors</a>, <a class="el" href="classonert_1_1exec_1_1_single_model_executors.html#ad75da312346b921b97fa49b8446b9f60">onert::exec::SingleModelExecutors</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#a703e18868a43e28688a45dd168861e07">onert::exec::train::TrainableExecutors</a>.</p>
+
+</div>
+</div>
+<a id="adfbd8bbcdccc356f57e9e105be3cc86b" name="adfbd8bbcdccc356f57e9e105be3cc86b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfbd8bbcdccc356f57e9e105be3cc86b">&#9670;&#160;</a></span>outputTensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">backend::IPortableTensor</a> * onert::exec::IExecutors::outputTensor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return NN package output tensor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Output index </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Tensor of output </dd></dl>
+
+<p>Implemented in <a class="el" href="classonert_1_1exec_1_1_multi_model_executors.html#aae330831347e3a3fa771276a3c5ddafc">onert::exec::MultiModelExecutors</a>, <a class="el" href="classonert_1_1exec_1_1_single_model_executors.html#aedc1ff03de69de2a782e8b3fa0285725">onert::exec::SingleModelExecutors</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#a1894f651291261c3246ea0df16db3f1f">onert::exec::train::TrainableExecutors</a>.</p>
 
 </div>
 </div>

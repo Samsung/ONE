@@ -12,5 +12,6 @@ var structonert_1_1exec_1_1_i_executor =
     [ "outputInfo", "structonert_1_1exec_1_1_i_executor.html#ae2c9811157634b2162ee924a1c362163", null ],
     [ "outputLayout", "structonert_1_1exec_1_1_i_executor.html#a13e17083ea3b634f693d634803e0b270", null ],
     [ "outputSize", "structonert_1_1exec_1_1_i_executor.html#a704945d64b8e0e1918388824f8fad409", null ],
+    [ "outputTensor", "structonert_1_1exec_1_1_i_executor.html#a15eb39ecc4513ef77d123d27271493ea", null ],
     [ "setIndexedRanks", "structonert_1_1exec_1_1_i_executor.html#a1f5655e4ad7317c32e3ce6fad3ec9d72", null ]
 ];

@@ -17,5 +17,6 @@ var classonert_1_1exec_1_1train_1_1_trainable_executor =
     [ "outputInfo", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#afd804936ac6652bb5942bef3caa26252", null ],
     [ "outputLayout", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#affd4d3a12dcac266a46a86d7f5f166ae", null ],
     [ "outputSize", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9bfeb3400991ed7d4b84677d18063329", null ],
+    [ "outputTensor", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#aa3ab622f9971e059ed9280d4bf37efdf", null ],
     [ "setIndexedRanks", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a93ff2e116f919422fcb489c9e70a6d52", null ]
 ];

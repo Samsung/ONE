@@ -17,5 +17,6 @@ var classonert_1_1exec_1_1train_1_1_trainable_executors =
     [ "outputBuffer", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#ae91b1e7eeff5076353f3d795bab60dd2", null ],
     [ "outputInfo", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a2c1e93db707599f40373b46df24fabdc", null ],
     [ "outputSize", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a703e18868a43e28688a45dd168861e07", null ],
+    [ "outputTensor", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a1894f651291261c3246ea0df16db3f1f", null ],
     [ "train", "classonert_1_1exec_1_1train_1_1_trainable_executors.html#a32a6af9024c438b8dcb056b61cf7e5c3", null ]
 ];

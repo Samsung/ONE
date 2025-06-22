@@ -7,6 +7,7 @@ var classonert_1_1ir_1_1_operand_info =
     [ "isDynamic", "classonert_1_1ir_1_1_operand_info.html#ad75de795fb1ede24b7bfb38aa9d478b6", null ],
     [ "isVariable", "classonert_1_1ir_1_1_operand_info.html#aba027f7844923beb4e80c562e4308eb7", null ],
     [ "memAllocType", "classonert_1_1ir_1_1_operand_info.html#aee559a7016d5245550f1b677d0892a59", null ],
+    [ "operator=", "classonert_1_1ir_1_1_operand_info.html#aa21c0c83d302ad3207cd0b070b11c9f8", null ],
     [ "originIndex", "classonert_1_1ir_1_1_operand_info.html#af225e52cc73d96d1568bc1c8cc0b4abc", null ],
     [ "setAsConstant", "classonert_1_1ir_1_1_operand_info.html#a4638f0b19a6c1fcac6b82487c7681d1e", null ],
     [ "setAsNonConst", "classonert_1_1ir_1_1_operand_info.html#aa94b86d6d751c8a5e64e1c8633201f82", null ],

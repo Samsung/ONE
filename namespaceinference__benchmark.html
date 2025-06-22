@@ -163,7 +163,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   63</span>        shape = tuple(info.dims[:info.rank])</div>
 <div class="line"><span class="lineno">   64</span>        dummy_inputs.append(np.random.rand(*shape).astype(info.dtype))</div>
 <div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>    prepare = total_io = total_run = 0.0</div>
+<div class="line"><span class="lineno">   66</span>    prepare = total_input = total_output = total_run = 0.0</div>
 <div class="line"><span class="lineno">   67</span> </div>
 <div class="line"><span class="lineno">   68</span>    <span class="comment"># Warmup runs</span></div>
 <div class="line"><span class="lineno">   69</span>    prepare_kb = 0</div>
@@ -178,30 +178,31 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   78</span>    <span class="keywordflow">for</span> _ <span class="keywordflow">in</span> range(repeat):</div>
 <div class="line"><span class="lineno">   79</span>        outputs, metrics = sess.infer(dummy_inputs, measure=<span class="keyword">True</span>)</div>
 <div class="line"><span class="lineno">   80</span>        del outputs</div>
-<div class="line"><span class="lineno">   81</span>        total_io += metrics[<span class="stringliteral">&quot;io_time_ms&quot;</span>]</div>
+<div class="line"><span class="lineno">   81</span>        total_input += metrics[<span class="stringliteral">&quot;input_time_ms&quot;</span>]</div>
 <div class="line"><span class="lineno">   82</span>        total_run += metrics[<span class="stringliteral">&quot;run_time_ms&quot;</span>]</div>
-<div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>    execute_kb = get_memory_usage_mb() * 1024 - mem_before_kb</div>
-<div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>    print(<span class="stringliteral">&quot;======= Inference Benchmark =======&quot;</span>)</div>
-<div class="line"><span class="lineno">   87</span>    print(f<span class="stringliteral">&quot;- Warmup runs   : 3&quot;</span>)</div>
-<div class="line"><span class="lineno">   88</span>    print(f<span class="stringliteral">&quot;- Measured runs : {repeat}&quot;</span>)</div>
-<div class="line"><span class="lineno">   89</span>    print(f<span class="stringliteral">&quot;- Prepare       : {prepare:.3f} ms&quot;</span>)</div>
-<div class="line"><span class="lineno">   90</span>    print(f<span class="stringliteral">&quot;- Avg I/O       : {total_io / repeat:.3f} ms&quot;</span>)</div>
-<div class="line"><span class="lineno">   91</span>    print(f<span class="stringliteral">&quot;- Avg Run       : {total_run / repeat:.3f} ms&quot;</span>)</div>
-<div class="line"><span class="lineno">   92</span>    print(<span class="stringliteral">&quot;===================================&quot;</span>)</div>
-<div class="line"><span class="lineno">   93</span>    print(<span class="stringliteral">&quot;RSS&quot;</span>)</div>
-<div class="line"><span class="lineno">   94</span>    print(f<span class="stringliteral">&quot;- MODEL_LOAD    : {model_load_kb:.0f} KB&quot;</span>)</div>
-<div class="line"><span class="lineno">   95</span>    print(f<span class="stringliteral">&quot;- PREPARE       : {prepare_kb:.0f} KB&quot;</span>)</div>
-<div class="line"><span class="lineno">   96</span>    print(f<span class="stringliteral">&quot;- EXECUTE       : {execute_kb:.0f} KB&quot;</span>)</div>
-<div class="line"><span class="lineno">   97</span>    print(f<span class="stringliteral">&quot;- PEAK          : {max(model_load_kb, prepare_kb, execute_kb):.0f} KB&quot;</span>)</div>
-<div class="line"><span class="lineno">   98</span>    print(<span class="stringliteral">&quot;===================================&quot;</span>)</div>
-<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">   83</span>        total_output += metrics[<span class="stringliteral">&quot;output_time_ms&quot;</span>]</div>
+<div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span>    execute_kb = get_memory_usage_mb() * 1024 - mem_before_kb</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>    print(<span class="stringliteral">&quot;======= Inference Benchmark =======&quot;</span>)</div>
+<div class="line"><span class="lineno">   88</span>    print(f<span class="stringliteral">&quot;- Warmup runs   : 3&quot;</span>)</div>
+<div class="line"><span class="lineno">   89</span>    print(f<span class="stringliteral">&quot;- Measured runs : {repeat}&quot;</span>)</div>
+<div class="line"><span class="lineno">   90</span>    print(f<span class="stringliteral">&quot;- Prepare       : {prepare:.3f} ms&quot;</span>)</div>
+<div class="line"><span class="lineno">   91</span>    print(f<span class="stringliteral">&quot;- Avg I/O       : {(total_input + total_output) / repeat:.3f} ms&quot;</span>)</div>
+<div class="line"><span class="lineno">   92</span>    print(f<span class="stringliteral">&quot;- Avg Run       : {total_run / repeat:.3f} ms&quot;</span>)</div>
+<div class="line"><span class="lineno">   93</span>    print(<span class="stringliteral">&quot;===================================&quot;</span>)</div>
+<div class="line"><span class="lineno">   94</span>    print(<span class="stringliteral">&quot;RSS&quot;</span>)</div>
+<div class="line"><span class="lineno">   95</span>    print(f<span class="stringliteral">&quot;- MODEL_LOAD    : {model_load_kb:.0f} KB&quot;</span>)</div>
+<div class="line"><span class="lineno">   96</span>    print(f<span class="stringliteral">&quot;- PREPARE       : {prepare_kb:.0f} KB&quot;</span>)</div>
+<div class="line"><span class="lineno">   97</span>    print(f<span class="stringliteral">&quot;- EXECUTE       : {execute_kb:.0f} KB&quot;</span>)</div>
+<div class="line"><span class="lineno">   98</span>    print(f<span class="stringliteral">&quot;- PEAK          : {max(model_load_kb, prepare_kb, execute_kb):.0f} KB&quot;</span>)</div>
+<div class="line"><span class="lineno">   99</span>    print(<span class="stringliteral">&quot;===================================&quot;</span>)</div>
 <div class="line"><span class="lineno">  100</span> </div>
+<div class="line"><span class="lineno">  101</span> </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="inference__benchmark_8py_source.html#l00011">get_memory_usage_mb()</a>, and <a class="el" href="inference__benchmark_8py_source.html#l00028">get_validated_input_tensorinfos()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="inference__benchmark_8py_source.html#l00101">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="inference__benchmark_8py_source.html#l00102">main()</a>.</p>
 
 </div>
 </div>
@@ -302,36 +303,36 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="inference__benchmark_8py_source.html#l00101">101</a> of file <a class="el" href="inference__benchmark_8py_source.html">inference_benchmark.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span><span class="keyword">def </span><a class="code hl_function" href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>():</div>
-<div class="line"><span class="lineno">  102</span>    parser = argparse.ArgumentParser(description=<span class="stringliteral">&quot;ONERT Inference Benchmark&quot;</span>)</div>
-<div class="line"><span class="lineno">  103</span>    parser.add_argument(<span class="stringliteral">&quot;nnpackage&quot;</span>, type=str, help=<span class="stringliteral">&quot;Path to .nnpackage directory&quot;</span>)</div>
-<div class="line"><span class="lineno">  104</span>    parser.add_argument(<span class="stringliteral">&quot;--backends&quot;</span>,</div>
-<div class="line"><span class="lineno">  105</span>                        type=str,</div>
-<div class="line"><span class="lineno">  106</span>                        default=<span class="stringliteral">&quot;cpu&quot;</span>,</div>
-<div class="line"><span class="lineno">  107</span>                        help=<span class="stringliteral">&quot;Backends to use (default: cpu)&quot;</span>)</div>
-<div class="line"><span class="lineno">  108</span>    parser.add_argument(<span class="stringliteral">&quot;--input-shape&quot;</span>,</div>
-<div class="line"><span class="lineno">  109</span>                        nargs=<span class="stringliteral">&quot;+&quot;</span>,</div>
-<div class="line"><span class="lineno">  110</span>                        help=<span class="stringliteral">&quot;Input shapes for each input (e.g. 1,224,224,3 1,10)&quot;</span>)</div>
-<div class="line"><span class="lineno">  111</span>    parser.add_argument(<span class="stringliteral">&quot;--repeat&quot;</span>,</div>
-<div class="line"><span class="lineno">  112</span>                        type=int,</div>
-<div class="line"><span class="lineno">  113</span>                        default=5,</div>
-<div class="line"><span class="lineno">  114</span>                        help=<span class="stringliteral">&quot;Number of measured inference repetitions&quot;</span>)</div>
-<div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>    args = parser.parse_args()</div>
-<div class="line"><span class="lineno">  117</span>    shapes = parse_shapes(args.input_shape) <span class="keywordflow">if</span> args.input_shape <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>    benchmark_inference(nnpackage_path=args.nnpackage,</div>
-<div class="line"><span class="lineno">  120</span>                        backends=args.backends,</div>
-<div class="line"><span class="lineno">  121</span>                        input_shapes=shapes,</div>
-<div class="line"><span class="lineno">  122</span>                        repeat=args.repeat)</div>
-<div class="line"><span class="lineno">  123</span> </div>
+<p class="definition">Definition at line <a class="el" href="inference__benchmark_8py_source.html#l00102">102</a> of file <a class="el" href="inference__benchmark_8py_source.html">inference_benchmark.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span><span class="keyword">def </span><a class="code hl_function" href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>():</div>
+<div class="line"><span class="lineno">  103</span>    parser = argparse.ArgumentParser(description=<span class="stringliteral">&quot;ONERT Inference Benchmark&quot;</span>)</div>
+<div class="line"><span class="lineno">  104</span>    parser.add_argument(<span class="stringliteral">&quot;nnpackage&quot;</span>, type=str, help=<span class="stringliteral">&quot;Path to .nnpackage directory&quot;</span>)</div>
+<div class="line"><span class="lineno">  105</span>    parser.add_argument(<span class="stringliteral">&quot;--backends&quot;</span>,</div>
+<div class="line"><span class="lineno">  106</span>                        type=str,</div>
+<div class="line"><span class="lineno">  107</span>                        default=<span class="stringliteral">&quot;cpu&quot;</span>,</div>
+<div class="line"><span class="lineno">  108</span>                        help=<span class="stringliteral">&quot;Backends to use (default: cpu)&quot;</span>)</div>
+<div class="line"><span class="lineno">  109</span>    parser.add_argument(<span class="stringliteral">&quot;--input-shape&quot;</span>,</div>
+<div class="line"><span class="lineno">  110</span>                        nargs=<span class="stringliteral">&quot;+&quot;</span>,</div>
+<div class="line"><span class="lineno">  111</span>                        help=<span class="stringliteral">&quot;Input shapes for each input (e.g. 1,224,224,3 1,10)&quot;</span>)</div>
+<div class="line"><span class="lineno">  112</span>    parser.add_argument(<span class="stringliteral">&quot;--repeat&quot;</span>,</div>
+<div class="line"><span class="lineno">  113</span>                        type=int,</div>
+<div class="line"><span class="lineno">  114</span>                        default=5,</div>
+<div class="line"><span class="lineno">  115</span>                        help=<span class="stringliteral">&quot;Number of measured inference repetitions&quot;</span>)</div>
+<div class="line"><span class="lineno">  116</span> </div>
+<div class="line"><span class="lineno">  117</span>    args = parser.parse_args()</div>
+<div class="line"><span class="lineno">  118</span>    shapes = parse_shapes(args.input_shape) <span class="keywordflow">if</span> args.input_shape <span class="keywordflow">else</span> <span class="keywordtype">None</span></div>
+<div class="line"><span class="lineno">  119</span> </div>
+<div class="line"><span class="lineno">  120</span>    benchmark_inference(nnpackage_path=args.nnpackage,</div>
+<div class="line"><span class="lineno">  121</span>                        backends=args.backends,</div>
+<div class="line"><span class="lineno">  122</span>                        input_shapes=shapes,</div>
+<div class="line"><span class="lineno">  123</span>                        repeat=args.repeat)</div>
 <div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span> </div>
 <div class="ttc" id="acircle-input-names_8cpp_html_a840291bc02cba5474a4cb46a9b9566fe"><div class="ttname"><a href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a></div><div class="ttdeci">int main(void)</div><div class="ttdef"><b>Definition</b> <a href="circle-input-names_8cpp_source.html#l00170">circle-input-names.cpp:170</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="inference__benchmark_8py_source.html#l00051">benchmark_inference()</a>, <a class="el" href="inference__benchmark_8py_source.html#l00101">main()</a>, and <a class="el" href="inference__benchmark_8py_source.html#l00017">parse_shapes()</a>.</p>
+<p class="reference">References <a class="el" href="inference__benchmark_8py_source.html#l00051">benchmark_inference()</a>, <a class="el" href="inference__benchmark_8py_source.html#l00102">main()</a>, and <a class="el" href="inference__benchmark_8py_source.html#l00017">parse_shapes()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="inference__benchmark_8py_source.html#l00101">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="inference__benchmark_8py_source.html#l00102">main()</a>.</p>
 
 </div>
 </div>
@@ -363,7 +364,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   25</span> </div>
 <div class="line"><span class="lineno">   26</span> </div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="inference__benchmark_8py_source.html#l00101">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="inference__benchmark_8py_source.html#l00102">main()</a>.</p>
 
 </div>
 </div>

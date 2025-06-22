@@ -11,5 +11,6 @@ var classonert_1_1exec_1_1_single_model_executors =
     [ "inputSize", "classonert_1_1exec_1_1_single_model_executors.html#ad55997040a73a0576f8bfb1b96499b93", null ],
     [ "outputBuffer", "classonert_1_1exec_1_1_single_model_executors.html#ada50e901e9c3d1b93227a9182e7dec0d", null ],
     [ "outputInfo", "classonert_1_1exec_1_1_single_model_executors.html#a41ef0a1684c1e8214ae57cb7ddb52333", null ],
-    [ "outputSize", "classonert_1_1exec_1_1_single_model_executors.html#ad75da312346b921b97fa49b8446b9f60", null ]
+    [ "outputSize", "classonert_1_1exec_1_1_single_model_executors.html#ad75da312346b921b97fa49b8446b9f60", null ],
+    [ "outputTensor", "classonert_1_1exec_1_1_single_model_executors.html#aedc1ff03de69de2a782e8b3fa0285725", null ]
 ];

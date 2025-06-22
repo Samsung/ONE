@@ -9,5 +9,6 @@ var classonert_1_1exec_1_1_i_executors =
     [ "inputSize", "classonert_1_1exec_1_1_i_executors.html#af1b46fbf2e066cb2a1795e4b95b3d222", null ],
     [ "outputBuffer", "classonert_1_1exec_1_1_i_executors.html#a2abc6d6c0f20d5887c987d2b620edf3f", null ],
     [ "outputInfo", "classonert_1_1exec_1_1_i_executors.html#a0a5d23929fe21913407ddf0ea2e34177", null ],
-    [ "outputSize", "classonert_1_1exec_1_1_i_executors.html#a6cf70b3f09f5fa6e381962d4b8214321", null ]
+    [ "outputSize", "classonert_1_1exec_1_1_i_executors.html#a6cf70b3f09f5fa6e381962d4b8214321", null ],
+    [ "outputTensor", "classonert_1_1exec_1_1_i_executors.html#adfbd8bbcdccc356f57e9e105be3cc86b", null ]
 ];
