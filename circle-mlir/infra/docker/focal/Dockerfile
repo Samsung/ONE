@@ -10,16 +10,22 @@ RUN apt-get update \
 RUN apt-get update \
  && apt-get -qqy install build-essential git fakeroot autoconf automake libtool unzip wget \
                          devscripts debmake debhelper lcov
+RUN apt-get update \
+ && apt-get -qqy install zlib1g-dev pkg-config libhdf5-dev
 
 # additonal tools
 RUN apt-get update \
- && apt-get -qqy install tree tmux
+ && apt-get -qqy install tree tmux sudo
 
-# Python
+# add ppa:deadsnakes to install python3.10
+RUN add-apt-repository ppa:deadsnakes/ppa -y
+# add ppa:circletools to install circle-interpreter
+RUN add-apt-repository ppa:circletools/nightly -y
+
+# Python 3.10 as default
 RUN apt-get update \
- && apt-get -qqy install python3 python3-pip python3-venv python3-dev python3-all dh-python
-RUN python3 -m pip install --upgrade pip setuptools
-RUN python3 -m pip install yapf==0.43.0 h5py==3.8.0 einops
+ && apt-get -qqy install python3.10 python3.10-venv python3.10-dev dh-python
+RUN python3.10 -m ensurepip --upgrade
 
 # TODO upgrade
 ARG VER_TORCH=2.4.1+cpu
