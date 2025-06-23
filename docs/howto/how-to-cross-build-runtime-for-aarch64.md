@@ -16,7 +16,7 @@ Use `install_rootfs.sh` script to prepare Root File System. You should have `sud
 $ sudo ./tools/cross/install_rootfs.sh aarch64
 ```
 - supports `arm`(default) and `aarch64` architecutre for now
-- supports `focal`, `jammy`, and `noble` release
+- supports `jammy`, and `noble` release
 
 To see the options,
 ```
@@ -27,7 +27,7 @@ RootFS will be prepared at `tools/cross/rootfs/aarch64` folder.
 
 ***\* CAUTION: The OS version of rootfs must match the OS version of execution target device. On the other hand, you need to match the Ubuntu version of the development PC with the Ubuntu version of rootfs to be used for cross-build. Otherwise, unexpected build errors may occur.***
 
-If you are using Ubuntu 20.04 LTS, select `focal`, if you are using Ubuntu 22.04 LTS, select `jammy`. You can check your Ubuntu code name in the following way.
+If you are using Ubuntu 22.04 LTS, select `jammy`, if you are using Ubuntu 24.04 LTS, select `noble`. You can check your Ubuntu code name in the following way.
 
 ```
 $ cat /etc/lsb-release
@@ -78,10 +78,9 @@ $ CROSS_BUILD=1 TARGET_ARCH=aarch64 make install
 - supports `armv7l` and `aarch64` for now
 
 If you used `ROOTFS_DIR` to prepare in alternative folder,
-you should also give this to makefile.
+you should also give this to makefile template.
 ```
-$ CROSS_BUILD=1 ROOTFS_DIR=/home/user/rootfs/aarch64-xenial TARGET_ARCH=aarch64 make
-$ CROSS_BUILD=1 ROOTFS_DIR=/home/user/rootfs/aarch64-xenial TARGET_ARCH=aarch64 make install
+$ CROSS_BUILD=1 ROOTFS_DIR=/home/user/rootfs/aarch64-jammy TARGET_ARCH=aarch64 make -f Makefile.template
 ```
 You can also omit the `CROSS_BUILD=1` option if you explicitly pass `ROOTFS_DIR`. In that case, if
 the `TARGET_ARCH` are differs from the hostarchitecture, the make script automatically applies
@@ -91,8 +90,8 @@ normal build and cross build as follows.
 ```
 $ export ROOTFS_DIR=xxx
 ...
-$ make                         # do normal build
-$ TARGET_ARCH=aarch64 make     # do cross build
+$ make -f Makefile.template                       # do normal build
+$ TARGET_ARCH=aarch64 make -f Makefile.template   # do cross build
 ```
 
 ### Run test

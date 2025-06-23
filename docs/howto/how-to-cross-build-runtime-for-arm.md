@@ -14,7 +14,7 @@ Use `install_rootfs.sh` script to prepare Root File System. You should have `sud
 $ sudo ./tools/cross/install_rootfs.sh arm
 ```
 - supports `arm`(default) and `aarch64` architecutre for now
-- supports `focal`,`jammy`, and `noble` release
+- supports `jammy`, and `noble` release
 
 To see the options,
 ```
@@ -25,7 +25,7 @@ RootFS will be prepared at `tools/cross/rootfs/arm` or `tools/cross/rootfs/aarch
 
 ***\* CAUTION: The OS version of rootfs must match the OS version of execution target device. On the other hand, you need to match the Ubuntu version of the development PC with the Ubuntu version of rootfs to be used for cross-build. Otherwise, unexpected build errors may occur.***
 
-If you are using Ubuntu 20.04 LTS, select `focal`, if you are using Ubuntu 22.04 LTS, select `jammy`, for Ubuntu 24.04 LTS, select `noble`. You can check your Ubuntu code name in the following way.
+If you are using Ubuntu 22.04 LTS, select `jammy`, if you are using Ubuntu 24.04 LTS, select `noble`. You can check your Ubuntu code name in the following way.
 
 ```
 $ cat /etc/lsb-release
@@ -44,7 +44,7 @@ If a build error occurs because the version of the development system and the ta
 Use `ROOTFS_DIR` to a full path to prepare at alternative path.
 
 ```
-$ ROOTFS_DIR=/home/user/rootfs/arm-bionic sudo -E ./tools/cross/install_rootfs.sh arm
+$ ROOTFS_DIR=/home/user/rootfs/arm-jammy sudo -E ./tools/cross/install_rootfs.sh arm
 ```
 
 ### Using proxy
@@ -63,32 +63,7 @@ for `http`, `https` and `ftp` protocol.
 
 ## Install ARM Cross Toolchain
 
-We recommend you have g++ >= 6.1 installed on your system because NN generated tests require it (c++14).
-
-### Ubuntu 20.04 LTS
-
-On Ubuntu 20.04 LTS, you can install using `apt-get`.
-
-Choose g++ version whatever you prefer: 9 (default) or 10. We are officially testing on default g++ version,
-so we don't confirm build on different version.
-
-```
-$ sudo apt-get install g++-{9,10}-arm-linux-gnueabihf
-```
-
-If you select specific version, update symbolic link for build toolchain.
-
-Otherwise, you should set your custom cmake crossbuild toolchain. You can find cmake toolchain files in `infra/nnfw/cmake/buildtool/cross/`.
-
-```
-$ sudo update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc-10 80 \
-    --slave /usr/bin/arm-linux-gnueabihf-g++ arm-linux-gnueabihf-g++ /usr/bin/arm-linux-gnueabihf-g++-10 \
-    --slave /usr/bin/arm-linux-gnueabihf-gcov arm-linux-gnueabihf-gcov /usr/bin/arm-linux-gnueabihf-gcov-10
-```
-
-### Ubuntu 22.04 LTS
-
-Same with Ubuntu 20.04 LTS. (except g++ version)
+We recommend you have g++ >= 9 installed on your system for c++17.
 
 ## Build and install ARM Compute Library
 
@@ -125,7 +100,7 @@ $ source .venv/bin/activate
 
 # If ROOTFS_DIR is in alternative folder
 (.venv)$ ROOTFS_DIR=/path/to/your/rootfs/arm \
-CROSS_BUILD=1 TARGET_ARCH=armv7l make
+CROSS_BUILD=1 TARGET_ARCH=armv7l make -f Makefile.template
 ```
 
 You can also omit the `CROSS_BUILD=1` option if you explicitly pass `ROOTFS_DIR`. In that case, if
