@@ -178,9 +178,15 @@ COPY --from=build / /
 
 # Add user account
 ARG USER_ACCOUNT=circlemlir
+ARG USER_ID=1000
+ARG GROUP_ID=${USER_ID}
 
-RUN groupadd -g 1000 ${USER_ACCOUNT} \
- && useradd -r -u 1000 -g ${USER_ACCOUNT} -ms /bin/bash ${USER_ACCOUNT}
+RUN addgroup --gid ${GROUP_ID} ${USER_ACCOUNT} \
+ && adduser --disabled-password --gecos '' --uid ${USER_ID} --gid ${GROUP_ID} ${USER_ACCOUNT}  \
+ && usermod -aG sudo ${USER_ACCOUNT}
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN echo 'circlemlir ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
 USER ${USER_ACCOUNT}
 WORKDIR /home/${USER_ACCOUNT}
 CMD ["bash"]
