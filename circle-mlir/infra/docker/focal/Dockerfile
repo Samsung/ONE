@@ -164,7 +164,7 @@ RUN rm -rf onnx-mlir/.git \
 RUN find ./onnx-mlir-build -name *.o -exec rm {} \;
 RUN find ./onnx-mlir-build -name *.so -exec rm {} \;
 
-# bin cleanup and strip: 2.7G -> 1.2G
+# bin cleanup and strip
 RUN rm -f ./bin/onnx-mlir-opt \
  && rm -f ./bin/onnx-mlir-reduce
 RUN cd ./bin && strip -s *
