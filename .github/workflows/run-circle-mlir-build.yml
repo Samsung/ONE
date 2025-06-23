@@ -37,7 +37,7 @@ jobs:
     strategy:
       matrix:
         type: [ Debug, Release ]
-        ubuntu_code: [ focal, jammy, noble]
+        ubuntu_code: [ focal, jammy, noble ]
 
     runs-on: ubuntu-latest
 
