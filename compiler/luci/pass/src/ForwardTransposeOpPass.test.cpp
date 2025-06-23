@@ -694,6 +694,7 @@ protected:
 };
 
 using TransposeAbsGraphlet = TransposeUnaryOpGraphlet<luci::CircleAbs>;
+using TransposeRelu6Graphlet = TransposeUnaryOpGraphlet<luci::CircleRelu6>;
 
 class ForwardTransposeToAbsGraph : public TestIOGraph, public TransposeAbsGraphlet
 {
@@ -751,6 +752,33 @@ public:
 
 protected:
   ForwardTransposeToAbsInvalidGraph _graph;
+};
+
+// for Relu6
+class ForwardTransposeToRelu6Graph : public TestIOGraph, public TransposeRelu6Graphlet
+{
+public:
+  void init(const ShapeU32 shape_in, const ShapeU32 shape_out)
+  {
+    TestIOGraph::init(shape_in, shape_out);
+    TransposeRelu6Graphlet::init(g(), shape_in, shape_out);
+
+    // connect network
+    _transpose->a(input());
+    _transpose->perm(_perm);
+    _unary->features(_transpose);
+
+    output()->from(_unary);
+  }
+};
+
+class ForwardTransposeToRelu6GraphTest : public ::testing::Test
+{
+public:
+  void run_pass(void) { run_phase(_graph.g()); }
+
+protected:
+  ForwardTransposeToRelu6Graph _graph;
 };
 
 } // namespace
@@ -817,4 +845,27 @@ TEST_F(ForwardTransposeToSingleElemMulGraphTest, forward_transpose_se_mul_NEG)
 
   luci::ForwardTransposeOpPass pass;
   EXPECT_FALSE(pass.run(_graph.g()));
+}
+
+TEST_F(ForwardTransposeToRelu6GraphTest, forward_relu6_f)
+{
+  _graph.init({1, 64, 51, 1}, {0, 3, 2, 1});
+
+  run_pass();
+
+  auto transpose = dynamic_cast<luci::CircleTranspose *>(_graph.output()->from());
+  EXPECT_NE(nullptr, transpose);
+  EXPECT_EQ(4, transpose->rank());
+  EXPECT_EQ(1, transpose->dim(0).value());
+  EXPECT_EQ(1, transpose->dim(1).value());
+  EXPECT_EQ(51, transpose->dim(2).value());
+  EXPECT_EQ(64, transpose->dim(3).value());
+
+  auto relu6 = dynamic_cast<luci::CircleRelu6 *>(transpose->a());
+  EXPECT_NE(nullptr, relu6);
+  EXPECT_EQ(4, relu6->rank());
+  EXPECT_EQ(1, relu6->dim(0).value());
+  EXPECT_EQ(64, relu6->dim(1).value());
+  EXPECT_EQ(51, relu6->dim(2).value());
+  EXPECT_EQ(1, relu6->dim(3).value());
 }
