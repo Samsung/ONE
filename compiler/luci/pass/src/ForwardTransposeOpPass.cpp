@@ -405,6 +405,30 @@ private:
     return false;
   }
 
+  // input is 'features'
+  template <typename CIRCLE_OP_PTR> bool has_pattern_features(CIRCLE_OP_PTR node)
+  {
+    if (auto tr = dynamic_cast<luci::CircleTranspose *>(node->features()))
+    {
+      RETURN_FALSE_UNLESS(check_perm(tr));
+
+      auto new_transpose = create_cloned_transpose(tr);
+      assert(new_transpose); // FIX_ME_UNLESS
+
+      // Reconnect network
+      node->features(tr->a());
+      loco::replace(node).with(new_transpose);
+      new_transpose->a(node);
+
+      // Do shape inference for this node again.
+      node->shape_status(luci::ShapeStatus::UNDEFINED);
+
+      return true;
+    }
+
+    return false;
+  }
+
 public:
   // Default
   bool visit(luci::CircleNode *) { return false; }
@@ -412,6 +436,8 @@ public:
   bool visit(luci::CircleAbs *node) { return has_pattern_x(node); }
 
   bool visit(luci::CircleLogistic *node) { return has_pattern_x(node); }
+
+  bool visit(luci::CircleRelu6 *node) { return has_pattern_features(node); }
 };
 
 } // namespace
