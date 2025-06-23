@@ -33,9 +33,6 @@ ARG VER_ONNX=1.17.0
 ARG VER_ONNXRUNTIME=1.18.0
 ARG VER_NUMPY=1.24.4
 
-RUN python3 -m pip install numpy==${VER_NUMPY} torch==${VER_TORCH} -f https://download.pytorch.org/whl/torch
-RUN python3 -m pip install onnx==${VER_ONNX} onnxruntime==${VER_ONNXRUNTIME}
-
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
 
@@ -55,6 +52,15 @@ ARG LLVM_PROJECT_HASH=b270525f730be6e7196667925f5a9bfa153262e9
 ARG ONNX_MLIR_HASH=d050bf35a2f186e45b0a4037c0a1d0727c69e7e6
 
 WORKDIR ${WORK_DIR}
+
+# prepare python3.10 virtual-env
+# h5py and einops are used in test
+RUN python3.10 -m venv ${WORK_DIR}/venv
+RUN ${WORK_DIR}/venv/bin/python3 -m pip install --upgrade pip setuptools
+RUN ${WORK_DIR}/venv/bin/python3 -m pip install numpy==${VER_NUMPY} torch==${VER_TORCH} \
+    -f https://download.pytorch.org/whl/torch
+RUN ${WORK_DIR}/venv/bin/python3 -m pip install onnx==${VER_ONNX} onnxruntime==${VER_ONNXRUNTIME} \
+    h5py==3.8.0 einops
 
 # Download experimental patch file for onnx-mlir
 
@@ -147,7 +153,7 @@ RUN cd onnx-mlir \
 RUN mkdir onnx-mlir-build && cd onnx-mlir-build \
  && cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${WORK_DIR} \
     -DMLIR_DIR=${WORK_DIR}/llvm-project-build/lib/cmake/mlir \
-    -DPython3_ROOT_DIR=/usr/bin \
+    -DPython3_ROOT_DIR=${WORK_DIR}/venv/bin \
     -DCMAKE_JOB_POOL_COMPILE:STRING=compile -DCMAKE_JOB_POOL_LINK:STRING=link \
     -DCMAKE_JOB_POOLS:STRING='compile=4;link=1' \
     -DONNX_MLIR_BUILD_TESTS=OFF -DONNX_MLIR_ENABLE_STABLEHLO=OFF \
@@ -194,6 +200,8 @@ RUN addgroup --gid ${GROUP_ID} ${USER_ACCOUNT} \
  && usermod -aG sudo ${USER_ACCOUNT}
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 RUN echo 'circlemlir ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+RUN echo 'source /workdir/venv/bin/activate' >> /etc/bash.bashrc
 
 USER ${USER_ACCOUNT}
 WORKDIR /home/${USER_ACCOUNT}
