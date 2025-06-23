@@ -40,89 +40,6 @@ import onelib.utils as oneutils
 sys.tracebacklimit = 0
 
 
-# Class to rename input/output to prevent issues while import ONNX models
-class TidyIONames:
-    def __init__(self, onnx_model):
-        self.input_nodes = []
-        self.output_nodes = []
-        self.remap_inputs = []
-        self.remap_outputs = []
-        self.initializers = []
-        self.onnx_model = onnx_model
-        # some models may have initializers as inputs. ignore them.
-        for initializer in onnx_model.graph.initializer:
-            self.initializers.append(initializer.name)
-
-    def order(self):
-        for idx in range(0, len(self.onnx_model.graph.input)):
-            name = self.onnx_model.graph.input[idx].name
-            if not name in self.initializers:
-                self.input_nodes.append(name)
-                self.remap_inputs.append('i_' + format(idx + 1, '04d') + '_' + name)
-        for idx in range(0, len(self.onnx_model.graph.output)):
-            name = self.onnx_model.graph.output[idx].name
-            self.output_nodes.append(name)
-            self.remap_outputs.append('o_' + format(idx + 1, '04d') + '_' + name)
-
-    # exclude special characters in names
-    def sanitize(self):
-        for idx in range(0, len(self.onnx_model.graph.input)):
-            name = self.onnx_model.graph.input[idx].name
-            if not name in self.initializers:
-                if '.' in name or ':' in name or '/' in name or name[:1].isdigit():
-                    self.input_nodes.append(name)
-                    name_alt = name.replace('.', '_')
-                    name_alt = name_alt.replace(':', '_')
-                    name_alt = name_alt.replace('/', '_')
-                    name_alt = 'a_' + name_alt  # prevent start with digit or _
-                    self.remap_inputs.append(name_alt)
-        for idx in range(0, len(self.onnx_model.graph.output)):
-            name = self.onnx_model.graph.output[idx].name
-            if '.' in name or ':' in name or '/' in name or name[:1].isdigit():
-                self.output_nodes.append(name)
-                name_alt = name.replace('.', '_')
-                name_alt = name_alt.replace(':', '_')
-                name_alt = name_alt.replace('/', '_')
-                name_alt = 'a_' + name_alt
-                self.remap_outputs.append(name_alt)
-
-    def update(self):
-        # change names for graph input
-        for i in range(len(self.onnx_model.graph.input)):
-            if self.onnx_model.graph.input[i].name in self.input_nodes:
-                to_rename = self.onnx_model.graph.input[i].name
-                idx = self.input_nodes.index(to_rename)
-                self.onnx_model.graph.input[i].name = self.remap_inputs[idx]
-        # change names of all nodes in the graph
-        for i in range(len(self.onnx_model.graph.node)):
-            # check node.input is to change to remap_inputs or remap_outputs
-            for j in range(len(self.onnx_model.graph.node[i].input)):
-                if self.onnx_model.graph.node[i].input[j] in self.input_nodes:
-                    to_rename = self.onnx_model.graph.node[i].input[j]
-                    idx = self.input_nodes.index(to_rename)
-                    self.onnx_model.graph.node[i].input[j] = self.remap_inputs[idx]
-                if self.onnx_model.graph.node[i].input[j] in self.output_nodes:
-                    to_rename = self.onnx_model.graph.node[i].input[j]
-                    idx = self.output_nodes.index(to_rename)
-                    self.onnx_model.graph.node[i].input[j] = self.remap_outputs[idx]
-            # check node.output is to change to remap_inputs or remap_outputs
-            for j in range(len(self.onnx_model.graph.node[i].output)):
-                if self.onnx_model.graph.node[i].output[j] in self.output_nodes:
-                    to_rename = self.onnx_model.graph.node[i].output[j]
-                    idx = self.output_nodes.index(to_rename)
-                    self.onnx_model.graph.node[i].output[j] = self.remap_outputs[idx]
-                if self.onnx_model.graph.node[i].output[j] in self.input_nodes:
-                    to_rename = self.onnx_model.graph.node[i].output[j]
-                    idx = self.input_nodes.index(to_rename)
-                    self.onnx_model.graph.node[i].output[j] = self.remap_inputs[idx]
-        # change names for graph output
-        for i in range(len(self.onnx_model.graph.output)):
-            if self.onnx_model.graph.output[i].name in self.output_nodes:
-                to_rename = self.onnx_model.graph.output[i].name
-                idx = self.output_nodes.index(to_rename)
-                self.onnx_model.graph.output[i].name = self.remap_outputs[idx]
-
-
 def get_driver_cfg_section():
     return "one-import-onnx"
 
@@ -228,26 +145,6 @@ def _apply_verbosity(verbosity):
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
-# TF2.12.1 tries to sanitize special characters, '.:/' and maybe others and then fails with
-# 'IndexError: tuple index out of range' error from somewhere else.
-# This method is to prevent this IndexError.
-def _sanitize_io_names(onnx_model):
-    sanitizer = TidyIONames(onnx_model)
-    sanitizer.sanitize()
-    sanitizer.update()
-
-
-# The index of input/output is added in front of the name. For example,
-# Original input names: 'a', 'c', 'b'
-# Renamed: 'i_0001_a', 'i_0002_c', 'i_0003_b'
-# This will preserve I/O order after import.
-def _remap_io_names(onnx_model):
-    # gather existing name of I/O and generate new name of I/O in sort order
-    remapper = TidyIONames(onnx_model)
-    remapper.order()
-    remapper.update()
-
-
 def _force_ext(args):
     if oneutils.is_valid_attr(args, 'force_ext'):
         return True
@@ -309,11 +206,6 @@ def _convert(args):
             tmpdir = os.path.dirname(logfile_path)
 
         onnx_model = onnx.load(onnx_to_convert_path)
-        # TODO delete sanitize if comment out works OK
-        # _sanitize_io_names(onnx_model)
-        # TODO set model_updated to True only when sanitize updates onnx_model
-        # NOTE with onnx2circle, we may not need sanitize(this needs verification)
-        model_updated = True
         if _onnx_legalizer_enabled:
             options = onnx_legalizer.LegalizeOptions
             options.unroll_rnn = oneutils.is_valid_attr(args, 'unroll_rnn')
@@ -321,11 +213,6 @@ def _convert(args):
             if options.unroll_rnn or options.unroll_lstm:
                 onnx_legalizer.legalize(onnx_model, options)
                 model_updated = True
-
-        # TODO delete remap_io if comment out works OK
-        # if oneutils.is_valid_attr(args, 'keep_io_order'):
-        #    _remap_io_names(onnx_model)
-        #    model_updated = True
 
         run_default_import = True
         if ext_path:
