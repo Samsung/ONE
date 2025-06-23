@@ -67,8 +67,7 @@ jobs:
     needs: configure
     strategy:
       matrix:
-        # TODO activate noble
-        ubuntu_code: [ focal, jammy ]
+        ubuntu_code: [ focal, jammy, noble ]
     name: onnx2circle ubuntu ${{ matrix.ubuntu_code }}
     runs-on: ubuntu-latest
     container:
