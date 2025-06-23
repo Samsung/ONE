@@ -25,10 +25,10 @@ RUN apt-get update \
  && apt-get -qqy install python3 python3-pip python3-venv python3-dev dh-python
 
 # TODO upgrade
-ARG VER_TORCH=2.4.1+cpu
-ARG VER_ONNX=1.17.0
-ARG VER_ONNXRUNTIME=1.18.0
-ARG VER_NUMPY=1.24.4
+ARG VER_TORCH=2.7.0+cpu
+ARG VER_ONNX=1.18.0
+ARG VER_ONNXRUNTIME=1.21.1
+ARG VER_NUMPY=1.26.4
 
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
