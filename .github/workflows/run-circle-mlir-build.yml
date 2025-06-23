@@ -61,8 +61,9 @@ jobs:
       # NOTE Docker image has pre-installed python packages
       - name: Configure
         run: |
+          source /workdir/venv/bin/activate
           cd circle-mlir
-          Python3_ROOT_DIR=/usr/bin cmake -B build/${{ matrix.type }} -S ./ \
+          Python3_ROOT_DIR=/workdir/venv/bin cmake -B build/${{ matrix.type }} -S ./ \
           -DCMAKE_INSTALL_PREFIX=build/${{ matrix.type }}.install \
           -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
           -DCIRCLE_MLIR_WORKDIR=/workdir
@@ -71,6 +72,7 @@ jobs:
         env:
           ONE_COMPILER_ROOT: /usr/share/circletools
         run: |
+          source /workdir/venv/bin/activate
           cd circle-mlir
           cmake --build build/${{ matrix.type }} -j4
           CTEST_OUTPUT_ON_FAILURE=1 cmake --build build/${{ matrix.type }} --verbose -- test
