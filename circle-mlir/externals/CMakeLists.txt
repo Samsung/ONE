@@ -76,10 +76,21 @@ set(PB_INSTALL_DIR "${EXTERNALS_BUILD_INST_DIR}/protobuf-install")
 set(OM_BUILD_DIR   "${EXTERNALS_BUILD_INST_DIR}/onnx-mlir-build")
 set(OM_INSTALL_DIR "${EXTERNALS_BUILD_INST_DIR}/onnx-mlir-install")
 
+set(GIT_RPO_FLATBUFFERS "https://github.com/google/flatbuffers.git")
+set(GIT_TAG_FLATBUFFERS "a078130c878b0f997af24d532c6ade903ea7f65b")
+set(GIT_RPO_ABSEILCPP   "https://github.com/abseil/abseil-cpp.git")
+set(GIT_TAG_ABSEILCPP   "d9e4955c65cd4367dd6bf46f4ccb8cd3d100540b") # 20250127.1
+set(GIT_RPO_LLVMPROJ    "https://github.com/llvm/llvm-project.git")
+set(GIT_TAG_LLVMPROJ    "b270525f730be6e7196667925f5a9bfa153262e9")
+set(GIT_RPO_PROTOBUF    "https://github.com/protocolbuffers/protobuf.git")
+set(GIT_TAG_PROTOBUF    "f0dc78d7e6e331b8c6bb2d5283e06aa26883ca7c") # v21.12
+set(GIT_RPO_ONNXMLIR    "https://github.com/onnx/onnx-mlir.git")
+set(GIT_TAG_ONNXMLIR    "d050bf35a2f186e45b0a4037c0a1d0727c69e7e6") # v0.5.0.0
+
 # build flatbuffers
 ExternalProject_Add(externals-flatbuffers
-  GIT_REPOSITORY "https://github.com/google/flatbuffers.git"
-  GIT_TAG        "a078130c878b0f997af24d532c6ade903ea7f65b"
+  GIT_REPOSITORY "${GIT_RPO_FLATBUFFERS}"
+  GIT_TAG        "${GIT_TAG_FLATBUFFERS}"
   SOURCE_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/flatbuffers"
   BINARY_DIR     "${FB_BUILD_DIR}"
   INSTALL_DIR    "${FB_INSTALL_DIR}"
@@ -89,8 +100,8 @@ ExternalProject_Add(externals-flatbuffers
 
 # build abseil-cpp
 ExternalProject_Add(externals-abseil-cpp
-  GIT_REPOSITORY "https://github.com/abseil/abseil-cpp.git"
-  GIT_TAG        "d9e4955c65cd4367dd6bf46f4ccb8cd3d100540b" # 20250127.1
+  GIT_REPOSITORY "${GIT_RPO_ABSEILCPP}"
+  GIT_TAG        "${GIT_TAG_ABSEILCPP}"
   SOURCE_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/abseil-cpp"
   BINARY_DIR     "${AC_BUILD_DIR}"
   INSTALL_DIR    "${AC_INSTALL_DIR}"
@@ -104,8 +115,8 @@ ExternalProject_Add(externals-abseil-cpp
 # build MLIR of LLVM
 # from https://github.com/onnx/onnx-mlir/blob/main/docs/BuildOnLinuxOSX.md
 ExternalProject_Add(externals-llvm-project
-  GIT_REPOSITORY "https://github.com/llvm/llvm-project.git"
-  GIT_TAG        "b270525f730be6e7196667925f5a9bfa153262e9"
+  GIT_REPOSITORY "${GIT_RPO_LLVMPROJ}"
+  GIT_TAG        "${GIT_TAG_LLVMPROJ}"
   SOURCE_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/llvm-project"
   SOURCE_SUBDIR  "llvm"
   BINARY_DIR     "${LP_BUILD_DIR}"
@@ -125,8 +136,8 @@ ExternalProject_Add(externals-llvm-project
 
 # build protobuf for onnx
 ExternalProject_Add(externals-protobuf
-  GIT_REPOSITORY "https://github.com/protocolbuffers/protobuf.git"
-  GIT_TAG        "f0dc78d7e6e331b8c6bb2d5283e06aa26883ca7c" # v21.12
+  GIT_REPOSITORY "${GIT_RPO_PROTOBUF}"
+  GIT_TAG        "${GIT_TAG_PROTOBUF}"
   SOURCE_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/protobuf"
   BINARY_DIR     "${PB_BUILD_DIR}"
   INSTALL_DIR    "${PB_INSTALL_DIR}"
@@ -144,8 +155,8 @@ list(APPEND CMAKE_PREFIX_PATH ${PB_INSTALL_DIR})
 
 # build ONNX-MLIR
 ExternalProject_Add(externals-onnx-mlir
-  GIT_REPOSITORY "https://github.com/onnx/onnx-mlir.git"
-  GIT_TAG        "d050bf35a2f186e45b0a4037c0a1d0727c69e7e6" # v0.5.0.0
+  GIT_REPOSITORY "${GIT_RPO_ONNXMLIR}"
+  GIT_TAG        "${GIT_TAG_ONNXMLIR}"
   GIT_SUBMODULES_RECURSE True
   SOURCE_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/onnx-mlir"
   BINARY_DIR     "${OM_BUILD_DIR}"
