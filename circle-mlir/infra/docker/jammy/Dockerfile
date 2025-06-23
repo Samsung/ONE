@@ -158,7 +158,7 @@ RUN rm -rf onnx-mlir/.git \
 RUN find ./onnx-mlir-build -name *.o -exec rm {} \;
 RUN find ./onnx-mlir-build -name *.so -exec rm {} \;
 
-# bin cleanup and strip: 2.7G -> 1.2G
+# bin cleanup and strip
 RUN rm -f ./bin/onnx-mlir-opt \
  && rm -f ./bin/onnx-mlir-reduce
 RUN cd ./bin && strip -s *
@@ -166,6 +166,8 @@ RUN cd ./lib && strip -s *.so.*git
 
 # more cleanup
 RUN rm -f /usr/local/lib/libprotoc.* \
+ && rm -rf /usr/local/man \
+ && rm -rf /usr/local/doc \
  && rm -rf ./onnx-mlir-build/docs/* \
  && rm -rf ./onnx-mlir-build/third_party/* \
  && rm -f ./onnx-mlir-build/.ninja_* \
