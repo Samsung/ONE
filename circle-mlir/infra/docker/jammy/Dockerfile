@@ -10,10 +10,15 @@ RUN apt-get update \
 RUN apt-get update \
  && apt-get -qqy install build-essential cmake git fakeroot autoconf automake libtool unzip wget \
                          devscripts debmake debhelper lcov
+RUN apt-get update \
+ && apt-get -qqy install zlib1g-dev pkg-config libhdf5-dev
 
 # additonal tools
 RUN apt-get update \
- && apt-get -qqy install tree tmux
+ && apt-get -qqy install tree tmux sudo
+
+ # add ppa:circletools to install circle-interpreter
+RUN add-apt-repository ppa:circletools/nightly -y
 
 # Python
 RUN apt-get update \
