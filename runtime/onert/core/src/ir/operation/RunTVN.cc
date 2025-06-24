@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#include "ir/operation/Bulk.h"
+#include "ir/operation/RunTVN.h"
 #include "ir/OperationVisitor.h"
 
 namespace onert::ir::operation
 {
-void Bulk::accept(OperationVisitor &v) const { v.visit(*this); }
+void RunTVN::accept(OperationVisitor &v) const { v.visit(*this); }
 
-Bulk::Bulk(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
-           const Bulk::Param &param)
+RunTVN::RunTVN(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+               const RunTVN::Param &param)
   : Operation{OperandConstraint::createAny(), inputs, outputs}, _param{param}
 {
 }

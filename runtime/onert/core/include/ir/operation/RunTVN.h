@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_IR_OPERATION_BULK_H__
-#define __ONERT_IR_OPERATION_BULK_H__
+#ifndef __ONERT_IR_OPERATION_RUNTVN_H__
+#define __ONERT_IR_OPERATION_RUNTVN_H__
 
 #include "ir/Operation.h"
 
 namespace onert::ir::operation
 {
 
-class Bulk : public Operation
+/**
+ * @brief Class to represent running TVN model operation
+ * @note  This operation is virtual operation which is not used on real circle model,
+ *        but used internally to represent running TVN model which is binary model format for
+ *        specific backend - trix backend.
+ *        RunTVN operation node is created when loading TVN model from given path by TVNLoader.
+ */
+class RunTVN : public Operation
 {
 public:
   struct Param
@@ -33,11 +40,12 @@ public:
   };
 
 public:
-  Bulk(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs, const Param &param);
+  RunTVN(const OperandIndexSequence &inputs, const OperandIndexSequence &outputs,
+         const Param &param);
 
 public:
   void accept(OperationVisitor &v) const override;
-  OpCode opcode() const final { return OpCode::Bulk; }
+  OpCode opcode() const final { return OpCode::RunTVN; }
   const Param &param() const { return _param; }
 
 private:
@@ -46,4 +54,4 @@ private:
 
 } // namespace onert::ir::operation
 
-#endif // __ONERT_IR_OPERATION_BULK_H__
+#endif // __ONERT_IR_OPERATION_RUNTVN_H__

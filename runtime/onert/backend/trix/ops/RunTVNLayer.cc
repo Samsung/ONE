@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-#include "BulkLayer.h"
+#include "RunTVNLayer.h"
 
 #include "../Convert.h"
 
 namespace onert::backend::trix::ops
 {
 
-BulkLayer::BulkLayer() : _inputs(), _outputs(), _model_id(0), _dev_context(nullptr)
+RunTVNLayer::RunTVNLayer() : _inputs(), _outputs(), _model_id(0), _dev_context(nullptr)
 {
   // DO NOTHING
 }
 
-BulkLayer::~BulkLayer() { _dev_context->unRegisterModel(_model_id); }
+RunTVNLayer::~RunTVNLayer() { _dev_context->unRegisterModel(_model_id); }
 
-void BulkLayer::configure(const std::vector<const IPortableTensor *> &inputs,
-                          std::vector<IPortableTensor *> &outputs, std::string binary_path,
-                          const std::shared_ptr<DevContext> &dev_context)
+void RunTVNLayer::configure(const std::vector<const IPortableTensor *> &inputs,
+                            std::vector<IPortableTensor *> &outputs, std::string binary_path,
+                            const std::shared_ptr<DevContext> &dev_context)
 {
   _inputs = inputs;
   _outputs = outputs;
@@ -38,7 +38,7 @@ void BulkLayer::configure(const std::vector<const IPortableTensor *> &inputs,
   _model_id = _dev_context->registerModel(binary_path);
 }
 
-void BulkLayer::run()
+void RunTVNLayer::run()
 {
   tensors_data_info in_info;
   tensors_data_info out_info;
@@ -59,7 +59,7 @@ void BulkLayer::run()
   _dev_context->requestRun(_model_id, &input_bufs, &in_info, &output_bufs, &out_info, batch_size);
 }
 
-void BulkLayer::prepare()
+void RunTVNLayer::prepare()
 {
   // DO NOTHING
 }

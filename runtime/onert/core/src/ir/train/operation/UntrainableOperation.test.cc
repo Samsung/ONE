@@ -82,14 +82,14 @@ operation::BroadcastTo generateBroadcastTo()
   return operation::BroadcastTo{OperandIndexSequence{1, 2}, OperandIndexSequence{0}};
 }
 
-operation::Bulk generateBulk()
+operation::RunTVN generateRunTVN()
 {
-  operation::Bulk::Param param;
+  operation::RunTVN::Param param;
   param.binary_path = "";
   param.origin_input_shapes = std::vector<onert::ir::Shape>{};
   param.origin_output_shapes = std::vector<onert::ir::Shape>{};
 
-  return operation::Bulk{OperandIndexSequence{1, 2}, OperandIndexSequence{0}, param};
+  return operation::RunTVN{OperandIndexSequence{1, 2}, OperandIndexSequence{0}, param};
 }
 
 operation::Comparison generateComparison()
@@ -619,7 +619,7 @@ TEST(UntrainableOperation, testAllOps)
   const auto broadcast = generateBroadcastTo();
   verifyOp(broadcast);
 
-  const auto bulk = generateBulk();
+  const auto bulk = generateRunTVN();
   verifyOp(bulk);
 
   const auto comparison = generateComparison();
@@ -864,7 +864,7 @@ TEST(UntrainableOperation, neg_TrainableOperationVisitor)
   }
 
   {
-    const auto bulk = generateBulk();
+    const auto bulk = generateRunTVN();
     auto untrainable = generateUntrainableOperation(bulk);
     EXPECT_ANY_THROW(visitor.invoke(*untrainable));
   }

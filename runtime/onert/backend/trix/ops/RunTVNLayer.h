@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_TRIX_OPS_BULKLAYER_H__
-#define __ONERT_BACKEND_TRIX_OPS_BULKLAYER_H__
+#ifndef __ONERT_BACKEND_TRIX_OPS_RUNTVNLAYER_H__
+#define __ONERT_BACKEND_TRIX_OPS_RUNTVNLAYER_H__
 
 #include <backend/IPortableTensor.h>
 #include "../DevContext.h"
@@ -25,11 +25,11 @@
 namespace onert::backend::trix::ops
 {
 
-class BulkLayer : public ::onert::exec::IFunction
+class RunTVNLayer : public ::onert::exec::IFunction
 {
 public:
-  BulkLayer();
-  ~BulkLayer();
+  RunTVNLayer();
+  ~RunTVNLayer();
 
 public:
   void configure(const std::vector<const IPortableTensor *> &inputs,
@@ -50,4 +50,4 @@ private:
 
 } // namespace onert::backend::trix::ops
 
-#endif // __ONERT_BACKEND_TRIX_OPS_BULKLAYER_H__
+#endif // __ONERT_BACKEND_TRIX_OPS_RUNTVNLAYER_H__

@@ -1453,7 +1453,7 @@ void StaticShapeInferer::visit(const ir::operation::DetectionPostProcess &op)
   auto &output4 = operands.at(output_idx4);
   output4.info().shape({1});
 }
-void StaticShapeInferer::visit(const ir::operation::Bulk &op)
+void StaticShapeInferer::visit(const ir::operation::RunTVN &op)
 {
   auto &operands = _lowered_subg->graph().operands();
 

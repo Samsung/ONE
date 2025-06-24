@@ -24,7 +24,7 @@
 #include "ir/operation/BCQGather.h"
 #include "ir/operation/BinaryArithmetic.h"
 #include "ir/operation/BroadcastTo.h"
-#include "ir/operation/Bulk.h"
+#include "ir/operation/RunTVN.h"
 #include "ir/operation/Comparison.h"
 #include "ir/operation/Concat.h"
 #include "ir/operation/Conv2D.h"

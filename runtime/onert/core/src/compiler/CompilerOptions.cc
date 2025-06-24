@@ -121,7 +121,7 @@ void CompilerOptions::forceInternalOptions()
   manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
 
   // FIXME This is a workaround for bulk operations, should remove it
-  manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
+  manual_scheduler_options.opcode_to_backend[ir::OpCode::RunTVN] = "trix";
 }
 
 void CompilerOptions::verboseOptions()

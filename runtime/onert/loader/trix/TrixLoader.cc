@@ -15,7 +15,7 @@
  */
 
 #include "ir/Graph.h"
-#include "ir/operation/Bulk.h"
+#include "ir/operation/RunTVN.h"
 #include "loader/ILoader.h"
 
 #include <libnpuhost.h>
@@ -96,7 +96,7 @@ private:
   void loadOperands(ir::Graph &subg);
   ir::OperandIndex loadOperandFromInput(uint32_t i, ir::Graph &subg);
   ir::OperandIndex loadOperandFromOutput(uint32_t i, ir::Graph &subg);
-  void loadBulk(ir::Graph &subg);
+  void loadRunTVN(ir::Graph &subg);
   void loadOperationIO(ir::OperandIndexSequence &inputs, ir::OperandIndexSequence &outputs);
   ir::OperandIndex inputIdxToOperandIdx(uint32_t i) const;
   ir::OperandIndex outputIdxToOperandIdx(uint32_t i) const;
@@ -144,9 +144,9 @@ void TrixLoader::loadOperationIO(ir::OperandIndexSequence &inputs,
   }
 }
 
-void TrixLoader::loadBulk(ir::Graph &subg)
+void TrixLoader::loadRunTVN(ir::Graph &subg)
 {
-  ir::operation::Bulk::Param param;
+  ir::operation::RunTVN::Param param;
   param.binary_path = _model_path;
   param.origin_input_shapes = _origin_input_shapes;
   param.origin_output_shapes = _origin_output_shapes;
@@ -156,7 +156,7 @@ void TrixLoader::loadBulk(ir::Graph &subg)
 
   loadOperationIO(inputs, outputs);
 
-  std::unique_ptr<ir::operation::Bulk> bulk(new ir::operation::Bulk(inputs, outputs, param));
+  std::unique_ptr<ir::operation::RunTVN> bulk(new ir::operation::RunTVN(inputs, outputs, param));
   subg.addOperation(std::move(bulk));
 }
 
@@ -227,7 +227,7 @@ std::unique_ptr<ir::Graph> TrixLoader::loadSubgraph()
     subg->addOutput(outputIdxToOperandIdx(i), "tvn_out" + std::to_string(i));
   }
   // Create operations
-  loadBulk(*subg);
+  loadRunTVN(*subg);
 
   subg->verify();
   return subg;
@@ -243,7 +243,7 @@ void TrixLoader::loadModel(std::unique_ptr<ir::Model> &model)
 std::unique_ptr<ir::Model> TrixLoader::loadFromFile(const std::string &file_path)
 {
   auto model = std::make_unique<ir::Model>();
-  // model path will be used to set Bulk param
+  // model path will be used to set RunTVN param
   _model_path = file_path;
   // metadata is initialized from model path since it is loadFromFile
   _meta.init(_model_path.c_str());

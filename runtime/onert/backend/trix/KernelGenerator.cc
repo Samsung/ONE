@@ -16,7 +16,7 @@
 
 #include "KernelGenerator.h"
 
-#include "ops/BulkLayer.h"
+#include "ops/RunTVNLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
@@ -51,9 +51,9 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
   return ret;
 }
 
-void KernelGenerator::visit(const ir::operation::Bulk &node)
+void KernelGenerator::visit(const ir::operation::RunTVN &node)
 {
-  using ir::operation::Bulk;
+  using ir::operation::RunTVN;
 
   std::vector<IPortableTensor *> output_tensors;
   for (const auto &ofm_idx : node.getOutputs())
@@ -66,7 +66,7 @@ void KernelGenerator::visit(const ir::operation::Bulk &node)
   // parameters
   const auto &binary_path = node.param().binary_path;
 
-  auto fn = std::make_unique<ops::BulkLayer>();
+  auto fn = std::make_unique<ops::RunTVNLayer>();
 
   fn->configure(input_tensors, output_tensors, binary_path, _dev_context);
 
