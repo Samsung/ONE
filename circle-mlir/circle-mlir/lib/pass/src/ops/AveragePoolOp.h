@@ -106,8 +106,8 @@ public:
 
     mlir::Value pre_tran = CreatePreTranspose(rewriter, inputPreTr, op_name);
     mlir::Value avgpool2d =
-      rewriter.create<AveragePool2DOp>(opLoc, output_type, pre_tran, filter_width, filter_height,
-                                       /*padding*/ "VALID", stride_w, stride_h,
+      rewriter.create<AveragePool2DOp>(opLoc, output_type, pre_tran, filter_height, filter_width,
+                                       /*padding*/ "VALID", stride_h, stride_w,
                                        /*fused_activation_function*/ "NONE");
     ReplaceOpWithPostTranspose(rewriter, op, avgpool2d, op.getType(), op_name);
 
