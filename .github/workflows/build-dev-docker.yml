@@ -17,9 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       yml: ${{ steps.filter.outputs.yml }}
-      android: ${{ steps.filter.outputs.android }}
-      ubuntu: ${{ steps.filter.outputs.ubuntu }}
-      ubuntu-cross: ${{ steps.filter.outputs.ubuntu-cross }}
+      target: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: dorny/paths-filter@v3
         id: filter
@@ -28,25 +26,25 @@ jobs:
             android:
               - '.github/**'
               - 'infra/docker/android-sdk/**'
-            ubuntu:
+            focal:
               - '.github/**'
               - 'infra/docker/focal/Dockerfile'
-              - 'infra/docker/jammy/Dockerfile'
-              - 'infra/docker/noble/Dockerfile'
-            ubuntu-cross:
+            jammy:
               - '.github/**'
-              - 'infra/docker/focal-cross/Dockerfile'
-              - 'infra/docker/jammy-cross/Dockerfile'
-              - 'infra/docker/noble-cross/Dockerfile'
+              - 'infra/docker/jammy/Dockerfile'
+            noble:
+              - '.github/**'
+              - 'infra/docker/noble/Dockerfile'
 
   # Build on docker CLI for PR test without login
   build-ubuntu:
     needs: filtering
-    if: github.repository_owner == 'Samsung' && needs.filtering.outputs.ubuntu == 'true'
     runs-on: one-x64-linux
     strategy:
       matrix:
-        version: [ 'focal', 'jammy', 'noble' ]
+        version: ${{ fromJSON(needs.filtering.outputs.target) }}
+        exclude:
+          - version: android
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -61,21 +59,6 @@ jobs:
         run: |
           ./nnas docker-run --user make -f Makefile.template
           ./nnas docker-run --user Product/out/test/onert-test unittest
-
-  build-ubuntu-cross:
-    needs: filtering
-    if: github.repository_owner == 'Samsung' && needs.filtering.outputs.ubuntu-cross == 'true'
-    runs-on: one-x64-linux
-    strategy:
-      matrix:
-        version: [ 'focal', 'jammy', 'noble' ]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Build Docker Image
-        run: |
-          docker build --file infra/docker/${{ matrix.version }}-cross/Dockerfile --tag one-test .
 
       - name: Download rootfs for cross build
         uses: dawidd6/action-download-artifact@v7
@@ -99,7 +82,7 @@ jobs:
 
   build-android:
     needs: filtering
-    if: github.repository_owner == 'Samsung' && needs.filtering.outputs.android == 'true'
+    if: github.repository_owner == 'Samsung' && contains(fromJSON(needs.filtering.outputs.target), 'android')
     runs-on: one-x64-linux
     steps:
       - name: Checkout
