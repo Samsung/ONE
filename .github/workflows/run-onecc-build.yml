@@ -45,7 +45,7 @@ jobs:
     strategy:
       matrix:
         type: [ Debug, Release ]
-        ubuntu_code: [ focal, jammy ]
+        ubuntu_code: [ focal, jammy, noble ]
     runs-on: one-x64-linux
     container:
       image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}
