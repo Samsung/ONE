@@ -1,3 +1,9 @@
+onnx2circle (0.4.0~202506240100~jammy) jammy; urgency=medium
+
+  * publish noble too
+
+ -- On-device AI developers <nnfw@samsung.com>  Tue, 24 Jun 2025 01:11:00 +0000
+
 onnx2circle (0.4.0~202506120221~jammy) jammy; urgency=medium
 
   * added new dynamic_batch_to_single_batch option.
