@@ -1,29 +1,27 @@
-if(NOT BUILD_PYTHON_BINDING)
-  return()
-endif(NOT BUILD_PYTHON_BINDING)
+set(PYTHON_MODULE_PREFIX "lib")
+set(PYTHON_MODULE_EXTENSION ".so")
 
-# CMakeLists.txt
+if(CMAKE_CROSSCOMPILING)
+  if(NOT BUILD_PYTHON_BINDING)
+    return()
+  endif(NOT BUILD_PYTHON_BINDING)
 
-# refer to https://github.com/Samsung/ONE/issues/11368
+  # FindPythonLibs is deprecated since 3.12, and recommand to use FindPython.
+  # But on cross compile, FindPython is not working for target environment
+  # For workaround, use PythonLibs
+  find_package(PythonLibs REQUIRED)
 
-# Tell pybind11 where the target python installation is
-#
-# FindPythonLibs is deprecated since 3.12, and recommand to use FindPython.
-# But on cross compile, FindPython is not working for target environment
-# For workaround, use PythonLibs
-find_package(PythonLibs REQUIRED)
-set(PYTHON_MODULE_PREFIX "lib" CACHE INTERNAL "Cross python lib prefix")
-set(PYTHON_MODULE_EXTENSION ".so" CACHE INTERNAL "Cross python lib extension")
+  # Disable pybind11 python search mechanism
+  set(PYTHONLIBS_FOUND TRUE CACHE INTERNAL "")
 
-# Disable pybind11 python search mechanism
-set(PYTHONLIBS_FOUND TRUE CACHE INTERNAL "")
-
-# Install pybind11
-nnfw_find_package(Pybind11 REQUIRED)
-if(NOT Pybind11_FOUND)
-  message(STATUS "Build onert/python: FAILED (Pybind11 is missing)")
-  return()
-endif()
+  nnfw_find_package(Pybind11 REQUIRED)
+else(CMAKE_CROSSCOMPILING)
+  nnfw_find_package(Pybind11 QUIET)
+  if(NOT Pybind11_FOUND)
+    message(STATUS "Build onert/python: FAILED (Pybind11 is missing)")
+    return()
+  endif()
+endif(CMAKE_CROSSCOMPILING)
 
 # Add the Python module
 file(GLOB_RECURSE NNFW_API_PYBIND_SOURCES "src/*.cc")
