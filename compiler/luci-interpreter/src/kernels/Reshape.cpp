@@ -74,6 +74,8 @@ static void resolveUnknownDimension(const Shape &input_shape, Shape *output_shap
   }
   if (unknown_dim_index != -1)
   {
+    // TODO support value with 0
+    LUCI_INTERPRETER_CHECK(num_output_elements != 0);
     output_shape->dim(unknown_dim_index) = num_input_elements / num_output_elements;
     num_output_elements *= output_shape->dim(unknown_dim_index);
   }
