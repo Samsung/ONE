@@ -389,6 +389,182 @@ void DetermineSubgraphsDFS(std::vector<onnx::GraphProto> &subgraphs, const onnx:
   }
 }
 
+/**
+ * @brief     Determine and partition subgraphs from the given ONNX graph using the index of nodes,
+ * compared with DetermineSubgraphsDFS, this function may produce less subgraphs but some of them
+ * may be not fully connected(connectivity of subgrpahs will not affect the inference procedure of
+ * subgraphs) This function specifically handles the partitioning logic for NPU support and
+ * preferred operations.
+ *
+ * @param     [in] g The original ONNX graph to be partitioned.
+ * @param     [out] otherSubgraphs A vector to store the subgraphs that do not meet the preferred
+ * operation criteria.
+ * @param     [in] d The device object containing information about supported and preferred
+ * operations.
+ * @param     [in,out] visited An array to keep track of visited nodes.
+ * @param     [in] adjacencyList The adjacency list representing the graph's structure.
+ * @param     [in] strategy The partitioning strategy to be used (e.g., SPILTE_CPU_STRUCTURE_FIRST,
+ * SPILTE_NPU_STRUCTURE_FIRST).
+ *
+ * @pre       The graph `g` and `adjacencyList` should be properly initialized.
+ * @pre       The `visited` array should be initialized to zero.
+ * @pre       The device object `d` should be properly initialized with support and preferred
+ * operations.
+ *
+ * @post      The `otherSubgraphs` vector will contain subgraphs that do not meet the preferred
+ * operation criteria.
+ * @post      The `visited` array will reflect the nodes that have been visited.
+ *
+ * @exception None
+ *
+ * @return    None
+ */
+void DetermineSubgraphs(std::vector<onnx::GraphProto> &subgraphs, const onnx::GraphProto &g,
+                        std::vector<onnx::GraphProto> &otherSubgraphs, Device &d, int *visited,
+                        std::vector<GraphAdjacencyNode> &adjacencyList, PartitionStrategy strategy)
+{
+  float maxSubgraphSize = d._max_subgraph_size;
+  std::vector<std::string> supportOp;
+  std::vector<std::string> preferOp;
+  supportOp = d.getNPUSupportOp();
+  preferOp = d.getNPUPreferOp();
+  onnx::GraphProto tempGraph;
+  int endFlag = 0;
+  int nodeCount = 0;
+  float tempGraphSize = 0;
+
+  while (!endFlag)
+  {
+    float nodeSize = CalculateNodeSize(g, nodeCount);
+
+    if (tempGraph.node_size() != 0)
+    {
+      if ((std::find(supportOp.begin(), supportOp.end(), g.node(nodeCount).op_type()) !=
+           supportOp.end()) &&
+          tempGraph.node_size() <= maxSubgraphSize)
+      {
+        *tempGraph.add_node() = g.node(nodeCount);
+        tempGraphSize += nodeSize;
+
+        if (tempGraphSize > maxSubgraphSize)
+        {
+          std::cout << "graph size exceed max size!" << tempGraphSize << " " << maxSubgraphSize
+                    << std::endl;
+        }
+
+        visited[nodeCount] = 1;
+      }
+      else
+      {
+        int find_preferop = 0;
+
+        for (int j = 0; j < tempGraph.node_size(); j++)
+        {
+          if (std::find(preferOp.begin(), preferOp.end(), tempGraph.node(j).op_type()) !=
+              preferOp.end())
+          {
+            find_preferop = 1;
+            break;
+          }
+        }
+
+        if (find_preferop == 1)
+        {
+          subgraphs.push_back(tempGraph);
+        }
+        else
+        {
+          for (int k = 1; k <= tempGraph.node_size(); k++)
+          {
+            visited[nodeCount - k] = 0;
+          }
+        }
+
+        tempGraph.Clear();
+        tempGraphSize = 0;
+        if (std::find(supportOp.begin(), supportOp.end(), g.node(nodeCount).op_type()) !=
+            supportOp.end())
+        {
+          *tempGraph.add_node() = g.node(nodeCount);
+          tempGraphSize += nodeSize;
+          visited[nodeCount] = 1;
+          continue;
+        }
+      }
+    }
+    else
+    {
+      if (std::find(supportOp.begin(), supportOp.end(), g.node(nodeCount).op_type()) !=
+          supportOp.end())
+      {
+        *tempGraph.add_node() = g.node(nodeCount);
+        tempGraphSize += nodeSize;
+
+        if (tempGraphSize > maxSubgraphSize)
+        {
+          std::cout << "graph size exceed max size!" << tempGraphSize << " " << maxSubgraphSize
+                    << std::endl;
+        }
+
+        visited[nodeCount] = 1;
+      }
+    }
+
+    nodeCount++;
+
+    if (nodeCount == g.node_size())
+    {
+      endFlag = 1;
+
+      if (tempGraph.node_size() != 0)
+      {
+        subgraphs.push_back(tempGraph);
+      }
+    }
+  }
+
+  onnx::GraphProto tempGraph2;
+  float tempGraphSize2 = 0;
+
+  for (int i = 0; i < g.node_size(); i++)
+  {
+    float nodeSize = CalculateNodeSize(g, i);
+
+    if (visited[i] == 0 && tempGraphSize2 < maxSubgraphSize)
+    {
+      *tempGraph2.add_node() = g.node(i);
+      tempGraphSize2 += nodeSize;
+    }
+    else
+    {
+      std::cout << "i = " << i << " tempGraphSize2: " << tempGraphSize2 << std::endl;
+
+      if (tempGraph2.node_size() != 0)
+      {
+        otherSubgraphs.push_back(tempGraph2);
+        tempGraphSize2 = 0;
+        tempGraph2.Clear();
+      }
+
+      if (visited[i] == 0)
+      {
+        *tempGraph2.add_node() = g.node(i);
+        tempGraphSize2 += nodeSize;
+        continue;
+      }
+    }
+
+    if (i == g.node_size() - 1)
+    {
+      if (tempGraph2.node_size() != 0)
+      {
+        otherSubgraphs.push_back(tempGraph2);
+        tempGraph2.Clear();
+      }
+    }
+  }
+}
+
 void PartitionGraph(const onnx::GraphProto &g, Device &d, PartitionStrategy strategy,
                     const std::unordered_map<std::string, NodeIOSize> &node_io_size)
 {
