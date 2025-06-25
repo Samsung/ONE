@@ -115,6 +115,12 @@ class CIR_OperandHasRank<int n, int m> :
       CPred<"mlir::cast<ShapedType>($_op.getOperand(" # n #
       ").getType()).getRank() == " # m>]>>;
 
+// Returns true if the n-th operand is ranked and has rank dim.
+class CIR_OperandHasKnownRank<int n, int dim> : And<[
+  CPred<"mlir::isa<RankedTensorType>($_op.getOperand(" # n # ").getType())">,
+  CPred<"mlir::cast<ShapedType>($_op.getOperand(" # n # ").getType()).getRank() == "
+    # dim>]>;
+
 class CIR_TFTypesWithSameBits<int i, int j, int num> :
   And<[CPred<"getElementTypeOrSelf($_op.getResult(" # i # ")).isUnsignedInteger(" # num # ")">,
        CPred<"getElementTypeOrSelf($_op.getOperand(" # j # ")).isUnsignedInteger(" # num # ")">]>;
@@ -137,6 +143,13 @@ class CIR_OperandIsRankedAndHasDimPred<int n, int dim> : And<[
   CPred<"mlir::cast<ShapedType>($_op.getOperand(" # n # ").getType()).getRank() > "
   # dim>]>;
 
+// Returns true if the n-th operand is ranked and has a dimension length = size
+// at the rank dim.
+class CIR_OperandDimEquals<int n, int dim, int size> : And<[
+  CIR_OperandIsRankedAndHasDimPred<n, dim>,
+  CPred<"mlir::cast<ShapedType>($_op.getOperand(" # n # ").getType())"
+      ".getShape()[" # dim # " ] == " # size>]>;
+
 // Returns true if the n-th operand is ranked and has a dimension length <=
 // size at the rank dim.
 class CIR_OperandDimIsAtMost<int n, int dim, int size> : And<[
@@ -154,6 +167,11 @@ class CIR_OperandRankEquals1DimOfOperand<int x, int y> :
           ").getType()).getRank() == "
           "mlir::cast<ShapedType>($_op.getOperand(" # y #
           ").getType()).getShape()[0]">]>>;
+
+class CIR_Operand0DOr1ElementTensor<int x> :
+  PredOpTrait<"operand #" # x # " is an 0-d tensor or 1-d tensor w/ 1 element",
+    Or<[CIR_OperandHasKnownRank<x, 0>,
+        And<[CIR_OperandHasKnownRank<x, 1>, CIR_OperandDimEquals<x, 0, 1>]>]>>;
 
 class CIR_OperandHasRankAtMost<int n, int m> :
   PredOpTrait<"operand " # n # " is at most " # m # "-D",
@@ -2034,6 +2052,34 @@ def CIR_SoftmaxOp : CIR_Op<"softmax", [
   //       /*zero_point=*/bit_width == 8 ? -(1<<(bit_width-1)): 0);
   // }
   // }];
+}
+
+def CIR_SplitOp : CIR_Op<"split", [
+    Pure,
+    CIR_Operand0DOr1ElementTensor<0>,
+    /*QuantizableResult,*/
+    /*SameOperandsAndResultsScale*/]> {
+  let summary = "Splits a tensor into `num_split` tensors along one dimension.";
+
+  let description = [{
+    Splits the `value` tensor along `split_dim` into a number of sub-tensors
+    with same shape as the original one, except for `split_dim`. Same as
+    tf.Split.
+  }];
+
+  let arguments = (ins
+    CIR_TensorOf<[I32]>:$split_dim,
+    CIR_TensorOf<[F32, I16, I32, I8, UI8/*, QI8, QUI8, QI16*/]>:$value,
+    ConfinedAttr<I32Attr, [IntPositive]>:$num_splits
+  );
+
+  let results = (outs
+    CIR_VariadicTensorOf<[F32, I16, I32, I8/*, UI8, QI8, QUI8, QI16*/]>:$outputs
+  );
+
+  let hasVerifier = 1;
+
+  let hasOptions = 1;
 }
 
 def CIR_SplitVOp : CIR_Op<"split_v", [

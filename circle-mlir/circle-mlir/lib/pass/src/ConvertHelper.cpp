@@ -189,7 +189,7 @@ mlir::Value CreatePreTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::
 }
 
 mlir::Value CreatePreTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Value &input,
-                               std::string &name)
+                               const std::string &name)
 {
   mlir::Location constLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/pre_tr/perm"));
   mlir::Location transLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/pre_tr"));
@@ -208,7 +208,7 @@ mlir::Value CreateTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Loc
 }
 
 mlir::Value CreateTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Value &input,
-                            llvm::SmallVector<int32_t, 4> &perm, std::string &name)
+                            llvm::SmallVector<int32_t, 4> &perm, const std::string &name)
 {
   mlir::Location constLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/tr/perm"));
   mlir::Location transLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/tr"));
@@ -225,7 +225,8 @@ void ReplaceOpWithPostTranspose(mlir::ConversionPatternRewriter &rewriter, Opera
 }
 
 mlir::Value ReplaceOpWithPostTranspose(mlir::ConversionPatternRewriter &rewriter, Operation *op,
-                                       mlir::Value &input, mlir::TypeRange type, std::string &name)
+                                       mlir::Value &input, mlir::TypeRange type,
+                                       const std::string &name)
 {
   mlir::Location constLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/post_tr/perm"));
   mlir::Location transLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/post_tr"));
@@ -238,7 +239,8 @@ mlir::Value ReplaceOpWithPostTranspose(mlir::ConversionPatternRewriter &rewriter
 }
 
 mlir::Value ReplaceOpWithPostTranspose(mlir::PatternRewriter &rewriter, Operation *op,
-                                       mlir::Value &input, mlir::TypeRange type, std::string &name)
+                                       mlir::Value &input, mlir::TypeRange type,
+                                       const std::string &name)
 {
   mlir::Location constLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/post_tr/perm"));
   mlir::Location transLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/post_tr"));
@@ -270,6 +272,19 @@ mlir::Value CreateConst(mlir::ConversionPatternRewriter &rewriter, float value,
 }
 
 mlir::Value CreateConst(mlir::ConversionPatternRewriter &rewriter, mlir::Location &opLoc,
+                        mlir::RankedTensorType &type, float value)
+{
+  auto shape = type.getShape();
+  if (shape.size() == 0)
+    return {};
+
+  int64_t numElements = mlir::ShapedType::getNumElements(shape);
+  llvm::SmallVector<float> values(numElements, value);
+
+  return rewriter.create<ConstOp>(opLoc, mlir::DenseFPElementsAttr::get(type, values));
+}
+
+mlir::Value CreateConst(mlir::ConversionPatternRewriter &rewriter, mlir::Location &opLoc,
                         mlir::Value &reference, float value)
 {
   auto rtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(reference.getType());
@@ -277,20 +292,8 @@ mlir::Value CreateConst(mlir::ConversionPatternRewriter &rewriter, mlir::Locatio
     return {};
   if (not rtype.getElementType().isF32())
     return {};
-  auto shape = rtype.getShape();
-  if (shape.size() == 0)
-    return {};
 
-  // TODO revise to better value filling
-  int64_t numElements = 1;
-  for (size_t dim = 0; dim < shape.size(); ++dim)
-    numElements = numElements * shape[dim];
-
-  llvm::SmallVector<float> values;
-  for (int64_t c = 0; c < numElements; ++c)
-    values.push_back(value);
-
-  return rewriter.create<ConstOp>(opLoc, mlir::DenseFPElementsAttr::get(rtype, values));
+  return CreateConst(rewriter, opLoc, rtype, value);
 }
 
 mlir::Value CreateConst(mlir::ConversionPatternRewriter &rewriter, mlir::Value &reference,

@@ -57,21 +57,23 @@ mlir::Value CreateNoValue(mlir::ConversionPatternRewriter &rewriter);
 mlir::Value CreatePreTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Location &opLoc,
                                mlir::Value &input);
 mlir::Value CreatePreTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Value &input,
-                               std::string &name);
+                               const std::string &name);
 
 // Create and return TransposeOp with permutation value
 mlir::Value CreateTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Location &opLoc,
                             mlir::Value &input, llvm::SmallVector<int32_t, 4> &perm);
 mlir::Value CreateTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Value &input,
-                            llvm::SmallVector<int32_t, 4> &perm, std::string &name);
+                            llvm::SmallVector<int32_t, 4> &perm, const std::string &name);
 
 // Create and replace with TransposeOp for channel last(NHWC) to channel first(NCHW)
 void ReplaceOpWithPostTranspose(mlir::ConversionPatternRewriter &rewriter, Operation *op,
                                 mlir::Location &opLoc, mlir::Value &input, mlir::TypeRange type);
 mlir::Value ReplaceOpWithPostTranspose(mlir::ConversionPatternRewriter &rewriter, Operation *op,
-                                       mlir::Value &input, mlir::TypeRange type, std::string &name);
+                                       mlir::Value &input, mlir::TypeRange type,
+                                       const std::string &name);
 mlir::Value ReplaceOpWithPostTranspose(mlir::PatternRewriter &rewriter, Operation *op,
-                                       mlir::Value &input, mlir::TypeRange type, std::string &name);
+                                       mlir::Value &input, mlir::TypeRange type,
+                                       const std::string &name);
 
 // Get output type of op with channel last order
 mlir::RankedTensorType GetChnLastType(mlir::RankedTensorType tensor_type);
@@ -79,6 +81,9 @@ mlir::RankedTensorType GetChnLastType(mlir::RankedTensorType tensor_type);
 // Create ConstOp with scalar type and float value
 mlir::Value CreateConst(mlir::ConversionPatternRewriter &rewriter, float value,
                         const std::string &name);
+// Create ConstOp with type 'type' and 'value' values
+mlir::Value CreateConst(mlir::ConversionPatternRewriter &rewriter, mlir::Location &opLoc,
+                        mlir::RankedTensorType &type, float value);
 // Create ConstOp with type 'reference' and 'value' values
 mlir::Value CreateConst(mlir::ConversionPatternRewriter &rewriter, mlir::Location &opLoc,
                         mlir::Value &reference, float value);
