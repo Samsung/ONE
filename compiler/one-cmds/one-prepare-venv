@@ -56,6 +56,7 @@ VER_PYDOT=1.4.2
 VER_TORCH="2.7.0+cpu"
 VER_PROTOBUF="5.29.4"
 VER_NUMPY="1.26.4"
+VER_TICO="0.1.0"
 
 PYTHON_VER=$(${PYTHON3_EXEC} -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
 echo "Setting package version for python $PYTHON_VER"
@@ -103,8 +104,6 @@ PYTHON_PACKAGES+="onnxruntime==${VER_ONNXRUNTIME} "
 PYTHON_PACKAGES+="protobuf==${VER_PROTOBUF} "
 PYTHON_PACKAGES+="pydot==${VER_PYDOT} "
 PYTHON_PACKAGES+="numpy==${VER_NUMPY} "
+PYTHON_PACKAGES+="tico==${VER_TICO} "
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade ${PYTHON_PACKAGES} ${TORCH_SOURCE_OPTION}
-
-### Install tico
-${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --pre tico
