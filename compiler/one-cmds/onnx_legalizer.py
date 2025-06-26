@@ -65,7 +65,7 @@ def _parse_tensor_name(name):
         tuple of str, int: base name and serial number of tensor
     """
     rev = _reverse_str(name)
-    m = re.match('(\d*)(.*)', rev)
+    m = re.match(r'(\d*)(.*)', rev)
     if m.groups()[0] != '':
         return (_reverse_str(m.groups()[1]), int(_reverse_str(m.groups()[0])))
     else:
