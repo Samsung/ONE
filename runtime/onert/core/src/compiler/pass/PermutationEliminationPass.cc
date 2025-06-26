@@ -34,6 +34,14 @@ void PermutationEliminationPass::visit(const ir::operation::Permute &node)
   auto in_operand = node.getInputs().at(0);
   auto out_operand = node.getOutputs().at(0);
 
+  // If permutation type is not COPY, we don't need to do anything here.
+  if (node.getPermuteType() != ir::PermuteType::COPY)
+    return;
+
+  // Check if the input and output are the same type
+  if (_graph.operands().at(in_operand).typeInfo() != _graph.operands().at(out_operand).typeInfo())
+    return;
+
   // Check if two tensors are both portable if not, we can't eliminate the node
   {
     auto &operand_li_map = _lowered_graph.lower_info().operand;

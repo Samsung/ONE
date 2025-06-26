@@ -56,6 +56,9 @@ public:
   std::shared_ptr<CompilerArtifact> compile(void);
 
 private:
+  CompilerOptions optionForSingleModel(const ir::ModelIndex &model_index);
+
+private:
   std::shared_ptr<ir::NNPkg> _nnpkg;
   CompilerOptions *_options;
 };
