@@ -35,6 +35,7 @@ RUN python3 -m pip install numpy flatbuffers --break-system-packages
 RUN apt-get update && apt-get -qqy install sudo
 RUN usermod -aG sudo ubuntu
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Clean archives (to reduce image size)
 RUN apt-get clean -y
