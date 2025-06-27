@@ -127,10 +127,6 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/README.txt
 
 add_subdirectory(onnx-operations)
 
-if(ENABLE_ONE_IMPORT_PYTORCH)
-  add_subdirectory(pytorch-operations)
-endif(ENABLE_ONE_IMPORT_PYTORCH)
-
 # Generate group option list for tests
 get_filename_component(ONE_CMDS_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 set(ONE_PYTHON_DIR "onelib")
