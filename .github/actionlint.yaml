@@ -1,0 +1,4 @@
+self-hosted-runner:
+  labels:
+    - one-x64-linux
+    - one-arm-linux
