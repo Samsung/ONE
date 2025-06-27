@@ -119,6 +119,14 @@ protected:
 
     return builtin_op;
   }
+  // Subgraph index verification
+  void verifySubgraphIndex(int subg_index)
+  {
+    const auto num_subgraphs = _domain_model->subgraphs()->size();
+    if (subg_index < 0 || subg_index >= static_cast<int32_t>(num_subgraphs))
+      throw std::runtime_error{std::string{"Invalid subgraph index - "} +
+                               std::to_string(subg_index)};
+  }
 
 private:
   std::unique_ptr<ir::Data> loadMetadata(const uint32_t buffer_idx);
@@ -169,14 +177,6 @@ private:
   void loadUnidirectionalSequenceLSTM(const Operator *op, ir::Graph &subg);
   void loadUnpack(const Operator *op, ir::Graph &subg);
   void loadWhile(const Operator *op, ir::Graph &subg);
-
-  void verifySubgraphIndex(int subg_index)
-  {
-    const auto num_subgraphs = _domain_model->subgraphs()->size();
-    if (subg_index < 0 || subg_index >= static_cast<int32_t>(num_subgraphs))
-      throw std::runtime_error{std::string{"Invalid subgraph index - "} +
-                               std::to_string(subg_index)};
-  }
 
 protected:
   // Base address for mapped region for loading (if needed)
