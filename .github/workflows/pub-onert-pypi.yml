@@ -1,0 +1,88 @@
+name: Publish onert to pypi
+
+on:
+  pull_request:
+    branches: [ master ]
+    paths:
+      - '.github/workflows/pub-onert-pypi.yml'
+  workflow_dispatch:
+    ipnuts:
+      official:
+        description: 'Official or Dev'
+        required: true
+        type: boolean
+        default: false
+      ref:
+        description: 'Git reference (branch or tag) to build and publish'
+        required: true
+        type: string
+        default: 'master'
+
+jobs:
+  build-and-publish:
+    if: github.repository_owner == 'Samsung'
+    strategy:
+      matrix:
+        python-version: [ 'python3.10', 'python3.11', 'python3.12' ]
+        arch: [ 'x86_64', 'aarch64' ]
+        include:
+          - arch: x86_64
+            runner: one-x64-linux
+            image: samsungonedev.azurecr.io/pypa/manylinux_2_28_x86_64
+          - arch: aarch64
+            runner: one-arm-linux
+            image: samsungonedev.azurecr.io/pypa/manylinux_2_28_aarch64
+      fail-fast: false
+    runs-on: ${{ matrix.runner }}
+    container:
+      image: ${{ matrix.image }}
+    env:
+      BUILD_TYPE: release
+      OPTIONS: "-DENABLE_TEST=OFF -DBUILD_ARMCOMPUTE=OFF"
+      DEV_TAG: ""
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Use inputs.ref if it is provided, otherwise use the default branch
+          ref: ${{ github.event.inputs.ref || 'master' }}
+
+      - name: Caching externals
+        uses: actions/cache@v4
+        with:
+          path: runtime/externals
+          key: external-onert-jammy-${{ hashFiles('runtime/infra/cmake/packages/**/*.cmake') }}
+          restore-keys: |
+            external-onert-jammy-
+
+      - name: Set tag for dev package
+        if: github.event.inputs.official == 'false'
+        run: |
+          export DATE=$(date -u "+%y%m%d%H")
+          echo "DEV_TAG='--tag-build dev${DATE}'" >> $GITHUB_ENV
+
+      - name: Install venv for python version
+        run: |
+          ${{ matrix.python-version }} -m venv ./venv
+          source ./venv/bin/activate
+          pip3 install -U setuptools wheel
+
+      - name: Build
+        run: |
+          source ./venv/bin/activate
+          make -f Makefile.template configure build install
+          cd runtime/infra/python
+          python3 setup.py bdist_wheel --plat-name manylinux_2_28_${{ matrix.arch }} egg_info ${{ env.DEV_TAG }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: onert-wheel-${{ matrix.python-version }}-${{ matrix.arch }}
+          path: runtime/infra/python/dist/*.whl
+
+      # - name: Publish
+      #   if: github.event_name != 'pull_request'
+      #   uses: pypa/gh-action-pypi-publish@release/v1
+      #   with:
+      #     packages-dir: runtime/infra/python/dist/
