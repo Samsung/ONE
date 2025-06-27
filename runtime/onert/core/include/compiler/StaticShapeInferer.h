@@ -121,6 +121,7 @@ private:
   void visit(const ir::operation::BCQGather &op) override;
   void visit(const ir::operation::BinaryArithmetic &op) override;
   void visit(const ir::operation::BroadcastTo &op) override;
+  void visit(const ir::operation::Call &op) override;
   void visit(const ir::operation::Comparison &op) override;
   void visit(const ir::operation::Concat &op) override;
   void visit(const ir::operation::Conv2D &op) override;
