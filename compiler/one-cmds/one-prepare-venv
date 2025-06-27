@@ -96,7 +96,12 @@ echo "Torch from '${ONE_PREPVENV_TORCH_SOURCE}' -> '${TORCH_SOURCE_OPTION}'"
 
 ${VENV_PYTHON} -m pip ${PIP_OPTIONS} install --upgrade pip setuptools
 
-PYTHON_PACKAGES="tensorflow-cpu==${VER_TENSORFLOW} "
+PY_PKGS_TF="tensorflow-cpu"
+CPU_ARCH=$(uname -m)
+if [[ "$CPU_ARCH" == "aarch64" ]]; then
+  PY_PKGS_TF="tensorflow"
+fi
+PYTHON_PACKAGES="${PY_PKGS_TF}==${VER_TENSORFLOW} "
 PYTHON_PACKAGES+="Pillow "
 PYTHON_PACKAGES+="torch==${VER_TORCH} "
 PYTHON_PACKAGES+="onnx==${VER_ONNX} "

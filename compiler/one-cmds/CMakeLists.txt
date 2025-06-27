@@ -46,17 +46,9 @@ set(ONE_COMMAND_FILES
     one-profile
     one-infer
     one-codegen
+    one-prepare-venv
     onecc
 )
-
-# TODO find better way for per-platform files
-if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  # NOTE copy one-prepare-venv.aarch64 as build/../one-prepare-venv
-  #      and install build/../one-prepare-venv file
-  list(APPEND ONE_COMMAND_FILES one-prepare-venv.aarch64)
-else(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
-  list(APPEND ONE_COMMAND_FILES one-prepare-venv)
-endif(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "aarch64")
 
 # pytorch importer is an experimental feature, it is not used in default configuration
 if(ENABLE_ONE_IMPORT_PYTORCH)
