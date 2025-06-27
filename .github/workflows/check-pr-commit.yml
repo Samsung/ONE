@@ -34,13 +34,13 @@ jobs:
 
       - name: Get commit body
         run: |
-          git log origin/${GITHUB_BASE_REF}..HEAD --format=%b > commit_msg.txt
+          git log "origin/${GITHUB_BASE_REF}..HEAD" --format=%b > commit_msg.txt
           sed '/^$/d' commit_msg.txt > commit_body.txt
 
       - name: Check signed-off
         run: |
           # Check string starting from "Signed-off-by:"
-          count=$(cat commit_body.txt | grep 'Signed-off-by:' | wc -l)
+          count=$(grep -c 'Signed-off-by:' commit_body.txt)
           if [[ ! "$count" -ge "1" ]]; then
             echo "Your commit message does not contain the expected signoff information."
             exit 1
@@ -52,7 +52,7 @@ jobs:
         # Run if check_signed_off step is failed
         if: ${{ always() }}
         run: |
-          count=$(cat commit_body.txt | sed '/Signed-off-by:/d' | wc -w)
+          count=$(sed '/Signed-off-by:/d' commit_body.txt | wc -w)
           echo "Commit body word check: $count words"
           if [[ "$count" -lt "5" ]]; then
             echo "The body of your commit does not satisfy this repository requirements."

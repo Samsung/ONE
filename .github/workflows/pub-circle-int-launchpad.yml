@@ -60,8 +60,11 @@ jobs:
             version="${base_version}~${release_date}"
             br_version="${base_version}-${release_date}"
           fi
-          echo "version=${version}" >> $GITHUB_OUTPUT
-          echo "br_version=${br_version}" >> $GITHUB_OUTPUT
+          {
+            echo "version=${version}"
+            echo "br_version=${br_version}"
+          } >> "${GITHUB_OUTPUT}"
+
 
   debian-release:
     needs: configure
@@ -88,9 +91,11 @@ jobs:
           VERSION="${{ needs.configure.outputs.version }}~${{ matrix.ubuntu_code }}"
           changes_file="circle-interpreter_${VERSION}_source.changes"
           tarball_file="circle-interpreter_${VERSION}.orig.tar.xz"
-          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
-          echo "changes_file=${changes_file}" >> $GITHUB_OUTPUT
-          echo "tarball_file=${tarball_file}" >> $GITHUB_OUTPUT
+          {
+            echo "VERSION=${VERSION}"
+            echo "changes_file=${changes_file}"
+            echo "tarball_file=${tarball_file}"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -108,26 +113,26 @@ jobs:
             -DENABLE_STRICT_BUILD=ON \
             -DENABLE_TEST=OFF \
             -DCMAKE_BUILD_TYPE=Release \
-            -DEXTERNALS_BUILD_THREADS=$(nproc) \
-            -DCMAKE_INSTALL_PREFIX=${NNCC_INSTALL_PREFIX} \
+            -DEXTERNALS_BUILD_THREADS="$(nproc)" \
+            -DCMAKE_INSTALL_PREFIX="${NNCC_INSTALL_PREFIX}" \
             -DBUILD_WHITELIST="${CIR_INTP_ITEMS}"
-          ./nncc build -j$(nproc)
-          cmake --build ${NNCC_WORKSPACE} -- install
+          ./nncc build "-j$(nproc)"
+          cmake --build "${NNCC_WORKSPACE}" -- install
 
       - name: Gather files
         run: |
-          cd ${NNCC_BUILD}
-          mkdir -p ${CIRINTP_PREFIX}
-          cp -v ${NNCC_INSTALL_PREFIX}/bin/circle-interpreter ./${CIRINTP_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libloco.so ./${CIRINTP_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_env.so ./${CIRINTP_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_import.so ./${CIRINTP_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_interpreter.so ./${CIRINTP_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_lang.so ./${CIRINTP_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_logex.so ./${CIRINTP_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_log.so ./${CIRINTP_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_plan.so ./${CIRINTP_PREFIX}/.
-          cp -v ${NNCC_INSTALL_PREFIX}/lib/libluci_profile.so ./${CIRINTP_PREFIX}/.
+          cd "${NNCC_BUILD}"
+          mkdir -p "${CIRINTP_PREFIX}"
+          cp -v "${NNCC_INSTALL_PREFIX}/bin/circle-interpreter" "./${CIRINTP_PREFIX}/."
+          cp -v "${NNCC_INSTALL_PREFIX}/lib/libloco.so" "./${CIRINTP_PREFIX}/."
+          cp -v "${NNCC_INSTALL_PREFIX}/lib/libluci_env.so" "./${CIRINTP_PREFIX}/."
+          cp -v "${NNCC_INSTALL_PREFIX}/lib/libluci_import.so" "./${CIRINTP_PREFIX}/."
+          cp -v "${NNCC_INSTALL_PREFIX}/lib/libluci_interpreter.so" "./${CIRINTP_PREFIX}/."
+          cp -v "${NNCC_INSTALL_PREFIX}/lib/libluci_lang.so" "./${CIRINTP_PREFIX}/."
+          cp -v "${NNCC_INSTALL_PREFIX}/lib/libluci_logex.so" "./${CIRINTP_PREFIX}/."
+          cp -v "${NNCC_INSTALL_PREFIX}/lib/libluci_log.so" "./${CIRINTP_PREFIX}/."
+          cp -v "${NNCC_INSTALL_PREFIX}/lib/libluci_plan.so" "./${CIRINTP_PREFIX}/."
+          cp -v "${NNCC_INSTALL_PREFIX}/lib/libluci_profile.so" "./${CIRINTP_PREFIX}/."
 
       - name: Update changelog
         run: |
@@ -153,7 +158,7 @@ jobs:
           FPR=$(gpg --list-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')
           echo "$FPR:6:" | gpg --import-ownertrust
           debuild -S -us -uc
-          debsign -k${FPR} ../circle-interpreter_*.changes
+          debsign "-k${FPR}" ../circle-interpreter_*.changes
 
       - name: Upload to Launchpad
         run: |
@@ -213,7 +218,7 @@ jobs:
         id: prepare
         run: |
           VERSION="${{ needs.configure.outputs.version }}"
-          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          echo "VERSION=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -237,14 +242,14 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           BRANCH=auto/update-cirint-changelog-${BR_VERSION}
-          git checkout -b ${BRANCH}
+          git checkout -b "${BRANCH}"
           git add infra/debian/circle-interpreter/changelog
           git commit -m "[infra/debian] Update changelog for circle-interpreter" \
             -m "This updates the changelog for circle-interpreter_${{ steps.prepare.outputs.VERSION }}." \
             -m "It is auto-generated PR from github workflow." \
             -m "" \
             -m "ONE-DCO-1.0-Signed-off-by: Seungho Henry Park <shs.park@samsung.com>"
-          git push origin ${BRANCH}
+          git push origin "${BRANCH}"
 
       - name: Create PR
         env:

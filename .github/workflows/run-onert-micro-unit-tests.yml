@@ -8,18 +8,18 @@ on:
     paths:
       - 'onert-micro/**'
       - '.github/workflows/run-onert-micro-unit-tests.yml'
-  pull_request:
-    branches:
-      - master
-      - release/*
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
-    paths:
-      - 'onert-micro/**'
-      - '.github/workflows/run-onert-micro-unit-tests.yml'
+  # pull_request:
+  #   branches:
+  #     - master
+  #     - release/*
+  #   types:
+  #     - opened
+  #     - synchronize
+  #     - reopened
+  #     - ready_for_review
+  #   paths:
+  #     - 'onert-micro/**'
+  #     - '.github/workflows/run-onert-micro-unit-tests.yml'
 
 defaults:
   run:
@@ -55,5 +55,5 @@ jobs:
           mkdir build
           cd build
           cmake ../infra/onert-micro/ -DENABLE_ONERT_MICRO_TEST=1 -DENABLE_TEST=1
-          make -j$(nproc) onert_micro_execute_kernels_test
+          make "-j$(nproc)" onert_micro_execute_kernels_test
           ./onert-micro/eval-driver/onert-micro/src/execute/onert_micro_execute_kernels_test
