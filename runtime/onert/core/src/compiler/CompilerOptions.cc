@@ -114,6 +114,7 @@ void CompilerOptions::forceInternalOptions()
   auto &builtin_id = backend::builtin::Config::ID;
   manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = builtin_id;
   manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = builtin_id;
+  manual_scheduler_options.opcode_to_backend[ir::OpCode::Call] = builtin_id;
   manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = builtin_id;
 
   // FIXME This is a workaround for bcq operations, should remove it
