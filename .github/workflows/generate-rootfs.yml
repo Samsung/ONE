@@ -2,13 +2,13 @@
 name: 'Generate RootFS'
 
 on:
-  pull_request:
-    branches:
-      - master
-      - release/*
-    paths:
-      - '.github/workflows/generate-rootfs.yml'
-      - 'tools/cross/**'
+  # pull_request:
+  #   branches:
+  #     - master
+  #     - release/*
+  #   paths:
+  #     - '.github/workflows/generate-rootfs.yml'
+  #     - 'tools/cross/**'
   push:
     branches:
       - master
@@ -51,7 +51,7 @@ jobs:
           pushd tools/cross
           sudo ./install_rootfs.sh ${{ matrix.arch }} ${{ matrix.os }} --skipunmount
           sudo umount --recursive rootfs || true
-          sudo chown -R $(id -u):$(id -g) rootfs/${{ matrix.arch }}
+          sudo chown -R "$(id -u):$(id -g)" rootfs/${{ matrix.arch }}
           tar -zcvf rootfs_${{ matrix.arch }}_${{ matrix.os }}.tar.gz -C rootfs \
             ${{ matrix.arch }}/usr ${{ matrix.arch }}/etc
           popd
