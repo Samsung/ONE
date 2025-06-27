@@ -6,7 +6,7 @@ on:
     paths:
       - '.github/workflows/pub-onert-pypi.yml'
   workflow_dispatch:
-    ipnuts:
+    inputs:
       official:
         description: 'Official or Dev'
         required: true
@@ -59,8 +59,8 @@ jobs:
       - name: Set tag for dev package
         if: github.event.inputs.official == 'false'
         run: |
-          export DATE=$(date -u "+%y%m%d%H")
-          echo "DEV_TAG='--tag-build dev${DATE}'" >> $GITHUB_ENV
+          DATE="$(date -u +%y%m%d%H)"
+          echo "DEV_TAG='--tag-build dev${DATE}'" >> "$GITHUB_ENV"
 
       - name: Install venv for python version
         run: |
