@@ -47,6 +47,7 @@ public:
 
     mlir::Value input = adaptor.getInput();
     mlir::Value split = adaptor.getSplit();
+    bool splitNone = mlir::isa<mlir::NoneType>(split.getType());
 
     mlir::Location opLoc = op->getLoc();
 
@@ -54,22 +55,49 @@ public:
     LLVM_DEBUG({ llvm::dbgs() << "ConvSplit name: " << op_name << "\n"; });
 
     int64_t axis = adaptor.getAxis();
-
     LLVM_DEBUG({ llvm::dbgs() << "ConvSplit axis: " << axis << "\n"; });
 
-    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
-    mlir::RankedTensorType outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(op.getType(0));
+    mlir::Value size_splits;
+    uint32_t num_splits = 0;
 
-    mlir::Value size_splits = CreateI32Const(rewriter, split, op_name + "/size");
-    if (mlir::isa<mlir::NoneType>(size_splits.getType()))
-      return mlir::failure();
+    if (splitNone)
+    {
+      // V13 SplitOp second input split is optional, and there is no input to get number of splits.
+      // we can only assume from number of outputs and split from output shape.
+      auto intype = mlir::dyn_cast<RankedTensorType>(input.getType());
+      int64_t a_axis = axis;
+      if (a_axis < 0)
+        a_axis += intype.getRank();
+
+      std::vector<int32_t> split_vals;
+      auto outtypes = op.getOutputs().getTypes();
+      for (size_t i = 0; i < outtypes.size(); ++i)
+      {
+        auto outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(outtypes[i]);
+        if (outtype)
+        {
+          auto shape = outtype.getShape();
+          split_vals.push_back(static_cast<int32_t>(shape[a_axis]));
+        }
+        else
+          return mlir::failure();
+        num_splits++;
+      }
+      size_splits = CreateI32Const(rewriter, split_vals, op_name + "/size");
+    }
+    else
+    {
+      size_splits = CreateI32Const(rewriter, split, op_name + "/size");
+      if (mlir::isa<mlir::NoneType>(size_splits.getType()))
+        return mlir::failure();
+
+      auto sptype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(split.getType());
+      auto spshape = sptype.getShape();
+      assert(spshape.size() == 1);
+      num_splits = spshape[0];
+    }
 
     mlir::Value split_dim = CreateI32Const(rewriter, axis, op_name + "/axis");
-
-    mlir::RankedTensorType sptype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(split.getType());
-    auto spshape = sptype.getShape();
-    assert(spshape.size() == 1);
-    uint32_t num_splits = spshape[0];
 
     // NOTE SplitV has multiple outputs, each output can have different shape
     rewriter.replaceOpWithNewOp<SplitVOp>(op, op.getOutputs().getTypes(), input, size_splits,
