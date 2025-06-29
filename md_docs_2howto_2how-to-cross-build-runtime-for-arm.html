@@ -99,12 +99,12 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-cross-build-run
 <div class="fragment"><div class="line">$ sudo ./tools/cross/install_rootfs.sh arm</div>
 </div><!-- fragment --><ul>
 <li>supports <code>arm</code>(default) and <code>aarch64</code> architecutre for now</li>
-<li>supports <code>focal</code>,<code>jammy</code>, and <code>noble</code> release</li>
+<li>supports <code>jammy</code>, and <code>noble</code> release</li>
 </ul>
 <p>To see the options, </p><div class="fragment"><div class="line">$ ./tools/cross/install_rootfs.sh -h</div>
 </div><!-- fragment --><p>RootFS will be prepared at <code>tools/cross/rootfs/arm</code> or <code>tools/cross/rootfs/aarch64</code> folder.</p>
 <p><em><b>* CAUTION: The OS version of rootfs must match the OS version of execution target device. On the other hand, you need to match the Ubuntu version of the development PC with the Ubuntu version of rootfs to be used for cross-build. Otherwise, unexpected build errors may occur.</b></em></p>
-<p>If you are using Ubuntu 20.04 LTS, select <code>focal</code>, if you are using Ubuntu 22.04 LTS, select <code>jammy</code>, for Ubuntu 24.04 LTS, select <code>noble</code>. You can check your Ubuntu code name in the following way.</p>
+<p>If you are using Ubuntu 22.04 LTS, select <code>jammy</code>, if you are using Ubuntu 24.04 LTS, select <code>noble</code>. You can check your Ubuntu code name in the following way.</p>
 <div class="fragment"><div class="line">$ cat /etc/lsb-release</div>
 <div class="line">DISTRIB_ID=Ubuntu</div>
 <div class="line">DISTRIB_RELEASE=22.04</div>
@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-cross-build-run
 <p>If a build error occurs because the version of the development system and the target system do not match, and if you can't replace your development system for any reason, you can consider <a class="el" href="md_docs_2howto_2how-to-build-runtime-using-prebuilt-docker-image.html">cross-build using the docker image</a>.</p>
 <h2>Prepare RootFS at alternative folder</h2>
 <p>Use <code>ROOTFS_DIR</code> to a full path to prepare at alternative path.</p>
-<div class="fragment"><div class="line">$ ROOTFS_DIR=/home/user/rootfs/arm-bionic sudo -E ./tools/cross/install_rootfs.sh arm</div>
+<div class="fragment"><div class="line">$ ROOTFS_DIR=/home/user/rootfs/arm-jammy sudo -E ./tools/cross/install_rootfs.sh arm</div>
 </div><!-- fragment --><h2>Using proxy</h2>
 <p>If you need to use proxy server while building the rootfs, use <code>--setproxy</code> option.</p>
 <div class="fragment"><div class="line"># for example,</div>
@@ -123,18 +123,7 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-cross-build-run
 <div class="line">$ sudo ./tools/cross/install_rootfs.sh arm --setproxy=&quot;proxy.server.com:8888&quot;</div>
 </div><!-- fragment --><p>This will put <code>apt</code> proxy settings in <code>rootfs/etc/apt/apt.conf.d/90proxy</code> file for <code>http</code>, <code>https</code> and <code>ftp</code> protocol.</p>
 <h1>Install ARM Cross Toolchain</h1>
-<p>We recommend you have g++ &gt;= 6.1 installed on your system because NN generated tests require it (c++14).</p>
-<h2>Ubuntu 20.04 LTS</h2>
-<p>On Ubuntu 20.04 LTS, you can install using <code>apt-get</code>.</p>
-<p>Choose g++ version whatever you prefer: 9 (default) or 10. We are officially testing on default g++ version, so we don't confirm build on different version.</p>
-<div class="fragment"><div class="line">$ sudo apt-get install g++-{9,10}-arm-linux-gnueabihf</div>
-</div><!-- fragment --><p>If you select specific version, update symbolic link for build toolchain.</p>
-<p>Otherwise, you should set your custom cmake crossbuild toolchain. You can find cmake toolchain files in <code>infra/nnfw/cmake/buildtool/cross/</code>.</p>
-<div class="fragment"><div class="line">$ sudo update-alternatives --install /usr/bin/arm-linux-gnueabihf-gcc arm-linux-gnueabihf-gcc /usr/bin/arm-linux-gnueabihf-gcc-10 80 \</div>
-<div class="line">    --slave /usr/bin/arm-linux-gnueabihf-g++ arm-linux-gnueabihf-g++ /usr/bin/arm-linux-gnueabihf-g++-10 \</div>
-<div class="line">    --slave /usr/bin/arm-linux-gnueabihf-gcov arm-linux-gnueabihf-gcov /usr/bin/arm-linux-gnueabihf-gcov-10</div>
-</div><!-- fragment --><h2>Ubuntu 22.04 LTS</h2>
-<p>Same with Ubuntu 20.04 LTS. (except g++ version)</p>
+<p>We recommend you have g++ &gt;= 9 installed on your system for c++17.</p>
 <h1>Build and install ARM Compute Library</h1>
 <p>Mostly you only need once of ACL (ARM Compute Library) build.</p>
 <p>To build ACL, you need to install scons</p>
@@ -152,7 +141,7 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-cross-build-run
 <div class="line"> </div>
 <div class="line"># If ROOTFS_DIR is in alternative folder</div>
 <div class="line">(.venv)$ ROOTFS_DIR=/path/to/your/rootfs/arm \</div>
-<div class="line">CROSS_BUILD=1 TARGET_ARCH=armv7l make</div>
+<div class="line">CROSS_BUILD=1 TARGET_ARCH=armv7l make -f Makefile.template</div>
 </div><!-- fragment --><p>You can also omit the <code>CROSS_BUILD=1</code> option if you explicitly pass <code>ROOTFS_DIR</code>. In that case, if the <code>TARGET_ARCH</code> are differs from the hostarchitecture, the make script automatically applies <code>CROSS_BUILD=1</code>. So, if you set <code>ROOTFS_DIR</code> as an environment variable, you can simply perform normal build and cross build as follows.</p>
 <div class="fragment"><div class="line">(.venv)$ export ROOTFS_DIR=xxx</div>
 <div class="line">...</div>

@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('onnx__legalizer_8py_source.html',''); 
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="stringliteral">        tuple of str, int: base name and serial number of tensor</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    rev = <a class="code hl_function" href="namespaceonnx__legalizer.html#acce4e92684340ba22f5db5f9f35b1811">_reverse_str</a>(name)</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    m = re.match(<span class="stringliteral">&#39;(\d*)(.*)&#39;</span>, rev)</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    m = re.match(<span class="stringliteral">r&#39;(\d*)(.*)&#39;</span>, rev)</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">if</span> m.groups()[0] != <span class="stringliteral">&#39;&#39;</span>:</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keywordflow">return</span> (<a class="code hl_function" href="namespaceonnx__legalizer.html#acce4e92684340ba22f5db5f9f35b1811">_reverse_str</a>(m.groups()[1]), int(<a class="code hl_function" href="namespaceonnx__legalizer.html#acce4e92684340ba22f5db5f9f35b1811">_reverse_str</a>(m.groups()[0])))</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">else</span>:</div>

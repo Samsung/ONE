@@ -94,14 +94,18 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-build-runtime-u
 <div class="contents">
 <div class="textblock"><p>You can pull a prebuilt image from the <code>DockerHub</code> and use it to build your project.</p>
 <p>We are supporting docker images for the following environments:</p><ul>
-<li>Ubuntu 20.04 LTS (x86_64, arm64): <code>nnfw/one-devtools:focal</code></li>
 <li>Ubuntu 22.04 LTS (x86_64, arm64): <code>nnfw/one-devtools:jammy</code></li>
-<li>Ubuntu 24.04 LTS (x86_64, arm64): <code>nnfw/one-devtools:noble</code> (not tested yet)</li>
+<li>Ubuntu 24.04 LTS (x86_64, arm64): <code>nnfw/one-devtools:noble</code><ul>
+<li>Built arm64 runtime on Ubuntu 24.04 is not tested yet</li>
+</ul>
+</li>
 </ul>
 <p>We are supporting docker images for cross building as well:</p><ul>
-<li>Ubuntu 20.04 LTS (x86_64 host, arm32/arm64 target): <code>nnfw/one-devtools:focal-cross</code></li>
-<li>Ubuntu 22.04 LTS (x86_64 host, arm32/arm64 target): <code>nnfw/one-devtools:jammy-cross</code></li>
-<li>Ubuntu 24.04 LTS (x86_64 host, arm32/arm64 target): <code>nnfw/one-devtools:noble-cross</code> (not tested yet)</li>
+<li>Ubuntu 22.04 LTS (x86_64 host, arm32/arm64 target): <code>nnfw/one-devtools:jammy</code></li>
+<li>Ubuntu 24.04 LTS (x86_64 host, arm32/arm64 target): <code>nnfw/one-devtools:noble</code><ul>
+<li>Built arm64 runtime on Ubuntu 24.04 is not tested yet</li>
+</ul>
+</li>
 </ul>
 <p>We are supporting docker images for android building as well:</p><ul>
 <li>Ubuntu host, android target: <code>nnfw/one-devtools:android-sdk</code> </li>

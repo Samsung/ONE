@@ -100,12 +100,12 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-cross-build-run
 <div class="fragment"><div class="line">$ sudo ./tools/cross/install_rootfs.sh aarch64</div>
 </div><!-- fragment --><ul>
 <li>supports <code>arm</code>(default) and <code>aarch64</code> architecutre for now</li>
-<li>supports <code>focal</code>, <code>jammy</code>, and <code>noble</code> release</li>
+<li>supports <code>jammy</code>, and <code>noble</code> release</li>
 </ul>
 <p>To see the options, </p><div class="fragment"><div class="line">$ ./tools/cross/install_rootfs.sh -h</div>
 </div><!-- fragment --><p>RootFS will be prepared at <code>tools/cross/rootfs/aarch64</code> folder.</p>
 <p><em><b>* CAUTION: The OS version of rootfs must match the OS version of execution target device. On the other hand, you need to match the Ubuntu version of the development PC with the Ubuntu version of rootfs to be used for cross-build. Otherwise, unexpected build errors may occur.</b></em></p>
-<p>If you are using Ubuntu 20.04 LTS, select <code>focal</code>, if you are using Ubuntu 22.04 LTS, select <code>jammy</code>. You can check your Ubuntu code name in the following way.</p>
+<p>If you are using Ubuntu 22.04 LTS, select <code>jammy</code>, if you are using Ubuntu 24.04 LTS, select <code>noble</code>. You can check your Ubuntu code name in the following way.</p>
 <div class="fragment"><div class="line">$ cat /etc/lsb-release</div>
 <div class="line">DISTRIB_ID=Ubuntu</div>
 <div class="line">DISTRIB_RELEASE=22.04</div>
@@ -130,13 +130,12 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-cross-build-run
 </div><!-- fragment --><ul>
 <li>supports <code>armv7l</code> and <code>aarch64</code> for now</li>
 </ul>
-<p>If you used <code>ROOTFS_DIR</code> to prepare in alternative folder, you should also give this to makefile. </p><div class="fragment"><div class="line">$ CROSS_BUILD=1 ROOTFS_DIR=/home/user/rootfs/aarch64-xenial TARGET_ARCH=aarch64 make</div>
-<div class="line">$ CROSS_BUILD=1 ROOTFS_DIR=/home/user/rootfs/aarch64-xenial TARGET_ARCH=aarch64 make install</div>
+<p>If you used <code>ROOTFS_DIR</code> to prepare in alternative folder, you should also give this to makefile template. </p><div class="fragment"><div class="line">$ CROSS_BUILD=1 ROOTFS_DIR=/home/user/rootfs/aarch64-jammy TARGET_ARCH=aarch64 make -f Makefile.template</div>
 </div><!-- fragment --><p> You can also omit the <code>CROSS_BUILD=1</code> option if you explicitly pass <code>ROOTFS_DIR</code>. In that case, if the <code>TARGET_ARCH</code> are differs from the hostarchitecture, the make script automatically applies <code>CROSS_BUILD=1</code>. So, if you set <code>ROOTFS_DIR</code> as an environment variable, you can simply perform normal build and cross build as follows.</p>
 <div class="fragment"><div class="line">$ export ROOTFS_DIR=xxx</div>
 <div class="line">...</div>
-<div class="line">$ make                         # do normal build</div>
-<div class="line">$ TARGET_ARCH=aarch64 make     # do cross build</div>
+<div class="line">$ make -f Makefile.template                       # do normal build</div>
+<div class="line">$ TARGET_ARCH=aarch64 make -f Makefile.template   # do cross build</div>
 </div><!-- fragment --><h2>Run test</h2>
 <p>To run and test the cross-compiled runtime, you need to copy the compiled output to the target device of the architecture in which it is executable. Please refer to the following document for details on the test procedure. In the guide, <code>armv7l-linux.debug</code> in path should be replaced by referring to your build result.</p>
 <ul>

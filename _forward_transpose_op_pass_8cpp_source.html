@@ -506,46 +506,72 @@ $(document).ready(function(){initNavTree('_forward_transpose_op_pass_8cpp_source
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>  }</div>
 <div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span> </div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>  <span class="comment">// Default</span></div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *) { <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span> </div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_abs.html">luci::CircleAbs</a> *node) { <span class="keywordflow">return</span> has_pattern_x(node); }</div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span> </div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_logistic.html">luci::CircleLogistic</a> *node) { <span class="keywordflow">return</span> has_pattern_x(node); }</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>};</div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span> </div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>} <span class="comment">// namespace</span></div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span> </div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>{</div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span> </div>
-<div class="foldopen" id="foldopen00491" data-start="{" data-end="}">
-<div class="line"><a id="l00491" name="l00491"></a><span class="lineno"><a class="line" href="structluci_1_1_forward_transpose_op_pass.html#ad31d121b87711a1e3cc5f766c77bf12f">  491</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_forward_transpose_op_pass.html#ad31d121b87711a1e3cc5f766c77bf12f">ForwardTransposeOpPass::run</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
-<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>{</div>
-<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span> </div>
-<div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span>  <span class="comment">// TODO Revisit pattern interface</span></div>
-<div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span>  EBOPattern ebo;</div>
-<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span>  EBOWithConstPattern eboc;</div>
-<div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>  EwUnaryPattern ewu;</div>
-<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
-<div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>  {</div>
-<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>    <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;eboc))</div>
-<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;ewu))</div>
-<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;ebo))</div>
-<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>      changed = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>  }</div>
-<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>  <span class="keywordflow">return</span> changed;</div>
-<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>}</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>  <span class="comment">// input is &#39;features&#39;</span></div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> CIRCLE_OP_PTR&gt; <span class="keywordtype">bool</span> has_pattern_features(CIRCLE_OP_PTR node)</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>  {</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> tr = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *<span class="keyword">&gt;</span>(node-&gt;features()))</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>    {</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>      <a class="code hl_define" href="_fold_fully_connected_pass_8cpp.html#afeefeb03342f01cad24a8985936fc3ff">RETURN_FALSE_UNLESS</a>(check_perm(tr));</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span> </div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>      <span class="keyword">auto</span> new_transpose = create_cloned_transpose(tr);</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>      assert(new_transpose); <span class="comment">// FIX_ME_UNLESS</span></div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span> </div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>      <span class="comment">// Reconnect network</span></div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>      node-&gt;features(tr-&gt;a());</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>      <a class="code hl_function" href="namespaceloco.html#af9c60952072b2f7c290459bfc4aabaf5">loco::replace</a>(node).<a class="code hl_function" href="classloco_1_1_subst_3_01_subst_qualifier_1_1_default_01_4.html#a2c26d1107a76876180e9f3dbfc6fdde0">with</a>(new_transpose);</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>      new_transpose-&gt;a(node);</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span> </div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>      <span class="comment">// Do shape inference for this node again.</span></div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>      node-&gt;shape_status(<a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172a0db45d2a4141101bdfe48e3314cfbca3">luci::ShapeStatus::UNDEFINED</a>);</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span> </div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>    }</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span> </div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>  }</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span> </div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>  <span class="comment">// Default</span></div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *) { <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span> </div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_abs.html">luci::CircleAbs</a> *node) { <span class="keywordflow">return</span> has_pattern_x(node); }</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span> </div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_logistic.html">luci::CircleLogistic</a> *node) { <span class="keywordflow">return</span> has_pattern_x(node); }</div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span> </div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">visit</a>(<a class="code hl_class" href="classluci_1_1_circle_relu6.html">luci::CircleRelu6</a> *node) { <span class="keywordflow">return</span> has_pattern_features(node); }</div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>};</div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span> </div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>} <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span> </div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>{</div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span> </div>
+<div class="foldopen" id="foldopen00517" data-start="{" data-end="}">
+<div class="line"><a id="l00517" name="l00517"></a><span class="lineno"><a class="line" href="structluci_1_1_forward_transpose_op_pass.html#ad31d121b87711a1e3cc5f766c77bf12f">  517</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="structluci_1_1_forward_transpose_op_pass.html#ad31d121b87711a1e3cc5f766c77bf12f">ForwardTransposeOpPass::run</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
+<div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>{</div>
+<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span> </div>
+<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>  <span class="comment">// TODO Revisit pattern interface</span></div>
+<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>  EBOPattern ebo;</div>
+<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>  EBOWithConstPattern eboc;</div>
+<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>  EwUnaryPattern ewu;</div>
+<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
+<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>  {</div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>    <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;eboc))</div>
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;ewu))</div>
+<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (circle_node-&gt;accept(&amp;ebo))</div>
+<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>      changed = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>  }</div>
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>  <span class="keywordflow">return</span> changed;</div>
+<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>}</div>
 </div>
-<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span> </div>
-<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span><span class="preprocessor">#undef RETURN_FALSE_UNLESS</span></div>
-<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span> </div>
-<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>} <span class="comment">// namespace luci</span></div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span> </div>
+<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span><span class="preprocessor">#undef RETURN_FALSE_UNLESS</span></div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span> </div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>} <span class="comment">// namespace luci</span></div>
 <div class="ttc" id="a_circle_node_clone_8h_html"><div class="ttname"><a href="_circle_node_clone_8h.html">CircleNodeClone.h</a></div></div>
 <div class="ttc" id="a_circle_node_origin_8h_html"><div class="ttname"><a href="_circle_node_origin_8h.html">CircleNodeOrigin.h</a></div></div>
 <div class="ttc" id="a_fold_fully_connected_pass_8cpp_html_afeefeb03342f01cad24a8985936fc3ff"><div class="ttname"><a href="_fold_fully_connected_pass_8cpp.html#afeefeb03342f01cad24a8985936fc3ff">RETURN_FALSE_UNLESS</a></div><div class="ttdeci">#define RETURN_FALSE_UNLESS(cond)</div><div class="ttdef"><b>Definition</b> <a href="_fold_fully_connected_pass_8cpp_source.html#l00064">FoldFullyConnectedPass.cpp:64</a></div></div>
@@ -562,6 +588,7 @@ $(document).ready(function(){initNavTree('_forward_transpose_op_pass_8cpp_source
 <div class="ttc" id="aclassluci_1_1_circle_const_html_a8afe1c3255b77a5d8e2a2a8efefdccba"><div class="ttname"><a href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">luci::CircleConst::size</a></div><div class="ttdeci">uint32_t size(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2src_2_nodes_2_circle_const_8cpp_source.html#l00024">CircleConst.cpp:24</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_logistic_html"><div class="ttname"><a href="classluci_1_1_circle_logistic.html">luci::CircleLogistic</a></div><div class="ttdoc">LOGISTIC in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_logistic_8h_source.html#l00031">CircleLogistic.h:32</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_mul_html"><div class="ttname"><a href="classluci_1_1_circle_mul.html">luci::CircleMul</a></div><div class="ttdoc">MUL in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_mul_8h_source.html#l00032">CircleMul.h:34</a></div></div>
+<div class="ttc" id="aclassluci_1_1_circle_relu6_html"><div class="ttname"><a href="classluci_1_1_circle_relu6.html">luci::CircleRelu6</a></div><div class="ttdoc">RELU6 in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_relu6_8h_source.html#l00031">CircleRelu6.h:32</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_transpose_html"><div class="ttname"><a href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a></div><div class="ttdoc">TRANSPOSE in Circle.</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_transpose_8h_source.html#l00031">CircleTranspose.h:32</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_transpose_html_a18ee6f9ec1ab4fdc80ab14b15251bea1"><div class="ttname"><a href="classluci_1_1_circle_transpose.html#a18ee6f9ec1ab4fdc80ab14b15251bea1">luci::CircleTranspose::a</a></div><div class="ttdeci">loco::Node * a(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_transpose_8h_source.html#l00034">CircleTranspose.h:34</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_transpose_html_a714c74616e5a1f5cff8de3cc8b765a2b"><div class="ttname"><a href="classluci_1_1_circle_transpose.html#a714c74616e5a1f5cff8de3cc8b765a2b">luci::CircleTranspose::perm</a></div><div class="ttdeci">loco::Node * perm(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_transpose_8h_source.html#l00037">CircleTranspose.h:37</a></div></div>
@@ -583,7 +610,7 @@ $(document).ready(function(){initNavTree('_forward_transpose_op_pass_8cpp_source
 <div class="ttc" id="astructluci_1_1_circle_node_html_a62b544dcd4be48302c214c3aa6ff5855"><div class="ttname"><a href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">luci::CircleNode::name</a></div><div class="ttdeci">NodeName name(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00050">CircleNodeDecl.h:50</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_mutable_visitor_html"><div class="ttname"><a href="structluci_1_1_circle_node_mutable_visitor.html">luci::CircleNodeMutableVisitor</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_visitor_8h_source.html#l00076">CircleNodeVisitor.h:77</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_mutable_visitor_html_a31a678e6ebcccccd9b5b934cfaa24ae4"><div class="ttname"><a href="structluci_1_1_circle_node_mutable_visitor.html#a31a678e6ebcccccd9b5b934cfaa24ae4">luci::CircleNodeMutableVisitor::visit</a></div><div class="ttdeci">virtual T visit(CircleNode *)</div><div class="ttdoc">Default fallback.</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_visitor_8h_source.html#l00090">CircleNodeVisitor.h:90</a></div></div>
-<div class="ttc" id="astructluci_1_1_forward_transpose_op_pass_html_ad31d121b87711a1e3cc5f766c77bf12f"><div class="ttname"><a href="structluci_1_1_forward_transpose_op_pass.html#ad31d121b87711a1e3cc5f766c77bf12f">luci::ForwardTransposeOpPass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdef"><b>Definition</b> <a href="_forward_transpose_op_pass_8cpp_source.html#l00491">ForwardTransposeOpPass.cpp:491</a></div></div>
+<div class="ttc" id="astructluci_1_1_forward_transpose_op_pass_html_ad31d121b87711a1e3cc5f766c77bf12f"><div class="ttname"><a href="structluci_1_1_forward_transpose_op_pass.html#ad31d121b87711a1e3cc5f766c77bf12f">luci::ForwardTransposeOpPass::run</a></div><div class="ttdeci">bool run(loco::Graph *g) final</div><div class="ttdef"><b>Definition</b> <a href="_forward_transpose_op_pass_8cpp_source.html#l00517">ForwardTransposeOpPass.cpp:517</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
