@@ -84,76 +84,23 @@ public:
     // for op.pads != [0,0,0,0]
     std::vector<int32_t> padsValue;
     if (GetPads(op.getPads(), padsValue))
-    {
-      mlir::Type i32 = rewriter.getI32Type();
-      mlir::RankedTensorType ptype = RankedTensorType::get({4, 2}, i32);
-      llvm::SmallVector<int32_t, 8> pvalue = {
-        0, 0, 0, 0, padsValue[0], padsValue[2], padsValue[1], padsValue[3]};
-      mlir::Location padsval_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/padsval"));
-      mlir::Value paddings =
-        rewriter.create<ConstOp>(padsval_loc, DenseIntElementsAttr::get(ptype, pvalue));
-
-      // calc output type+shape of Pad
-      auto shape = intype.getShape();
-      assert(shape.size() == 4);
-      int64_t padH = 0, padW = 0;
-      // NOTE if input is unknown, set padH, padW as unknown.
-      // these will be resolved in shape inference.
-      auto int64_min = std::numeric_limits<int64_t>::min();
-      padH = (shape[2] == int64_min ? shape[2] : shape[2] + padsValue[0] + padsValue[2]);
-      padW = (shape[3] == int64_min ? shape[3] : shape[3] + padsValue[1] + padsValue[3]);
-      auto padShape = {shape[0], shape[1], padH, padW}; // order is NCHW
-      LLVM_DEBUG({ llvm::dbgs() << "ConvConv padH: " << padH << ", padW: " << padW << "\n"; });
-      auto padType = mlir::RankedTensorType::get(padShape, outtype.getElementType());
-
-      // change pre Transpose input to this new Pad
-      mlir::Location pads_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/pads"));
-      LLVM_DEBUG({ llvm::dbgs() << "ConvConv Pad: " << pads_loc << "\n"; });
-      inputPreTr = rewriter.create<PadOp>(pads_loc, padType, input, paddings);
-    }
+      inputPreTr = insertPad(rewriter, op_name, input, outtype, padsValue);
 
     int32_t stride_h = 1;
     int32_t stride_w = 1;
-    auto strides = op.getStrides();
-    if (strides.has_value())
-    {
-      auto value = strides.value();
-      if (value.size() != 2)
-        return mlir::failure();
-
-      stride_h = GetIntValue<int32_t>(value, 0);
-      stride_w = GetIntValue<int32_t>(value, 1);
-    }
+    if (!getStrides(op, stride_h, stride_w))
+      return mlir::failure();
 
     int64_t dilation_h_factor = 1;
     int64_t dilation_w_factor = 1;
-    auto dilations = op.getDilations();
-    if (dilations.has_value())
-    {
-      auto value = dilations.value();
-      if (value.size() != 2)
-        return mlir::failure();
-
-      dilation_h_factor = GetIntValue<int64_t>(value, 0);
-      dilation_w_factor = GetIntValue<int64_t>(value, 1);
-    }
+    if (!getDilations(op, dilation_h_factor, dilation_w_factor))
+      return mlir::failure();
 
     // NOTE luci-interpreter fails to execute when bias is none.
     // we can (1) fix luci-interpreter (2) update bias to have zero values.
     // onnx-tensorflow works like (2) so we follow this.
     if (biasNone)
-    {
-      auto ftype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(filter.getType());
-      assert(ftype.getElementType().isF32());
-      auto shape = ftype.getShape();
-      int32_t num = shape[0]; // dim 0 from OIHW
-      mlir::RankedTensorType type = RankedTensorType::get({num}, ftype.getElementType());
-      std::vector<float> val;
-      for (int32_t c = 0; c < num; ++c)
-        val.push_back(0.0f);
-      mlir::Location nobias_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/nobias"));
-      bias = rewriter.create<ConstOp>(nobias_loc, DenseFPElementsAttr::get(type, val));
-    }
+      bias = getZeroBias(rewriter, op_name, filter);
 
     auto filter_name = GetOperationName(filter.getDefiningOp());
     if (filter_name.empty())
@@ -225,6 +172,83 @@ private:
       return true;
 
     return false;
+  }
+
+  mlir::Value insertPad(mlir::ConversionPatternRewriter &rewriter, const std::string &op_name,
+                        const mlir::Value &input, const mlir::RankedTensorType &outtype,
+                        const std::vector<int32_t> &padsValue) const
+  {
+    mlir::Type i32 = rewriter.getI32Type();
+    mlir::RankedTensorType ptype = RankedTensorType::get({4, 2}, i32);
+    llvm::SmallVector<int32_t, 8> pvalue = {
+      0, 0, 0, 0, padsValue[0], padsValue[2], padsValue[1], padsValue[3]};
+    mlir::Location padsval_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/padsval"));
+    mlir::Value paddings =
+      rewriter.create<ConstOp>(padsval_loc, DenseIntElementsAttr::get(ptype, pvalue));
+
+    // calc output type+shape of Pad
+    mlir::RankedTensorType intype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(input.getType());
+    auto shape = intype.getShape();
+    assert(shape.size() == 4);
+    int64_t padH = 0, padW = 0;
+    // NOTE if input is unknown, set padH, padW as unknown.
+    // these will be resolved in shape inference.
+    auto int64_min = std::numeric_limits<int64_t>::min();
+    padH = (shape[2] == int64_min ? shape[2] : shape[2] + padsValue[0] + padsValue[2]);
+    padW = (shape[3] == int64_min ? shape[3] : shape[3] + padsValue[1] + padsValue[3]);
+    auto padShape = {shape[0], shape[1], padH, padW}; // order is NCHW
+    LLVM_DEBUG({ llvm::dbgs() << "ConvConv padH: " << padH << ", padW: " << padW << "\n"; });
+    auto padType = mlir::RankedTensorType::get(padShape, outtype.getElementType());
+
+    // change pre Transpose input to this new Pad
+    mlir::Location pads_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/pads"));
+    LLVM_DEBUG({ llvm::dbgs() << "ConvConv Pad: " << pads_loc << "\n"; });
+    return rewriter.create<PadOp>(pads_loc, padType, input, paddings);
+  }
+
+  bool getStrides(mlir::ONNXConvOp op, int32_t &stride_h, int32_t &stride_w) const
+  {
+    auto strides = op.getStrides();
+    if (strides.has_value())
+    {
+      auto value = strides.value();
+      if (value.size() != 2)
+        return false;
+
+      stride_h = GetIntValue<int32_t>(value, 0);
+      stride_w = GetIntValue<int32_t>(value, 1);
+    }
+    return true;
+  }
+
+  bool getDilations(mlir::ONNXConvOp op, int64_t &dilation_h, int64_t &dilation_w) const
+  {
+    auto dilations = op.getDilations();
+    if (dilations.has_value())
+    {
+      auto value = dilations.value();
+      if (value.size() != 2)
+        return false;
+
+      dilation_h = GetIntValue<int64_t>(value, 0);
+      dilation_w = GetIntValue<int64_t>(value, 1);
+    }
+    return true;
+  }
+
+  mlir::Value getZeroBias(mlir::ConversionPatternRewriter &rewriter, const std::string &op_name,
+                          mlir::Value &filter) const
+  {
+    auto ftype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(filter.getType());
+    assert(ftype.getElementType().isF32());
+    auto shape = ftype.getShape();
+    int32_t num = shape[0]; // dim 0 from OIHW
+    mlir::RankedTensorType type = RankedTensorType::get({num}, ftype.getElementType());
+    std::vector<float> val;
+    for (int32_t c = 0; c < num; ++c)
+      val.push_back(0.0f);
+    mlir::Location nobias_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/nobias"));
+    return rewriter.create<ConstOp>(nobias_loc, DenseFPElementsAttr::get(type, val));
   }
 };
 
