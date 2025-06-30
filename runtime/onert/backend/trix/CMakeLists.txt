@@ -1,9 +1,6 @@
 set(LIB_ONERT_BACKEND_TRIX onert_backend_trix)
 
-find_package(PkgConfig REQUIRED)
-# TRIXEngine version is required to higher than 2.5.0
-pkg_check_modules(TRIXEngine QUIET IMPORTED_TARGET npu-engine>2.5.0)
-
+nnfw_find_package(TRIXEngine QUIET)
 if(NOT TRIXEngine_FOUND)
   message(STATUS "ONERT backend: Failed to find TRIXEngine")
   return()
@@ -15,7 +12,7 @@ file(GLOB_RECURSE SOURCES "*.cc")
 add_library(${LIB_ONERT_BACKEND_TRIX} SHARED ${SOURCES})
 
 target_link_libraries(${LIB_ONERT_BACKEND_TRIX} PRIVATE onert_core)
-target_link_libraries(${LIB_ONERT_BACKEND_TRIX} PRIVATE PkgConfig::TRIXEngine)
+target_link_libraries(${LIB_ONERT_BACKEND_TRIX} PRIVATE trix-engine)
 target_link_libraries(${LIB_ONERT_BACKEND_TRIX} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_TRIX} PRIVATE nnfw_coverage)
 
