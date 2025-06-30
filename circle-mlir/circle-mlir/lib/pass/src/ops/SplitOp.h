@@ -47,6 +47,7 @@ public:
 
     mlir::Value input = adaptor.getInput();
     mlir::Value split = adaptor.getSplit();
+    bool splitNone = mlir::isa<mlir::NoneType>(split.getType());
 
     mlir::Location opLoc = op->getLoc();
 
@@ -59,6 +60,32 @@ public:
     mlir::Value size_splits;
     uint32_t num_splits = 0;
 
+    if (splitNone)
+    {
+      // V13 SplitOp second input split is optional, and there is no input to get number of splits.
+      // we can only assume from number of outputs and split from output shape.
+      auto intype = mlir::dyn_cast<RankedTensorType>(input.getType());
+      int64_t a_axis = axis;
+      if (a_axis < 0)
+        a_axis += intype.getRank();
+
+      std::vector<int32_t> split_vals;
+      auto outtypes = op.getOutputs().getTypes();
+      for (size_t i = 0; i < outtypes.size(); ++i)
+      {
+        auto outtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(outtypes[i]);
+        if (outtype)
+        {
+          auto shape = outtype.getShape();
+          split_vals.push_back(static_cast<int32_t>(shape[a_axis]));
+        }
+        else
+          return mlir::failure();
+        num_splits++;
+      }
+      size_splits = CreateI32Const(rewriter, split_vals, op_name + "/size");
+    }
+    else
     {
       size_splits = CreateI32Const(rewriter, split, op_name + "/size");
       if (mlir::isa<mlir::NoneType>(size_splits.getType()))
