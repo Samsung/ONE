@@ -92,6 +92,13 @@ if [[ ! -s "test_onnx_model.onnx" ]]; then
     # https://github.com/Samsung/ONE/issues/5548#issuecomment-754373360
 fi
 
+if [[ ! -s "test_pytorch_model.pt2" ]]; then
+    rm -rf test_pytorch_model.zip
+    wget -nv https://github.com/user-attachments/files/20944985/test_pytorch_model.zip
+    unzip test_pytorch_model.zip
+    # https://github.com/Samsung/ONE/issues/15406#issuecomment-3012389865
+fi
+
 if [[ ! -s "onnx_conv2d_conv2d.onnx" ]]; then
     rm -rf onnx_conv2d_conv2d.zip
     wget -nv https://github.com/Samsung/ONE/files/5774648/onnx_conv2d_conv2d.zip
