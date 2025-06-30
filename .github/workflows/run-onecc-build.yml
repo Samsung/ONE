@@ -96,9 +96,9 @@ jobs:
       - name: Build
         run: |
           ./nncc configure -DENABLE_STRICT_BUILD=ON -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
-            -DEXTERNALS_BUILD_THREADS=$(nproc) -DCMAKE_INSTALL_PREFIX=${NNCC_INSTALL_PREFIX}
-          ./nncc build -j$(nproc)
-          cmake --build ${NNCC_WORKSPACE} -- install
+            -DEXTERNALS_BUILD_THREADS="$(nproc)" -DCMAKE_INSTALL_PREFIX="${NNCC_INSTALL_PREFIX}"
+          ./nncc build "-j$(nproc)"
+          cmake --build "${NNCC_WORKSPACE}" -- install
 
       - name: Test(Debug)
         if: matrix.type == 'Debug'
@@ -112,10 +112,10 @@ jobs:
           NNCC_INSTALL_PATH : ${{ env.NNCC_WORKSPACE }}/${{ env.NNCC_INSTALL_PREFIX }}
         run: |
           ./nncc test
-          ${NNCC_INSTALL_PATH}/bin/one-prepare-venv
-          ${NNCC_INSTALL_PATH}/test/prepare_test_materials.sh
+          "${NNCC_INSTALL_PATH}/bin/one-prepare-venv"
+          "${NNCC_INSTALL_PATH}/test/prepare_test_materials.sh"
           export PATH=${PWD}/${NNCC_INSTALL_PATH}/bin:$PATH
-          pushd ${NNCC_INSTALL_PATH}/test
+          pushd "${NNCC_INSTALL_PATH}/test"
 
           ## one-import-tf -> one-optimize -> one-quantize -> one-codegen
           bash onecc_006.test
