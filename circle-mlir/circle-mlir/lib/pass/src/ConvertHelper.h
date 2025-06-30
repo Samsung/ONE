@@ -79,6 +79,9 @@ mlir::RankedTensorType GetChnLastType(mlir::RankedTensorType tensor_type);
 // Create ConstOp with scalar type and float value
 mlir::Value CreateConst(mlir::ConversionPatternRewriter &rewriter, float value,
                         const std::string &name);
+// Create ConstOp with type 'type' and 'value' values
+mlir::Value CreateConst(mlir::ConversionPatternRewriter &rewriter, mlir::Location &opLoc,
+                        mlir::RankedTensorType &type, float value);
 // Create ConstOp with type 'reference' and 'value' values
 mlir::Value CreateConst(mlir::ConversionPatternRewriter &rewriter, mlir::Location &opLoc,
                         mlir::Value &reference, float value);
