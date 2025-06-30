@@ -38,6 +38,11 @@ jobs:
       matrix:
         type: [ Debug, Release ]
         ubuntu_code: [ focal, jammy, noble ]
+        exclude:
+          - ubuntu_code: focal
+            type: Debug
+          - ubuntu_code: noble
+            type: Debug
 
     runs-on: ubuntu-latest
 
