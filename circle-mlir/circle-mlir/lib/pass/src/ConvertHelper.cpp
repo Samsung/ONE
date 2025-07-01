@@ -189,7 +189,7 @@ mlir::Value CreatePreTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::
 }
 
 mlir::Value CreatePreTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Value &input,
-                               std::string &name)
+                               const std::string &name)
 {
   mlir::Location constLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/pre_tr/perm"));
   mlir::Location transLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/pre_tr"));
@@ -208,7 +208,7 @@ mlir::Value CreateTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Loc
 }
 
 mlir::Value CreateTranspose(mlir::ConversionPatternRewriter &rewriter, mlir::Value &input,
-                            llvm::SmallVector<int32_t, 4> &perm, std::string &name)
+                            llvm::SmallVector<int32_t, 4> &perm, const std::string &name)
 {
   mlir::Location constLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/tr/perm"));
   mlir::Location transLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/tr"));
@@ -225,7 +225,8 @@ void ReplaceOpWithPostTranspose(mlir::ConversionPatternRewriter &rewriter, Opera
 }
 
 mlir::Value ReplaceOpWithPostTranspose(mlir::ConversionPatternRewriter &rewriter, Operation *op,
-                                       mlir::Value &input, mlir::TypeRange type, std::string &name)
+                                       mlir::Value &input, mlir::TypeRange type,
+                                       const std::string &name)
 {
   mlir::Location constLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/post_tr/perm"));
   mlir::Location transLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/post_tr"));
@@ -238,7 +239,8 @@ mlir::Value ReplaceOpWithPostTranspose(mlir::ConversionPatternRewriter &rewriter
 }
 
 mlir::Value ReplaceOpWithPostTranspose(mlir::PatternRewriter &rewriter, Operation *op,
-                                       mlir::Value &input, mlir::TypeRange type, std::string &name)
+                                       mlir::Value &input, mlir::TypeRange type,
+                                       const std::string &name)
 {
   mlir::Location constLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/post_tr/perm"));
   mlir::Location transLoc = mlir::NameLoc::get(rewriter.getStringAttr(name + "/post_tr"));
