@@ -40,6 +40,15 @@ VENV_ACTIVATE=${DRIVER_PATH}/venv/bin/activate
 # Since debian maintainer script is called with sudo, `source activation` is ignored.
 VENV_PYTHON=${DRIVER_PATH}/venv/bin/python
 
+# Check if existing venv/bin/python is old version and delete if so
+if [ -f ${VENV_PYTHON} ]; then
+  PYTHON_VER=$(${VENV_PYTHON} -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
+  if [[ "$PYTHON_VER" == "3.8" ]]; then
+    echo "Cleaning old venv with python $PYTHON_VER ..."
+    rm -rf "${DRIVER_PATH}/venv"
+  fi
+fi
+
 if [ ! -f ${VENV_ACTIVATE} ]; then
   # Create python virtual enviornment
   ${PYTHON3_EXEC} -m venv "${DRIVER_PATH}/venv"
@@ -58,7 +67,7 @@ VER_PROTOBUF="5.29.4"
 VER_NUMPY="1.26.4"
 VER_TICO="0.1.0"
 
-PYTHON_VER=$(${PYTHON3_EXEC} -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
+PYTHON_VER=$(${VENV_PYTHON} -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')" )
 echo "Setting package version for python $PYTHON_VER"
 if [[ "$PYTHON_VER" == "3.10" ]]; then
   : # TODO change vesions
