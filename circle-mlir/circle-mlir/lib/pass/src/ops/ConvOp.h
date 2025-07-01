@@ -149,21 +149,18 @@ public:
       bool depthwise = (inshape.size() == 4 && filtype.getShape().size() == 4) && (group == ic);
       if (depthwise)
       {
-        // clang-format off
-      // TODO fix indentation
-      // ONNX kernel is (I O H W) --> convert to Circle (O H W I)
-      llvm::SmallVector<int32_t, 4> ker_perm{1, 2, 3, 0};
-      mlir::Value filter_tran = CreateTranspose(rewriter, filter, ker_perm, filter_name);
+        // ONNX kernel is (I O H W) --> convert to Circle (O H W I)
+        llvm::SmallVector<int32_t, 4> ker_perm{1, 2, 3, 0};
+        mlir::Value filter_tran = CreateTranspose(rewriter, filter, ker_perm, filter_name);
 
-      auto dwconv_output_type = GetChnLastType(outtype);
-      mlir::Value dwconv2d = rewriter.create<DepthwiseConv2DOp>(
-        opLoc, dwconv_output_type, pre_tran, filter_tran, bias, dilation_h_factor,
-        dilation_w_factor,
-        /*fused_activation_function=*/"NONE",
-        /*padding=*/"VALID", stride_h, stride_w, depth_multiplier);
+        auto dwconv_output_type = GetChnLastType(outtype);
+        mlir::Value dwconv2d = rewriter.create<DepthwiseConv2DOp>(
+          opLoc, dwconv_output_type, pre_tran, filter_tran, bias, dilation_h_factor,
+          dilation_w_factor,
+          /*fused_activation_function=*/"NONE",
+          /*padding=*/"VALID", stride_h, stride_w, depth_multiplier);
 
-      ReplaceOpWithPostTranspose(rewriter, op, dwconv2d, op.getType(), op_name);
-        // clang-format on
+        ReplaceOpWithPostTranspose(rewriter, op, dwconv2d, op.getType(), op_name);
       }
       else
       {
