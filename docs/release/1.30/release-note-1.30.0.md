@@ -13,7 +13,7 @@
 - ONNX is converted from new _circle-mlir/onnx2circle_ tool (onnx-tf tool is deprecated)
 - _luci-interpreter_ handles scalar indices in Gather and additional element types across 
  several kernels.
-- Ubuntu22.04 with python3.10 is official supported platform, python3.10 is neccessary 
+- Ubuntu22.04 with python3.10 is official supported platform, python3.10 is necessary 
  for Ubuntu20.04 and Ubuntu24.04 with python3.12 is experimentally supported.
 - Python packages are upgraded to TensorFlow 2.19.0, ONNX 1.18.0, ONNXRuntime 1.21.1, 
  Torch 2.7.0.
@@ -33,7 +33,7 @@
  model types are TFLite, Circle, and TVN.
 - Python API supports training APIs.
 - Python API supports dynamic shapes.
-- Supporting custom BroadcastTo, AddV2, BatchMatMul are deprecated. These custom opeartions 
+- Supporting custom BroadcastTo, AddV2, BatchMatMul are deprecated. These custom operations 
  loading was introduced to support custom operations by compiler but now it is replaced with
  general operations.
 
@@ -50,7 +50,7 @@
 
 ### Backend Kernel Updates
 
-- CPU backend supports INT64 BinaryArithemtic operations.
+- CPU backend supports INT64 BinaryArithmetic operations.
 - CPU backend supports FullyConnected block quantized weight operations.
 - CPU backend supports Gather block quantized constant input operations.
 - CPU backend supports RMSNorm, RoPE, and GELU operations.
