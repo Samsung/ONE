@@ -41,6 +41,16 @@ public:
   using mlir::OpConversionPattern<mlir::ONNXConvOp>::OpConversionPattern;
   using OpAdaptor = typename mlir::ONNXConvOp::Adaptor;
 
+private:
+  struct ConvAttrs
+  {
+    int32_t stride_h;
+    int32_t stride_w;
+    int64_t dilation_h;
+    int64_t dilation_w;
+  };
+
+public:
   mlir::LogicalResult matchAndRewrite(mlir::ONNXConvOp op, OpAdaptor adaptor,
                                       mlir::ConversionPatternRewriter &rewriter) const override
   {
@@ -164,8 +174,23 @@ public:
       }
       else
       {
-        // TODO implemeent
-        return mlir::failure();
+        // Convert to network as
+        //     input - Transpose - Split - [Conv] - Concat - Add - Transpose - output
+        //    filter - Transpose - Split /
+        // Use from above
+        //    pre_tran: input - (Pad) - Transpose
+        ConvAttrs convAttrs{stride_h, stride_w, dilation_h_factor, dilation_w_factor};
+        mlir::Value add_op;
+        // splitConv() will return new Add in add_op
+        if (!splitConv(rewriter, group, pre_tran, filter, bias, intype, outtype, op_name,
+                       filter_name, convAttrs, add_op))
+        {
+          return mlir::failure();
+        }
+
+        ReplaceOpWithPostTranspose(rewriter, op, add_op, op.getType(), op_name);
+
+        return mlir::success();
       }
     }
     else
@@ -259,6 +284,20 @@ private:
       val.push_back(0.0f);
     mlir::Location nobias_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/nobias"));
     return rewriter.create<ConstOp>(nobias_loc, DenseFPElementsAttr::get(type, val));
+  }
+
+  bool splitConv(mlir::ConversionPatternRewriter &rewriter, int64_t group, mlir::Value &pre_tran,
+                 mlir::Value &filter, mlir::Value &bias, const mlir::RankedTensorType &intype,
+                 const mlir::RankedTensorType &outtype, const std::string &op_name,
+                 const std::string &filter_name, const ConvAttrs &convAttrs,
+                 mlir::Value &add_op) const
+  {
+    // This will create a small network with
+    //     pre_tran - Transpose - Split - [Conv] - Concat - Add
+    //       filter - Transpose - Split /            bias /
+    // and return Add as add_op
+    // TODO implement
+    return false;
   }
 };
 
