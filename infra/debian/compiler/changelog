@@ -13,7 +13,7 @@ one (1.30.0) focal jammy; urgency=medium
   * _luci-interpreter_ handles scalar indices in Gather and additional element 
     types across several kernels.
   * Ubuntu22.04 with python3.10 is official supported platform, python3.10 is 
-    neccessary for Ubuntu20.04 and Ubuntu24.04 with python3.12 is experimentally supported.
+    necessary for Ubuntu20.04 and Ubuntu24.04 with python3.12 is experimentally supported.
   * Python packages are upgraded to TensorFlow 2.19.0, ONNX 1.18.0, 
     ONNXRuntime 1.21.1, Torch 2.7.0.
 
