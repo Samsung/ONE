@@ -50,11 +50,6 @@ set(ONE_COMMAND_FILES
     onecc
 )
 
-# pytorch importer is an experimental feature, it is not used in default configuration
-if(ENABLE_ONE_IMPORT_PYTORCH)
-  list(APPEND ONE_COMMAND_FILES one-import-pytorch)
-endif(ENABLE_ONE_IMPORT_PYTORCH)
-
 foreach(ONE_COMMAND IN ITEMS ${ONE_COMMAND_FILES})
 
   set(ONE_COMMAND_FILE ${ONE_COMMAND})
