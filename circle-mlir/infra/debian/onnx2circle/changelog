@@ -1,3 +1,9 @@
+onnx2circle (0.4.0~202507010501~jammy) jammy; urgency=medium
+
+  * Fixed SplitOp V13
+
+ -- On-device AI developers <nnfw@samsung.com>  Tue, 01 Jul 2025 05:11:37 +0000
+
 onnx2circle (0.4.0~202506240759~jammy) jammy; urgency=medium
 
   * Fixed ConvAveragePool
