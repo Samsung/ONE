@@ -145,6 +145,12 @@ public:
       if (depth_multiplier * group != oc)
         return mlir::failure();
 
+      auto filtype = mlir::dyn_cast_or_null<mlir::RankedTensorType>(filter.getType());
+      bool depthwise = (inshape.size() == 4 && filtype.getShape().size() == 4) && (group == ic);
+      if (depthwise)
+      {
+        // clang-format off
+      // TODO fix indentation
       // ONNX kernel is (I O H W) --> convert to Circle (O H W I)
       llvm::SmallVector<int32_t, 4> ker_perm{1, 2, 3, 0};
       mlir::Value filter_tran = CreateTranspose(rewriter, filter, ker_perm, filter_name);
@@ -157,6 +163,13 @@ public:
         /*padding=*/"VALID", stride_h, stride_w, depth_multiplier);
 
       ReplaceOpWithPostTranspose(rewriter, op, dwconv2d, op.getType(), op_name);
+        // clang-format on
+      }
+      else
+      {
+        // TODO implemeent
+        return mlir::failure();
+      }
     }
     else
       return mlir::failure();
