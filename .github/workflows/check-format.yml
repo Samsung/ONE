@@ -51,7 +51,6 @@ jobs:
       # Refer https://github.com/rhysd/actionlint/blob/main/docs/usage.md#use-actionlint-on-github-actions
       - name: Check workflow files
         uses: docker://rhysd/actionlint:latest
-        continue-on-error: true # Ignore failure because it is not prepared yet. It will be enabled later.
         with:
           args: -color
 
