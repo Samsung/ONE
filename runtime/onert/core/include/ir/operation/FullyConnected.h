@@ -39,6 +39,7 @@ public:
   {
     Activation activation;
     FullyConnectedWeightsFormat weights_format;
+    bool keep_num_dims;
   };
 
 public:

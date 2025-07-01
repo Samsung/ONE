@@ -795,6 +795,7 @@ void BaseLoader<LoaderDomain>::loadFC(const Operator *op, ir::Graph &subg)
 
   param.activation = convertActivation(options->fused_activation_function());
   param.weights_format = static_cast<ir::FullyConnectedWeightsFormat>(options->weights_format());
+  param.keep_num_dims = options->keep_num_dims();
 
   const auto fc = loadOperationTo<ir::operation::FullyConnected>(op, subg, param);
 
