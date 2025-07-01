@@ -1,4 +1,4 @@
-one (1.30.0) focal jammy; urgency=medium
+one (1.30.0) focal jammy noble; urgency=medium
 
   * Support more optimization option(s): `--dynamic_batch_to_single_batch`, 
     `--fuse_rmsnorm`, `--fuse_rope`, `--fuse_rsqrt`.
