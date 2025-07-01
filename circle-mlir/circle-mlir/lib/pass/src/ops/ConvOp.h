@@ -296,8 +296,105 @@ private:
     //     pre_tran - Transpose - Split - [Conv] - Concat - Add
     //       filter - Transpose - Split /            bias /
     // and return Add as add_op
-    // TODO implement
-    return false;
+    auto elementType = outtype.getElementType();
+    auto inshape = intype.getShape();
+    auto outshape = outtype.getShape();
+    auto filtype = mlir::dyn_cast<mlir::RankedTensorType>(filter.getType());
+
+    int64_t channel_split = 1;
+    mlir::RankedTensorType insplttype;
+    mlir::RankedTensorType fisplttype;
+    {
+      // get each split shape, which should be same as each Transpose output shape
+      //    input (N C H W) -> Tr (N H W C) -> Split (N H W C/split)
+      //   filter (O I H W) -> Tr (O H W I) -> Split (O/split H W I)
+      channel_split = inshape[1] / group;
+      if (channel_split * group != inshape[1])
+      {
+        // TODO support not divisable
+        LLVM_DEBUG({ llvm::dbgs() << "Channel is not divisable with group\r\n"; });
+        return false;
+      }
+      auto in_split = {inshape[0], inshape[2], inshape[3], channel_split};
+      insplttype = mlir::RankedTensorType::get(in_split, elementType);
+
+      // for filter O I H W
+      auto fishape = filtype.getShape();
+      // filter perm = 0, 2, 3, 1
+      channel_split = fishape[0] / group;
+      auto fi_split = {channel_split, fishape[2], fishape[3], fishape[1]};
+      fisplttype = mlir::RankedTensorType::get(fi_split, elementType);
+    }
+
+    // prepare array of outputs of two Splits, one for input, another for filter
+    llvm::SmallVector<mlir::Type, 4> split_out_types;
+    llvm::SmallVector<mlir::Type, 4> split_fil_types;
+    for (int64_t split = 0; split < group; ++split)
+    {
+      split_out_types.push_back(insplttype);
+      split_fil_types.push_back(fisplttype);
+    }
+
+    // prepare SplitOp attributes
+    mlir::Value split_i_dim = CreateI32Const(rewriter, 3, op_name + "/split_input_dim");
+    mlir::Value split_f_dim = CreateI32Const(rewriter, 0, op_name + "/split_filter_dim");
+    uint32_t num_splits = static_cast<uint32_t>(group);
+
+    mlir::Value filter_tran = CreatePreTranspose(rewriter, filter, filter_name);
+    mlir::Location spf_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/split_filter"));
+    auto filter_split =
+      rewriter.create<SplitOp>(spf_loc, split_fil_types, split_f_dim, filter_tran, num_splits);
+    mlir::SmallVector<mlir::Value, 4> filter_splits(filter_split.getOutputs());
+
+    mlir::Location spi_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/split_input"));
+    auto input_split =
+      rewriter.create<SplitOp>(spi_loc, split_out_types, split_i_dim, pre_tran, num_splits);
+    mlir::SmallVector<mlir::Value, 4> input_splits(input_split.getOutputs());
+
+    // prepare ConvOp output type
+    mlir::RankedTensorType conv2d_split_type;
+    {
+      // get splitted Conv2d type
+      channel_split = outshape[1] / group;
+      if (channel_split * group != outshape[1])
+      {
+        // TODO support not dividable
+        LLVM_DEBUG({ llvm::dbgs() << "Channel is not dividable with group\r\n"; });
+        return false;
+      }
+      // NCHW to NHWC
+      auto to_nhwc = {outshape[0], outshape[2], outshape[3], channel_split};
+      conv2d_split_type = mlir::RankedTensorType::get(to_nhwc, elementType);
+    }
+    mlir::Value bias_split_zero;
+    {
+      mlir::RankedTensorType type = RankedTensorType::get({channel_split}, elementType);
+      mlir::Location bias0_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/bias0"));
+      bias_split_zero = CreateConst(rewriter, bias0_loc, type, 0.0f);
+    }
+
+    // prepare array of ConvOp
+    llvm::SmallVector<mlir::Value, 4> ops;
+    auto ch_last_outtype = GetChnLastType(outtype);
+    for (int64_t split = 0; split < group; ++split)
+    {
+      mlir::Location conv_loc =
+        mlir::NameLoc::get(rewriter.getStringAttr(op_name + "_" + std::to_string(split)));
+      auto conv = rewriter.create<Conv2DOp>(
+        conv_loc, conv2d_split_type, input_splits[split], filter_splits[split], bias_split_zero,
+        convAttrs.dilation_h, convAttrs.dilation_w, /*fused_activation_function=*/"NONE",
+        /*padding=*/"VALID", convAttrs.stride_h, convAttrs.stride_w);
+      ops.push_back(conv);
+    }
+    mlir::ValueRange conv_ops(ops);
+    mlir::Location concat_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/concat"));
+    mlir::Value concat_op =
+      rewriter.create<ConcatenationOp>(concat_loc, ch_last_outtype, conv_ops, -1, "NONE");
+
+    mlir::Location add_loc = mlir::NameLoc::get(rewriter.getStringAttr(op_name + "/bias"));
+    add_op = rewriter.create<AddOp>(add_loc, ch_last_outtype, concat_op, bias, "NONE");
+
+    return true;
   }
 };
 
