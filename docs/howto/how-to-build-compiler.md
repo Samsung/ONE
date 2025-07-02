@@ -48,19 +48,21 @@ curl
 $ pip install numpy flatbuffers
 ```
 
-If you are using python3.12 or upper (ex. Ubuntu 24.04), or python 3.6 or under (ex. Ubuntu 18.04), as there is no TensorFlow2.12.1 package for python version, build may fail.
-Please install python3.8-venv additionally.
+Supported platforms:
+- Ubuntu 20.04
+- Ubuntu 22.04
+- Ubuntu 24.04 (experimental)
 
-Additional install python3.8 if you are using Ubuntu 18.04
-```
-$ sudo apt-get install python3.8 python3.8-dev python3.8-venv
-```
+Supported Python versions:
+- Python 3.10 for Ubuntu 20.04 and 22.04
+- Python 3.12 for Ubuntu 24.04
 
-Additional install python 3.8 if you are using Ubuntu 24.04
+Note: Python 3.10 needs to be installed manually on Ubuntu 20.04.
 ```
-$ sudo apt-get install software-properties-common
-$ sudo add-apt-repository ppa:deadsnakes/ppa
-$ sudo apt-get update && sudo apt-get install python3.8 python3.8-dev python3.8-venv
+sudo apt-get install software-properties-common
+sudo -E add-apt-repository ppa:deadsnakes/ppa -y
+sudo apt-get -y install python3.10 python3.10-venv python3.10-dev
+python3.10 -m ensurepip
 ```
 
 Additional install libtsan_preinit.o manually if you are using Ubuntu 20.04 and gcc-9 (refer https://github.com/Samsung/ONE/issues/11202)
