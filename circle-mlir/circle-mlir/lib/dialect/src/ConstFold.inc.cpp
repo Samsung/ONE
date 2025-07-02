@@ -241,6 +241,32 @@ template <typename T> bool getAsConstant(mlir::Value &input, std::vector<T> &val
   return true;
 }
 
+template <typename T> bool getAsFPConstant(mlir::Value &input, std::vector<T> &values)
+{
+  mlir::DenseElementsAttr dataAttr;
+
+  // Check if input is constant
+  if (!matchPattern(input, m_Constant(&dataAttr)))
+    return false;
+
+  if (auto constOp = dyn_cast<mlir::Circle::ConstOp>(input.getDefiningOp()))
+    dataAttr = mlir::dyn_cast<mlir::DenseElementsAttr>(constOp.getValueAttr());
+  else
+    return false;
+
+  if (dataAttr == nullptr)
+    return false;
+
+  auto valueIt = dataAttr.getValues<llvm::APFloat>().begin();
+  auto valueEd = dataAttr.getValues<llvm::APFloat>().end();
+  for (; valueIt != valueEd; ++valueIt)
+  {
+    T value = static_cast<T>((*valueIt).convertToFloat());
+    values.push_back(value);
+  }
+  return true;
+}
+
 bool getAsConstant(mlir::Value &input, std::vector<int64_t> &values)
 {
   return getAsConstant<int64_t>(input, values);
@@ -254,6 +280,16 @@ bool getAsConstant(mlir::Value &input, std::vector<int32_t> &values)
 bool getAsConstant(mlir::Value &input, std::vector<bool> &values)
 {
   return getAsConstant<bool>(input, values);
+}
+
+bool getAsConstant(mlir::Value &input, std::vector<float> &values)
+{
+  return getAsFPConstant<float>(input, values);
+}
+
+bool getAsConstant(mlir::Value &input, std::vector<double> &values)
+{
+  return getAsFPConstant<double>(input, values);
 }
 
 } // namespace Circle
