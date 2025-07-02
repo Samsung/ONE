@@ -56,12 +56,6 @@ jobs:
           restore-keys: |
             external-onert-jammy-
 
-      - name: Set tag for dev package
-        if: github.event.inputs.official == 'false'
-        run: |
-          DATE="$(date -u +%y%m%d%H)"
-          echo "DEV_TAG='--tag-build dev${DATE}'" >> "$GITHUB_ENV"
-
       - name: Install venv for python version
         run: |
           ${{ matrix.python-version }} -m venv ./venv
@@ -72,8 +66,20 @@ jobs:
         run: |
           source ./venv/bin/activate
           make -f Makefile.template configure build install
+
+      - name: Pre-release packaging
+        if: github.event.inputs.official == 'false' || github.event_name == 'pull_request'
+        run: |
+          source ./venv/bin/activate
           cd runtime/infra/python
-          python3 setup.py bdist_wheel --plat-name manylinux_2_28_${{ matrix.arch }} egg_info ${{ env.DEV_TAG }}
+          python3 setup.py bdist_wheel --plat-name manylinux_2_28_${{ matrix.arch }} egg_info --tag-build "dev$(date -u "+%y%m%d")"
+
+      - name: Release packaging
+        if: github.event.inputs.official == 'true'
+        run: |
+          source ./venv/bin/activate
+          cd runtime/infra/python
+          python3 setup.py bdist_wheel --plat-name manylinux_2_28_${{ matrix.arch }} egg_info
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
