@@ -1,3 +1,24 @@
+one (1.30.0) focal jammy noble; urgency=medium
+
+  * Support more optimization option(s): `--dynamic_batch_to_single_batch`, 
+    `--fuse_rmsnorm`, `--fuse_rope`, `--fuse_rsqrt`.
+  * Introduce _one-import-pytorch_ for direct PyTorch import that converts 
+    PyTorch modules straight to Circle.
+  * Support MX (microscaling) data type.
+  * Introduce _circle-mlir_ that converts new ops (e.g., ConvTranspose2D, 
+    DepthwiseConv2D, ArgMax, Reduce*, Resize, Pooling, GELU, Sigmoid, Softmax, 
+    Slice/StridedSlice, Select, Gather, BatchMatMul) and validates shape inference.
+  * ONNX is converted from new _circle-mlir/onnx2circle_ tool (onnx-tf tool 
+    is deprecated)
+  * _luci-interpreter_ handles scalar indices in Gather and additional element 
+    types across several kernels.
+  * Ubuntu22.04 with python3.10 is official supported platform, python3.10 is 
+    necessary for Ubuntu20.04 and Ubuntu24.04 with python3.12 is experimentally supported.
+  * Python packages are upgraded to TensorFlow 2.19.0, ONNX 1.18.0, 
+    ONNXRuntime 1.21.1, Torch 2.7.0.
+
+ -- seongwoo <mhs4670go@naver.com>  Tue, 01 Jul 2025 13:51:37 +0900
+
 one (1.29.0) bionic focal jammy; urgency=medium
 
   * Support more optimization option(s): `--transform_sqrt_div_to_rsqrt_mul`, `--fold_mul`,
