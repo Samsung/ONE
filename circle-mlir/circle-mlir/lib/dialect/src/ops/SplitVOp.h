@@ -31,47 +31,6 @@ namespace Circle
 // SplitVOp
 //===----------------------------------------------------------------------===//
 
-// Extracts and returns the signed integer constant in a 0-rank integer tensor
-// or 1-element 1-rank integer tensor if 'value' is a constant.
-static std::optional<int64_t> ExtractConstantIntFromTensor(Value value)
-{
-  ElementsAttr attr;
-  if (!matchPattern(value, m_Constant(&attr)))
-    return {};
-  if (attr.getNumElements() != 1)
-    return {};
-  IntegerAttr int_attr = *attr.getValues<IntegerAttr>().begin();
-  return int_attr.getValue().getSExtValue();
-}
-
-// Returns a RankedTensorType which is similar to `input_type` but replaces the
-// dimension size of `dim` with `dim_size`.  For example,
-// `SubstituteRankedTensorTypeDimSize(tensor<3x4xi32>, 1, 2)` returns
-// `tensor<3x2xi32>`.
-static RankedTensorType SubstituteRankedTensorTypeDimSize(RankedTensorType input_type, int64_t dim,
-                                                          int64_t dim_size)
-{
-  auto shape = input_type.getShape().vec();
-  shape[dim] = dim_size;
-  return mlir::Circle::GetTypeFromTensorShape(shape, input_type.getElementType());
-}
-
-// Verifies the output tensor types of SplitOp or SplitVOp.
-template <typename ExpectedOutputTypeGetter>
-static LogicalResult VerifySplitOpOutputTypes(Operation *op, int64_t num_splits,
-                                              ExpectedOutputTypeGetter get_expected_output_type)
-{
-  for (int64_t i = 0; i < num_splits; ++i)
-  {
-    auto expected_output_type = get_expected_output_type(i);
-    Value output = op->getResult(i);
-    if (failed(verifyCompatibleShape(output.getType(), expected_output_type)))
-      return op->emitOpError() << "output #" << i << " should be " << expected_output_type
-                               << " instead got " << output.getType();
-  }
-  return success();
-}
-
 mlir::LogicalResult SplitVOp::verify()
 {
   SplitVOp op = *this;
@@ -159,50 +118,6 @@ mlir::LogicalResult SplitVOp::verify()
     return SubstituteRankedTensorTypeDimSize(input_type, split_dim, size_splits[i]);
   };
   return VerifySplitOpOutputTypes(op.getOperation(), num_splits, get_expected_output_type);
-}
-
-//===----------------------------------------------------------------------===//
-// SplitOp
-//===----------------------------------------------------------------------===//
-
-mlir::LogicalResult SplitOp::verify()
-{
-  SplitOp op = *this;
-  int64_t num_splits = op.getNumSplits();
-  if (op.getNumResults() != num_splits)
-    return op.emitOpError("output count should match 'num_splits' attribute");
-
-  // If 'split_dim' is not a constant, there are no other checks.
-  std::optional<int64_t> split_dim_opt = ExtractConstantIntFromTensor(op.getSplitDim());
-  if (!split_dim_opt)
-    return success();
-
-  // If 'input' is not a ranked tensor, there are no other checks.
-  auto input_type = mlir::dyn_cast<RankedTensorType>(op.getValue().getType());
-  if (!input_type)
-    return success();
-
-  int64_t split_dim = split_dim_opt.value();
-  const int64_t rank = input_type.getRank();
-  if (split_dim < 0)
-    split_dim += rank;
-  if (split_dim < 0 || split_dim >= rank)
-    return op.emitOpError("'split_dim' should be in [-rank, rank)");
-
-  // If the 'split_dim' dimension of the 'input' tensor has a dynamic size,
-  // there are no other checks.
-  const int64_t dim_size = input_type.getDimSize(split_dim);
-  if (ShapedType::isDynamic(dim_size))
-    return success();
-
-  if (dim_size % num_splits != 0)
-    return op.emitOpError("'num_splits' should evenly divide 'split_dim' axis");
-
-  // Verifies output tensor types.
-  RankedTensorType expected_output_type =
-    SubstituteRankedTensorTypeDimSize(input_type, split_dim, dim_size / num_splits);
-  return VerifySplitOpOutputTypes(op.getOperation(), num_splits,
-                                  [expected_output_type](int64_t) { return expected_output_type; });
 }
 
 } // namespace Circle
