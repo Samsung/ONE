@@ -55,6 +55,15 @@ make prep
 NOTE `llvm-project` builds in `Debug` mode, which may require 32GB or more RAM.
 - if the build fails, try changing the build type to `-DCMAKE_BUILD_TYPE=Release`
   in the `prep` target of `Makefile.sample` file.
+- or you can use gold linker as this uses less memory
+  ```
+  CIRCLE_MLIR_USE_GOLD=1 make prep
+  ```
+- or you can use clang
+  ```
+  CIRCLE_MLIR_USE_CLANG=1 make prep
+  ```
+- you cannot use both gold linker and clang
 
 NOTE `prep` build is needed only once.
 
@@ -85,7 +94,7 @@ Release build is almost same as Debug build.
 
 Build externals;
 ```
-make prepr
+CIRCLE_MLIR_USE_CLANG=1 make prepr
 ```
 
 Configure and build;
