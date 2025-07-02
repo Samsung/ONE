@@ -17,6 +17,7 @@
 #include "VerifyQuantizedBiasScale.h"
 
 #include <cmath>
+#include <limits>
 
 // This macro is undef at the end of the file
 #define RETURN_FALSE_UNLESS(ARG) \
@@ -30,7 +31,7 @@ namespace
 
 bool same(float a, float b)
 {
-  constexpr float epsilon = 1e-10;
+  constexpr float epsilon = std::numeric_limits<float>::epsilon();
   return std::abs(a - b) < epsilon;
 }
 
