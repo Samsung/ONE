@@ -53,7 +53,7 @@ jobs:
             platform: arm
     runs-on: one-x64-linux
     container:
-      image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}-cross
+      image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}
       options: --user root
     env:
       TARGET_ARCH: ${{ matrix.arch }}
