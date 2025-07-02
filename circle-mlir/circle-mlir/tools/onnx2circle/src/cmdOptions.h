@@ -30,6 +30,7 @@ inline const char *__opt_keep_io_order_d = "Rename I/O to match order (obsolete)
 inline const char *__opt_save_int_d = "Save intermediate files (obsolete)";
 inline const char *__opt_check_shapeinf = "Validate shape inference";
 inline const char *__opt_check_dynshapeinf = "Validate dynamic shape inference";
+inline const char *__opt_check_rawprocessed = "Validate raw vs processed";
 
 } // namespace opts
 

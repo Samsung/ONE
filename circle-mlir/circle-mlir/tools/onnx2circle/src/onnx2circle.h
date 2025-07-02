@@ -31,6 +31,7 @@ struct O2Cparam
   bool unfold_batchmatmul = false;
   bool check_shapeinf = false;
   bool check_dynshapeinf = false;
+  bool check_rawprocessed = false;
   // TODO add more if necessary
 };
 

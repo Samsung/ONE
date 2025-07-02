@@ -87,3 +87,11 @@ ValidateDynaShapeInf(StridedSlice_F32_R2_ds.circle.mlir)
 
 # dynamic batch to single batch validation
 ValidateDynaBatchToSingle(Logistics_F32_R4_db.circle.mlir)
+
+# raw circle vs processed circle
+# NOTE this will load, save raw, do process and save processed
+# value is done in tools-test/circle-impexp-test
+ValidateRawProcessed(ConstSplitAdd_F32_d0.circle.mlir)
+ValidateRawProcessed(ConstSplitAdd_F32_d1.circle.mlir)
+ValidateRawProcessed(ConstSplitAdd_F32_d2.circle.mlir)
+ValidateRawProcessed(ConstSplitAdd_F32_d3.circle.mlir)

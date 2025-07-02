@@ -108,6 +108,12 @@ int safe_main(int argc, char *argv[])
     .default_value(false)
     .help(__opt_check_dynshapeinf);
 
+  arser.add_argument("--check_rawprocessed")
+    .nargs(0)
+    .required(false)
+    .default_value(false)
+    .help(__opt_check_rawprocessed);
+
   // two positional arguments
   arser.add_argument("onnx").help("Input ONNX file");
   arser.add_argument("circle").help("Output Circle file");
@@ -124,6 +130,7 @@ int safe_main(int argc, char *argv[])
   param.unfold_batchmatmul = !arser.get<bool>("--experimental_disable_batchmatmul_unfold");
   param.check_shapeinf = arser.get<bool>("--check_shapeinf");
   param.check_dynshapeinf = arser.get<bool>("--check_dynshapeinf");
+  param.check_rawprocessed = arser.get<bool>("--check_rawprocessed");
 
   return entry(param);
 }

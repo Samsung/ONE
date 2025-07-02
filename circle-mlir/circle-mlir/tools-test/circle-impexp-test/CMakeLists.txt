@@ -23,6 +23,7 @@ endmacro(COPY_SCRIPT)
 # copy test scripts
 COPY_SCRIPT(run_value_test.sh)
 COPY_SCRIPT(run_import_test.sh)
+COPY_SCRIPT(run_mlir_test.sh)
 COPY_SCRIPT(exec_onnx.py)
 COPY_SCRIPT(exec_circle.py)
 COPY_SCRIPT(make_circle_input.py)
@@ -31,6 +32,7 @@ COPY_SCRIPT(util_h5_file.py)
 
 get_target_property(ONNX_ARTIFACTS_BIN_PATH gen_onnx_target BINARY_DIR)
 get_target_property(CIRCLE_ARTIFACTS_BIN_PATH onnx2circle_models_target BINARY_DIR)
+get_target_property(ONNX2CIRCLE_BIN_PATH onnx2circle BINARY_DIR)
 
 # AddModel used in test.lst
 set(UNIT_TEST_MODELS )
@@ -100,6 +102,33 @@ macro(ImportModel MODEL_NAME)
 
 endmacro(ImportModel)
 
+macro(RawProcessed MODEL_NAME)
+  # copy two circle files from tools/onnx2circle/model
+  # model.1.circle is raw file before processing
+  # model.2.circle is optimization proccessed model
+  set(TEST_CIRCLE_MODEL_SRC "${ONNX2CIRCLE_BIN_PATH}/models/mlir/${MODEL_NAME}.circle")
+  set(TEST_CIRCLE_MODEL_DST "${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}.2.circle")
+  add_custom_command(
+    OUTPUT ${TEST_CIRCLE_MODEL_DST}
+    COMMAND ${CMAKE_COMMAND} -E copy "${TEST_CIRCLE_MODEL_SRC}" "${TEST_CIRCLE_MODEL_DST}"
+    DEPENDS ${TEST_CIRCLE_MODEL_SRC} onnx2circle_models_target
+    COMMENT "circle-impexp-test: copy ${MODEL_NAME}.circle"
+  )
+  set(TEST_CIRCLE_MODEL_RAW_SRC "${ONNX2CIRCLE_BIN_PATH}/models/mlir/${MODEL_NAME}.raw.circle")
+  set(TEST_CIRCLE_MODEL_RAW_DST "${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}.1.circle")
+  add_custom_command(
+    OUTPUT ${TEST_CIRCLE_MODEL_RAW_DST}
+    COMMAND ${CMAKE_COMMAND} -E copy "${TEST_CIRCLE_MODEL_RAW_SRC}" "${TEST_CIRCLE_MODEL_RAW_DST}"
+    DEPENDS ${TEST_CIRCLE_MODEL_RAW_SRC} onnx2circle_models_target
+    COMMENT "circle-impexp-test: copy ${MODEL_NAME}.raw.circle"
+  )
+
+  list(APPEND UNIT_TEST_MODELS_MLIR "${MODEL_NAME}")
+  list(APPEND FILE_DEPS_MLIR "${TEST_CIRCLE_MODEL_DST}")
+  list(APPEND FILE_DEPS_MLIR "${TEST_CIRCLE_MODEL_RAW_DST}")
+
+endmacro(RawProcessed)
+
 # Read "test.lst"
 include("test.lst")
 # Read "test.local.lst" if exists
@@ -130,3 +159,16 @@ foreach(MODEL IN ITEMS ${UNIT_TEST_MODELS_IMPORT})
     COMMAND bash run_import_test.sh ${TEST_MODEL_BASE}
   )
 endforeach()
+
+add_custom_target(
+  circle_impexp_mlir_test_target ALL
+  DEPENDS ${FILE_DEPS_MLIR}
+)
+
+#foreach(MODEL IN ITEMS ${UNIT_TEST_MODELS_MLIR})
+#  set(TEST_MODEL_BASE "${CMAKE_CURRENT_BINARY_DIR}/${MODEL}")
+#  add_test(
+#    NAME circle_impexp_mlir_test_${MODEL}
+#    COMMAND bash run_mlir_test.sh ${TEST_MODEL_BASE}
+#  )
+#endforeach()

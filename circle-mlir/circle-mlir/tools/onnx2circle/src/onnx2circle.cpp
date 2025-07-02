@@ -45,6 +45,7 @@
 #include <circle-mlir/pass/CirclePass.h>
 #include <circle-mlir/export/CircleExport.h>
 
+#include <filesystem>
 #include <iostream>
 #include <string>
 
@@ -136,6 +137,21 @@ int convertToCircle(const O2Cparam &param)
   auto result = loadONNX(sourcefile, context, module);
   if (result != 0)
     return result;
+
+  if (param.check_rawprocessed)
+  {
+    std::string serialized_flatbuffer;
+    if (mlir::Circle::MlirToFlatBufferTranslateFunction(module.get(), &serialized_flatbuffer))
+    {
+      std::string error_msg;
+      std::filesystem::path tempFile = targetfile;
+      tempFile.replace_extension(".raw.circle");
+      auto output = mlir::openOutputFile(tempFile.string(), &error_msg);
+      // TODO error handle
+      output->os() << serialized_flatbuffer;
+      output->keep();
+    }
+  }
 
   if (param.dynamic_batch_to_single_batch)
   {

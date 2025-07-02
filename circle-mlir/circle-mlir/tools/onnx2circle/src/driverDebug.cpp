@@ -81,6 +81,10 @@ static llvm::cl::opt<bool> OptCheckShapeInf("check_shapeinf", llvm::cl::desc(__o
 static llvm::cl::opt<bool> OptCheckDynShapeInf("check_dynshapeinf",
                                                llvm::cl::desc(__opt_check_dynshapeinf),
                                                llvm::cl::init(false), llvm::cl::cat(O2CirCat));
+// raw vs processed validation
+static llvm::cl::opt<bool> OptCheckRawProcessed("check_rawprocessed",
+                                                llvm::cl::desc(__opt_check_rawprocessed),
+                                                llvm::cl::init(false), llvm::cl::cat(O2CirCat));
 
 } // namespace opts
 
@@ -165,6 +169,7 @@ int main(int argc, char *argv[])
   param.unfold_batchmatmul = !opts::OptExpDisBMMUnfold;
   param.check_shapeinf = opts::OptCheckShapeInf;
   param.check_dynshapeinf = opts::OptCheckDynShapeInf;
+  param.check_rawprocessed = opts::OptCheckRawProcessed;
 
   auto result = entry(param);
   LLVM_DEBUG({ llvm::dbgs() << "Conversion done: " << result << "\n"; });
