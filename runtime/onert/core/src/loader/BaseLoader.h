@@ -183,8 +183,9 @@ protected:
   uint8_t *_base;
   // Memory page size
   int32_t _pagesize;
-  // loaded file description
+  // loaded file description and path
   int _fd;
+  std::string _file_path;
   // Reference to ir::model (to be loaded from _domain_model)
   std::unique_ptr<ir::Model> &_model;
   const Model *_domain_model;
@@ -203,6 +204,7 @@ protected:
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const std::string &file_path)
 {
+  _file_path = file_path;
   _fd = open(file_path.c_str(), O_RDONLY);
   if (_fd < 0)
   {
