@@ -390,7 +390,8 @@ template <typename T> ir::Shape inferFillShape(const ir::Shape &fill_shape, cons
 template ir::Shape inferFillShape(const ir::Shape &fill_shape, const int32_t *shape_buf);
 template ir::Shape inferFillShape(const ir::Shape &fill_shape, const int64_t *shape_buf);
 
-ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape)
+ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &ker_shape,
+                                   bool keep_num_dims)
 {
   assert(in_shape.rank() >= 2);
   assert(ker_shape.rank() == 2);
@@ -400,6 +401,14 @@ ir::Shape inferFullyConnectedShape(const ir::Shape &in_shape, const ir::Shape &k
   const auto input_size = ker_shape.dim(1);
   const auto batch_size = input_size_with_batch / input_size;
   assert(input_size_with_batch % input_size == 0);
+
+  if (keep_num_dims)
+  {
+    assert(in_shape.dim(in_shape.rank() - 1) == input_size);
+    auto output_shape = ir::Shape(in_shape);
+    output_shape.dim(output_shape.rank() - 1) = num_units;
+    return output_shape;
+  }
 
   return {ir::Shape({static_cast<int32_t>(batch_size), num_units})};
 }

@@ -349,11 +349,26 @@ TEST(ShapeInference, FullyConnected)
 {
   Shape in_shape{3, 4, 5, 6};
   Shape ker_shape{3, 10};
-  auto infered_out_shape = onert::shape_inference::inferFullyConnectedShape(in_shape, ker_shape);
+  auto infered_out_shape =
+    onert::shape_inference::inferFullyConnectedShape(in_shape, ker_shape, false);
 
   ASSERT_EQ(infered_out_shape.rank(), 2);
   ASSERT_EQ(infered_out_shape.dim(0), 36);
   ASSERT_EQ(infered_out_shape.dim(1), 3);
+}
+
+TEST(ShapeInference, FullyConnected_keep_num_dims)
+{
+  Shape in_shape{3, 4, 5, 6};
+  Shape ker_shape{3, 6};
+  auto infered_out_shape =
+    onert::shape_inference::inferFullyConnectedShape(in_shape, ker_shape, true);
+
+  ASSERT_EQ(infered_out_shape.rank(), 4);
+  ASSERT_EQ(infered_out_shape.dim(0), 3);
+  ASSERT_EQ(infered_out_shape.dim(1), 4);
+  ASSERT_EQ(infered_out_shape.dim(2), 5);
+  ASSERT_EQ(infered_out_shape.dim(3), 3);
 }
 
 TEST(ShapeInference, Transpose)
