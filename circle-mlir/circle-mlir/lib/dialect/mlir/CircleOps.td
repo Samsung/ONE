@@ -2080,6 +2080,8 @@ def CIR_SplitOp : CIR_Op<"split", [
   let hasVerifier = 1;
 
   let hasOptions = 1;
+
+  let hasFolder = 1;
 }
 
 def CIR_SplitVOp : CIR_Op<"split_v", [
