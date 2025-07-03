@@ -19,7 +19,7 @@ on:
         default: 'master'
 
 jobs:
-  build-and-publish:
+  build:
     if: github.repository_owner == 'Samsung'
     strategy:
       matrix:
@@ -87,8 +87,26 @@ jobs:
           name: onert-wheel-${{ matrix.python-version }}-${{ matrix.arch }}
           path: runtime/infra/python/dist/*.whl
 
-      # - name: Publish
-      #   if: github.event_name != 'pull_request'
-      #   uses: pypa/gh-action-pypi-publish@release/v1
-      #   with:
-      #     packages-dir: runtime/infra/python/dist/
+  publish-to-pypi:
+    needs: [ build ]
+    if: github.repository_owner == 'Samsung'
+    runs-on: ubuntu-22.04
+
+    environment:
+      name: pypi
+      url: https://pypi.org/p/onert
+
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+
+    steps:
+      - name: "Download all the dists"
+        uses: actions/download-artifact@v4
+        with:
+          pattern: onert-wheel-*
+          path: "./dist/"
+          merge-multiple: true  # download to 'dist/' directory, not individual directories
+
+      - name: "Publish distribution to PyPI"
+        if: github.event.inputs.official == 'true'
+        uses: pypa/gh-action-pypi-publish@release/v1
