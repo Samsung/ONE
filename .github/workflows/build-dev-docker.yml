@@ -54,6 +54,7 @@ jobs:
           docker build --file infra/docker/${{ matrix.version }}/Dockerfile --tag one-test .
 
       - name: Test onert build
+        if: matrix.version != 'focal' # not supported
         env:
           DOCKER_IMAGE_NAME: one-test
         run: |
@@ -62,6 +63,7 @@ jobs:
 
       - name: Download rootfs for cross build
         uses: dawidd6/action-download-artifact@v7
+        if: matrix.version != 'focal' # not supported
         with:
           workflow: generate-rootfs.yml
           branch: master
@@ -69,6 +71,7 @@ jobs:
 
       # Workaround: symlink for rootfs checker in cmake toolchain file
       - name: Install rootfs and cross build
+        if: matrix.version != 'focal' # not supported
         env:
           DOCKER_IMAGE_NAME: one-test
           DOCKER_ENV_VARS: '-e CROSS_BUILD=1 -e TARGET_ARCH=armv7l'
