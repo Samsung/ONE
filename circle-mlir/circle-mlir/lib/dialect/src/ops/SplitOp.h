@@ -71,6 +71,13 @@ mlir::LogicalResult SplitOp::verify()
                                   [expected_output_type](int64_t) { return expected_output_type; });
 }
 
+LogicalResult SplitOp::fold(FoldAdaptor adaptor, SmallVectorImpl<OpFoldResult> &results)
+{
+  // TODO implement
+
+  return failure();
+}
+
 } // namespace Circle
 } // namespace mlir
 
