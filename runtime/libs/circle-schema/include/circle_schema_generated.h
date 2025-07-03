@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2024 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2019-2025 Samsung Electronics Co., Ltd. All Rights Reserved
  * Copyright 2018 The TensorFlow Authors. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,6 +34,10 @@ namespace circle
 struct CustomQuantization;
 struct CustomQuantizationBuilder;
 struct CustomQuantizationT;
+
+struct MXQuantization;
+struct MXQuantizationBuilder;
+struct MXQuantizationT;
 
 struct QuantizationParameters;
 struct QuantizationParametersBuilder;
@@ -709,6 +713,8 @@ struct ModelT;
 
 enum TensorType : int8_t
 {
+  TensorType_MXINT8 = -7,
+  TensorType_MXFP4 = -6,
   TensorType_GGML_Q8_1 = -5,
   TensorType_GGML_Q8_0 = -4,
   TensorType_GGML_Q4_1 = -3,
@@ -732,37 +738,38 @@ enum TensorType : int8_t
   TensorType_UINT32 = 15,
   TensorType_UINT16 = 16,
   TensorType_INT4 = 17,
-  TensorType_MIN = TensorType_GGML_Q8_1,
+  TensorType_MIN = TensorType_MXINT8,
   TensorType_MAX = TensorType_INT4
 };
 
-inline const TensorType (&EnumValuesTensorType())[23]
+inline const TensorType (&EnumValuesTensorType())[25]
 {
   static const TensorType values[] = {
-    TensorType_GGML_Q8_1,  TensorType_GGML_Q8_0, TensorType_GGML_Q4_1, TensorType_GGML_Q4_0,
-    TensorType_UINT4,      TensorType_FLOAT32,   TensorType_FLOAT16,   TensorType_INT32,
-    TensorType_UINT8,      TensorType_INT64,     TensorType_STRING,    TensorType_BOOL,
-    TensorType_INT16,      TensorType_COMPLEX64, TensorType_INT8,      TensorType_FLOAT64,
-    TensorType_COMPLEX128, TensorType_UINT64,    TensorType_RESOURCE,  TensorType_VARIANT,
-    TensorType_UINT32,     TensorType_UINT16,    TensorType_INT4};
+    TensorType_MXINT8,    TensorType_MXFP4,     TensorType_GGML_Q8_1,  TensorType_GGML_Q8_0,
+    TensorType_GGML_Q4_1, TensorType_GGML_Q4_0, TensorType_UINT4,      TensorType_FLOAT32,
+    TensorType_FLOAT16,   TensorType_INT32,     TensorType_UINT8,      TensorType_INT64,
+    TensorType_STRING,    TensorType_BOOL,      TensorType_INT16,      TensorType_COMPLEX64,
+    TensorType_INT8,      TensorType_FLOAT64,   TensorType_COMPLEX128, TensorType_UINT64,
+    TensorType_RESOURCE,  TensorType_VARIANT,   TensorType_UINT32,     TensorType_UINT16,
+    TensorType_INT4};
   return values;
 }
 
 inline const char *const *EnumNamesTensorType()
 {
-  static const char *const names[24] = {
-    "GGML_Q8_1", "GGML_Q8_0", "GGML_Q4_1", "GGML_Q4_0", "UINT4",      "FLOAT32",
-    "FLOAT16",   "INT32",     "UINT8",     "INT64",     "STRING",     "BOOL",
-    "INT16",     "COMPLEX64", "INT8",      "FLOAT64",   "COMPLEX128", "UINT64",
-    "RESOURCE",  "VARIANT",   "UINT32",    "UINT16",    "INT4",       nullptr};
+  static const char *const names[26] = {
+    "MXINT8",  "MXFP4",     "GGML_Q8_1", "GGML_Q8_0", "GGML_Q4_1",  "GGML_Q4_0", "UINT4",
+    "FLOAT32", "FLOAT16",   "INT32",     "UINT8",     "INT64",      "STRING",    "BOOL",
+    "INT16",   "COMPLEX64", "INT8",      "FLOAT64",   "COMPLEX128", "UINT64",    "RESOURCE",
+    "VARIANT", "UINT32",    "UINT16",    "INT4",      nullptr};
   return names;
 }
 
 inline const char *EnumNameTensorType(TensorType e)
 {
-  if (::flatbuffers::IsOutRange(e, TensorType_GGML_Q8_1, TensorType_INT4))
+  if (::flatbuffers::IsOutRange(e, TensorType_MXINT8, TensorType_INT4))
     return "";
-  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(TensorType_GGML_Q8_1);
+  const size_t index = static_cast<size_t>(e) - static_cast<size_t>(TensorType_MXINT8);
   return EnumNamesTensorType()[index];
 }
 
@@ -770,27 +777,28 @@ enum QuantizationDetails : uint8_t
 {
   QuantizationDetails_NONE = 0,
   QuantizationDetails_CustomQuantization = 1,
+  QuantizationDetails_MXQuantization = 2,
   QuantizationDetails_MIN = QuantizationDetails_NONE,
-  QuantizationDetails_MAX = QuantizationDetails_CustomQuantization
+  QuantizationDetails_MAX = QuantizationDetails_MXQuantization
 };
 
-inline const QuantizationDetails (&EnumValuesQuantizationDetails())[2]
+inline const QuantizationDetails (&EnumValuesQuantizationDetails())[3]
 {
   static const QuantizationDetails values[] = {QuantizationDetails_NONE,
-                                               QuantizationDetails_CustomQuantization};
+                                               QuantizationDetails_CustomQuantization,
+                                               QuantizationDetails_MXQuantization};
   return values;
 }
 
 inline const char *const *EnumNamesQuantizationDetails()
 {
-  static const char *const names[3] = {"NONE", "CustomQuantization", nullptr};
+  static const char *const names[4] = {"NONE", "CustomQuantization", "MXQuantization", nullptr};
   return names;
 }
 
 inline const char *EnumNameQuantizationDetails(QuantizationDetails e)
 {
-  if (::flatbuffers::IsOutRange(e, QuantizationDetails_NONE,
-                                QuantizationDetails_CustomQuantization))
+  if (::flatbuffers::IsOutRange(e, QuantizationDetails_NONE, QuantizationDetails_MXQuantization))
     return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesQuantizationDetails()[index];
@@ -806,6 +814,11 @@ template <> struct QuantizationDetailsTraits<circle::CustomQuantization>
   static const QuantizationDetails enum_value = QuantizationDetails_CustomQuantization;
 };
 
+template <> struct QuantizationDetailsTraits<circle::MXQuantization>
+{
+  static const QuantizationDetails enum_value = QuantizationDetails_MXQuantization;
+};
+
 template <typename T> struct QuantizationDetailsUnionTraits
 {
   static const QuantizationDetails enum_value = QuantizationDetails_NONE;
@@ -814,6 +827,11 @@ template <typename T> struct QuantizationDetailsUnionTraits
 template <> struct QuantizationDetailsUnionTraits<circle::CustomQuantizationT>
 {
   static const QuantizationDetails enum_value = QuantizationDetails_CustomQuantization;
+};
+
+template <> struct QuantizationDetailsUnionTraits<circle::MXQuantizationT>
+{
+  static const QuantizationDetails enum_value = QuantizationDetails_MXQuantization;
 };
 
 struct QuantizationDetailsUnion
@@ -874,6 +892,18 @@ struct QuantizationDetailsUnion
   {
     return type == QuantizationDetails_CustomQuantization
              ? reinterpret_cast<const circle::CustomQuantizationT *>(value)
+             : nullptr;
+  }
+  circle::MXQuantizationT *AsMXQuantization()
+  {
+    return type == QuantizationDetails_MXQuantization
+             ? reinterpret_cast<circle::MXQuantizationT *>(value)
+             : nullptr;
+  }
+  const circle::MXQuantizationT *AsMXQuantization() const
+  {
+    return type == QuantizationDetails_MXQuantization
+             ? reinterpret_cast<const circle::MXQuantizationT *>(value)
              : nullptr;
   }
 };
@@ -6363,6 +6393,64 @@ CreateCustomQuantizationDirect(::flatbuffers::FlatBufferBuilder &_fbb,
 CreateCustomQuantization(::flatbuffers::FlatBufferBuilder &_fbb, const CustomQuantizationT *_o,
                          const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
+struct MXQuantizationT : public ::flatbuffers::NativeTable
+{
+  typedef MXQuantization TableType;
+  int32_t axis = 0;
+};
+
+struct MXQuantization FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
+{
+  typedef MXQuantizationT NativeTableType;
+  typedef MXQuantizationBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE
+  {
+    VT_AXIS = 4
+  };
+  int32_t axis() const { return GetField<int32_t>(VT_AXIS, 0); }
+  bool Verify(::flatbuffers::Verifier &verifier) const
+  {
+    return VerifyTableStart(verifier) && VerifyField<int32_t>(verifier, VT_AXIS, 4) &&
+           verifier.EndTable();
+  }
+  MXQuantizationT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(MXQuantizationT *_o,
+                const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<MXQuantization>
+  Pack(::flatbuffers::FlatBufferBuilder &_fbb, const MXQuantizationT *_o,
+       const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+};
+
+struct MXQuantizationBuilder
+{
+  typedef MXQuantization Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_axis(int32_t axis) { fbb_.AddElement<int32_t>(MXQuantization::VT_AXIS, axis, 0); }
+  explicit MXQuantizationBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
+  {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<MXQuantization> Finish()
+  {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<MXQuantization>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<MXQuantization>
+CreateMXQuantization(::flatbuffers::FlatBufferBuilder &_fbb, int32_t axis = 0)
+{
+  MXQuantizationBuilder builder_(_fbb);
+  builder_.add_axis(axis);
+  return builder_.Finish();
+}
+
+::flatbuffers::Offset<MXQuantization>
+CreateMXQuantization(::flatbuffers::FlatBufferBuilder &_fbb, const MXQuantizationT *_o,
+                     const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
+
 struct QuantizationParametersT : public ::flatbuffers::NativeTable
 {
   typedef QuantizationParameters TableType;
@@ -6416,6 +6504,12 @@ struct QuantizationParameters FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
              ? static_cast<const circle::CustomQuantization *>(details())
              : nullptr;
   }
+  const circle::MXQuantization *details_as_MXQuantization() const
+  {
+    return details_type() == circle::QuantizationDetails_MXQuantization
+             ? static_cast<const circle::MXQuantization *>(details())
+             : nullptr;
+  }
   int32_t quantized_dimension() const { return GetField<int32_t>(VT_QUANTIZED_DIMENSION, 0); }
   bool Verify(::flatbuffers::Verifier &verifier) const
   {
@@ -6443,6 +6537,13 @@ inline const circle::CustomQuantization *
 QuantizationParameters::details_as<circle::CustomQuantization>() const
 {
   return details_as_CustomQuantization();
+}
+
+template <>
+inline const circle::MXQuantization *
+QuantizationParameters::details_as<circle::MXQuantization>() const
+{
+  return details_as_MXQuantization();
 }
 
 struct QuantizationParametersBuilder
@@ -21022,6 +21123,49 @@ CreateCustomQuantization(::flatbuffers::FlatBufferBuilder &_fbb, const CustomQua
   return circle::CreateCustomQuantization(_fbb, _custom);
 }
 
+inline MXQuantizationT *
+MXQuantization::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const
+{
+  auto _o = std::unique_ptr<MXQuantizationT>(new MXQuantizationT());
+  UnPackTo(_o.get(), _resolver);
+  return _o.release();
+}
+
+inline void MXQuantization::UnPackTo(MXQuantizationT *_o,
+                                     const ::flatbuffers::resolver_function_t *_resolver) const
+{
+  (void)_o;
+  (void)_resolver;
+  {
+    auto _e = axis();
+    _o->axis = _e;
+  }
+}
+
+inline ::flatbuffers::Offset<MXQuantization>
+MXQuantization::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const MXQuantizationT *_o,
+                     const ::flatbuffers::rehasher_function_t *_rehasher)
+{
+  return CreateMXQuantization(_fbb, _o, _rehasher);
+}
+
+inline ::flatbuffers::Offset<MXQuantization>
+CreateMXQuantization(::flatbuffers::FlatBufferBuilder &_fbb, const MXQuantizationT *_o,
+                     const ::flatbuffers::rehasher_function_t *_rehasher)
+{
+  (void)_rehasher;
+  (void)_o;
+  struct _VectorArgs
+  {
+    ::flatbuffers::FlatBufferBuilder *__fbb;
+    const MXQuantizationT *__o;
+    const ::flatbuffers::rehasher_function_t *__rehasher;
+  } _va = {&_fbb, _o, _rehasher};
+  (void)_va;
+  auto _axis = _o->axis;
+  return circle::CreateMXQuantization(_fbb, _axis);
+}
+
 inline QuantizationParametersT *
 QuantizationParameters::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const
 {
@@ -30273,6 +30417,11 @@ inline bool VerifyQuantizationDetails(::flatbuffers::Verifier &verifier, const v
       auto ptr = reinterpret_cast<const circle::CustomQuantization *>(obj);
       return verifier.VerifyTable(ptr);
     }
+    case QuantizationDetails_MXQuantization:
+    {
+      auto ptr = reinterpret_cast<const circle::MXQuantization *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
     default:
       return true;
   }
@@ -30309,6 +30458,11 @@ inline void *QuantizationDetailsUnion::UnPack(const void *obj, QuantizationDetai
       auto ptr = reinterpret_cast<const circle::CustomQuantization *>(obj);
       return ptr->UnPack(resolver);
     }
+    case QuantizationDetails_MXQuantization:
+    {
+      auto ptr = reinterpret_cast<const circle::MXQuantization *>(obj);
+      return ptr->UnPack(resolver);
+    }
     default:
       return nullptr;
   }
@@ -30326,6 +30480,11 @@ QuantizationDetailsUnion::Pack(::flatbuffers::FlatBufferBuilder &_fbb,
       auto ptr = reinterpret_cast<const circle::CustomQuantizationT *>(value);
       return CreateCustomQuantization(_fbb, ptr, _rehasher).Union();
     }
+    case QuantizationDetails_MXQuantization:
+    {
+      auto ptr = reinterpret_cast<const circle::MXQuantizationT *>(value);
+      return CreateMXQuantization(_fbb, ptr, _rehasher).Union();
+    }
     default:
       return 0;
   }
@@ -30342,6 +30501,11 @@ inline QuantizationDetailsUnion::QuantizationDetailsUnion(const QuantizationDeta
         new circle::CustomQuantizationT(*reinterpret_cast<circle::CustomQuantizationT *>(u.value));
       break;
     }
+    case QuantizationDetails_MXQuantization:
+    {
+      value = new circle::MXQuantizationT(*reinterpret_cast<circle::MXQuantizationT *>(u.value));
+      break;
+    }
     default:
       break;
   }
@@ -30354,6 +30518,12 @@ inline void QuantizationDetailsUnion::Reset()
     case QuantizationDetails_CustomQuantization:
     {
       auto ptr = reinterpret_cast<circle::CustomQuantizationT *>(value);
+      delete ptr;
+      break;
+    }
+    case QuantizationDetails_MXQuantization:
+    {
+      auto ptr = reinterpret_cast<circle::MXQuantizationT *>(value);
       delete ptr;
       break;
     }
