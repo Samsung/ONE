@@ -513,6 +513,7 @@ OperationFactory::OperationFactory()
     param.activation =
       NNAPIConvert::getFusedActivation(operands.at(activation_index).asScalar<FuseCode>());
     param.weights_format = FullyConnectedWeightsFormat::Default;
+    param.keep_num_dims = false;
 
     return new operation::FullyConnected{inputs, outputs, param};
   };

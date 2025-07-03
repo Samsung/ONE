@@ -585,8 +585,8 @@ void StaticShapeInferer::visit(const ir::operation::FullyConnected &op)
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = operands.at(output_idx);
   // re-sizing output shape
-  ir::Shape new_shape =
-    shape_inference::inferFullyConnectedShape(input.info().shape(), ker.info().shape());
+  ir::Shape new_shape = shape_inference::inferFullyConnectedShape(
+    input.info().shape(), ker.info().shape(), op.param().keep_num_dims);
   output.info().shape(new_shape);
 }
 

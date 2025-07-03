@@ -470,7 +470,8 @@ void DynamicShapeInferer::visit(const ir::operation::FullyConnected &op)
   auto input_shape = input->getShape();
   auto ker_shape = ker->getShape();
 
-  ir::Shape new_shape = shape_inference::inferFullyConnectedShape(input_shape, ker_shape);
+  ir::Shape new_shape =
+    shape_inference::inferFullyConnectedShape(input_shape, ker_shape, op.param().keep_num_dims);
 
   auto output_ind = op.getOutputs().at(0);
   auto output = _tensor_registry->getITensor(output_ind);
