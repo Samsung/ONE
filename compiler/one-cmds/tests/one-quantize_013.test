@@ -32,7 +32,7 @@ inputfile="./inception_v3.circle"
 outputfile="./inception_v3.one-quantize_013.q.circle"
 
 rm -f ${filename}.log
-rm -rf ${outputfile}
+rm -f ${outputfile}
 
 # run test without input data
 # quantized_dtype and granularity are not given here

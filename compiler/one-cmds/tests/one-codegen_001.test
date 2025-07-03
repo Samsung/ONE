@@ -33,7 +33,7 @@ cp help-compile ../bin/help-compile
 # run test
 one-codegen -b help -- -h > ${filename}.log 2>&1
 
-rm -rf ../bin/help-compile
+rm -f ../bin/help-compile
 
 if grep -q "HELP MESSAGE!!" "${filename}.log"; then
   echo "${filename_ext} SUCCESS"

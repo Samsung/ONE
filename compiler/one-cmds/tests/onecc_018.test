@@ -37,7 +37,7 @@ if [[ ! -s "${inputfile}" && ! -s "${inputdata}" ]]; then
 fi
 
 rm -f ${filename}.log
-rm -rf ${outputfile}
+rm -f ${outputfile}
 
 # run test
 onecc quantize -i ${inputfile} -o ${outputfile} -d ${inputdata} > ${filename}.log 2>&1

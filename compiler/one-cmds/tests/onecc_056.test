@@ -22,7 +22,7 @@ filename="${filename_ext%.*}"
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummyV3-profile
+  rm -f ../bin/dummyV3-profile
   exit 255
 }
 
@@ -43,6 +43,6 @@ if ! grep -q "dummyV3-profile with onecc_056_overwrite" "${filename}.log"; then
   trap_err_onexit
 fi
 
-rm -rf ../bin/dummyV3-profile
+rm -f ../bin/dummyV3-profile
 
 echo "${filename_ext} SUCCESS"

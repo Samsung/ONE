@@ -30,7 +30,7 @@ trap trap_err_onexit ERR
 outputfile="./output_one-create-quant-dataset_testdata_002.h5"
 
 rm -f ${filename}.log
-rm -rf ${outputfile}
+rm -f ${outputfile}
 
 one-create-quant-dataset \
 --input_data_format numpy \

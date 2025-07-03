@@ -37,8 +37,8 @@ cfgfile="${testmodel}.neg.cfg"
 
 rm -rf  ${testmodel}.000*
 rm -rf  ${testmodel}.conn.*
-rm -rf  ${testmodel}.*.log
-rm -rf ${filename}.log
+rm -f  ${testmodel}.*.log
+rm -f ${filename}.log
 
 # run test
 one-partition -C ${cfgfile}> ${filename}.log 2>&1

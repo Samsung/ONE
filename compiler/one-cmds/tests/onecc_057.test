@@ -21,8 +21,8 @@ filename="${filename_ext%.*}"
 
 clean_envir()
 {
-  rm -rf ../bin/dummyV2-profile
-  rm -rf ../bin/dummyV3-profile
+  rm -f ../bin/dummyV2-profile
+  rm -f ../bin/dummyV3-profile
 }
 
 trap_err_onexit()

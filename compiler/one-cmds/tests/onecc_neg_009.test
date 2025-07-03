@@ -37,7 +37,7 @@ filename="${filename_ext%.*}"
 
 trap_err_onexit()
 {
-  rm -rf ../optimization/OONECC_NEG_009.cfg
+  rm -f ../optimization/OONECC_NEG_009.cfg
   if [ "$OPT_ALREADY_EXIST" = false ]; then
     rm -rf ../optimization
   fi

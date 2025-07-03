@@ -50,9 +50,9 @@ commandschema="one-profile_008.py"
 
 clean_envir()
 {
-  rm -rf ../bin/dummy-profile
-  rm -rf ../target/${targetfile}
-  rm -rf "../backends/command/${BACKEND_NAME}/profile.py"
+  rm -f ../bin/dummy-profile
+  rm -f ../target/${targetfile}
+  rm -f "../backends/command/${BACKEND_NAME}/profile.py"
   if [ "$TARGET_ALREADY_EXIST" = false ]; then
     rm -rf ../target/
   fi

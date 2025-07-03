@@ -41,7 +41,7 @@ trap trap_err_onexit ERR
 inputfile="./bcq.pb"
 outputfile="./bcq.circle"
 
-rm -rf ${outputfile}
+rm -f ${outputfile}
 rm -f ${filename}.log
 
 # run test

@@ -31,7 +31,7 @@ trap_err_onexit()
   fi
 
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummy-infer
+  rm -f ../bin/dummy-infer
   exit 255
 }
 
@@ -51,6 +51,6 @@ rm -f ${filename}.log
 # run test
 one-infer -d dummy-infer --post-process "./one-infer-test-post-process.py" -- ${inputfile} > ${filename}.log 2>&1
 
-rm -rf ../bin/dummy-infer
+rm -f ../bin/dummy-infer
 echo "${filename_ext} FAILED"
 exit 255

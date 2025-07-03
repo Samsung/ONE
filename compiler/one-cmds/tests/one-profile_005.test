@@ -43,8 +43,8 @@ inputfile="one-profile_005.tvn"
 
 clean_envir()
 {
-  rm -rf ../bin/dummy-profile
-  rm -rf ../target/${targetfile}
+  rm -f ../bin/dummy-profile
+  rm -f ../target/${targetfile}
   if [ "$TARGET_ALREADY_EXIST" = false ]; then
     rm -rf ../target/
   fi

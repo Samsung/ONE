@@ -33,7 +33,7 @@ outputfile="${testmodel}.conn.json"
 rm -f ${filename}.log
 rm -rf  ${testmodel}.000*
 rm -rf  ${testmodel}.conn.*
-rm -rf  ${testmodel}.*.log
+rm -f  ${testmodel}.*.log
 
 # run test
 one-partition \

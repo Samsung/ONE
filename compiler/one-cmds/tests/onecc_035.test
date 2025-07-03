@@ -31,8 +31,8 @@ workflowfile="onecc_035.workflow.json"
 outputfile="inception_v3.alt.circle"
 intermfile="inception_v3.alt.tflite"
 
-rm -rf ${outputfile}
-rm -rf ${intermfile}
+rm -f ${outputfile}
+rm -f ${intermfile}
 rm -f ${filename}.log
 
 # run test

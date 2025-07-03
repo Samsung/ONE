@@ -36,7 +36,7 @@ inputfile="./inception_v3.circle"
 inputdata="./inception_v3_test_data.h5"
 outputfile="./inception_v3.quantized.circle"
 
-rm -rf ${outputfile}
+rm -f ${outputfile}
 rm -f ${filename}.log
 
 # test begin

@@ -23,8 +23,8 @@ outputfile="dummy_env.bin"
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummyEnv-compile
-  rm -rf ${outputfile}
+  rm -f ../bin/dummyEnv-compile
+  rm -f ${outputfile}
   exit 255
 }
 
@@ -32,8 +32,8 @@ trap trap_err_onexit ERR
 
 configfile="onecc_042.cfg"
 
-rm -rf ${outputfile}
-rm -rf ${filename}.log
+rm -f ${outputfile}
+rm -f ${filename}.log
 
 # copy dummyEnv-compile to bin folder
 cp dummyEnv-compile ../bin/dummyEnv-compile
@@ -47,8 +47,8 @@ fi
 
 if grep -q "SPM_SIZE=256KB" "${outputfile}"; then
   echo "${filename_ext} SUCCESS"
-  rm -rf ../bin/dummyEnv-compile
-  rm -rf ${outputfile}
+  rm -f ../bin/dummyEnv-compile
+  rm -f ${outputfile}
   exit 0
 fi
 

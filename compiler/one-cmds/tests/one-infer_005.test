@@ -22,7 +22,7 @@ filename="${filename_ext%.*}"
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummy-infer
+  rm -f ../bin/dummy-infer
   exit 255
 }
 
@@ -43,7 +43,7 @@ rm -f ${filename}.log
 one-infer -d dummy-infer --post-process "./one-infer-test-post-process.py TOKEN" -- ${inputfile} > ${filename}.log 2>&1
 return_code=$?
 
-rm -rf ../bin/dummy-infer
+rm -f ../bin/dummy-infer
 
 if grep -q "dummy-infer dummy output!!!" "${filename}.log"; then
   if [ "$return_code" -eq "0" ]; then

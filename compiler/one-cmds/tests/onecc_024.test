@@ -37,7 +37,7 @@ filename="${filename_ext%.*}"
 
 clean_envir()
 {
-  rm -rf ../optimization/OONECC_024.cfg
+  rm -f ../optimization/OONECC_024.cfg
   if [ "$OPT_ALREADY_EXIST" = false ]; then
     rm -rf ../optimization
   fi
@@ -56,7 +56,7 @@ configfile="onecc_024.cfg"
 outputfile="inception_v3.opt.circle"
 
 rm -f ${filename}.log
-rm -rf ${outputfile}
+rm -f ${outputfile}
 
 if [ ! -d "../optimization" ]; then
   mkdir -p ../optimization

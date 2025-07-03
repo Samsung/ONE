@@ -35,7 +35,7 @@ trap trap_err_onexit ERR
 inputfile="./inception_v3.circle"
 outputfile="./inception_v3.quantized.circle"
 
-rm -rf ${outputfile}
+rm -f ${outputfile}
 rm -f ${filename}.log
 
 # run test

@@ -29,7 +29,7 @@ inputfile="./bcq.pb"
 outputfile="./bcq.circle"
 
 rm -f ${filename}.log
-rm -rf $outputfile
+rm -f $outputfile
 
 # run test
 one-import-bcq \

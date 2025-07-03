@@ -31,7 +31,7 @@ configfile="onecc_016.cfg"
 outputfile="test_onnx_model.circle"
 
 rm -f ${filename}.log
-rm -rf ${outputfile}
+rm -f ${outputfile}
 
 # run test
 onecc import onnx -C ${configfile} > ${filename}.log 2>&1
