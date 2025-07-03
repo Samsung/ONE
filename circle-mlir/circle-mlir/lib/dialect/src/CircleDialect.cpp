@@ -526,6 +526,7 @@ static LogicalResult VerifySplitOpOutputTypes(Operation *op, int64_t num_splits,
 #include "ops/ShapeOp.h"
 #include "ops/SinOp.h"
 #include "ops/SliceOp.h"
+#include "ops/SplitOp.h"
 #include "ops/SplitVOp.h"
 #include "ops/SqrtOp.h"
 #include "ops/SqueezeOp.h"
