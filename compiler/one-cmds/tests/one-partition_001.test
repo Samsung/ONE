@@ -31,8 +31,8 @@ partfile="${testmodel}.part"
 outputfile="${testmodel}.conn.json"
 
 rm -f ${filename}.log
-rm -rf  ${testmodel}.000*
-rm -rf  ${testmodel}.conn.*
+rm -f  ${testmodel}.000*
+rm -f  ${testmodel}.conn.*
 rm -f  ${testmodel}.*.log
 
 # run test

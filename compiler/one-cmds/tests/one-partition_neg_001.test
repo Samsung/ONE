@@ -42,8 +42,8 @@ inputfile="${testmodel}.circle"
 partfile="${testmodel}.neg.part"
 outputfile="${testmodel}.conn.json"
 
-rm -rf  ${testmodel}.000*
-rm -rf  ${testmodel}.conn.*
+rm -f  ${testmodel}.000*
+rm -f  ${testmodel}.conn.*
 rm -f  ${testmodel}.*.log
 rm -f ${filename}.log
 

@@ -35,8 +35,8 @@ trap trap_err_onexit ERR
 
 cfgfile="${testmodel}.neg.cfg"
 
-rm -rf  ${testmodel}.000*
-rm -rf  ${testmodel}.conn.*
+rm -f  ${testmodel}.000*
+rm -f  ${testmodel}.conn.*
 rm -f  ${testmodel}.*.log
 rm -f ${filename}.log
 
