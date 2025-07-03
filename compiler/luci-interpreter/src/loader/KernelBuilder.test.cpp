@@ -70,6 +70,7 @@
 #include <kernels/ReverseV2.h>
 #include <kernels/RmsNorm.h>
 #include <kernels/RoPE.h>
+#include <kernels/Round.h>
 #include <kernels/Rsqrt.h>
 #include <kernels/Sin.h>
 #include <kernels/Slice.h>
@@ -1133,6 +1134,20 @@ TEST_F(KernelBuilderTest, RoPE)
   checkTensor(kernel->input(), input);
   checkTensor(kernel->sin_table(), sin_table);
   checkTensor(kernel->cos_table(), cos_table);
+  checkTensor(kernel->output(), op);
+}
+
+TEST_F(KernelBuilderTest, Round)
+{
+  auto *input = createInputNode();
+
+  auto *op = createNode<luci::CircleRound>();
+  op->x(input);
+
+  auto kernel = buildKernel<kernels::Round>(op);
+  ASSERT_THAT(kernel, NotNull());
+
+  checkTensor(kernel->input(), input);
   checkTensor(kernel->output(), op);
 }
 
