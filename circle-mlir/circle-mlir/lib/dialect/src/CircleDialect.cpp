@@ -446,6 +446,56 @@ void ConstBytesAttr::print(mlir::AsmPrinter &printer) const
 } // namespace Circle
 } // namespace mlir
 
+// for SplitOp and SplitVOp
+namespace mlir
+{
+namespace Circle
+{
+
+// Extracts and returns the signed integer constant in a 0-rank integer tensor
+// or 1-element 1-rank integer tensor if 'value' is a constant.
+static std::optional<int64_t> ExtractConstantIntFromTensor(Value value)
+{
+  ElementsAttr attr;
+  if (!matchPattern(value, m_Constant(&attr)))
+    return {};
+  if (attr.getNumElements() != 1)
+    return {};
+  IntegerAttr int_attr = *attr.getValues<IntegerAttr>().begin();
+  return int_attr.getValue().getSExtValue();
+}
+
+// Returns a RankedTensorType which is similar to `input_type` but replaces the
+// dimension size of `dim` with `dim_size`.  For example,
+// `SubstituteRankedTensorTypeDimSize(tensor<3x4xi32>, 1, 2)` returns
+// `tensor<3x2xi32>`.
+static RankedTensorType SubstituteRankedTensorTypeDimSize(RankedTensorType input_type, int64_t dim,
+                                                          int64_t dim_size)
+{
+  auto shape = input_type.getShape().vec();
+  shape[dim] = dim_size;
+  return mlir::Circle::GetTypeFromTensorShape(shape, input_type.getElementType());
+}
+
+// Verifies the output tensor types of SplitOp or SplitVOp.
+template <typename ExpectedOutputTypeGetter>
+static LogicalResult VerifySplitOpOutputTypes(Operation *op, int64_t num_splits,
+                                              ExpectedOutputTypeGetter get_expected_output_type)
+{
+  for (int64_t i = 0; i < num_splits; ++i)
+  {
+    auto expected_output_type = get_expected_output_type(i);
+    Value output = op->getResult(i);
+    if (failed(verifyCompatibleShape(output.getType(), expected_output_type)))
+      return op->emitOpError() << "output #" << i << " should be " << expected_output_type
+                               << " instead got " << output.getType();
+  }
+  return success();
+}
+
+} // namespace Circle
+} // namespace mlir
+
 #include "ops/AddOp.h"
 #include "ops/CastOp.h"
 #include "ops/ConcatenationOp.h"
