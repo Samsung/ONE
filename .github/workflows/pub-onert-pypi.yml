@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       official:
-        description: 'Official or Dev'
+        description: 'Official release?'
         required: true
         type: boolean
         default: false
@@ -89,7 +89,7 @@ jobs:
 
   publish-to-pypi:
     needs: [ build ]
-    if: github.repository_owner == 'Samsung'
+    if: github.repository_owner == 'Samsung' && github.event_name != 'pull_request'
     runs-on: ubuntu-22.04
 
     environment:
@@ -108,5 +108,4 @@ jobs:
           merge-multiple: true  # download to 'dist/' directory, not individual directories
 
       - name: "Publish distribution to PyPI"
-        if: github.event.inputs.official == 'true'
         uses: pypa/gh-action-pypi-publish@release/v1
