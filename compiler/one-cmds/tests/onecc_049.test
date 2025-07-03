@@ -22,8 +22,8 @@ filename="${filename_ext%.*}"
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummy-profile
-  rm -rf ../bin/dummyV2-profile
+  rm -f ../bin/dummy-profile
+  rm -f ../bin/dummyV2-profile
   exit 255
 }
 
@@ -48,7 +48,7 @@ if ! grep -q "dummyV2-profile dummy output!!!" "${filename}.log"; then
   trap_err_onexit
 fi
 
-rm -rf ../bin/dummy-profile
-rm -rf ../bin/dummyV2-profile
+rm -f ../bin/dummy-profile
+rm -f ../bin/dummyV2-profile
 
 echo "${filename_ext} SUCCESS"

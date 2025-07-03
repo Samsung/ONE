@@ -32,7 +32,7 @@ trap trap_err_onexit ERR
 workflowfile="onecc_036.workflow.json"
 outputfile="test_onnx_model.circle"
 
-rm -rf ${outputfile}
+rm -f ${outputfile}
 rm -f ${filename}.log
 
 # run test

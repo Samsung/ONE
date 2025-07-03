@@ -38,8 +38,8 @@ trap trap_err_onexit ERR
 inputfile="./reshape_matmul.onnx"
 outputfile="./reshape_matmul.one-import-onnx_002.circle"
 
-rm -rf ${outputfile}
-rm -rf ${outputfile}.log
+rm -f ${outputfile}
+rm -f ${outputfile}.log
 
 # run test without option that should drop FULLY_CONNECTED
 one-import-onnx \

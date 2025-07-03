@@ -32,7 +32,7 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
-rm -rf ${filename}.log
+rm -f ${filename}.log
 
 # prepare dummy file
 touch ./sample.circle

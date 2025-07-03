@@ -43,8 +43,8 @@ targetfile="one-codegen_011.ini"
 
 clean_envir()
 {
-  rm -rf ../bin/dummy-compile
-  rm -rf ../target/${targetfile}
+  rm -f ../bin/dummy-compile
+  rm -f ../target/${targetfile}
   if [ "$TARGET_ALREADY_EXIST" = false ]; then
     rm -rf ../target/
   fi
@@ -59,7 +59,7 @@ trap_err_onexit()
 
 trap trap_err_onexit ERR
 
-rm -rf ${outputfile}
+rm -f ${outputfile}
 rm -f ${filename}.log
 
 if [ ! -d "../target/" ]; then

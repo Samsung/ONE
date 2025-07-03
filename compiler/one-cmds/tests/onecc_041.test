@@ -44,13 +44,13 @@ outputfile2="inception_v3.opt.circle"
 
 cp dummy-inferV2 ../bin/dummy-inferV2
 
-rm -rf ${outputfile1} {outputfile2}
+rm -f ${outputfile1} {outputfile2}
 rm -f ${filename}.log
 
 # run test
 onecc -W ${workflowfile} > ${filename}.log 2>&1
 
-rm -rf ../bin/dummy-inferV2
+rm -f ../bin/dummy-inferV2
 
 if [[ ! -s "${outputfile1}" ]] && [[ ! -s "${outputfile2}" ]]; then
   trap_err_onexit

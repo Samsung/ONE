@@ -22,7 +22,7 @@ filename="${filename_ext%.*}"
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummy-compile
+  rm -f ../bin/dummy-compile
   exit 255
 }
 
@@ -31,7 +31,7 @@ trap trap_err_onexit ERR
 workflowfile="onecc_031.workflow.json"
 outputfile="sample.tvn"
 
-rm -rf ${outputfile}
+rm -f ${outputfile}
 rm -f ${filename}.log
 
 # copy dummy-compile to bin folder
@@ -44,6 +44,6 @@ if [[ ! -s "${outputfile}" ]]; then
   trap_err_onexit
 fi
 
-rm -rf ../bin/dummy-compile
+rm -f ../bin/dummy-compile
 
 echo "${filename_ext} SUCCESS"

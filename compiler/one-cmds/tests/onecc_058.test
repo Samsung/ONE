@@ -29,7 +29,7 @@ configfile="onecc_058.cfg"
 outputfile="mobilenet_edgetpu_224_1.0_int8.onecc_058.circle"
 
 rm -f ${filename}.log
-rm -rf ${outputfile}
+rm -f ${outputfile}
 
 # run test
 onecc -C ${configfile} > ${filename}.log 2>&1

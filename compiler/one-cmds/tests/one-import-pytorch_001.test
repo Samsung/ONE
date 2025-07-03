@@ -28,7 +28,7 @@ trap trap_err_onexit ERR
 inputfile="./test_pytorch_model.pt2"
 outputfile="./test_pytorch_model.circle"
 
-rm -rf ${outputfile}
+rm -f ${outputfile}
 rm -f ${filename}.log
 
 # run test

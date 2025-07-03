@@ -36,7 +36,7 @@ if [[ ! -s "${inputfile}" ]]; then
 fi
 
 rm -f ${filename}.log
-rm -rf ${outputfile}
+rm -f ${outputfile}
 
 # run test
 onecc optimize -i ${inputfile} -o ${outputfile} > ${filename}.log 2>&1

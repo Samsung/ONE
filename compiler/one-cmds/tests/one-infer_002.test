@@ -20,7 +20,7 @@ filename="${filename_ext%.*}"
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummy-infer
+  rm -f ../bin/dummy-infer
   exit 255
 }
 
@@ -40,7 +40,7 @@ rm -f ${filename}.log
 # run test
 one-infer -d dummy-infer -- ${inputfile} > ${filename}.log
 
-rm -rf ../bin/dummy-infer
+rm -f ../bin/dummy-infer
 
 if grep -q "dummy-infer dummy output!!!" "${filename}.log"; then
   echo "${filename_ext} SUCCESS"

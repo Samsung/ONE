@@ -41,8 +41,8 @@ trap trap_err_onexit ERR
 inputfile="./inception_v3.pb"
 outputfile="./inception_v3.imp_neg_010.circle"
 
-rm -rf ${outputfile}
-rm -rf ${filename}.log
+rm -f ${outputfile}
+rm -f ${filename}.log
 
 # run test
 one-import tf \

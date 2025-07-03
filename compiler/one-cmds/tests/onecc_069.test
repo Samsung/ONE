@@ -50,9 +50,9 @@ targetfile="onecc_069.ini"
 
 clean_envir()
 {
-  rm -rf ../bin/${driver_name}
-  rm -rf ../target/${targetfile}
-  rm -rf "../backends/command/${BACKEND_NAME}/codegen.py"
+  rm -f ../bin/${driver_name}
+  rm -f ../target/${targetfile}
+  rm -f "../backends/command/${BACKEND_NAME}/codegen.py"
   if [ "$TARGET_ALREADY_EXIST" = false ]; then
     rm -rf ../target/
   fi
@@ -77,7 +77,7 @@ trap_err_onexit()
 trap trap_err_onexit ERR
 
 rm -f ${filename}.log
-rm -rf ${outputfile}
+rm -f ${outputfile}
 
 if [ ! -d "../target/" ]; then
   mkdir -p ../target/

@@ -22,8 +22,8 @@ filename="${filename_ext%.*}"
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummy-compile
-  rm -rf ../bin/dummyV2-compile
+  rm -f ../bin/dummy-compile
+  rm -f ../bin/dummyV2-compile
   exit 255
 }
 
@@ -35,9 +35,9 @@ outputfile1="onecc_054.tvn"
 outputfile2="onecc_054.2.tvn"
 
 rm -f ${filename}.log
-rm -rf ${outputfile0}
-rm -rf ${outputfile1}
-rm -rf ${outputfile2}
+rm -f ${outputfile0}
+rm -f ${outputfile1}
+rm -f ${outputfile2}
 
 # copy dummy tools to bin folder
 cp dummy-compile ../bin/dummy-compile
@@ -59,7 +59,7 @@ if [[ -s "${outputfile2}" ]]; then
   trap_err_onexit
 fi
 
-rm -rf ../bin/dummy-compile
-rm -rf ../bin/dummyV2-compile
+rm -f ../bin/dummy-compile
+rm -f ../bin/dummyV2-compile
 
 echo "${filename_ext} SUCCESS"

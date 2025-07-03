@@ -29,7 +29,7 @@ inputfile="./Add_000.circle"
 outputfile="./Add_000.one-quantize_023.circle"
 
 rm -f ${filename}.log
-rm -rf ${outputfile}
+rm -f ${outputfile}
 
 # Test space-delimitered list format (Add_000.inputs.txt)
 # Content of Add_000.inputs.txt is as follows.

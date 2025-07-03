@@ -51,9 +51,9 @@ commandschema="one-codegen_neg_006.py"
 
 clean_envir()
 {
-  rm -rf ../bin/dummy-compile
-  rm -rf ../target/${targetfile}
-  rm -rf "../backends/command/${BACKEND_NAME}/codegen.py"
+  rm -f ../bin/dummy-compile
+  rm -f ../target/${targetfile}
+  rm -f "../backends/command/${BACKEND_NAME}/codegen.py"
   if [ "$TARGET_ALREADY_EXIST" = false ]; then
     rm -rf ../target/
   fi
@@ -84,7 +84,7 @@ trap_err_onexit()
 trap trap_err_onexit ERR
 
 rm -f ${filename}.log
-rm -rf ${outputfile}
+rm -f ${outputfile}
 
 if [ ! -d "../target/" ]; then
   mkdir -p ../target/

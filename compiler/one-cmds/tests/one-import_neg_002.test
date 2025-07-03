@@ -41,8 +41,8 @@ trap trap_err_onexit ERR
 inputfile="./while_3.pbtxt"
 outputfile="./while_3.circle"
 
-rm -rf ${outputfile}
-rm -rf ${filename}.log
+rm -f ${outputfile}
+rm -f ${filename}.log
 
 # run test
 one-import tf \

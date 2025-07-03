@@ -30,7 +30,7 @@ trap trap_err_onexit ERR
 workflowfile="onecc_029.workflow.json"
 outputfile="inception_v3.quantized.circle"
 
-rm -rf ${outputfile}
+rm -f ${outputfile}
 rm -f ${filename}.log
 
 # run test

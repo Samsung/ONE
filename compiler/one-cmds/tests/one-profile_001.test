@@ -20,7 +20,7 @@ filename="${filename_ext%.*}"
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/help-profile
+  rm -f ../bin/help-profile
   exit 255
 }
 
@@ -34,7 +34,7 @@ rm -f ${filename}.log
 # run test
 one-profile -b help -- -h > ${filename}.log
 
-rm -rf ../bin/help-profile
+rm -f ../bin/help-profile
 
 if grep -q "HELP MESSAGE!!" "${filename}.log"; then
   echo "${filename_ext} SUCCESS"

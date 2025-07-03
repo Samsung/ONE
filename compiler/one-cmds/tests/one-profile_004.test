@@ -22,7 +22,7 @@ filename="${filename_ext%.*}"
 trap_err_onexit()
 {
   echo "${filename_ext} FAILED"
-  rm -rf ../bin/dummy-profile
+  rm -f ../bin/dummy-profile
   exit 255
 }
 
@@ -43,7 +43,7 @@ rm -f ${filename}.log
 # run test
 one-profile -C ${configfile} > ${filename}.log
 
-rm -rf ../bin/dummy-profile
+rm -f ../bin/dummy-profile
 
 if grep -q "dummy-profile dummy output!!!" "${filename}.log"; then
   echo "${filename_ext} SUCCESS"

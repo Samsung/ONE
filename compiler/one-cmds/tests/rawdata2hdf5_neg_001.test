@@ -33,7 +33,7 @@ trap trap_err_onexit ERR
 inputfile="./wronglist.txt"
 outputfile="./output_testdata.h5"
 
-rm -rf ${inputfile}
+rm -f ${inputfile}
 rm -f ${filename}.log
 
 touch ${inputfile}

@@ -39,7 +39,7 @@ if [[ ! -f "${inputfile}" ]]; then
 fi
 
 rm -f ${filename}.log
-rm -rf ${outputfile}
+rm -f ${outputfile}
 
 # copy dummy-compile to bin folder
 cp dummy-compile ../bin/dummy-compile
