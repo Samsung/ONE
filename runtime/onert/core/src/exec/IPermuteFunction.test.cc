@@ -111,7 +111,7 @@ public:
       _src_tensors[i] = inputs[i].get();
       _dst_tensors[i] = outputs[i].get();
       if (inputs[i]->layout() == outputs[i]->layout())
-        _permute_types[i] = ir::PermuteType::COPY;
+        _permute_types[i] = ir::PermuteType::SAME;
       else if (inputs[i]->layout() == ir::Layout::NHWC)
         _permute_types[i] = ir::PermuteType::NHWC_TO_NCHW;
       else

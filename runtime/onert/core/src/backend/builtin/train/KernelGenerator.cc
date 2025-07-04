@@ -64,7 +64,7 @@ void KernelGenerator::visit(const ir::train::operation::Permute &node)
 
   // Layout in graph is always NHWC, so layout is not changed
   for (uint32_t i = 0; i < input_tensors.size(); i++)
-    permute_types.emplace_back(ir::PermuteType::COPY);
+    permute_types.emplace_back(ir::PermuteType::SAME);
 
   // NOTE The output buffers of IOTensors are not essential for training. If there
   //      is no output buffer provided by the user, permute is not performed.
