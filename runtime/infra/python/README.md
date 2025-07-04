@@ -1,14 +1,15 @@
-# onert package
+# onert Python Package
 
-`onert` is a package to run `nnpackage` with the nnfw onert's python API.
+`onert` provides python package to run `nnpackage` package format or supporting modelfile format (`circle`, `tflite`) with the onert's python API.
 
-This package includes the nnfw-onert python API module resulting from runtime build.
+This package includes the onert python API module resulting from runtime build.
 
-It is provided separate package for each architecture(x86_64, armv7l, aarch64).
+It is provided separate package for each architecture(x86_64, aarch64), and experimental cross build target architecture(armv7l).
 
-It uses `onert/infer.py` interface.
+It uses `onert.infer.session` interface defined in `runtime/onert/api/python/package/infer/session.py`.
 
 ## Packaging
+
 Execute this command, then the tasks such as copying modules, and packaging.
 
 ```
@@ -21,43 +22,4 @@ arch is supported target architecture: aarch64, x86_64, armv7l
 
 ## Publishing
 
-To publish the package, twine should be installed.
-
-```
-$ sudo apt install twine
-```
-This command is for TestPyPI only and it will be changed to PyPI.
-Additionally, a private token is required for publishing.
-
-```
-$ twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-```
-
-
-## Usage
-
-You can install the package as follows:
-
-```
-$ pip install -i https://test.pypi.org/simple/ nnfw-onert
-```
-
-By specifying the version, you can use a specific version of the package. (recommended)
-
-```
-$ pip install -i https://test.pypi.org/simple/ nnfw-onert==0.1.1
-```
-
-This definition has to be set at the top of the script using nnfw python API.
-
-```
-import onert
-```
-
-Or you can import the onert module directly.
-
-```
-from onert.infer import *
-```
-
-This can be use onert session directly.
+We are using github action to publish x86_64 and aarch64 packages to PyPI.
