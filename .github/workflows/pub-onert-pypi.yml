@@ -12,11 +12,6 @@ on:
         required: true
         type: boolean
         default: false
-      ref:
-        description: 'Git reference (branch or tag) to build and publish'
-        required: true
-        type: string
-        default: 'master'
 
 jobs:
   build:
@@ -44,9 +39,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          # Use inputs.ref if it is provided, otherwise use the default branch
-          ref: ${{ github.event.inputs.ref || 'master' }}
 
       - name: Caching externals
         uses: actions/cache@v4
@@ -67,15 +59,20 @@ jobs:
           source ./venv/bin/activate
           make -f Makefile.template configure build install
 
+      # Pre-release build
+      # 1) Release branch test build
+      # 2) PR build
+      # 3) Main branch (develop branch) build
       - name: Pre-release packaging
-        if: github.event.inputs.official == 'false' || github.event_name == 'pull_request'
+        if: github.event.inputs.official == 'false' || github.event_name == 'pull_request' || github.ref_name == 'master'
         run: |
           source ./venv/bin/activate
           cd runtime/infra/python
           python3 setup.py bdist_wheel --plat-name manylinux_2_28_${{ matrix.arch }} egg_info --tag-build "dev$(date -u "+%y%m%d")"
 
+      # Allow official release on release branch only
       - name: Release packaging
-        if: github.event.inputs.official == 'true'
+        if: github.event.inputs.official == 'true' && startsWith(github.ref_name, 'release/')
         run: |
           source ./venv/bin/activate
           cd runtime/infra/python
