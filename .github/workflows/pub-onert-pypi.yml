@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       official:
-        description: 'Official release?'
+        description: 'Official release'
         required: true
         type: boolean
         default: false
