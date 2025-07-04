@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        os: [ focal, jammy, noble ]
+        os: [ jammy, noble ]
         arch: [ arm, aarch64 ]
       fail-fast: false
 
@@ -53,7 +53,7 @@ jobs:
           sudo umount --recursive rootfs || true
           sudo chown -R "$(id -u):$(id -g)" rootfs/${{ matrix.arch }}
           tar -zcvf rootfs_${{ matrix.arch }}_${{ matrix.os }}.tar.gz -C rootfs \
-            ${{ matrix.arch }}/usr ${{ matrix.arch }}/etc
+            ${{ matrix.arch }}/usr ${{ matrix.arch }}/etc ${{ matrix.arch }}/lib
           popd
           mv tools/cross/rootfs_${{ matrix.arch }}_${{ matrix.os }}.tar.gz .
 
