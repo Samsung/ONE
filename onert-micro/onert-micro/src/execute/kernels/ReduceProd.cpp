@@ -14,123 +14,145 @@
  * limitations under the License.
  */
 
-#include "execute/OMUtils.h"
 #include "execute/OMKernelExecutionBuilder.h"
-#include "OMStatus.h"
 #include "execute/OMRuntimeKernel.h"
-#include "core/OMUtils.h"
+#include "execute/OMUtils.h"
 
 #include "core/OMRuntimeShape.h"
+#include "core/OMUtils.h"
+
 #include "PALReduceCommon.h"
 
 using namespace onert_micro;
 using namespace onert_micro::execute;
 
-namespace
-{
+// ------------------------------------------------------------------------------------------------
 
-constexpr uint32_t input1TensorIdx = 0;
-constexpr uint32_t input2TensorIdx = 1;
-constexpr uint32_t outputTensorIdx = 0;
+namespace impl
+{
 
 template <typename T>
-void reduceProdGeneric(core::OMRuntimeShape &input_shape, const T *input_data,
-                       core::OMRuntimeShape &axis_shape, const int *axis_data,
-                       core::OMRuntimeShape &output_shape, T *output_data, bool keep_dims)
+OMStatus reduceProdGeneric(core::OMRuntimeShape &input_shape, const T *input_data,
+                           core::OMRuntimeShape &axis_shape, const int *axis_data,
+                           core::OMRuntimeShape &output_shape, T *output_data
+                           /* bool keep_dims - TODO: Remove unused? */)
 {
-  onert_micro::execute::pal::ReduceGeneric<T>(
+  // clang-format off
+
+  T init_value = T(1);
+
+  auto callback_fn = [](const T current, const T in) -> T
+  {
+    return in * current;
+  };
+
+  const bool is_ok = pal::ReduceGeneric<T>
+  (
     input_data, input_shape.dimsData(), input_shape.dimensionsCount(), output_data, axis_data,
-    axis_shape.dimensionsCount(),
-    /*init_value=*/T(1), output_shape.flatSize(),
-    [](const T current, const T in) -> T { return in * current; });
+    axis_shape.dimensionsCount(), init_value, output_shape.flatSize(), callback_fn
+  );
+
+  // clang-format on
+
+  return is_ok ? Ok : UnknownError;
 }
 
-} // namespace
+} // namespace impl
 
-namespace onert_micro
-{
-namespace execute
+// ------------------------------------------------------------------------------------------------
+
+namespace onert_micro::execute
 {
 
 OMStatus execute_kernel_CircleReduceProd(const OMExecuteArgs &execute_args)
 {
+  constexpr static uint32_t inputTensorIdx = 0;
+  constexpr static uint32_t axisTensorIdx = 1;
+  constexpr static uint32_t outputTensorIdx = 0;
+
   core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
   core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
-  uint16_t op_index = execute_args.kernel_index;
 
-  const circle::Tensor *input;
-  const circle::Tensor *axis;
-  const circle::Tensor *output;
+  const uint16_t op_index = execute_args.kernel_index;
 
-  uint8_t *input_data;
-  uint8_t *axis_data;
-  uint8_t *output_data;
+  execute::OMRuntimeKernel runtime_kernel;
+  runtime_kernel.readKernel(op_index, runtime_context);
 
-  uint16_t input_index = 0;
-  uint16_t axis_index = 0;
+  const circle::Tensor *input = runtime_kernel.inputs[inputTensorIdx];
+  const circle::Tensor *axis = runtime_kernel.inputs[axisTensorIdx];
+  const circle::Tensor *output = runtime_kernel.outputs[outputTensorIdx];
 
-  const circle::ReducerOptions *options;
-  // Read kernel
-  {
-    execute::OMRuntimeKernel runtime_kernel;
-    runtime_kernel.readKernel(op_index, runtime_context);
+  assert(input != nullptr);
+  assert(axis != nullptr);
+  assert(output != nullptr);
 
-    input = runtime_kernel.inputs[input1TensorIdx];
-    axis = runtime_kernel.inputs[input2TensorIdx];
-    output = runtime_kernel.outputs[outputTensorIdx];
-    assert(input != nullptr);
-    assert(axis != nullptr);
-    assert(output != nullptr);
+  runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
 
-    runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
+  uint8_t *input_data = runtime_kernel.inputs_data[inputTensorIdx];
+  uint8_t *axis_data = runtime_kernel.inputs_data[axisTensorIdx];
+  uint8_t *output_data = runtime_kernel.outputs_data[outputTensorIdx];
 
-    input_data = runtime_kernel.inputs_data[input1TensorIdx];
-    axis_data = runtime_kernel.inputs_data[input2TensorIdx];
-    output_data = runtime_kernel.outputs_data[outputTensorIdx];
-    assert(input_data != nullptr);
-    assert(axis_data != nullptr);
-    assert(output_data != nullptr);
+  assert(input_data != nullptr);
+  assert(axis_data != nullptr);
+  assert(output_data != nullptr);
 
-    options = runtime_kernel.first_operator->builtin_options_as_ReducerOptions();
-
-    input_index = runtime_kernel.inputs_index[input1TensorIdx];
-    axis_index = runtime_kernel.inputs_index[input2TensorIdx];
-  }
-
-  OMStatus status;
+  // TODO: Remove unused?
+  // const circle::Operator *first_op = runtime_kernel.first_operator;
+  // const circle::ReducerOptions *options = first_op->builtin_options_as_ReducerOptions();
+  // uint16_t input_index = 0;
+  // uint16_t axis_index = 0;
+  // input_index = runtime_kernel.inputs_index[input1TensorIdx];
+  // axis_index = runtime_kernel.inputs_index[input2TensorIdx];
 
   core::OMRuntimeShape input_shape(input);
   core::OMRuntimeShape axis_shape(axis);
   core::OMRuntimeShape output_shape(output);
 
+  // clang-format off
+
   switch (input->type())
   {
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:
-      reduceProdGeneric<float>(input_shape, core::utils::castInputData<float>(input_data),
-                               axis_shape, core::utils::castInputData<int>(axis_data), output_shape,
-                               core::utils::castOutputData<float>(output_data),
-                               options->keep_dims());
-      break;
+    {
+      return impl::reduceProdGeneric<float>
+      (
+        input_shape, core::utils::castInputData<float>(input_data),
+        axis_shape, core::utils::castInputData<int>(axis_data), output_shape,
+        core::utils::castOutputData<float>(output_data)
+        // options->keep_dims() - TODO: Remove unused?
+      );
+    }
 #endif // DIS_FLOAT
+
     case circle::TensorType_INT32:
-      reduceProdGeneric<int32_t>(input_shape, core::utils::castInputData<int32_t>(input_data),
-                                 axis_shape, core::utils::castInputData<int>(axis_data),
-                                 output_shape, core::utils::castOutputData<int32_t>(output_data),
-                                 options->keep_dims());
-      break;
+    {
+      return impl::reduceProdGeneric<int32_t>
+      (
+        input_shape, core::utils::castInputData<int32_t>(input_data),
+        axis_shape, core::utils::castInputData<int>(axis_data),
+        output_shape, core::utils::castOutputData<int32_t>(output_data)
+        // options->keep_dims() - TODO: Remove unused?
+      );
+    }
+
     case circle::TensorType_INT64:
-      reduceProdGeneric<int64_t>(input_shape, core::utils::castInputData<int64_t>(input_data),
-                                 axis_shape, core::utils::castInputData<int>(axis_data),
-                                 output_shape, core::utils::castOutputData<int64_t>(output_data),
-                                 options->keep_dims());
-      break;
+    {
+      return impl::reduceProdGeneric<int64_t>
+      (
+        input_shape, core::utils::castInputData<int64_t>(input_data),
+        axis_shape, core::utils::castInputData<int>(axis_data),
+        output_shape, core::utils::castOutputData<int64_t>(output_data)
+        // options->keep_dims() - TODO: Remove unused?
+      );
+    }
+
     default:
       assert(false && "Unsupported type");
+      break;
   }
 
-  return status;
+  return UnsupportedType;
 }
 
-} // namespace execute
-} // namespace onert_micro
+} // namespace onert_micro::execute
