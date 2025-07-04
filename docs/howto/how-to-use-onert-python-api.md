@@ -1,4 +1,4 @@
-# How to Use NNFW PYTHON API
+# How to Use onert Python API
 
 ## CAUTION
 
@@ -10,18 +10,51 @@ This Python API is experimental yet. It can be changed later.
 
 Use the [nnpackage examples](https://github.com/Samsung/ONE/tree/master/nnpackage/examples/v1.0.0) to run tutorial code.
 
-## Install nnfw python API
+## Install onert Python API
 
-Please see [nnfw python api](https://github.com/SAMSUNG/ONE/tree/master/runtime/infra/python) for installing nnfw python api.
+You can install the package as follows:
 
-1. Initialize nnfw_session
+```
+$ pip install onert
+```
+
+By specifying the version, you can use a specific version of the package.
+
+```
+$ pip install onert==0.1.0
+```
+
+You can install latest developing package as follows:
+
+```
+$ pip install onert --pre
+```
+
+This definition has to be set at the top of the script using onert Python API.
+
+```
+import onert
+```
+
+Or you can import the onert module directly.
+
+```
+from onert.infer import *
+```
+
+This can be use onert session directly.
+
+
+## Example Code
+
+1. Initialize session
 
 ```python
 import onert
 
-# Create session and load nnpackage
+# Create session and load nnpackage or modelfile
 # The default value of backends is "cpu".
-session = onert.infer.session(nnpackage_path, backends)
+session = onert.infer.session(path, backends)
 ```
 
 2. Prepare Input
