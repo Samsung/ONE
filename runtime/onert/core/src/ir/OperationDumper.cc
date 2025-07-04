@@ -349,6 +349,8 @@ void OperationDumper::visit(const Range &node)
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
+void OperationDumper::visit(const Round &node) { dumpOpGeneric(node); }
+
 void OperationDumper::visit(const Select &node)
 {
   VERBOSE(LIR) << "* Select" << std::endl;

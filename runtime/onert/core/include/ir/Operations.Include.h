@@ -67,6 +67,7 @@
 #include "ir/operation/Reverse.h"
 #include "ir/operation/RmsNorm.h"
 #include "ir/operation/RoPE.h"
+#include "ir/operation/Round.h"
 #include "ir/operation/RNN.h"
 #include "ir/operation/Select.h"
 #include "ir/operation/Shape.h"

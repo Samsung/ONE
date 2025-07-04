@@ -70,6 +70,7 @@ public:
   void visit(const operation::Reverse &) override;
   void visit(const operation::RmsNorm &) override;
   void visit(const operation::RNN &) override;
+  void visit(const operation::Round &) override;
   void visit(const operation::Select &node) override;
   void visit(const operation::Shape &node) override;
   void visit(const operation::Softmax &node) override;
