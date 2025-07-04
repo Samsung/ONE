@@ -100,7 +100,7 @@ void KernelGenerator::visit(const ir::operation::Permute &node)
 
   // Layout in graph is always NHWC, so layout is not changed
   for (uint32_t i = 0; i < input_tensors.size(); i++)
-    permute_types.emplace_back(ir::PermuteType::COPY);
+    permute_types.emplace_back(ir::PermuteType::SAME);
 
   auto fn = std::make_unique<kernel::PermuteLayer>(input_tensors, output_tensors, permute_types,
                                                    _external_context);

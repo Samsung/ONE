@@ -114,7 +114,7 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
       if (desc->layout == ir::Layout::NCHW)
         input_permute_types.push_back(ir::PermuteType::NCHW_TO_NHWC);
       else
-        input_permute_types.push_back(ir::PermuteType::COPY);
+        input_permute_types.push_back(ir::PermuteType::SAME);
     }
     else
       inputs[i] = tensorpool.back().get();
@@ -160,7 +160,7 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
       if (desc->layout == ir::Layout::NCHW)
         output_permute_types.push_back(ir::PermuteType::NHWC_TO_NCHW);
       else
-        output_permute_types.push_back(ir::PermuteType::COPY);
+        output_permute_types.push_back(ir::PermuteType::SAME);
     }
     else
       outputs[i] = tensorpool.back().get();
