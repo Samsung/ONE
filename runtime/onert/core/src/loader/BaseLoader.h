@@ -456,7 +456,6 @@ void BaseLoader<LoaderDomain>::loadQuantization(const Tensor *tensor, ir::TypeIn
   auto q_params = tensor->quantization();
   if (q_params == nullptr || q_params->scale() == nullptr || q_params->scale()->size() == 0)
   {
-    typeInfo.quantization(0., 0);
     return;
   }
   if (q_params->zero_point() == nullptr)

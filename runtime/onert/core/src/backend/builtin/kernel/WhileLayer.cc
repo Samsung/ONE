@@ -81,7 +81,7 @@ void WhileLayer::run()
   std::vector<ir::PermuteType> permute_types;
   // Layout in graph is always NHWC, so layout is not changed
   for (uint32_t i = 0; i < op_outputs.size(); i++)
-    permute_types.emplace_back(ir::PermuteType::COPY);
+    permute_types.emplace_back(ir::PermuteType::SAME);
   // Copying body inputs to outputs when the loop body is never executed
   if (!getResultCond(cond_output_tensor.get()))
   {
