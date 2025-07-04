@@ -53,7 +53,7 @@ jobs:
     needs: build-docker-image
     strategy:
       matrix:
-        ubuntu_code: [ 'focal', 'jammy', 'noble']
+        ubuntu_code: [ 'jammy', 'noble']  # focal: not supported onert build
       fail-fast: false
     runs-on: one-x64-linux
     container:
@@ -102,7 +102,7 @@ jobs:
     needs: build-docker-image
     strategy:
       matrix:
-        ubuntu_code: [ 'focal', 'jammy', 'noble' ]
+        ubuntu_code: [ 'jammy', 'noble' ] # focal: not supported onert build
       fail-fast: false
     runs-on: one-x64-linux
     container:
