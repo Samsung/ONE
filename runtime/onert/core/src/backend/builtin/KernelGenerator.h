@@ -51,6 +51,7 @@ public:
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
 
 private:
+  void visit(const ir::operation::Call &) override;
   void visit(const ir::operation::If &) override;
   void visit(const ir::operation::Permute &) override;
   void visit(const ir::operation::While &) override;
