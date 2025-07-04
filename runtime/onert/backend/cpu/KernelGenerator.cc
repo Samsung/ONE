@@ -49,6 +49,7 @@
 #include "ops/ResizeBilinearLayer.h"
 #include "ops/ReverseLayer.h"
 #include "ops/RoPELayer.h"
+#include "ops/RoundLayer.h"
 #include "ops/SelectLayer.h"
 #include "ops/ShapeLayer.h"
 #include "ops/SliceLayer.h"
@@ -1069,7 +1070,7 @@ void KernelGenerator::visit(const ir::operation::Range &node)
 void KernelGenerator::visit(const ir::operation::Rank &node)
 {
   const auto ofm_index{node.getOutputs().at(0)};
-  const auto ifm_index{node.getInputs().at(ir::operation::Shape::Input::INPUT)};
+  const auto ifm_index{node.getInputs().at(ir::operation::Rank::Input::INPUT)};
 
   auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index);
@@ -1095,6 +1096,21 @@ void KernelGenerator::visit(const ir::operation::RmsNorm &node)
   auto fn = std::make_unique<ops::RmsNormLayer>();
 
   fn->configure(ifm_tensor, gamma_tensor, epsilon, ofm_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::Round &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::Round::Input::INPUT)};
+
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index);
+
+  auto fn = std::make_unique<ops::RoundLayer>();
+
+  fn->configure(ifm_tensor, ofm_tensor);
 
   _return_fn = std::move(fn);
 }

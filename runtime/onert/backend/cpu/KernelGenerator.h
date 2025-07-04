@@ -77,6 +77,7 @@ public:
   void visit(const ir::operation::Reverse &) override;
   void visit(const ir::operation::RmsNorm &) override;
   void visit(const ir::operation::RoPE &) override;
+  void visit(const ir::operation::Round &) override;
   void visit(const ir::operation::Select &) override;
   void visit(const ir::operation::Shape &) override;
   void visit(const ir::operation::Slice &) override;
