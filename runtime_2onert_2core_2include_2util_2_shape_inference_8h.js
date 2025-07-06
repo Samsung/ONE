@@ -14,7 +14,7 @@ var runtime_2onert_2core_2include_2util_2_shape_inference_8h =
     [ "inferEltwiseShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#a72256a69029016c77735058b9c68fc18", null ],
     [ "inferExpandDimsShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#a0da8b986f531953219b9b4d8da542870", null ],
     [ "inferFillShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#a0b00b6def5d94c25579c4fffef47cd71", null ],
-    [ "inferFullyConnectedShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#ac164390405abbf5d5f49f010577ad3a6", null ],
+    [ "inferFullyConnectedShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#ac814692a0409b5397bd55c1d6c8711ea", null ],
     [ "inferGatherShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#a662b459b41e43ba0b50a036fa7865451", null ],
     [ "inferOnehotShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#addd08a55e11dbcc499dddd1413bb31e1", null ],
     [ "inferPackShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#a6a54581549572c86f237df73e779f2d1", null ],

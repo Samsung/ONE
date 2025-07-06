@@ -124,11 +124,19 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-build-compiler.
 <div class="line">hdf5-tools \</div>
 <div class="line">curl</div>
 <div class="line">$ pip install numpy flatbuffers</div>
-</div><!-- fragment --><p>If you are using python3.12 or upper (ex. Ubuntu 24.04), or python 3.6 or under (ex. Ubuntu 18.04), as there is no TensorFlow2.12.1 package for python version, build may fail. Please install python3.8-venv additionally.</p>
-<p>Additional install python3.8 if you are using Ubuntu 18.04 </p><div class="fragment"><div class="line">$ sudo apt-get install python3.8 python3.8-dev python3.8-venv</div>
-</div><!-- fragment --><p>Additional install python 3.8 if you are using Ubuntu 24.04 </p><div class="fragment"><div class="line">$ sudo apt-get install software-properties-common</div>
-<div class="line">$ sudo add-apt-repository ppa:deadsnakes/ppa</div>
-<div class="line">$ sudo apt-get update &amp;&amp; sudo apt-get install python3.8 python3.8-dev python3.8-venv</div>
+</div><!-- fragment --><p>Supported platforms:</p><ul>
+<li>Ubuntu 20.04</li>
+<li>Ubuntu 22.04</li>
+<li>Ubuntu 24.04 (experimental)</li>
+</ul>
+<p>Supported Python versions:</p><ul>
+<li>Python 3.10 for Ubuntu 20.04 and 22.04</li>
+<li>Python 3.12 for Ubuntu 24.04</li>
+</ul>
+<p>Note: Python 3.10 needs to be installed manually on Ubuntu 20.04. </p><div class="fragment"><div class="line">sudo apt-get install software-properties-common</div>
+<div class="line">sudo -E add-apt-repository ppa:deadsnakes/ppa -y</div>
+<div class="line">sudo apt-get -y install python3.10 python3.10-venv python3.10-dev</div>
+<div class="line">python3.10 -m ensurepip</div>
 </div><!-- fragment --><p>Additional install libtsan_preinit.o manually if you are using Ubuntu 20.04 and gcc-9 (refer <a href="https://github.com/Samsung/ONE/issues/11202">https://github.com/Samsung/ONE/issues/11202</a>) </p><div class="fragment"><div class="line">$ apt-get download libgcc-10-dev</div>
 <div class="line">$ dpkg -x libgcc-10-dev_*_amd64.deb libgcc/</div>
 <div class="line">$ sudo cp -f libgcc/usr/lib/gcc/x86_64-linux-gnu/10/libtsan_preinit.o /usr/lib/gcc/x86_64-linux-gnu/9/</div>

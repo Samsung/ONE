@@ -3058,6 +3058,7 @@ var hierarchy =
       [ "luci_interpreter::kernels::Reshape", "classluci__interpreter_1_1kernels_1_1_reshape.html", null ],
       [ "luci_interpreter::kernels::ReverseV2", "classluci__interpreter_1_1kernels_1_1_reverse_v2.html", null ],
       [ "luci_interpreter::kernels::ReverseV2", "classluci__interpreter_1_1kernels_1_1_reverse_v2.html", null ],
+      [ "luci_interpreter::kernels::Round", "classluci__interpreter_1_1kernels_1_1_round.html", null ],
       [ "luci_interpreter::kernels::Rsqrt", "classluci__interpreter_1_1kernels_1_1_rsqrt.html", null ],
       [ "luci_interpreter::kernels::Select", "classluci__interpreter_1_1kernels_1_1_select.html", null ],
       [ "luci_interpreter::kernels::SelectV2", "classluci__interpreter_1_1kernels_1_1_select_v2.html", null ],

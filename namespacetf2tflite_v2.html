@@ -233,7 +233,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  146</span> </div>
 <div class="line"><span class="lineno">  147</span> </div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="tf2tflite_v2_8py_source.html#l00275">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="tf2tflite_v2_8py_source.html#l00273">main()</a>.</p>
 
 </div>
 </div>
@@ -265,20 +265,18 @@ Variables</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  262</span><span class="keyword">def </span>_convert(flags):</div>
 <div class="line"><span class="lineno">  263</span>    _apply_verbosity(flags.verbose)</div>
 <div class="line"><span class="lineno">  264</span> </div>
-<div class="line"><span class="lineno">  265</span>    <span class="keywordflow">if</span> (flags.v1):</div>
-<div class="line"><span class="lineno">  266</span>        print(<span class="stringliteral">&quot;tf2tfliteV2: v1 not supported anymore. convert with v2.&quot;</span>)</div>
-<div class="line"><span class="lineno">  267</span>    _v2_convert(flags)</div>
-<div class="line"><span class="lineno">  268</span> </div>
-<div class="line"><span class="lineno">  269</span> </div>
+<div class="line"><span class="lineno">  265</span>    _v2_convert(flags)</div>
+<div class="line"><span class="lineno">  266</span> </div>
+<div class="line"><span class="lineno">  267</span> </div>
+<div class="line"><span class="lineno">  268</span><span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">  269</span><span class="stringliteral">Input frozen graph must be from TensorFlow 1.13.1</span></div>
 <div class="line"><span class="lineno">  270</span><span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  271</span><span class="stringliteral">Input frozen graph must be from TensorFlow 1.13.1</span></div>
-<div class="line"><span class="lineno">  272</span><span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  273</span> </div>
-<div class="line"><span class="lineno">  274</span> </div>
+<div class="line"><span class="lineno">  271</span> </div>
+<div class="line"><span class="lineno">  272</span> </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="tf2tflite_v2_8py_source.html#l00242">_apply_verbosity()</a>, and <a class="el" href="tf2tflite_v2_8py_source.html#l00184">_v2_convert()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="tf2tflite_v2_8py_source.html#l00275">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="tf2tflite_v2_8py_source.html#l00273">main()</a>.</p>
 
 </div>
 </div>
@@ -387,7 +385,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  115</span> </div>
 <div class="line"><span class="lineno">  116</span> </div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="tf2tflite_v2_8py_source.html#l00275">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="tf2tflite_v2_8py_source.html#l00273">main()</a>.</p>
 
 </div>
 </div>
@@ -603,24 +601,24 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tf2tflite_v2_8py_source.html#l00275">275</a> of file <a class="el" href="tf2tflite_v2_8py_source.html">tf2tfliteV2.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  275</span><span class="keyword">def </span><a class="code hl_function" href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>():</div>
-<div class="line"><span class="lineno">  276</span>    <span class="comment"># Parse argument.</span></div>
-<div class="line"><span class="lineno">  277</span>    parser = _get_parser()</div>
-<div class="line"><span class="lineno">  278</span> </div>
-<div class="line"><span class="lineno">  279</span>    <span class="comment"># Check if the flags are valid.</span></div>
-<div class="line"><span class="lineno">  280</span>    flags = parser.parse_known_args(args=sys.argv[1:])</div>
-<div class="line"><span class="lineno">  281</span>    _check_flags(flags[0])</div>
-<div class="line"><span class="lineno">  282</span> </div>
-<div class="line"><span class="lineno">  283</span>    <span class="comment"># Convert</span></div>
-<div class="line"><span class="lineno">  284</span>    _convert(flags[0])</div>
-<div class="line"><span class="lineno">  285</span> </div>
-<div class="line"><span class="lineno">  286</span> </div>
+<p class="definition">Definition at line <a class="el" href="tf2tflite_v2_8py_source.html#l00273">273</a> of file <a class="el" href="tf2tflite_v2_8py_source.html">tf2tfliteV2.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  273</span><span class="keyword">def </span><a class="code hl_function" href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>():</div>
+<div class="line"><span class="lineno">  274</span>    <span class="comment"># Parse argument.</span></div>
+<div class="line"><span class="lineno">  275</span>    parser = _get_parser()</div>
+<div class="line"><span class="lineno">  276</span> </div>
+<div class="line"><span class="lineno">  277</span>    <span class="comment"># Check if the flags are valid.</span></div>
+<div class="line"><span class="lineno">  278</span>    flags = parser.parse_known_args(args=sys.argv[1:])</div>
+<div class="line"><span class="lineno">  279</span>    _check_flags(flags[0])</div>
+<div class="line"><span class="lineno">  280</span> </div>
+<div class="line"><span class="lineno">  281</span>    <span class="comment"># Convert</span></div>
+<div class="line"><span class="lineno">  282</span>    _convert(flags[0])</div>
+<div class="line"><span class="lineno">  283</span> </div>
+<div class="line"><span class="lineno">  284</span> </div>
 <div class="ttc" id="acircle-input-names_8cpp_html_a840291bc02cba5474a4cb46a9b9566fe"><div class="ttname"><a href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a></div><div class="ttdeci">int main(void)</div><div class="ttdef"><b>Definition</b> <a href="circle-input-names_8cpp_source.html#l00170">circle-input-names.cpp:170</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="tf2tflite_v2_8py_source.html#l00117">_check_flags()</a>, <a class="el" href="tf2tflite_v2_8py_source.html#l00262">_convert()</a>, <a class="el" href="tf2tflite_v2_8py_source.html#l00038">_get_parser()</a>, and <a class="el" href="tf2tflite_v2_8py_source.html#l00275">main()</a>.</p>
+<p class="reference">References <a class="el" href="tf2tflite_v2_8py_source.html#l00117">_check_flags()</a>, <a class="el" href="tf2tflite_v2_8py_source.html#l00262">_convert()</a>, <a class="el" href="tf2tflite_v2_8py_source.html#l00038">_get_parser()</a>, and <a class="el" href="tf2tflite_v2_8py_source.html#l00273">main()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="tf2tflite_v2_8py_source.html#l00275">main()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="tf2tflite_v2_8py_source.html#l00273">main()</a>.</p>
 
 </div>
 </div>
@@ -686,7 +684,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tf2tflite_v2_8py_source.html#l00292">292</a> of file <a class="el" href="tf2tflite_v2_8py_source.html">tf2tfliteV2.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tf2tflite_v2_8py_source.html#l00290">290</a> of file <a class="el" href="tf2tflite_v2_8py_source.html">tf2tfliteV2.py</a>.</p>
 
 </div>
 </div>
@@ -702,7 +700,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tf2tflite_v2_8py_source.html#l00291">291</a> of file <a class="el" href="tf2tflite_v2_8py_source.html">tf2tfliteV2.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tf2tflite_v2_8py_source.html#l00289">289</a> of file <a class="el" href="tf2tflite_v2_8py_source.html">tf2tfliteV2.py</a>.</p>
 
 </div>
 </div>

@@ -199,6 +199,7 @@ var namespaceluci__interpreter =
     [ "build_kernel_CircleReverseV2", "namespaceluci__interpreter.html#a2115ebec668555dc7d3112a4d5152f46", null ],
     [ "build_kernel_CircleRmsNorm", "namespaceluci__interpreter.html#a945fb11fcdec21599e4dce0d0877b325", null ],
     [ "build_kernel_CircleRoPE", "namespaceluci__interpreter.html#a212280e5f9b585e19e4c397a8407553e", null ],
+    [ "build_kernel_CircleRound", "namespaceluci__interpreter.html#a6fdf8cd345cc0e1ee278b26f3479dfa4", null ],
     [ "build_kernel_CircleRsqrt", "namespaceluci__interpreter.html#aebe078291eb8ba330430acefc8214626", null ],
     [ "build_kernel_CircleSelect", "namespaceluci__interpreter.html#a4d3244588083f0e28a4322335721f7a9", null ],
     [ "build_kernel_CircleSelectV2", "namespaceluci__interpreter.html#a6bfb38d068bf49af2e7f316fe143e916", null ],

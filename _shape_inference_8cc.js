@@ -18,7 +18,7 @@ var _shape_inference_8cc =
     [ "inferFillShape", "_shape_inference_8cc.html#a90d2b991810b6a555f26a0eeaf9096ac", null ],
     [ "inferFillShape", "_shape_inference_8cc.html#a55b01c2f45e3a45c32f5a5c587e8f26d", null ],
     [ "inferFillShape", "_shape_inference_8cc.html#a0b00b6def5d94c25579c4fffef47cd71", null ],
-    [ "inferFullyConnectedShape", "_shape_inference_8cc.html#ac164390405abbf5d5f49f010577ad3a6", null ],
+    [ "inferFullyConnectedShape", "_shape_inference_8cc.html#ac814692a0409b5397bd55c1d6c8711ea", null ],
     [ "inferGatherShape", "_shape_inference_8cc.html#a662b459b41e43ba0b50a036fa7865451", null ],
     [ "inferOnehotShape", "_shape_inference_8cc.html#addd08a55e11dbcc499dddd1413bb31e1", null ],
     [ "inferPackShape", "_shape_inference_8cc.html#a6a54581549572c86f237df73e779f2d1", null ],

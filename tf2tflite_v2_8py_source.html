@@ -376,39 +376,37 @@ $(document).ready(function(){initNavTree('tf2tflite_v2_8py_source.html',''); ini
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno"><a class="line" href="namespacetf2tflite_v2.html#ab069c2fbfdb953e774b08fecd6d2e672">  262</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetf2tflite_v2.html#ab069c2fbfdb953e774b08fecd6d2e672">_convert</a>(flags):</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    <a class="code hl_function" href="namespacetf2tflite_v2.html#a5ae4870ed15dfb9a490635fd96c4015a">_apply_verbosity</a>(flags.verbose)</div>
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    <span class="keywordflow">if</span> (flags.v1):</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        print(<span class="stringliteral">&quot;tf2tfliteV2: v1 not supported anymore. convert with v2.&quot;</span>)</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <a class="code hl_function" href="namespacetf2tflite_v2.html#ab24710e25b6a1a8699cf0b2ceb2621f0">_v2_convert</a>(flags)</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    <a class="code hl_function" href="namespacetf2tflite_v2.html#ab24710e25b6a1a8699cf0b2ceb2621f0">_v2_convert</a>(flags)</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="stringliteral">Input frozen graph must be from TensorFlow 1.13.1</span></div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="stringliteral">Input frozen graph must be from TensorFlow 1.13.1</span></div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
 </div>
-<div class="foldopen" id="foldopen00275" data-start="" data-end="">
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno"><a class="line" href="namespacetf2tflite_v2.html#a0770980e8295ebc3c6732b19b54abb67">  275</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetf2tflite_v2.html#a0770980e8295ebc3c6732b19b54abb67">main</a>():</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    <span class="comment"># Parse argument.</span></div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    parser = <a class="code hl_function" href="namespacetf2tflite_v2.html#ab2b61dd90d8bb2b2b2589af8eb81e78c">_get_parser</a>()</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    <span class="comment"># Check if the flags are valid.</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    flags = parser.parse_known_args(args=sys.argv[1:])</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <a class="code hl_function" href="namespacetf2tflite_v2.html#a9daaf8105a7eae5c1f4a0ad7f5452aa1">_check_flags</a>(flags[0])</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    <span class="comment"># Convert</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <a class="code hl_function" href="namespacetf2tflite_v2.html#ab069c2fbfdb953e774b08fecd6d2e672">_convert</a>(flags[0])</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
+<div class="foldopen" id="foldopen00273" data-start="" data-end="">
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno"><a class="line" href="namespacetf2tflite_v2.html#a0770980e8295ebc3c6732b19b54abb67">  273</a></span><span class="keyword">def </span><a class="code hl_function" href="namespacetf2tflite_v2.html#a0770980e8295ebc3c6732b19b54abb67">main</a>():</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    <span class="comment"># Parse argument.</span></div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    parser = <a class="code hl_function" href="namespacetf2tflite_v2.html#ab2b61dd90d8bb2b2b2589af8eb81e78c">_get_parser</a>()</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    <span class="comment"># Check if the flags are valid.</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    flags = parser.parse_known_args(args=sys.argv[1:])</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    <a class="code hl_function" href="namespacetf2tflite_v2.html#a9daaf8105a7eae5c1f4a0ad7f5452aa1">_check_flags</a>(flags[0])</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span> </div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="comment"># Convert</span></div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <a class="code hl_function" href="namespacetf2tflite_v2.html#ab069c2fbfdb953e774b08fecd6d2e672">_convert</a>(flags[0])</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
 </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>        <a class="code hl_function" href="namespacetf2tflite_v2.html#a0770980e8295ebc3c6732b19b54abb67">main</a>()</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno"><a class="line" href="namespacetf2tflite_v2.html#abb2b8e43152ab55836993a2255f286b1">  291</a></span>        prog_name = os.path.basename(__file__)</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno"><a class="line" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">  292</a></span>        print(f<span class="stringliteral">&quot;{prog_name}: {type(e).__name__}: &quot;</span> + str(e), file=sys.stderr)</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>        sys.exit(255)</div>
-<div class="ttc" id="anamespacetf2tflite_v2_html_a0770980e8295ebc3c6732b19b54abb67"><div class="ttname"><a href="namespacetf2tflite_v2.html#a0770980e8295ebc3c6732b19b54abb67">tf2tfliteV2.main</a></div><div class="ttdeci">main()</div><div class="ttdef"><b>Definition</b> <a href="tf2tflite_v2_8py_source.html#l00275">tf2tfliteV2.py:275</a></div></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="keywordflow">if</span> __name__ == <span class="stringliteral">&quot;__main__&quot;</span>:</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    <span class="keywordflow">try</span>:</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>        <a class="code hl_function" href="namespacetf2tflite_v2.html#a0770980e8295ebc3c6732b19b54abb67">main</a>()</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno"><a class="line" href="namespacetf2tflite_v2.html#abb2b8e43152ab55836993a2255f286b1">  289</a></span>        prog_name = os.path.basename(__file__)</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno"><a class="line" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">  290</a></span>        print(f<span class="stringliteral">&quot;{prog_name}: {type(e).__name__}: &quot;</span> + str(e), file=sys.stderr)</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>        sys.exit(255)</div>
+<div class="ttc" id="anamespacetf2tflite_v2_html_a0770980e8295ebc3c6732b19b54abb67"><div class="ttname"><a href="namespacetf2tflite_v2.html#a0770980e8295ebc3c6732b19b54abb67">tf2tfliteV2.main</a></div><div class="ttdeci">main()</div><div class="ttdef"><b>Definition</b> <a href="tf2tflite_v2_8py_source.html#l00273">tf2tfliteV2.py:273</a></div></div>
 <div class="ttc" id="anamespacetf2tflite_v2_html_a543168893bba2c76ec699735bd2574fe"><div class="ttname"><a href="namespacetf2tflite_v2.html#a543168893bba2c76ec699735bd2574fe">tf2tfliteV2.wrap_frozen_graph</a></div><div class="ttdeci">wrap_frozen_graph(graph_def, inputs, outputs)</div><div class="ttdef"><b>Definition</b> <a href="tf2tflite_v2_8py_source.html#l00027">tf2tfliteV2.py:27</a></div></div>
 <div class="ttc" id="anamespacetf2tflite_v2_html_a5ae4870ed15dfb9a490635fd96c4015a"><div class="ttname"><a href="namespacetf2tflite_v2.html#a5ae4870ed15dfb9a490635fd96c4015a">tf2tfliteV2._apply_verbosity</a></div><div class="ttdeci">_apply_verbosity(verbosity)</div><div class="ttdef"><b>Definition</b> <a href="tf2tflite_v2_8py_source.html#l00242">tf2tfliteV2.py:242</a></div></div>
 <div class="ttc" id="anamespacetf2tflite_v2_html_a72305f201e068e1534a65be63bee1e61"><div class="ttname"><a href="namespacetf2tflite_v2.html#a72305f201e068e1534a65be63bee1e61">tf2tfliteV2._parse_array</a></div><div class="ttdeci">_parse_array(arrays, type_fn=str)</div><div class="ttdef"><b>Definition</b> <a href="tf2tflite_v2_8py_source.html#l00148">tf2tfliteV2.py:148</a></div></div>

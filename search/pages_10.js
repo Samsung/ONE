@@ -19,7 +19,7 @@ var searchData=
   ['to_20use_20api_16',['How to Use API',['../md_docs_2howto_2how-to-use-api.html',1,'']]],
   ['to_20use_20nnapi_20binding_17',['How to Use NNAPI Binding',['../md_docs_2howto_2how-to-use-nnapi-binding.html',1,'']]],
   ['to_20use_20nnfw_20api_18',['How to Use NNFW API',['../md_docs_2howto_2how-to-use-nnfw-api.html',1,'']]],
-  ['to_20use_20nnfw_20python_20api_19',['How to Use NNFW PYTHON API',['../md_docs_2howto_2how-to-use-nnfw-python-api.html',1,'']]],
+  ['to_20use_20onert_20python_20api_19',['How to Use onert Python API',['../md_docs_2howto_2how-to-use-onert-python-api.html',1,'']]],
   ['to_20use_20specific_20backend_20during_20inference_20',['How to Use Specific Backend during Inference',['../md_docs_2howto_2how-to-use-specific-backend.html',1,'']]],
   ['training_21',['Training',['../md_docs_2runtime_2training.html',1,'']]],
   ['training_20a_20simple_20cnn_20model_20on_20mnist_20using_20onert_22',['Training a simple CNN model on MNIST using ONERT',['../md_docs_2runtime_2training__cnn__on__mnist.html',1,'']]],

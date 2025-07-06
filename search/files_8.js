@@ -46,7 +46,7 @@ var searchData=
   ['how_2dto_2duse_2dapi_2emd_43',['how-to-use-api.md',['../how-to-use-api_8md.html',1,'']]],
   ['how_2dto_2duse_2dnnapi_2dbinding_2emd_44',['how-to-use-nnapi-binding.md',['../how-to-use-nnapi-binding_8md.html',1,'']]],
   ['how_2dto_2duse_2dnnfw_2dapi_2emd_45',['how-to-use-nnfw-api.md',['../how-to-use-nnfw-api_8md.html',1,'']]],
-  ['how_2dto_2duse_2dnnfw_2dpython_2dapi_2emd_46',['how-to-use-nnfw-python-api.md',['../how-to-use-nnfw-python-api_8md.html',1,'']]],
+  ['how_2dto_2duse_2donert_2dpython_2dapi_2emd_46',['how-to-use-onert-python-api.md',['../how-to-use-onert-python-api_8md.html',1,'']]],
   ['how_2dto_2duse_2dspecific_2dbackend_2emd_47',['how-to-use-specific-backend.md',['../how-to-use-specific-backend_8md.html',1,'']]],
   ['html_5freport_5ftemplate_2eg_2eh_2b_2b_48',['html_report_template.g.h++',['../html__report__template_8g_8h_09_09.html',1,'']]],
   ['hwclayout_2ecpp_49',['HWCLayout.cpp',['../_h_w_c_layout_8cpp.html',1,'']]],

@@ -9,7 +9,7 @@ var searchData=
   ['an_20application_20with_20runtime_6',['How to Make an Application with Runtime',['../md_docs_2howto_2how-to-make-an-application-with-runtime.html',1,'']]],
   ['and_20backend_7',['Supported Operations and backend',['../md_docs_2runtime_2supported-operations-backend.html',1,'']]],
   ['android_8',['How to Cross-build Runtime for Android',['../md_docs_2howto_2how-to-cross-build-runtime-for-android.html',1,'']]],
-  ['api_9',['api',['../md_docs_2runtime_2api.html',1,'API'],['../md_docs_2runtime_2backend-api.html',1,'Backend API'],['../md_docs_2howto_2how-to-use-api.html',1,'How to Use API'],['../md_docs_2howto_2how-to-use-nnfw-api.html',1,'How to Use NNFW API'],['../md_docs_2howto_2how-to-use-nnfw-python-api.html',1,'How to Use NNFW PYTHON API']]],
+  ['api_9',['api',['../md_docs_2runtime_2api.html',1,'API'],['../md_docs_2runtime_2backend-api.html',1,'Backend API'],['../md_docs_2howto_2how-to-use-api.html',1,'How to Use API'],['../md_docs_2howto_2how-to-use-nnfw-api.html',1,'How to Use NNFW API'],['../md_docs_2howto_2how-to-use-onert-python-api.html',1,'How to Use onert Python API']]],
   ['application_20with_20runtime_10',['How to Make an Application with Runtime',['../md_docs_2howto_2how-to-make-an-application-with-runtime.html',1,'']]],
   ['architecture_11',['Overall Architecture',['../md_docs_2overview_2overall-architecture.html',1,'']]],
   ['arm_12',['How to Cross-build Runtime for ARM',['../md_docs_2howto_2how-to-cross-build-runtime-for-arm.html',1,'']]]
