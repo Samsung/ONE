@@ -66,7 +66,7 @@ add_custom_target(
   DEPENDS onnx2circle_models_target ${FILE_DEPS_VALCHK}
 )
 
-set(MODELS_ROOT "${CMAKE_SOURCE_DIR}/models/net")
+set(MODELS_ROOT "${CMAKE_SOURCE_DIR}/models")
 set(RUN_PATH "${CMAKE_CURRENT_BINARY_DIR}")
 
 foreach(MODEL IN ITEMS ${UNIT_TEST_MODELS})
