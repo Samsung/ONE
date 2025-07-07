@@ -961,6 +961,17 @@ NNFW_STATUS nnfw_session::set_config(const char *key, const char *value)
   {
     _coptions->he_profiling_mode = toBool(value);
   }
+  else if (skey == config::ONERT_LOG_ENABLE || skey == config::NUM_THREADS)
+  {
+    onert::util::CfgKeyValues keyValues;
+    keyValues[skey] = std::string(value);
+    onert::util::setConfigKeyValues(keyValues);
+
+    if (skey == config::ONERT_LOG_ENABLE)
+    {
+      UPDATE_VERBOSE_CONFIG();
+    }
+  }
   else
   {
     return NNFW_STATUS_ERROR;

@@ -74,6 +74,14 @@ int main(const int argc, char **argv)
     // Set training backend
     NNPR_ENSURE_STATUS(nnfw_set_available_backends(session, default_backend_cand));
 
+    // Configurations from environment variable
+    char *log_enable = std::getenv("ONERT_LOG_ENABLE");
+    if (log_enable)
+      NNPR_ENSURE_STATUS(nnfw_set_config(session, "ONERT_LOG_ENABLE", log_enable));
+    char *num_threads = std::getenv("NUM_THREADS");
+    if (num_threads)
+      NNPR_ENSURE_STATUS(nnfw_set_config(session, "NUM_THREADS", num_threads));
+
     uint32_t num_inputs;
     NNPR_ENSURE_STATUS(nnfw_input_size(session, &num_inputs));
 

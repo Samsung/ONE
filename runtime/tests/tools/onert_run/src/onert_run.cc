@@ -222,9 +222,16 @@ int main(const int argc, char **argv)
       NNPR_ENSURE_STATUS(nnfw_codegen(session, codegen.c_str(), NNFW_CODEGEN_PREF_DEFAULT));
     }
 
+    // Configurations from environment variable
     char *available_backends = std::getenv("BACKENDS");
     if (available_backends)
       NNPR_ENSURE_STATUS(nnfw_set_available_backends(session, available_backends));
+    char *log_enable = std::getenv("ONERT_LOG_ENABLE");
+    if (log_enable)
+      NNPR_ENSURE_STATUS(nnfw_set_config(session, "ONERT_LOG_ENABLE", log_enable));
+    char *num_threads = std::getenv("NUM_THREADS");
+    if (num_threads)
+      NNPR_ENSURE_STATUS(nnfw_set_config(session, "NUM_THREADS", num_threads));
 
     // verify input and output
     for (uint32_t i = 0; i < num_inputs; ++i)
