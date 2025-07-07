@@ -71,11 +71,68 @@ mlir::LogicalResult SplitOp::verify()
                                   [expected_output_type](int64_t) { return expected_output_type; });
 }
 
+template <typename T>
+bool splitFPTensor(Value input, int64_t split_dim, int64_t num_splits,
+                   RankedTensorType expected_output_type, SmallVectorImpl<OpFoldResult> &results)
+{
+  assert(num_splits > 0);
+  // TODO implement
+  return false;
+}
+
 LogicalResult SplitOp::fold(FoldAdaptor adaptor, SmallVectorImpl<OpFoldResult> &results)
 {
-  // TODO implement
+  // NOTE current implementation is for ONNXConv2D with group that converts to
+  // SplitOp-[Conv2D]-Concat and this method is to fold ConstOp(filter)-SplitOp.
+  SplitOp op = *this;
+  Value input = op.getValue();
+  {
+    auto dim_type = mlir::cast<ShapedType>(op.getSplitDim().getType());
+    if (!dim_type.hasStaticShape())
+      return failure();
+    auto input_type = mlir::cast<ShapedType>(input.getType());
+    if (!input_type.hasStaticShape())
+      return failure();
+  }
 
-  return failure();
+  auto split_dim_opt = ExtractConstantIntFromTensor(op.getSplitDim());
+  if (!split_dim_opt)
+    return failure();
+
+  auto input_type = mlir::dyn_cast<RankedTensorType>(input.getType());
+  auto split_dim = split_dim_opt.value();
+  auto rank = input_type.getRank();
+  if (split_dim < 0)
+    split_dim += rank;
+  if (split_dim < 0 || split_dim >= rank)
+    return failure();
+
+  auto input_split_dim = input_type.getDimSize(split_dim);
+  auto num_splits = static_cast<int64_t>(op.getNumSplits());
+  if (num_splits == 0 || (input_split_dim % num_splits != 0))
+    return failure();
+
+  // get results shape
+  auto split_dim_size = input_split_dim / num_splits;
+  RankedTensorType expected_output_type =
+    SubstituteRankedTensorTypeDimSize(input_type, split_dim, split_dim_size);
+  LLVM_DEBUG({ llvm::dbgs() << "SplitOp::fold " << expected_output_type << "\n"; });
+
+  auto in_etype = input_type.getElementType();
+  if (in_etype.isF32())
+  {
+    if (!splitFPTensor<float>(input, split_dim, num_splits, expected_output_type, results))
+      return failure();
+  }
+  else if (in_etype.isF64())
+  {
+    if (!splitFPTensor<double>(input, split_dim, num_splits, expected_output_type, results))
+      return failure();
+  }
+  else
+    return failure();
+
+  return success();
 }
 
 } // namespace Circle
