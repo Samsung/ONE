@@ -61,9 +61,16 @@ void PermuteLayer::optimize()
       auto dst = *dst_it;
       src_offsets_it->resize(0);
       dst_offsets_it->resize(0);
+      const auto permute_type = *type_it;
+
+      src_it++;
+      dst_it++;
+      src_offsets_it++;
+      dst_offsets_it++;
+      type_it++;
+
       if (underlying_type(src->data_type()) != underlying_type(dst->data_type()))
         continue;
-      const auto permute_type = *type_it;
 
       // TODO Support different types
       auto fn = [&](backend::ITensor &src_tensor) {
@@ -71,7 +78,7 @@ void PermuteLayer::optimize()
           // NOTE The buffer of both tensor can be nullptr in this step
           const auto data_size = ir::sizeOfDataType(src_tensor.data_type());
 
-          if (permute_type == ir::PermuteType::COPY)
+          if (permute_type == ir::PermuteType::SAME)
           {
             if ((!src_tensor.has_padding() && !dst_tensor.has_padding()))
             {
@@ -118,11 +125,6 @@ void PermuteLayer::optimize()
         });
       };
       src->access(fn);
-      src_it++;
-      dst_it++;
-      src_offsets_it++;
-      dst_offsets_it++;
-      type_it++;
     }
   }
 }
@@ -133,7 +135,7 @@ void PermuteLayer::appendPermuteTasks(const ITensor *src_tensor, ITensor *dst_te
 {
   size_t distributed_dim = 0;
   auto src_shape = src_tensor->getShape();
-  if (permute_type == ir::PermuteType::COPY)
+  if (permute_type == ir::PermuteType::SAME)
   {
     for (int i = 1; i < src_shape.rank() - 1; ++i)
     {
@@ -259,7 +261,7 @@ void PermuteLayer::run()
         // If dst is subtensor, we have to use clEnqueueMapBuffer instead of clEnqueueWirteBuffer
         else if (dst->needMemoryMap() && !dst->is_subtensor())
         {
-          if (!src->has_padding() && !dst->has_padding() && permute_type == ir::PermuteType::COPY)
+          if (!src->has_padding() && !dst->has_padding() && permute_type == ir::PermuteType::SAME)
           {
             // This is more effective than multi-threading
             src->access([&](backend::ITensor &) { dst->enqueueWriteBuffer(src->buffer(), false); });
@@ -275,7 +277,7 @@ void PermuteLayer::run()
           }
         }
         else if (src->needMemoryMap() && !src->is_subtensor() && !src->has_padding() &&
-                 !dst->has_padding() && permute_type == ir::PermuteType::COPY)
+                 !dst->has_padding() && permute_type == ir::PermuteType::SAME)
         {
           // This is more effective than multi-threading
           assert(!dst->needMemoryMap());

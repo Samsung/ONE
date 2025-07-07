@@ -101,20 +101,6 @@ struct IExecutor
   virtual const ir::OperandInfo &outputInfo(uint32_t index) const = 0;
 
   /**
-   * @brief     Get input layout at index
-   * @param[in] index Index of input
-   * @return    Input operand layout
-   */
-  virtual ir::Layout inputLayout(uint32_t index) const = 0;
-
-  /**
-   * @brief     Get output layout at index
-   * @param[in] index Index of output
-   * @return    Output operand layout
-   */
-  virtual ir::Layout outputLayout(uint32_t index) const = 0;
-
-  /**
    * @brief     Get output buffer at index
    * @param[in] index Index of output
    * @return    Output buffer

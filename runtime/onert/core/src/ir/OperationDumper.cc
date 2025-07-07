@@ -271,7 +271,20 @@ void OperationDumper::visit(const Permute &node)
 {
   std::string permute_type = "Unknown";
 
-  VERBOSE(LIR) << "* " << node.name() << std::endl;
+  switch (node.getPermuteType())
+  {
+    case ir::PermuteType::SAME:
+      permute_type = "Same Layout";
+      break;
+    case ir::PermuteType::NHWC_TO_NCHW:
+      permute_type = "NHWC to NCHW";
+      break;
+    case ir::PermuteType::NCHW_TO_NHWC:
+      permute_type = "NCHW to NHWC";
+      break;
+  }
+
+  VERBOSE(LIR) << "* " << node.name() + "(" + permute_type + ")" << std::endl;
   VERBOSE(LIR) << "  - Inputs : Input(" << node.getInputs().at(0) << ")" << std::endl;
   VERBOSE(LIR) << "  - Output : Output(" << node.getOutputs().at(0) << ")" << std::endl;
 }

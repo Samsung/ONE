@@ -58,7 +58,7 @@ void elementwiseQuantize(const backend::ITensor *src_tensor, backend::ITensor *d
   int max_val = std::numeric_limits<OutputT>::max();
 
   auto loop_shape = src_tensor->getShape();
-  const bool is_permutation = type != ir::PermuteType::COPY && loop_shape.rank() == 4;
+  const bool is_permutation = type != ir::PermuteType::SAME && loop_shape.rank() == 4;
   ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
     const InputT *input_data =
       reinterpret_cast<const InputT *>(src_tensor->buffer() + src_tensor->calcOffset(coords));
@@ -77,7 +77,7 @@ template <typename InputT, typename OutputT>
 void quantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor,
               const ir::PermuteType &type)
 {
-  if (!src_tensor->has_padding() && !dst_tensor->has_padding() && type == ir::PermuteType::COPY &&
+  if (!src_tensor->has_padding() && !dst_tensor->has_padding() && type == ir::PermuteType::SAME &&
       !src_tensor->is_dynamic())
   {
     assert(!dst_tensor->is_dynamic());
@@ -103,7 +103,7 @@ void elementwiseDequantize(const backend::ITensor *src_tensor, backend::ITensor 
   const auto zero_point = src_tensor->data_zero_point();
 
   auto loop_shape = src_tensor->getShape();
-  const bool is_permutation = type != ir::PermuteType::COPY && loop_shape.rank() == 4;
+  const bool is_permutation = type != ir::PermuteType::SAME && loop_shape.rank() == 4;
   ShapeLoop(loop_shape, [&](const onert::ir::Coordinates &coords) {
     const InputT *input_data =
       reinterpret_cast<const InputT *>(src_tensor->buffer() + src_tensor->calcOffset(coords));
@@ -121,7 +121,7 @@ template <typename InputT, typename OutputT>
 void dequantize(const backend::ITensor *src_tensor, backend::ITensor *dst_tensor,
                 const ir::PermuteType &type)
 {
-  if (!src_tensor->has_padding() && !dst_tensor->has_padding() && type == ir::PermuteType::COPY &&
+  if (!src_tensor->has_padding() && !dst_tensor->has_padding() && type == ir::PermuteType::SAME &&
       !src_tensor->is_dynamic())
   {
     assert(!dst_tensor->is_dynamic());

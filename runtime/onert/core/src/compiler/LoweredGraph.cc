@@ -23,6 +23,7 @@
 #include "pass/PassRunner.h"
 #include "pass/PermutationEliminationPass.h"
 #include "pass/PermutationInsertionPass.h"
+#include "pass/PermutationIOPass.h"
 #include "../dumper/text/GraphDumper.h"
 #include "../ir/verifier/Verifier.h"
 
@@ -88,6 +89,7 @@ void LoweredGraph::lowerGraph(const CompilerOptions &options)
     .append(std::make_unique<pass::ConstantInsertionPass>(*this))
     .append(std::make_unique<pass::ConstantLoweringPass>(*this))
     .append(std::make_unique<pass::PermutationInsertionPass>(*this))
+    .append(std::make_unique<pass::PermutationIOPass>(*this, options))
     .run();
 
   // Optimization passes (optional)

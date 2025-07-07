@@ -64,7 +64,7 @@ Shape convertShape(const Shape &shape, const PermuteType &type)
   assert(shape.rank() <= Shape::kMaxRank);
   Shape ret{shape};
 
-  if (type == ir::PermuteType::COPY || shape.rank() < 4)
+  if (type == ir::PermuteType::SAME || shape.rank() < 4)
     return ret;
 
   // Permutation changing layout beyond 4-D is not supported yet

@@ -31,11 +31,12 @@ enum class Layout
   NCHW
 };
 
+// PermuteType::SAME is used for data forwarding and type conversion
 enum class PermuteType
 {
   NHWC_TO_NCHW,
   NCHW_TO_NHWC,
-  COPY
+  SAME
 };
 
 inline std::string to_string(Layout layout)

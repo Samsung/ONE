@@ -125,10 +125,22 @@ NNFW_STATUS nnfw_set_input_layout(nnfw_session *session, uint32_t index, NNFW_LA
   return session->set_input_layout(index, layout);
 }
 
+NNFW_STATUS nnfw_set_input_type(nnfw_session *session, uint32_t index, NNFW_TYPE type)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_input_type(index, type);
+}
+
 NNFW_STATUS nnfw_set_output_layout(nnfw_session *session, uint32_t index, NNFW_LAYOUT layout)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
   return session->set_output_layout(index, layout);
+}
+
+NNFW_STATUS nnfw_set_output_type(nnfw_session *session, uint32_t index, NNFW_TYPE type)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_output_type(index, type);
 }
 
 NNFW_STATUS nnfw_input_tensorinfo(nnfw_session *session, uint32_t index,
