@@ -61,9 +61,16 @@ void PermuteLayer::optimize()
       auto dst = *dst_it;
       src_offsets_it->resize(0);
       dst_offsets_it->resize(0);
+      const auto permute_type = *type_it;
+
+      src_it++;
+      dst_it++;
+      src_offsets_it++;
+      dst_offsets_it++;
+      type_it++;
+
       if (underlying_type(src->data_type()) != underlying_type(dst->data_type()))
         continue;
-      const auto permute_type = *type_it;
 
       // TODO Support different types
       auto fn = [&](backend::ITensor &src_tensor) {
@@ -118,11 +125,6 @@ void PermuteLayer::optimize()
         });
       };
       src->access(fn);
-      src_it++;
-      dst_it++;
-      src_offsets_it++;
-      dst_offsets_it++;
-      type_it++;
     }
   }
 }
