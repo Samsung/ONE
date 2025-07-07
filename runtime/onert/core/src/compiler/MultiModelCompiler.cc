@@ -53,30 +53,30 @@ CompilerOptions MultiModelCompiler::optionForSingleModel(const ir::ModelIndex &m
 
   for (const auto &[index, layout] : _options->input_layout)
   {
-    const auto &io_desc = _nnpkg->input(index);
+    const auto &io_desc = _nnpkg->input(index.value());
     if (std::get<ir::ModelIndex>(io_desc) == model_index)
-      opts.input_layout.insert_or_assign(std::get<ir::IOIndex>(io_desc).value(), layout);
+      opts.input_layout.insert_or_assign(std::get<ir::IOIndex>(io_desc), layout);
   }
 
   for (const auto &[index, layout] : _options->output_layout)
   {
-    const auto &io_desc = _nnpkg->output(index);
+    const auto &io_desc = _nnpkg->output(index.value());
     if (std::get<ir::ModelIndex>(io_desc) == model_index)
-      opts.output_layout.insert_or_assign(std::get<ir::IOIndex>(io_desc).value(), layout);
+      opts.output_layout.insert_or_assign(std::get<ir::IOIndex>(io_desc), layout);
   }
 
   for (const auto &[index, type] : _options->input_type)
   {
-    const auto &io_desc = _nnpkg->input(index);
+    const auto &io_desc = _nnpkg->input(index.value());
     if (std::get<ir::ModelIndex>(io_desc) == model_index)
-      opts.input_type.insert_or_assign(std::get<ir::IOIndex>(io_desc).value(), type);
+      opts.input_type.insert_or_assign(std::get<ir::IOIndex>(io_desc), type);
   }
 
   for (const auto &[index, type] : _options->output_type)
   {
-    const auto &io_desc = _nnpkg->output(index);
+    const auto &io_desc = _nnpkg->output(index.value());
     if (std::get<ir::ModelIndex>(io_desc) == model_index)
-      opts.output_type.insert_or_assign(std::get<ir::IOIndex>(io_desc).value(), type);
+      opts.output_type.insert_or_assign(std::get<ir::IOIndex>(io_desc), type);
   }
 
   return opts;

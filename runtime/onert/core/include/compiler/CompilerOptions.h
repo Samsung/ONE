@@ -66,10 +66,10 @@ struct CompilerOptions
 
   // GENERAL OPTIONS
   std::vector<std::string> backend_list;
-  std::unordered_map<uint32_t, ir::Layout> input_layout;
-  std::unordered_map<uint32_t, ir::Layout> output_layout;
-  std::unordered_map<uint32_t, ir::TypeInfo> input_type;
-  std::unordered_map<uint32_t, ir::TypeInfo> output_type;
+  std::unordered_map<ir::IOIndex, ir::Layout> input_layout;
+  std::unordered_map<ir::IOIndex, ir::Layout> output_layout;
+  std::unordered_map<ir::IOIndex, ir::TypeInfo> input_type;
+  std::unordered_map<ir::IOIndex, ir::TypeInfo> output_type;
 
   // OPTIONS ONLY FOR DEBUGGING/PROFILING
   int graph_dump_level; //< Graph dump level, values between 0 and 2 are valid

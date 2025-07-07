@@ -33,7 +33,7 @@ void PermutationIOPass::run()
       _options.input_type.size() == 0 && _options.output_type.size() == 0)
     return;
 
-  for (uint32_t i = 0; i < _graph.getInputs().size(); i++)
+  for (auto i = ir::IOIndex{0}; i < ir::IOIndex{_graph.getInputs().size()}; i++)
   {
     if (_options.input_layout.count(i) == 0 && _options.input_type.count(i) == 0)
       continue;
@@ -47,7 +47,7 @@ void PermutationIOPass::run()
     insertInputPermute(index, type, layout);
   }
 
-  for (uint32_t i = 0; i < _graph.getOutputs().size(); i++)
+  for (auto i = ir::IOIndex{0}; i < ir::IOIndex{_graph.getOutputs().size()}; i++)
   {
     if (_options.output_layout.count(i) == 0 && _options.output_type.count(i) == 0)
       continue;

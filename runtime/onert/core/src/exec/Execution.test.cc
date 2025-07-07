@@ -515,18 +515,20 @@ TEST(ExecInstance, quantModel_floatIO)
 {
   auto mockup = MockUpModel();
   auto compile_option = onert::compiler::CompilerOptions::fromGlobalConfig();
-  compile_option->input_type.insert_or_assign(0, onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
-  compile_option->input_type.insert_or_assign(1, onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
-  compile_option->output_type.insert_or_assign(0,
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output = IOIndex{0};
+
+  compile_option->input_type.insert_or_assign(input1,
+                                              onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
+  compile_option->input_type.insert_or_assign(input2,
+                                              onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
+  compile_option->output_type.insert_or_assign(output,
                                                onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
   auto artifact = onert::compiler::Compiler{mockup.model, compile_option.get()}.compile();
 
   auto graph = mockup.graph;
   auto executors = artifact->_executors;
-
-  auto input1 = IOIndex{0};
-  auto input2 = IOIndex{1};
-  auto output = IOIndex{0};
 
   const float input1_buffer[4] = {1, 0, -1, -2};
   const float input2_buffer[4] = {1, -3, 2, -4};
@@ -786,21 +788,20 @@ TEST(ExecInstance, multi_model_dequant_input_quant_output)
 {
   auto mockup = MockUpMultiModel();
   auto compile_option = onert::compiler::CompilerOptions::fromGlobalConfig();
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output = IOIndex{0};
 
   float scale = 0.1;
   int32_t zero_point = 128;
   onert::ir::TypeInfo type_info{onert::ir::DataType::QUANT_UINT8_ASYMM, scale, zero_point};
-  compile_option->input_type.insert_or_assign(0, type_info);
-  compile_option->input_type.insert_or_assign(1, type_info);
-  compile_option->output_type.insert_or_assign(0, type_info);
+  compile_option->input_type.insert_or_assign(input1, type_info);
+  compile_option->input_type.insert_or_assign(input2, type_info);
+  compile_option->output_type.insert_or_assign(output, type_info);
   auto compiler =
     onert::compiler::CompilerFactory::get().create(mockup.nnpkg, compile_option.get());
   auto artifact = compiler->compile();
   auto executors = artifact->_executors;
-
-  auto input1 = IOIndex{0};
-  auto input2 = IOIndex{1};
-  auto output = IOIndex{0};
 
   const uint8_t input1_buffer[4] = {138, 128, 118, 108}; // {1, 0, -1, -2}
   const uint8_t input2_buffer[4] = {138, 98, 148, 88};   // {1, -3, 2, -4}

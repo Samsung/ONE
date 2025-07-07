@@ -641,7 +641,7 @@ NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
     }
 
     // Insert if not exists, otherwise update the value
-    _coptions->input_layout[index] = convertLayout(layout);
+    _coptions->input_layout[onert::ir::IOIndex{index}] = convertLayout(layout);
   }
   catch (const std::exception &e)
   {
@@ -668,7 +668,7 @@ NNFW_STATUS nnfw_session::set_input_type(uint32_t index, NNFW_TYPE type)
       return NNFW_STATUS_ERROR;
     }
 
-    _coptions->input_type.insert_or_assign(index,
+    _coptions->input_type.insert_or_assign(onert::ir::IOIndex{index},
                                            onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
   }
   catch (const std::exception &e)
@@ -700,7 +700,7 @@ NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
     }
 
     // Insert if not exists, otherwise update the value
-    _coptions->output_layout[index] = convertLayout(layout);
+    _coptions->output_layout[onert::ir::IOIndex{index}] = convertLayout(layout);
   }
   catch (const std::exception &e)
   {
@@ -727,7 +727,7 @@ NNFW_STATUS nnfw_session::set_output_type(uint32_t index, NNFW_TYPE type)
       return NNFW_STATUS_ERROR;
     }
 
-    _coptions->output_type.insert_or_assign(index,
+    _coptions->output_type.insert_or_assign(onert::ir::IOIndex{index},
                                             onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
   }
   catch (const std::exception &e)
@@ -2278,29 +2278,25 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
       std::vector<const void *> _input_buffers;
       std::vector<void *> _output_buffers;
 
+      using namespace onert::ir;
       // Save Inputs buffers, set compile option to use float type
-      for (size_t input_index = 0; input_index < input_size; input_index++)
+      for (auto input_index = IOIndex{0}; input_index < IOIndex{input_size}; input_index++)
       {
-        auto io_input_index = onert::ir::IOIndex(input_index);
-        auto input_Shape = _execution->getInputShape(io_input_index);
-        auto input_buffer = _execution->getInputBuffer(io_input_index);
+        auto input_Shape = _execution->getInputShape(input_index);
+        auto input_buffer = _execution->getInputBuffer(input_index);
 
         _input_buffers.push_back(input_buffer);
-        _coptions->input_type.insert_or_assign(input_index,
-                                               onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
+        _coptions->input_type.insert_or_assign(input_index, TypeInfo(DataType::FLOAT32));
       }
 
       // Save Outputs buffers
-      for (size_t output_index = 0; output_index < output_size; output_index++)
+      for (auto output_index = IOIndex{0}; output_index < IOIndex{output_size}; output_index++)
       {
-        auto io_output_index = onert::ir::IOIndex(output_index);
-
-        auto output_Shape = _execution->getOutputShape(io_output_index);
-        auto output_buffer = _execution->getOutputBuffer(io_output_index);
+        auto output_Shape = _execution->getOutputShape(output_index);
+        auto output_buffer = _execution->getOutputBuffer(output_index);
 
         _output_buffers.push_back(output_buffer);
-        _coptions->output_type.insert_or_assign(output_index,
-                                                onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
+        _coptions->output_type.insert_or_assign(output_index, TypeInfo(DataType::FLOAT32));
       }
 
       // Save execution options
