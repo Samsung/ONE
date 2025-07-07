@@ -6,7 +6,8 @@ from pathlib import Path
 
 # Check operators with final Circle MLIR
 def check_model(models_root, model_name, ops_path):
-    sys.path.append(models_root)
+    sys.path.append(models_root + "/net")
+    sys.path.append(models_root + "/unit")
     module = importlib.import_module(model_name)
 
     m_keys = module.__dict__.keys()
