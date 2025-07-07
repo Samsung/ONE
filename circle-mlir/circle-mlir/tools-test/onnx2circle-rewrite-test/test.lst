@@ -3,6 +3,9 @@
 # AddModel(test_model)
 #
 
+AddModel(Conv2d_F32_R4_g4_1)
+AddModel(Conv2d_F32_R4_g4_2)
+
 AddModel(Net_AddReLU_F32_R4)
 AddModel(Net_AddReLUConcat_F32_R4)
 AddModel(Net_AddReLUSub_F32_R4)
