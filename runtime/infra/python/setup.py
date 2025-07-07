@@ -147,7 +147,7 @@ except Exception as e:
 # copy .so files to architecture directories
 
 setup(name=package_name,
-      version='0.1.0',
+      version='0.2.0',
       description='onert API binding',
       long_description='It provides onert Python api',
       url='https://github.com/Samsung/ONE',
