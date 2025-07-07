@@ -91,7 +91,7 @@ private:
       // Now there is no case where both src and dst have cl buffer.
       assert(!src->needMemoryMap());
 
-      if (!src->has_padding() && !dst->has_padding() && permute_type == ir::PermuteType::COPY)
+      if (!src->has_padding() && !dst->has_padding() && permute_type == ir::PermuteType::SAME)
       {
         src->access([&](backend::ITensor &) { dst->enqueueWriteBuffer(src->buffer(), false); });
       }
@@ -108,7 +108,7 @@ private:
       }
     }
     else if (src->needMemoryMap() && !src->is_subtensor() && !src->has_padding() &&
-             !dst->has_padding() && permute_type == ir::PermuteType::COPY)
+             !dst->has_padding() && permute_type == ir::PermuteType::SAME)
     {
       assert(!dst->needMemoryMap());
       dst->access([&](backend::ITensor &) { src->enqueueReadBuffer(dst->buffer(), true); });
@@ -133,7 +133,7 @@ private:
     assert(dst_buffer != nullptr);
     assert(dst_size == dst->total_size());
 
-    if (rank == 4 && permute_type != ir::PermuteType::COPY)
+    if (rank == 4 && permute_type != ir::PermuteType::SAME)
     {
       switch (permute_type)
       {

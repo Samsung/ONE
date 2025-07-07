@@ -213,7 +213,7 @@ void MultiModelExecutors::createEdgeQuantLayers()
             outputs.emplace_back(type_aware_quant_tensor.get());
 
             // No layout change on edge
-            permute_types.emplace_back(ir::PermuteType::COPY);
+            permute_types.emplace_back(ir::PermuteType::SAME);
 
             _edge_quant_tensors[to_iodesc] = std::move(type_aware_quant_tensor);
           }
@@ -307,7 +307,7 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
         if (input_desc->layout == ir::Layout::NCHW)
           permute_types.emplace_back(ir::PermuteType::NCHW_TO_NHWC);
         else
-          permute_types.emplace_back(ir::PermuteType::COPY);
+          permute_types.emplace_back(ir::PermuteType::SAME);
       }
     }
 
@@ -355,7 +355,7 @@ void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
         if (output_desc->layout == ir::Layout::NCHW)
           permute_types.emplace_back(ir::PermuteType::NHWC_TO_NCHW);
         else
-          permute_types.emplace_back(ir::PermuteType::COPY);
+          permute_types.emplace_back(ir::PermuteType::SAME);
       }
     }
 

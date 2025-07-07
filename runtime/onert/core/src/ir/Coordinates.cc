@@ -25,7 +25,7 @@ Coordinates convertCoordinates(const Coordinates &coords, const PermuteType &typ
 {
   assert(coords.size() == 4);
   Coordinates to{coords};
-  if (type == PermuteType::COPY)
+  if (type == PermuteType::SAME)
     return to;
 
   if (type == PermuteType::NHWC_TO_NCHW)
