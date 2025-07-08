@@ -91,8 +91,8 @@ namespace onert::backend::acl_common
       return ::arm_compute::DataType::F16;
     case ir::DataType::INT64:
       return ::arm_compute::DataType::S64;
-    case ir::DataType::QUANT_INT16_ASYMM:
-      return ::arm_compute::DataType::QASYMM16;
+    case ir::DataType::QUANT_INT16_SYMM:
+      return ::arm_compute::DataType::QSYMM16;
     case ir::DataType::QUANT_INT8_SYMM_PER_CHANNEL:
       return ::arm_compute::DataType::QSYMM8_PER_CHANNEL;
     default:

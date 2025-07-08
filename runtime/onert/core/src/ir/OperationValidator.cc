@@ -269,12 +269,12 @@ void OperationValidator::visit(const operation::ElementwiseActivation &node)
     case operation::ElementwiseActivation::Type::LEAKY_RELU:
       OP_REQUIRES(
         isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
-                                  DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
+                                  DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_SYMM}));
       break;
     case operation::ElementwiseActivation::Type::LOGISTIC:
       OP_REQUIRES(
         isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
-                                  DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
+                                  DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_SYMM}));
       break;
     case operation::ElementwiseActivation::Type::RELU:
       OP_REQUIRES(isValidType(
@@ -283,7 +283,7 @@ void OperationValidator::visit(const operation::ElementwiseActivation &node)
     case operation::ElementwiseActivation::Type::TANH:
       OP_REQUIRES(
         isValidType(input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM,
-                                  DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_ASYMM}));
+                                  DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_SYMM}));
       break;
   }
 }
