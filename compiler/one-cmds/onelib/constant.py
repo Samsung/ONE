@@ -149,6 +149,7 @@ class CONSTANT:
         ('fuse_gelu', 'fuse ops to GeLU operator'),
         ('fuse_rmsnorm', 'fuse ops to RmsNorm operator'),
         ('fuse_rsqrt', 'fuse ops to Rsqrt operator'),
+        ('fuse_rope', 'fuse ops to RoPE operator'),
         ('replace_cw_mul_add_with_depthwise_conv',
          'replace channel-wise Mul/Add with DepthwiseConv2D'),
         ('remove_fakequant', 'remove FakeQuant ops'),
