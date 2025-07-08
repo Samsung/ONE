@@ -1,82 +1,41 @@
-# Don't cache HDF5_*. Otherwise it will use the cached value without searching.
-if (HDF5_INCLUDE_DIRS AND HDF5_CXX_LIBRARIES AND HDF5_FOUND)
-  return()
-endif()
-
-unset(HDF5_DIR CACHE)
-unset(HDF5_INCLUDE_DIRS CACHE)
-unset(HDF5_CXX_LIBRARY_hdf5 CACHE)
-unset(HDF5_CXX_LIBRARY_hdf5_cpp CACHE)
-
-if(NOT BUILD_WITH_HDF5)
-  set(HDF5_FOUND FALSE)
-  return()
-endif(NOT BUILD_WITH_HDF5)
-
-# Case 1. external hdf5
-if(DEFINED EXT_HDF5_DIR)
-  find_path(HDF5_INCLUDE_DIRS NAMES H5Cpp.h NO_CMAKE_FIND_ROOT_PATH PATHS "${EXT_HDF5_DIR}/include")
-  find_library(HDF5_CXX_LIBRARY_hdf5 NAMES libhdf5.a PATHS "${EXT_HDF5_DIR}/lib")
-  find_library(HDF5_CXX_LIBRARY_hdf5_cpp NAMES libhdf5_cpp.a PATHS "${EXT_HDF5_DIR}/lib")
-  if (NOT (HDF5_INCLUDE_DIRS AND HDF5_CXX_LIBRARY_hdf5 AND HDF5_CXX_LIBRARY_hdf5_cpp))
-    message(WARNING "Failed to find H5Cpp.h or libhdf5.a or libhdf5_cpp.a")
-    set(HDF5_FOUND FALSE)
+function(_HDF5_build)
+  if(NOT BUILD_HDF5)
     return()
-  else()
-    # message(FATAL_ERROR "0=${HDF5_INCLUDE_DIRS},1=${HDF5_CXX_LIBRARIES}")
-    set(HDF5_FOUND TRUE)
-    list(APPEND HDF5_CXX_LIBRARIES ${HDF5_CXX_LIBRARY_hdf5_cpp} ${HDF5_CXX_LIBRARY_hdf5})
+  endif(NOT BUILD_HDF5)
+
+  nnfw_find_package(HDF5Source QUIET)
+
+  if(NOT HDF5Source_FOUND)
+    message(STATUS "HD5Config skip: HDF5Source NOT FOUND")
     return()
+  endif(NOT HDF5Source_FOUND)
+
+  nnfw_include(ExternalBuildTools)
+  ExternalBuild_CMake(CMAKE_DIR   ${HDF5Source_DIR}
+                      BUILD_DIR   ${CMAKE_BINARY_DIR}/externals/HDF5
+                      INSTALL_DIR ${EXT_OVERLAY_DIR}
+                      IDENTIFIER  "1.14.6"
+                      PKG_NAME    "HDF5"
+                      EXTRA_OPTS "-DBUILD_SHARED_LIBS:BOOL=OFF"
+                                 "-DBUILD_TESTING:BOOL=OFF"
+                                 "-DHDF5_BUILD_CPP_LIB:BOOL=ON"
+                                 "-DHDF5_BUILD_EXAMPLES:BOOL=OFF"
+                                 "-DHDF5_BUILD_TOOLS:BOOL=OFF"
+                                 "-DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF"
+                                 "-DHDF5_MODULE_MODE_ZLIB:BOOL=OFF"
+                                 "-DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF"
+                                 "-DHDF5_BUILD_UTILS:BOOL=OFF")
+
+endfunction(_HDF5_build)
+
+if (NOT HDF5_FOUND AND BUILD_HDF5)
+  _HDF5_build()
+
+  find_package(hdf5 REQUIRED COMPONENTS static C CXX)
+
+  # Set HDF5_CXX_STATIC_LIBRARY manually
+  # hdf5 cmake config file fails to set HDF5_CXX_STATIC_LIBRARY
+  if (NOT HDF5_CXX_STATIC_LIBRARY)
+    set(HDF5_CXX_STATIC_LIBRARY hdf5_cpp-static)
   endif()
-endif()
-
-# Case 2. search pre-installed locations (by apt, brew, ...)
-if(NOT CMAKE_CROSSCOMPILING)
-  find_package(HDF5 COMPONENTS CXX QUIET)
-else()
-  find_path(HDF5_INCLUDE_DIRS NAMES hdf5.h ONLY_CMAKE_FIND_ROOT_PATH PATH_SUFFIXES include/hdf5/serial)
-
-  if (NOT HDF5_INCLUDE_DIRS)
-    set(HDF5_FOUND FALSE)
-    return()
-  endif()
-
-  if(HDF5_USE_STATIC_LIBRARIES)
-    find_library(HDF5_CXX_LIBRARY_hdf5
-      NAMES libhdf5.a
-      ONLY_CMAKE_FIND_ROOT_PATH
-      PATH_SUFFIXES hdf5/serial)
-    find_library(HDF5_CXX_LIBRARY_hdf5_cpp
-      NAMES libhdf5_cpp.a
-      ONLY_CMAKE_FIND_ROOT_PATH
-      PATH_SUFFIXES hdf5/serial)
-  else(HDF5_USE_STATIC_LIBRARIES)
-    find_library(HDF5_CXX_LIBRARY_hdf5
-      NAMES libhdf5.so
-      ONLY_CMAKE_FIND_ROOT_PATH
-      PATH_SUFFIXES hdf5/serial)
-    find_library(HDF5_CXX_LIBRARY_hdf5_cpp
-      NAMES libhdf5_cpp.so
-      ONLY_CMAKE_FIND_ROOT_PATH
-      PATH_SUFFIXES hdf5/serial)
-  endif(HDF5_USE_STATIC_LIBRARIES)
-
-  if (NOT (HDF5_CXX_LIBRARY_hdf5 AND HDF5_CXX_LIBRARY_hdf5_cpp))
-    set(HDF5_FOUND FALSE)
-    return()
-  endif()
-
-  find_library(HDF5_DEP_sz NAMES sz ONLY_CMAKE_FIND_ROOT_PATH)
-  list(APPEND HDF5_CXX_LIBRARY_DEPS ${HDF5_DEP_sz})
-
-  find_library(HDF5_DEP_z NAMES z ONLY_CMAKE_FIND_ROOT_PATH)
-  list(APPEND HDF5_CXX_LIBRARY_DEPS ${HDF5_DEP_z})
-
-  find_library(HDF5_DEP_m NAMES m ONLY_CMAKE_FIND_ROOT_PATH)
-  list(APPEND HDF5_CXX_LIBRARY_DEPS ${HDF5_DEP_m})
-
-  ### Caution: You must keep appending order for static linking
-  list(APPEND HDF5_CXX_LIBRARIES ${HDF5_CXX_LIBRARY_hdf5_cpp} ${HDF5_CXX_LIBRARY_hdf5} ${HDF5_CXX_LIBRARY_DEPS})
-
-  set(HDF5_FOUND TRUE)
 endif()
