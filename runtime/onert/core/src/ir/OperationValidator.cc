@@ -315,15 +315,15 @@ void OperationValidator::visit(const operation::ElementwiseUnary &node)
   {
     // NNAPI allow QUANT_INT8_SYMM type input
     OP_REQUIRES(isValidType(input_index, {DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_SYMM,
-                                          DataType::QUANT_INT8_ASYMM}));
+                                          DataType::QUANT_INT8_ASYMM, DataType::QUANT_INT16_SYMM}));
     OP_REQUIRES(isValidType(output_index, DataType::FLOAT32));
   }
   else if (node.param().op_type == operation::ElementwiseUnary::Type::QUANTIZE)
   {
     OP_REQUIRES(isValidType(
       input_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM}));
-    OP_REQUIRES(
-      isValidType(output_index, {DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM}));
+    OP_REQUIRES(isValidType(output_index, {DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM,
+                                           DataType::QUANT_INT16_SYMM}));
   }
   else if (node.param().op_type == operation::ElementwiseUnary::Type::FLOOR)
   {
