@@ -65,7 +65,7 @@ ir::OperandIndex OddOutputPass::insertPermute(ir::OperandIndex ind)
   auto &output_obj = _graph.operands().at(output_ind);
 
   using ir::operation::Permute;
-  auto permute_obj = std::make_unique<Permute>(ind, output_ind);
+  auto permute_obj = std::make_unique<Permute>(ind, output_ind, ir::PermuteType::SAME);
   auto permute_ind = _graph.operations().push(std::move(permute_obj));
 
   output_obj.setDef(permute_ind);

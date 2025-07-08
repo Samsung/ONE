@@ -29,21 +29,22 @@ namespace onert::ir::operation
 
 /**
  * @brief Class to represent Permute operation
- * @note  Permute operation reorders the dimensions of a tensor.
+ * @note  Permute operation reorders the dimensions of a tensor and convert data types if needed
  *
  *        This operation is virtual operation, which is not used on real model, but used internally.
- *        It was introduced to support various model layout (NHWC, NCHW, etc) and backend layout.
+ *        This operation is used for below cases.
+ *
  *        But currently, model layout and backend layout are always same as NHWC.
  *        So this operation is used for below cases.
  *        1) Handle model output buffer's special case
  *          1-1) Model output is comes from model constant
  *          1-2) Model output is comes from model input
  *          1-3) Model output shares tensor with other model output(s)
- *        2) Handle shared tensor between different backend
- *
- *        Q) Why name is still 'Permute'?
- *        A) It is handled as copy operation on compile phase,
- *           but it can be permute operation if output buffer layout is changed by API call
+ *        2) Handle when tensor defining backend is different with tensor using backend
+ *        3) Handle when actual input and/or output layouts are different with model layout
+ *           by user setting
+ *        4) Handle when actual input and/or output data type is different with model data type
+ *           by user setting or model connection
  */
 class Permute : public Operation
 {
@@ -52,7 +53,13 @@ public:
   OpCode opcode() const final { return OpCode::Permute; }
 
 public:
-  Permute(const OperandIndex &input, const OperandIndex &output);
+  Permute(const OperandIndex &input, const OperandIndex &output, PermuteType type);
+
+public:
+  PermuteType getPermuteType() const { return _type; }
+
+private:
+  PermuteType _type = PermuteType::SAME;
 };
 
 } // namespace onert::ir::operation
