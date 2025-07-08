@@ -15,9 +15,12 @@
  */
 
 #include "loader/CircleLoader.h"
+#include "loader/ModelLoader.h"
 
 #include "BaseLoader.h"
 #include "circle_schema_generated.h"
+
+#include <filesystem>
 
 namespace onert::loader
 {
@@ -70,6 +73,8 @@ protected:
   void loadBCQGather(const Operator *op, ir::Graph &subg);
   void loadRmsNorm(const Operator *op, ir::Graph &subg);
   void loadRoPE(const Operator *op, ir::Graph &subg);
+  void loadCall(const Operator *op, ir::Graph &subg);
+  void loadRunModel(const Operator *op, ir::Graph &subg);
 
 public:
   using BaseLoader::BaseLoader;
@@ -169,6 +174,12 @@ private:
         return;
       case circle::BuiltinOperator::BuiltinOperator_ROPE:
         loadRoPE(op, subg);
+        return;
+      case circle::BuiltinOperator::BuiltinOperator_CALL:
+        loadCall(op, subg);
+        return;
+      case circle::BuiltinOperator::BuiltinOperator_RUN_MODEL:
+        loadRunModel(op, subg);
         return;
       default:
         BaseLoader::loadOperation(op, subg);
@@ -275,6 +286,62 @@ void CircleLoader::loadRoPE(const Operator *op, ir::Graph &subg)
   param.mode = convertRoPEMode(options->mode());
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::RoPE(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+void CircleLoader::loadCall(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::Call::Param param;
+  const auto *options = op->builtin_options_as_CallOptions();
+  const uint32_t callee_index = options->subgraph();
+  verifySubgraphIndex(callee_index);
+  param.callee_subg_index = ir::SubgraphIndex{static_cast<uint16_t>(callee_index)};
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Call(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+void CircleLoader::loadRunModel(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  const auto *options = op->builtin_options_as_RunModelOptions();
+
+  // As workaround, we assume that only tvn type model is used for RUN_MODEL
+  // So subgraph will have only one OP: Bulk
+  // We copy this OP into this subgraph (like model inlining)
+  //
+  // TODO Introduce RunModel operator type to support various model
+  // TODO Introduce ModelIndexManager to handle various case
+  //      - ModelIndex mapping for nnpackage's multimodel
+  //      - ModelIndex mapping for RUN_MODEL
+  //      - Lazy loading for model index for RUN_MODEL
+  //      - Model inlining on optimize phase (compile)
+  assert(!_file_path.empty());
+  auto model_base_path = std::filesystem::path(_file_path).parent_path();
+  auto location = options->location()->str();
+  auto model_path = model_base_path / location;
+  auto type = model_path.extension().string();
+
+  // auto model = onert::loader::loadModel(model_path.string(), type); // TODO Fix this
+  auto model = onert::loader::loadModel(model_path.string(), "tvn");
+  assert(model);
+
+  // Get 1st OP in 1st subgraph
+  auto &op_bulk = model->primary_subgraph()->operations().at(ir::OperationIndex{0});
+  // Check if it is Bulk operation
+  assert(op_bulk.opcode() == ir::OpCode::Bulk);
+  const auto bulk_op = dynamic_cast<const ir::operation::Bulk *>(&op_bulk);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Bulk(inputs, outputs, bulk_op->param()));
   subg.addOperation(std::move(new_op));
 }
 

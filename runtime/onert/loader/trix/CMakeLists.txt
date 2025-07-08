@@ -1,3 +1,7 @@
+if (NOT BUILD_TRIX_LOADER)
+  return()
+endif ()
+
 nnfw_find_package(TRIXEngine QUIET)
 if(NOT TRIXEngine_FOUND)
   message(STATUS "ONERT frontend: Failed to find TRIXEngine")

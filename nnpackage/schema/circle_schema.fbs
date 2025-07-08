@@ -299,6 +299,7 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
+  RUN_MODEL = -8,
   ROPE = -7,
   RMS_NORM = -6,
   GRU = -5,
@@ -650,6 +651,7 @@ union BuiltinOptions {
   BitcastOptions,
   BitwiseXorOptions,
   RightShiftOptions,
+  RunModelOptions = 248,
   RoPEOptions = 249,
   RmsNormOptions = 250,
   GRUOptions = 251,
@@ -1547,6 +1549,13 @@ enum RoPEMode : int {
 
 table RoPEOptions {
   mode: RoPEMode;
+}
+
+table RunModelOptions {
+  // Relative path from current model directory
+  location:string;
+  // Entry subgraph signature. Empty means default subgraph.
+  signature:string;
 }
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a

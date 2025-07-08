@@ -119,6 +119,14 @@ protected:
 
     return builtin_op;
   }
+  // Subgraph index verification
+  void verifySubgraphIndex(int subg_index)
+  {
+    const auto num_subgraphs = _domain_model->subgraphs()->size();
+    if (subg_index < 0 || subg_index >= static_cast<int32_t>(num_subgraphs))
+      throw std::runtime_error{std::string{"Invalid subgraph index - "} +
+                               std::to_string(subg_index)};
+  }
 
 private:
   std::unique_ptr<ir::Data> loadMetadata(const uint32_t buffer_idx);
@@ -170,21 +178,14 @@ private:
   void loadUnpack(const Operator *op, ir::Graph &subg);
   void loadWhile(const Operator *op, ir::Graph &subg);
 
-  void verifySubgraphIndex(int subg_index)
-  {
-    const auto num_subgraphs = _domain_model->subgraphs()->size();
-    if (subg_index < 0 || subg_index >= static_cast<int32_t>(num_subgraphs))
-      throw std::runtime_error{std::string{"Invalid subgraph index - "} +
-                               std::to_string(subg_index)};
-  }
-
 protected:
   // Base address for mapped region for loading (if needed)
   uint8_t *_base;
   // Memory page size
   int32_t _pagesize;
-  // loaded file description
+  // loaded file description and path
   int _fd;
+  std::string _file_path;
   // Reference to ir::model (to be loaded from _domain_model)
   std::unique_ptr<ir::Model> &_model;
   const Model *_domain_model;
@@ -203,6 +204,7 @@ protected:
 template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const std::string &file_path)
 {
+  _file_path = file_path;
   _fd = open(file_path.c_str(), O_RDONLY);
   if (_fd < 0)
   {
@@ -309,7 +311,7 @@ ir::DataType BaseLoader<LoaderDomain>::BaseLoader::tensorTypeToDataType(const Te
     case TensorType::TensorType_BOOL:
       return ir::DataType::BOOL8;
     case TensorType::TensorType_INT16:
-      return ir::DataType::QUANT_INT16_ASYMM;
+      return ir::DataType::QUANT_INT16_SYMM;
     // case TensorType::TensorType_COMPLEX64
     case TensorType::TensorType_INT8:
       return ir::DataType::QUANT_INT8_ASYMM;

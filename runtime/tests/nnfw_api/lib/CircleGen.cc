@@ -635,6 +635,13 @@ uint32_t CircleGen::addOperatorRoPE(const OperatorParams &params, circle::RoPEMo
                                 circle::BuiltinOptions_RoPEOptions, options);
 }
 
+uint32_t CircleGen::addOperatorCall(const OperatorParams &params, uint32_t callee_subg)
+{
+  auto options = circle::CreateCallOptions(_fbb, callee_subg).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_CALL,
+                                circle::BuiltinOptions_CallOptions, options);
+}
+
 // NOTE Please add addOperator functions ABOVE this lie
 //
 // %  How to add a new addOperatorXXX fuction
