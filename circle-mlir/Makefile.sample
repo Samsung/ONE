@@ -15,6 +15,9 @@ endif
 # TODO error handle if not found
 PYTHON3_PATH=$(shell dirname $(PYTHON3_CMD))
 
+# NOTE CIRCLE_MLIR_XXX is used for CMakeLists
+#      CIRCLEMLIR_XXX is used in this Makefile.sample
+
 CIRCLEMLIR_BUILD_DEBUG?=build/debug
 CIRCLEMLIR_BUILD_REL?=build/release
 CIRCLEMLIR_BUILD_COV?=build/coverage
