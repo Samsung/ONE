@@ -49,7 +49,6 @@ class CONSTANT:
         'fuse_prelu',
         'fuse_gelu',
         'fuse_rsqrt',
-        'fuse_rope',
         'fuse_mean_with_mean',
         'fuse_mul_with_conv',
         'fuse_mul_with_div',
