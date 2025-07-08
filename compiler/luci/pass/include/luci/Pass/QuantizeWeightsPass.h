@@ -37,6 +37,7 @@ public:
     loco::DataType input_model_dtype = loco::DataType::Unknown;
     loco::DataType output_model_dtype = loco::DataType::Unknown;
     QuantizationGranularity granularity = QuantizationGranularity::ChannelWise;
+    QuantizationAlgorithmParams algorithm_params;
   };
 
 public:
@@ -47,13 +48,15 @@ public:
 
 public:
   QuantizeWeightsPass(loco::DataType input_model_dtype, loco::DataType output_model_dtype,
-                      QuantizationGranularity granularity)
+                      QuantizationGranularity granularity,
+                      QuantizationAlgorithmParams algorithm_params)
   {
     _ctx = std::make_unique<Context>();
     {
       _ctx->input_model_dtype = input_model_dtype;
       _ctx->output_model_dtype = output_model_dtype;
       _ctx->granularity = granularity;
+      _ctx->algorithm_params = algorithm_params;
     }
   }
   virtual const char *name(void) const { return "luci::QuantizeWeightsPass"; }
