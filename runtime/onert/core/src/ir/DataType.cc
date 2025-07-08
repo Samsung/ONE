@@ -46,8 +46,6 @@ size_t sizeOfDataType(DataType data_type)
       return sizeof(float16);
     case DataType::INT64:
       return sizeof(int64_t);
-    case DataType::QUANT_INT16_ASYMM:
-      return sizeof(int16_t);
     case DataType::QUANT_INT16_SYMM:
       return sizeof(int16_t);
     default:

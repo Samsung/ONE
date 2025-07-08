@@ -309,7 +309,7 @@ ir::DataType BaseLoader<LoaderDomain>::BaseLoader::tensorTypeToDataType(const Te
     case TensorType::TensorType_BOOL:
       return ir::DataType::BOOL8;
     case TensorType::TensorType_INT16:
-      return ir::DataType::QUANT_INT16_ASYMM;
+      return ir::DataType::QUANT_INT16_SYMM;
     // case TensorType::TensorType_COMPLEX64
     case TensorType::TensorType_INT8:
       return ir::DataType::QUANT_INT8_ASYMM;
@@ -454,6 +454,23 @@ template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadQuantization(const Tensor *tensor, ir::TypeInfo &typeInfo)
 {
   auto q_params = tensor->quantization();
+
+  // Type validation
+  // INT16 should be symmetric quantized
+  if (tensor->type() == TensorType::TensorType_INT16)
+  {
+    if (q_params->zero_point() != nullptr && q_params->zero_point()->size() != 0)
+    {
+      auto zero_points = q_params->zero_point();
+      for (uint32_t i = 0; i < zero_points->size(); i++)
+      {
+        if (zero_points->Get(i) != 0)
+          throw std::runtime_error(
+            "Quantization param: int16 should be symmetric, but zero_point is not zero.");
+      }
+    }
+  }
+
   if (q_params == nullptr || q_params->scale() == nullptr || q_params->scale()->size() == 0)
   {
     typeInfo.quantization(0., 0);

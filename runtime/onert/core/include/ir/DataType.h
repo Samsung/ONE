@@ -34,7 +34,7 @@ enum class DataType
   FLOAT16 = 7,
   INT64 = 8,
   QUANT_INT8_ASYMM = 9,
-  QUANT_INT16_ASYMM = 10,
+  // QUANT_INT16_ASYMM = 10, // Not used now
   QUANT_INT8_SYMM_PER_CHANNEL = 11,
   QUANT_INT16_SYMM = 12,
   QUANT_GGML_Q4_0 = 13, // 4bit quantization, 32 block, 16bit delta
