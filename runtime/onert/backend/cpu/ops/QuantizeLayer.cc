@@ -62,9 +62,14 @@ void QuantizeLayer::configure(const IPortableTensor *input, IPortableTensor *out
 
 void QuantizeLayer::run()
 {
-  if ((_input->data_type() == OperandType::FLOAT32))
+  if (_input->data_type() == OperandType::FLOAT32)
   {
-    affineQuantize<float, uint8_t>(_input, _output);
+    if (_output->data_type() == OperandType::QUANT_UINT8_ASYMM)
+      affineQuantize<float, uint8_t>(_input, _output);
+    else if (_output->data_type() == OperandType::QUANT_INT16_SYMM)
+      affineQuantize<float, int16_t>(_input, _output);
+    else
+      throw std::runtime_error{"Quantize: Unsupported data type"};
   }
   else if ((_input->data_type() == OperandType::QUANT_UINT8_ASYMM) &&
            (_output->data_type() == OperandType::QUANT_INT8_ASYMM))

@@ -56,6 +56,20 @@ TEST_F(GenModelTest, OneOp_Quantize_Int8toUint8)
   SUCCEED();
 }
 
+TEST_F(GenModelTest, OneOp_Quantize_toInt16)
+{
+  CircleGen cgen =
+    genSimpleQuantizeModel(circle::TensorType_FLOAT32, 0, 0, circle::TensorType_INT16, 2., 0);
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(
+    TestCaseData{}
+      .addInput<float>({-10, -50, 2, 42, -46, 14, -50, -56, -48, -48, -54, -28, -66, -20, -4, 48})
+      .addOutput<int16_t>(
+        {-5, -25, 1, 21, -23, 7, -25, -28, -24, -24, -27, -14, -33, -10, -2, 24}));
+  _context->setBackends({"cpu"});
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, neg_OneOp_Quantize_Uint8toInt16)
 {
   CircleGen cgen =

@@ -125,6 +125,12 @@ void dequantizeUint8(const IPortableTensor *input, IPortableTensor *output)
                          getBuffer<float>(output), input->data_scale(), input->data_zero_point());
 }
 
+void dequantizeInt16(const IPortableTensor *input, IPortableTensor *output)
+{
+  nnfw::cker::Dequantize(getShape(input), getBuffer<int16_t>(input), getShape(output),
+                         getBuffer<float>(output), input->data_scale(), input->data_zero_point());
+}
+
 void expFloat32(const IPortableTensor *input, IPortableTensor *output)
 {
   nnfw::cker::Exp(getShape(input), getBuffer<float>(input), getShape(output),
@@ -244,6 +250,10 @@ void ElementwiseUnaryLayer::configure(const IPortableTensor *input, IPortableTen
                (input->data_type() == OperandType::QUANT_INT8_SYMM))
       {
         _kernel = dequantizeInt8;
+      }
+      else if (input->data_type() == OperandType::QUANT_INT16_SYMM)
+      {
+        _kernel = dequantizeInt16;
       }
       else
       {
