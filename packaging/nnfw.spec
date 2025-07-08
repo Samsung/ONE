@@ -30,19 +30,11 @@ Source3016: XNNPACK.tar.gz
 %{!?build_type:     %define build_type      Release}
 %{!?trix_support:   %define trix_support    1}
 %{!?odc_build:      %define odc_build       1}
-%{!?coverage_build: %define coverage_build  0}
 %{!?test_build:     %define test_build      0}
 %{!?extra_option:   %define extra_option    %{nil}}
-%{!?config_support: %define config_support  1}
 # Define nproc on gbs build option if you want to set number of build threads manually (ex. CI/CD infra)
 %define build_jobs   %{?!nproc:%{?_smp_mflags}%{?!_smp_mflags:-j4}}%{?nproc:-j%nproc}
 %{!?nproc:          %define nproc           %{?!jobs:4}%{?jobs}}
-
-%if %{coverage_build} == 1
-# Coverage test requires debug build runtime
-%define build_type Debug
-%define test_build 1
-%endif
 
 BuildRequires:  cmake
 
@@ -110,7 +102,6 @@ Summary: NNFW Test
 %description test
 NNFW test rpm.
 If you want to use test package, you should install runtime package which is build with test build option
-If you want to get coverage info, you should install runtime package which is build with coverage build option
 # TODO Use release runtime pacakge for test
 %endif
 
@@ -147,9 +138,8 @@ If you want to get coverage info, you should install runtime package which is bu
 %define test_install_dir %{test_install_home}/Product/out
 %define test_install_path %{buildroot}/%{test_install_dir}
 
-# Set option for test build (and coverage test build)
+# Set option for test build
 %define option_test -DENABLE_TEST=OFF
-%define option_coverage %{nil}
 %define test_suite_list infra/scripts tests/scripts
 
 %if %{test_build} == 1
@@ -158,16 +148,10 @@ If you want to get coverage info, you should install runtime package which is bu
 
 # Set option for configuration
 %define option_config %{nil}
-%if %{config_support} == 1
-%endif # config_support
-
-%if %{coverage_build} == 1
-%define option_coverage -DENABLE_COVERAGE=ON
-%endif # coverage_build
 
 %define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen \\\
         -DEXTERNALS_BUILD_THREAD=%{nproc} -DBUILD_MINIMAL_SAMPLE=OFF -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
-        %{option_test} %{option_coverage} %{option_config} %{extra_option}
+        %{option_test} %{option_config} %{extra_option}
 
 %define strip_options %{nil}
 %if %{build_type} == "Release"
@@ -236,9 +220,6 @@ cp -r %{nncc_workspace}/overlay/include/flatbuffers %{overlay_path}/include
 %{build_env} ./nnfw install --prefix %{nnfw_workspace}/out %{strip_options}
 
 %if %{test_build} == 1
-%if %{coverage_build} == 1
-pwd > runtime/tests/scripts/build_path.txt
-%endif # coverage_build
 tar -zcf test-suite.tar.gz infra/scripts
 %endif # test_build
 %endif # arm armv7l armv7hl aarch64
@@ -298,11 +279,6 @@ cp runtime/tests/nnapi/nnapi_gtest.skip.%{target_arch}-* %{test_install_path}/nn
 cp %{test_install_path}/nnapi-gtest/nnapi_gtest.skip.%{target_arch}-linux.cpu %{test_install_path}/nnapi-gtest/nnapi_gtest.skip
 tar -zxf test-suite.tar.gz -C %{buildroot}%{test_install_home}
 
-%if %{coverage_build} == 1
-mkdir -p %{buildroot}%{test_install_home}/gcov
-find %{nnfw_workspace} -name "*.gcno" -exec xargs cp {} %{buildroot}%{test_install_home}/gcov/. \;
-install -m 0644 ./runtime/tests/scripts/build_path.txt %{buildroot}%{test_install_dir}/test/build_path.txt
-%endif # coverage_build
 %endif # test_build
 
 %if %{odc_build} == 1
