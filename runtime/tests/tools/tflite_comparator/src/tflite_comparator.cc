@@ -239,6 +239,20 @@ int main(const int argc, char **argv)
   NNFW_ASSERT_FAIL(nnfw_load_model_from_file(onert_session, tflite_file.c_str()),
                    "[ ERROR ] Failure during model load");
 
+  // Configurations from environment variable
+  char *available_backends = std::getenv("BACKENDS");
+  if (available_backends)
+    NNFW_ASSERT_FAIL(nnfw_set_available_backends(onert_session, available_backends),
+                     "[ ERROR ] Failure to set backend");
+  char *log_enable = std::getenv("ONERT_LOG_ENABLE");
+  if (log_enable)
+    NNFW_ASSERT_FAIL(nnfw_set_config(onert_session, "ONERT_LOG_ENABLE", log_enable),
+                     "[ ERROR ] Failure to set logging");
+  char *num_threads = std::getenv("NUM_THREADS");
+  if (num_threads)
+    NNFW_ASSERT_FAIL(nnfw_set_config(onert_session, "NUM_THREADS", num_threads),
+                     "[ ERROR ] Failure to set number of threads");
+
   uint32_t num_inputs;
   uint32_t num_outputs;
   NNFW_ASSERT_FAIL(nnfw_input_size(onert_session, &num_inputs),

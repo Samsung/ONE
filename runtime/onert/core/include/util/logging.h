@@ -42,6 +42,7 @@ public:
 
 public:
   bool enabled(void) const { return _enabled; }
+  void update(void) { _enabled = util::getConfigBool(util::config::ONERT_LOG_ENABLE); }
 
 private:
   bool _enabled;
@@ -76,6 +77,8 @@ inline std::string decorated_name(const char *input)
     {                                        \
       METHOD;                                \
   } while (0)
+
+#define UPDATE_VERBOSE_CONFIG() ::onert::util::logging::ctx.update()
 
 #define MEASURE_TIME_START(name) \
   do                             \
