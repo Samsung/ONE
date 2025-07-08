@@ -22,6 +22,7 @@
 #include "pass/ConstantOutputPass.h"
 #include "pass/OddOutputPass.h"
 #include "pass/PassRunner.h"
+#include "pass/PermutationIOPass.h"
 #include "pass/UnusedOperandEliminationPass.h"
 #include "../dumper/dot/DotDumper.h"
 #include "../exec/MultiModelExecutors.h"
@@ -108,8 +109,11 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       throw std::runtime_error("MultiModelCompiler can only compile models for inference.");
   }
 
+  std::unordered_map<ir::ModelIndex, CompilerOptions> model_options;
   for (uint16_t i = 0; i < model_count; i++)
   {
+    auto model_index = ir::ModelIndex{i};
+    model_options[model_index] = optionForSingleModel(model_index);
     _nnpkg->model(ir::ModelIndex{i})->iterate([&](const ir::SubgraphIndex &, ir::IGraph &graph) {
       auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
 
@@ -117,6 +121,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       pass::PassRunner{}
         .append(std::make_unique<pass::ConstantOutputPass>(subg))
         .append(std::make_unique<pass::OddOutputPass>(subg))
+        .append(std::make_unique<pass::PermutationIOPass>(subg, model_options[model_index]))
         .run();
 
       // Optimizations
@@ -151,7 +156,6 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
   std::unordered_map<ir::ModelIndex,
                      std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>>
     lowered_subgs;
-  std::unordered_map<ir::ModelIndex, CompilerOptions> model_options;
 
   for (uint16_t i = 0; i < model_count; i++)
   {
@@ -164,7 +168,6 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       dot_dumper.dump(subg,
                       nnfw::misc::str("before_lower_model-", i, "-subg-", subg_index.value()));
       // Lower: Assign backend
-      model_options[model_index] = optionForSingleModel(model_index);
       lowered_subgs[model_index][subg_index] =
         std::make_unique<compiler::LoweredGraph>(subg, model_options[model_index]);
       // Set tracing_ctx for copied graph

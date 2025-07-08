@@ -30,9 +30,10 @@ namespace pass
 
 class PermutationIOPass : public Pass
 {
+
 public:
-  PermutationIOPass(ILoweredGraph &lowered_graph, const CompilerOptions &options)
-    : Pass{lowered_graph.graph()}, _lowered_graph(lowered_graph), _options(options)
+  PermutationIOPass(ir::Graph &graph, const CompilerOptions &options)
+    : Pass(graph), _options(options)
   {
   }
 
@@ -47,7 +48,6 @@ private:
                            const ir::Layout &to_layout);
 
 private:
-  compiler::ILoweredGraph &_lowered_graph;
   const compiler::CompilerOptions &_options;
 };
 

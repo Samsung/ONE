@@ -92,15 +92,6 @@ void PermutationIOPass::insertInputPermute(const ir::OperandIndex &index, const 
   new_input.insertUse(node_index);
   _graph.operands().at(index).setDef(node_index);
 
-  // Update LowerInfo
-  const backend::Backend *builtin_backend = compiler::BackendManager::get().getBuiltin();
-  auto input_operand_li = std::make_unique<compiler::OperandLowerInfo>();
-  input_operand_li->addDefBackend(builtin_backend);
-  input_operand_li->addUseBackend(builtin_backend);
-  auto &lower_info = _lowered_graph.lower_info();
-  lower_info.operand.set(input_operand_index, std::move(input_operand_li));
-  lower_info.operation.emplace(node_index, builtin_backend);
-
   VERBOSE(PermuteIOPass) << "Permute Op inserted for a input, node index : " << node_index
                          << std::endl;
   VERBOSE(PermuteIOPass) << "  - Input (inserted) Operand : " << input_operand_index << std::endl;
@@ -136,15 +127,6 @@ void PermutationIOPass::insertOutputPermute(const ir::OperandIndex &index, const
   new_output.setDef(node_index);
   assert(_graph.operands().at(index).getUses().size() == 0);
   origin_operand.insertUse(node_index);
-
-  // Update LowerInfo
-  const backend::Backend *builtin_backend = compiler::BackendManager::get().getBuiltin();
-  auto input_operand_li = std::make_unique<compiler::OperandLowerInfo>();
-  input_operand_li->addDefBackend(builtin_backend);
-  input_operand_li->addUseBackend(builtin_backend);
-  auto &lower_info = _lowered_graph.lower_info();
-  lower_info.operand.set(output_operand_index, std::move(input_operand_li));
-  lower_info.operation.emplace(node_index, builtin_backend);
 
   VERBOSE(PermuteIOPass) << "Permute Op inserted for a output, node index : " << node_index
                          << std::endl;
