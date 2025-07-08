@@ -152,6 +152,7 @@ class CONSTANT:
         ('fuse_rope', 'fuse ops to RoPE operator'),
         ('replace_cw_mul_add_with_depthwise_conv',
          'replace channel-wise Mul/Add with DepthwiseConv2D'),
+        ('remove_duplicate_const', 'remove all duplicate constant nodes'),
         ('remove_fakequant', 'remove FakeQuant ops'),
         ('remove_gather_guard',
          'remove Add/FloorMod guards of Gather indices with certain conditions. '
@@ -178,6 +179,8 @@ class CONSTANT:
         ('resolve_customop_max_pool_with_argmax',
          'convert Custom(MaxPoolWithArgmax) to net of builtin operators'),
         ('resolve_customop_splitv', 'convert Custom(SplitV) op to SplitV op'),
+        ('resolve_former_customop',
+         'convert a former custom op to builtin in from schema version upgrade'),
         ('shuffle_weight_to_16x1float32',
          'convert weight format of FullyConnected op to SHUFFLED16x1FLOAT32.'
          ' Note that it only converts weights whose row is a multiple of 16'),
