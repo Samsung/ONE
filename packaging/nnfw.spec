@@ -153,8 +153,7 @@ If you want to get coverage info, you should install runtime package which is bu
 %define test_suite_list infra/scripts tests/scripts
 
 %if %{test_build} == 1
-# ENVVAR_ONERT_CONFIG: Use environment variable for runtime core configuration and debug
-%define option_test -DENABLE_TEST=ON -DENVVAR_ONERT_CONFIG=ON
+%define option_test -DENABLE_TEST=ON
 %endif # test_build
 
 # Set option for configuration
