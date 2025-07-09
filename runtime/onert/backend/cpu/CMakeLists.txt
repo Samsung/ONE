@@ -20,9 +20,9 @@ target_link_libraries(${LIB_ONERT_BACKEND_CPU} PUBLIC ggml)
 set_target_properties(${LIB_ONERT_BACKEND_CPU} PROPERTIES
   OUTPUT_NAME backend_cpu
   POSITION_INDEPENDENT_CODE ON
-  INSTALL_RPATH "$ORIGIN:$ORIGIN/..")
+  INSTALL_RPATH ${ONERT_RPATH_PLUGIN})
 
-install(TARGETS ${LIB_ONERT_BACKEND_CPU} DESTINATION lib/nnfw/backend)
+install(TARGETS ${LIB_ONERT_BACKEND_CPU} DESTINATION ${ONERT_INSTALL_BACKENDDIR})
 
 if(NOT ENABLE_TEST)
   return()
@@ -41,7 +41,7 @@ target_link_libraries(${TEST_ONERT_CPU_BACKEND} gtest gtest_main dl ${LIB_PTHREA
 
 # Set install rpath to find onert_core, onert_backend_cpu, etc
 set_target_properties(${TEST_ONERT_CPU_BACKEND} PROPERTIES
-  INSTALL_RPATH "$ORIGIN/../lib/nnfw:$ORIGIN/../lib/nnfw/backend")
+  INSTALL_RPATH "$ORIGIN/../${ONERT_INSTALL_COREDIR}:$ORIGIN/../${ONERT_INSTALL_BACKENDDIR}")
 
 add_test(${TEST_ONERT_CPU_BACKEND} ${TEST_ONERT_CPU_BACKEND})
 install(TARGETS ${TEST_ONERT_CPU_BACKEND} DESTINATION unittest)

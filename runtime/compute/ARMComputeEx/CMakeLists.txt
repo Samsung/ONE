@@ -34,5 +34,5 @@ add_library(ignore_unused_warning INTERFACE)
 target_compile_options(ignore_unused_warning INTERFACE -Wno-unused-parameter -Wno-unused-function)
 target_link_libraries(arm_compute_ex PRIVATE $<$<NOT:$<CONFIG:Debug>>:ignore_unused_warning>)
 # Install arm_compute_ex with acl backend
-install(TARGETS arm_compute_ex DESTINATION lib/nnfw/backend)
-set_target_properties(arm_compute_ex PROPERTIES INSTALL_RPATH "$ORIGIN:$ORIGIN/..:$ORIGIN/../..")
+install(TARGETS arm_compute_ex DESTINATION ${ONERT_INSTALL_BACKENDDIR})
+set_target_properties(arm_compute_ex PROPERTIES INSTALL_RPATH ${ONERT_RPATH_PLUGIN})

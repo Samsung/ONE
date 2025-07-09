@@ -4,9 +4,28 @@ project(nnfw)
 
 enable_testing()
 
+# Library install path
+include(GNUInstallDirs)
+set(ONERT_INSTALL_APIDIR ${CMAKE_INSTALL_LIBDIR})
+set(ONERT_INSTALL_COREDIR ${CMAKE_INSTALL_LIBDIR}/nnfw)
+# TODO Handle asan build
+# ONERT core uses dlopen to use loader, backend, odc, and codegen.
+# But asan build does not support dlopen with RPATH, so we need to install all libraries in same directory with core.
+set(ONERT_INSTALL_LOADERDIR ${ONERT_INSTALL_COREDIR}/loader)
+set(ONERT_INSTALL_BACKENDDIR ${ONERT_INSTALL_COREDIR}/backend)
+set(ONERT_INSTALL_ODCDIR ${ONERT_INSTALL_COREDIR}/odc)
+set(ONERT_INSTALL_CODEGENDIR ${ONERT_INSTALL_COREDIR}/codegen)
+# Decide rpath for runtime library here because install path is decided above
+# API rpath: find core
+# core rpath: find plugins - loader, backend, odc, codegen
+# plugin rpath: find core
+set(ONERT_RPATH_API "$ORIGIN:$ORIGIN/nnfw")
+set(ONERT_RPATH_CORE "$ORIGIN:$ORIGIN/loader:$ORIGIN/backend:$ORIGIN/odc:$ORIGIN/codegen")
+set(ONERT_RPATH_PLUGIN "$ORIGIN:$ORIGIN/..")
+
 set(CMAKE_SKIP_BUILD_RPATH FALSE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-set(CMAKE_INSTALL_RPATH "$ORIGIN/../lib/:$ORIGIN/")
+set(CMAKE_INSTALL_RPATH "$ORIGIN/../${CMAKE_INSTALL_LIBDIR}/:$ORIGIN/")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 ### CMAKE_BUILD_TYPE_LC: Build type lower case

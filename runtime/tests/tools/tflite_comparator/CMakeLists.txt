@@ -13,4 +13,4 @@ target_link_libraries(tflite_comparator nnfw-dev)
 target_link_libraries(tflite_comparator nnfw_lib_tflite nnfw_lib_misc)
 target_link_libraries(tflite_comparator arser)
 
-install(TARGETS tflite_comparator DESTINATION bin)
+install(TARGETS tflite_comparator DESTINATION ${CMAKE_INSTALL_BINDIR})

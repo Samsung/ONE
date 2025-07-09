@@ -20,4 +20,4 @@ target_link_libraries(heap_trace PRIVATE ${CMAKE_DL_LIBS})
 
 add_subdirectory(tests)
 
-install(TARGETS heap_trace DESTINATION lib)
+install(TARGETS heap_trace DESTINATION ${CMAKE_INSTALL_LIBDIR})

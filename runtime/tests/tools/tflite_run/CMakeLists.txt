@@ -12,7 +12,7 @@ add_executable(tflite_run ${TFLITE_RUN_SRCS})
 target_link_libraries(tflite_run nnfw_lib_tflite nnfw_lib_benchmark)
 target_link_libraries(tflite_run arser)
 
-install(TARGETS tflite_run DESTINATION bin)
+install(TARGETS tflite_run DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 ## Add test cpp file
 add_executable(tflite_test src/tflite_test.cc)
