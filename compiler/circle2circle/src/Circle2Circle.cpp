@@ -198,7 +198,7 @@ int entry(int argc, char **argv)
   add_switch(arser, "--expand_broadcast_const", "This will expand broadcastable constant inputs");
   add_switch(arser, "--unroll_unidirseqlstm", "Unroll UnidirectionalSequenceLSTM operator.");
   add_switch(arser, "--convert_nchw_to_nhwc",
-             "Experimental: This will convert NCHW operators to NHWC under the assumption that "
+             "This will convert NCHW operators to NHWC under the assumption that "
              "input model is NCHW.");
   add_switch(arser, "--nchw_to_nhwc_input_shape",
              "Convert the input shape of the model (argument for --convert_nchw_to_nhwc).");
