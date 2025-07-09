@@ -54,6 +54,12 @@ void QuantizeLayer::configure(const IPortableTensor *input, IPortableTensor *out
       static_cast<double>(input->data_scale()) / static_cast<double>(output->data_scale());
     QuantizeMultiplier(effective_output_scale, &_output_multiplier, &_output_shift);
   }
+  else if(input->data_type() == OperandType::QUANT_INT16_SYMM && output->data_type() == OperandType::QUANT_INT16_SYMM)
+  {
+    const double effective_output_scale =
+      static_cast<double>(input->data_scale()) / static_cast<double>(output->data_scale());
+    QuantizeMultiplier(effective_output_scale, &_output_multiplier, &_output_shift);
+  }
   else
   {
     throw std::runtime_error{"Quantize: Unsupported  data type"};
@@ -81,6 +87,14 @@ void QuantizeLayer::run()
       getBuffer<int8_t>(_input), MatchingFlatSize(getShape(_input), getShape(_output)),
       _output_multiplier, _output_shift, _input->data_zero_point(), _output->data_zero_point(),
       getBuffer<uint8_t>(_output));
+  }
+  else if ((_input->data_type() == OperandType::QUANT_INT16_SYMM) &&
+           (_output->data_type() == OperandType::QUANT_INT16_SYMM))
+  {
+    nnfw::cker::Requantize<int16_t, int16_t>(
+      getBuffer<int16_t>(_input), MatchingFlatSize(getShape(_input), getShape(_output)),
+      _output_multiplier, _output_shift, _input->data_zero_point(), _output->data_zero_point(),
+      getBuffer<int16_t>(_output));
   }
   else
   {
