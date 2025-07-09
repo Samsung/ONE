@@ -70,6 +70,7 @@ protected:
   void loadBCQGather(const Operator *op, ir::Graph &subg);
   void loadRmsNorm(const Operator *op, ir::Graph &subg);
   void loadRoPE(const Operator *op, ir::Graph &subg);
+  void loadCall(const Operator *op, ir::Graph &subg);
 
 public:
   using BaseLoader::BaseLoader;
@@ -169,6 +170,9 @@ private:
         return;
       case circle::BuiltinOperator::BuiltinOperator_ROPE:
         loadRoPE(op, subg);
+        return;
+      case circle::BuiltinOperator::BuiltinOperator_CALL:
+        loadCall(op, subg);
         return;
       default:
         BaseLoader::loadOperation(op, subg);
@@ -275,6 +279,23 @@ void CircleLoader::loadRoPE(const Operator *op, ir::Graph &subg)
   param.mode = convertRoPEMode(options->mode());
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::RoPE(inputs, outputs, param));
+  subg.addOperation(std::move(new_op));
+}
+
+void CircleLoader::loadCall(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::Call::Param param;
+  const auto *options = op->builtin_options_as_CallOptions();
+  const uint32_t callee_index = options->subgraph();
+  verifySubgraphIndex(callee_index);
+  param.callee_subg_index = ir::SubgraphIndex{static_cast<uint16_t>(callee_index)};
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Call(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
