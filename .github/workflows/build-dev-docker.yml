@@ -16,16 +16,13 @@ jobs:
   filtering:
     runs-on: ubuntu-latest
     outputs:
-      yml: ${{ steps.filter.outputs.yml }}
-      target: ${{ steps.filter.outputs.changes }}
+      ubuntu-target: ${{ steps.ubuntu-filter.outputs.changes }}
+      android: ${{ steps.android-filter.outputs.android }}
     steps:
       - uses: dorny/paths-filter@v3
-        id: filter
+        id: ubuntu-filter
         with:
           filters: |
-            android:
-              - '.github/**'
-              - 'infra/docker/android-sdk/**'
             focal:
               - '.github/**'
               - 'infra/docker/focal/Dockerfile'
@@ -35,6 +32,13 @@ jobs:
             noble:
               - '.github/**'
               - 'infra/docker/noble/Dockerfile'
+      - uses: dorny/paths-filter@v3
+        id: android-filter
+        with:
+          filters: |
+            android:
+              - '.github/**'
+              - 'infra/docker/android-sdk/**'
 
   # Build on docker CLI for PR test without login
   build-ubuntu:
@@ -42,9 +46,7 @@ jobs:
     runs-on: one-x64-linux
     strategy:
       matrix:
-        version: ${{ fromJSON(needs.filtering.outputs.target) }}
-        exclude:
-          - version: android
+        version: ${{ fromJSON(needs.filtering.outputs.ubuntu-target) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -85,7 +87,7 @@ jobs:
 
   build-android:
     needs: filtering
-    if: github.repository_owner == 'Samsung' && contains(fromJSON(needs.filtering.outputs.target), 'android')
+    if: github.repository_owner == 'Samsung' && needs.filtering.outputs.android == 'true'
     runs-on: one-x64-linux
     steps:
       - name: Checkout

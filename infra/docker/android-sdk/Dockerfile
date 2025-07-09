@@ -47,7 +47,7 @@ WORKDIR /opt/android-tools
 
 # download and install Gradle
 # https://services.gradle.org/distributions/
-ARG GRADLE_VERSION=6.4.1
+ARG GRADLE_VERSION=7.6.4
 ARG GRADLE_DIST=bin
 RUN wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-${GRADLE_DIST}.zip && \
     unzip gradle*.zip && \
