@@ -29,6 +29,20 @@ CircleGen genSimpleQuantizeModel(circle::TensorType from_t, float input_scale, i
   return cgen;
 }
 
+TEST_F(GenModelTest, OneOp_Quantize_toInt16)
+{
+  CircleGen cgen =
+    genSimpleQuantizeModel(circle::TensorType_FLOAT32, 0, 0, circle::TensorType_INT16, 2., 0);
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->addTestCase(TestCaseData{}
+                          .addInput<float>({-128, 42, 200, -6, 254, -200, 16, -240, 98, -90, 152,
+                                            -32, 180, -150, 84, 20})
+                          .addOutput<int16_t>({-64, 21, 100, -3, 127, -100, 8, -120, 49, -45, 76,
+                                               -16, 90, -75, 42, 10}));
+  _context->setBackends({"cpu"});
+  SUCCEED();
+}
+
 TEST_F(GenModelTest, OneOp_Quantize_Uint8toInt8)
 {
   CircleGen cgen =
