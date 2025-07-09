@@ -73,7 +73,8 @@ void StaticShapeInferer::infer()
     const auto opcode = op.opcode();
     // IF: requires shape inference for then, else
     // While: requires shape inference for condition, body
-    if (opcode == ir::OpCode::If || opcode == ir::OpCode::While)
+    // Call: requires shape inference for callee
+    if (opcode == ir::OpCode::If || opcode == ir::OpCode::While || opcode == ir::OpCode::Call)
     {
       op.accept(*this);
     }
@@ -297,6 +298,23 @@ StaticShapeInferer::createStaticShapeInferers(
             throw std::runtime_error("StaticShapeInferer: Invalid While operation");
           }
         }
+        else if (op.opcode() == ir::OpCode::Call)
+        {
+          // TODO Remove dynamic_cast
+          try
+          {
+            const auto &call_op = dynamic_cast<const ir::operation::Call &>(op);
+
+            appendChildInferer(call_op.param().callee_subg_index);
+
+            appendSubgraphInputObserver(call_op.param().callee_subg_index);
+            setControlFlowOutputObserver(call_op.param().callee_subg_index);
+          }
+          catch (const std::bad_cast &)
+          {
+            throw std::runtime_error("StaticShapeInferer: Invalid Call operation");
+          }
+        }
       });
   }
 
@@ -426,6 +444,22 @@ void StaticShapeInferer::visit(const ir::operation::BroadcastTo &op)
   // re-sizing output shape
   ir::Shape new_shape = shape_inference::inferBroadcastToShape(shape.info().shape(), shape_buffer);
   output.info().shape(new_shape);
+}
+
+void StaticShapeInferer::visit(const ir::operation::Call &op)
+{
+  // re-sizing input shapes of callee subgraph
+  const std::vector<ir::OperandIndex> inputs{op.getInputs().begin(), op.getInputs().end()};
+
+  std::vector<ir::OperandInfo> inputs_info;
+  const auto &graph = _lowered_subg->graph();
+  for (size_t i = 0; i < inputs.size(); ++i)
+  {
+    const auto &operand_info = graph.operands().at(inputs.at(i)).info();
+    inputs_info.emplace_back(operand_info);
+  }
+  _subg_input_observers.at(op.param().callee_subg_index)->updateShapes(inputs_info);
+  _child_inferers.at(op.param().callee_subg_index)->infer();
 }
 
 void StaticShapeInferer::visit(const ir::operation::Comparison &op)
