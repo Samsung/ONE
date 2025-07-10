@@ -18,10 +18,10 @@ set(ONERT_INSTALL_CODEGENDIR ${ONERT_INSTALL_COREDIR}/codegen)
 # Decide rpath for runtime library here because install path is decided above
 # API rpath: find core
 # core rpath: find plugins - loader, backend, odc, codegen
-# plugin rpath: find core
+# plugin rpath: find core, dependent libraries (ex. armcompute)
 set(ONERT_RPATH_API "$ORIGIN:$ORIGIN/nnfw")
 set(ONERT_RPATH_CORE "$ORIGIN:$ORIGIN/loader:$ORIGIN/backend:$ORIGIN/odc:$ORIGIN/codegen")
-set(ONERT_RPATH_PLUGIN "$ORIGIN:$ORIGIN/..")
+set(ONERT_RPATH_PLUGIN "$ORIGIN:$ORIGIN/..:$ORIGIN/../..")
 
 set(CMAKE_SKIP_BUILD_RPATH FALSE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
