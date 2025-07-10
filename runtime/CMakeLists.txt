@@ -8,13 +8,19 @@ enable_testing()
 include(GNUInstallDirs)
 set(ONERT_INSTALL_APIDIR ${CMAKE_INSTALL_LIBDIR})
 set(ONERT_INSTALL_COREDIR ${CMAKE_INSTALL_LIBDIR}/nnfw)
-# TODO Handle asan build
 # ONERT core uses dlopen to use loader, backend, odc, and codegen.
 # But asan build does not support dlopen with RPATH, so we need to install all libraries in same directory with core.
-set(ONERT_INSTALL_LOADERDIR ${ONERT_INSTALL_COREDIR}/loader)
-set(ONERT_INSTALL_BACKENDDIR ${ONERT_INSTALL_COREDIR}/backend)
-set(ONERT_INSTALL_ODCDIR ${ONERT_INSTALL_COREDIR}/odc)
-set(ONERT_INSTALL_CODEGENDIR ${ONERT_INSTALL_COREDIR}/codegen)
+if (ASAN_BUILD)
+  set(ONERT_INSTALL_LOADERDIR ${ONERT_INSTALL_COREDIR})
+  set(ONERT_INSTALL_BACKENDDIR ${ONERT_INSTALL_COREDIR})
+  set(ONERT_INSTALL_ODCDIR ${ONERT_INSTALL_COREDIR})
+  set(ONERT_INSTALL_CODEGENDIR ${ONERT_INSTALL_COREDIR})
+else (ASAN_BUILD)
+  set(ONERT_INSTALL_LOADERDIR ${ONERT_INSTALL_COREDIR}/loader)
+  set(ONERT_INSTALL_BACKENDDIR ${ONERT_INSTALL_COREDIR}/backend)
+  set(ONERT_INSTALL_ODCDIR ${ONERT_INSTALL_COREDIR}/odc)
+  set(ONERT_INSTALL_CODEGENDIR ${ONERT_INSTALL_COREDIR}/codegen)
+endif(ASAN_BUILD)
 # Decide rpath for runtime library here because install path is decided above
 # API rpath: find core
 # core rpath: find plugins - loader, backend, odc, codegen
