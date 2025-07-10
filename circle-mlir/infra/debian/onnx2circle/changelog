@@ -1,3 +1,9 @@
+onnx2circle (0.4.0~202507100754~jammy) jammy; urgency=medium
+
+  * Supprot folding of SplitOp
+
+ -- On-device AI developers <nnfw@samsung.com>  Thu, 10 Jul 2025 08:05:05 +0000
+
 onnx2circle (0.4.0~202507010501~jammy) jammy; urgency=medium
 
   * Fixed SplitOp V13
