@@ -686,6 +686,70 @@ NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
   return NNFW_STATUS_NO_ERROR;
 }
 
+NNFW_STATUS nnfw_session::set_input_type(uint32_t index, NNFW_TYPE type)
+{
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during nnfw_session::set_input_type : "
+              << "run should be run before prepare" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  try
+  {
+    if (type != NNFW_TYPE_TENSOR_FLOAT32)
+    {
+      std::cerr << "Error during nnfw_session::set_input_type, not supported type" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    _coptions->input_type.insert_or_assign(onert::ir::IOIndex{index},
+                                           onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::set_input_type : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  // Not supporting yet
+  // TODO Enable this
+  std::cerr << "Error during nnfw_session::set_input_type : NYI" << std::endl;
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_output_type(uint32_t index, NNFW_TYPE type)
+{
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during nnfw_session::set_output_type : "
+              << "run should be run before prepare" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  try
+  {
+    if (type != NNFW_TYPE_TENSOR_FLOAT32)
+    {
+      std::cerr << "Error during nnfw_session::set_output_type, not supported type" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    _coptions->output_type.insert_or_assign(onert::ir::IOIndex{index},
+                                            onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "Error during nnfw_session::set_output_type : " << e.what() << std::endl;
+    return NNFW_STATUS_ERROR;
+  }
+
+  // Not supporting yet
+  // TODO Enable this
+  std::cerr << "Error during nnfw_session::set_output_type : NYI" << std::endl;
+  return NNFW_STATUS_ERROR;
+}
+
 NNFW_STATUS nnfw_session::set_input_tensorinfo(uint32_t index, const nnfw_tensorinfo *ti)
 {
   // sanity check
