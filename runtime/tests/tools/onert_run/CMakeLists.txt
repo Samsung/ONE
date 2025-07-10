@@ -37,4 +37,4 @@ if(Ruy_FOUND AND PROFILE_RUY)
   target_link_libraries(onert_run ruy_profiler)
 endif(Ruy_FOUND AND PROFILE_RUY)
 
-install(TARGETS onert_run DESTINATION bin)
+install(TARGETS onert_run DESTINATION ${CMAKE_INSTALL_BINDIR})

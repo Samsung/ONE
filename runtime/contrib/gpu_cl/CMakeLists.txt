@@ -28,7 +28,7 @@ target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE onert_core)
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE ${LIB_ONERT_BACKEND_CL_COMMON})
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE nnfw_common)
 
-set_target_properties(${LIB_ONERT_BACKEND_GPU_CL} PROPERTIES OUTPUT_NAME backend_gpu_cl)
+set_target_properties(${LIB_ONERT_BACKEND_GPU_CL} PROPERTIES OUTPUT_NAME backend_gpu_cl INSTALL_RPATH ${ONERT_RPATH_PLUGIN})
 
 add_library(tflite_ignore_warnings INTERFACE)
 target_compile_options(tflite_ignore_warnings INTERFACE -Wno-unused-parameter -Wno-sign-compare)
@@ -37,4 +37,4 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION
 endif()
 target_link_libraries(${LIB_ONERT_BACKEND_GPU_CL} PRIVATE tflite_ignore_warnings)
 
-install(TARGETS ${LIB_ONERT_BACKEND_GPU_CL} DESTINATION lib)
+install(TARGETS ${LIB_ONERT_BACKEND_GPU_CL} DESTINATION ${ONERT_INSTALL_BACKENDDIR})

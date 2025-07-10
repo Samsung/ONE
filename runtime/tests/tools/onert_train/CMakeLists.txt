@@ -34,7 +34,7 @@ target_link_libraries(onert_train nnfw-dev)
 target_link_libraries(onert_train arser)
 target_link_libraries(onert_train nnfw_lib_benchmark)
 
-install(TARGETS onert_train DESTINATION bin)
+install(TARGETS onert_train DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 if(NOT ENABLE_TEST)
   return()

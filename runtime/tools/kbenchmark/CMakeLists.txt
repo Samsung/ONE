@@ -17,7 +17,7 @@ target_include_directories(kbenchmark PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(kbenchmark PUBLIC nonius)
 target_link_libraries(kbenchmark PUBLIC dl)
 target_link_libraries(kbenchmark PUBLIC pthread arser)
-install(TARGETS kbenchmark DESTINATION bin)
+install(TARGETS kbenchmark DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # kernel libraries
 add_subdirectory(kernels)

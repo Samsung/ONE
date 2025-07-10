@@ -31,4 +31,4 @@ target_link_libraries(nnfw_api_pybind PRIVATE nnfw-dev)
 target_link_libraries(nnfw_api_pybind PRIVATE nnfw_common nnfw_coverage)
 
 # Install the Python module
-install(TARGETS nnfw_api_pybind DESTINATION lib)
+install(TARGETS nnfw_api_pybind DESTINATION ${ONERT_INSTALL_APIDIR})

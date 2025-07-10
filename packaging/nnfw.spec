@@ -231,14 +231,14 @@ mkdir -p %{buildroot}%{_libdir}/nnfw/backend
 mkdir -p %{buildroot}%{_libdir}/nnfw/loader
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_includedir}
-install -m 644 build/out/lib/*.so %{buildroot}%{_libdir}
-install -m 644 build/out/lib/nnfw/*.so %{buildroot}%{_libdir}/nnfw/
+install -m 644 build/out/%{_lib}/*.so %{buildroot}%{_libdir}
+install -m 644 build/out/%{_lib}/nnfw/*.so %{buildroot}%{_libdir}/nnfw/
 %if "%{asan}" == "1"
- install -m 644 build/out/lib/nnfw/backend/*.so %{buildroot}%{_libdir}
- install -m 644 build/out/lib/nnfw/loader/*.so %{buildroot}%{_libdir}
+ install -m 644 build/out/%{_lib}/nnfw/backend/*.so %{buildroot}%{_libdir}
+ install -m 644 build/out/%{_lib}/nnfw/loader/*.so %{buildroot}%{_libdir}
 %else
- install -m 644 build/out/lib/nnfw/backend/*.so %{buildroot}%{_libdir}/nnfw/backend
- install -m 644 build/out/lib/nnfw/loader/*.so %{buildroot}%{_libdir}/nnfw/loader
+ install -m 644 build/out/%{_lib}/nnfw/backend/*.so %{buildroot}%{_libdir}/nnfw/backend
+ install -m 644 build/out/%{_lib}/nnfw/loader/*.so %{buildroot}%{_libdir}/nnfw/loader
 %endif
 cp -r build/out/include/* %{buildroot}%{_includedir}/
 
@@ -285,7 +285,7 @@ tar -zxf test-suite.tar.gz -C %{buildroot}%{test_install_home}
 mkdir -p %{buildroot}%{_libdir}/nnfw/odc
 install -m 644 %{overlay_path}/lib/libluci*.so %{buildroot}%{_libdir}/nnfw/odc
 install -m 644 %{overlay_path}/lib/libloco*.so %{buildroot}%{_libdir}/nnfw/odc
-install -m 644 build/out/lib/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
+install -m 644 build/out/%{_lib}/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %endif # odc_build
 
 %endif

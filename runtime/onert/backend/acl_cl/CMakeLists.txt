@@ -17,6 +17,6 @@ target_link_libraries(${LIB_ONERT_BACKEND_ACL_CL} PRIVATE nnfw_coverage)
 # Set install rpath to find onert_core and acl library
 set_target_properties(${LIB_ONERT_BACKEND_ACL_CL} PROPERTIES
   OUTPUT_NAME backend_acl_cl
-  INSTALL_RPATH "$ORIGIN:$ORIGIN/..:$ORIGIN/../..")
+  INSTALL_RPATH ${ONERT_RPATH_PLUGIN})
 
-install(TARGETS ${LIB_ONERT_BACKEND_ACL_CL} DESTINATION lib/nnfw/backend)
+install(TARGETS ${LIB_ONERT_BACKEND_ACL_CL} DESTINATION ${ONERT_INSTALL_BACKENDDIR})

@@ -13,8 +13,8 @@ target_link_libraries(onert_odc PRIVATE onert_core luci::import luci::export luc
 target_link_libraries(onert_odc PRIVATE nnfw_common)
 target_link_libraries(onert_odc PRIVATE nnfw_coverage)
 
-install(TARGETS onert_odc LIBRARY DESTINATION lib/nnfw/odc)
-set_target_properties(onert_odc PROPERTIES INSTALL_RPATH "$ORIGIN:$ORIGIN/..")
+install(TARGETS onert_odc LIBRARY DESTINATION ${ONERT_INSTALL_ODCDIR})
+set_target_properties(onert_odc PROPERTIES INSTALL_RPATH ${ONERT_RPATH_PLUGIN})
 
 if(NOT ENABLE_TEST)
   return()
@@ -33,4 +33,4 @@ target_include_directories(${TEST_ONERT_ODC} PRIVATE $<TARGET_PROPERTY:onert_odc
 
 add_test(${TEST_ONERT_ODC} ${TEST_ONERT_ODC})
 install(TARGETS ${TEST_ONERT_ODC} DESTINATION unittest)
-set_target_properties(${TEST_ONERT_ODC} PROPERTIES INSTALL_RPATH "$ORIGIN/../lib/nnfw/odc")
+set_target_properties(${TEST_ONERT_ODC} PROPERTIES INSTALL_RPATH "$ORIGIN/../${ONERT_INSTALL_ODCDIR}")

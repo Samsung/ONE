@@ -13,7 +13,7 @@ function(add_kben_acl_cl_library)
   target_link_libraries(${ARG_NAME} arm_compute)
   target_link_libraries(${ARG_NAME} arm_compute_ex)
   target_link_libraries(${ARG_NAME} pthread)
-  install(TARGETS ${ARG_NAME} DESTINATION lib/kben)
+  install(TARGETS ${ARG_NAME} DESTINATION ${CMAKE_INSTALL_LIBDIR}/kben)
 endfunction(add_kben_acl_cl_library)
 
 add_kben_acl_cl_library(NAME kben_acl_cl_conv SOURCES Convolution.cpp)

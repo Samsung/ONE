@@ -13,4 +13,4 @@ endif(NOT ARMCompute_FOUND)
 add_executable(opencl_info ${OPENCL_INFO_SOURCE})
 target_link_libraries(opencl_info arm_compute)
 
-install(TARGETS opencl_info DESTINATION bin)
+install(TARGETS opencl_info DESTINATION ${CMAKE_INSTALL_BINDIR})

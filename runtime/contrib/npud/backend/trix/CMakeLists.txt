@@ -18,4 +18,4 @@ if(ENVVAR_NPUD_CONFIG)
   target_compile_definitions(npud_backend_trix PRIVATE ENVVAR_FOR_DEFAULT_CONFIG)
 endif(ENVVAR_NPUD_CONFIG)
 
-install(TARGETS npud_backend_trix DESTINATION lib)
+install(TARGETS npud_backend_trix DESTINATION ${CMAKE_INSTALL_LIBDIR})

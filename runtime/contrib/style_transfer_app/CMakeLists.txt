@@ -33,4 +33,4 @@ if(JPEG_FOUND)
   target_link_libraries(style_transfer_app ${JPEG_LIBRARIES})
 endif(JPEG_FOUND)
 
-install(TARGETS style_transfer_app DESTINATION bin)
+install(TARGETS style_transfer_app DESTINATION ${CMAKE_INSTALL_BINDIR})
