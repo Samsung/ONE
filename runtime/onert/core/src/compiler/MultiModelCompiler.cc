@@ -43,6 +43,46 @@ MultiModelCompiler::MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
   // DO NOTHING
 }
 
+CompilerOptions MultiModelCompiler::optionForSingleModel(const ir::ModelIndex &model_index)
+{
+  CompilerOptions opts = CompilerOptions(*_options); // Copy options
+  opts.input_layout.clear();
+  opts.output_layout.clear();
+  opts.input_type.clear();
+  opts.output_type.clear();
+
+  // Set option for selected model
+  for (const auto &[index, layout] : _options->input_layout)
+  {
+    const auto &io_desc = _nnpkg->input(index.value());
+    if (std::get<ir::ModelIndex>(io_desc) == model_index)
+      opts.input_layout.insert_or_assign(std::get<ir::IOIndex>(io_desc), layout);
+  }
+
+  for (const auto &[index, layout] : _options->output_layout)
+  {
+    const auto &io_desc = _nnpkg->output(index.value());
+    if (std::get<ir::ModelIndex>(io_desc) == model_index)
+      opts.output_layout.insert_or_assign(std::get<ir::IOIndex>(io_desc), layout);
+  }
+
+  for (const auto &[index, type] : _options->input_type)
+  {
+    const auto &io_desc = _nnpkg->input(index.value());
+    if (std::get<ir::ModelIndex>(io_desc) == model_index)
+      opts.input_type.insert_or_assign(std::get<ir::IOIndex>(io_desc), type);
+  }
+
+  for (const auto &[index, type] : _options->output_type)
+  {
+    const auto &io_desc = _nnpkg->output(index.value());
+    if (std::get<ir::ModelIndex>(io_desc) == model_index)
+      opts.output_type.insert_or_assign(std::get<ir::IOIndex>(io_desc), type);
+  }
+
+  return opts;
+}
+
 std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
 {
   /***************************************************
@@ -69,8 +109,11 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       throw std::runtime_error("MultiModelCompiler can only compile models for inference.");
   }
 
+  std::unordered_map<ir::ModelIndex, CompilerOptions> model_options;
   for (uint16_t i = 0; i < model_count; i++)
   {
+    auto model_index = ir::ModelIndex{i};
+    model_options[model_index] = optionForSingleModel(model_index);
     _nnpkg->model(ir::ModelIndex{i})->iterate([&](const ir::SubgraphIndex &, ir::IGraph &graph) {
       auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
 
@@ -125,7 +168,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
                       nnfw::misc::str("before_lower_model-", i, "-subg-", subg_index.value()));
       // Lower: Assign backend
       lowered_subgs[model_index][subg_index] =
-        std::make_unique<compiler::LoweredGraph>(subg, *_options);
+        std::make_unique<compiler::LoweredGraph>(subg, model_options[model_index]);
       // Set tracing_ctx for copied graph
       if (tracing_ctx != nullptr)
         tracing_ctx->setSubgraphIndex(&(lowered_subgs[model_index][subg_index]->graph()),
@@ -203,7 +246,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
 
       ExecutorFactoryArgs args;
       args.tracing_ctx = tracing_ctx.get();
-      args.options = _options;
+      args.options = &model_options[model_index];
       args.model_index = model_index;
       args.custom_kernel_builder = custom_kernel_builders[model_index];
       if (_options->internal_output_alloc)
