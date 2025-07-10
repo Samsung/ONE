@@ -16,6 +16,7 @@
 
 #include "KernelGenerator.h"
 
+#include "kernel/CallLayer.h"
 #include "kernel/IfLayer.h"
 #include "kernel/PermuteLayer.h"
 #include "kernel/WhileLayer.h"
@@ -56,6 +57,30 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
   ret->append(std::move(_return_fn));
 
   return ret;
+}
+
+void KernelGenerator::visit(const ir::operation::Call &node)
+{
+  const auto callee_subg_index = node.param().callee_subg_index;
+
+  std::vector<backend::IPortableTensor *> input_tensors;
+  for (const auto &input_index : node.getInputs())
+  {
+    auto input_tensor = getPortableTensor(input_index);
+    input_tensors.emplace_back(input_tensor);
+  }
+
+  std::vector<backend::IPortableTensor *> output_tensors;
+  for (const auto &output_index : node.getOutputs())
+  {
+    auto output_tensor = getPortableTensor(output_index);
+    output_tensors.emplace_back(output_tensor);
+  }
+
+  auto fn = std::make_unique<::onert::backend::builtin::kernel::CallLayer>(
+    input_tensors, output_tensors, callee_subg_index, _executors, _model_index, _external_context);
+
+  _return_fn = std::move(fn);
 }
 
 void KernelGenerator::visit(const ir::operation::If &node)
