@@ -75,7 +75,7 @@ enum TensorType : byte {
 
   UINT4 = -1,
   // GGML_Q{X}_{Y} are follow ggml quantization spec (https://github.com/ggerganov/ggml)
-  // GGML_Q{X}_{Y} are not used for activation and used for weight only.
+  // GGML_Q{X}_{Y} are used only for weights, not for activations.
   // Quantization parameters are placed with weight value in buffer following ggml's struct,
   // so they are not in QuantizationParameters
   GGML_Q4_0 = -2,
