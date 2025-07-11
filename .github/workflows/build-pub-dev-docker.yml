@@ -236,7 +236,7 @@ jobs:
         with:
           file: ./infra/docker/${{ matrix.version }}/Dockerfile
           push: true
-          platforms: linux/amd64${{ matrix.platform }}
+          platforms: ${{ matrix.platform }}
           cache-from: type=gha,scope=${{ matrix.version }}
           cache-to: type=gha,mode=max,scope=${{ matrix.version }}
           tags: |
