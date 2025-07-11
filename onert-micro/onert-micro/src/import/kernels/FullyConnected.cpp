@@ -133,6 +133,9 @@ OMStatus configure_kernel_CircleFullyConnected(const OMConfigureArgs &config_arg
   if (status != Ok)
     return status;
 
+  //FIXME: support dynamic shape in proper way
+  //       I do not understand where is this code comes from.
+  /*
   if (input_shape.flatSize() == 1 and output_shape.flatSize() != 1)
   {
 #ifndef DIS_DYN_SHAPES
@@ -144,7 +147,7 @@ OMStatus configure_kernel_CircleFullyConnected(const OMConfigureArgs &config_arg
     return UnsupportedDynamicShapeCase;
 #endif // DIS_DYN_SHAPES
   }
-
+  */
   status = utils::checkCondition(bias == nullptr or weight_shape.dims(0) == bias_shape.flatSize());
 
   if (input->type() == circle::TensorType_FLOAT32)
