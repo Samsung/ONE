@@ -45,42 +45,33 @@ MultiModelCompiler::MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
 
 CompilerOptions MultiModelCompiler::optionForSingleModel(const ir::ModelIndex &model_index)
 {
-  CompilerOptions opts = CompilerOptions(*_options); // Copy options
-  opts.input_layout.clear();
-  opts.output_layout.clear();
-  opts.input_type.clear();
-  opts.output_type.clear();
+  CompilerOptions model_opts = CompilerOptions(*_options); // Copy options
+  model_opts.input_layout.clear();
+  model_opts.output_layout.clear();
+  model_opts.input_type.clear();
+  model_opts.output_type.clear();
 
   // Set option for selected model
-  for (const auto &[index, layout] : _options->input_layout)
-  {
-    const auto &io_desc = _nnpkg->input(index.value());
-    if (std::get<ir::ModelIndex>(io_desc) == model_index)
-      opts.input_layout.insert_or_assign(std::get<ir::IOIndex>(io_desc), layout);
-  }
+  auto option_for_model = [](const auto &src_opt, auto &dst_opt, const ir::ModelIndex &model_index,
+                             auto io_desc_getter) {
+    for (const auto &[index, val] : src_opt)
+    {
+      const auto &io_desc = io_desc_getter(index.value());
+      if (std::get<ir::ModelIndex>(io_desc) == model_index)
+        dst_opt.insert_or_assign(std::get<ir::IOIndex>(io_desc), val);
+    }
+  };
 
-  for (const auto &[index, layout] : _options->output_layout)
-  {
-    const auto &io_desc = _nnpkg->output(index.value());
-    if (std::get<ir::ModelIndex>(io_desc) == model_index)
-      opts.output_layout.insert_or_assign(std::get<ir::IOIndex>(io_desc), layout);
-  }
+  option_for_model(_options->input_layout, model_opts.input_layout, model_index,
+                   [this](uint32_t idx) { return _nnpkg->input(idx); });
+  option_for_model(_options->output_layout, model_opts.output_layout, model_index,
+                   [this](uint32_t idx) { return _nnpkg->output(idx); });
+  option_for_model(_options->input_type, model_opts.input_type, model_index,
+                   [this](uint32_t idx) { return _nnpkg->input(idx); });
+  option_for_model(_options->output_type, model_opts.output_type, model_index,
+                   [this](uint32_t idx) { return _nnpkg->output(idx); });
 
-  for (const auto &[index, type] : _options->input_type)
-  {
-    const auto &io_desc = _nnpkg->input(index.value());
-    if (std::get<ir::ModelIndex>(io_desc) == model_index)
-      opts.input_type.insert_or_assign(std::get<ir::IOIndex>(io_desc), type);
-  }
-
-  for (const auto &[index, type] : _options->output_type)
-  {
-    const auto &io_desc = _nnpkg->output(index.value());
-    if (std::get<ir::ModelIndex>(io_desc) == model_index)
-      opts.output_type.insert_or_assign(std::get<ir::IOIndex>(io_desc), type);
-  }
-
-  return opts;
+  return model_opts;
 }
 
 std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
