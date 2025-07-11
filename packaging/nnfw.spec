@@ -148,6 +148,9 @@ If you want to use test package, you should install runtime package which is bui
 
 # Set option for configuration
 %define option_config %{nil}
+%if "%{asan}" == "1"
+%define option_config -DASAN_BUILD=ON
+%endif # asan
 
 %define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen \\\
         -DEXTERNALS_BUILD_THREAD=%{nproc} -DBUILD_MINIMAL_SAMPLE=OFF -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
@@ -233,12 +236,9 @@ mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_includedir}
 install -m 644 build/out/%{_lib}/*.so %{buildroot}%{_libdir}
 install -m 644 build/out/%{_lib}/nnfw/*.so %{buildroot}%{_libdir}/nnfw/
-%if "%{asan}" == "1"
- install -m 644 build/out/%{_lib}/nnfw/backend/*.so %{buildroot}%{_libdir}
- install -m 644 build/out/%{_lib}/nnfw/loader/*.so %{buildroot}%{_libdir}
-%else
- install -m 644 build/out/%{_lib}/nnfw/backend/*.so %{buildroot}%{_libdir}/nnfw/backend
- install -m 644 build/out/%{_lib}/nnfw/loader/*.so %{buildroot}%{_libdir}/nnfw/loader
+%if "%{asan}" != "1"
+install -m 644 build/out/%{_lib}/nnfw/backend/*.so %{buildroot}%{_libdir}/nnfw/backend
+install -m 644 build/out/%{_lib}/nnfw/loader/*.so %{buildroot}%{_libdir}/nnfw/loader
 %endif
 cp -r build/out/include/* %{buildroot}%{_includedir}/
 
@@ -282,10 +282,15 @@ tar -zxf test-suite.tar.gz -C %{buildroot}%{test_install_home}
 %endif # test_build
 
 %if %{odc_build} == 1
+%if "%{asan}" == "1"
+install -m 644 %{overlay_path}/lib/libluci*.so %{buildroot}%{_libdir}/nnfw
+install -m 644 %{overlay_path}/lib/libloco*.so %{buildroot}%{_libdir}/nnfw
+%else # asan
 mkdir -p %{buildroot}%{_libdir}/nnfw/odc
 install -m 644 %{overlay_path}/lib/libluci*.so %{buildroot}%{_libdir}/nnfw/odc
 install -m 644 %{overlay_path}/lib/libloco*.so %{buildroot}%{_libdir}/nnfw/odc
 install -m 644 build/out/%{_lib}/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
+%endif # asan
 %endif # odc_build
 
 %endif
@@ -299,13 +304,24 @@ install -m 644 build/out/%{_lib}/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %{_libdir}/*.so
 %{_libdir}/nnfw/*.so
-%if "%{asan}" != "1"
+%if "%{asan}" == "1"
+# exclude train, trix, odc
+%exclude %{_libdir}/nnfw/libbackend_train.so
+%if %{trix_support} == 1
+%exclude %{_libdir}/nnfw/libtvn_loader.so
+%exclude %{_libdir}/nnfw/libbackend_trix.so
+%endif # trix_support
+%if %{odc_build} == 1
+%exclude %{_libdir}/nnfw/libluci*.so
+%exclude %{_libdir}/nnfw/libloco*.so
+%exclude %{_libdir}/nnfw/libonert_odc.so
+%endif # odc_build
+%else # asan
 %{_libdir}/nnfw/backend/*.so
 %exclude %{_libdir}/nnfw/backend/libbackend_trix.so
 %exclude %{_libdir}/nnfw/backend/libbackend_train.so
-%endif
-%exclude %{_includedir}/CL/*
-%endif
+%endif # asan
+%endif # arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 
 %files devel
 %manifest %{name}.manifest
@@ -331,7 +347,11 @@ install -m 644 build/out/%{_lib}/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
+%if "%{asan}" == "1"
+%{_libdir}/nnfw/libbackend_train.so
+%else # asan
 %{_libdir}/nnfw/backend/libbackend_train.so
+%endif # asan
 %endif # arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 
 %if %{trix_support} == 1
@@ -339,8 +359,13 @@ install -m 644 build/out/%{_lib}/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
+%if "%{asan}" == "1"
+%{_libdir}/nnfw/libtvn_loader.so
+%{_libdir}/nnfw/libbackend_trix.so
+%else # asan
 %{_libdir}/nnfw/loader/libtvn_loader.so
 %{_libdir}/nnfw/backend/libbackend_trix.so
+%endif # asan
 %endif # arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %endif # trix_support
 
@@ -359,8 +384,14 @@ install -m 644 build/out/%{_lib}/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
+%if "%{asan}" == "1"
+%{_libdir}/nnfw/libluci*.so
+%{_libdir}/nnfw/libloco*.so
+%{_libdir}/nnfw/libonert_odc.so
+%else # asan
 %dir %{_libdir}/nnfw/odc
 %{_libdir}/nnfw/odc/*
+%endif # asan
 %endif # arm armv7l armv7hl aarch64 x86_64 %ix86
 %endif # odc_build
 
