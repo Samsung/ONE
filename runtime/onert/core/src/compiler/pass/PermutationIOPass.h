@@ -66,4 +66,4 @@ private:
 } // namespace compiler
 } // namespace onert
 
-#endif // __ONERT_COMPILER_PASS_PERMUTATION_INSERTION_PASS_H__
+#endif // __ONERT_COMPILER_PASS_PERMUTATION_IO_PASS_H__

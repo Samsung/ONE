@@ -91,7 +91,7 @@ void PermutationIOPass::insertInputPermute(const ir::OperandIndex &index, const 
   new_input.insertUse(node_index);
   _graph.operands().at(index).setDef(node_index);
 
-  VERBOSE(PermuteIOPass) << "Permute Op inserted for a input, node index : " << node_index
+  VERBOSE(PermuteIOPass) << "Permute Op inserted for an input, node index : " << node_index
                          << std::endl;
   VERBOSE(PermuteIOPass) << "  - Input (inserted) Operand : " << input_operand_index << std::endl;
   VERBOSE(PermuteIOPass) << "  - Output(original) Operand : " << index << std::endl;
@@ -127,7 +127,7 @@ void PermutationIOPass::insertOutputPermute(const ir::OperandIndex &index, const
   assert(_graph.operands().at(index).getUses().size() == 0);
   origin_operand.insertUse(node_index);
 
-  VERBOSE(PermuteIOPass) << "Permute Op inserted for a output, node index : " << node_index
+  VERBOSE(PermuteIOPass) << "Permute Op inserted for an output, node index : " << node_index
                          << std::endl;
   VERBOSE(PermuteIOPass) << "  - Input (original) Operand : " << index << std::endl;
   VERBOSE(PermuteIOPass) << "  - Output(inserted) Operand : " << output_operand_index << std::endl;
