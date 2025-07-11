@@ -133,8 +133,8 @@ OMStatus configure_kernel_CircleFullyConnected(const OMConfigureArgs &config_arg
   if (status != Ok)
     return status;
 
-  //FIXME: support dynamic shape in proper way
-  //       I do not understand where is this code comes from.
+  //  FIXME: support dynamic shape in proper way
+  //         I do not understand where is this code comes from.
   /*
   if (input_shape.flatSize() == 1 and output_shape.flatSize() != 1)
   {
