@@ -1,5 +1,13 @@
 var NAVTREEINDEX34 =
 {
+"backend_2trix_2_backend_context_8h.html":[41,0,3,3,1,7,3],
+"backend_2trix_2_backend_context_8h_source.html":[41,0,3,3,1,7,3],
+"backend_2trix_2_config_8cc.html":[41,0,3,3,1,7,6],
+"backend_2trix_2_config_8cc_source.html":[41,0,3,3,1,7,6],
+"backend_2trix_2_kernel_generator_8cc.html":[41,0,3,3,1,7,12],
+"backend_2trix_2_kernel_generator_8cc_source.html":[41,0,3,3,1,7,12],
+"backend_2trix_2_kernel_generator_8h.html":[41,0,3,3,1,7,13],
+"backend_2trix_2_kernel_generator_8h_source.html":[41,0,3,3,1,7,13],
 "backend_2trix_2_tensor_builder_8h.html":[41,0,3,3,1,7,15],
 "backend_2trix_2_tensor_builder_8h.html#ae5d0e2c339f567794e60a2a6249232dd":[41,0,3,3,1,7,15,0],
 "backend_2trix_2_tensor_builder_8h_source.html":[41,0,3,3,1,7,15],
@@ -201,8 +209,8 @@ var NAVTREEINDEX34 =
 "circle-eval-diff_2src_2_tensor_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b":[41,0,0,9,2,5,1],
 "circle-eval-diff_2src_2_tensor_8cpp_source.html":[41,0,0,9,2,5],
 "circle-input-names_8cpp.html":[41,0,0,11,0,0],
-"circle-input-names_8cpp.html#a0bf95843a4ca2404557403f869f84fc3":[41,0,0,11,0,0,14],
 "circle-input-names_8cpp.html#a0bf95843a4ca2404557403f869f84fc3":[41,0,0,11,0,0,13],
+"circle-input-names_8cpp.html#a0bf95843a4ca2404557403f869f84fc3":[41,0,0,11,0,0,14],
 "circle-input-names_8cpp.html#a1539ebd71ffa69856945e99e92d0ab08":[41,0,0,11,0,0,18],
 "circle-input-names_8cpp.html#a4edd29d5bb92eb98d22fb0e9162552fd":[41,0,0,11,0,0,19],
 "circle-input-names_8cpp.html#a5f0cd3d97cf0e240937536cd2536e26c":[41,0,0,11,0,0,21],
@@ -241,13 +249,5 @@ var NAVTREEINDEX34 =
 "circle-quantizer_2src_2_circle_quantizer_8cpp.html#a23c3deb9bbd884643314e51c2f9f5e87":[41,0,0,22,0,0,7],
 "circle-quantizer_2src_2_circle_quantizer_8cpp.html#a3bb05d03e32edee8af37def90d95ac27":[41,0,0,22,0,0,3],
 "circle-quantizer_2src_2_circle_quantizer_8cpp.html#a5db9941d9931593efc3138e26646dc21":[41,0,0,22,0,0,5],
-"circle-quantizer_2src_2_circle_quantizer_8cpp.html#a6228f896a64b52198522eca1543146a7":[41,0,0,22,0,0,2],
-"circle-quantizer_2src_2_circle_quantizer_8cpp.html#a8fc044da756e5d20028e2106b5a784dd":[41,0,0,22,0,0,9],
-"circle-quantizer_2src_2_circle_quantizer_8cpp.html#ac6230d495fc909bb61195c45f703d492":[41,0,0,22,0,0,8],
-"circle-quantizer_2src_2_circle_quantizer_8cpp.html#ace3dc99cb50ae96c59ff417cc078e766":[41,0,0,22,0,0,4],
-"circle-quantizer_2src_2_circle_quantizer_8cpp.html#ad70a2daf5649d9dbde0335251b9aa520":[41,0,0,22,0,0,1],
-"circle-quantizer_2src_2_circle_quantizer_8cpp.html#af8cfcb52c3527253aa5699daf5eddd68":[41,0,0,22,0,0,10],
-"circle-quantizer_2src_2_circle_quantizer_8cpp_source.html":[41,0,0,22,0,0],
-"circle-resizer_2include_2_circle_model_8h.html":[41,0,0,23,1,0],
-"circle-resizer_2include_2_circle_model_8h_source.html":[41,0,0,23,1,0]
+"circle-quantizer_2src_2_circle_quantizer_8cpp.html#a6228f896a64b52198522eca1543146a7":[41,0,0,22,0,0,2]
 };

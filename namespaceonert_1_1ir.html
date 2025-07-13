@@ -227,11 +227,10 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a4e866b275c85fbb439f6484251cfb31c">INT64</a> = 8
 , <a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331abbe1fa19839d6985b8161aeeb3a249b6">QUANT_INT8_ASYMM</a> = 9
-, <a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a14bcd8d6bae57d713be9b3b01f84db6a">QUANT_INT16_ASYMM</a> = 10
 , <a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a7874c580051c95dc64b33be2dbada5c0">QUANT_INT8_SYMM_PER_CHANNEL</a> = 11
+, <a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a9aa185ccbba2c158bd867b0442c3c9aa">QUANT_INT16_SYMM</a> = 12
 , <br />
-&#160;&#160;<a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a9aa185ccbba2c158bd867b0442c3c9aa">QUANT_INT16_SYMM</a> = 12
-, <a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a8aedb3aef4124c9215ec9cfe08df84a9">QUANT_GGML_Q4_0</a> = 13
+&#160;&#160;<a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a8aedb3aef4124c9215ec9cfe08df84a9">QUANT_GGML_Q4_0</a> = 13
 , <a class="el" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331acb818f4524e9907085fe9e40ffdd9799">QUANT_GGML_Q8_0</a> = 14
 <br />
  }</td></tr>
@@ -259,7 +258,7 @@ Enumerations</h2></td></tr>
 <tr class="separator:ae8c0846bdada8dcd2c06205bb4a8a4e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9154c7f4290b0d224a03a10dc73817a" id="r_ae9154c7f4290b0d224a03a10dc73817a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">PermuteType</a> { <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">NHWC_TO_NCHW</a>
 , <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">NCHW_TO_NHWC</a>
-, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">COPY</a>
+, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b">SAME</a>
  }</td></tr>
 <tr class="separator:ae9154c7f4290b0d224a03a10dc73817a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a587a2982319cf192bc7a6e6e44cde3b7" id="r_a587a2982319cf192bc7a6e6e44cde3b7"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7">OpCode</a> { <a class="el" href="namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7a4bbb8f967da6d1a610596d7257179c2b">Invalid</a>
@@ -578,7 +577,6 @@ template&lt;typename T &gt; </div>
 <tr><td class="fieldname"><a id="a0343744557a8c62c8f3ac225760f8331ac49f280a5ad551ccc77be0b01a2f386a" name="a0343744557a8c62c8f3ac225760f8331ac49f280a5ad551ccc77be0b01a2f386a"></a>FLOAT16&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a0343744557a8c62c8f3ac225760f8331a4e866b275c85fbb439f6484251cfb31c" name="a0343744557a8c62c8f3ac225760f8331a4e866b275c85fbb439f6484251cfb31c"></a>INT64&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a0343744557a8c62c8f3ac225760f8331abbe1fa19839d6985b8161aeeb3a249b6" name="a0343744557a8c62c8f3ac225760f8331abbe1fa19839d6985b8161aeeb3a249b6"></a>QUANT_INT8_ASYMM&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a0343744557a8c62c8f3ac225760f8331a14bcd8d6bae57d713be9b3b01f84db6a" name="a0343744557a8c62c8f3ac225760f8331a14bcd8d6bae57d713be9b3b01f84db6a"></a>QUANT_INT16_ASYMM&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a0343744557a8c62c8f3ac225760f8331a7874c580051c95dc64b33be2dbada5c0" name="a0343744557a8c62c8f3ac225760f8331a7874c580051c95dc64b33be2dbada5c0"></a>QUANT_INT8_SYMM_PER_CHANNEL&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a0343744557a8c62c8f3ac225760f8331a9aa185ccbba2c158bd867b0442c3c9aa" name="a0343744557a8c62c8f3ac225760f8331a9aa185ccbba2c158bd867b0442c3c9aa"></a>QUANT_INT16_SYMM&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a0343744557a8c62c8f3ac225760f8331a8aedb3aef4124c9215ec9cfe08df84a9" name="a0343744557a8c62c8f3ac225760f8331a8aedb3aef4124c9215ec9cfe08df84a9"></a>QUANT_GGML_Q4_0&#160;</td><td class="fielddoc"></td></tr>
@@ -597,7 +595,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   34</span>  FLOAT16 = 7,</div>
 <div class="line"><span class="lineno">   35</span>  INT64 = 8,</div>
 <div class="line"><span class="lineno">   36</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331abbe1fa19839d6985b8161aeeb3a249b6">QUANT_INT8_ASYMM</a> = 9,</div>
-<div class="line"><span class="lineno">   37</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a14bcd8d6bae57d713be9b3b01f84db6a">QUANT_INT16_ASYMM</a> = 10,</div>
+<div class="line"><span class="lineno">   37</span>  <span class="comment">// QUANT_INT16_ASYMM = 10, // Not used now</span></div>
 <div class="line"><span class="lineno">   38</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a7874c580051c95dc64b33be2dbada5c0">QUANT_INT8_SYMM_PER_CHANNEL</a> = 11,</div>
 <div class="line"><span class="lineno">   39</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a9aa185ccbba2c158bd867b0442c3c9aa">QUANT_INT16_SYMM</a> = 12,</div>
 <div class="line"><span class="lineno">   40</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a8aedb3aef4124c9215ec9cfe08df84a9">QUANT_GGML_Q4_0</a> = 13, <span class="comment">// 4bit quantization, 32 block, 16bit delta</span></div>
@@ -607,7 +605,6 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="a_operand_type_8h_html_aeb6507c1024b22251bb08c413044d1fda6495adba09844fac8eeb0aba86e6f1bf"><div class="ttname"><a href="_operand_type_8h.html#aeb6507c1024b22251bb08c413044d1fda6495adba09844fac8eeb0aba86e6f1bf">OperandType::INT32</a></div><div class="ttdeci">@ INT32</div></div>
 <div class="ttc" id="a_operand_type_8h_html_aeb6507c1024b22251bb08c413044d1fda967d280b5c16d95f2947647dd2ca6cc2"><div class="ttname"><a href="_operand_type_8h.html#aeb6507c1024b22251bb08c413044d1fda967d280b5c16d95f2947647dd2ca6cc2">OperandType::FLOAT32</a></div><div class="ttdeci">@ FLOAT32</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a0343744557a8c62c8f3ac225760f8331a05afd9eb8887a406d47474cd3809a5dd"><div class="ttname"><a href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a05afd9eb8887a406d47474cd3809a5dd">onert::ir::DataType::BOOL8</a></div><div class="ttdeci">@ BOOL8</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_a0343744557a8c62c8f3ac225760f8331a14bcd8d6bae57d713be9b3b01f84db6a"><div class="ttname"><a href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a14bcd8d6bae57d713be9b3b01f84db6a">onert::ir::DataType::QUANT_INT16_ASYMM</a></div><div class="ttdeci">@ QUANT_INT16_ASYMM</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a0343744557a8c62c8f3ac225760f8331a15063c63e0c6c9d18d12750f6d56a77e"><div class="ttname"><a href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a15063c63e0c6c9d18d12750f6d56a77e">onert::ir::DataType::QUANT_INT8_SYMM</a></div><div class="ttdeci">@ QUANT_INT8_SYMM</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a0343744557a8c62c8f3ac225760f8331a43a4b3ebfe393544b710efcba2f69d3b"><div class="ttname"><a href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a43a4b3ebfe393544b710efcba2f69d3b">onert::ir::DataType::QUANT_UINT8_ASYMM</a></div><div class="ttdeci">@ QUANT_UINT8_ASYMM</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a0343744557a8c62c8f3ac225760f8331a7874c580051c95dc64b33be2dbada5c0"><div class="ttname"><a href="namespaceonert_1_1ir.html#a0343744557a8c62c8f3ac225760f8331a7874c580051c95dc64b33be2dbada5c0">onert::ir::DataType::QUANT_INT8_SYMM_PER_CHANNEL</a></div><div class="ttdeci">@ QUANT_INT8_SYMM_PER_CHANNEL</div></div>
@@ -822,18 +819,17 @@ template&lt;typename T &gt; </div>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625" name="ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625"></a>NHWC_TO_NCHW&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65" name="ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65"></a>NCHW_TO_NHWC&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f" name="ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f"></a>COPY&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b" name="ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b"></a>SAME&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00034">34</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html">Layout.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
-<div class="line"><span class="lineno">   36</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">NHWC_TO_NCHW</a>,</div>
-<div class="line"><span class="lineno">   37</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">NCHW_TO_NHWC</a>,</div>
-<div class="line"><span class="lineno">   38</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">COPY</a></div>
-<div class="line"><span class="lineno">   39</span>};</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00035">35</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html">Layout.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
+<div class="line"><span class="lineno">   37</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">NHWC_TO_NCHW</a>,</div>
+<div class="line"><span class="lineno">   38</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">NCHW_TO_NHWC</a>,</div>
+<div class="line"><span class="lineno">   39</span>  SAME</div>
+<div class="line"><span class="lineno">   40</span>};</div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">onert::ir::PermuteType::NHWC_TO_NCHW</a></div><div class="ttdeci">@ NHWC_TO_NCHW</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">onert::ir::PermuteType::NCHW_TO_NHWC</a></div><div class="ttdeci">@ NCHW_TO_NHWC</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">onert::ir::PermuteType::COPY</a></div><div class="ttdeci">@ COPY</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1079,7 +1075,7 @@ template&lt;typename IndexType &gt; </div>
 <div class="fragment"><div class="line"><span class="lineno">   25</span>{</div>
 <div class="line"><span class="lineno">   26</span>  assert(<a class="code hl_variable" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>.size() == 4);</div>
 <div class="line"><span class="lineno">   27</span>  <a class="code hl_class" href="classonert_1_1ir_1_1_coordinates.html">Coordinates</a> to{<a class="code hl_variable" href="_detection_post_process_layer_8cc.html#a56ac4a0f8f593e61e643fc044dd3a61a">coords</a>};</div>
-<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">if</span> (type == PermuteType::COPY)</div>
+<div class="line"><span class="lineno">   28</span>  <span class="keywordflow">if</span> (type == PermuteType::SAME)</div>
 <div class="line"><span class="lineno">   29</span>    <span class="keywordflow">return</span> to;</div>
 <div class="line"><span class="lineno">   30</span> </div>
 <div class="line"><span class="lineno">   31</span>  <span class="keywordflow">if</span> (type == PermuteType::NHWC_TO_NCHW)</div>
@@ -1102,7 +1098,7 @@ template&lt;typename IndexType &gt; </div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_coordinates_html"><div class="ttname"><a href="classonert_1_1ir_1_1_coordinates.html">onert::ir::Coordinates</a></div><div class="ttdoc">Class to represent position(offset) of tensor.  Assume that the front is higher dimensional....</div><div class="ttdef"><b>Definition</b> <a href="_coordinates_8h_source.html#l00034">Coordinates.h:35</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_coordinates_html_a1dbfdbca6fa59c2e357dc3def258d140"><div class="ttname"><a href="classonert_1_1ir_1_1_coordinates.html#a1dbfdbca6fa59c2e357dc3def258d140">onert::ir::Coordinates::set</a></div><div class="ttdeci">void set(size_t dimension, int32_t coordinate)</div><div class="ttdoc">Set the coordinate of one of the coordinates.</div><div class="ttdef"><b>Definition</b> <a href="_coordinates_8h_source.html#l00077">Coordinates.h:77</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_detection_post_process_layer_8cc_source.html#l00048">coords</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">COPY</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">NCHW_TO_NHWC</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">NHWC_TO_NCHW</a>, and <a class="el" href="_coordinates_8h_source.html#l00077">onert::ir::Coordinates::set()</a>.</p>
+<p class="reference">References <a class="el" href="_detection_post_process_layer_8cc_source.html#l00048">coords</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">NCHW_TO_NHWC</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">NHWC_TO_NCHW</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b">SAME</a>, and <a class="el" href="_coordinates_8h_source.html#l00077">onert::ir::Coordinates::set()</a>.</p>
 
 </div>
 </div>
@@ -1140,7 +1136,7 @@ template&lt;typename IndexType &gt; </div>
 <div class="line"><span class="lineno">   64</span>  assert(shape.rank() &lt;= Shape::kMaxRank);</div>
 <div class="line"><span class="lineno">   65</span>  <a class="code hl_class" href="classonert_1_1ir_1_1operation_1_1_shape.html">Shape</a> ret{shape};</div>
 <div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">if</span> (type == ir::PermuteType::COPY || shape.rank() &lt; 4)</div>
+<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">if</span> (type == ir::PermuteType::SAME || shape.rank() &lt; 4)</div>
 <div class="line"><span class="lineno">   68</span>    <span class="keywordflow">return</span> ret;</div>
 <div class="line"><span class="lineno">   69</span> </div>
 <div class="line"><span class="lineno">   70</span>  <span class="comment">// Permutation changing layout beyond 4-D is not supported yet</span></div>
@@ -1162,9 +1158,9 @@ template&lt;typename IndexType &gt; </div>
 <div class="line"><span class="lineno">   86</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_shape_html"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_shape.html">onert::ir::operation::Shape</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_shape_8h_source.html#l00027">Shape.h:28</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">COPY</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">NCHW_TO_NHWC</a>, and <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">NHWC_TO_NCHW</a>.</p>
+<p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">NCHW_TO_NHWC</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">NHWC_TO_NCHW</a>, and <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b">SAME</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00182">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00184">onert::backend::builtin::kernel::PermuteLayer::run()</a>.</p>
 
 </div>
 </div>
@@ -1744,15 +1740,13 @@ template&lt;typename IndexType &gt; </div>
 <div class="line"><span class="lineno">   46</span>      <span class="keywordflow">return</span> <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="_data_type_8cc.html#ad845fe51c10c9d162451b4572f79aef4">float16</a>);</div>
 <div class="line"><span class="lineno">   47</span>    <span class="keywordflow">case</span> DataType::INT64:</div>
 <div class="line"><span class="lineno">   48</span>      <span class="keywordflow">return</span> <span class="keyword">sizeof</span>(int64_t);</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">case</span> DataType::QUANT_INT16_ASYMM:</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">case</span> DataType::QUANT_INT16_SYMM:</div>
 <div class="line"><span class="lineno">   50</span>      <span class="keywordflow">return</span> <span class="keyword">sizeof</span>(int16_t);</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">case</span> DataType::QUANT_INT16_SYMM:</div>
-<div class="line"><span class="lineno">   52</span>      <span class="keywordflow">return</span> <span class="keyword">sizeof</span>(int16_t);</div>
-<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   54</span>      <span class="comment">// ggml block quantize type data size is not supported</span></div>
-<div class="line"><span class="lineno">   55</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unsupported type size&quot;</span>};</div>
-<div class="line"><span class="lineno">   56</span>  }</div>
-<div class="line"><span class="lineno">   57</span>}</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   52</span>      <span class="comment">// ggml block quantize type data size is not supported</span></div>
+<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Unsupported type size&quot;</span>};</div>
+<div class="line"><span class="lineno">   54</span>  }</div>
+<div class="line"><span class="lineno">   55</span>}</div>
 <div class="ttc" id="a_data_type_8cc_html_ad845fe51c10c9d162451b4572f79aef4"><div class="ttname"><a href="_data_type_8cc.html#ad845fe51c10c9d162451b4572f79aef4">float16</a></div><div class="ttdeci">Half float16</div><div class="ttdef"><b>Definition</b> <a href="_data_type_8cc_source.html#l00022">DataType.cc:22</a></div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_user_tensor_8cc_source.html#l00025">onert::backend::builtin::UserTensor::applyShape()</a>, <a class="el" href="_edge_tensor_8cc_source.html#l00022">onert::exec::EdgeTensor::applyShape()</a>, <a class="el" href="_operand_8cc_source.html#l00022">onert::ir::Operand::operandSize()</a>, <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00040">onert::backend::builtin::kernel::PermuteLayer::optimize()</a>, and <a class="el" href="_operand_info_8cc_source.html#l00022">onert::ir::OperandInfo::total_size()</a>.</p>
@@ -1835,20 +1829,20 @@ template&lt;typename IndexType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00041">41</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html">Layout.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
-<div class="line"><span class="lineno">   43</span>  <span class="keywordflow">switch</span> (layout)</div>
-<div class="line"><span class="lineno">   44</span>  {</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">case</span> Layout::NHWC:</div>
-<div class="line"><span class="lineno">   46</span>      <span class="keywordflow">return</span> std::string{<span class="stringliteral">&quot;NHWC&quot;</span>};</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">case</span> Layout::NCHW:</div>
-<div class="line"><span class="lineno">   48</span>      <span class="keywordflow">return</span> std::string{<span class="stringliteral">&quot;NCHW&quot;</span>};</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">case</span> Layout::UNKNOWN:</div>
-<div class="line"><span class="lineno">   50</span>      <span class="keywordflow">return</span> std::string{<span class="stringliteral">&quot;UNKNOWN&quot;</span>};</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   52</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;WRONG LAYOUT&quot;</span>);</div>
-<div class="line"><span class="lineno">   53</span>  }</div>
-<div class="line"><span class="lineno">   54</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00042">42</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html">Layout.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>{</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">switch</span> (layout)</div>
+<div class="line"><span class="lineno">   45</span>  {</div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">case</span> Layout::NHWC:</div>
+<div class="line"><span class="lineno">   47</span>      <span class="keywordflow">return</span> std::string{<span class="stringliteral">&quot;NHWC&quot;</span>};</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">case</span> Layout::NCHW:</div>
+<div class="line"><span class="lineno">   49</span>      <span class="keywordflow">return</span> std::string{<span class="stringliteral">&quot;NCHW&quot;</span>};</div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">case</span> Layout::UNKNOWN:</div>
+<div class="line"><span class="lineno">   51</span>      <span class="keywordflow">return</span> std::string{<span class="stringliteral">&quot;UNKNOWN&quot;</span>};</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   53</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;WRONG LAYOUT&quot;</span>);</div>
+<div class="line"><span class="lineno">   54</span>  }</div>
+<div class="line"><span class="lineno">   55</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">NCHW</a>, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">NHWC</a>, and <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a696b031073e74bf2cb98e5ef201d4aa3">UNKNOWN</a>.</p>
 

@@ -1,5 +1,13 @@
 var NAVTREEINDEX11 =
 {
+"_float_strided_slice_kernel_8h.html":[41,0,2,5,0,5,65,0],
+"_float_strided_slice_kernel_8h.html#a26e697dcf25544327dbf088841b3f737":[41,0,2,5,0,5,65,0,1],
+"_float_strided_slice_kernel_8h.html#a7d7af86c43d152933c587a6fc192f38a":[41,0,2,5,0,5,65,0,3],
+"_float_strided_slice_kernel_8h.html#adeff6ddef9e7a7631662cb185e1871da":[41,0,2,5,0,5,65,0,2],
+"_float_strided_slice_kernel_8h_source.html":[41,0,2,5,0,5,65,0],
+"_float_unidirectional_l_s_t_m_kernel_8h.html":[41,0,2,4,0,0,1,83,0],
+"_float_unidirectional_l_s_t_m_kernel_8h.html#a49a5d72fdbce6cae1f57872e6af00b17":[41,0,2,4,0,0,1,83,0,3],
+"_float_unidirectional_l_s_t_m_kernel_8h.html#a798f065c5eaf9490f7705f45fc55ba89":[41,0,2,4,0,0,1,83,0,1],
 "_float_unidirectional_l_s_t_m_kernel_8h.html#a95642126c155a4dccbb8eb53dc13542a":[41,0,2,4,0,0,1,83,0,2],
 "_float_unidirectional_l_s_t_m_kernel_8h_source.html":[41,0,2,4,0,0,1,83,0],
 "_floor_div_options_8cpp.html":[41,0,0,133,2,0,48],
@@ -241,13 +249,5 @@ var NAVTREEINDEX11 =
 "_fuse_post_scale_pass_8h.html":[41,0,0,45,1,0,1],
 "_fuse_post_scale_pass_8h_source.html":[41,0,0,45,1,0,1],
 "_fuse_pre_activation_batch_norm_pass_8cpp.html":[41,0,0,59,7,1,50],
-"_fuse_pre_activation_batch_norm_pass_8cpp.html#a1d061913b6426cbfc3a74cf8f7bd2545":[41,0,0,59,7,1,50,0],
-"_fuse_pre_activation_batch_norm_pass_8cpp.html#aa86d64f893f58edeff3a15b2e82ae9e8":[41,0,0,59,7,1,50,2],
-"_fuse_pre_activation_batch_norm_pass_8cpp.html#ab46996da8c5c407bc43ef70e0ae4e955":[41,0,0,59,7,1,50,3],
-"_fuse_pre_activation_batch_norm_pass_8cpp.html#ac0e231ce93ce072850190c6787d5c3ee":[41,0,0,59,7,1,50,1],
-"_fuse_pre_activation_batch_norm_pass_8cpp_source.html":[41,0,0,59,7,1,50],
-"_fuse_pre_activation_batch_norm_pass_8h.html":[41,0,0,59,7,0,0,0,43],
-"_fuse_pre_activation_batch_norm_pass_8h_source.html":[41,0,0,59,7,0,0,0,43],
-"_fuse_pre_activation_batch_norm_pass_internal_8h.html":[41,0,0,59,7,1,51],
-"_fuse_pre_activation_batch_norm_pass_internal_8h.html#a1d061913b6426cbfc3a74cf8f7bd2545":[41,0,0,59,7,1,51,0]
+"_fuse_pre_activation_batch_norm_pass_8cpp.html#a1d061913b6426cbfc3a74cf8f7bd2545":[41,0,0,59,7,1,50,0]
 };

@@ -2885,6 +2885,7 @@ var annotated_dup =
         ] ],
         [ "builtin", "namespaceonert_1_1backend_1_1builtin.html", [
           [ "kernel", "namespaceonert_1_1backend_1_1builtin_1_1kernel.html", [
+            [ "CallLayer", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_call_layer.html", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_call_layer" ],
             [ "IfLayer", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_if_layer.html", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_if_layer" ],
             [ "PermuteLayer", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer.html", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_permute_layer" ],
             [ "WhileLayer", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_while_layer.html", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_while_layer" ]
@@ -3204,6 +3205,7 @@ var annotated_dup =
           [ "BinaryArithmetic", "classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html", "classonert_1_1ir_1_1operation_1_1_binary_arithmetic" ],
           [ "BroadcastTo", "classonert_1_1ir_1_1operation_1_1_broadcast_to.html", "classonert_1_1ir_1_1operation_1_1_broadcast_to" ],
           [ "Bulk", "classonert_1_1ir_1_1operation_1_1_bulk.html", "classonert_1_1ir_1_1operation_1_1_bulk" ],
+          [ "Call", "classonert_1_1ir_1_1operation_1_1_call.html", "classonert_1_1ir_1_1operation_1_1_call" ],
           [ "Comparison", "classonert_1_1ir_1_1operation_1_1_comparison.html", "classonert_1_1ir_1_1operation_1_1_comparison" ],
           [ "Concat", "classonert_1_1ir_1_1operation_1_1_concat.html", "classonert_1_1ir_1_1operation_1_1_concat" ],
           [ "Conv2D", "classonert_1_1ir_1_1operation_1_1_conv2_d.html", "classonert_1_1ir_1_1operation_1_1_conv2_d" ],

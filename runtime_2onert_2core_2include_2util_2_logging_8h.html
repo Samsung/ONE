@@ -125,6 +125,8 @@ Macros</h2></td></tr>
 <tr class="separator:aa34e3d11287d2717ced5899f8e48f983"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed861bfa370db79dd4bd632479cb515f" id="r_aed861bfa370db79dd4bd632479cb515f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h.html#aed861bfa370db79dd4bd632479cb515f">WHEN_LOG_ENABLED</a>(METHOD)</td></tr>
 <tr class="separator:aed861bfa370db79dd4bd632479cb515f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8f8d385143db9cf3fe3d9e6e38d9b18" id="r_ab8f8d385143db9cf3fe3d9e6e38d9b18"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h.html#ab8f8d385143db9cf3fe3d9e6e38d9b18">UPDATE_VERBOSE_CONFIG</a>()&#160;&#160;&#160;::onert::util::logging::ctx.update()</td></tr>
+<tr class="separator:ab8f8d385143db9cf3fe3d9e6e38d9b18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38cf9e54a19fff300e25fe6c76926555" id="r_a38cf9e54a19fff300e25fe6c76926555"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h.html#a38cf9e54a19fff300e25fe6c76926555">MEASURE_TIME_START</a>(name)</td></tr>
 <tr class="separator:a38cf9e54a19fff300e25fe6c76926555"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6aa970765b566e155b23c4249f5cd85c" id="r_a6aa970765b566e155b23c4249f5cd85c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h.html#a6aa970765b566e155b23c4249f5cd85c">MEASURE_TIME_END</a>(name)</td></tr>
@@ -159,9 +161,9 @@ Functions</h2></td></tr>
 <div class="line">              &lt;&lt; <span class="stringliteral">&quot; time = &quot;</span> &lt;&lt; dur_##name.count() &lt;&lt; std::endl;                     \</div>
 <div class="line">  }                                                                                 \</div>
 <div class="line">  while (0)</div>
-<div class="ttc" id="anamespaceonert_1_1util_1_1logging_html_ab82c05096fcf69c9faefe23e6fd230b5"><div class="ttname"><a href="namespaceonert_1_1util_1_1logging.html#ab82c05096fcf69c9faefe23e6fd230b5">onert::util::logging::decorated_name</a></div><div class="ttdeci">std::string decorated_name(const char *input)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00052">logging.h:52</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1util_1_1logging_html_ab82c05096fcf69c9faefe23e6fd230b5"><div class="ttname"><a href="namespaceonert_1_1util_1_1logging.html#ab82c05096fcf69c9faefe23e6fd230b5">onert::util::logging::decorated_name</a></div><div class="ttdeci">std::string decorated_name(const char *input)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00053">logging.h:53</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00085">85</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00088">88</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
 
 </div>
 </div>
@@ -184,11 +186,30 @@ Functions</h2></td></tr>
 <div class="line">  {                              \</div>
 <div class="line">  <span class="keyword">auto</span> beg_##name = std::chrono::steady_clock::now()</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00080">80</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   82</span>  {                              \</div>
-<div class="line"><span class="lineno">   83</span>  <span class="keyword">auto</span> beg_##<a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = std::chrono::steady_clock::now()</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00083">83</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   85</span>  {                              \</div>
+<div class="line"><span class="lineno">   86</span>  <span class="keyword">auto</span> beg_##<a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = std::chrono::steady_clock::now()</div>
 <div class="ttc" id="anamespacesetup_html_ab3a7a0638d76a01367c5bc3cc699447f"><div class="ttname"><a href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">setup.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00149">setup.py:149</a></div></div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="ab8f8d385143db9cf3fe3d9e6e38d9b18" name="ab8f8d385143db9cf3fe3d9e6e38d9b18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8f8d385143db9cf3fe3d9e6e38d9b18">&#9670;&#160;</a></span>UPDATE_VERBOSE_CONFIG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UPDATE_VERBOSE_CONFIG</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td>&#160;&#160;&#160;::onert::util::logging::ctx.update()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00081">81</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
+
 </div>
 </div>
 <a id="aca0521fea514606c641e14a4c611b60d" name="aca0521fea514606c641e14a4c611b60d"></a>
@@ -209,7 +230,7 @@ Functions</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">if</span> (::onert::util::logging::ctx.enabled()) \</div>
 <div class="line">  std::cout &lt;&lt; <a class="code hl_function" href="namespaceonert_1_1util_1_1logging.html#ab82c05096fcf69c9faefe23e6fd230b5">::onert::util::logging::decorated_name</a>(#name)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00065">65</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00066">66</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
 
 </div>
 </div>
@@ -230,7 +251,7 @@ Functions</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">if</span> (::onert::util::logging::ctx.enabled()) \</div>
 <div class="line">  std::cout &lt;&lt; <a class="code hl_function" href="namespaceonert_1_1util_1_1logging.html#ab82c05096fcf69c9faefe23e6fd230b5">::onert::util::logging::decorated_name</a>(__func__)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00069">69</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00070">70</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
 
 </div>
 </div>
@@ -255,10 +276,10 @@ Functions</h2></td></tr>
 <div class="line">      METHOD;                                \</div>
 <div class="line">  } <span class="keywordflow">while</span> (0)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00073">73</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   76</span>    {                                        \</div>
-<div class="line"><span class="lineno">   77</span>      METHOD;                                \</div>
-<div class="line"><span class="lineno">   78</span>  } <span class="keywordflow">while</span> (0)</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00074">74</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>    {                                        \</div>
+<div class="line"><span class="lineno">   78</span>      METHOD;                                \</div>
+<div class="line"><span class="lineno">   79</span>  } <span class="keywordflow">while</span> (0)</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -34,6 +34,7 @@ var classonert_1_1loader_1_1_base_loader =
     [ "loadStridesAndPaddings", "classonert_1_1loader_1_1_base_loader.html#ab60b38e7eba5685b0d7132103075225a", null ],
     [ "tensorIdxToOperandIdx", "classonert_1_1loader_1_1_base_loader.html#a7f1b2a2d1e1a0f137bab24a956956ede", null ],
     [ "tensorTypeToDataType", "classonert_1_1loader_1_1_base_loader.html#a39c0b1679a03af6121a87d7650972cdf", null ],
+    [ "verifySubgraphIndex", "classonert_1_1loader_1_1_base_loader.html#a492937758b87c10b69a1463a51cb3912", null ],
     [ "_base", "classonert_1_1loader_1_1_base_loader.html#ad3df22e9c2fa443820e35497f7a8c6d2", null ],
     [ "_buf_to_data", "classonert_1_1loader_1_1_base_loader.html#a1ff0c207573994546820d8dfe1e5791c", null ],
     [ "_domain_model", "classonert_1_1loader_1_1_base_loader.html#a83bba4a86c0d0624db36eea5aa985a51", null ],

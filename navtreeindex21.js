@@ -1,5 +1,13 @@
 var NAVTREEINDEX21 =
 {
+"_p_a_l_g_r_u_common_8h.html#addf23051aa4fdb41d61d03af1f4d9163":[41,0,2,5,0,4,1,29,0],
+"_p_a_l_g_r_u_common_8h_source.html":[41,0,2,5,0,4,1,29],
+"_p_a_l_g_r_u_weight_grad_8h.html":[41,0,2,5,0,4,1,30],
+"_p_a_l_g_r_u_weight_grad_8h.html#a99c93f6fa72bdcac318b81e3bd3f9dc0":[41,0,2,5,0,4,1,30,0],
+"_p_a_l_g_r_u_weight_grad_8h_source.html":[41,0,2,5,0,4,1,30],
+"_p_a_l_gather_8h.html":[41,0,0,62,1,1,11],
+"_p_a_l_gather_8h_source.html":[41,0,0,62,1,1,11],
+"_p_a_l_gelu_8h.html":[41,0,0,62,1,1,12],
 "_p_a_l_gelu_8h_source.html":[41,0,0,62,1,1,12],
 "_p_a_l_hard_swish_8h.html":[41,0,0,62,1,1,14],
 "_p_a_l_hard_swish_8h_source.html":[41,0,0,62,1,1,14],
@@ -160,10 +168,10 @@ var NAVTREEINDEX21 =
 "_p_models_runner_8h.html#aa5212196f3110e7d24ec4ae5dc7eaeca":[41,0,0,18,0,2,2],
 "_p_models_runner_8h.html#ae15d35932f14ae9be7b0c3fdf8265fbb":[41,0,0,18,0,2,4],
 "_p_models_runner_8h_source.html":[41,0,0,18,0,2],
-"_p_re_l_u_8cc.html":[41,0,3,3,2,1,5,0,41],
-"_p_re_l_u_8cc_source.html":[41,0,3,3,2,1,5,0,41],
-"_pack_8cc.html":[41,0,3,3,2,1,5,0,36],
-"_pack_8cc_source.html":[41,0,3,3,2,1,5,0,36],
+"_p_re_l_u_8cc.html":[41,0,3,3,2,1,5,0,42],
+"_p_re_l_u_8cc_source.html":[41,0,3,3,2,1,5,0,42],
+"_pack_8cc.html":[41,0,3,3,2,1,5,0,37],
+"_pack_8cc_source.html":[41,0,3,3,2,1,5,0,37],
 "_pack_command_8cpp.html":[41,0,0,128,0,7],
 "_pack_command_8cpp_source.html":[41,0,0,128,0,7],
 "_pack_command_8hpp.html":[41,0,0,128,0,8],
@@ -241,13 +249,5 @@ var NAVTREEINDEX21 =
 "_palette_8py_source.html":[41,0,0,135,0,3],
 "_parallel_executor_8cc.html":[41,0,3,3,2,1,3,33],
 "_parallel_executor_8cc_source.html":[41,0,3,3,2,1,3,33],
-"_parallel_executor_8h.html":[41,0,3,3,2,1,3,34],
-"_parallel_executor_8h_source.html":[41,0,3,3,2,1,3,34],
-"_parallel_scheduler_8cc.html":[41,0,3,3,2,1,3,35],
-"_parallel_scheduler_8cc_source.html":[41,0,3,3,2,1,3,35],
-"_parallel_scheduler_8h.html":[41,0,3,3,2,1,3,36],
-"_parallel_scheduler_8h_source.html":[41,0,3,3,2,1,3,36],
-"_params_8h.html":[41,0,2,4,1,1,65],
-"_params_8h.html#a06f2777ae390466061247361a9a416c2":[41,0,2,4,1,1,65,15],
-"_params_8h.html#a06f2777ae390466061247361a9a416c2a06fa1fae85cf41c2d935673d11463ca7":[41,0,2,4,1,1,65,15,5]
+"_parallel_executor_8h.html":[41,0,3,3,2,1,3,34]
 };

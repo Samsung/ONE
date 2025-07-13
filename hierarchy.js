@@ -2410,6 +2410,7 @@ var hierarchy =
     [ "onert::exec::IFunction", "classonert_1_1exec_1_1_i_function.html", [
       [ "onert::api::CustomKernel", "classonert_1_1api_1_1_custom_kernel.html", null ],
       [ "onert::backend::acl_common::AclFunction", "classonert_1_1backend_1_1acl__common_1_1_acl_function.html", null ],
+      [ "onert::backend::builtin::kernel::CallLayer", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_call_layer.html", null ],
       [ "onert::backend::builtin::kernel::IfLayer", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_if_layer.html", null ],
       [ "onert::backend::builtin::kernel::WhileLayer", "classonert_1_1backend_1_1builtin_1_1kernel_1_1_while_layer.html", null ],
       [ "onert::backend::cpu::ops::AddNLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_add_n_layer.html", null ],
@@ -2629,6 +2630,7 @@ var hierarchy =
         ] ],
         [ "onert::ir::operation::BroadcastTo", "classonert_1_1ir_1_1operation_1_1_broadcast_to.html", null ],
         [ "onert::ir::operation::Bulk", "classonert_1_1ir_1_1operation_1_1_bulk.html", null ],
+        [ "onert::ir::operation::Call", "classonert_1_1ir_1_1operation_1_1_call.html", null ],
         [ "onert::ir::operation::Comparison", "classonert_1_1ir_1_1operation_1_1_comparison.html", null ],
         [ "onert::ir::operation::Concat", "classonert_1_1ir_1_1operation_1_1_concat.html", null ],
         [ "onert::ir::operation::Conv2D", "classonert_1_1ir_1_1operation_1_1_conv2_d.html", [
@@ -4324,6 +4326,7 @@ var hierarchy =
     [ "onert::ir::operation::BCQGather::Param", "structonert_1_1ir_1_1operation_1_1_b_c_q_gather_1_1_param.html", null ],
     [ "onert::ir::operation::BinaryArithmetic::Param", "structonert_1_1ir_1_1operation_1_1_binary_arithmetic_1_1_param.html", null ],
     [ "onert::ir::operation::Bulk::Param", "structonert_1_1ir_1_1operation_1_1_bulk_1_1_param.html", null ],
+    [ "onert::ir::operation::Call::Param", "structonert_1_1ir_1_1operation_1_1_call_1_1_param.html", null ],
     [ "onert::ir::operation::Comparison::Param", "structonert_1_1ir_1_1operation_1_1_comparison_1_1_param.html", null ],
     [ "onert::ir::operation::Concat::Param", "structonert_1_1ir_1_1operation_1_1_concat_1_1_param.html", null ],
     [ "onert::ir::operation::Conv2D::Param", "structonert_1_1ir_1_1operation_1_1_conv2_d_1_1_param.html", null ],

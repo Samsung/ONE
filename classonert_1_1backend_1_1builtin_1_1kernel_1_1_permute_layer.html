@@ -262,82 +262,84 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   61</span>      <span class="keyword">auto</span> dst = *dst_it;</div>
 <div class="line"><span class="lineno">   62</span>      src_offsets_it-&gt;resize(0);</div>
 <div class="line"><span class="lineno">   63</span>      dst_offsets_it-&gt;resize(0);</div>
-<div class="line"><span class="lineno">   64</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a>(src-&gt;data_type()) != <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a>(dst-&gt;data_type()))</div>
-<div class="line"><span class="lineno">   65</span>        <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">   66</span>      <span class="keyword">const</span> <span class="keyword">auto</span> permute_type = *type_it;</div>
-<div class="line"><span class="lineno">   67</span> </div>
-<div class="line"><span class="lineno">   68</span>      <span class="comment">// TODO Support different types</span></div>
-<div class="line"><span class="lineno">   69</span>      <span class="keyword">auto</span> fn = [&amp;](backend::ITensor &amp;<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>) {</div>
-<div class="line"><span class="lineno">   70</span>        dst-&gt;access([&amp;](backend::ITensor &amp;<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>) {</div>
-<div class="line"><span class="lineno">   71</span>          <span class="comment">// NOTE The buffer of both tensor can be nullptr in this step</span></div>
-<div class="line"><span class="lineno">   72</span>          <span class="keyword">const</span> <span class="keyword">auto</span> data_size = <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">ir::sizeOfDataType</a>(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.data_type());</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>          <span class="keywordflow">if</span> (permute_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">ir::PermuteType::COPY</a>)</div>
-<div class="line"><span class="lineno">   75</span>          {</div>
-<div class="line"><span class="lineno">   76</span>            <span class="keywordflow">if</span> ((!<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.has_padding() &amp;&amp; !<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>.has_padding()))</div>
-<div class="line"><span class="lineno">   77</span>            {</div>
-<div class="line"><span class="lineno">   78</span>              <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a> = <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.getShape().num_elements();</div>
-<div class="line"><span class="lineno">   79</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> thread_count =</div>
-<div class="line"><span class="lineno">   80</span>                _external_context-&gt;ruy_context()-&gt;max_num_threads() &lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a>)</div>
-<div class="line"><span class="lineno">   81</span>                  ? _external_context-&gt;ruy_context()-&gt;max_num_threads()</div>
-<div class="line"><span class="lineno">   82</span>                  : <a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a>;</div>
-<div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>              std::vector&lt;PermuteWorkerTask&gt; tasks;</div>
-<div class="line"><span class="lineno">   85</span>              <span class="keyword">auto</span> start = 0;</div>
-<div class="line"><span class="lineno">   86</span>              <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = 0; i &lt; thread_count; ++i)</div>
-<div class="line"><span class="lineno">   87</span>              {</div>
-<div class="line"><span class="lineno">   88</span>                <span class="keywordtype">int</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">end</a> = start + (<a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a> - start) / (thread_count - i);</div>
-<div class="line"><span class="lineno">   89</span>                tasks.emplace_back(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.buffer(), <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>.buffer(), start * data_size,</div>
-<div class="line"><span class="lineno">   90</span>                                   start * data_size, (end - start) * data_size);</div>
-<div class="line"><span class="lineno">   91</span>                start = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">end</a>;</div>
-<div class="line"><span class="lineno">   92</span>              }</div>
-<div class="line"><span class="lineno">   93</span>              assert(tasks.size() &gt;= 1);</div>
-<div class="line"><span class="lineno">   94</span>              _tasks_map[src] = std::move(tasks);</div>
-<div class="line"><span class="lineno">   95</span>            }</div>
-<div class="line"><span class="lineno">   96</span>            <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   97</span>            {</div>
-<div class="line"><span class="lineno">   98</span>              <span class="keyword">auto</span> loop_shape = <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.getShape();</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>              <span class="keyword">auto</span> copy_axis = loop_shape.rank() - 1;</div>
-<div class="line"><span class="lineno">  101</span>              copy_axis = copy_axis &lt; 0 ? 1 : copy_axis;</div>
-<div class="line"><span class="lineno">  102</span>              <span class="keyword">const</span> <span class="keyword">auto</span> copy_len = loop_shape.dim(copy_axis) * data_size;</div>
-<div class="line"><span class="lineno">  103</span>              loop_shape.dim(copy_axis) = 1;</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>              appendPermuteTasks(src, dst, loop_shape, copy_len, permute_type);</div>
-<div class="line"><span class="lineno">  106</span>            }</div>
-<div class="line"><span class="lineno">  107</span>          }</div>
-<div class="line"><span class="lineno">  108</span>          <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  109</span>          {</div>
-<div class="line"><span class="lineno">  110</span>            assert(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.getShape().rank() == 4 &amp;&amp;</div>
-<div class="line"><span class="lineno">  111</span>                   (permute_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">ir::PermuteType::NHWC_TO_NCHW</a> ||</div>
-<div class="line"><span class="lineno">  112</span>                    permute_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">ir::PermuteType::NCHW_TO_NHWC</a>));</div>
-<div class="line"><span class="lineno">  113</span>            <span class="keyword">const</span> <span class="keyword">auto</span> loop_shape = <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.getShape();</div>
-<div class="line"><span class="lineno">  114</span>            <span class="keyword">const</span> <span class="keyword">auto</span> copy_len = data_size;</div>
-<div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>            appendPermuteTasks(src, dst, loop_shape, copy_len, permute_type);</div>
-<div class="line"><span class="lineno">  117</span>          }</div>
-<div class="line"><span class="lineno">  118</span>        });</div>
-<div class="line"><span class="lineno">  119</span>      };</div>
-<div class="line"><span class="lineno">  120</span>      src-&gt;access(fn);</div>
-<div class="line"><span class="lineno">  121</span>      src_it++;</div>
-<div class="line"><span class="lineno">  122</span>      dst_it++;</div>
-<div class="line"><span class="lineno">  123</span>      src_offsets_it++;</div>
-<div class="line"><span class="lineno">  124</span>      dst_offsets_it++;</div>
-<div class="line"><span class="lineno">  125</span>      type_it++;</div>
-<div class="line"><span class="lineno">  126</span>    }</div>
-<div class="line"><span class="lineno">  127</span>  }</div>
-<div class="line"><span class="lineno">  128</span>}</div>
+<div class="line"><span class="lineno">   64</span>      <span class="keyword">const</span> <span class="keyword">auto</span> permute_type = *type_it;</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>      src_it++;</div>
+<div class="line"><span class="lineno">   67</span>      dst_it++;</div>
+<div class="line"><span class="lineno">   68</span>      src_offsets_it++;</div>
+<div class="line"><span class="lineno">   69</span>      dst_offsets_it++;</div>
+<div class="line"><span class="lineno">   70</span>      type_it++;</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a>(src-&gt;data_type()) != <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a>(dst-&gt;data_type()))</div>
+<div class="line"><span class="lineno">   73</span>        <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   75</span>      <span class="comment">// TODO Support different types</span></div>
+<div class="line"><span class="lineno">   76</span>      <span class="keyword">auto</span> fn = [&amp;](backend::ITensor &amp;<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>) {</div>
+<div class="line"><span class="lineno">   77</span>        dst-&gt;access([&amp;](backend::ITensor &amp;<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>) {</div>
+<div class="line"><span class="lineno">   78</span>          <span class="comment">// NOTE The buffer of both tensor can be nullptr in this step</span></div>
+<div class="line"><span class="lineno">   79</span>          <span class="keyword">const</span> <span class="keyword">auto</span> data_size = <a class="code hl_function" href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">ir::sizeOfDataType</a>(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.data_type());</div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>          <span class="keywordflow">if</span> (permute_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b">ir::PermuteType::SAME</a>)</div>
+<div class="line"><span class="lineno">   82</span>          {</div>
+<div class="line"><span class="lineno">   83</span>            <span class="keywordflow">if</span> ((!<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.has_padding() &amp;&amp; !<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>.has_padding()))</div>
+<div class="line"><span class="lineno">   84</span>            {</div>
+<div class="line"><span class="lineno">   85</span>              <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a> = <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.getShape().num_elements();</div>
+<div class="line"><span class="lineno">   86</span>              <span class="keyword">const</span> <span class="keywordtype">int</span> thread_count =</div>
+<div class="line"><span class="lineno">   87</span>                _external_context-&gt;ruy_context()-&gt;max_num_threads() &lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a>)</div>
+<div class="line"><span class="lineno">   88</span>                  ? _external_context-&gt;ruy_context()-&gt;max_num_threads()</div>
+<div class="line"><span class="lineno">   89</span>                  : <a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a>;</div>
+<div class="line"><span class="lineno">   90</span> </div>
+<div class="line"><span class="lineno">   91</span>              std::vector&lt;PermuteWorkerTask&gt; tasks;</div>
+<div class="line"><span class="lineno">   92</span>              <span class="keyword">auto</span> start = 0;</div>
+<div class="line"><span class="lineno">   93</span>              <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = 0; i &lt; thread_count; ++i)</div>
+<div class="line"><span class="lineno">   94</span>              {</div>
+<div class="line"><span class="lineno">   95</span>                <span class="keywordtype">int</span> <a class="code hl_function" href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">end</a> = start + (<a class="code hl_function" href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">num_elements</a> - start) / (thread_count - i);</div>
+<div class="line"><span class="lineno">   96</span>                tasks.emplace_back(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.buffer(), <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>.buffer(), start * data_size,</div>
+<div class="line"><span class="lineno">   97</span>                                   start * data_size, (end - start) * data_size);</div>
+<div class="line"><span class="lineno">   98</span>                start = <a class="code hl_function" href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">end</a>;</div>
+<div class="line"><span class="lineno">   99</span>              }</div>
+<div class="line"><span class="lineno">  100</span>              assert(tasks.size() &gt;= 1);</div>
+<div class="line"><span class="lineno">  101</span>              _tasks_map[src] = std::move(tasks);</div>
+<div class="line"><span class="lineno">  102</span>            }</div>
+<div class="line"><span class="lineno">  103</span>            <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  104</span>            {</div>
+<div class="line"><span class="lineno">  105</span>              <span class="keyword">auto</span> loop_shape = <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.getShape();</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>              <span class="keyword">auto</span> copy_axis = loop_shape.rank() - 1;</div>
+<div class="line"><span class="lineno">  108</span>              copy_axis = copy_axis &lt; 0 ? 1 : copy_axis;</div>
+<div class="line"><span class="lineno">  109</span>              <span class="keyword">const</span> <span class="keyword">auto</span> copy_len = loop_shape.dim(copy_axis) * data_size;</div>
+<div class="line"><span class="lineno">  110</span>              loop_shape.dim(copy_axis) = 1;</div>
+<div class="line"><span class="lineno">  111</span> </div>
+<div class="line"><span class="lineno">  112</span>              appendPermuteTasks(src, dst, loop_shape, copy_len, permute_type);</div>
+<div class="line"><span class="lineno">  113</span>            }</div>
+<div class="line"><span class="lineno">  114</span>          }</div>
+<div class="line"><span class="lineno">  115</span>          <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  116</span>          {</div>
+<div class="line"><span class="lineno">  117</span>            assert(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.getShape().rank() == 4 &amp;&amp;</div>
+<div class="line"><span class="lineno">  118</span>                   (permute_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">ir::PermuteType::NHWC_TO_NCHW</a> ||</div>
+<div class="line"><span class="lineno">  119</span>                    permute_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">ir::PermuteType::NCHW_TO_NHWC</a>));</div>
+<div class="line"><span class="lineno">  120</span>            <span class="keyword">const</span> <span class="keyword">auto</span> loop_shape = <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>.getShape();</div>
+<div class="line"><span class="lineno">  121</span>            <span class="keyword">const</span> <span class="keyword">auto</span> copy_len = data_size;</div>
+<div class="line"><span class="lineno">  122</span> </div>
+<div class="line"><span class="lineno">  123</span>            appendPermuteTasks(src, dst, loop_shape, copy_len, permute_type);</div>
+<div class="line"><span class="lineno">  124</span>          }</div>
+<div class="line"><span class="lineno">  125</span>        });</div>
+<div class="line"><span class="lineno">  126</span>      };</div>
+<div class="line"><span class="lineno">  127</span>      src-&gt;access(fn);</div>
+<div class="line"><span class="lineno">  128</span>    }</div>
+<div class="line"><span class="lineno">  129</span>  }</div>
+<div class="line"><span class="lineno">  130</span>}</div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a8174dbba1a0c5f449d891e5b31a6bfd4"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">onert::exec::IPermuteFunction::underlying_type</a></div><div class="ttdeci">const std::type_info &amp; underlying_type(ir::DataType type) const</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8cc_source.html#l00288">IPermuteFunction.cc:288</a></div></div>
 <div class="ttc" id="anamespacenncc_1_1core_1_1_a_d_t_1_1feature_html_a1780a62ce2f7897524ee6a9c8967158d"><div class="ttname"><a href="namespacenncc_1_1core_1_1_a_d_t_1_1feature.html#a1780a62ce2f7897524ee6a9c8967158d">nncc::core::ADT::feature::num_elements</a></div><div class="ttdeci">uint32_t num_elements(const Shape &amp;shape)</div><div class="ttdoc">The number of elements of a feature map of a given shape.</div><div class="ttdef"><b>Definition</b> <a href="compiler_2angkor_2include_2nncc_2core_2_a_d_t_2feature_2_shape_8h_source.html#l00059">Shape.h:59</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a5a23adf0690140cdfe1dc79640a31047"><div class="ttname"><a href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">nnfw::cker::end</a></div><div class="ttdeci">ShapeIterator end(const Shape &amp;s)</div><div class="ttdef"><b>Definition</b> <a href="_shape_iterator_8h_source.html#l00089">ShapeIterator.h:89</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a306303df14f9f20079574f5a9cc37f26"><div class="ttname"><a href="namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26">onert::ir::sizeOfDataType</a></div><div class="ttdeci">size_t sizeOfDataType(DataType data_type)</div><div class="ttdef"><b>Definition</b> <a href="_data_type_8cc_source.html#l00027">DataType.cc:27</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">onert::ir::PermuteType::NHWC_TO_NCHW</a></div><div class="ttdeci">@ NHWC_TO_NCHW</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">onert::ir::PermuteType::NCHW_TO_NHWC</a></div><div class="ttdeci">@ NCHW_TO_NHWC</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">onert::ir::PermuteType::COPY</a></div><div class="ttdeci">@ COPY</div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b">onert::ir::PermuteType::SAME</a></div><div class="ttdeci">@ SAME</div></div>
 <div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a5e402ec5119ad0ebf56f68815c047082"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a></div><div class="ttdeci">CLTensor src_tensor</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00291">Convolution.cpp:291</a></div></div>
 <div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_aa48a2b28b89b66b791e096eef57c83f1"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a></div><div class="ttdeci">CLTensor dst_tensor</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00292">Convolution.cpp:292</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_permute_function_8h_source.html#l00241">onert::exec::IPermuteFunction::_dst_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00243">onert::exec::IPermuteFunction::_dst_tensors_offsets</a>, <a class="el" href="_i_permute_function_8h_source.html#l00244">onert::exec::IPermuteFunction::_permute_types</a>, <a class="el" href="_i_permute_function_8h_source.html#l00240">onert::exec::IPermuteFunction::_src_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00242">onert::exec::IPermuteFunction::_src_tensors_offsets</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">onert::ir::COPY</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00292">dst_tensor</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">onert::ir::NCHW_TO_NHWC</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">onert::ir::NHWC_TO_NCHW</a>, <a class="el" href="_data_type_8cc_source.html#l00027">onert::ir::sizeOfDataType()</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00291">src_tensor</a>, and <a class="el" href="_i_permute_function_8cc_source.html#l00288">onert::exec::IPermuteFunction::underlying_type()</a>.</p>
+<p class="reference">References <a class="el" href="_i_permute_function_8h_source.html#l00241">onert::exec::IPermuteFunction::_dst_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00243">onert::exec::IPermuteFunction::_dst_tensors_offsets</a>, <a class="el" href="_i_permute_function_8h_source.html#l00244">onert::exec::IPermuteFunction::_permute_types</a>, <a class="el" href="_i_permute_function_8h_source.html#l00240">onert::exec::IPermuteFunction::_src_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00242">onert::exec::IPermuteFunction::_src_tensors_offsets</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00292">dst_tensor</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">onert::ir::NCHW_TO_NHWC</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">onert::ir::NHWC_TO_NCHW</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b">onert::ir::SAME</a>, <a class="el" href="_data_type_8cc_source.html#l00027">onert::ir::sizeOfDataType()</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00291">src_tensor</a>, and <a class="el" href="_i_permute_function_8cc_source.html#l00288">onert::exec::IPermuteFunction::underlying_type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00040">onert::backend::builtin::train::kernel::PermuteLayer::optimize()</a>.</p>
 
@@ -368,129 +370,129 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1exec_1_1_i_permute_function.html#a168261ad1eea9b0a0842419e69a05f47">onert::exec::IPermuteFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00182">182</a> of file <a class="el" href="kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  183</span>{</div>
-<div class="line"><span class="lineno">  184</span>  assert(<a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.size() == <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">_dst_tensors</a>.size());</div>
-<div class="line"><span class="lineno">  185</span>  <span class="comment">// PermuteLayer infers dynamic shape inside itself whenever run is called for the following</span></div>
-<div class="line"><span class="lineno">  186</span>  <span class="comment">// reasons:</span></div>
-<div class="line"><span class="lineno">  187</span>  <span class="comment">// 1. PermuteLayer has to access dynamic tensor manager for input/output tensors of other backends</span></div>
-<div class="line"><span class="lineno">  188</span>  <span class="comment">// 2. Other controlflow operation(If/While) uses this layout for copying tensors of other</span></div>
-<div class="line"><span class="lineno">  189</span>  <span class="comment">// subgraphs(with other backends)</span></div>
-<div class="line"><span class="lineno">  190</span>  <span class="comment">// 3. This infering code is placed here to avoid duplicated code that can be caused by above 2</span></div>
-<div class="line"><span class="lineno">  191</span>  <span class="comment">// reasons</span></div>
-<div class="line"><span class="lineno">  192</span> </div>
-<div class="line"><span class="lineno">  193</span>  <span class="comment">// check if output is not dynamic</span></div>
-<div class="line"><span class="lineno">  194</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.size(); ++i)</div>
-<div class="line"><span class="lineno">  195</span>  {</div>
-<div class="line"><span class="lineno">  196</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a> = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">_dst_tensors</a>.at(i);</div>
-<div class="line"><span class="lineno">  197</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a> = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.at(i);</div>
-<div class="line"><span class="lineno">  198</span>    <span class="keyword">auto</span> permute_type = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a43516f4c839df2fe816b9c8531866ad4">_permute_types</a>.at(i);</div>
-<div class="line"><span class="lineno">  199</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>-&gt;is_dynamic() || <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>-&gt;is_dynamic())</div>
-<div class="line"><span class="lineno">  200</span>    {</div>
-<div class="line"><span class="lineno">  201</span>      <span class="comment">// getting output shape</span></div>
-<div class="line"><span class="lineno">  202</span>      <span class="keyword">auto</span> src_shape = <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>-&gt;getShape();</div>
-<div class="line"><span class="lineno">  203</span> </div>
-<div class="line"><span class="lineno">  204</span>      <span class="comment">// set output shape and output buffer</span></div>
-<div class="line"><span class="lineno">  205</span>      ir::Shape new_shape = <a class="code hl_function" href="namespaceonert_1_1ir.html#ab92fc7cd718a3cc5f5ed959ebf0d3913">ir::convertShape</a>(src_shape, permute_type);</div>
-<div class="line"><span class="lineno">  206</span> </div>
-<div class="line"><span class="lineno">  207</span>      <span class="keywordflow">try</span></div>
-<div class="line"><span class="lineno">  208</span>      {</div>
-<div class="line"><span class="lineno">  209</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>-&gt;applyShape(new_shape))</div>
-<div class="line"><span class="lineno">  210</span>          <span class="keywordflow">throw</span> std::runtime_error{</div>
-<div class="line"><span class="lineno">  211</span>            <span class="stringliteral">&quot;Error: PermuteLayer: output&#39;s TensorManager does not support dynamic tensor&quot;</span>};</div>
-<div class="line"><span class="lineno">  212</span>        assert(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  213</span>      }</div>
-<div class="line"><span class="lineno">  214</span>      <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::out_of_range &amp;e)</div>
-<div class="line"><span class="lineno">  215</span>      {</div>
-<div class="line"><span class="lineno">  216</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: out_of_range in PermuteLayer: output&#39;s TensorManager does not support &quot;</span></div>
-<div class="line"><span class="lineno">  217</span>                     <span class="stringliteral">&quot;dynamic tensor&quot;</span></div>
-<div class="line"><span class="lineno">  218</span>                  &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">  219</span>        <span class="keywordflow">throw</span>;</div>
-<div class="line"><span class="lineno">  220</span>      }</div>
-<div class="line"><span class="lineno">  221</span>    }</div>
-<div class="line"><span class="lineno">  222</span>    assert(<a class="code hl_function" href="namespaceonert_1_1ir.html#ab92fc7cd718a3cc5f5ed959ebf0d3913">ir::convertShape</a>(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>-&gt;getShape(), permute_type) == <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>-&gt;getShape());</div>
-<div class="line"><span class="lineno">  223</span>  }</div>
-<div class="line"><span class="lineno">  224</span>  assert(<a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.size() == <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">_dst_tensors</a>.size());</div>
-<div class="line"><span class="lineno">  225</span>  assert(<a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.size() == <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a8705a1ceb48f7d535d321e6bab6081c7">_src_tensors_offsets</a>.size());</div>
-<div class="line"><span class="lineno">  226</span>  assert(<a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">_dst_tensors</a>.size() == <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a067528d61e5b9e112aeb10e63af884a9">_dst_tensors_offsets</a>.size());</div>
-<div class="line"><span class="lineno">  227</span>  <span class="keyword">auto</span> src_it = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.begin();</div>
-<div class="line"><span class="lineno">  228</span>  <span class="keyword">auto</span> dst_it = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">_dst_tensors</a>.begin();</div>
-<div class="line"><span class="lineno">  229</span>  <span class="keyword">auto</span> src_offsets_it = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a8705a1ceb48f7d535d321e6bab6081c7">_src_tensors_offsets</a>.begin();</div>
-<div class="line"><span class="lineno">  230</span>  <span class="keyword">auto</span> dst_offsets_it = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a067528d61e5b9e112aeb10e63af884a9">_dst_tensors_offsets</a>.begin();</div>
-<div class="line"><span class="lineno">  231</span>  <span class="keyword">auto</span> type_it = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a43516f4c839df2fe816b9c8531866ad4">_permute_types</a>.begin();</div>
-<div class="line"><span class="lineno">  232</span>  <span class="keywordflow">while</span> (src_it != <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.end())</div>
-<div class="line"><span class="lineno">  233</span>  {</div>
-<div class="line"><span class="lineno">  234</span>    <span class="keyword">auto</span> src = *src_it;</div>
-<div class="line"><span class="lineno">  235</span>    <span class="keyword">auto</span> dst = *dst_it;</div>
-<div class="line"><span class="lineno">  236</span>    <span class="keyword">auto</span> &amp;src_offsets = *src_offsets_it;</div>
-<div class="line"><span class="lineno">  237</span>    <span class="keyword">auto</span> &amp;dst_offsets = *dst_offsets_it;</div>
-<div class="line"><span class="lineno">  238</span>    <span class="keyword">auto</span> permute_type = *type_it;</div>
-<div class="line"><span class="lineno">  239</span> </div>
-<div class="line"><span class="lineno">  240</span>    <span class="keywordflow">if</span> (src-&gt;total_size() == 0)</div>
-<div class="line"><span class="lineno">  241</span>    {</div>
-<div class="line"><span class="lineno">  242</span>      assert(dst-&gt;total_size() == 0);</div>
-<div class="line"><span class="lineno">  243</span>    }</div>
-<div class="line"><span class="lineno">  244</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  245</span>    {</div>
-<div class="line"><span class="lineno">  246</span>      <span class="keywordflow">if</span> (src != dst)</div>
-<div class="line"><span class="lineno">  247</span>      {</div>
-<div class="line"><span class="lineno">  248</span>        <span class="comment">// Conditions to run permutation with multithreading</span></div>
-<div class="line"><span class="lineno">  249</span>        <span class="comment">// 1. The tasks for multithreathing was created</span></div>
-<div class="line"><span class="lineno">  250</span>        <span class="comment">// 2. The tasks&#39;s size &gt; 1</span></div>
-<div class="line"><span class="lineno">  251</span>        <span class="comment">// 3. Both tensors are not dynamic</span></div>
-<div class="line"><span class="lineno">  252</span>        <span class="comment">// 4. Data types of both tensors are different</span></div>
-<div class="line"><span class="lineno">  253</span>        <span class="keywordflow">if</span> (_tasks_map.find(src) == _tasks_map.end() || _tasks_map.at(src).size() == 1 ||</div>
-<div class="line"><span class="lineno">  254</span>            src-&gt;is_dynamic() || dst-&gt;is_dynamic() ||</div>
-<div class="line"><span class="lineno">  255</span>            <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a>(src-&gt;data_type()) != <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a>(dst-&gt;data_type()))</div>
-<div class="line"><span class="lineno">  256</span>        {</div>
-<div class="line"><span class="lineno">  257</span>          <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a4dd7a12f901f6e35d530e9a71f592e28">permute</a>(src, dst, src-&gt;getShape().rank(), src_offsets, dst_offsets, permute_type);</div>
-<div class="line"><span class="lineno">  258</span>        }</div>
-<div class="line"><span class="lineno">  259</span>        <span class="comment">// If dst is subtensor, we have to use clEnqueueMapBuffer instead of clEnqueueWirteBuffer</span></div>
-<div class="line"><span class="lineno">  260</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dst-&gt;needMemoryMap() &amp;&amp; !dst-&gt;is_subtensor())</div>
-<div class="line"><span class="lineno">  261</span>        {</div>
-<div class="line"><span class="lineno">  262</span>          <span class="keywordflow">if</span> (!src-&gt;has_padding() &amp;&amp; !dst-&gt;has_padding() &amp;&amp; permute_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">ir::PermuteType::COPY</a>)</div>
-<div class="line"><span class="lineno">  263</span>          {</div>
-<div class="line"><span class="lineno">  264</span>            <span class="comment">// This is more effective than multi-threading</span></div>
-<div class="line"><span class="lineno">  265</span>            src-&gt;access([&amp;](backend::ITensor &amp;) { dst-&gt;enqueueWriteBuffer(src-&gt;buffer(), <span class="keyword">false</span>); });</div>
-<div class="line"><span class="lineno">  266</span>          }</div>
-<div class="line"><span class="lineno">  267</span>          <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  268</span>          {</div>
-<div class="line"><span class="lineno">  269</span>            <span class="comment">// TODO Optimize this block in case of that padding size of dst is big.</span></div>
-<div class="line"><span class="lineno">  270</span>            <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a1be7fd11c49f519c320f1c5583ecee5e">_buffers_map</a>[dst].reserve(dst-&gt;total_size());</div>
-<div class="line"><span class="lineno">  271</span>            <span class="keyword">auto</span> dst_buffer = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a1be7fd11c49f519c320f1c5583ecee5e">_buffers_map</a>[dst].data();</div>
-<div class="line"><span class="lineno">  272</span> </div>
-<div class="line"><span class="lineno">  273</span>            src-&gt;access([&amp;](backend::ITensor &amp;) { runPermuteTasks(src, dst_buffer); });</div>
-<div class="line"><span class="lineno">  274</span>            dst-&gt;enqueueWriteBuffer(dst_buffer, <span class="keyword">false</span>);</div>
-<div class="line"><span class="lineno">  275</span>          }</div>
-<div class="line"><span class="lineno">  276</span>        }</div>
-<div class="line"><span class="lineno">  277</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (src-&gt;needMemoryMap() &amp;&amp; !src-&gt;is_subtensor() &amp;&amp; !src-&gt;has_padding() &amp;&amp;</div>
-<div class="line"><span class="lineno">  278</span>                 !dst-&gt;has_padding() &amp;&amp; permute_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">ir::PermuteType::COPY</a>)</div>
-<div class="line"><span class="lineno">  279</span>        {</div>
-<div class="line"><span class="lineno">  280</span>          <span class="comment">// This is more effective than multi-threading</span></div>
-<div class="line"><span class="lineno">  281</span>          assert(!dst-&gt;needMemoryMap());</div>
-<div class="line"><span class="lineno">  282</span>          dst-&gt;access([&amp;](backend::ITensor &amp;) { src-&gt;enqueueReadBuffer(dst-&gt;buffer(), <span class="keyword">true</span>); });</div>
-<div class="line"><span class="lineno">  283</span>        }</div>
-<div class="line"><span class="lineno">  284</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  285</span>        {</div>
-<div class="line"><span class="lineno">  286</span>          <span class="keyword">auto</span> fn = [&amp;](backend::ITensor &amp;) {</div>
-<div class="line"><span class="lineno">  287</span>            dst-&gt;access([&amp;](backend::ITensor &amp;) { runPermuteTasks(src, dst-&gt;buffer()); });</div>
-<div class="line"><span class="lineno">  288</span>          };</div>
-<div class="line"><span class="lineno">  289</span>          src-&gt;access(fn);</div>
-<div class="line"><span class="lineno">  290</span>        }</div>
-<div class="line"><span class="lineno">  291</span>      }</div>
-<div class="line"><span class="lineno">  292</span>    }</div>
-<div class="line"><span class="lineno">  293</span>    src_it++;</div>
-<div class="line"><span class="lineno">  294</span>    dst_it++;</div>
-<div class="line"><span class="lineno">  295</span>    src_offsets_it++;</div>
-<div class="line"><span class="lineno">  296</span>    dst_offsets_it++;</div>
-<div class="line"><span class="lineno">  297</span>    type_it++;</div>
-<div class="line"><span class="lineno">  298</span>  }</div>
-<div class="line"><span class="lineno">  299</span>}</div>
+<p class="definition">Definition at line <a class="el" href="kernel_2_permute_layer_8cc_source.html#l00184">184</a> of file <a class="el" href="kernel_2_permute_layer_8cc_source.html">PermuteLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  185</span>{</div>
+<div class="line"><span class="lineno">  186</span>  assert(<a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.size() == <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">_dst_tensors</a>.size());</div>
+<div class="line"><span class="lineno">  187</span>  <span class="comment">// PermuteLayer infers dynamic shape inside itself whenever run is called for the following</span></div>
+<div class="line"><span class="lineno">  188</span>  <span class="comment">// reasons:</span></div>
+<div class="line"><span class="lineno">  189</span>  <span class="comment">// 1. PermuteLayer has to access dynamic tensor manager for input/output tensors of other backends</span></div>
+<div class="line"><span class="lineno">  190</span>  <span class="comment">// 2. Other controlflow operation(If/While) uses this layout for copying tensors of other</span></div>
+<div class="line"><span class="lineno">  191</span>  <span class="comment">// subgraphs(with other backends)</span></div>
+<div class="line"><span class="lineno">  192</span>  <span class="comment">// 3. This infering code is placed here to avoid duplicated code that can be caused by above 2</span></div>
+<div class="line"><span class="lineno">  193</span>  <span class="comment">// reasons</span></div>
+<div class="line"><span class="lineno">  194</span> </div>
+<div class="line"><span class="lineno">  195</span>  <span class="comment">// check if output is not dynamic</span></div>
+<div class="line"><span class="lineno">  196</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.size(); ++i)</div>
+<div class="line"><span class="lineno">  197</span>  {</div>
+<div class="line"><span class="lineno">  198</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a> = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">_dst_tensors</a>.at(i);</div>
+<div class="line"><span class="lineno">  199</span>    <span class="keyword">auto</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a> = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.at(i);</div>
+<div class="line"><span class="lineno">  200</span>    <span class="keyword">auto</span> permute_type = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a43516f4c839df2fe816b9c8531866ad4">_permute_types</a>.at(i);</div>
+<div class="line"><span class="lineno">  201</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>-&gt;is_dynamic() || <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>-&gt;is_dynamic())</div>
+<div class="line"><span class="lineno">  202</span>    {</div>
+<div class="line"><span class="lineno">  203</span>      <span class="comment">// getting output shape</span></div>
+<div class="line"><span class="lineno">  204</span>      <span class="keyword">auto</span> src_shape = <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>-&gt;getShape();</div>
+<div class="line"><span class="lineno">  205</span> </div>
+<div class="line"><span class="lineno">  206</span>      <span class="comment">// set output shape and output buffer</span></div>
+<div class="line"><span class="lineno">  207</span>      ir::Shape new_shape = <a class="code hl_function" href="namespaceonert_1_1ir.html#ab92fc7cd718a3cc5f5ed959ebf0d3913">ir::convertShape</a>(src_shape, permute_type);</div>
+<div class="line"><span class="lineno">  208</span> </div>
+<div class="line"><span class="lineno">  209</span>      <span class="keywordflow">try</span></div>
+<div class="line"><span class="lineno">  210</span>      {</div>
+<div class="line"><span class="lineno">  211</span>        <span class="keywordflow">if</span> (!<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>-&gt;applyShape(new_shape))</div>
+<div class="line"><span class="lineno">  212</span>          <span class="keywordflow">throw</span> std::runtime_error{</div>
+<div class="line"><span class="lineno">  213</span>            <span class="stringliteral">&quot;Error: PermuteLayer: output&#39;s TensorManager does not support dynamic tensor&quot;</span>};</div>
+<div class="line"><span class="lineno">  214</span>        assert(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>-&gt;buffer() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  215</span>      }</div>
+<div class="line"><span class="lineno">  216</span>      <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::out_of_range &amp;e)</div>
+<div class="line"><span class="lineno">  217</span>      {</div>
+<div class="line"><span class="lineno">  218</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: out_of_range in PermuteLayer: output&#39;s TensorManager does not support &quot;</span></div>
+<div class="line"><span class="lineno">  219</span>                     <span class="stringliteral">&quot;dynamic tensor&quot;</span></div>
+<div class="line"><span class="lineno">  220</span>                  &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno">  221</span>        <span class="keywordflow">throw</span>;</div>
+<div class="line"><span class="lineno">  222</span>      }</div>
+<div class="line"><span class="lineno">  223</span>    }</div>
+<div class="line"><span class="lineno">  224</span>    assert(<a class="code hl_function" href="namespaceonert_1_1ir.html#ab92fc7cd718a3cc5f5ed959ebf0d3913">ir::convertShape</a>(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a5e402ec5119ad0ebf56f68815c047082">src_tensor</a>-&gt;getShape(), permute_type) == <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#aa48a2b28b89b66b791e096eef57c83f1">dst_tensor</a>-&gt;getShape());</div>
+<div class="line"><span class="lineno">  225</span>  }</div>
+<div class="line"><span class="lineno">  226</span>  assert(<a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.size() == <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">_dst_tensors</a>.size());</div>
+<div class="line"><span class="lineno">  227</span>  assert(<a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.size() == <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a8705a1ceb48f7d535d321e6bab6081c7">_src_tensors_offsets</a>.size());</div>
+<div class="line"><span class="lineno">  228</span>  assert(<a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">_dst_tensors</a>.size() == <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a067528d61e5b9e112aeb10e63af884a9">_dst_tensors_offsets</a>.size());</div>
+<div class="line"><span class="lineno">  229</span>  <span class="keyword">auto</span> src_it = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.begin();</div>
+<div class="line"><span class="lineno">  230</span>  <span class="keyword">auto</span> dst_it = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#af4d632eca1bf45e99229e972078b3dce">_dst_tensors</a>.begin();</div>
+<div class="line"><span class="lineno">  231</span>  <span class="keyword">auto</span> src_offsets_it = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a8705a1ceb48f7d535d321e6bab6081c7">_src_tensors_offsets</a>.begin();</div>
+<div class="line"><span class="lineno">  232</span>  <span class="keyword">auto</span> dst_offsets_it = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a067528d61e5b9e112aeb10e63af884a9">_dst_tensors_offsets</a>.begin();</div>
+<div class="line"><span class="lineno">  233</span>  <span class="keyword">auto</span> type_it = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a43516f4c839df2fe816b9c8531866ad4">_permute_types</a>.begin();</div>
+<div class="line"><span class="lineno">  234</span>  <span class="keywordflow">while</span> (src_it != <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a9f6cf33a245a4c96e4b1d12b2c574540">_src_tensors</a>.end())</div>
+<div class="line"><span class="lineno">  235</span>  {</div>
+<div class="line"><span class="lineno">  236</span>    <span class="keyword">auto</span> src = *src_it;</div>
+<div class="line"><span class="lineno">  237</span>    <span class="keyword">auto</span> dst = *dst_it;</div>
+<div class="line"><span class="lineno">  238</span>    <span class="keyword">auto</span> &amp;src_offsets = *src_offsets_it;</div>
+<div class="line"><span class="lineno">  239</span>    <span class="keyword">auto</span> &amp;dst_offsets = *dst_offsets_it;</div>
+<div class="line"><span class="lineno">  240</span>    <span class="keyword">auto</span> permute_type = *type_it;</div>
+<div class="line"><span class="lineno">  241</span> </div>
+<div class="line"><span class="lineno">  242</span>    <span class="keywordflow">if</span> (src-&gt;total_size() == 0)</div>
+<div class="line"><span class="lineno">  243</span>    {</div>
+<div class="line"><span class="lineno">  244</span>      assert(dst-&gt;total_size() == 0);</div>
+<div class="line"><span class="lineno">  245</span>    }</div>
+<div class="line"><span class="lineno">  246</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  247</span>    {</div>
+<div class="line"><span class="lineno">  248</span>      <span class="keywordflow">if</span> (src != dst)</div>
+<div class="line"><span class="lineno">  249</span>      {</div>
+<div class="line"><span class="lineno">  250</span>        <span class="comment">// Conditions to run permutation with multithreading</span></div>
+<div class="line"><span class="lineno">  251</span>        <span class="comment">// 1. The tasks for multithreathing was created</span></div>
+<div class="line"><span class="lineno">  252</span>        <span class="comment">// 2. The tasks&#39;s size &gt; 1</span></div>
+<div class="line"><span class="lineno">  253</span>        <span class="comment">// 3. Both tensors are not dynamic</span></div>
+<div class="line"><span class="lineno">  254</span>        <span class="comment">// 4. Data types of both tensors are different</span></div>
+<div class="line"><span class="lineno">  255</span>        <span class="keywordflow">if</span> (_tasks_map.find(src) == _tasks_map.end() || _tasks_map.at(src).size() == 1 ||</div>
+<div class="line"><span class="lineno">  256</span>            src-&gt;is_dynamic() || dst-&gt;is_dynamic() ||</div>
+<div class="line"><span class="lineno">  257</span>            <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a>(src-&gt;data_type()) != <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a8174dbba1a0c5f449d891e5b31a6bfd4">underlying_type</a>(dst-&gt;data_type()))</div>
+<div class="line"><span class="lineno">  258</span>        {</div>
+<div class="line"><span class="lineno">  259</span>          <a class="code hl_function" href="classonert_1_1exec_1_1_i_permute_function.html#a4dd7a12f901f6e35d530e9a71f592e28">permute</a>(src, dst, src-&gt;getShape().rank(), src_offsets, dst_offsets, permute_type);</div>
+<div class="line"><span class="lineno">  260</span>        }</div>
+<div class="line"><span class="lineno">  261</span>        <span class="comment">// If dst is subtensor, we have to use clEnqueueMapBuffer instead of clEnqueueWirteBuffer</span></div>
+<div class="line"><span class="lineno">  262</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (dst-&gt;needMemoryMap() &amp;&amp; !dst-&gt;is_subtensor())</div>
+<div class="line"><span class="lineno">  263</span>        {</div>
+<div class="line"><span class="lineno">  264</span>          <span class="keywordflow">if</span> (!src-&gt;has_padding() &amp;&amp; !dst-&gt;has_padding() &amp;&amp; permute_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b">ir::PermuteType::SAME</a>)</div>
+<div class="line"><span class="lineno">  265</span>          {</div>
+<div class="line"><span class="lineno">  266</span>            <span class="comment">// This is more effective than multi-threading</span></div>
+<div class="line"><span class="lineno">  267</span>            src-&gt;access([&amp;](backend::ITensor &amp;) { dst-&gt;enqueueWriteBuffer(src-&gt;buffer(), <span class="keyword">false</span>); });</div>
+<div class="line"><span class="lineno">  268</span>          }</div>
+<div class="line"><span class="lineno">  269</span>          <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  270</span>          {</div>
+<div class="line"><span class="lineno">  271</span>            <span class="comment">// TODO Optimize this block in case of that padding size of dst is big.</span></div>
+<div class="line"><span class="lineno">  272</span>            <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a1be7fd11c49f519c320f1c5583ecee5e">_buffers_map</a>[dst].reserve(dst-&gt;total_size());</div>
+<div class="line"><span class="lineno">  273</span>            <span class="keyword">auto</span> dst_buffer = <a class="code hl_variable" href="classonert_1_1exec_1_1_i_permute_function.html#a1be7fd11c49f519c320f1c5583ecee5e">_buffers_map</a>[dst].data();</div>
+<div class="line"><span class="lineno">  274</span> </div>
+<div class="line"><span class="lineno">  275</span>            src-&gt;access([&amp;](backend::ITensor &amp;) { runPermuteTasks(src, dst_buffer); });</div>
+<div class="line"><span class="lineno">  276</span>            dst-&gt;enqueueWriteBuffer(dst_buffer, <span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">  277</span>          }</div>
+<div class="line"><span class="lineno">  278</span>        }</div>
+<div class="line"><span class="lineno">  279</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (src-&gt;needMemoryMap() &amp;&amp; !src-&gt;is_subtensor() &amp;&amp; !src-&gt;has_padding() &amp;&amp;</div>
+<div class="line"><span class="lineno">  280</span>                 !dst-&gt;has_padding() &amp;&amp; permute_type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b">ir::PermuteType::SAME</a>)</div>
+<div class="line"><span class="lineno">  281</span>        {</div>
+<div class="line"><span class="lineno">  282</span>          <span class="comment">// This is more effective than multi-threading</span></div>
+<div class="line"><span class="lineno">  283</span>          assert(!dst-&gt;needMemoryMap());</div>
+<div class="line"><span class="lineno">  284</span>          dst-&gt;access([&amp;](backend::ITensor &amp;) { src-&gt;enqueueReadBuffer(dst-&gt;buffer(), <span class="keyword">true</span>); });</div>
+<div class="line"><span class="lineno">  285</span>        }</div>
+<div class="line"><span class="lineno">  286</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  287</span>        {</div>
+<div class="line"><span class="lineno">  288</span>          <span class="keyword">auto</span> fn = [&amp;](backend::ITensor &amp;) {</div>
+<div class="line"><span class="lineno">  289</span>            dst-&gt;access([&amp;](backend::ITensor &amp;) { runPermuteTasks(src, dst-&gt;buffer()); });</div>
+<div class="line"><span class="lineno">  290</span>          };</div>
+<div class="line"><span class="lineno">  291</span>          src-&gt;access(fn);</div>
+<div class="line"><span class="lineno">  292</span>        }</div>
+<div class="line"><span class="lineno">  293</span>      }</div>
+<div class="line"><span class="lineno">  294</span>    }</div>
+<div class="line"><span class="lineno">  295</span>    src_it++;</div>
+<div class="line"><span class="lineno">  296</span>    dst_it++;</div>
+<div class="line"><span class="lineno">  297</span>    src_offsets_it++;</div>
+<div class="line"><span class="lineno">  298</span>    dst_offsets_it++;</div>
+<div class="line"><span class="lineno">  299</span>    type_it++;</div>
+<div class="line"><span class="lineno">  300</span>  }</div>
+<div class="line"><span class="lineno">  301</span>}</div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a1be7fd11c49f519c320f1c5583ecee5e"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a1be7fd11c49f519c320f1c5583ecee5e">onert::exec::IPermuteFunction::_buffers_map</a></div><div class="ttdeci">std::unordered_map&lt; const backend::ITensor *, std::vector&lt; uint8_t &gt; &gt; _buffers_map</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8h_source.html#l00245">IPermuteFunction.h:245</a></div></div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_i_permute_function_html_a4dd7a12f901f6e35d530e9a71f592e28"><div class="ttname"><a href="classonert_1_1exec_1_1_i_permute_function.html#a4dd7a12f901f6e35d530e9a71f592e28">onert::exec::IPermuteFunction::permute</a></div><div class="ttdeci">void permute(backend::ITensor *src_tensor, backend::ITensor *dst_tensor, size_t rank, std::vector&lt; size_t &gt; &amp;src_offsets, std::vector&lt; size_t &gt; &amp;dst_offsets, const ir::PermuteType &amp;permute_type)</div><div class="ttdef"><b>Definition</b> <a href="_i_permute_function_8cc_source.html#l00238">IPermuteFunction.cc:238</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ab92fc7cd718a3cc5f5ed959ebf0d3913"><div class="ttname"><a href="namespaceonert_1_1ir.html#ab92fc7cd718a3cc5f5ed959ebf0d3913">onert::ir::convertShape</a></div><div class="ttdeci">Shape convertShape(const Shape &amp;shape, const PermuteType &amp;type)</div><div class="ttdoc">Converts shape when its rank is 4.</div><div class="ttdef"><b>Definition</b> <a href="_shape_8cc_source.html#l00062">Shape.cc:62</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_permute_function_8h_source.html#l00245">onert::exec::IPermuteFunction::_buffers_map</a>, <a class="el" href="_i_permute_function_8h_source.html#l00241">onert::exec::IPermuteFunction::_dst_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00243">onert::exec::IPermuteFunction::_dst_tensors_offsets</a>, <a class="el" href="_i_permute_function_8h_source.html#l00244">onert::exec::IPermuteFunction::_permute_types</a>, <a class="el" href="_i_permute_function_8h_source.html#l00240">onert::exec::IPermuteFunction::_src_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00242">onert::exec::IPermuteFunction::_src_tensors_offsets</a>, <a class="el" href="_shape_8cc_source.html#l00062">onert::ir::convertShape()</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">onert::ir::COPY</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00292">dst_tensor</a>, <a class="el" href="_i_permute_function_8cc_source.html#l00238">onert::exec::IPermuteFunction::permute()</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00291">src_tensor</a>, and <a class="el" href="_i_permute_function_8cc_source.html#l00288">onert::exec::IPermuteFunction::underlying_type()</a>.</p>
+<p class="reference">References <a class="el" href="_i_permute_function_8h_source.html#l00245">onert::exec::IPermuteFunction::_buffers_map</a>, <a class="el" href="_i_permute_function_8h_source.html#l00241">onert::exec::IPermuteFunction::_dst_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00243">onert::exec::IPermuteFunction::_dst_tensors_offsets</a>, <a class="el" href="_i_permute_function_8h_source.html#l00244">onert::exec::IPermuteFunction::_permute_types</a>, <a class="el" href="_i_permute_function_8h_source.html#l00240">onert::exec::IPermuteFunction::_src_tensors</a>, <a class="el" href="_i_permute_function_8h_source.html#l00242">onert::exec::IPermuteFunction::_src_tensors_offsets</a>, <a class="el" href="_shape_8cc_source.html#l00062">onert::ir::convertShape()</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00292">dst_tensor</a>, <a class="el" href="_i_permute_function_8cc_source.html#l00238">onert::exec::IPermuteFunction::permute()</a>, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b">onert::ir::SAME</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00291">src_tensor</a>, and <a class="el" href="_i_permute_function_8cc_source.html#l00288">onert::exec::IPermuteFunction::underlying_type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="train_2kernel_2_permute_layer_8cc_source.html#l00047">onert::backend::builtin::train::kernel::PermuteLayer::forward()</a>.</p>
 

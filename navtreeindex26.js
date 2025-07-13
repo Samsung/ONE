@@ -1,5 +1,13 @@
 var NAVTREEINDEX26 =
 {
+"_s8_concatenation_kernel_8h.html#ae9cab9751f206b9c9a27e57dbc79794e":[41,0,2,5,0,5,9,3,1],
+"_s8_concatenation_kernel_8h.html#aefc1950c1adff4061dee3111cbb37f05":[41,0,2,5,0,5,9,3,3],
+"_s8_concatenation_kernel_8h.html#af213d840f1a6c1f8e2b2815cc5ff163a":[41,0,2,5,0,5,9,3,2],
+"_s8_concatenation_kernel_8h_source.html":[41,0,2,5,0,5,9,3],
+"_s8_gather_kernel_8h.html":[41,0,2,5,0,5,24,3],
+"_s8_gather_kernel_8h.html#a00f6ee94be4a9257f5ce9512c7adc857":[41,0,2,5,0,5,24,3,2],
+"_s8_gather_kernel_8h.html#a29a2e55afb0fa0e432e4c9df3f3e035e":[41,0,2,5,0,5,24,3,3],
+"_s8_gather_kernel_8h.html#afde20fec3c696c3600e357872335be8a":[41,0,2,5,0,5,24,3,1],
 "_s8_gather_kernel_8h_source.html":[41,0,2,5,0,5,24,3],
 "_s8_less_kernel_8h.html":[41,0,2,5,0,5,32,4],
 "_s8_less_kernel_8h.html#a48af6d79d69a7b4dcc6c71d217fa1a74":[41,0,2,5,0,5,32,4,1],
@@ -89,8 +97,8 @@ var NAVTREEINDEX26 =
 "_segment_sum_options_8h.html":[41,0,0,133,2,0,133],
 "_segment_sum_options_8h.html#affe17044db9a748e31d08acef4ac74ee":[41,0,0,133,2,0,133,0],
 "_segment_sum_options_8h_source.html":[41,0,0,133,2,0,133],
-"_select_8cc.html":[41,0,3,3,2,1,5,0,52],
-"_select_8cc_source.html":[41,0,3,3,2,1,5,0,52],
+"_select_8cc.html":[41,0,3,3,2,1,5,0,53],
+"_select_8cc_source.html":[41,0,3,3,2,1,5,0,53],
 "_select_layer_8cc.html":[41,0,3,3,1,4,0,80],
 "_select_layer_8cc.html#a1327004010b84cb19659537df90867e7":[41,0,3,3,1,4,0,80,1],
 "_select_layer_8cc.html#aafffaacd008a5a680278758f27895c94":[41,0,3,3,1,4,0,80,0],
@@ -241,13 +249,5 @@ var NAVTREEINDEX26 =
 "_shape_query_8h_source.html":[41,0,0,38,2,0,0,25],
 "_shape_range_8cpp.html":[41,0,0,80,2,4],
 "_shape_range_8cpp_source.html":[41,0,0,80,2,4],
-"_shape_range_8h.html":[41,0,0,80,0,0,16],
-"_shape_range_8h_source.html":[41,0,0,80,0,0,16],
-"_shape_validator_8cc.html":[41,0,3,3,2,1,1,22],
-"_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e":[41,0,3,3,2,1,1,22,0],
-"_shape_validator_8cc_source.html":[41,0,3,3,2,1,1,22],
-"_shape_validator_8h.html":[41,0,3,3,2,1,1,23],
-"_shape_validator_8h_source.html":[41,0,3,3,2,1,1,23],
-"_shared_memory_operands_8cc.html":[41,0,3,3,1,4,11],
-"_shared_memory_operands_8cc.html#ab1e4fdaddf812c27be8b729fd87ccdf7":[41,0,3,3,1,4,11,0]
+"_shape_range_8h.html":[41,0,0,80,0,0,16]
 };

@@ -131,16 +131,16 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00052">52</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
-<div class="line"><span class="lineno">   54</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> min_prefix = 16;</div>
-<div class="line"><span class="lineno">   55</span>  std::string prefix(input);</div>
-<div class="line"><span class="lineno">   56</span>  <span class="keyword">auto</span> len_prefix = prefix.size();</div>
-<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">if</span> (len_prefix &gt; min_prefix)</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">return</span> <span class="stringliteral">&quot;[&quot;</span> + prefix + <span class="stringliteral">&quot;] &quot;</span>;</div>
-<div class="line"><span class="lineno">   59</span>  std::string spaces((min_prefix - len_prefix) / 2, <span class="charliteral">&#39; &#39;</span>);</div>
-<div class="line"><span class="lineno">   60</span>  <span class="keywordflow">return</span> (len_prefix % 2 ? <span class="stringliteral">&quot;[ &quot;</span> : <span class="stringliteral">&quot;[&quot;</span>) + spaces + prefix + spaces + <span class="stringliteral">&quot;] &quot;</span>;</div>
-<div class="line"><span class="lineno">   61</span>}</div>
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00053">53</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{</div>
+<div class="line"><span class="lineno">   55</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> min_prefix = 16;</div>
+<div class="line"><span class="lineno">   56</span>  std::string prefix(input);</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keyword">auto</span> len_prefix = prefix.size();</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keywordflow">if</span> (len_prefix &gt; min_prefix)</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">return</span> <span class="stringliteral">&quot;[&quot;</span> + prefix + <span class="stringliteral">&quot;] &quot;</span>;</div>
+<div class="line"><span class="lineno">   60</span>  std::string spaces((min_prefix - len_prefix) / 2, <span class="charliteral">&#39; &#39;</span>);</div>
+<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">return</span> (len_prefix % 2 ? <span class="stringliteral">&quot;[ &quot;</span> : <span class="stringliteral">&quot;[&quot;</span>) + spaces + prefix + spaces + <span class="stringliteral">&quot;] &quot;</span>;</div>
+<div class="line"><span class="lineno">   62</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

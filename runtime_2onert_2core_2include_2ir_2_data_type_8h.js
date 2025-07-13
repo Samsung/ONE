@@ -11,7 +11,6 @@ var runtime_2onert_2core_2include_2ir_2_data_type_8h =
       [ "FLOAT16", "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331ac49f280a5ad551ccc77be0b01a2f386a", null ],
       [ "INT64", "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331a4e866b275c85fbb439f6484251cfb31c", null ],
       [ "QUANT_INT8_ASYMM", "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331abbe1fa19839d6985b8161aeeb3a249b6", null ],
-      [ "QUANT_INT16_ASYMM", "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331a14bcd8d6bae57d713be9b3b01f84db6a", null ],
       [ "QUANT_INT8_SYMM_PER_CHANNEL", "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331a7874c580051c95dc64b33be2dbada5c0", null ],
       [ "QUANT_INT16_SYMM", "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331a9aa185ccbba2c158bd867b0442c3c9aa", null ],
       [ "QUANT_GGML_Q4_0", "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331a8aedb3aef4124c9215ec9cfe08df84a9", null ],

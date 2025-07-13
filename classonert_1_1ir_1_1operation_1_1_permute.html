@@ -118,8 +118,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4edbd225dcbfb20126313ef51dbd8c04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac97e6f048da6f65a052e9fab23f375df" id="r_ac97e6f048da6f65a052e9fab23f375df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7">OpCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1operation_1_1_permute.html#ac97e6f048da6f65a052e9fab23f375df">opcode</a> () const final</td></tr>
 <tr class="separator:ac97e6f048da6f65a052e9fab23f375df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29b540f340862dfd937f352815894518" id="r_a29b540f340862dfd937f352815894518"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1operation_1_1_permute.html#a29b540f340862dfd937f352815894518">Permute</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">OperandIndex</a> &amp;input, const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">OperandIndex</a> &amp;output)</td></tr>
-<tr class="separator:a29b540f340862dfd937f352815894518"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d1361500cc1d5db49b39bbc21bfdbd3" id="r_a4d1361500cc1d5db49b39bbc21bfdbd3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1operation_1_1_permute.html#a4d1361500cc1d5db49b39bbc21bfdbd3">Permute</a> (const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">OperandIndex</a> &amp;input, const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">OperandIndex</a> &amp;output, <a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">PermuteType</a> type)</td></tr>
+<tr class="separator:a4d1361500cc1d5db49b39bbc21bfdbd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa150139d1af0795c8092fe60317e5964" id="r_aa150139d1af0795c8092fe60317e5964"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">PermuteType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1operation_1_1_permute.html#aa150139d1af0795c8092fe60317e5964">getPermuteType</a> () const</td></tr>
+<tr class="separator:aa150139d1af0795c8092fe60317e5964"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classonert_1_1ir_1_1_operation"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1ir_1_1_operation')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1ir_1_1_operation.html">onert::ir::Operation</a></td></tr>
 <tr class="memitem:ae9bff17640c07d39b4b8707d334fee9b inherit pub_methods_classonert_1_1ir_1_1_operation" id="r_ae9bff17640c07d39b4b8707d334fee9b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_operation.html#ae9bff17640c07d39b4b8707d334fee9b">Operation</a> (<a class="el" href="classonert_1_1ir_1_1_operand_constraint.html">OperandConstraint</a> input_constr, const <a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html">OperandIndexSequence</a> &amp;inputs, const <a class="el" href="classonert_1_1ir_1_1_operand_index_sequence.html">OperandIndexSequence</a> &amp;outputs, <a class="el" href="classonert_1_1ir_1_1_operand_constraint.html">OperandConstraint</a> output_constr=<a class="el" href="classonert_1_1ir_1_1_operand_constraint.html#a0c496316ff6e406436e11da162163496">OperandConstraint::createAny</a>())</td></tr>
 <tr class="separator:ae9bff17640c07d39b4b8707d334fee9b inherit pub_methods_classonert_1_1ir_1_1_operation"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,25 +163,26 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to represent Permute operation. </p>
-<dl class="section note"><dt>Note</dt><dd>Permute operation reorders the dimensions of a tensor. <pre class="fragment">   This operation is virtual operation, which is not used on real model, but used internally.
-   It was introduced to support various model layout (NHWC, NCHW, etc) and backend layout.
+<dl class="section note"><dt>Note</dt><dd>Permute operation reorders the dimensions of a tensor and convert data types if needed <pre class="fragment">   This operation is virtual operation, which is not used on real model, but used internally.
+   This operation is used for below cases.
+
    But currently, model layout and backend layout are always same as NHWC.
    So this operation is used for below cases.
    1) Handle model output buffer's special case
      1-1) Model output is comes from model constant
      1-2) Model output is comes from model input
      1-3) Model output shares tensor with other model output(s)
-   2) Handle shared tensor between different backend
-
-   Q) Why name is still 'Permute'?
-   A) It is handled as copy operation on compile phase,
-      but it can be permute operation if output buffer layout is changed by API call
+   2) Handle when tensor defining backend is different with tensor using backend
+   3) Handle when actual input and/or output layouts are different with model layout
+      by user setting
+   4) Handle when actual input and/or output data type is different with model data type
+      by user setting or model connection
 </pre> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="operation_2_permute_8h_source.html#l00048">48</a> of file <a class="el" href="operation_2_permute_8h_source.html">Permute.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="operation_2_permute_8h_source.html#l00049">49</a> of file <a class="el" href="operation_2_permute_8h_source.html">Permute.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a29b540f340862dfd937f352815894518" name="a29b540f340862dfd937f352815894518"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29b540f340862dfd937f352815894518">&#9670;&#160;</a></span>Permute()</h2>
+<a id="a4d1361500cc1d5db49b39bbc21bfdbd3" name="a4d1361500cc1d5db49b39bbc21bfdbd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d1361500cc1d5db49b39bbc21bfdbd3">&#9670;&#160;</a></span>Permute()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -194,7 +197,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">OperandIndex</a> &amp;&#160;</td>
-          <td class="paramname"><em>output</em>&#160;</td>
+          <td class="paramname"><em>output</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">ir::PermuteType</a>&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -205,7 +214,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="operation_2_permute_8cc_source.html#l00025">25</a> of file <a class="el" href="operation_2_permute_8cc_source.html">Permute.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>  : <a class="code hl_struct" href="struct_operation.html">Operation</a>{<a class="code hl_function" href="classonert_1_1ir_1_1_operand_constraint.html#acf6c681f095a9bd697150d97b4db94e9">OperandConstraint::createExact</a>(1u)}</div>
+<div class="fragment"><div class="line"><span class="lineno">   26</span>  : <a class="code hl_struct" href="struct_operation.html">Operation</a>{<a class="code hl_function" href="classonert_1_1ir_1_1_operand_constraint.html#acf6c681f095a9bd697150d97b4db94e9">OperandConstraint::createExact</a>(1u)}, _type{<a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a>}</div>
 <div class="line"><span class="lineno">   27</span>{</div>
 <div class="line"><span class="lineno">   28</span>  <a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#acfbd48e991e67183552071d846b4cd1e">setInputs</a>({<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>});</div>
 <div class="line"><span class="lineno">   29</span>  <a class="code hl_function" href="classonert_1_1ir_1_1_operation.html#afe375431406bc768a681eae5dbba1842">setOutputs</a>({<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>});</div>
@@ -214,6 +223,7 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operation_html_acfbd48e991e67183552071d846b4cd1e"><div class="ttname"><a href="classonert_1_1ir_1_1_operation.html#acfbd48e991e67183552071d846b4cd1e">onert::ir::Operation::setInputs</a></div><div class="ttdeci">void setInputs(const OperandIndexSequence &amp;indexes)</div><div class="ttdef"><b>Definition</b> <a href="_operation_8cc_source.html#l00039">Operation.cc:39</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operation_html_afe375431406bc768a681eae5dbba1842"><div class="ttname"><a href="classonert_1_1ir_1_1_operation.html#afe375431406bc768a681eae5dbba1842">onert::ir::Operation::setOutputs</a></div><div class="ttdeci">void setOutputs(const OperandIndexSequence &amp;indexes)</div><div class="ttdef"><b>Definition</b> <a href="_operation_8cc_source.html#l00046">Operation.cc:46</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_ab89ed5258ead024638290064e52469c8"><div class="ttname"><a href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">infer.type</a></div><div class="ttdeci">type</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00018">infer.py:18</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="astruct_operation_html"><div class="ttname"><a href="struct_operation.html">Operation</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2ann-ref_2src_2_operation_8h_source.html#l00026">Operation.h:26</a></div></div>
 </div><!-- fragment -->
@@ -255,6 +265,34 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="aa150139d1af0795c8092fe60317e5964" name="aa150139d1af0795c8092fe60317e5964"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa150139d1af0795c8092fe60317e5964">&#9670;&#160;</a></span>getPermuteType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">PermuteType</a> onert::ir::operation::Permute::getPermuteType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="operation_2_permute_8h_source.html#l00059">59</a> of file <a class="el" href="operation_2_permute_8h_source.html">Permute.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>{ <span class="keywordflow">return</span> _type; }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="ac97e6f048da6f65a052e9fab23f375df" name="ac97e6f048da6f65a052e9fab23f375df"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac97e6f048da6f65a052e9fab23f375df">&#9670;&#160;</a></span>opcode()</h2>
 
@@ -280,8 +318,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structonert_1_1ir_1_1_i_operation.html#a62422c08e7b5ae69f18a73584d7174a3">onert::ir::IOperation</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="operation_2_permute_8h_source.html#l00052">52</a> of file <a class="el" href="operation_2_permute_8h_source.html">Permute.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>{ <span class="keywordflow">return</span> OpCode::Permute; }</div>
+<p class="definition">Definition at line <a class="el" href="operation_2_permute_8h_source.html#l00053">53</a> of file <a class="el" href="operation_2_permute_8h_source.html">Permute.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{ <span class="keywordflow">return</span> OpCode::Permute; }</div>
 </div><!-- fragment -->
 </div>
 </div>

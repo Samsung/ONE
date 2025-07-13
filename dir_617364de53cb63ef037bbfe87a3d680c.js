@@ -9,6 +9,7 @@ var dir_617364de53cb63ef037bbfe87a3d680c =
     [ "BinaryArithmetic.cc", "operation_2_binary_arithmetic_8cc.html", null ],
     [ "BroadcastTo.cc", "_broadcast_to_8cc.html", null ],
     [ "Bulk.cc", "_bulk_8cc.html", null ],
+    [ "Call.cc", "_call_8cc.html", null ],
     [ "Comparison.cc", "_comparison_8cc.html", null ],
     [ "Concat.cc", "_concat_8cc.html", null ],
     [ "Conv2D.cc", "operation_2_conv2_d_8cc.html", null ],

@@ -132,66 +132,67 @@ $(document).ready(function(){initNavTree('runtime_2onert_2core_2include_2ir_2_la
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>};</div>
 </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="foldopen" id="foldopen00034" data-start="{" data-end="};">
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">   34</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">PermuteType</a></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">NHWC_TO_NCHW</a>,</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">NCHW_TO_NHWC</a>,</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">COPY</a></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>};</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// PermuteType::SAME is used for data forwarding and type conversion</span></div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="};">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">   35</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">PermuteType</a></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">NHWC_TO_NCHW</a>,</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">NCHW_TO_NHWC</a>,</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b">SAME</a></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>};</div>
 </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="namespaceonert_1_1ir.html#a9d29d81f4314245455853d6cca405568">   41</a></span><span class="keyword">inline</span> std::string <a class="code hl_function" href="namespaceonert_1_1ir.html#a9d29d81f4314245455853d6cca405568">to_string</a>(<a class="code hl_enumeration" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">Layout</a> layout)</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>{</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordflow">switch</span> (layout)</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">Layout::NHWC</a>:</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>      <span class="keywordflow">return</span> std::string{<span class="stringliteral">&quot;NHWC&quot;</span>};</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">Layout::NCHW</a>:</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <span class="keywordflow">return</span> std::string{<span class="stringliteral">&quot;NCHW&quot;</span>};</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a696b031073e74bf2cb98e5ef201d4aa3">Layout::UNKNOWN</a>:</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      <span class="keywordflow">return</span> std::string{<span class="stringliteral">&quot;UNKNOWN&quot;</span>};</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;WRONG LAYOUT&quot;</span>);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  }</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="namespaceonert_1_1ir.html#a9d29d81f4314245455853d6cca405568">   42</a></span><span class="keyword">inline</span> std::string <a class="code hl_function" href="namespaceonert_1_1ir.html#a9d29d81f4314245455853d6cca405568">to_string</a>(<a class="code hl_enumeration" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">Layout</a> layout)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>{</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">switch</span> (layout)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">Layout::NHWC</a>:</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <span class="keywordflow">return</span> std::string{<span class="stringliteral">&quot;NHWC&quot;</span>};</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">Layout::NCHW</a>:</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <span class="keywordflow">return</span> std::string{<span class="stringliteral">&quot;NCHW&quot;</span>};</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a696b031073e74bf2cb98e5ef201d4aa3">Layout::UNKNOWN</a>:</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <span class="keywordflow">return</span> std::string{<span class="stringliteral">&quot;UNKNOWN&quot;</span>};</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;WRONG LAYOUT&quot;</span>);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
 </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>} <span class="comment">// namespace onert::ir</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacestd.html">std</a></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>{</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="foldopen" id="foldopen00061" data-start="{" data-end="};">
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="structstd_1_1hash_3_01onert_1_1ir_1_1_layout_01_4.html">   61</a></span><span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>hash&lt;<a class="code hl_namespace" href="namespaceonert.html">onert</a>::ir::Layout&gt;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>{</div>
-<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="structstd_1_1hash_3_01onert_1_1ir_1_1_layout_01_4.html#a086bf548caa3b4392d89d9cbec3d2614">   63</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="structstd_1_1hash_3_01onert_1_1ir_1_1_layout_01_4.html#a086bf548caa3b4392d89d9cbec3d2614">operator()</a>(<a class="code hl_enumeration" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">onert::ir::Layout</a> value) <span class="keyword">const</span> <span class="keyword">noexcept</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  {</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keyword">using </span>type = <span class="keyword">typename</span> std::underlying_type&lt;onert::ir::Layout&gt;::type;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">return</span> hash&lt;type&gt;()(<span class="keyword">static_cast&lt;</span>type<span class="keyword">&gt;</span>(value));</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>} <span class="comment">// namespace onert::ir</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacestd.html">std</a></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>{</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="};">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="structstd_1_1hash_3_01onert_1_1ir_1_1_layout_01_4.html">   62</a></span><span class="keyword">template</span> &lt;&gt; <span class="keyword">struct </span>hash&lt;<a class="code hl_namespace" href="namespaceonert.html">onert</a>::ir::Layout&gt;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>{</div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="structstd_1_1hash_3_01onert_1_1ir_1_1_layout_01_4.html#a086bf548caa3b4392d89d9cbec3d2614">   64</a></span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="structstd_1_1hash_3_01onert_1_1ir_1_1_layout_01_4.html#a086bf548caa3b4392d89d9cbec3d2614">operator()</a>(<a class="code hl_enumeration" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">onert::ir::Layout</a> value) <span class="keyword">const</span> <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keyword">using </span>type = <span class="keyword">typename</span> std::underlying_type&lt;onert::ir::Layout&gt;::type;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">return</span> hash&lt;type&gt;()(<span class="keyword">static_cast&lt;</span>type<span class="keyword">&gt;</span>(value));</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  }</div>
 </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>};</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>};</div>
 </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>} <span class="comment">// namespace std</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_IR_LAYOUT_H__</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>} <span class="comment">// namespace std</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_IR_LAYOUT_H__</span></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html"><div class="ttname"><a href="namespaceonert_1_1ir.html">onert::ir</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2exporter_2_circle_exporter_8h_source.html#l00029">CircleExporter.h:30</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_a9d29d81f4314245455853d6cca405568"><div class="ttname"><a href="namespaceonert_1_1ir.html#a9d29d81f4314245455853d6cca405568">onert::ir::to_string</a></div><div class="ttdeci">std::string to_string(Layout layout)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00041">Layout.h:41</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_a9d29d81f4314245455853d6cca405568"><div class="ttname"><a href="namespaceonert_1_1ir.html#a9d29d81f4314245455853d6cca405568">onert::ir::to_string</a></div><div class="ttdeci">std::string to_string(Layout layout)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00042">Layout.h:42</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">onert::ir::Layout</a></div><div class="ttdeci">Layout</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00027">Layout.h:28</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2a696b031073e74bf2cb98e5ef201d4aa3"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a696b031073e74bf2cb98e5ef201d4aa3">onert::ir::Layout::UNKNOWN</a></div><div class="ttdeci">@ UNKNOWN</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2a6b99f356fe3b30a2a850b5ea897c289f">onert::ir::Layout::NCHW</a></div><div class="ttdeci">@ NCHW</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::Layout::NHWC</a></div><div class="ttdeci">@ NHWC</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817a"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">onert::ir::PermuteType</a></div><div class="ttdeci">PermuteType</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00034">Layout.h:35</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817a"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817a">onert::ir::PermuteType</a></div><div class="ttdeci">PermuteType</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00035">Layout.h:36</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aa91e2d85a9482765dd34300a989314625">onert::ir::PermuteType::NHWC_TO_NCHW</a></div><div class="ttdeci">@ NHWC_TO_NCHW</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aaac33c7e495b69e7a5fa54b992a5a7d65">onert::ir::PermuteType::NCHW_TO_NHWC</a></div><div class="ttdeci">@ NCHW_TO_NHWC</div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aae8606d021da140a92c7eba8d9b8af84f">onert::ir::PermuteType::COPY</a></div><div class="ttdeci">@ COPY</div></div>
+<div class="ttc" id="anamespaceonert_1_1ir_html_ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae9154c7f4290b0d224a03a10dc73817aac706ffd80b0ad0a4ef605c581e95252b">onert::ir::PermuteType::SAME</a></div><div class="ttdeci">@ SAME</div></div>
 <div class="ttc" id="anamespaceonert_html"><div class="ttname"><a href="namespaceonert.html">onert</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_8cc_source.html#l00019">CustomKernel.cc:20</a></div></div>
 <div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_circle_2_circle_exporter_utils_8h_source.html#l00052">CircleExporterUtils.h:53</a></div></div>
-<div class="ttc" id="astructstd_1_1hash_3_01onert_1_1ir_1_1_layout_01_4_html_a086bf548caa3b4392d89d9cbec3d2614"><div class="ttname"><a href="structstd_1_1hash_3_01onert_1_1ir_1_1_layout_01_4.html#a086bf548caa3b4392d89d9cbec3d2614">std::hash&lt; onert::ir::Layout &gt;::operator()</a></div><div class="ttdeci">size_t operator()(onert::ir::Layout value) const noexcept</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00063">Layout.h:63</a></div></div>
+<div class="ttc" id="astructstd_1_1hash_3_01onert_1_1ir_1_1_layout_01_4_html_a086bf548caa3b4392d89d9cbec3d2614"><div class="ttname"><a href="structstd_1_1hash_3_01onert_1_1ir_1_1_layout_01_4.html#a086bf548caa3b4392d89d9cbec3d2614">std::hash&lt; onert::ir::Layout &gt;::operator()</a></div><div class="ttdeci">size_t operator()(onert::ir::Layout value) const noexcept</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_layout_8h_source.html#l00064">Layout.h:64</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
