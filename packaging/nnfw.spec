@@ -124,24 +124,14 @@ If you want to use test package, you should install runtime package which is bui
 %define target_arch riscv64
 %endif
 
-%define install_dir %{_prefix}
-%define install_path %{buildroot}%{install_dir}
 %define nnfw_workspace build
 %define build_env NNFW_WORKSPACE=%{nnfw_workspace}
 %define nncc_workspace build/nncc
 %define nncc_env NNCC_WORKSPACE=%{nncc_workspace}
 %define overlay_path %{nnfw_workspace}/overlay
 
-# Path to install test bin and scripts (test script assumes path Product/out)
-# TODO Share path with release package
-%define test_install_home /opt/usr/nnfw-test
-%define test_install_dir %{test_install_home}/Product/out
-%define test_install_path %{buildroot}/%{test_install_dir}
-
 # Set option for test build
 %define option_test -DENABLE_TEST=OFF
-%define test_suite_list infra/scripts tests/scripts
-
 %if %{test_build} == 1
 %define option_test -DENABLE_TEST=ON
 %endif # test_build
@@ -218,29 +208,12 @@ cp -r %{nncc_workspace}/overlay/include/flatbuffers %{overlay_path}/include
 # runtime build
 %{build_env} ./nnfw configure %{build_options}
 %{build_env} ./nnfw build %{build_jobs}
-# install in workspace
-# TODO Set install path
-%{build_env} ./nnfw install --prefix %{nnfw_workspace}/out %{strip_options}
-
-%if %{test_build} == 1
-tar -zcf test-suite.tar.gz infra/scripts
-%endif # test_build
 %endif # arm armv7l armv7hl aarch64
 
 %install
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 
-mkdir -p %{buildroot}%{_libdir}/nnfw/backend
-mkdir -p %{buildroot}%{_libdir}/nnfw/loader
-mkdir -p %{buildroot}%{_bindir}
-mkdir -p %{buildroot}%{_includedir}
-install -m 644 build/out/%{_lib}/*.so %{buildroot}%{_libdir}
-install -m 644 build/out/%{_lib}/nnfw/*.so %{buildroot}%{_libdir}/nnfw/
-%if "%{asan}" != "1"
-install -m 644 build/out/%{_lib}/nnfw/backend/*.so %{buildroot}%{_libdir}/nnfw/backend
-install -m 644 build/out/%{_lib}/nnfw/loader/*.so %{buildroot}%{_libdir}/nnfw/loader
-%endif
-cp -r build/out/include/* %{buildroot}%{_includedir}/
+%{build_env} ./nnfw install --prefix %{buildroot}%{_prefix} %{strip_options}
 
 # For developer
 cp %{SOURCE2001} .
@@ -260,25 +233,9 @@ ln -sf onert-plugin.pc nnfw-plugin.pc
 popd
 
 %if %{test_build} == 1
-mkdir -p %{test_install_path}/bin
-mkdir -p %{test_install_path}/nnapi-gtest
-mkdir -p %{test_install_path}/unittest
-mkdir -p %{test_install_path}/test
-
-install -m 755 build/out/bin/onert_run %{test_install_path}/bin
-install -m 755 build/out/bin/tflite_comparator %{test_install_path}/bin
-install -m 755 build/out/bin/tflite_run %{test_install_path}/bin
-install -m 755 build/out/nnapi-gtest/* %{test_install_path}/nnapi-gtest
-install -m 755 build/out/unittest/*_test %{test_install_path}/unittest
-install -m 755 build/out/unittest/test_* %{test_install_path}/unittest
-cp -r build/out/test/* %{test_install_path}/test
-cp -r build/out/unittest/nnfw_api_gtest_models %{test_install_path}/unittest
-
 # Share test script with ubuntu (ignore error if there is no list for target)
-cp runtime/tests/nnapi/nnapi_gtest.skip.%{target_arch}-* %{test_install_path}/nnapi-gtest/.
-cp %{test_install_path}/nnapi-gtest/nnapi_gtest.skip.%{target_arch}-linux.cpu %{test_install_path}/nnapi-gtest/nnapi_gtest.skip
-tar -zxf test-suite.tar.gz -C %{buildroot}%{test_install_home}
-
+install -m 0644 runtime/tests/nnapi/nnapi_gtest.skip.%{target_arch}-* %{buildroot}%{_prefix}/nnapi-gtest/.
+install -m 0644 runtime/tests/nnapi/nnapi_gtest.skip.%{target_arch}-linux.cpu %{buildroot}%{_prefix}/nnapi-gtest/nnapi_gtest.skip
 %endif # test_build
 
 %if %{odc_build} == 1
@@ -286,10 +243,8 @@ tar -zxf test-suite.tar.gz -C %{buildroot}%{test_install_home}
 install -m 644 %{overlay_path}/lib/libluci*.so %{buildroot}%{_libdir}/nnfw
 install -m 644 %{overlay_path}/lib/libloco*.so %{buildroot}%{_libdir}/nnfw
 %else # asan
-mkdir -p %{buildroot}%{_libdir}/nnfw/odc
 install -m 644 %{overlay_path}/lib/libluci*.so %{buildroot}%{_libdir}/nnfw/odc
 install -m 644 %{overlay_path}/lib/libloco*.so %{buildroot}%{_libdir}/nnfw/odc
-install -m 644 build/out/%{_lib}/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %endif # asan
 %endif # odc_build
 
@@ -374,8 +329,10 @@ install -m 644 build/out/%{_lib}/nnfw/odc/*.so %{buildroot}%{_libdir}/nnfw/odc
 %manifest %{name}.manifest
 %defattr(-,root,root,-)
 %ifarch arm armv7l armv7hl aarch64 x86_64
-%dir %{test_install_home}
-%{test_install_home}/*
+%{_bindir}/*
+%{_prefix}/test/*
+%{_prefix}/nnapi-gtest/*
+%{_prefix}/unittest/*
 %endif # arm armv7l armv7hl aarch64
 %endif # test_build
 
