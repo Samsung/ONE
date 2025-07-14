@@ -29,3 +29,7 @@ set_target_properties(${ONERT_DEV} PROPERTIES
 install(TARGETS ${ONERT_DEV}
         LIBRARY DESTINATION ${ONERT_INSTALL_APIDIR}
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nnfw)
+
+# Install pkg-config file for NNFW API
+configure_file(onert.pc.in onert.pc @ONLY)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/onert.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)

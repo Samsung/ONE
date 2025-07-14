@@ -1,5 +1,0 @@
-Name: onert-plugin
-Description: onert plugin API
-Version: @version@
-Libs: -L@libdir@ -lonert_core
-Cflags: -I@includedir@/nnfw -I@includedir@/onert
