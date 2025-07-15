@@ -28,9 +28,12 @@ override_dh_auto_configure:
 	test -d externals || mkdir -p externals
 	find packaging/ -type f -name "*.tar.gz" | xargs -i tar xf {} -C externals
 	mkdir -p $(NNFW_WORKSPACE)
+# CMAKE_INSTALL_PREFIX is used for config files
+# Actual install path is set by --prefix option in cmake install command
 	./nnfw configure -DCMAKE_BUILD_TYPE=Release -DEXTERNALS_BUILD_THREADS=$(NPROC) \
 	  -DDOWNLOAD_GTEST=OFF -DENABLE_TEST=OFF \
 		-DBUILD_PYTHON_BINDING=OFF -DBUILD_MINIMAL_SAMPLE=OFF
+		-DCMAKE_INSTALL_PREFIX=/usr
 
 override_dh_auto_build:
 	./nnfw build -j$(NPROC)
@@ -39,13 +42,4 @@ override_dh_auto_install:
 	./nnfw install --prefix $(NNFW_INSTALL_PREFIX) --strip
 
 override_dh_install:
-	install -d $(NNFW_INSTALL_PREFIX)/lib/pkgconfig
-	install -m 0644 packaging/onert.pc.in -T $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert.pc
-	install -m 0644 packaging/onert-plugin.pc.in -T $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert-plugin.pc
-	sed -i 's:@libdir@:\/usr\/lib:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert.pc
-	sed -i 's:@includedir@:\/usr\/include:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert.pc
-	sed -i 's:@version@:${DEBVER}:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert.pc
-	sed -i 's:@libdir@:\/usr\/lib:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert-plugin.pc
-	sed -i 's:@includedir@:\/usr\/include:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert-plugin.pc
-	sed -i 's:@version@:${DEBVER}:g' $(NNFW_INSTALL_PREFIX)/lib/pkgconfig/onert-plugin.pc
 	dh_install

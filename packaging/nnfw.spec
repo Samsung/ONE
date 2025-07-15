@@ -8,8 +8,6 @@ License: Apache-2.0 and MIT and BSD-2-Clause and MPL-2.0
 Source0: %{name}-%{version}.tar.gz
 Source1: %{name}.manifest
 Source1001: nnapi_test_generated.tar.gz
-Source2001: onert.pc.in
-Source2002: onert-plugin.pc.in
 Source3001: ABSEIL.tar.gz
 Source3002: CPUINFO.tar.gz
 Source3003: FARMHASH.tar.gz
@@ -142,9 +140,11 @@ If you want to use test package, you should install runtime package which is bui
 %define option_config -DASAN_BUILD=ON
 %endif # asan
 
+# CMAKE_INSTALL_PREFIX is used for config files
+# Actual install path is set by --prefix option in cmake install command
 %define build_options -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen \\\
         -DEXTERNALS_BUILD_THREAD=%{nproc} -DBUILD_MINIMAL_SAMPLE=OFF -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
-        %{option_test} %{option_config} %{extra_option}
+        -DCMAKE_INSTALL_PREFIX=%{_prefix} %{option_test} %{option_config} %{extra_option}
 
 %define strip_options %{nil}
 %if %{build_type} == "Release"
@@ -210,18 +210,7 @@ cp compiler/oops/include/oops/InternalExn.h %{overlay_path}/include/oops
 
 %{build_env} ./nnfw install --prefix %{buildroot}%{_prefix} %{strip_options}
 
-# For developer
-cp %{SOURCE2001} .
-cp %{SOURCE2002} .
-sed -i 's:@libdir@:%{_libdir}:g
-        s:@includedir@:%{_includedir}:g
-        s:@version@:%{version}:g' ./onert.pc.in
-sed -i 's:@libdir@:%{_libdir}:g
-        s:@includedir@:%{_includedir}:g
-        s:@version@:%{version}:g' ./onert-plugin.pc.in
-mkdir -p %{buildroot}%{_libdir}/pkgconfig
-install -m 0644 ./onert.pc.in %{buildroot}%{_libdir}/pkgconfig/onert.pc
-install -m 0644 ./onert-plugin.pc.in %{buildroot}%{_libdir}/pkgconfig/onert-plugin.pc
+# For developer - linking pkg-config files for backward compatibility
 pushd %{buildroot}%{_libdir}/pkgconfig
 ln -sf onert.pc nnfw.pc
 ln -sf onert-plugin.pc nnfw-plugin.pc

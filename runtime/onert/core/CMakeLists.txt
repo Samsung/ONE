@@ -45,6 +45,10 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
 
 set_target_properties(onert_core PROPERTIES INSTALL_RPATH ${ONERT_RPATH_CORE})
 
+# Install pkg-config file for onert plugin developer
+configure_file(onert-plugin.pc.in onert-plugin.pc @ONLY)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/onert-plugin.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+
 if(NOT ENABLE_TEST)
   return()
 endif(NOT ENABLE_TEST)

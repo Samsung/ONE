@@ -1,0 +1,10 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${prefix}/@ONERT_INSTALL_APIDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+version=@CMAKE_PROJECT_VERSION@
+
+Name: onert
+Description: onert API
+Version: ${version}
+Libs: -L${libdir} -lonert
+Cflags: -I${includedir}/nnfw

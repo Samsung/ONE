@@ -1,0 +1,10 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${prefix}/@ONERT_INSTALL_COREDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+version=@CMAKE_PROJECT_VERSION@
+
+Name: onert-plugin
+Description: onert plugin API
+Version: @CMAKE_PROJECT_VERSION@
+Libs: -L@libdir@ -lonert_core
+Cflags: -I@includedir@/onert

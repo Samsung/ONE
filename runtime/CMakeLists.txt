@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16.3)
 
-project(nnfw)
+project(onert VERSION 1.31.0)
 
 enable_testing()
 
