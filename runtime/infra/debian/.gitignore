@@ -1,0 +1,14 @@
+files
+*.log
+*.substvars
+.debhelper/
+tmp/
+
+# Pacakge dir
+nnfw/
+nnfw-dev/
+onert/
+onert-dev/
+onert-plugin-dev/
+onert-train/
+onert-trix/
