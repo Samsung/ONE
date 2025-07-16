@@ -691,7 +691,7 @@ NNFW_STATUS nnfw_session::set_input_type(uint32_t index, NNFW_TYPE type)
   if (!isStateModelLoaded())
   {
     std::cerr << "Error during nnfw_session::set_input_type : "
-              << "run should be run before prepare" << std::endl;
+              << "set_input_type should be called before prepare" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -723,7 +723,7 @@ NNFW_STATUS nnfw_session::set_output_type(uint32_t index, NNFW_TYPE type)
   if (!isStateModelLoaded())
   {
     std::cerr << "Error during nnfw_session::set_output_type : "
-              << "run should be run before prepare" << std::endl;
+              << "set_output_type should be called before prepare" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
