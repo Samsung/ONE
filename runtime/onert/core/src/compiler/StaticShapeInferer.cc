@@ -525,6 +525,12 @@ void StaticShapeInferer::visit(const ir::operation::DepthwiseConv2D &op)
   output.info().shape(new_shape);
 }
 
+void StaticShapeInferer::visit(const ir::operation::DynamicUpdateSlice &op)
+{
+  // DynamicUpdateSlice is not unary operator, but output shape is same with input
+  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::DynamicUpdateSlice::Input::OPERAND));
+}
+
 void StaticShapeInferer::visit(const ir::operation::ElementwiseActivation &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ElementwiseActivation::Input::INPUT));

@@ -1648,6 +1648,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
     case BuiltinOperator::BuiltinOperator_HASHTABLE_LOOKUP:
       loadOperationTo<ir::operation::HashtableLookup>(op, subg);
       return;
+    case BuiltinOperator::BuiltinOperator_DYNAMIC_UPDATE_SLICE:
+      loadOperationTo<ir::operation::DynamicUpdateSlice>(op, subg);
+      return;
     default:
       throw std::runtime_error(
         std::string("Unsupported operation: ").append(EnumNameBuiltinOperator(builtin_op)));

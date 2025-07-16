@@ -240,6 +240,13 @@ uint32_t CircleGen::addOperatorDetectionPostProcess(const OperatorParams &params
                                       nullptr, nullptr);
 }
 
+uint32_t CircleGen::addOperatorDynamicUpdateSlice(const OperatorParams &params)
+{
+  auto options = circle::CreateDynamicUpdateSliceOptions(_fbb).Union();
+  return addOperatorWithOptions(params, circle::BuiltinOperator_DYNAMIC_UPDATE_SLICE,
+                                circle::BuiltinOptions_DynamicUpdateSliceOptions, options);
+}
+
 uint32_t CircleGen::addOperatorElu(const OperatorParams &params)
 {
   return addOperatorWithOptions(params, circle::BuiltinOperator_ELU, circle::BuiltinOptions_NONE,
