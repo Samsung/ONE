@@ -1,2 +1,1 @@
-# {FILES_TO_INSTALL} {DEST_DIR}
-usr/lib/nnfw/backend/libbackend_train.so
+/usr/lib/*/nnfw/backend/libbackend_train.so

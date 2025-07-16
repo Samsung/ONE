@@ -1,4 +1,2 @@
-# {FILES_TO_INSTALL} {DEST_DIR}
-# include
-usr/include/nnfw usr/include/
-usr/lib/pkgconfig/onert.pc usr/lib/pkgconfig/
+/usr/include/nnfw
+/usr/lib/*/pkgconfig/onert.pc

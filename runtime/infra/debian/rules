@@ -42,4 +42,4 @@ override_dh_auto_install:
 	./nnfw install --prefix $(NNFW_INSTALL_PREFIX) --strip
 
 override_dh_install:
-	dh_install
+	dh_install --sourcedir=debian/tmp --fail-missing
