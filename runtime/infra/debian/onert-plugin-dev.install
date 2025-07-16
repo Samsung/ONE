@@ -1,3 +1,2 @@
-# {FILES_TO_INSTALL} {DEST_DIR}
-usr/include/onert usr/include/
-usr/lib/pkgconfig/onert-plugin.pc usr/lib/pkgconfig/
+/usr/include/onert
+/usr/lib/*/pkgconfig/onert-plugin.pc
