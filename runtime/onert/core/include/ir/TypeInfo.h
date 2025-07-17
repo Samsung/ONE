@@ -28,10 +28,22 @@
 namespace onert::ir
 {
 
+/**
+ * @brief Struct to hold quantization information of a tensor
+ *
+ * @note  This struct is used only for quantized tensors.
+ *
+ *        For non-quantized tensors, scales, and zero_points have only one element,
+ *        and scale value is zero.
+ *
+ *        For per-channel quantized tensors, scales vectors should have same size as number of
+ *        channels of the tensor. And zero_points vector should be same size as scales vector if
+ *        quantization type is assymetric, otherwise it will be ignored.
+ */
 struct Quantization
 {
-  std::vector<float> scales;
-  std::vector<int32_t> zero_points;
+  std::vector<float> scales = {0.0f};
+  std::vector<int32_t> zero_points = {0};
 };
 
 class TypeInfo
@@ -50,26 +62,27 @@ public:
   DataType type() const { return _type; }
   float scale() const { return _quant.scales[0]; }
   const std::vector<float> &scales() const { return _quant.scales; }
-  int32_t zero_point() const
-  {
-    assert(_quant.zero_points.size() == 1);
-    return _quant.zero_points[0];
-  }
+  int32_t zero_point() const { return _quant.zero_points[0]; }
   const std::vector<int32_t> &zero_points() const { return _quant.zero_points; }
   const ir::Sparsity *sparsity() const { return _sparsity.get(); }
   void quantization(float scale, int32_t zero_point)
   {
-    _quant.scales.resize(1);
-    _quant.scales[0] = scale;
-    _quant.zero_points.resize(1);
-    _quant.zero_points[0] = zero_point;
+    _quant.scales = {scale};
+    _quant.zero_points = {zero_point};
   }
   void quantization(std::vector<float> &&scales, std::vector<int32_t> &&zero_points)
   {
-    _quant.scales = scales;
-    _quant.zero_points = zero_points;
+    assert(scales.size() != 0); // Not allow empty scales vector when this is called
+    assert(zero_points.size() == 0 ||
+           zero_points.size() == scales.size()); // Symmetric or Asymmetric
+    // Not allow meaningless quantization parameters
+    assert(std::all_of(scales.begin(), scales.end(), [](float s) { return s != 0; }));
+
+    _quant.scales = std::move(scales);
+    _quant.zero_points = std::move(zero_points);
   }
-  void sparsity(std::shared_ptr<ir::Sparsity> sparsity) { _sparsity = sparsity; }
+  void sparsity(std::shared_ptr<ir::Sparsity> &&sparsity) { _sparsity = std::move(sparsity); }
+  bool quantized() const { return _quant.scales[0] != 0; }
 
 public:
   void type(const DataType type) { _type = type; }

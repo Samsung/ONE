@@ -26,22 +26,17 @@ bool operator==(const TypeInfo &lhs, const TypeInfo &rhs)
     return false;
   }
 
-  if (lhs.zero_points().size() != rhs.zero_points().size())
+  if (!lhs.quantized() && !rhs.quantized())
+    return true;
+
+  if (lhs.quantized() ^ rhs.quantized())
     return false;
 
-  if (lhs.zero_points().size() != 0)
-  {
-    if (lhs.zero_point() != rhs.zero_point())
-    {
-      return false;
-    }
+  if (lhs.scales().size() != rhs.scales().size())
+    return false;
 
-    if (lhs.scale() != rhs.scale())
-    {
-      return false;
-    }
-  }
-
+  // Assume zero_points are same as scales.size() or symmetric
+  // Don't check values of scale and zero_points here
   return true;
 }
 
