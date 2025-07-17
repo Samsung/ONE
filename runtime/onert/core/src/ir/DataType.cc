@@ -54,4 +54,40 @@ size_t sizeOfDataType(DataType data_type)
   }
 }
 
+bool requireQuantParam(DataType data_type)
+{
+  switch (data_type)
+  {
+    case DataType::FLOAT32:
+      return false;
+    case DataType::INT32:
+      // Generally, no quantization parameter is needed for INT32
+      // But Conv2D, DepthwiseConv2D, FullyConnected, TransposeConv bias is quantized INT32
+      // TODO : Return false when we support INT32 quantization type
+      return true;
+    case DataType::UINT32:
+      return false;
+    case DataType::QUANT_UINT8_ASYMM:
+      return true;
+    case DataType::BOOL8:
+    case DataType::UINT8:
+      return false;
+    case DataType::QUANT_INT8_SYMM:
+      return true;
+    case DataType::FLOAT16:
+    case DataType::INT64:
+      return false;
+    case DataType::QUANT_INT8_ASYMM:
+    case DataType::QUANT_INT8_SYMM_PER_CHANNEL:
+    case DataType::QUANT_INT16_SYMM:
+      return true;
+    case DataType::QUANT_GGML_Q4_0:
+    case DataType::QUANT_GGML_Q8_0:
+      // Quantize type, but no quantization parameter
+      return false;
+    default:
+      throw std::runtime_error{"Unsupported type"};
+  }
+}
+
 } // namespace onert::ir

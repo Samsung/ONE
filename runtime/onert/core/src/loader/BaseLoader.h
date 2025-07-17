@@ -380,7 +380,9 @@ ir::OperandIndex BaseLoader<LoaderDomain>::loadOperand(const Tensor *tensor, ir:
 
   // TypeInfo
   ir::TypeInfo type_info(tensorTypeToDataType(tensor->type()));
-  loadQuantization(tensor, type_info);
+  // Ignore quantize param if datatype does not requires
+  if (ir::requireQuantParam(type_info.type()))
+    loadQuantization(tensor, type_info);
   loadSparsity(tensor, type_info);
 
   // Create operand

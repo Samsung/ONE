@@ -53,7 +53,11 @@ DataType NNAPIConvert::getDataType(OperandCode type)
 
 TypeInfo NNAPIConvert::getTypeInfo(const ANeuralNetworksOperandType *type)
 {
-  return TypeInfo(getDataType((OperandCode)(type->type)), type->scale, type->zeroPoint);
+  const auto datatype = getDataType((OperandCode)(type->type));
+  if (onert::ir::requireQuantParam(datatype))
+    return TypeInfo(getDataType((OperandCode)(type->type)), type->scale, type->zeroPoint);
+  else
+    return TypeInfo(getDataType((OperandCode)(type->type)));
 }
 
 Shape NNAPIConvert::getShape(const ANeuralNetworksOperandType *type)
