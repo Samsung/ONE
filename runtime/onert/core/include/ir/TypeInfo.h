@@ -39,7 +39,7 @@ namespace onert::ir
  *
  *        For per-channel quantized tensors, scales vectors should have same size as number of
  *        channels of the tensor. And zero_points vector should be same size as scales vector if
- *        quantization type is assymetric, otherwise it will be ignored.
+ *        quantization type is asymmetric, otherwise it will be ignored.
  */
 struct Quantization
 {
