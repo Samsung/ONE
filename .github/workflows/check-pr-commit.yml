@@ -59,3 +59,17 @@ jobs:
             echo "The body needs to contain at least 5 words."
             exit 1
           fi
+
+  check-typo:
+    runs-on: ubuntu-22.04
+    if: github.repository_owner == 'Samsung'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+        # Chekc typo
+      - name: Check typo
+        uses: reviewdog/action-typos@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
