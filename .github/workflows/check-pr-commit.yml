@@ -59,3 +59,12 @@ jobs:
             echo "The body needs to contain at least 5 words."
             exit 1
           fi
+
+  # Chekc typo
+  spell-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: reviewdog/action-typos@v1
+        with:
+          reporter: github-pr-check
