@@ -74,6 +74,7 @@ echo "Unittest start"
 echo "============================================"
 
 num_unittest=0
+FAILED_LIST=()
 # Run all executables in unit test directory
 for TEST_BIN in `find $UNITTEST_TEST_DIR -maxdepth 1 -type f -executable`; do
     num_unittest=$((num_unittest+1))
@@ -87,6 +88,7 @@ for TEST_BIN in `find $UNITTEST_TEST_DIR -maxdepth 1 -type f -executable`; do
     if [[ $TEMP_UNITTEST_RESULT -ne 0 ]]; then
         UNITTEST_RESULT=$TEMP_UNITTEST_RESULT
         echo "$TEST_BIN failed... return code: $TEMP_UNITTEST_RESULT"
+        FAILED_LIST=("${FAILED_LIST[@]}" "$TEST_BIN")
     fi
     echo "============================================"
     echo "Finishing set $num_unittest: $TEST_BIN..."
@@ -96,6 +98,10 @@ done
 if [[ $UNITTEST_RESULT -ne 0 ]]; then
     echo "============================================"
     echo "Failed unit test... exit code: $UNITTEST_RESULT"
+    echo "Failed test:"
+    for failed_test in "${FAILED_LIST[@]}"; do
+        echo "  - $failed_test"
+    done
     echo "============================================"
     exit $UNITTEST_RESULT
 fi
