@@ -161,7 +161,7 @@ class session(BaseSession):
                 # re-raise ValueError directly
                 raise
             except Exception as e:
-                raise Oner
+                raise OnertError(f"Failed to update input tensorinfo: {e}") from e
 
     @contextmanager
     def _time_block(self, metrics: Dict[str, float], key: str, measure: bool):
