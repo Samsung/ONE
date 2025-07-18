@@ -252,6 +252,19 @@ void OperationValidator::visit(const operation::DepthwiseConv2D &node)
   }
 }
 
+void OperationValidator::visit(const operation::DynamicUpdateSlice &node)
+{
+  const auto operand_index{node.getInputs().at(operation::DynamicUpdateSlice::Input::OPERAND)};
+  const auto update_index{node.getInputs().at(operation::DynamicUpdateSlice::Input::UPDATE)};
+  const auto indices_index{node.getInputs().at(operation::DynamicUpdateSlice::Input::INDICES)};
+  const auto output_index{node.getOutputs().at(0)};
+
+  OP_REQUIRES(isSameType(operand_index, update_index));
+  OP_REQUIRES(isSameType(operand_index, output_index));
+  OP_REQUIRES(operandType(indices_index) == DataType::INT32 ||
+              operandType(indices_index) == DataType::INT64);
+}
+
 void OperationValidator::visit(const operation::ElementwiseActivation &node)
 {
   const auto output_index{node.getOutputs().at(0)};
