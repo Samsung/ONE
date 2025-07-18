@@ -17,7 +17,6 @@ function Usage()
   echo ""
   echo "Options:"
   echo "      --clang-format-version <version>  clang format version (default: ${DEFAULT_CLANG_VERSION})"
-  echo "      --clang-format <TOOL>             clang format bin (default: $DEFAULT_CLANG_FORMAT) (will be deprecated)"
   echo "      --diff-only                       check diff files with master"
   echo "      --staged-only                     check git staged files"
 }
@@ -30,17 +29,8 @@ do
       Usage
       exit 0
       ;;
-    --clang-format)
-      CLANG_FORMAT_CANDIDATE=$2
-      shift 2
-      ;;
-    --clang-format=*)
-      CLANG_FORMAT_CANDIDATE=${1#*=}
-      shift
-      ;;
     --clang-format-version)
       CLANG_FORMAT_CANDIDATE=clang-format-$2
-      CLANG_STYLE_FILE=.clang-format.$2
       shift 2
       ;;
     --staged-only)
