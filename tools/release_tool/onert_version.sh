@@ -39,6 +39,7 @@ set_version() {
   version=$1
   perl -pi -e "s/^release = .*/release = \'$version\'/" ${nnfw_root}/docs/conf.py
   perl -pi -e "s/^Version: .*/Version: $version/" ${nnfw_root}/packaging/nnfw.spec
+  perl -pi -e "s/^project\(onert.*/project\(onert VERSION $version\)/" ${nnfw_root}/runtime/CMakeLists.txt
 
   IFS=. read M m p <<< "$version"
   hex=$(printf '0x%08x' $(( (($M << 24)) | (($m << 8)) | $p )))
