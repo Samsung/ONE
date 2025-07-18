@@ -327,18 +327,11 @@ void CircleLoader::loadRunModel(const Operator *op, ir::Graph &subg)
   assert(!_file_path.empty());
   auto model_base_path = std::filesystem::path(_file_path).parent_path();
   // TODO Get location from BuiltinOptions instead of custom OP option
-  const auto &attr_map = getCustomOpAttrMap(op);
-  auto it = attr_map.find("location");
-  if (it == attr_map.end())
-    throw std::runtime_error("Custom op attribute 'location' not found");
+  auto location_obj = getCustomOpAttrMap(op)["location"];
+  if (location_obj.IsNull())
+    throw std::runtime_error("Cannot find 'location'");
 
-  // The below validation can be omitted
-  auto location_obj = it->second;
-  if (!location_obj.IsString())
-    throw std::runtime_error("Custom op attribute 'location' is not a string");
-
-  auto location = location_obj.ToString();
-  auto model_path = model_base_path / location;
+  auto model_path = model_base_path / location_obj.ToString();
   auto extension_path = model_path.extension();
   if (extension_path.empty())
   {
