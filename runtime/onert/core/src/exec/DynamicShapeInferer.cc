@@ -362,6 +362,12 @@ void DynamicShapeInferer::visit(const ir::operation::DepthwiseConv2D &op)
   assert(output->buffer() != nullptr);
 }
 
+void DynamicShapeInferer::visit(const ir::operation::DynamicUpdateSlice &op)
+{
+  // DynamicUpdateSlice is not unary operator, but output shape is same with input
+  handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::DynamicUpdateSlice::OPERAND));
+}
+
 void DynamicShapeInferer::visit(const ir::operation::ElementwiseActivation &op)
 {
   handleSimpleUnaryOp(op, op.getInputs().at(ir::operation::ElementwiseActivation::INPUT));
