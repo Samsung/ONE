@@ -75,7 +75,7 @@ protected:
   void loadRoPE(const Operator *op, ir::Graph &subg);
   void loadCall(const Operator *op, ir::Graph &subg);
   void loadRunModel(const Operator *op, ir::Graph &subg);
-  void loadCustomCircle(const Operator *op, ir::Graph &subg);
+  void loadCustom(const Operator *op, ir::Graph &subg);
 
 public:
   using BaseLoader::BaseLoader;
@@ -180,7 +180,7 @@ private:
         loadCall(op, subg);
         return;
       case circle::BuiltinOperator::BuiltinOperator_CUSTOM:
-        loadCustomCircle(op, subg);
+        loadCustom(op, subg);
         return;
       default:
         BaseLoader::loadOperation(op, subg);
@@ -353,7 +353,7 @@ void CircleLoader::loadRunModel(const Operator *op, ir::Graph &subg)
   subg.addOperation(std::move(new_op));
 }
 
-void CircleLoader::loadCustomCircle(const Operator *op, ir::Graph &subg)
+void CircleLoader::loadCustom(const Operator *op, ir::Graph &subg)
 {
   ir::OperandIndexSequence inputs;
   ir::OperandIndexSequence outputs;
