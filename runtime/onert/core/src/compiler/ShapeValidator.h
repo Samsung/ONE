@@ -52,6 +52,7 @@ public:
   void visit(const ir::operation::Conv2D &node) override;
   void visit(const ir::operation::Comparison &node) override;
   void visit(const ir::operation::DepthwiseConv2D &node) override;
+  void visit(const ir::operation::DynamicUpdateSlice &node) override;
   void visit(const ir::operation::FullyConnected &node) override;
   void visit(const ir::operation::Softmax &node) override;
   void visit(const ir::operation::InstanceNorm &node) override;

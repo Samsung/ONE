@@ -221,6 +221,31 @@ void ShapeValidator::visit(const ir::operation::DepthwiseConv2D &node)
   OP_REQUIRES(operands.at(ofm_index).shape().rank() == 4);
 }
 
+void ShapeValidator::visit(const ir::operation::DynamicUpdateSlice &node)
+{
+  const auto &operands = _graph.operands();
+  const auto output_index{node.getOutputs().at(0)};
+  if (operands.at(output_index).info().isDynamic())
+    return;
+
+  const auto operand_index{node.getInputs().at(ir::operation::DynamicUpdateSlice::Input::OPERAND)};
+  const auto update_index{node.getInputs().at(ir::operation::DynamicUpdateSlice::Input::UPDATE)};
+  const auto start_indices_index{
+    node.getInputs().at(ir::operation::DynamicUpdateSlice::Input::START_INDICES)};
+
+  OP_REQUIRES(operands.at(start_indices_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(start_indices_index).shape().dim(0) ==
+              operands.at(operand_index).shape().rank());
+  OP_REQUIRES(operands.at(operand_index).shape().rank() ==
+              operands.at(update_index).shape().rank());
+  for (int i = 0; i < operands.at(operand_index).shape().rank(); i++)
+  {
+    OP_REQUIRES(operands.at(operand_index).shape().dim(i) >=
+                operands.at(update_index).shape().dim(i));
+  }
+  OP_REQUIRES(operands.at(operand_index).shape() == operands.at(output_index).shape());
+}
+
 void ShapeValidator::visit(const ir::operation::FullyConnected &node)
 {
   const auto &operands = _graph.operands();

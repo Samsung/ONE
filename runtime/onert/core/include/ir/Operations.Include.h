@@ -34,6 +34,7 @@
 #include "ir/operation/Custom.h"
 #include "ir/operation/DepthToSpace.h"
 #include "ir/operation/DepthwiseConv2D.h"
+#include "ir/operation/DynamicUpdateSlice.h"
 #include "ir/operation/ElementwiseActivation.h"
 #include "ir/operation/ElementwiseBinary.h"
 #include "ir/operation/ElementwiseUnary.h"
