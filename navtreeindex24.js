@@ -1,5 +1,9 @@
 var NAVTREEINDEX24 =
 {
+"_quantize_type_8h.html#a10a7ed2455615b22aa27f8186bae1c55a0baeebde1537e93aa8ae0cd78d2b945b":[41,0,3,3,2,0,6,4,0,3],
+"_quantize_type_8h.html#a10a7ed2455615b22aa27f8186bae1c55a2383127367400e2b92f1c9afda608fb1":[41,0,3,3,2,0,6,4,0,0],
+"_quantize_type_8h.html#a10a7ed2455615b22aa27f8186bae1c55a37aa3556da6914ec4ce522991e17a407":[41,0,3,3,2,0,6,4,0,2],
+"_quantize_type_8h.html#a10a7ed2455615b22aa27f8186bae1c55a8de20b0fd93d1c749f61711b151fe7cb":[41,0,3,3,2,0,6,4,0,4],
 "_quantize_type_8h.html#a10a7ed2455615b22aa27f8186bae1c55a9f0b7ad8a78f69948560ec00225edcf0":[41,0,3,3,2,0,6,4,0,1],
 "_quantize_type_8h_source.html":[41,0,3,3,2,0,6,4],
 "_quantize_weights_8cpp.html":[41,0,0,59,7,1,83],
@@ -245,9 +249,5 @@ var NAVTREEINDEX24 =
 "_relu_canonicalizer_8h_source.html":[41,0,0,85,1,0,35],
 "_relu_common_8cpp.html":[41,0,2,5,1,2,0,55],
 "_relu_common_8cpp.html#a7bf4fc7bd9abd874f5cbfd28a9f4cec8":[41,0,2,5,1,2,0,55,0],
-"_relu_common_8cpp_source.html":[41,0,2,5,1,2,0,55],
-"_relu_common_8h.html":[41,0,2,5,0,1,0,6],
-"_relu_common_8h.html#a7bf4fc7bd9abd874f5cbfd28a9f4cec8":[41,0,2,5,0,1,0,6,0],
-"_relu_common_8h_source.html":[41,0,2,5,0,1,0,6],
-"_relu_converter_8cpp.html":[41,0,0,41,1,1,31]
+"_relu_common_8cpp_source.html":[41,0,2,5,1,2,0,55]
 };

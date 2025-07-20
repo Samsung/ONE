@@ -1,5 +1,9 @@
 var NAVTREEINDEX34 =
 {
+"backend_2train_2_tensor_registry_8h.html":[41,0,3,3,1,6,25],
+"backend_2train_2_tensor_registry_8h_source.html":[41,0,3,3,1,6,25],
+"backend_2trix_2_backend_context_8cc.html":[41,0,3,3,1,7,2],
+"backend_2trix_2_backend_context_8cc_source.html":[41,0,3,3,1,7,2],
 "backend_2trix_2_backend_context_8h.html":[41,0,3,3,1,7,3],
 "backend_2trix_2_backend_context_8h_source.html":[41,0,3,3,1,7,3],
 "backend_2trix_2_config_8cc.html":[41,0,3,3,1,7,6],
@@ -245,9 +249,5 @@ var NAVTREEINDEX34 =
 "circle-part-value-py-test_2conftest_8py.html#af477898ec1680a5189af3ab5eca4fdcb":[41,0,0,19,0,0],
 "circle-part-value-py-test_2conftest_8py_source.html":[41,0,0,19,0],
 "circle-quantizer_2src_2_circle_quantizer_8cpp.html":[41,0,0,22,0,0],
-"circle-quantizer_2src_2_circle_quantizer_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198":[41,0,0,22,0,0,6],
-"circle-quantizer_2src_2_circle_quantizer_8cpp.html#a23c3deb9bbd884643314e51c2f9f5e87":[41,0,0,22,0,0,7],
-"circle-quantizer_2src_2_circle_quantizer_8cpp.html#a3bb05d03e32edee8af37def90d95ac27":[41,0,0,22,0,0,3],
-"circle-quantizer_2src_2_circle_quantizer_8cpp.html#a5db9941d9931593efc3138e26646dc21":[41,0,0,22,0,0,5],
-"circle-quantizer_2src_2_circle_quantizer_8cpp.html#a6228f896a64b52198522eca1543146a7":[41,0,0,22,0,0,2]
+"circle-quantizer_2src_2_circle_quantizer_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198":[41,0,0,22,0,0,6]
 };

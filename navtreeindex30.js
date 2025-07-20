@@ -1,5 +1,9 @@
 var NAVTREEINDEX30 =
 {
+"_t_f_squared_difference_8h.html":[41,0,0,83,1,0,0,0,0,27],
+"_t_f_squared_difference_8h_source.html":[41,0,0,83,1,0,0,0,0,27],
+"_t_f_squeeze_8h.html":[41,0,0,83,1,0,0,0,0,28],
+"_t_f_squeeze_8h_source.html":[41,0,0,83,1,0,0,0,0,28],
 "_t_f_stop_gradient_8h.html":[41,0,0,83,1,0,0,0,0,29],
 "_t_f_stop_gradient_8h_source.html":[41,0,0,83,1,0,0,0,0,29],
 "_t_f_strided_slice_8h.html":[41,0,0,83,1,0,0,0,0,30],
@@ -245,9 +249,5 @@ var NAVTREEINDEX30 =
 "_top_k_v2_options_8cpp.html":[41,0,0,133,2,0,168],
 "_top_k_v2_options_8cpp.html#afde85c083efd20c72ec3214fd3524ac9":[41,0,0,133,2,0,168,0],
 "_top_k_v2_options_8cpp_source.html":[41,0,0,133,2,0,168],
-"_top_k_v2_options_8h.html":[41,0,0,133,2,0,169],
-"_top_k_v2_options_8h.html#afde85c083efd20c72ec3214fd3524ac9":[41,0,0,133,2,0,169,0],
-"_top_k_v2_options_8h_source.html":[41,0,0,133,2,0,169],
-"_topological_sort_helper_8py.html":[41,0,0,100,1,8],
-"_topological_sort_helper_8py_source.html":[41,0,0,100,1,8]
+"_top_k_v2_options_8h.html":[41,0,0,133,2,0,169]
 };

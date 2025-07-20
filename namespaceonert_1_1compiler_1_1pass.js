@@ -13,5 +13,6 @@ var namespaceonert_1_1compiler_1_1pass =
     [ "PassRunner", "classonert_1_1compiler_1_1pass_1_1_pass_runner.html", "classonert_1_1compiler_1_1pass_1_1_pass_runner" ],
     [ "PermutationEliminationPass", "classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html", "classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass" ],
     [ "PermutationInsertionPass", "classonert_1_1compiler_1_1pass_1_1_permutation_insertion_pass.html", "classonert_1_1compiler_1_1pass_1_1_permutation_insertion_pass" ],
+    [ "PermutationIOPass", "classonert_1_1compiler_1_1pass_1_1_permutation_i_o_pass.html", "classonert_1_1compiler_1_1pass_1_1_permutation_i_o_pass" ],
     [ "UnusedOperandEliminationPass", "classonert_1_1compiler_1_1pass_1_1_unused_operand_elimination_pass.html", "classonert_1_1compiler_1_1pass_1_1_unused_operand_elimination_pass" ]
 ];

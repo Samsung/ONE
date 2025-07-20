@@ -39,6 +39,7 @@ var classonert_1_1loader_1_1_base_loader =
     [ "_buf_to_data", "classonert_1_1loader_1_1_base_loader.html#a1ff0c207573994546820d8dfe1e5791c", null ],
     [ "_domain_model", "classonert_1_1loader_1_1_base_loader.html#a83bba4a86c0d0624db36eea5aa985a51", null ],
     [ "_fd", "classonert_1_1loader_1_1_base_loader.html#a7cb2075608353bfc8a91c42d7ee90a71", null ],
+    [ "_file_path", "classonert_1_1loader_1_1_base_loader.html#ab962301d441c6d60da989782c8d4966f", null ],
     [ "_model", "classonert_1_1loader_1_1_base_loader.html#a6c208cffb5b4531e90522a8295acb62e", null ],
     [ "_pagesize", "classonert_1_1loader_1_1_base_loader.html#a883b32e59f08793fd98121f74edc08b9", null ],
     [ "_tensor_names", "classonert_1_1loader_1_1_base_loader.html#ad9a70ddc189dd15c49c1ead64df3eca0", null ],

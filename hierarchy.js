@@ -2754,6 +2754,7 @@ var hierarchy =
             [ "onert::compiler::train::pass::TrainableConstantInsertionPass", "classonert_1_1compiler_1_1train_1_1pass_1_1_trainable_constant_insertion_pass.html", null ]
           ] ]
         ] ],
+        [ "onert::compiler::pass::PermutationIOPass", "classonert_1_1compiler_1_1pass_1_1_permutation_i_o_pass.html", null ],
         [ "onert::compiler::pass::UnusedOperandEliminationPass", "classonert_1_1compiler_1_1pass_1_1_unused_operand_elimination_pass.html", null ]
       ] ],
       [ "onert::compiler::train::pass::Pass", "classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html", [

@@ -22,6 +22,8 @@ var dir_2d55ed669f6dff4acc3bfca26109fd49 =
     [ "PermutationEliminationPass.h", "_permutation_elimination_pass_8h.html", "_permutation_elimination_pass_8h" ],
     [ "PermutationInsertionPass.cc", "_permutation_insertion_pass_8cc.html", null ],
     [ "PermutationInsertionPass.h", "_permutation_insertion_pass_8h.html", "_permutation_insertion_pass_8h" ],
+    [ "PermutationIOPass.cc", "_permutation_i_o_pass_8cc.html", null ],
+    [ "PermutationIOPass.h", "_permutation_i_o_pass_8h.html", "_permutation_i_o_pass_8h" ],
     [ "UnusedOperandEliminationPass.cc", "_unused_operand_elimination_pass_8cc.html", null ],
     [ "UnusedOperandEliminationPass.h", "_unused_operand_elimination_pass_8h.html", "_unused_operand_elimination_pass_8h" ]
 ];
