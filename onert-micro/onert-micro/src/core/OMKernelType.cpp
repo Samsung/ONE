@@ -15,6 +15,7 @@
  */
 
 #include "core/OMKernelType.h"
+#include <iostream>
 
 using namespace onert_micro::core;
 using namespace onert_micro;
@@ -31,6 +32,7 @@ OMStatus onert_micro::core::getBuiltinOperatorBuilderId(const circle::BuiltinOpe
 #include "KernelsToBuild.lst"
 #undef REGISTER_KERNEL
     default:
+      std::cerr << "Error: Unsupported opcode: " << opcode << std::endl;
       assert(false && "Unsupported operation");
       return UnsupportedOp;
   }
@@ -84,6 +86,8 @@ OMStatus onert_micro::core::getCustomOperatorBuilderId(const flatbuffers::String
   }
 #include "CustomKernelsToBuild.lst"
 #undef REGISTER_CUSTOM_KERNEL
+
+  std::cerr << "Error: Unsupported custom opcode: " << custom_opcode->c_str() << std::endl;
   assert(false && "Unsupported custom operation");
   return UnsupportedOp;
 }
