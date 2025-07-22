@@ -65,19 +65,19 @@ void DynamicUpdateSliceLayer::run()
   switch (_operand->data_type())
   {
     case OperandType::FLOAT32:
-      nnfw::cker::DynamicUpdateSlice<float>(getShape(_operand), getBuffer<float>(_operand),
-                                            getShape(_update), getBuffer<float>(_update),
-                                            indices_data, getBuffer<float>(_output));
+      nnfw::cker::DynamicUpdateSlice()(getShape(_operand), getBuffer<float>(_operand),
+                                       getShape(_update), getBuffer<float>(_update), indices_data,
+                                       getBuffer<float>(_output));
       break;
     case OperandType::QUANT_UINT8_ASYMM:
-      nnfw::cker::DynamicUpdateSlice<uint8_t>(getShape(_operand), getBuffer<uint8_t>(_operand),
-                                              getShape(_update), getBuffer<uint8_t>(_update),
-                                              indices_data, getBuffer<uint8_t>(_output));
+      nnfw::cker::DynamicUpdateSlice()(getShape(_operand), getBuffer<uint8_t>(_operand),
+                                       getShape(_update), getBuffer<uint8_t>(_update), indices_data,
+                                       getBuffer<uint8_t>(_output));
       break;
     case OperandType::QUANT_INT16_SYMM:
-      nnfw::cker::DynamicUpdateSlice<int8_t>(getShape(_operand), getBuffer<int8_t>(_operand),
-                                             getShape(_update), getBuffer<int8_t>(_update),
-                                             indices_data, getBuffer<int8_t>(_output));
+      nnfw::cker::DynamicUpdateSlice()(getShape(_operand), getBuffer<int8_t>(_operand),
+                                       getShape(_update), getBuffer<int8_t>(_update), indices_data,
+                                       getBuffer<int8_t>(_output));
       break;
     default:
       throw std::runtime_error{"DynamicUpdateSlice: NYI - unsupported data type"};

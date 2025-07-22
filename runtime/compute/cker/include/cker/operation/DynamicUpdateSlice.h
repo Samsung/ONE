@@ -25,21 +25,28 @@
 namespace nnfw::cker
 {
 
-template <typename T>
-void UpdateSlice(int32_t current_dim, int32_t max_dim, const std::vector<int32_t> output_stride,
-                 const std::vector<int32_t> update_stride, const Shape &update_shape,
-                 const T *update, const std::vector<int64_t> indices_data, T *output)
+class DynamicUpdateSlice
 {
-  if (current_dim == max_dim)
-    return;
+public:
+  DynamicUpdateSlice() = default;
+  ~DynamicUpdateSlice() = default;
 
-  if (current_dim == max_dim - 1)
+private:
+  template <typename T>
+  void UpdateSlice(int32_t current_dim, int32_t max_dim, const std::vector<int32_t> &output_stride,
+                   const std::vector<int32_t> &update_stride, const Shape &update_shape,
+                   const T *update, const std::vector<int64_t> &indices_data, T *output)
   {
-    output += indices_data[current_dim] * output_stride[current_dim];
-    memcpy(output, update, update_shape.Dims(max_dim - 1) * sizeof(T));
-  }
-  else
-  {
+    if (current_dim == max_dim)
+      return;
+
+    if (current_dim == max_dim - 1)
+    {
+      output += indices_data[current_dim] * output_stride[current_dim];
+      memcpy(output, update, update_shape.Dims(max_dim - 1) * sizeof(T));
+      return;
+    }
+
     output += indices_data[current_dim] * output_stride[current_dim];
     for (int i = 0; i < update_shape.Dims(current_dim); ++i)
     {
@@ -49,51 +56,51 @@ void UpdateSlice(int32_t current_dim, int32_t max_dim, const std::vector<int32_t
       update += update_stride[current_dim];
     }
   }
-}
 
-template <typename T>
-void DynamicUpdateSlice(const Shape &input_shape, const T *input_data, const Shape &update_shape,
-                        const T *update_data, const std::vector<int64_t> &indices_data,
-                        T *output_data)
-{
-  // Special case 1 : output is copy of update
-  if (input_shape == update_shape)
+public:
+  template <typename T>
+  void operator()(const Shape &input_shape, const T *input_data, const Shape &update_shape,
+                  const T *update_data, const std::vector<int64_t> &indices_data, T *output_data)
   {
-    memcpy(output_data, update_data, update_shape.FlatSize() * sizeof(T));
-    return;
+    // Special case 1 : output is copy of update
+    if (input_shape == update_shape)
+    {
+      memcpy(output_data, update_data, update_shape.FlatSize() * sizeof(T));
+      return;
+    }
+
+    // Prepare update
+    if (input_data != output_data)
+      memcpy(output_data, input_data, input_shape.FlatSize() * sizeof(T));
+
+    // Special case 2: no update
+    if (update_shape.FlatSize() == 0)
+      return;
+
+    // Calculate clamped_start_indices
+    const auto input_dims = input_shape.DimensionsCount();
+    std::vector<int64_t> clamped_start_indices(input_dims, 0);
+    for (int i = 0; i < input_dims; i++)
+    {
+      clamped_start_indices[i] = std::min<int64_t>(std::max<int64_t>(0, indices_data[i]),
+                                                   input_shape.Dims(i) - update_shape.Dims(i));
+    }
+
+    // Calculate strides
+    std::vector<int32_t> output_stride(input_dims);
+    std::vector<int32_t> update_stride(input_dims);
+    output_stride[input_dims - 1] = 1;
+    update_stride[input_dims - 1] = 1;
+    for (int i = input_dims - 2; i >= 0; --i)
+    {
+      output_stride[i] = output_stride[i + 1] * input_shape.Dims(i + 1);
+      update_stride[i] = update_stride[i + 1] * update_shape.Dims(i + 1);
+    }
+
+    UpdateSlice<T>(0, input_dims, output_stride, update_stride, update_shape, update_data,
+                   clamped_start_indices, output_data);
   }
-
-  // Prepare update
-  if (input_data != output_data)
-    memcpy(output_data, input_data, input_shape.FlatSize() * sizeof(T));
-
-  // Special case 2: no update
-  if (update_shape.FlatSize() == 0)
-    return;
-
-  // Calculate clamped_start_indices
-  const auto input_dims = input_shape.DimensionsCount();
-  std::vector<int64_t> clamped_start_indices(input_dims, 0);
-  for (int i = 0; i < input_dims; i++)
-  {
-    clamped_start_indices[i] = std::min<int64_t>(std::max<int64_t>(0, indices_data[i]),
-                                                 input_shape.Dims(i) - update_shape.Dims(i));
-  }
-
-  // Calculate strides
-  std::vector<int32_t> output_stride(input_dims);
-  std::vector<int32_t> update_stride(input_dims);
-  output_stride[input_dims - 1] = 1;
-  update_stride[input_dims - 1] = 1;
-  for (int i = input_dims - 2; i >= 0; --i)
-  {
-    output_stride[i] = output_stride[i + 1] * input_shape.Dims(i + 1);
-    update_stride[i] = update_stride[i + 1] * update_shape.Dims(i + 1);
-  }
-
-  UpdateSlice<T>(0, input_dims, output_stride, update_stride, update_shape, update_data,
-                 clamped_start_indices, output_data);
-}
+};
 
 } // namespace nnfw::cker
 
