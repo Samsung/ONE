@@ -74,7 +74,7 @@ enum TensorType : byte {
   // Belows are using negative value to represent not existing TensorType on TensorFlow Lite schema
 
   UINT4 = -1,
-  // GGML_Q{X}_{Y} are follow ggml quantization spec (https://github.com/ggerganov/ggml)
+  // GGML_Q{X}_{Y} follow the GGML quantization spec (https://github.com/ggerganov/ggml).
   // GGML_Q{X}_{Y} are used only for weights, not for activations.
   // Quantization parameters are placed with weight value in buffer following ggml's struct,
   // so they are not in QuantizationParameters
