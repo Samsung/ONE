@@ -49,14 +49,6 @@ do
   esac
 done
 
-function pushd () {
-  command pushd "$@" > /dev/null
-}
-
-function popd () {
-  command popd "$@" > /dev/null
-}
-
 function command_exists() {
   command -v $1 > /dev/null 2>&1
 }
@@ -152,7 +144,7 @@ function check_python_files() {
   fi
 }
 
-pushd ${NNAS_PROJECT_PATH}
+cd ${NNAS_PROJECT_PATH} || exit
 
 if [[ -n "$(git diff)" ]] && { [[ "${CHECK_DIFF_ONLY}" != "1" ]] || [[ "${CHECK_STAGED_ONLY}" != "1" ]]; }; then
   echo "[WARNING] Commit all the changes before running format check"
@@ -200,7 +192,7 @@ else
   DIFF=$(git diff | tee ${PATCH_FILE})
 fi
 
-popd
+cd ~- || exit
 
 if [[ -z "${CRCHECK}" ]] && [[ ! -n "${DIFF}" ]] && [[ ${INVALID_EXIT} -eq 0 ]]; then
   echo "[PASSED] Format checker succeed."
