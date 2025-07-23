@@ -80,6 +80,7 @@ public:
     // Calculate clamped_start_indices
     const auto input_dims = input_shape.DimensionsCount();
     std::vector<int64_t> clamped_start_indices(input_dims, 0);
+    assert(input_dims == update_shape.DimensionsCount());
     for (int i = 0; i < input_dims; i++)
     {
       clamped_start_indices[i] = std::min<int64_t>(std::max<int64_t>(0, indices_data[i]),
