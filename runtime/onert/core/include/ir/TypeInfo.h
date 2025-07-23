@@ -85,7 +85,7 @@ public:
     _quant.scales = std::move(scales);
     _quant.zero_points = std::move(zero_points);
   }
-  void sparsity(std::shared_ptr<ir::Sparsity> &&sparsity) { _sparsity = std::move(sparsity); }
+  void sparsity(std::shared_ptr<ir::Sparsity> sparsity) { _sparsity = std::move(sparsity); }
 
 public:
   void type(const DataType type) { _type = type; }
