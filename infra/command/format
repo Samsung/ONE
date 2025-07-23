@@ -185,7 +185,7 @@ check_cpp_files
 check_python_files
 
 if [[ "${CHECK_DIFF_ONLY}" = "1" ]] && [[ "${CHECK_STAGED_ONLY}" = "1" ]]; then
-  if [[ ! -z "${FILES_TO_CHECK}" ]]; then
+  if [[ -n "${FILES_TO_CHECK}" ]]; then
     DIFF=$(git diff ${FILES_TO_CHECK} | tee ${PATCH_FILE})
   fi
 else
@@ -194,14 +194,14 @@ fi
 
 cd ~- || exit
 
-if [[ -z "${CRCHECK}" ]] && [[ ! -n "${DIFF}" ]] && [[ ${INVALID_EXIT} -eq 0 ]]; then
+if [[ -z "${CRCHECK}" ]] && [[ -z "${DIFF}" ]] && [[ ${INVALID_EXIT} -eq 0 ]]; then
   echo "[PASSED] Format checker succeed."
   return
 fi
 
 # Something went wrong
 
-if [[ ! -z "${CRCHECK}" ]]; then
+if [[ -n "${CRCHECK}" ]]; then
   echo "[FAILED] Please use LF for newline for following files."
   echo "${CRCHECK}"
 fi
