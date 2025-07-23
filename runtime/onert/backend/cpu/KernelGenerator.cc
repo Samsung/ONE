@@ -25,6 +25,7 @@
 #include "ops/ConvolutionLayer.h"
 #include "ops/DepthToSpaceLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
+#include "ops/DynamicUpdateSlice.h"
 #include "ops/ElementwiseActivationLayer.h"
 #include "ops/ElementwiseBinaryLayer.h"
 #include "ops/ElementwiseUnaryLayer.h"
@@ -369,6 +370,27 @@ void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
   fn->configure(ifm_tensor, ker_tensor, bias_tensor, padding.left, padding.right, padding.top,
                 padding.bottom, stride.horizontal, stride.vertical, multiplier, dilation_width,
                 dilation_height, activation, ofm_tensor, _external_context);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::DynamicUpdateSlice &node)
+{
+  using ir::operation::DynamicUpdateSlice;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto operand_index{node.getInputs().at(DynamicUpdateSlice::Input::OPERAND)};
+  const auto update_index{node.getInputs().at(DynamicUpdateSlice::Input::UPDATE)};
+  const auto indices_index{node.getInputs().at(DynamicUpdateSlice::Input::INDICES)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto operand_tensor = _tensor_reg->getPortableTensor(operand_index);
+  auto update_tensor = _tensor_reg->getPortableTensor(update_index);
+  auto indices_tensor = _tensor_reg->getPortableTensor(indices_index);
+
+  auto fn = std::make_unique<ops::DynamicUpdateSliceLayer>();
+
+  fn->configure(operand_tensor, update_tensor, indices_tensor, output_tensor);
 
   _return_fn = std::move(fn);
 }

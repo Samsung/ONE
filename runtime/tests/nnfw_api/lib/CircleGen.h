@@ -170,6 +170,7 @@ public:
                                            float w_scale, float nms_score_threshold,
                                            float nms_iou_threshold, int max_detections,
                                            int max_classes_per_detection, int detections_per_class);
+  uint32_t addOperatorDynamicUpdateSlice(const OperatorParams &params);
   uint32_t addOperatorElu(const OperatorParams &params);
   uint32_t addOperatorEqual(const OperatorParams &params);
   uint32_t addOperatorExpandDims(const OperatorParams &params);
