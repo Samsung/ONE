@@ -22,11 +22,21 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <random>
 
 namespace
 {
 
 using DataBuffer = std::vector<char>;
+
+void generateRandomData(char *data, size_t data_size)
+{
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<uint8_t> dist(0, 255);
+  for (size_t i = 0; i < data_size; ++i)
+    data[i] = static_cast<char>(dist(gen));
+}
 
 void readDataFromFile(const std::string &filename, char *data, size_t data_size)
 {
@@ -58,18 +68,29 @@ void writeDataToFile(const std::string &filename, const char *data, size_t data_
  */
 int entry(int argc, char **argv)
 {
-  if (argc != 5)
-  {
-    std::cerr
-      << "Usage: " << argv[0]
-      << " <path/to/circle/model> <num_inputs> <path/to/input/prefix> <path/to/output/file>\n";
+  // Parse command line arguments
+  if (argc < 2) {
+    std::cerr << "Usage: " << argv[0] << " [ <model_file> | <model_file> <input_prefix> <output_file> ]\n";
+    std::cerr << "Options:\n";
+    std::cerr << "  run w/o input/output file  : Generate random input data automatically\n";
+    std::cerr << "  <input_prefix>: Prefix for input files (e.g. 'input_' for input_0, input_1...)\n";
+    std::cerr << "  <output_file> : Output file name\n";
     return EXIT_FAILURE;
   }
 
-  const char *filename = argv[1];
-  const int32_t num_inputs = atoi(argv[2]);
-  const char *input_prefix = argv[3];
-  const char *output_file = argv[4];
+  const char* filename = argv[1];
+  bool auto_input = false;
+  const char* input_prefix = nullptr;
+  const char* output_file = nullptr;
+  int32_t num_inputs = 1; // Default number of inputs
+
+  // Check for --auto-input flag
+  if (argc == 2) {
+    auto_input = true;
+  } else if (argc >= 4) {
+    input_prefix = argv[2];
+    output_file = argv[3];
+  }
 
   std::ifstream file(filename, std::ios::binary | std::ios::in);
   if (!file.good())
@@ -98,6 +119,8 @@ int entry(int argc, char **argv)
   onert_micro::OMConfig config;
   interpreter.importModel(model_data.data(), config);
 
+  num_inputs = interpreter.getNumberOfInputs(); // To initialize input buffers
+
   // Set input.
   // Data for n'th input is read from ${input_prefix}n
   // (ex: Add.circle.input0, Add.circle.input1 ..)
@@ -109,8 +132,14 @@ int entry(int argc, char **argv)
     for (int32_t i = 0; i < num_inputs; i++)
     {
       auto input_data = reinterpret_cast<char *>(interpreter.getInputDataAt(i));
-      readDataFromFile(std::string(input_prefix) + std::to_string(i), input_data,
-                       interpreter.getInputSizeAt(i) * sizeof(float));
+      size_t input_size = interpreter.getInputSizeAt(i);
+      
+      if (auto_input) {
+        generateRandomData(input_data, input_size);
+      } else {
+        readDataFromFile(std::string(input_prefix) + std::to_string(i), 
+                        input_data, input_size);
+      }
     }
 
     // Do inference.
@@ -122,11 +151,13 @@ int entry(int argc, char **argv)
   for (int i = 0; i < num_outputs; i++)
   {
     auto data = interpreter.getOutputDataAt(i);
+    size_t output_size = interpreter.getOutputSizeAt(i);
 
-    // Output data is written in ${output_file}
-    // (ex: Add.circle.output0)
-    writeDataToFile(std::string(output_file) + std::to_string(i), reinterpret_cast<char *>(data),
-                    interpreter.getOutputSizeAt(i) * sizeof(float));
+    if (output_file != nullptr) {
+      writeDataToFile(std::string(output_file) + std::to_string(i),
+                     reinterpret_cast<char*>(data), output_size);
+    }
+    // Otherwise, output remains in interpreter memory
   }
   interpreter.reset();
   return EXIT_SUCCESS;
