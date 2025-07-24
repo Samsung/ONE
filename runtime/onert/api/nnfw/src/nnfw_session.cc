@@ -768,7 +768,7 @@ NNFW_STATUS nnfw_session::set_input_tensorinfo(uint32_t index, const nnfw_tensor
       return NNFW_STATUS_UNEXPECTED_NULL;
     }
 
-    if (ti->rank <= 0 || ti->rank > NNFW_MAX_RANK)
+    if (ti->rank < 0 || ti->rank > NNFW_MAX_RANK)
     {
       std::cerr << "unsupported rank: " << ti->rank << std::endl;
       return NNFW_STATUS_ERROR;
