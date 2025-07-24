@@ -565,6 +565,89 @@ void DetermineSubgraphs(std::vector<onnx::GraphProto> &subgraphs, const onnx::Gr
   }
 }
 
+/**
+* @brief     Perform Tarjan's algorithm to find all strongly connected components in a
+*            directed graph.This function uses depth-first search (DFS) to identify and
+*            group nodes into strongly connected components.
+*
+* @param     [in] index The current node index being visited.
+* @param     [in] depth The current depth in the DFS traversal.
+* @param     [out] stronglyConnectedSubgraphs A vector to store the identified strongly
+*            connected components.
+* @param     [in,out] DFN An array to store the discovery time of each node.
+* @param     [in,out] LOW An array to store the lowest discovery time reachable from each node.
+* @param     [in,out] stackSubgraphs A stack to keep track of nodes in the current DFS path.
+* @param     [in] successorsSubgraphs A vector of vectors representing the adjacency list of
+*            the graph.
+*
+* @pre       The `DFN` and `LOW` arrays should be initialized to zero.
+* @pre       The `stackSubgraphs` should be empty before the first call to this function.
+* @pre       The `successorsSubgraphs` should be properly initialized with the graph's 
+*            adjacency list.
+*
+* @post      The `stronglyConnectedSubgraphs` vector will contain all the strongly connected
+*            components found in the graph.
+* @post      The `DFN` and `LOW` arrays will reflect the discovery times and lowest reachable
+*            discovery times for each node.
+* @post      The `stackSubgraphs` will be empty after the function completes.
+*
+* @exception None
+*
+* @return    None
+*/
+void Tarjan(int index,
+            int depth,
+            std::vector<std::vector<int>>& stronglyConnectedSubgraphs,
+            int* DFN,
+            int* LOW,
+            std::vector<int>& stackSubgraphs,
+            std::vector<std::vector<int>>& successorsSubgraphs)
+{
+    int rank = depth + 1;
+    DFN[index] = LOW[index] = rank;// initialize DFN and LOW to 0
+    stackSubgraphs.push_back(index);
+
+    for(const auto& successor : successorsSubgraphs[index])
+    {
+        if(DFN[successor] == 0)//the successor is not visited
+        {
+            Tarjan(successor, rank,stronglyConnectedSubgraphs,
+                   DFN, LOW, stackSubgraphs, successorsSubgraphs);//visit successor
+            LOW[index] = std::min(LOW[index], LOW[successor]);
+        }
+        else if(std::find(stackSubgraphs.begin(),stackSubgraphs.end(),successor)
+                != stackSubgraphs.end())
+        {
+            LOW[index] = std::min(LOW[index], DFN[successor]);
+        }
+    }
+
+    //if this node is the smallest root of the strongly connected component subtree,
+    //then subsequent nodes are popped out of the stack and the obtained strongly
+    //connected components are saved
+    if(LOW[index] == DFN[index])
+    {
+        auto it = stackSubgraphs.end() - 1; 
+        std:: vector<int> stronglyConnected;
+
+        while(*it != index)
+        {
+            stronglyConnected.insert(stronglyConnected.begin(), *it);
+            stackSubgraphs.pop_back();
+            it = stackSubgraphs.end() - 1;
+        }
+
+        stronglyConnected.insert(stronglyConnected.begin(), *it);
+
+        if(stronglyConnected.size() > 1)
+        {
+            stronglyConnectedSubgraphs.push_back(stronglyConnected);
+        }
+
+        stackSubgraphs.pop_back();//pop
+    }
+}
+
 void PartitionGraph(const onnx::GraphProto &g, Device &d, PartitionStrategy strategy,
                     const std::unordered_map<std::string, NodeIOSize> &node_io_size)
 {
