@@ -22,20 +22,14 @@ namespace onert::ir
 bool operator==(const TypeInfo &lhs, const TypeInfo &rhs)
 {
   if (lhs.type() != rhs.type())
-  {
     return false;
-  }
 
-  if (lhs.zero_point() != rhs.zero_point())
-  {
+  // Check channelwise quantization
+  if (lhs.scales().size() != rhs.scales().size())
     return false;
-  }
 
-  if (lhs.scale() != rhs.scale())
-  {
-    return false;
-  }
-
+  // Assume zero_points are same as scales.size() or symmetric
+  // Don't check values of scale and zero_points here
   return true;
 }
 
