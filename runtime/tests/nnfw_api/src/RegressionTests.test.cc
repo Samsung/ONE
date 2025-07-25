@@ -176,3 +176,43 @@ TEST_F(RegressionTest, github_4585)
 
   NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
 }
+
+TEST_F(RegressionTest, github_15836)
+{
+  // vector input + constant input => vector output
+  CircleGen cgen;
+  int lhs_input = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32});
+  std::vector<float> rhs_data{1, 2};
+  uint32_t rhs_buf = cgen.addBuffer(rhs_data);
+  int rhs_const = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32, rhs_buf});
+  int output = cgen.addTensor({{2}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorAdd({{lhs_input, rhs_const}, {output}}, circle::ActivationFunctionType_NONE);
+  cgen.setInputsAndOutputs({lhs_input}, {output});
+  auto cbuf = cgen.finish();
+
+  nnfw_session *session = nullptr;
+  NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
+  NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, cbuf.buffer(), cbuf.size()));
+
+  // change to scalar input
+  nnfw_tensorinfo t_input;
+  NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(session, 0, &t_input));
+  t_input.rank = 0;
+  NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(session, 0, &t_input));
+  NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
+
+  std::vector<float> in_buf{1};
+  std::vector<float> out_buf{0, 0};
+  NNFW_ENSURE_SUCCESS(
+    nnfw_set_input(session, 0, NNFW_TYPE_TENSOR_FLOAT32, in_buf.data(), in_buf.size() * sizeof(float)));
+  NNFW_ENSURE_SUCCESS(
+    nnfw_set_output(session, 0, NNFW_TYPE_TENSOR_FLOAT32, out_buf.data(), out_buf.size() * sizeof(float)));
+
+  NNFW_ENSURE_SUCCESS(nnfw_run(session));
+
+  ASSERT_EQ(out_buf[0], 2);
+  ASSERT_EQ(out_buf[1], 3);
+
+  NNFW_ENSURE_SUCCESS(nnfw_close_session(session));
+}
