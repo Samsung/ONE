@@ -22,6 +22,7 @@
 #include "pass/ConstantOutputPass.h"
 #include "pass/OddOutputPass.h"
 #include "pass/PassRunner.h"
+#include "pass/PermutationIOPass.h"
 #include "pass/UnusedOperandEliminationPass.h"
 #include "../dumper/dot/DotDumper.h"
 #include "../exec/SingleModelExecutors.h"
@@ -85,6 +86,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     pass::PassRunner{}
       .append(std::make_unique<pass::ConstantOutputPass>(subg))
       .append(std::make_unique<pass::OddOutputPass>(subg))
+      .append(std::make_unique<pass::PermutationIOPass>(subg, *_options))
       .run();
 
     // Optimizations
