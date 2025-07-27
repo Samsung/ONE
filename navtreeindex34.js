@@ -1,5 +1,8 @@
 var NAVTREEINDEX34 =
 {
+"backend_2train_2_tensor_builder_8cc_source.html":[41,0,3,3,1,6,19],
+"backend_2train_2_tensor_builder_8h.html":[41,0,3,3,1,6,20],
+"backend_2train_2_tensor_builder_8h_source.html":[41,0,3,3,1,6,20],
 "backend_2train_2_tensor_registry_8h.html":[41,0,3,3,1,6,25],
 "backend_2train_2_tensor_registry_8h_source.html":[41,0,3,3,1,6,25],
 "backend_2trix_2_backend_context_8cc.html":[41,0,3,3,1,7,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX34 =
 "circle-part-value-py-test_2conftest_8py.html":[41,0,0,19,0],
 "circle-part-value-py-test_2conftest_8py.html#a4c9f38a95a92b4f580fb13c0e6b58373":[41,0,0,19,0,2],
 "circle-part-value-py-test_2conftest_8py.html#a61c7cced37dffae2b2c6edf883c44c12":[41,0,0,19,0,1],
-"circle-part-value-py-test_2conftest_8py.html#af477898ec1680a5189af3ab5eca4fdcb":[41,0,0,19,0,0],
-"circle-part-value-py-test_2conftest_8py_source.html":[41,0,0,19,0],
-"circle-quantizer_2src_2_circle_quantizer_8cpp.html":[41,0,0,22,0,0],
-"circle-quantizer_2src_2_circle_quantizer_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198":[41,0,0,22,0,0,6]
+"circle-part-value-py-test_2conftest_8py.html#af477898ec1680a5189af3ab5eca4fdcb":[41,0,0,19,0,0]
 };

@@ -16,5 +16,6 @@ var runtime_2onert_2core_2include_2ir_2_data_type_8h =
       [ "QUANT_GGML_Q4_0", "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331a8aedb3aef4124c9215ec9cfe08df84a9", null ],
       [ "QUANT_GGML_Q8_0", "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a0343744557a8c62c8f3ac225760f8331acb818f4524e9907085fe9e40ffdd9799", null ]
     ] ],
+    [ "requireQuantParam", "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a20a63404c02461ed68e2184a45033a2c", null ],
     [ "sizeOfDataType", "runtime_2onert_2core_2include_2ir_2_data_type_8h.html#a306303df14f9f20079574f5a9cc37f26", null ]
 ];

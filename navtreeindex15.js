@@ -1,5 +1,6 @@
 var NAVTREEINDEX15 =
 {
+"_leaky_relu_options_8h_source.html":[41,0,0,133,2,0,69],
 "_less_equal_options_8cpp.html":[41,0,0,133,2,0,70],
 "_less_equal_options_8cpp.html#a5fb470d0021169f3d1bb820f2a4f9f47":[41,0,0,133,2,0,70,0],
 "_less_equal_options_8cpp_source.html":[41,0,0,133,2,0,70],
@@ -69,8 +70,8 @@ var NAVTREEINDEX15 =
 "_list_file_iterator_8h_source.html":[41,0,0,117,1,4],
 "_load_8cpp.html":[41,0,0,30,0,1,1,22],
 "_load_8cpp_source.html":[41,0,0,30,0,1,1,22],
-"_local_response_normalization_8cc.html":[41,0,3,3,2,1,5,0,32],
-"_local_response_normalization_8cc_source.html":[41,0,3,3,2,1,5,0,32],
+"_local_response_normalization_8cc.html":[41,0,3,3,2,1,5,0,33],
+"_local_response_normalization_8cc_source.html":[41,0,3,3,2,1,5,0,33],
 "_local_response_normalization_options_8cpp.html":[41,0,0,133,2,0,74],
 "_local_response_normalization_options_8cpp.html#acb18f5a69ead43d28e0173f6f3e3fd13":[41,0,0,133,2,0,74,0],
 "_local_response_normalization_options_8cpp_source.html":[41,0,0,133,2,0,74],
@@ -79,12 +80,12 @@ var NAVTREEINDEX15 =
 "_local_response_normalization_options_8h_source.html":[41,0,0,133,2,0,75],
 "_locatable_8h.html":[41,0,0,30,0,0,0,1,34],
 "_locatable_8h_source.html":[41,0,0,30,0,0,0,1,34],
-"_log_soft_max_layer_8cc.html":[41,0,3,3,1,4,0,44],
-"_log_soft_max_layer_8cc_source.html":[41,0,3,3,1,4,0,44],
-"_log_soft_max_layer_8h.html":[41,0,3,3,1,4,0,45],
-"_log_soft_max_layer_8h_source.html":[41,0,3,3,1,4,0,45],
-"_log_softmax_8cc.html":[41,0,3,3,2,1,5,0,33],
-"_log_softmax_8cc_source.html":[41,0,3,3,2,1,5,0,33],
+"_log_soft_max_layer_8cc.html":[41,0,3,3,1,4,0,46],
+"_log_soft_max_layer_8cc_source.html":[41,0,3,3,1,4,0,46],
+"_log_soft_max_layer_8h.html":[41,0,3,3,1,4,0,47],
+"_log_soft_max_layer_8h_source.html":[41,0,3,3,1,4,0,47],
+"_log_softmax_8cc.html":[41,0,3,3,2,1,5,0,34],
+"_log_softmax_8cc_source.html":[41,0,3,3,2,1,5,0,34],
 "_log_softmax_options_8cpp.html":[41,0,0,133,2,0,82],
 "_log_softmax_options_8cpp.html#af0709276dbc81956b573bdc852cb7f68":[41,0,0,133,2,0,82,0],
 "_log_softmax_options_8cpp_source.html":[41,0,0,133,2,0,82],
@@ -248,6 +249,5 @@ var NAVTREEINDEX15 =
 "_matrix_diag_options_8cpp.html":[41,0,0,133,2,0,84],
 "_matrix_diag_options_8cpp.html#ac1508df1e5923d290bdfca4d175f3b18":[41,0,0,133,2,0,84,0],
 "_matrix_diag_options_8cpp_source.html":[41,0,0,133,2,0,84],
-"_matrix_diag_options_8h.html":[41,0,0,133,2,0,85],
-"_matrix_diag_options_8h.html#ac1508df1e5923d290bdfca4d175f3b18":[41,0,0,133,2,0,85,0]
+"_matrix_diag_options_8h.html":[41,0,0,133,2,0,85]
 };

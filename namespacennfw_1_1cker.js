@@ -65,6 +65,7 @@ var namespacennfw_1_1cker =
     [ "ConvParams", "structnnfw_1_1cker_1_1_conv_params.html", "structnnfw_1_1cker_1_1_conv_params" ],
     [ "DepthwiseConvParams", "structnnfw_1_1cker_1_1_depthwise_conv_params.html", "structnnfw_1_1cker_1_1_depthwise_conv_params" ],
     [ "DepthwiseConvWorkerTask", "structnnfw_1_1cker_1_1_depthwise_conv_worker_task.html", "structnnfw_1_1cker_1_1_depthwise_conv_worker_task" ],
+    [ "DynamicUpdateSlice", "classnnfw_1_1cker_1_1_dynamic_update_slice.html", "classnnfw_1_1cker_1_1_dynamic_update_slice" ],
     [ "FCTempArena", "classnnfw_1_1cker_1_1_f_c_temp_arena.html", "classnnfw_1_1cker_1_1_f_c_temp_arena" ],
     [ "FullyConnectedParams", "structnnfw_1_1cker_1_1_fully_connected_params.html", "structnnfw_1_1cker_1_1_fully_connected_params" ],
     [ "FusedBatchNorm", "classnnfw_1_1cker_1_1_fused_batch_norm.html", "classnnfw_1_1cker_1_1_fused_batch_norm" ],

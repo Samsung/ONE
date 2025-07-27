@@ -17,6 +17,7 @@ var dir_c9348e4763c5124a9eef9e6530a60018 =
     [ "DepthToSpace.h", "runtime_2compute_2cker_2include_2cker_2operation_2_depth_to_space_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_depth_to_space_8h" ],
     [ "DepthwiseConv.h", "operation_2_depthwise_conv_8h.html", "operation_2_depthwise_conv_8h" ],
     [ "Dequantize.h", "runtime_2compute_2cker_2include_2cker_2operation_2_dequantize_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_dequantize_8h" ],
+    [ "DynamicUpdateSlice.h", "compute_2cker_2include_2cker_2operation_2_dynamic_update_slice_8h.html", "compute_2cker_2include_2cker_2operation_2_dynamic_update_slice_8h" ],
     [ "Elementwise.h", "runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_elementwise_8h" ],
     [ "ELU.h", "runtime_2compute_2cker_2include_2cker_2operation_2_e_l_u_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_e_l_u_8h" ],
     [ "Erf.h", "runtime_2compute_2cker_2include_2cker_2operation_2_erf_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_erf_8h" ],

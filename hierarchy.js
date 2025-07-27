@@ -1830,6 +1830,7 @@ var hierarchy =
     [ "onert::backend::basic::DynamicMemoryManager", "classonert_1_1backend_1_1basic_1_1_dynamic_memory_manager.html", null ],
     [ "onert::exec::FunctionSequence::DynamicTensorCtx", "structonert_1_1exec_1_1_function_sequence_1_1_dynamic_tensor_ctx.html", null ],
     [ "onert::backend::basic::DynamicTensorManager", "classonert_1_1backend_1_1basic_1_1_dynamic_tensor_manager.html", null ],
+    [ "nnfw::cker::DynamicUpdateSlice", "classnnfw_1_1cker_1_1_dynamic_update_slice.html", null ],
     [ "nnfw::cker::eigen_support::EigenContext", "structnnfw_1_1cker_1_1eigen__support_1_1_eigen_context.html", null ],
     [ "coco::ElemID", "classcoco_1_1_elem_i_d.html", null ],
     [ "mir_interpreter::ELUImpl< T >", "structmir__interpreter_1_1_e_l_u_impl.html", null ],
@@ -2431,6 +2432,7 @@ var hierarchy =
         [ "onert::backend::train::ops::DepthwiseConvolutionLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_depthwise_convolution_layer.html", null ]
       ] ],
       [ "onert::backend::cpu::ops::DetectionPostProcessLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer.html", null ],
+      [ "onert::backend::cpu::ops::DynamicUpdateSliceLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_dynamic_update_slice_layer.html", null ],
       [ "onert::backend::cpu::ops::ElementwiseActivationLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html", [
         [ "onert::backend::train::ops::ElementwiseActivationLayer", "classonert_1_1backend_1_1train_1_1ops_1_1_elementwise_activation_layer.html", null ]
       ] ],
@@ -2644,6 +2646,7 @@ var hierarchy =
           [ "onert::ir::train::operation::DepthwiseConv2D", "classonert_1_1ir_1_1train_1_1operation_1_1_depthwise_conv2_d.html", null ]
         ] ],
         [ "onert::ir::operation::DetectionPostProcess", "classonert_1_1ir_1_1operation_1_1_detection_post_process.html", null ],
+        [ "onert::ir::operation::DynamicUpdateSlice", "classonert_1_1ir_1_1operation_1_1_dynamic_update_slice.html", null ],
         [ "onert::ir::operation::ElementwiseActivation", "classonert_1_1ir_1_1operation_1_1_elementwise_activation.html", [
           [ "onert::ir::train::operation::ElementwiseActivation", "classonert_1_1ir_1_1train_1_1operation_1_1_elementwise_activation.html", null ]
         ] ],

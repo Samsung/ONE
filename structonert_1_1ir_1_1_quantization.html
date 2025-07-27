@@ -95,18 +95,29 @@ $(document).ready(function(){initNavTree('structonert_1_1ir_1_1_quantization.htm
 </div><!--header-->
 <div class="contents">
 
+<p>Struct to hold quantization information of a tensor.  
+ <a href="structonert_1_1ir_1_1_quantization.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="_type_info_8h_source.html">TypeInfo.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a5d5d38422c267e2e0df152a11ec309ca" id="r_a5d5d38422c267e2e0df152a11ec309ca"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_quantization.html#a5d5d38422c267e2e0df152a11ec309ca">scales</a></td></tr>
+<tr class="memitem:a5d5d38422c267e2e0df152a11ec309ca" id="r_a5d5d38422c267e2e0df152a11ec309ca"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_quantization.html#a5d5d38422c267e2e0df152a11ec309ca">scales</a> = {0.0f}</td></tr>
 <tr class="separator:a5d5d38422c267e2e0df152a11ec309ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7e479993d953e473f2291ecad9a6f55" id="r_af7e479993d953e473f2291ecad9a6f55"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_quantization.html#af7e479993d953e473f2291ecad9a6f55">zero_points</a></td></tr>
+<tr class="memitem:af7e479993d953e473f2291ecad9a6f55" id="r_af7e479993d953e473f2291ecad9a6f55"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1ir_1_1_quantization.html#af7e479993d953e473f2291ecad9a6f55">zero_points</a> = {0}</td></tr>
 <tr class="separator:af7e479993d953e473f2291ecad9a6f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_type_info_8h_source.html#l00031">31</a> of file <a class="el" href="_type_info_8h_source.html">TypeInfo.h</a>.</p>
+<div class="textblock"><p>Struct to hold quantization information of a tensor. </p>
+<dl class="section note"><dt>Note</dt><dd>This struct is used only for quantized tensors. <pre class="fragment">   For non-quantized tensors, scales, and zero_points have only one element,
+   and scale value is zero.
+
+   For per-channel quantized tensors, scales vectors should have same size as number of
+   channels of the tensor. And zero_points vector should be same size as scales vector if
+   quantization type is assymetric, otherwise it will be ignored.
+</pre> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_type_info_8h_source.html#l00044">44</a> of file <a class="el" href="_type_info_8h_source.html">TypeInfo.h</a>.</p>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="a5d5d38422c267e2e0df152a11ec309ca" name="a5d5d38422c267e2e0df152a11ec309ca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5d5d38422c267e2e0df152a11ec309ca">&#9670;&#160;</a></span>scales</h2>
@@ -115,14 +126,15 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;float&gt; onert::ir::Quantization::scales</td>
+          <td class="memname">std::vector&lt;float&gt; onert::ir::Quantization::scales = {0.0f}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_type_info_8h_source.html#l00033">33</a> of file <a class="el" href="_type_info_8h_source.html">TypeInfo.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_type_info_8h_source.html#l00060">onert::ir::TypeInfo::quantization()</a>, <a class="el" href="_type_info_8h_source.html#l00067">onert::ir::TypeInfo::quantization()</a>, <a class="el" href="_type_info_8h_source.html#l00051">onert::ir::TypeInfo::scale()</a>, and <a class="el" href="_type_info_8h_source.html#l00052">onert::ir::TypeInfo::scales()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_type_info_8h_source.html#l00046">46</a> of file <a class="el" href="_type_info_8h_source.html">TypeInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{0.0f};</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_type_info_8h_source.html#l00069">onert::ir::TypeInfo::quantization()</a>, <a class="el" href="_type_info_8h_source.html#l00075">onert::ir::TypeInfo::quantization()</a>, <a class="el" href="_type_info_8h_source.html#l00064">onert::ir::TypeInfo::scale()</a>, and <a class="el" href="_type_info_8h_source.html#l00065">onert::ir::TypeInfo::scales()</a>.</p>
 
 </div>
 </div>
@@ -133,14 +145,15 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;int32_t&gt; onert::ir::Quantization::zero_points</td>
+          <td class="memname">std::vector&lt;int32_t&gt; onert::ir::Quantization::zero_points = {0}</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_type_info_8h_source.html#l00034">34</a> of file <a class="el" href="_type_info_8h_source.html">TypeInfo.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="_type_info_8h_source.html#l00060">onert::ir::TypeInfo::quantization()</a>, <a class="el" href="_type_info_8h_source.html#l00067">onert::ir::TypeInfo::quantization()</a>, <a class="el" href="_type_info_8h_source.html#l00053">onert::ir::TypeInfo::zero_point()</a>, and <a class="el" href="_type_info_8h_source.html#l00058">onert::ir::TypeInfo::zero_points()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_type_info_8h_source.html#l00047">47</a> of file <a class="el" href="_type_info_8h_source.html">TypeInfo.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{0};</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="_type_info_8h_source.html#l00069">onert::ir::TypeInfo::quantization()</a>, <a class="el" href="_type_info_8h_source.html#l00075">onert::ir::TypeInfo::quantization()</a>, <a class="el" href="_type_info_8h_source.html#l00066">onert::ir::TypeInfo::zero_point()</a>, and <a class="el" href="_type_info_8h_source.html#l00067">onert::ir::TypeInfo::zero_points()</a>.</p>
 
 </div>
 </div>

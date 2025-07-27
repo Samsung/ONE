@@ -19,6 +19,7 @@ var dir_c67b2d6a1794e95e9d1aa933ef4fa6b2 =
     [ "DepthToSpace.h", "runtime_2onert_2core_2include_2ir_2operation_2_depth_to_space_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_depth_to_space_8h" ],
     [ "DepthwiseConv2D.h", "runtime_2onert_2core_2include_2ir_2operation_2_depthwise_conv2_d_8h.html", "runtime_2onert_2core_2include_2ir_2operation_2_depthwise_conv2_d_8h" ],
     [ "DetectionPostProcess.h", "_detection_post_process_8h.html", "_detection_post_process_8h" ],
+    [ "DynamicUpdateSlice.h", "onert_2core_2include_2ir_2operation_2_dynamic_update_slice_8h.html", "onert_2core_2include_2ir_2operation_2_dynamic_update_slice_8h" ],
     [ "ElementwiseActivation.h", "operation_2_elementwise_activation_8h.html", "operation_2_elementwise_activation_8h" ],
     [ "ElementwiseBinary.h", "_elementwise_binary_8h.html", "_elementwise_binary_8h" ],
     [ "ElementwiseUnary.h", "_elementwise_unary_8h.html", "_elementwise_unary_8h" ],

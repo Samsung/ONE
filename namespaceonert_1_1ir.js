@@ -123,6 +123,7 @@ var namespaceonert_1_1ir =
     [ "operator==", "namespaceonert_1_1ir.html#a2ff5156baf7c263628243dd1304f2799", null ],
     [ "operator==", "namespaceonert_1_1ir.html#a556d7c5424d2bdf6bca6271e9bd94c6c", null ],
     [ "rankMaybeUnspecified", "namespaceonert_1_1ir.html#a60288e0e74a65f9902ebdf52626098ee", null ],
+    [ "requireQuantParam", "namespaceonert_1_1ir.html#a20a63404c02461ed68e2184a45033a2c", null ],
     [ "sizeOfDataType", "namespaceonert_1_1ir.html#a306303df14f9f20079574f5a9cc37f26", null ],
     [ "to_string", "namespaceonert_1_1ir.html#a8f6928493e220980a53b39c5d0fdc61e", null ],
     [ "to_string", "namespaceonert_1_1ir.html#a9d29d81f4314245455853d6cca405568", null ],

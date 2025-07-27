@@ -14,6 +14,7 @@ var namespaceonert_1_1backend_1_1cpu_1_1ops =
     [ "DepthToSpaceLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depth_to_space_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depth_to_space_layer" ],
     [ "DepthwiseConvolutionLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer" ],
     [ "DetectionPostProcessLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer" ],
+    [ "DynamicUpdateSliceLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_dynamic_update_slice_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_dynamic_update_slice_layer" ],
     [ "ElementwiseActivationLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_activation_layer" ],
     [ "ElementwiseBinaryLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_binary_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_binary_layer" ],
     [ "ElementwiseUnaryLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_unary_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_unary_layer" ],

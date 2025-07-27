@@ -24,6 +24,8 @@ var dir_41fcf59703ad3e4317a6c52e7bbdc719 =
     [ "DepthwiseConvolutionLayer.h", "cpu_2ops_2_depthwise_convolution_layer_8h.html", "cpu_2ops_2_depthwise_convolution_layer_8h" ],
     [ "DetectionPostProcessLayer.cc", "_detection_post_process_layer_8cc.html", "_detection_post_process_layer_8cc" ],
     [ "DetectionPostProcessLayer.h", "_detection_post_process_layer_8h.html", "_detection_post_process_layer_8h" ],
+    [ "DynamicUpdateSlice.cc", "backend_2cpu_2ops_2_dynamic_update_slice_8cc.html", null ],
+    [ "DynamicUpdateSlice.h", "onert_2backend_2cpu_2ops_2_dynamic_update_slice_8h.html", "onert_2backend_2cpu_2ops_2_dynamic_update_slice_8h" ],
     [ "ElementwiseActivationLayer.cc", "cpu_2ops_2_elementwise_activation_layer_8cc.html", null ],
     [ "ElementwiseActivationLayer.h", "cpu_2ops_2_elementwise_activation_layer_8h.html", "cpu_2ops_2_elementwise_activation_layer_8h" ],
     [ "ElementwiseBinaryLayer.cc", "_elementwise_binary_layer_8cc.html", null ],

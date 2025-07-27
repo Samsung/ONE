@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"_float_squeeze_kernel_8h_source.html":[41,0,2,4,0,0,1,75,0],
 "_float_strided_slice_kernel_8h.html":[41,0,2,5,0,5,65,0],
 "_float_strided_slice_kernel_8h.html#a26e697dcf25544327dbf088841b3f737":[41,0,2,5,0,5,65,0,1],
 "_float_strided_slice_kernel_8h.html#a7d7af86c43d152933c587a6fc192f38a":[41,0,2,5,0,5,65,0,3],
@@ -132,8 +133,8 @@ var NAVTREEINDEX11 =
 "_fully_connected_8float_8h_source.html":[41,0,0,3,0,0,27],
 "_fully_connected_8train_8cpp.html":[41,0,2,4,2,1,33],
 "_fully_connected_8train_8cpp_source.html":[41,0,2,4,2,1,33],
-"_fully_connected_dense16x1_8h.html":[41,0,3,0,1,0,0,3,25],
-"_fully_connected_dense16x1_8h_source.html":[41,0,3,0,1,0,0,3,25],
+"_fully_connected_dense16x1_8h.html":[41,0,3,0,1,0,0,3,26],
+"_fully_connected_dense16x1_8h_source.html":[41,0,3,0,1,0,0,3,26],
 "_fully_connected_op_8cpp.html":[41,0,0,80,1,4,7],
 "_fully_connected_op_8cpp_source.html":[41,0,0,80,1,4,7],
 "_fully_connected_op_8h.html":[41,0,0,80,0,0,0,15],
@@ -144,9 +145,9 @@ var NAVTREEINDEX11 =
 "_fully_connected_options_8h.html":[41,0,0,133,2,0,53],
 "_fully_connected_options_8h.html#aa87979c600ccc561ac08cad6a9d3d7e2":[41,0,0,133,2,0,53,0],
 "_fully_connected_options_8h_source.html":[41,0,0,133,2,0,53],
-"_fully_connected_sparse16x1_8h.html":[41,0,3,0,1,0,0,3,26],
-"_fully_connected_sparse16x1_8h.html#a38ce7e8df68ce5c6527f23b008a422b3":[41,0,3,0,1,0,0,3,26,0],
-"_fully_connected_sparse16x1_8h_source.html":[41,0,3,0,1,0,0,3,26],
+"_fully_connected_sparse16x1_8h.html":[41,0,3,0,1,0,0,3,27],
+"_fully_connected_sparse16x1_8h.html#a38ce7e8df68ce5c6527f23b008a422b3":[41,0,3,0,1,0,0,3,27,0],
+"_fully_connected_sparse16x1_8h_source.html":[41,0,3,0,1,0,0,3,27],
 "_function_command_8h.html":[41,0,0,29,0,0,2],
 "_function_command_8h_source.html":[41,0,0,29,0,0,2],
 "_function_sequence_8cc.html":[41,0,3,3,2,1,3,18],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "_fuse_post_scale_pass_8cpp_source.html":[41,0,0,45,1,0,0],
 "_fuse_post_scale_pass_8h.html":[41,0,0,45,1,0,1],
 "_fuse_post_scale_pass_8h_source.html":[41,0,0,45,1,0,1],
-"_fuse_pre_activation_batch_norm_pass_8cpp.html":[41,0,0,59,7,1,50],
-"_fuse_pre_activation_batch_norm_pass_8cpp.html#a1d061913b6426cbfc3a74cf8f7bd2545":[41,0,0,59,7,1,50,0]
+"_fuse_pre_activation_batch_norm_pass_8cpp.html":[41,0,0,59,7,1,50]
 };

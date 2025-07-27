@@ -2284,7 +2284,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  552</span>  }</div>
 <div class="line"><span class="lineno">  553</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9ac52d73e30a68a36193249215f0333363">NNFW_STATUS_NO_ERROR</a>;</div>
 <div class="line"><span class="lineno">  554</span>}</div>
-<div class="ttc" id="aclassonert_1_1ir_1_1_type_info_html"><div class="ttname"><a href="classonert_1_1ir_1_1_type_info.html">onert::ir::TypeInfo</a></div><div class="ttdef"><b>Definition</b> <a href="_type_info_8h_source.html#l00037">TypeInfo.h:38</a></div></div>
+<div class="ttc" id="aclassonert_1_1ir_1_1_type_info_html"><div class="ttname"><a href="classonert_1_1ir_1_1_type_info.html">onert::ir::TypeInfo</a></div><div class="ttdef"><b>Definition</b> <a href="_type_info_8h_source.html#l00050">TypeInfo.h:51</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_8h_source.html#l00093">NNFW_STATUS_ERROR</a>, <a class="el" href="onert-micro_8h_source.html#l00097">NNFW_STATUS_INVALID_STATE</a>, <a class="el" href="onert-micro_8h_source.html#l00088">NNFW_STATUS_NO_ERROR</a>, and <a class="el" href="onert-micro_8h_source.html#l00077">NNFW_TYPE_TENSOR_FLOAT32</a>.</p>
 
@@ -2397,7 +2397,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  768</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9a8c2c0c3144c8f01a71e01229d3d897c3">NNFW_STATUS_UNEXPECTED_NULL</a>;</div>
 <div class="line"><span class="lineno">  769</span>    }</div>
 <div class="line"><span class="lineno">  770</span> </div>
-<div class="line"><span class="lineno">  771</span>    <span class="keywordflow">if</span> (ti-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a> &lt;= 0 || ti-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a> &gt; <a class="code hl_define" href="onert-micro_8h.html#ae4a6c20a576dbf5f53f34aa891089a25">NNFW_MAX_RANK</a>)</div>
+<div class="line"><span class="lineno">  771</span>    <span class="keywordflow">if</span> (ti-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a> &lt; 0 || ti-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a> &gt; <a class="code hl_define" href="onert-micro_8h.html#ae4a6c20a576dbf5f53f34aa891089a25">NNFW_MAX_RANK</a>)</div>
 <div class="line"><span class="lineno">  772</span>    {</div>
 <div class="line"><span class="lineno">  773</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;unsupported rank: &quot;</span> &lt;&lt; ti-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a> &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">  774</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="onert-micro_8h.html#a0fc95d8fb10465f26cb26219dd4eafc9aeacdc722d3766538df81e0ebfe91f0ea">NNFW_STATUS_ERROR</a>;</div>
