@@ -130,17 +130,20 @@ function check_python_files() {
   # Check python files
   mapfile -t FILES_TO_CHECK_PYTHON < <(printf '%s\n' "${FILES_TO_CHECK[@]}" | grep -E '\.py$')
 
-  # Exceptional cases
+  # Exceptional case: one-cmds don't have '.py' extension: ignore non-python source (cmake, etc) and ignore shell script: one-prepare-venv
   mapfile -t EXCEPTIONAL_FILES < <(printf '%s\n' "${FILES_TO_CHECK[@]}" |
     grep -E '^compiler/one-cmds/[^(\./)]*$' | grep -Ev '^compiler/one-cmds/one-prepare-venv$')
   FILES_TO_CHECK_PYTHON+=("${EXCEPTIONAL_FILES[@]}")
 
+  # Exceptional case: onecc-docker don't have '.py' extension.
   mapfile -t EXCEPTIONAL_FILES < <(printf '%s\n' "${FILES_TO_CHECK[@]}" | grep -E '^compiler/onecc-docker/onecc-docker$')
   FILES_TO_CHECK_PYTHON+=("${EXCEPTIONAL_FILES[@]}")
 
+  # Exceptional case: visq don't have '.py' extension.
   mapfile -t EXCEPTIONAL_FILES < <(printf '%s\n' "${FILES_TO_CHECK[@]}" | grep -E '^compiler/visq/visq$')
   FILES_TO_CHECK_PYTHON+=("${EXCEPTIONAL_FILES[@]}")
 
+  # Exceptional case: fm-equalize doesn't have '.py' extension.
   mapfile -t EXCEPTIONAL_FILES < <(printf '%s\n' "${FILES_TO_CHECK[@]}" | grep -E '^compiler/fm-equalize/fm-equalize$')
   FILES_TO_CHECK_PYTHON+=("${EXCEPTIONAL_FILES[@]}")
 
