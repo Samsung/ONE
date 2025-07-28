@@ -24,17 +24,13 @@
 namespace onert_micro::test_model
 {
 
-template <typename T>
-class TestDataLogicalOrBase : public TestDataBase<T>
+template <typename T> class TestDataLogicalOrBase : public TestDataBase<T>
 {
 public:
   TestDataLogicalOrBase() = default;
   ~TestDataLogicalOrBase() override = default;
 
-  const unsigned char *get_model_ptr() override final
-  {
-    return _test_kernel_model_circle;
-  }
+  const unsigned char *get_model_ptr() override final { return _test_kernel_model_circle; }
 
   const std::vector<T> &get_input_data_by_index(int i) override final
   {
