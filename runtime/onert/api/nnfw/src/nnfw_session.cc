@@ -2300,25 +2300,25 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
       std::vector<const void *> _input_buffers;
       std::vector<void *> _output_buffers;
 
-      // Save Inputs buffers
-      for (size_t input_index = 0; input_index < input_size; input_index++)
+      using namespace onert::ir;
+      // Save Inputs buffers, set compile option to use float type
+      for (auto input_index = IOIndex{0}; input_index < IOIndex{input_size}; input_index++)
       {
-        auto io_input_index = onert::ir::IOIndex(input_index);
-        auto input_Shape = _execution->getInputShape(io_input_index);
-        auto input_buffer = _execution->getInputBuffer(io_input_index);
+        auto input_Shape = _execution->getInputShape(input_index);
+        auto input_buffer = _execution->getInputBuffer(input_index);
 
         _input_buffers.push_back(input_buffer);
+        _coptions->input_type.insert_or_assign(input_index, TypeInfo(DataType::FLOAT32));
       }
 
       // Save Outputs buffers
-      for (size_t output_index = 0; output_index < output_size; output_index++)
+      for (auto output_index = IOIndex{0}; output_index < IOIndex{output_size}; output_index++)
       {
-        auto io_output_index = onert::ir::IOIndex(output_index);
-
-        auto output_Shape = _execution->getOutputShape(io_output_index);
-        auto output_buffer = _execution->getOutputBuffer(io_output_index);
+        auto output_Shape = _execution->getOutputShape(output_index);
+        auto output_buffer = _execution->getOutputBuffer(output_index);
 
         _output_buffers.push_back(output_buffer);
+        _coptions->output_type.insert_or_assign(output_index, TypeInfo(DataType::FLOAT32));
       }
 
       // Save execution options
@@ -2377,7 +2377,6 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
         if (status != NNFW_STATUS_NO_ERROR)
           return status;
 
-        ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
         auto input_size_in_bytes = getBufSize(&ti);
 
         status = set_input(input_index, ti.dtype, _input_buffers[input_index], input_size_in_bytes);
@@ -2394,8 +2393,6 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
         status = output_tensorinfo(output_index, &ti);
         if (status != NNFW_STATUS_NO_ERROR)
           return status;
-
-        ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
 
         uint64_t output_size_in_bytes = getBufSize(&ti);
 
