@@ -204,10 +204,10 @@ TEST_F(RegressionTest, github_15836)
 
   std::vector<float> in_buf{1};
   std::vector<float> out_buf{0, 0};
-  NNFW_ENSURE_SUCCESS(
-    nnfw_set_input(session, 0, NNFW_TYPE_TENSOR_FLOAT32, in_buf.data(), in_buf.size() * sizeof(float)));
-  NNFW_ENSURE_SUCCESS(
-    nnfw_set_output(session, 0, NNFW_TYPE_TENSOR_FLOAT32, out_buf.data(), out_buf.size() * sizeof(float)));
+  NNFW_ENSURE_SUCCESS(nnfw_set_input(session, 0, NNFW_TYPE_TENSOR_FLOAT32, in_buf.data(),
+                                     in_buf.size() * sizeof(float)));
+  NNFW_ENSURE_SUCCESS(nnfw_set_output(session, 0, NNFW_TYPE_TENSOR_FLOAT32, out_buf.data(),
+                                      out_buf.size() * sizeof(float)));
 
   NNFW_ENSURE_SUCCESS(nnfw_run(session));
 
