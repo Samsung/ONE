@@ -635,15 +635,15 @@ NNFW_STATUS nnfw_odc_delete_minmax_file(nnfw_session *session);
  *
  * Additionally the following parameters should be set up :
  * 1. Quantization type {@link nnfw_set_quantization_type }
- * 2. Quantizated model path {@link  nnfw_set_quantized_model_path }
+ * 2. Quantized model path {@link  nnfw_set_quantized_model_path }
  * 3. Minmax records threshold for quantization {@link nnfw_set_odc_param_minmax_records_count }
- * 3. File with minMax statistics can be removed by {@link nnfw_odc_delete_minmax_file}
- * 4. Compiled model path {@link  nnfw_set_codegen_model_path}
+ * 4. File with minMax statistics can be removed by {@link nnfw_odc_delete_minmax_file}
+ * 5. Compiled model path {@link  nnfw_set_codegen_model_path}
  *
  * Model is loaded by {@link nnfw_load_model_from_file},
  * session is prepared for inference by {@link nnfw_prepare},
  * set input and output float buffers by {@link nnfw_set_input} and {@link nnfw_set_output}.
- * This function should be called after those functions.
+ * This function must be called after model loading, preparation, and buffer setup are complete.
  *
  * After auto compilation, quantized model still uses float input/output buffer
  * and cast them to quantized type in runtime automatically.
