@@ -301,18 +301,24 @@ int main(const int argc, char **argv)
         // Allocate memory for input data and set buffer
         if (allocate)
         {
-          if (args.getForceFloat())
-            ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
-
           auto input_size_in_bytes = bufsize_for(&ti);
           inputs[i].alloc(input_size_in_bytes, ti.dtype);
 
           NNPR_ENSURE_STATUS(
             nnfw_set_input(session, i, ti.dtype, inputs[i].data(), input_size_in_bytes));
-          NNPR_ENSURE_STATUS(nnfw_set_input_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
         }
       }
     };
+
+    // Set input & output type to float, not model's type to pass float type data to runtime
+    // Runtime will cast it to model's type
+    if (args.getForceFloat())
+    {
+      for (uint32_t i = 0; i < num_inputs; i++)
+        NNPR_ENSURE_STATUS(nnfw_set_input_type(session, i, NNFW_TYPE_TENSOR_FLOAT32));
+      for (uint32_t i = 0; i < num_outputs; i++)
+        NNPR_ENSURE_STATUS(nnfw_set_output_type(session, i, NNFW_TYPE_TENSOR_FLOAT32));
+    }
 
 // set input shape before compilation
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
@@ -368,8 +374,6 @@ int main(const int argc, char **argv)
     {
       nnfw_tensorinfo ti;
       NNPR_ENSURE_STATUS(nnfw_output_tensorinfo(session, i, &ti));
-      if (args.getForceFloat())
-        ti.dtype = NNFW_TYPE_TENSOR_FLOAT32;
 
       uint64_t output_size_in_bytes = 0;
       auto found = output_sizes.find(i);
@@ -385,7 +389,6 @@ int main(const int argc, char **argv)
       outputs[i].alloc(output_size_in_bytes, ti.dtype);
       NNPR_ENSURE_STATUS(
         nnfw_set_output(session, i, ti.dtype, outputs[i].data(), output_size_in_bytes));
-      NNPR_ENSURE_STATUS(nnfw_set_output_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
     }
 
     // NOTE: Measuring memory can't avoid taking overhead. Therefore, memory will be measured on the

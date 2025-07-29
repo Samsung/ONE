@@ -520,8 +520,7 @@ NNFW_STATUS nnfw_session::await()
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE type, const void *buffer,
-                                    size_t length)
+NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE, const void *buffer, size_t length)
 {
   if (!isStatePreparedOrFinishedRun())
   {
@@ -539,10 +538,6 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE type, const void *
 
   try
   {
-    // Allow float input internal quantization only
-    if (type == NNFW_TYPE_TENSOR_FLOAT32)
-      _execution->setInputType(onert::ir::IOIndex(index),
-                               onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
     _execution->setInput(onert::ir::IOIndex(index), buffer, length);
   }
   catch (const std::exception &e)
@@ -553,7 +548,7 @@ NNFW_STATUS nnfw_session::set_input(uint32_t index, NNFW_TYPE type, const void *
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE type, void *buffer, size_t length)
+NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE, void *buffer, size_t length)
 {
   if (!isStatePreparedOrFinishedRun())
   {
@@ -571,10 +566,6 @@ NNFW_STATUS nnfw_session::set_output(uint32_t index, NNFW_TYPE type, void *buffe
 
   try
   {
-    // Allow float output internal dequantization only
-    if (type == NNFW_TYPE_TENSOR_FLOAT32)
-      _execution->setOutputType(onert::ir::IOIndex(index),
-                                onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
     _execution->setOutput(onert::ir::IOIndex(index), buffer, length);
   }
   catch (const std::exception &e)
@@ -712,10 +703,7 @@ NNFW_STATUS nnfw_session::set_input_type(uint32_t index, NNFW_TYPE type)
     return NNFW_STATUS_ERROR;
   }
 
-  // Not supporting yet
-  // TODO Enable this
-  std::cerr << "Error during nnfw_session::set_input_type : NYI" << std::endl;
-  return NNFW_STATUS_ERROR;
+  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::set_output_type(uint32_t index, NNFW_TYPE type)
@@ -744,10 +732,7 @@ NNFW_STATUS nnfw_session::set_output_type(uint32_t index, NNFW_TYPE type)
     return NNFW_STATUS_ERROR;
   }
 
-  // Not supporting yet
-  // TODO Enable this
-  std::cerr << "Error during nnfw_session::set_output_type : NYI" << std::endl;
-  return NNFW_STATUS_ERROR;
+  return NNFW_STATUS_NO_ERROR;
 }
 
 NNFW_STATUS nnfw_session::set_input_tensorinfo(uint32_t index, const nnfw_tensorinfo *ti)

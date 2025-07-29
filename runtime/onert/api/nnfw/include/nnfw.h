@@ -332,13 +332,10 @@ NNFW_STATUS nnfw_await(nnfw_session *session);
  * reused for many inferences. \p length must be greater or equal than the operand requires. To
  * specify an optional input, you can either not call this for that input or call this with \p
  * buffer of NULL and \p length of 0.
- * If you set {@link NNFW_TYPE_TENSOR_FLOAT32} type and model has quantized input type on given
- * index, runtime will set quantized data type model input by converting from float buffer data
- * internally.
  *
  * @param[in] session Session to the input is to be set
  * @param[in] index   Index of input to be set (0-indexed)
- * @param[in] type    Type of the input
+ * @param[in] type    Type of the input (deprecated)
  * @param[in] buffer  Raw buffer for input
  * @param[in] length  Size of bytes of input buffer
  *
@@ -354,13 +351,10 @@ NNFW_STATUS nnfw_set_input(nnfw_session *session, uint32_t index, NNFW_TYPE type
  * reused for many inferences. \p length must be greater or equal than the operand requires. An
  * output operand can have unspecified shape and deduced dynamically during the execution. You must
  * provide \p buffer large enough.
- * If you set {@link NNFW_TYPE_TENSOR_FLOAT32} type and model has quantized output type on given
- * index, runtime will set dequantized float buffer data from quantize data type model output
- * internally.
  *
  * @param[in]   session Session from inference output is to be extracted
  * @param[in]   index   Index of output to be set (0-indexed)
- * @param[in]   type    Type of the output
+ * @param[in]   type    Type of the output (deprecated)
  * @param[out]  buffer  Raw buffer for output
  * @param[in]   length  Size of bytes of output buffer
  *
@@ -398,9 +392,11 @@ NNFW_STATUS nnfw_output_size(nnfw_session *session, uint32_t *number);
 /**
  * @brief Set the layout of an input
  *
- * The input that does not call this has NNFW_LAYOUT_NHWC layout
+ * The input that does not call this has NNFW_LAYOUT_NHWC layout.
+ * This function should be called after {@link nnfw_load_model_from_file} and
+ * before {@link nnfw_prepare}.
  *
- * @param[in] session session from inference input is to be extracted
+ * @param[in] session session from input is to be extracted
  * @param[in] index   index of input to be set (0-indexed)
  * @param[in] layout  layout to set to target input
  *
@@ -411,9 +407,11 @@ NNFW_STATUS nnfw_set_input_layout(nnfw_session *session, uint32_t index, NNFW_LA
 /**
  * @brief Set the layout of an output
  *
- * The output that does not call this has NNFW_LAYOUT_NHWC layout
+ * The output that does not call this has NNFW_LAYOUT_NHWC layout.
+ * This function should be called after {@link nnfw_load_model_from_file} and
+ * before {@link nnfw_prepare}.
  *
- * @param[in] session session from inference output is to be extracted
+ * @param[in] session session from output is to be extracted
  * @param[in] index   index of output to be set (0-indexed)
  * @param[in] layout  layout to set to target output
  *
