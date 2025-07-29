@@ -244,9 +244,9 @@ int main(const int argc, char **argv)
   if (available_backends)
     NNFW_ASSERT_FAIL(nnfw_set_available_backends(onert_session, available_backends),
                      "[ ERROR ] Failure to set backend");
-  char *log_enable = std::getenv("ONERT_LOG_ENABLE");
+  char *log_enable = std::getenv("ENABLE_LOG");
   if (log_enable)
-    NNFW_ASSERT_FAIL(nnfw_set_config(onert_session, "ONERT_LOG_ENABLE", log_enable),
+    NNFW_ASSERT_FAIL(nnfw_set_config(onert_session, "ENABLE_LOG", log_enable),
                      "[ ERROR ] Failure to set logging");
   char *num_threads = std::getenv("NUM_THREADS");
   if (num_threads)

@@ -30,7 +30,7 @@ class Context
 public:
   Context() noexcept : _enabled{false}
   {
-    const auto env = util::getConfigBool(util::config::ONERT_LOG_ENABLE);
+    const auto env = util::getConfigBool(util::config::ENABLE_LOG);
 
     if (env)
     {
@@ -42,7 +42,7 @@ public:
 
 public:
   bool enabled(void) const { return _enabled; }
-  void update(void) { _enabled = util::getConfigBool(util::config::ONERT_LOG_ENABLE); }
+  void update(void) { _enabled = util::getConfigBool(util::config::ENABLE_LOG); }
 
 private:
   bool _enabled;
