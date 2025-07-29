@@ -9,6 +9,7 @@ res/** linguist-detectable=false
 # Binary - ignore text file setting
 *.bmp binary
 *.caffemodel binary
+*.circle binary
 *.h5 binary
 *.jar binary
 *.pdf binary
