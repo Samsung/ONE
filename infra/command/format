@@ -53,13 +53,13 @@ function command_exists() {
   command -v "$1" > /dev/null 2>&1
 }
 
-function check_newline() {
+function check_endoffile() {
   # Exclude binary (refer .gitattributes file)
   # TODO Remove svg file excluding
   #   .svg: xml type ML for vector graphic
-  FILES_TO_CHECK_EOF=$(echo "${FILES_TO_CHECK[@]}" | tr ' ' '\n' | grep -Ev '((\.caffemodel)|(\.png)|(\.pdf)|(\.h5)|(\.pdf)|(\.tar.gz)|(\.tflite)|(\.pdf)|(\.bmp)|(\.svg))$')
+  FILES_TO_CHECK_EOF=$(echo "${FILES_TO_CHECK[@]}" | tr ' ' '\n' | grep -Ev '((\.bmp)|(\.caffemodel)|(\.circle)|(\.h5)|(\.jar)|(\.pdf)|(\.png)|(\.tar.gz)|(\.tflite)|(\.svg))$')
 
-  echo "${FILES_TO_CHECK_EOF[@]}" | xargs -P "$(nproc)" -I {} bash -c "if diff /dev/null '{}' | tail -1 | grep -q '\\ No newline'; then echo >> '{}'; fi"
+  echo "${FILES_TO_CHECK_EOF[@]}" | xargs -P "$(nproc)" -I {} bash -c "if [[ -n \"\$(tail -c1 {})\" ]]; then echo >> {}; fi"
 }
 
 function check_permission() {
@@ -191,7 +191,7 @@ if [[ "${CHECK_DIFF_ONLY}" = "1" ]]; then
   fi
 fi
 
-check_newline
+check_endoffile
 check_permission
 check_cpp_files
 check_python_files
