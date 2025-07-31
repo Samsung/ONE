@@ -149,7 +149,6 @@ void H5Formatter::loadInputs(const std::string &filename, std::vector<Allocation
           throw std::runtime_error("onert_run can load f32, i32, qasymm8, bool and uint8.");
       }
       NNPR_ENSURE_STATUS(nnfw_set_input(session_, i, ti.dtype, inputs[i].data(), bufsz));
-      NNPR_ENSURE_STATUS(nnfw_set_input_layout(session_, i, NNFW_LAYOUT_CHANNELS_LAST));
     }
   }
   catch (const H5::Exception &e)

@@ -199,7 +199,6 @@ int main(const int argc, char **argv)
       inputs[i] = genData(input_num_elements);
       NNPR_ENSURE_STATUS(nnfw_set_input(session, i, NNFW_TYPE_TENSOR_FLOAT32, inputs[i].data(),
                                         sizeof(float) * input_num_elements));
-      NNPR_ENSURE_STATUS(nnfw_set_input_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
     }
   };
 
@@ -218,7 +217,6 @@ int main(const int argc, char **argv)
     outputs[i].resize(output_num_elements);
     NNPR_ENSURE_STATUS(nnfw_set_output(session, i, NNFW_TYPE_TENSOR_FLOAT32, outputs[i].data(),
                                        sizeof(float) * output_num_elements));
-    NNPR_ENSURE_STATUS(nnfw_set_output_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
   }
 
   uint64_t run_ms = NowMicros();
