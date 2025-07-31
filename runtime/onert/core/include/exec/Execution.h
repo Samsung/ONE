@@ -108,18 +108,6 @@ public:
    */
   void setOutputLayout(const ir::IOIndex &index, ir::Layout layout);
   /**
-   * @brief     Set input type information
-   * @param[in] index     Input index
-   * @param[in] typeInfo  Input type information
-   */
-  void setInputType(const ir::IOIndex &index, const ir::TypeInfo &typeInfo);
-  /**
-   * @brief     Set output type information
-   * @param[in] index     Output index
-   * @param[in] typeInfo  Output type information
-   */
-  void setOutputType(const ir::IOIndex &index, const ir::TypeInfo &typeInfo);
-  /**
    * @brief  Execution
    * @note   It should be called after setting input and output buffer
    */

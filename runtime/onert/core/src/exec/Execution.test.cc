@@ -91,11 +91,13 @@ public:
   std::shared_ptr<onert::compiler::CompilerArtifact> artifact;
 };
 
-class CompiledMockUpMultiModel
+class MockUpMultiModel
 {
 public:
-  CompiledMockUpMultiModel()
+  MockUpMultiModel()
   {
+    nnpkg = std::make_shared<onert::ir::NNPkg>();
+
     // Model0: a float elementwise add operation
     // Model0 input: lhs0, rhs0
     // Model0 output: add result (result0)
@@ -116,9 +118,9 @@ public:
     // activation: none (constant)
 
     // Update edge information
-    edges.pkg_inputs.emplace_back(ModelIndex{0}, SubgraphIndex{0}, IOIndex{0});
-    edges.pkg_inputs.emplace_back(ModelIndex{0}, SubgraphIndex{0}, IOIndex{1});
-    edges.pkg_outputs.emplace_back(ModelIndex{2}, SubgraphIndex{0}, IOIndex{0});
+    nnpkg->addInput({ModelIndex{0}, SubgraphIndex{0}, IOIndex{0}});
+    nnpkg->addInput({ModelIndex{0}, SubgraphIndex{0}, IOIndex{1}});
+    nnpkg->addOutput({ModelIndex{2}, SubgraphIndex{0}, IOIndex{0}});
     // From
     const auto result0 = IODesc{ModelIndex{0}, SubgraphIndex{0}, IOIndex{0}};
     const auto result1 = IODesc{ModelIndex{1}, SubgraphIndex{0}, IOIndex{0}};
@@ -126,9 +128,9 @@ public:
     const auto lhs1 = IODesc{ModelIndex{1}, SubgraphIndex{0}, IOIndex{0}};
     const auto lhs2 = IODesc{ModelIndex{2}, SubgraphIndex{0}, IOIndex{0}};
     const auto rhs2 = IODesc{ModelIndex{2}, SubgraphIndex{0}, IOIndex{1}};
-    edges.edges.insert({result0, lhs1});
-    edges.edges.insert({result0, lhs2});
-    edges.edges.insert({result1, rhs2});
+    nnpkg->addEdge(result0, lhs1);
+    nnpkg->addEdge(result0, lhs2);
+    nnpkg->addEdge(result1, rhs2);
 
     for (size_t i = 0; i < 3; ++i)
     {
@@ -204,16 +206,6 @@ public:
     graphs[2]->addOutput(operand_result2);
     graphs[2]->verify();
 
-    // Compile
-    compile();
-  }
-
-public:
-  void compile()
-  {
-    auto nnpkg = std::make_shared<onert::ir::NNPkg>();
-    coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-
     for (uint16_t i = 0; i < graphs.size(); ++i)
     {
       auto model = std::make_shared<onert::ir::Model>();
@@ -221,20 +213,15 @@ public:
 
       nnpkg->push(onert::ir::ModelIndex{i}, std::move(model));
     }
-    for (const auto &pkg_input : edges.pkg_inputs)
-    {
-      nnpkg->addInput(pkg_input);
-    }
-    for (const auto &pkg_output : edges.pkg_outputs)
-    {
-      nnpkg->addOutput(pkg_output);
-    }
-    for (const auto &edge : edges.edges)
-    {
-      nnpkg->addEdge(edge.from, edge.to);
-    }
+
+    // Initialize compile option
+    coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
+  }
+
+public:
+  void compile()
+  {
     auto compiler = onert::compiler::CompilerFactory::get().create(nnpkg, coptions.get());
-    nnpkg.reset();
     artifact = compiler->compile();
   }
 
@@ -242,13 +229,13 @@ public:
   std::vector<std::shared_ptr<Graph>> graphs;
   std::unique_ptr<onert::compiler::CompilerOptions> coptions;
   std::shared_ptr<onert::compiler::CompilerArtifact> artifact;
-  ModelEdges edges;
+  std::shared_ptr<onert::ir::NNPkg> nnpkg;
 };
 
-class CompiledMockUpQuantModel
+class CompiledMockUpQuantModelToFloat
 {
 public:
-  CompiledMockUpQuantModel()
+  CompiledMockUpQuantModelToFloat()
   {
     // Model: two elementwise add operation
     // model input: lhs, rhs1
@@ -292,10 +279,13 @@ public:
     graph->addOutput(operand_result2);
     graph->verify();
 
-    // Compile
+    // Compile to float I/O
     auto model = std::make_shared<onert::ir::Model>();
     model->push(onert::ir::SubgraphIndex{0}, graph);
     coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
+    coptions->input_type.insert_or_assign(IOIndex{0}, TypeInfo(DataType::FLOAT32));
+    coptions->input_type.insert_or_assign(IOIndex{1}, TypeInfo(DataType::FLOAT32));
+    coptions->output_type.insert_or_assign(IOIndex{0}, TypeInfo(DataType::FLOAT32));
     onert::compiler::Compiler compiler{model, coptions.get()};
     artifact = compiler.compile();
   }
@@ -477,7 +467,7 @@ TEST(ExecInstance, twoExecution)
 
 TEST(ExecInstance, quantModel_floatIO)
 {
-  auto mockup = CompiledMockUpQuantModel();
+  auto mockup = CompiledMockUpQuantModelToFloat();
   auto graph = mockup.graph;
   auto executors = mockup.artifact->_executors;
 
@@ -495,9 +485,6 @@ TEST(ExecInstance, quantModel_floatIO)
   execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 16);
   execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 16);
   execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
-  execution.setInputType(input1, onert::ir::TypeInfo{onert::ir::DataType::FLOAT32});
-  execution.setInputType(input2, onert::ir::TypeInfo{onert::ir::DataType::FLOAT32});
-  execution.setOutputType(output, onert::ir::TypeInfo{onert::ir::DataType::FLOAT32});
   execution.execute();
 
   EXPECT_EQ(output_buffer[0], output_expected[0]);
@@ -602,7 +589,8 @@ TEST(ExecInstance, async)
 
 TEST(ExecInstance, multi_model_simple)
 {
-  auto mockup = CompiledMockUpMultiModel();
+  auto mockup = MockUpMultiModel();
+  mockup.compile();
   auto executors = mockup.artifact->_executors;
 
   auto input1 = IOIndex{0};
@@ -629,7 +617,8 @@ TEST(ExecInstance, multi_model_simple)
 
 TEST(ExecInstance, multi_model_twoCompile)
 {
-  auto mockup = CompiledMockUpMultiModel();
+  auto mockup = MockUpMultiModel();
+  mockup.compile();
   auto executors1 = mockup.artifact->_executors;
   onert::exec::Execution execution1{executors1};
 
@@ -672,7 +661,8 @@ TEST(ExecInstance, multi_model_twoCompile)
 // Support two initialized execution instance then ordered execution
 TEST(ExecInstance, multi_model_twoExecution)
 {
-  auto mockup = CompiledMockUpMultiModel();
+  auto mockup = MockUpMultiModel();
+  mockup.compile();
   auto executors = mockup.artifact->_executors;
   auto input1 = IOIndex{0};
   auto input2 = IOIndex{1};
@@ -716,7 +706,8 @@ TEST(ExecInstance, multi_model_twoExecution)
 // Support asynchronous execution
 TEST(ExecInstance, multi_model_async)
 {
-  auto mockup = CompiledMockUpMultiModel();
+  auto mockup = MockUpMultiModel();
+  mockup.compile();
   auto executors = mockup.artifact->_executors;
 
   auto input1 = IOIndex{0};
@@ -744,8 +735,7 @@ TEST(ExecInstance, multi_model_async)
 
 TEST(ExecInstance, multi_model_dequant_input_quant_output)
 {
-  auto mockup = CompiledMockUpMultiModel();
-  auto executors = mockup.artifact->_executors;
+  auto mockup = MockUpMultiModel();
 
   auto input1 = IOIndex{0};
   auto input2 = IOIndex{1};
@@ -758,16 +748,20 @@ TEST(ExecInstance, multi_model_dequant_input_quant_output)
   float scale = 0.1;
   int32_t zero_point = 128;
 
-  onert::exec::Execution execution{executors};
+  mockup.coptions->input_type.insert_or_assign(input1,
+                                               TypeInfo(DataType::QUANT_UINT8_ASYMM, 0.1, 128));
+  mockup.coptions->input_type.insert_or_assign(input2,
+                                               TypeInfo(DataType::QUANT_UINT8_ASYMM, 0.1, 128));
+  mockup.coptions->output_type.insert_or_assign(output,
+                                                TypeInfo(DataType::QUANT_UINT8_ASYMM, 0.1, 128));
+  mockup.compile();
+  auto executors = mockup.artifact->_executors;
 
-  onert::ir::TypeInfo type_info{onert::ir::DataType::QUANT_UINT8_ASYMM, scale, zero_point};
-  execution.setInputType(input1, type_info);
+  onert::exec::Execution execution{executors};
   execution.setInput(input1, execution.getInputShape(input1),
                      reinterpret_cast<const void *>(input1_buffer), 4);
-  execution.setInputType(input2, type_info);
   execution.setInput(input2, execution.getInputShape(input2),
                      reinterpret_cast<const void *>(input2_buffer), 4);
-  execution.setOutputType(output, type_info);
   execution.setOutput(output, execution.getOutputShape(output),
                       reinterpret_cast<void *>(output_buffer), 4);
   execution.execute();
