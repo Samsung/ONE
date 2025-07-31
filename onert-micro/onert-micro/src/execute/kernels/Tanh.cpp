@@ -28,12 +28,45 @@ namespace execute
 
 OMStatus execute_kernel_CircleTanh(const OMExecuteArgs &execute_args)
 {
-  auto tanh_float_lambda = [](const core::OMRuntimeShape &input_shape, const float *input_data,
-                              const core::OMRuntimeShape &output_shape, float *output_data) {
-    return pal::Tanh(input_shape, input_data, output_shape, output_data);
-  };
+  const circle::Tensor *input = nullptr;
+  const circle::Tensor *output = nullptr;
 
-  return execute_math_common(execute_args, tanh_float_lambda);
+  uint8_t *input_data = nullptr;
+  uint8_t *output_data = nullptr;
+
+  SISOHeader(execute_args, &input, &output, &input_data, &output_data);
+
+  OMStatus status;
+  switch (input->type())
+  {
+#ifndef DIS_FLOAT
+    case circle::TensorType_FLOAT32:
+    {
+      status =
+        pal::Tanh<float>(core::OMRuntimeShape(input), reinterpret_cast<const float *>(input_data),
+                         core::OMRuntimeShape(output), reinterpret_cast<float *>(output_data));
+    }
+    break;
+#endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+    {
+      // TODO support CWQ
+      onert_micro::core::QuantizationParams in_qparams = {
+        (*input->quantization()->scale())[0],
+        static_cast<int32_t>((*input->quantization()->zero_point())[0])};
+      onert_micro::core::QuantizationParams out_qparams = {
+        (*output->quantization()->scale())[0],
+        static_cast<int32_t>((*output->quantization()->zero_point())[0])};
+
+      status = pal::QuantizedTanh<int8_t>(
+        core::OMRuntimeShape(input), in_qparams, reinterpret_cast<const int8_t *>(input_data),
+        core::OMRuntimeShape(output), out_qparams, reinterpret_cast<int8_t *>(output_data));
+    }
+#endif // DIS_QUANT
+  }
+
+  return status;
 }
 
 } // namespace execute
