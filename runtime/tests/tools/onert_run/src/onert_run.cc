@@ -226,9 +226,9 @@ int main(const int argc, char **argv)
     char *available_backends = std::getenv("BACKENDS");
     if (available_backends)
       NNPR_ENSURE_STATUS(nnfw_set_available_backends(session, available_backends));
-    char *log_enable = std::getenv("ONERT_LOG_ENABLE");
+    char *log_enable = std::getenv("ENABLE_LOG");
     if (log_enable)
-      NNPR_ENSURE_STATUS(nnfw_set_config(session, "ONERT_LOG_ENABLE", log_enable));
+      NNPR_ENSURE_STATUS(nnfw_set_config(session, "ENABLE_LOG", log_enable));
     char *num_threads = std::getenv("NUM_THREADS");
     if (num_threads)
       NNPR_ENSURE_STATUS(nnfw_set_config(session, "NUM_THREADS", num_threads));

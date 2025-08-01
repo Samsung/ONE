@@ -118,7 +118,7 @@ function run_benchmark_test()
         export USE_SCHEDULER=1
         export PROFILING_MODE=1
         export EXECUTOR="Dataflow"
-        export ONERT_LOG_ENABLE=1
+        export ENABLE_LOG=1
         for j in 1 2 3 4; do # 1 to $PROFILING_RUN_CNT
             # Save the verbose log of each run
             LOG_FILE=$REPORT_MODEL_DIR/tflite_profiling_$j.txt
@@ -135,7 +135,7 @@ function run_benchmark_test()
             # Save the exec_time.json of each run
             cp "exec_time.json" $REPORT_MODEL_DIR/"exec_time_$j.json"
         done
-        unset ONERT_LOG_ENABLE
+        unset ENABLE_LOG
 
 
 ##################################################################################
