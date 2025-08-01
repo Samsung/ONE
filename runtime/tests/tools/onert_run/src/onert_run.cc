@@ -173,7 +173,6 @@ int main(const int argc, char **argv)
           inputs[i].alloc(input_size_in_bytes, ti.dtype);
           NNPR_ENSURE_STATUS(
             nnfw_set_input(session, i, ti.dtype, inputs[i].data(), input_size_in_bytes));
-          NNPR_ENSURE_STATUS(nnfw_set_input_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
         }
         for (uint32_t i = 0; i < num_outputs; i++)
         {
@@ -183,7 +182,6 @@ int main(const int argc, char **argv)
           outputs[i].alloc(output_size_in_bytes, ti.dtype);
           NNPR_ENSURE_STATUS(
             nnfw_set_output(session, i, ti.dtype, outputs[i].data(), output_size_in_bytes));
-          NNPR_ENSURE_STATUS(nnfw_set_output_layout(session, i, NNFW_LAYOUT_CHANNELS_LAST));
         }
 
         auto random_generator = RandomGenerator();

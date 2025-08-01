@@ -61,7 +61,6 @@ void RawFormatter::loadInputs(const std::string &prefix, std::vector<Allocation>
       file.close();
 
       NNPR_ENSURE_STATUS(nnfw_set_input(session_, i, ti.dtype, inputs[i].data(), bufsz));
-      NNPR_ENSURE_STATUS(nnfw_set_input_layout(session_, i, NNFW_LAYOUT_CHANNELS_LAST));
     }
   }
   catch (const std::exception &e)

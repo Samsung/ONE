@@ -622,10 +622,10 @@ NNFW_STATUS nnfw_session::output_size(uint32_t *number)
 
 NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
 {
-  if (!isStatePreparedOrFinishedRun())
+  if (!isStateModelLoaded())
   {
     std::cerr << "Error during nnfw_session::set_input_layout : "
-              << "run should be run after prepare" << std::endl;
+              << "run should be run before prepare" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -638,7 +638,8 @@ NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
       return NNFW_STATUS_ERROR;
     }
 
-    _execution->setInputLayout(onert::ir::IOIndex(index), convertLayout(layout));
+    // Insert if not exists, otherwise update the value
+    _coptions->input_layout[onert::ir::IOIndex{index}] = convertLayout(layout);
   }
   catch (const std::exception &e)
   {
@@ -650,10 +651,10 @@ NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
 
 NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
 {
-  if (!isStatePreparedOrFinishedRun())
+  if (!isStateModelLoaded())
   {
     std::cerr << "Error during nnfw_session::set_output_layout : "
-              << "run should be run after prepare" << std::endl;
+              << "run should be run before prepare" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -667,7 +668,8 @@ NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
       return NNFW_STATUS_ERROR;
     }
 
-    _execution->setOutputLayout(onert::ir::IOIndex(index), convertLayout(layout));
+    // Insert if not exists, otherwise update the value
+    _coptions->output_layout[onert::ir::IOIndex{index}] = convertLayout(layout);
   }
   catch (const std::exception &e)
   {

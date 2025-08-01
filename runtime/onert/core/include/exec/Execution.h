@@ -96,18 +96,6 @@ public:
    */
   void setOutput(const ir::IOIndex &index, const ir::Shape &shape, void *buffer, size_t length);
   /**
-   * @brief     Set input data's data format
-   * @param[in] index   Input index
-   * @param[in] layout  Input data's data format
-   */
-  void setInputLayout(const ir::IOIndex &index, ir::Layout layout);
-  /**
-   * @brief     Set output data's data format
-   * @param[in] index   Output index
-   * @param[in] layout  Output data's data format
-   */
-  void setOutputLayout(const ir::IOIndex &index, ir::Layout layout);
-  /**
    * @brief  Execution
    * @note   It should be called after setting input and output buffer
    */
