@@ -68,4 +68,4 @@ jobs:
           fetch-depth: 0
 
       - name: Check copyright
-        run: ./nnfw copyright-check
+        run: ./nnas copyright-check
