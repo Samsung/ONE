@@ -37,6 +37,18 @@ inline OMStatus Rsqrt(const core::OMRuntimeShape &input_shape, const T *input_da
   return SISOOperation<T>(input_shape, input_data, output_shape, output_data,
                           [](T arg) -> T { return 1.f / std::sqrt(arg); });
 }
+
+template <typename T>
+inline OMStatus QuantizedRsqrt(const core::OMRuntimeShape &input_shape,
+                               const onert_micro::core::QuantizationParams &input_qparams,
+                               const T *input_data, const core::OMRuntimeShape &output_shape,
+                               const onert_micro::core::QuantizationParams &output_qparams,
+                               T *output_data)
+{
+  return SISOOperation<T>(input_shape, input_qparams, input_data, output_shape, output_qparams,
+                          output_data, [](float arg) -> float { return 1.f / std::sqrt(arg); });
+}
+
 } // namespace pal
 } // namespace execute
 } // namespace onert_micro

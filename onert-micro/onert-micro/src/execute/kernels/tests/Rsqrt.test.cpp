@@ -16,6 +16,7 @@
 
 #include "execute/OMTestUtils.h"
 #include "test_models/rsqrt/FloatRsqrtKernel.h"
+#include "test_models/rsqrt/Int8RsqrtKernel.h"
 #include "test_models/rsqrt/NegRsqrtKernel.h"
 
 namespace onert_micro
@@ -39,6 +40,14 @@ TEST_F(RsqrtTest, Float_P)
     onert_micro::execute::testing::checkKernel<float>(1, &test_data_kernel);
   EXPECT_THAT(output_data_vector,
               FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
+}
+
+TEST_F(RsqrtTest, Int8_P)
+{
+  onert_micro::test_model::TestDataInt8Rsqrt test_data_kernel;
+  std::vector<int8_t> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int8_t>(1, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
 TEST_F(RsqrtTest, Input_output_type_mismatch_NEG)

@@ -49,6 +49,43 @@ inline OMStatus SISOOperation(const core::OMRuntimeShape &input_shape, const T *
 
   return Ok;
 }
+
+template <typename T>
+inline OMStatus SISOOperation(const core::OMRuntimeShape &input_shape,
+                              const onert_micro::core::QuantizationParams &input_qparams,
+                              const T *input_data, const core::OMRuntimeShape &output_shape,
+                              const onert_micro::core::QuantizationParams &output_qparams,
+                              T *output_data, std::function<float(float)> const &func)
+{
+  const uint32_t flat_size = input_shape.flatSize();
+
+  if (flat_size == -1)
+    return UnknownError;
+
+  assert(input_data != nullptr);
+  assert(output_data != nullptr);
+
+  assert(input_shape == output_shape);
+
+  for (int i = 0; i < flat_size; i++)
+  {
+    // Dequantize input
+    float result = static_cast<float>((input_data[i] - static_cast<T>(input_qparams.zero_point)) *
+                                      input_qparams.scale);
+    // float result
+    result = func(result);
+
+    // Quantize result to output type
+    result = result / output_qparams.scale + output_qparams.zero_point;
+    result = std::max<float>(std::numeric_limits<T>::min(), result);
+    result = std::min<float>(std::numeric_limits<T>::max(), result);
+
+    output_data[i] = static_cast<T>(result);
+  }
+
+  return Ok;
+}
+
 } // namespace pal
 } // namespace execute
 } // namespace onert_micro
