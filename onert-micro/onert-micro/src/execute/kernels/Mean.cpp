@@ -97,17 +97,17 @@ OMStatus execute_kernel_CircleMean(const OMExecuteArgs &execute_args)
     axis_index = runtime_kernel.inputs_index[input2TensorIdx];
   }
 
-  OMStatus status;
-
   core::OMRuntimeShape input_shape(input);
   core::OMRuntimeShape axis_shape(axis);
   core::OMRuntimeShape output_shape(output);
+
+  bool is_ok = false;
 
   switch (input->type())
   {
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:
-      onert_micro::execute::pal::Mean<float>(
+      is_ok = onert_micro::execute::pal::Mean<float>(
         input_shape.dimsData(), core::utils::castInputData<float>(input_data),
         input_shape.dimensionsCount(), core::utils::castOutputData<float>(output_data),
         output_shape.flatSize(), core::utils::castInputData<int>(axis_data),
@@ -116,14 +116,16 @@ OMStatus execute_kernel_CircleMean(const OMExecuteArgs &execute_args)
       break;
 #endif // DIS_FLOAT
     case circle::TensorType_INT32:
-      break;
     case circle::TensorType_INT64:
-      break;
     default:
       assert(false && "Unsupported type");
+      return UnsupportedType;
   }
 
-  return status;
+  if (!is_ok)
+    return UnknownError;
+
+  return Ok;
 }
 
 } // namespace execute

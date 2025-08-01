@@ -34,11 +34,11 @@ constexpr uint32_t input2TensorIdx = 1;
 constexpr uint32_t outputTensorIdx = 0;
 
 template <typename T>
-void reduceProdGeneric(core::OMRuntimeShape &input_shape, const T *input_data,
+bool reduceProdGeneric(core::OMRuntimeShape &input_shape, const T *input_data,
                        core::OMRuntimeShape &axis_shape, const int *axis_data,
                        core::OMRuntimeShape &output_shape, T *output_data, bool keep_dims)
 {
-  onert_micro::execute::pal::ReduceGeneric<T>(
+  return onert_micro::execute::pal::ReduceGeneric<T>(
     input_data, input_shape.dimsData(), input_shape.dimensionsCount(), output_data, axis_data,
     axis_shape.dimensionsCount(),
     /*init_value=*/T(1), output_shape.flatSize(),
@@ -97,39 +97,43 @@ OMStatus execute_kernel_CircleReduceProd(const OMExecuteArgs &execute_args)
     axis_index = runtime_kernel.inputs_index[input2TensorIdx];
   }
 
-  OMStatus status;
-
   core::OMRuntimeShape input_shape(input);
   core::OMRuntimeShape axis_shape(axis);
   core::OMRuntimeShape output_shape(output);
+
+  bool is_ok = false;
 
   switch (input->type())
   {
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:
-      reduceProdGeneric<float>(input_shape, core::utils::castInputData<float>(input_data),
-                               axis_shape, core::utils::castInputData<int>(axis_data), output_shape,
-                               core::utils::castOutputData<float>(output_data),
-                               options->keep_dims());
+      is_ok = reduceProdGeneric<float>(
+        input_shape, core::utils::castInputData<float>(input_data), axis_shape,
+        core::utils::castInputData<int>(axis_data), output_shape,
+        core::utils::castOutputData<float>(output_data), options->keep_dims());
       break;
 #endif // DIS_FLOAT
     case circle::TensorType_INT32:
-      reduceProdGeneric<int32_t>(input_shape, core::utils::castInputData<int32_t>(input_data),
-                                 axis_shape, core::utils::castInputData<int>(axis_data),
-                                 output_shape, core::utils::castOutputData<int32_t>(output_data),
-                                 options->keep_dims());
+      is_ok = reduceProdGeneric<int32_t>(
+        input_shape, core::utils::castInputData<int32_t>(input_data), axis_shape,
+        core::utils::castInputData<int>(axis_data), output_shape,
+        core::utils::castOutputData<int32_t>(output_data), options->keep_dims());
       break;
     case circle::TensorType_INT64:
-      reduceProdGeneric<int64_t>(input_shape, core::utils::castInputData<int64_t>(input_data),
-                                 axis_shape, core::utils::castInputData<int>(axis_data),
-                                 output_shape, core::utils::castOutputData<int64_t>(output_data),
-                                 options->keep_dims());
+      is_ok = reduceProdGeneric<int64_t>(
+        input_shape, core::utils::castInputData<int64_t>(input_data), axis_shape,
+        core::utils::castInputData<int>(axis_data), output_shape,
+        core::utils::castOutputData<int64_t>(output_data), options->keep_dims());
       break;
     default:
       assert(false && "Unsupported type");
+      return UnsupportedType;
   }
 
-  return status;
+  if (!is_ok)
+    return UnknownError;
+
+  return Ok;
 }
 
 } // namespace execute
