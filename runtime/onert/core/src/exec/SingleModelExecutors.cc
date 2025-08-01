@@ -72,17 +72,11 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
   std::vector<backend::IPortableTensor *> inputs(ctx.desc.inputs.size());
   std::vector<backend::IPortableTensor *> outputs(ctx.desc.outputs.size());
 
-  // Vector for input quantization I/O
+  // Vector for input & output tensor
   std::vector<backend::ITensor *> input_tensors;
-  std::vector<backend::ITensor *> input_qtensors;
-  std::vector<ir::PermuteType> input_permute_types;
-
-  // Vector for output dequantization I/O
   std::vector<backend::ITensor *> output_qtensors;
-  std::vector<backend::ITensor *> output_tensors;
-  std::vector<ir::PermuteType> output_permute_types;
 
-  // Prepare UserTensor and EdgeTensor for input quantization
+  // Prepare UserTensor for input
   for (uint32_t i = 0; i < inputs.size(); i++)
   {
     auto &desc = ctx.desc.inputs[i];
@@ -91,36 +85,14 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
     if (desc->buffer == nullptr && (desc->size != 0 || desc->info.total_size() != 0))
       throw std::runtime_error{"Input " + std::to_string(i) + "'s buffer is not set."};
 
-    // TODO: Create UserTensor only that will be set into IOTensor
     tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
       desc->info, desc->layout, const_cast<uint8_t *>(static_cast<const uint8_t *>(desc->buffer)),
       desc->size));
 
-    auto user_type = desc->info.typeInfo().type();
-    auto &model_info = entryExecutor()->inputInfo(i).typeInfo();
-    auto model_type = model_info.type();
-    if ((user_type != model_type && user_type == ir::DataType::FLOAT32) ||
-        (desc->layout == ir::Layout::NCHW))
-    {
-      auto quantized_info = desc->info;
-      quantized_info.typeInfo(model_info);
-      qtensorpool.emplace_back(
-        std::make_unique<EdgeTensor>(quantized_info, entryExecutor()->inputLayout(i)));
-      qtensorpool.back()->allocate_buffer();
-
-      input_tensors.push_back(tensorpool.back().get());
-      input_qtensors.push_back(qtensorpool.back().get());
-      inputs[i] = qtensorpool.back().get();
-      if (desc->layout == ir::Layout::NCHW)
-        input_permute_types.push_back(ir::PermuteType::NCHW_TO_NHWC);
-      else
-        input_permute_types.push_back(ir::PermuteType::SAME);
-    }
-    else
-      inputs[i] = tensorpool.back().get();
+    inputs[i] = tensorpool.back().get();
   }
 
-  // Prepare UserTensor and EdgeTensor for output dequantization
+  // Prepare UserTensor for output
   for (uint32_t i = 0; i < outputs.size(); i++)
   {
     auto &desc = ctx.desc.outputs[i];
@@ -137,54 +109,11 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
 
     tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
       desc->info, desc->layout, static_cast<uint8_t *>(desc->buffer), desc->size));
-
-    auto user_type = desc->info.typeInfo().type();
-    auto &model_info = entryExecutor()->outputInfo(i).typeInfo();
-    auto model_type = model_info.type();
-    if ((user_type != model_type && user_type == ir::DataType::FLOAT32) ||
-        (desc->layout == ir::Layout::NCHW))
-    {
-      if (skip_set_output)
-        std::runtime_error("When outputs are allocated internally, backend-aware quantization is "
-                           "not yet supported.");
-
-      auto quantized_info = desc->info;
-      quantized_info.typeInfo(model_info);
-      qtensorpool.emplace_back(
-        std::make_unique<EdgeTensor>(quantized_info, entryExecutor()->outputLayout(i)));
-      qtensorpool.back()->allocate_buffer();
-
-      output_qtensors.push_back(qtensorpool.back().get());
-      output_tensors.push_back(tensorpool.back().get());
-      outputs[i] = qtensorpool.back().get();
-      if (desc->layout == ir::Layout::NCHW)
-        output_permute_types.push_back(ir::PermuteType::NHWC_TO_NCHW);
-      else
-        output_permute_types.push_back(ir::PermuteType::SAME);
-    }
-    else
-      outputs[i] = tensorpool.back().get();
-  }
-
-  // Run quantization
-  if (input_tensors.size() > 0)
-  {
-    auto input_quantize_layer = PermuteLayer(input_tensors, input_qtensors, input_permute_types);
-    input_quantize_layer.prepare();
-    input_quantize_layer.run();
+    outputs[i] = tensorpool.back().get();
   }
 
   // Executor
   entryExecutor()->execute(inputs, outputs, ctx.options);
-
-  // Run dequantization
-  if (output_tensors.size() != 0)
-  {
-    auto output_dequantize_layer =
-      PermuteLayer(output_qtensors, output_tensors, output_permute_types);
-    output_dequantize_layer.prepare();
-    output_dequantize_layer.run();
-  }
 
   // Get dynamic shape inference result
   for (uint32_t i = 0; i < outputs.size(); i++)

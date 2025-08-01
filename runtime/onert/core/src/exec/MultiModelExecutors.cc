@@ -262,110 +262,6 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
   }
 }
 
-void MultiModelExecutors::createPkgIOQuantLayers(const IODescription &desc)
-{
-  // Append type-aware quantization layer for nnpkg inputs/outputs between executors
-  for (const auto &[executor_index, executor] : _executors)
-  {
-    const auto &[model_index, subg_index] = executor_index;
-
-    // Find pkg inputs of current executor
-    std::vector<ir::IODesc> pkg_inputs;
-    for (const auto &pkg_input : _model_edges->pkg_inputs)
-    {
-      if (std::get<ir::ModelIndex>(pkg_input) == model_index &&
-          std::get<ir::SubgraphIndex>(pkg_input) == subg_index)
-      {
-        pkg_inputs.emplace_back(pkg_input);
-      }
-    }
-    std::vector<backend::ITensor *> src_tensors;
-    std::vector<backend::ITensor *> dst_tensors;
-    std::vector<ir::PermuteType> permute_types;
-    for (const auto &pkg_input : pkg_inputs)
-    {
-      const auto &io_index = std::get<ir::IOIndex>(pkg_input);
-      const auto input_pkg_index =
-        find_input_index(_model_edges->pkg_inputs, model_index, subg_index, io_index);
-      if (input_pkg_index == -1)
-        throw std::runtime_error{"Cannot find multi model input index"};
-      auto input_desc = desc.inputs[input_pkg_index].get();
-
-      // Create EdgeTensor for nnpkg input if type is different
-      const auto &orig_info = executor->inputInfo(io_index.value());
-      const auto orig_layout = executor->inputLayout(io_index.value());
-      if ((input_desc->info.typeInfo().type() != orig_info.typeInfo().type()) ||
-          (input_desc->layout == ir::Layout::NCHW))
-      {
-        auto pkg_input_edge_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
-        _pkg_input_quant_tensors[pkg_input] = std::move(pkg_input_edge_tensor);
-
-        // Append type-aware quantization layer's inputs/outputs
-        src_tensors.emplace_back(_pkg_input_tensors[pkg_input].get());
-        dst_tensors.emplace_back(_pkg_input_quant_tensors[pkg_input].get());
-
-        if (input_desc->layout == ir::Layout::NCHW)
-          permute_types.emplace_back(ir::PermuteType::NCHW_TO_NHWC);
-        else
-          permute_types.emplace_back(ir::PermuteType::SAME);
-      }
-    }
-
-    // Create type-aware quantization layer for nnpkg inputs
-    auto pkg_input_layer = std::make_unique<PermuteLayer>(src_tensors, dst_tensors, permute_types);
-    pkg_input_layer->prepare();
-    _pkg_input_quant_layers[{model_index, subg_index}] = std::move(pkg_input_layer);
-
-    // Find pkg outputs of current executor
-    std::vector<ir::IODesc> pkg_outputs;
-    for (const auto &pkg_output : _model_edges->pkg_outputs)
-    {
-      if (std::get<ir::ModelIndex>(pkg_output) == model_index &&
-          std::get<ir::SubgraphIndex>(pkg_output) == subg_index)
-      {
-        pkg_outputs.emplace_back(pkg_output);
-      }
-    }
-    src_tensors.clear();
-    dst_tensors.clear();
-    permute_types.clear();
-    // Create Tensors of nnpkg outputs for type-aware quantization
-    for (const auto &pkg_output : pkg_outputs)
-    {
-      const auto &io_index = std::get<ir::IOIndex>(pkg_output);
-      const auto output_pkg_index =
-        find_output_index(_model_edges->pkg_outputs, model_index, subg_index, io_index);
-      if (output_pkg_index == -1)
-        throw std::runtime_error{"Cannot find multi model output index"};
-      auto output_desc = desc.outputs[output_pkg_index].get();
-
-      // Create EdgeTensor for nnpkg output if type is different
-      const auto &orig_info = executor->outputInfo(io_index.value());
-      const auto orig_layout = executor->outputLayout(io_index.value());
-      if ((output_desc->info.typeInfo().type() != orig_info.typeInfo().type()) ||
-          (output_desc->layout == ir::Layout::NCHW))
-      {
-        auto pkg_output_edge_tensor = std::make_unique<EdgeTensor>(orig_info, orig_layout);
-        _pkg_output_quant_tensors[pkg_output] = std::move(pkg_output_edge_tensor);
-
-        // Append type-aware quantization layer's inputs/outputs
-        src_tensors.emplace_back(_pkg_output_quant_tensors[pkg_output].get());
-        dst_tensors.emplace_back(_pkg_output_tensors[pkg_output].get());
-
-        if (output_desc->layout == ir::Layout::NCHW)
-          permute_types.emplace_back(ir::PermuteType::NHWC_TO_NCHW);
-        else
-          permute_types.emplace_back(ir::PermuteType::SAME);
-      }
-    }
-
-    // Create type-aware quantization layer for nnpkg outputs
-    auto pkg_output_layer = std::make_unique<PermuteLayer>(src_tensors, dst_tensors, permute_types);
-    pkg_output_layer->prepare();
-    _pkg_output_quant_layers[{model_index, subg_index}] = std::move(pkg_output_layer);
-  }
-}
-
 void MultiModelExecutors::execute(const ExecutionContext &ctx)
 {
   // TODO: Enable to skip setting user tensor into IOTensor
@@ -390,9 +286,6 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
 
   // TODO Create IOTensors only once and recreate them only if nnpkg info changes
   CreatePkgIOTensors(desc);
-
-  // TODO Create type-aware quantization layers only once and recreate them only if type changes
-  createPkgIOQuantLayers(desc);
 
   // TODO Find better way to schedule order of executors
   auto const model_count = modelCount();
@@ -435,17 +328,7 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
       const auto input_io_desc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
       if (input_pkg_index != -1)
       {
-        // Allocate type-aware quantization tensors for nnpkg inputs and set internal tensors
-        if (_pkg_input_quant_tensors.find(input_io_desc) != _pkg_input_quant_tensors.end())
-        {
-          _pkg_input_quant_tensors[input_io_desc]->allocate_buffer();
-
-          inputs_inter[i] = _pkg_input_quant_tensors[input_io_desc].get();
-        }
-        else
-        {
-          inputs_inter[i] = _pkg_input_tensors[input_io_desc].get();
-        }
+        inputs_inter[i] = _pkg_input_tensors[input_io_desc].get();
       }
       else
       {
@@ -475,17 +358,7 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
       const auto output_io_desc = ir::IODesc{model_index, ir::SubgraphIndex{0}, ir::IOIndex{i}};
       if (output_pkg_index != -1)
       {
-        // Allocate type-aware quantization tensors for nnpkg outputs and set internal tensors
-        if (_pkg_output_quant_tensors.find(output_io_desc) != _pkg_output_quant_tensors.end())
-        {
-          _pkg_output_quant_tensors[output_io_desc]->allocate_buffer();
-
-          outputs_inter[i] = _pkg_output_quant_tensors[output_io_desc].get();
-        }
-        else
-        {
-          outputs_inter[i] = _pkg_output_tensors[output_io_desc].get();
-        }
+        outputs_inter[i] = _pkg_output_tensors[output_io_desc].get();
       }
       else
       {
@@ -509,12 +382,9 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
       }
     }
 
-    _pkg_input_quant_layers[{model_index, ir::SubgraphIndex{0}}]->run();
-
     executor->execute(inputs_inter, outputs_inter, ctx.options);
 
     _edge_quant_layers[{model_index, ir::SubgraphIndex{0}}]->run();
-    _pkg_output_quant_layers[{model_index, ir::SubgraphIndex{0}}]->run();
 
     // Release input buffers that are no longer needed
     for (uint32_t i = 0; i < input_size; i++)
@@ -540,12 +410,6 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
           // Decrease reference count of `from` tensor if input tensor is the `from` tensor
           const auto from_iodesc = find_from(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
           _edge_tensors[from_iodesc]->decrease_ref();
-
-          // Decrease reference count of nnpkg inputs
-          if (_pkg_input_quant_tensors.find(to_iodesc) != _pkg_input_quant_tensors.end())
-          {
-            _pkg_input_quant_tensors[to_iodesc]->decrease_ref();
-          }
         }
       }
     }
@@ -576,12 +440,6 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
         // This edge tensor's buffer won't be used in other executors
         // Tensors for type-aware quantization take over the role of this edge tensor instead
         _edge_tensors[from_iodesc]->decrease_ref();
-      }
-
-      // Decrease reference count of nnpkg outputs
-      if (_pkg_output_quant_tensors.find(from_iodesc) != _pkg_output_quant_tensors.end())
-      {
-        _pkg_output_quant_tensors[from_iodesc]->decrease_ref();
       }
     }
   }

@@ -51,8 +51,7 @@ public:
   MultiModelExecutors(std::unique_ptr<ir::ModelEdges> model_edges)
     : _executors{}, _model_edges{std::move(model_edges)}, _edge_quant_layers{},
       _edge_quant_tensors{}, _edge_tensors{}, _is_created_edge_quant_layers{false},
-      _pkg_input_quant_layers{}, _pkg_output_quant_layers{}, _pkg_input_quant_tensors{},
-      _pkg_output_quant_tensors{}, _pkg_input_tensors{}, _pkg_output_tensors{}
+      _pkg_input_tensors{}, _pkg_output_tensors{}
   {
     for (const auto &edge : _model_edges->edges)
     {
@@ -88,7 +87,6 @@ private:
   void checkSupportedMultimodel() const;
   void createEdgeQuantLayers();
   void CreatePkgIOTensors(const IODescription &desc);
-  void createPkgIOQuantLayers(const IODescription &desc);
   uint16_t modelCount() const;
 
 private:
@@ -135,15 +133,6 @@ private:
   //      is moved into compilation stage
   bool _is_created_edge_quant_layers;
 
-  // TODO Replace PermuteLayer with backend::builtin::kernel::PermuteLayer
-  std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<PermuteLayer>>
-    _pkg_input_quant_layers;
-  // TODO Replace PermuteLayer with backend::builtin::kernel::PermuteLayer
-  std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<PermuteLayer>>
-    _pkg_output_quant_layers;
-  // Edge tensors of nnpkg inputs/outputs for type-aware quantization
-  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _pkg_input_quant_tensors;
-  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _pkg_output_quant_tensors;
   // IOTensors for user buffer
   std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::UserTensor>> _pkg_input_tensors;
   std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::UserTensor>> _pkg_output_tensors;
