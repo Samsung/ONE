@@ -34,6 +34,8 @@ var dir_398ea7c36d76878cd9138b670aaa7b8c =
     [ "PALL2Normalize.h", "onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_l2_normalize_8h.html", "onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_l2_normalize_8h" ],
     [ "PALL2Pool2DCommon.h", "_p_a_l_l2_pool2_d_common_8h.html", "_p_a_l_l2_pool2_d_common_8h" ],
     [ "PALLogCommon.h", "_p_a_l_log_common_8h.html", "_p_a_l_log_common_8h" ],
+    [ "PALLogicalCommon.h", "onert-micro_2include_2pal_2common_2_p_a_l_logical_common_8h.html", "onert-micro_2include_2pal_2common_2_p_a_l_logical_common_8h" ],
+    [ "PALLogicalNotCommon.h", "onert-micro_2include_2pal_2common_2_p_a_l_logical_not_common_8h.html", "onert-micro_2include_2pal_2common_2_p_a_l_logical_not_common_8h" ],
     [ "PALLogistic.h", "onert-micro_2include_2pal_2common_2_p_a_l_logistic_8h.html", "onert-micro_2include_2pal_2common_2_p_a_l_logistic_8h" ],
     [ "PALLogSoftmax.h", "onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_log_softmax_8h.html", "onert-micro_2onert-micro_2include_2pal_2common_2_p_a_l_log_softmax_8h" ],
     [ "PALMaximumCommon.h", "onert-micro_2include_2pal_2common_2_p_a_l_maximum_common_8h.html", "onert-micro_2include_2pal_2common_2_p_a_l_maximum_common_8h" ],

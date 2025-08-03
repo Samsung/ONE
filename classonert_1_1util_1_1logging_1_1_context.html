@@ -142,7 +142,7 @@ Static Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00031">31</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   31</span>                     : _enabled{<span class="keyword">false</span>}</div>
 <div class="line"><span class="lineno">   32</span>  {</div>
-<div class="line"><span class="lineno">   33</span>    <span class="keyword">const</span> <span class="keyword">auto</span> env = <a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::ONERT_LOG_ENABLE);</div>
+<div class="line"><span class="lineno">   33</span>    <span class="keyword">const</span> <span class="keyword">auto</span> env = <a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::ENABLE_LOG);</div>
 <div class="line"><span class="lineno">   34</span> </div>
 <div class="line"><span class="lineno">   35</span>    <span class="keywordflow">if</span> (env)</div>
 <div class="line"><span class="lineno">   36</span>    {</div>
@@ -240,7 +240,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html#l00045">45</a> of file <a class="el" href="runtime_2onert_2core_2include_2util_2_logging_8h_source.html">logging.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{ _enabled = <a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::ONERT_LOG_ENABLE); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>{ _enabled = <a class="code hl_function" href="namespaceonert_1_1util.html#a31f86c6ba380a60f458c85e621e0f953">util::getConfigBool</a>(util::config::ENABLE_LOG); }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_config_source_8cc_source.html#l00118">onert::util::getConfigBool()</a>.</p>
 

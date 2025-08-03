@@ -123,18 +123,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af160289c813f8bb16f683cb6bec0ae59" id="r_af160289c813f8bb16f683cb6bec0ae59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#af160289c813f8bb16f683cb6bec0ae59">setOutput</a> (const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;index, const <a class="el" href="classonert_1_1ir_1_1operation_1_1_shape.html">ir::Shape</a> &amp;shape, void *buffer, size_t length)</td></tr>
 <tr class="memdesc:af160289c813f8bb16f683cb6bec0ae59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set output data's information, especially to specify unknown dimensions on model build time.  <br /></td></tr>
 <tr class="separator:af160289c813f8bb16f683cb6bec0ae59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3841f00e697501debd916a0edaeae946" id="r_a3841f00e697501debd916a0edaeae946"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#a3841f00e697501debd916a0edaeae946">setInputLayout</a> (const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;index, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> layout)</td></tr>
-<tr class="memdesc:a3841f00e697501debd916a0edaeae946"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set input data's data format.  <br /></td></tr>
-<tr class="separator:a3841f00e697501debd916a0edaeae946"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab787a161da6ca4c33000768824451e6b" id="r_ab787a161da6ca4c33000768824451e6b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#ab787a161da6ca4c33000768824451e6b">setOutputLayout</a> (const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;index, <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> layout)</td></tr>
-<tr class="memdesc:ab787a161da6ca4c33000768824451e6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set output data's data format.  <br /></td></tr>
-<tr class="separator:ab787a161da6ca4c33000768824451e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a283a73a62dc99a0cfd81e465cf5fd84a" id="r_a283a73a62dc99a0cfd81e465cf5fd84a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#a283a73a62dc99a0cfd81e465cf5fd84a">setInputType</a> (const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;index, const <a class="el" href="classonert_1_1ir_1_1_type_info.html">ir::TypeInfo</a> &amp;typeInfo)</td></tr>
-<tr class="memdesc:a283a73a62dc99a0cfd81e465cf5fd84a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set input type information.  <br /></td></tr>
-<tr class="separator:a283a73a62dc99a0cfd81e465cf5fd84a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc8c470315458f8288fe928099674e87" id="r_afc8c470315458f8288fe928099674e87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#afc8c470315458f8288fe928099674e87">setOutputType</a> (const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;index, const <a class="el" href="classonert_1_1ir_1_1_type_info.html">ir::TypeInfo</a> &amp;typeInfo)</td></tr>
-<tr class="memdesc:afc8c470315458f8288fe928099674e87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set output type information.  <br /></td></tr>
-<tr class="separator:afc8c470315458f8288fe928099674e87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afab55cb24e452a475dab77c01ada92c5" id="r_afab55cb24e452a475dab77c01ada92c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_execution.html#afab55cb24e452a475dab77c01ada92c5">execute</a> ()</td></tr>
 <tr class="memdesc:afab55cb24e452a475dab77c01ada92c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execution.  <br /></td></tr>
 <tr class="separator:afab55cb24e452a475dab77c01ada92c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -323,46 +311,46 @@ Public Member Functions</h2></td></tr>
 <p>Execution. </p>
 <dl class="section note"><dt>Note</dt><dd>It should be called after setting input and output buffer </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00132">132</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  133</span>{</div>
-<div class="line"><span class="lineno">  134</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Execution) &lt;&lt; <span class="stringliteral">&quot;Start execution&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  135</span> </div>
-<div class="line"><span class="lineno">  136</span>  <span class="comment">// Input length validation check</span></div>
-<div class="line"><span class="lineno">  137</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;input : _ctx.desc.<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>)</div>
-<div class="line"><span class="lineno">  138</span>  {</div>
-<div class="line"><span class="lineno">  139</span>    <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info.total_size() &gt; <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;size)</div>
-<div class="line"><span class="lineno">  140</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Too small input buffer length&quot;</span>};</div>
-<div class="line"><span class="lineno">  141</span>  }</div>
-<div class="line"><span class="lineno">  142</span> </div>
-<div class="line"><span class="lineno">  143</span>  <span class="comment">// Output length validation check</span></div>
-<div class="line"><span class="lineno">  144</span>  <span class="keywordflow">if</span> (!_ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#ac6d427de10ef49422ed16e9e4249bf67">shape_updated</a>)</div>
-<div class="line"><span class="lineno">  145</span>  {</div>
-<div class="line"><span class="lineno">  146</span>    assert(_ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.size() == _is_internal_output_tensor.size());</div>
-<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.size(); ++i)</div>
-<div class="line"><span class="lineno">  148</span>    {</div>
-<div class="line"><span class="lineno">  149</span>      <span class="keyword">const</span> <span class="keywordtype">bool</span> is_managed_internally = _is_internal_output_tensor.at(i);</div>
-<div class="line"><span class="lineno">  150</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.at(i);</div>
-<div class="line"><span class="lineno">  151</span>      <span class="keywordflow">if</span> (!is_managed_internally &amp;&amp; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info.total_size() &gt; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;size)</div>
-<div class="line"><span class="lineno">  152</span>        <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Too small output buffer length&quot;</span>};</div>
-<div class="line"><span class="lineno">  153</span>      <span class="keywordflow">if</span> (is_managed_internally &amp;&amp; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer != <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  154</span>        <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Execution) &lt;&lt; <span class="stringliteral">&quot;Warning: Output buffer was set from API even though the output &quot;</span></div>
-<div class="line"><span class="lineno">  155</span>                              <span class="stringliteral">&quot;tensor was allocated internally&quot;</span></div>
-<div class="line"><span class="lineno">  156</span>                           &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  157</span>    }</div>
-<div class="line"><span class="lineno">  158</span>  }</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span>  _executors-&gt;execute(_ctx);</div>
-<div class="line"><span class="lineno">  161</span>  finished = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  162</span> </div>
-<div class="line"><span class="lineno">  163</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Execution) &lt;&lt; <span class="stringliteral">&quot;Execution finished&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  164</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00110">110</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  111</span>{</div>
+<div class="line"><span class="lineno">  112</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Execution) &lt;&lt; <span class="stringliteral">&quot;Start execution&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  113</span> </div>
+<div class="line"><span class="lineno">  114</span>  <span class="comment">// Input length validation check</span></div>
+<div class="line"><span class="lineno">  115</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;input : _ctx.desc.<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>)</div>
+<div class="line"><span class="lineno">  116</span>  {</div>
+<div class="line"><span class="lineno">  117</span>    <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;info.total_size() &gt; <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>-&gt;size)</div>
+<div class="line"><span class="lineno">  118</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Too small input buffer length&quot;</span>};</div>
+<div class="line"><span class="lineno">  119</span>  }</div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>  <span class="comment">// Output length validation check</span></div>
+<div class="line"><span class="lineno">  122</span>  <span class="keywordflow">if</span> (!_ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#ac6d427de10ef49422ed16e9e4249bf67">shape_updated</a>)</div>
+<div class="line"><span class="lineno">  123</span>  {</div>
+<div class="line"><span class="lineno">  124</span>    assert(_ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.size() == _is_internal_output_tensor.size());</div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.size(); ++i)</div>
+<div class="line"><span class="lineno">  126</span>    {</div>
+<div class="line"><span class="lineno">  127</span>      <span class="keyword">const</span> <span class="keywordtype">bool</span> is_managed_internally = _is_internal_output_tensor.at(i);</div>
+<div class="line"><span class="lineno">  128</span>      <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.at(i);</div>
+<div class="line"><span class="lineno">  129</span>      <span class="keywordflow">if</span> (!is_managed_internally &amp;&amp; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;info.total_size() &gt; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;size)</div>
+<div class="line"><span class="lineno">  130</span>        <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Too small output buffer length&quot;</span>};</div>
+<div class="line"><span class="lineno">  131</span>      <span class="keywordflow">if</span> (is_managed_internally &amp;&amp; <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;buffer != <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  132</span>        <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Execution) &lt;&lt; <span class="stringliteral">&quot;Warning: Output buffer was set from API even though the output &quot;</span></div>
+<div class="line"><span class="lineno">  133</span>                              <span class="stringliteral">&quot;tensor was allocated internally&quot;</span></div>
+<div class="line"><span class="lineno">  134</span>                           &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  135</span>    }</div>
+<div class="line"><span class="lineno">  136</span>  }</div>
+<div class="line"><span class="lineno">  137</span> </div>
+<div class="line"><span class="lineno">  138</span>  _executors-&gt;execute(_ctx);</div>
+<div class="line"><span class="lineno">  139</span>  finished = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  140</span> </div>
+<div class="line"><span class="lineno">  141</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Execution) &lt;&lt; <span class="stringliteral">&quot;Execution finished&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  142</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_abcab13752e1826b70991e56f8e9a834d"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">GenH5RandomInputs.inputs</a></div><div class="ttdeci">inputs</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00049">GenH5RandomInputs.py:49</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00075">onert::exec::ExecutionContext::desc</a>, <a class="el" href="_execution_context_8h_source.html#l00060">onert::exec::IODescription::inputs</a>, <a class="el" href="_execution_context_8h_source.html#l00061">onert::exec::IODescription::outputs</a>, <a class="el" href="_execution_context_8h_source.html#l00076">onert::exec::ExecutionContext::shape_updated</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_execution_8cc_source.html#l00166">startExecute()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_execution_8cc_source.html#l00144">startExecute()</a>.</p>
 
 </div>
 </div>
@@ -389,8 +377,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_execution_8h_source.html#l00191">191</a> of file <a class="el" href="_execution_8h_source.html">Execution.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  191</span>{ <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#afa68498cd4989d3c0a7f91d7b3824254">options</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8h_source.html#l00167">167</a> of file <a class="el" href="_execution_8h_source.html">Execution.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  167</span>{ <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#afa68498cd4989d3c0a7f91d7b3824254">options</a>; }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00077">onert::exec::ExecutionContext::options</a>.</p>
 
@@ -421,10 +409,10 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer of Input Buffer </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00245">245</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  246</span>{</div>
-<div class="line"><span class="lineno">  247</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a1d842027428ac55ad383a808582c1845">inputs</a>.at(ind.value())-&gt;buffer;</div>
-<div class="line"><span class="lineno">  248</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00223">223</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  224</span>{</div>
+<div class="line"><span class="lineno">  225</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a1d842027428ac55ad383a808582c1845">inputs</a>.at(ind.value())-&gt;buffer;</div>
+<div class="line"><span class="lineno">  226</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00075">onert::exec::ExecutionContext::desc</a>, <a class="el" href="_execution_context_8h_source.html#l00060">onert::exec::IODescription::inputs</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00137">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
 
@@ -446,10 +434,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00218">218</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  219</span>{</div>
-<div class="line"><span class="lineno">  220</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a1d842027428ac55ad383a808582c1845">inputs</a>.at(ind.value())-&gt;info.shape();</div>
-<div class="line"><span class="lineno">  221</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00196">196</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  197</span>{</div>
+<div class="line"><span class="lineno">  198</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a1d842027428ac55ad383a808582c1845">inputs</a>.at(ind.value())-&gt;info.shape();</div>
+<div class="line"><span class="lineno">  199</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00075">onert::exec::ExecutionContext::desc</a>, <a class="el" href="_execution_context_8h_source.html#l00060">onert::exec::IODescription::inputs</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00137">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
 
@@ -471,11 +459,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00234">234</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  235</span>{</div>
-<div class="line"><span class="lineno">  236</span>  <span class="comment">// TODO Support dynamic shape</span></div>
-<div class="line"><span class="lineno">  237</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a1d842027428ac55ad383a808582c1845">inputs</a>.at(ind.value())-&gt;info.total_size();</div>
-<div class="line"><span class="lineno">  238</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00212">212</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  213</span>{</div>
+<div class="line"><span class="lineno">  214</span>  <span class="comment">// TODO Support dynamic shape</span></div>
+<div class="line"><span class="lineno">  215</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a1d842027428ac55ad383a808582c1845">inputs</a>.at(ind.value())-&gt;info.total_size();</div>
+<div class="line"><span class="lineno">  216</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00075">onert::exec::ExecutionContext::desc</a>, <a class="el" href="_execution_context_8h_source.html#l00060">onert::exec::IODescription::inputs</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00137">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
 
@@ -507,16 +495,16 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><code>float</code> Loss value </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00195">195</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  196</span>{</div>
-<div class="line"><span class="lineno">  197</span>  <span class="keyword">auto</span> execs = <span class="keyword">dynamic_cast&lt;</span>exec::train::TrainableExecutors *<span class="keyword">&gt;</span>(_executors.get());</div>
-<div class="line"><span class="lineno">  198</span>  <span class="keywordflow">if</span> (!execs)</div>
-<div class="line"><span class="lineno">  199</span>  {</div>
-<div class="line"><span class="lineno">  200</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Supported only TrainableExecutors&quot;</span>};</div>
-<div class="line"><span class="lineno">  201</span>  }</div>
-<div class="line"><span class="lineno">  202</span> </div>
-<div class="line"><span class="lineno">  203</span>  <span class="keywordflow">return</span> execs-&gt;getLoss(ind);</div>
-<div class="line"><span class="lineno">  204</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00173">173</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  174</span>{</div>
+<div class="line"><span class="lineno">  175</span>  <span class="keyword">auto</span> execs = <span class="keyword">dynamic_cast&lt;</span>exec::train::TrainableExecutors *<span class="keyword">&gt;</span>(_executors.get());</div>
+<div class="line"><span class="lineno">  176</span>  <span class="keywordflow">if</span> (!execs)</div>
+<div class="line"><span class="lineno">  177</span>  {</div>
+<div class="line"><span class="lineno">  178</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Supported only TrainableExecutors&quot;</span>};</div>
+<div class="line"><span class="lineno">  179</span>  }</div>
+<div class="line"><span class="lineno">  180</span> </div>
+<div class="line"><span class="lineno">  181</span>  <span class="keywordflow">return</span> execs-&gt;getLoss(ind);</div>
+<div class="line"><span class="lineno">  182</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_trainable_executors_8cc_source.html#l00132">onert::exec::train::TrainableExecutors::getLoss()</a>.</p>
 
@@ -547,10 +535,10 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer of Output Buffer </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00250">250</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  251</span>{</div>
-<div class="line"><span class="lineno">  252</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.at(ind.value())-&gt;buffer;</div>
-<div class="line"><span class="lineno">  253</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00228">228</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  229</span>{</div>
+<div class="line"><span class="lineno">  230</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.at(ind.value())-&gt;buffer;</div>
+<div class="line"><span class="lineno">  231</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00075">onert::exec::ExecutionContext::desc</a>, <a class="el" href="_execution_context_8h_source.html#l00061">onert::exec::IODescription::outputs</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00137">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
 
@@ -572,10 +560,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00229">229</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  230</span>{</div>
-<div class="line"><span class="lineno">  231</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.at(ind.value())-&gt;info.shape();</div>
-<div class="line"><span class="lineno">  232</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00207">207</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  208</span>{</div>
+<div class="line"><span class="lineno">  209</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.at(ind.value())-&gt;info.shape();</div>
+<div class="line"><span class="lineno">  210</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00075">onert::exec::ExecutionContext::desc</a>, <a class="el" href="_execution_context_8h_source.html#l00061">onert::exec::IODescription::outputs</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00137">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
 
@@ -597,10 +585,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00240">240</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  241</span>{</div>
-<div class="line"><span class="lineno">  242</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.at(ind.value())-&gt;info.total_size();</div>
-<div class="line"><span class="lineno">  243</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00218">218</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  219</span>{</div>
+<div class="line"><span class="lineno">  220</span>  <span class="keywordflow">return</span> _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.at(ind.value())-&gt;info.total_size();</div>
+<div class="line"><span class="lineno">  221</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00075">onert::exec::ExecutionContext::desc</a>, <a class="el" href="_execution_context_8h_source.html#l00061">onert::exec::IODescription::outputs</a>, and <a class="el" href="runtime_2onert_2core_2include_2util_2_index_8h_source.html#l00137">onert::util::Index&lt; T, DummyTag &gt;::value()</a>.</p>
 
@@ -625,8 +613,8 @@ Public Member Functions</h2></td></tr>
 <p>Check execution is finished. </p>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> if execution is finished, otherwise <code>false</code> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00181">181</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  181</span>{ <span class="keywordflow">return</span> finished; }</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00159">159</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  159</span>{ <span class="keywordflow">return</span> finished; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -655,15 +643,15 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00206">206</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  209</span>{</div>
-<div class="line"><span class="lineno">  210</span>  <span class="keyword">auto</span> execs = <span class="keyword">dynamic_cast&lt;</span>exec::train::TrainableExecutors *<span class="keyword">&gt;</span>(_executors.get());</div>
-<div class="line"><span class="lineno">  211</span>  <span class="keywordflow">if</span> (!execs)</div>
-<div class="line"><span class="lineno">  212</span>  {</div>
-<div class="line"><span class="lineno">  213</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Supported only TrainableExecutors&quot;</span>};</div>
-<div class="line"><span class="lineno">  214</span>  }</div>
-<div class="line"><span class="lineno">  215</span>  execs-&gt;iterateTrainableTensors(fn);</div>
-<div class="line"><span class="lineno">  216</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00184">184</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  187</span>{</div>
+<div class="line"><span class="lineno">  188</span>  <span class="keyword">auto</span> execs = <span class="keyword">dynamic_cast&lt;</span>exec::train::TrainableExecutors *<span class="keyword">&gt;</span>(_executors.get());</div>
+<div class="line"><span class="lineno">  189</span>  <span class="keywordflow">if</span> (!execs)</div>
+<div class="line"><span class="lineno">  190</span>  {</div>
+<div class="line"><span class="lineno">  191</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Supported only TrainableExecutors&quot;</span>};</div>
+<div class="line"><span class="lineno">  192</span>  }</div>
+<div class="line"><span class="lineno">  193</span>  execs-&gt;iterateTrainableTensors(fn);</div>
+<div class="line"><span class="lineno">  194</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_trainable_executors_8cc_source.html#l00139">onert::exec::train::TrainableExecutors::iterateTrainableTensors()</a>.</p>
 
@@ -820,95 +808,6 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a3841f00e697501debd916a0edaeae946" name="a3841f00e697501debd916a0edaeae946"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3841f00e697501debd916a0edaeae946">&#9670;&#160;</a></span>setInputLayout()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onert::exec::Execution::setInputLayout </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td>
-          <td class="paramname"><em>layout</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set input data's data format. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Input index </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">layout</td><td>Input data's data format </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00110">110</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  111</span>{</div>
-<div class="line"><span class="lineno">  112</span>  _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a1d842027428ac55ad383a808582c1845">inputs</a>.at(<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.value())-&gt;layout = layout;</div>
-<div class="line"><span class="lineno">  113</span>}</div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00075">onert::exec::ExecutionContext::desc</a>, and <a class="el" href="_execution_context_8h_source.html#l00060">onert::exec::IODescription::inputs</a>.</p>
-
-</div>
-</div>
-<a id="a283a73a62dc99a0cfd81e465cf5fd84a" name="a283a73a62dc99a0cfd81e465cf5fd84a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a283a73a62dc99a0cfd81e465cf5fd84a">&#9670;&#160;</a></span>setInputType()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onert::exec::Execution::setInputType </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classonert_1_1ir_1_1_type_info.html">ir::TypeInfo</a> &amp;&#160;</td>
-          <td class="paramname"><em>typeInfo</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set input type information. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Input index </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">typeInfo</td><td>Input type information </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00120">120</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  121</span>{</div>
-<div class="line"><span class="lineno">  122</span>  _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a1d842027428ac55ad383a808582c1845">inputs</a>.at(<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.value())-&gt;info.typeInfo(typeInfo);</div>
-<div class="line"><span class="lineno">  123</span>  _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#ac6d427de10ef49422ed16e9e4249bf67">shape_updated</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  124</span>}</div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00075">onert::exec::ExecutionContext::desc</a>, <a class="el" href="_execution_context_8h_source.html#l00060">onert::exec::IODescription::inputs</a>, and <a class="el" href="_execution_context_8h_source.html#l00076">onert::exec::ExecutionContext::shape_updated</a>.</p>
-
-</div>
-</div>
 <a id="af160289c813f8bb16f683cb6bec0ae59" name="af160289c813f8bb16f683cb6bec0ae59"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af160289c813f8bb16f683cb6bec0ae59">&#9670;&#160;</a></span>setOutput() <span class="overload">[1/2]</span></h2>
 
@@ -1029,95 +928,6 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab787a161da6ca4c33000768824451e6b" name="ab787a161da6ca4c33000768824451e6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab787a161da6ca4c33000768824451e6b">&#9670;&#160;</a></span>setOutputLayout()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onert::exec::Execution::setOutputLayout </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td>
-          <td class="paramname"><em>layout</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set output data's data format. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Output index </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">layout</td><td>Output data's data format </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00115">115</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  116</span>{</div>
-<div class="line"><span class="lineno">  117</span>  _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.at(<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.value())-&gt;layout = layout;</div>
-<div class="line"><span class="lineno">  118</span>}</div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00075">onert::exec::ExecutionContext::desc</a>, and <a class="el" href="_execution_context_8h_source.html#l00061">onert::exec::IODescription::outputs</a>.</p>
-
-</div>
-</div>
-<a id="afc8c470315458f8288fe928099674e87" name="afc8c470315458f8288fe928099674e87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc8c470315458f8288fe928099674e87">&#9670;&#160;</a></span>setOutputType()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onert::exec::Execution::setOutputType </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classonert_1_1ir_1_1_type_info.html">ir::TypeInfo</a> &amp;&#160;</td>
-          <td class="paramname"><em>typeInfo</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set output type information. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">index</td><td>Output index </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">typeInfo</td><td>Output type information </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00126">126</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  127</span>{</div>
-<div class="line"><span class="lineno">  128</span>  _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#a11200666decaa597466b88dff8b19dac">desc</a>.<a class="code hl_variable" href="structonert_1_1exec_1_1_i_o_description.html#a0b710a1dadd0a95e7c1090e03d94e19e">outputs</a>.at(<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>.value())-&gt;info.typeInfo(typeInfo);</div>
-<div class="line"><span class="lineno">  129</span>  _ctx.<a class="code hl_variable" href="structonert_1_1exec_1_1_execution_context.html#ac6d427de10ef49422ed16e9e4249bf67">shape_updated</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  130</span>}</div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="_execution_context_8h_source.html#l00075">onert::exec::ExecutionContext::desc</a>, <a class="el" href="_execution_context_8h_source.html#l00061">onert::exec::IODescription::outputs</a>, and <a class="el" href="_execution_context_8h_source.html#l00076">onert::exec::ExecutionContext::shape_updated</a>.</p>
-
-</div>
-</div>
 <a id="ad58a31855844ee5df203d9f9dbef015d" name="ad58a31855844ee5df203d9f9dbef015d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad58a31855844ee5df203d9f9dbef015d">&#9670;&#160;</a></span>startExecute()</h2>
 
@@ -1137,15 +947,15 @@ Public Member Functions</h2></td></tr>
 <p>Start asynchronous execution. </p>
 <dl class="section note"><dt>Note</dt><dd>It returns after execution thread is started It should be called after setting input and output buffer </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00166">166</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  167</span>{</div>
-<div class="line"><span class="lineno">  168</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Execution) &lt;&lt; <span class="stringliteral">&quot;Create asynchronous execution thread&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>  _exec_thread = std::make_unique&lt;std::thread&gt;(&amp;<a class="code hl_function" href="classonert_1_1exec_1_1_execution.html#afab55cb24e452a475dab77c01ada92c5">Execution::execute</a>, <span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">  171</span>}</div>
-<div class="ttc" id="aclassonert_1_1exec_1_1_execution_html_afab55cb24e452a475dab77c01ada92c5"><div class="ttname"><a href="classonert_1_1exec_1_1_execution.html#afab55cb24e452a475dab77c01ada92c5">onert::exec::Execution::execute</a></div><div class="ttdeci">void execute()</div><div class="ttdoc">Execution.</div><div class="ttdef"><b>Definition</b> <a href="_execution_8cc_source.html#l00132">Execution.cc:132</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00144">144</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  145</span>{</div>
+<div class="line"><span class="lineno">  146</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Execution) &lt;&lt; <span class="stringliteral">&quot;Create asynchronous execution thread&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  147</span> </div>
+<div class="line"><span class="lineno">  148</span>  _exec_thread = std::make_unique&lt;std::thread&gt;(&amp;<a class="code hl_function" href="classonert_1_1exec_1_1_execution.html#afab55cb24e452a475dab77c01ada92c5">Execution::execute</a>, <span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">  149</span>}</div>
+<div class="ttc" id="aclassonert_1_1exec_1_1_execution_html_afab55cb24e452a475dab77c01ada92c5"><div class="ttname"><a href="classonert_1_1exec_1_1_execution.html#afab55cb24e452a475dab77c01ada92c5">onert::exec::Execution::execute</a></div><div class="ttdeci">void execute()</div><div class="ttdoc">Execution.</div><div class="ttdef"><b>Definition</b> <a href="_execution_8cc_source.html#l00110">Execution.cc:110</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_execution_8cc_source.html#l00132">execute()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
+<p class="reference">References <a class="el" href="_execution_8cc_source.html#l00110">execute()</a>, and <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
 
 </div>
 </div>
@@ -1174,17 +984,17 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00183">183</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  184</span>{</div>
-<div class="line"><span class="lineno">  185</span>  <span class="keyword">auto</span> execs = <span class="keyword">dynamic_cast&lt;</span>exec::train::TrainableExecutors *<span class="keyword">&gt;</span>(_executors.get());</div>
-<div class="line"><span class="lineno">  186</span>  <span class="keywordflow">if</span> (!execs)</div>
-<div class="line"><span class="lineno">  187</span>  {</div>
-<div class="line"><span class="lineno">  188</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Supported only TrainableExecutors&quot;</span>};</div>
-<div class="line"><span class="lineno">  189</span>  }</div>
-<div class="line"><span class="lineno">  190</span> </div>
-<div class="line"><span class="lineno">  191</span>  execs-&gt;train(_ctx, training_step);</div>
-<div class="line"><span class="lineno">  192</span>  finished = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  193</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00161">161</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  162</span>{</div>
+<div class="line"><span class="lineno">  163</span>  <span class="keyword">auto</span> execs = <span class="keyword">dynamic_cast&lt;</span>exec::train::TrainableExecutors *<span class="keyword">&gt;</span>(_executors.get());</div>
+<div class="line"><span class="lineno">  164</span>  <span class="keywordflow">if</span> (!execs)</div>
+<div class="line"><span class="lineno">  165</span>  {</div>
+<div class="line"><span class="lineno">  166</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Supported only TrainableExecutors&quot;</span>};</div>
+<div class="line"><span class="lineno">  167</span>  }</div>
+<div class="line"><span class="lineno">  168</span> </div>
+<div class="line"><span class="lineno">  169</span>  execs-&gt;train(_ctx, training_step);</div>
+<div class="line"><span class="lineno">  170</span>  finished = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  171</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_trainable_executors_8cc_source.html#l00078">onert::exec::train::TrainableExecutors::train()</a>.</p>
 
@@ -1209,13 +1019,13 @@ Public Member Functions</h2></td></tr>
 <p>Return when execution is finished. </p>
 <dl class="section note"><dt>Note</dt><dd>It waits until execution is finished </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00173">173</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  174</span>{</div>
-<div class="line"><span class="lineno">  175</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Execution) &lt;&lt; <span class="stringliteral">&quot;Wait to finish execution&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  176</span> </div>
-<div class="line"><span class="lineno">  177</span>  _exec_thread-&gt;join();</div>
-<div class="line"><span class="lineno">  178</span>  finished = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  179</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_execution_8cc_source.html#l00151">151</a> of file <a class="el" href="_execution_8cc_source.html">Execution.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  152</span>{</div>
+<div class="line"><span class="lineno">  153</span>  <a class="code hl_define" href="luci_2log_2include_2luci_2_log_8h.html#a212d71bce44cd84d4fe678058cd5eccd">VERBOSE</a>(Execution) &lt;&lt; <span class="stringliteral">&quot;Wait to finish execution&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  154</span> </div>
+<div class="line"><span class="lineno">  155</span>  _exec_thread-&gt;join();</div>
+<div class="line"><span class="lineno">  156</span>  finished = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  157</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2log_2include_2luci_2_log_8h_source.html#l00071">VERBOSE</a>.</p>
 

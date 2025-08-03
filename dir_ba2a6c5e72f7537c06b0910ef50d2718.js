@@ -1,6 +1,6 @@
 var dir_ba2a6c5e72f7537c06b0910ef50d2718 =
 [
-    [ "BoolLogicalNotKernel.h", "_bool_logical_not_kernel_8h.html", "_bool_logical_not_kernel_8h" ],
-    [ "NegLogicalNotKernel.h", "_neg_logical_not_kernel_8h.html", "_neg_logical_not_kernel_8h" ],
-    [ "TestDataLogicalNotBase.h", "_test_data_logical_not_base_8h.html", "_test_data_logical_not_base_8h" ]
+    [ "BoolLogicalNotKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__not_2_bool_logical_not_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__not_2_bool_logical_not_kernel_8h" ],
+    [ "NegLogicalNotKernel.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__not_2_neg_logical_not_kernel_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__not_2_neg_logical_not_kernel_8h" ],
+    [ "TestDataLogicalNotBase.h", "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__not_2_test_data_logical_not_base_8h.html", "luci-interpreter_2include_2luci__interpreter_2test__models_2logical__not_2_test_data_logical_not_base_8h" ]
 ];

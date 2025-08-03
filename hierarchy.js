@@ -3170,6 +3170,8 @@ var hierarchy =
     [ "std::logic_error", null, [
       [ "nnc::cli::BadOption", "classnnc_1_1cli_1_1_bad_option.html", null ]
     ] ],
+    [ "onert_micro::execute::pal::LogicalAndFn", "structonert__micro_1_1execute_1_1pal_1_1_logical_and_fn.html", null ],
+    [ "onert_micro::execute::pal::LogicalOrFn", "structonert__micro_1_1execute_1_1pal_1_1_logical_or_fn.html", null ],
     [ "onert_micro::core::LogSoftmaxParams", "structonert__micro_1_1core_1_1_log_softmax_params.html", null ],
     [ "package.experimental.train.losses.loss.LossFunction", "classpackage_1_1experimental_1_1train_1_1losses_1_1loss_1_1_loss_function.html", [
       [ "package.experimental.train.losses.cce.CategoricalCrossentropy", "classpackage_1_1experimental_1_1train_1_1losses_1_1cce_1_1_categorical_crossentropy.html", null ],
@@ -3573,6 +3575,10 @@ var hierarchy =
       [ "onert_micro::test_model::NegTestDataInvalidInputShapeTransposeConvKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_invalid_input_shape_transpose_conv_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInvalidInputTypeExpandDimsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_invalid_input_type_expand_dims_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataLessKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_less_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataLogicalAndInputsTypeMismatch", "classonert__micro_1_1test__model_1_1_neg_test_data_logical_and_inputs_type_mismatch.html", null ],
+      [ "onert_micro::test_model::NegTestDataLogicalNotOutputShapeMismatch", "classonert__micro_1_1test__model_1_1_neg_test_data_logical_not_output_shape_mismatch.html", null ],
+      [ "onert_micro::test_model::NegTestDataLogicalNotOutputTypeMismatch", "classonert__micro_1_1test__model_1_1_neg_test_data_logical_not_output_type_mismatch.html", null ],
+      [ "onert_micro::test_model::NegTestDataLogicalOrInputsTypeMismatch", "classonert__micro_1_1test__model_1_1_neg_test_data_logical_or_inputs_type_mismatch.html", null ],
       [ "onert_micro::test_model::NegTestDataNoQuantParamsAveragePool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_average_pool2_d_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataNoQuantParamsConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_conv2_d_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataNoQuantParamsDepthwiseConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_depthwise_conv2_d_kernel.html", null ],
@@ -5748,6 +5754,15 @@ var hierarchy =
       ] ],
       [ "onert_micro::test_model::TestDataLogSoftmaxBase< T >", "classonert__micro_1_1test__model_1_1_test_data_log_softmax_base.html", [
         [ "onert_micro::test_model::TestDataFloatLogSoftmax", "classonert__micro_1_1test__model_1_1_test_data_float_log_softmax.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataLogicalAndBase< T >", "classonert__micro_1_1test__model_1_1_test_data_logical_and_base.html", [
+        [ "onert_micro::test_model::TestDataBoolLogicalAnd", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_and.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataLogicalNotBase< T >", "classonert__micro_1_1test__model_1_1_test_data_logical_not_base.html", [
+        [ "onert_micro::test_model::TestDataBoolLogicalNot", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_not.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataLogicalOrBase< T >", "classonert__micro_1_1test__model_1_1_test_data_logical_or_base.html", [
+        [ "onert_micro::test_model::TestDataBoolLogicalOr", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_or.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataLogisticBase< T >", "classonert__micro_1_1test__model_1_1_test_data_logistic_base.html", [
         [ "onert_micro::test_model::TestDataFloatLogistic", "classonert__micro_1_1test__model_1_1_test_data_float_logistic.html", null ]

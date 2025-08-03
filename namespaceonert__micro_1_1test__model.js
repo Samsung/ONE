@@ -387,6 +387,23 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1log__softmax__float.html#a2abc70f3ddf7d3babc824feb78ad28d8", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1log__softmax__float.html#ac213cd25f328129fafec94c6b561b32c", null ]
     ] ],
+    [ "logical_and_bool", "namespaceonert__micro_1_1test__model_1_1logical__and__bool.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1logical__and__bool.html#a6724d56a02f932251cde7a2d94aaedf2", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1logical__and__bool.html#adddf8951092db92c0b47a4912cb9fd17", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1logical__and__bool.html#af88ee2adbe22d78b3db67726075124a1", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1logical__and__bool.html#ae579bf903bc14842fcc19cc2e316fe12", null ]
+    ] ],
+    [ "logical_not_bool", "namespaceonert__micro_1_1test__model_1_1logical__not__bool.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1logical__not__bool.html#a5321126c19985678a524e17733ba75b3", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1logical__not__bool.html#a3765d35044dc6600afaef583355a92ae", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1logical__not__bool.html#a4a8c6fe0d04f7e3f9679059cf152f818", null ]
+    ] ],
+    [ "logical_or_bool", "namespaceonert__micro_1_1test__model_1_1logical__or__bool.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1logical__or__bool.html#acabf5a354cd7c0815bb1ab5959c11f48", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1logical__or__bool.html#a07c1db242c9b1fb17a616700c3142f32", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1logical__or__bool.html#a85b3bec1e03dbe3e89ca20f21d2960a0", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1logical__or__bool.html#a243971ac081ed3612d6ce82371963400", null ]
+    ] ],
     [ "logistic_float", "namespaceonert__micro_1_1test__model_1_1logistic__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1logistic__float.html#a142c75b5d461adcb85b4a7f47727edee", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1logistic__float.html#a422eff38d2ac3504cc89a64532625a01", null ],
@@ -714,6 +731,18 @@ var namespaceonert__micro_1_1test__model =
       [ "input2_data", "namespaceonert__micro_1_1test__model_1_1neg__less__uint8__with__no__broadcasting.html#a76dee61ba9d979fc139b30cc299fd841", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1neg__less__uint8__with__no__broadcasting.html#a7f928220c2dda6106e96d875e1f959bf", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__less__uint8__with__no__broadcasting.html#af22ece523e71f487a44d71510a9733b4", null ]
+    ] ],
+    [ "neg_logical_and_inputs_type_mismatch", "namespaceonert__micro_1_1test__model_1_1neg__logical__and__inputs__type__mismatch.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__logical__and__inputs__type__mismatch.html#ab5b21e53bd9b531cbbe8dc088cde03a5", null ]
+    ] ],
+    [ "neg_logical_not_output_shape_mismatch", "namespaceonert__micro_1_1test__model_1_1neg__logical__not__output__shape__mismatch.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__logical__not__output__shape__mismatch.html#a41c88ae0b752b2a0f2731ba4cb10af9b", null ]
+    ] ],
+    [ "neg_logical_not_output_type_mismatch", "namespaceonert__micro_1_1test__model_1_1neg__logical__not__output__type__mismatch.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__logical__not__output__type__mismatch.html#a166e558ef53fe02166eab9ab2a523ecc", null ]
+    ] ],
+    [ "neg_logical_or_inputs_type_mismatch", "namespaceonert__micro_1_1test__model_1_1neg__logical__or__inputs__type__mismatch.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__logical__or__inputs__type__mismatch.html#a44ad1b8e0f1b5178f906e3c8fd630339", null ]
     ] ],
     [ "neg_logistic_input_output_type_mismatch", "namespaceonert__micro_1_1test__model_1_1neg__logistic__input__output__type__mismatch.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__logistic__input__output__type__mismatch.html#a4967536dd59c5cdee16bcdd30fce7a34", null ]
@@ -1183,6 +1212,10 @@ var namespaceonert__micro_1_1test__model =
     [ "NegTestDataInvalidInputShapeTransposeConvKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_invalid_input_shape_transpose_conv_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_invalid_input_shape_transpose_conv_kernel" ],
     [ "NegTestDataInvalidInputTypeExpandDimsKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_invalid_input_type_expand_dims_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_invalid_input_type_expand_dims_kernel" ],
     [ "NegTestDataLessKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_less_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_less_kernel" ],
+    [ "NegTestDataLogicalAndInputsTypeMismatch", "classonert__micro_1_1test__model_1_1_neg_test_data_logical_and_inputs_type_mismatch.html", "classonert__micro_1_1test__model_1_1_neg_test_data_logical_and_inputs_type_mismatch" ],
+    [ "NegTestDataLogicalNotOutputShapeMismatch", "classonert__micro_1_1test__model_1_1_neg_test_data_logical_not_output_shape_mismatch.html", "classonert__micro_1_1test__model_1_1_neg_test_data_logical_not_output_shape_mismatch" ],
+    [ "NegTestDataLogicalNotOutputTypeMismatch", "classonert__micro_1_1test__model_1_1_neg_test_data_logical_not_output_type_mismatch.html", "classonert__micro_1_1test__model_1_1_neg_test_data_logical_not_output_type_mismatch" ],
+    [ "NegTestDataLogicalOrInputsTypeMismatch", "classonert__micro_1_1test__model_1_1_neg_test_data_logical_or_inputs_type_mismatch.html", "classonert__micro_1_1test__model_1_1_neg_test_data_logical_or_inputs_type_mismatch" ],
     [ "NegTestDataNoQuantParamsAveragePool2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_average_pool2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_average_pool2_d_kernel" ],
     [ "NegTestDataNoQuantParamsConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_conv2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_conv2_d_kernel" ],
     [ "NegTestDataNoQuantParamsDepthwiseConv2DKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_depthwise_conv2_d_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_no_quant_params_depthwise_conv2_d_kernel" ],
@@ -1219,6 +1252,9 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataAxisOutputTypeMismatchArgMin", "classonert__micro_1_1test__model_1_1_test_data_axis_output_type_mismatch_arg_min.html", "classonert__micro_1_1test__model_1_1_test_data_axis_output_type_mismatch_arg_min" ],
     [ "TestDataBase", "classonert__micro_1_1test__model_1_1_test_data_base.html", "classonert__micro_1_1test__model_1_1_test_data_base" ],
     [ "TestDataBatchToSpaceNDBase", "classonert__micro_1_1test__model_1_1_test_data_batch_to_space_n_d_base.html", "classonert__micro_1_1test__model_1_1_test_data_batch_to_space_n_d_base" ],
+    [ "TestDataBoolLogicalAnd", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_and.html", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_and" ],
+    [ "TestDataBoolLogicalNot", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_not.html", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_not" ],
+    [ "TestDataBoolLogicalOr", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_or.html", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_or" ],
     [ "TestDataCastBase", "classonert__micro_1_1test__model_1_1_test_data_cast_base.html", "classonert__micro_1_1test__model_1_1_test_data_cast_base" ],
     [ "TestDataCeilBase", "classonert__micro_1_1test__model_1_1_test_data_ceil_base.html", "classonert__micro_1_1test__model_1_1_test_data_ceil_base" ],
     [ "TestDataConcatenationBase", "classonert__micro_1_1test__model_1_1_test_data_concatenation_base.html", "classonert__micro_1_1test__model_1_1_test_data_concatenation_base" ],
@@ -1335,6 +1371,9 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataLessBase", "classonert__micro_1_1test__model_1_1_test_data_less_base.html", "classonert__micro_1_1test__model_1_1_test_data_less_base" ],
     [ "TestDataLessEqualBase", "classonert__micro_1_1test__model_1_1_test_data_less_equal_base.html", "classonert__micro_1_1test__model_1_1_test_data_less_equal_base" ],
     [ "TestDataLogBase", "classonert__micro_1_1test__model_1_1_test_data_log_base.html", "classonert__micro_1_1test__model_1_1_test_data_log_base" ],
+    [ "TestDataLogicalAndBase", "classonert__micro_1_1test__model_1_1_test_data_logical_and_base.html", "classonert__micro_1_1test__model_1_1_test_data_logical_and_base" ],
+    [ "TestDataLogicalNotBase", "classonert__micro_1_1test__model_1_1_test_data_logical_not_base.html", "classonert__micro_1_1test__model_1_1_test_data_logical_not_base" ],
+    [ "TestDataLogicalOrBase", "classonert__micro_1_1test__model_1_1_test_data_logical_or_base.html", "classonert__micro_1_1test__model_1_1_test_data_logical_or_base" ],
     [ "TestDataLogisticBase", "classonert__micro_1_1test__model_1_1_test_data_logistic_base.html", "classonert__micro_1_1test__model_1_1_test_data_logistic_base" ],
     [ "TestDataLogSoftmaxBase", "classonert__micro_1_1test__model_1_1_test_data_log_softmax_base.html", "classonert__micro_1_1test__model_1_1_test_data_log_softmax_base" ],
     [ "TestDataMaximumBase", "classonert__micro_1_1test__model_1_1_test_data_maximum_base.html", "classonert__micro_1_1test__model_1_1_test_data_maximum_base" ],
