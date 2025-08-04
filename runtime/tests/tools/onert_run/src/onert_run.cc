@@ -221,13 +221,13 @@ int main(const int argc, char **argv)
     }
 
     // Configurations from environment variable
-    char *available_backends = std::getenv("BACKENDS");
+    const char *available_backends = std::getenv("BACKENDS");
     if (available_backends)
       NNPR_ENSURE_STATUS(nnfw_set_available_backends(session, available_backends));
-    char *log_enable = std::getenv("ENABLE_LOG");
+    const char *log_enable = std::getenv("ENABLE_LOG");
     if (log_enable)
       NNPR_ENSURE_STATUS(nnfw_set_config(session, "ENABLE_LOG", log_enable));
-    char *num_threads = std::getenv("NUM_THREADS");
+    const char *num_threads = std::getenv("NUM_THREADS");
     if (num_threads)
       NNPR_ENSURE_STATUS(nnfw_set_config(session, "NUM_THREADS", num_threads));
 
@@ -389,8 +389,8 @@ int main(const int argc, char **argv)
         nnfw_set_output(session, i, ti.dtype, outputs[i].data(), output_size_in_bytes));
     }
 
-    char *trace_enable = std::getenv("TRACING_MODE");
-    if (trace_enable)
+    const std::string trace_enable = std::getenv("TRACING_MODE");
+    if (trace_enable == "1")
       NNPR_ENSURE_STATUS(nnfw_set_execute_config(session, NNFW_RUN_CONFIG_TRACE, nullptr));
 
     // NOTE: Measuring memory can't avoid taking overhead. Therefore, memory will be measured on the
