@@ -65,16 +65,9 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
   // UserTensor for Input/Output
   std::vector<std::unique_ptr<backend::builtin::UserTensor>> tensorpool;
 
-  // EdgeTensor for Input Quantization / Output Dequantization
-  std::vector<std::unique_ptr<EdgeTensor>> qtensorpool;
-
   // Input/Output Tensor vector for executor
   std::vector<backend::IPortableTensor *> inputs(ctx.desc.inputs.size());
   std::vector<backend::IPortableTensor *> outputs(ctx.desc.outputs.size());
-
-  // Vector for input & output tensor
-  std::vector<backend::ITensor *> input_tensors;
-  std::vector<backend::ITensor *> output_qtensors;
 
   // Prepare UserTensor for input
   for (uint32_t i = 0; i < inputs.size(); i++)
