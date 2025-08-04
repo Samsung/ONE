@@ -122,6 +122,24 @@ OMStatus execute_kernel_CirclePad(const OMExecuteArgs &execute_args)
     }
     break;
 #endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+    {
+      // TODO CWQ quantization
+      // TODO non_zero padding
+      onert_micro::core::QuantizationParams in_qparams = {
+        (*input1->quantization()->scale())[0],
+        static_cast<int32_t>((*input1->quantization()->zero_point())[0])};
+      onert_micro::core::QuantizationParams out_qparams = {
+        (*output->quantization()->scale())[0],
+        static_cast<int32_t>((*output->quantization()->zero_point())[0])};
+
+      status = pal::QuantizedZeroPad(pad_params, input1_shape, in_qparams,
+                                     core::utils::castInputData<int8_t>(input1_data), output_shape,
+                                     out_qparams, core::utils::castOutputData<int8_t>(output_data));
+    }
+    break;
+#endif // DIS_QUANT
     default:
     {
       status = UnsupportedType;
