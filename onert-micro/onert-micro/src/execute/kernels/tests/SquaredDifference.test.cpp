@@ -16,6 +16,7 @@
 
 #include "execute/OMTestUtils.h"
 #include "test_models/squared_difference/FloatSquaredDifferenceKernel.h"
+#include "test_models/squared_difference/Int8SquaredDifferenceKernel.h"
 #include "test_models/squared_difference/NegSquaredDifferenceKernel.h"
 
 namespace onert_micro
@@ -40,6 +41,22 @@ TEST_F(SquaredDifferenceTest, Float_P)
     onert_micro::execute::testing::checkKernel<float>(2, &test_data_kernel);
   EXPECT_THAT(output_data_vector,
               FloatArrayNear(test_data_kernel.get_output_data_by_index(0), 0.0001f));
+}
+
+TEST_F(SquaredDifferenceTest, Int8_P)
+{
+  test_model::TestDataInt8SquaredDifference test_data_kernel;
+  std::vector<int8_t> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int8_t>(2, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
+TEST_F(SquaredDifferenceTest, Int8_WithBroadcasting_P)
+{
+  test_model::TestDataInt8SquaredDifferenceWithBroadcasting test_data_kernel;
+  std::vector<int8_t> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int8_t>(2, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
 TEST_F(SquaredDifferenceTest, Inputs_type_mismatch_NEG)

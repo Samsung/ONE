@@ -65,6 +65,37 @@ OMStatus ArithmeticOp(const core::BinaryArithmeticBroadcastParams &params, const
   return Ok;
 }
 
+template <typename T, typename Fn>
+OMStatus QuantizedArithmeticOp(
+  const core::BinaryArithmeticBroadcastParams &params, const int flat_size,
+  const onert_micro::core::QuantizationParams &input1_qparams, const T *input1_data,
+  const onert_micro::core::QuantizationParams &input2_qparams, const T *input2_data,
+  const onert_micro::core::QuantizationParams &output_qparams, T *output_data)
+{
+  float activation_min, activation_max;
+  getActivationParams(params, &activation_min, &activation_max);
+
+  Fn func;
+  for (int i = 0; i < flat_size; ++i)
+  {
+    // Dequantize input1
+    float input1 = static_cast<float>((input1_data[i] - static_cast<T>(input1_qparams.zero_point)) *
+                                      input1_qparams.scale);
+    // Dequantize input2
+    float input2 = static_cast<float>((input2_data[i] - static_cast<T>(input2_qparams.zero_point)) *
+                                      input2_qparams.scale);
+    float result = std::min(std::max(func(input1, input2), activation_min), activation_max);
+
+    // Quantize result
+    result = result / output_qparams.scale + output_qparams.zero_point;
+    result = std::max<float>(std::numeric_limits<T>::min(), result);
+    result = std::min<float>(std::numeric_limits<T>::max(), result);
+    output_data[i] = static_cast<T>(result);
+  }
+
+  return Ok;
+}
+
 template <typename T>
 void ElementWise(const uint32_t size, const core::ArithmeticQuantParams &params,
                  const T *input1_data, const T *input2_data, T *output_data,
@@ -134,6 +165,71 @@ OMStatus BroadcastArithmeticOp4DSlow(const core::BinaryArithmeticBroadcastParams
                                    input2_data[subscriptToIndex(desc2, b, y, x, c)]),
                               activation_min),
                      activation_max);
+        }
+      }
+    }
+  }
+  return Ok;
+}
+
+template <typename T, typename Fn>
+OMStatus QuantizedBroadcastArithmeticOp4DSlow(
+  const core::BinaryArithmeticBroadcastParams &params, const core::OMRuntimeShape &input1_shape,
+  const onert_micro::core::QuantizationParams &input1_qparams, const T *input1_data,
+  const core::OMRuntimeShape &input2_shape,
+  const onert_micro::core::QuantizationParams &input2_qparams, const T *input2_data,
+  const core::OMRuntimeShape &output_shape,
+  const onert_micro::core::QuantizationParams &output_qparams, T *output_data)
+{
+  NdArrayDesc<4> desc1;
+  NdArrayDesc<4> desc2;
+  NdArrayDescsForElementwiseBroadcast(input1_shape, input2_shape, &desc1, &desc2);
+  const core::OMRuntimeShape extended_output_shape =
+    core::OMRuntimeShape::extendedShape(4, output_shape);
+
+  float activation_min, activation_max;
+  getActivationParams(params, &activation_min, &activation_max);
+
+  // In Tensorflow, the dimensions are canonically named (batch_number, row,
+  // col, channel), with extents (batches, height, width, depth), with the
+  // trailing dimension changing most rapidly (channels has the smallest stride,
+  // typically 1 element).
+  //
+  // In generated C code, we store arrays with the dimensions reversed. The
+  // first dimension has smallest stride.
+  //
+  // We name our variables by their Tensorflow convention, but generate C code
+  // nesting loops such that the innermost loop has the smallest stride for the
+  // best cache behavior.
+  Fn func;
+  for (int b = 0; b < extended_output_shape.dims(0); ++b)
+  {
+    for (int y = 0; y < extended_output_shape.dims(1); ++y)
+    {
+      for (int x = 0; x < extended_output_shape.dims(2); ++x)
+      {
+        for (int c = 0; c < extended_output_shape.dims(3); ++c)
+        {
+          // Dequantize input1
+          float input1 = static_cast<float>((input1_data[subscriptToIndex(desc1, b, y, x, c)] -
+                                             static_cast<T>(input1_qparams.zero_point)) *
+                                            input1_qparams.scale);
+          // Dequantize input2
+          float input2 = static_cast<float>((input2_data[subscriptToIndex(desc2, b, y, x, c)] -
+                                             static_cast<T>(input2_qparams.zero_point)) *
+                                            input2_qparams.scale);
+
+          float result = std::min(std::max(func(input1, input2), activation_min), activation_max);
+
+          // Quantize result
+          result = result / output_qparams.scale + output_qparams.zero_point;
+          result = std::max<float>(std::numeric_limits<T>::min(), result);
+          result = std::min<float>(std::numeric_limits<T>::max(), result);
+          const int output_data_offset =
+            ((b * extended_output_shape.dims(1) + y) * extended_output_shape.dims(2) + x) *
+              extended_output_shape.dims(3) +
+            c;
+          output_data[output_data_offset] = static_cast<T>(result);
         }
       }
     }
