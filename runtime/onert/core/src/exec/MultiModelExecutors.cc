@@ -176,8 +176,7 @@ void MultiModelExecutors::createEdgeQuantLayers()
 
     const auto from_executor = _executors.at({from_model_index, from_subg_index}).get();
     const auto &from_info = from_executor->outputInfo(from_io_index.value());
-    const auto from_layout = from_executor->outputLayout(from_io_index.value());
-    _edge_tensors[from_iodesc] = std::make_unique<EdgeTensor>(from_info, from_layout);
+    _edge_tensors[from_iodesc] = std::make_unique<EdgeTensor>(from_info);
   }
 
   // Append type-aware quantization layer for edges between executors
@@ -201,7 +200,6 @@ void MultiModelExecutors::createEdgeQuantLayers()
 
           const auto to_executor = _executors.at({to_model_index, to_subg_index}).get();
           const auto &to_info = to_executor->inputInfo(to_io_index.value());
-          const auto to_layout = to_executor->inputLayout(to_io_index.value());
 
           // TODO Unify tensors with the same `from` tensor and same type
           if (from_tensor->data_type() != to_info.typeInfo().type())
@@ -209,7 +207,7 @@ void MultiModelExecutors::createEdgeQuantLayers()
             assert(inputs.size() == outputs.size());
             inputs.emplace_back(from_tensor);
 
-            auto type_aware_quant_tensor = std::make_unique<EdgeTensor>(to_info, to_layout);
+            auto type_aware_quant_tensor = std::make_unique<EdgeTensor>(to_info);
             outputs.emplace_back(type_aware_quant_tensor.get());
 
             // No layout change on edge
@@ -242,7 +240,7 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
     auto input_desc = desc.inputs[input_pkg_index].get();
     // TODO Remove const_cast (we need const_cast as ITensor is writable)
     _pkg_input_tensors[pkg_input] = std::make_unique<backend::builtin::UserTensor>(
-      input_desc->info, input_desc->layout,
+      input_desc->info,
       const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(input_desc->buffer)),
       input_desc->size);
   }
@@ -257,8 +255,7 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
       throw std::runtime_error{"Cannot find multi model output index"};
     auto output_desc = desc.outputs[output_pkg_index].get();
     _pkg_output_tensors[pkg_output] = std::make_unique<backend::builtin::UserTensor>(
-      output_desc->info, output_desc->layout, reinterpret_cast<uint8_t *>(output_desc->buffer),
-      output_desc->size);
+      output_desc->info, reinterpret_cast<uint8_t *>(output_desc->buffer), output_desc->size);
   }
 }
 

@@ -86,8 +86,7 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
       throw std::runtime_error{"Input " + std::to_string(i) + "'s buffer is not set."};
 
     tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
-      desc->info, desc->layout, const_cast<uint8_t *>(static_cast<const uint8_t *>(desc->buffer)),
-      desc->size));
+      desc->info, const_cast<uint8_t *>(static_cast<const uint8_t *>(desc->buffer)), desc->size));
 
     inputs[i] = tensorpool.back().get();
   }
@@ -108,7 +107,7 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
       throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
 
     tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
-      desc->info, desc->layout, static_cast<uint8_t *>(desc->buffer), desc->size));
+      desc->info, static_cast<uint8_t *>(desc->buffer), desc->size));
     outputs[i] = tensorpool.back().get();
   }
 
