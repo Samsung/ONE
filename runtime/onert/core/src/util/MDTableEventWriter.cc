@@ -183,7 +183,8 @@ struct Graph : public MDContent
 
 std::string getLabel(const OpSeqDurationEvent &evt)
 {
-  std::string subg_label("$" + std::to_string(evt.subg_index) + " subgraph");
+  std::string subg_label("#" + std::to_string(evt.model_index) + " model $" +
+                         std::to_string(evt.subg_index) + " subgraph");
   std::string op_label("@" + std::to_string(evt.op_index) + " " + evt.op_name);
 
   return subg_label + " " + op_label;

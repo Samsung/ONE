@@ -31,15 +31,15 @@ class MinMaxRecorder : public IExecutionObserver
 public:
   MinMaxRecorder(const std::string &workspace_dir, const ir::Graph &graph,
                  const backend::BackendContexts &backend_contexts);
-  void handleJobBegin(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
+  void handleJobBegin(IExecutor *, std::pair<ir::ModelIndex, ir::SubgraphIndex>, ir::OperationIndex,
                       const backend::Backend *) override
   {
     return;
   }
-  void handleJobEnd(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
+  void handleJobEnd(IExecutor *, std::pair<ir::ModelIndex, ir::SubgraphIndex>, ir::OperationIndex,
                     const backend::Backend *) override;
-  void handleSubgraphBegin(ir::SubgraphIndex) override;
-  void handleSubgraphEnd(ir::SubgraphIndex) override;
+  void handleSubgraphBegin(std::pair<ir::ModelIndex, ir::SubgraphIndex>) override;
+  void handleSubgraphEnd(std::pair<ir::ModelIndex, ir::SubgraphIndex>) override;
   ObserverType type() const override { return ObserverType::MINMAX_DUMP; }
 
 private:

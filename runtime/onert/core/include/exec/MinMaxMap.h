@@ -37,21 +37,29 @@ namespace onert::exec
  */
 struct OpMinMaxHash
 {
-  size_t operator()(const std::pair<ir::SubgraphIndex, ir::OperationIndex> &k) const noexcept
+  size_t operator()(
+    const std::tuple<ir::ModelIndex, ir::SubgraphIndex, ir::OperationIndex> &k) const noexcept
   {
-    return std::hash<ir::SubgraphIndex>()(k.first) ^ std::hash<ir::OperationIndex>()(k.second);
+    return std::hash<ir::ModelIndex>()(std::get<ir::ModelIndex>(k)) ^
+           std::hash<ir::SubgraphIndex>()(std::get<ir::SubgraphIndex>(k)) ^
+           std::hash<ir::OperationIndex>()(std::get<ir::OperationIndex>(k));
   }
 };
-using OpMinMaxMap = util::MinMaxMap<std::pair<ir::SubgraphIndex, ir::OperationIndex>, OpMinMaxHash>;
+using OpMinMaxMap =
+  util::MinMaxMap<std::tuple<ir::ModelIndex, ir::SubgraphIndex, ir::OperationIndex>, OpMinMaxHash>;
 
 struct IOMinMaxHash
 {
-  size_t operator()(const std::pair<ir::SubgraphIndex, ir::IOIndex> &k) const noexcept
+  size_t
+  operator()(const std::tuple<ir::ModelIndex, ir::SubgraphIndex, ir::IOIndex> &k) const noexcept
   {
-    return std::hash<ir::SubgraphIndex>()(k.first) ^ std::hash<ir::IOIndex>()(k.second);
+    return std::hash<ir::ModelIndex>()(std::get<ir::ModelIndex>(k)) ^
+           std::hash<ir::SubgraphIndex>()(std::get<ir::SubgraphIndex>(k)) ^
+           std::hash<ir::IOIndex>()(std::get<ir::IOIndex>(k));
   }
 };
-using IOMinMaxMap = util::MinMaxMap<std::pair<ir::SubgraphIndex, ir::IOIndex>, IOMinMaxHash>;
+using IOMinMaxMap =
+  util::MinMaxMap<std::tuple<ir::ModelIndex, ir::SubgraphIndex, ir::IOIndex>, IOMinMaxHash>;
 } // namespace onert::exec
 
 #endif // __ONERT_EXEC_MINMAX_MAP_H__

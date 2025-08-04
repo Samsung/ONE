@@ -50,11 +50,13 @@ public:
     dur_evt->tracing_ctx = evt_collected.tracing_ctx;
 
     dur_evt->session_index = evt_collected.session_index;
+    dur_evt->model_index = evt_collected.model_index;
     dur_evt->subg_index = evt_collected.subg_index;
 
     dur_evt->args = evt_collected.userData;
     {
       dur_evt->args.emplace_back("session", std::to_string(evt_collected.session_index));
+      dur_evt->args.emplace_back("model", std::to_string(evt_collected.model_index));
       dur_evt->args.emplace_back("subgraph", std::to_string(evt_collected.subg_index));
     }
 
@@ -82,6 +84,7 @@ public:
     dur_evt->args = evt_collected.userData;
     {
       dur_evt->args.emplace_back("session", std::to_string(evt_collected.session_index));
+      dur_evt->args.emplace_back("model", std::to_string(evt_collected.model_index));
       dur_evt->args.emplace_back("subgraph", std::to_string(evt_collected.subg_index));
     }
 

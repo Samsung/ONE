@@ -129,8 +129,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
   onert::dumper::dot::DotDumper dot_dumper(dump_level);
 
   // Tracing context
-  // TODO Support tracing_ctx for multiple model
-  std::unique_ptr<util::TracingCtx> tracing_ctx = nullptr;
+  auto tracing_ctx = std::make_unique<util::TracingCtx>();
 
   // Model edge context: copy model edge context
   auto model_edges = std::make_unique<ir::ModelEdges>(_nnpkg->model_edges());
@@ -163,9 +162,8 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       lowered_subgs[model_index][subg_index] =
         std::make_unique<compiler::LoweredGraph>(subg, model_options[model_index]);
       // Set tracing_ctx for copied graph
-      if (tracing_ctx != nullptr)
-        tracing_ctx->setSubgraphIndex(&(lowered_subgs[model_index][subg_index]->graph()),
-                                      subg_index.value());
+      tracing_ctx->setSubgraphIndex(&(lowered_subgs[model_index][subg_index]->graph()),
+                                    {model_index, subg_index});
     });
   }
 

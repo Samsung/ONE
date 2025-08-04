@@ -204,7 +204,8 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
       lowered_subgs[subg_index] =
         std::make_unique<compiler::train::LoweredTrainableGraph>(*trainable_subg, *_options);
       // Set tracing_ctx for copied graph
-      tracing_ctx->setSubgraphIndex(&(lowered_subgs[subg_index]->graph()), subg_index.value());
+      tracing_ctx->setSubgraphIndex(&(lowered_subgs[subg_index]->graph()),
+                                    {ir::ModelIndex{0}, subg_index});
     }
   }
 

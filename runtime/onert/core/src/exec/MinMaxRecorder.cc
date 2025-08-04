@@ -64,7 +64,7 @@ std::pair<float, float> minmaxFrom(const backend::ITensor *tensor)
   return {min, max};
 }
 
-void MinMaxRecorder::handleJobEnd(IExecutor *, ir::SubgraphIndex subg_idx,
+void MinMaxRecorder::handleJobEnd(IExecutor *, std::pair<ir::ModelIndex, ir::SubgraphIndex> idx,
                                   ir::OperationIndex op_idx, const backend::Backend *backend)
 {
   const auto &tensor_reg = _backend_contexts.at(backend)->tensor_registry;
@@ -103,10 +103,10 @@ void MinMaxRecorder::handleJobEnd(IExecutor *, ir::SubgraphIndex subg_idx,
   // Otherwise, dump!
   assert(tensor->data_type() == ir::DataType::FLOAT32);
   auto [min, max] = minmaxFrom(tensor);
-  _op_minmax.append({subg_idx, op_idx}, min, max);
+  _op_minmax.append({idx.first, idx.second, op_idx}, min, max);
 }
 
-void MinMaxRecorder::handleSubgraphBegin(ir::SubgraphIndex subg_idx)
+void MinMaxRecorder::handleSubgraphBegin(std::pair<ir::ModelIndex, ir::SubgraphIndex> idx)
 {
   // Make sure there is only cpu backend except for builtin backend
   std::set<std::string> backend_names;
@@ -134,11 +134,11 @@ void MinMaxRecorder::handleSubgraphBegin(ir::SubgraphIndex subg_idx)
       return;
 
     auto [min, max] = minmaxFrom(tensor);
-    _input_minmax.append({subg_idx, ir::IOIndex{i}}, min, max);
+    _input_minmax.append({idx.first, idx.second, ir::IOIndex{i}}, min, max);
   }
 }
 
-void MinMaxRecorder::handleSubgraphEnd(ir::SubgraphIndex)
+void MinMaxRecorder::handleSubgraphEnd(std::pair<ir::ModelIndex, ir::SubgraphIndex>)
 {
   // It would be better to dump at the end of model execution, not subgraph
   // But it requires more changes than subgraph.

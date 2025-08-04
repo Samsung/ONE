@@ -129,7 +129,8 @@ std::string getSessionLabel(const DurationEvent &evt)
 
 std::string getSubgLabel(const DurationEvent &evt)
 {
-  return "$" + std::to_string(evt.subg_index) + " subg";
+  return "#" + std::to_string(evt.model_index) + " model $" + std::to_string(evt.subg_index) +
+         " subg";
 }
 
 std::string getOpLabel(const OpSeqDurationEvent &evt)
