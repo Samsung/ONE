@@ -62,7 +62,7 @@ jobs:
 
       - name: Install GBS
         run: |
-          sudo apt-get update && sudo add-apt-repository -y 'deb [trusted=yes] http://download.tizen.org/tools/latest/Ubuntu_22.04/ /'
+          sudo apt-get update && sudo add-apt-repository -y 'deb [trusted=yes] http://download.tizen.org/tools/latest-release/Ubuntu_22.04/ /'
           sudo apt-get update && sudo apt-get -qqy install gbs
 
       - name: Checkout
