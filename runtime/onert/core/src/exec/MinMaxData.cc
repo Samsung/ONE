@@ -97,9 +97,9 @@ void RawMinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
   // For each op
   for (auto &&[index, minmax] : op_minmax)
   {
-    const uint32_t model_idx = 0;
-    const uint32_t subg_idx = index.first.value();
-    const uint32_t op_idx = index.second.value();
+    const uint32_t model_idx = std::get<ir::ModelIndex>(index).value();
+    const uint32_t subg_idx = std::get<ir::SubgraphIndex>(index).value();
+    const uint32_t op_idx = std::get<ir::OperationIndex>(index).value();
 
     // Write model/subg/op index
     std::fwrite(&model_idx, sizeof(uint32_t), 1, file);
@@ -113,9 +113,9 @@ void RawMinMaxDumper::dump(const exec::IOMinMaxMap &input_minmax,
   // For each input
   for (auto &&[index, minmax] : input_minmax)
   {
-    const uint32_t model_idx = 0;
-    const uint32_t subg_idx = index.first.value();
-    const uint32_t input_idx = index.second.value();
+    const uint32_t model_idx = std::get<ir::ModelIndex>(index).value();
+    const uint32_t subg_idx = std::get<ir::SubgraphIndex>(index).value();
+    const uint32_t input_idx = std::get<ir::IOIndex>(index).value();
 
     // Write model/subg/input index
     std::fwrite(&model_idx, sizeof(uint32_t), 1, file);

@@ -52,7 +52,7 @@ ExecutionObservee::ExecutionObservee(const ExecObservers &observers,
   }
 }
 
-void ExecutionObservee::notifySubgraphBegin(ir::SubgraphIndex ind) const
+void ExecutionObservee::notifySubgraphBegin(std::pair<ir::ModelIndex, ir::SubgraphIndex> ind) const
 {
   for (auto &&o : _observers)
   {
@@ -60,7 +60,7 @@ void ExecutionObservee::notifySubgraphBegin(ir::SubgraphIndex ind) const
   }
 }
 
-void ExecutionObservee::notifySubgraphEnd(ir::SubgraphIndex ind) const
+void ExecutionObservee::notifySubgraphEnd(std::pair<ir::ModelIndex, ir::SubgraphIndex> ind) const
 {
   for (auto &&o : _observers)
   {
@@ -68,7 +68,8 @@ void ExecutionObservee::notifySubgraphEnd(ir::SubgraphIndex ind) const
   }
 }
 
-void ExecutionObservee::notifyJobBegin(IExecutor *executor, ir::SubgraphIndex subg_ind,
+void ExecutionObservee::notifyJobBegin(IExecutor *executor,
+                                       std::pair<ir::ModelIndex, ir::SubgraphIndex> subg_ind,
                                        ir::OperationIndex op_ind,
                                        const backend::Backend *backend) const
 {
@@ -78,7 +79,8 @@ void ExecutionObservee::notifyJobBegin(IExecutor *executor, ir::SubgraphIndex su
   }
 }
 
-void ExecutionObservee::notifyJobEnd(IExecutor *executor, ir::SubgraphIndex subg_ind,
+void ExecutionObservee::notifyJobEnd(IExecutor *executor,
+                                     std::pair<ir::ModelIndex, ir::SubgraphIndex> subg_ind,
                                      ir::OperationIndex op_ind,
                                      const backend::Backend *backend) const
 {

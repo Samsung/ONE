@@ -73,7 +73,8 @@ namespace onert
 namespace exec
 {
 
-void ProfileObserver::handleJobBegin(onert::exec::IExecutor *, ir::SubgraphIndex,
+void ProfileObserver::handleJobBegin(onert::exec::IExecutor *,
+                                     std::pair<ir::ModelIndex, ir::SubgraphIndex>,
                                      ir::OperationIndex, const onert::backend::Backend *backend)
 {
   _timer = backend->config()->timer();
@@ -82,7 +83,7 @@ void ProfileObserver::handleJobBegin(onert::exec::IExecutor *, ir::SubgraphIndex
   _timer->handleBegin();
 }
 
-void ProfileObserver::handleJobEnd(IExecutor *exec, ir::SubgraphIndex,
+void ProfileObserver::handleJobEnd(IExecutor *exec, std::pair<ir::ModelIndex, ir::SubgraphIndex>,
                                    const ir::OperationIndex op_ind, const backend::Backend *backend)
 {
   _timer->handleEnd();
@@ -139,40 +140,41 @@ TracingObserver::~TracingObserver()
   }
 }
 
-void TracingObserver::handleSubgraphBegin(ir::SubgraphIndex subg_ind)
+void TracingObserver::handleSubgraphBegin(std::pair<ir::ModelIndex, ir::SubgraphIndex> ind)
 {
   _triggered = true;
 
-  _collector.onEvent(
-    EventCollector::SubgEvent{_tracing_ctx, EventCollector::Edge::BEGIN, subg_ind.value()});
+  _collector.onEvent(EventCollector::SubgEvent{_tracing_ctx, EventCollector::Edge::BEGIN,
+                                               ind.first.value(), ind.second.value()});
 }
 
-void TracingObserver::handleJobBegin(IExecutor *, ir::SubgraphIndex subg_ind,
+void TracingObserver::handleJobBegin(IExecutor *, std::pair<ir::ModelIndex, ir::SubgraphIndex> ind,
                                      ir::OperationIndex op_ind, const backend::Backend *backend)
 {
   std::string backend_id = backend->config()->id();
   const auto &op = _graph.operations().at(op_ind);
-  auto ev = EventCollector::OpSeqEvent{_tracing_ctx,     EventCollector::Edge::BEGIN,
-                                       subg_ind.value(), backend_id,
-                                       op_ind.value(),   op.name()};
+  auto ev = EventCollector::OpSeqEvent{_tracing_ctx,      EventCollector::Edge::BEGIN,
+                                       ind.first.value(), ind.second.value(),
+                                       backend_id,        op_ind.value(),
+                                       op.name()};
   // add shape of inputs
   setUserData(_graph, &op, ev.userData);
   _collector.onEvent(ev);
 }
 
-void TracingObserver::handleJobEnd(IExecutor *, ir::SubgraphIndex subg_ind,
+void TracingObserver::handleJobEnd(IExecutor *, std::pair<ir::ModelIndex, ir::SubgraphIndex> ind,
                                    ir::OperationIndex op_ind, const backend::Backend *backend)
 {
   std::string backend_id = backend->config()->id();
-  _collector.onEvent(EventCollector::OpSeqEvent{_tracing_ctx, EventCollector::Edge::END,
-                                                subg_ind.value(), backend_id, op_ind.value(),
-                                                _graph.operations().at(op_ind).name()});
+  _collector.onEvent(EventCollector::OpSeqEvent{
+    _tracing_ctx, EventCollector::Edge::END, ind.first.value(), ind.second.value(), backend_id,
+    op_ind.value(), _graph.operations().at(op_ind).name()});
 }
 
-void TracingObserver::handleSubgraphEnd(ir::SubgraphIndex subg_ind)
+void TracingObserver::handleSubgraphEnd(std::pair<ir::ModelIndex, ir::SubgraphIndex> ind)
 {
-  _collector.onEvent(
-    EventCollector::SubgEvent{_tracing_ctx, EventCollector::Edge::END, subg_ind.value()});
+  _collector.onEvent(EventCollector::SubgEvent{_tracing_ctx, EventCollector::Edge::END,
+                                               ind.first.value(), ind.second.value()});
 }
 
 } // namespace exec

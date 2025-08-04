@@ -51,12 +51,18 @@ public:
   /**
    * @brief Set subgraph index of a graph
    */
-  void setSubgraphIndex(const ir::Graph *g, uint32_t index) { _subgraph_indices.emplace(g, index); }
+  void setSubgraphIndex(const ir::Graph *g, std::pair<ir::ModelIndex, ir::SubgraphIndex> index)
+  {
+    _subgraph_indices.emplace(g, index);
+  }
 
   /**
    * @brief Get subgraph index of a graph.
    */
-  ir::SubgraphIndex getSubgraphIndex(const ir::Graph *g) const { return _subgraph_indices.at(g); }
+  std::pair<ir::ModelIndex, ir::SubgraphIndex> getSubgraphIndex(const ir::Graph *g) const
+  {
+    return _subgraph_indices.at(g);
+  }
 
 private:
   void decideSessionID()
@@ -67,7 +73,8 @@ private:
   }
 
 private:
-  std::unordered_map<const ir::Graph *, ir::SubgraphIndex> _subgraph_indices;
+  std::unordered_map<const ir::Graph *, std::pair<ir::ModelIndex, ir::SubgraphIndex>>
+    _subgraph_indices;
   uint32_t _session_id;
   static inline std::mutex _session_id_mutex;
   static inline uint32_t _next_session_id = 0;

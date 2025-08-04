@@ -40,6 +40,7 @@ struct Event
 struct DurationEvent : public Event
 {
   uint32_t session_index = 0;
+  uint32_t model_index = 0;
   uint32_t subg_index = 0;
 
 protected:

@@ -42,15 +42,15 @@ class IExecutionObserver
 {
 public:
   /// @brief Invoked just before model (not individual operation) execution begins
-  virtual void handleSubgraphBegin(ir::SubgraphIndex) { return; }
+  virtual void handleSubgraphBegin(std::pair<ir::ModelIndex, ir::SubgraphIndex>) { return; }
 
-  virtual void handleJobBegin(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
-                              const backend::Backend *) = 0;
-  virtual void handleJobEnd(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
-                            const backend::Backend *) = 0;
+  virtual void handleJobBegin(IExecutor *, std::pair<ir::ModelIndex, ir::SubgraphIndex>,
+                              ir::OperationIndex, const backend::Backend *) = 0;
+  virtual void handleJobEnd(IExecutor *, std::pair<ir::ModelIndex, ir::SubgraphIndex>,
+                            ir::OperationIndex, const backend::Backend *) = 0;
 
   /// @brief Invoked just after model (not individual operation) execution ends
-  virtual void handleSubgraphEnd(ir::SubgraphIndex) { return; }
+  virtual void handleSubgraphEnd(std::pair<ir::ModelIndex, ir::SubgraphIndex>) { return; }
 
   virtual ObserverType type() const = 0;
 
@@ -84,12 +84,15 @@ public:
     : _et(std::move(et)), _graph(graph)
   {
   }
-  void handleJobBegin(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
+  void handleJobBegin(IExecutor *, std::pair<ir::ModelIndex, ir::SubgraphIndex>, ir::OperationIndex,
                       const backend::Backend *) override;
-  void handleJobEnd(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
+  void handleJobEnd(IExecutor *, std::pair<ir::ModelIndex, ir::SubgraphIndex>, ir::OperationIndex,
                     const backend::Backend *) override;
 
-  void handleSubgraphEnd(ir::SubgraphIndex) override { _et->storeOperationsExecTime(); }
+  void handleSubgraphEnd(std::pair<ir::ModelIndex, ir::SubgraphIndex>) override
+  {
+    _et->storeOperationsExecTime();
+  }
   ObserverType type() const override { return ObserverType::PROFILE; }
 
 private:
@@ -104,12 +107,12 @@ public:
   TracingObserver(const std::string &workspace_dir, const ir::Graph &graph,
                   const util::TracingCtx *tracing_ctx);
   ~TracingObserver();
-  void handleSubgraphBegin(ir::SubgraphIndex) override;
-  void handleJobBegin(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
+  void handleSubgraphBegin(std::pair<ir::ModelIndex, ir::SubgraphIndex>) override;
+  void handleJobBegin(IExecutor *, std::pair<ir::ModelIndex, ir::SubgraphIndex>, ir::OperationIndex,
                       const backend::Backend *) override;
-  void handleJobEnd(IExecutor *, ir::SubgraphIndex, ir::OperationIndex,
+  void handleJobEnd(IExecutor *, std::pair<ir::ModelIndex, ir::SubgraphIndex>, ir::OperationIndex,
                     const backend::Backend *) override;
-  void handleSubgraphEnd(ir::SubgraphIndex) override;
+  void handleSubgraphEnd(std::pair<ir::ModelIndex, ir::SubgraphIndex>) override;
   ObserverType type() const override { return ObserverType::TRACING; }
 
 private:

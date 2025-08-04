@@ -37,8 +37,12 @@
  * - When there are two or more sessions, operation name is a form of
  *   "$1 session $2 subgraph $3 ADD", meaning ADD op whose operation index 3
  *   in a subgraph whose index is 2, which was run in 1st session.
+ *
+ * In version 3,
+ * - "version" : "3 was added in Json
+ * - Multiple model are supported: model is represented by "#"
  */
-#define SNPE_JSON_SCHEMA_VERSION "2"
+#define SNPE_JSON_SCHEMA_VERSION "3"
 
 namespace
 {
@@ -47,7 +51,8 @@ std::string getLabel(const DurationEvent &evt)
 {
   if (auto evt_ptr = dynamic_cast<const OpSeqDurationEvent *>(&evt))
   {
-    std::string subg_label("$" + std::to_string(evt_ptr->subg_index) + " subgraph");
+    std::string subg_label("#" + std::to_string(evt_ptr->model_index) + " model $" +
+                           std::to_string(evt_ptr->subg_index) + " subgraph");
     std::string op_label("$" + std::to_string(evt_ptr->op_index) + " " + evt_ptr->op_name);
 
     // Note : At this moment, there is only one thread running for EventWriter
