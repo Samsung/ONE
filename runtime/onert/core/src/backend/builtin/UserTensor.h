@@ -34,20 +34,18 @@ namespace onert::backend::builtin
 class UserTensor : public IPortableTensor
 {
 public:
-  UserTensor(const ir::OperandInfo &info, ir::Layout layout, uint8_t *buffer, size_t size)
-    : IPortableTensor{info}, _layout{layout}, _buffer{buffer}, _size{size}
+  UserTensor(const ir::OperandInfo &info, uint8_t *buffer, size_t size)
+    : IPortableTensor{info}, _buffer{buffer}, _size{size}
   {
   }
 
 public:
   uint8_t *buffer() const override { return _buffer; }
-  ir::Layout layout() const { return _layout; }
   void set_dynamic() override { _info.setDynamic(); }
   void setShape(const ir::Shape &new_shape) override { _info.shape(new_shape); }
   bool applyShape(const ir::Shape &) override;
 
 private:
-  ir::Layout _layout;
   uint8_t *_buffer;
   size_t _size;
 };
