@@ -557,4 +557,98 @@ bool is_onnx_quantize_linear(const luci::CircleCustom *node)
   return true;
 }
 
+void iterate_per_channel(CircleConst *node, int32_t &channel_dim_index, IterFunc func)
+{
+  loco::TensorShape dimension;
+  dimension.rank(4);
+  uint32_t indices[4] = {
+    0,
+  };
+
+  if (!get_channel_dim_index(node, dimension, channel_dim_index))
+  {
+    assert(false);
+    return;
+  }
+
+  for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
+  {
+    for (indices[1] = 0; indices[1] < dimension.dim(1).value(); indices[1]++)
+    {
+      for (indices[2] = 0; indices[2] < dimension.dim(2).value(); indices[2]++)
+      {
+        for (indices[3] = 0; indices[3] < dimension.dim(3).value(); indices[3]++)
+        {
+          func(indices, dimension, channel_dim_index);
+        }
+      }
+    }
+  }
+}
+
+void iterate_per_channel(CircleConst *node, IterFunc func)
+{
+  loco::TensorShape dimension;
+  dimension.rank(4);
+  uint32_t indices[4] = {
+    0,
+  };
+  int32_t channel_dim_index{0};
+
+  if (!get_channel_dim_index(node, dimension, channel_dim_index))
+  {
+    assert(false);
+    return;
+  }
+
+  for (indices[0] = 0; indices[0] < dimension.dim(0).value(); indices[0]++)
+  {
+    for (indices[1] = 0; indices[1] < dimension.dim(1).value(); indices[1]++)
+    {
+      for (indices[2] = 0; indices[2] < dimension.dim(2).value(); indices[2]++)
+      {
+        for (indices[3] = 0; indices[3] < dimension.dim(3).value(); indices[3]++)
+        {
+          func(indices, dimension, channel_dim_index);
+        }
+      }
+    }
+  }
+}
+
+void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vector<float> &max,
+                            int32_t &channel_dim_index)
+{
+  loco::TensorShape dimension;
+  dimension.rank(4);
+
+  if (!get_channel_dim_index(node, dimension, channel_dim_index))
+  {
+    throw std::runtime_error("Failed to find channel index in " + node->name());
+  }
+  auto size = dimension.dim(channel_dim_index).value();
+
+  std::vector<bool> has_min_max_value(size, false);
+  min.resize(size);
+  max.resize(size);
+
+  auto cal_minmax = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
+    int channel_idx = indices[channel_dim_index];
+    auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
+    if (has_min_max_value[channel_idx])
+    {
+      min[channel_idx] = data < min[channel_idx] ? data : min[channel_idx];
+      max[channel_idx] = data > max[channel_idx] ? data : max[channel_idx];
+    }
+    else
+    {
+      min[channel_idx] = data;
+      max[channel_idx] = data;
+      has_min_max_value[channel_idx] = true;
+    }
+  };
+
+  iterate_per_channel(node, channel_dim_index, cal_minmax);
+}
+
 } // namespace luci

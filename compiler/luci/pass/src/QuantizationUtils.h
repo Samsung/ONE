@@ -20,6 +20,8 @@
 #include <luci/IR/CircleNodes.h>
 #include <loco/IR/TensorShape.h>
 
+#include <functional>
+
 namespace luci
 {
 
@@ -101,6 +103,15 @@ bool is_onnx_dequantize_linear(const luci::CircleCustom *node);
 
 // Return true if the node is OnnxQuantizeLinear
 bool is_onnx_quantize_linear(const luci::CircleCustom *node);
+
+// Compute per-channel minmax of node
+void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vector<float> &max,
+                            int32_t &channel_dim_index);
+
+using IterFunc = std::function<void(uint32_t *, loco::TensorShape &, int32_t)>;
+// TODO Remove redundant iterate_per_channel
+void iterate_per_channel(CircleConst *node, int32_t &channel_dim_index, IterFunc func);
+void iterate_per_channel(CircleConst *node, IterFunc func);
 
 } // namespace luci
 
