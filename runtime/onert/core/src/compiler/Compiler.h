@@ -22,50 +22,12 @@
 #ifndef __ONERT_COMPILER_COMPILE_H_
 #define __ONERT_COMPILER_COMPILE_H_
 
-#include "compiler/CompilerOptions.h"
-#include "compiler/ICompiler.h"
-#include "ir/NNPkg.h"
+#include "MultiModelCompiler.h"
 
 namespace onert::compiler
 {
 
-/**
- * @brief Class to compile NN package
- */
-class Compiler : public ICompiler
-{
-public:
-  /**
-   * @brief     Construct a new Compiler object for single model
-   * @param[in] model model to compile
-   * @param[in] copts Compiler Options
-   */
-  Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions *copts);
-
-  /**
-   * @brief     Construct a new Compiler object for NN package
-   * @param[in] nnpkg NN package to compile
-   * @param[in] copts Compiler option for package
-   */
-  Compiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts);
-
-  /**
-   * @brief Destroy the Compiler object
-   */
-  ~Compiler() = default;
-
-public:
-  /**
-   * @brief   Do compilation with the options
-   *
-   * @return std::shared_ptr<CompilerArtifact> Executors as a result of compilation
-   */
-  std::shared_ptr<CompilerArtifact> compile(void);
-
-private:
-  std::unique_ptr<ir::NNPkg> _nnpkg;
-  CompilerOptions *_options;
-};
+using Compiler = MultiModelCompiler;
 
 } // namespace onert::compiler
 
