@@ -47,7 +47,7 @@ public:
    * @param[in] nnpkg NN package to compile
    * @param[in] copts Compiler option for package
    */
-  Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts);
+  Compiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts);
 
   /**
    * @brief Destroy the Compiler object

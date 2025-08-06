@@ -29,19 +29,19 @@ CompilerFactory &CompilerFactory::get()
   return singleton;
 }
 
-std::unique_ptr<ICompiler> CompilerFactory::create(const std::shared_ptr<ir::NNPkg> &nnpkg,
+std::unique_ptr<ICompiler> CompilerFactory::create(std::unique_ptr<ir::NNPkg> nnpkg,
                                                    CompilerOptions *copts,
                                                    const ir::train::TrainingInfo *training_info)
 {
   // Returing compiler for training
   if (training_info)
-    return std::make_unique<train::TrainingCompiler>(nnpkg, copts, *training_info);
+    return std::make_unique<train::TrainingCompiler>(std::move(nnpkg), copts, *training_info);
 
   // Returing compiler for inference
   if (nnpkg->model_count() == 1)
-    return std::make_unique<Compiler>(nnpkg, copts);
+    return std::make_unique<Compiler>(std::move(nnpkg), copts);
 
-  return std::make_unique<MultiModelCompiler>(nnpkg, copts);
+  return std::make_unique<MultiModelCompiler>(std::move(nnpkg), copts);
 }
 
 } // namespace onert::compiler

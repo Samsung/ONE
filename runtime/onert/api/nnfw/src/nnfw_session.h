@@ -210,7 +210,7 @@ private:
 
 private:
   State _state{State::INITIALIZED};
-  std::shared_ptr<onert::ir::NNPkg> _nnpkg;
+  std::unique_ptr<onert::ir::NNPkg> _nnpkg;
   std::unique_ptr<onert::compiler::CompilerOptions> _coptions;
   std::shared_ptr<onert::compiler::CompilerArtifact> _compiler_artifact;
   std::unique_ptr<onert::exec::Execution> _execution;

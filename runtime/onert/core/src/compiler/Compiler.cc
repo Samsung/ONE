@@ -43,7 +43,7 @@ Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions *cop
   // DO NOTHING
 }
 
-Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts)
+Compiler::Compiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts)
   : _model{nnpkg->primary_model()}, _options{copts}
 {
   // Use for single model only
