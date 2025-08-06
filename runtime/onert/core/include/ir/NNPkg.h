@@ -292,6 +292,12 @@ public:
    */
   void replaceModel(std::shared_ptr<Model> model) { _models[ModelIndex{0}] = model; }
 
+  /**
+   * @brief Reset models to empty state (no model)
+   *        This is useful when we want to reduce the memory usage
+   */
+  void resetModels() { _models.clear(); }
+
   // TODO: Add iterate() or getter for edges
 
 private:

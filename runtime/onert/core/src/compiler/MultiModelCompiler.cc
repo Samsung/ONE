@@ -167,7 +167,8 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
     });
   }
 
-  _nnpkg.reset();
+  // Models are not used anymore after lower phase. Reset them to save memory.
+  _nnpkg->resetModels();
 
   for (const auto &[model_index, model_lsubg] : lowered_subgs)
   {
