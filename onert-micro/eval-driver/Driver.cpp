@@ -78,13 +78,14 @@ int entry(int argc, char **argv)
   arser.add_argument("--input_prefix")
     .type(arser::DataType::STR)
     .help("Prefix for input files (generates random inputs if not provided)");
-  arser.add_argument("--output_prefix")
-    .type(arser::DataType::STR)
-    .help("Prefix for output files");
+  arser.add_argument("--output_prefix").type(arser::DataType::STR).help("Prefix for output files");
 
-  try {
+  try
+  {
     arser.parse(argc, argv);
-  } catch (const std::runtime_error& err) {
+  }
+  catch (const std::runtime_error &err)
+  {
     std::cerr << err.what() << std::endl;
     std::cerr << arser;
     return EXIT_FAILURE;
@@ -93,11 +94,13 @@ int entry(int argc, char **argv)
   const auto filename = arser.get<std::string>("--model");
   std::string input_prefix;
   std::string output_prefix;
-  
-  if (arser["--input_prefix"]) {
+
+  if (arser["--input_prefix"])
+  {
     input_prefix = arser.get<std::string>("--input_prefix");
   }
-  if (arser["--output_prefix"]) {
+  if (arser["--output_prefix"])
+  {
     output_prefix = arser.get<std::string>("--output_prefix");
   }
   const bool auto_input = !arser["--input_prefix"];
@@ -144,12 +147,14 @@ int entry(int argc, char **argv)
     {
       auto input_data = reinterpret_cast<char *>(interpreter.getInputDataAt(i));
       size_t input_size = interpreter.getInputSizeAt(i);
-      
-      if (auto_input) {
+
+      if (auto_input)
+      {
         generateRandomData(input_data, input_size);
-      } else {
-        readDataFromFile(input_prefix + std::to_string(i), 
-                        input_data, input_size);
+      }
+      else
+      {
+        readDataFromFile(input_prefix + std::to_string(i), input_data, input_size);
       }
     }
 
@@ -164,9 +169,10 @@ int entry(int argc, char **argv)
     auto data = interpreter.getOutputDataAt(i);
     size_t output_size = interpreter.getOutputSizeAt(i);
 
-    if (arser["--output_prefix"]) {
-      writeDataToFile(output_prefix + std::to_string(i),
-                     reinterpret_cast<char*>(data), output_size);
+    if (arser["--output_prefix"])
+    {
+      writeDataToFile(output_prefix + std::to_string(i), reinterpret_cast<char *>(data),
+                      output_size);
     }
     // Otherwise, output remains in interpreter memory
   }
