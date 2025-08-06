@@ -15,8 +15,8 @@
  */
 
 /**
- * @file  MultiModelCompiler.h
- * @brief This file contains MultiModelCompiler class to define and run compilation phase
+ * @file  Compiler.h
+ * @brief This file contains Compiler class to define and run compilation phase
  */
 
 #ifndef __ONERT_COMPILER_MULTI_MODEL_COMPILER_H__
@@ -32,7 +32,7 @@ namespace onert::compiler
 /**
  * @brief Class to compile NN package
  */
-class MultiModelCompiler final : public ICompiler
+class Compiler final : public ICompiler
 {
 public:
   /**
@@ -40,19 +40,19 @@ public:
    * @param[in] model model to compile
    * @param[in] copts Compiler Options
    */
-  MultiModelCompiler(const std::shared_ptr<ir::Model> &model, CompilerOptions *copts);
+  Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions *copts);
 
   /**
    * @brief     Construct a new Compiler object for NN package
    * @param[in] nnpkg NN package to compile
    * @param[in] copts Compiler option for package
    */
-  MultiModelCompiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts);
+  Compiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts);
 
   /**
-   * @brief Destroy the MultiModelCompiler object
+   * @brief Destroy the Compiler object
    */
-  ~MultiModelCompiler() = default;
+  ~Compiler() = default;
 
 public:
   /**

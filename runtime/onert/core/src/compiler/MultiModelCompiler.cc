@@ -38,20 +38,19 @@
 namespace onert::compiler
 {
 
-MultiModelCompiler::MultiModelCompiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts)
+Compiler::Compiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts)
   : _nnpkg{std::move(nnpkg)}, _options{copts}
 {
   // DO NOTHING
 }
 
-MultiModelCompiler::MultiModelCompiler(const std::shared_ptr<ir::Model> &model,
-                                       CompilerOptions *copts)
+Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions *copts)
   : _nnpkg{std::make_unique<ir::NNPkg>(model)}, _options{copts}
 {
   // DO NOTHING
 }
 
-CompilerOptions MultiModelCompiler::optionForSingleModel(const ir::ModelIndex &model_index)
+CompilerOptions Compiler::optionForSingleModel(const ir::ModelIndex &model_index)
 {
   CompilerOptions model_opts = CompilerOptions(*_options); // Copy options
   model_opts.input_layout.clear();
@@ -82,7 +81,7 @@ CompilerOptions MultiModelCompiler::optionForSingleModel(const ir::ModelIndex &m
   return model_opts;
 }
 
-std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
+std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 {
   /***************************************************
    * Prepare compilation phase
@@ -105,7 +104,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
   for (uint16_t i = 0; i < model_count; i++)
   {
     if (!_nnpkg->model(ir::ModelIndex{i})->hasOnly<ir::Graph>())
-      throw std::runtime_error("MultiModelCompiler can only compile models for inference.");
+      throw std::runtime_error("Compiler can only compile models for inference.");
   }
 
   std::unordered_map<ir::ModelIndex, CompilerOptions> model_options;
