@@ -30,6 +30,36 @@ namespace souschef
 {
 
 template <typename T>
+static std::vector<uint8_t> generate_gaussian_with_minmax(int32_t count, float mean, float stddev,
+                                                          float min, float max)
+{
+  auto time_stamp = std::chrono::system_clock::now().time_since_epoch().count();
+
+  // Note this is implementation defined, change if needed.
+  auto seed = static_cast<std::minstd_rand::result_type>(time_stamp);
+
+  std::minstd_rand rand{static_cast<std::minstd_rand::result_type>(seed)};
+  std::normal_distribution<float> dist{mean, stddev};
+
+  std::vector<uint8_t> res;
+
+  for (uint32_t n = 0; n < count; ++n)
+  {
+    float raw_value = dist(rand);
+    const float capped_value = std::max(min, std::min(max, raw_value));
+    auto const value = static_cast<T>(capped_value);
+    auto const arr = reinterpret_cast<const uint8_t *>(&value);
+
+    for (uint32_t b = 0; b < sizeof(T); ++b)
+    {
+      res.emplace_back(arr[b]);
+    }
+  }
+
+  return res;
+}
+
+template <typename T>
 static std::vector<uint8_t> generate_gaussian(int32_t count, float mean, float stddev,
                                               std::minstd_rand::result_type seed)
 {
@@ -120,6 +150,11 @@ std::vector<uint8_t> GaussianInt8DataChef::generate(int32_t count) const
   return generate_gaussian<int8_t>(count, _mean, _stddev);
 }
 
+std::vector<uint8_t> GaussianUint4DataChef::generate(int32_t count) const
+{
+  return generate_gaussian_with_minmax<uint8_t>(count, _mean, _stddev, 0, 15);
+}
+
 std::unique_ptr<DataChef> GaussianFloat32DataChefFactory::create(const Arguments &args) const
 {
   if (args.count() != 2)
@@ -183,6 +218,19 @@ std::unique_ptr<DataChef> GaussianInt8DataChefFactory::create(const Arguments &a
   auto const stddev = to_number<float>(args.value(1));
 
   return std::unique_ptr<DataChef>{new GaussianInt8DataChef{mean, stddev}};
+}
+
+std::unique_ptr<DataChef> GaussianUint4DataChefFactory::create(const Arguments &args) const
+{
+  if (args.count() != 2)
+  {
+    throw std::runtime_error{"invalid argument count: two arguments (mean/stddev) are expected"};
+  }
+
+  auto const mean = to_number<float>(args.value(0));
+  auto const stddev = to_number<float>(args.value(1));
+
+  return std::unique_ptr<DataChef>{new GaussianUint4DataChef{mean, stddev}};
 }
 
 std::unique_ptr<DataChef> GaussianFloat16DataChefFactory::create(const Arguments &args) const
