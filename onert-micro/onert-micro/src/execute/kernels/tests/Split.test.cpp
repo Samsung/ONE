@@ -16,6 +16,7 @@
 
 #include "execute/OMTestUtils.h"
 #include "test_models/split/FloatSplitKernel.h"
+#include "test_models/split/S8SplitKernel.h"
 #include "test_models/split/NegSplitKernel.h"
 
 namespace onert_micro
@@ -45,6 +46,14 @@ TEST_F(SplitTest, Input_output_type_mismatch_NEG)
   onert_micro::test_model::NegTestDataInputOutputTypeMismatchSplitKernel test_data_kernel;
 
   EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
+}
+
+TEST_F(SplitTest, S8_P)
+{
+  onert_micro::test_model::TestDataS8Split test_data_kernel;
+  std::vector<int8_t> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int8_t>(1, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
 } // namespace testing
