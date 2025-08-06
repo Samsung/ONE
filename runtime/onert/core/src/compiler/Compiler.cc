@@ -119,8 +119,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     });
   }
 
-  if (!_options->internal_output_alloc)
-    _nnpkg.reset();
+  // Models are not used anymore after lower phase. Reset them to save memory.
+  _nnpkg->resetModels();
 
   for (const auto &[subg_index, lowered_subg] : lowered_subgs)
   {

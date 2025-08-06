@@ -294,6 +294,12 @@ public:
   void replaceModel(std::shared_ptr<Model> model) { _models[ModelIndex{0}] = model; }
 
   /**
+   * @brief Reset models to empty state (no model)
+   *        This is useful when we want to reduce the memory usage
+   */
+  void resetModels() { _models.clear(); }
+
+  /**
    * @brief     Get the Package Outputs set object
    * @param[in] model_idx Model index
    * @param[in] subg_idx  Subgraph index
