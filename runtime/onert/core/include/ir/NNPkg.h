@@ -23,7 +23,6 @@
 
 #include "ir/Index.h"
 #include "ir/Model.h"
-#include "util/Set.h"
 
 namespace onert::ir
 {
@@ -90,8 +89,17 @@ public:
   NNPkg &operator=(const NNPkg &) = default;
   NNPkg &operator=(NNPkg &&) = default;
   ~NNPkg() = default;
+  NNPkg(std::shared_ptr<Model> model)
+  {
+    _models[ModelIndex{0}] = model;
 
-  NNPkg(std::shared_ptr<Model> model) { _models[ModelIndex{0}] = model; }
+    // Fill pkg_inputs and pkg_outputs with primary model's inputs and outputs
+    for (uint32_t i = 0; i < model->primary_subgraph()->getInputs().size(); i++)
+      _edges.pkg_inputs.emplace_back(0, 0, IOIndex{i});
+    for (uint32_t i = 0; i < model->primary_subgraph()->getOutputs().size(); i++)
+      _edges.pkg_outputs.emplace_back(0, 0, IOIndex{i});
+  }
+
   std::shared_ptr<Model> primary_model() const { return _models.at(onert::ir::ModelIndex{0}); }
 
   /**
@@ -298,43 +306,6 @@ public:
    *        This is useful when we want to reduce the memory usage
    */
   void resetModels() { _models.clear(); }
-
-  /**
-   * @brief     Get the Package Outputs set object
-   * @param[in] model_idx Model index
-   * @param[in] subg_idx  Subgraph index
-   * @return    Set of OperandIndex which are outputs of the given model and subgraph index
-   */
-  util::Set<ir::OperandIndex> getPkgOutputs(const ir::ModelIndex &model_idx,
-                                            const ir::SubgraphIndex &subg_idx) const
-  {
-    util::Set<ir::OperandIndex> ret;
-
-    // Assume that all outputs are from primary subgraph of each model
-    if (subg_idx != ir::SubgraphIndex{0})
-      return ret;
-
-    if (model_count() == 1)
-    {
-      assert(model_idx == ir::ModelIndex{0});
-      for (const auto &output : primary_model()->primary_subgraph()->getOutputs() |
-                                  ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
-        ret.add(output);
-
-      return ret;
-    }
-
-    for (const auto &output_desc : _edges.pkg_outputs)
-    {
-      if (const auto &[m, s, io] = output_desc; m == model_idx && s == subg_idx)
-      {
-        auto idx = model(m)->primary_subgraph()->getOutputs().at(io.value());
-        ret.add(idx);
-      }
-    }
-
-    return ret;
-  }
 
   // TODO: Add iterate() or getter for edges
 

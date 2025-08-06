@@ -146,7 +146,7 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
   std::unordered_map<ir::ModelIndex,
                      std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>>>
     lowered_subgs;
-
+  std::unordered_map<ir::ModelIndex, util::Set<ir::OperandIndex>> pkg_outputs_map;
   for (uint16_t i = 0; i < model_count; i++)
   {
     auto const model_index = ir::ModelIndex{i};
@@ -164,10 +164,31 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       tracing_ctx->setSubgraphIndex(&(lowered_subgs[model_index][subg_index]->graph()),
                                     {model_index, subg_index});
     });
+
+    // Fill pkg_outputs map here because compile phase and lowering can change operand index
+    // It will be used after models clearing
+    if (_options->internal_output_alloc)
+    {
+      util::Set<ir::OperandIndex> pkg_outputs_set;
+      const auto &pkg_outputs = _nnpkg->model_edges().pkg_outputs;
+      for (const auto &desc : pkg_outputs)
+      {
+        // Only outputs of this entry
+        if (const auto &[m, s, io] = desc; m == model_index)
+        {
+          // Assume only primary subgraph can have package output
+          assert(s == ir::SubgraphIndex{0});
+          // Map IOIndex to OperandIndex
+          auto idx = lowered_subgs[model_index][ir::SubgraphIndex{0}]->graph().getOutputs().at(io);
+          pkg_outputs_set.add(idx);
+        }
+      }
+      pkg_outputs_map[model_index] = pkg_outputs_set;
+    }
   }
 
   // Models are not used anymore after lower phase. Reset them to save memory.
-  _nnpkg->resetModels();
+  _nnpkg.reset();
 
   for (const auto &[model_index, model_lsubg] : lowered_subgs)
   {
@@ -240,8 +261,9 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       args.options = &model_options[model_index];
       args.model_index = model_index;
       args.custom_kernel_builder = custom_kernel_builders[model_index];
-      if (_options->internal_output_alloc)
-        args.internal_io_indexes = _nnpkg->getPkgOutputs(model_index, subg_index);
+      const bool is_entry_executor = subg_index == ir::SubgraphIndex{0} ? true : false;
+      if (is_entry_executor && _options->internal_output_alloc)
+        args.internal_io_indexes = pkg_outputs_map[model_index];
 
       auto executor = std::unique_ptr<exec::IExecutor>{
         ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};

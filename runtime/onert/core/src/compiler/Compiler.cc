@@ -107,6 +107,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
 
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
+  util::Set<ir::OperandIndex> pkg_outputs_set;
   {
     model->iterate([&](const ir::SubgraphIndex &subg_index, ir::IGraph &graph) {
       auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
@@ -117,6 +118,24 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       tracing_ctx->setSubgraphIndex(&(lowered_subgs[subg_index]->graph()),
                                     {ir::ModelIndex{0}, subg_index});
     });
+
+    // Fill pkg_outputs map here because compile phase and lowering can change operand index
+    // It will be used after models clearing
+    if (_options->internal_output_alloc)
+    {
+      const auto &pkg_outputs = _nnpkg->model_edges().pkg_outputs;
+      for (const auto &desc : pkg_outputs)
+      {
+        // Only outputs of this entry
+        const auto &[m, s, io] = desc;
+        // Assume only primary subgraph can have package output
+        assert(m == ir::ModelIndex{0});
+        assert(s == ir::SubgraphIndex{0});
+        // Map IOIndex to OperandIndex
+        auto idx = lowered_subgs[ir::SubgraphIndex{0}]->graph().getOutputs().at(io);
+        pkg_outputs_set.add(idx);
+      }
+    }
   }
 
   // Models are not used anymore after lower phase. Reset them to save memory.
@@ -176,8 +195,9 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     args.options = _options;
     args.model_index = model_index;
     args.custom_kernel_builder = custom_kernel_builder;
-    if (_options->internal_output_alloc)
-      args.internal_io_indexes = _nnpkg->getPkgOutputs(model_index, subg_index);
+    const bool is_entry_executor = subg_index == ir::SubgraphIndex{0} ? true : false;
+    if (is_entry_executor && _options->internal_output_alloc)
+      args.internal_io_indexes = pkg_outputs_set;
     auto executor = std::unique_ptr<exec::IExecutor>{
       ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
     executor->setIndexedRanks(indexed_ranks);
