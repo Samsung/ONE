@@ -19,8 +19,8 @@
  * @brief This file contains Compiler class to define and run compilation phase
  */
 
-#ifndef __ONERT_COMPILER_MULTI_MODEL_COMPILER_H__
-#define __ONERT_COMPILER_MULTI_MODEL_COMPILER_H__
+#ifndef __ONERT_COMPILER_COMPILER_H__
+#define __ONERT_COMPILER_COMPILER_H__
 
 #include "compiler/CompilerOptions.h"
 #include "compiler/ICompiler.h"
@@ -72,4 +72,4 @@ private:
 
 } // namespace onert::compiler
 
-#endif // __ONERT_COMPILER_MULTI_MODEL_COMPILER_H__
+#endif // __ONERT_COMPILER_COMPILER_H__

@@ -21,7 +21,7 @@
 #include "ir/operation/BinaryArithmetic.h"
 #include "util/TracingCtx.h"
 
-#include "../compiler/MultiModelCompiler.h"
+#include "../compiler/Compiler.h"
 
 #include <gtest/gtest.h>
 #include <thread>

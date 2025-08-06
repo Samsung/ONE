@@ -16,7 +16,7 @@
 
 #include "compiler/CompilerFactory.h"
 
-#include "MultiModelCompiler.h"
+#include "Compiler.h"
 #include "train/TrainingCompiler.h"
 
 namespace onert::compiler

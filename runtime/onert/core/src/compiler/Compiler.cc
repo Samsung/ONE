@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "MultiModelCompiler.h"
+#include "Compiler.h"
 
 #include "CompilerHelpers.h"
 #include "ExecutorFactory.h"
