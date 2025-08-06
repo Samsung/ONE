@@ -15,6 +15,7 @@
  */
 
 #include "OMInterpreter.h"
+#include "arser/arser.h"
 
 #include <stdexcept>
 #include <cstdlib>
@@ -68,29 +69,39 @@ void writeDataToFile(const std::string &filename, const char *data, size_t data_
  */
 int entry(int argc, char **argv)
 {
-  // Parse command line arguments
-  if (argc < 2) {
-    std::cerr << "Usage: " << argv[0] << " [ <model_file> | <model_file> <input_prefix> <output_file> ]\n";
-    std::cerr << "Options:\n";
-    std::cerr << "  run w/o input/output file  : Generate random input data automatically\n";
-    std::cerr << "  <input_prefix>: Prefix for input files (e.g. 'input_' for input_0, input_1...)\n";
-    std::cerr << "  <output_file> : Output file name\n";
+  // Parse command line arguments using arser
+  arser::Arser arser;
+  arser.add_argument("--model")
+    .type(arser::DataType::STR)
+    .required(true)
+    .help("Path to model.circle file");
+  arser.add_argument("--input_prefix")
+    .type(arser::DataType::STR)
+    .help("Prefix for input files (generates random inputs if not provided)");
+  arser.add_argument("--output_prefix")
+    .type(arser::DataType::STR)
+    .help("Prefix for output files");
+
+  try {
+    arser.parse(argc, argv);
+  } catch (const std::runtime_error& err) {
+    std::cerr << err.what() << std::endl;
+    std::cerr << arser;
     return EXIT_FAILURE;
   }
 
-  const char* filename = argv[1];
-  bool auto_input = false;
-  const char* input_prefix = nullptr;
-  const char* output_file = nullptr;
-  int32_t num_inputs = 1; // Default number of inputs
-
-  // Check for --auto-input flag
-  if (argc == 2) {
-    auto_input = true;
-  } else if (argc >= 4) {
-    input_prefix = argv[2];
-    output_file = argv[3];
+  const auto filename = arser.get<std::string>("--model");
+  std::string input_prefix;
+  std::string output_prefix;
+  
+  if (arser["--input_prefix"]) {
+    input_prefix = arser.get<std::string>("--input_prefix");
   }
+  if (arser["--output_prefix"]) {
+    output_prefix = arser.get<std::string>("--output_prefix");
+  }
+  const bool auto_input = !arser["--input_prefix"];
+  int32_t num_inputs = 1; // Default number of inputs
 
   std::ifstream file(filename, std::ios::binary | std::ios::in);
   if (!file.good())
@@ -137,7 +148,7 @@ int entry(int argc, char **argv)
       if (auto_input) {
         generateRandomData(input_data, input_size);
       } else {
-        readDataFromFile(std::string(input_prefix) + std::to_string(i), 
+        readDataFromFile(input_prefix + std::to_string(i), 
                         input_data, input_size);
       }
     }
@@ -153,8 +164,8 @@ int entry(int argc, char **argv)
     auto data = interpreter.getOutputDataAt(i);
     size_t output_size = interpreter.getOutputSizeAt(i);
 
-    if (output_file != nullptr) {
-      writeDataToFile(std::string(output_file) + std::to_string(i),
+    if (arser["--output_prefix"]) {
+      writeDataToFile(output_prefix + std::to_string(i),
                      reinterpret_cast<char*>(data), output_size);
     }
     // Otherwise, output remains in interpreter memory
