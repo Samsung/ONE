@@ -38,13 +38,13 @@ namespace onert::compiler
 {
 
 Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions *copts)
-  : _model{model}, _options{copts}
+  : _nnpkg{std::make_shared<ir::NNPkg>(model)}, _options{copts}
 {
   // DO NOTHING
 }
 
 Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts)
-  : _model{nnpkg->primary_model()}, _options{copts}
+  : _nnpkg{nnpkg}, _options{copts}
 {
   // Use for single model only
   assert(nnpkg->model_count() == 1);
@@ -58,6 +58,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   if (!_options)
     throw std::runtime_error{"Empty compile option"};
 
+  auto model = _nnpkg->model(ir::ModelIndex{0});
+
   // Mode check
   // TODO handle option for each model
   if (_options->he_profiling_mode)
@@ -69,7 +71,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
   }
 
-  if (!_model->hasOnly<ir::Graph>())
+  if (!model->hasOnly<ir::Graph>())
   {
     throw std::runtime_error("Compiler can only compile models for inference.");
   }
@@ -77,9 +79,9 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   _options->forceInternalOptions();
   _options->verboseOptions();
 
-  auto custom_kernel_builder = _model->getKernelBuilder();
+  auto custom_kernel_builder = model->getKernelBuilder();
 
-  _model->iterate([&](const ir::SubgraphIndex &, ir::IGraph &graph) {
+  model->iterate([&](const ir::SubgraphIndex &, ir::IGraph &graph) {
     auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
 
     // Mandatory passes
@@ -106,7 +108,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
   {
-    _model->iterate([&](const ir::SubgraphIndex &subg_index, ir::IGraph &graph) {
+    model->iterate([&](const ir::SubgraphIndex &subg_index, ir::IGraph &graph) {
       auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
 
       // Lower: Assign backend
@@ -117,7 +119,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     });
   }
 
-  _model.reset();
+  if (!_options->internal_output_alloc)
+    _nnpkg.reset();
 
   for (const auto &[subg_index, lowered_subg] : lowered_subgs)
   {
@@ -174,10 +177,8 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     args.model_index = model_index;
     args.custom_kernel_builder = custom_kernel_builder;
     const bool is_entry_executor = subg_index == ir::SubgraphIndex{0} ? true : false;
-    if (is_entry_executor && _options->internal_output_alloc)
-      for (const auto &output :
-           lowered_subg->graph().getOutputs() | ir::Remove::UNDEFINED | ir::Remove::DUPLICATED)
-        args.internal_io_indexes.add(output);
+    if (_options->internal_output_alloc)
+      args.internal_io_indexes = _nnpkg->getPkgOutputs(model_index, subg_index);
     auto executor = std::unique_ptr<exec::IExecutor>{
       ExecutorFactory::get().create(std::move(lowered_subg), executors, args)};
     executor->setIndexedRanks(indexed_ranks);

@@ -63,7 +63,7 @@ public:
   std::shared_ptr<CompilerArtifact> compile(void);
 
 private:
-  std::shared_ptr<ir::Model> _model;
+  std::shared_ptr<ir::NNPkg> _nnpkg;
   CompilerOptions *_options;
 };
 
