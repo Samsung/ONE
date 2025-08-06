@@ -43,6 +43,13 @@ MultiModelCompiler::MultiModelCompiler(std::unique_ptr<ir::NNPkg> nnpkg, Compile
   // DO NOTHING
 }
 
+MultiModelCompiler::MultiModelCompiler(const std::shared_ptr<ir::Model> &model,
+                                       CompilerOptions *copts)
+  : _nnpkg{std::make_unique<ir::NNPkg>(model)}, _options{copts}
+{
+  // DO NOTHING
+}
+
 CompilerOptions MultiModelCompiler::optionForSingleModel(const ir::ModelIndex &model_index)
 {
   CompilerOptions model_opts = CompilerOptions(*_options); // Copy options

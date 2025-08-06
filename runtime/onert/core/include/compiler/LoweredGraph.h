@@ -17,10 +17,10 @@
 #ifndef __ONERT_COMPILER_LOWERED_GRAPH_H__
 #define __ONERT_COMPILER_LOWERED_GRAPH_H__
 
-#include "compiler/BackendResolver.h"
-#include "compiler/Compiler.h"
-#include "compiler/GraphLowerInfo.h"
-#include "compiler/ILoweredGraph.h"
+#include "BackendResolver.h"
+#include "CompilerOptions.h"
+#include "GraphLowerInfo.h"
+#include "ILoweredGraph.h"
 #include "ir/Graph.h"
 
 namespace onert::compiler
