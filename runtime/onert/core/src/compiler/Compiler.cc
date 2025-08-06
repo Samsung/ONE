@@ -38,16 +38,16 @@ namespace onert::compiler
 {
 
 Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions *copts)
-  : _nnpkg{std::make_shared<ir::NNPkg>(model)}, _options{copts}
+  : _nnpkg{std::make_unique<ir::NNPkg>(model)}, _options{copts}
 {
   // DO NOTHING
 }
 
-Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts)
-  : _nnpkg{nnpkg}, _options{copts}
+Compiler::Compiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts)
+  : _nnpkg{std::move(nnpkg)}, _options{copts}
 {
   // Use for single model only
-  assert(nnpkg->model_count() == 1);
+  assert(_nnpkg->model_count() == 1);
 }
 
 std::shared_ptr<CompilerArtifact> Compiler::compile(void)
