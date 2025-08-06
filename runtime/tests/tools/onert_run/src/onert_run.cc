@@ -389,8 +389,8 @@ int main(const int argc, char **argv)
         nnfw_set_output(session, i, ti.dtype, outputs[i].data(), output_size_in_bytes));
     }
 
-    const std::string trace_enable = std::getenv("TRACING_MODE");
-    if (trace_enable == "1")
+    if (const char *trace_enable = std::getenv("TRACING_MODE");
+        trace_enable != nullptr && std::string(trace_enable) == "1")
       NNPR_ENSURE_STATUS(nnfw_set_execute_config(session, NNFW_RUN_CONFIG_TRACE, nullptr));
 
     // NOTE: Measuring memory can't avoid taking overhead. Therefore, memory will be measured on the
