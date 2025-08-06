@@ -15,6 +15,7 @@
  */
 
 #include "OMInterpreter.h"
+#include "arser/arser.h"
 
 #include <stdexcept>
 #include <cstdlib>
@@ -22,11 +23,21 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <random>
 
 namespace
 {
 
 using DataBuffer = std::vector<char>;
+
+void generateRandomData(char *data, size_t data_size)
+{
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<uint8_t> dist(0, 255);
+  for (size_t i = 0; i < data_size; ++i)
+    data[i] = static_cast<char>(dist(gen));
+}
 
 void readDataFromFile(const std::string &filename, char *data, size_t data_size)
 {
@@ -58,18 +69,42 @@ void writeDataToFile(const std::string &filename, const char *data, size_t data_
  */
 int entry(int argc, char **argv)
 {
-  if (argc != 5)
+  // Parse command line arguments using arser
+  arser::Arser arser;
+  arser.add_argument("--model")
+    .type(arser::DataType::STR)
+    .required(true)
+    .help("Path to model.circle file");
+  arser.add_argument("--input_prefix")
+    .type(arser::DataType::STR)
+    .help("Prefix for input files (generates random inputs if not provided)");
+  arser.add_argument("--output_prefix").type(arser::DataType::STR).help("Prefix for output files");
+
+  try
   {
-    std::cerr
-      << "Usage: " << argv[0]
-      << " <path/to/circle/model> <num_inputs> <path/to/input/prefix> <path/to/output/file>\n";
+    arser.parse(argc, argv);
+  }
+  catch (const std::runtime_error &err)
+  {
+    std::cerr << err.what() << std::endl;
+    std::cerr << arser;
     return EXIT_FAILURE;
   }
 
-  const char *filename = argv[1];
-  const int32_t num_inputs = atoi(argv[2]);
-  const char *input_prefix = argv[3];
-  const char *output_file = argv[4];
+  const auto filename = arser.get<std::string>("--model");
+  std::string input_prefix;
+  std::string output_prefix;
+
+  if (arser["--input_prefix"])
+  {
+    input_prefix = arser.get<std::string>("--input_prefix");
+  }
+  if (arser["--output_prefix"])
+  {
+    output_prefix = arser.get<std::string>("--output_prefix");
+  }
+  const bool auto_input = !arser["--input_prefix"];
+  int32_t num_inputs = 1; // Default number of inputs
 
   std::ifstream file(filename, std::ios::binary | std::ios::in);
   if (!file.good())
@@ -98,6 +133,8 @@ int entry(int argc, char **argv)
   onert_micro::OMConfig config;
   interpreter.importModel(model_data.data(), config);
 
+  num_inputs = interpreter.getNumberOfInputs(); // To initialize input buffers
+
   // Set input.
   // Data for n'th input is read from ${input_prefix}n
   // (ex: Add.circle.input0, Add.circle.input1 ..)
@@ -109,8 +146,16 @@ int entry(int argc, char **argv)
     for (int32_t i = 0; i < num_inputs; i++)
     {
       auto input_data = reinterpret_cast<char *>(interpreter.getInputDataAt(i));
-      readDataFromFile(std::string(input_prefix) + std::to_string(i), input_data,
-                       interpreter.getInputSizeAt(i) * sizeof(float));
+      size_t input_size = interpreter.getInputSizeAt(i);
+
+      if (auto_input)
+      {
+        generateRandomData(input_data, input_size);
+      }
+      else
+      {
+        readDataFromFile(input_prefix + std::to_string(i), input_data, input_size);
+      }
     }
 
     // Do inference.
@@ -122,11 +167,14 @@ int entry(int argc, char **argv)
   for (int i = 0; i < num_outputs; i++)
   {
     auto data = interpreter.getOutputDataAt(i);
+    size_t output_size = interpreter.getOutputSizeAt(i);
 
-    // Output data is written in ${output_file}
-    // (ex: Add.circle.output0)
-    writeDataToFile(std::string(output_file) + std::to_string(i), reinterpret_cast<char *>(data),
-                    interpreter.getOutputSizeAt(i) * sizeof(float));
+    if (arser["--output_prefix"])
+    {
+      writeDataToFile(output_prefix + std::to_string(i), reinterpret_cast<char *>(data),
+                      output_size);
+    }
+    // Otherwise, output remains in interpreter memory
   }
   interpreter.reset();
   return EXIT_SUCCESS;
