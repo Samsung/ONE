@@ -32,6 +32,7 @@ public:
   static CompilerFactory &get();
 
 public:
+  // TODO Compiler should explicitly get ownership nnpkg without sharing by unique_ptr
   std::unique_ptr<ICompiler> create(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts,
                                     const ir::train::TrainingInfo *training_info = nullptr);
 

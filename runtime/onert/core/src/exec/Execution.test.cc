@@ -221,7 +221,10 @@ public:
 public:
   void compile()
   {
-    auto compiler = onert::compiler::CompilerFactory::get().create(nnpkg, coptions.get());
+    // To support multiple compilation,
+    // it needs to copy nnpkg because compiler changes nnpkg during compilation.
+    auto compiler = onert::compiler::CompilerFactory::get().create(
+      std::make_shared<onert::ir::NNPkg>(*nnpkg), coptions.get());
     artifact = compiler->compile();
   }
 
