@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
  * Copyright 2020 The TensorFlow Authors. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,6 +19,9 @@
 #define ONERT_MICRO_PAL_REDUCE_COMMON_H
 
 #include "PALUtils.h"
+#include "core/OMCustomRuntimeData.h"
+
+using namespace onert_micro::core;
 
 namespace onert_micro
 {
@@ -26,6 +29,32 @@ namespace execute
 {
 namespace pal
 {
+
+// clang-format off
+
+// ------------------------------------------------------------------------------------------------
+
+template <class T>
+struct ReduceSumFn
+{
+  T operator()(const T current, const T in)
+  {
+    return in + current;
+  }
+};
+
+template <>
+struct ReduceSumFn<int8_t>
+{
+  float operator()(const float current, const float in)
+  {
+    return in + current;
+  }
+};
+
+// ------------------------------------------------------------------------------------------------
+
+// clang-format on
 
 // This method parses the input 'axis' to remove duplicates and handle negative
 // values, and returns a valid 'out_axis'
@@ -71,6 +100,9 @@ inline bool resolveAxis(const int num_dims, const int *axis, const int64_t num_a
   return true;
 }
 
+// ------------------------------------------------------------------------------------------------
+
+// Old version (used in Sum and ReduceProd), to be replaced with the new one (see below).
 // Computes the generic value (i.e., sum/max/min/prod) of elements across
 // dimensions given in axis. It needs to pass in init_value and reducer.
 template <typename T>
@@ -128,22 +160,97 @@ inline bool reduceSumImpl(const T *input_data, const int *input_dims, const int 
                           [](const T current, const T in) -> T { return in + current; });
 }
 
-template <typename T>
-inline bool Mean(const int *input_dims, const T *input_data, const int input_num_dims,
-                 T *output_data, const int num_outputs, const int *axis,
-                 const int num_axis_dimensions)
+// ------------------------------------------------------------------------------------------------
+
+// New version (used in Mean).
+template <typename T, class ReduceFn> bool ReduceGeneric(OMReduceDataContext<T> &ctx, T init_value)
 {
-  if (!reduceSumImpl<T>(input_data, input_dims, input_num_dims, output_data, axis,
-                        num_axis_dimensions, num_outputs))
+  auto &input = ctx.Input();
+  auto &input_data = input.Data();
+  auto input_dims = input.Dims();
+  auto input_num_dims = input.DimsCount();
+
+  auto &output = ctx.Output();
+  auto &output_data = output.Data();
+  auto output_flat_size = output.ShapeFlatSize();
+
+  auto &axis_ctx = ctx.Axis();
+  auto &axis = axis_ctx.Data();
+  auto num_axis_dimensions = axis_ctx.DimsCount();
+
+  // Return early when input shape has zero dim.
+  for (size_t i = 0; i < input_num_dims; ++i)
+  {
+    if (input_dims[i] == 0)
+      return false;
+  }
+
+  for (size_t idx = 0; idx < output_flat_size; ++idx)
+  {
+    output_data.Get()[idx] = init_value;
+  }
+
+  // Resolve axis.
+  int num_resolved_axis = 0;
+  int resolved_axis[2];
+
+  if (!resolveAxis(input_num_dims, axis.Get(), num_axis_dimensions, resolved_axis,
+                   &num_resolved_axis))
   {
     return false;
   }
+
+  int temp_index[5];
+  // Reset input iterator.
+  for (size_t idx = 0; idx < input_num_dims; ++idx)
+  {
+    temp_index[idx] = 0;
+  }
+
+  // Iterate through input_data.
+  do
+  {
+    size_t input_offset = reducedOutputOffset(input_num_dims, input_dims, temp_index, 0, nullptr);
+    size_t output_offset =
+      reducedOutputOffset(input_num_dims, input_dims, temp_index, num_resolved_axis, axis.Get());
+
+    ReduceFn reducer;
+    auto value = reducer(output_data.ValueAt(output_offset), input_data.ValueAt(input_offset));
+    output_data.SetValueAt(output_offset, value);
+
+  } while (nextIndex(input_num_dims, input_dims, temp_index));
+
+  return true;
+}
+
+// ------------------------------------------------------------------------------------------------
+
+template <typename T> bool Mean(OMReduceDataContext<T> &ctx)
+{
+  constexpr static T kInitValue = T(0);
+
+  if (!ReduceGeneric<T, ReduceSumFn<T>>(ctx, kInitValue))
+  {
+    return false;
+  }
+
+  auto &input = ctx.Input();
+  auto input_dims = input.Dims();
+  auto input_num_dims = input.DimsCount();
+
+  auto &output = ctx.Output();
+  auto &output_data = output.Data();
+  auto num_outputs = output.ShapeFlatSize();
+
+  auto &axis = ctx.Axis().Data();
+  auto num_axis_dimensions = ctx.Axis().DimsCount();
 
   // Resolve axis again for computing mean
   int num_resolved_axis = 0;
   int resolved_axis[2];
 
-  if (!resolveAxis(input_num_dims, axis, num_axis_dimensions, resolved_axis, &num_resolved_axis))
+  if (!resolveAxis(input_num_dims, axis.Get(), num_axis_dimensions, resolved_axis,
+                   &num_resolved_axis))
   {
     return false;
   }
@@ -165,7 +272,9 @@ inline bool Mean(const int *input_dims, const T *input_data, const int input_num
   {
     for (size_t idx = 0; idx < num_outputs; ++idx)
     {
-      output_data[idx] = static_cast<T>(output_data[idx] / static_cast<T>(num_elements_in_axis));
+      auto value = output_data.ValueAt(idx);
+      value /= static_cast<T>(num_elements_in_axis);
+      output_data.SetAt(idx, value);
     }
   }
   return true;
