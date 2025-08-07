@@ -113,6 +113,9 @@ using IterFunc = std::function<void(uint32_t *, loco::TensorShape &, int32_t)>;
 void iterate_per_channel(CircleConst *node, int32_t &channel_dim_index, IterFunc func);
 void iterate_per_channel(CircleConst *node, IterFunc func);
 
+// Throw exception if constant node contains quantization-unfrinedly values
+void check_quant_unfriendly_values(const luci::CircleConst *node);
+
 } // namespace luci
 
 #endif // __LUCI_QUANTIZATION_UTILS_H__

@@ -77,6 +77,8 @@ namespace luci
 
 void QuantizeWeightsOnly::quantize_weights(luci::CircleConst *weights)
 {
+  check_quant_unfriendly_values(weights);
+
   // Find min/max per channel-wise
   if (granularity == QuantizationGranularity::ChannelWise)
   {

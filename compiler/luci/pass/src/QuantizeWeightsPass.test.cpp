@@ -17,6 +17,8 @@
 #include "luci/Pass/QuantizeWeightsPass.h"
 #include <luci/IR/CircleNodes.h>
 
+#include <limits>
+
 #include <gtest/gtest.h>
 
 namespace
@@ -70,6 +72,8 @@ struct QuantizeWeightsPassTest : public ::testing::Test
     conv->dtype(loco::DataType::FLOAT32);
     conv->name("nconv");
 
+    _conv_weight = weight;
+
     // CircleOutput
     auto output = _g.nodes()->create<luci::CircleOutput>();
     output->index(graph_output->index());
@@ -80,6 +84,8 @@ struct QuantizeWeightsPassTest : public ::testing::Test
   }
   virtual void SetUp() { MakeGraph(); }
   loco::Graph _g;
+
+  luci::CircleConst *_conv_weight = nullptr;
 };
 
 } // namespace
@@ -119,5 +125,17 @@ TEST_F(QuantizeWeightsPassTest, run_output_f32_NEG)
   loco::Graph g;
   luci::QuantizeWeightsPass pass(loco::DataType::FLOAT32, loco::DataType::FLOAT32,
                                  luci::QuantizationGranularity::ChannelWise);
+  EXPECT_THROW(pass.run(&_g), std::runtime_error);
+}
+
+TEST_F(QuantizeWeightsPassTest, inf_weights_NEG)
+{
+  luci::QuantizeWeightsPass pass(loco::DataType::FLOAT32, loco::DataType::U8,
+                                 luci::QuantizationGranularity::ChannelWise);
+
+  _conv_weight->at<loco::DataType::FLOAT32>(0) = std::numeric_limits<float>::lowest();
+  EXPECT_THROW(pass.run(&_g), std::runtime_error);
+
+  _conv_weight->at<loco::DataType::FLOAT32>(0) = std::numeric_limits<float>::max();
   EXPECT_THROW(pass.run(&_g), std::runtime_error);
 }

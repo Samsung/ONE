@@ -651,4 +651,23 @@ void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vec
   iterate_per_channel(node, channel_dim_index, cal_minmax);
 }
 
+void check_quant_unfriendly_values(const luci::CircleConst *node)
+{
+  assert(node); // FIX_CALLER_UNLESS
+
+  if (node->dtype() != loco::DataType::FLOAT32)
+    return;
+
+  for (uint32_t i = 0; i < node->size<loco::DataType::FLOAT32>(); i++)
+  {
+    const auto val = node->at<loco::DataType::FLOAT32>(i);
+
+    if (val == std::numeric_limits<float>::lowest())
+      throw std::runtime_error(node->name() + " includes -inf");
+
+    if (val == std::numeric_limits<float>::max())
+      throw std::runtime_error(node->name() + " includes inf");
+  }
+}
+
 } // namespace luci
