@@ -18,6 +18,7 @@
 
 #include "OMQuantizationData.h"
 
+#include <map>
 #include <memory>
 #include <type_traits>
 
@@ -40,7 +41,7 @@ private:
   T *_data = nullptr;
   size_t _size = 0;
   QuantDataPtr _quant = {};
-  std::vector<float> _float_data = {};
+  std::map<size_t, float> _out_float_data = {};
 
 public:
   OMTensorData(T *data, const circle::Tensor *tensor)
@@ -54,7 +55,6 @@ public:
     if (IsQuantized<T>)
     {
       _quant = std::make_unique<QuantData>(_data, tensor);
-      _float_data.resize(_size, 0.f);
     }
   }
 
@@ -70,10 +70,16 @@ public:
 
 public:
   template <typename U = T>
-  constexpr static bool IsInputData = std::is_const<U>::value;
+  constexpr static bool HasConstData = std::is_const<U>::value;
 
   template <typename U = T>
-  constexpr static bool IsOutputData = !IsInputData<U>;
+  constexpr static bool HasNonConstData = !HasConstData<U>;
+
+  template <typename U = T>
+  constexpr static bool HasQuantizedConstData = IsQuantized<U> && HasConstData<U>;
+
+  template <typename U = T>
+  constexpr static bool HasQuantizedNonConstData = IsQuantized<U> && HasNonConstData<U>;
 
 public:
   bool IsNull() const noexcept
@@ -114,17 +120,21 @@ public:
   }
 
   template <typename U = T>
-  std::enable_if_t<IsQuantized<U> && IsInputData<U>, float> ValueAt(size_t idx) const
+  std::enable_if_t<HasQuantizedConstData<U>, float> ValueAt(size_t idx) const
   {
     CheckIndex(idx);
     return _quant->DataAt(idx);
   }
 
   template <typename U = T>
-  std::enable_if_t<IsQuantized<U> && IsOutputData<U>, float> ValueAt(size_t idx) const
+  std::enable_if_t<HasQuantizedNonConstData<U>, float> ValueAt(size_t idx) const
   {
     CheckIndex(idx);
-    return _float_data[idx];
+
+    if (_out_float_data.count(idx) == 0)
+      return 0.f;
+
+    return _out_float_data.at(idx);
   }
 
 public:
@@ -135,10 +145,10 @@ public:
   }
 
   template <typename U = T>
-  std::enable_if_t<IsQuantized<U>> SetValueAt(size_t idx, float value)
+  std::enable_if_t<HasQuantizedNonConstData<U>> SetValueAt(size_t idx, float value)
   {
     CheckIndex(idx);
-    _float_data[idx] = value;
+    _out_float_data[idx] = value;
   }
 
 private:

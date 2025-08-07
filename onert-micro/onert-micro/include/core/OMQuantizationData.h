@@ -45,19 +45,21 @@ private:
   T *_data = nullptr;
   const circle::QuantizationParameters *_params = nullptr;
   QuantizationType _type = LWQ;
-  size_t _depth = 0;
 
 public:
-  OMQuantizationData(T *data, const circle::Tensor *tensor, size_t depth = 0)
+  OMQuantizationData(T *data, const circle::Tensor *tensor)
     : _data(data)
-    , _type(depth > 0 ? CWQ : LWQ)
-    , _depth(depth)
   {
     assert(data != nullptr);
     assert(tensor != nullptr);
     assert(tensor->quantization() != nullptr);
 
     _params = tensor->quantization();
+    
+    if (Scales().Length() > 1)
+    {
+      _type = CWQ;
+    }
   }
 
 public:
@@ -92,8 +94,8 @@ public:
   T Quantize(float value)
   {
     float fvalue = value / ScaleAt(0) + ZeroPointAt(0);
-    T qvalue = static_cast<T>(std::round(fvalue));
-    return Clamp(qvalue);
+    T qvalue = Clamp(std::round(fvalue));
+    return qvalue;
   }
 
 public:
@@ -108,12 +110,17 @@ public:
   }
 
 private:
-  T Clamp(T value)
+  T Clamp(float value)
   {
-    constexpr static T kMinValue = std::numeric_limits<T>::min();
-    constexpr static T kMaxValue = std::numeric_limits<T>::max();
+    using limits = std::numeric_limits<T>;
 
-    return std::min(std::max(value, kMinValue), kMaxValue);
+    constexpr static auto kMin = static_cast<float>(limits::min());
+    constexpr static auto kMax = static_cast<float>(limits::max());
+
+    value = std::max(value, kMin);
+    value = std::min(value, kMax);
+
+    return static_cast<T>(value);
   }
 };
 
