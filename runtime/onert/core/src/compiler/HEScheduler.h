@@ -29,7 +29,7 @@
 
 #include <backend/Backend.h>
 #include <compiler/BackendManager.h>
-#include <compiler/Compiler.h>
+#include <compiler/CompilerOptions.h>
 #include <ir/Graph.h>
 #include <ir/OperationIndexMap.h>
 

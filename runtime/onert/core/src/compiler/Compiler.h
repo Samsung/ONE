@@ -22,8 +22,8 @@
 #ifndef __ONERT_COMPILER_COMPILE_H_
 #define __ONERT_COMPILER_COMPILE_H_
 
-#include "CompilerOptions.h"
-#include "ICompiler.h"
+#include "compiler/CompilerOptions.h"
+#include "compiler/ICompiler.h"
 #include "ir/NNPkg.h"
 
 namespace onert::compiler

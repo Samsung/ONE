@@ -16,6 +16,7 @@
 
 #include "ANeuralNetworksCompilation.h"
 
+#include "compiler/CompilerFactory.h"
 #include "util/logging.h"
 
 using namespace onert;
@@ -23,7 +24,8 @@ using namespace onert;
 // TODO Support multiple subgraphs
 ANeuralNetworksCompilation::ANeuralNetworksCompilation(const ANeuralNetworksModel *model)
   : _model{model->getModel()}, _coptions{compiler::CompilerOptions::fromGlobalConfig()},
-    _compiler{std::make_shared<compiler::Compiler>(_model, _coptions.get())}
+    _compiler{
+      compiler::CompilerFactory::get().create(std::make_shared<ir::NNPkg>(_model), _coptions.get())}
 {
   if (model->allowedToFp16())
     _coptions->fp16_enable = true;
