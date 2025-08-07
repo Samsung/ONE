@@ -1,0 +1,97 @@
+#!/bin/bash
+
+# Environment variables to override
+#   COVERAGE_RPATH : folder where coverage report is generatged,
+#                    default is 'coverage'
+#   COVERAGE_PATH  : path where coverage report is generated,
+#                    default is ${PROJECT_PATH}/${COVERAGE_RPATH}
+
+PROJECT_PATH="$(cd $(dirname ${BASH_SOURCE[0]})/../.. && pwd)"
+
+# Set BUILD_WORKSPACE_RPATH with default 'build/coverage' if not set
+BUILD_WORKSPACE_RPATH="${BUILD_WORKSPACE_RPATH:-build/coverage}"
+
+# Set BUILD_WORKSPACE_PATH with environment override, or default to PROJECT_PATH/BUILD_WORKSPACE_RPATH
+if [[ -z "${BUILD_WORKSPACE_PATH}" ]]; then
+  BUILD_WORKSPACE_PATH="${PROJECT_PATH}/${BUILD_WORKSPACE_RPATH}"
+fi
+
+LCOV_PATH=$(command -v lcov)
+GENHTML_PATH=$(command -v genhtml)
+GCOV_PATH=$(command -v gcov)
+
+if [[ -z "${LCOV_PATH}" ]]; then
+  echo "ERROR: 'lcov' is not found"
+  exit 255
+fi
+
+if [[ -z "${GENHTML_PATH}" ]]; then
+  echo "ERROR: 'genhtml' is not found"
+  exit 255
+fi
+
+if [[ -z "${GCOV_PATH}" ]]; then
+  echo "ERROR: 'gcov' is not found"
+  exit 255
+fi
+
+OUTPUT_TAG="${COVERAGE_RPATH:-coverage}"
+OUTPUT_PATH="${COVERAGE_PATH:-${PROJECT_PATH}/${OUTPUT_TAG}}"
+
+if [[ -e "${OUTPUT_PATH}" ]]; then
+  echo "ERROR: '${OUTPUT_PATH}' exists."
+  echo "       remove '${OUTPUT_PATH}' and try again."
+  exit 255
+fi
+
+mkdir -p "${OUTPUT_PATH}"
+
+RAW_BASE_COVERAGE_INFO_PATH="${OUTPUT_PATH}/coverage.base.raw.info"
+RAW_TEST_COVERAGE_INFO_PATH="${OUTPUT_PATH}/coverage.test.raw.info"
+RAW_COVERAGE_INFO_PATH="${OUTPUT_PATH}/coverage.raw.info"
+EXTRACTED_COVERAGE_INFO_PATH="${OUTPUT_PATH}/coverage.extracted.info"
+EXCLUDED_COVERAGE_INFO_PATH="${OUTPUT_PATH}/coverage.excluded.info"
+COVERAGE_INFO_PATH="${OUTPUT_PATH}/coverage.info"
+HTML_PATH="${OUTPUT_PATH}/html"
+
+CANDIDATES=()
+SRC_PREFIX=${SRC_PREFIX:-${PROJECT_PATH}}
+
+for CANDIDATE in "$@";
+do
+  CANDIDATES+=("${SRC_PREFIX}/${CANDIDATE}/*")
+done
+
+# Capture initial zero coverage data
+echo "#---- capture initial data"
+"${LCOV_PATH}" -c -i -d "${BUILD_WORKSPACE_PATH}" --gcov-tool ${GCOV_PATH} \
+  -o "${RAW_BASE_COVERAGE_INFO_PATH}"
+
+# Capture tests coverage data
+echo "#---- capture tests data"
+"${LCOV_PATH}" -c -d "${BUILD_WORKSPACE_PATH}" --gcov-tool ${GCOV_PATH} \
+  -o "${RAW_TEST_COVERAGE_INFO_PATH}"
+
+# Append zero coverage data and tests coverage data
+echo "#----  append zero and tests data"
+"${LCOV_PATH}" -o "${RAW_COVERAGE_INFO_PATH}" \
+  -a "${RAW_BASE_COVERAGE_INFO_PATH}" \
+  -a "${RAW_TEST_COVERAGE_INFO_PATH}"
+
+# Extract only source files of circle-mlir
+echo "#---- extract '${CANDIDATES[@]}'"
+"${LCOV_PATH}" -o "${EXTRACTED_COVERAGE_INFO_PATH}" \
+  -e "${RAW_COVERAGE_INFO_PATH}" "${CANDIDATES[@]}"
+
+# Exclude test files from coverage report
+"${LCOV_PATH}" -o "${EXCLUDED_COVERAGE_INFO_PATH}" \
+  -r "${EXTRACTED_COVERAGE_INFO_PATH}" \
+  '*.test.cpp' '*/test/*' '*/tests/*'
+
+# Final coverage data
+cp -v ${EXCLUDED_COVERAGE_INFO_PATH} ${COVERAGE_INFO_PATH}
+
+# Gen html
+"${GENHTML_PATH}" "${COVERAGE_INFO_PATH}" \
+  --prefix "${PROJECT_PATH}" \
+  --output-directory "${HTML_PATH}"
