@@ -16,11 +16,12 @@
 
 #include "exec/Execution.h"
 
-#include "compiler/Compiler.h"
 #include "compiler/CompilerFactory.h"
 #include "ir/Graph.h"
 #include "ir/operation/BinaryArithmetic.h"
 #include "util/TracingCtx.h"
+
+#include "../compiler/Compiler.h"
 
 #include <gtest/gtest.h>
 #include <thread>
@@ -221,7 +222,9 @@ public:
 public:
   void compile()
   {
-    auto compiler = onert::compiler::CompilerFactory::get().create(nnpkg, coptions.get());
+    // Compile copied nnpkg to handle multiple compilation
+    auto compiler = onert::compiler::CompilerFactory::get().create(
+      std::make_unique<onert::ir::NNPkg>(*nnpkg), coptions.get());
     artifact = compiler->compile();
   }
 

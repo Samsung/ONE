@@ -41,7 +41,7 @@
 namespace onert::compiler::train
 {
 
-TrainingCompiler::TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts,
+TrainingCompiler::TrainingCompiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts,
                                    const ir::train::TrainingInfo &training_info)
   : _model{nnpkg->primary_model()}, _options{copts}, _training_info{training_info}
 {

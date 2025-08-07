@@ -89,8 +89,17 @@ public:
   NNPkg &operator=(const NNPkg &) = default;
   NNPkg &operator=(NNPkg &&) = default;
   ~NNPkg() = default;
+  NNPkg(std::shared_ptr<Model> model)
+  {
+    _models[ModelIndex{0}] = model;
 
-  NNPkg(std::shared_ptr<Model> model) { _models[ModelIndex{0}] = model; }
+    // Fill pkg_inputs and pkg_outputs with primary model's inputs and outputs
+    for (uint32_t i = 0; i < model->primary_subgraph()->getInputs().size(); i++)
+      _edges.pkg_inputs.emplace_back(0, 0, IOIndex{i});
+    for (uint32_t i = 0; i < model->primary_subgraph()->getOutputs().size(); i++)
+      _edges.pkg_outputs.emplace_back(0, 0, IOIndex{i});
+  }
+
   std::shared_ptr<Model> primary_model() const { return _models.at(onert::ir::ModelIndex{0}); }
 
   /**
@@ -291,6 +300,12 @@ public:
    * TODO:  Support multiple models
    */
   void replaceModel(std::shared_ptr<Model> model) { _models[ModelIndex{0}] = model; }
+
+  /**
+   * @brief Reset models to empty state (no model)
+   *        This is useful when we want to reduce the memory usage
+   */
+  void resetModels() { _models.clear(); }
 
   // TODO: Add iterate() or getter for edges
 

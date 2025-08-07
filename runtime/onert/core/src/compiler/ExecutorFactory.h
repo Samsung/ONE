@@ -25,6 +25,7 @@
 #include "compiler/train/LoweredTrainableGraph.h"
 #include "exec/IExecutors.h"
 #include "ir/train/TrainingInfo.h"
+#include "util/TracingCtx.h"
 
 #include <deque>
 #include <unordered_map>
