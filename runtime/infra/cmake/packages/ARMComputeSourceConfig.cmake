@@ -8,7 +8,7 @@ function(_ARMComputeSource_import)
   nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  set(ARMCOMPUTE_URL ${EXTERNAL_DOWNLOAD_SERVER}/ARM-software/ComputeLibrary/archive/v24.07.tar.gz)
+  set(ARMCOMPUTE_URL ${EXTERNAL_DOWNLOAD_SERVER}/ARM-software/ComputeLibrary/archive/v52.3.0.tar.gz)
   ExternalSource_Download(ARMCOMPUTE ${ARMCOMPUTE_URL})
 
   set(ARMComputeSource_DIR ${ARMCOMPUTE_SOURCE_DIR} PARENT_SCOPE)
