@@ -37,6 +37,8 @@ namespace pal
 template <class T>
 struct ReduceSumFn
 {
+  constexpr static T InitValue = T(0);
+
   T operator()(const T current, const T in)
   {
     return in + current;
@@ -46,9 +48,35 @@ struct ReduceSumFn
 template <>
 struct ReduceSumFn<int8_t>
 {
+  constexpr static float InitValue = 0.f;
+
   float operator()(const float current, const float in)
   {
     return in + current;
+  }
+};
+
+// ------------------------------------------------------------------------------------------------
+
+template <typename T>
+struct ReduceProductFn
+{
+  constexpr static T InitValue = T(1);
+
+  T operator()(const T current, const T in)
+  {
+    return in * current;
+  }
+};
+
+template <>
+struct ReduceProductFn<int8_t>
+{
+  constexpr static float InitValue = 1.f;
+
+  float operator()(const float current, const float in)
+  {
+    return in * current;
   }
 };
 
@@ -163,7 +191,8 @@ inline bool reduceSumImpl(const T *input_data, const int *input_dims, const int 
 // ------------------------------------------------------------------------------------------------
 
 // New version (used in Mean).
-template <typename T, class ReduceFn> bool ReduceGeneric(OMReduceDataContext<T> &ctx, T init_value)
+template <typename T, template <typename> class ReduceFn>
+bool ReduceGeneric(OMReduceDataContext<T> &ctx)
 {
   auto &input = ctx.Input();
   auto &input_data = input.Data();
@@ -187,7 +216,7 @@ template <typename T, class ReduceFn> bool ReduceGeneric(OMReduceDataContext<T> 
 
   for (size_t idx = 0; idx < output_flat_size; ++idx)
   {
-    output_data.Get()[idx] = init_value;
+    output_data.SetValueAt(idx, ReduceFn<T>::InitValue);
   }
 
   // Resolve axis.
@@ -214,7 +243,7 @@ template <typename T, class ReduceFn> bool ReduceGeneric(OMReduceDataContext<T> 
     size_t output_offset =
       reducedOutputOffset(input_num_dims, input_dims, temp_index, num_resolved_axis, axis.Get());
 
-    ReduceFn reducer;
+    ReduceFn<T> reducer;
     auto value = reducer(output_data.ValueAt(output_offset), input_data.ValueAt(input_offset));
     output_data.SetValueAt(output_offset, value);
 
@@ -225,11 +254,10 @@ template <typename T, class ReduceFn> bool ReduceGeneric(OMReduceDataContext<T> 
 
 // ------------------------------------------------------------------------------------------------
 
-template <typename T> bool Mean(OMReduceDataContext<T> &ctx)
+template <typename T, template <typename> class ReduceFn>
+bool Reduce(OMReduceDataContext<T> &ctx, bool mean = false)
 {
-  constexpr static T kInitValue = T(0);
-
-  if (!ReduceGeneric<T, ReduceSumFn<T>>(ctx, kInitValue))
+  if (!ReduceGeneric<T, ReduceFn>(ctx))
   {
     return false;
   }
@@ -255,6 +283,26 @@ template <typename T> bool Mean(OMReduceDataContext<T> &ctx)
     return false;
   }
 
+  // clang-format off
+
+  auto fnReduceOutput = [&](size_t divide_by = 1)
+  {
+      for (size_t idx = 0; idx < num_outputs; ++idx)
+      {
+        auto value = output_data.ValueAt(idx);
+        value /= static_cast<T>(divide_by);
+        output_data.SetAt(idx, value);
+      }
+  };
+
+  // clang-format on
+
+  if (!mean)
+  {
+    fnReduceOutput();
+    return true;
+  }
+
   // Calculate mean by dividing output_data by num of aggregated element.
   size_t num_elements_in_axis = 1;
   for (int idx = 0; idx < num_resolved_axis; ++idx)
@@ -270,13 +318,9 @@ template <typename T> bool Mean(OMReduceDataContext<T> &ctx)
 
   if (num_elements_in_axis > 0)
   {
-    for (size_t idx = 0; idx < num_outputs; ++idx)
-    {
-      auto value = output_data.ValueAt(idx);
-      value /= static_cast<T>(num_elements_in_axis);
-      output_data.SetAt(idx, value);
-    }
+    fnReduceOutput(num_elements_in_axis);
   }
+
   return true;
 }
 

@@ -17,7 +17,6 @@
 #define ONERT_MICRO_CORE_QUANTIZATION_DATA_H
 
 #include "core/reader/OMCircleReader.h"
-#include "OMUtils.h"
 
 #include <cmath>
 #include <cstddef>
@@ -63,12 +62,12 @@ public:
   }
 
 public:
-  const flatbuffers::Vector<float>& Scales() const
+  const flatbuffers::Vector<float> &Scales() const
   {
     return *(_params->scale());
   }
 
-  const flatbuffers::Vector<int64_t>& ZeroPoint() const
+  const flatbuffers::Vector<int64_t> &ZeroPoint() const
   {
     return *(_params->zero_point());
   }
