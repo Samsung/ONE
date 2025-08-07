@@ -130,7 +130,7 @@ public:
 
   // clang-format off
 
-  bool isScalar() const
+  bool isScalar() const noexcept
   {
     return _is_scalar;
   }
@@ -145,7 +145,7 @@ public:
     return _dims.data();
   }
 
-  size_t dimensionsCount() const
+  size_t dimensionsCount() const noexcept
   {
     return _size;
   }
