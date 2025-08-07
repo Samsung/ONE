@@ -192,6 +192,12 @@ public:
   bool expected_fail_compile() const { return _expected_fail_compile; }
 
   /**
+   * @brief   Return small error is allowed
+   * @return  bool small error is allowed
+   */
+  bool allow_small_error() const { return _allow_small_error; }
+
+  /**
    * @brief Set the output buffer size of specified output tensor
    *        Note that output tensor size of a model with dynamic tensor is calculated while
    *        running the model.
@@ -263,6 +269,13 @@ public:
    */
   void expectFailExecution() { _expected_fail_execution = true; }
 
+  /**
+   * @brief Allow small error 1 in integer comparison (ex. acceptable quantization error)
+   *
+   * @param error acceptable error value for comparison
+   */
+  void allowSmallError() { _allow_small_error = true; }
+
 private:
   CircleBuffer _cbuf;
   std::vector<TestCaseData> _test_cases;
@@ -271,6 +284,7 @@ private:
   bool _expected_fail_model_load{false};
   bool _expected_fail_compile{false};
   bool _expected_fail_execution{false};
+  bool _allow_small_error = false;
 };
 
 /**
@@ -411,13 +425,13 @@ protected:
               break;
             case NNFW_TYPE_TENSOR_UINT8:
             case NNFW_TYPE_TENSOR_QUANT8_ASYMM:
-              compareBuffersExact<uint8_t>(ref_output, output, i);
+              compareBuffersExact<uint8_t>(ref_output, output, i, _context->allow_small_error());
               break;
             case NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
-              compareBuffersExact<int8_t>(ref_output, output, i);
+              compareBuffersExact<int8_t>(ref_output, output, i, _context->allow_small_error());
               break;
             case NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED:
-              compareBuffersExact<int16_t>(ref_output, output, i);
+              compareBuffersExact<int16_t>(ref_output, output, i, _context->allow_small_error());
               break;
             case NNFW_TYPE_TENSOR_INT32:
               compareBuffersExact<int32_t>(ref_output, output, i);
@@ -449,13 +463,16 @@ protected:
 private:
   template <typename T>
   void compareBuffersExact(const std::vector<uint8_t> &ref_buf, const std::vector<uint8_t> &act_buf,
-                           uint32_t index)
+                           uint32_t index, bool small_error = false)
   {
     for (uint32_t e = 0; e < ref_buf.size() / sizeof(T); e++)
     {
       T expected = reinterpret_cast<const T *>(ref_buf.data())[e];
       T actual = reinterpret_cast<const T *>(act_buf.data())[e];
-      EXPECT_EQ(expected, actual) << "Output #" << index << ", Element Index : " << e;
+      if (small_error)
+        EXPECT_NEAR(expected, actual, 1) << "Output #" << index << ", Element Index : " << e;
+      else
+        EXPECT_EQ(expected, actual) << "Output #" << index << ", Element Index : " << e;
     }
   }
 
