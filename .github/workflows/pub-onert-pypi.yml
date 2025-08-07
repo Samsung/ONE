@@ -5,6 +5,8 @@ on:
     branches: [ master ]
     paths:
       - '.github/workflows/pub-onert-pypi.yml'
+      - 'runtime/infra/python/**'
+      - '!**/*.md'
   workflow_dispatch:
     inputs:
       official:
