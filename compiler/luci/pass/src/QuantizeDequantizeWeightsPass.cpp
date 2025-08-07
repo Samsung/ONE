@@ -264,6 +264,8 @@ private:
 private:
   void fake_quantize(luci::CircleConst *weights) const
   {
+    check_quant_unfriendly_values(weights);
+
     switch (granularity)
     {
       case luci::QuantizationGranularity::ChannelWise:
