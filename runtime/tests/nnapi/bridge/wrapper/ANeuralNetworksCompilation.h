@@ -19,7 +19,8 @@
 
 #include "ANeuralNetworksModel.h"
 
-#include "compiler/Compiler.h"
+#include "compiler/CompilerOptions.h"
+#include "compiler/ICompiler.h"
 #include "ir/Graph.h"
 #include "ir/Model.h"
 #include "exec/IExecutors.h"
@@ -42,7 +43,7 @@ public:
 private:
   std::shared_ptr<onert::ir::Model> _model;
   std::unique_ptr<onert::compiler::CompilerOptions> _coptions;
-  std::shared_ptr<onert::compiler::Compiler> _compiler;
+  std::shared_ptr<onert::compiler::ICompiler> _compiler;
   std::shared_ptr<onert::compiler::CompilerArtifact> _artifact;
 };
 

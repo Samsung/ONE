@@ -18,7 +18,7 @@
 #define __ONERT_COMPILER_LOWERED_GRAPH_H__
 
 #include "compiler/BackendResolver.h"
-#include "compiler/Compiler.h"
+#include "compiler/CompilerOptions.h"
 #include "compiler/GraphLowerInfo.h"
 #include "compiler/ILoweredGraph.h"
 #include "ir/Graph.h"

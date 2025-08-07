@@ -16,7 +16,7 @@
 
 #include "exec/Execution.h"
 
-#include "compiler/Compiler.h"
+#include "../compiler/Compiler.h"
 #include "compiler/CompilerFactory.h"
 #include "ir/Graph.h"
 #include "ir/operation/BinaryArithmetic.h"
