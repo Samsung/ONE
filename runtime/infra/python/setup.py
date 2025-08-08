@@ -8,7 +8,7 @@ package_name = 'onert'
 package_directory = 'onert'
 packaging_directory = ['build', package_directory + '.egg-info']
 THIS_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_PRODUCT_DIR = "../../../Product"
+DEFAULT_PRODUCT_DIR = os.path.normpath(os.path.join(THIS_FILE_DIR, "../../../Product"))
 so_list = []
 so_files = []
 target_arch = 'none'
@@ -51,7 +51,8 @@ try:
     print(f"Created directory '{package_directory}'...")
 
     # copy *py files to package_directory
-    PY_DIR = os.path.join(THIS_FILE_DIR, '../../../runtime/onert/api/python/package')
+    PY_DIR = os.path.normpath(
+        os.path.join(THIS_FILE_DIR, '../../../runtime/onert/api/python/package'))
     for root, dirs, files in os.walk(PY_DIR):
         # Calculate the relative path from the source directory
         rel_path = os.path.relpath(root, PY_DIR)
@@ -85,12 +86,20 @@ try:
         def get_directories():
             # If the environment variable is not set, get default one.
             product_dir = os.environ.get("PRODUCT_DIR", DEFAULT_PRODUCT_DIR)
-            return os.path.join(THIS_FILE_DIR, product_dir), os.path.join(
-                product_dir,
-                "lib/" if product_dir != DEFAULT_PRODUCT_DIR else target_arch +
-                '-linux.release/out/lib')
+            base_dir = product_dir if product_dir != DEFAULT_PRODUCT_DIR else os.path.join(
+                product_dir, target_arch + '-linux.release/out')
 
-        product_dir, so_base_dir = get_directories()
+            if os.path.exists(os.path.join(base_dir, "lib64")):
+                return os.path.join(base_dir, "lib64")
+            elif os.path.exists(os.path.join(base_dir, "lib32")):
+                return os.path.join(base_dir, "lib32")
+            elif os.path.exists(os.path.join(base_dir, "lib")):
+                return os.path.join(base_dir, "lib")
+            else:
+                raise FileNotFoundError(f"No lib directory found in {base_dir}")
+
+        so_base_dir = get_directories()
+        print(f"so_base_dir '{so_base_dir}'")
 
         for so in os.listdir(so_base_dir):
             if so.endswith(".so"):
