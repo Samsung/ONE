@@ -882,12 +882,7 @@ void StaticShapeInferer::visit(const ir::operation::Permute &op)
   const auto output_idx = op.getOutputs().at(0);
   ir::Operand &output = operands.at(output_idx);
 
-  // re-sizing output shape
-  // Permute is a special operation that layouts of input/output may be different on backend
-  // However, it is not applied here, so input/output have the same layout of frontend. Because
-  // "ExecutorFactory" would convert shape of input/output accoding to the layouts when registering
-  // operand info to "TensorBuilder" after calling "StaticShapeInferer"
-  const auto &new_shape = input.info().shape();
+  const auto &new_shape = convertShape(input.info().shape(), op.getPermuteType());
   output.info().shape(new_shape);
 }
 
