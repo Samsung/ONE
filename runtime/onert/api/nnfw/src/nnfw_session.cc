@@ -289,7 +289,7 @@ NNFW_STATUS nnfw_session::load_circle_from_buffer(uint8_t *buffer, size_t size)
   {
     auto model = onert::loader::loadCircleModel(buffer, size);
     // TODO: Update _model_path if necessary
-    _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
+    _nnpkg = std::make_unique<onert::ir::NNPkg>(std::move(model));
     _train_info = loadTrainingInfo(_nnpkg->primary_model());
     _state = State::MODEL_LOADED;
   }
@@ -357,7 +357,7 @@ NNFW_STATUS nnfw_session::load_model_from_path(const char *path)
         onert::util::setConfigKeyValues(keyValues);
       }
     }
-    _nnpkg = std::make_shared<onert::ir::NNPkg>();
+    _nnpkg = std::make_unique<onert::ir::NNPkg>();
     auto num_models = models.size();
     if (num_models == 0 || (num_models - 1) > onert::ir::ModelIndex::max())
     {
@@ -446,8 +446,8 @@ NNFW_STATUS nnfw_session::prepare()
 
   try
   {
-    auto compiler = onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions.get());
-    _nnpkg.reset();
+    auto compiler =
+      onert::compiler::CompilerFactory::get().create(std::move(_nnpkg), _coptions.get());
     _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
   }
@@ -1076,7 +1076,7 @@ NNFW_STATUS nnfw_session::loadModelFile(const std::string &model_file_path,
   if (model == nullptr)
     return NNFW_STATUS_ERROR;
 
-  _nnpkg = std::make_shared<onert::ir::NNPkg>(std::move(model));
+  _nnpkg = std::make_unique<onert::ir::NNPkg>(std::move(model));
   _model_path = std::filesystem::path(model_file_path);
   _compiler_artifact.reset();
   _execution.reset();
@@ -1492,9 +1492,8 @@ NNFW_STATUS nnfw_session::train_prepare()
     // initialize trainingStep count
     _train_info->trainingStep() = 0;
 
-    auto compiler =
-      onert::compiler::CompilerFactory::get().create(_nnpkg, _coptions.get(), _train_info.get());
-    _nnpkg.reset();
+    auto compiler = onert::compiler::CompilerFactory::get().create(
+      std::move(_nnpkg), _coptions.get(), _train_info.get());
     _compiler_artifact = compiler->compile();
     _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors);
   }

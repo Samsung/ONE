@@ -25,7 +25,7 @@ using namespace onert;
 ANeuralNetworksCompilation::ANeuralNetworksCompilation(const ANeuralNetworksModel *model)
   : _model{model->getModel()}, _coptions{compiler::CompilerOptions::fromGlobalConfig()},
     _compiler{
-      compiler::CompilerFactory::get().create(std::make_shared<ir::NNPkg>(_model), _coptions.get())}
+      compiler::CompilerFactory::get().create(std::make_unique<ir::NNPkg>(_model), _coptions.get())}
 {
   if (model->allowedToFp16())
     _coptions->fp16_enable = true;
