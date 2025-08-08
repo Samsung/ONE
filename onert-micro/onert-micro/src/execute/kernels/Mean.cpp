@@ -31,9 +31,12 @@ namespace impl
 
 template <typename T> OMStatus CircleMean(OMRuntimeKernel &rt_kernel)
 {
-  core::OMReduceDataContext<T> ctx(rt_kernel);
+  constexpr static T kInitValue = 0;
 
-  bool is_ok = pal::Reduce<T, pal::ReduceSumFn>(ctx, true);
+  core::OMReduceDataContext<T> ctx(rt_kernel);
+  pal::Reducer<T, pal::ReduceSumFn> reducer(ctx, kInitValue);
+
+  bool is_ok = reducer.Mean();
   if (!is_ok)
   {
     return UnknownError;

@@ -21,14 +21,18 @@
 #include "PALUtils.h"
 #include "core/OMCustomRuntimeData.h"
 #include "core/OMRuntimeShape.h"
+#include "core/OMTypeTraits.h"
 
-using namespace onert_micro::core;
+#include <set>
+#include <unordered_map>
 
-namespace onert_micro
-{
-namespace execute
-{
-namespace pal
+namespace core = onert_micro::core;
+
+using core::OMRuntimeShape;
+using core::OMReduceDataContext;
+using core::type_traits::IsQuantized;
+
+namespace onert_micro::execute::pal
 {
 
 // clang-format off
@@ -38,22 +42,9 @@ namespace pal
 template <class T>
 struct ReduceSumFn
 {
-  constexpr static T InitValue = T(0);
-
-  T operator()(const T current, const T in)
+  void operator()(T& total, const T value)
   {
-    return in + current;
-  }
-};
-
-template <>
-struct ReduceSumFn<int8_t>
-{
-  constexpr static float InitValue = 0.f;
-
-  float operator()(const float current, const float in)
-  {
-    return in + current;
+    total += value;
   }
 };
 
@@ -62,142 +53,112 @@ struct ReduceSumFn<int8_t>
 template <typename T>
 struct ReduceProductFn
 {
-  constexpr static T InitValue = T(1);
-
-  T operator()(const T current, const T in)
+  void operator()(T& total, const T value)
   {
-    return in * current;
-  }
-};
-
-template <>
-struct ReduceProductFn<int8_t>
-{
-  constexpr static float InitValue = 1.f;
-
-  float operator()(const float current, const float in)
-  {
-    return in * current;
+    total *= value;
   }
 };
 
 // ------------------------------------------------------------------------------------------------
 
-// clang-format on
-
-// This method parses the input 'axis' to remove duplicates and handle negative
-// values, and returns a valid 'out_axis'
-inline bool resolveAxis(const int num_dims, const int *axis, const int64_t num_axis, int *out_axis,
-                        int *out_num_axis)
+template <typename T, template <typename> class ReduceFn>
+class Reducer
 {
-  *out_num_axis = 0; // Just in case.
-  // Short-circuit axis resolution for scalars; the axis will go unused.
-  if (num_dims == 0)
+  using ValueType = std::conditional_t<IsQuantized<T>, float, T>;
+
+private:
+  core::OMInputContext<T> &_input;
+  core::OMOutputContext<T> &_output;
+  core::OMAxisContext &_axes;
+
+  T _init_value;
+  ReduceFn<ValueType> _reducer;
+
+  std::unordered_map<size_t, size_t> _curr_index = {};
+  std::unordered_map<size_t, uint32_t> _resolved_axes = {};
+  std::unordered_map<size_t, ValueType> _accumulator = {};
+
+public:
+  explicit Reducer(core::OMReduceDataContext<T> &ctx, T init_value)
+    : _input(ctx.Input())
+    , _output(ctx.Output())
+    , _axes(ctx.Axis())
+    , _init_value(init_value)
+  {}
+
+public:
+  bool Mean()
   {
-    return true;
+    if (SpecialCaseMeanImpl())
+      return true;
+
+    return ReduceImpl(true);
   }
-  // o(n^2) is fine since out_num_axis should be really small, mostly <= 4
-  for (int64_t idx = 0; idx < num_axis; ++idx)
+
+  bool Reduce()
   {
-    // Handle negative index. A positive index 'p_idx' can be represented as a
-    // negative index 'n_idx' as: n_idx = p_idx-num_dims
-    // eg: For num_dims=3, [0, 1, 2] is the same as [-3, -2, -1]  */
-    int current = axis[idx] < 0 ? (axis[idx] + num_dims) : axis[idx];
-    if (current < 0 || current >= num_dims)
-    {
+    return ReduceImpl();
+  }
+
+private:
+  bool ReduceImpl(bool mean = false);
+  bool SpecialCaseMeanImpl();
+
+  bool ResolveAxis();
+  T ResolvedAxisLength();
+
+  size_t ReducedOutputOffset(int num_axes, const uint32_t *axes);
+  bool NextIndex();
+};
+
+// ------------------------------------------------------------------------------------------------
+
+template <typename T, template <typename> class ReduceFn>
+bool Reducer<T, ReduceFn>::ResolveAxis()
+{
+  size_t num_resolved_axes = 0;
+  _resolved_axes.clear();
+
+  if (_input.IsScalar())
+    return 0;
+
+  for (size_t i = 0; i < _axes.DimsCount(); ++i)
+  {
+    int current = _axes.Data().At(i);
+
+    if (_resolved_axes.count(current) > 0)
+      continue;
+
+    if (_resolved_axes.size() > 1)
       return false;
-    }
-    bool is_dup = false;
-    for (int j = 0; j < *out_num_axis; ++j)
-    {
-      if (out_axis[j] == current)
-      {
-        is_dup = true;
-        break;
-      }
-    }
-    if (!is_dup)
-    {
-      if (*out_num_axis > 1)
-      {
-        return false;
-      }
-      out_axis[*out_num_axis] = current;
-      *out_num_axis += 1;
-    }
+
+    _resolved_axes[num_resolved_axes++] = current;
   }
+
   return true;
 }
 
-// ------------------------------------------------------------------------------------------------
-
-// Old version (used in Sum and ReduceProd), to be replaced with the new one (see below).
-// Computes the generic value (i.e., sum/max/min/prod) of elements across
-// dimensions given in axis. It needs to pass in init_value and reducer.
-template <typename T>
-inline bool ReduceGeneric(const T *input_data, const int *input_dims, const int input_num_dims,
-                          T *output_data, const int *axis, const int64_t num_axis_dimensions,
-                          T init_value, const int output_flat_size, T reducer(const T, const T))
+template <typename T, template <typename> class ReduceFn>
+bool Reducer<T, ReduceFn>::SpecialCaseMeanImpl()
 {
-  // Return early when input shape has zero dim.
-  for (int i = 0; i < input_num_dims; ++i)
-  {
-    if (input_dims[i] == 0)
-      return false;
-  }
+  /*
+    Case: Mean over WH of axis 1 and 2.
+    Detail: for tensor with rank=4 and simultaneous reduction over width and height.
+  */
+  const uint32_t *axes_data = _axes.Data().Get();
+  std::set<uint32_t> axes_values = { axes_data[0], axes_data[1] };
 
-  for (size_t idx = 0; idx < output_flat_size; ++idx)
-  {
-    output_data[idx] = init_value;
-  }
-
-  // Resolve axis.
-  int num_resolved_axis = 0;
-  int resolved_axis[2];
-
-  if (!resolveAxis(input_num_dims, axis, num_axis_dimensions, resolved_axis, &num_resolved_axis))
-  {
+  if (_input.DimsCount() != 4)
     return false;
-  }
 
-  int temp_index[5];
-  // Reset input iterator.
-  for (int idx = 0; idx < input_num_dims; ++idx)
-  {
-    temp_index[idx] = 0;
-  }
-  // Iterate through input_data.
-  do
-  {
-    size_t input_offset = reducedOutputOffset(input_num_dims, input_dims, temp_index, 0, nullptr);
-    size_t output_offset =
-      reducedOutputOffset(input_num_dims, input_dims, temp_index, num_resolved_axis, axis);
-    output_data[output_offset] = reducer(output_data[output_offset], input_data[input_offset]);
-  } while (nextIndex(input_num_dims, input_dims, temp_index));
+  if (_axes.ElementsCount() != 2)
+    return false;
 
-  return true;
-}
+  if (axes_values.count(1) != 1 || axes_values.count(2) != 1)
+    return false;
 
-// This method expects that output_data has been initialized.
-template <typename T>
-inline bool reduceSumImpl(const T *input_data, const int *input_dims, const int input_num_dims,
-                          T *output_data, const int *axis, const int num_axis,
-                          const int num_outputs)
-{
-  return ReduceGeneric<T>(input_data, input_dims, input_num_dims, output_data, axis, num_axis,
-                          static_cast<T>(0), num_outputs,
-                          [](const T current, const T in) -> T { return in + current; });
-}
-
-// Mean over WH of axis 1,2
-template <typename T>
-inline void MeanROWH(const OMRuntimeShape &unextended_input_shape, const T *input_data,
-                     const OMRuntimeShape &unextended_output_shape, T *output_data)
-{
-  // Current implementation only supports dimension equals 4 and simultaneous
-  // reduction over width and height.
-  const OMRuntimeShape input_shape = OMRuntimeShape::extendedShape(4, unextended_input_shape);
-  const OMRuntimeShape output_shape = OMRuntimeShape::extendedShape(4, unextended_output_shape);
+  auto input_shape = OMRuntimeShape::extendedShape(4, _input.Shape());
+  auto output_shape = OMRuntimeShape::extendedShape(4, _output.Shape());
 
   const int output_batch = output_shape.dims(0);
   const int output_depth = output_shape.dims(3);
@@ -210,171 +171,161 @@ inline void MeanROWH(const OMRuntimeShape &unextended_input_shape, const T *inpu
     for (int out_d = 0; out_d < output_depth; ++out_d)
     {
       float value = 0;
+
       for (int in_h = 0; in_h < input_height; ++in_h)
       {
         for (int in_w = 0; in_w < input_width; ++in_w)
         {
-          value += static_cast<float>(
-            input_data[offset(input_shape.dimsData(), out_b, in_h, in_w, out_d)]);
+          size_t idx = offset(input_shape.dimsData(), out_b, in_h, in_w, out_d);
+          value += static_cast<float>(_input.Data().At(idx));
         }
       }
+
       float result = value / (input_width * input_height);
-      output_data[offset(output_shape.dimsData(), out_b, 0, 0, out_d)] = static_cast<T>(result);
+      size_t idx = offset(output_shape.dimsData(), out_b, 0, 0, out_d);
+      _output.Data().SetAt(idx, result);
     }
   }
+
+  return true;
 }
-// New version (used in Mean).
+
 template <typename T, template <typename> class ReduceFn>
-bool ReduceGeneric(OMReduceDataContext<T> &ctx)
+bool Reducer<T, ReduceFn>::ReduceImpl(bool mean)
 {
-  auto &input = ctx.Input();
-  auto &input_data = input.Data();
-  auto input_dims = input.Dims();
-  auto input_num_dims = input.DimsCount();
+  _accumulator.clear();
+  _curr_index.clear();
 
-  auto &output = ctx.Output();
-  auto &output_data = output.Data();
-  auto output_flat_size = output.ShapeFlatSize();
+  auto *axes_data = _axes.Data().Get();
+  auto num_outputs = _output.ElementsCount();
 
-  auto &axis_ctx = ctx.Axis();
-  auto &axis = axis_ctx.Data();
-  auto num_axis_dimensions = axis_ctx.DimsCount();
+  const auto &input_data = _input.Data();
 
-  // Return early when input shape has zero dim.
-  for (size_t i = 0; i < input_num_dims; ++i)
-  {
-    if (input_dims[i] == 0)
-      return false;
-  }
-
-  for (size_t idx = 0; idx < output_flat_size; ++idx)
-  {
-    output_data.SetValueAt(idx, ReduceFn<T>::InitValue);
-  }
-
-  // Resolve axis.
-  int num_resolved_axis = 0;
-  int resolved_axis[2];
-
-  if (!resolveAxis(input_num_dims, axis.Get(), num_axis_dimensions, resolved_axis,
-                   &num_resolved_axis))
+  if (_input.HasZeroSizeDims())
   {
     return false;
   }
 
-  int temp_index[5];
-  // Reset input iterator.
-  for (size_t idx = 0; idx < input_num_dims; ++idx)
+  for (size_t i = 0; i < num_outputs; ++i)
   {
-    temp_index[idx] = 0;
+    _accumulator[i] = _init_value;
   }
 
-  // Iterate through input_data.
+  if (!ResolveAxis())
+  {
+    return false;
+  }
+
   do
   {
-    size_t input_offset = reducedOutputOffset(input_num_dims, input_dims, temp_index, 0, nullptr);
-    size_t output_offset =
-      reducedOutputOffset(input_num_dims, input_dims, temp_index, num_resolved_axis, axis.Get());
+    size_t input_offset = ReducedOutputOffset(0, nullptr);
+    size_t output_offset = ReducedOutputOffset(_resolved_axes.size(), axes_data);
 
-    ReduceFn<T> reducer;
-    auto value = reducer(output_data.ValueAt(output_offset), input_data.ValueAt(input_offset));
-    output_data.SetValueAt(output_offset, value);
+    _reducer(_accumulator[output_offset], input_data.ValueAt(input_offset));
 
-  } while (nextIndex(input_num_dims, input_dims, temp_index));
+  } while (NextIndex());
+
+  for (size_t i = 0; i < num_outputs; ++i)
+  {
+    auto value = _accumulator.at(i);
+
+    if (mean)
+    {
+      value /= ResolvedAxisLength();
+    }
+
+    _output.Data().SetValueAt(i, value);
+  }
 
   return true;
+}
+
+template <typename T, template <typename> class ReduceFn>
+T Reducer<T, ReduceFn>::ResolvedAxisLength()
+{
+  T axis_length = 1;
+  constexpr static auto kMax = std::numeric_limits<size_t>::max();
+
+  for (auto i = 0u; i < _resolved_axes.size(); ++i)
+  {
+    auto &axis = _resolved_axes.at(i);
+    auto current = static_cast<size_t>(_input.Dims()[axis]);
+
+    if (current == 0)
+      return false;
+
+    // Overflow prevention.
+    if (current > (kMax / axis_length))
+      return false;
+
+    axis_length *= current;
+  }
+
+  return static_cast<T>(axis_length);
+}
+
+/*
+  Gets offset of index if reducing on axis. When reducing, the flattened offset
+  will not change, if the input index changes on the given axis.
+  For example, if you have a 3D tensor and you are reducing to 2D by eliminating axis 0,
+  then index (0, 1, 2) and index (1, 1, 2) will map to the same flattened offset.
+*/
+template <typename T, template <typename> class ReduceFn>
+size_t Reducer<T, ReduceFn>::ReducedOutputOffset(int num_axes, const uint32_t *axes_data)
+{
+  size_t offset = 0;
+
+  for (auto dim_idx = 0u; dim_idx < _input.DimsCount(); ++dim_idx)
+  {
+    bool skip_axis = false;
+
+    if (axes_data != nullptr)
+    {
+      skip_axis = std::any_of(axes_data, axes_data + num_axes, [&dim_idx](auto axis)
+      {
+        return axis == dim_idx;
+      });
+    }
+
+    if (!skip_axis)
+    {
+      offset *= _input.DimLength(dim_idx);
+      offset += _curr_index[dim_idx];
+    }
+  }
+
+  return offset;
+}
+
+/*
+  Gets next index to iterate through a multidimensional array.
+*/
+template <typename T, template <typename> class ReduceFn>
+bool Reducer<T, ReduceFn>::NextIndex()
+{
+  if (_input.DimsCount() == 0)
+  {
+    return false;
+  }
+
+  for (int idx = _input.DimsCount() - 1; idx >= 0; --idx)
+  {
+    auto current_val = _curr_index[idx] + 1;
+
+    if (_input.DimLength(idx) != current_val)
+    {
+      _curr_index[idx] = current_val;
+      return true;
+    }
+
+    _curr_index[idx] = 0;
+  }
+
+  return false;
 }
 
 // ------------------------------------------------------------------------------------------------
 
-template <typename T, template <typename> class ReduceFn>
-bool Reduce(OMReduceDataContext<T> &ctx, bool mean = false)
-{
-  // Special case mean implementation exists for 4D mean across axes 1
-  // and 2
-  const int *axis_value = ctx.Axis().Data().Get();
-  bool special_case_4d_axes_1_and_2 =
-    ctx.Input().DimsCount() == 4 && ctx.Axis().ShapeFlatSize() == 2 &&
-    ((axis_value[0] == 1 && axis_value[1] == 2) || (axis_value[0] == 2 && axis_value[1] == 1));
-  if (special_case_4d_axes_1_and_2)
-  {
-    OMRuntimeShape input_shape(ctx.Input().Shape());
-    OMRuntimeShape output_shape(ctx.Output().Shape());
-    MeanROWH<T>(input_shape, ctx.Input().Data().Get(), output_shape, ctx.Output().Data().Get());
-    return true;
-  }
-
-  constexpr static T kInitValue = T(0);
-
-  if (!ReduceGeneric<T, ReduceFn>(ctx))
-  {
-    return false;
-  }
-
-  auto &input = ctx.Input();
-  auto input_dims = input.Dims();
-  auto input_num_dims = input.DimsCount();
-
-  auto &output = ctx.Output();
-  auto &output_data = output.Data();
-  auto num_outputs = output.ShapeFlatSize();
-
-  auto &axis = ctx.Axis().Data();
-  auto num_axis_dimensions = ctx.Axis().DimsCount();
-
-  // Resolve axis again for computing mean
-  int num_resolved_axis = 0;
-  int resolved_axis[2];
-
-  if (!resolveAxis(input_num_dims, axis.Get(), num_axis_dimensions, resolved_axis,
-                   &num_resolved_axis))
-  {
-    return false;
-  }
-
-  // clang-format off
-
-  auto fnReduceOutput = [&](size_t divide_by = 1)
-  {
-      for (size_t idx = 0; idx < num_outputs; ++idx)
-      {
-        auto value = output_data.ValueAt(idx);
-        value /= static_cast<T>(divide_by);
-        output_data.SetAt(idx, value);
-      }
-  };
-
-  // clang-format on
-
-  if (!mean)
-  {
-    fnReduceOutput();
-    return true;
-  }
-
-  // Calculate mean by dividing output_data by num of aggregated element.
-  size_t num_elements_in_axis = 1;
-  for (int idx = 0; idx < num_resolved_axis; ++idx)
-  {
-    size_t current = static_cast<size_t>(input_dims[resolved_axis[idx]]);
-    // Overflow prevention.
-    if (current > (std::numeric_limits<size_t>::max() / num_elements_in_axis))
-    {
-      return false;
-    }
-    num_elements_in_axis *= current;
-  }
-
-  if (num_elements_in_axis > 0)
-  {
-    fnReduceOutput(num_elements_in_axis);
-  }
-
-  return true;
-}
-
-} // namespace pal
-} // namespace execute
-} // namespace onert_micro
+} // namespace onert_micro::execute::pal
 
 #endif // ONERT_MICRO_PAL_REDUCE_COMMON_H
