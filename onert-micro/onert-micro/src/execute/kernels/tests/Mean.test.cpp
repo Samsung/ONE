@@ -70,6 +70,13 @@ TEST_F(MeanTest, Float_P)
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
+TEST_F(MeanTest, Float_Axis12_P)
+{
+  test_model::TestDataFloatMeanAxis12 test_data_kernel;
+  std::vector<float> output_data_vector = checkMeanKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
+}
+
 TEST_F(MeanTest, Input_output_type_mismatch_NEG)
 {
   test_model::NegTestDataInputOutputTypeMismatchMeanKernel test_data_kernel;
