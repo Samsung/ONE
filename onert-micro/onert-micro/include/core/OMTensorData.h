@@ -18,17 +18,16 @@
 
 #include "OMQuantizationData.h"
 #include "OMUtils.h"
+#include "OMTypeTraits.h"
 
-#include <map>
 #include <memory>
-#include <type_traits>
 
-namespace onert_micro
-{
-namespace core
+namespace onert_micro::core
 {
 
 // clang-format off
+
+using type_traits::IsQuantized;
 
 // ------------------------------------------------------------------------------------------------
 
@@ -42,7 +41,6 @@ private:
   T *_data = nullptr;
   size_t _size = 0;
   QuantDataPtr _quant = {};
-  std::map<size_t, float> _out_float_data = {};
 
 public:
   OMTensorData(T *data, const circle::Tensor *tensor)
@@ -60,29 +58,6 @@ public:
   }
 
 public:
-  template <typename U = T>
-  constexpr static bool IsInt8 = std::is_same<std::decay_t<U>, int8_t>::value;
-
-  template <typename U = T>
-  constexpr static bool IsUInt8 = std::is_same<std::decay_t<U>, uint8_t>::value;
-
-  template <typename U = T>
-  constexpr static bool IsQuantized = IsInt8<U> || IsUInt8<U>;
-
-public:
-  template <typename U = T>
-  constexpr static bool HasConstData = std::is_const<U>::value;
-
-  template <typename U = T>
-  constexpr static bool HasNonConstData = !HasConstData<U>;
-
-  template <typename U = T>
-  constexpr static bool HasQuantizedConstData = IsQuantized<U> && HasConstData<U>;
-
-  template <typename U = T>
-  constexpr static bool HasQuantizedNonConstData = IsQuantized<U> && HasNonConstData<U>;
-
-public:
   bool IsNull() const noexcept
   {
     return (_data == nullptr) || (_size == 0);
@@ -94,12 +69,27 @@ public:
     return _data;
   }
 
+public:
   T& At(size_t idx) const
   {
     CheckIndex(idx);
     return _data[idx];
   }
 
+  template <typename U = T>
+  std::enable_if_t<!IsQuantized<U>, T> ValueAt(size_t idx) const
+  {
+    return At(idx);
+  }
+
+  template <typename U = T>
+  std::enable_if_t<IsQuantized<U>, float> ValueAt(size_t idx) const
+  {
+    CheckIndex(idx);
+    return _quant->DataAt(idx);
+  }
+
+public:
   void SetAt(size_t idx, T value)
   {
     CheckIndex(idx);
@@ -107,49 +97,16 @@ public:
   }
 
   template <typename U = T>
-  std::enable_if_t<IsQuantized<U>> SetAt(size_t idx, float value)
-  {
-    CheckIndex(idx);
-    _quant->SetDataAt(idx, value);
-  }
-
-public:
-  template <typename U = T>
-  std::enable_if_t<!IsQuantized<U>, T&> ValueAt(size_t idx) const
-  {
-    return At(idx);
-  }
-
-  template <typename U = T>
-  std::enable_if_t<HasQuantizedConstData<U>, float> ValueAt(size_t idx) const
-  {
-    CheckIndex(idx);
-    return _quant->DataAt(idx);
-  }
-
-  template <typename U = T>
-  std::enable_if_t<HasQuantizedNonConstData<U>, float> ValueAt(size_t idx) const
-  {
-    CheckIndex(idx);
-
-    if (_out_float_data.count(idx) == 0)
-      return 0.f;
-
-    return _out_float_data.at(idx);
-  }
-
-public:
-  template <typename U = T>
   std::enable_if_t<!IsQuantized<U>> SetValueAt(size_t idx, T value)
   {
     SetAt(idx, value);
   }
 
   template <typename U = T>
-  std::enable_if_t<HasQuantizedNonConstData<U>> SetValueAt(size_t idx, float value)
+  std::enable_if_t<IsQuantized<U>> SetValueAt(size_t idx, float value)
   {
     CheckIndex(idx);
-    _out_float_data[idx] = value;
+    _quant->SetDataAt(idx, value);
   }
 
 private:
@@ -190,7 +147,6 @@ OMTensorData<T> MakeOutputData(RuntimeKernel& rtk, size_t output_idx)
 
 // ------------------------------------------------------------------------------------------------
 
-} // namespace core
-} // namespace onert_micro
+} // namespace onert_micro::core
 
 #endif // ONERT_MICRO_CORE_TENSOR_DATA_H
