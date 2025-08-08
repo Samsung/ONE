@@ -186,7 +186,8 @@ inline void MeanROWH(const OMRuntimeShape &unextended_input_shape, const T *inpu
       {
         for (int in_w = 0; in_w < input_width; ++in_w)
         {
-          value += static_cast<float>(input_data[offset(input_shape.dimsData(), out_b, in_h, in_w, out_d)]);
+          value += static_cast<float>(
+            input_data[offset(input_shape.dimsData(), out_b, in_h, in_w, out_d)]);
         }
       }
       float result = value / (input_width * input_height);
@@ -263,15 +264,13 @@ template <typename T> bool Mean(OMReduceDataContext<T> &ctx)
   // and 2
   const int *axis_value = ctx.Axis().Data().Get();
   bool special_case_4d_axes_1_and_2 =
-    ctx.Input().DimsCount() == 4 && ctx.Axis().ShapeFlatSize()  == 2 &&
+    ctx.Input().DimsCount() == 4 && ctx.Axis().ShapeFlatSize() == 2 &&
     ((axis_value[0] == 1 && axis_value[1] == 2) || (axis_value[0] == 2 && axis_value[1] == 1));
   if (special_case_4d_axes_1_and_2)
   {
     OMRuntimeShape input_shape(ctx.Input().Shape());
     OMRuntimeShape output_shape(ctx.Output().Shape());
-    MeanROWH<T>(
-      input_shape, ctx.Input().Data().Get(), output_shape,
-      ctx.Output().Data().Get());
+    MeanROWH<T>(input_shape, ctx.Input().Data().Get(), output_shape, ctx.Output().Data().Get());
     return true;
   }
 

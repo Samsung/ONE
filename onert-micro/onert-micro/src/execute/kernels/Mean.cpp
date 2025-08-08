@@ -91,5 +91,5 @@ OMStatus execute_kernel_CircleMean(const OMExecuteArgs &execute_args)
   }
 }
 
-} 
-} 
+} // namespace execute
+} // namespace onert_micro
