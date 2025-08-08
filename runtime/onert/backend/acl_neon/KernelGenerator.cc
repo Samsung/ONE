@@ -1126,7 +1126,6 @@ void KernelGenerator::visit(const ir::operation::StridedSlice &node)
   }
 
   // Set mask bits such as order of inputData
-  // FIXME Take the layouts into account.
   const auto begin_mask = acl_common::ReorderBits<int32_t>(node.param().begin_mask, input_rank);
   const auto end_mask = acl_common::ReorderBits<int32_t>(node.param().end_mask, input_rank);
   const auto shrink_axis_mask =

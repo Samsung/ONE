@@ -40,8 +40,8 @@ void TrainableConstantInsertionPass::callback(const ir::OperationIndex &node_ind
       if (use_index == node_index)
         continue;
 
-      // NOTE The PermuteFactor(backend and layout) of the current node and the use node may be
-      //      different. But there is no problem because both nodes' constant operand will have
+      // NOTE The PermuteFactor(backend) of the current node and the use node may be different.
+      //      But there is no problem because both nodes' constant operand will have
       //      only one use node.
       const auto new_index = insertNewOperand(object);
       updateUseDef(input, new_index, use_index);

@@ -48,7 +48,6 @@ public:
    * @brief     Register tensor information to allocate on ACL-CL backend
    * @param[in] ind    Operand index
    * @param[in] info   Tensor information
-   * @param[in] layout Tensor data layout
    */
   void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info);
 
