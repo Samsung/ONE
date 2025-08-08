@@ -419,6 +419,8 @@ void quant_const(luci::CircleConst *node, loco::DataType quant_type)
 {
   assert(node->dtype() == loco::DataType::FLOAT32);
 
+  check_quant_unfriendly_values(node);
+
   float min = std::numeric_limits<float>::max();
   float max = std::numeric_limits<float>::lowest();
   for (uint32_t i = 0; i < node->size<loco::DataType::FLOAT32>(); i++)
