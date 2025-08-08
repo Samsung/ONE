@@ -17,6 +17,7 @@
 #define ONERT_MICRO_CORE_TENSOR_DATA_H
 
 #include "OMQuantizationData.h"
+#include "OMUtils.h"
 
 #include <map>
 #include <memory>
@@ -84,11 +85,11 @@ public:
 public:
   bool IsNull() const noexcept
   {
-    return _data == nullptr;
+    return (_data == nullptr) || (_size == 0);
   }
 
 public:
-  T* Get() const
+  T* Get() const noexcept
   {
     return _data;
   }
@@ -114,7 +115,7 @@ public:
 
 public:
   template <typename U = T>
-  std::enable_if_t<!IsQuantized<U>, T> ValueAt(size_t idx) const
+  std::enable_if_t<!IsQuantized<U>, T&> ValueAt(size_t idx) const
   {
     return At(idx);
   }
@@ -152,9 +153,10 @@ public:
   }
 
 private:
-  void CheckIndex(size_t idx) const
+  bool CheckIndex(size_t idx) const
   {
     assert(idx < _size);
+    return idx < _size;
   }
 };
 
