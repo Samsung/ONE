@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef ONERT_MICRO_TEST_MODELS_TRANSPOSE_KERNEL_H
-#define ONERT_MICRO_TEST_MODELS_TRANSPOSE_KERNEL_H
+#ifndef ONERT_MICRO_TEST_MODELS_FLOAT_TRANSPOSE_KERNEL_H
+#define ONERT_MICRO_TEST_MODELS_FLOAT_TRANSPOSE_KERNEL_H
 
-#include "test_models/TestDataBase.h"
+#include "TestDataTransposeBase.h"
 #include <cassert>
 
 namespace onert_micro
@@ -25,7 +25,7 @@ namespace onert_micro
 namespace test_model
 {
 
-namespace transpose_kernel
+namespace transpose_float_kernel
 {
 /*
  * Transpose Kernel:
@@ -77,46 +77,22 @@ const std::vector<float> reference_output_data = {
   20.761623, 27.862984,  -2.8192825, 13.150787, 1.067873,   19.296608, 7.0800495,  19.894545,
   23.116634, -5.8079357, 0.25564194, 6.5216866, -4.265215,  10.414932, -7.0733185, -2.801073,
   3.317482,  -3.3730087, 14.42078,   -0.727417, -34.845665, 8.526264,  -5.702162,  28.050354};
-} // namespace transpose_kernel
+} // namespace transpose_float_kernel
 
-template <typename T> class TestDataTransposeKernel : public TestDataBase<T>
+class TestDataFloatTransposeKernel : public TestDataTransposeBase<float>
 {
 public:
-  TestDataTransposeKernel()
+  TestDataFloatTransposeKernel()
   {
-    _input_data = transpose_kernel::input_data;
-    _reference_output_data = transpose_kernel::reference_output_data;
-    _test_kernel_model_circle = transpose_kernel::test_kernel_model_circle;
+    _input_data = transpose_float_kernel::input_data;
+    _reference_output_data = transpose_float_kernel::reference_output_data;
+    _test_kernel_model_circle = transpose_float_kernel::test_kernel_model_circle;
   }
 
-  ~TestDataTransposeKernel() override = default;
-
-  const unsigned char *get_model_ptr() override final { return _test_kernel_model_circle; }
-
-  const std::vector<T> &get_input_data_by_index(int i) override final
-  {
-    switch (i)
-    {
-      case 0:
-        return _input_data;
-      default:
-        assert(false && "Wrong input index");
-    }
-  }
-
-  const std::vector<T> &get_output_data_by_index(int i) override final
-  {
-    assert(i == 0);
-    return _reference_output_data;
-  }
-
-protected:
-  std::vector<T> _input_data;
-  std::vector<T> _reference_output_data;
-  const unsigned char *_test_kernel_model_circle;
+  ~TestDataFloatTransposeKernel() override = default;
 };
 
 } // namespace test_model
 } // namespace onert_micro
 
-#endif // ONERT_MICRO_TEST_MODELS_TRANSPOSE_KERNEL_H
+#endif // ONERT_MICRO_TEST_MODELS_FLOAT_TRANSPOSE_KERNEL_H

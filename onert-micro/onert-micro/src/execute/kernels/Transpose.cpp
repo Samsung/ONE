@@ -103,6 +103,14 @@ OMStatus execute_kernel_CircleTranspose(const OMExecuteArgs &execute_args)
                                      output_shape, reinterpret_cast<float *>(output_data));
       break;
 #endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+    {
+      status = pal::Transpose<int8_t>(params, input_shape, reinterpret_cast<int8_t *>(input_data),
+                                      output_shape, reinterpret_cast<int8_t *>(output_data));
+    }
+    break;
+#endif // DIS_QUANT
     default:
     {
       status = UnsupportedActivation;
