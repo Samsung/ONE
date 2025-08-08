@@ -116,7 +116,7 @@ public:
 
 private:
   IPortableTensor *_tensor{nullptr}; //< The actual tensor that is indirected
-  // "_orig" has UserTensor type original tensor's info with nullptr buffer and layout,
+  // "_orig" has UserTensor type original tensor's info with nullptr buffer,
   // and "_tensor" points to "_user_tensor".
   // After 1st setTensor(tensor) call, "_tensor" is updated to actual tensor
   std::unique_ptr<UserTensor> _orig; //< If it is a user tensor, it is managed by this object

@@ -28,7 +28,6 @@ namespace onert::backend::basic
 
 class DynamicMemoryManager;
 
-// Always NHWC layout
 class Tensor : public IPortableTensor
 {
 public:
@@ -136,7 +135,7 @@ private:
  *        instead of allocating and copying the data. (ex. constant data from model file)
  *        ExternalTensor's data pointer points to an address of memory such as where memory is
  *        already allocated, or mmapped area. This is meaning that ExternalTensor can take all of
- *        types' ir::Data. To support this, assume below things no padding, always NHWC layout,
+ *        types' ir::Data. To support this, assume below things no padding,
  *        constant tensor and not dynamic.
  */
 class ExternalTensor : public Tensor
