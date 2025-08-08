@@ -162,8 +162,9 @@ inline bool reduceSumImpl(const T *input_data, const int *input_dims, const int 
 }
 
 // Mean over WH of axis 1,2
-inline void MeanROWH(const OMRuntimeShape &unextended_input_shape, const float *input_data,
-                     const OMRuntimeShape &unextended_output_shape, float *output_data)
+template <typename T>
+inline void MeanROWH(const OMRuntimeShape &unextended_input_shape, const T *input_data,
+                     const OMRuntimeShape &unextended_output_shape, T *output_data)
 {
   // Current implementation only supports dimension equals 4 and simultaneous
   // reduction over width and height.
@@ -185,11 +186,11 @@ inline void MeanROWH(const OMRuntimeShape &unextended_input_shape, const float *
       {
         for (int in_w = 0; in_w < input_width; ++in_w)
         {
-          value += input_data[offset(input_shape.dimsData(), out_b, in_h, in_w, out_d)];
+          value += static_cast<float>(input_data[offset(input_shape.dimsData(), out_b, in_h, in_w, out_d)]);
         }
       }
-      output_data[offset(output_shape.dimsData(), out_b, 0, 0, out_d)] =
-        value / (input_width * input_height);
+      float result = value / (input_width * input_height);
+      output_data[offset(output_shape.dimsData(), out_b, 0, 0, out_d)] = static_cast<T>(result);
     }
   }
 }
@@ -258,6 +259,22 @@ template <typename T, class ReduceFn> bool ReduceGeneric(OMReduceDataContext<T> 
 
 template <typename T> bool Mean(OMReduceDataContext<T> &ctx)
 {
+  // Special case mean implementation exists for 4D mean across axes 1
+  // and 2
+  const int *axis_value = ctx.Axis().Data().Get();
+  bool special_case_4d_axes_1_and_2 =
+    ctx.Input().DimsCount() == 4 && ctx.Axis().ShapeFlatSize()  == 2 &&
+    ((axis_value[0] == 1 && axis_value[1] == 2) || (axis_value[0] == 2 && axis_value[1] == 1));
+  if (special_case_4d_axes_1_and_2)
+  {
+    OMRuntimeShape input_shape(ctx.Input().Shape());
+    OMRuntimeShape output_shape(ctx.Output().Shape());
+    MeanROWH<T>(
+      input_shape, ctx.Input().Data().Get(), output_shape,
+      ctx.Output().Data().Get());
+    return true;
+  }
+
   constexpr static T kInitValue = T(0);
 
   if (!ReduceGeneric<T, ReduceSumFn<T>>(ctx, kInitValue))
