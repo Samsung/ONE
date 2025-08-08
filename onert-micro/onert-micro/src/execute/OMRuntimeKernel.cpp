@@ -63,12 +63,18 @@ OMStatus onert_micro::execute::OMRuntimeKernel::readKernel(uint16_t op_index,
   return Ok;
 }
 
-// Note: if inplace then first input and first output will be inplace
+// Note: if inplace then first non-const input and first output will be inplace
 OMStatus onert_micro::execute::OMRuntimeKernel::getDataFromStorage(uint16_t op_index,
                                                                    core::OMRuntimeStorage &storage,
                                                                    core::OMRuntimeContext &context)
 {
   OMStatus status = Ok;
+
+  // Note: we need to inroduce this vector for resolving situation when first input of kernel is
+  // const, but const inputs don't exist in allocation plan and there are not allocation of buffers
+  // for such kind of the inputs. Therefore in such situation for inplace mode we need to link first
+  // non const input with first output
+  std::vector<int32_t> non_const_input_indxs;
 
   for (uint32_t i = 0; i < inputs_num; ++i)
   {
@@ -77,6 +83,9 @@ OMStatus onert_micro::execute::OMRuntimeKernel::getDataFromStorage(uint16_t op_i
     status = storage.getDataByTensorIndex(&inputs_data[i], inputs_index[i]);
     if (inputs_data[i] == nullptr)
       status = context.getConstDataByTensorIndex(&inputs_data[i], inputs_index[i]);
+    else
+      non_const_input_indxs.push_back(i);
+
     if (status != Ok)
       return status;
   }
@@ -89,8 +98,10 @@ OMStatus onert_micro::execute::OMRuntimeKernel::getDataFromStorage(uint16_t op_i
 
     if (storage.getKernelType(op_index) == core::Inplace)
     {
-      outputs_data[i] = inputs_data[i];
-      status = storage.removeTensorFromTensorIndexToData(inputs_index[i]);
+      assert(i < non_const_input_indxs.size());
+
+      outputs_data[i] = inputs_data[non_const_input_indxs[i]];
+      status = storage.removeTensorFromTensorIndexToData(inputs_index[non_const_input_indxs[i]]);
 
       if (status != Ok)
         return status;
