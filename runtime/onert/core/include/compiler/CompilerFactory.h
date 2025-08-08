@@ -32,7 +32,20 @@ public:
   static CompilerFactory &get();
 
 public:
-  std::unique_ptr<ICompiler> create(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts,
+  /**
+   * @brief     Create ICompiler instance. Ownership of nnpkg is moved to ICompiler instance
+   *
+   * Compiler is designed on assumption that caller will not use nnpkg after calling this function.
+   * So ownership of nnpkg is moved to ICompiler instance to handle memory overhead of nnpkg.
+   * If caller want to maintain nnpkg after calling this function,
+   * caller should clone nnpkg before calling this function.
+   *
+   * @param[in] nnpkg         Package to compile
+   * @param[in] copts         Compiler options
+   * @param[in] training_info Training info if it is a training model, otherwise nullptr
+   * @return    ICompiler instance pointer which owns nnpkg
+   */
+  std::unique_ptr<ICompiler> create(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts,
                                     const ir::train::TrainingInfo *training_info = nullptr);
 
 private:
