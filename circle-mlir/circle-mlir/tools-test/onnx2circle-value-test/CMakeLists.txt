@@ -30,6 +30,7 @@ COPY_SCRIPT(util_validation.py)
 
 # AddModel used in test.lst
 set(UNIT_TEST_MODELS )
+set(UNIT_TEST_TOL_MODELS )
 
 get_target_property(ONNX_ARTIFACTS_BIN_PATH gen_onnx_target BINARY_DIR)
 get_target_property(CIRCLE_ARTIFACTS_BIN_PATH onnx2circle_models_target BINARY_DIR)
@@ -59,6 +60,62 @@ macro(AddModel MODEL_NAME)
   list(APPEND FILE_DEPS_VALCHK "${TEST_CIRCLE_MODEL_DST}")
 endmacro(AddModel)
 
+macro(AddDownloadModel MODEL_NAME)
+  # copy ONNX to build folder
+  set(TEST_ONNX_MODEL_SRC "${DOWNLOAD_ONNX_PATH}/${MODEL_NAME}.onnx")
+  set(TEST_ONNX_MODEL_DST "${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}.onnx")
+
+  if(EXISTS ${TEST_ONNX_MODEL_SRC})
+    add_custom_command(
+      OUTPUT ${TEST_ONNX_MODEL_DST}
+      COMMAND ${CMAKE_COMMAND} -E copy "${TEST_ONNX_MODEL_SRC}" "${TEST_ONNX_MODEL_DST}"
+      DEPENDS ${TEST_ONNX_MODEL_SRC}
+      COMMENT "onnx2circle-value-test: prepare ${MODEL_NAME}.onnx"
+    )
+    # copy Circle to build folder
+    set(TEST_CIRCLE_MODEL_SRC "${CIRCLE_ARTIFACTS_BIN_PATH}/${MODEL_NAME}.circle")
+    set(TEST_CIRCLE_MODEL_DST "${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}.circle")
+    add_custom_command(
+      OUTPUT ${TEST_CIRCLE_MODEL_DST}
+      COMMAND ${CMAKE_COMMAND} -E copy "${TEST_CIRCLE_MODEL_SRC}" "${TEST_CIRCLE_MODEL_DST}"
+      DEPENDS ${TEST_CIRCLE_MODEL_SRC}
+      COMMENT "onnx2circle-value-test: prepare ${MODEL_NAME}.circle"
+    )
+
+    list(APPEND UNIT_TEST_MODELS "${MODEL_NAME}")
+    list(APPEND FILE_DEPS_VALCHK "${TEST_ONNX_MODEL_DST}")
+    list(APPEND FILE_DEPS_VALCHK "${TEST_CIRCLE_MODEL_DST}")
+  endif()
+endmacro(AddDownloadModel)
+
+macro(AddDownloadModelTol MODEL_NAME RTOL ATOL)
+  # copy ONNX to build folder
+  set(TEST_ONNX_MODEL_SRC "${DOWNLOAD_ONNX_PATH}/${MODEL_NAME}.onnx")
+  set(TEST_ONNX_MODEL_DST "${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}.onnx")
+
+  if(EXISTS ${TEST_ONNX_MODEL_SRC})
+    add_custom_command(
+      OUTPUT ${TEST_ONNX_MODEL_DST}
+      COMMAND ${CMAKE_COMMAND} -E copy "${TEST_ONNX_MODEL_SRC}" "${TEST_ONNX_MODEL_DST}"
+      DEPENDS ${TEST_ONNX_MODEL_SRC}
+      COMMENT "onnx2circle-value-test: prepare ${MODEL_NAME}.onnx"
+    )
+    # copy Circle to build folder
+    set(TEST_CIRCLE_MODEL_SRC "${CIRCLE_ARTIFACTS_BIN_PATH}/${MODEL_NAME}.circle")
+    set(TEST_CIRCLE_MODEL_DST "${CMAKE_CURRENT_BINARY_DIR}/${MODEL_NAME}.circle")
+    add_custom_command(
+      OUTPUT ${TEST_CIRCLE_MODEL_DST}
+      COMMAND ${CMAKE_COMMAND} -E copy "${TEST_CIRCLE_MODEL_SRC}" "${TEST_CIRCLE_MODEL_DST}"
+      DEPENDS ${TEST_CIRCLE_MODEL_SRC}
+      COMMENT "onnx2circle-value-test: prepare ${MODEL_NAME}.circle"
+    )
+
+    list(APPEND UNIT_TEST_TOL_MODELS "${MODEL_NAME} ${RTOL} ${ATOL}")
+    list(APPEND FILE_DEPS_VALCHK "${TEST_ONNX_MODEL_DST}")
+    list(APPEND FILE_DEPS_VALCHK "${TEST_CIRCLE_MODEL_DST}")
+  endif()
+endmacro(AddDownloadModelTol)
+
 # Read "test.lst"
 include("test.lst")
 # Read "test.local.lst" if exists
@@ -74,5 +131,18 @@ foreach(MODEL IN ITEMS ${UNIT_TEST_MODELS})
   add_test(
     NAME onnx2circle_value_test_${MODEL}
     COMMAND bash run_value_test.sh ${VENV_PATH} ${TEST_MODEL_BASE}
+  )
+endforeach()
+
+foreach(MODEL_INFO IN ITEMS ${UNIT_TEST_TOL_MODELS})
+  separate_arguments(MODEL_INFO_LIST UNIX_COMMAND ${MODEL_INFO})
+  list (GET MODEL_INFO_LIST 0 MODEL)
+  list (GET MODEL_INFO_LIST 1 ATOL)
+  list (GET MODEL_INFO_LIST 2 RTOL)
+
+  set(TEST_MODEL_BASE "${CMAKE_CURRENT_BINARY_DIR}/${MODEL}")
+  add_test(
+    NAME onnx2circle_value_test_${MODEL}
+    COMMAND bash run_value_test.sh ${VENV_PATH} ${TEST_MODEL_BASE} ${ATOL} ${RTOL}
   )
 endforeach()
