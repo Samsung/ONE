@@ -92,7 +92,7 @@ OMStatus execute_kernel_CircleBatchMatMul(const OMExecuteArgs &execute_args)
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:
     {
-      onert_micro::execute::pal::BatchMatMul<float, float>(
+      status = onert_micro::execute::pal::BatchMatMul<float, float>(
         input1_shape, core::utils::castInputData<float>(input1_data), input2_shape,
         core::utils::castInputData<float>(input2_data), output_shape,
         core::utils::castOutputData<float>(output_data));
