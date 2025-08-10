@@ -136,37 +136,47 @@ $(document).ready(function(){initNavTree('_tracing_ctx_8h_source.html',''); init
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classonert_1_1util_1_1_tracing_ctx.html#a1837f9ab0e8b6085fd2ecd922f0781f1">   49</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classonert_1_1util_1_1_tracing_ctx.html#a1837f9ab0e8b6085fd2ecd922f0781f1">hasMultipleSessions</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _next_session_id &gt; 1; }</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classonert_1_1util_1_1_tracing_ctx.html#ac45bd7e34f5877ae7073b0d18ede68c5">   54</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1util_1_1_tracing_ctx.html#ac45bd7e34f5877ae7073b0d18ede68c5">setSubgraphIndex</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> *g, uint32_t index) { _subgraph_indices.emplace(g, index); }</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classonert_1_1util_1_1_tracing_ctx.html#aa06d23a7b1540b82fd695d0e22fac644">   59</a></span>  <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::SubgraphIndex</a> <a class="code hl_function" href="classonert_1_1util_1_1_tracing_ctx.html#aa06d23a7b1540b82fd695d0e22fac644">getSubgraphIndex</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> *g)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _subgraph_indices.at(g); }</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordtype">void</span> decideSessionID()</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  {</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    std::unique_lock&lt;std::mutex&gt; lock{_session_id_mutex};</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    _session_id = _next_session_id++;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  }</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  std::unordered_map&lt;const ir::Graph *, ir::SubgraphIndex&gt; _subgraph_indices;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  uint32_t _session_id;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">static</span> <span class="keyword">inline</span> std::mutex _session_id_mutex;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">static</span> <span class="keyword">inline</span> uint32_t _next_session_id = 0;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>};</div>
+<div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="classonert_1_1util_1_1_tracing_ctx.html#a0c3e0a172dd9ddb0d3dd69d130233129">   54</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classonert_1_1util_1_1_tracing_ctx.html#a0c3e0a172dd9ddb0d3dd69d130233129">setSubgraphIndex</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> *g, std::pair&lt;ir::ModelIndex, ir::SubgraphIndex&gt; index)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    _subgraph_indices.emplace(g, index);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  }</div>
 </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>} <span class="comment">// namespace onert::util</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_UTIL_TRACING_CTX_H__</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classonert_1_1util_1_1_tracing_ctx.html#a602297010bdb2ac0f7beae55cf65ee36">   62</a></span>  std::pair&lt;ir::ModelIndex, ir::SubgraphIndex&gt; <a class="code hl_function" href="classonert_1_1util_1_1_tracing_ctx.html#a602297010bdb2ac0f7beae55cf65ee36">getSubgraphIndex</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1ir_1_1_graph.html">ir::Graph</a> *g)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">  </span>{</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">return</span> _subgraph_indices.at(g);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  }</div>
+</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordtype">void</span> decideSessionID()</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  {</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    std::unique_lock&lt;std::mutex&gt; lock{_session_id_mutex};</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    _session_id = _next_session_id++;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  std::unordered_map&lt;const ir::Graph *, std::pair&lt;ir::ModelIndex, ir::SubgraphIndex&gt;&gt;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    _subgraph_indices;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  uint32_t _session_id;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keyword">static</span> <span class="keyword">inline</span> std::mutex _session_id_mutex;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keyword">static</span> <span class="keyword">inline</span> uint32_t _next_session_id = 0;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>};</div>
+</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>} <span class="comment">// namespace onert::util</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_UTIL_TRACING_CTX_H__</span></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_graph_html"><div class="ttname"><a href="classonert_1_1ir_1_1_graph.html">onert::ir::Graph</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_graph_8h_source.html#l00031">Graph.h:32</a></div></div>
-<div class="ttc" id="aclassonert_1_1util_1_1_index_html"><div class="ttname"><a href="classonert_1_1util_1_1_index.html">onert::util::Index&lt; uint16_t, SubgraphIndexTag &gt;</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_tracing_ctx_html"><div class="ttname"><a href="classonert_1_1util_1_1_tracing_ctx.html">onert::util::TracingCtx</a></div><div class="ttdoc">Class to maintain information about profiling per session.</div><div class="ttdef"><b>Definition</b> <a href="_tracing_ctx_8h_source.html#l00033">TracingCtx.h:34</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1_tracing_ctx_html_a0c3e0a172dd9ddb0d3dd69d130233129"><div class="ttname"><a href="classonert_1_1util_1_1_tracing_ctx.html#a0c3e0a172dd9ddb0d3dd69d130233129">onert::util::TracingCtx::setSubgraphIndex</a></div><div class="ttdeci">void setSubgraphIndex(const ir::Graph *g, std::pair&lt; ir::ModelIndex, ir::SubgraphIndex &gt; index)</div><div class="ttdoc">Set subgraph index of a graph.</div><div class="ttdef"><b>Definition</b> <a href="_tracing_ctx_8h_source.html#l00054">TracingCtx.h:54</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_tracing_ctx_html_a1837f9ab0e8b6085fd2ecd922f0781f1"><div class="ttname"><a href="classonert_1_1util_1_1_tracing_ctx.html#a1837f9ab0e8b6085fd2ecd922f0781f1">onert::util::TracingCtx::hasMultipleSessions</a></div><div class="ttdeci">bool hasMultipleSessions() const</div><div class="ttdoc">Return true if more than 1 session exist.</div><div class="ttdef"><b>Definition</b> <a href="_tracing_ctx_8h_source.html#l00049">TracingCtx.h:49</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1_tracing_ctx_html_a602297010bdb2ac0f7beae55cf65ee36"><div class="ttname"><a href="classonert_1_1util_1_1_tracing_ctx.html#a602297010bdb2ac0f7beae55cf65ee36">onert::util::TracingCtx::getSubgraphIndex</a></div><div class="ttdeci">std::pair&lt; ir::ModelIndex, ir::SubgraphIndex &gt; getSubgraphIndex(const ir::Graph *g) const</div><div class="ttdoc">Get subgraph index of a graph.</div><div class="ttdef"><b>Definition</b> <a href="_tracing_ctx_8h_source.html#l00062">TracingCtx.h:62</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_tracing_ctx_html_a6da0095e0b861cad09685b043e2219f2"><div class="ttname"><a href="classonert_1_1util_1_1_tracing_ctx.html#a6da0095e0b861cad09685b043e2219f2">onert::util::TracingCtx::TracingCtx</a></div><div class="ttdeci">TracingCtx(void)</div><div class="ttdoc">Create and store unique session id managed by this class.</div><div class="ttdef"><b>Definition</b> <a href="_tracing_ctx_8h_source.html#l00040">TracingCtx.h:40</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_tracing_ctx_html_a77412d3f8ae78dfc6e2c84d1425af0de"><div class="ttname"><a href="classonert_1_1util_1_1_tracing_ctx.html#a77412d3f8ae78dfc6e2c84d1425af0de">onert::util::TracingCtx::getSessionId</a></div><div class="ttdeci">uint32_t getSessionId() const</div><div class="ttdef"><b>Definition</b> <a href="_tracing_ctx_8h_source.html#l00042">TracingCtx.h:42</a></div></div>
-<div class="ttc" id="aclassonert_1_1util_1_1_tracing_ctx_html_aa06d23a7b1540b82fd695d0e22fac644"><div class="ttname"><a href="classonert_1_1util_1_1_tracing_ctx.html#aa06d23a7b1540b82fd695d0e22fac644">onert::util::TracingCtx::getSubgraphIndex</a></div><div class="ttdeci">ir::SubgraphIndex getSubgraphIndex(const ir::Graph *g) const</div><div class="ttdoc">Get subgraph index of a graph.</div><div class="ttdef"><b>Definition</b> <a href="_tracing_ctx_8h_source.html#l00059">TracingCtx.h:59</a></div></div>
-<div class="ttc" id="aclassonert_1_1util_1_1_tracing_ctx_html_ac45bd7e34f5877ae7073b0d18ede68c5"><div class="ttname"><a href="classonert_1_1util_1_1_tracing_ctx.html#ac45bd7e34f5877ae7073b0d18ede68c5">onert::util::TracingCtx::setSubgraphIndex</a></div><div class="ttdeci">void setSubgraphIndex(const ir::Graph *g, uint32_t index)</div><div class="ttdoc">Set subgraph index of a graph.</div><div class="ttdef"><b>Definition</b> <a href="_tracing_ctx_8h_source.html#l00054">TracingCtx.h:54</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1util_html"><div class="ttname"><a href="namespaceonert_1_1util.html">onert::util</a></div><div class="ttdef"><b>Definition</b> <a href="_calculate_activation_range_8h_source.html#l00024">CalculateActivationRange.h:25</a></div></div>
 <div class="ttc" id="aruntime_2onert_2core_2include_2ir_2_model_8h_html"><div class="ttname"><a href="runtime_2onert_2core_2include_2ir_2_model_8h.html">Model.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

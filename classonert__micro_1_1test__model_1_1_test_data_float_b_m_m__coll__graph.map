@@ -1,0 +1,11 @@
+<map id="onert_micro::test_model::TestDataFloatBMM" name="onert_micro::test_model::TestDataFloatBMM">
+<area shape="rect" id="Node000001" title=" " alt="" coords="719,37,878,78"/>
+<area shape="rect" id="Node000002" href="$classonert__micro_1_1test__model_1_1_test_data_b_m_m_base.html" title=" " alt="" coords="482,37,670,78"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="685,55,718,55,718,60,685,60"/>
+<area shape="rect" id="Node000003" href="$classonert__micro_1_1test__model_1_1_test_data_base.html" title=" " alt="" coords="220,5,379,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="395,34,482,44,482,49,394,39"/>
+<area shape="rect" id="Node000004" href="$classonert__micro_1_1test__model_1_1_test_data_b_m_m_base.html" title=" " alt="" coords="214,71,385,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="400,76,481,66,482,72,401,82"/>
+<area shape="rect" id="Node000005" href="$classonert__micro_1_1test__model_1_1_test_data_base.html" title=" " alt="" coords="5,71,165,111"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="180,88,214,88,214,94,180,94"/>
+</map>

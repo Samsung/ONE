@@ -1,0 +1,11 @@
+<map id="onert_micro::test_model::TestDataInt8Mean" name="onert_micro::test_model::TestDataInt8Mean">
+<area shape="rect" id="Node000001" title=" " alt="" coords="737,37,896,78"/>
+<area shape="rect" id="Node000002" href="$classonert__micro_1_1test__model_1_1_test_data_mean_base.html" title=" " alt="" coords="491,37,688,78"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="703,55,737,55,737,60,703,60"/>
+<area shape="rect" id="Node000003" href="$classonert__micro_1_1test__model_1_1_test_data_base.html" title=" " alt="" coords="221,5,380,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="396,33,491,44,490,49,395,39"/>
+<area shape="rect" id="Node000004" href="$classonert__micro_1_1test__model_1_1_test_data_mean_base.html" title=" " alt="" coords="214,71,386,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="402,77,490,66,491,72,402,82"/>
+<area shape="rect" id="Node000005" href="$classonert__micro_1_1test__model_1_1_test_data_base.html" title=" " alt="" coords="5,71,165,111"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="180,88,213,88,213,94,180,94"/>
+</map>

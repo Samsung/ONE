@@ -10,12 +10,10 @@ var classonert_1_1exec_1_1train_1_1_trainable_executor =
     [ "getLoss", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a57b4593cbc4db787812a866a45779336", null ],
     [ "graph", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a4eb1b7b19e14d14db46987d8022df2f6", null ],
     [ "inputInfo", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a17313f5f16b979efc46ed53311a420f5", null ],
-    [ "inputLayout", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a8dc78133db4d042b06cb5488365085e9", null ],
     [ "inputSize", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a63fd23446555b9447f7b3e46ebed58d2", null ],
     [ "iterateTrainableTensors", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a02180db1a5cab15c3d030043c5b1e63c", null ],
     [ "outputBuffer", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a68e50ffd25a57f14de6675eb3ef8d7cd", null ],
     [ "outputInfo", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#afd804936ac6652bb5942bef3caa26252", null ],
-    [ "outputLayout", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#affd4d3a12dcac266a46a86d7f5f166ae", null ],
     [ "outputSize", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a9bfeb3400991ed7d4b84677d18063329", null ],
     [ "outputTensor", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#aa3ab622f9971e059ed9280d4bf37efdf", null ],
     [ "setIndexedRanks", "classonert_1_1exec_1_1train_1_1_trainable_executor.html#a93ff2e116f919422fcb489c9e70a6d52", null ]

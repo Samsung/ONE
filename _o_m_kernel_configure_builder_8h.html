@@ -98,7 +98,8 @@ $(document).ready(function(){initNavTree('_o_m_kernel_configure_builder_8h.html'
   <div class="headertitle"><div class="title">OMKernelConfigureBuilder.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="_o_m_circle_reader_8h_source.html">core/reader/OMCircleReader.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;iostream&gt;</code><br />
+<code>#include &quot;<a class="el" href="_o_m_circle_reader_8h_source.html">core/reader/OMCircleReader.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_o_m_kernel_type_8h_source.html">core/OMKernelType.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_o_m_runtime_storage_8h_source.html">core/OMRuntimeStorage.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_o_m_runtime_context_8h_source.html">core/OMRuntimeContext.h</a>&quot;</code><br />
@@ -174,101 +175,103 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00040">40</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
-<div class="line"><span class="lineno">   47</span><span class="keyword">public</span>:</div>
-<div class="line"><span class="lineno">   48</span>  <span class="keyword">constexpr</span> KernelBuiltinConfigureRegistry() : _operator_configure()</div>
-<div class="line"><span class="lineno">   49</span>  {</div>
-<div class="line"><span class="lineno">   50</span><span class="preprocessor">#define REGISTER_KERNEL(builtin_operator, name)                                  \</span></div>
-<div class="line"><span class="lineno">   51</span><span class="preprocessor">  registerKernelConfigure(core::OMBuilderID::BuiltinOperator_##builtin_operator, \</span></div>
-<div class="line"><span class="lineno">   52</span><span class="preprocessor">                          configure_kernel_Circle##name);</span></div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span><span class="preprocessor">#include &quot;KernelsToBuild.lst&quot;</span></div>
-<div class="line"><span class="lineno">   55</span> </div>
-<div class="line"><span class="lineno">   56</span><span class="preprocessor">#undef REGISTER_KERNEL</span></div>
-<div class="line"><span class="lineno">   57</span>  }</div>
-<div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span><span class="keyword">public</span>:</div>
-<div class="line"><span class="lineno">   60</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> getKernelConfigureFunc(core::OMBuilderID builderID,</div>
-<div class="line"><span class="lineno">   61</span>                                  KernelConfigureFunc **configure_func)<span class="keyword"> const</span></div>
-<div class="line"><span class="lineno">   62</span><span class="keyword">  </span>{</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keyword">const</span> <span class="keyword">auto</span> builder_id_opcode = size_t(builderID);</div>
-<div class="line"><span class="lineno">   64</span>    assert(builder_id_opcode &lt; <span class="keywordtype">size_t</span>(core::OMBuilderID::BuiltinOperatorsSize));</div>
-<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">if</span> (builder_id_opcode &gt;= <span class="keywordtype">size_t</span>(core::OMBuilderID::BuiltinOperatorsSize))</div>
-<div class="line"><span class="lineno">   66</span>    {</div>
-<div class="line"><span class="lineno">   67</span>      *configure_func = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">   68</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
-<div class="line"><span class="lineno">   69</span>    }</div>
-<div class="line"><span class="lineno">   70</span>    *configure_func = _operator_configure[builder_id_opcode];</div>
-<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">   72</span>  }</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span><span class="keyword">private</span>:</div>
-<div class="line"><span class="lineno">   75</span>  <span class="keyword">constexpr</span> <span class="keywordtype">void</span> registerKernelConfigure(core::OMBuilderID <span class="keywordtype">id</span>, KernelConfigureFunc *func)</div>
-<div class="line"><span class="lineno">   76</span>  {</div>
-<div class="line"><span class="lineno">   77</span>    assert(<span class="keywordtype">size_t</span>(<span class="keywordtype">id</span>) &lt; <span class="keywordtype">size_t</span>(core::OMBuilderID::BuiltinOperatorsSize));</div>
-<div class="line"><span class="lineno">   78</span>    _operator_configure[size_t(<span class="keywordtype">id</span>)] = func;</div>
-<div class="line"><span class="lineno">   79</span>  }</div>
-<div class="line"><span class="lineno">   80</span> </div>
-<div class="line"><span class="lineno">   81</span><span class="keyword">private</span>:</div>
-<div class="line"><span class="lineno">   82</span>  <a class="code hl_typedef" href="namespaceonert__micro_1_1import.html#aba9d0b9e9b1e1e32627ab4e8d7639703">KernelConfigureFunc</a> *_operator_configure[size_t(core::OMBuilderID::BuiltinOperatorsSize)];</div>
-<div class="line"><span class="lineno">   83</span>};</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span><span class="keyword">class </span>KernelCustomConfigureRegistry</div>
-<div class="line"><span class="lineno">   86</span>{</div>
-<div class="line"><span class="lineno">   87</span><span class="keyword">public</span>:</div>
-<div class="line"><span class="lineno">   88</span>  <span class="keyword">constexpr</span> KernelCustomConfigureRegistry() : _operator_configure()</div>
-<div class="line"><span class="lineno">   89</span>  {</div>
-<div class="line"><span class="lineno">   90</span><span class="preprocessor">#define REGISTER_CUSTOM_KERNEL(name, string_name) \</span></div>
-<div class="line"><span class="lineno">   91</span><span class="preprocessor">  registerKernelConfigure(core::OMBuilderID::CUSTOM_##name, configure_kernel_Circle##name);</span></div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span><span class="preprocessor">#include &quot;CustomKernelsToBuild.lst&quot;</span></div>
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00041">41</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{</div>
+<div class="line"><span class="lineno">   48</span><span class="keyword">public</span>:</div>
+<div class="line"><span class="lineno">   49</span>  <span class="keyword">constexpr</span> KernelBuiltinConfigureRegistry() : _operator_configure()</div>
+<div class="line"><span class="lineno">   50</span>  {</div>
+<div class="line"><span class="lineno">   51</span><span class="preprocessor">#define REGISTER_KERNEL(builtin_operator, name)                                  \</span></div>
+<div class="line"><span class="lineno">   52</span><span class="preprocessor">  registerKernelConfigure(core::OMBuilderID::BuiltinOperator_##builtin_operator, \</span></div>
+<div class="line"><span class="lineno">   53</span><span class="preprocessor">                          configure_kernel_Circle##name);</span></div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span><span class="preprocessor">#include &quot;KernelsToBuild.lst&quot;</span></div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span><span class="preprocessor">#undef REGISTER_KERNEL</span></div>
+<div class="line"><span class="lineno">   58</span>  }</div>
+<div class="line"><span class="lineno">   59</span> </div>
+<div class="line"><span class="lineno">   60</span><span class="keyword">public</span>:</div>
+<div class="line"><span class="lineno">   61</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> getKernelConfigureFunc(core::OMBuilderID builderID,</div>
+<div class="line"><span class="lineno">   62</span>                                  KernelConfigureFunc **configure_func)<span class="keyword"> const</span></div>
+<div class="line"><span class="lineno">   63</span><span class="keyword">  </span>{</div>
+<div class="line"><span class="lineno">   64</span>    <span class="keyword">const</span> <span class="keyword">auto</span> builder_id_opcode = size_t(builderID);</div>
+<div class="line"><span class="lineno">   65</span>    assert(builder_id_opcode &lt; <span class="keywordtype">size_t</span>(core::OMBuilderID::BuiltinOperatorsSize));</div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">if</span> (builder_id_opcode &gt;= <span class="keywordtype">size_t</span>(core::OMBuilderID::BuiltinOperatorsSize))</div>
+<div class="line"><span class="lineno">   67</span>    {</div>
+<div class="line"><span class="lineno">   68</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: Unknown builtin operator ID &quot;</span> &lt;&lt; builder_id_opcode &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   69</span>      *configure_func = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   70</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   71</span>    }</div>
+<div class="line"><span class="lineno">   72</span>    *configure_func = _operator_configure[builder_id_opcode];</div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">   74</span>  }</div>
+<div class="line"><span class="lineno">   75</span> </div>
+<div class="line"><span class="lineno">   76</span><span class="keyword">private</span>:</div>
+<div class="line"><span class="lineno">   77</span>  <span class="keyword">constexpr</span> <span class="keywordtype">void</span> registerKernelConfigure(core::OMBuilderID <span class="keywordtype">id</span>, KernelConfigureFunc *func)</div>
+<div class="line"><span class="lineno">   78</span>  {</div>
+<div class="line"><span class="lineno">   79</span>    assert(<span class="keywordtype">size_t</span>(<span class="keywordtype">id</span>) &lt; <span class="keywordtype">size_t</span>(core::OMBuilderID::BuiltinOperatorsSize));</div>
+<div class="line"><span class="lineno">   80</span>    _operator_configure[size_t(<span class="keywordtype">id</span>)] = func;</div>
+<div class="line"><span class="lineno">   81</span>  }</div>
+<div class="line"><span class="lineno">   82</span> </div>
+<div class="line"><span class="lineno">   83</span><span class="keyword">private</span>:</div>
+<div class="line"><span class="lineno">   84</span>  <a class="code hl_typedef" href="namespaceonert__micro_1_1import.html#aba9d0b9e9b1e1e32627ab4e8d7639703">KernelConfigureFunc</a> *_operator_configure[size_t(core::OMBuilderID::BuiltinOperatorsSize)];</div>
+<div class="line"><span class="lineno">   85</span>};</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span><span class="keyword">class </span>KernelCustomConfigureRegistry</div>
+<div class="line"><span class="lineno">   88</span>{</div>
+<div class="line"><span class="lineno">   89</span><span class="keyword">public</span>:</div>
+<div class="line"><span class="lineno">   90</span>  <span class="keyword">constexpr</span> KernelCustomConfigureRegistry() : _operator_configure()</div>
+<div class="line"><span class="lineno">   91</span>  {</div>
+<div class="line"><span class="lineno">   92</span><span class="preprocessor">#define REGISTER_CUSTOM_KERNEL(name, string_name) \</span></div>
+<div class="line"><span class="lineno">   93</span><span class="preprocessor">  registerKernelConfigure(core::OMBuilderID::CUSTOM_##name, configure_kernel_Circle##name);</span></div>
 <div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span><span class="preprocessor">#undef REGISTER_CUSTOM_KERNEL</span></div>
-<div class="line"><span class="lineno">   96</span>  }</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span><span class="keyword">public</span>:</div>
-<div class="line"><span class="lineno">   99</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> getKernelConfigureFunc(core::OMBuilderID builderID,</div>
-<div class="line"><span class="lineno">  100</span>                                  KernelConfigureFunc **configure_func)<span class="keyword"> const</span></div>
-<div class="line"><span class="lineno">  101</span><span class="keyword">  </span>{</div>
-<div class="line"><span class="lineno">  102</span>    <span class="keyword">auto</span> builder_id_opcode = size_t(builderID);</div>
-<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> (builder_id_opcode &gt;= <span class="keywordtype">size_t</span>(core::OMBuilderID::Size))</div>
-<div class="line"><span class="lineno">  104</span>    {</div>
-<div class="line"><span class="lineno">  105</span>      *configure_func = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  106</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
-<div class="line"><span class="lineno">  107</span>    }</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keyword">const</span> <span class="keyword">auto</span> builder_id_offset = size_t(core::OMBuilderID::BuiltinOperatorsSize);</div>
-<div class="line"><span class="lineno">  109</span>    builder_id_opcode -= builder_id_offset - 1;</div>
-<div class="line"><span class="lineno">  110</span> </div>
-<div class="line"><span class="lineno">  111</span>    *configure_func = _operator_configure[builder_id_opcode];</div>
-<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  113</span>  }</div>
-<div class="line"><span class="lineno">  114</span> </div>
-<div class="line"><span class="lineno">  115</span><span class="keyword">private</span>:</div>
-<div class="line"><span class="lineno">  116</span>  <span class="keyword">constexpr</span> <span class="keywordtype">void</span> registerKernelConfigure(core::OMBuilderID <span class="keywordtype">id</span>, KernelConfigureFunc *func)</div>
-<div class="line"><span class="lineno">  117</span>  {</div>
-<div class="line"><span class="lineno">  118</span>    <span class="keyword">auto</span> builder_id_opcode = size_t(<span class="keywordtype">id</span>);</div>
-<div class="line"><span class="lineno">  119</span>    <span class="keyword">const</span> <span class="keyword">auto</span> builder_id_offset = size_t(core::OMBuilderID::BuiltinOperatorsSize);</div>
-<div class="line"><span class="lineno">  120</span>    builder_id_opcode = builder_id_opcode - builder_id_offset - 1;</div>
-<div class="line"><span class="lineno">  121</span>    _operator_configure[builder_id_opcode] = func;</div>
-<div class="line"><span class="lineno">  122</span>  }</div>
-<div class="line"><span class="lineno">  123</span> </div>
-<div class="line"><span class="lineno">  124</span><span class="keyword">private</span>:</div>
-<div class="line"><span class="lineno">  125</span>  <a class="code hl_typedef" href="namespaceonert__micro_1_1import.html#aba9d0b9e9b1e1e32627ab4e8d7639703">KernelConfigureFunc</a> *_operator_configure[size_t(core::OMBuilderID::Size) -</div>
-<div class="line"><span class="lineno">  126</span>                                           size_t(core::OMBuilderID::BuiltinOperatorsSize) - 1];</div>
-<div class="line"><span class="lineno">  127</span>};</div>
-<div class="line"><span class="lineno">  128</span> </div>
-<div class="line"><span class="lineno">  129</span><span class="comment">// Global constexpr kernel builtin and custom configure</span></div>
-<div class="line"><span class="lineno">  130</span><span class="keyword">constexpr</span> KernelBuiltinConfigureRegistry <a class="code hl_variable" href="namespaceonert__micro_1_1import.html#a03571a359df65e4bf7120d48edb3c3d4">kernel_builtin_configure</a>;</div>
-<div class="line"><span class="lineno">  131</span><span class="keyword">constexpr</span> KernelCustomConfigureRegistry <a class="code hl_variable" href="namespaceonert__micro_1_1import.html#ad1c9480dab4ad185fa8f2954466ee160">kernel_custom_configure</a>;</div>
-<div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span>} <span class="comment">// namespace import</span></div>
-<div class="line"><span class="lineno">  134</span>} <span class="comment">// namespace onert_micro</span></div>
+<div class="line"><span class="lineno">   95</span><span class="preprocessor">#include &quot;CustomKernelsToBuild.lst&quot;</span></div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span><span class="preprocessor">#undef REGISTER_CUSTOM_KERNEL</span></div>
+<div class="line"><span class="lineno">   98</span>  }</div>
+<div class="line"><span class="lineno">   99</span> </div>
+<div class="line"><span class="lineno">  100</span><span class="keyword">public</span>:</div>
+<div class="line"><span class="lineno">  101</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> getKernelConfigureFunc(core::OMBuilderID builderID,</div>
+<div class="line"><span class="lineno">  102</span>                                  KernelConfigureFunc **configure_func)<span class="keyword"> const</span></div>
+<div class="line"><span class="lineno">  103</span><span class="keyword">  </span>{</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keyword">auto</span> builder_id_opcode = size_t(builderID);</div>
+<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">if</span> (builder_id_opcode &gt;= <span class="keywordtype">size_t</span>(core::OMBuilderID::Size))</div>
+<div class="line"><span class="lineno">  106</span>    {</div>
+<div class="line"><span class="lineno">  107</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: Unknown custom operator ID &quot;</span> &lt;&lt; builder_id_opcode &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  108</span>      *configure_func = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  109</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">  110</span>    }</div>
+<div class="line"><span class="lineno">  111</span>    <span class="keyword">const</span> <span class="keyword">auto</span> builder_id_offset = size_t(core::OMBuilderID::BuiltinOperatorsSize);</div>
+<div class="line"><span class="lineno">  112</span>    builder_id_opcode -= builder_id_offset - 1;</div>
+<div class="line"><span class="lineno">  113</span> </div>
+<div class="line"><span class="lineno">  114</span>    *configure_func = _operator_configure[builder_id_opcode];</div>
+<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">  116</span>  }</div>
+<div class="line"><span class="lineno">  117</span> </div>
+<div class="line"><span class="lineno">  118</span><span class="keyword">private</span>:</div>
+<div class="line"><span class="lineno">  119</span>  <span class="keyword">constexpr</span> <span class="keywordtype">void</span> registerKernelConfigure(core::OMBuilderID <span class="keywordtype">id</span>, KernelConfigureFunc *func)</div>
+<div class="line"><span class="lineno">  120</span>  {</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keyword">auto</span> builder_id_opcode = size_t(<span class="keywordtype">id</span>);</div>
+<div class="line"><span class="lineno">  122</span>    <span class="keyword">const</span> <span class="keyword">auto</span> builder_id_offset = size_t(core::OMBuilderID::BuiltinOperatorsSize);</div>
+<div class="line"><span class="lineno">  123</span>    builder_id_opcode = builder_id_opcode - builder_id_offset - 1;</div>
+<div class="line"><span class="lineno">  124</span>    _operator_configure[builder_id_opcode] = func;</div>
+<div class="line"><span class="lineno">  125</span>  }</div>
+<div class="line"><span class="lineno">  126</span> </div>
+<div class="line"><span class="lineno">  127</span><span class="keyword">private</span>:</div>
+<div class="line"><span class="lineno">  128</span>  <a class="code hl_typedef" href="namespaceonert__micro_1_1import.html#aba9d0b9e9b1e1e32627ab4e8d7639703">KernelConfigureFunc</a> *_operator_configure[size_t(core::OMBuilderID::Size) -</div>
+<div class="line"><span class="lineno">  129</span>                                           size_t(core::OMBuilderID::BuiltinOperatorsSize) - 1];</div>
+<div class="line"><span class="lineno">  130</span>};</div>
+<div class="line"><span class="lineno">  131</span> </div>
+<div class="line"><span class="lineno">  132</span><span class="comment">// Global constexpr kernel builtin and custom configure</span></div>
+<div class="line"><span class="lineno">  133</span><span class="keyword">constexpr</span> KernelBuiltinConfigureRegistry <a class="code hl_variable" href="namespaceonert__micro_1_1import.html#a03571a359df65e4bf7120d48edb3c3d4">kernel_builtin_configure</a>;</div>
+<div class="line"><span class="lineno">  134</span><span class="keyword">constexpr</span> KernelCustomConfigureRegistry <a class="code hl_variable" href="namespaceonert__micro_1_1import.html#ad1c9480dab4ad185fa8f2954466ee160">kernel_custom_configure</a>;</div>
 <div class="line"><span class="lineno">  135</span> </div>
-<div class="line"><span class="lineno">  136</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_IMPORT_KERNEL_CONFIGURE_BUILDER_H</span></div>
-<div class="ttc" id="anamespaceonert__micro_1_1import_html_a03571a359df65e4bf7120d48edb3c3d4"><div class="ttname"><a href="namespaceonert__micro_1_1import.html#a03571a359df65e4bf7120d48edb3c3d4">onert_micro::import::kernel_builtin_configure</a></div><div class="ttdeci">constexpr KernelBuiltinConfigureRegistry kernel_builtin_configure</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_configure_builder_8h_source.html#l00130">OMKernelConfigureBuilder.h:130</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1import_html_aba9d0b9e9b1e1e32627ab4e8d7639703"><div class="ttname"><a href="namespaceonert__micro_1_1import.html#aba9d0b9e9b1e1e32627ab4e8d7639703">onert_micro::import::KernelConfigureFunc</a></div><div class="ttdeci">OMStatus(const OMConfigureArgs &amp;) KernelConfigureFunc</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_configure_builder_8h_source.html#l00033">OMKernelConfigureBuilder.h:33</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1import_html_ad1c9480dab4ad185fa8f2954466ee160"><div class="ttname"><a href="namespaceonert__micro_1_1import.html#ad1c9480dab4ad185fa8f2954466ee160">onert_micro::import::kernel_custom_configure</a></div><div class="ttdeci">constexpr KernelCustomConfigureRegistry kernel_custom_configure</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_configure_builder_8h_source.html#l00131">OMKernelConfigureBuilder.h:131</a></div></div>
+<div class="line"><span class="lineno">  136</span>} <span class="comment">// namespace import</span></div>
+<div class="line"><span class="lineno">  137</span>} <span class="comment">// namespace onert_micro</span></div>
+<div class="line"><span class="lineno">  138</span> </div>
+<div class="line"><span class="lineno">  139</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_IMPORT_KERNEL_CONFIGURE_BUILDER_H</span></div>
+<div class="ttc" id="anamespaceonert__micro_1_1import_html_a03571a359df65e4bf7120d48edb3c3d4"><div class="ttname"><a href="namespaceonert__micro_1_1import.html#a03571a359df65e4bf7120d48edb3c3d4">onert_micro::import::kernel_builtin_configure</a></div><div class="ttdeci">constexpr KernelBuiltinConfigureRegistry kernel_builtin_configure</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_configure_builder_8h_source.html#l00133">OMKernelConfigureBuilder.h:133</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1import_html_aba9d0b9e9b1e1e32627ab4e8d7639703"><div class="ttname"><a href="namespaceonert__micro_1_1import.html#aba9d0b9e9b1e1e32627ab4e8d7639703">onert_micro::import::KernelConfigureFunc</a></div><div class="ttdeci">OMStatus(const OMConfigureArgs &amp;) KernelConfigureFunc</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_configure_builder_8h_source.html#l00034">OMKernelConfigureBuilder.h:34</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1import_html_ad1c9480dab4ad185fa8f2954466ee160"><div class="ttname"><a href="namespaceonert__micro_1_1import.html#ad1c9480dab4ad185fa8f2954466ee160">onert_micro::import::kernel_custom_configure</a></div><div class="ttdeci">constexpr KernelCustomConfigureRegistry kernel_custom_configure</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_configure_builder_8h_source.html#l00134">OMKernelConfigureBuilder.h:134</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cb"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">onert_micro::OMStatus</a></div><div class="ttdeci">OMStatus</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00023">OMStatus.h:24</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">onert_micro::UnknownError</a></div><div class="ttdeci">@ UnknownError</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00030">OMStatus.h:30</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">onert_micro::Ok</a></div><div class="ttdeci">@ Ok</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00025">OMStatus.h:25</a></div></div>
@@ -301,7 +304,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00040">40</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00041">41</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
 
 </div>
 </div>
@@ -331,7 +334,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00035">35</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00036">36</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
 
 </div>
 </div>
@@ -363,7 +366,7 @@ Variables</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">  registerKernelConfigure(core::OMBuilderID::BuiltinOperator_##builtin_operator, \</div>
 <div class="line">                          configure_kernel_Circle##name);</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00035">35</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00036">36</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
 
 </div>
 </div>

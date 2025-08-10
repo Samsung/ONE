@@ -29,6 +29,7 @@ var namespaceonert__micro_1_1execute =
     [ "execute_kernel_CircleArgMax", "namespaceonert__micro_1_1execute.html#a35f24c3eb55cb3421550dc6553261f62", null ],
     [ "execute_kernel_CircleArgMin", "namespaceonert__micro_1_1execute.html#a431cb1c613fad1c4f1f2aead938a4052", null ],
     [ "execute_kernel_CircleAveragePool2D", "namespaceonert__micro_1_1execute.html#acdb1af4cb5b565f6c4fa0235ae1b632f", null ],
+    [ "execute_kernel_CircleBatchMatMul", "namespaceonert__micro_1_1execute.html#a4f58417ab1dcaace74aa73f09753a1b7", null ],
     [ "execute_kernel_CircleBatchToSpaceND", "namespaceonert__micro_1_1execute.html#a7a51e7b472040f7dd9388f76d846a79f", null ],
     [ "execute_kernel_CircleCast", "namespaceonert__micro_1_1execute.html#a24a32fe3daa02a4421bfceaa69e3f98b", null ],
     [ "execute_kernel_CircleCeil", "namespaceonert__micro_1_1execute.html#a31767189ef51703f16b6f7b9bbf9fc19", null ],

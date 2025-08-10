@@ -1,0 +1,10 @@
+<map id="onert_micro::core::OMReduceDataContext&lt; T &gt;" name="onert_micro::core::OMReduceDataContext&lt; T &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="26,304,214,345"/>
+<area shape="rect" id="Node000002" href="$classonert__micro_1_1core_1_1_o_m_data_context.html" title=" " alt="" coords="5,199,235,255"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,270,123,304,117,304,117,270"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="86,5,144,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="118,46,122,198,117,198,113,46"/>
+<area shape="rect" id="Node000004" href="$classonert__micro_1_1core_1_1_o_m_data_context.html" title=" " alt="" coords="136,80,323,121"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="146,38,203,78,200,82,143,42"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="204,134,146,200,142,197,200,131"/>
+</map>

@@ -224,8 +224,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   40</span>      <span class="keywordflow">if</span> (use_index == node_index)</div>
 <div class="line"><span class="lineno">   41</span>        <span class="keywordflow">continue</span>;</div>
 <div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>      <span class="comment">// NOTE The PermuteFactor(backend and layout) of the current node and the use node may be</span></div>
-<div class="line"><span class="lineno">   44</span>      <span class="comment">//      different. But there is no problem because both nodes&#39; constant operand will have</span></div>
+<div class="line"><span class="lineno">   43</span>      <span class="comment">// NOTE The PermuteFactor(backend) of the current node and the use node may be different.</span></div>
+<div class="line"><span class="lineno">   44</span>      <span class="comment">//      But there is no problem because both nodes&#39; constant operand will have</span></div>
 <div class="line"><span class="lineno">   45</span>      <span class="comment">//      only one use node.</span></div>
 <div class="line"><span class="lineno">   46</span>      <span class="keyword">const</span> <span class="keyword">auto</span> new_index = insertNewOperand(<span class="keywordtype">object</span>);</div>
 <div class="line"><span class="lineno">   47</span>      updateUseDef(input, new_index, use_index);</div>

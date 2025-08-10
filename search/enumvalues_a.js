@@ -16,7 +16,7 @@ var searchData=
   ['linux_13',['LINUX',['../namespacecircle__planner.html#accc79ac9a3803f4b18b180428137202aa349973174d3c2d21cb28e39d5e00274a',1,'circle_planner']]],
   ['list_5ffile_14',['LIST_FILE',['../classrecord__minmax_1_1_record_min_max.html#aabb3c38df5ddf2f38e0f4b7cd87c8b9da4858462f919de241552426d2e8bba32a',1,'record_minmax::RecordMinMax']]],
   ['local_5fresponse_5fnormalization_15',['LOCAL_RESPONSE_NORMALIZATION',['../_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152a2006d72a4491c2c80c558e9bce8aeb78',1,'OperationType.h']]],
-  ['log_16',['log',['../classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a4b5ffcdaf38ce4d463171f5c977c5ab3',1,'onert::ir::operation::ElementwiseUnary::LOG'],['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8adc1d71bbb5c4d2a5e936db79ef10c19f',1,'mir_caffe::log']]],
+  ['log_16',['log',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8adc1d71bbb5c4d2a5e936db79ef10c19f',1,'mir_caffe::log'],['../classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a4b5ffcdaf38ce4d463171f5c977c5ab3',1,'onert::ir::operation::ElementwiseUnary::LOG']]],
   ['logical_5fand_17',['LOGICAL_AND',['../classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783aa770916377f618641eccd6783b13503a',1,'onert::ir::operation::ElementwiseBinary']]],
   ['logical_5fnot_18',['LOGICAL_NOT',['../classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a330c6551c4bc9acbc0a7363dc8f68680',1,'onert::ir::operation::ElementwiseUnary']]],
   ['logical_5for_19',['LOGICAL_OR',['../classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783a0d0389dd347e259ac16a47fc9db81c18',1,'onert::ir::operation::ElementwiseBinary']]],
@@ -26,5 +26,6 @@ var searchData=
   ['lrn_23',['LRN',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8afe551a61d0f82b961f8c1dcb271d631f',1,'mir_caffe']]],
   ['lsh_5fprojection_24',['LSH_PROJECTION',['../_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152a7a7cd93344ebd0a0dac92b87d7f8e14d',1,'OperationType.h']]],
   ['lstm_25',['lstm',['../_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152aeca9158c08600cd86442dfd1c18a3c86',1,'LSTM:&#160;OperationType.h'],['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aeca9158c08600cd86442dfd1c18a3c86',1,'mir_caffe::LSTM']]],
-  ['luci_5finterpreter_26',['LUCI_INTERPRETER',['../namespacecircle__planner.html#a564e76d27b50b73a788d5809e3475581a9044cf9974571aaa7ba21e97802961db',1,'circle_planner']]]
+  ['luci_5finterpreter_26',['LUCI_INTERPRETER',['../namespacecircle__planner.html#a564e76d27b50b73a788d5809e3475581a9044cf9974571aaa7ba21e97802961db',1,'circle_planner']]],
+  ['lwq_27',['LWQ',['../classonert__micro_1_1core_1_1_o_m_quantization_data.html#aa7b6cbd3a716f559c6360be23e25af14a83ff69101dadbf3518496b9c9bec8eb9',1,'onert_micro::core::OMQuantizationData']]]
 ];

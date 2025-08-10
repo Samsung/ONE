@@ -192,6 +192,8 @@ Functions</h2></td></tr>
 <tr class="separator:a431cb1c613fad1c4f1f2aead938a4052"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdb1af4cb5b565f6c4fa0235ae1b632f" id="r_acdb1af4cb5b565f6c4fa0235ae1b632f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#acdb1af4cb5b565f6c4fa0235ae1b632f">execute_kernel_CircleAveragePool2D</a> (const <a class="el" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html">OMExecuteArgs</a> &amp;execute_args)</td></tr>
 <tr class="separator:acdb1af4cb5b565f6c4fa0235ae1b632f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f58417ab1dcaace74aa73f09753a1b7" id="r_a4f58417ab1dcaace74aa73f09753a1b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#a4f58417ab1dcaace74aa73f09753a1b7">execute_kernel_CircleBatchMatMul</a> (const <a class="el" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html">OMExecuteArgs</a> &amp;execute_args)</td></tr>
+<tr class="separator:a4f58417ab1dcaace74aa73f09753a1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a51e7b472040f7dd9388f76d846a79f" id="r_a7a51e7b472040f7dd9388f76d846a79f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#a7a51e7b472040f7dd9388f76d846a79f">execute_kernel_CircleBatchToSpaceND</a> (const <a class="el" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html">onert_micro::execute::OMExecuteArgs</a> &amp;execute_args)</td></tr>
 <tr class="separator:a7a51e7b472040f7dd9388f76d846a79f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24a32fe3daa02a4421bfceaa69e3f98b" id="r_a24a32fe3daa02a4421bfceaa69e3f98b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute.html#a24a32fe3daa02a4421bfceaa69e3f98b">execute_kernel_CircleCast</a> (const <a class="el" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html">OMExecuteArgs</a> &amp;execute_args)</td></tr>
@@ -1754,6 +1756,93 @@ template&lt;typename T , typename AccType &gt; </div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_pool2_d_params_html"><div class="ttname"><a href="structonert__micro_1_1core_1_1_pool2_d_params.html">onert_micro::core::Pool2DParams</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00072">OMKernelData.h:73</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_average_pool2d_8h_source.html#l00032">onert_micro::execute::pal::AveragePool()</a>, <a class="el" href="namespaceonert__micro_1_1execute.html#a9fb9e08df4155b8e17dcb86ce734cb12">execute_pooling_common()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
+
+</div>
+</div>
+<a id="a4f58417ab1dcaace74aa73f09753a1b7" name="a4f58417ab1dcaace74aa73f09753a1b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f58417ab1dcaace74aa73f09753a1b7">&#9670;&#160;</a></span>execute_kernel_CircleBatchMatMul()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> onert_micro::execute::execute_kernel_CircleBatchMatMul </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html">OMExecuteArgs</a> &amp;&#160;</td>
+          <td class="paramname"><em>execute_args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_batch_mat_mul_8cpp_source.html#l00045">45</a> of file <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_batch_mat_mul_8cpp_source.html">BatchMatMul.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>{</div>
+<div class="line"><span class="lineno">   47</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">core::OMRuntimeContext</a> &amp;runtime_context = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#a40c48eccb030e4c5526658e5cfebf166">runtime_context</a>;</div>
+<div class="line"><span class="lineno">   48</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html">core::OMRuntimeStorage</a> &amp;runtime_storage = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#aa193a1a6131e92d562053000b2c1d3a1">runtime_storage</a>;</div>
+<div class="line"><span class="lineno">   49</span>  uint16_t op_index = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#a2e8431dcee55febe4a20515ce1f3f14e">kernel_index</a>;</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>  <span class="keyword">const</span> circle::Tensor *input1;</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keyword">const</span> circle::Tensor *input2;</div>
+<div class="line"><span class="lineno">   53</span>  <span class="keyword">const</span> circle::Tensor *output;</div>
+<div class="line"><span class="lineno">   54</span> </div>
+<div class="line"><span class="lineno">   55</span>  uint8_t *input1_data;</div>
+<div class="line"><span class="lineno">   56</span>  uint8_t *input2_data;</div>
+<div class="line"><span class="lineno">   57</span>  uint8_t *output_data;</div>
+<div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   59</span>  <span class="keyword">const</span> circle::BatchMatMulOptions *options;</div>
+<div class="line"><span class="lineno">   60</span>  <span class="comment">// Read kernel</span></div>
+<div class="line"><span class="lineno">   61</span>  {</div>
+<div class="line"><span class="lineno">   62</span>    <a class="code hl_class" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html">execute::OMRuntimeKernel</a> runtime_kernel;</div>
+<div class="line"><span class="lineno">   63</span>    runtime_kernel.<a class="code hl_function" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9d1e53f55b9a2cd90b9f1add8c01643c">readKernel</a>(op_index, runtime_context);</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>    input1 = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">inputs</a>[input1TensorIdx];</div>
+<div class="line"><span class="lineno">   66</span>    input2 = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">inputs</a>[input2TensorIdx];</div>
+<div class="line"><span class="lineno">   67</span>    output = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#abd40fce4708b3659c02bdc3989973740">outputs</a>[outputTensorIdx];</div>
+<div class="line"><span class="lineno">   68</span>    assert(input1 != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   69</span>    assert(input2 != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   70</span>    assert(output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   71</span> </div>
+<div class="line"><span class="lineno">   72</span>    runtime_kernel.<a class="code hl_function" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a637cef05fffa2180f89636987e705b4d">getDataFromStorage</a>(op_index, runtime_storage, runtime_context);</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>    input1_data = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9bdb1e6ec84a197bcc2e0af4701f3503">inputs_data</a>[input1TensorIdx];</div>
+<div class="line"><span class="lineno">   75</span>    input2_data = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9bdb1e6ec84a197bcc2e0af4701f3503">inputs_data</a>[input2TensorIdx];</div>
+<div class="line"><span class="lineno">   76</span>    output_data = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a262335e7698df2b2547e8af28e2995ab">outputs_data</a>[outputTensorIdx];</div>
+<div class="line"><span class="lineno">   77</span>    assert(input1_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   78</span>    assert(input2_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   79</span>    assert(output_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>    options = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a490477ad767b834d3580536ad1d1fcf8">first_operator</a>-&gt;builtin_options_as_BatchMatMulOptions();</div>
+<div class="line"><span class="lineno">   82</span>  }</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status;</div>
+<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   86</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> input1_shape(input1);</div>
+<div class="line"><span class="lineno">   87</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> input2_shape(input2);</div>
+<div class="line"><span class="lineno">   88</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>(output);</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>  <span class="keywordflow">switch</span> (input1-&gt;type())</div>
+<div class="line"><span class="lineno">   91</span>  {</div>
+<div class="line"><span class="lineno">   92</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
+<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">case</span> circle::TensorType_FLOAT32:</div>
+<div class="line"><span class="lineno">   94</span>    {</div>
+<div class="line"><span class="lineno">   95</span>      onert_micro::execute::pal::BatchMatMul&lt;float, float&gt;(</div>
+<div class="line"><span class="lineno">   96</span>        input1_shape, core::utils::castInputData&lt;float&gt;(input1_data), input2_shape,</div>
+<div class="line"><span class="lineno">   97</span>        core::utils::castInputData&lt;float&gt;(input2_data), <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
+<div class="line"><span class="lineno">   98</span>        core::utils::castOutputData&lt;float&gt;(output_data));</div>
+<div class="line"><span class="lineno">   99</span>    }</div>
+<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  101</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
+<div class="line"><span class="lineno">  102</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  103</span>    {</div>
+<div class="line"><span class="lineno">  104</span>      status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
+<div class="line"><span class="lineno">  105</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">  106</span>    }</div>
+<div class="line"><span class="lineno">  107</span>  }</div>
+<div class="line"><span class="lineno">  108</span> </div>
+<div class="line"><span class="lineno">  109</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  110</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00063">onert_micro::execute::OMRuntimeKernel::first_operator</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00051">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00054">onert_micro::execute::OMRuntimeKernel::inputs_data</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00052">onert_micro::execute::OMRuntimeKernel::outputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00055">onert_micro::execute::OMRuntimeKernel::outputs_data</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
 
 </div>
 </div>
@@ -3784,7 +3873,7 @@ template&lt;typename T , typename AccType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_leaky_re_l_u_8cpp_source.html#l00028">28</a> of file <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_leaky_re_l_u_8cpp_source.html">LeakyRelu.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_leaky_relu_8cpp_source.html#l00028">28</a> of file <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_leaky_relu_8cpp_source.html">LeakyRelu.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
 <div class="line"><span class="lineno">   30</span>  <span class="keywordtype">bool</span> is_relu_6 = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   31</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#a7bf4fc7bd9abd874f5cbfd28a9f4cec8">execute_relu_common</a>(execute_args, is_relu_6);</div>
@@ -4368,83 +4457,42 @@ template&lt;typename T , typename AccType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_mean_8cpp_source.html#l00055">55</a> of file <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_mean_8cpp_source.html">Mean.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
-<div class="line"><span class="lineno">   57</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">core::OMRuntimeContext</a> &amp;runtime_context = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#a40c48eccb030e4c5526658e5cfebf166">runtime_context</a>;</div>
-<div class="line"><span class="lineno">   58</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html">core::OMRuntimeStorage</a> &amp;runtime_storage = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#aa193a1a6131e92d562053000b2c1d3a1">runtime_storage</a>;</div>
-<div class="line"><span class="lineno">   59</span>  uint16_t op_index = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#a2e8431dcee55febe4a20515ce1f3f14e">kernel_index</a>;</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>  <span class="keyword">const</span> circle::Tensor *input;</div>
-<div class="line"><span class="lineno">   62</span>  <span class="keyword">const</span> circle::Tensor *axis;</div>
-<div class="line"><span class="lineno">   63</span>  <span class="keyword">const</span> circle::Tensor *output;</div>
-<div class="line"><span class="lineno">   64</span> </div>
-<div class="line"><span class="lineno">   65</span>  uint8_t *input_data;</div>
-<div class="line"><span class="lineno">   66</span>  uint8_t *axis_data;</div>
-<div class="line"><span class="lineno">   67</span>  uint8_t *output_data;</div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>  uint16_t input_index = 0;</div>
-<div class="line"><span class="lineno">   70</span>  uint16_t axis_index = 0;</div>
-<div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>  <span class="keyword">const</span> circle::ReducerOptions *options;</div>
-<div class="line"><span class="lineno">   73</span>  <span class="comment">// Read kernel</span></div>
-<div class="line"><span class="lineno">   74</span>  {</div>
-<div class="line"><span class="lineno">   75</span>    <a class="code hl_class" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html">execute::OMRuntimeKernel</a> runtime_kernel;</div>
-<div class="line"><span class="lineno">   76</span>    runtime_kernel.<a class="code hl_function" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9d1e53f55b9a2cd90b9f1add8c01643c">readKernel</a>(op_index, runtime_context);</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_mean_8cpp_source.html#l00053">53</a> of file <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_mean_8cpp_source.html">Mean.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>{</div>
+<div class="line"><span class="lineno">   55</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">core::OMRuntimeContext</a> &amp;runtime_context = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#a40c48eccb030e4c5526658e5cfebf166">runtime_context</a>;</div>
+<div class="line"><span class="lineno">   56</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html">core::OMRuntimeStorage</a> &amp;runtime_storage = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#aa193a1a6131e92d562053000b2c1d3a1">runtime_storage</a>;</div>
+<div class="line"><span class="lineno">   57</span>  uint16_t op_index = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#a2e8431dcee55febe4a20515ce1f3f14e">kernel_index</a>;</div>
+<div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   59</span>  <a class="code hl_class" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html">OMRuntimeKernel</a> runtime_kernel;</div>
+<div class="line"><span class="lineno">   60</span>  runtime_kernel.<a class="code hl_function" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9d1e53f55b9a2cd90b9f1add8c01643c">readKernel</a>(op_index, runtime_context);</div>
+<div class="line"><span class="lineno">   61</span>  runtime_kernel.<a class="code hl_function" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a637cef05fffa2180f89636987e705b4d">getDataFromStorage</a>(op_index, runtime_storage, runtime_context);</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>  <span class="keyword">constexpr</span> <span class="keyword">static</span> <span class="keywordtype">size_t</span> kInputTensorIdx = 0;</div>
+<div class="line"><span class="lineno">   64</span>  <span class="keyword">const</span> circle::Tensor *input = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">inputs</a>[kInputTensorIdx];</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">switch</span> (input-&gt;type())</div>
+<div class="line"><span class="lineno">   67</span>  {</div>
+<div class="line"><span class="lineno">   68</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
+<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">case</span> circle::TensorType_FLOAT32:</div>
+<div class="line"><span class="lineno">   70</span>      <span class="keywordflow">return</span> impl::CircleMean&lt;float&gt;(runtime_kernel);</div>
+<div class="line"><span class="lineno">   71</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
+<div class="line"><span class="lineno">   72</span> </div>
+<div class="line"><span class="lineno">   73</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">case</span> circle::TensorType_INT8:</div>
+<div class="line"><span class="lineno">   75</span>      <span class="keywordflow">return</span> impl::CircleMean&lt;int8_t&gt;(runtime_kernel);</div>
+<div class="line"><span class="lineno">   76</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
 <div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>    input = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">inputs</a>[input1TensorIdx];</div>
-<div class="line"><span class="lineno">   79</span>    axis = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">inputs</a>[input2TensorIdx];</div>
-<div class="line"><span class="lineno">   80</span>    output = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#abd40fce4708b3659c02bdc3989973740">outputs</a>[outputTensorIdx];</div>
-<div class="line"><span class="lineno">   81</span>    assert(input != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   82</span>    assert(axis != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   83</span>    assert(output != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">case</span> circle::TensorType_INT32:</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">case</span> circle::TensorType_INT64:</div>
+<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   81</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
+<div class="line"><span class="lineno">   82</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
+<div class="line"><span class="lineno">   83</span>  }</div>
 <div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>    runtime_kernel.<a class="code hl_function" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a637cef05fffa2180f89636987e705b4d">getDataFromStorage</a>(op_index, runtime_storage, runtime_context);</div>
-<div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>    input_data = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9bdb1e6ec84a197bcc2e0af4701f3503">inputs_data</a>[input1TensorIdx];</div>
-<div class="line"><span class="lineno">   88</span>    axis_data = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9bdb1e6ec84a197bcc2e0af4701f3503">inputs_data</a>[input2TensorIdx];</div>
-<div class="line"><span class="lineno">   89</span>    output_data = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a262335e7698df2b2547e8af28e2995ab">outputs_data</a>[outputTensorIdx];</div>
-<div class="line"><span class="lineno">   90</span>    assert(input_data != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   91</span>    assert(axis_data != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   92</span>    assert(output_data != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>    options = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a490477ad767b834d3580536ad1d1fcf8">first_operator</a>-&gt;builtin_options_as_ReducerOptions();</div>
-<div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>    input_index = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#ae55c41ddddfe4c07cd354c474ce5fd0d">inputs_index</a>[input1TensorIdx];</div>
-<div class="line"><span class="lineno">   97</span>    axis_index = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#ae55c41ddddfe4c07cd354c474ce5fd0d">inputs_index</a>[input2TensorIdx];</div>
-<div class="line"><span class="lineno">   98</span>  }</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> input_shape(input);</div>
-<div class="line"><span class="lineno">  101</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> axis_shape(axis);</div>
-<div class="line"><span class="lineno">  102</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>(output);</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span>  <span class="keywordtype">bool</span> is_ok = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">switch</span> (input-&gt;type())</div>
-<div class="line"><span class="lineno">  107</span>  {</div>
-<div class="line"><span class="lineno">  108</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
-<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">case</span> circle::TensorType_FLOAT32:</div>
-<div class="line"><span class="lineno">  110</span>      is_ok = onert_micro::execute::pal::Mean&lt;float&gt;(</div>
-<div class="line"><span class="lineno">  111</span>        input_shape.dimsData(), core::utils::castInputData&lt;float&gt;(input_data),</div>
-<div class="line"><span class="lineno">  112</span>        input_shape.dimensionsCount(), core::utils::castOutputData&lt;float&gt;(output_data),</div>
-<div class="line"><span class="lineno">  113</span>        <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#acbf4dabf4f38e9b25551036973965529">flatSize</a>(), core::utils::castInputData&lt;int&gt;(axis_data),</div>
-<div class="line"><span class="lineno">  114</span>        axis_shape.dimensionsCount());</div>
-<div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  117</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
-<div class="line"><span class="lineno">  118</span>    <span class="keywordflow">case</span> circle::TensorType_INT32:</div>
-<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">case</span> circle::TensorType_INT64:</div>
-<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  121</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
-<div class="line"><span class="lineno">  122</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
-<div class="line"><span class="lineno">  123</span>  }</div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span>  <span class="keywordflow">if</span> (!is_ok)</div>
-<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
-<div class="line"><span class="lineno">  127</span> </div>
-<div class="line"><span class="lineno">  128</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  129</span>}</div>
+<div class="line"><span class="lineno">   85</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">   86</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00063">onert_micro::execute::OMRuntimeKernel::first_operator</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00051">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00054">onert_micro::execute::OMRuntimeKernel::inputs_data</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00057">onert_micro::execute::OMRuntimeKernel::inputs_index</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00052">onert_micro::execute::OMRuntimeKernel::outputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00055">onert_micro::execute::OMRuntimeKernel::outputs_data</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>, <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00051">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
 
 </div>
 </div>
@@ -4942,20 +4990,40 @@ template&lt;typename T , typename AccType &gt; </div>
 <div class="line"><span class="lineno">  122</span>    }</div>
 <div class="line"><span class="lineno">  123</span>    <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  124</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
-<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  126</span>    {</div>
-<div class="line"><span class="lineno">  127</span>      status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
-<div class="line"><span class="lineno">  128</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
-<div class="line"><span class="lineno">  129</span>    }</div>
-<div class="line"><span class="lineno">  130</span>  }</div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span>  <span class="keywordflow">return</span> status;</div>
-<div class="line"><span class="lineno">  133</span>}</div>
+<div class="line"><span class="lineno">  125</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
+<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">case</span> circle::TensorType_INT8:</div>
+<div class="line"><span class="lineno">  127</span>    {</div>
+<div class="line"><span class="lineno">  128</span>      <span class="comment">// TODO CWQ quantization</span></div>
+<div class="line"><span class="lineno">  129</span>      <span class="comment">// TODO non_zero padding</span></div>
+<div class="line"><span class="lineno">  130</span>      <a class="code hl_struct" href="structonert__micro_1_1core_1_1_quantization_params.html">onert_micro::core::QuantizationParams</a> in_qparams = {</div>
+<div class="line"><span class="lineno">  131</span>        (*input1-&gt;quantization()-&gt;scale())[0],</div>
+<div class="line"><span class="lineno">  132</span>        <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>((*input1-&gt;quantization()-&gt;zero_point())[0])};</div>
+<div class="line"><span class="lineno">  133</span>      <a class="code hl_struct" href="structonert__micro_1_1core_1_1_quantization_params.html">onert_micro::core::QuantizationParams</a> out_qparams = {</div>
+<div class="line"><span class="lineno">  134</span>        (*<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;quantization()-&gt;scale())[0],</div>
+<div class="line"><span class="lineno">  135</span>        <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>((*<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;quantization()-&gt;zero_point())[0])};</div>
+<div class="line"><span class="lineno">  136</span> </div>
+<div class="line"><span class="lineno">  137</span>      status = <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#ae77ea3478e241503174bfa58ee744dab">pal::QuantizedZeroPad</a>(pad_params, input1_shape, in_qparams,</div>
+<div class="line"><span class="lineno">  138</span>                                     core::utils::castInputData&lt;int8_t&gt;(input1_data), <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
+<div class="line"><span class="lineno">  139</span>                                     out_qparams, core::utils::castOutputData&lt;int8_t&gt;(output_data));</div>
+<div class="line"><span class="lineno">  140</span>    }</div>
+<div class="line"><span class="lineno">  141</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  142</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
+<div class="line"><span class="lineno">  143</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  144</span>    {</div>
+<div class="line"><span class="lineno">  145</span>      status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
+<div class="line"><span class="lineno">  146</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
+<div class="line"><span class="lineno">  147</span>    }</div>
+<div class="line"><span class="lineno">  148</span>  }</div>
+<div class="line"><span class="lineno">  149</span> </div>
+<div class="line"><span class="lineno">  150</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  151</span>}</div>
+<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_1_1test__kernel_1_1add__n__float_html_aacaf5fbff655ee4f17f69657a76a53a5"><div class="ttname"><a href="namespaceluci__interpreter_1_1test__kernel_1_1add__n__float.html#aacaf5fbff655ee4f17f69657a76a53a5">luci_interpreter::test_kernel::add_n_float::input3_data</a></div><div class="ttdeci">const std::vector&lt; float &gt; input3_data</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2include_2luci__interpreter_2test__models_2add__n_2_float_add_n_kernel_8h_source.html#l00086">FloatAddNKernel.h:86</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a5600ed9d33508222cf5c7ecbbe03edae"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a5600ed9d33508222cf5c7ecbbe03edae">onert_micro::execute::pal::Pad</a></div><div class="ttdeci">OMStatus Pad(const core::PadParams &amp;op_params, const core::OMRuntimeShape &amp;input_shape, const float *input_data, const float pad_value, const core::OMRuntimeShape &amp;output_shape, float *output_data)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2common_2_p_a_l_pad_8h_source.html#l00035">PALPad.h:35</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_ae77ea3478e241503174bfa58ee744dab"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#ae77ea3478e241503174bfa58ee744dab">onert_micro::execute::pal::QuantizedZeroPad</a></div><div class="ttdeci">OMStatus QuantizedZeroPad(const core::PadParams &amp;op_params, const core::OMRuntimeShape &amp;input_shape, const onert_micro::core::QuantizationParams &amp;input_qparams, const T *input_data, const core::OMRuntimeShape &amp;output_shape, const onert_micro::core::QuantizationParams &amp;output_qparams, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2common_2_p_a_l_pad_8h_source.html#l00115">PALPad.h:115</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_pad_params_html"><div class="ttname"><a href="structonert__micro_1_1core_1_1_pad_params.html">onert_micro::core::PadParams</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00197">OMKernelData.h:198</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00063">onert_micro::execute::OMRuntimeKernel::first_operator</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00051">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00054">onert_micro::execute::OMRuntimeKernel::inputs_data</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00052">onert_micro::execute::OMRuntimeKernel::outputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00055">onert_micro::execute::OMRuntimeKernel::outputs_data</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_pad_8h_source.html#l00035">onert_micro::execute::pal::Pad()</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00063">onert_micro::execute::OMRuntimeKernel::first_operator</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00051">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00054">onert_micro::execute::OMRuntimeKernel::inputs_data</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00052">onert_micro::execute::OMRuntimeKernel::outputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00055">onert_micro::execute::OMRuntimeKernel::outputs_data</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_pad_8h_source.html#l00035">onert_micro::execute::pal::Pad()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_pad_8h_source.html#l00115">onert_micro::execute::pal::QuantizedZeroPad()</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
 
 </div>
 </div>
@@ -5144,7 +5212,7 @@ template&lt;typename T , typename AccType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_relu_8cpp_source.html#l00028">28</a> of file <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_relu_8cpp_source.html">Relu.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_re_l_u_8cpp_source.html#l00028">28</a> of file <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_re_l_u_8cpp_source.html">Relu.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
 <div class="line"><span class="lineno">   30</span>  <span class="keywordtype">bool</span> is_relu_6 = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   31</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#a7bf4fc7bd9abd874f5cbfd28a9f4cec8">execute_relu_common</a>(execute_args, is_relu_6);</div>
@@ -5170,7 +5238,7 @@ template&lt;typename T , typename AccType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_relu6_8cpp_source.html#l00028">28</a> of file <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_relu6_8cpp_source.html">Relu6.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_re_l_u6_8cpp_source.html#l00028">28</a> of file <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_re_l_u6_8cpp_source.html">Relu6.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
 <div class="line"><span class="lineno">   30</span>  <span class="keywordtype">bool</span> is_relu_6 = <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   31</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#a7bf4fc7bd9abd874f5cbfd28a9f4cec8">execute_relu_common</a>(execute_args, is_relu_6);</div>
@@ -5254,16 +5322,47 @@ template&lt;typename T , typename AccType &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_rsqrt_8cpp_source.html#l00029">29</a> of file <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_rsqrt_8cpp_source.html">Rsqrt.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  <span class="keyword">auto</span> rsqrt_float_lambda = [](<span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_shape, <span class="keyword">const</span> <span class="keywordtype">float</span> *input_data,</div>
-<div class="line"><span class="lineno">   32</span>                               <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, <span class="keywordtype">float</span> *output_data) {</div>
-<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#acd3a7e3971e991af5c291c125bde8cf4">pal::Rsqrt</a>(input_shape, input_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
-<div class="line"><span class="lineno">   34</span>  };</div>
-<div class="line"><span class="lineno">   35</span> </div>
-<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#ac23aed336a427289a712ad0bed333118">execute_math_common</a>(execute_args, rsqrt_float_lambda);</div>
-<div class="line"><span class="lineno">   37</span>}</div>
+<div class="line"><span class="lineno">   31</span>  <span class="keyword">const</span> circle::Tensor *input = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   32</span>  <span class="keyword">const</span> circle::Tensor *output = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   33</span> </div>
+<div class="line"><span class="lineno">   34</span>  uint8_t *input_data = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   35</span>  uint8_t *output_data = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   36</span> </div>
+<div class="line"><span class="lineno">   37</span>  <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#a1ed56945d0defdaf5aa8823d3a3ed0d9">SISOHeader</a>(execute_args, &amp;input, &amp;output, &amp;input_data, &amp;output_data);</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status;</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">switch</span> (input-&gt;type())</div>
+<div class="line"><span class="lineno">   41</span>  {</div>
+<div class="line"><span class="lineno">   42</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">case</span> circle::TensorType_FLOAT32:</div>
+<div class="line"><span class="lineno">   44</span>    {</div>
+<div class="line"><span class="lineno">   45</span>      status = <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#acd3a7e3971e991af5c291c125bde8cf4">pal::Rsqrt</a>(<a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a>(input), <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(input_data),</div>
+<div class="line"><span class="lineno">   46</span>                          <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a>(output), <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(output_data));</div>
+<div class="line"><span class="lineno">   47</span>    }</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   49</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
+<div class="line"><span class="lineno">   50</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">case</span> circle::TensorType_INT8:</div>
+<div class="line"><span class="lineno">   52</span>    {</div>
+<div class="line"><span class="lineno">   53</span>      <span class="comment">// TODO support CWQ</span></div>
+<div class="line"><span class="lineno">   54</span>      <a class="code hl_struct" href="structonert__micro_1_1core_1_1_quantization_params.html">onert_micro::core::QuantizationParams</a> in_qparams = {</div>
+<div class="line"><span class="lineno">   55</span>        (*input-&gt;quantization()-&gt;scale())[0],</div>
+<div class="line"><span class="lineno">   56</span>        <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>((*input-&gt;quantization()-&gt;zero_point())[0])};</div>
+<div class="line"><span class="lineno">   57</span>      <a class="code hl_struct" href="structonert__micro_1_1core_1_1_quantization_params.html">onert_micro::core::QuantizationParams</a> out_qparams = {</div>
+<div class="line"><span class="lineno">   58</span>        (*output-&gt;quantization()-&gt;scale())[0],</div>
+<div class="line"><span class="lineno">   59</span>        <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>((*output-&gt;quantization()-&gt;zero_point())[0])};</div>
+<div class="line"><span class="lineno">   60</span> </div>
+<div class="line"><span class="lineno">   61</span>      status = pal::QuantizedRsqrt&lt;int8_t&gt;(</div>
+<div class="line"><span class="lineno">   62</span>        <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a>(input), in_qparams, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int8_t *<span class="keyword">&gt;</span>(input_data),</div>
+<div class="line"><span class="lineno">   63</span>        <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a>(output), out_qparams, <span class="keyword">reinterpret_cast&lt;</span>int8_t *<span class="keyword">&gt;</span>(output_data));</div>
+<div class="line"><span class="lineno">   64</span>    }</div>
+<div class="line"><span class="lineno">   65</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">   66</span>  }</div>
+<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">   68</span>}</div>
 <div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_acd3a7e3971e991af5c291c125bde8cf4"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#acd3a7e3971e991af5c291c125bde8cf4">onert_micro::execute::pal::Rsqrt</a></div><div class="ttdeci">OMStatus Rsqrt(const core::OMRuntimeShape &amp;input_shape, const T *input_data, const core::OMRuntimeShape &amp;output_shape, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="_p_a_l_rsqrt_common_8h_source.html#l00034">PALRsqrtCommon.h:34</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespaceonert__micro_1_1execute.html#ac23aed336a427289a712ad0bed333118">execute_math_common()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_p_a_l_rsqrt_common_8h_source.html#l00034">onert_micro::execute::pal::Rsqrt()</a>.</p>
+<p class="reference">References <a class="el" href="_p_a_l_rsqrt_common_8h_source.html#l00034">onert_micro::execute::pal::Rsqrt()</a>, and <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00159">SISOHeader()</a>.</p>
 
 </div>
 </div>
@@ -5705,7 +5804,6 @@ template&lt;typename T , typename AccType &gt; </div>
 <div class="line"><span class="lineno">  167</span> </div>
 <div class="line"><span class="lineno">  168</span>  <span class="keywordflow">return</span> status;</div>
 <div class="line"><span class="lineno">  169</span>}</div>
-<div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a2230eee1844cbc1545392967b2fcec42"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a2230eee1844cbc1545392967b2fcec42">onert_micro::execute::pal::Softmax</a></div><div class="ttdeci">OMStatus Softmax(const core::SoftmaxParams &amp;params, const T *input_data, U *output_data)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2common_2_p_a_l_softmax_common_8h_source.html#l00033">PALSoftmaxCommon.h:33</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1execute_html_ae269f05865c4f02be3146e57e383b1fb"><div class="ttname"><a href="namespaceonert__micro_1_1execute.html#ae269f05865c4f02be3146e57e383b1fb">onert_micro::execute::calculateInputRadius</a></div><div class="ttdeci">int calculateInputRadius(int input_integer_bits, int input_left_shift, int total_signed_bits)</div><div class="ttdef"><b>Definition</b> <a href="execute_2_o_m_utils_8h_source.html#l00170">OMUtils.h:170</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_softmax_params_html"><div class="ttname"><a href="structonert__micro_1_1core_1_1_softmax_params.html">onert_micro::core::SoftmaxParams</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00045">OMKernelData.h:46</a></div></div>
@@ -5916,15 +6014,24 @@ template&lt;typename T , typename AccType &gt; </div>
 <div class="line"><span class="lineno">  109</span>                                 <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, axis_value);</div>
 <div class="line"><span class="lineno">  110</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  111</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
-<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  113</span>    {</div>
-<div class="line"><span class="lineno">  114</span>      status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3f7223be17053b8f368f55028849047d">UnsupportedActivation</a>;</div>
-<div class="line"><span class="lineno">  115</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
-<div class="line"><span class="lineno">  116</span>    }</div>
-<div class="line"><span class="lineno">  117</span>  }</div>
-<div class="line"><span class="lineno">  118</span> </div>
-<div class="line"><span class="lineno">  119</span>  <span class="keywordflow">return</span> status;</div>
-<div class="line"><span class="lineno">  120</span>}</div>
+<div class="line"><span class="lineno">  112</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
+<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">case</span> circle::TensorType_INT8:</div>
+<div class="line"><span class="lineno">  114</span>    {</div>
+<div class="line"><span class="lineno">  115</span>      status =</div>
+<div class="line"><span class="lineno">  116</span>        pal::Split&lt;int8_t&gt;(params, input_shape, core::utils::castInputData&lt;int8_t&gt;(input_data),</div>
+<div class="line"><span class="lineno">  117</span>                           <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, axis_value);</div>
+<div class="line"><span class="lineno">  118</span>    }</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  120</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  122</span>    {</div>
+<div class="line"><span class="lineno">  123</span>      status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3f7223be17053b8f368f55028849047d">UnsupportedActivation</a>;</div>
+<div class="line"><span class="lineno">  124</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">  125</span>    }</div>
+<div class="line"><span class="lineno">  126</span>  }</div>
+<div class="line"><span class="lineno">  127</span> </div>
+<div class="line"><span class="lineno">  128</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  129</span>}</div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_split_params_html"><div class="ttname"><a href="structonert__micro_1_1core_1_1_split_params.html">onert_micro::core::SplitParams</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00160">OMKernelData.h:161</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00063">onert_micro::execute::OMRuntimeKernel::first_operator</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00051">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00054">onert_micro::execute::OMRuntimeKernel::inputs_data</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00052">onert_micro::execute::OMRuntimeKernel::outputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00055">onert_micro::execute::OMRuntimeKernel::outputs_data</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>, and <a class="el" href="_o_m_status_8h_source.html#l00028">onert_micro::UnsupportedActivation</a>.</p>
@@ -6173,19 +6280,58 @@ template&lt;typename T , typename AccType &gt; </div>
 <div class="line"><span class="lineno">  117</span>    }</div>
 <div class="line"><span class="lineno">  118</span>    <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  119</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
-<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  121</span>    {</div>
-<div class="line"><span class="lineno">  122</span>      status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
-<div class="line"><span class="lineno">  123</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
-<div class="line"><span class="lineno">  124</span>    }</div>
-<div class="line"><span class="lineno">  125</span>  }</div>
-<div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>  <span class="keywordflow">return</span> status;</div>
-<div class="line"><span class="lineno">  128</span>}</div>
+<div class="line"><span class="lineno">  120</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">case</span> circle::TensorType_INT8:</div>
+<div class="line"><span class="lineno">  122</span>    {</div>
+<div class="line"><span class="lineno">  123</span>      <span class="comment">// TODO support CWQ</span></div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span>      status = <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#acef69ab956e54b4b2e15c7372baca2ef">execute::calculateActivationRange</a>(</div>
+<div class="line"><span class="lineno">  126</span>        circle::ActivationFunctionType::ActivationFunctionType_NONE, &amp;params.float_activation_min,</div>
+<div class="line"><span class="lineno">  127</span>        &amp;params.float_activation_max);</div>
+<div class="line"><span class="lineno">  128</span> </div>
+<div class="line"><span class="lineno">  129</span>      <a class="code hl_struct" href="structonert__micro_1_1core_1_1_quantization_params.html">onert_micro::core::QuantizationParams</a> in1_qparams = {</div>
+<div class="line"><span class="lineno">  130</span>        (*input1-&gt;quantization()-&gt;scale())[0],</div>
+<div class="line"><span class="lineno">  131</span>        <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>((*input1-&gt;quantization()-&gt;zero_point())[0])};</div>
+<div class="line"><span class="lineno">  132</span>      <a class="code hl_struct" href="structonert__micro_1_1core_1_1_quantization_params.html">onert_micro::core::QuantizationParams</a> in2_qparams = {</div>
+<div class="line"><span class="lineno">  133</span>        (*input2-&gt;quantization()-&gt;scale())[0],</div>
+<div class="line"><span class="lineno">  134</span>        <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>((*input2-&gt;quantization()-&gt;zero_point())[0])};</div>
+<div class="line"><span class="lineno">  135</span>      <a class="code hl_struct" href="structonert__micro_1_1core_1_1_quantization_params.html">onert_micro::core::QuantizationParams</a> out_qparams = {</div>
+<div class="line"><span class="lineno">  136</span>        (*<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;quantization()-&gt;scale())[0],</div>
+<div class="line"><span class="lineno">  137</span>        <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>((*<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>-&gt;quantization()-&gt;zero_point())[0])};</div>
+<div class="line"><span class="lineno">  138</span> </div>
+<div class="line"><span class="lineno">  139</span>      <span class="keywordflow">if</span> (need_broadcast)</div>
+<div class="line"><span class="lineno">  140</span>      {</div>
+<div class="line"><span class="lineno">  141</span>        status = <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a6bcdf09ac11db83443e846296714b846">pal::QuantizedBroadcastSquaredDifference4DSlow</a>(</div>
+<div class="line"><span class="lineno">  142</span>          params, input1_shape, in1_qparams, core::utils::castInputData&lt;int8_t&gt;(input1_data),</div>
+<div class="line"><span class="lineno">  143</span>          input2_shape, in2_qparams, core::utils::castInputData&lt;int8_t&gt;(input2_data), <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
+<div class="line"><span class="lineno">  144</span>          out_qparams, core::utils::castOutputData&lt;int8_t&gt;(output_data));</div>
+<div class="line"><span class="lineno">  145</span>      }</div>
+<div class="line"><span class="lineno">  146</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  147</span>      {</div>
+<div class="line"><span class="lineno">  148</span>        status = <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a8154dfb43ce1aff17470648bb2aa025f">pal::QuantizedSquaredDifference</a>(</div>
+<div class="line"><span class="lineno">  149</span>          params, input1_shape.flatSize(), in1_qparams,</div>
+<div class="line"><span class="lineno">  150</span>          core::utils::castInputData&lt;int8_t&gt;(input1_data), in2_qparams,</div>
+<div class="line"><span class="lineno">  151</span>          core::utils::castInputData&lt;int8_t&gt;(input2_data), out_qparams,</div>
+<div class="line"><span class="lineno">  152</span>          core::utils::castOutputData&lt;int8_t&gt;(output_data));</div>
+<div class="line"><span class="lineno">  153</span>      }</div>
+<div class="line"><span class="lineno">  154</span>    }</div>
+<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  156</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
+<div class="line"><span class="lineno">  157</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  158</span>    {</div>
+<div class="line"><span class="lineno">  159</span>      status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
+<div class="line"><span class="lineno">  160</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">  161</span>    }</div>
+<div class="line"><span class="lineno">  162</span>  }</div>
+<div class="line"><span class="lineno">  163</span> </div>
+<div class="line"><span class="lineno">  164</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  165</span>}</div>
 <div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a0d840bc1c53e106ee642016d95262ec6"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a0d840bc1c53e106ee642016d95262ec6">onert_micro::execute::pal::BroadcastSquaredDifference4DSlow</a></div><div class="ttdeci">OMStatus BroadcastSquaredDifference4DSlow(const core::BinaryArithmeticBroadcastParams &amp;params, const core::OMRuntimeShape &amp;input1_shape, const T *input1_data, const core::OMRuntimeShape &amp;input2_shape, const T *input2_data, const core::OMRuntimeShape &amp;output_shape, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="_p_a_l_squared_difference_common_8h_source.html#l00038">PALSquaredDifferenceCommon.h:38</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a6bcdf09ac11db83443e846296714b846"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a6bcdf09ac11db83443e846296714b846">onert_micro::execute::pal::QuantizedBroadcastSquaredDifference4DSlow</a></div><div class="ttdeci">OMStatus QuantizedBroadcastSquaredDifference4DSlow(const core::BinaryArithmeticBroadcastParams &amp;params, const core::OMRuntimeShape &amp;input1_shape, const onert_micro::core::QuantizationParams &amp;input1_qparams, const T *input1_data, const core::OMRuntimeShape &amp;input2_shape, const onert_micro::core::QuantizationParams &amp;input2_qparams, const T *input2_data, const core::OMRuntimeShape &amp;output_shape, const onert_micro::core::QuantizationParams &amp;output_qparams, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="_p_a_l_squared_difference_common_8h_source.html#l00049">PALSquaredDifferenceCommon.h:49</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a8154dfb43ce1aff17470648bb2aa025f"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a8154dfb43ce1aff17470648bb2aa025f">onert_micro::execute::pal::QuantizedSquaredDifference</a></div><div class="ttdeci">OMStatus QuantizedSquaredDifference(const core::BinaryArithmeticBroadcastParams &amp;params, const int flat_size, const onert_micro::core::QuantizationParams &amp;input1_qparams, const T *input1_data, const onert_micro::core::QuantizationParams &amp;input2_qparams, const T *input2_data, const onert_micro::core::QuantizationParams &amp;output_qparams, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="_p_a_l_squared_difference_common_8h_source.html#l00064">PALSquaredDifferenceCommon.h:64</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_ad5af30472c4d4ed429c1a677ea5d2eb0"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#ad5af30472c4d4ed429c1a677ea5d2eb0">onert_micro::execute::pal::SquaredDifference</a></div><div class="ttdeci">OMStatus SquaredDifference(const core::BinaryArithmeticBroadcastParams &amp;params, const int flat_size, const T *input1_data, const T *input2_data, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="_p_a_l_squared_difference_common_8h_source.html#l00029">PALSquaredDifferenceCommon.h:29</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_p_a_l_squared_difference_common_8h_source.html#l00038">onert_micro::execute::pal::BroadcastSquaredDifference4DSlow()</a>, <a class="el" href="execute_2_o_m_utils_8h_source.html#l00036">calculateActivationRange()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00121">onert_micro::core::OMRuntimeShape::flatSize()</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00051">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00054">onert_micro::execute::OMRuntimeKernel::inputs_data</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00052">onert_micro::execute::OMRuntimeKernel::outputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00055">onert_micro::execute::OMRuntimeKernel::outputs_data</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_process_broadcast_shapes_8h_source.html#l00155">onert_micro::execute::pal::processBroadcastShapes()</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>, <a class="el" href="_p_a_l_squared_difference_common_8h_source.html#l00029">onert_micro::execute::pal::SquaredDifference()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
+<p class="reference">References <a class="el" href="_p_a_l_squared_difference_common_8h_source.html#l00038">onert_micro::execute::pal::BroadcastSquaredDifference4DSlow()</a>, <a class="el" href="execute_2_o_m_utils_8h_source.html#l00036">calculateActivationRange()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00121">onert_micro::core::OMRuntimeShape::flatSize()</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00051">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00054">onert_micro::execute::OMRuntimeKernel::inputs_data</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00052">onert_micro::execute::OMRuntimeKernel::outputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00055">onert_micro::execute::OMRuntimeKernel::outputs_data</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_process_broadcast_shapes_8h_source.html#l00155">onert_micro::execute::pal::processBroadcastShapes()</a>, <a class="el" href="_p_a_l_squared_difference_common_8h_source.html#l00049">onert_micro::execute::pal::QuantizedBroadcastSquaredDifference4DSlow()</a>, <a class="el" href="_p_a_l_squared_difference_common_8h_source.html#l00064">onert_micro::execute::pal::QuantizedSquaredDifference()</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>, <a class="el" href="_p_a_l_squared_difference_common_8h_source.html#l00029">onert_micro::execute::pal::SquaredDifference()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
 
 </div>
 </div>
@@ -6498,82 +6644,46 @@ template&lt;typename T , typename AccType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_sum_8cpp_source.html#l00044">44</a> of file <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_sum_8cpp_source.html">Sum.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{</div>
-<div class="line"><span class="lineno">   46</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">core::OMRuntimeContext</a> &amp;runtime_context = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#a40c48eccb030e4c5526658e5cfebf166">runtime_context</a>;</div>
-<div class="line"><span class="lineno">   47</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html">core::OMRuntimeStorage</a> &amp;runtime_storage = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#aa193a1a6131e92d562053000b2c1d3a1">runtime_storage</a>;</div>
-<div class="line"><span class="lineno">   48</span>  uint16_t op_index = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#a2e8431dcee55febe4a20515ce1f3f14e">kernel_index</a>;</div>
-<div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  <span class="keyword">const</span> circle::Tensor *input;</div>
-<div class="line"><span class="lineno">   51</span>  <span class="keyword">const</span> circle::Tensor *axis;</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keyword">const</span> circle::Tensor *output;</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>  uint8_t *input_data;</div>
-<div class="line"><span class="lineno">   55</span>  uint8_t *axis_data;</div>
-<div class="line"><span class="lineno">   56</span>  uint8_t *output_data;</div>
-<div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>  uint16_t input_index = 0;</div>
-<div class="line"><span class="lineno">   59</span>  uint16_t axis_index = 0;</div>
-<div class="line"><span class="lineno">   60</span> </div>
-<div class="line"><span class="lineno">   61</span>  <span class="keyword">const</span> circle::ReducerOptions *options;</div>
-<div class="line"><span class="lineno">   62</span>  <span class="comment">// Read kernel</span></div>
-<div class="line"><span class="lineno">   63</span>  {</div>
-<div class="line"><span class="lineno">   64</span>    <a class="code hl_class" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html">execute::OMRuntimeKernel</a> runtime_kernel;</div>
-<div class="line"><span class="lineno">   65</span>    runtime_kernel.<a class="code hl_function" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9d1e53f55b9a2cd90b9f1add8c01643c">readKernel</a>(op_index, runtime_context);</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_sum_8cpp_source.html#l00052">52</a> of file <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_sum_8cpp_source.html">Sum.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>{</div>
+<div class="line"><span class="lineno">   54</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">core::OMRuntimeContext</a> &amp;rt_context = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#a40c48eccb030e4c5526658e5cfebf166">runtime_context</a>;</div>
+<div class="line"><span class="lineno">   55</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html">core::OMRuntimeStorage</a> &amp;rt_storage = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#aa193a1a6131e92d562053000b2c1d3a1">runtime_storage</a>;</div>
+<div class="line"><span class="lineno">   56</span> </div>
+<div class="line"><span class="lineno">   57</span>  uint16_t op_index = execute_args.<a class="code hl_variable" href="structonert__micro_1_1execute_1_1_o_m_execute_args.html#a2e8431dcee55febe4a20515ce1f3f14e">kernel_index</a>;</div>
+<div class="line"><span class="lineno">   58</span> </div>
+<div class="line"><span class="lineno">   59</span>  <a class="code hl_class" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html">OMRuntimeKernel</a> rt_kernel;</div>
+<div class="line"><span class="lineno">   60</span>  rt_kernel.<a class="code hl_function" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9d1e53f55b9a2cd90b9f1add8c01643c">readKernel</a>(op_index, rt_context);</div>
+<div class="line"><span class="lineno">   61</span>  rt_kernel.<a class="code hl_function" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a637cef05fffa2180f89636987e705b4d">getDataFromStorage</a>(op_index, rt_storage, rt_context);</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>  <span class="keyword">constexpr</span> <span class="keyword">static</span> <span class="keywordtype">size_t</span> kInputTensorIdx = 0;</div>
+<div class="line"><span class="lineno">   64</span> </div>
+<div class="line"><span class="lineno">   65</span>  <span class="keyword">const</span> circle::Tensor *input = rt_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">inputs</a>[kInputTensorIdx];</div>
 <div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>    input = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">inputs</a>[input1TensorIdx];</div>
-<div class="line"><span class="lineno">   68</span>    axis = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#af34c85abb206d91e55e3e28b975692c5">inputs</a>[input2TensorIdx];</div>
-<div class="line"><span class="lineno">   69</span>    output = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#abd40fce4708b3659c02bdc3989973740">outputs</a>[outputTensorIdx];</div>
-<div class="line"><span class="lineno">   70</span>    assert(input != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   71</span>    assert(axis != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   72</span>    assert(output != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>    runtime_kernel.<a class="code hl_function" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a637cef05fffa2180f89636987e705b4d">getDataFromStorage</a>(op_index, runtime_storage, runtime_context);</div>
+<div class="line"><span class="lineno">   67</span>  <span class="comment">// TODO: Add ReducerOptions support</span></div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">switch</span> (input-&gt;type())</div>
+<div class="line"><span class="lineno">   70</span>  {</div>
+<div class="line"><span class="lineno">   71</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
+<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">case</span> circle::TensorType_FLOAT32:</div>
+<div class="line"><span class="lineno">   73</span>      <span class="keywordflow">return</span> impl::CircleSum&lt;float&gt;(rt_kernel);</div>
+<div class="line"><span class="lineno">   74</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
 <div class="line"><span class="lineno">   75</span> </div>
-<div class="line"><span class="lineno">   76</span>    input_data = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9bdb1e6ec84a197bcc2e0af4701f3503">inputs_data</a>[input1TensorIdx];</div>
-<div class="line"><span class="lineno">   77</span>    axis_data = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a9bdb1e6ec84a197bcc2e0af4701f3503">inputs_data</a>[input2TensorIdx];</div>
-<div class="line"><span class="lineno">   78</span>    output_data = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a262335e7698df2b2547e8af28e2995ab">outputs_data</a>[outputTensorIdx];</div>
-<div class="line"><span class="lineno">   79</span>    assert(input_data != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   80</span>    assert(axis_data != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   81</span>    assert(output_data != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>    options = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#a490477ad767b834d3580536ad1d1fcf8">first_operator</a>-&gt;builtin_options_as_ReducerOptions();</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>    input_index = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#ae55c41ddddfe4c07cd354c474ce5fd0d">inputs_index</a>[input1TensorIdx];</div>
-<div class="line"><span class="lineno">   86</span>    axis_index = runtime_kernel.<a class="code hl_variable" href="classonert__micro_1_1execute_1_1_o_m_runtime_kernel.html#ae55c41ddddfe4c07cd354c474ce5fd0d">inputs_index</a>[input2TensorIdx];</div>
-<div class="line"><span class="lineno">   87</span>  }</div>
-<div class="line"><span class="lineno">   88</span> </div>
-<div class="line"><span class="lineno">   89</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> input_shape(input);</div>
-<div class="line"><span class="lineno">   90</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> axis_shape(axis);</div>
-<div class="line"><span class="lineno">   91</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>(output);</div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span>  <span class="keywordtype">bool</span> is_ok = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>  <span class="keywordflow">switch</span> (input-&gt;type())</div>
-<div class="line"><span class="lineno">   96</span>  {</div>
-<div class="line"><span class="lineno">   97</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
-<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">case</span> circle::TensorType_FLOAT32:</div>
-<div class="line"><span class="lineno">   99</span>      is_ok = onert_micro::execute::pal::reduceSumImpl&lt;float&gt;(</div>
-<div class="line"><span class="lineno">  100</span>        core::utils::castInputData&lt;float&gt;(input_data), input_shape.dimsData(),</div>
-<div class="line"><span class="lineno">  101</span>        input_shape.dimensionsCount(), core::utils::castOutputData&lt;float&gt;(output_data),</div>
-<div class="line"><span class="lineno">  102</span>        core::utils::castInputData&lt;int&gt;(axis_data), axis_shape.dimensionsCount(),</div>
-<div class="line"><span class="lineno">  103</span>        <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#acbf4dabf4f38e9b25551036973965529">flatSize</a>());</div>
-<div class="line"><span class="lineno">  104</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  105</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">case</span> circle::TensorType_INT32:</div>
-<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">case</span> circle::TensorType_INT64:</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  109</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
-<div class="line"><span class="lineno">  110</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
-<div class="line"><span class="lineno">  111</span>  }</div>
-<div class="line"><span class="lineno">  112</span> </div>
-<div class="line"><span class="lineno">  113</span>  <span class="keywordflow">if</span> (!is_ok)</div>
-<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
-<div class="line"><span class="lineno">  115</span> </div>
-<div class="line"><span class="lineno">  116</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  117</span>}</div>
+<div class="line"><span class="lineno">   76</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
+<div class="line"><span class="lineno">   77</span>    <span class="keywordflow">case</span> circle::TensorType_INT8:</div>
+<div class="line"><span class="lineno">   78</span>      <span class="keywordflow">return</span> impl::CircleSum&lt;int8_t&gt;(rt_kernel);</div>
+<div class="line"><span class="lineno">   79</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">case</span> circle::TensorType_INT32:</div>
+<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">case</span> circle::TensorType_INT64:</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   84</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
+<div class="line"><span class="lineno">   85</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3b2cb25d5dcf9238890767250e02de2b">UnsupportedType</a>;</div>
+<div class="line"><span class="lineno">   86</span>  }</div>
+<div class="line"><span class="lineno">   87</span> </div>
+<div class="line"><span class="lineno">   88</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">   89</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00063">onert_micro::execute::OMRuntimeKernel::first_operator</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00051">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00054">onert_micro::execute::OMRuntimeKernel::inputs_data</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00057">onert_micro::execute::OMRuntimeKernel::inputs_index</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00052">onert_micro::execute::OMRuntimeKernel::outputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00055">onert_micro::execute::OMRuntimeKernel::outputs_data</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>, <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00051">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
 
 </div>
 </div>
@@ -6761,16 +6871,48 @@ template&lt;typename T , typename AccType &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_tanh_8cpp_source.html#l00029">29</a> of file <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_tanh_8cpp_source.html">Tanh.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
-<div class="line"><span class="lineno">   31</span>  <span class="keyword">auto</span> tanh_float_lambda = [](<span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_shape, <span class="keyword">const</span> <span class="keywordtype">float</span> *input_data,</div>
-<div class="line"><span class="lineno">   32</span>                              <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, <span class="keywordtype">float</span> *output_data) {</div>
-<div class="line"><span class="lineno">   33</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#accfd923e3886b1daba0fbc8f20b97a64">pal::Tanh</a>(input_shape, input_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
-<div class="line"><span class="lineno">   34</span>  };</div>
-<div class="line"><span class="lineno">   35</span> </div>
-<div class="line"><span class="lineno">   36</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#ac23aed336a427289a712ad0bed333118">execute_math_common</a>(execute_args, tanh_float_lambda);</div>
-<div class="line"><span class="lineno">   37</span>}</div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_accfd923e3886b1daba0fbc8f20b97a64"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#accfd923e3886b1daba0fbc8f20b97a64">onert_micro::execute::pal::Tanh</a></div><div class="ttdeci">OMStatus Tanh(const core::OMRuntimeShape &amp;input_shape, const T *input_data, const core::OMRuntimeShape &amp;output_shape, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="_p_a_l_tanh_common_8h_source.html#l00031">PALTanhCommon.h:31</a></div></div>
+<div class="line"><span class="lineno">   31</span>  <span class="keyword">const</span> circle::Tensor *input = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   32</span>  <span class="keyword">const</span> circle::Tensor *output = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   33</span> </div>
+<div class="line"><span class="lineno">   34</span>  uint8_t *input_data = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   35</span>  uint8_t *output_data = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">   36</span> </div>
+<div class="line"><span class="lineno">   37</span>  <a class="code hl_function" href="namespaceonert__micro_1_1execute.html#a1ed56945d0defdaf5aa8823d3a3ed0d9">SISOHeader</a>(execute_args, &amp;input, &amp;output, &amp;input_data, &amp;output_data);</div>
+<div class="line"><span class="lineno">   38</span> </div>
+<div class="line"><span class="lineno">   39</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> status;</div>
+<div class="line"><span class="lineno">   40</span>  <span class="keywordflow">switch</span> (input-&gt;type())</div>
+<div class="line"><span class="lineno">   41</span>  {</div>
+<div class="line"><span class="lineno">   42</span><span class="preprocessor">#ifndef DIS_FLOAT</span></div>
+<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">case</span> circle::TensorType_FLOAT32:</div>
+<div class="line"><span class="lineno">   44</span>    {</div>
+<div class="line"><span class="lineno">   45</span>      status =</div>
+<div class="line"><span class="lineno">   46</span>        pal::Tanh&lt;float&gt;(<a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a>(input), <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(input_data),</div>
+<div class="line"><span class="lineno">   47</span>                         <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a>(output), <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(output_data));</div>
+<div class="line"><span class="lineno">   48</span>    }</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   50</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
+<div class="line"><span class="lineno">   51</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">case</span> circle::TensorType_INT8:</div>
+<div class="line"><span class="lineno">   53</span>    {</div>
+<div class="line"><span class="lineno">   54</span>      <span class="comment">// TODO support CWQ</span></div>
+<div class="line"><span class="lineno">   55</span>      <a class="code hl_struct" href="structonert__micro_1_1core_1_1_quantization_params.html">onert_micro::core::QuantizationParams</a> in_qparams = {</div>
+<div class="line"><span class="lineno">   56</span>        (*input-&gt;quantization()-&gt;scale())[0],</div>
+<div class="line"><span class="lineno">   57</span>        <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>((*input-&gt;quantization()-&gt;zero_point())[0])};</div>
+<div class="line"><span class="lineno">   58</span>      <a class="code hl_struct" href="structonert__micro_1_1core_1_1_quantization_params.html">onert_micro::core::QuantizationParams</a> out_qparams = {</div>
+<div class="line"><span class="lineno">   59</span>        (*output-&gt;quantization()-&gt;scale())[0],</div>
+<div class="line"><span class="lineno">   60</span>        <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>((*output-&gt;quantization()-&gt;zero_point())[0])};</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>      status = pal::QuantizedTanh&lt;int8_t&gt;(</div>
+<div class="line"><span class="lineno">   63</span>        <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a>(input), in_qparams, <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int8_t *<span class="keyword">&gt;</span>(input_data),</div>
+<div class="line"><span class="lineno">   64</span>        <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a>(output), out_qparams, <span class="keyword">reinterpret_cast&lt;</span>int8_t *<span class="keyword">&gt;</span>(output_data));</div>
+<div class="line"><span class="lineno">   65</span>    }</div>
+<div class="line"><span class="lineno">   66</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
+<div class="line"><span class="lineno">   67</span>  }</div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">   70</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespaceonert__micro_1_1execute.html#ac23aed336a427289a712ad0bed333118">execute_math_common()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_p_a_l_tanh_common_8h_source.html#l00031">onert_micro::execute::pal::Tanh()</a>.</p>
+<p class="reference">References <a class="el" href="execute_2_o_m_utils_8cpp_source.html#l00159">SISOHeader()</a>.</p>
 
 </div>
 </div>
@@ -6851,15 +6993,23 @@ template&lt;typename T , typename AccType &gt; </div>
 <div class="line"><span class="lineno">  103</span>                                     <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">float</span> *<span class="keyword">&gt;</span>(output_data));</div>
 <div class="line"><span class="lineno">  104</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  105</span><span class="preprocessor">#endif </span><span class="comment">// DIS_FLOAT</span></div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  107</span>    {</div>
-<div class="line"><span class="lineno">  108</span>      status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3f7223be17053b8f368f55028849047d">UnsupportedActivation</a>;</div>
-<div class="line"><span class="lineno">  109</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
-<div class="line"><span class="lineno">  110</span>    }</div>
-<div class="line"><span class="lineno">  111</span>  }</div>
-<div class="line"><span class="lineno">  112</span> </div>
-<div class="line"><span class="lineno">  113</span>  <span class="keywordflow">return</span> status;</div>
-<div class="line"><span class="lineno">  114</span>}</div>
+<div class="line"><span class="lineno">  106</span><span class="preprocessor">#ifndef DIS_QUANT</span></div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">case</span> circle::TensorType_INT8:</div>
+<div class="line"><span class="lineno">  108</span>    {</div>
+<div class="line"><span class="lineno">  109</span>      status = pal::Transpose&lt;int8_t&gt;(params, input_shape, <span class="keyword">reinterpret_cast&lt;</span>int8_t *<span class="keyword">&gt;</span>(input_data),</div>
+<div class="line"><span class="lineno">  110</span>                                      <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, <span class="keyword">reinterpret_cast&lt;</span>int8_t *<span class="keyword">&gt;</span>(output_data));</div>
+<div class="line"><span class="lineno">  111</span>    }</div>
+<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  113</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
+<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  115</span>    {</div>
+<div class="line"><span class="lineno">  116</span>      status = <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba3f7223be17053b8f368f55028849047d">UnsupportedActivation</a>;</div>
+<div class="line"><span class="lineno">  117</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><span class="lineno">  118</span>    }</div>
+<div class="line"><span class="lineno">  119</span>  }</div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><span class="lineno">  122</span>}</div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_transpose_params_html"><div class="ttname"><a href="structonert__micro_1_1core_1_1_transpose_params.html">onert_micro::core::TransposeParams</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00104">OMKernelData.h:105</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_transpose_params_html_a0b9903df3013a0d37c103db9228e3fab"><div class="ttname"><a href="structonert__micro_1_1core_1_1_transpose_params.html#a0b9903df3013a0d37c103db9228e3fab">onert_micro::core::TransposeParams::perm_count</a></div><div class="ttdeci">int32_t perm_count</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00106">OMKernelData.h:106</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_transpose_params_html_a8fc06ab72d0a49a8ebe71fd0135bb41e"><div class="ttname"><a href="structonert__micro_1_1core_1_1_transpose_params.html#a8fc06ab72d0a49a8ebe71fd0135bb41e">onert_micro::core::TransposeParams::perm</a></div><div class="ttdeci">int32_t perm[5]</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00107">OMKernelData.h:107</a></div></div>
@@ -7405,7 +7555,7 @@ template&lt;typename T , typename AccType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_abs_8cpp_source.html#l00029">execute_kernel_CircleAbs()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_ceil_8cpp_source.html#l00029">execute_kernel_CircleCeil()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_cos_8cpp_source.html#l00029">execute_kernel_CircleCos()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_exp_8cpp_source.html#l00029">execute_kernel_CircleExp()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_floor_8cpp_source.html#l00029">execute_kernel_CircleFloor()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_log_8cpp_source.html#l00029">execute_kernel_CircleLog()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_neg_8cpp_source.html#l00029">execute_kernel_CircleNeg()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_round_8cpp_source.html#l00029">execute_kernel_CircleRound()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_rsqrt_8cpp_source.html#l00029">execute_kernel_CircleRsqrt()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_sin_8cpp_source.html#l00029">execute_kernel_CircleSin()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_sqrt_8cpp_source.html#l00029">execute_kernel_CircleSqrt()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_square_8cpp_source.html#l00029">execute_kernel_CircleSquare()</a>, and <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_tanh_8cpp_source.html#l00029">execute_kernel_CircleTanh()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_abs_8cpp_source.html#l00029">execute_kernel_CircleAbs()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_ceil_8cpp_source.html#l00029">execute_kernel_CircleCeil()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_cos_8cpp_source.html#l00029">execute_kernel_CircleCos()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_exp_8cpp_source.html#l00029">execute_kernel_CircleExp()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_floor_8cpp_source.html#l00029">execute_kernel_CircleFloor()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_log_8cpp_source.html#l00029">execute_kernel_CircleLog()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_neg_8cpp_source.html#l00029">execute_kernel_CircleNeg()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_round_8cpp_source.html#l00029">execute_kernel_CircleRound()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_sin_8cpp_source.html#l00029">execute_kernel_CircleSin()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_sqrt_8cpp_source.html#l00029">execute_kernel_CircleSqrt()</a>, and <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_square_8cpp_source.html#l00029">execute_kernel_CircleSquare()</a>.</p>
 
 </div>
 </div>
@@ -7699,7 +7849,7 @@ template&lt;typename T , typename AccType &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00063">onert_micro::execute::OMRuntimeKernel::first_operator</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00121">onert_micro::core::OMRuntimeShape::flatSize()</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00051">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00054">onert_micro::execute::OMRuntimeKernel::inputs_data</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00052">onert_micro::execute::OMRuntimeKernel::outputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00055">onert_micro::execute::OMRuntimeKernel::outputs_data</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_relu_common_8h_source.html#l00033">onert_micro::execute::pal::ReLUCommon()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>, and <a class="el" href="_o_m_status_8h_source.html#l00026">onert_micro::UnsupportedType</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_leaky_re_l_u_8cpp_source.html#l00028">execute_kernel_CircleLeakyRelu()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_relu_8cpp_source.html#l00028">execute_kernel_CircleRelu()</a>, and <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_relu6_8cpp_source.html#l00028">execute_kernel_CircleRelu6()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_leaky_relu_8cpp_source.html#l00028">execute_kernel_CircleLeakyRelu()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_re_l_u_8cpp_source.html#l00028">execute_kernel_CircleRelu()</a>, and <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_re_l_u6_8cpp_source.html#l00028">execute_kernel_CircleRelu6()</a>.</p>
 
 </div>
 </div>
@@ -8473,7 +8623,7 @@ template&lt;typename T &gt; </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00067">onert_micro::execute::OMRuntimeKernel::getDataFromStorage()</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00051">onert_micro::execute::OMRuntimeKernel::inputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00054">onert_micro::execute::OMRuntimeKernel::inputs_data</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00034">onert_micro::execute::OMExecuteArgs::kernel_index</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00052">onert_micro::execute::OMRuntimeKernel::outputs</a>, <a class="el" href="_o_m_runtime_kernel_8h_source.html#l00055">onert_micro::execute::OMRuntimeKernel::outputs_data</a>, <a class="el" href="_o_m_runtime_kernel_8cpp_source.html#l00022">onert_micro::execute::OMRuntimeKernel::readKernel()</a>, <a class="el" href="_o_m_execute_args_8h_source.html#l00033">onert_micro::execute::OMExecuteArgs::runtime_context</a>, and <a class="el" href="_o_m_execute_args_8h_source.html#l00032">onert_micro::execute::OMExecuteArgs::runtime_storage</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_cast_8cpp_source.html#l00046">execute_kernel_CircleCast()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_dequantize_8cpp_source.html#l00043">execute_kernel_CircleDequantize()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_l2_normalize_8cpp_source.html#l00044">execute_kernel_CircleL2Normalize()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_logical_not_8cpp_source.html#l00027">execute_kernel_CircleLogicalNot()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_logistic_8cpp_source.html#l00045">execute_kernel_CircleLogistic()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_log_softmax_8cpp_source.html#l00044">execute_kernel_CircleLogSoftmax()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_quantize_8cpp_source.html#l00044">execute_kernel_CircleQuantize()</a>, and <a class="el" href="_math_common_8cpp_source.html#l00039">execute_math_common()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_cast_8cpp_source.html#l00046">execute_kernel_CircleCast()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_dequantize_8cpp_source.html#l00043">execute_kernel_CircleDequantize()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_l2_normalize_8cpp_source.html#l00044">execute_kernel_CircleL2Normalize()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_logical_not_8cpp_source.html#l00027">execute_kernel_CircleLogicalNot()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_logistic_8cpp_source.html#l00045">execute_kernel_CircleLogistic()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_log_softmax_8cpp_source.html#l00044">execute_kernel_CircleLogSoftmax()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_quantize_8cpp_source.html#l00044">execute_kernel_CircleQuantize()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_rsqrt_8cpp_source.html#l00029">execute_kernel_CircleRsqrt()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_tanh_8cpp_source.html#l00029">execute_kernel_CircleTanh()</a>, and <a class="el" href="_math_common_8cpp_source.html#l00039">execute_math_common()</a>.</p>
 
 </div>
 </div>

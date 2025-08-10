@@ -78,6 +78,12 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1batch__to__space__nd__float.html#a8f11ebb0157095d61ebbb8ad54a735ea", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1batch__to__space__nd__float.html#ae361c246837336fae9de0284d4e2cfa8", null ]
     ] ],
+    [ "batchmatmul_float", "namespaceonert__micro_1_1test__model_1_1batchmatmul__float.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1batchmatmul__float.html#af3bd2d89b5a31c9bf3192511b08ab8f6", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1batchmatmul__float.html#abd86c76c15a53ee1c8d58f609b2a8226", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1batchmatmul__float.html#aed77748e7f011547fc1769da14b6f089", null ],
+      [ "test_circle", "namespaceonert__micro_1_1test__model_1_1batchmatmul__float.html#a0f0024caead5bed6dfe5766558393d9c", null ]
+    ] ],
     [ "cast_float", "namespaceonert__micro_1_1test__model_1_1cast__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1cast__float.html#a71ac299f0df5263d3772ddf9ba231927", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1cast__float.html#a7d502844ae77c37cb14e67bdf4e6852c", null ],
@@ -435,6 +441,11 @@ var namespaceonert__micro_1_1test__model =
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1mean__float.html#ac4b7e7953eed0890064e54329e62bf74", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1mean__float.html#aa019547c0fef097709d675a4cfae6925", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1mean__float.html#ab46716f7f381bac8ba492529b3590e78", null ]
+    ] ],
+    [ "mean_int8", "namespaceonert__micro_1_1test__model_1_1mean__int8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1mean__int8.html#a24cde78fdf347644f5792a48b2b6fa93", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1mean__int8.html#a310bef05e3ce2594158d7fcb1c122bb8", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1mean__int8.html#ac3c19781c6a5155a7b909e10b2d8773f", null ]
     ] ],
     [ "minimum_float_no_broadcasting", "namespaceonert__micro_1_1test__model_1_1minimum__float__no__broadcasting.html", [
       [ "input1_data", "namespaceonert__micro_1_1test__model_1_1minimum__float__no__broadcasting.html#ace4291bb2ba557cf1b7c5b6602bd2e4d", null ],
@@ -852,6 +863,11 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1pad__float.html#a6a23a40034386975a97e18e923d5cd8d", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1pad__float.html#a4b20697bfd84982f664c1488ea4a3a76", null ]
     ] ],
+    [ "pad_int8", "namespaceonert__micro_1_1test__model_1_1pad__int8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1pad__int8.html#a8d818d6f51e1c8f6b767e8532cbb0b52", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1pad__int8.html#a4de325273ceca5a98093fbf40ebf40a1", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1pad__int8.html#ab0d075c4deb143fdebda99bd064a1ad2", null ]
+    ] ],
     [ "quantize_float", "namespaceonert__micro_1_1test__model_1_1quantize__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1quantize__float.html#a2360d469beaa51bbf708e2f007739a9b", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1quantize__float.html#a72fa4a9bc3c5804e6ca4186b67f683af", null ],
@@ -906,6 +922,11 @@ var namespaceonert__micro_1_1test__model =
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1rsqrt__float.html#a1c60312b979e1f220916d76bd1566101", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1rsqrt__float.html#a91f9931f5c6fcb5016d92d972f098de1", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1rsqrt__float.html#a2e699ab7b32b47a0c8f73123fc6efd26", null ]
+    ] ],
+    [ "rsqrt_int8", "namespaceonert__micro_1_1test__model_1_1rsqrt__int8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1rsqrt__int8.html#acc5a8b1ecebe6eb81ff8997f10d7611e", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1rsqrt__int8.html#abd14036d135b48f67d05f8cddba709b3", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1rsqrt__int8.html#a0876bbc2f6035f0bbfdedf1702d4317d", null ]
     ] ],
     [ "s16_fully_connected", "namespaceonert__micro_1_1test__model_1_1s16__fully__connected.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1s16__fully__connected.html#a830d1c7a7f47eada1ce02b12e1fd3ef8", null ],
@@ -1007,6 +1028,12 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data_2", "namespaceonert__micro_1_1test__model_1_1split__float.html#a969d5cad7fc3f4b00952c7c9a4fa0876", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1split__float.html#a202374f9e76f181e12c744bd91feab22", null ]
     ] ],
+    [ "split_S8", "namespaceonert__micro_1_1test__model_1_1split___s8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1split___s8.html#a38271b5e8979fd2afe5ce88bb57ec517", null ],
+      [ "reference_output_data_1", "namespaceonert__micro_1_1test__model_1_1split___s8.html#a9804680af545369c112a4f9566d9ab57", null ],
+      [ "reference_output_data_2", "namespaceonert__micro_1_1test__model_1_1split___s8.html#a931b15db410e03561cbc8c42eb886b6f", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1split___s8.html#a6dd61243bd1d78745f5fcbec6c8a4c39", null ]
+    ] ],
     [ "split_v_kernel", "namespaceonert__micro_1_1test__model_1_1split__v__kernel.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1split__v__kernel.html#a41b8a988f1b1e9f2737812d05f1ae44b", null ],
       [ "reference_output_data_1", "namespaceonert__micro_1_1test__model_1_1split__v__kernel.html#a35c9d4bc8b62b508ba653409ef174df8", null ],
@@ -1029,6 +1056,18 @@ var namespaceonert__micro_1_1test__model =
       [ "input2_data", "namespaceonert__micro_1_1test__model_1_1squared__difference__float__with__broadcasting.html#a62309004cb3a17431f227878a63cb828", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1squared__difference__float__with__broadcasting.html#ab02374af04ae91606c745d6375998b7f", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1squared__difference__float__with__broadcasting.html#ad86e72613bf2b176192c23fc821afa9f", null ]
+    ] ],
+    [ "squared_difference_int8", "namespaceonert__micro_1_1test__model_1_1squared__difference__int8.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1squared__difference__int8.html#aa9c74bf4afead58e32aaf74a9e5e2026", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1squared__difference__int8.html#ae514d0d1152a5a38f46f11b130caff70", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1squared__difference__int8.html#abdc3ddaee920bab07921f3d4c094f05a", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1squared__difference__int8.html#ac3fba076ff05f3bd97d719f1cfba592f", null ]
+    ] ],
+    [ "squared_difference_int8_with_broadcasting", "namespaceonert__micro_1_1test__model_1_1squared__difference__int8__with__broadcasting.html", [
+      [ "input1_data", "namespaceonert__micro_1_1test__model_1_1squared__difference__int8__with__broadcasting.html#ac86a0814e77a996bd871c40f640b05b5", null ],
+      [ "input2_data", "namespaceonert__micro_1_1test__model_1_1squared__difference__int8__with__broadcasting.html#adbd3004e838f5dce3a5440be9fa9a6f9", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1squared__difference__int8__with__broadcasting.html#a8165e141c6e0ecba834caf867fbcb530", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1squared__difference__int8__with__broadcasting.html#a9c508eaf3549981d7fb9c23e8b507c0c", null ]
     ] ],
     [ "strided_slice_float", "namespaceonert__micro_1_1test__model_1_1strided__slice__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1strided__slice__float.html#a26e697dcf25544327dbf088841b3f737", null ],
@@ -1089,6 +1128,11 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1sum__float.html#a32e834784954b5a53a8b9e6816454336", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1sum__float.html#a57de26f1cef2fd996732684614f9dc01", null ]
     ] ],
+    [ "sum_int8", "namespaceonert__micro_1_1test__model_1_1sum__int8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1sum__int8.html#a5630260f45bdb91f1e188314cb717548", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1sum__int8.html#aa5c1e6a3dc9514768f5445a50863855f", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1sum__int8.html#a4c1fa1c3ce8f0329ba9864ecad25ae4b", null ]
+    ] ],
     [ "svdf_float", "namespaceonert__micro_1_1test__model_1_1svdf__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1svdf__float.html#a563e4e35886e5e08f6916358f59238a0", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1svdf__float.html#ab9a8abea62e62ab8ffd3128690637792", null ],
@@ -1099,15 +1143,25 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1tanh__float.html#af72da0198ed54741282a6ff86aba5dc2", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1tanh__float.html#af9e565103a83ba03586a3d936cfdbc31", null ]
     ] ],
+    [ "tanh_int8", "namespaceonert__micro_1_1test__model_1_1tanh__int8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1tanh__int8.html#ab7041ae463e221aff3216d75f2978b93", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1tanh__int8.html#a0cb018454b643ecde84b3a7c1423b274", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1tanh__int8.html#af18a66341b09aa26f9bef81399c80a82", null ]
+    ] ],
     [ "transpose_conv_float", "namespaceonert__micro_1_1test__model_1_1transpose__conv__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1transpose__conv__float.html#a271b16443da29baed84640a4371eb099", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1transpose__conv__float.html#af0ce6c6a53b4c0311a953fb67a635b67", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1transpose__conv__float.html#a403186c2301ba4c9055fd864d6345caa", null ]
     ] ],
-    [ "transpose_kernel", "namespaceonert__micro_1_1test__model_1_1transpose__kernel.html", [
-      [ "input_data", "namespaceonert__micro_1_1test__model_1_1transpose__kernel.html#a1ab2a5ab9900fa83829b64544af4eb10", null ],
-      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1transpose__kernel.html#a5d167bce011352dd17a9ddee999179c9", null ],
-      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1transpose__kernel.html#a3dfdf0fe23bec9c4ac3305c2e599cb6d", null ]
+    [ "transpose_float_kernel", "namespaceonert__micro_1_1test__model_1_1transpose__float__kernel.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1transpose__float__kernel.html#a7eba4e9df56fe1b4f2197149bc6a615b", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1transpose__float__kernel.html#a5943288c221e25ca2a45cfa3997c461b", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1transpose__float__kernel.html#a46d7f9b10765af81ff23c8a4ac7a76f3", null ]
+    ] ],
+    [ "transpose_int8", "namespaceonert__micro_1_1test__model_1_1transpose__int8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1transpose__int8.html#a31f55a47c062f3e74945583c3e615a08", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1transpose__int8.html#a5fbf2fbc4d23bc0f82f5bf9fc23b02f2", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1transpose__int8.html#afbc1840ff591b7db7d2ae10652c1f17d", null ]
     ] ],
     [ "unpack_float", "namespaceonert__micro_1_1test__model_1_1unpack__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1unpack__float.html#ae74dffcfbffc5fa35744e2b55e8ed6d2", null ],
@@ -1252,6 +1306,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataAxisOutputTypeMismatchArgMin", "classonert__micro_1_1test__model_1_1_test_data_axis_output_type_mismatch_arg_min.html", "classonert__micro_1_1test__model_1_1_test_data_axis_output_type_mismatch_arg_min" ],
     [ "TestDataBase", "classonert__micro_1_1test__model_1_1_test_data_base.html", "classonert__micro_1_1test__model_1_1_test_data_base" ],
     [ "TestDataBatchToSpaceNDBase", "classonert__micro_1_1test__model_1_1_test_data_batch_to_space_n_d_base.html", "classonert__micro_1_1test__model_1_1_test_data_batch_to_space_n_d_base" ],
+    [ "TestDataBMMBase", "classonert__micro_1_1test__model_1_1_test_data_b_m_m_base.html", "classonert__micro_1_1test__model_1_1_test_data_b_m_m_base" ],
     [ "TestDataBoolLogicalAnd", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_and.html", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_and" ],
     [ "TestDataBoolLogicalNot", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_not.html", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_not" ],
     [ "TestDataBoolLogicalOr", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_or.html", "classonert__micro_1_1test__model_1_1_test_data_bool_logical_or" ],
@@ -1275,6 +1330,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataFloatArgMin", "classonert__micro_1_1test__model_1_1_test_data_float_arg_min.html", "classonert__micro_1_1test__model_1_1_test_data_float_arg_min" ],
     [ "TestDataFloatAveragePool2D", "classonert__micro_1_1test__model_1_1_test_data_float_average_pool2_d.html", "classonert__micro_1_1test__model_1_1_test_data_float_average_pool2_d" ],
     [ "TestDataFloatBatchToSpaceND", "classonert__micro_1_1test__model_1_1_test_data_float_batch_to_space_n_d.html", "classonert__micro_1_1test__model_1_1_test_data_float_batch_to_space_n_d" ],
+    [ "TestDataFloatBMM", "classonert__micro_1_1test__model_1_1_test_data_float_b_m_m.html", "classonert__micro_1_1test__model_1_1_test_data_float_b_m_m" ],
     [ "TestDataFloatCast", "classonert__micro_1_1test__model_1_1_test_data_float_cast.html", "classonert__micro_1_1test__model_1_1_test_data_float_cast" ],
     [ "TestDataFloatCeil", "classonert__micro_1_1test__model_1_1_test_data_float_ceil.html", "classonert__micro_1_1test__model_1_1_test_data_float_ceil" ],
     [ "TestDataFloatConcatenation", "classonert__micro_1_1test__model_1_1_test_data_float_concatenation.html", "classonert__micro_1_1test__model_1_1_test_data_float_concatenation" ],
@@ -1335,6 +1391,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataFloatSVDF", "classonert__micro_1_1test__model_1_1_test_data_float_s_v_d_f.html", "classonert__micro_1_1test__model_1_1_test_data_float_s_v_d_f" ],
     [ "TestDataFloatTanh", "classonert__micro_1_1test__model_1_1_test_data_float_tanh.html", "classonert__micro_1_1test__model_1_1_test_data_float_tanh" ],
     [ "TestDataFloatTransposeConv", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_conv.html", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_conv" ],
+    [ "TestDataFloatTransposeKernel", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_kernel" ],
     [ "TestDataFloatUnpack", "classonert__micro_1_1test__model_1_1_test_data_float_unpack.html", "classonert__micro_1_1test__model_1_1_test_data_float_unpack" ],
     [ "TestDataFloatWQInt8FullyConnected", "classonert__micro_1_1test__model_1_1_test_data_float_w_q_int8_fully_connected.html", "classonert__micro_1_1test__model_1_1_test_data_float_w_q_int8_fully_connected" ],
     [ "TestDataFloatZerosLike", "classonert__micro_1_1test__model_1_1_test_data_float_zeros_like.html", "classonert__micro_1_1test__model_1_1_test_data_float_zeros_like" ],
@@ -1354,8 +1411,16 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataInt64Slice", "classonert__micro_1_1test__model_1_1_test_data_int64_slice.html", "classonert__micro_1_1test__model_1_1_test_data_int64_slice" ],
     [ "TestDataInt8Add", "classonert__micro_1_1test__model_1_1_test_data_int8_add.html", "classonert__micro_1_1test__model_1_1_test_data_int8_add" ],
     [ "TestDataInt8DepthwiseConv2D", "classonert__micro_1_1test__model_1_1_test_data_int8_depthwise_conv2_d.html", "classonert__micro_1_1test__model_1_1_test_data_int8_depthwise_conv2_d" ],
+    [ "TestDataInt8Mean", "classonert__micro_1_1test__model_1_1_test_data_int8_mean.html", "classonert__micro_1_1test__model_1_1_test_data_int8_mean" ],
     [ "TestDataInt8Mul", "classonert__micro_1_1test__model_1_1_test_data_int8_mul.html", "classonert__micro_1_1test__model_1_1_test_data_int8_mul" ],
+    [ "TestDataInt8Pad", "classonert__micro_1_1test__model_1_1_test_data_int8_pad.html", "classonert__micro_1_1test__model_1_1_test_data_int8_pad" ],
+    [ "TestDataInt8Rsqrt", "classonert__micro_1_1test__model_1_1_test_data_int8_rsqrt.html", "classonert__micro_1_1test__model_1_1_test_data_int8_rsqrt" ],
     [ "TestDataInt8Softmax", "classonert__micro_1_1test__model_1_1_test_data_int8_softmax.html", "classonert__micro_1_1test__model_1_1_test_data_int8_softmax" ],
+    [ "TestDataInt8SquaredDifference", "classonert__micro_1_1test__model_1_1_test_data_int8_squared_difference.html", "classonert__micro_1_1test__model_1_1_test_data_int8_squared_difference" ],
+    [ "TestDataInt8SquaredDifferenceWithBroadcasting", "classonert__micro_1_1test__model_1_1_test_data_int8_squared_difference_with_broadcasting.html", "classonert__micro_1_1test__model_1_1_test_data_int8_squared_difference_with_broadcasting" ],
+    [ "TestDataInt8Sum", "classonert__micro_1_1test__model_1_1_test_data_int8_sum.html", "classonert__micro_1_1test__model_1_1_test_data_int8_sum" ],
+    [ "TestDataInt8Tanh", "classonert__micro_1_1test__model_1_1_test_data_int8_tanh.html", "classonert__micro_1_1test__model_1_1_test_data_int8_tanh" ],
+    [ "TestDataInt8TransposeKernel", "classonert__micro_1_1test__model_1_1_test_data_int8_transpose_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_int8_transpose_kernel" ],
     [ "TestDataIntDiv", "classonert__micro_1_1test__model_1_1_test_data_int_div.html", "classonert__micro_1_1test__model_1_1_test_data_int_div" ],
     [ "TestDataIntEqual", "classonert__micro_1_1test__model_1_1_test_data_int_equal.html", "classonert__micro_1_1test__model_1_1_test_data_int_equal" ],
     [ "TestDataIntGather", "classonert__micro_1_1test__model_1_1_test_data_int_gather.html", "classonert__micro_1_1test__model_1_1_test_data_int_gather" ],
@@ -1411,6 +1476,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataS8ReLU6", "classonert__micro_1_1test__model_1_1_test_data_s8_re_l_u6.html", "classonert__micro_1_1test__model_1_1_test_data_s8_re_l_u6" ],
     [ "TestDataS8ReshapeKernel", "classonert__micro_1_1test__model_1_1_test_data_s8_reshape_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_s8_reshape_kernel" ],
     [ "TestDataS8SpaceToDepth", "classonert__micro_1_1test__model_1_1_test_data_s8_space_to_depth.html", "classonert__micro_1_1test__model_1_1_test_data_s8_space_to_depth" ],
+    [ "TestDataS8Split", "classonert__micro_1_1test__model_1_1_test_data_s8_split.html", "classonert__micro_1_1test__model_1_1_test_data_s8_split" ],
     [ "TestDataS8StridedSlice", "classonert__micro_1_1test__model_1_1_test_data_s8_strided_slice.html", "classonert__micro_1_1test__model_1_1_test_data_s8_strided_slice" ],
     [ "TestDataS8Sub", "classonert__micro_1_1test__model_1_1_test_data_s8_sub.html", "classonert__micro_1_1test__model_1_1_test_data_s8_sub" ],
     [ "TestDataS8Unpack", "classonert__micro_1_1test__model_1_1_test_data_s8_unpack.html", "classonert__micro_1_1test__model_1_1_test_data_s8_unpack" ],
@@ -1431,8 +1497,8 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataSumBase", "classonert__micro_1_1test__model_1_1_test_data_sum_base.html", "classonert__micro_1_1test__model_1_1_test_data_sum_base" ],
     [ "TestDataSVDFBase", "classonert__micro_1_1test__model_1_1_test_data_s_v_d_f_base.html", "classonert__micro_1_1test__model_1_1_test_data_s_v_d_f_base" ],
     [ "TestDataTanhBase", "classonert__micro_1_1test__model_1_1_test_data_tanh_base.html", "classonert__micro_1_1test__model_1_1_test_data_tanh_base" ],
+    [ "TestDataTransposeBase", "classonert__micro_1_1test__model_1_1_test_data_transpose_base.html", "classonert__micro_1_1test__model_1_1_test_data_transpose_base" ],
     [ "TestDataTransposeConvBase", "classonert__micro_1_1test__model_1_1_test_data_transpose_conv_base.html", "classonert__micro_1_1test__model_1_1_test_data_transpose_conv_base" ],
-    [ "TestDataTransposeKernel", "classonert__micro_1_1test__model_1_1_test_data_transpose_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_transpose_kernel" ],
     [ "TestDataTypeMismatchSlice", "classonert__micro_1_1test__model_1_1_test_data_type_mismatch_slice.html", "classonert__micro_1_1test__model_1_1_test_data_type_mismatch_slice" ],
     [ "TestDataUnpackBase", "classonert__micro_1_1test__model_1_1_test_data_unpack_base.html", "classonert__micro_1_1test__model_1_1_test_data_unpack_base" ],
     [ "TestDataWhileKernel", "classonert__micro_1_1test__model_1_1_test_data_while_kernel.html", "classonert__micro_1_1test__model_1_1_test_data_while_kernel" ],

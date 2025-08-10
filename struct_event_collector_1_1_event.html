@@ -116,6 +116,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:a33b87dcf0836258a15d9c8b35fb8c792"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a937ec1314dd79be877b519a037bcfef7" id="r_a937ec1314dd79be877b519a037bcfef7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#a937ec1314dd79be877b519a037bcfef7">session_index</a></td></tr>
 <tr class="separator:a937ec1314dd79be877b519a037bcfef7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a118ed31ce8a18e07cb9092a76342bf21" id="r_a118ed31ce8a18e07cb9092a76342bf21"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#a118ed31ce8a18e07cb9092a76342bf21">model_index</a></td></tr>
+<tr class="separator:a118ed31ce8a18e07cb9092a76342bf21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8171f2a222ead4028811b8836e6cb59" id="r_ac8171f2a222ead4028811b8836e6cb59"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#ac8171f2a222ead4028811b8836e6cb59">subg_index</a></td></tr>
 <tr class="separator:ac8171f2a222ead4028811b8836e6cb59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee3fddfc2ee1626c2dccd98ee4c51531" id="r_aee3fddfc2ee1626c2dccd98ee4c51531"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; std::string, std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#aee3fddfc2ee1626c2dccd98ee4c51531">userData</a></td></tr>
@@ -123,8 +125,8 @@ Data Fields</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a1970baef21b7b31cceeb832924a3d30f" id="r_a1970baef21b7b31cceeb832924a3d30f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#a1970baef21b7b31cceeb832924a3d30f">Event</a> (const <a class="el" href="classonert_1_1util_1_1_tracing_ctx.html">onert::util::TracingCtx</a> *a_tracing_ctx, <a class="el" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aa">Edge</a> a_edge, uint32_t a_subg_index)</td></tr>
-<tr class="separator:a1970baef21b7b31cceeb832924a3d30f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ec38883700e625248e9143313ca8916" id="r_a8ec38883700e625248e9143313ca8916"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#a8ec38883700e625248e9143313ca8916">Event</a> (const <a class="el" href="classonert_1_1util_1_1_tracing_ctx.html">onert::util::TracingCtx</a> *a_tracing_ctx, <a class="el" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aa">Edge</a> a_edge, uint32_t a_model_index, uint32_t a_subg_index)</td></tr>
+<tr class="separator:a8ec38883700e625248e9143313ca8916"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac47064a45d035e6cf81b25f628f4dc51" id="r_ac47064a45d035e6cf81b25f628f4dc51"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#ac47064a45d035e6cf81b25f628f4dc51">~Event</a> ()=default</td></tr>
 <tr class="separator:ac47064a45d035e6cf81b25f628f4dc51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -132,8 +134,8 @@ Protected Member Functions</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00055">55</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1970baef21b7b31cceeb832924a3d30f" name="a1970baef21b7b31cceeb832924a3d30f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1970baef21b7b31cceeb832924a3d30f">&#9670;&#160;</a></span>Event()</h2>
+<a id="a8ec38883700e625248e9143313ca8916" name="a8ec38883700e625248e9143313ca8916"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ec38883700e625248e9143313ca8916">&#9670;&#160;</a></span>Event()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -157,6 +159,12 @@ Protected Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>a_model_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>a_subg_index</em>&#160;</td>
         </tr>
         <tr>
@@ -172,15 +180,16 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00067">67</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   68</span>      : <a class="code hl_variable" href="struct_event_collector_1_1_event.html#acb16c82e14e3ef8374faafcdc56c56f1">tracing_ctx</a>(a_tracing_ctx), <a class="code hl_variable" href="struct_event_collector_1_1_event.html#a33b87dcf0836258a15d9c8b35fb8c792">edge</a>(a_edge), <a class="code hl_variable" href="struct_event_collector_1_1_event.html#a937ec1314dd79be877b519a037bcfef7">session_index</a>(<a class="code hl_variable" href="struct_event_collector_1_1_event.html#acb16c82e14e3ef8374faafcdc56c56f1">tracing_ctx</a>-&gt;<a class="code hl_function" href="classonert_1_1util_1_1_tracing_ctx.html#a77412d3f8ae78dfc6e2c84d1425af0de">getSessionId</a>()),</div>
-<div class="line"><span class="lineno">   69</span>        <a class="code hl_variable" href="struct_event_collector_1_1_event.html#ac8171f2a222ead4028811b8836e6cb59">subg_index</a>(a_subg_index)</div>
-<div class="line"><span class="lineno">   70</span>    { <span class="comment">/* empty */</span></div>
-<div class="line"><span class="lineno">   71</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00068">68</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>      : <a class="code hl_variable" href="struct_event_collector_1_1_event.html#acb16c82e14e3ef8374faafcdc56c56f1">tracing_ctx</a>(a_tracing_ctx), <a class="code hl_variable" href="struct_event_collector_1_1_event.html#a33b87dcf0836258a15d9c8b35fb8c792">edge</a>(a_edge), <a class="code hl_variable" href="struct_event_collector_1_1_event.html#a937ec1314dd79be877b519a037bcfef7">session_index</a>(<a class="code hl_variable" href="struct_event_collector_1_1_event.html#acb16c82e14e3ef8374faafcdc56c56f1">tracing_ctx</a>-&gt;<a class="code hl_function" href="classonert_1_1util_1_1_tracing_ctx.html#a77412d3f8ae78dfc6e2c84d1425af0de">getSessionId</a>()),</div>
+<div class="line"><span class="lineno">   71</span>        <a class="code hl_variable" href="struct_event_collector_1_1_event.html#a118ed31ce8a18e07cb9092a76342bf21">model_index</a>(a_model_index), <a class="code hl_variable" href="struct_event_collector_1_1_event.html#ac8171f2a222ead4028811b8836e6cb59">subg_index</a>(a_subg_index)</div>
+<div class="line"><span class="lineno">   72</span>    { <span class="comment">/* empty */</span></div>
+<div class="line"><span class="lineno">   73</span>    }</div>
 <div class="ttc" id="aclassonert_1_1util_1_1_tracing_ctx_html_a77412d3f8ae78dfc6e2c84d1425af0de"><div class="ttname"><a href="classonert_1_1util_1_1_tracing_ctx.html#a77412d3f8ae78dfc6e2c84d1425af0de">onert::util::TracingCtx::getSessionId</a></div><div class="ttdeci">uint32_t getSessionId() const</div><div class="ttdef"><b>Definition</b> <a href="_tracing_ctx_8h_source.html#l00042">TracingCtx.h:42</a></div></div>
+<div class="ttc" id="astruct_event_collector_1_1_event_html_a118ed31ce8a18e07cb9092a76342bf21"><div class="ttname"><a href="struct_event_collector_1_1_event.html#a118ed31ce8a18e07cb9092a76342bf21">EventCollector::Event::model_index</a></div><div class="ttdeci">uint32_t model_index</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00061">EventCollector.h:61</a></div></div>
 <div class="ttc" id="astruct_event_collector_1_1_event_html_a33b87dcf0836258a15d9c8b35fb8c792"><div class="ttname"><a href="struct_event_collector_1_1_event.html#a33b87dcf0836258a15d9c8b35fb8c792">EventCollector::Event::edge</a></div><div class="ttdeci">Edge edge</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00059">EventCollector.h:59</a></div></div>
 <div class="ttc" id="astruct_event_collector_1_1_event_html_a937ec1314dd79be877b519a037bcfef7"><div class="ttname"><a href="struct_event_collector_1_1_event.html#a937ec1314dd79be877b519a037bcfef7">EventCollector::Event::session_index</a></div><div class="ttdeci">uint32_t session_index</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00060">EventCollector.h:60</a></div></div>
-<div class="ttc" id="astruct_event_collector_1_1_event_html_ac8171f2a222ead4028811b8836e6cb59"><div class="ttname"><a href="struct_event_collector_1_1_event.html#ac8171f2a222ead4028811b8836e6cb59">EventCollector::Event::subg_index</a></div><div class="ttdeci">uint32_t subg_index</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00061">EventCollector.h:61</a></div></div>
+<div class="ttc" id="astruct_event_collector_1_1_event_html_ac8171f2a222ead4028811b8836e6cb59"><div class="ttname"><a href="struct_event_collector_1_1_event.html#ac8171f2a222ead4028811b8836e6cb59">EventCollector::Event::subg_index</a></div><div class="ttdeci">uint32_t subg_index</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00062">EventCollector.h:62</a></div></div>
 <div class="ttc" id="astruct_event_collector_1_1_event_html_acb16c82e14e3ef8374faafcdc56c56f1"><div class="ttname"><a href="struct_event_collector_1_1_event.html#acb16c82e14e3ef8374faafcdc56c56f1">EventCollector::Event::tracing_ctx</a></div><div class="ttdeci">const onert::util::TracingCtx * tracing_ctx</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00057">EventCollector.h:57</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -227,6 +236,22 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a118ed31ce8a18e07cb9092a76342bf21" name="a118ed31ce8a18e07cb9092a76342bf21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a118ed31ce8a18e07cb9092a76342bf21">&#9670;&#160;</a></span>model_index</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t EventCollector::Event::model_index</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00061">61</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
+
+</div>
+</div>
 <a id="a937ec1314dd79be877b519a037bcfef7" name="a937ec1314dd79be877b519a037bcfef7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a937ec1314dd79be877b519a037bcfef7">&#9670;&#160;</a></span>session_index</h2>
 
@@ -255,7 +280,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00061">61</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00062">62</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
 
 </div>
 </div>
@@ -287,7 +312,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00064">64</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00065">65</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
 
 </div>
 </div>

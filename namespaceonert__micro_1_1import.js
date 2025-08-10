@@ -22,6 +22,7 @@ var namespaceonert__micro_1_1import =
     [ "configure_kernel_CircleArgMax", "namespaceonert__micro_1_1import.html#afd503f69d1fbf3855e978d2b5ca11d25", null ],
     [ "configure_kernel_CircleArgMin", "namespaceonert__micro_1_1import.html#aad8acc66f19d627f8cacdadd3bdbcb49", null ],
     [ "configure_kernel_CircleAveragePool2D", "namespaceonert__micro_1_1import.html#acc3e7d2070abe4d158542b40a7ff512e", null ],
+    [ "configure_kernel_CircleBatchMatMul", "namespaceonert__micro_1_1import.html#a860278a1953ef60251c95de3fd75c07f", null ],
     [ "configure_kernel_CircleBatchToSpaceND", "namespaceonert__micro_1_1import.html#a920cb3e8d071a2b320862fa4d378c1c7", null ],
     [ "configure_kernel_CircleCast", "namespaceonert__micro_1_1import.html#a860205e0755d2511585cffbc488fa4a5", null ],
     [ "configure_kernel_CircleCeil", "namespaceonert__micro_1_1import.html#a7d99ef533765035bf4c58f1c32da708c", null ],

@@ -1,5 +1,6 @@
 var _quantization_utils_8h =
 [
+    [ "IterFunc", "_quantization_utils_8h.html#a6c6a7d503d9825cee0020945f55af7d5", null ],
     [ "ActivationQType", "_quantization_utils_8h.html#a251ef4594e9c96e8de04315def5fc28e", [
       [ "MinMax", "_quantization_utils_8h.html#a251ef4594e9c96e8de04315def5fc28ead6105f30b07a05c5e76aa7b5092d2ff3", null ],
       [ "PreDefinedLogistic", "_quantization_utils_8h.html#a251ef4594e9c96e8de04315def5fc28ea516ab7fb3e844b3223a06ccb657f1c59", null ],
@@ -9,7 +10,9 @@ var _quantization_utils_8h =
     ] ],
     [ "activation_qtype", "_quantization_utils_8h.html#a3a93288835d5987bf66c18340aa2498d", null ],
     [ "asymmetric_wquant_with_minmax_per_layer", "_quantization_utils_8h.html#a2794836a87d2212005d9ef7b7ef3498a", null ],
+    [ "cal_minmax_per_channel", "_quantization_utils_8h.html#ad7ff55f3020d5a7c1d80ebb745d45f4f", null ],
     [ "cal_offset", "_quantization_utils_8h.html#abbde06f4d0bf6ed2a3c9438df8eed7ed", null ],
+    [ "check_quant_unfriendly_values", "_quantization_utils_8h.html#af5691e340b01613ed1acbe039f283ff3", null ],
     [ "compute_asym_scale_zp", "_quantization_utils_8h.html#a18cc394d8cc1def0bd5426a8e9e8328d", null ],
     [ "compute_sym_scale", "_quantization_utils_8h.html#a78b1db0d7d2e1f81aa2b268b465a2962", null ],
     [ "fp32_to_uint8_cast", "_quantization_utils_8h.html#a2250a670bdd1f2f8db677a4080758347", null ],
@@ -18,6 +21,8 @@ var _quantization_utils_8h =
     [ "is_onnx_dequantize_linear", "_quantization_utils_8h.html#a167803de156057780a81a39cbc694672", null ],
     [ "is_onnx_quantize_linear", "_quantization_utils_8h.html#acdb994408bbb18d392a5c4f82570cd9a", null ],
     [ "is_quantized", "_quantization_utils_8h.html#a92c776392acf3d65c602775dcf6078e8", null ],
+    [ "iterate_per_channel", "_quantization_utils_8h.html#a67c8a15a6720a64adca3536a2cdd1ce0", null ],
+    [ "iterate_per_channel", "_quantization_utils_8h.html#a3ad7677ed141667ff29b43558b07df72", null ],
     [ "make_predefined_qparam", "_quantization_utils_8h.html#a7f4594820696716f29dade1d31a7bb93", null ],
     [ "make_predefined_qparam", "_quantization_utils_8h.html#abc664d29f6593ae697b90928e3a5a2c3", null ],
     [ "max_for_sym_quant", "_quantization_utils_8h.html#aea047022a3da2315c60cedd6e75647b7", null ],

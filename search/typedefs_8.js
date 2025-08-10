@@ -14,10 +14,11 @@ var searchData=
   ['internalbuffermanager_11',['internalbuffermanager',['../namespaceonert_1_1backend_1_1acl__neon.html#a0c1cc420c8f31334a4b40d530f3ce468',1,'onert::backend::acl_neon::InternalBufferManager'],['../namespaceonert_1_1backend_1_1acl__cl.html#a38f4246ec6bdaee3b5bcc440f2c89dbb',1,'onert::backend::acl_cl::InternalBufferManager']]],
   ['iodesc_12',['IODesc',['../namespaceonert_1_1ir.html#a054e57a584412f9d194952596c7db844',1,'onert::ir']]],
   ['ioindex_13',['IOIndex',['../namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940',1,'onert::ir']]],
-  ['iominmaxmap_14',['IOMinMaxMap',['../namespaceonert_1_1exec.html#a7361aeb3bf6ccd17ff69925972b8d7ee',1,'onert::exec']]],
+  ['iominmaxmap_14',['IOMinMaxMap',['../namespaceonert_1_1exec.html#a7ee284b40b3869b5ecff6f20f8dd64e4',1,'onert::exec']]],
   ['itemid_15',['ItemID',['../namespacekuma.html#a68f73ceda2a09317f0f7f31f8eb8912f',1,'kuma']]],
   ['itemsize_16',['ItemSize',['../namespacekuma.html#a7a58189df752b1befc8a1330b81883e1',1,'kuma']]],
   ['iterator_17',['iterator',['../classadt_1_1small__vector.html#ae9799dc004004d58900a5be72f625502',1,'adt::small_vector::iterator'],['../classluci_1_1_vector_wrapper.html#aa0f5bda19b252779565e93c37e70c8cf',1,'luci::VectorWrapper::iterator'],['../classflatbuffers_1_1_vector.html#a0eeca1798d12e29e1003e6f831668986',1,'flatbuffers::Vector::iterator'],['../classluci__interpreter_1_1_vector_wrapper.html#a443ab449b9f6f6c8028ac8eb06819795',1,'luci_interpreter::VectorWrapper::iterator'],['../classkbenchmark_1_1_config_file.html#a8900929203765816830aa6d232573684',1,'kbenchmark::ConfigFile::iterator']]],
   ['iterator_5fcategory_18',['iterator_category',['../structflatbuffers_1_1_vector_iterator.html#ac9e9c7cb6d2cc0a69c22b954bb73dc42',1,'flatbuffers::VectorIterator::iterator_category'],['../structnnfw_1_1cker_1_1_shape_iterator.html#aedc1d843930d480792f4318ba32fdc55',1,'nnfw::cker::ShapeIterator::iterator_category']]],
-  ['iterator_5ftype_19',['iterator_type',['../classndarray_1_1_contiguous_span.html#acca4d0dac90fdfabcd3ce5cb55956d7f',1,'ndarray::ContiguousSpan']]]
+  ['iterator_5ftype_19',['iterator_type',['../classndarray_1_1_contiguous_span.html#acca4d0dac90fdfabcd3ce5cb55956d7f',1,'ndarray::ContiguousSpan']]],
+  ['iterfunc_20',['IterFunc',['../namespaceluci.html#a6c6a7d503d9825cee0020945f55af7d5',1,'luci']]]
 ];

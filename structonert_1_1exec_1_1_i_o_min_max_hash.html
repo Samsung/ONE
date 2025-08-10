@@ -99,15 +99,15 @@ $(document).ready(function(){initNavTree('structonert_1_1exec_1_1_i_o_min_max_ha
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6f5f5d8399f13f16fbb91ea825bdafb2" id="r_a6f5f5d8399f13f16fbb91ea825bdafb2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_o_min_max_hash.html#a6f5f5d8399f13f16fbb91ea825bdafb2">operator()</a> (const std::pair&lt; <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &gt; &amp;k) const noexcept</td></tr>
-<tr class="separator:a6f5f5d8399f13f16fbb91ea825bdafb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec55b65b6aa448e5bb1634dd374ae18e" id="r_aec55b65b6aa448e5bb1634dd374ae18e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert_1_1exec_1_1_i_o_min_max_hash.html#aec55b65b6aa448e5bb1634dd374ae18e">operator()</a> (const std::tuple&lt; <a class="el" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &gt; &amp;k) const noexcept</td></tr>
+<tr class="separator:aec55b65b6aa448e5bb1634dd374ae18e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="exec_2_min_max_map_8h_source.html#l00047">47</a> of file <a class="el" href="exec_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="exec_2_min_max_map_8h_source.html#l00051">51</a> of file <a class="el" href="exec_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6f5f5d8399f13f16fbb91ea825bdafb2" name="a6f5f5d8399f13f16fbb91ea825bdafb2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f5f5d8399f13f16fbb91ea825bdafb2">&#9670;&#160;</a></span>operator()()</h2>
+<a id="aec55b65b6aa448e5bb1634dd374ae18e" name="aec55b65b6aa448e5bb1634dd374ae18e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec55b65b6aa448e5bb1634dd374ae18e">&#9670;&#160;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -118,7 +118,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">size_t onert::exec::IOMinMaxHash::operator() </td>
           <td>(</td>
-          <td class="paramtype">const std::pair&lt; <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::tuple&lt; <a class="el" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>k</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -130,10 +130,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="exec_2_min_max_map_8h_source.html#l00049">49</a> of file <a class="el" href="exec_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>  {</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">return</span> std::hash&lt;ir::SubgraphIndex&gt;()(k.first) ^ std::hash&lt;ir::IOIndex&gt;()(k.second);</div>
-<div class="line"><span class="lineno">   52</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="exec_2_min_max_map_8h_source.html#l00054">54</a> of file <a class="el" href="exec_2_min_max_map_8h_source.html">MinMaxMap.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>  {</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">return</span> std::hash&lt;ir::ModelIndex&gt;()(std::get&lt;ir::ModelIndex&gt;(k)) ^</div>
+<div class="line"><span class="lineno">   57</span>           std::hash&lt;ir::SubgraphIndex&gt;()(std::get&lt;ir::SubgraphIndex&gt;(k)) ^</div>
+<div class="line"><span class="lineno">   58</span>           std::hash&lt;ir::IOIndex&gt;()(std::get&lt;ir::IOIndex&gt;(k));</div>
+<div class="line"><span class="lineno">   59</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('setup_8py_source.html',''); initResiza
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="namespacesetup.html#a6b70cb40c56c925a782fcf1c33046cde">    8</a></span>package_directory = <span class="stringliteral">&#39;onert&#39;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespacesetup.html#a5b5d5fe604836f568c9a3503084e736d">    9</a></span>packaging_directory = [<span class="stringliteral">&#39;build&#39;</span>, package_directory + <span class="stringliteral">&#39;.egg-info&#39;</span>]</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespacesetup.html#aa2ce0aedb6cc02d12b8b555f5f0fc877">   10</a></span>THIS_FILE_DIR = os.path.dirname(os.path.abspath(__file__))</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespacesetup.html#a6aeca7db8250b20f8904347200c4d342">   11</a></span>DEFAULT_PRODUCT_DIR = <span class="stringliteral">&quot;../../../Product&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespacesetup.html#a6cada06de205795e377821fe34500d7d">   11</a></span>DEFAULT_PRODUCT_DIR = os.path.normpath(os.path.join(THIS_FILE_DIR, <span class="stringliteral">&quot;../../../Product&quot;</span>))</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespacesetup.html#acbf123ceac5ca04132c74b1d16829e05">   12</a></span>so_list = []</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespacesetup.html#a4ecc108f7a5006102d66cc66b2ece21e">   13</a></span>so_files = []</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="namespacesetup.html#a2f16496690e425675e8b9b3d51ac888c">   14</a></span>target_arch = <span class="stringliteral">&#39;none&#39;</span></div>
@@ -150,115 +150,124 @@ $(document).ready(function(){initNavTree('setup_8py_source.html',''); initResiza
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    print(f<span class="stringliteral">&quot;Created directory &#39;{package_directory}&#39;...&quot;</span>)</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="comment"># copy *py files to package_directory</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="namespacesetup.html#abda56ec8d05cc15cf560a5237e8ee995">   54</a></span>    PY_DIR = os.path.join(THIS_FILE_DIR, <span class="stringliteral">&#39;../../../runtime/onert/api/python/package&#39;</span>)</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">for</span> root, dirs, files <span class="keywordflow">in</span> os.walk(PY_DIR):</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="comment"># Calculate the relative path from the source directory</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="namespacesetup.html#a63a26c35aa5367cae2cb292b2001919b">   57</a></span>        rel_path = os.path.relpath(root, PY_DIR)</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="namespacesetup.html#a4c0505658de1f23b7a4ea73b34f9c067">   58</a></span>        dest_dir = os.path.join(THIS_FILE_DIR, package_directory)</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="namespacesetup.html#ac42d50036ccf82ce4e002271dd1e5073">   59</a></span>        dest_sub_dir = os.path.join(dest_dir, rel_path)</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        print(f<span class="stringliteral">&quot;dest_sub_dir &#39;{dest_sub_dir}&#39;&quot;</span>)</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="comment"># Ensure the corresponding destination subdirectory exists</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="namespacesetup.html#a087f5d55e115fc6ace1c74f08830d1c4">   63</a></span>        os.makedirs(dest_sub_dir, exist_ok=<span class="keyword">True</span>)</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="comment"># Copy only .py files</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keywordflow">for</span> py_file <span class="keywordflow">in</span> files:</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            <span class="keywordflow">if</span> py_file.endswith(<span class="stringliteral">&quot;.py&quot;</span>):</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="namespacesetup.html#ab92667e659baf0f323064952430a8ccd">   68</a></span>                src_path = os.path.join(root, py_file)</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                <span class="comment"># dest_path = os.path.join(THIS_FILE_DIR, package_directory)</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                shutil.copy(src_path, dest_sub_dir)</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                print(f<span class="stringliteral">&quot;Copied &#39;{src_path}&#39; to &#39;{dest_sub_dir}&#39;&quot;</span>)</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="comment"># remove architecture directory</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">if</span> os.path.exists(package_directory):</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="namespacesetup.html#ade45cf7db239e121b194e41d7b612e94">   75</a></span>        arch_path = os.path.join(package_directory, target_arch)</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keywordflow">if</span> os.path.exists(arch_path):</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            print(f<span class="stringliteral">&quot;Deleting existing directory &#39;{arch_path}&#39;...&quot;</span>)</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            shutil.rmtree(arch_path)</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="comment"># make architecture_directory and copy .so files to the directories</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        arch_path = os.path.join(package_directory, <span class="stringliteral">&#39;native&#39;</span>)</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        os.makedirs(arch_path)</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        print(f<span class="stringliteral">&quot;Created directory &#39;{arch_path}&#39;&quot;</span>)</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="foldopen" id="foldopen00085" data-start="" data-end="">
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="namespacesetup.html#a246738081761d4dc3fd63f76320696dd">   85</a></span>        <span class="keyword">def </span><a class="code hl_function" href="namespacesetup.html#a246738081761d4dc3fd63f76320696dd">get_directories</a>():</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            <span class="comment"># If the environment variable is not set, get default one.</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            product_dir = os.environ.get(<span class="stringliteral">&quot;PRODUCT_DIR&quot;</span>, DEFAULT_PRODUCT_DIR)</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            <span class="keywordflow">return</span> os.path.join(THIS_FILE_DIR, product_dir), os.path.join(</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                product_dir,</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                <span class="stringliteral">&quot;lib/&quot;</span> <span class="keywordflow">if</span> product_dir != DEFAULT_PRODUCT_DIR <span class="keywordflow">else</span> target_arch +</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                <span class="stringliteral">&#39;-linux.release/out/lib&#39;</span>)</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="namespacesetup.html#abda56ec8d05cc15cf560a5237e8ee995">   54</a></span>    PY_DIR = os.path.normpath(</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        os.path.join(THIS_FILE_DIR, <span class="stringliteral">&#39;../../../runtime/onert/api/python/package&#39;</span>))</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">for</span> root, dirs, files <span class="keywordflow">in</span> os.walk(PY_DIR):</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="comment"># Calculate the relative path from the source directory</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="namespacesetup.html#a63a26c35aa5367cae2cb292b2001919b">   58</a></span>        rel_path = os.path.relpath(root, PY_DIR)</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="namespacesetup.html#a4c0505658de1f23b7a4ea73b34f9c067">   59</a></span>        dest_dir = os.path.join(THIS_FILE_DIR, package_directory)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="namespacesetup.html#ac42d50036ccf82ce4e002271dd1e5073">   60</a></span>        dest_sub_dir = os.path.join(dest_dir, rel_path)</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        print(f<span class="stringliteral">&quot;dest_sub_dir &#39;{dest_sub_dir}&#39;&quot;</span>)</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="comment"># Ensure the corresponding destination subdirectory exists</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="namespacesetup.html#a087f5d55e115fc6ace1c74f08830d1c4">   64</a></span>        os.makedirs(dest_sub_dir, exist_ok=<span class="keyword">True</span>)</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="comment"># Copy only .py files</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="keywordflow">for</span> py_file <span class="keywordflow">in</span> files:</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            <span class="keywordflow">if</span> py_file.endswith(<span class="stringliteral">&quot;.py&quot;</span>):</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="namespacesetup.html#ab92667e659baf0f323064952430a8ccd">   69</a></span>                src_path = os.path.join(root, py_file)</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                <span class="comment"># dest_path = os.path.join(THIS_FILE_DIR, package_directory)</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                shutil.copy(src_path, dest_sub_dir)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                print(f<span class="stringliteral">&quot;Copied &#39;{src_path}&#39; to &#39;{dest_sub_dir}&#39;&quot;</span>)</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="comment"># remove architecture directory</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">if</span> os.path.exists(package_directory):</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="namespacesetup.html#ade45cf7db239e121b194e41d7b612e94">   76</a></span>        arch_path = os.path.join(package_directory, target_arch)</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="keywordflow">if</span> os.path.exists(arch_path):</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            print(f<span class="stringliteral">&quot;Deleting existing directory &#39;{arch_path}&#39;...&quot;</span>)</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            shutil.rmtree(arch_path)</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="comment"># make architecture_directory and copy .so files to the directories</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        arch_path = os.path.join(package_directory, <span class="stringliteral">&#39;native&#39;</span>)</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        os.makedirs(arch_path)</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        print(f<span class="stringliteral">&quot;Created directory &#39;{arch_path}&#39;&quot;</span>)</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="foldopen" id="foldopen00086" data-start="" data-end="">
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="namespacesetup.html#a246738081761d4dc3fd63f76320696dd">   86</a></span>        <span class="keyword">def </span><a class="code hl_function" href="namespacesetup.html#a246738081761d4dc3fd63f76320696dd">get_directories</a>():</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            <span class="comment"># If the environment variable is not set, get default one.</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            product_dir = os.environ.get(<span class="stringliteral">&quot;PRODUCT_DIR&quot;</span>, DEFAULT_PRODUCT_DIR)</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            base_dir = product_dir <span class="keywordflow">if</span> product_dir != DEFAULT_PRODUCT_DIR <span class="keywordflow">else</span> os.path.join(</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                product_dir, target_arch + <span class="stringliteral">&#39;-linux.release/out&#39;</span>)</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            <span class="keywordflow">if</span> os.path.exists(os.path.join(base_dir, <span class="stringliteral">&quot;lib64&quot;</span>)):</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                <span class="keywordflow">return</span> os.path.join(base_dir, <span class="stringliteral">&quot;lib64&quot;</span>)</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            <span class="keywordflow">elif</span> os.path.exists(os.path.join(base_dir, <span class="stringliteral">&quot;lib32&quot;</span>)):</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                <span class="keywordflow">return</span> os.path.join(base_dir, <span class="stringliteral">&quot;lib32&quot;</span>)</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <span class="keywordflow">elif</span> os.path.exists(os.path.join(base_dir, <span class="stringliteral">&quot;lib&quot;</span>)):</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                <span class="keywordflow">return</span> os.path.join(base_dir, <span class="stringliteral">&quot;lib&quot;</span>)</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                <span class="keywordflow">raise</span> FileNotFoundError(f<span class="stringliteral">&quot;No lib directory found in {base_dir}&quot;</span>)</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
 </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="namespacesetup.html#a5c1f2b356ddc6c01c64fbf3ec0992032">   93</a></span>        product_dir, so_base_dir = <a class="code hl_function" href="namespacesetup.html#a246738081761d4dc3fd63f76320696dd">get_directories</a>()</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keywordflow">for</span> so <span class="keywordflow">in</span> os.listdir(so_base_dir):</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <span class="keywordflow">if</span> so.endswith(<span class="stringliteral">&quot;.so&quot;</span>):</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                so_list.append(<span class="stringliteral">&#39;native/&#39;</span> + so)</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                src_path = os.path.join(so_base_dir, so)</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="namespacesetup.html#aa208ac4955a049434e61e04cf0e6f917">   99</a></span>                tgt_path = os.path.join(arch_path, so)</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                shutil.copy(src_path, tgt_path)</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                print(f<span class="stringliteral">&quot;Copied {src_path} to {tgt_path}&quot;</span>)</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="comment"># onert core library</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="namespacesetup.html#a9c3d1d78026c92ef978133df9fac56f9">  104</a></span>        so_core_dir = os.path.join(so_base_dir, <span class="stringliteral">&#39;nnfw&#39;</span>)</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordflow">if</span> os.path.exists(so_core_dir):</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="namespacesetup.html#aac4d81456f7f4a67cda994be1ba1d5c6">  106</a></span>            so_core_tgt_dir = os.path.join(arch_path, <span class="stringliteral">&#39;nnfw&#39;</span>)</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            os.makedirs(so_core_tgt_dir)</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>            <span class="keywordflow">for</span> so <span class="keywordflow">in</span> os.listdir(so_core_dir):</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                <span class="keywordflow">if</span> so.endswith(<span class="stringliteral">&quot;.so&quot;</span>):</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                    so_list.append(<span class="stringliteral">&#39;native/nnfw/&#39;</span> + so)</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                    src_path = os.path.join(so_core_dir, so)</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                    tgt_path = os.path.join(so_core_tgt_dir, so)</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                    shutil.copy(src_path, tgt_path)</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                    print(f<span class="stringliteral">&quot;Copied {src_path} to {tgt_path}&quot;</span>)</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="comment"># onert backend library</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="namespacesetup.html#a1adbbbd00bc67ce344f8fd6fdfeba594">  117</a></span>        so_backend_dir = os.path.join(so_base_dir, <span class="stringliteral">&#39;nnfw/backend&#39;</span>)</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordflow">if</span> os.path.exists(so_backend_dir):</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="namespacesetup.html#afa86dbdfd010d2a4f92b0c7d21ca492a">  119</a></span>            so_backend_tgt_dir = os.path.join(arch_path, <span class="stringliteral">&#39;nnfw/backend&#39;</span>)</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>            os.makedirs(so_backend_tgt_dir)</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>            <span class="keywordflow">for</span> so <span class="keywordflow">in</span> os.listdir(so_backend_dir):</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                <span class="keywordflow">if</span> so.endswith(<span class="stringliteral">&quot;.so&quot;</span>):</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                    so_list.append(<span class="stringliteral">&#39;native/nnfw/backend/&#39;</span> + so)</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                    src_path = os.path.join(so_backend_dir, so)</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                    tgt_path = os.path.join(so_backend_tgt_dir, so)</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                    shutil.copy(src_path, tgt_path)</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                    print(f<span class="stringliteral">&quot;Copied {src_path} to {tgt_path}&quot;</span>)</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="comment"># onert odc library</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="namespacesetup.html#a634fcc6df534799dd1624e6aaf334558">  130</a></span>        so_odc_dir = os.path.join(so_base_dir, <span class="stringliteral">&#39;nnfw/odc&#39;</span>)</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keywordflow">if</span> os.path.exists(so_odc_dir):</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="namespacesetup.html#a65a7964dc6c56987a1a7fe3d419ac389">  132</a></span>            so_odc_tgt_dir = os.path.join(arch_path, <span class="stringliteral">&#39;nnfw/odc&#39;</span>)</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>            os.makedirs(so_odc_tgt_dir)</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>            <span class="keywordflow">for</span> so <span class="keywordflow">in</span> os.listdir(so_odc_dir):</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>                <span class="keywordflow">if</span> so.endswith(<span class="stringliteral">&quot;.so&quot;</span>):</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>                    so_list.append(<span class="stringliteral">&#39;native/nnfw/odc/&#39;</span> + so)</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>                    src_path = os.path.join(so_odc_dir, so)</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                    tgt_path = os.path.join(so_odc_tgt_dir, so)</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                    shutil.copy(src_path, tgt_path)</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                    print(f<span class="stringliteral">&quot;Copied {src_path} to {tgt_path}&quot;</span>)</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    print(<span class="stringliteral">&quot;Operation completed successfully.&quot;</span>)</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    print(f<span class="stringliteral">&quot;An error occurred: {str(e)}&quot;</span>)</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment"># copy .so files to architecture directories</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">  149</a></span><a class="code hl_namespace" href="namespacesetup.html">setup</a>(name=package_name,</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="namespacesetup.html#a2aa722b36a933088812b50ea79b97a5c">  150</a></span>      version=<span class="stringliteral">&#39;0.2.0&#39;</span>,</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="namespacesetup.html#aedf461ec52a946bda975938ba0b93ec0">  151</a></span>      description=<span class="stringliteral">&#39;onert API binding&#39;</span>,</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="namespacesetup.html#a4cda9dbfb952875376a0749fe08a5bde">  152</a></span>      long_description=<span class="stringliteral">&#39;It provides onert Python api&#39;</span>,</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="namespacesetup.html#afc13124aa5c0124e84e1d965e3f4b0fb">  153</a></span>      url=<span class="stringliteral">&#39;https://github.com/Samsung/ONE&#39;</span>,</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="namespacesetup.html#a8ed6f50a28bd6a8794f8e1153baa6de9">  154</a></span>      license=<span class="stringliteral">&#39;Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, Mozilla Public License 2.0&#39;</span>,</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="namespacesetup.html#adde076486f2d4496e225b61f7a3dd555">  155</a></span>      has_ext_modules=<span class="keyword">lambda</span>: <span class="keyword">True</span>,</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="namespacesetup.html#aff2375a361fd5865c77bd9aa093be747">  156</a></span>      packages=find_packages(),</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno"><a class="line" href="namespacesetup.html#a0a5ccc22976d20d42c6bb6c7651ce0be">  157</a></span>      package_data={package_directory: so_list},</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="namespacesetup.html#abead4f26b530856f858f0d44c7cf2588">  158</a></span>      install_requires=[<span class="stringliteral">&#39;numpy &gt;= 1.19&#39;</span>])</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="namespacesetup.html#a1f71298b78242580b19d30e9d712700e">  101</a></span>        so_base_dir = <a class="code hl_function" href="namespacesetup.html#a246738081761d4dc3fd63f76320696dd">get_directories</a>()</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        print(f<span class="stringliteral">&quot;so_base_dir &#39;{so_base_dir}&#39;&quot;</span>)</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordflow">for</span> so <span class="keywordflow">in</span> os.listdir(so_base_dir):</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            <span class="keywordflow">if</span> so.endswith(<span class="stringliteral">&quot;.so&quot;</span>):</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                so_list.append(<span class="stringliteral">&#39;native/&#39;</span> + so)</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                src_path = os.path.join(so_base_dir, so)</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="namespacesetup.html#aa208ac4955a049434e61e04cf0e6f917">  108</a></span>                tgt_path = os.path.join(arch_path, so)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                shutil.copy(src_path, tgt_path)</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                print(f<span class="stringliteral">&quot;Copied {src_path} to {tgt_path}&quot;</span>)</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <span class="comment"># onert core library</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="namespacesetup.html#a9c3d1d78026c92ef978133df9fac56f9">  113</a></span>        so_core_dir = os.path.join(so_base_dir, <span class="stringliteral">&#39;nnfw&#39;</span>)</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keywordflow">if</span> os.path.exists(so_core_dir):</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="namespacesetup.html#aac4d81456f7f4a67cda994be1ba1d5c6">  115</a></span>            so_core_tgt_dir = os.path.join(arch_path, <span class="stringliteral">&#39;nnfw&#39;</span>)</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            os.makedirs(so_core_tgt_dir)</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            <span class="keywordflow">for</span> so <span class="keywordflow">in</span> os.listdir(so_core_dir):</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                <span class="keywordflow">if</span> so.endswith(<span class="stringliteral">&quot;.so&quot;</span>):</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                    so_list.append(<span class="stringliteral">&#39;native/nnfw/&#39;</span> + so)</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                    src_path = os.path.join(so_core_dir, so)</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                    tgt_path = os.path.join(so_core_tgt_dir, so)</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                    shutil.copy(src_path, tgt_path)</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                    print(f<span class="stringliteral">&quot;Copied {src_path} to {tgt_path}&quot;</span>)</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <span class="comment"># onert backend library</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="namespacesetup.html#a1adbbbd00bc67ce344f8fd6fdfeba594">  126</a></span>        so_backend_dir = os.path.join(so_base_dir, <span class="stringliteral">&#39;nnfw/backend&#39;</span>)</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="keywordflow">if</span> os.path.exists(so_backend_dir):</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="namespacesetup.html#afa86dbdfd010d2a4f92b0c7d21ca492a">  128</a></span>            so_backend_tgt_dir = os.path.join(arch_path, <span class="stringliteral">&#39;nnfw/backend&#39;</span>)</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            os.makedirs(so_backend_tgt_dir)</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>            <span class="keywordflow">for</span> so <span class="keywordflow">in</span> os.listdir(so_backend_dir):</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                <span class="keywordflow">if</span> so.endswith(<span class="stringliteral">&quot;.so&quot;</span>):</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                    so_list.append(<span class="stringliteral">&#39;native/nnfw/backend/&#39;</span> + so)</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                    src_path = os.path.join(so_backend_dir, so)</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                    tgt_path = os.path.join(so_backend_tgt_dir, so)</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>                    shutil.copy(src_path, tgt_path)</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>                    print(f<span class="stringliteral">&quot;Copied {src_path} to {tgt_path}&quot;</span>)</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        <span class="comment"># onert odc library</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="namespacesetup.html#a634fcc6df534799dd1624e6aaf334558">  139</a></span>        so_odc_dir = os.path.join(so_base_dir, <span class="stringliteral">&#39;nnfw/odc&#39;</span>)</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        <span class="keywordflow">if</span> os.path.exists(so_odc_dir):</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="namespacesetup.html#a65a7964dc6c56987a1a7fe3d419ac389">  141</a></span>            so_odc_tgt_dir = os.path.join(arch_path, <span class="stringliteral">&#39;nnfw/odc&#39;</span>)</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>            os.makedirs(so_odc_tgt_dir)</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>            <span class="keywordflow">for</span> so <span class="keywordflow">in</span> os.listdir(so_odc_dir):</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                <span class="keywordflow">if</span> so.endswith(<span class="stringliteral">&quot;.so&quot;</span>):</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>                    so_list.append(<span class="stringliteral">&#39;native/nnfw/odc/&#39;</span> + so)</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>                    src_path = os.path.join(so_odc_dir, so)</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                    tgt_path = os.path.join(so_odc_tgt_dir, so)</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                    shutil.copy(src_path, tgt_path)</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                    print(f<span class="stringliteral">&quot;Copied {src_path} to {tgt_path}&quot;</span>)</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    print(<span class="stringliteral">&quot;Operation completed successfully.&quot;</span>)</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    print(f<span class="stringliteral">&quot;An error occurred: {str(e)}&quot;</span>)</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment"># copy .so files to architecture directories</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">  158</a></span><a class="code hl_namespace" href="namespacesetup.html">setup</a>(name=package_name,</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="namespacesetup.html#a2aa722b36a933088812b50ea79b97a5c">  159</a></span>      version=<span class="stringliteral">&#39;0.2.0&#39;</span>,</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno"><a class="line" href="namespacesetup.html#aedf461ec52a946bda975938ba0b93ec0">  160</a></span>      description=<span class="stringliteral">&#39;onert API binding&#39;</span>,</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno"><a class="line" href="namespacesetup.html#a4cda9dbfb952875376a0749fe08a5bde">  161</a></span>      long_description=<span class="stringliteral">&#39;It provides onert Python api&#39;</span>,</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="namespacesetup.html#afc13124aa5c0124e84e1d965e3f4b0fb">  162</a></span>      url=<span class="stringliteral">&#39;https://github.com/Samsung/ONE&#39;</span>,</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="namespacesetup.html#a8ed6f50a28bd6a8794f8e1153baa6de9">  163</a></span>      license=<span class="stringliteral">&#39;Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, Mozilla Public License 2.0&#39;</span>,</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="namespacesetup.html#adde076486f2d4496e225b61f7a3dd555">  164</a></span>      has_ext_modules=<span class="keyword">lambda</span>: <span class="keyword">True</span>,</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="namespacesetup.html#aff2375a361fd5865c77bd9aa093be747">  165</a></span>      packages=find_packages(),</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="namespacesetup.html#a0a5ccc22976d20d42c6bb6c7651ce0be">  166</a></span>      package_data={package_directory: so_list},</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="namespacesetup.html#abead4f26b530856f858f0d44c7cf2588">  167</a></span>      install_requires=[<span class="stringliteral">&#39;numpy &gt;= 1.19&#39;</span>])</div>
 <div class="ttc" id="anamespacesetup_html"><div class="ttname"><a href="namespacesetup.html">setup</a></div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00001">setup.py:1</a></div></div>
-<div class="ttc" id="anamespacesetup_html_a246738081761d4dc3fd63f76320696dd"><div class="ttname"><a href="namespacesetup.html#a246738081761d4dc3fd63f76320696dd">setup.get_directories</a></div><div class="ttdeci">get_directories()</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00085">setup.py:85</a></div></div>
+<div class="ttc" id="anamespacesetup_html_a246738081761d4dc3fd63f76320696dd"><div class="ttname"><a href="namespacesetup.html#a246738081761d4dc3fd63f76320696dd">setup.get_directories</a></div><div class="ttdeci">get_directories()</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00086">setup.py:86</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

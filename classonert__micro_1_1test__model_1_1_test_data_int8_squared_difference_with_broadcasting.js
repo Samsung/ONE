@@ -1,0 +1,5 @@
+var classonert__micro_1_1test__model_1_1_test_data_int8_squared_difference_with_broadcasting =
+[
+    [ "TestDataInt8SquaredDifferenceWithBroadcasting", "classonert__micro_1_1test__model_1_1_test_data_int8_squared_difference_with_broadcasting.html#a3b01607c1e5abbe048c4f9ddc61fc32b", null ],
+    [ "~TestDataInt8SquaredDifferenceWithBroadcasting", "classonert__micro_1_1test__model_1_1_test_data_int8_squared_difference_with_broadcasting.html#a3311a58b6324e869e8fbc265d2456f85", null ]
+];

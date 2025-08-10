@@ -40,9 +40,9 @@ var namespaceonert_1_1exec =
     [ "TracingObserver", "classonert_1_1exec_1_1_tracing_observer.html", "classonert_1_1exec_1_1_tracing_observer" ],
     [ "WorkQueue", "classonert_1_1exec_1_1_work_queue.html", "classonert_1_1exec_1_1_work_queue" ],
     [ "BackendSet", "namespaceonert_1_1exec.html#a54edf28856f9caa5c269b5004cd0ae82", null ],
-    [ "IOMinMaxMap", "namespaceonert_1_1exec.html#a7361aeb3bf6ccd17ff69925972b8d7ee", null ],
+    [ "IOMinMaxMap", "namespaceonert_1_1exec.html#a7ee284b40b3869b5ecff6f20f8dd64e4", null ],
     [ "MeasurementData", "namespaceonert_1_1exec.html#a893a10751ea3505eaad6ffe3da376aef", null ],
-    [ "OpMinMaxMap", "namespaceonert_1_1exec.html#a9bb7d7fe29fa6d0b1f9e712de6abda82", null ],
+    [ "OpMinMaxMap", "namespaceonert_1_1exec.html#a4528a5b1b364c068dc58d0790b6d38ca", null ],
     [ "ObserverType", "namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068", [
       [ "PROFILE", "namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a48359f9afd830d28b1152d071fb09147", null ],
       [ "TRACING", "namespaceonert_1_1exec.html#a7197df3298167805c3fe9e0646ba9068a28f7e2e9de04d41e66f59b3bbea71a89", null ],

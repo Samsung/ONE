@@ -20,7 +20,7 @@ var searchData=
   ['circle_5fvnode_17',['CIRCLE_VNODE',['../namespaceluci.html#a311e4e8fc7a65afbda7a68d7a12d3ffca8ddfc2d3f241acbc6d6c569ee4c71246',1,'luci']]],
   ['circletranspose_18',['CircleTranspose',['../namespaceluci_1_1test.html#af9a30c0ad5df3b8b6109ceebbedd90f3a75dcb86958be68bd14bd8418bfafa5ed',1,'luci::test']]],
   ['class_5findex_19',['CLASS_INDEX',['../classonert_1_1backend_1_1cpu_1_1ops_1_1_detection_post_process_layer.html#a4650ca5f4542b81612ba17dc1134ec81a0f76a10338d489a717124a86e2aba361',1,'onert::backend::cpu::ops::DetectionPostProcessLayer']]],
-  ['clip_20',['clip',['../namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8af6d8b886335927d46fad323c60335d09',1,'mir_caffe2::clip'],['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8af6d8b886335927d46fad323c60335d09',1,'mir_caffe::clip']]],
+  ['clip_20',['clip',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8af6d8b886335927d46fad323c60335d09',1,'mir_caffe::clip'],['../namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8af6d8b886335927d46fad323c60335d09',1,'mir_caffe2::clip']]],
   ['cmsisnn_21',['CMSISNN',['../namespacecircle__planner.html#accc79ac9a3803f4b18b180428137202aa5ac42bb512a3833799862c070673f683',1,'circle_planner']]],
   ['cmsisnnerror_22',['CmsisNNError',['../namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba64d346fcdb26d1aa73b8d305682fbbe6',1,'onert_micro']]],
   ['codegen_5fpref_5fcompile_5ftime_5ffirst_23',['CODEGEN_PREF_COMPILE_TIME_FIRST',['../namespaceonert_1_1odc.html#abc20a817f7c150a3eadeac4e65b015c1ad3db6c20ac6ca4846599f27d8f1a85f6',1,'onert::odc']]],
@@ -30,7 +30,7 @@ var searchData=
   ['common_27',['COMMON',['../namespacecircle__planner.html#ab5b2e3f311577b6e851d66784b747bb9aada155a668c4b5b8d04e05d8d986ba9d',1,'circle_planner']]],
   ['commonsubexpressionelimination_28',['CommonSubExpressionElimination',['../structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea2cb7d2ba443d5073c00131655e4ec76e',1,'luci::CircleOptimizer::Options']]],
   ['complete_29',['Complete',['../structlocop_1_1_node_desc.html#a76aad081471eff9ece2ebdeaa9716c96aae94f80b3ce82062a5dd7815daa04f9d',1,'locop::NodeDesc']]],
-  ['concat_30',['concat',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a414e7c8ede73a0c2c3d17699134f4080',1,'mir_caffe::concat'],['../namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a414e7c8ede73a0c2c3d17699134f4080',1,'mir_caffe2::concat']]],
+  ['concat_30',['concat',['../namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a414e7c8ede73a0c2c3d17699134f4080',1,'mir_caffe2::concat'],['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a414e7c8ede73a0c2c3d17699134f4080',1,'mir_caffe::concat']]],
   ['concatenation_31',['CONCATENATION',['../_operation_type_8h.html#ae75fec8376570a470a9035fab2a08152a09642f40460f8aa951d4527ae0886d9f',1,'OperationType.h']]],
   ['condition_32',['CONDITION',['../classonert_1_1ir_1_1operation_1_1_select.html#a57feacffca5a5139ac1733628b4c22ddadb3a6be5d8b1d0f78960a823127c5ec0',1,'onert::ir::operation::Select']]],
   ['constant_5fcopy_33',['CONSTANT_COPY',['../compiler_2ann-ref_2src_2_operand_8h.html#a6d43dbf7e892bb998b357897692acfeaaa085cc92c153f6b8aa715f2b1dcbd199',1,'Operand.h']]],
@@ -47,11 +47,12 @@ var searchData=
   ['copyquantparam_44',['CopyQuantParam',['../structluci_1_1_circle_quantizer_1_1_options.html#afd210994317d6cad17bc8d057b8f968ba655358c33459d60cce558ebe67ff82b3',1,'luci::CircleQuantizer::Options']]],
   ['cos_45',['COS',['../classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51aef23ef1d426ae1a73a7eed399cef707d',1,'onert::ir::operation::ElementwiseUnary']]],
   ['cos_5ftable_46',['COS_TABLE',['../classonert_1_1ir_1_1operation_1_1_ro_p_e.html#afe3061ed1c90564f1186ee5c7bbe349ba54851f3071b3f601a5b893b18632a483',1,'onert::ir::operation::RoPE']]],
-  ['count_47',['count',['../namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7a4905ac9d6a22bdfc1ae096094ce6248d',1,'onert::ir::COUNT'],['../namespaceloco.html#ac9f207997cef8d437eb2e86f2a78a1ebae93f994f01c537c4e2f7d8528c3eb5e9',1,'loco::Count'],['../namespaceloco.html#aa7dc6df6698f9a45c41ae8ea155fb623ae93f994f01c537c4e2f7d8528c3eb5e9',1,'loco::Count']]],
+  ['count_47',['count',['../namespaceloco.html#ac9f207997cef8d437eb2e86f2a78a1ebae93f994f01c537c4e2f7d8528c3eb5e9',1,'loco::Count'],['../namespaceloco.html#aa7dc6df6698f9a45c41ae8ea155fb623ae93f994f01c537c4e2f7d8528c3eb5e9',1,'loco::Count'],['../namespaceonert_1_1ir.html#a587a2982319cf192bc7a6e6e44cde3b7a4905ac9d6a22bdfc1ae096094ce6248d',1,'onert::ir::COUNT']]],
   ['createtmp_48',['createTmp',['../structnnc_1_1sir_1_1_action.html#af34846d6e6cc38c888083ba3c1a29c95abc384ce2e5746b9b8a7e34564a86e0c8',1,'nnc::sir::Action']]],
   ['crop_49',['crop',['../namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa634e7960e04b1633c103382004fe526',1,'mir_caffe']]],
   ['crops_5fdata_50',['CROPS_DATA',['../classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html#a2fa7aa5522d4c5244d9f512053ef7471a8ff2dbe9b752d571d36bb49fd9f9735c',1,'onert::ir::operation::BatchToSpaceND']]],
   ['cross_5fentropy_51',['CROSS_ENTROPY',['../namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda230bdeb6e7661f504d806e1c1d5ae0fa',1,'onert_micro']]],
   ['cross_5fentropy_5fmetrics_52',['CROSS_ENTROPY_METRICS',['../namespaceonert__micro.html#ad046550495f851ca3f09b45262799224aa46382799c51655269e4e1d53b6a1087',1,'onert_micro']]],
-  ['custom_5fcustom_5fgru_53',['CUSTOM_custom_gru',['../namespaceonert__micro_1_1core.html#a8059fcf407eee825b3eccffcda2e7babad43ce9b5284cd6b01d02ba7f0fa05ca4',1,'onert_micro::core']]]
+  ['custom_5fcustom_5fgru_53',['CUSTOM_custom_gru',['../namespaceonert__micro_1_1core.html#a8059fcf407eee825b3eccffcda2e7babad43ce9b5284cd6b01d02ba7f0fa05ca4',1,'onert_micro::core']]],
+  ['cwq_54',['CWQ',['../classonert__micro_1_1core_1_1_o_m_quantization_data.html#aa7b6cbd3a716f559c6360be23e25af14a81506eccf2a378254615731ba42ad27c',1,'onert_micro::core::OMQuantizationData']]]
 ];

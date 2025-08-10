@@ -106,7 +106,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00085">85</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00087">87</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abe7b920b2751e36c854d8d906eee79cd" name="abe7b920b2751e36c854d8d906eee79cd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abe7b920b2751e36c854d8d906eee79cd">&#9670;&#160;</a></span>KernelCustomConfigureRegistry()</h2>
@@ -131,16 +131,16 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00088">88</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   88</span>                                            : _operator_configure()</div>
-<div class="line"><span class="lineno">   89</span>  {</div>
-<div class="line"><span class="lineno">   90</span><span class="preprocessor">#define REGISTER_CUSTOM_KERNEL(name, string_name) \</span></div>
-<div class="line"><span class="lineno">   91</span><span class="preprocessor">  registerKernelConfigure(core::OMBuilderID::CUSTOM_##name, configure_kernel_Circle##name);</span></div>
-<div class="line"><span class="lineno">   92</span> </div>
-<div class="line"><span class="lineno">   93</span><span class="preprocessor">#include &quot;CustomKernelsToBuild.lst&quot;</span></div>
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00090">90</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span>                                            : _operator_configure()</div>
+<div class="line"><span class="lineno">   91</span>  {</div>
+<div class="line"><span class="lineno">   92</span><span class="preprocessor">#define REGISTER_CUSTOM_KERNEL(name, string_name) \</span></div>
+<div class="line"><span class="lineno">   93</span><span class="preprocessor">  registerKernelConfigure(core::OMBuilderID::CUSTOM_##name, configure_kernel_Circle##name);</span></div>
 <div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span><span class="preprocessor">#undef REGISTER_CUSTOM_KERNEL</span></div>
-<div class="line"><span class="lineno">   96</span>  }</div>
+<div class="line"><span class="lineno">   95</span><span class="preprocessor">#include &quot;CustomKernelsToBuild.lst&quot;</span></div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span><span class="preprocessor">#undef REGISTER_CUSTOM_KERNEL</span></div>
+<div class="line"><span class="lineno">   98</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -179,20 +179,21 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00099">99</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span>  {</div>
-<div class="line"><span class="lineno">  102</span>    <span class="keyword">auto</span> builder_id_opcode = size_t(builderID);</div>
-<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> (builder_id_opcode &gt;= <span class="keywordtype">size_t</span>(<a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#ab1fab592efb734841ceeb8519c002374a6f6cb72d544962fa333e2e34ce64f719">core::OMBuilderID::Size</a>))</div>
-<div class="line"><span class="lineno">  104</span>    {</div>
-<div class="line"><span class="lineno">  105</span>      *configure_func = <span class="keyword">nullptr</span>;</div>
-<div class="line"><span class="lineno">  106</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
-<div class="line"><span class="lineno">  107</span>    }</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keyword">const</span> <span class="keyword">auto</span> builder_id_offset = size_t(<a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#ab1fab592efb734841ceeb8519c002374a5daddf5abe72fe38be6c817119eaf3ad">core::OMBuilderID::BuiltinOperatorsSize</a>);</div>
-<div class="line"><span class="lineno">  109</span>    builder_id_opcode -= builder_id_offset - 1;</div>
-<div class="line"><span class="lineno">  110</span> </div>
-<div class="line"><span class="lineno">  111</span>    *configure_func = _operator_configure[builder_id_opcode];</div>
-<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
-<div class="line"><span class="lineno">  113</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_o_m_kernel_configure_builder_8h_source.html#l00101">101</a> of file <a class="el" href="_o_m_kernel_configure_builder_8h_source.html">OMKernelConfigureBuilder.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  103</span>  {</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keyword">auto</span> builder_id_opcode = size_t(builderID);</div>
+<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">if</span> (builder_id_opcode &gt;= <span class="keywordtype">size_t</span>(<a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#ab1fab592efb734841ceeb8519c002374a6f6cb72d544962fa333e2e34ce64f719">core::OMBuilderID::Size</a>))</div>
+<div class="line"><span class="lineno">  106</span>    {</div>
+<div class="line"><span class="lineno">  107</span>      std::cerr &lt;&lt; <span class="stringliteral">&quot;Error: Unknown custom operator ID &quot;</span> &lt;&lt; builder_id_opcode &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  108</span>      *configure_func = <span class="keyword">nullptr</span>;</div>
+<div class="line"><span class="lineno">  109</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">  110</span>    }</div>
+<div class="line"><span class="lineno">  111</span>    <span class="keyword">const</span> <span class="keyword">auto</span> builder_id_offset = size_t(<a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#ab1fab592efb734841ceeb8519c002374a5daddf5abe72fe38be6c817119eaf3ad">core::OMBuilderID::BuiltinOperatorsSize</a>);</div>
+<div class="line"><span class="lineno">  112</span>    builder_id_opcode -= builder_id_offset - 1;</div>
+<div class="line"><span class="lineno">  113</span> </div>
+<div class="line"><span class="lineno">  114</span>    *configure_func = _operator_configure[builder_id_opcode];</div>
+<div class="line"><span class="lineno">  115</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
+<div class="line"><span class="lineno">  116</span>  }</div>
 <div class="ttc" id="anamespaceonert__micro_1_1core_html_ab1fab592efb734841ceeb8519c002374a5daddf5abe72fe38be6c817119eaf3ad"><div class="ttname"><a href="namespaceonert__micro_1_1core.html#ab1fab592efb734841ceeb8519c002374a5daddf5abe72fe38be6c817119eaf3ad">onert_micro::core::OMBuilderID::BuiltinOperatorsSize</a></div><div class="ttdeci">@ BuiltinOperatorsSize</div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1core_html_ab1fab592efb734841ceeb8519c002374a6f6cb72d544962fa333e2e34ce64f719"><div class="ttname"><a href="namespaceonert__micro_1_1core.html#ab1fab592efb734841ceeb8519c002374a6f6cb72d544962fa333e2e34ce64f719">onert_micro::core::OMBuilderID::Size</a></div><div class="ttdeci">@ Size</div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">onert_micro::UnknownError</a></div><div class="ttdeci">@ UnknownError</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00030">OMStatus.h:30</a></div></div>

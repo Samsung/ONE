@@ -112,8 +112,8 @@ Collaboration diagram for EventCollector::OpSeqEvent:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9ce90c10a1b9713744db3a1b969d4a5a" id="r_a9ce90c10a1b9713744db3a1b969d4a5a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_op_seq_event.html#a9ce90c10a1b9713744db3a1b969d4a5a">OpSeqEvent</a> (const <a class="el" href="classonert_1_1util_1_1_tracing_ctx.html">onert::util::TracingCtx</a> *a_tracing_ctx, <a class="el" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aa">Edge</a> a_edge, uint32_t a_subg_index, const std::string a_backend, uint32_t a_op_index, const std::string a_op_name)</td></tr>
-<tr class="separator:a9ce90c10a1b9713744db3a1b969d4a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35c90bbc8c31124a5bfcfeb5cff672b9" id="r_a35c90bbc8c31124a5bfcfeb5cff672b9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_op_seq_event.html#a35c90bbc8c31124a5bfcfeb5cff672b9">OpSeqEvent</a> (const <a class="el" href="classonert_1_1util_1_1_tracing_ctx.html">onert::util::TracingCtx</a> *a_tracing_ctx, <a class="el" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aa">Edge</a> a_edge, uint32_t a_model_index, uint32_t a_subg_index, const std::string a_backend, uint32_t a_op_index, const std::string a_op_name)</td></tr>
+<tr class="separator:a35c90bbc8c31124a5bfcfeb5cff672b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -130,6 +130,8 @@ Data Fields</h2></td></tr>
 <tr class="separator:a33b87dcf0836258a15d9c8b35fb8c792 inherit pub_attribs_struct_event_collector_1_1_event"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a937ec1314dd79be877b519a037bcfef7 inherit pub_attribs_struct_event_collector_1_1_event" id="r_a937ec1314dd79be877b519a037bcfef7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#a937ec1314dd79be877b519a037bcfef7">session_index</a></td></tr>
 <tr class="separator:a937ec1314dd79be877b519a037bcfef7 inherit pub_attribs_struct_event_collector_1_1_event"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a118ed31ce8a18e07cb9092a76342bf21 inherit pub_attribs_struct_event_collector_1_1_event" id="r_a118ed31ce8a18e07cb9092a76342bf21"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#a118ed31ce8a18e07cb9092a76342bf21">model_index</a></td></tr>
+<tr class="separator:a118ed31ce8a18e07cb9092a76342bf21 inherit pub_attribs_struct_event_collector_1_1_event"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8171f2a222ead4028811b8836e6cb59 inherit pub_attribs_struct_event_collector_1_1_event" id="r_ac8171f2a222ead4028811b8836e6cb59"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#ac8171f2a222ead4028811b8836e6cb59">subg_index</a></td></tr>
 <tr class="separator:ac8171f2a222ead4028811b8836e6cb59 inherit pub_attribs_struct_event_collector_1_1_event"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee3fddfc2ee1626c2dccd98ee4c51531 inherit pub_attribs_struct_event_collector_1_1_event" id="r_aee3fddfc2ee1626c2dccd98ee4c51531"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; std::string, std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#aee3fddfc2ee1626c2dccd98ee4c51531">userData</a></td></tr>
@@ -138,17 +140,17 @@ Data Fields</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_struct_event_collector_1_1_event"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_struct_event_collector_1_1_event')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="struct_event_collector_1_1_event.html">EventCollector::Event</a></td></tr>
-<tr class="memitem:a1970baef21b7b31cceeb832924a3d30f inherit pro_methods_struct_event_collector_1_1_event" id="r_a1970baef21b7b31cceeb832924a3d30f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#a1970baef21b7b31cceeb832924a3d30f">Event</a> (const <a class="el" href="classonert_1_1util_1_1_tracing_ctx.html">onert::util::TracingCtx</a> *a_tracing_ctx, <a class="el" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aa">Edge</a> a_edge, uint32_t a_subg_index)</td></tr>
-<tr class="separator:a1970baef21b7b31cceeb832924a3d30f inherit pro_methods_struct_event_collector_1_1_event"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ec38883700e625248e9143313ca8916 inherit pro_methods_struct_event_collector_1_1_event" id="r_a8ec38883700e625248e9143313ca8916"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#a8ec38883700e625248e9143313ca8916">Event</a> (const <a class="el" href="classonert_1_1util_1_1_tracing_ctx.html">onert::util::TracingCtx</a> *a_tracing_ctx, <a class="el" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aa">Edge</a> a_edge, uint32_t a_model_index, uint32_t a_subg_index)</td></tr>
+<tr class="separator:a8ec38883700e625248e9143313ca8916 inherit pro_methods_struct_event_collector_1_1_event"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac47064a45d035e6cf81b25f628f4dc51 inherit pro_methods_struct_event_collector_1_1_event" id="r_ac47064a45d035e6cf81b25f628f4dc51"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_event_collector_1_1_event.html#ac47064a45d035e6cf81b25f628f4dc51">~Event</a> ()=default</td></tr>
 <tr class="separator:ac47064a45d035e6cf81b25f628f4dc51 inherit pro_methods_struct_event_collector_1_1_event"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00086">86</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00089">89</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9ce90c10a1b9713744db3a1b969d4a5a" name="a9ce90c10a1b9713744db3a1b969d4a5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ce90c10a1b9713744db3a1b969d4a5a">&#9670;&#160;</a></span>OpSeqEvent()</h2>
+<a id="a35c90bbc8c31124a5bfcfeb5cff672b9" name="a35c90bbc8c31124a5bfcfeb5cff672b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35c90bbc8c31124a5bfcfeb5cff672b9">&#9670;&#160;</a></span>OpSeqEvent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -167,6 +169,12 @@ Additional Inherited Members</h2></td></tr>
           <td></td>
           <td class="paramtype"><a class="el" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aa">Edge</a>&#160;</td>
           <td class="paramname"><em>a_edge</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>a_model_index</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -205,19 +213,19 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00092">92</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>      : <a class="code hl_struct" href="struct_event.html">Event</a>(a_tracing_ctx, a_edge, a_subg_index)</div>
-<div class="line"><span class="lineno">   95</span>    {</div>
-<div class="line"><span class="lineno">   96</span>      <a class="code hl_variable" href="struct_event_collector_1_1_op_seq_event.html#ad82cccb09caef4a9391d8709ff75060d">backend</a>.assign(a_backend);</div>
-<div class="line"><span class="lineno">   97</span>      <a class="code hl_variable" href="struct_event_collector_1_1_op_seq_event.html#ac31d5ded3c6f42d6b3e5f0339603a3dc">op_index</a> = a_op_index;</div>
-<div class="line"><span class="lineno">   98</span>      <a class="code hl_variable" href="struct_event_collector_1_1_op_seq_event.html#a8cac1cae15b9d8f70c4eaf46130cd301">op_name</a>.assign(a_op_name);</div>
-<div class="line"><span class="lineno">   99</span>    }</div>
-<div class="ttc" id="astruct_event_collector_1_1_op_seq_event_html_a8cac1cae15b9d8f70c4eaf46130cd301"><div class="ttname"><a href="struct_event_collector_1_1_op_seq_event.html#a8cac1cae15b9d8f70c4eaf46130cd301">EventCollector::OpSeqEvent::op_name</a></div><div class="ttdeci">std::string op_name</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00090">EventCollector.h:90</a></div></div>
-<div class="ttc" id="astruct_event_collector_1_1_op_seq_event_html_ac31d5ded3c6f42d6b3e5f0339603a3dc"><div class="ttname"><a href="struct_event_collector_1_1_op_seq_event.html#ac31d5ded3c6f42d6b3e5f0339603a3dc">EventCollector::OpSeqEvent::op_index</a></div><div class="ttdeci">uint32_t op_index</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00089">EventCollector.h:89</a></div></div>
-<div class="ttc" id="astruct_event_collector_1_1_op_seq_event_html_ad82cccb09caef4a9391d8709ff75060d"><div class="ttname"><a href="struct_event_collector_1_1_op_seq_event.html#ad82cccb09caef4a9391d8709ff75060d">EventCollector::OpSeqEvent::backend</a></div><div class="ttdeci">std::string backend</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00088">EventCollector.h:88</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00095">95</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   98</span>      : <a class="code hl_struct" href="struct_event.html">Event</a>(a_tracing_ctx, a_edge, a_model_index, a_subg_index)</div>
+<div class="line"><span class="lineno">   99</span>    {</div>
+<div class="line"><span class="lineno">  100</span>      <a class="code hl_variable" href="struct_event_collector_1_1_op_seq_event.html#ad82cccb09caef4a9391d8709ff75060d">backend</a>.assign(a_backend);</div>
+<div class="line"><span class="lineno">  101</span>      <a class="code hl_variable" href="struct_event_collector_1_1_op_seq_event.html#ac31d5ded3c6f42d6b3e5f0339603a3dc">op_index</a> = a_op_index;</div>
+<div class="line"><span class="lineno">  102</span>      <a class="code hl_variable" href="struct_event_collector_1_1_op_seq_event.html#a8cac1cae15b9d8f70c4eaf46130cd301">op_name</a>.assign(a_op_name);</div>
+<div class="line"><span class="lineno">  103</span>    }</div>
+<div class="ttc" id="astruct_event_collector_1_1_op_seq_event_html_a8cac1cae15b9d8f70c4eaf46130cd301"><div class="ttname"><a href="struct_event_collector_1_1_op_seq_event.html#a8cac1cae15b9d8f70c4eaf46130cd301">EventCollector::OpSeqEvent::op_name</a></div><div class="ttdeci">std::string op_name</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00093">EventCollector.h:93</a></div></div>
+<div class="ttc" id="astruct_event_collector_1_1_op_seq_event_html_ac31d5ded3c6f42d6b3e5f0339603a3dc"><div class="ttname"><a href="struct_event_collector_1_1_op_seq_event.html#ac31d5ded3c6f42d6b3e5f0339603a3dc">EventCollector::OpSeqEvent::op_index</a></div><div class="ttdeci">uint32_t op_index</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00092">EventCollector.h:92</a></div></div>
+<div class="ttc" id="astruct_event_collector_1_1_op_seq_event_html_ad82cccb09caef4a9391d8709ff75060d"><div class="ttname"><a href="struct_event_collector_1_1_op_seq_event.html#ad82cccb09caef4a9391d8709ff75060d">EventCollector::OpSeqEvent::backend</a></div><div class="ttdeci">std::string backend</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00091">EventCollector.h:91</a></div></div>
 <div class="ttc" id="astruct_event_html"><div class="ttname"><a href="struct_event.html">Event</a></div><div class="ttdef"><b>Definition</b> <a href="_event_recorder_8h_source.html#l00029">EventRecorder.h:30</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_event_collector_8h_source.html#l00088">backend</a>, <a class="el" href="_event_collector_8h_source.html#l00089">op_index</a>, and <a class="el" href="_event_collector_8h_source.html#l00090">op_name</a>.</p>
+<p class="reference">References <a class="el" href="_event_collector_8h_source.html#l00091">backend</a>, <a class="el" href="_event_collector_8h_source.html#l00092">op_index</a>, and <a class="el" href="_event_collector_8h_source.html#l00093">op_name</a>.</p>
 
 </div>
 </div>
@@ -234,9 +242,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00088">88</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00091">91</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_event_collector_8h_source.html#l00092">OpSeqEvent()</a>, <a class="el" href="_cfg_runner_8py_source.html#l00104">CfgRunner.CfgRunner::run()</a>, and <a class="el" href="_cfg_runner_8py_source.html#l00095">CfgRunner.CfgRunner::set_backend()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_event_collector_8h_source.html#l00095">OpSeqEvent()</a>, <a class="el" href="_cfg_runner_8py_source.html#l00104">CfgRunner.CfgRunner::run()</a>, and <a class="el" href="_cfg_runner_8py_source.html#l00095">CfgRunner.CfgRunner::set_backend()</a>.</p>
 
 </div>
 </div>
@@ -252,9 +260,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00089">89</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00092">92</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_event_collector_8h_source.html#l00092">OpSeqEvent()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_event_collector_8h_source.html#l00095">OpSeqEvent()</a>.</p>
 
 </div>
 </div>
@@ -270,9 +278,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00090">90</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00093">93</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_event_collector_8h_source.html#l00092">OpSeqEvent()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_event_collector_8h_source.html#l00095">OpSeqEvent()</a>.</p>
 
 </div>
 </div>

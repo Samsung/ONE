@@ -112,8 +112,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4a44dc60d9e2166587dc7805d168a690"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accaf48ec5c466b5cb26f2adb0e762944" id="r_accaf48ec5c466b5cb26f2adb0e762944"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classonert_1_1util_1_1_set.html">util::Set</a>&lt; <a class="el" href="namespaceonert_1_1ir.html#ae9d6514c748e05f0254717f688bc458f">ir::OperandIndex</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#accaf48ec5c466b5cb26f2adb0e762944">external_operands</a> () const</td></tr>
 <tr class="separator:accaf48ec5c466b5cb26f2adb0e762944"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2babd33814084cded5f8ce7d54da03ce" id="r_a2babd33814084cded5f8ce7d54da03ce"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a2babd33814084cded5f8ce7d54da03ce">operand_layouts</a> () const</td></tr>
-<tr class="separator:a2babd33814084cded5f8ce7d54da03ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a672125c2bc9cb3a2bba4d745d6aadb" id="r_a1a672125c2bc9cb3a2bba4d745d6aadb"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classonert_1_1backend_1_1train_1_1_i_tensor_registry.html">ITensorRegistry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a1a672125c2bc9cb3a2bba4d745d6aadb">tensor_registry</a> ()</td></tr>
 <tr class="separator:a1a672125c2bc9cb3a2bba4d745d6aadb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a912b8335c9ecefc262f0bc43dbd54d" id="r_a5a912b8335c9ecefc262f0bc43dbd54d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceonert_1_1backend_1_1train.html#adfca2674d6ad05cee6fc454ca4791f67">FunctionMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a5a912b8335c9ecefc262f0bc43dbd54d">gen</a> ()=0</td></tr>
@@ -128,7 +126,7 @@ Protected Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00053">53</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00051">51</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a009817ec4e78ed99b49044c4a41223f3" name="a009817ec4e78ed99b49044c4a41223f3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a009817ec4e78ed99b49044c4a41223f3">&#9670;&#160;</a></span>TrainableBackendContext()</h2>
@@ -170,17 +168,17 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00056">56</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>    : _backend{<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a4a44dc60d9e2166587dc7805d168a690">backend</a>}, <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>{std::move(tdata)}, <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a8fcc90f6f427a21577dd028c80d00127">_tensor_registry</a>{<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a1a672125c2bc9cb3a2bba4d745d6aadb">tensor_registry</a>}</div>
-<div class="line"><span class="lineno">   60</span>  {</div>
-<div class="line"><span class="lineno">   61</span>    assert(<a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>);</div>
-<div class="line"><span class="lineno">   62</span>  }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a1a672125c2bc9cb3a2bba4d745d6aadb"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a1a672125c2bc9cb3a2bba4d745d6aadb">onert::backend::train::TrainableBackendContext::tensor_registry</a></div><div class="ttdeci">std::shared_ptr&lt; ITensorRegistry &gt; tensor_registry()</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00073">TrainableBackendContext.h:73</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a4a44dc60d9e2166587dc7805d168a690"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a4a44dc60d9e2166587dc7805d168a690">onert::backend::train::TrainableBackendContext::backend</a></div><div class="ttdeci">const ITrainableBackend * backend() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00069">TrainableBackendContext.h:69</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a8fcc90f6f427a21577dd028c80d00127"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a8fcc90f6f427a21577dd028c80d00127">onert::backend::train::TrainableBackendContext::_tensor_registry</a></div><div class="ttdeci">std::shared_ptr&lt; ITensorRegistry &gt; _tensor_registry</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00084">TrainableBackendContext.h:84</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_af9763aac9ded9e19bbbf748986227264"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">onert::backend::train::TrainableBackendContext::_tdata</a></div><div class="ttdeci">std::unique_ptr&lt; TrainableContextData &gt; _tdata</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00081">TrainableBackendContext.h:81</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00054">54</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   57</span>    : _backend{<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a4a44dc60d9e2166587dc7805d168a690">backend</a>}, <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>{std::move(tdata)}, <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a8fcc90f6f427a21577dd028c80d00127">_tensor_registry</a>{<a class="code hl_function" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a1a672125c2bc9cb3a2bba4d745d6aadb">tensor_registry</a>}</div>
+<div class="line"><span class="lineno">   58</span>  {</div>
+<div class="line"><span class="lineno">   59</span>    assert(<a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>);</div>
+<div class="line"><span class="lineno">   60</span>  }</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a1a672125c2bc9cb3a2bba4d745d6aadb"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a1a672125c2bc9cb3a2bba4d745d6aadb">onert::backend::train::TrainableBackendContext::tensor_registry</a></div><div class="ttdeci">std::shared_ptr&lt; ITensorRegistry &gt; tensor_registry()</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00070">TrainableBackendContext.h:70</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a4a44dc60d9e2166587dc7805d168a690"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a4a44dc60d9e2166587dc7805d168a690">onert::backend::train::TrainableBackendContext::backend</a></div><div class="ttdeci">const ITrainableBackend * backend() const</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00067">TrainableBackendContext.h:67</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_a8fcc90f6f427a21577dd028c80d00127"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a8fcc90f6f427a21577dd028c80d00127">onert::backend::train::TrainableBackendContext::_tensor_registry</a></div><div class="ttdeci">std::shared_ptr&lt; ITensorRegistry &gt; _tensor_registry</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00081">TrainableBackendContext.h:81</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1train_1_1_trainable_backend_context_html_af9763aac9ded9e19bbbf748986227264"><div class="ttname"><a href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">onert::backend::train::TrainableBackendContext::_tdata</a></div><div class="ttdeci">std::unique_ptr&lt; TrainableContextData &gt; _tdata</div><div class="ttdef"><b>Definition</b> <a href="_trainable_backend_context_8h_source.html#l00078">TrainableBackendContext.h:78</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_backend_context_8h_source.html#l00081">_tdata</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_backend_context_8h_source.html#l00078">_tdata</a>.</p>
 
 </div>
 </div>
@@ -233,8 +231,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00069">69</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   69</span>{ <span class="keywordflow">return</span> _backend; }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00067">67</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>{ <span class="keywordflow">return</span> _backend; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_cfg_runner_8py_source.html#l00104">CfgRunner.CfgRunner::run()</a>, and <a class="el" href="_cfg_runner_8py_source.html#l00095">CfgRunner.CfgRunner::set_backend()</a>.</p>
 
@@ -263,10 +261,10 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00067">67</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   67</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>.get(); }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00065">65</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>.get(); }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_backend_context_8h_source.html#l00081">_tdata</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_backend_context_8h_source.html#l00078">_tdata</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="backend_2train_2_backend_context_8cc_source.html#l00133">onert::backend::train::BackendContext::gen()</a>.</p>
 
@@ -295,10 +293,10 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00070">70</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>-&gt;external_operands; }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00068">68</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>-&gt;external_operands; }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_backend_context_8h_source.html#l00081">_tdata</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_backend_context_8h_source.html#l00078">_tdata</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="backend_2train_2_backend_context_8cc_source.html#l00133">onert::backend::train::BackendContext::gen()</a>, <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8cc_source.html#l00025">onert::backend::builtin::train::BackendContext::gen()</a>, and <a class="el" href="_trainable_backend_context_helpers_8h_source.html#l00028">onert::backend::basic::train::genTensors()</a>.</p>
 
@@ -331,36 +329,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a2babd33814084cded5f8ce7d54da03ce" name="a2babd33814084cded5f8ce7d54da03ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2babd33814084cded5f8ce7d54da03ce">&#9670;&#160;</a></span>operand_layouts()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="namespaceonert_1_1ir.html#a8d1d09cc0eb99dc03e422dbe13dccce3">ir::OperandIndexMap</a>&lt; <a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> &gt; &amp; onert::backend::train::TrainableBackendContext::operand_layouts </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00071">71</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   71</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>-&gt;operand_layouts; }</div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_backend_context_8h_source.html#l00081">_tdata</a>.</p>
-
-</div>
-</div>
 <a id="a1a672125c2bc9cb3a2bba4d745d6aadb" name="a1a672125c2bc9cb3a2bba4d745d6aadb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1a672125c2bc9cb3a2bba4d745d6aadb">&#9670;&#160;</a></span>tensor_registry()</h2>
 
@@ -384,10 +352,10 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00073">73</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   73</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a8fcc90f6f427a21577dd028c80d00127">_tensor_registry</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00070">70</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#a8fcc90f6f427a21577dd028c80d00127">_tensor_registry</a>; }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_backend_context_8h_source.html#l00084">_tensor_registry</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_backend_context_8h_source.html#l00081">_tensor_registry</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="backend_2train_2_backend_context_8cc_source.html#l00133">onert::backend::train::BackendContext::gen()</a>, and <a class="el" href="_trainable_backend_context_helpers_8h_source.html#l00028">onert::backend::basic::train::genTensors()</a>.</p>
 
@@ -416,10 +384,10 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00065">65</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   65</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>-&gt;tgraph.get(); }</div>
+<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00063">63</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classonert_1_1backend_1_1train_1_1_trainable_backend_context.html#af9763aac9ded9e19bbbf748986227264">_tdata</a>-&gt;tgraph.get(); }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_trainable_backend_context_8h_source.html#l00081">_tdata</a>.</p>
+<p class="reference">References <a class="el" href="_trainable_backend_context_8h_source.html#l00078">_tdata</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="backend_2train_2_backend_context_8cc_source.html#l00133">onert::backend::train::BackendContext::gen()</a>, <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8cc_source.html#l00025">onert::backend::builtin::train::BackendContext::gen()</a>, and <a class="el" href="_trainable_backend_context_helpers_8h_source.html#l00028">onert::backend::basic::train::genTensors()</a>.</p>
 
@@ -446,9 +414,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00081">81</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00078">78</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_backend_context_8h_source.html#l00067">data()</a>, <a class="el" href="_trainable_backend_context_8h_source.html#l00070">external_operands()</a>, <a class="el" href="backend_2train_2_backend_context_8cc_source.html#l00133">onert::backend::train::BackendContext::gen()</a>, <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8cc_source.html#l00025">onert::backend::builtin::train::BackendContext::gen()</a>, <a class="el" href="_trainable_backend_context_8h_source.html#l00071">operand_layouts()</a>, <a class="el" href="_trainable_backend_context_8h_source.html#l00065">trainable_graph()</a>, and <a class="el" href="_trainable_backend_context_8h_source.html#l00056">TrainableBackendContext()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_backend_context_8h_source.html#l00065">data()</a>, <a class="el" href="_trainable_backend_context_8h_source.html#l00068">external_operands()</a>, <a class="el" href="backend_2train_2_backend_context_8cc_source.html#l00133">onert::backend::train::BackendContext::gen()</a>, <a class="el" href="core_2src_2backend_2builtin_2train_2_backend_context_8cc_source.html#l00025">onert::backend::builtin::train::BackendContext::gen()</a>, <a class="el" href="_trainable_backend_context_8h_source.html#l00063">trainable_graph()</a>, and <a class="el" href="_trainable_backend_context_8h_source.html#l00054">TrainableBackendContext()</a>.</p>
 
 </div>
 </div>
@@ -472,9 +440,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00084">84</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_trainable_backend_context_8h_source.html#l00081">81</a> of file <a class="el" href="_trainable_backend_context_8h_source.html">TrainableBackendContext.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_trainable_backend_context_8h_source.html#l00073">tensor_registry()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_trainable_backend_context_8h_source.html#l00070">tensor_registry()</a>.</p>
 
 </div>
 </div>

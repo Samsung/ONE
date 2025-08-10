@@ -126,8 +126,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a35a55164e033ffce55521821ffe62e46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e11becc5b4824384b605f06a71b7c8e" id="r_a3e11becc5b4824384b605f06a71b7c8e"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a3e11becc5b4824384b605f06a71b7c8e">buffer</a> () const override</td></tr>
 <tr class="separator:a3e11becc5b4824384b605f06a71b7c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bba0cb8fa9245a9b21ce5b8c6c39f33" id="r_a5bba0cb8fa9245a9b21ce5b8c6c39f33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a5bba0cb8fa9245a9b21ce5b8c6c39f33">layout</a> () const</td></tr>
-<tr class="separator:a5bba0cb8fa9245a9b21ce5b8c6c39f33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad08039ec1be9173cf8e24a80ab1733b3" id="r_ad08039ec1be9173cf8e24a80ab1733b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#ad08039ec1be9173cf8e24a80ab1733b3">set_dynamic</a> () override</td></tr>
 <tr class="memdesc:ad08039ec1be9173cf8e24a80ab1733b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">set this tensor dynamic  <br /></td></tr>
 <tr class="separator:ad08039ec1be9173cf8e24a80ab1733b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -231,14 +229,12 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_i_o_tensor_8cc_source.html#l00028">28</a> of file <a class="el" href="_i_o_tensor_8cc_source.html">IOTensor.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   29</span>  : <a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a9697cc6ef0eba77d6604c2d21d4f07ca">IPortableTensor</a>{<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>}, _tensor{<span class="keyword">nullptr</span>},</div>
-<div class="line"><span class="lineno">   30</span>    _orig{std::make_unique&lt;UserTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">ir::Layout::NHWC</a>, (uint8_t *)<span class="keyword">nullptr</span>, 0)},</div>
-<div class="line"><span class="lineno">   31</span>    _has_backend_tensor{<span class="keyword">false</span>}</div>
-<div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  _tensor = _orig.get();</div>
-<div class="line"><span class="lineno">   34</span>}</div>
+<div class="line"><span class="lineno">   30</span>    _orig{std::make_unique&lt;UserTensor&gt;(<a class="code hl_variable" href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a>, (uint8_t *)<span class="keyword">nullptr</span>, 0)}, _has_backend_tensor{<span class="keyword">false</span>}</div>
+<div class="line"><span class="lineno">   31</span>{</div>
+<div class="line"><span class="lineno">   32</span>  _tensor = _orig.get();</div>
+<div class="line"><span class="lineno">   33</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a9697cc6ef0eba77d6604c2d21d4f07ca"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a9697cc6ef0eba77d6604c2d21d4f07ca">onert::backend::IPortableTensor::IPortableTensor</a></div><div class="ttdeci">IPortableTensor(const ir::OperandInfo &amp;info)</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00039">IPortableTensor.h:39</a></div></div>
 <div class="ttc" id="alibrary__info_8cc_html_a54f2e176d30fe963addf60c313ccd9ca"><div class="ttname"><a href="library__info_8cc.html#a54f2e176d30fe963addf60c313ccd9ca">info</a></div><div class="ttdeci">volatile const char info[]</div><div class="ttdef"><b>Definition</b> <a href="library__info_8cc_source.html#l00017">library_info.cc:17</a></div></div>
-<div class="ttc" id="anamespaceonert_1_1ir_html_ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51"><div class="ttname"><a href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2ad066db54b89b0912e7e7c6da51e2da51">onert::ir::Layout::NHWC</a></div><div class="ttdeci">@ NHWC</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -301,16 +297,16 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented from <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#abde8d4d97e9220821e44c5fb8028b19d">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8h_source.html#l00088">88</a> of file <a class="el" href="_i_o_tensor_8h_source.html">IOTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   89</span>  {</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keyword">auto</span> return_val = _tensor-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#abde8d4d97e9220821e44c5fb8028b19d">applyShape</a>(shape);</div>
-<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">if</span> (return_val)</div>
-<div class="line"><span class="lineno">   92</span>    {</div>
-<div class="line"><span class="lineno">   93</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>(shape);</div>
-<div class="line"><span class="lineno">   94</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a2ef46e5a2c628c22771e2050796bcec8">setDynamic</a>();</div>
-<div class="line"><span class="lineno">   95</span>    }</div>
-<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">return</span> return_val;</div>
-<div class="line"><span class="lineno">   97</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8h_source.html#l00087">87</a> of file <a class="el" href="_i_o_tensor_8h_source.html">IOTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   88</span>  {</div>
+<div class="line"><span class="lineno">   89</span>    <span class="keyword">auto</span> return_val = _tensor-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#abde8d4d97e9220821e44c5fb8028b19d">applyShape</a>(shape);</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">if</span> (return_val)</div>
+<div class="line"><span class="lineno">   91</span>    {</div>
+<div class="line"><span class="lineno">   92</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>(shape);</div>
+<div class="line"><span class="lineno">   93</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a2ef46e5a2c628c22771e2050796bcec8">setDynamic</a>();</div>
+<div class="line"><span class="lineno">   94</span>    }</div>
+<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">return</span> return_val;</div>
+<div class="line"><span class="lineno">   96</span>  }</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_adae3cd8adf8bdf21ac3e24709f5218ae"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">onert::backend::IPortableTensor::_info</a></div><div class="ttdeci">ir::OperandInfo _info</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00071">IPortableTensor.h:71</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_abde8d4d97e9220821e44c5fb8028b19d"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#abde8d4d97e9220821e44c5fb8028b19d">onert::backend::ITensor::applyShape</a></div><div class="ttdeci">virtual bool applyShape(const ir::Shape &amp;)</div><div class="ttdoc">Set the shape to shape and possibly re-allocate the buffer.</div><div class="ttdef"><b>Definition</b> <a href="_i_tensor_8h_source.html#l00063">ITensor.h:63</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_info_html_a2ef46e5a2c628c22771e2050796bcec8"><div class="ttname"><a href="classonert_1_1ir_1_1_operand_info.html#a2ef46e5a2c628c22771e2050796bcec8">onert::ir::OperandInfo::setDynamic</a></div><div class="ttdeci">void setDynamic()</div><div class="ttdef"><b>Definition</b> <a href="_operand_info_8h_source.html#l00147">OperandInfo.h:147</a></div></div>
@@ -378,39 +374,11 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Return whether the tensor member has backend tensor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8h_source.html#l00102">102</a> of file <a class="el" href="_i_o_tensor_8h_source.html">IOTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  102</span>{ <span class="keywordflow">return</span> _has_backend_tensor; }</div>
+<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8h_source.html#l00101">101</a> of file <a class="el" href="_i_o_tensor_8h_source.html">IOTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  101</span>{ <span class="keywordflow">return</span> _has_backend_tensor; }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_single_model_executors_8cc_source.html#l00063">onert::exec::SingleModelExecutors::execute()</a>.</p>
 
-</div>
-</div>
-<a id="a5bba0cb8fa9245a9b21ce5b8c6c39f33" name="a5bba0cb8fa9245a9b21ce5b8c6c39f33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5bba0cb8fa9245a9b21ce5b8c6c39f33">&#9670;&#160;</a></span>layout()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespaceonert_1_1ir.html#ae8c0846bdada8dcd2c06205bb4a8a4e2">ir::Layout</a> onert::backend::builtin::IOTensor::layout </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8h_source.html#l00057">57</a> of file <a class="el" href="_i_o_tensor_8h_source.html">IOTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   57</span>{ <span class="keywordflow">return</span> _orig-&gt;layout(); }</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a id="ad08039ec1be9173cf8e24a80ab1733b3" name="ad08039ec1be9173cf8e24a80ab1733b3"></a>
@@ -440,11 +408,11 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented from <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#a23e5584d459f5e94117ca757ff33f9e4">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8h_source.html#l00058">58</a> of file <a class="el" href="_i_o_tensor_8h_source.html">IOTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>  {</div>
-<div class="line"><span class="lineno">   60</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a2ef46e5a2c628c22771e2050796bcec8">setDynamic</a>();</div>
-<div class="line"><span class="lineno">   61</span>    _tensor-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a23e5584d459f5e94117ca757ff33f9e4">set_dynamic</a>();</div>
-<div class="line"><span class="lineno">   62</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8h_source.html#l00057">57</a> of file <a class="el" href="_i_o_tensor_8h_source.html">IOTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>  {</div>
+<div class="line"><span class="lineno">   59</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a2ef46e5a2c628c22771e2050796bcec8">setDynamic</a>();</div>
+<div class="line"><span class="lineno">   60</span>    _tensor-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#a23e5584d459f5e94117ca757ff33f9e4">set_dynamic</a>();</div>
+<div class="line"><span class="lineno">   61</span>  }</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_a23e5584d459f5e94117ca757ff33f9e4"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#a23e5584d459f5e94117ca757ff33f9e4">onert::backend::ITensor::set_dynamic</a></div><div class="ttdeci">virtual void set_dynamic()</div><div class="ttdoc">set this tensor dynamic</div><div class="ttdef"><b>Definition</b> <a href="_i_tensor_8h_source.html#l00081">ITensor.h:81</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00071">onert::backend::IPortableTensor::_info</a>, <a class="el" href="_i_tensor_8h_source.html#l00081">onert::backend::ITensor::set_dynamic()</a>, and <a class="el" href="_operand_info_8h_source.html#l00147">onert::ir::OperandInfo::setDynamic()</a>.</p>
@@ -467,14 +435,14 @@ false If not applying shape is not supported (it throws for other errors) </dd><
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8cc_source.html#l00055">55</a> of file <a class="el" href="_i_o_tensor_8cc_source.html">IOTensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
-<div class="line"><span class="lineno">   57</span>  <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a2fc40e86f47e87c09ad4bf9f23ee2997">setTensor</a>(tensor);</div>
-<div class="line"><span class="lineno">   58</span>  _has_backend_tensor = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   59</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_i_o_tensor_html_a2fc40e86f47e87c09ad4bf9f23ee2997"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a2fc40e86f47e87c09ad4bf9f23ee2997">onert::backend::builtin::IOTensor::setTensor</a></div><div class="ttdeci">void setTensor(IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="_i_o_tensor_8cc_source.html#l00036">IOTensor.cc:36</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8cc_source.html#l00054">54</a> of file <a class="el" href="_i_o_tensor_8cc_source.html">IOTensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>{</div>
+<div class="line"><span class="lineno">   56</span>  <a class="code hl_function" href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a2fc40e86f47e87c09ad4bf9f23ee2997">setTensor</a>(tensor);</div>
+<div class="line"><span class="lineno">   57</span>  _has_backend_tensor = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   58</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1builtin_1_1_i_o_tensor_html_a2fc40e86f47e87c09ad4bf9f23ee2997"><div class="ttname"><a href="classonert_1_1backend_1_1builtin_1_1_i_o_tensor.html#a2fc40e86f47e87c09ad4bf9f23ee2997">onert::backend::builtin::IOTensor::setTensor</a></div><div class="ttdeci">void setTensor(IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="_i_o_tensor_8cc_source.html#l00035">IOTensor.cc:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_i_o_tensor_8cc_source.html#l00036">setTensor()</a>.</p>
+<p class="reference">References <a class="el" href="_i_o_tensor_8cc_source.html#l00035">setTensor()</a>.</p>
 
 </div>
 </div>
@@ -507,11 +475,11 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Reimplemented from <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#aef9058984013de799aa8e181009f89bf">onert::backend::ITensor</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8h_source.html#l00063">63</a> of file <a class="el" href="_i_o_tensor_8h_source.html">IOTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   64</span>  {</div>
-<div class="line"><span class="lineno">   65</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>(shape);</div>
-<div class="line"><span class="lineno">   66</span>    _tensor-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#aef9058984013de799aa8e181009f89bf">setShape</a>(shape);</div>
-<div class="line"><span class="lineno">   67</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8h_source.html#l00062">62</a> of file <a class="el" href="_i_o_tensor_8h_source.html">IOTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>  {</div>
+<div class="line"><span class="lineno">   64</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>(shape);</div>
+<div class="line"><span class="lineno">   65</span>    _tensor-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_tensor.html#aef9058984013de799aa8e181009f89bf">setShape</a>(shape);</div>
+<div class="line"><span class="lineno">   66</span>  }</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_tensor_html_aef9058984013de799aa8e181009f89bf"><div class="ttname"><a href="classonert_1_1backend_1_1_i_tensor.html#aef9058984013de799aa8e181009f89bf">onert::backend::ITensor::setShape</a></div><div class="ttdeci">virtual void setShape(const ir::Shape &amp;)</div><div class="ttdoc">Set the shape of tenser to new_shape.</div><div class="ttdef"><b>Definition</b> <a href="_i_tensor_8h_source.html#l00096">ITensor.h:96</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00071">onert::backend::IPortableTensor::_info</a>, <a class="el" href="_i_tensor_8h_source.html#l00096">onert::backend::ITensor::setShape()</a>, and <a class="el" href="_operand_info_8h_source.html#l00099">onert::ir::OperandInfo::shape()</a>.</p>
@@ -534,29 +502,29 @@ false If not applying shape is not supported (it throws for other errors) </dd><
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8cc_source.html#l00036">36</a> of file <a class="el" href="_i_o_tensor_8cc_source.html">IOTensor.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
-<div class="line"><span class="lineno">   38</span>  assert(tensor);</div>
-<div class="line"><span class="lineno">   39</span>  assert(tensor != <span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">   40</span>  assert(!_has_backend_tensor);</div>
-<div class="line"><span class="lineno">   41</span>  _tensor = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>;</div>
-<div class="line"><span class="lineno">   42</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>() != <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;getShape())</div>
-<div class="line"><span class="lineno">   43</span>  {</div>
-<div class="line"><span class="lineno">   44</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;getShape());</div>
-<div class="line"><span class="lineno">   45</span> </div>
-<div class="line"><span class="lineno">   46</span>    <span class="comment">// If input tensor shape is updated, other effective buffers use dynamic memory manager.</span></div>
-<div class="line"><span class="lineno">   47</span>    <span class="comment">// Dynamic memory manager deallocate allcoated memory after each execution.</span></div>
-<div class="line"><span class="lineno">   48</span>    <span class="comment">// So we should remain input tensor as dynamic if we mark it dynamic at least once.</span></div>
-<div class="line"><span class="lineno">   49</span>    <span class="comment">// If dynamic memory manager maintains allocated memory after execution is finished,</span></div>
-<div class="line"><span class="lineno">   50</span>    <span class="comment">// we may need to reset it as static for each setTensor call.</span></div>
-<div class="line"><span class="lineno">   51</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a2ef46e5a2c628c22771e2050796bcec8">setDynamic</a>();</div>
-<div class="line"><span class="lineno">   52</span>  }</div>
-<div class="line"><span class="lineno">   53</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8cc_source.html#l00035">35</a> of file <a class="el" href="_i_o_tensor_8cc_source.html">IOTensor.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
+<div class="line"><span class="lineno">   37</span>  assert(tensor);</div>
+<div class="line"><span class="lineno">   38</span>  assert(tensor != <span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">   39</span>  assert(!_has_backend_tensor);</div>
+<div class="line"><span class="lineno">   40</span>  _tensor = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>;</div>
+<div class="line"><span class="lineno">   41</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>() != <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;getShape())</div>
+<div class="line"><span class="lineno">   42</span>  {</div>
+<div class="line"><span class="lineno">   43</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#aed6ade449a1b0e5d296c66a99b1725d4">shape</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">tensor</a>-&gt;getShape());</div>
+<div class="line"><span class="lineno">   44</span> </div>
+<div class="line"><span class="lineno">   45</span>    <span class="comment">// If input tensor shape is updated, other effective buffers use dynamic memory manager.</span></div>
+<div class="line"><span class="lineno">   46</span>    <span class="comment">// Dynamic memory manager deallocate allcoated memory after each execution.</span></div>
+<div class="line"><span class="lineno">   47</span>    <span class="comment">// So we should remain input tensor as dynamic if we mark it dynamic at least once.</span></div>
+<div class="line"><span class="lineno">   48</span>    <span class="comment">// If dynamic memory manager maintains allocated memory after execution is finished,</span></div>
+<div class="line"><span class="lineno">   49</span>    <span class="comment">// we may need to reset it as static for each setTensor call.</span></div>
+<div class="line"><span class="lineno">   50</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a>.<a class="code hl_function" href="classonert_1_1ir_1_1_operand_info.html#a2ef46e5a2c628c22771e2050796bcec8">setDynamic</a>();</div>
+<div class="line"><span class="lineno">   51</span>  }</div>
+<div class="line"><span class="lineno">   52</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a8ccc67c6dabd22b5465400b73929c0fc"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a8ccc67c6dabd22b5465400b73929c0fc">GenH5RandomInputs.tensor</a></div><div class="ttdeci">tensor</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00061">GenH5RandomInputs.py:61</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00071">onert::backend::IPortableTensor::_info</a>, <a class="el" href="_operand_info_8h_source.html#l00147">onert::ir::OperandInfo::setDynamic()</a>, and <a class="el" href="_operand_info_8h_source.html#l00099">onert::ir::OperandInfo::shape()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_i_o_tensor_8cc_source.html#l00055">setBackendTensor()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_i_o_tensor_8cc_source.html#l00054">setBackendTensor()</a>.</p>
 
 </div>
 </div>
@@ -585,15 +553,15 @@ false If not applying shape is not supported (it throws for other errors) </dd><
 
 <p>Synchronize this IOTensor's operand info from the backend tensor Copies the full OperandInfo from _tensor to _info if the backend tensor is dynamic. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8h_source.html#l00108">108</a> of file <a class="el" href="_i_o_tensor_8h_source.html">IOTensor.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  109</span>  {</div>
-<div class="line"><span class="lineno">  110</span>    assert(_tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  111</span>    assert(_has_backend_tensor);</div>
-<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">if</span> (_tensor-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>())</div>
-<div class="line"><span class="lineno">  113</span>    {</div>
-<div class="line"><span class="lineno">  114</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a> = _tensor-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5aa2cfeb527066e9bee0316f67f67b1d">get_info</a>();</div>
-<div class="line"><span class="lineno">  115</span>    }</div>
-<div class="line"><span class="lineno">  116</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_i_o_tensor_8h_source.html#l00107">107</a> of file <a class="el" href="_i_o_tensor_8h_source.html">IOTensor.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  108</span>  {</div>
+<div class="line"><span class="lineno">  109</span>    assert(_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  110</span>    assert(_has_backend_tensor);</div>
+<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">if</span> (_tensor-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>())</div>
+<div class="line"><span class="lineno">  112</span>    {</div>
+<div class="line"><span class="lineno">  113</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1_i_portable_tensor.html#adae3cd8adf8bdf21ac3e24709f5218ae">_info</a> = _tensor-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5aa2cfeb527066e9bee0316f67f67b1d">get_info</a>();</div>
+<div class="line"><span class="lineno">  114</span>    }</div>
+<div class="line"><span class="lineno">  115</span>  }</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a5aa2cfeb527066e9bee0316f67f67b1d"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a5aa2cfeb527066e9bee0316f67f67b1d">onert::backend::IPortableTensor::get_info</a></div><div class="ttdeci">const ir::OperandInfo &amp; get_info() const</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00048">IPortableTensor.h:48</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_ae85cf7ba798b307fd40e09b736caf5c9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">onert::backend::IPortableTensor::is_dynamic</a></div><div class="ttdeci">bool is_dynamic() const override final</div><div class="ttdoc">Return true if the tensor needs dynamic allocation, meaning that during compile-time the outpus shape...</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00063">IPortableTensor.h:63</a></div></div>
 </div><!-- fragment -->

@@ -29,6 +29,8 @@ var namespacesouschef =
     [ "GaussianInt32DataChefFactory", "structsouschef_1_1_gaussian_int32_data_chef_factory.html", "structsouschef_1_1_gaussian_int32_data_chef_factory" ],
     [ "GaussianInt8DataChef", "classsouschef_1_1_gaussian_int8_data_chef.html", "classsouschef_1_1_gaussian_int8_data_chef" ],
     [ "GaussianInt8DataChefFactory", "structsouschef_1_1_gaussian_int8_data_chef_factory.html", "structsouschef_1_1_gaussian_int8_data_chef_factory" ],
+    [ "GaussianUint4DataChef", "classsouschef_1_1_gaussian_uint4_data_chef.html", "classsouschef_1_1_gaussian_uint4_data_chef" ],
+    [ "GaussianUint4DataChefFactory", "structsouschef_1_1_gaussian_uint4_data_chef_factory.html", "structsouschef_1_1_gaussian_uint4_data_chef_factory" ],
     [ "GaussianUint8DataChef", "classsouschef_1_1_gaussian_uint8_data_chef.html", "classsouschef_1_1_gaussian_uint8_data_chef" ],
     [ "GaussianUint8DataChefFactory", "structsouschef_1_1_gaussian_uint8_data_chef_factory.html", "structsouschef_1_1_gaussian_uint8_data_chef_factory" ],
     [ "RangedArguments", "classsouschef_1_1_ranged_arguments.html", "classsouschef_1_1_ranged_arguments" ],

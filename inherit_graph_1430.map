@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classrecord__minmax_1_1_min_max_computer.html" title=" " alt="" coords="5,46,222,72"/>
-<area shape="rect" id="Node000001" href="$classrecord__minmax_1_1_moving_avg_computer.html" title=" " alt="" coords="270,5,450,46"/>
-<area shape="poly" id="edge3305_Node000000_Node000001" title=" " alt="" coords="228,41,269,35,270,41,228,46"/>
-<area shape="rect" id="Node000002" href="$classrecord__minmax_1_1_percentile_computer.html" title=" " alt="" coords="273,71,447,111"/>
-<area shape="poly" id="edge3306_Node000000_Node000002" title=" " alt="" coords="233,72,273,77,272,82,232,77"/>
+<area shape="rect" id="Node000000" href="$structpp_1_1_multi_line_text.html" title=" " alt="" coords="5,31,125,56"/>
+<area shape="rect" id="Node000001" href="$classpp_1_1_enclosed_document.html" title=" " alt="" coords="173,5,326,31"/>
+<area shape="poly" id="edge3323_Node000000_Node000001" title=" " alt="" coords="140,31,172,26,172,31,141,36"/>
+<area shape="rect" id="Node000002" href="$classpp_1_1_linear_document.html" title=" " alt="" coords="181,55,318,80"/>
+<area shape="poly" id="edge3324_Node000000_Node000002" title=" " alt="" coords="141,51,181,56,181,61,140,56"/>
 </map>

@@ -113,8 +113,8 @@ Variables</h2></td></tr>
 <tr class="separator:a5b5d5fe604836f568c9a3503084e736d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2ce0aedb6cc02d12b8b555f5f0fc877" id="r_aa2ce0aedb6cc02d12b8b555f5f0fc877"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#aa2ce0aedb6cc02d12b8b555f5f0fc877">THIS_FILE_DIR</a> = os.path.dirname(os.path.abspath(__file__))</td></tr>
 <tr class="separator:aa2ce0aedb6cc02d12b8b555f5f0fc877"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6aeca7db8250b20f8904347200c4d342" id="r_a6aeca7db8250b20f8904347200c4d342"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#a6aeca7db8250b20f8904347200c4d342">DEFAULT_PRODUCT_DIR</a> = &quot;../../../Product&quot;</td></tr>
-<tr class="separator:a6aeca7db8250b20f8904347200c4d342"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cada06de205795e377821fe34500d7d" id="r_a6cada06de205795e377821fe34500d7d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#a6cada06de205795e377821fe34500d7d">DEFAULT_PRODUCT_DIR</a> = os.path.normpath(os.path.join(<a class="el" href="namespacesetup.html#aa2ce0aedb6cc02d12b8b555f5f0fc877">THIS_FILE_DIR</a>, &quot;../../../Product&quot;))</td></tr>
+<tr class="separator:a6cada06de205795e377821fe34500d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbf123ceac5ca04132c74b1d16829e05" id="r_acbf123ceac5ca04132c74b1d16829e05"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#acbf123ceac5ca04132c74b1d16829e05">so_list</a> = []</td></tr>
 <tr class="separator:acbf123ceac5ca04132c74b1d16829e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ecc108f7a5006102d66cc66b2ece21e" id="r_a4ecc108f7a5006102d66cc66b2ece21e"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#a4ecc108f7a5006102d66cc66b2ece21e">so_files</a> = []</td></tr>
@@ -127,7 +127,7 @@ Variables</h2></td></tr>
 <tr class="separator:a573350cbe948a84ee232b0a67f8ca262"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb30ecb94ec81f4ccd6f6be4dab28915" id="r_abb30ecb94ec81f4ccd6f6be4dab28915"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#abb30ecb94ec81f4ccd6f6be4dab28915">arch_idx</a> = sys.argv.index('--plat-<a class="el" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a>')</td></tr>
 <tr class="separator:abb30ecb94ec81f4ccd6f6be4dab28915"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abda56ec8d05cc15cf560a5237e8ee995" id="r_abda56ec8d05cc15cf560a5237e8ee995"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#abda56ec8d05cc15cf560a5237e8ee995">PY_DIR</a> = os.path.join(<a class="el" href="namespacesetup.html#aa2ce0aedb6cc02d12b8b555f5f0fc877">THIS_FILE_DIR</a>, '../../../runtime/onert/api/python/package')</td></tr>
+<tr class="memitem:abda56ec8d05cc15cf560a5237e8ee995" id="r_abda56ec8d05cc15cf560a5237e8ee995"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#abda56ec8d05cc15cf560a5237e8ee995">PY_DIR</a></td></tr>
 <tr class="separator:abda56ec8d05cc15cf560a5237e8ee995"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63a26c35aa5367cae2cb292b2001919b" id="r_a63a26c35aa5367cae2cb292b2001919b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#a63a26c35aa5367cae2cb292b2001919b">rel_path</a> = os.path.relpath(root, <a class="el" href="namespacesetup.html#abda56ec8d05cc15cf560a5237e8ee995">PY_DIR</a>)</td></tr>
 <tr class="separator:a63a26c35aa5367cae2cb292b2001919b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -141,9 +141,7 @@ Variables</h2></td></tr>
 <tr class="separator:ab92667e659baf0f323064952430a8ccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade45cf7db239e121b194e41d7b612e94" id="r_ade45cf7db239e121b194e41d7b612e94"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#ade45cf7db239e121b194e41d7b612e94">arch_path</a> = os.path.join(<a class="el" href="namespacesetup.html#a6b70cb40c56c925a782fcf1c33046cde">package_directory</a>, <a class="el" href="namespacesetup.html#a2f16496690e425675e8b9b3d51ac888c">target_arch</a>)</td></tr>
 <tr class="separator:ade45cf7db239e121b194e41d7b612e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c1f2b356ddc6c01c64fbf3ec0992032" id="r_a5c1f2b356ddc6c01c64fbf3ec0992032"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#a5c1f2b356ddc6c01c64fbf3ec0992032">product_dir</a></td></tr>
-<tr class="separator:a5c1f2b356ddc6c01c64fbf3ec0992032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f71298b78242580b19d30e9d712700e" id="r_a1f71298b78242580b19d30e9d712700e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#a1f71298b78242580b19d30e9d712700e">so_base_dir</a></td></tr>
+<tr class="memitem:a1f71298b78242580b19d30e9d712700e" id="r_a1f71298b78242580b19d30e9d712700e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#a1f71298b78242580b19d30e9d712700e">so_base_dir</a> = <a class="el" href="namespacesetup.html#a246738081761d4dc3fd63f76320696dd">get_directories</a>()</td></tr>
 <tr class="separator:a1f71298b78242580b19d30e9d712700e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa208ac4955a049434e61e04cf0e6f917" id="r_aa208ac4955a049434e61e04cf0e6f917"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesetup.html#aa208ac4955a049434e61e04cf0e6f917">tgt_path</a> = os.path.join(<a class="el" href="namespacesetup.html#ade45cf7db239e121b194e41d7b612e94">arch_path</a>, so)</td></tr>
 <tr class="separator:aa208ac4955a049434e61e04cf0e6f917"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,15 +194,22 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00085">85</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>        <span class="keyword">def </span>get_directories():</div>
-<div class="line"><span class="lineno">   86</span>            <span class="comment"># If the environment variable is not set, get default one.</span></div>
-<div class="line"><span class="lineno">   87</span>            product_dir = os.environ.get(<span class="stringliteral">&quot;PRODUCT_DIR&quot;</span>, DEFAULT_PRODUCT_DIR)</div>
-<div class="line"><span class="lineno">   88</span>            <span class="keywordflow">return</span> os.path.join(THIS_FILE_DIR, product_dir), os.path.join(</div>
-<div class="line"><span class="lineno">   89</span>                product_dir,</div>
-<div class="line"><span class="lineno">   90</span>                <span class="stringliteral">&quot;lib/&quot;</span> <span class="keywordflow">if</span> product_dir != DEFAULT_PRODUCT_DIR <span class="keywordflow">else</span> target_arch +</div>
-<div class="line"><span class="lineno">   91</span>                <span class="stringliteral">&#39;-linux.release/out/lib&#39;</span>)</div>
-<div class="line"><span class="lineno">   92</span> </div>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00086">86</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>        <span class="keyword">def </span>get_directories():</div>
+<div class="line"><span class="lineno">   87</span>            <span class="comment"># If the environment variable is not set, get default one.</span></div>
+<div class="line"><span class="lineno">   88</span>            product_dir = os.environ.get(<span class="stringliteral">&quot;PRODUCT_DIR&quot;</span>, DEFAULT_PRODUCT_DIR)</div>
+<div class="line"><span class="lineno">   89</span>            base_dir = product_dir <span class="keywordflow">if</span> product_dir != DEFAULT_PRODUCT_DIR <span class="keywordflow">else</span> os.path.join(</div>
+<div class="line"><span class="lineno">   90</span>                product_dir, target_arch + <span class="stringliteral">&#39;-linux.release/out&#39;</span>)</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span>            <span class="keywordflow">if</span> os.path.exists(os.path.join(base_dir, <span class="stringliteral">&quot;lib64&quot;</span>)):</div>
+<div class="line"><span class="lineno">   93</span>                <span class="keywordflow">return</span> os.path.join(base_dir, <span class="stringliteral">&quot;lib64&quot;</span>)</div>
+<div class="line"><span class="lineno">   94</span>            <span class="keywordflow">elif</span> os.path.exists(os.path.join(base_dir, <span class="stringliteral">&quot;lib32&quot;</span>)):</div>
+<div class="line"><span class="lineno">   95</span>                <span class="keywordflow">return</span> os.path.join(base_dir, <span class="stringliteral">&quot;lib32&quot;</span>)</div>
+<div class="line"><span class="lineno">   96</span>            <span class="keywordflow">elif</span> os.path.exists(os.path.join(base_dir, <span class="stringliteral">&quot;lib&quot;</span>)):</div>
+<div class="line"><span class="lineno">   97</span>                <span class="keywordflow">return</span> os.path.join(base_dir, <span class="stringliteral">&quot;lib&quot;</span>)</div>
+<div class="line"><span class="lineno">   98</span>            <span class="keywordflow">else</span>:</div>
+<div class="line"><span class="lineno">   99</span>                <span class="keywordflow">raise</span> FileNotFoundError(f<span class="stringliteral">&quot;No lib directory found in {base_dir}&quot;</span>)</div>
+<div class="line"><span class="lineno">  100</span> </div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -237,7 +242,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00075">75</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00076">76</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -289,14 +294,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a6aeca7db8250b20f8904347200c4d342" name="a6aeca7db8250b20f8904347200c4d342"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6aeca7db8250b20f8904347200c4d342">&#9670;&#160;</a></span>DEFAULT_PRODUCT_DIR</h2>
+<a id="a6cada06de205795e377821fe34500d7d" name="a6cada06de205795e377821fe34500d7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cada06de205795e377821fe34500d7d">&#9670;&#160;</a></span>DEFAULT_PRODUCT_DIR</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">str setup.DEFAULT_PRODUCT_DIR = &quot;../../../Product&quot;</td>
+          <td class="memname">setup.DEFAULT_PRODUCT_DIR = os.path.normpath(os.path.join(<a class="el" href="namespacesetup.html#aa2ce0aedb6cc02d12b8b555f5f0fc877">THIS_FILE_DIR</a>, &quot;../../../Product&quot;))</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -317,7 +322,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00151">151</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00160">160</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -333,7 +338,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00058">58</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00059">59</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -349,7 +354,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00059">59</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00060">60</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -365,7 +370,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00063">63</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00064">64</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -381,7 +386,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00155">155</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00164">164</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -397,7 +402,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00158">158</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00167">167</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -413,7 +418,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00154">154</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00163">163</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -429,7 +434,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00152">152</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00161">161</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -445,7 +450,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00149">149</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00158">158</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -461,7 +466,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00157">157</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00166">166</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -509,7 +514,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00156">156</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00165">165</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -529,22 +534,6 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a5c1f2b356ddc6c01c64fbf3ec0992032" name="a5c1f2b356ddc6c01c64fbf3ec0992032"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c1f2b356ddc6c01c64fbf3ec0992032">&#9670;&#160;</a></span>product_dir</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">setup.product_dir</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00093">93</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
-
-</div>
-</div>
 <a id="abda56ec8d05cc15cf560a5237e8ee995" name="abda56ec8d05cc15cf560a5237e8ee995"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abda56ec8d05cc15cf560a5237e8ee995">&#9670;&#160;</a></span>PY_DIR</h2>
 
@@ -552,11 +541,13 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">setup.PY_DIR = os.path.join(<a class="el" href="namespacesetup.html#aa2ce0aedb6cc02d12b8b555f5f0fc877">THIS_FILE_DIR</a>, '../../../runtime/onert/api/python/package')</td>
+          <td class="memname">setup.PY_DIR</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<b>Initial value:</b><div class="fragment"><div class="line"><span class="lineno">    1</span>=  os.path.normpath(</div>
+<div class="line"><span class="lineno">    2</span>        os.path.join(THIS_FILE_DIR, <span class="stringliteral">&#39;../../../runtime/onert/api/python/package&#39;</span>))</div>
+</div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00054">54</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
@@ -573,7 +564,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00057">57</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00058">58</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -589,7 +580,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00117">117</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00126">126</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -605,7 +596,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00119">119</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00128">128</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -616,12 +607,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">setup.so_base_dir</td>
+          <td class="memname">setup.so_base_dir = <a class="el" href="namespacesetup.html#a246738081761d4dc3fd63f76320696dd">get_directories</a>()</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00093">93</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00101">101</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -637,7 +628,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00104">104</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00113">113</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -653,7 +644,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00106">106</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00115">115</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -701,7 +692,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00130">130</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00139">139</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -717,7 +708,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00132">132</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00141">141</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -733,7 +724,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00068">68</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00069">69</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -765,7 +756,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00099">99</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00108">108</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -797,7 +788,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00153">153</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00162">162</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>
@@ -813,7 +804,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00150">150</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
+<p class="definition">Definition at line <a class="el" href="setup_8py_source.html#l00159">159</a> of file <a class="el" href="setup_8py_source.html">setup.py</a>.</p>
 
 </div>
 </div>

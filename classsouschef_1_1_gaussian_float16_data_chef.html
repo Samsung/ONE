@@ -194,33 +194,33 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="structsouschef_1_1_data_chef.html#aba3e5234f3670624be6401a6ee52609b">souschef::DataChef</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_gaussian_8cpp_source.html#l00075">75</a> of file <a class="el" href="_gaussian_8cpp_source.html">Gaussian.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   76</span>{</div>
-<div class="line"><span class="lineno">   77</span>  <span class="keyword">auto</span> time_stamp = std::chrono::system_clock::now().time_since_epoch().count();</div>
-<div class="line"><span class="lineno">   78</span>  <span class="keyword">auto</span> seed = <span class="keyword">static_cast&lt;</span>std::minstd_rand::result_type<span class="keyword">&gt;</span>(time_stamp);</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span>  std::minstd_rand rand{<span class="keyword">static_cast&lt;</span>std::minstd_rand::result_type<span class="keyword">&gt;</span>(seed)};</div>
-<div class="line"><span class="lineno">   81</span>  std::normal_distribution&lt;float&gt; dist{_mean, _stddev};</div>
-<div class="line"><span class="lineno">   82</span> </div>
-<div class="line"><span class="lineno">   83</span>  std::vector&lt;uint8_t&gt; res;</div>
-<div class="line"><span class="lineno">   84</span> </div>
-<div class="line"><span class="lineno">   85</span>  <span class="keyword">constexpr</span> <span class="keywordtype">float</span> max_cap = 1e9;</div>
-<div class="line"><span class="lineno">   86</span>  <span class="keyword">constexpr</span> <span class="keywordtype">float</span> min_cap = -1e9;</div>
-<div class="line"><span class="lineno">   87</span>  <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; count; ++n)</div>
-<div class="line"><span class="lineno">   88</span>  {</div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordtype">float</span> raw_value = dist(rand);</div>
-<div class="line"><span class="lineno">   90</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> capped_value = std::max(min_cap, std::min(max_cap, raw_value));</div>
-<div class="line"><span class="lineno">   91</span>    <span class="keyword">const</span> uint16_t value = fp16_ieee_from_fp32_value(capped_value);</div>
-<div class="line"><span class="lineno">   92</span>    <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespaceinfer.html#aea40b298caaf11c6a391dcf92f194e5f">arr</a> = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(&amp;value);</div>
-<div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">for</span> (uint32_t b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; <span class="keyword">sizeof</span>(uint16_t); ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>)</div>
-<div class="line"><span class="lineno">   95</span>    {</div>
-<div class="line"><span class="lineno">   96</span>      res.emplace_back(arr[b]);</div>
-<div class="line"><span class="lineno">   97</span>    }</div>
-<div class="line"><span class="lineno">   98</span>  }</div>
-<div class="line"><span class="lineno">   99</span> </div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">  101</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_gaussian_8cpp_source.html#l00105">105</a> of file <a class="el" href="_gaussian_8cpp_source.html">Gaussian.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  106</span>{</div>
+<div class="line"><span class="lineno">  107</span>  <span class="keyword">auto</span> time_stamp = std::chrono::system_clock::now().time_since_epoch().count();</div>
+<div class="line"><span class="lineno">  108</span>  <span class="keyword">auto</span> seed = <span class="keyword">static_cast&lt;</span>std::minstd_rand::result_type<span class="keyword">&gt;</span>(time_stamp);</div>
+<div class="line"><span class="lineno">  109</span> </div>
+<div class="line"><span class="lineno">  110</span>  std::minstd_rand rand{<span class="keyword">static_cast&lt;</span>std::minstd_rand::result_type<span class="keyword">&gt;</span>(seed)};</div>
+<div class="line"><span class="lineno">  111</span>  std::normal_distribution&lt;float&gt; dist{_mean, _stddev};</div>
+<div class="line"><span class="lineno">  112</span> </div>
+<div class="line"><span class="lineno">  113</span>  std::vector&lt;uint8_t&gt; res;</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>  <span class="keyword">constexpr</span> <span class="keywordtype">float</span> max_cap = 1e9;</div>
+<div class="line"><span class="lineno">  116</span>  <span class="keyword">constexpr</span> <span class="keywordtype">float</span> min_cap = -1e9;</div>
+<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">for</span> (uint32_t n = 0; n &lt; count; ++n)</div>
+<div class="line"><span class="lineno">  118</span>  {</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keywordtype">float</span> raw_value = dist(rand);</div>
+<div class="line"><span class="lineno">  120</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> capped_value = std::max(min_cap, std::min(max_cap, raw_value));</div>
+<div class="line"><span class="lineno">  121</span>    <span class="keyword">const</span> uint16_t value = fp16_ieee_from_fp32_value(capped_value);</div>
+<div class="line"><span class="lineno">  122</span>    <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_variable" href="namespaceinfer.html#aea40b298caaf11c6a391dcf92f194e5f">arr</a> = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(&amp;value);</div>
+<div class="line"><span class="lineno">  123</span> </div>
+<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">for</span> (uint32_t b = 0; <a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a> &lt; <span class="keyword">sizeof</span>(uint16_t); ++<a class="code hl_variable" href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">b</a>)</div>
+<div class="line"><span class="lineno">  125</span>    {</div>
+<div class="line"><span class="lineno">  126</span>      res.emplace_back(arr[b]);</div>
+<div class="line"><span class="lineno">  127</span>    }</div>
+<div class="line"><span class="lineno">  128</span>  }</div>
+<div class="line"><span class="lineno">  129</span> </div>
+<div class="line"><span class="lineno">  130</span>  <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  131</span>}</div>
 <div class="ttc" id="anamespaceinfer_html_aea40b298caaf11c6a391dcf92f194e5f"><div class="ttname"><a href="namespaceinfer.html#aea40b298caaf11c6a391dcf92f194e5f">infer.arr</a></div><div class="ttdeci">arr</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00092">infer.py:92</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1"><div class="ttname"><a href="namespacejpeg2hdf5.html#a1a0fe2ec4c2bc8757bcf4f0fcd4f74c1">jpeg2hdf5.b</a></div><div class="ttdeci">b</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00105">jpeg2hdf5.py:105</a></div></div>
 </div><!-- fragment -->

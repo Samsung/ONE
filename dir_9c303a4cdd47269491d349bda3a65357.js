@@ -7,6 +7,7 @@ var dir_9c303a4cdd47269491d349bda3a65357 =
     [ "arg_min", "dir_b1927e243276cd5eb330439e70cbe937.html", "dir_b1927e243276cd5eb330439e70cbe937" ],
     [ "averagepool2d", "dir_1734f8056a22cd1793fb054d29866a6f.html", "dir_1734f8056a22cd1793fb054d29866a6f" ],
     [ "batch_to_space_nd", "dir_15f576aef29984e17a9aa3f5109047f7.html", "dir_15f576aef29984e17a9aa3f5109047f7" ],
+    [ "batchmatmul", "dir_32829de5577655695323339259fce915.html", "dir_32829de5577655695323339259fce915" ],
     [ "cast", "dir_e876b1940d592ddcddc9f2a00201ec7d.html", "dir_e876b1940d592ddcddc9f2a00201ec7d" ],
     [ "ceil", "dir_225ff85c4ae7e9c3fc5cd08da9613b0c.html", "dir_225ff85c4ae7e9c3fc5cd08da9613b0c" ],
     [ "concatenation", "dir_d707ebc8d5bf446e1aa43b548cdfb2de.html", "dir_d707ebc8d5bf446e1aa43b548cdfb2de" ],

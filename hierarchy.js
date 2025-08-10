@@ -1665,6 +1665,7 @@ var hierarchy =
       [ "souschef::GaussianInt16DataChef", "classsouschef_1_1_gaussian_int16_data_chef.html", null ],
       [ "souschef::GaussianInt32DataChef", "classsouschef_1_1_gaussian_int32_data_chef.html", null ],
       [ "souschef::GaussianInt8DataChef", "classsouschef_1_1_gaussian_int8_data_chef.html", null ],
+      [ "souschef::GaussianUint4DataChef", "classsouschef_1_1_gaussian_uint4_data_chef.html", null ],
       [ "souschef::GaussianUint8DataChef", "classsouschef_1_1_gaussian_uint8_data_chef.html", null ]
     ] ],
     [ "souschef::DataChefFactory", "structsouschef_1_1_data_chef_factory.html", [
@@ -1680,6 +1681,7 @@ var hierarchy =
       [ "souschef::GaussianInt16DataChefFactory", "structsouschef_1_1_gaussian_int16_data_chef_factory.html", null ],
       [ "souschef::GaussianInt32DataChefFactory", "structsouschef_1_1_gaussian_int32_data_chef_factory.html", null ],
       [ "souschef::GaussianInt8DataChefFactory", "structsouschef_1_1_gaussian_int8_data_chef_factory.html", null ],
+      [ "souschef::GaussianUint4DataChefFactory", "structsouschef_1_1_gaussian_uint4_data_chef_factory.html", null ],
       [ "souschef::GaussianUint8DataChefFactory", "structsouschef_1_1_gaussian_uint8_data_chef_factory.html", null ]
     ] ],
     [ "minmax_embedder_test::DataGen", "classminmax__embedder__test_1_1_data_gen.html", null ],
@@ -3258,8 +3260,8 @@ var hierarchy =
     ] ],
     [ "onert::util::MinMaxMap< N, Hash >", "classonert_1_1util_1_1_min_max_map.html", null ],
     [ "record_minmax::MinMaxMap", "classrecord__minmax_1_1_min_max_map.html", null ],
-    [ "onert::util::MinMaxMap< std::pair< ir::SubgraphIndex, ir::IOIndex >, IOMinMaxHash >", "classonert_1_1util_1_1_min_max_map.html", null ],
-    [ "onert::util::MinMaxMap< std::pair< ir::SubgraphIndex, ir::OperationIndex >, OpMinMaxHash >", "classonert_1_1util_1_1_min_max_map.html", null ],
+    [ "onert::util::MinMaxMap< std::tuple< ir::ModelIndex, ir::SubgraphIndex, ir::IOIndex >, IOMinMaxHash >", "classonert_1_1util_1_1_min_max_map.html", null ],
+    [ "onert::util::MinMaxMap< std::tuple< ir::ModelIndex, ir::SubgraphIndex, ir::OperationIndex >, OpMinMaxHash >", "classonert_1_1util_1_1_min_max_map.html", null ],
     [ "onert::odc::MinMaxReader", "classonert_1_1odc_1_1_min_max_reader.html", null ],
     [ "minmax_embedder::h5::MinMaxVectors", "structminmax__embedder_1_1h5_1_1_min_max_vectors.html", null ],
     [ "onert::odc::MinMaxVectors", "structonert_1_1odc_1_1_min_max_vectors.html", null ],
@@ -3320,7 +3322,11 @@ var hierarchy =
       [ "loco::GraphOutput", "classloco_1_1_graph_output.html", null ]
     ] ],
     [ "Mixins", null, [
-      [ "loco::CanonicalNodeDef< Code, Mixins >", "structloco_1_1_canonical_node_def.html", null ]
+      [ "onert_micro::core::OMDataContext< T, OMAxisContextMixin< 1 > >", "classonert__micro_1_1core_1_1_o_m_data_context.html", [
+        [ "onert_micro::core::OMReduceDataContext< T >", "classonert__micro_1_1core_1_1_o_m_reduce_data_context.html", null ]
+      ] ],
+      [ "loco::CanonicalNodeDef< Code, Mixins >", "structloco_1_1_canonical_node_def.html", null ],
+      [ "onert_micro::core::OMDataContext< T, Mixins >", "classonert__micro_1_1core_1_1_o_m_data_context.html", null ]
     ] ],
     [ "Model", "struct_model.html", null ],
     [ "nnsuite::conv::Model", "structnnsuite_1_1conv_1_1_model.html", [
@@ -3746,8 +3752,14 @@ var hierarchy =
     [ "flatbuffers::Offset< flatbuffers::String >", "structflatbuffers_1_1_offset.html", null ],
     [ "flatbuffers::Offset< flatbuffers::Vector< typename T::CIR > >", "structflatbuffers_1_1_offset.html", null ],
     [ "flatbuffers::Offset< void >", "structflatbuffers_1_1_offset.html", null ],
+    [ "onert_micro::core::OMAxisContextMixin< AxisTensorIdx >", "classonert__micro_1_1core_1_1_o_m_axis_context_mixin.html", null ],
     [ "onert_micro::train::OMBackpropExecute", "structonert__micro_1_1train_1_1_o_m_backprop_execute.html", null ],
     [ "onert_micro::train::OMBackpropExecuteArgs", "structonert__micro_1_1train_1_1_o_m_backprop_execute_args.html", null ],
+    [ "onert_micro::core::OMBaseContext", "classonert__micro_1_1core_1_1_o_m_base_context.html", [
+      [ "onert_micro::core::OMInputContext< int32_t, 1 >", "classonert__micro_1_1core_1_1_o_m_input_context.html", null ],
+      [ "onert_micro::core::OMInputContext< T, InputTensorIdx >", "classonert__micro_1_1core_1_1_o_m_input_context.html", null ],
+      [ "onert_micro::core::OMOutputContext< T, OutputTensorIdx >", "classonert__micro_1_1core_1_1_o_m_output_context.html", null ]
+    ] ],
     [ "onert_micro::core::train::OMCheckpointLoader", "classonert__micro_1_1core_1_1train_1_1_o_m_checkpoint_loader.html", null ],
     [ "onert_micro::core::train::OMCheckpointSaver", "classonert__micro_1_1core_1_1train_1_1_o_m_checkpoint_saver.html", null ],
     [ "onert_micro::core::reader::OMCircleReader", "classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html", null ],
@@ -3775,6 +3787,7 @@ var hierarchy =
     [ "onert_micro::execute::OMKernelExecute", "structonert__micro_1_1execute_1_1_o_m_kernel_execute.html", null ],
     [ "onert_micro::core::memory::OMMemoryManager", "structonert__micro_1_1core_1_1memory_1_1_o_m_memory_manager.html", null ],
     [ "onert_micro::optimize::OMOptimizer", "structonert__micro_1_1optimize_1_1_o_m_optimizer.html", null ],
+    [ "onert_micro::core::OMQuantizationData< T >", "classonert__micro_1_1core_1_1_o_m_quantization_data.html", null ],
     [ "onert_micro::core::memory::OMRuntimeAllocator", "classonert__micro_1_1core_1_1memory_1_1_o_m_runtime_allocator.html", null ],
     [ "onert_micro::core::OMRuntimeContext", "classonert__micro_1_1core_1_1_o_m_runtime_context.html", null ],
     [ "onert_micro::core::OMRuntimeGraph", "classonert__micro_1_1core_1_1_o_m_runtime_graph.html", null ],
@@ -3784,6 +3797,9 @@ var hierarchy =
     ] ],
     [ "onert_micro::core::OMRuntimeShape", "classonert__micro_1_1core_1_1_o_m_runtime_shape.html", null ],
     [ "onert_micro::core::OMRuntimeStorage", "classonert__micro_1_1core_1_1_o_m_runtime_storage.html", null ],
+    [ "onert_micro::core::OMTensorData< T >", "classonert__micro_1_1core_1_1_o_m_tensor_data.html", null ],
+    [ "onert_micro::core::OMTensorData< const int32_t >", "classonert__micro_1_1core_1_1_o_m_tensor_data.html", null ],
+    [ "onert_micro::core::OMTensorData< const T >", "classonert__micro_1_1core_1_1_o_m_tensor_data.html", null ],
     [ "onert_micro::core::reader::OMTrainingConfigReader", "classonert__micro_1_1core_1_1reader_1_1_o_m_training_config_reader.html", null ],
     [ "onert_micro::OMTrainingContext", "structonert__micro_1_1_o_m_training_context.html", null ],
     [ "onert_micro::core::train::OMTrainingHandler", "classonert__micro_1_1core_1_1train_1_1_o_m_training_handler.html", null ],
@@ -4841,7 +4857,11 @@ var hierarchy =
     ] ],
     [ "mir_interpreter::ReduceMeanImpl< T >", "structmir__interpreter_1_1_reduce_mean_impl.html", null ],
     [ "nnfw::cker::functor::ReduceOuterDimensions< Device, InputT, AccumT, OutputT, BinaryFunctor >", "structnnfw_1_1cker_1_1functor_1_1_reduce_outer_dimensions.html", null ],
+    [ "onert_micro::execute::pal::ReduceProductFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html", null ],
+    [ "onert_micro::execute::pal::ReduceProductFn< int8_t >", "structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_3_01int8__t_01_4.html", null ],
     [ "luci_interpreter::ReducerParams", "structluci__interpreter_1_1_reducer_params.html", null ],
+    [ "onert_micro::execute::pal::ReduceSumFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html", null ],
+    [ "onert_micro::execute::pal::ReduceSumFn< int8_t >", "structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_3_01int8__t_01_4.html", null ],
     [ "flexbuffers::Reference", "classflexbuffers_1_1_reference.html", null ],
     [ "mir::Region< T >", "structmir_1_1_region.html", [
       [ "mir::ExternalRegion< T >", "classmir_1_1_external_region.html", null ]
@@ -5557,6 +5577,9 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataAveragePool2DBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_average_pool2_d_base.html", [
         [ "onert_micro::test_model::TestDataS8AveragePool2D", "classonert__micro_1_1test__model_1_1_test_data_s8_average_pool2_d.html", null ]
       ] ],
+      [ "onert_micro::test_model::TestDataBMMBase< float >", "classonert__micro_1_1test__model_1_1_test_data_b_m_m_base.html", [
+        [ "onert_micro::test_model::TestDataFloatBMM", "classonert__micro_1_1test__model_1_1_test_data_float_b_m_m.html", null ]
+      ] ],
       [ "onert_micro::test_model::TestDataConcatenationBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_concatenation_base.html", [
         [ "onert_micro::test_model::TestDataS8Concatenation", "classonert__micro_1_1test__model_1_1_test_data_s8_concatenation.html", null ]
       ] ],
@@ -5596,11 +5619,17 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataMaxPool2DBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_max_pool2_d_base.html", [
         [ "onert_micro::test_model::TestDataS8MaxPool2D", "classonert__micro_1_1test__model_1_1_test_data_s8_max_pool2_d.html", null ]
       ] ],
+      [ "onert_micro::test_model::TestDataMeanBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_mean_base.html", [
+        [ "onert_micro::test_model::TestDataInt8Mean", "classonert__micro_1_1test__model_1_1_test_data_int8_mean.html", null ]
+      ] ],
       [ "onert_micro::test_model::TestDataMulBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_mul_base.html", [
         [ "onert_micro::test_model::TestDataInt8Mul", "classonert__micro_1_1test__model_1_1_test_data_int8_mul.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataPackBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_pack_base.html", [
         [ "onert_micro::test_model::TestDataS8Pack", "classonert__micro_1_1test__model_1_1_test_data_s8_pack.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataPadBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_pad_base.html", [
+        [ "onert_micro::test_model::TestDataInt8Pad", "classonert__micro_1_1test__model_1_1_test_data_int8_pad.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataQuantizeBase< float, int8_t >", "classonert__micro_1_1test__model_1_1_test_data_quantize_base.html", [
         [ "onert_micro::test_model::TestDataFloatQuantize", "classonert__micro_1_1test__model_1_1_test_data_float_quantize.html", null ]
@@ -5617,6 +5646,9 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataReduceProdBase< int32_t >", "classonert__micro_1_1test__model_1_1_test_data_reduce_prod_base.html", [
         [ "onert_micro::test_model::TestDataIntReduceProd", "classonert__micro_1_1test__model_1_1_test_data_int_reduce_prod.html", null ]
       ] ],
+      [ "onert_micro::test_model::TestDataRsqrtBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_rsqrt_base.html", [
+        [ "onert_micro::test_model::TestDataInt8Rsqrt", "classonert__micro_1_1test__model_1_1_test_data_int8_rsqrt.html", null ]
+      ] ],
       [ "onert_micro::test_model::TestDataSliceBase< int32_t >", "classonert__micro_1_1test__model_1_1_test_data_slice_base.html", [
         [ "onert_micro::test_model::TestDataInt32Slice", "classonert__micro_1_1test__model_1_1_test_data_int32_slice.html", null ]
       ] ],
@@ -5632,8 +5664,15 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataSpaceToDepthBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_space_to_depth_base.html", [
         [ "onert_micro::test_model::TestDataS8SpaceToDepth", "classonert__micro_1_1test__model_1_1_test_data_s8_space_to_depth.html", null ]
       ] ],
+      [ "onert_micro::test_model::TestDataSplitBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_split_base.html", [
+        [ "onert_micro::test_model::TestDataS8Split", "classonert__micro_1_1test__model_1_1_test_data_s8_split.html", null ]
+      ] ],
       [ "onert_micro::test_model::TestDataSplitVBase< float >", "classonert__micro_1_1test__model_1_1_test_data_split_v_base.html", [
         [ "onert_micro::test_model::TestDataFloatSplitV", "classonert__micro_1_1test__model_1_1_test_data_float_split_v.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataSquaredDifferenceBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_squared_difference_base.html", [
+        [ "onert_micro::test_model::TestDataInt8SquaredDifference", "classonert__micro_1_1test__model_1_1_test_data_int8_squared_difference.html", null ],
+        [ "onert_micro::test_model::TestDataInt8SquaredDifferenceWithBroadcasting", "classonert__micro_1_1test__model_1_1_test_data_int8_squared_difference_with_broadcasting.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataStridedSliceBase< float >", "classonert__micro_1_1test__model_1_1_test_data_strided_slice_base.html", [
         [ "onert_micro::test_model::TestDataFloatStridedSlice", "classonert__micro_1_1test__model_1_1_test_data_float_strided_slice.html", null ]
@@ -5646,6 +5685,18 @@ var hierarchy =
       ] ],
       [ "onert_micro::test_model::TestDataSubBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_sub_base.html", [
         [ "onert_micro::test_model::TestDataS8Sub", "classonert__micro_1_1test__model_1_1_test_data_s8_sub.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataSumBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_sum_base.html", [
+        [ "onert_micro::test_model::TestDataInt8Sum", "classonert__micro_1_1test__model_1_1_test_data_int8_sum.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataTanhBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_tanh_base.html", [
+        [ "onert_micro::test_model::TestDataInt8Tanh", "classonert__micro_1_1test__model_1_1_test_data_int8_tanh.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataTransposeBase< float >", "classonert__micro_1_1test__model_1_1_test_data_transpose_base.html", [
+        [ "onert_micro::test_model::TestDataFloatTransposeKernel", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_kernel.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataTransposeBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_transpose_base.html", [
+        [ "onert_micro::test_model::TestDataInt8TransposeKernel", "classonert__micro_1_1test__model_1_1_test_data_int8_transpose_kernel.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataUnpackBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_unpack_base.html", [
         [ "onert_micro::test_model::TestDataS8Unpack", "classonert__micro_1_1test__model_1_1_test_data_s8_unpack.html", null ]
@@ -5666,6 +5717,7 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataAveragePool2DBase< T >", "classonert__micro_1_1test__model_1_1_test_data_average_pool2_d_base.html", [
         [ "onert_micro::test_model::TestDataFloatAveragePool2D", "classonert__micro_1_1test__model_1_1_test_data_float_average_pool2_d.html", null ]
       ] ],
+      [ "onert_micro::test_model::TestDataBMMBase< T >", "classonert__micro_1_1test__model_1_1_test_data_b_m_m_base.html", null ],
       [ "onert_micro::test_model::TestDataBatchToSpaceNDBase< T >", "classonert__micro_1_1test__model_1_1_test_data_batch_to_space_n_d_base.html", [
         [ "onert_micro::test_model::TestDataFloatBatchToSpaceND", "classonert__micro_1_1test__model_1_1_test_data_float_batch_to_space_n_d.html", null ]
       ] ],
@@ -5857,10 +5909,10 @@ var hierarchy =
       [ "onert_micro::test_model::TestDataTanhBase< T >", "classonert__micro_1_1test__model_1_1_test_data_tanh_base.html", [
         [ "onert_micro::test_model::TestDataFloatTanh", "classonert__micro_1_1test__model_1_1_test_data_float_tanh.html", null ]
       ] ],
+      [ "onert_micro::test_model::TestDataTransposeBase< T >", "classonert__micro_1_1test__model_1_1_test_data_transpose_base.html", null ],
       [ "onert_micro::test_model::TestDataTransposeConvBase< T >", "classonert__micro_1_1test__model_1_1_test_data_transpose_conv_base.html", [
         [ "onert_micro::test_model::TestDataFloatTransposeConv", "classonert__micro_1_1test__model_1_1_test_data_float_transpose_conv.html", null ]
       ] ],
-      [ "onert_micro::test_model::TestDataTransposeKernel< T >", "classonert__micro_1_1test__model_1_1_test_data_transpose_kernel.html", null ],
       [ "onert_micro::test_model::TestDataUnpackBase< T >", "classonert__micro_1_1test__model_1_1_test_data_unpack_base.html", [
         [ "onert_micro::test_model::TestDataFloatUnpack", "classonert__micro_1_1test__model_1_1_test_data_float_unpack.html", null ]
       ] ],

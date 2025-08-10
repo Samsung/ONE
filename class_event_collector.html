@@ -204,12 +204,12 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00103">103</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  103</span>                                     : <a class="code hl_variable" href="class_event_collector.html#a739e2c7ae5225158a4f01f4590e5ef3d">_rec</a>{rec}</div>
-<div class="line"><span class="lineno">  104</span>  {</div>
-<div class="line"><span class="lineno">  105</span>    <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">  106</span>  }</div>
-<div class="ttc" id="aclass_event_collector_html_a739e2c7ae5225158a4f01f4590e5ef3d"><div class="ttname"><a href="class_event_collector.html#a739e2c7ae5225158a4f01f4590e5ef3d">EventCollector::_rec</a></div><div class="ttdeci">EventRecorder * _rec</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00112">EventCollector.h:112</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00107">107</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  107</span>                                     : <a class="code hl_variable" href="class_event_collector.html#a739e2c7ae5225158a4f01f4590e5ef3d">_rec</a>{rec}</div>
+<div class="line"><span class="lineno">  108</span>  {</div>
+<div class="line"><span class="lineno">  109</span>    <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">  110</span>  }</div>
+<div class="ttc" id="aclass_event_collector_html_a739e2c7ae5225158a4f01f4590e5ef3d"><div class="ttname"><a href="class_event_collector.html#a739e2c7ae5225158a4f01f4590e5ef3d">EventCollector::_rec</a></div><div class="ttdeci">EventRecorder * _rec</div><div class="ttdef"><b>Definition</b> <a href="_event_collector_8h_source.html#l00116">EventCollector.h:116</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -232,39 +232,39 @@ template&lt;typename EventT &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_event_collector_8cc_source.html#l00127">127</a> of file <a class="el" href="_event_collector_8cc_source.html">EventCollector.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  128</span>{</div>
-<div class="line"><span class="lineno">  129</span>  <span class="keyword">auto</span> ts = timestamp();</div>
-<div class="line"><span class="lineno">  130</span> </div>
-<div class="line"><span class="lineno">  131</span>  DurationEventBuilder builder(ts);</div>
-<div class="line"><span class="lineno">  132</span> </div>
-<div class="line"><span class="lineno">  133</span>  <span class="keywordflow">switch</span> (event.edge)</div>
-<div class="line"><span class="lineno">  134</span>  {</div>
-<div class="line"><span class="lineno">  135</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aaa19aad9f2fe3ce0023298ab83f7e75775">Edge::BEGIN</a>:</div>
-<div class="line"><span class="lineno">  136</span>    {</div>
-<div class="line"><span class="lineno">  137</span>      <span class="keyword">auto</span> duration_evt = builder.build(event, <span class="stringliteral">&quot;B&quot;</span>);</div>
-<div class="line"><span class="lineno">  138</span>      <a class="code hl_variable" href="class_event_collector.html#a739e2c7ae5225158a4f01f4590e5ef3d">_rec</a>-&gt;<a class="code hl_function" href="class_event_recorder.html#aae0bbea164738c78c6989bc924070a13">emit</a>(std::move(duration_evt));</div>
-<div class="line"><span class="lineno">  139</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  140</span>    }</div>
-<div class="line"><span class="lineno">  141</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aaab1a326c06d88bf042f73d70f50197905">Edge::END</a>:</div>
-<div class="line"><span class="lineno">  142</span>    {</div>
-<div class="line"><span class="lineno">  143</span>      <span class="keyword">auto</span> duration_evt = builder.build(event, <span class="stringliteral">&quot;E&quot;</span>);</div>
-<div class="line"><span class="lineno">  144</span>      <a class="code hl_variable" href="class_event_collector.html#a739e2c7ae5225158a4f01f4590e5ef3d">_rec</a>-&gt;<a class="code hl_function" href="class_event_recorder.html#aae0bbea164738c78c6989bc924070a13">emit</a>(std::move(duration_evt));</div>
-<div class="line"><span class="lineno">  145</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  146</span>    }</div>
-<div class="line"><span class="lineno">  147</span>  }</div>
-<div class="line"><span class="lineno">  148</span> </div>
-<div class="line"><span class="lineno">  149</span><span class="comment">// TODO: Add resurece measurement(e.g. RSS)</span></div>
-<div class="line"><span class="lineno">  150</span><span class="comment">// when ready with low overhead in release build</span></div>
-<div class="line"><span class="lineno">  151</span><span class="preprocessor">#ifdef DEBUG</span></div>
-<div class="line"><span class="lineno">  152</span>  emit_rusage(<a class="code hl_variable" href="class_event_collector.html#a739e2c7ae5225158a4f01f4590e5ef3d">_rec</a>, ts);</div>
-<div class="line"><span class="lineno">  153</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">  154</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_event_collector_8cc_source.html#l00130">130</a> of file <a class="el" href="_event_collector_8cc_source.html">EventCollector.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  131</span>{</div>
+<div class="line"><span class="lineno">  132</span>  <span class="keyword">auto</span> ts = timestamp();</div>
+<div class="line"><span class="lineno">  133</span> </div>
+<div class="line"><span class="lineno">  134</span>  DurationEventBuilder builder(ts);</div>
+<div class="line"><span class="lineno">  135</span> </div>
+<div class="line"><span class="lineno">  136</span>  <span class="keywordflow">switch</span> (event.edge)</div>
+<div class="line"><span class="lineno">  137</span>  {</div>
+<div class="line"><span class="lineno">  138</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aaa19aad9f2fe3ce0023298ab83f7e75775">Edge::BEGIN</a>:</div>
+<div class="line"><span class="lineno">  139</span>    {</div>
+<div class="line"><span class="lineno">  140</span>      <span class="keyword">auto</span> duration_evt = builder.build(event, <span class="stringliteral">&quot;B&quot;</span>);</div>
+<div class="line"><span class="lineno">  141</span>      <a class="code hl_variable" href="class_event_collector.html#a739e2c7ae5225158a4f01f4590e5ef3d">_rec</a>-&gt;<a class="code hl_function" href="class_event_recorder.html#aae0bbea164738c78c6989bc924070a13">emit</a>(std::move(duration_evt));</div>
+<div class="line"><span class="lineno">  142</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  143</span>    }</div>
+<div class="line"><span class="lineno">  144</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aaab1a326c06d88bf042f73d70f50197905">Edge::END</a>:</div>
+<div class="line"><span class="lineno">  145</span>    {</div>
+<div class="line"><span class="lineno">  146</span>      <span class="keyword">auto</span> duration_evt = builder.build(event, <span class="stringliteral">&quot;E&quot;</span>);</div>
+<div class="line"><span class="lineno">  147</span>      <a class="code hl_variable" href="class_event_collector.html#a739e2c7ae5225158a4f01f4590e5ef3d">_rec</a>-&gt;<a class="code hl_function" href="class_event_recorder.html#aae0bbea164738c78c6989bc924070a13">emit</a>(std::move(duration_evt));</div>
+<div class="line"><span class="lineno">  148</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  149</span>    }</div>
+<div class="line"><span class="lineno">  150</span>  }</div>
+<div class="line"><span class="lineno">  151</span> </div>
+<div class="line"><span class="lineno">  152</span><span class="comment">// TODO: Add resurece measurement(e.g. RSS)</span></div>
+<div class="line"><span class="lineno">  153</span><span class="comment">// when ready with low overhead in release build</span></div>
+<div class="line"><span class="lineno">  154</span><span class="preprocessor">#ifdef DEBUG</span></div>
+<div class="line"><span class="lineno">  155</span>  emit_rusage(<a class="code hl_variable" href="class_event_collector.html#a739e2c7ae5225158a4f01f4590e5ef3d">_rec</a>, ts);</div>
+<div class="line"><span class="lineno">  156</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">  157</span>}</div>
 <div class="ttc" id="aclass_event_recorder_html_aae0bbea164738c78c6989bc924070a13"><div class="ttname"><a href="class_event_recorder.html#aae0bbea164738c78c6989bc924070a13">EventRecorder::emit</a></div><div class="ttdeci">void emit(std::unique_ptr&lt; DurationEvent &gt; &amp;&amp;evt)</div><div class="ttdef"><b>Definition</b> <a href="_event_recorder_8cc_source.html#l00019">EventRecorder.cc:19</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_event_collector_8h_source.html#l00112">_rec</a>, <a class="el" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aaa19aad9f2fe3ce0023298ab83f7e75775">BEGIN</a>, <a class="el" href="_event_recorder_8cc_source.html#l00019">EventRecorder::emit()</a>, and <a class="el" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aaab1a326c06d88bf042f73d70f50197905">END</a>.</p>
+<p class="reference">References <a class="el" href="_event_collector_8h_source.html#l00116">_rec</a>, <a class="el" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aaa19aad9f2fe3ce0023298ab83f7e75775">BEGIN</a>, <a class="el" href="_event_recorder_8cc_source.html#l00019">EventRecorder::emit()</a>, and <a class="el" href="class_event_collector.html#a7229bac4472246ae5b79ec900601e3aaab1a326c06d88bf042f73d70f50197905">END</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_execution_observers_8cc_source.html#l00150">onert::exec::TracingObserver::handleJobBegin()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00163">onert::exec::TracingObserver::handleJobEnd()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00142">onert::exec::TracingObserver::handleSubgraphBegin()</a>, and <a class="el" href="_execution_observers_8cc_source.html#l00172">onert::exec::TracingObserver::handleSubgraphEnd()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_execution_observers_8cc_source.html#l00151">onert::exec::TracingObserver::handleJobBegin()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00165">onert::exec::TracingObserver::handleJobEnd()</a>, <a class="el" href="_execution_observers_8cc_source.html#l00143">onert::exec::TracingObserver::handleSubgraphBegin()</a>, and <a class="el" href="_execution_observers_8cc_source.html#l00174">onert::exec::TracingObserver::handleSubgraphEnd()</a>.</p>
 
 </div>
 </div>
@@ -289,9 +289,9 @@ template&lt;typename EventT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00112">112</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_event_collector_8h_source.html#l00116">116</a> of file <a class="el" href="_event_collector_8h_source.html">EventCollector.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_event_collector_8cc_source.html#l00127">onEvent()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_event_collector_8cc_source.html#l00130">onEvent()</a>.</p>
 
 </div>
 </div>

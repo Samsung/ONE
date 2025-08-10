@@ -298,6 +298,10 @@ var namespaces_dup =
     ] ],
     [ "grpc", "namespacegrpc.html", null ],
     [ "hermes", "namespacehermes.html", "namespacehermes" ],
+    [ "impl", "namespaceimpl.html", [
+      [ "CircleMean", "namespaceimpl.html#a2690faf39c23af19d5ae9ead63b7af25", null ],
+      [ "CircleSum", "namespaceimpl.html#ac4093b3e0c9b41e5a427a7cdc8d72258", null ]
+    ] ],
     [ "infer", "namespaceinfer.html", [
       [ "check_for_errors", "namespaceinfer.html#a422d0635c3acd84532e16634821d0bca", null ],
       [ "error_checked", "namespaceinfer.html#a8195f6182cf5ee81e812769c0f2d6cc7", null ],
@@ -666,7 +670,7 @@ var namespaces_dup =
       [ "architecture_directory", "namespacesetup.html#af79feb06943c9cb84a56ef870c56ece8", null ],
       [ "arg_arch", "namespacesetup.html#a573350cbe948a84ee232b0a67f8ca262", null ],
       [ "arg_split", "namespacesetup.html#a1057bc47e48e5131414748e3b52da187", null ],
-      [ "DEFAULT_PRODUCT_DIR", "namespacesetup.html#a6aeca7db8250b20f8904347200c4d342", null ],
+      [ "DEFAULT_PRODUCT_DIR", "namespacesetup.html#a6cada06de205795e377821fe34500d7d", null ],
       [ "description", "namespacesetup.html#aedf461ec52a946bda975938ba0b93ec0", null ],
       [ "dest_dir", "namespacesetup.html#a4c0505658de1f23b7a4ea73b34f9c067", null ],
       [ "dest_sub_dir", "namespacesetup.html#ac42d50036ccf82ce4e002271dd1e5073", null ],
@@ -681,7 +685,6 @@ var namespaces_dup =
       [ "package_name", "namespacesetup.html#a69903e4f05cebc9e005b22b36f5724eb", null ],
       [ "packages", "namespacesetup.html#aff2375a361fd5865c77bd9aa093be747", null ],
       [ "packaging_directory", "namespacesetup.html#a5b5d5fe604836f568c9a3503084e736d", null ],
-      [ "product_dir", "namespacesetup.html#a5c1f2b356ddc6c01c64fbf3ec0992032", null ],
       [ "PY_DIR", "namespacesetup.html#abda56ec8d05cc15cf560a5237e8ee995", null ],
       [ "rel_path", "namespacesetup.html#a63a26c35aa5367cae2cb292b2001919b", null ],
       [ "so_backend_dir", "namespacesetup.html#a1adbbbd00bc67ce344f8fd6fdfeba594", null ],

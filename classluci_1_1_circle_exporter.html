@@ -166,10 +166,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   36</span>  <span class="keyword">auto</span> <span class="keyword">module</span> = contract-&gt;module();</div>
 <div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (module != <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   38</span>  {</div>
-<div class="line"><span class="lineno">   39</span>    CircleExporterImpl impl(module);</div>
+<div class="line"><span class="lineno">   39</span>    CircleExporterImpl <a class="code hl_namespace" href="namespaceimpl.html">impl</a>(module);</div>
 <div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> *ptr = impl.getBufferPointer();</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = impl.getBufferSize();</div>
+<div class="line"><span class="lineno">   41</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> *ptr = <a class="code hl_namespace" href="namespaceimpl.html">impl</a>.getBufferPointer();</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = <a class="code hl_namespace" href="namespaceimpl.html">impl</a>.getBufferSize();</div>
 <div class="line"><span class="lineno">   43</span> </div>
 <div class="line"><span class="lineno">   44</span>    <span class="comment">// we just send one time</span></div>
 <div class="line"><span class="lineno">   45</span>    <span class="keywordflow">return</span> contract-&gt;store(ptr, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
@@ -180,9 +180,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   50</span> </div>
 <div class="line"><span class="lineno">   51</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   52</span>}</div>
+<div class="ttc" id="anamespaceimpl_html"><div class="ttname"><a href="namespaceimpl.html">impl</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2onert-micro_2src_2execute_2kernels_2_mean_8cpp_source.html#l00028">Mean.cpp:29</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2export_2src_2_circle_exporter_impl_8cpp_source.html#l00311">luci::CircleExporterImpl::getBufferPointer()</a>, <a class="el" href="luci_2export_2src_2_circle_exporter_impl_8cpp_source.html#l00318">luci::CircleExporterImpl::getBufferSize()</a>, <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>, and <a class="el" href="structluci_1_1_circle_exporter_1_1_contract.html#a9275b697439a133c38b7d9da2fa405e4">luci::CircleExporter::Contract::store()</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>, and <a class="el" href="structluci_1_1_circle_exporter_1_1_contract.html#a9275b697439a133c38b7d9da2fa405e4">luci::CircleExporter::Contract::store()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_embedder_8cpp_source.html#l00077">minmax_embedder::Embedder::embed()</a>, <a class="el" href="_circle_execution_plan_8cpp_source.html#l00032">entry()</a>, <a class="el" href="_module_i_o_8cpp_source.html#l00029">opselector::exportModule()</a>, <a class="el" href="_quantizer_8cc_source.html#l00085">onert::odc::Quantizer::quantize()</a>, <a class="el" href="circle-resizer_2src_2_circle_model_8cpp_source.html#l00123">circle_resizer::CircleModel::save()</a>, and <a class="el" href="_record_min_max_8cpp_source.html#l00334">record_minmax::RecordMinMax::saveModel()</a>.</p>
 

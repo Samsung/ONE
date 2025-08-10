@@ -282,47 +282,47 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classlogo_1_1_pass.html#a3076e513d3bf84dafeb158a028725374">logo::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_quantize_dequantize_weights_pass_8cpp_source.html#l00432">432</a> of file <a class="el" href="_quantize_dequantize_weights_pass_8cpp_source.html">QuantizeDequantizeWeightsPass.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  433</span>{</div>
-<div class="line"><span class="lineno">  434</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
-<div class="line"><span class="lineno">  435</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;QuantizeDequantizeWeightsPass Start&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  436</span> </div>
-<div class="line"><span class="lineno">  437</span>  <span class="keyword">auto</span> info_by_name = <a class="code hl_function" href="namespaceluci.html#a22258d95f19cad911e52309c50613e07">layer_info_map</a>(g, _ctx-&gt;layers_info);</div>
-<div class="line"><span class="lineno">  438</span> </div>
-<div class="line"><span class="lineno">  439</span>  <span class="keyword">auto</span> quantize_dtype = [&amp;](<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node) {</div>
-<div class="line"><span class="lineno">  440</span>    <span class="keyword">auto</span> iter = info_by_name.find(node-&gt;name());</div>
-<div class="line"><span class="lineno">  441</span> </div>
-<div class="line"><span class="lineno">  442</span>    <span class="comment">// Return designated quantization dtype</span></div>
-<div class="line"><span class="lineno">  443</span>    <span class="keywordflow">if</span> (iter != info_by_name.end())</div>
-<div class="line"><span class="lineno">  444</span>      <span class="keywordflow">return</span> iter-&gt;second.dtype;</div>
-<div class="line"><span class="lineno">  445</span> </div>
-<div class="line"><span class="lineno">  446</span>    <span class="comment">// Return default quantization dtype</span></div>
-<div class="line"><span class="lineno">  447</span>    <span class="keywordflow">return</span> _ctx-&gt;output_model_dtype;</div>
-<div class="line"><span class="lineno">  448</span>  };</div>
-<div class="line"><span class="lineno">  449</span> </div>
-<div class="line"><span class="lineno">  450</span>  <span class="keyword">auto</span> quantize_granularity = [&amp;](<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node) {</div>
-<div class="line"><span class="lineno">  451</span>    <span class="keyword">auto</span> iter = info_by_name.find(node-&gt;name());</div>
-<div class="line"><span class="lineno">  452</span> </div>
-<div class="line"><span class="lineno">  453</span>    <span class="comment">// Return designated quantization granularity</span></div>
-<div class="line"><span class="lineno">  454</span>    <span class="keywordflow">if</span> (iter != info_by_name.end())</div>
-<div class="line"><span class="lineno">  455</span>      <span class="keywordflow">return</span> iter-&gt;second.granularity;</div>
-<div class="line"><span class="lineno">  456</span> </div>
-<div class="line"><span class="lineno">  457</span>    <span class="comment">// Return default quantization granularity</span></div>
-<div class="line"><span class="lineno">  458</span>    <span class="keywordflow">return</span> _ctx-&gt;granularity;</div>
-<div class="line"><span class="lineno">  459</span>  };</div>
-<div class="line"><span class="lineno">  460</span> </div>
-<div class="line"><span class="lineno">  461</span>  <span class="comment">// Quantize weights</span></div>
-<div class="line"><span class="lineno">  462</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
-<div class="line"><span class="lineno">  463</span>  {</div>
-<div class="line"><span class="lineno">  464</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  465</span>    QuantizeDequantizeWeights qw(_ctx-&gt;input_model_dtype, quantize_dtype(circle_node),</div>
-<div class="line"><span class="lineno">  466</span>                                 quantize_granularity(circle_node));</div>
-<div class="line"><span class="lineno">  467</span>    circle_node-&gt;accept(&amp;qw);</div>
-<div class="line"><span class="lineno">  468</span>  }</div>
-<div class="line"><span class="lineno">  469</span> </div>
-<div class="line"><span class="lineno">  470</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;QuantizeDequantizeWeightsPass End&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><span class="lineno">  471</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// one time run</span></div>
-<div class="line"><span class="lineno">  472</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_quantize_dequantize_weights_pass_8cpp_source.html#l00361">361</a> of file <a class="el" href="_quantize_dequantize_weights_pass_8cpp_source.html">QuantizeDequantizeWeightsPass.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  362</span>{</div>
+<div class="line"><span class="lineno">  363</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
+<div class="line"><span class="lineno">  364</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;QuantizeDequantizeWeightsPass Start&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  365</span> </div>
+<div class="line"><span class="lineno">  366</span>  <span class="keyword">auto</span> info_by_name = <a class="code hl_function" href="namespaceluci.html#a22258d95f19cad911e52309c50613e07">layer_info_map</a>(g, _ctx-&gt;layers_info);</div>
+<div class="line"><span class="lineno">  367</span> </div>
+<div class="line"><span class="lineno">  368</span>  <span class="keyword">auto</span> quantize_dtype = [&amp;](<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node) {</div>
+<div class="line"><span class="lineno">  369</span>    <span class="keyword">auto</span> iter = info_by_name.find(node-&gt;name());</div>
+<div class="line"><span class="lineno">  370</span> </div>
+<div class="line"><span class="lineno">  371</span>    <span class="comment">// Return designated quantization dtype</span></div>
+<div class="line"><span class="lineno">  372</span>    <span class="keywordflow">if</span> (iter != info_by_name.end())</div>
+<div class="line"><span class="lineno">  373</span>      <span class="keywordflow">return</span> iter-&gt;second.dtype;</div>
+<div class="line"><span class="lineno">  374</span> </div>
+<div class="line"><span class="lineno">  375</span>    <span class="comment">// Return default quantization dtype</span></div>
+<div class="line"><span class="lineno">  376</span>    <span class="keywordflow">return</span> _ctx-&gt;output_model_dtype;</div>
+<div class="line"><span class="lineno">  377</span>  };</div>
+<div class="line"><span class="lineno">  378</span> </div>
+<div class="line"><span class="lineno">  379</span>  <span class="keyword">auto</span> quantize_granularity = [&amp;](<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node) {</div>
+<div class="line"><span class="lineno">  380</span>    <span class="keyword">auto</span> iter = info_by_name.find(node-&gt;name());</div>
+<div class="line"><span class="lineno">  381</span> </div>
+<div class="line"><span class="lineno">  382</span>    <span class="comment">// Return designated quantization granularity</span></div>
+<div class="line"><span class="lineno">  383</span>    <span class="keywordflow">if</span> (iter != info_by_name.end())</div>
+<div class="line"><span class="lineno">  384</span>      <span class="keywordflow">return</span> iter-&gt;second.granularity;</div>
+<div class="line"><span class="lineno">  385</span> </div>
+<div class="line"><span class="lineno">  386</span>    <span class="comment">// Return default quantization granularity</span></div>
+<div class="line"><span class="lineno">  387</span>    <span class="keywordflow">return</span> _ctx-&gt;granularity;</div>
+<div class="line"><span class="lineno">  388</span>  };</div>
+<div class="line"><span class="lineno">  389</span> </div>
+<div class="line"><span class="lineno">  390</span>  <span class="comment">// Quantize weights</span></div>
+<div class="line"><span class="lineno">  391</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
+<div class="line"><span class="lineno">  392</span>  {</div>
+<div class="line"><span class="lineno">  393</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  394</span>    QuantizeDequantizeWeights qw(_ctx-&gt;input_model_dtype, quantize_dtype(circle_node),</div>
+<div class="line"><span class="lineno">  395</span>                                 quantize_granularity(circle_node));</div>
+<div class="line"><span class="lineno">  396</span>    circle_node-&gt;accept(&amp;qw);</div>
+<div class="line"><span class="lineno">  397</span>  }</div>
+<div class="line"><span class="lineno">  398</span> </div>
+<div class="line"><span class="lineno">  399</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;QuantizeDequantizeWeightsPass End&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">  400</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// one time run</span></div>
+<div class="line"><span class="lineno">  401</span>}</div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00065">Log.h:65</a></div></div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a7af9b9d1a859db99acb5e3447167b029"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a></div><div class="ttdeci">#define INFO(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00068">Log.h:68</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a7210f017c15aa9fb47b012adefcf31dd"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">GenH5RandomInputs.g</a></div><div class="ttdeci">g</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00062">GenH5RandomInputs.py:62</a></div></div>

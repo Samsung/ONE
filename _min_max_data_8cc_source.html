@@ -197,9 +197,9 @@ $(document).ready(function(){initNavTree('_min_max_data_8cc_source.html',''); in
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="comment">// For each op</span></div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;[index, minmax] : op_minmax)</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  {</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keyword">const</span> uint32_t model_idx = 0;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keyword">const</span> uint32_t subg_idx = index.first.value();</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keyword">const</span> uint32_t op_idx = index.second.value();</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keyword">const</span> uint32_t model_idx = std::get&lt;ir::ModelIndex&gt;(index).value();</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keyword">const</span> uint32_t subg_idx = std::get&lt;ir::SubgraphIndex&gt;(index).value();</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keyword">const</span> uint32_t op_idx = std::get&lt;ir::OperationIndex&gt;(index).value();</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="comment">// Write model/subg/op index</span></div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    std::fwrite(&amp;model_idx, <span class="keyword">sizeof</span>(uint32_t), 1, file);</div>
@@ -213,9 +213,9 @@ $(document).ready(function(){initNavTree('_min_max_data_8cc_source.html',''); in
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="comment">// For each input</span></div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;[index, minmax] : input_minmax)</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  {</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keyword">const</span> uint32_t model_idx = 0;</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keyword">const</span> uint32_t subg_idx = index.first.value();</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keyword">const</span> uint32_t input_idx = index.second.value();</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keyword">const</span> uint32_t model_idx = std::get&lt;ir::ModelIndex&gt;(index).value();</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keyword">const</span> uint32_t subg_idx = std::get&lt;ir::SubgraphIndex&gt;(index).value();</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keyword">const</span> uint32_t input_idx = std::get&lt;ir::IOIndex&gt;(index).value();</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="comment">// Write model/subg/input index</span></div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    std::fwrite(&amp;model_idx, <span class="keyword">sizeof</span>(uint32_t), 1, file);</div>
@@ -234,7 +234,7 @@ $(document).ready(function(){initNavTree('_min_max_data_8cc_source.html',''); in
 <div class="ttc" id="a_min_max_data_8h_html"><div class="ttname"><a href="_min_max_data_8h.html">MinMaxData.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_raw_min_max_dumper_html_a185660dde4ab12637fe4fa20f1eb3c53"><div class="ttname"><a href="classonert_1_1exec_1_1_raw_min_max_dumper.html#a185660dde4ab12637fe4fa20f1eb3c53">onert::exec::RawMinMaxDumper::RawMinMaxDumper</a></div><div class="ttdeci">RawMinMaxDumper(const std::string &amp;filename)</div><div class="ttdef"><b>Definition</b> <a href="_min_max_data_8cc_source.html#l00024">MinMaxData.cc:24</a></div></div>
 <div class="ttc" id="aclassonert_1_1exec_1_1_raw_min_max_dumper_html_a21cbd4cad2190f8faa9c77646b4325b8"><div class="ttname"><a href="classonert_1_1exec_1_1_raw_min_max_dumper.html#a21cbd4cad2190f8faa9c77646b4325b8">onert::exec::RawMinMaxDumper::dump</a></div><div class="ttdeci">void dump(const exec::IOMinMaxMap &amp;in_minmax, const exec::OpMinMaxMap &amp;op_minmax) const</div><div class="ttdoc">Dump input minmax map.</div><div class="ttdef"><b>Definition</b> <a href="_min_max_data_8cc_source.html#l00026">MinMaxData.cc:26</a></div></div>
-<div class="ttc" id="aclassonert_1_1util_1_1_min_max_map_html"><div class="ttname"><a href="classonert_1_1util_1_1_min_max_map.html">onert::util::MinMaxMap&lt; std::pair&lt; ir::SubgraphIndex, ir::IOIndex &gt;, IOMinMaxHash &gt;</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1_min_max_map_html"><div class="ttname"><a href="classonert_1_1util_1_1_min_max_map.html">onert::util::MinMaxMap&lt; std::tuple&lt; ir::ModelIndex, ir::SubgraphIndex, ir::IOIndex &gt;, IOMinMaxHash &gt;</a></div></div>
 <div class="ttc" id="aclassonert_1_1util_1_1_min_max_map_html_a4d4c8e417afa23ac59c6dac46992f688"><div class="ttname"><a href="classonert_1_1util_1_1_min_max_map.html#a4d4c8e417afa23ac59c6dac46992f688">onert::util::MinMaxMap::size</a></div><div class="ttdeci">auto size() const</div><div class="ttdef"><b>Definition</b> <a href="util_2_min_max_map_8h_source.html#l00037">MinMaxMap.h:37</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1exec_html"><div class="ttname"><a href="namespaceonert_1_1exec.html">onert::exec</a></div><div class="ttdef"><b>Definition</b> <a href="_custom_kernel_builder_8h_source.html#l00027">CustomKernelBuilder.h:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

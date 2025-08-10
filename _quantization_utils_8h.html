@@ -91,6 +91,7 @@ $(document).ready(function(){initNavTree('_quantization_utils_8h.html',''); init
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">QuantizationUtils.h File Reference</div></div>
@@ -98,6 +99,7 @@ $(document).ready(function(){initNavTree('_quantization_utils_8h.html',''); init
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h_source.html">luci/IR/CircleNodes.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="loco_2include_2loco_2_i_r_2_tensor_shape_8h_source.html">loco/IR/TensorShape.h</a>&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
 </div>
 <p><a href="_quantization_utils_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -105,6 +107,11 @@ $(document).ready(function(){initNavTree('_quantization_utils_8h.html',''); init
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceluci" id="r_namespaceluci"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html">luci</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a6c6a7d503d9825cee0020945f55af7d5" id="r_a6c6a7d503d9825cee0020945f55af7d5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a6c6a7d503d9825cee0020945f55af7d5">luci::IterFunc</a> = std::function&lt; void(uint32_t *, <a class="el" href="classloco_1_1_tensor_shape.html">loco::TensorShape</a> &amp;, int32_t)&gt;</td></tr>
+<tr class="separator:a6c6a7d503d9825cee0020945f55af7d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -161,6 +168,14 @@ Functions</h2></td></tr>
 <tr class="separator:a167803de156057780a81a39cbc694672"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdb994408bbb18d392a5c4f82570cd9a" id="r_acdb994408bbb18d392a5c4f82570cd9a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#acdb994408bbb18d392a5c4f82570cd9a">luci::is_onnx_quantize_linear</a> (const <a class="el" href="classluci_1_1_circle_custom.html">luci::CircleCustom</a> *node)</td></tr>
 <tr class="separator:acdb994408bbb18d392a5c4f82570cd9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7ff55f3020d5a7c1d80ebb745d45f4f" id="r_ad7ff55f3020d5a7c1d80ebb745d45f4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#ad7ff55f3020d5a7c1d80ebb745d45f4f">luci::cal_minmax_per_channel</a> (<a class="el" href="classluci_1_1_circle_const.html">CircleConst</a> *node, std::vector&lt; float &gt; &amp;min, std::vector&lt; float &gt; &amp;max, int32_t &amp;channel_dim_index)</td></tr>
+<tr class="separator:ad7ff55f3020d5a7c1d80ebb745d45f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67c8a15a6720a64adca3536a2cdd1ce0" id="r_a67c8a15a6720a64adca3536a2cdd1ce0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a67c8a15a6720a64adca3536a2cdd1ce0">luci::iterate_per_channel</a> (<a class="el" href="classluci_1_1_circle_const.html">CircleConst</a> *node, int32_t &amp;channel_dim_index, <a class="el" href="namespaceluci.html#a6c6a7d503d9825cee0020945f55af7d5">IterFunc</a> func)</td></tr>
+<tr class="separator:a67c8a15a6720a64adca3536a2cdd1ce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ad7677ed141667ff29b43558b07df72" id="r_a3ad7677ed141667ff29b43558b07df72"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#a3ad7677ed141667ff29b43558b07df72">luci::iterate_per_channel</a> (<a class="el" href="classluci_1_1_circle_const.html">CircleConst</a> *node, <a class="el" href="namespaceluci.html#a6c6a7d503d9825cee0020945f55af7d5">IterFunc</a> func)</td></tr>
+<tr class="separator:a3ad7677ed141667ff29b43558b07df72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5691e340b01613ed1acbe039f283ff3" id="r_af5691e340b01613ed1acbe039f283ff3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci.html#af5691e340b01613ed1acbe039f283ff3">luci::check_quant_unfriendly_values</a> (const <a class="el" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *node)</td></tr>
+<tr class="separator:af5691e340b01613ed1acbe039f283ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -100,8 +100,9 @@ $(document).ready(function(){initNavTree('classonert_1_1compiler_1_1_compiler_fa
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7218aa142a04bac2c92d0c15832633e9" id="r_a7218aa142a04bac2c92d0c15832633e9"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classonert_1_1compiler_1_1_i_compiler.html">ICompiler</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_compiler_factory.html#a7218aa142a04bac2c92d0c15832633e9">create</a> (const std::shared_ptr&lt; <a class="el" href="classonert_1_1ir_1_1_n_n_pkg.html">ir::NNPkg</a> &gt; &amp;nnpkg, <a class="el" href="structonert_1_1compiler_1_1_compiler_options.html">CompilerOptions</a> *copts, const <a class="el" href="classonert_1_1ir_1_1train_1_1_training_info.html">ir::train::TrainingInfo</a> *training_info=nullptr)</td></tr>
-<tr class="separator:a7218aa142a04bac2c92d0c15832633e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaeb006caed0f91982a1ae9e4e37351a" id="r_abaeb006caed0f91982a1ae9e4e37351a"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classonert_1_1compiler_1_1_i_compiler.html">ICompiler</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_compiler_factory.html#abaeb006caed0f91982a1ae9e4e37351a">create</a> (std::unique_ptr&lt; <a class="el" href="classonert_1_1ir_1_1_n_n_pkg.html">ir::NNPkg</a> &gt; nnpkg, <a class="el" href="structonert_1_1compiler_1_1_compiler_options.html">CompilerOptions</a> *copts, const <a class="el" href="classonert_1_1ir_1_1train_1_1_training_info.html">ir::train::TrainingInfo</a> *training_info=nullptr)</td></tr>
+<tr class="memdesc:abaeb006caed0f91982a1ae9e4e37351a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create ICompiler instance. Ownership of nnpkg is moved to ICompiler instance.  <br /></td></tr>
+<tr class="separator:abaeb006caed0f91982a1ae9e4e37351a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -112,8 +113,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="_compiler_factory_8h_source.html#l00029">29</a> of file <a class="el" href="_compiler_factory_8h_source.html">CompilerFactory.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7218aa142a04bac2c92d0c15832633e9" name="a7218aa142a04bac2c92d0c15832633e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7218aa142a04bac2c92d0c15832633e9">&#9670;&#160;</a></span>create()</h2>
+<a id="abaeb006caed0f91982a1ae9e4e37351a" name="abaeb006caed0f91982a1ae9e4e37351a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abaeb006caed0f91982a1ae9e4e37351a">&#9670;&#160;</a></span>create()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -121,7 +122,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">std::unique_ptr&lt; <a class="el" href="classonert_1_1compiler_1_1_i_compiler.html">ICompiler</a> &gt; onert::compiler::CompilerFactory::create </td>
           <td>(</td>
-          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classonert_1_1ir_1_1_n_n_pkg.html">ir::NNPkg</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classonert_1_1ir_1_1_n_n_pkg.html">ir::NNPkg</a> &gt;&#160;</td>
           <td class="paramname"><em>nnpkg</em>, </td>
         </tr>
         <tr>
@@ -144,17 +145,29 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Create ICompiler instance. Ownership of nnpkg is moved to ICompiler instance. </p>
+<p>Compiler is designed on assumption that caller will not use nnpkg after calling this function. So ownership of nnpkg is moved to ICompiler instance to handle memory overhead of nnpkg. If caller want to maintain nnpkg after calling this function, caller should clone nnpkg before calling this function.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">nnpkg</td><td>Package to compile </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">copts</td><td>Compiler options </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">training_info</td><td>Training info if it is a training model, otherwise nullptr </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>ICompiler instance pointer which owns nnpkg </dd></dl>
+
 <p class="definition">Definition at line <a class="el" href="_compiler_factory_8cc_source.html#l00032">32</a> of file <a class="el" href="_compiler_factory_8cc_source.html">CompilerFactory.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   35</span>{</div>
 <div class="line"><span class="lineno">   36</span>  <span class="comment">// Returing compiler for training</span></div>
 <div class="line"><span class="lineno">   37</span>  <span class="keywordflow">if</span> (training_info)</div>
-<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span> std::make_unique&lt;train::TrainingCompiler&gt;(nnpkg, copts, *training_info);</div>
+<div class="line"><span class="lineno">   38</span>    <span class="keywordflow">return</span> std::make_unique&lt;train::TrainingCompiler&gt;(std::move(nnpkg), copts, *training_info);</div>
 <div class="line"><span class="lineno">   39</span> </div>
 <div class="line"><span class="lineno">   40</span>  <span class="comment">// Returing compiler for inference</span></div>
 <div class="line"><span class="lineno">   41</span>  <span class="keywordflow">if</span> (nnpkg-&gt;model_count() == 1)</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">return</span> std::make_unique&lt;Compiler&gt;(nnpkg, copts);</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">return</span> std::make_unique&lt;Compiler&gt;(std::move(nnpkg), copts);</div>
 <div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">return</span> std::make_unique&lt;MultiModelCompiler&gt;(nnpkg, copts);</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">return</span> std::make_unique&lt;MultiModelCompiler&gt;(std::move(nnpkg), copts);</div>
 <div class="line"><span class="lineno">   45</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="nnfw__session_8cc_source.html#l00429">nnfw_session::prepare()</a>.</p>
