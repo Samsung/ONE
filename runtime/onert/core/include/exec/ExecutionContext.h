@@ -64,6 +64,7 @@ struct ExecutionOptions
 
 struct ExecutionContext
 {
+  ir::SubgraphIndex entry = ir::SubgraphIndex{0};
   IODescription desc;
   bool shape_updated = false; // Require shape inference and buffer size calculation
   ExecutionOptions options;
