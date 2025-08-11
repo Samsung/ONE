@@ -15,6 +15,7 @@
  */
 
 #include "execute/OMTestUtils.h"
+#include "test_models/sum/Int8SumKernel.h"
 #include "test_models/sum/FloatSumKernel.h"
 #include "test_models/sum/NegSumKernel.h"
 
@@ -52,6 +53,13 @@ template <typename T> std::vector<T> checkSumKernel(test_model::TestDataSumBase<
   const size_t num_elements = interpreter.getOutputSizeAt(0);
   std::vector<T> output_data_vector(output_data, output_data + num_elements);
   return output_data_vector;
+}
+
+TEST_F(SumTest, Int8_P)
+{
+  test_model::TestDataInt8Sum test_data_kernel;
+  std::vector<int8_t> output_data_vector = checkSumKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
 TEST_F(SumTest, Float_P)

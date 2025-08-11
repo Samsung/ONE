@@ -117,6 +117,43 @@ OMStatus execute_kernel_CircleSquaredDifference(const OMExecuteArgs &execute_arg
     }
     break;
 #endif // DIS_FLOAT
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+    {
+      // TODO support CWQ
+
+      status = execute::calculateActivationRange(
+        circle::ActivationFunctionType::ActivationFunctionType_NONE, &params.float_activation_min,
+        &params.float_activation_max);
+
+      onert_micro::core::QuantizationParams in1_qparams = {
+        (*input1->quantization()->scale())[0],
+        static_cast<int32_t>((*input1->quantization()->zero_point())[0])};
+      onert_micro::core::QuantizationParams in2_qparams = {
+        (*input2->quantization()->scale())[0],
+        static_cast<int32_t>((*input2->quantization()->zero_point())[0])};
+      onert_micro::core::QuantizationParams out_qparams = {
+        (*output->quantization()->scale())[0],
+        static_cast<int32_t>((*output->quantization()->zero_point())[0])};
+
+      if (need_broadcast)
+      {
+        status = pal::QuantizedBroadcastSquaredDifference4DSlow(
+          params, input1_shape, in1_qparams, core::utils::castInputData<int8_t>(input1_data),
+          input2_shape, in2_qparams, core::utils::castInputData<int8_t>(input2_data), output_shape,
+          out_qparams, core::utils::castOutputData<int8_t>(output_data));
+      }
+      else
+      {
+        status = pal::QuantizedSquaredDifference(
+          params, input1_shape.flatSize(), in1_qparams,
+          core::utils::castInputData<int8_t>(input1_data), in2_qparams,
+          core::utils::castInputData<int8_t>(input2_data), out_qparams,
+          core::utils::castOutputData<int8_t>(output_data));
+      }
+    }
+    break;
+#endif // DIS_QUANT
     default:
     {
       status = UnsupportedType;

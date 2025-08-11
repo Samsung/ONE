@@ -361,7 +361,6 @@ void KernelGenerator::visit(const ir::operation::Squeeze &node)
   // Squeeze is identical to reshape except that it has an optional dimensions input.
   // In addition, optional dims_index is ignored since output tensor already has squeezed shape
   // by freezer and toco
-  // TODO Support multi-layout for frontend and backend
   const auto output_index{node.getOutputs().at(0)};
   const auto input_index{node.getInputs().at(ir::operation::Squeeze::Input::INPUT)};
   const auto dims{node.param().dims};

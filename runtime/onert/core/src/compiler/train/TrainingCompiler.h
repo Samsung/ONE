@@ -42,7 +42,7 @@ public:
    * @param[in] copts         compiler options
    * @param[in] training_info training information
    */
-  explicit TrainingCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts,
+  explicit TrainingCompiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts,
                             const ir::train::TrainingInfo &training_info);
 
   /**

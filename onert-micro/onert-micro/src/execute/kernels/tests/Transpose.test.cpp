@@ -15,7 +15,8 @@
  */
 
 #include "execute/OMTestUtils.h"
-#include "test_models/transpose/TransposeKernel.h"
+#include "test_models/transpose/FloatTransposeKernel.h"
+#include "test_models/transpose/Int8TransposeKernel.h"
 #include "test_models/transpose/NegTransposeKernel.h"
 
 namespace onert_micro
@@ -34,7 +35,7 @@ class TransposeTest : public ::testing::Test
 
 TEST_F(TransposeTest, Float_P)
 {
-  onert_micro::test_model::TestDataTransposeKernel<float> test_data_kernel;
+  onert_micro::test_model::TestDataFloatTransposeKernel test_data_kernel;
   std::vector<float> output_data_vector =
     onert_micro::execute::testing::checkKernel<float>(1, &test_data_kernel);
   EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
@@ -45,6 +46,14 @@ TEST_F(TransposeTest, Perm_wrong_type_NEG)
   onert_micro::test_model::NegTestDataWrongPermTypeTransposeKernel test_data_kernel;
 
   EXPECT_DEATH(checkNEGSISOKernel(&test_data_kernel), "");
+}
+
+TEST_F(TransposeTest, Int8_P)
+{
+  onert_micro::test_model::TestDataInt8TransposeKernel test_data_kernel;
+  std::vector<int8_t> output_data_vector =
+    onert_micro::execute::testing::checkKernel<int8_t>(1, &test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
 } // namespace testing

@@ -37,17 +37,11 @@
 namespace onert::compiler
 {
 
-Compiler::Compiler(const std::shared_ptr<ir::Model> &model, CompilerOptions *copts)
-  : _model{model}, _options{copts}
-{
-  // DO NOTHING
-}
-
-Compiler::Compiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts)
-  : _model{nnpkg->primary_model()}, _options{copts}
+Compiler::Compiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts)
+  : _nnpkg{std::move(nnpkg)}, _options{copts}
 {
   // Use for single model only
-  assert(nnpkg->model_count() == 1);
+  assert(_nnpkg->model_count() == 1);
 }
 
 std::shared_ptr<CompilerArtifact> Compiler::compile(void)
@@ -69,7 +63,10 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
       throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
   }
 
-  if (!_model->hasOnly<ir::Graph>())
+  // Single model
+  const auto model = _nnpkg->primary_model();
+
+  if (!model->hasOnly<ir::Graph>())
   {
     throw std::runtime_error("Compiler can only compile models for inference.");
   }
@@ -77,9 +74,9 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   _options->forceInternalOptions();
   _options->verboseOptions();
 
-  auto custom_kernel_builder = _model->getKernelBuilder();
+  auto custom_kernel_builder = model->getKernelBuilder();
 
-  _model->iterate([&](const ir::SubgraphIndex &, ir::IGraph &graph) {
+  model->iterate([&](const ir::SubgraphIndex &, ir::IGraph &graph) {
     auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
 
     // Mandatory passes
@@ -106,7 +103,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   // Lower: Assign backend
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<compiler::LoweredGraph>> lowered_subgs;
   {
-    _model->iterate([&](const ir::SubgraphIndex &subg_index, ir::IGraph &graph) {
+    model->iterate([&](const ir::SubgraphIndex &subg_index, ir::IGraph &graph) {
       auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
 
       // Lower: Assign backend
@@ -117,7 +114,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
     });
   }
 
-  _model.reset();
+  _nnpkg.reset();
 
   for (const auto &[subg_index, lowered_subg] : lowered_subgs)
   {

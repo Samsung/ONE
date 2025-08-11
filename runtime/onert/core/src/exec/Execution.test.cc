@@ -81,7 +81,7 @@ public:
     auto model = std::make_shared<onert::ir::Model>();
     model->push(onert::ir::SubgraphIndex{0}, graph);
     coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-    onert::compiler::Compiler compiler{model, coptions.get()};
+    onert::compiler::Compiler compiler{std::make_unique<NNPkg>(model), coptions.get()};
     artifact = compiler.compile();
   }
 
@@ -221,7 +221,9 @@ public:
 public:
   void compile()
   {
-    auto compiler = onert::compiler::CompilerFactory::get().create(nnpkg, coptions.get());
+    // Compile copied nnpkg to handle multiple compilation
+    auto compiler = onert::compiler::CompilerFactory::get().create(
+      std::make_unique<onert::ir::NNPkg>(*nnpkg), coptions.get());
     artifact = compiler->compile();
   }
 
@@ -286,7 +288,7 @@ public:
     coptions->input_type.insert_or_assign(IOIndex{0}, TypeInfo(DataType::FLOAT32));
     coptions->input_type.insert_or_assign(IOIndex{1}, TypeInfo(DataType::FLOAT32));
     coptions->output_type.insert_or_assign(IOIndex{0}, TypeInfo(DataType::FLOAT32));
-    onert::compiler::Compiler compiler{model, coptions.get()};
+    onert::compiler::Compiler compiler{std::make_unique<NNPkg>(model), coptions.get()};
     artifact = compiler.compile();
   }
 
@@ -402,7 +404,7 @@ TEST(ExecInstance, twoCompile)
   auto model = std::make_shared<onert::ir::Model>();
   model->push(onert::ir::SubgraphIndex{0}, graph);
   auto coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-  onert::compiler::Compiler compiler{model, coptions.get()};
+  onert::compiler::Compiler compiler{std::make_unique<NNPkg>(model), coptions.get()};
   std::shared_ptr<onert::compiler::CompilerArtifact> artifact = compiler.compile();
   onert::exec::Execution execution2{artifact->_executors};
 

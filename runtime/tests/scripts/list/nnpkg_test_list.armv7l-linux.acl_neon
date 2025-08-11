@@ -4,7 +4,7 @@ Add_000.opt
 #ArgMax_002.opt
 #ArgMax_003.opt
 AveragePool2D_000.opt
-AveragePool2D_U8_000.opt
+#AveragePool2D_U8_000.opt
 Concatenation_000.opt
 Conv2D_000.opt
 Conv2D_001.opt

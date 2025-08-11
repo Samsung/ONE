@@ -40,7 +40,7 @@ public:
    * @param[in] nnpkg NN package to compile
    * @param[in] copts Compiler option for package
    */
-  MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg, CompilerOptions *copts);
+  MultiModelCompiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts);
 
   /**
    * @brief Destroy the MultiModelCompiler object
@@ -59,7 +59,7 @@ private:
   CompilerOptions optionForSingleModel(const ir::ModelIndex &model_index);
 
 private:
-  std::shared_ptr<ir::NNPkg> _nnpkg;
+  std::unique_ptr<ir::NNPkg> _nnpkg;
   CompilerOptions *_options;
 };
 

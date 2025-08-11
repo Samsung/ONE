@@ -45,6 +45,36 @@ BroadcastSquaredDifference4DSlow(const core::BinaryArithmeticBroadcastParams &pa
   return Ok;
 }
 
+template <typename T>
+OMStatus QuantizedBroadcastSquaredDifference4DSlow(
+  const core::BinaryArithmeticBroadcastParams &params, const core::OMRuntimeShape &input1_shape,
+  const onert_micro::core::QuantizationParams &input1_qparams, const T *input1_data,
+  const core::OMRuntimeShape &input2_shape,
+  const onert_micro::core::QuantizationParams &input2_qparams, const T *input2_data,
+  const core::OMRuntimeShape &output_shape,
+  const onert_micro::core::QuantizationParams &output_qparams, T *output_data)
+{
+  QuantizedBroadcastArithmeticOp4DSlow<T, SquaredDifferenceFn<float>>(
+    params, input1_shape, input1_qparams, input1_data, input2_shape, input2_qparams, input2_data,
+    output_shape, output_qparams, output_data);
+  return Ok;
+}
+
+template <typename T>
+OMStatus QuantizedSquaredDifference(
+  const core::BinaryArithmeticBroadcastParams &params, const int flat_size,
+  const onert_micro::core::QuantizationParams &input1_qparams, const T *input1_data,
+  const onert_micro::core::QuantizationParams &input2_qparams, const T *input2_data,
+  const onert_micro::core::QuantizationParams &output_qparams, T *output_data)
+{
+
+  QuantizedArithmeticOp<T, SquaredDifferenceFn<float>>(params, flat_size, input1_qparams,
+                                                       input1_data, input2_qparams, input2_data,
+                                                       output_qparams, output_data);
+
+  return Ok;
+}
+
 } // namespace pal
 } // namespace execute
 } // namespace onert_micro

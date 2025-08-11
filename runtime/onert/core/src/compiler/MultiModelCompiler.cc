@@ -37,9 +37,8 @@
 namespace onert::compiler
 {
 
-MultiModelCompiler::MultiModelCompiler(const std::shared_ptr<ir::NNPkg> &nnpkg,
-                                       CompilerOptions *copts)
-  : _nnpkg{nnpkg}, _options{copts}
+MultiModelCompiler::MultiModelCompiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts)
+  : _nnpkg{std::move(nnpkg)}, _options{copts}
 {
   // DO NOTHING
 }

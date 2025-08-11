@@ -723,11 +723,23 @@ void DynamicShapeInferer::visit(const ir::operation::Pad &op)
   assert(output->buffer() != nullptr);
 }
 
-void DynamicShapeInferer::visit(const ir::operation::Permute & /* op */)
+void DynamicShapeInferer::visit(const ir::operation::Permute &op)
 {
-  // NOTE Permute is a special operation which does not do shape inference before the actual
-  // function(kernel) execution. Shape inference and output allocation will be done in the kernel
-  // on-the-fly, as it must support inter-backend inference/allocation.
+  const auto output_ind = op.getOutputs().at(0);
+  const auto &output = _tensor_registry->getITensor(output_ind);
+
+  const auto input_ind = op.getInputs().at(0);
+  const auto &input = _tensor_registry->getITensor(input_ind);
+
+  // check if input and output are not dynamic
+  if ((!input->is_dynamic()) && (!output->is_dynamic()))
+    return;
+
+  ir::Shape input_shape = input->getShape();
+  const auto &output_shape = convertShape(input_shape, op.getPermuteType());
+
+  output->applyShape(output_shape);
+  assert(output->buffer() != nullptr);
 }
 
 void DynamicShapeInferer::visit(const ir::operation::Pool2D &op)

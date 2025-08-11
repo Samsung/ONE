@@ -13,12 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "core/OMUtils.h"
 #include "core/OMCustomRuntimeData.h"
-
 #include "execute/OMKernelExecutionBuilder.h"
 #include "execute/OMRuntimeKernel.h"
-#include "execute/OMUtils.h"
 
 #include "OMStatus.h"
 #include "PALReduceCommon.h"
@@ -36,7 +33,7 @@ template <typename T> OMStatus CircleMean(OMRuntimeKernel &rt_kernel)
 {
   core::OMReduceDataContext<T> ctx(rt_kernel);
 
-  bool is_ok = pal::Mean<T>(ctx);
+  bool is_ok = pal::Reduce<T, pal::ReduceSumFn>(ctx, true);
   if (!is_ok)
   {
     return UnknownError;
