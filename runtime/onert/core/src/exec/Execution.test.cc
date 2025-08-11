@@ -16,7 +16,6 @@
 
 #include "exec/Execution.h"
 
-#include "../compiler/Compiler.h"
 #include "compiler/CompilerFactory.h"
 #include "ir/Graph.h"
 #include "ir/operation/BinaryArithmetic.h"
@@ -81,8 +80,9 @@ public:
     auto model = std::make_shared<onert::ir::Model>();
     model->push(onert::ir::SubgraphIndex{0}, graph);
     coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-    onert::compiler::Compiler compiler{std::make_unique<NNPkg>(model), coptions.get()};
-    artifact = compiler.compile();
+    auto compiler = onert::compiler::CompilerFactory::get().create(std::make_unique<NNPkg>(model),
+                                                                   coptions.get());
+    artifact = compiler->compile();
   }
 
 public:
@@ -288,8 +288,9 @@ public:
     coptions->input_type.insert_or_assign(IOIndex{0}, TypeInfo(DataType::FLOAT32));
     coptions->input_type.insert_or_assign(IOIndex{1}, TypeInfo(DataType::FLOAT32));
     coptions->output_type.insert_or_assign(IOIndex{0}, TypeInfo(DataType::FLOAT32));
-    onert::compiler::Compiler compiler{std::make_unique<NNPkg>(model), coptions.get()};
-    artifact = compiler.compile();
+    auto compiler = onert::compiler::CompilerFactory::get().create(std::make_unique<NNPkg>(model),
+                                                                   coptions.get());
+    artifact = compiler->compile();
   }
 
 public:
@@ -404,8 +405,9 @@ TEST(ExecInstance, twoCompile)
   auto model = std::make_shared<onert::ir::Model>();
   model->push(onert::ir::SubgraphIndex{0}, graph);
   auto coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-  onert::compiler::Compiler compiler{std::make_unique<NNPkg>(model), coptions.get()};
-  std::shared_ptr<onert::compiler::CompilerArtifact> artifact = compiler.compile();
+  auto compiler =
+    onert::compiler::CompilerFactory::get().create(std::make_unique<NNPkg>(model), coptions.get());
+  auto artifact = compiler->compile();
   onert::exec::Execution execution2{artifact->_executors};
 
   const float exe2_input1_buffer[4] = {2, 1, -2, 0};
