@@ -86,7 +86,13 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
     // Mode check
     // TODO handle option for each model
     if (_options->he_profiling_mode)
-      throw std::runtime_error("NYI: Profiling mode for multiple model is not supported yet");
+    {
+      if (!_options->he_scheduler)
+        throw std::runtime_error("Heterogeneous scheduler must be enabled during profiling.");
+
+      if (_options->executor != "Dataflow")
+        throw std::runtime_error("Profiling mode works only with 'Dataflow' executor");
+    }
 
     _options->forceInternalOptions();
     _options->verboseOptions();
