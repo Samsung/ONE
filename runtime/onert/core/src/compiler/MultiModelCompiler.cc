@@ -26,6 +26,7 @@
 #include "pass/UnusedOperandEliminationPass.h"
 #include "../dumper/dot/DotDumper.h"
 #include "../exec/MultiModelExecutors.h"
+#include "../exec/SingleModelExecutors.h"
 #include "../ir/OperationDumper.h"
 #include "../ir/verifier/Verifier.h"
 
@@ -223,7 +224,13 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
   /*************************************************************
    *  Backend independent analysis & optimization phase finished
    *************************************************************/
-  auto executors = std::make_shared<exec::MultiModelExecutors>(std::move(model_edges));
+  std::shared_ptr<exec::IExecutors> executors = nullptr;
+  const auto &pkg_outputs = model_edges->pkg_outputs;
+  if (model_count == 1)
+    executors = std::make_shared<exec::SingleModelExecutors>();
+  else
+    executors = std::make_shared<exec::MultiModelExecutors>(std::move(model_edges));
+
   for (auto &&pair : lowered_subgs)
   {
     auto const &model_index = pair.first;
@@ -247,7 +254,6 @@ std::shared_ptr<CompilerArtifact> MultiModelCompiler::compile(void)
       args.custom_kernel_builder = custom_kernel_builders[model_index];
       if (_options->internal_output_alloc)
       {
-        const auto &pkg_outputs = _nnpkg->model_edges().pkg_outputs;
         for (const auto &desc : pkg_outputs)
         {
           // Only outputs of this entry
