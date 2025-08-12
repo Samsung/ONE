@@ -53,7 +53,7 @@ public:
    *
    * @return std::shared_ptr<CompilerArtifact> MultiModelExecutors as a result of compilation
    */
-  std::shared_ptr<CompilerArtifact> compile(void);
+  std::unique_ptr<CompilerArtifact> compile(void);
 
 private:
   CompilerOptions optionForSingleModel(const ir::ModelIndex &model_index);
