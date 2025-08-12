@@ -36,9 +36,9 @@ namespace pal
 // Notice that original code assumes that RHS is transposed by default from caller, which is not
 // true here.
 template <typename T, typename AccumT>
-inline void BatchMatMul(const OMRuntimeShape &lhs_shape, const T *lhs_data,
-                        const OMRuntimeShape &rhs_shape, const T *rhs_data,
-                        const OMRuntimeShape &output_shape, T *output_data)
+inline OMStatus BatchMatMul(const OMRuntimeShape &lhs_shape, const T *lhs_data,
+                            const OMRuntimeShape &rhs_shape, const T *rhs_data,
+                            const OMRuntimeShape &output_shape, T *output_data)
 {
 
   const OMRuntimeShape extended_lhs_shape = OMRuntimeShape::extendedShape(5, lhs_shape);
@@ -104,6 +104,8 @@ inline void BatchMatMul(const OMRuntimeShape &lhs_shape, const T *lhs_data,
       }
     }
   }
+
+  return Ok;
 }
 
 } // namespace pal
