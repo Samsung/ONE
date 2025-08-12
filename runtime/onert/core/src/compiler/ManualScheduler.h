@@ -17,7 +17,7 @@
 #ifndef __ONERT_CORE_COMPILER_MANUAL_SCHEDULER_H__
 #define __ONERT_CORE_COMPILER_MANUAL_SCHEDULER_H__
 
-#include "Compiler.h"
+#include "compiler/CompilerOptions.h"
 #include "IScheduler.h"
 
 namespace onert::compiler
