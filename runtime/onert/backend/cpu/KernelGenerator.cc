@@ -60,6 +60,7 @@
 #include "ops/SplitLayer.h"
 #include "ops/SplitVLayer.h"
 #include "ops/TileLayer.h"
+#include "ops/TopKV2Layer.h"
 #include "ops/TransposeLayer.h"
 #include "ops/UnpackLayer.h"
 #include "ops/SquaredDiffLayer.h"
@@ -934,6 +935,27 @@ void KernelGenerator::visit(const ir::operation::Shape &node)
   auto fn = std::make_unique<ops::ShapeLayer>();
 
   fn->configure(ifm_tensor, ofm_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void KernelGenerator::visit(const ir::operation::TopKV2 &node)
+{
+  const auto outputValues_index{node.getOutputs().at(ir::operation::TopKV2::Output::OUTPUT_VALUES)};
+  const auto outputIndices_index{
+    node.getOutputs().at(ir::operation::TopKV2::Output::OUTPUT_INDICES)};
+
+  const auto inputData_index{node.getInputs().at(ir::operation::TopKV2::Input::INPUT)};
+
+  const auto k = node.param().k;
+
+  auto values_tensor = _tensor_reg->getPortableTensor(outputValues_index);
+  auto indices_tensor = _tensor_reg->getPortableTensor(outputIndices_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(inputData_index);
+
+  auto fn = std::make_unique<ops::TopKV2Layer>();
+
+  fn->configure(input_tensor, values_tensor, indices_tensor, k);
 
   _return_fn = std::move(fn);
 }

@@ -577,6 +577,15 @@ void OperationValidator::visit(const operation::StridedSlice &node)
   OP_REQUIRES(isSameType(output_index, input_index));
 }
 
+void OperationValidator::visit(const operation::TopKV2 &node)
+{
+  const auto output_value_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(operation::TopKV2::Input::INPUT)};
+
+  OP_REQUIRES(isSameType(output_value_index, input_index));
+  OP_REQUIRES(node.param().k >= 0);
+}
+
 void OperationValidator::visit(const operation::Transpose &node)
 {
   const auto output_index{node.getOutputs().at(0)};
