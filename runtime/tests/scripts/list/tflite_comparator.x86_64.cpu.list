@@ -52,5 +52,6 @@ strided_slice
 sub
 tanh
 tile
+topk_v2
 transpose
 zeros_like

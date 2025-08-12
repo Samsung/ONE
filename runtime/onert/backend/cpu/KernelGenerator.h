@@ -90,6 +90,7 @@ public:
   void visit(const ir::operation::Squeeze &) override;
   void visit(const ir::operation::StatelessRandomUniform &) override;
   void visit(const ir::operation::StridedSlice &) override;
+  void visit(const ir::operation::TopKV2 &) override;
   void visit(const ir::operation::Tile &) override;
   void visit(const ir::operation::Transpose &) override;
   void visit(const ir::operation::Unpack &) override;

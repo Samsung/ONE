@@ -174,6 +174,7 @@ private:
   void loadSqueeze(const Operator *op, ir::Graph &subg);
   void loadStridedSlice(const Operator *op, ir::Graph &subg);
   void loadTransposeConv(const Operator *op, ir::Graph &subg);
+  void loadTopKV2(const Operator *op, ir::Graph &subg);
   void loadUnidirectionalSequenceLSTM(const Operator *op, ir::Graph &subg);
   void loadUnpack(const Operator *op, ir::Graph &subg);
   void loadWhile(const Operator *op, ir::Graph &subg);
@@ -1174,6 +1175,32 @@ void BaseLoader<LoaderDomain>::loadStridedSlice(const Operator *op, ir::Graph &s
 }
 
 template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadTopKV2(const Operator *op, ir::Graph &subg)
+{
+  ir::operation::TopKV2::Param param;
+
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+  // Circle & TFLite model set k as 2nd input, but internally IR uses k as param
+  const int32_t input_index = (*op->inputs())[0];
+  const int32_t k_index = (*op->inputs())[1];
+
+  // Get k value - assume that operand is already loaded to graph
+  const auto &k_operand = subg.operands().at(tensorIdxToOperandIdx(k_index));
+  if (!k_operand.isConstant())
+    throw std::runtime_error{"TopKV2: k tensor is not constant."};
+  const int32_t k = k_operand.template asScalar<int32_t>();
+  param.k = k;
+
+  inputs.append(tensorIdxToOperandIdx(input_index));
+  for (const std::int32_t idx : *op->outputs())
+  {
+    outputs.append(tensorIdxToOperandIdx(idx));
+  }
+  subg.addOperation(std::make_unique<ir::operation::TopKV2>(inputs, outputs, param));
+}
+
+template <typename LoaderDomain>
 void BaseLoader<LoaderDomain>::loadUnpack(const Operator *op, ir::Graph &subg)
 {
   ir::operation::Unpack::Param param;
@@ -1654,6 +1681,9 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
       return;
     case BuiltinOperator::BuiltinOperator_DYNAMIC_UPDATE_SLICE:
       loadOperationTo<ir::operation::DynamicUpdateSlice>(op, subg);
+      return;
+    case BuiltinOperator::BuiltinOperator_TOPK_V2:
+      loadTopKV2(op, subg);
       return;
     default:
       throw std::runtime_error(
