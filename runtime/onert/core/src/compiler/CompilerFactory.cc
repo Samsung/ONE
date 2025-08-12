@@ -16,7 +16,7 @@
 
 #include "compiler/CompilerFactory.h"
 
-#include "MultiModelCompiler.h"
+#include "Compiler.h"
 #include "train/TrainingCompiler.h"
 
 namespace onert::compiler
@@ -37,7 +37,7 @@ std::unique_ptr<ICompiler> CompilerFactory::create(std::unique_ptr<ir::NNPkg> nn
     return std::make_unique<train::TrainingCompiler>(std::move(nnpkg), copts, *training_info);
 
   // Returing compiler for inference
-  return std::make_unique<MultiModelCompiler>(std::move(nnpkg), copts);
+  return std::make_unique<Compiler>(std::move(nnpkg), copts);
 }
 
 } // namespace onert::compiler

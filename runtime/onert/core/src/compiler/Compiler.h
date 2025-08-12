@@ -15,12 +15,12 @@
  */
 
 /**
- * @file  MultiModelCompiler.h
- * @brief This file contains MultiModelCompiler class to define and run compilation phase
+ * @file  Compiler.h
+ * @brief This file contains Compiler class to define and run compilation phase
  */
 
-#ifndef __ONERT_COMPILER_MULTI_MODEL_COMPILER_H__
-#define __ONERT_COMPILER_MULTI_MODEL_COMPILER_H__
+#ifndef __ONERT_COMPILER_COMPILER_H__
+#define __ONERT_COMPILER_COMPILER_H__
 
 #include "compiler/CompilerOptions.h"
 #include "compiler/ICompiler.h"
@@ -32,7 +32,7 @@ namespace onert::compiler
 /**
  * @brief Class to compile NN package
  */
-class MultiModelCompiler final : public ICompiler
+class Compiler final : public ICompiler
 {
 public:
   /**
@@ -40,12 +40,12 @@ public:
    * @param[in] nnpkg NN package to compile
    * @param[in] copts Compiler option for package
    */
-  MultiModelCompiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts);
+  Compiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts);
 
   /**
-   * @brief Destroy the MultiModelCompiler object
+   * @brief Destroy the Compiler object
    */
-  ~MultiModelCompiler() = default;
+  ~Compiler() = default;
 
 public:
   /**
@@ -65,4 +65,4 @@ private:
 
 } // namespace onert::compiler
 
-#endif // __ONERT_COMPILER_MULTI_MODEL_COMPILER_H__
+#endif // __ONERT_COMPILER_COMPILER_H__
