@@ -43,3 +43,11 @@ externals/
 
 # Intermediate code for runtime build (refer nnfw.spec file's nncc_workspace)
 build/nncc/
+
+# circle-mlir Docker image
+/workdir/
+
+# circle-mlir externals, build and testing
+circle-mlir/externals/
+circle-mlir/build/
+circle-mlir/lib/tools-test/
