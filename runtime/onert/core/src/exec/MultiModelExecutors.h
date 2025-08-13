@@ -49,9 +49,8 @@ class MultiModelExecutors : public IExecutors
 public:
   MultiModelExecutors(void) = delete;
   MultiModelExecutors(std::unique_ptr<ir::ModelEdges> model_edges)
-    : _executors{}, _model_edges{std::move(model_edges)}, _edge_quant_layers{},
-      _edge_quant_tensors{}, _edge_tensors{}, _is_created_edge_quant_layers{false},
-      _pkg_input_tensors{}, _pkg_output_tensors{}
+    : _executors{}, _model_edges{std::move(model_edges)}, _edge_tensors{},
+      _is_created_edge_tensors{false}, _pkg_input_tensors{}, _pkg_output_tensors{}
   {
     for (const auto &edge : _model_edges->edges)
     {
@@ -85,7 +84,7 @@ public:
 
 private:
   void checkSupportedMultimodel() const;
-  void createEdgeQuantLayers();
+  void createEdgeTensors();
   void CreatePkgIOTensors(const IODescription &desc);
   uint16_t modelCount() const;
 
@@ -96,26 +95,6 @@ private:
   // NOTE _model_edges may use different struct type for executor implementation
   std::unique_ptr<ir::ModelEdges> _model_edges;
   std::unordered_map<ir::IODesc, std::vector<ir::IODesc>> _edge_map;
-
-  /**
-   * @brief Type-aware quantization layers for edges between executors
-   *
-   */
-  // TODO Move variables related to type-aware quantization for edges into compilation stage
-  // TODO Replace PermuteLayer with backend::builtin::kernel::PermuteLayer
-  std::unordered_map<std::pair<ir::ModelIndex, ir::SubgraphIndex>, std::unique_ptr<PermuteLayer>>
-    _edge_quant_layers;
-
-  /**
-   * @brief Tensors for type-aware quantization of edges
-   *        Key: `to` IODesc, Value: EdgeTensor
-   */
-  //
-  // Q: Why is Key `to` IODesc
-  // A: these tensors are currently created depending on the type of `to`
-  // TODO Unify tensors with the same `from` tensor and same type
-  // NOTE The incomplete type 'EdgeTensor' cannot be declared as unique_ptr.
-  std::unordered_map<ir::IODesc, std::shared_ptr<EdgeTensor>> _edge_quant_tensors;
 
   /**
    * @brief Tensors for edges between executors that are not related to type-aware quantization
@@ -129,9 +108,8 @@ private:
    * @brief Whether type-aware quantization layers for edges between executors are created
    *
    */
-  // TODO Remove this member after the creation of type-aware quantization layers for edges
-  //      is moved into compilation stage
-  bool _is_created_edge_quant_layers;
+  // TODO Remove this member after the creation of edges tensors is moved into compilation stage
+  bool _is_created_edge_tensors;
 
   // IOTensors for user buffer
   std::unordered_map<ir::IODesc, std::unique_ptr<backend::builtin::UserTensor>> _pkg_input_tensors;

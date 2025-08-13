@@ -72,6 +72,25 @@ CompilerOptions Compiler::optionForSingleModel(const ir::ModelIndex &model_index
   option_for_model(_options->output_type, model_opts.output_type, model_index,
                    [this](uint32_t idx) { return _nnpkg->output(idx); });
 
+  // Pass input type info for edges because edge's from_tensor info can be different
+  // with its to_tensor info.
+  // Permutation node will be inserted on PermutationIOPass.
+  // Optimization pass will remove permutation node if it's unnecessary
+  // TODO Optimize if tensors for type-aware quantization unified
+  // for the same `from` tensor and same type
+  for (const auto &[from, to] : _nnpkg->model_edges().edges)
+  {
+    const auto &[from_model, from_subg, from_io] = from;
+    const auto &[to_model, to_subg, to_io] = to;
+    if (to_model == model_index)
+    {
+      const auto from_index =
+        _nnpkg->model(from_model)->primary_subgraph()->getOutputs().at(from_io);
+      model_opts.input_type.insert_or_assign(
+        to_io, _nnpkg->model(from_model)->primary_subgraph()->operands().at(from_index).typeInfo());
+    }
+  }
+
   return model_opts;
 }
 
