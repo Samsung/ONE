@@ -75,7 +75,7 @@ CompilerOptions Compiler::optionForSingleModel(const ir::ModelIndex &model_index
   return model_opts;
 }
 
-std::shared_ptr<CompilerArtifact> Compiler::compile(void)
+std::unique_ptr<CompilerArtifact> Compiler::compile(void)
 {
   /***************************************************
    * Prepare compilation phase
@@ -275,7 +275,7 @@ std::shared_ptr<CompilerArtifact> Compiler::compile(void)
   /********************************
    * Code generation phase finished
    ********************************/
-  return std::make_shared<CompilerArtifact>(executors, std::move(tracing_ctx));
+  return std::make_unique<CompilerArtifact>(executors, std::move(tracing_ctx));
 }
 
 } // namespace onert::compiler

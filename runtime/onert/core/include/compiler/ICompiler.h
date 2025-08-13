@@ -50,9 +50,9 @@ public:
 
   /**
    * @brief   Do compilation
-   * @return  std::shared_ptr<CompilerArtifact> Executors as a result of compilation
+   * @return  std::unique_ptr<CompilerArtifact> Executors as a result of compilation
    */
-  virtual std::shared_ptr<CompilerArtifact> compile(void) = 0;
+  virtual std::unique_ptr<CompilerArtifact> compile(void) = 0;
 };
 
 } // namespace onert::compiler

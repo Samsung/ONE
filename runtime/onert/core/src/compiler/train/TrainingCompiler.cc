@@ -52,7 +52,7 @@ TrainingCompiler::TrainingCompiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOpt
     throw std::runtime_error("TrainingCompiler does not support multiple subgraphs yet");
 }
 
-std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
+std::unique_ptr<CompilerArtifact> TrainingCompiler::compile(void)
 {
   /***************************************************
    * Prepare compilation phase
@@ -295,7 +295,7 @@ std::shared_ptr<CompilerArtifact> TrainingCompiler::compile(void)
   /********************************
    * Code generation phase finished
    ********************************/
-  return std::make_shared<CompilerArtifact>(executors, std::move(tracing_ctx));
+  return std::make_unique<CompilerArtifact>(executors, std::move(tracing_ctx));
 }
 
 } // namespace onert::compiler::train
