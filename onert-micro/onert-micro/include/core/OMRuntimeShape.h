@@ -162,6 +162,16 @@ public:
     _dims[i] = val;
   }
 
+  bool hasZeroSizeDims() const
+  {
+    auto it = _dims.begin();
+
+    return std::any_of(it, it + _size, [](auto dim)
+    {
+      return dim == 0;
+    });
+  }
+
   void resize(size_t dimensions_count)
   {
     assert(dimensions_count <= kMaxDimsCount);

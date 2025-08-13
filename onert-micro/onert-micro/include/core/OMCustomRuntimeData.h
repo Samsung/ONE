@@ -30,10 +30,12 @@ namespace core
 template <typename T>
 class OMReduceDataContext : public OMDataContext<T, OMAxisContextMixin<1>>
 {
+  using DataContext = OMDataContext<T, OMAxisContextMixin<1>>;
+
 public:
   template <class RuntimeKernel>
   explicit OMReduceDataContext(RuntimeKernel &rt_kernel)
-    : OMDataContext<T, OMAxisContextMixin<1>>(rt_kernel)
+    : DataContext(rt_kernel)
   {}
 
   ~OMReduceDataContext() override = default;

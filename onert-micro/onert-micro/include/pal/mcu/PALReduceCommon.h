@@ -20,14 +20,15 @@
 
 #include "PALUtils.h"
 #include "core/OMCustomRuntimeData.h"
+#include "core/OMTypeTraits.h"
 
-using namespace onert_micro::core;
+#include <unordered_map>
 
-namespace onert_micro
-{
-namespace execute
-{
-namespace pal
+namespace core = onert_micro::core;
+
+using core::type_traits::IsQuantized;
+
+namespace onert_micro::execute::pal
 {
 
 // clang-format off
@@ -37,22 +38,9 @@ namespace pal
 template <class T>
 struct ReduceSumFn
 {
-  constexpr static T InitValue = T(0);
-
-  T operator()(const T current, const T in)
+  void operator()(T& total, const T value)
   {
-    return in + current;
-  }
-};
-
-template <>
-struct ReduceSumFn<int8_t>
-{
-  constexpr static float InitValue = 0.f;
-
-  float operator()(const float current, const float in)
-  {
-    return in + current;
+    total += value;
   }
 };
 
@@ -61,193 +49,84 @@ struct ReduceSumFn<int8_t>
 template <typename T>
 struct ReduceProductFn
 {
-  constexpr static T InitValue = T(1);
-
-  T operator()(const T current, const T in)
+  void operator()(T& total, const T value)
   {
-    return in * current;
-  }
-};
-
-template <>
-struct ReduceProductFn<int8_t>
-{
-  constexpr static float InitValue = 1.f;
-
-  float operator()(const float current, const float in)
-  {
-    return in * current;
+    total *= value;
   }
 };
 
 // ------------------------------------------------------------------------------------------------
 
-// clang-format on
-
-// This method parses the input 'axis' to remove duplicates and handle negative
-// values, and returns a valid 'out_axis'
-inline bool resolveAxis(const int num_dims, const int *axis, const int64_t num_axis, int *out_axis,
-                        int *out_num_axis)
-{
-  *out_num_axis = 0; // Just in case.
-  // Short-circuit axis resolution for scalars; the axis will go unused.
-  if (num_dims == 0)
-  {
-    return true;
-  }
-  // o(n^2) is fine since out_num_axis should be really small, mostly <= 4
-  for (int64_t idx = 0; idx < num_axis; ++idx)
-  {
-    // Handle negative index. A positive index 'p_idx' can be represented as a
-    // negative index 'n_idx' as: n_idx = p_idx-num_dims
-    // eg: For num_dims=3, [0, 1, 2] is the same as [-3, -2, -1]  */
-    int current = axis[idx] < 0 ? (axis[idx] + num_dims) : axis[idx];
-    if (current < 0 || current >= num_dims)
-    {
-      return false;
-    }
-    bool is_dup = false;
-    for (int j = 0; j < *out_num_axis; ++j)
-    {
-      if (out_axis[j] == current)
-      {
-        is_dup = true;
-        break;
-      }
-    }
-    if (!is_dup)
-    {
-      if (*out_num_axis > 1)
-      {
-        return false;
-      }
-      out_axis[*out_num_axis] = current;
-      *out_num_axis += 1;
-    }
-  }
-  return true;
-}
-
-// ------------------------------------------------------------------------------------------------
-
-// Old version (used in Sum and ReduceProd), to be replaced with the new one (see below).
-// Computes the generic value (i.e., sum/max/min/prod) of elements across
-// dimensions given in axis. It needs to pass in init_value and reducer.
-template <typename T>
-inline bool ReduceGeneric(const T *input_data, const int *input_dims, const int input_num_dims,
-                          T *output_data, const int *axis, const int64_t num_axis_dimensions,
-                          T init_value, const int output_flat_size, T reducer(const T, const T))
-{
-  // Return early when input shape has zero dim.
-  for (int i = 0; i < input_num_dims; ++i)
-  {
-    if (input_dims[i] == 0)
-      return false;
-  }
-
-  for (size_t idx = 0; idx < output_flat_size; ++idx)
-  {
-    output_data[idx] = init_value;
-  }
-
-  // Resolve axis.
-  int num_resolved_axis = 0;
-  int resolved_axis[2];
-
-  if (!resolveAxis(input_num_dims, axis, num_axis_dimensions, resolved_axis, &num_resolved_axis))
-  {
-    return false;
-  }
-
-  int temp_index[5];
-  // Reset input iterator.
-  for (int idx = 0; idx < input_num_dims; ++idx)
-  {
-    temp_index[idx] = 0;
-  }
-  // Iterate through input_data.
-  do
-  {
-    size_t input_offset = reducedOutputOffset(input_num_dims, input_dims, temp_index, 0, nullptr);
-    size_t output_offset =
-      reducedOutputOffset(input_num_dims, input_dims, temp_index, num_resolved_axis, axis);
-    output_data[output_offset] = reducer(output_data[output_offset], input_data[input_offset]);
-  } while (nextIndex(input_num_dims, input_dims, temp_index));
-
-  return true;
-}
-
-// This method expects that output_data has been initialized.
-template <typename T>
-inline bool reduceSumImpl(const T *input_data, const int *input_dims, const int input_num_dims,
-                          T *output_data, const int *axis, const int num_axis,
-                          const int num_outputs)
-{
-  return ReduceGeneric<T>(input_data, input_dims, input_num_dims, output_data, axis, num_axis,
-                          static_cast<T>(0), num_outputs,
-                          [](const T current, const T in) -> T { return in + current; });
-}
-
-// ------------------------------------------------------------------------------------------------
-
-// New version (used in Mean).
 template <typename T, template <typename> class ReduceFn>
-bool ReduceGeneric(OMReduceDataContext<T> &ctx)
+class Reducer
 {
-  auto &input = ctx.Input();
-  auto &input_data = input.Data();
-  auto input_dims = input.Dims();
-  auto input_num_dims = input.DimsCount();
+  using ValueType = std::conditional_t<IsQuantized<T>, float, T>;
 
-  auto &output = ctx.Output();
-  auto &output_data = output.Data();
-  auto output_flat_size = output.ShapeFlatSize();
+  core::OMInputContext<T> &_input_ctx;
+  core::OMOutputContext<T> &_output_ctx;
+  core::OMAxisContext<1> &_axis_ctx;
 
-  auto &axis_ctx = ctx.Axis();
-  auto &axis = axis_ctx.Data();
-  auto num_axis_dimensions = axis_ctx.DimsCount();
+  T _init_value;
+  ReduceFn<ValueType> _reducer;
 
-  // Return early when input shape has zero dim.
-  for (size_t i = 0; i < input_num_dims; ++i)
+  std::unordered_map<size_t, int> _resolved_axis = {};
+  std::unordered_map<size_t, ValueType> _accumulator = {};
+
+public:
+  explicit Reducer(core::OMReduceDataContext<T> &ctx, T init_value)
+    : _input_ctx(ctx.Input())
+    , _output_ctx(ctx.Output())
+    , _axis_ctx(ctx.Axis())
+    , _init_value(init_value)
+  {}
+
+public:
+  bool Mean()
   {
-    if (input_dims[i] == 0)
+    return ReduceImpl(true);
+  }
+
+  bool Reduce()
+  {
+    return ReduceImpl();
+  }
+
+private:
+  size_t IndexOffset(const int32_t *index, const int32_t num_axis, const int32_t *axis)
+  {
+    return reducedOutputOffset(_input_ctx.DimsCount(), _input_ctx.Dims(), index, num_axis, axis);
+  }
+
+private:
+  bool ReduceImpl(bool mean = false);
+
+  bool ResolveAxis();
+  T ResolvedAxisLength();
+};
+
+// ------------------------------------------------------------------------------------------------
+
+template <typename T, template <typename> class ReduceFn>
+bool Reducer<T, ReduceFn>::ResolveAxis()
+{
+  size_t num_resolved_axis = 0;
+  _resolved_axis.clear();
+
+  if (_input_ctx.IsScalar())
+    return 0;
+
+  for (size_t i = 0; i < _axis_ctx.DimsCount(); ++i)
+  {
+    int current = _axis_ctx.Data().PositiveAxisAt(i);
+
+    if (_resolved_axis.count(current) > 0)
+      continue;
+
+    if (_resolved_axis.size() > 1)
       return false;
+
+    _resolved_axis[num_resolved_axis++] = current;
   }
-
-  for (size_t idx = 0; idx < output_flat_size; ++idx)
-  {
-    output_data.SetValueAt(idx, ReduceFn<T>::InitValue);
-  }
-
-  // Resolve axis.
-  int num_resolved_axis = 0;
-  int resolved_axis[2];
-
-  if (!resolveAxis(input_num_dims, axis.Get(), num_axis_dimensions, resolved_axis,
-                   &num_resolved_axis))
-  {
-    return false;
-  }
-
-  int temp_index[5];
-  // Reset input iterator.
-  for (size_t idx = 0; idx < input_num_dims; ++idx)
-  {
-    temp_index[idx] = 0;
-  }
-
-  // Iterate through input_data.
-  do
-  {
-    size_t input_offset = reducedOutputOffset(input_num_dims, input_dims, temp_index, 0, nullptr);
-    size_t output_offset =
-      reducedOutputOffset(input_num_dims, input_dims, temp_index, num_resolved_axis, axis.Get());
-
-    ReduceFn<T> reducer;
-    auto value = reducer(output_data.ValueAt(output_offset), input_data.ValueAt(input_offset));
-    output_data.SetValueAt(output_offset, value);
-
-  } while (nextIndex(input_num_dims, input_dims, temp_index));
 
   return true;
 }
@@ -255,77 +134,83 @@ bool ReduceGeneric(OMReduceDataContext<T> &ctx)
 // ------------------------------------------------------------------------------------------------
 
 template <typename T, template <typename> class ReduceFn>
-bool Reduce(OMReduceDataContext<T> &ctx, bool mean = false)
+bool Reducer<T, ReduceFn>::ReduceImpl(bool mean)
 {
-  if (!ReduceGeneric<T, ReduceFn>(ctx))
+  auto &input_data = _input_ctx.Data();
+  auto input_dims = _input_ctx.Dims();
+  auto input_num_dims = _input_ctx.DimsCount();
+
+  auto *axis_data = _axis_ctx.Data().Get();
+
+  auto &output_data = _output_ctx.Data();
+  auto num_outputs = _output_ctx.ShapeFlatSize();
+
+  if (_input_ctx.HasZeroSizeDims())
   {
     return false;
   }
 
-  auto &input = ctx.Input();
-  auto input_dims = input.Dims();
-  auto input_num_dims = input.DimsCount();
+  for (size_t i = 0; i < num_outputs; ++i)
+  {
+    _accumulator[i] = _init_value;
+  }
 
-  auto &output = ctx.Output();
-  auto &output_data = output.Data();
-  auto num_outputs = output.ShapeFlatSize();
-
-  auto &axis = ctx.Axis().Data();
-  auto num_axis_dimensions = ctx.Axis().DimsCount();
-
-  // Resolve axis again for computing mean
-  int num_resolved_axis = 0;
-  int resolved_axis[2];
-
-  if (!resolveAxis(input_num_dims, axis.Get(), num_axis_dimensions, resolved_axis,
-                   &num_resolved_axis))
+  if (!ResolveAxis())
   {
     return false;
   }
 
-  // clang-format off
-
-  auto fnReduceOutput = [&](size_t divide_by = 1)
+  int temp_index[5] = {0};
+  do
   {
-      for (size_t idx = 0; idx < num_outputs; ++idx)
-      {
-        auto value = output_data.ValueAt(idx);
-        value /= static_cast<T>(divide_by);
-        output_data.SetAt(idx, value);
-      }
-  };
+    size_t input_offset = IndexOffset(temp_index, 0, nullptr);
+    size_t output_offset = IndexOffset(temp_index, _resolved_axis.size(), axis_data);
 
-  // clang-format on
+    _reducer(_accumulator.at(output_offset), input_data.ValueAt(input_offset));
 
-  if (!mean)
+  } while (nextIndex(input_num_dims, input_dims, temp_index));
+
+  for (size_t i = 0; i < num_outputs; ++i)
   {
-    fnReduceOutput();
-    return true;
+    auto value = _accumulator.at(i);
+
+    if (mean)
+    {
+      value /= ResolvedAxisLength();
+    }
+
+    output_data.SetValueAt(i, value);
   }
 
-  // Calculate mean by dividing output_data by num of aggregated element.
-  size_t num_elements_in_axis = 1;
-  for (int idx = 0; idx < num_resolved_axis; ++idx)
+  return true;
+}
+
+// ------------------------------------------------------------------------------------------------
+
+template <typename T, template <typename> class ReduceFn>
+T Reducer<T, ReduceFn>::ResolvedAxisLength()
+{
+  T axis_length = 1;
+  constexpr static auto kMax = std::numeric_limits<size_t>::max();
+
+  for (auto i = 0u; i < _resolved_axis.size(); ++i)
   {
-    size_t current = static_cast<size_t>(input_dims[resolved_axis[idx]]);
+    auto& axis = _resolved_axis.at(i);
+    auto current = static_cast<size_t>(_input_ctx.Dims()[axis]);
+
+    if (current == 0)
+      return false;
+
     // Overflow prevention.
-    if (current > (std::numeric_limits<size_t>::max() / num_elements_in_axis))
-    {
+    if (current > (kMax / axis_length))
       return false;
-    }
-    num_elements_in_axis *= current;
+
+    axis_length *= current;
   }
 
-  if (num_elements_in_axis > 0)
-  {
-    fnReduceOutput(num_elements_in_axis);
-  }
-
-  return true;
+  return axis_length;
 }
 
-} // namespace pal
-} // namespace execute
-} // namespace onert_micro
+} // namespace onert_micro::execute::pal
 
 #endif // ONERT_MICRO_PAL_REDUCE_COMMON_H

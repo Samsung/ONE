@@ -29,9 +29,12 @@ namespace impl
 
 template <typename T> OMStatus CircleSum(OMRuntimeKernel &rt_kernel)
 {
-  core::OMReduceDataContext<T> ctx(rt_kernel);
+  constexpr static T kInitValue = 0;
 
-  bool is_ok = pal::Reduce<T, pal::ReduceSumFn>(ctx);
+  core::OMReduceDataContext<T> ctx(rt_kernel);
+  pal::Reducer<T, pal::ReduceSumFn> reducer(ctx, kInitValue);
+
+  bool is_ok = reducer.Reduce();
   if (!is_ok)
   {
     return UnknownError;

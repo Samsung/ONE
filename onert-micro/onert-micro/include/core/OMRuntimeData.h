@@ -16,15 +16,11 @@
 #ifndef ONERT_MICRO_CORE_RUNTIME_DATA_H
 #define ONERT_MICRO_CORE_RUNTIME_DATA_H
 
+#include "OMAxisData.h"
 #include "OMTensorData.h"
 #include "OMUtils.h"
 
-#include <memory>
-#include <type_traits>
-
-namespace onert_micro
-{
-namespace core
+namespace onert_micro::core
 {
 
 // clang-format off
@@ -63,6 +59,11 @@ public:
     return _shape.dimsData();
   }
 
+  bool HasZeroSizeDims() const
+  {
+    return _shape.hasZeroSizeDims();
+  }
+
   size_t DimsCount() const
   {
     return _shape.dimensionsCount();
@@ -71,6 +72,11 @@ public:
   size_t ShapeFlatSize() const
   {
     return _shape.flatSize();
+  }
+
+  bool IsScalar() const noexcept
+  {
+    return _shape.isScalar();
   }
 };
 
@@ -138,7 +144,7 @@ protected:
 public:
   template <class RuntimeKernel>
   explicit OMDataContext(RuntimeKernel &rt_kernel)
-    : Mixins(rt_kernel)... 
+    : Mixins(rt_kernel)...
     , _in_ctx(rt_kernel)
     , _out_ctx(rt_kernel)
   {}
@@ -159,14 +165,36 @@ public:
 
 // ------------------------------------------------------------------------------------------------
 
+template <size_t AxisTensorIdx>
+class OMAxisContext : public OMBaseContext
+{
+  OMAxisData _data;
+
+public:
+  template <class RuntimeKernel>
+  explicit OMAxisContext(const RuntimeKernel &rtk)
+    : OMBaseContext(rtk.inputs[AxisTensorIdx])
+    , _data(MakeAxisData(rtk, AxisTensorIdx))
+  {
+    assert(!_data.IsNull());
+  }
+
+public:
+  OMAxisData &Data() noexcept
+  {
+    return _data;
+  }
+};
+
+// ------------------------------------------------------------------------------------------------
+
 template <size_t AxisTensorIdx = 1>
 class OMAxisContextMixin
 {
-public:
-  using OMAxisContext = OMInputContext<int32_t, AxisTensorIdx>;
+  using AxisContext = OMAxisContext<AxisTensorIdx>;
 
 protected:
-  OMAxisContext _axis_ctx;
+  AxisContext _axis_ctx;
 
 public:
   template <class RuntimeKernel>
@@ -175,7 +203,7 @@ public:
   {}
 
 public:
-  OMAxisContext &Axis()
+  AxisContext &Axis()
   {
     return _axis_ctx;
   }
@@ -183,7 +211,6 @@ public:
 
 // ------------------------------------------------------------------------------------------------
 
-} // namespace core
-} // namespace onert_micro
+} // namespace onert_micro::core
 
 #endif // ONERT_MICRO_CORE_RUNTIME_DATA_H
