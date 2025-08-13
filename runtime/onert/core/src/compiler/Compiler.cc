@@ -80,8 +80,8 @@ CompilerOptions Compiler::optionForSingleModel(const ir::ModelIndex &model_index
   // for the same `from` tensor and same type
   for (const auto &[from, to] : _nnpkg->model_edges().edges)
   {
-    const auto [from_model, from_subg, from_io] = from;
-    const auto [to_model, to_subg, to_io] = to;
+    const auto &[from_model, from_subg, from_io] = from;
+    const auto &[to_model, to_subg, to_io] = to;
     if (to_model == model_index)
     {
       const auto from_index =
