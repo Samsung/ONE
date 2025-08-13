@@ -269,7 +269,7 @@ NNFW_STATUS nnfw_set_input_tensorinfo(nnfw_session *session, uint32_t index,
  * @brief     Prepare session to be ready for inference
  *
  * This phase may finalize model compilation, scheduling, and additional settings.
- * If {@link nnfw_apply_tensorinfo} is called to apply input tensor info different with model
+ * If {@link nnfw_set_input_tensorinfo} is called to apply input tensor info different with model
  * before this function, tries to resize all tensors.
  *
  * @param[in] session the session to be prepared
@@ -423,10 +423,10 @@ NNFW_STATUS nnfw_set_output_layout(nnfw_session *session, uint32_t index, NNFW_L
  * @brief       Get i-th input tensor info
  *
  * <p>Before {@link nnfw_prepare} is invoked, this function return tensor info in model,
- * so updated tensor info by {@link nnfw_apply_tensorinfo} is not returned.</p>
+ * so updated tensor info by {@link nnfw_set_input_tensorinfo} is not returned.</p>
  *
  * <p>After {@link nnfw_prepare} is invoked, this function return updated tensor info
- * if tensor info is updated by {@link nnfw_apply_tensorinfo}.</p>
+ * if tensor info is updated by {@link nnfw_set_input_tensorinfo}.</p>
  *
  * @param[in]   session     Session from input information is to be extracted
  * @param[in]   index       Index of input
