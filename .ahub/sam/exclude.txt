@@ -50,4 +50,4 @@ build/nncc/
 # circle-mlir externals, build and testing
 circle-mlir/externals/
 circle-mlir/build/
-circle-mlir/lib/tools-test/
+circle-mlir/tools-test/
