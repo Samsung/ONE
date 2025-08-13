@@ -89,7 +89,7 @@ const void *MultiModelExecutors::outputBuffer(const ir::IOIndex &index) const
 {
   auto const [model_index, subg_index, io_index] = _model_edges->pkg_outputs[index.value()];
   auto const executor = at(model_index, subg_index);
-  return static_cast<const void *>(executor->outputBuffer(index.value()));
+  return static_cast<const void *>(executor->outputBuffer(io_index.value()));
 }
 
 const backend::IPortableTensor *MultiModelExecutors::outputTensor(const ir::IOIndex &index) const
