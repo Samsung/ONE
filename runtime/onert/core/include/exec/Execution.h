@@ -96,6 +96,12 @@ public:
    */
   void setOutput(const ir::IOIndex &index, const ir::Shape &shape, void *buffer, size_t length);
   /**
+   * @brief     Get the Input Info object
+   * @param[in] index Input index
+   * @return    Input info
+   */
+  const ir::OperandInfo &getInputInfo(uint32_t index) { return _ctx.desc.inputs.at(index)->info; }
+  /**
    * @brief  Execution
    * @note   It should be called after setting input and output buffer
    */
