@@ -21,6 +21,7 @@
 #include "PALReduceCommon.h"
 
 using namespace onert_micro;
+using namespace onert_micro::core;
 using namespace onert_micro::execute;
 
 // ------------------------------------------------------------------------------------------------
@@ -67,11 +68,15 @@ OMStatus execute_kernel_CircleMean(const OMExecuteArgs &execute_args)
   {
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:
+    {
       return impl::CircleMean<float>(runtime_kernel);
+    }
+    break;
 #endif // DIS_FLOAT
 
 #ifndef DIS_QUANT
     case circle::TensorType_INT8:
+      // FIXME: this is not for QUANTIZED int8
       return impl::CircleMean<int8_t>(runtime_kernel);
 #endif // DIS_QUANT
 
@@ -81,8 +86,6 @@ OMStatus execute_kernel_CircleMean(const OMExecuteArgs &execute_args)
       assert(false && "Unsupported type");
       return UnsupportedType;
   }
-
-  return Ok;
 }
 
 } // namespace execute
