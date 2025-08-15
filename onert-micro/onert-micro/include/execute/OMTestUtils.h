@@ -61,7 +61,7 @@ std::vector<U> checkKernel(uint32_t num_inputs,
     }
   }
 
-  interpreter.run(config);
+  EXPECT_TRUE(interpreter.run(config) == OMStatus::Ok);
 
   U *output_data = reinterpret_cast<U *>(interpreter.getOutputDataAt(0));
   const size_t num_elements = interpreter.getOutputSizeAt(0);
