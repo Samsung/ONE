@@ -53,6 +53,7 @@ var namespaceonert_1_1backend_1_1cpu_1_1ops =
     [ "StatelessRandomUniformLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_stateless_random_uniform_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_stateless_random_uniform_layer" ],
     [ "StridedSliceLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_strided_slice_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_strided_slice_layer" ],
     [ "TileLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_tile_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_tile_layer" ],
+    [ "TopKV2Layer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_top_k_v2_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_top_k_v2_layer" ],
     [ "TransposeLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_transpose_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_transpose_layer" ],
     [ "UnpackLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_unpack_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_unpack_layer" ],
     [ "ArithmeticType", "namespaceonert_1_1backend_1_1cpu_1_1ops.html#ada7a2f8ca271c7940fe46e54b0163588", [

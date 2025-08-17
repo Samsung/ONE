@@ -1,0 +1,7 @@
+<map id="onert_micro::test_model::TestDataFloatMeanAxis12" name="onert_micro::test_model::TestDataFloatMeanAxis12">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,183,186,223"/>
+<area shape="rect" id="Node000002" href="$classonert__micro_1_1test__model_1_1_test_data_mean_base.html" title=" " alt="" coords="9,94,182,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,150,98,182,93,182,93,150"/>
+<area shape="rect" id="Node000003" href="$classonert__micro_1_1test__model_1_1_test_data_base.html" title=" " alt="" coords="16,5,175,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="98,62,98,94,93,94,93,62"/>
+</map>

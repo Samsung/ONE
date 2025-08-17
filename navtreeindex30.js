@@ -1,9 +1,5 @@
 var NAVTREEINDEX30 =
 {
-"_t_f_reduce_canonicalze_helper_8h_source.html":[41,0,0,85,1,28],
-"_t_f_relu6_8h.html":[41,0,0,83,1,0,0,0,0,21],
-"_t_f_relu6_8h_source.html":[41,0,0,83,1,0,0,0,0,21],
-"_t_f_relu_8h.html":[41,0,0,83,1,0,0,0,0,20],
 "_t_f_relu_8h_source.html":[41,0,0,83,1,0,0,0,0,20],
 "_t_f_reshape_8h.html":[41,0,0,83,1,0,0,0,0,22],
 "_t_f_reshape_8h_source.html":[41,0,0,83,1,0,0,0,0,22],
@@ -180,8 +176,8 @@ var NAVTREEINDEX30 =
 "_tensor_reduce_converter_8cpp_source.html":[41,0,0,41,1,1,37],
 "_tensor_reduce_converter_8h.html":[41,0,0,41,1,1,38],
 "_tensor_reduce_converter_8h_source.html":[41,0,0,41,1,1,38],
-"_tensor_registries_8h.html":[41,0,3,3,2,1,1,26],
-"_tensor_registries_8h_source.html":[41,0,3,3,2,1,1,26],
+"_tensor_registries_8h.html":[41,0,3,3,2,1,1,24],
+"_tensor_registries_8h_source.html":[41,0,3,3,2,1,1,24],
 "_tensor_sets_8h.html":[41,0,0,97,1,0,0,0,0,3],
 "_tensor_sets_8h_source.html":[41,0,0,97,1,0,0,0,0,3],
 "_tensor_shape_8cpp.html":[41,0,0,52,1,1,30],
@@ -249,5 +245,9 @@ var NAVTREEINDEX30 =
 "_test_data_split_v_base_8h_source.html":[41,0,2,5,0,6,65,2],
 "_test_data_squeeze_base_8h.html":[41,0,2,4,0,0,1,75,2],
 "_test_data_squeeze_base_8h_source.html":[41,0,2,4,0,0,1,75,2],
-"_test_data_strided_slice_base_8h.html":[41,0,2,5,0,6,69,4]
+"_test_data_strided_slice_base_8h.html":[41,0,2,5,0,6,69,4],
+"_test_data_strided_slice_base_8h_source.html":[41,0,2,5,0,6,69,4],
+"_test_data_transpose_base_8h.html":[41,0,2,5,0,6,74,3],
+"_test_data_transpose_base_8h_source.html":[41,0,2,5,0,6,74,3],
+"_test_data_unidirectional_l_s_t_m_base_8h.html":[41,0,2,4,0,0,1,83,2]
 };

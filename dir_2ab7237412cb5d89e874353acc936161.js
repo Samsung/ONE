@@ -21,8 +21,6 @@ var dir_2ab7237412cb5d89e874353acc936161 =
     [ "LoweredGraph.cc", "_lowered_graph_8cc.html", null ],
     [ "ManualScheduler.cc", "_manual_scheduler_8cc.html", null ],
     [ "ManualScheduler.h", "_manual_scheduler_8h.html", "_manual_scheduler_8h" ],
-    [ "MultiModelCompiler.cc", "_multi_model_compiler_8cc.html", null ],
-    [ "MultiModelCompiler.h", "_multi_model_compiler_8h.html", "_multi_model_compiler_8h" ],
     [ "ShapeValidator.cc", "_shape_validator_8cc.html", "_shape_validator_8cc" ],
     [ "ShapeValidator.h", "_shape_validator_8h.html", "_shape_validator_8h" ],
     [ "StaticShapeInferer.cc", "_static_shape_inferer_8cc.html", null ],

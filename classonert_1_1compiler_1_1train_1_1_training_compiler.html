@@ -121,9 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac5187cf5b7cc092d3d9ae01965404605" id="r_ac5187cf5b7cc092d3d9ae01965404605"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1train_1_1_training_compiler.html#ac5187cf5b7cc092d3d9ae01965404605">~TrainingCompiler</a> ()=default</td></tr>
 <tr class="memdesc:ac5187cf5b7cc092d3d9ae01965404605"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the TrainingCompiler object.  <br /></td></tr>
 <tr class="separator:ac5187cf5b7cc092d3d9ae01965404605"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f2de755c9871694320045130d8214d8" id="r_a1f2de755c9871694320045130d8214d8"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structonert_1_1compiler_1_1_compiler_artifact.html">CompilerArtifact</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1train_1_1_training_compiler.html#a1f2de755c9871694320045130d8214d8">compile</a> (void)</td></tr>
-<tr class="memdesc:a1f2de755c9871694320045130d8214d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do compilation with the options.  <br /></td></tr>
-<tr class="separator:a1f2de755c9871694320045130d8214d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a58d765db0c4d11d18cb58ec886202d" id="r_a7a58d765db0c4d11d18cb58ec886202d"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="structonert_1_1compiler_1_1_compiler_artifact.html">CompilerArtifact</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1train_1_1_training_compiler.html#a7a58d765db0c4d11d18cb58ec886202d">compile</a> (void)</td></tr>
+<tr class="memdesc:a7a58d765db0c4d11d18cb58ec886202d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do compilation with the options.  <br /></td></tr>
+<tr class="separator:a7a58d765db0c4d11d18cb58ec886202d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classonert_1_1compiler_1_1_i_compiler"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classonert_1_1compiler_1_1_i_compiler')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classonert_1_1compiler_1_1_i_compiler.html">onert::compiler::ICompiler</a></td></tr>
 <tr class="memitem:a75f9a5ef98c99688800de14d4f6cbeba inherit pub_methods_classonert_1_1compiler_1_1_i_compiler" id="r_a75f9a5ef98c99688800de14d4f6cbeba"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_i_compiler.html#a75f9a5ef98c99688800de14d4f6cbeba">~ICompiler</a> ()=default</td></tr>
 <tr class="memdesc:a75f9a5ef98c99688800de14d4f6cbeba inherit pub_methods_classonert_1_1compiler_1_1_i_compiler"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual ICompiler destructor.  <br /></td></tr>
@@ -252,8 +252,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1f2de755c9871694320045130d8214d8" name="a1f2de755c9871694320045130d8214d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f2de755c9871694320045130d8214d8">&#9670;&#160;</a></span>compile()</h2>
+<a id="a7a58d765db0c4d11d18cb58ec886202d" name="a7a58d765db0c4d11d18cb58ec886202d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a58d765db0c4d11d18cb58ec886202d">&#9670;&#160;</a></span>compile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -262,7 +262,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="structonert_1_1compiler_1_1_compiler_artifact.html">CompilerArtifact</a> &gt; onert::compiler::train::TrainingCompiler::compile </td>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="structonert_1_1compiler_1_1_compiler_artifact.html">CompilerArtifact</a> &gt; onert::compiler::train::TrainingCompiler::compile </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -277,9 +277,9 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Do compilation with the options. </p>
-<dl class="section return"><dt>Returns</dt><dd>std::shared_ptr&lt;CompilerArtifact&gt; Executors as a result of compilation </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>std::unique_ptr&lt;CompilerArtifact&gt; Executors as a result of compilation </dd></dl>
 
-<p>Implements <a class="el" href="classonert_1_1compiler_1_1_i_compiler.html#aac54546d9fe1a04cdddd81eae9426fcf">onert::compiler::ICompiler</a>.</p>
+<p>Implements <a class="el" href="classonert_1_1compiler_1_1_i_compiler.html#a1093d5c8233ff030b62b0ab52569340a">onert::compiler::ICompiler</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_training_compiler_8cc_source.html#l00055">55</a> of file <a class="el" href="_training_compiler_8cc_source.html">TrainingCompiler.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   56</span>{</div>
@@ -524,7 +524,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  295</span><span class="comment">  /********************************</span></div>
 <div class="line"><span class="lineno">  296</span><span class="comment">   * Code generation phase finished</span></div>
 <div class="line"><span class="lineno">  297</span><span class="comment">   ********************************/</span></div>
-<div class="line"><span class="lineno">  298</span>  <span class="keywordflow">return</span> std::make_shared&lt;CompilerArtifact&gt;(executors, std::move(tracing_ctx));</div>
+<div class="line"><span class="lineno">  298</span>  <span class="keywordflow">return</span> std::make_unique&lt;CompilerArtifact&gt;(executors, std::move(tracing_ctx));</div>
 <div class="line"><span class="lineno">  299</span>}</div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1_executor_factory_html_a3330cf1fb069dc076abb3f6232833522"><div class="ttname"><a href="classonert_1_1compiler_1_1_executor_factory.html#a3330cf1fb069dc076abb3f6232833522">onert::compiler::ExecutorFactory::create</a></div><div class="ttdeci">exec::IExecutor * create(std::unique_ptr&lt; compiler::LoweredGraph &gt; lowered_graph, const std::shared_ptr&lt; exec::IExecutors &gt; &amp;executors, const ExecutorFactoryArgs &amp;args)</div><div class="ttdef"><b>Definition</b> <a href="_executor_factory_8cc_source.html#l00343">ExecutorFactory.cc:343</a></div></div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1_executor_factory_html_af12fec093001b1c415ca1e86b4e55663"><div class="ttname"><a href="classonert_1_1compiler_1_1_executor_factory.html#af12fec093001b1c415ca1e86b4e55663">onert::compiler::ExecutorFactory::get</a></div><div class="ttdeci">static ExecutorFactory &amp; get()</div><div class="ttdef"><b>Definition</b> <a href="_executor_factory_8cc_source.html#l00328">ExecutorFactory.cc:328</a></div></div>

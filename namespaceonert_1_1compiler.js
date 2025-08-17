@@ -21,7 +21,6 @@ var namespaceonert_1_1compiler =
     [ "LoweredGraph", "classonert_1_1compiler_1_1_lowered_graph.html", "classonert_1_1compiler_1_1_lowered_graph" ],
     [ "ManualScheduler", "classonert_1_1compiler_1_1_manual_scheduler.html", "classonert_1_1compiler_1_1_manual_scheduler" ],
     [ "ManualSchedulerOptions", "structonert_1_1compiler_1_1_manual_scheduler_options.html", "structonert_1_1compiler_1_1_manual_scheduler_options" ],
-    [ "MultiModelCompiler", "classonert_1_1compiler_1_1_multi_model_compiler.html", "classonert_1_1compiler_1_1_multi_model_compiler" ],
     [ "OperandLowerInfo", "classonert_1_1compiler_1_1_operand_lower_info.html", "classonert_1_1compiler_1_1_operand_lower_info" ],
     [ "OperandObserver", "classonert_1_1compiler_1_1_operand_observer.html", "classonert_1_1compiler_1_1_operand_observer" ],
     [ "ShapeValidator", "classonert_1_1compiler_1_1_shape_validator.html", "classonert_1_1compiler_1_1_shape_validator" ],

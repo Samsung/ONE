@@ -2346,7 +2346,6 @@ var hierarchy =
     [ "onert::odc::ICodegen", "classonert_1_1odc_1_1_i_codegen.html", null ],
     [ "onert::compiler::ICompiler", "classonert_1_1compiler_1_1_i_compiler.html", [
       [ "onert::compiler::Compiler", "classonert_1_1compiler_1_1_compiler.html", null ],
-      [ "onert::compiler::MultiModelCompiler", "classonert_1_1compiler_1_1_multi_model_compiler.html", null ],
       [ "onert::compiler::train::TrainingCompiler", "classonert_1_1compiler_1_1train_1_1_training_compiler.html", null ]
     ] ],
     [ "onert::backend::IConfig", "structonert_1_1backend_1_1_i_config.html", [
@@ -2485,6 +2484,7 @@ var hierarchy =
       [ "onert::backend::cpu::ops::StatelessRandomUniformLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_stateless_random_uniform_layer.html", null ],
       [ "onert::backend::cpu::ops::StridedSliceLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_strided_slice_layer.html", null ],
       [ "onert::backend::cpu::ops::TileLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_tile_layer.html", null ],
+      [ "onert::backend::cpu::ops::TopKV2Layer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_top_k_v2_layer.html", null ],
       [ "onert::backend::cpu::ops::TransposeLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_transpose_layer.html", null ],
       [ "onert::backend::cpu::ops::UnpackLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_unpack_layer.html", null ],
       [ "onert::backend::ruy::ops::ConvolutionLayer", "classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html", null ],
@@ -5826,7 +5826,8 @@ var hierarchy =
         [ "onert_micro::test_model::TestDataFloatMaximum", "classonert__micro_1_1test__model_1_1_test_data_float_maximum.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataMeanBase< T >", "classonert__micro_1_1test__model_1_1_test_data_mean_base.html", [
-        [ "onert_micro::test_model::TestDataFloatMean", "classonert__micro_1_1test__model_1_1_test_data_float_mean.html", null ]
+        [ "onert_micro::test_model::TestDataFloatMean", "classonert__micro_1_1test__model_1_1_test_data_float_mean.html", null ],
+        [ "onert_micro::test_model::TestDataFloatMeanAxis12", "classonert__micro_1_1test__model_1_1_test_data_float_mean_axis12.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataMinimumBase< T >", "classonert__micro_1_1test__model_1_1_test_data_minimum_base.html", [
         [ "onert_micro::test_model::TestDataFloatMinimum", "classonert__micro_1_1test__model_1_1_test_data_float_minimum.html", null ]
@@ -6143,6 +6144,7 @@ var hierarchy =
     ] ],
     [ "luci_interpreter::kernels::TISOData", "structluci__interpreter_1_1kernels_1_1_t_i_s_o_data.html", null ],
     [ "luci_interpreter::kernels::TISOKernel", "classluci__interpreter_1_1kernels_1_1_t_i_s_o_kernel.html", null ],
+    [ "nnfw::cker::TopContainer< T, Tidx >", "classnnfw_1_1cker_1_1_top_container.html", null ],
     [ "nnfw::rt::optimized_ops::TopContainer< T >", "classnnfw_1_1rt_1_1optimized__ops_1_1_top_container.html", null ],
     [ "TopologicalSortHelper.TopologicalSortHelper", "class_topological_sort_helper_1_1_topological_sort_helper.html", null ],
     [ "onert::util::TracingCtx", "classonert_1_1util_1_1_tracing_ctx.html", null ],

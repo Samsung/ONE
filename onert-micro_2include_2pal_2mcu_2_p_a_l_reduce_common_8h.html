@@ -98,6 +98,7 @@ $(document).ready(function(){initNavTree('onert-micro_2include_2pal_2mcu_2_p_a_l
 <div class="contents">
 <div class="textblock"><code>#include &quot;PALUtils.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="_o_m_custom_runtime_data_8h_source.html">core/OMCustomRuntimeData.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_o_m_runtime_shape_8h_source.html">core/OMRuntimeShape.h</a>&quot;</code><br />
 </div>
 <p><a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -131,6 +132,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aff349297371b587eae0e3afa8e57b512" id="r_aff349297371b587eae0e3afa8e57b512"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aff349297371b587eae0e3afa8e57b512"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#aff349297371b587eae0e3afa8e57b512">onert_micro::execute::pal::reduceSumImpl</a> (const T *input_data, const int *input_dims, const int input_num_dims, T *output_data, const int *axis, const int num_axis, const int num_outputs)</td></tr>
 <tr class="separator:aff349297371b587eae0e3afa8e57b512"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b6fb7abee062cb7da367950a6104717" id="r_a2b6fb7abee062cb7da367950a6104717"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a2b6fb7abee062cb7da367950a6104717"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a2b6fb7abee062cb7da367950a6104717">onert_micro::execute::pal::MeanROWH</a> (const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;unextended_input_shape, const T *input_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;unextended_output_shape, T *output_data)</td></tr>
+<tr class="separator:a2b6fb7abee062cb7da367950a6104717"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5af1d1e868d9ec1f723ec73d75619034" id="r_a5af1d1e868d9ec1f723ec73d75619034"><td class="memTemplParams" colspan="2">template&lt;typename T , template&lt; typename &gt; class ReduceFn&gt; </td></tr>
 <tr class="memitem:a5af1d1e868d9ec1f723ec73d75619034"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a5af1d1e868d9ec1f723ec73d75619034">onert_micro::execute::pal::ReduceGeneric</a> (<a class="el" href="classonert__micro_1_1core_1_1_o_m_reduce_data_context.html">OMReduceDataContext</a>&lt; T &gt; &amp;ctx)</td></tr>
 <tr class="separator:a5af1d1e868d9ec1f723ec73d75619034"><td class="memSeparator" colspan="2">&#160;</td></tr>

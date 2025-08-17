@@ -442,6 +442,11 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1mean__float.html#aa019547c0fef097709d675a4cfae6925", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1mean__float.html#ab46716f7f381bac8ba492529b3590e78", null ]
     ] ],
+    [ "mean_float_axis12", "namespaceonert__micro_1_1test__model_1_1mean__float__axis12.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1mean__float__axis12.html#a02d076f771456f436aecde48d9b65781", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1mean__float__axis12.html#ae0fec91a4aa827644691ce263a8a21ac", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1mean__float__axis12.html#a27890bf7b003ac8e49ce38beaf4f5886", null ]
+    ] ],
     [ "mean_int8", "namespaceonert__micro_1_1test__model_1_1mean__int8.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1mean__int8.html#a24cde78fdf347644f5792a48b2b6fa93", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1mean__int8.html#a310bef05e3ce2594158d7fcb1c122bb8", null ],
@@ -1362,6 +1367,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataFloatMaximum", "classonert__micro_1_1test__model_1_1_test_data_float_maximum.html", "classonert__micro_1_1test__model_1_1_test_data_float_maximum" ],
     [ "TestDataFloatMaxPool2D", "classonert__micro_1_1test__model_1_1_test_data_float_max_pool2_d.html", "classonert__micro_1_1test__model_1_1_test_data_float_max_pool2_d" ],
     [ "TestDataFloatMean", "classonert__micro_1_1test__model_1_1_test_data_float_mean.html", "classonert__micro_1_1test__model_1_1_test_data_float_mean" ],
+    [ "TestDataFloatMeanAxis12", "classonert__micro_1_1test__model_1_1_test_data_float_mean_axis12.html", "classonert__micro_1_1test__model_1_1_test_data_float_mean_axis12" ],
     [ "TestDataFloatMinimum", "classonert__micro_1_1test__model_1_1_test_data_float_minimum.html", "classonert__micro_1_1test__model_1_1_test_data_float_minimum" ],
     [ "TestDataFloatMul", "classonert__micro_1_1test__model_1_1_test_data_float_mul.html", "classonert__micro_1_1test__model_1_1_test_data_float_mul" ],
     [ "TestDataFloatNeg", "classonert__micro_1_1test__model_1_1_test_data_float_neg.html", "classonert__micro_1_1test__model_1_1_test_data_float_neg" ],

@@ -102,9 +102,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a75f9a5ef98c99688800de14d4f6cbeba" id="r_a75f9a5ef98c99688800de14d4f6cbeba"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_i_compiler.html#a75f9a5ef98c99688800de14d4f6cbeba">~ICompiler</a> ()=default</td></tr>
 <tr class="memdesc:a75f9a5ef98c99688800de14d4f6cbeba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual ICompiler destructor.  <br /></td></tr>
 <tr class="separator:a75f9a5ef98c99688800de14d4f6cbeba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac54546d9fe1a04cdddd81eae9426fcf" id="r_aac54546d9fe1a04cdddd81eae9426fcf"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="structonert_1_1compiler_1_1_compiler_artifact.html">CompilerArtifact</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_i_compiler.html#aac54546d9fe1a04cdddd81eae9426fcf">compile</a> (void)=0</td></tr>
-<tr class="memdesc:aac54546d9fe1a04cdddd81eae9426fcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do compilation.  <br /></td></tr>
-<tr class="separator:aac54546d9fe1a04cdddd81eae9426fcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1093d5c8233ff030b62b0ab52569340a" id="r_a1093d5c8233ff030b62b0ab52569340a"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="structonert_1_1compiler_1_1_compiler_artifact.html">CompilerArtifact</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1compiler_1_1_i_compiler.html#a1093d5c8233ff030b62b0ab52569340a">compile</a> (void)=0</td></tr>
+<tr class="memdesc:a1093d5c8233ff030b62b0ab52569340a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do compilation.  <br /></td></tr>
+<tr class="separator:a1093d5c8233ff030b62b0ab52569340a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -139,8 +139,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aac54546d9fe1a04cdddd81eae9426fcf" name="aac54546d9fe1a04cdddd81eae9426fcf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac54546d9fe1a04cdddd81eae9426fcf">&#9670;&#160;</a></span>compile()</h2>
+<a id="a1093d5c8233ff030b62b0ab52569340a" name="a1093d5c8233ff030b62b0ab52569340a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1093d5c8233ff030b62b0ab52569340a">&#9670;&#160;</a></span>compile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -149,7 +149,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::shared_ptr&lt; <a class="el" href="structonert_1_1compiler_1_1_compiler_artifact.html">CompilerArtifact</a> &gt; onert::compiler::ICompiler::compile </td>
+          <td class="memname">virtual std::unique_ptr&lt; <a class="el" href="structonert_1_1compiler_1_1_compiler_artifact.html">CompilerArtifact</a> &gt; onert::compiler::ICompiler::compile </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -164,9 +164,9 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Do compilation. </p>
-<dl class="section return"><dt>Returns</dt><dd>std::shared_ptr&lt;CompilerArtifact&gt; Executors as a result of compilation </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>std::unique_ptr&lt;CompilerArtifact&gt; Executors as a result of compilation </dd></dl>
 
-<p>Implemented in <a class="el" href="classonert_1_1compiler_1_1_compiler.html#a6478ddab71b1dd6bf4cf96ac1a723bd9">onert::compiler::Compiler</a>, <a class="el" href="classonert_1_1compiler_1_1_multi_model_compiler.html#aa9d76e8e915bc297a6dcf8a6cdf17deb">onert::compiler::MultiModelCompiler</a>, and <a class="el" href="classonert_1_1compiler_1_1train_1_1_training_compiler.html#a1f2de755c9871694320045130d8214d8">onert::compiler::train::TrainingCompiler</a>.</p>
+<p>Implemented in <a class="el" href="classonert_1_1compiler_1_1_compiler.html#a27b0f4fe74883be4a57d473a6ba4a063">onert::compiler::Compiler</a>, and <a class="el" href="classonert_1_1compiler_1_1train_1_1_training_compiler.html#a7a58d765db0c4d11d18cb58ec886202d">onert::compiler::train::TrainingCompiler</a>.</p>
 
 </div>
 </div>

@@ -240,6 +240,8 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1_tensor.html">Tensor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classnnfw_1_1cker_1_1_top_container.html">TopContainer</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1_transpose_conv_params.html">TransposeConvParams</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnnfw_1_1cker_1_1_transpose_params.html">TransposeParams</a></td></tr>
@@ -780,6 +782,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a9914bcaed4bfbe2c923c12d8efafcbce" id="r_a9914bcaed4bfbe2c923c12d8efafcbce"><td class="memTemplParams" colspan="2">template&lt;typename T , typename M &gt; </td></tr>
 <tr class="memitem:a9914bcaed4bfbe2c923c12d8efafcbce"><td class="memTemplItemLeft" align="right" valign="top">std::pair&lt; int, int &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a9914bcaed4bfbe2c923c12d8efafcbce">TileOneDimension</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;in_dimensions, const T *in_data, const M *multipliers, T *out_data, int dimension)</td></tr>
 <tr class="separator:a9914bcaed4bfbe2c923c12d8efafcbce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d15bca0d6016715a84fe983d1f6cf00" id="r_a9d15bca0d6016715a84fe983d1f6cf00"><td class="memTemplParams" colspan="2">template&lt;typename T , typename Tidx  = int32_t&gt; </td></tr>
+<tr class="memitem:a9d15bca0d6016715a84fe983d1f6cf00"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#a9d15bca0d6016715a84fe983d1f6cf00">TopKV2</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const T *input_data, const uint32_t k, T *output_value_data, Tidx *output_indices_data)</td></tr>
+<tr class="separator:a9d15bca0d6016715a84fe983d1f6cf00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc798daf435f8d7303abf05e96ae6a23" id="r_acc798daf435f8d7303abf05e96ae6a23"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:acc798daf435f8d7303abf05e96ae6a23"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacennfw_1_1cker.html#acc798daf435f8d7303abf05e96ae6a23">Transpose2D</a> (const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;input_shape, const T *input_data, const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</td></tr>
 <tr class="separator:acc798daf435f8d7303abf05e96ae6a23"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -20226,6 +20231,94 @@ template&lt;typename DSizes &gt; </div>
 <div class="line"><span class="lineno">  174</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_helper_2_tensor_8h_source.html#l00178">To32Bit()</a>.</p>
+
+</div>
+</div>
+<a id="a9d15bca0d6016715a84fe983d1f6cf00" name="a9d15bca0d6016715a84fe983d1f6cf00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d15bca0d6016715a84fe983d1f6cf00">&#9670;&#160;</a></span>TopKV2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename Tidx  = int32_t&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nnfw::cker::TopKV2 </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classnnfw_1_1cker_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>input_shape</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T *&#160;</td>
+          <td class="paramname"><em>input_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint32_t&#160;</td>
+          <td class="paramname"><em>k</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>output_value_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Tidx *&#160;</td>
+          <td class="paramname"><em>output_indices_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_top_k_v2_8h_source.html#l00127">127</a> of file <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_top_k_v2_8h_source.html">TopKV2.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  129</span>{</div>
+<div class="line"><span class="lineno">  130</span>  <span class="keyword">const</span> int32_t row_size = input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() - 1);</div>
+<div class="line"><span class="lineno">  131</span>  int32_t num_rows = 1;</div>
+<div class="line"><span class="lineno">  132</span>  <span class="keywordflow">for</span> (int32_t i = 0; i &lt; input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a01c6b5dc4b24d5c2567c47cb15318839">DimensionsCount</a>() - 1; ++i)</div>
+<div class="line"><span class="lineno">  133</span>  {</div>
+<div class="line"><span class="lineno">  134</span>    num_rows *= input_shape.<a class="code hl_function" href="classnnfw_1_1cker_1_1_shape.html#a497180ee7844bbef51b36bd58e61fa31">Dims</a>(i);</div>
+<div class="line"><span class="lineno">  135</span>  }</div>
+<div class="line"><span class="lineno">  136</span> </div>
+<div class="line"><span class="lineno">  137</span>  TopContainer&lt;T, Tidx&gt; topc(k, row_size);</div>
+<div class="line"><span class="lineno">  138</span>  <span class="keywordflow">for</span> (int32_t row = 0; row &lt; num_rows; ++row)</div>
+<div class="line"><span class="lineno">  139</span>  {</div>
+<div class="line"><span class="lineno">  140</span>    <span class="keyword">const</span> T *values_row = input_data + row * row_size;</div>
+<div class="line"><span class="lineno">  141</span>    topc.start_collecting(values_row);</div>
+<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">for</span> (int32_t c = 0; c &lt; row_size; ++c)</div>
+<div class="line"><span class="lineno">  143</span>    {</div>
+<div class="line"><span class="lineno">  144</span>      topc.push(c);</div>
+<div class="line"><span class="lineno">  145</span>    }</div>
+<div class="line"><span class="lineno">  146</span> </div>
+<div class="line"><span class="lineno">  147</span>    <span class="comment">// Prepare output buffers.</span></div>
+<div class="line"><span class="lineno">  148</span>    Tidx *indexes_row = output_indices_data + row * k;</div>
+<div class="line"><span class="lineno">  149</span>    T *output_row = output_value_data + row * k;</div>
+<div class="line"><span class="lineno">  150</span>    <span class="comment">// We always assume that the output is sorted.</span></div>
+<div class="line"><span class="lineno">  151</span>    <span class="keyword">const</span> <span class="keyword">auto</span> &amp;top_k = topc.sorted_result();</div>
+<div class="line"><span class="lineno">  152</span>    std::copy(top_k.begin(), top_k.end(), indexes_row);</div>
+<div class="line"><span class="lineno">  153</span>    std::transform(top_k.begin(), top_k.end(), output_row,</div>
+<div class="line"><span class="lineno">  154</span>                   [values_row](<span class="keyword">const</span> int32_t loc) { return values_row[loc]; });</div>
+<div class="line"><span class="lineno">  155</span>  }</div>
+<div class="line"><span class="lineno">  156</span>}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00103">nnfw::cker::Shape::DimensionsCount()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00106">nnfw::cker::Shape::Dims()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_top_k_v2_8h_source.html#l00042">nnfw::cker::TopContainer&lt; T, Tidx &gt;::push()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_top_k_v2_8h_source.html#l00072">nnfw::cker::TopContainer&lt; T, Tidx &gt;::sorted_result()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_top_k_v2_8h_source.html#l00035">nnfw::cker::TopContainer&lt; T, Tidx &gt;::start_collecting()</a>.</p>
 
 </div>
 </div>

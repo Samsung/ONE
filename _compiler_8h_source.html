@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('_compiler_8h_source.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <a href="_compiler_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * Copyright (c) 2018 Samsung Electronics Co., Ltd. All Rights Reserved</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> * you may not use this file except in compliance with the License.</span></div>
@@ -113,8 +113,8 @@ $(document).ready(function(){initNavTree('_compiler_8h_source.html',''); initRes
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * limitations under the License.</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> */</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#ifndef __ONERT_COMPILER_COMPILE_H_</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#define __ONERT_COMPILER_COMPILE_H_</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#ifndef __ONERT_COMPILER_COMPILER_H__</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#define __ONERT_COMPILER_COMPILER_H__</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &quot;<a class="code" href="_compiler_options_8h.html">compiler/CompilerOptions.h</a>&quot;</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &quot;<a class="code" href="_i_compiler_8h.html">compiler/ICompiler.h</a>&quot;</span></div>
@@ -124,7 +124,7 @@ $(document).ready(function(){initNavTree('_compiler_8h_source.html',''); initRes
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="foldopen" id="foldopen00035" data-start="{" data-end="};">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classonert_1_1compiler_1_1_compiler.html">   35</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1compiler_1_1_compiler.html">Compiler</a> : <span class="keyword">public</span> <a class="code hl_class" href="classonert_1_1compiler_1_1_i_compiler.html">ICompiler</a></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classonert_1_1compiler_1_1_compiler.html">   35</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert_1_1compiler_1_1_compiler.html">Compiler</a> final : <span class="keyword">public</span> <a class="code hl_class" href="classonert_1_1compiler_1_1_i_compiler.html">ICompiler</a></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <a class="code hl_class" href="classonert_1_1compiler_1_1_compiler.html">Compiler</a>(std::unique_ptr&lt;ir::NNPkg&gt; nnpkg, <a class="code hl_struct" href="structonert_1_1compiler_1_1_compiler_options.html">CompilerOptions</a> *copts);</div>
@@ -132,24 +132,28 @@ $(document).ready(function(){initNavTree('_compiler_8h_source.html',''); initRes
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classonert_1_1compiler_1_1_compiler.html#aac008b0a75f37457d7aee7b1a8aace0e">   48</a></span>  <a class="code hl_function" href="classonert_1_1compiler_1_1_compiler.html#aac008b0a75f37457d7aee7b1a8aace0e">~Compiler</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  std::shared_ptr&lt;CompilerArtifact&gt; <a class="code hl_function" href="classonert_1_1compiler_1_1_compiler.html#a6478ddab71b1dd6bf4cf96ac1a723bd9">compile</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  std::unique_ptr&lt;CompilerArtifact&gt; <a class="code hl_function" href="classonert_1_1compiler_1_1_compiler.html#a27b0f4fe74883be4a57d473a6ba4a063">compile</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  std::unique_ptr&lt;ir::NNPkg&gt; _nnpkg;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <a class="code hl_struct" href="structonert_1_1compiler_1_1_compiler_options.html">CompilerOptions</a> *_options;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>};</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <a class="code hl_struct" href="structonert_1_1compiler_1_1_compiler_options.html">CompilerOptions</a> optionForSingleModel(<span class="keyword">const</span> <a class="code hl_class" href="classonert_1_1util_1_1_index.html">ir::ModelIndex</a> &amp;model_index);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  std::unique_ptr&lt;ir::NNPkg&gt; _nnpkg;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <a class="code hl_struct" href="structonert_1_1compiler_1_1_compiler_options.html">CompilerOptions</a> *_options;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>};</div>
 </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>} <span class="comment">// namespace onert::compiler</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_COMPILER_COMPILE_H_</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>} <span class="comment">// namespace onert::compiler</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#endif </span><span class="comment">// __ONERT_COMPILER_COMPILER_H__</span></div>
 <div class="ttc" id="a_compiler_options_8h_html"><div class="ttname"><a href="_compiler_options_8h.html">CompilerOptions.h</a></div></div>
 <div class="ttc" id="a_i_compiler_8h_html"><div class="ttname"><a href="_i_compiler_8h.html">ICompiler.h</a></div><div class="ttdoc">This file contains ICompiler class to define and run compilation phase.</div></div>
 <div class="ttc" id="a_n_n_pkg_8h_html"><div class="ttname"><a href="_n_n_pkg_8h.html">NNPkg.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_html"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler.html">onert::compiler::Compiler</a></div><div class="ttdoc">Class to compile NN package.</div><div class="ttdef"><b>Definition</b> <a href="_compiler_8h_source.html#l00035">Compiler.h:36</a></div></div>
-<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_html_a6478ddab71b1dd6bf4cf96ac1a723bd9"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler.html#a6478ddab71b1dd6bf4cf96ac1a723bd9">onert::compiler::Compiler::compile</a></div><div class="ttdeci">std::shared_ptr&lt; CompilerArtifact &gt; compile(void)</div><div class="ttdoc">Do compilation with the options.</div><div class="ttdef"><b>Definition</b> <a href="_compiler_8cc_source.html#l00047">Compiler.cc:47</a></div></div>
+<div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_html_a27b0f4fe74883be4a57d473a6ba4a063"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler.html#a27b0f4fe74883be4a57d473a6ba4a063">onert::compiler::Compiler::compile</a></div><div class="ttdeci">std::unique_ptr&lt; CompilerArtifact &gt; compile(void)</div><div class="ttdoc">Do compilation with the options.</div><div class="ttdef"><b>Definition</b> <a href="_compiler_8cc_source.html#l00097">Compiler.cc:97</a></div></div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1_compiler_html_aac008b0a75f37457d7aee7b1a8aace0e"><div class="ttname"><a href="classonert_1_1compiler_1_1_compiler.html#aac008b0a75f37457d7aee7b1a8aace0e">onert::compiler::Compiler::~Compiler</a></div><div class="ttdeci">~Compiler()=default</div><div class="ttdoc">Destroy the Compiler object.</div></div>
 <div class="ttc" id="aclassonert_1_1compiler_1_1_i_compiler_html"><div class="ttname"><a href="classonert_1_1compiler_1_1_i_compiler.html">onert::compiler::ICompiler</a></div><div class="ttdef"><b>Definition</b> <a href="_i_compiler_8h_source.html#l00042">ICompiler.h:43</a></div></div>
+<div class="ttc" id="aclassonert_1_1util_1_1_index_html"><div class="ttname"><a href="classonert_1_1util_1_1_index.html">onert::util::Index&lt; uint16_t, ModelIndexTag &gt;</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1compiler_html"><div class="ttname"><a href="namespaceonert_1_1compiler.html">onert::compiler</a></div><div class="ttdef"><b>Definition</b> <a href="_backend_manager_8h_source.html#l00026">BackendManager.h:27</a></div></div>
 <div class="ttc" id="astructonert_1_1compiler_1_1_compiler_options_html"><div class="ttname"><a href="structonert_1_1compiler_1_1_compiler_options.html">onert::compiler::CompilerOptions</a></div><div class="ttdef"><b>Definition</b> <a href="_compiler_options_8h_source.html#l00042">CompilerOptions.h:43</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
