@@ -35,8 +35,8 @@ namespace Circle
 mlir::LogicalResult SplitOp::verify()
 {
   SplitOp op = *this;
-  int64_t num_splits = op.getNumSplits();
-  if (op.getNumResults() != num_splits)
+  uint32_t num_splits = op.getNumSplits();
+  if (op.getNumResults() != static_cast<unsigned>(num_splits))
     return op.emitOpError("output count should match 'num_splits' attribute");
 
   // If 'split_dim' is not a constant, there are no other checks.
