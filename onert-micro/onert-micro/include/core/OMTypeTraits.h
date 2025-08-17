@@ -38,6 +38,25 @@ constexpr static bool IsUInt16 = std::is_same<std::decay_t<T>, uint16_t>::value;
 template <typename T>
 constexpr static bool IsQuantized = IsInt8<T> || IsUInt8<T> || IsInt16<T> || IsUInt16<T>;
 
+template <typename T>
+constexpr static bool IsConst = std::is_const<T>::value;
+
+// ------------------------------------------------------------------------------------------------
+
+template <typename T, typename U>
+using EnableIfConst = std::enable_if_t<IsConst<T>, U>;
+
+template <typename T, typename U>
+using EnableIfNotConst = std::enable_if_t<!IsConst<T>, U>;
+
+template <typename T, typename U = void>
+using EnableIfQuantized = std::enable_if_t<IsQuantized<T>, U>;
+
+template <typename T, typename U = void>
+using EnableIfNotQuantized = std::enable_if_t<!IsQuantized<T>, U>;
+
+// ------------------------------------------------------------------------------------------------
+
 } // namespace onert_micro::core::type_traits
 
 #endif // ONERT_MICRO_CORE_TYPE_TRAITS_H

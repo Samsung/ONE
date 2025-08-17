@@ -16,134 +16,90 @@
 #ifndef ONERT_MICRO_CORE_TENSOR_DATA_H
 #define ONERT_MICRO_CORE_TENSOR_DATA_H
 
-#include "OMQuantizationData.h"
-#include "OMUtils.h"
+#include "OMRuntimeShape.h"
 #include "OMTypeTraits.h"
 
-#include <memory>
+#include <vector>
 
 namespace onert_micro::core
 {
 
 // clang-format off
 
-using type_traits::IsQuantized;
+using type_traits::EnableIfNotConst;
 
 // ------------------------------------------------------------------------------------------------
 
-template <typename T>
+template <typename TData, typename TValue = TData>
 class OMTensorData
 {
-  using QuantData = OMQuantizationData<T>;
-  using QuantDataPtr = std::unique_ptr<QuantData>;
-
-private:
-  T *_data = nullptr;
+protected:
+  TData *_data = nullptr;
   size_t _size = 0;
-  QuantDataPtr _quant = {};
 
 public:
-  OMTensorData(T *data, const circle::Tensor *tensor)
-    : _data(data)
+  OMTensorData(TData *data, const circle::Tensor *tensor)
   {
     assert(data != nullptr);
     assert(tensor != nullptr);
 
+    _data = data;
     _size = OMRuntimeShape(tensor).flatSize();
-
-    if (IsQuantized<T>)
-    {
-      _quant = std::make_unique<QuantData>(_data, tensor);
-    }
   }
 
 public:
+  size_t Size() const noexcept
+  {
+    return _size;
+  }
+
   bool IsNull() const noexcept
   {
     return (_data == nullptr) || (_size == 0);
   }
 
 public:
-  T* Get() const noexcept
+  template <typename R = TValue>
+  EnableIfNotConst<R, R> At(size_t idx)
   {
-    return _data;
+    CheckIndex(idx);
+    auto data = Get();
+    return data[idx];
+  }
+
+  TValue At(size_t idx) const
+  {
+    CheckIndex(idx);
+    auto data = Get();
+    return data[idx];
+  }
+
+  template <typename R = TValue>
+  EnableIfNotConst<R, void> SetAt(size_t idx, TValue value)
+  {
+    CheckIndex(idx);
+    auto data = Get();
+    data[idx] = value;
   }
 
 public:
-  T& At(size_t idx) const
+  virtual TValue *Get() noexcept
   {
-    CheckIndex(idx);
-    return _data[idx];
+    return reinterpret_cast<TValue*>(_data);
   }
 
-  template <typename U = T>
-  std::enable_if_t<!IsQuantized<U>, T> ValueAt(size_t idx) const
+  virtual const TValue *Get() const noexcept
   {
-    return At(idx);
+    return reinterpret_cast<const TValue*>(_data);
   }
 
-  template <typename U = T>
-  std::enable_if_t<IsQuantized<U>, float> ValueAt(size_t idx) const
-  {
-    CheckIndex(idx);
-    return _quant->DataAt(idx);
-  }
-
-public:
-  void SetAt(size_t idx, T value)
-  {
-    CheckIndex(idx);
-    _data[idx] = value;
-  }
-
-  template <typename U = T>
-  std::enable_if_t<!IsQuantized<U>> SetValueAt(size_t idx, T value)
-  {
-    SetAt(idx, value);
-  }
-
-  template <typename U = T>
-  std::enable_if_t<IsQuantized<U>> SetValueAt(size_t idx, float value)
-  {
-    CheckIndex(idx);
-    _quant->SetDataAt(idx, value);
-  }
-
-private:
-  bool CheckIndex(size_t idx) const
+protected:
+  virtual bool CheckIndex(size_t idx) const
   {
     assert(idx < _size);
     return idx < _size;
   }
 };
-
-// ------------------------------------------------------------------------------------------------
-
-template <class T, class RuntimeKernel>
-OMTensorData<const T> MakeInputData(RuntimeKernel& rtk, size_t input_idx)
-{
-  const T *data = utils::castInputData<T>(rtk.inputs_data[input_idx]);
-  const circle::Tensor *tensor = rtk.inputs[input_idx];
-
-  assert(data != nullptr);
-  assert(tensor != nullptr);
-
-  OMTensorData<const T> result(data, tensor);
-  return result;
-}
-
-template <class T, class RuntimeKernel>
-OMTensorData<T> MakeOutputData(RuntimeKernel& rtk, size_t output_idx)
-{
-  T *data = utils::castOutputData<T>(rtk.outputs_data[output_idx]);
-  const circle::Tensor *tensor = rtk.outputs[output_idx];
-
-  assert(data != nullptr);
-  assert(tensor != nullptr);
-
-  OMTensorData<T> result(data, tensor);
-  return result;
-}
 
 // ------------------------------------------------------------------------------------------------
 

@@ -16,8 +16,7 @@
 #ifndef ONERT_MICRO_CORE_RUNTIME_DATA_H
 #define ONERT_MICRO_CORE_RUNTIME_DATA_H
 
-#include "OMAxisData.h"
-#include "OMTensorData.h"
+#include "OMCustomTensorData.h"
 #include "OMUtils.h"
 
 namespace onert_micro::core
@@ -27,23 +26,34 @@ namespace onert_micro::core
 
 // ------------------------------------------------------------------------------------------------
 
-class OMBaseContext
+template <typename T, class TensorData>
+class OMTensorContext
 {
 protected:
+  TensorData _data;
   const circle::Tensor *_tensor;
   OMRuntimeShape _shape;
 
 public:
-  explicit OMBaseContext(const circle::Tensor *tensor)
-    : _tensor(tensor)
+  OMTensorContext(TensorData &&data, const circle::Tensor *tensor)
+    : _data(std::move(data))
+    , _tensor(tensor)
     , _shape(tensor)
   {
     assert(_tensor != nullptr);
   }
 
-  virtual ~OMBaseContext() = default;
-
 public:
+  TensorData &Data()
+  {
+    return _data;
+  }
+
+  const TensorData &Data() const
+  {
+    return _data;
+  }
+
   const circle::Tensor *Tensor() const noexcept
   {
     return _tensor;
@@ -59,6 +69,14 @@ public:
     return _shape.dimsData();
   }
 
+  size_t DimLength(size_t idx) const
+  {
+    auto result = _shape.dims(idx);
+    assert(result >= 0);
+
+    return static_cast<size_t>(result);
+  }
+
   bool HasZeroSizeDims() const
   {
     return _shape.hasZeroSizeDims();
@@ -69,7 +87,7 @@ public:
     return _shape.dimensionsCount();
   }
 
-  size_t ShapeFlatSize() const
+  size_t ElementsCount() const
   {
     return _shape.flatSize();
   }
@@ -82,55 +100,39 @@ public:
 
 // ------------------------------------------------------------------------------------------------
 
-template <typename T, size_t InputTensorIdx = 0>
-class OMInputContext : public OMBaseContext
-{
-protected:
-  OMTensorData<const T> _data;
+template <typename T>
+using OMInputContext = OMTensorContext<const T, IOTensorData<const T>>;
 
-public:
-  template <class RuntimeKernel>
-  explicit OMInputContext(const RuntimeKernel &rtk)
-    : OMBaseContext(rtk.inputs[InputTensorIdx])
-    , _data(MakeInputData<T>(rtk, InputTensorIdx))
-  {
-    assert(!_data.IsNull());
-  }
+template <typename T>
+using OMOutputContext = OMTensorContext<T, IOTensorData<T>>;
 
-  ~OMInputContext() override = default;
-
-public:
-  const OMTensorData<const T>& Data() const noexcept
-  {
-    return _data;
-  }
-};
+using OMAxisContext = OMTensorContext<uint32_t, OMAxisData<uint32_t>>;
 
 // ------------------------------------------------------------------------------------------------
 
-template <class T, size_t OutputTensorIdx = 0>
-class OMOutputContext : public OMBaseContext
+template <typename T, class RuntimeKernel>
+OMInputContext<T> MakeInputContext(RuntimeKernel &rtk, size_t inputIdx = 0)
 {
-protected:
-  OMTensorData<T> _data;
+  auto data = MakeInputData<T>(rtk, inputIdx);
+  const circle::Tensor *tensor = rtk.inputs[inputIdx];
+  return OMInputContext<T>(std::move(data), tensor);
+}
 
-public:
-  template <class RuntimeKernel>
-  explicit OMOutputContext(const RuntimeKernel &rtk)
-    : OMBaseContext(rtk.outputs[OutputTensorIdx])
-    , _data(MakeOutputData<T>(rtk, OutputTensorIdx))
-  {
-    assert(!_data.IsNull());
-  }
+template <typename T, class RuntimeKernel>
+OMOutputContext<T> MakeOutputContext(RuntimeKernel &rtk, size_t outputIdx = 0)
+{
+  auto data = MakeOutputData<T>(rtk, outputIdx);
+  const circle::Tensor *tensor = rtk.outputs[outputIdx];
+  return OMOutputContext<T>(std::move(data), tensor);
+}
 
-  ~OMOutputContext() override = default;
-
-public:
-  OMTensorData<T> &Data() noexcept
-  {
-    return _data;
-  }
-};
+template <class RuntimeKernel>
+OMAxisContext MakeAxisContext(RuntimeKernel &rtk, size_t axisInputIdx = 1)
+{
+  auto data = MakeAxisData<uint32_t>(rtk, axisInputIdx);
+  const circle::Tensor *tensor = rtk.inputs[axisInputIdx];
+  return OMAxisContext(std::move(data), tensor);
+}
 
 // ------------------------------------------------------------------------------------------------
 
@@ -138,15 +140,15 @@ template <class T, class ... Mixins>
 class OMDataContext : public Mixins...
 {
 protected:
-  OMInputContext<T> _in_ctx;
-  OMOutputContext<T> _out_ctx;
+  OMInputContext<T> _input;
+  OMOutputContext<T> _output;
 
 public:
   template <class RuntimeKernel>
   explicit OMDataContext(RuntimeKernel &rt_kernel)
     : Mixins(rt_kernel)...
-    , _in_ctx(rt_kernel)
-    , _out_ctx(rt_kernel)
+    , _input(MakeInputContext<T>(rt_kernel))
+    , _output(MakeOutputContext<T>(rt_kernel))
   {}
 
   virtual ~OMDataContext() = default;
@@ -154,58 +156,33 @@ public:
 public:
   auto &Input()
   {
-    return _in_ctx;
+    return _input;
   }
 
   auto &Output()
   {
-    return _out_ctx;
+    return _output;
   }
 };
 
 // ------------------------------------------------------------------------------------------------
 
-template <size_t AxisTensorIdx>
-class OMAxisContext : public OMBaseContext
-{
-  OMAxisData _data;
-
-public:
-  template <class RuntimeKernel>
-  explicit OMAxisContext(const RuntimeKernel &rtk)
-    : OMBaseContext(rtk.inputs[AxisTensorIdx])
-    , _data(MakeAxisData(rtk, AxisTensorIdx))
-  {
-    assert(!_data.IsNull());
-  }
-
-public:
-  OMAxisData &Data() noexcept
-  {
-    return _data;
-  }
-};
-
-// ------------------------------------------------------------------------------------------------
-
-template <size_t AxisTensorIdx = 1>
+template <typename IntType = uint32_t, size_t AxisTensorIdx = 1>
 class OMAxisContextMixin
 {
-  using AxisContext = OMAxisContext<AxisTensorIdx>;
-
 protected:
-  AxisContext _axis_ctx;
+  OMAxisContext _axis;
 
 public:
   template <class RuntimeKernel>
   explicit OMAxisContextMixin(RuntimeKernel &rt_kernel)
-    : _axis_ctx(rt_kernel)
+    : _axis(MakeAxisContext(rt_kernel, AxisTensorIdx))
   {}
 
 public:
-  AxisContext &Axis()
+  OMAxisContext &Axis()
   {
-    return _axis_ctx;
+    return _axis;
   }
 };
 

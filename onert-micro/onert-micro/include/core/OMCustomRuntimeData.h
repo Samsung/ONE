@@ -28,9 +28,9 @@ namespace core
 // ------------------------------------------------------------------------------------------------
 
 template <typename T>
-class OMReduceDataContext : public OMDataContext<T, OMAxisContextMixin<1>>
+class OMReduceDataContext : public OMDataContext<T, OMAxisContextMixin<uint32_t, 1>>
 {
-  using DataContext = OMDataContext<T, OMAxisContextMixin<1>>;
+  using DataContext = OMDataContext<T, OMAxisContextMixin<uint32_t, 1>>;
 
 public:
   template <class RuntimeKernel>
