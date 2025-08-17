@@ -22,6 +22,7 @@
 
 #include "utils/DynamicShapeUtils.h"
 #include "utils/Padding.h"
+#include "utils/KernelShapeUtil.h"
 
 #include <mlir/IR/Matchers.h>
 
@@ -29,12 +30,6 @@ namespace mlir
 {
 namespace Circle
 {
-
-// To reuse calculation for shape inference from CircleDialect.cpp
-// TODO relocate to some header
-LogicalResult ComputeConvWindowedOutputSize(int64_t input_size, int64_t filter_size,
-                                            int64_t dilation_rate, int64_t stride,
-                                            Circle::Padding padding, int64_t *output_size);
 
 namespace
 {

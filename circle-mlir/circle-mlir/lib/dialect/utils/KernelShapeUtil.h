@@ -22,6 +22,8 @@
 
 #include "Padding.h"
 
+#include <mlir/IR/BuiltinTypes.h>
+
 #include <array>
 
 namespace mlir
@@ -143,6 +145,18 @@ Status Get3dOutputSizeV2(const std::array<int64_t, 3> &input, const std::array<i
                          const std::array<int64_t, 3> &dilations,
                          const std::array<int64_t, 3> &strides, Padding padding_type,
                          std::array<int64_t, 3> *output_ptr, std::array<int64_t, 3> *padding_ptr);
+
+} // namespace Circle
+} // namespace mlir
+
+namespace mlir
+{
+namespace Circle
+{
+
+LogicalResult ComputeConvWindowedOutputSize(int64_t input_size, int64_t filter_size,
+                                            int64_t dilation_rate, int64_t stride,
+                                            Circle::Padding padding, int64_t *output_size);
 
 } // namespace Circle
 } // namespace mlir
