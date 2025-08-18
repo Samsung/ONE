@@ -38,21 +38,6 @@ void Conv2DOp::getCanonicalizationPatterns(RewritePatternSet &results, MLIRConte
   // results.add<RemoveOptionalZeroBias<Conv2DOp>>(context);
 }
 
-LogicalResult ComputeConvWindowedOutputSize(int64_t input_size, int64_t filter_size,
-                                            int64_t dilation_rate, int64_t stride,
-                                            Circle::Padding padding, int64_t *output_size)
-{
-  int64_t pad_low;
-  int64_t pad_high;
-
-  Status status = Circle::GetWindowedOutputSizeVerboseV2(
-    input_size, filter_size, dilation_rate, stride, padding, output_size, &pad_low, &pad_high);
-  // Return failure if expected_output_size could not be calculated.
-  if (!status.ok())
-    return failure();
-  return success();
-}
-
 LogicalResult Conv2DOp::inferReturnTypes(MLIRContext *, std::optional<Location> location,
                                          ValueRange operands, DictionaryAttr attr,
                                          OpaqueProperties properties, RegionRange,

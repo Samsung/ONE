@@ -146,3 +146,27 @@ Status Get3dOutputSizeV2(const std::array<int64_t, 3> &input, const std::array<i
 
 } // namespace Circle
 } // namespace mlir
+
+namespace mlir
+{
+namespace Circle
+{
+
+// NOTE relocated from dialect/src/ops/Conv2DOp.h to reduce MCD
+LogicalResult ComputeConvWindowedOutputSize(int64_t input_size, int64_t filter_size,
+                                            int64_t dilation_rate, int64_t stride,
+                                            Circle::Padding padding, int64_t *output_size)
+{
+  int64_t pad_low;
+  int64_t pad_high;
+
+  Status status = Circle::GetWindowedOutputSizeVerboseV2(
+    input_size, filter_size, dilation_rate, stride, padding, output_size, &pad_low, &pad_high);
+  // Return failure if expected_output_size could not be calculated.
+  if (!status.ok())
+    return failure();
+  return success();
+}
+
+} // namespace Circle
+} // namespace mlir
