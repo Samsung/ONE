@@ -39,7 +39,7 @@ enum class PhaseEvent
   PassEnd,
 };
 
-template <PhaseEvent E> struct PhaseEventInfo;
+template <PhaseEvent E> class PhaseEventInfo;
 
 template <> class PhaseEventInfo<PhaseEvent::PhaseBegin>
 {
