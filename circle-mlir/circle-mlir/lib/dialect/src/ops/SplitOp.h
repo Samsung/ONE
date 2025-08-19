@@ -66,9 +66,10 @@ mlir::LogicalResult SplitOp::verify()
     return op.emitOpError("'num_splits' should evenly divide 'split_dim' axis");
 
   // Verifies output tensor types.
+  int64_t num_splits64 = static_cast<int64_t>(num_splits);
   RankedTensorType expected_output_type =
-    SubstituteRankedTensorTypeDimSize(input_type, split_dim, dim_size / num_splits);
-  return VerifySplitOpOutputTypes(op.getOperation(), num_splits,
+    SubstituteRankedTensorTypeDimSize(input_type, split_dim, dim_size / num_splits64);
+  return VerifySplitOpOutputTypes(op.getOperation(), num_splits64,
                                   [expected_output_type](int64_t) { return expected_output_type; });
 }
 
