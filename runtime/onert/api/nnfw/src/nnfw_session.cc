@@ -815,10 +815,8 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     }
     else
     {
-      auto io_index = onert::ir::IOIndex{index};
-      auto shape = _execution->getInputShape(io_index);
-      auto dtype = _compiler_artifact->_executors->inputInfo(io_index).typeInfo().type();
-      fillTensorInfo(ti, shape, dtype);
+      const auto &info = _execution->getInputInfo(index);
+      fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
   }
   catch (const std::exception &e)
