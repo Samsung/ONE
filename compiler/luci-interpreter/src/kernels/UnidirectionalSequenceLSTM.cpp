@@ -34,7 +34,6 @@ using namespace tflite;
 void UpdateLstmCellFloat(int n_batch, int n_cell, float *cell_state, const float *input_gate,
                          float *forget_gate, const float *cell_gate, bool use_cifg, float clip)
 {
-// NOTE tflite source is as is but will fail build with gcc-8 and above
   tensor_utils::VectorVectorCwiseProduct(forget_gate, cell_state, n_batch * n_cell, cell_state);
 
   if (use_cifg)
