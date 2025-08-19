@@ -366,12 +366,14 @@ TEST(ExecInstance, neg_small_inoutsize)
 
   onert::exec::Execution execution{executors};
 
-  execution.setInput(input1, new_shape, reinterpret_cast<const void *>(input1_buffer), 8);
-  execution.setInput(input2, new_shape, reinterpret_cast<const void *>(input2_buffer), 2);
+  execution.changeInputShape(input1, new_shape);
+  execution.changeInputShape(input2, new_shape);
+  execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 8);
+  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 2);
   EXPECT_THROW(execution.execute(), std::exception);
 
   // Not throw exception because input shape is changed and output buffer is enough
-  execution.setInput(input2, new_shape, reinterpret_cast<const void *>(input2_buffer), 8);
+  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 8);
   execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 16);
   execution.execute();
 
@@ -762,12 +764,9 @@ TEST(ExecInstance, multi_model_dequant_input_quant_output)
   auto executors = mockup.artifact->_executors;
 
   onert::exec::Execution execution{executors};
-  execution.setInput(input1, execution.getInputShape(input1),
-                     reinterpret_cast<const void *>(input1_buffer), 4);
-  execution.setInput(input2, execution.getInputShape(input2),
-                     reinterpret_cast<const void *>(input2_buffer), 4);
-  execution.setOutput(output, execution.getOutputShape(output),
-                      reinterpret_cast<void *>(output_buffer), 4);
+  execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 4);
+  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 4);
+  execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 4);
   execution.execute();
 
   for (auto i = 0; i < 4; i++)

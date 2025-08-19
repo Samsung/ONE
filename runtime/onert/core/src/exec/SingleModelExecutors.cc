@@ -60,7 +60,7 @@ const backend::IPortableTensor *SingleModelExecutors::outputTensor(const ir::IOI
   return entryExecutor()->outputTensor(index.value());
 }
 
-void SingleModelExecutors::execute(const ExecutionContext &ctx)
+void SingleModelExecutors::execute(ExecutionContext &ctx)
 {
   // UserTensor for Input/Output
   std::vector<std::unique_ptr<backend::builtin::UserTensor>> tensorpool;
@@ -75,11 +75,11 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
     auto &desc = ctx.desc.inputs[i];
 
     // Input is optional if buffer is nullptr, and optional input's size is 0
-    if (desc->buffer == nullptr && (desc->size != 0 || desc->info.total_size() != 0))
+    if (desc.buffer == nullptr && (desc.size != 0 || desc.info.total_size() != 0))
       throw std::runtime_error{"Input " + std::to_string(i) + "'s buffer is not set."};
 
     tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
-      desc->info, const_cast<uint8_t *>(static_cast<const uint8_t *>(desc->buffer)), desc->size));
+      desc.info, const_cast<uint8_t *>(static_cast<const uint8_t *>(desc.buffer)), desc.size));
 
     inputs[i] = tensorpool.back().get();
   }
@@ -95,12 +95,12 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
     bool skip_set_output = output_io_tensor->hasBackendTensor();
 
     // Output is optional if buffer is nullptr, and optional output's size is 0
-    if (desc->buffer == nullptr && (desc->size != 0 || desc->info.total_size() != 0) &&
+    if (desc.buffer == nullptr && (desc.size != 0 || desc.info.total_size() != 0) &&
         !skip_set_output)
       throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
 
     tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
-      desc->info, static_cast<uint8_t *>(desc->buffer), desc->size));
+      desc.info, static_cast<uint8_t *>(desc.buffer), desc.size));
     outputs[i] = tensorpool.back().get();
   }
 
@@ -110,13 +110,13 @@ void SingleModelExecutors::execute(const ExecutionContext &ctx)
   // Get dynamic shape inference result
   for (uint32_t i = 0; i < outputs.size(); i++)
   {
-    if (ctx.desc.outputs[i]->buffer == nullptr)
+    if (ctx.desc.outputs[i].buffer == nullptr)
     {
       // Output is optional if buffer is nullptr
       continue;
     }
 
-    ctx.desc.outputs[i]->info.shape(outputs[i]->getShape());
+    ctx.desc.outputs[i].info.shape(outputs[i]->getShape());
   }
 }
 
