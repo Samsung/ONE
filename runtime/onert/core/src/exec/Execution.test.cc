@@ -29,10 +29,10 @@ namespace
 
 using namespace onert::ir;
 
-class CompiledMockUpModel
+class MockUpModel
 {
 public:
-  CompiledMockUpModel()
+  MockUpModel()
   {
     // Model: two elementwise add operation
     // model input: lhs, rhs1
@@ -76,12 +76,17 @@ public:
     graph->addOutput(operand_result2);
     graph->verify();
 
-    // Compile
+    // Initialize compile option
+    coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
+  }
+
+  void compile()
+  {
     auto model = std::make_shared<onert::ir::Model>();
     model->push(onert::ir::SubgraphIndex{0}, graph);
-    coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-    auto compiler = onert::compiler::CompilerFactory::get().create(std::make_unique<NNPkg>(model),
-                                                                   coptions.get());
+    // Compile copied nnpkg to handle multiple compilation
+    auto compiler = onert::compiler::CompilerFactory::get().create(
+      std::make_unique<onert::ir::NNPkg>(model), coptions.get());
     artifact = compiler->compile();
   }
 
@@ -301,8 +306,8 @@ public:
 
 TEST(ExecInstance, simple)
 {
-  auto mockup = CompiledMockUpModel();
-  auto graph = mockup.graph;
+  auto mockup = MockUpModel();
+  mockup.compile();
   auto executors = mockup.artifact->_executors;
 
   auto input1 = IOIndex{0};
@@ -327,10 +332,74 @@ TEST(ExecInstance, simple)
   }
 }
 
+TEST(ExecInstance, shapeinf)
+{
+  auto mockup = MockUpModel();
+  mockup.compile();
+  auto executors = mockup.artifact->_executors;
+
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output = IOIndex{0};
+
+  const onert::ir::Shape new_shape{2, 2, 2, 1};
+  const float input1_buffer[8] = {1, 0, -1, -2, 1, 2, 0, -1};
+  const float input2_buffer[8] = {1, -3, 2, -4, 4, -2, 3, 1};
+  float output_buffer[8] = {};
+  const float output_expected[8] = {5, -2, 0, -1, 8, 1, 2, 5};
+
+  onert::exec::Execution execution{executors};
+
+  execution.changeInputShape(input1, new_shape);
+  execution.changeInputShape(input2, new_shape);
+  execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 32);
+  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 32);
+  execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 32);
+  execution.execute();
+
+  EXPECT_EQ(execution.getOutputShape(output), new_shape);
+  for (auto i = 0; i < 8; i++)
+  {
+    EXPECT_EQ(output_buffer[i], output_expected[i]);
+  }
+}
+
+TEST(ExecInstance, internaloutput_shapeinf)
+{
+  auto mockup = MockUpModel();
+  mockup.coptions->internal_output_alloc = true;
+  mockup.compile();
+  auto executors = mockup.artifact->_executors;
+
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output = IOIndex{0};
+
+  const onert::ir::Shape new_shape{2, 2, 2, 1};
+  const float input1_buffer[8] = {1, 0, -1, -2, 1, 2, 0, -1};
+  const float input2_buffer[8] = {1, -3, 2, -4, 4, -2, 3, 1};
+  const float output_expected[8] = {5, -2, 0, -1, 8, 1, 2, 5};
+
+  onert::exec::Execution execution{executors};
+
+  execution.changeInputShape(input1, new_shape);
+  execution.changeInputShape(input2, new_shape);
+  execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 32);
+  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 32);
+  execution.execute();
+
+  const float *output_buffer = reinterpret_cast<const float *>(executors->outputBuffer(output));
+  EXPECT_EQ(executors->outputInfo(output).shape(), new_shape);
+  for (auto i = 0; i < 8; i++)
+  {
+    EXPECT_EQ(output_buffer[i], output_expected[i]);
+  }
+}
+
 TEST(ExecInstance, neg_small_outputbuffer)
 {
-  auto mockup = CompiledMockUpModel();
-  auto graph = mockup.graph;
+  auto mockup = MockUpModel();
+  mockup.compile();
   auto executors = mockup.artifact->_executors;
 
   auto input1 = IOIndex{0};
@@ -351,8 +420,8 @@ TEST(ExecInstance, neg_small_outputbuffer)
 
 TEST(ExecInstance, neg_small_inoutsize)
 {
-  auto mockup = CompiledMockUpModel();
-  auto graph = mockup.graph;
+  auto mockup = MockUpModel();
+  mockup.compile();
   auto executors = mockup.artifact->_executors;
 
   auto input1 = IOIndex{0};
@@ -385,7 +454,8 @@ TEST(ExecInstance, neg_small_inoutsize)
 
 TEST(ExecInstance, twoCompile)
 {
-  auto mockup = CompiledMockUpModel();
+  auto mockup = MockUpModel();
+  mockup.compile();
   auto graph = mockup.graph;
   auto executors1 = mockup.artifact->_executors;
   onert::exec::Execution execution1{executors1};
@@ -434,7 +504,8 @@ TEST(ExecInstance, twoCompile)
 // Support two initialized execution instance then ordered execution
 TEST(ExecInstance, twoExecution)
 {
-  auto mockup = CompiledMockUpModel();
+  auto mockup = MockUpModel();
+  mockup.compile();
   auto executors = mockup.artifact->_executors;
   auto input1 = IOIndex{0};
   auto input2 = IOIndex{1};
@@ -533,7 +604,8 @@ private:
 // Support multi-thread execution
 TEST(ExecInstance, twoThreads)
 {
-  auto mockup = CompiledMockUpModel();
+  auto mockup = MockUpModel();
+  mockup.compile();
   auto executors = mockup.artifact->_executors;
 
   const float exe1_input1_buffer[4] = {1, 0, -1, -2};
@@ -566,8 +638,8 @@ TEST(ExecInstance, twoThreads)
 // Support asynchronous execution
 TEST(ExecInstance, async)
 {
-  auto mockup = CompiledMockUpModel();
-  auto graph = mockup.graph;
+  auto mockup = MockUpModel();
+  mockup.compile();
   auto executors = mockup.artifact->_executors;
 
   auto input1 = IOIndex{0};
