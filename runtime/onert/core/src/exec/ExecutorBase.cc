@@ -91,6 +91,9 @@ void ExecutorBase::execute(const std::vector<backend::IPortableTensor *> &inputs
     {
       assert(output_tensor->buffer() != nullptr);
       output_tensor->syncInfoFromBackendTensor();
+
+      // outputs[n] is not used, but update its shape to pass updated shape to caller
+      outputs[n]->setShape(output_tensor->actualTensor()->getShape());
     }
   }
 }

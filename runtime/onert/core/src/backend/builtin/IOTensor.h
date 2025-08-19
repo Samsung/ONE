@@ -51,6 +51,7 @@ public:
 public:
   void setTensor(IPortableTensor *tensor);
   void setBackendTensor(IPortableTensor *tensor);
+  const IPortableTensor *actualTensor() { return _tensor; }
 
 public:
   uint8_t *buffer() const override { return _tensor->buffer(); }

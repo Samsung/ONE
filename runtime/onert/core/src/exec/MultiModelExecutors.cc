@@ -331,6 +331,18 @@ void MultiModelExecutors::execute(const ExecutionContext &ctx)
         _edge_tensors[from_iodesc]->decrease_ref();
       }
     }
+
+    // Get dynamic shape inference result
+    for (uint32_t i = 0; i < output_size; ++i)
+    {
+      if (ctx.desc.outputs[i]->buffer == nullptr)
+      {
+        // Output is optional if buffer is nullptr
+        continue;
+      }
+
+      ctx.desc.outputs[i]->info.shape(outputs_inter[i]->getShape());
+    }
   }
 }
 
