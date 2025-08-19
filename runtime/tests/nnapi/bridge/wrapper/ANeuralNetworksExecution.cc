@@ -136,10 +136,11 @@ bool ANeuralNetworksExecution::setInput(uint32_t index, const ANeuralNetworksOpe
   try
   {
     onert::ir::IOIndex input_index{index};
-    const auto &shape =
-      (type != nullptr) ? NNAPIConvert::getShape(type) : _execution->getInputShape(input_index);
 
-    _execution->setInput(input_index, shape, buffer, length);
+    if (type != nullptr)
+      _execution->changeInputShape(input_index, NNAPIConvert::getShape(type));
+
+    _execution->setInput(input_index, buffer, length);
   }
   catch (const std::exception &e)
   {
@@ -162,7 +163,7 @@ bool ANeuralNetworksExecution::setOptionalInput(uint32_t index,
   {
     onert::ir::IOIndex input_index{index};
     const auto &shape =
-      (type != nullptr) ? NNAPIConvert::getShape(type) : _execution->getInputShape(input_index);
+      (type != nullptr) ? NNAPIConvert::getShape(type) : _execution->inputInfo(index).shape();
 
     // ANeuralNetworksExecution::setInput() uses only shape information
     ANeuralNetworksOperandType optional_input_type;
@@ -186,16 +187,14 @@ bool ANeuralNetworksExecution::setOptionalInput(uint32_t index,
   return true;
 }
 
-bool ANeuralNetworksExecution::setOutput(uint32_t index, const ANeuralNetworksOperandType *type,
+bool ANeuralNetworksExecution::setOutput(uint32_t index, const ANeuralNetworksOperandType *,
                                          void *buffer, size_t length) noexcept
 {
   try
   {
+    // type is not be handled
     onert::ir::IOIndex output_index{index};
-    const auto &shape =
-      (type != nullptr) ? NNAPIConvert::getShape(type) : _execution->getOutputShape(output_index);
-
-    _execution->setOutput(output_index, shape, buffer, length);
+    _execution->setOutput(output_index, buffer, length);
   }
   catch (const std::exception &e)
   {
@@ -256,7 +255,7 @@ bool ANeuralNetworksExecution::getOutputOperandRank(uint32_t index, uint32_t *ra
       return false;
     }
 
-    const auto shape = _execution->getOutputShape(output_index);
+    const auto shape = _execution->outputInfo(index).shape();
     if (shape.hasUnspecifiedDims())
     {
       throw std::runtime_error{"Internal error: Output tensor has unspecified dims"};
@@ -286,7 +285,7 @@ bool ANeuralNetworksExecution::getOutputOperandDimensions(uint32_t index, uint32
       return false;
     }
 
-    const auto shape = _execution->getOutputShape(output_index);
+    const auto shape = _execution->outputInfo(index).shape();
     if (shape.hasUnspecifiedDims())
     {
       throw std::runtime_error{"Internal error: Output tensor has unspecified dims"};

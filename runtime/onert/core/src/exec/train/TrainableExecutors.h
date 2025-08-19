@@ -67,7 +67,7 @@ public:
 
   const backend::IPortableTensor *outputTensor(const ir::IOIndex &index) const final;
 
-  void execute(const ExecutionContext &ctx) override;
+  void execute(ExecutionContext &ctx) override;
 
   /**
    * @brief Train

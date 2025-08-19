@@ -815,7 +815,7 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     }
     else
     {
-      const auto &info = _execution->getInputInfo(index);
+      const auto &info = _execution->inputInfo(index);
       fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
   }
@@ -855,10 +855,8 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     }
     else
     {
-      auto io_index = onert::ir::IOIndex{index};
-      auto shape = _execution->getOutputShape(io_index);
-      auto dtype = _compiler_artifact->_executors->outputInfo(io_index).typeInfo().type();
-      fillTensorInfo(ti, shape, dtype);
+      auto info = _execution->outputInfo(index);
+      fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
   }
   catch (const std::exception &e)
@@ -1562,7 +1560,7 @@ NNFW_STATUS nnfw_session::train_set_input(uint32_t index, const void *input,
   try
   {
     auto ind = onert::ir::IOIndex(index);
-    auto size = _execution->getInputTotalSize(ind);
+    auto size = _execution->inputInfo(index).total_size();
     if (input_tensorinfo && getBufSize(input_tensorinfo) != size)
     {
       std::cerr
@@ -1607,8 +1605,7 @@ NNFW_STATUS nnfw_session::train_set_expected(uint32_t index, const void *expecte
 
   try
   {
-    auto output_ind = onert::ir::IOIndex(index);
-    auto size = _execution->getOutputTotalSize(output_ind);
+    auto size = _execution->outputInfo(index).total_size();
     if (expected_tensorinfo && getBufSize(expected_tensorinfo) != size)
     {
       std::cerr << "Error during nnfw_session::train_set_expected : invalid tensorinfo"
@@ -2285,28 +2282,16 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
       std::vector<void *> _output_buffers;
 
       using namespace onert::ir;
-      // Save Inputs buffers, set compile option to use float type
-      for (auto input_index = IOIndex{0}; input_index < IOIndex{input_size}; input_index++)
-      {
-        auto input_Shape = _execution->getInputShape(input_index);
-        auto input_buffer = _execution->getInputBuffer(input_index);
+      // Copy execution context for backup: I/O buffer, shape, and execution options
+      const onert::exec::ExecutionContext ctx_backup = _execution->context();
 
-        _input_buffers.push_back(input_buffer);
+      // Set compile option to use float type
+      for (auto input_index = IOIndex{0}; input_index < IOIndex{input_size}; input_index++)
         _coptions->input_type.insert_or_assign(input_index, TypeInfo(DataType::FLOAT32));
-      }
 
       // Save Outputs buffers
       for (auto output_index = IOIndex{0}; output_index < IOIndex{output_size}; output_index++)
-      {
-        auto output_Shape = _execution->getOutputShape(output_index);
-        auto output_buffer = _execution->getOutputBuffer(output_index);
-
-        _output_buffers.push_back(output_buffer);
         _coptions->output_type.insert_or_assign(output_index, TypeInfo(DataType::FLOAT32));
-      }
-
-      // Save execution options
-      auto saved_options = _execution->executionOptions();
 
       // if there is compiled model - try to load it
       if (file_compiled_model.good())
@@ -2350,41 +2335,8 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
       if (status != NNFW_STATUS_NO_ERROR)
         return status;
 
-      // Restore execution options
-      _execution->executionOptions() = saved_options;
-
-      // Restore inputs to the quantized or compiled model
-      for (uint32_t input_index = 0; input_index < _input_buffers.size(); input_index++)
-      {
-        nnfw_tensorinfo ti;
-        status = input_tensorinfo(input_index, &ti);
-        if (status != NNFW_STATUS_NO_ERROR)
-          return status;
-
-        auto input_size_in_bytes = getBufSize(&ti);
-
-        status = set_input(input_index, ti.dtype, _input_buffers[input_index], input_size_in_bytes);
-
-        if (status != NNFW_STATUS_NO_ERROR)
-          return status;
-      }
-
-      // Restore outputs to the quantized or compiled model
-      for (uint32_t output_index = 0; output_index < _output_buffers.size(); output_index++)
-      {
-
-        nnfw_tensorinfo ti;
-        status = output_tensorinfo(output_index, &ti);
-        if (status != NNFW_STATUS_NO_ERROR)
-          return status;
-
-        uint64_t output_size_in_bytes = getBufSize(&ti);
-
-        status =
-          set_output(output_index, ti.dtype, _output_buffers[output_index], output_size_in_bytes);
-        if (status != NNFW_STATUS_NO_ERROR)
-          return status;
-      }
+      // Restore execution context: I/O buffer, shape, and execution options
+      _execution->restoreContext(ctx_backup);
     }
 
     // Run quantized model

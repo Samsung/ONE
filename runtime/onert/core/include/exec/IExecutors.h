@@ -98,10 +98,10 @@ public:
   virtual const backend::IPortableTensor *outputTensor(const ir::IOIndex &index) const = 0;
 
   /**
-   * @brief     Execute NN package executor set
-   * @param[in] ctx  Execution context
+   * @brief         Execute NN package executor set
+   * @param[inout]  ctx Execution context. It reflects execution result (ex. output shape inference)
    */
-  virtual void execute(const ExecutionContext &ctx) = 0;
+  virtual void execute(ExecutionContext &ctx) = 0;
 };
 
 } // namespace onert::exec
