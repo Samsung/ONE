@@ -357,7 +357,7 @@ TEST(ExecInstance, shapeinf)
   execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 32);
   execution.execute();
 
-  EXPECT_EQ(execution.getOutputShape(output), new_shape);
+  EXPECT_EQ(execution.outputInfo(0).shape(), new_shape);
   for (auto i = 0; i < 8; i++)
   {
     EXPECT_EQ(output_buffer[i], output_expected[i]);
@@ -720,7 +720,7 @@ TEST(ExecInstance, multi_model_shapeinf)
   execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 32);
   execution.execute();
 
-  EXPECT_EQ(execution.getOutputShape(output), new_shape);
+  EXPECT_EQ(execution.outputInfo(0).shape(), new_shape);
   for (auto i = 0; i < 8; i++)
   {
     EXPECT_EQ(output_buffer[i], output_expected[i]);
@@ -752,9 +752,9 @@ TEST(ExecInstance, multi_model_internaloutput_shapeinf)
   execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 32);
   execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 32);
   execution.execute();
-  float *output_buffer = reinterpret_cast<float *>(execution.getOutputBuffer(output));
+  const float *output_buffer = reinterpret_cast<const float *>(executors->outputBuffer(output));
 
-  EXPECT_EQ(execution.getOutputShape(output), new_shape);
+  EXPECT_EQ(execution.outputInfo(0).shape(), new_shape);
   for (auto i = 0; i < 8; i++)
   {
     EXPECT_EQ(output_buffer[i], output_expected[i]);
