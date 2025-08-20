@@ -389,7 +389,7 @@ TEST(ExecInstance, internaloutput_shapeinf)
   execution.execute();
 
   const float *output_buffer = reinterpret_cast<const float *>(executors->outputBuffer(output));
-  EXPECT_EQ(executors->outputInfo(output).shape(), new_shape);
+  EXPECT_EQ(execution.outputInfo(0).shape(), new_shape);
   for (auto i = 0; i < 8; i++)
   {
     EXPECT_EQ(output_buffer[i], output_expected[i]);

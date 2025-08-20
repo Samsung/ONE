@@ -94,7 +94,8 @@ void SingleModelExecutors::execute(ExecutionContext &ctx)
       throw std::runtime_error{"Output tensor must be IOTensor"};
     bool skip_set_output = output_io_tensor->hasBackendTensor();
 
-    // Output is optional if buffer is nullptr, and optional output's size is 0
+    // If buffer is nullptr, output is optional or internally allocated buffer,
+    // and optional output's size is 0
     if (desc.buffer == nullptr && (desc.size != 0 || desc.info.total_size() != 0) &&
         !skip_set_output)
       throw std::runtime_error{"Output " + std::to_string(i) + "'s buffer is not set."};
@@ -110,13 +111,15 @@ void SingleModelExecutors::execute(ExecutionContext &ctx)
   // Get dynamic shape inference result
   for (uint32_t i = 0; i < outputs.size(); i++)
   {
-    if (ctx.desc.outputs[i].buffer == nullptr)
-    {
-      // Output is optional if buffer is nullptr
-      continue;
-    }
+    const auto output_io_tensor =
+      dynamic_cast<const backend::builtin::IOTensor *>(outputTensor(ir::IOIndex{i}));
+    if (!output_io_tensor)
+      throw std::runtime_error{"Output tensor must be IOTensor"};
 
-    ctx.desc.outputs[i].info.shape(outputs[i]->getShape());
+    // if (output_io_tensor->hasBackendTensor())
+    ctx.desc.outputs[i].info.shape(output_io_tensor->get_info().shape());
+    // else
+    // ctx.desc.outputs[i].info.shape(outputs[i]->getShape());
   }
 }
 
