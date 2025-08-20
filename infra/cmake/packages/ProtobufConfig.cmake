@@ -24,7 +24,7 @@ endfunction(_Protobuf_module_import)
 function(_Protobuf_import)
   # Let's use find_package here not to export unnecessary definitions
   # NOTE Here we use "exact" match to avoid possible infinite loop
-  find_package(protobuf EXACT 3.20.2.0 QUIET)
+  find_package(protobuf EXACT 3.21.12.0 QUIET)
 
   if(NOT protobuf_FOUND)
     set(Protobuf_FOUND FALSE PARENT_SCOPE)
@@ -65,7 +65,7 @@ function(_Protobuf_build)
                       INSTALL_DIR ${EXT_OVERLAY_DIR}
                       BUILD_FLAGS -fPIC
                       EXTRA_OPTS  -Dprotobuf_BUILD_TESTS=OFF -Dprotobuf_WITH_ZLIB=OFF
-                      IDENTIFIER  "3.20.2.0"
+                      IDENTIFIER  "3.21.12.0"
                       PKG_NAME    "PROTOBUF")
 
 endfunction(_Protobuf_build)

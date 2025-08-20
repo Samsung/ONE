@@ -8,7 +8,7 @@ function(_ProtobufSource_import)
   nnas_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  envoption(PROTOBUF_URL ${EXTERNAL_DOWNLOAD_SERVER}/protocolbuffers/protobuf/archive/v3.20.2.tar.gz)
+  envoption(PROTOBUF_URL ${EXTERNAL_DOWNLOAD_SERVER}/protocolbuffers/protobuf/archive/v3.21.12.tar.gz)
 
   ExternalSource_Download(PROTOBUF ${PROTOBUF_URL})
 
