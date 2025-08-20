@@ -61,7 +61,7 @@ const backend::IPortableTensor *TrainableExecutors::outputTensor(const ir::IOInd
   return entryExecutor()->outputTensor(index.value());
 }
 
-void TrainableExecutors::execute(const ExecutionContext &ctx)
+void TrainableExecutors::execute(ExecutionContext &ctx)
 {
   if (_executors.size() > 1)
     throw std::runtime_error("TrainableExecutors does not support multiple executors yet");
@@ -104,11 +104,11 @@ void TrainableExecutors::forward(
     auto &desc = ctx.desc.inputs[i];
 
     // Input is optional if buffer is nullptr, and optional input's size is 0
-    if (desc->buffer == nullptr && (desc->size != 0 || desc->info.total_size() != 0))
+    if (desc.buffer == nullptr && (desc.size != 0 || desc.info.total_size() != 0))
       throw std::runtime_error{"Input " + std::to_string(i) + "'s buffer is not set."};
 
     tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
-      desc->info, const_cast<uint8_t *>(static_cast<const uint8_t *>(desc->buffer)), desc->size));
+      desc.info, const_cast<uint8_t *>(static_cast<const uint8_t *>(desc.buffer)), desc.size));
     inputs[i] = tensorpool.back().get();
   }
 
@@ -120,7 +120,7 @@ void TrainableExecutors::forward(
     // If training, output buffer may not be used
     // So don't check optional
     tensorpool.emplace_back(std::make_unique<backend::builtin::UserTensor>(
-      desc->info, static_cast<uint8_t *>(desc->buffer), desc->size));
+      desc.info, static_cast<uint8_t *>(desc.buffer), desc.size));
     outputs[i] = tensorpool.back().get();
   }
 

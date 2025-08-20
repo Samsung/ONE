@@ -70,37 +70,27 @@ public:
   void setInput(const ir::IOIndex &index, const void *buffer, size_t length);
 
   /**
-   * @brief     Set input data's information, especially to specify unknown dimensions on model
-   * build time.
-   * @param[in] index   Input index
-   * @param[in] shape   Input data's shape
-   * @param[in] buffer  Input data's buffer pointer
-   * @param[in] length  Input data's length
-   */
-  void setInput(const ir::IOIndex &index, const ir::Shape &shape, const void *buffer,
-                size_t length);
-  /**
    * @brief     Set output data's information
    * @param[in] index   Output index
    * @param[in] buffer  Output data's buffer pointer
    * @param[in] length  Output data's length
    */
   void setOutput(const ir::IOIndex &index, void *buffer, size_t length);
-  /**
-   * @brief     Set output data's information, especially to specify unknown dimensions on model
-   * build time.
-   * @param[in] index   Output index
-   * @param[in] shape   Output data's shape
-   * @param[in] buffer  Output data's buffer pointer
-   * @param[in] length  Output data's length
-   */
-  void setOutput(const ir::IOIndex &index, const ir::Shape &shape, void *buffer, size_t length);
+
   /**
    * @brief     Get the Input Info object
    * @param[in] index Input index
    * @return    Input info
    */
-  const ir::OperandInfo &getInputInfo(uint32_t index) { return _ctx.desc.inputs.at(index)->info; }
+  const ir::OperandInfo &inputInfo(uint32_t index) { return _ctx.desc.inputs.at(index).info; }
+
+  /**
+   * @brief     Get the Output Info object
+   * @param[in] index Output index
+   * @return    Output info
+   */
+  const ir::OperandInfo &outputInfo(uint32_t index) { return _ctx.desc.outputs.at(index).info; }
+
   /**
    * @brief  Execution
    * @note   It should be called after setting input and output buffer
@@ -151,24 +141,17 @@ public:
     const std::function<void(const ir::OperandIndex &, const backend::train::ITrainableTensor *)>
       &fn) const;
 
-  ir::Shape getInputShape(ir::IOIndex ind) const;
-  ir::Shape getOutputShape(ir::IOIndex ind) const;
-  size_t getInputTotalSize(ir::IOIndex ind) const;
-  size_t getOutputTotalSize(ir::IOIndex ind) const;
+  /**
+   * @brief   Get context of execution
+   * @return  Execution context
+   */
+  const ExecutionContext &context() const { return _ctx; }
 
   /**
-   * @brief     Get pointer of Input Buffer
-   * @param[in] index     Input index
-   * @return    Pointer of Input Buffer
+   * @brief     Set context of execution at once
+   * @param[in] ctx Execution context
    */
-  const void *getInputBuffer(ir::IOIndex ind) const;
-
-  /**
-   * @brief     Get pointer of Output Buffer
-   * @param[in] index     Output index
-   * @return    Pointer of Output Buffer
-   */
-  void *getOutputBuffer(ir::IOIndex ind);
+  void restoreContext(const ExecutionContext &ctx) { _ctx = ctx; }
 
   ExecutionOptions &executionOptions() { return _ctx.options; }
 

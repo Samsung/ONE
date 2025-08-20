@@ -49,8 +49,8 @@ struct OutputDesc
 
 struct IODescription
 {
-  std::vector<std::unique_ptr<InputDesc>> inputs;
-  std::vector<std::unique_ptr<OutputDesc>> outputs;
+  std::vector<InputDesc> inputs;
+  std::vector<OutputDesc> outputs;
 };
 
 struct ExecutionOptions

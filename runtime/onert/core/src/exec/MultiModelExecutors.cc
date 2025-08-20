@@ -192,12 +192,11 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
       find_input_index(_model_edges->pkg_inputs, model_index, subg_index, io_index);
     if (input_pkg_index == -1)
       throw std::runtime_error{"Cannot find multi model input index"};
-    auto input_desc = desc.inputs[input_pkg_index].get();
+    auto &input_desc = desc.inputs[input_pkg_index];
     // TODO Remove const_cast (we need const_cast as ITensor is writable)
     _pkg_input_tensors[pkg_input] = std::make_unique<backend::builtin::UserTensor>(
-      input_desc->info,
-      const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(input_desc->buffer)),
-      input_desc->size);
+      input_desc.info, const_cast<uint8_t *>(reinterpret_cast<const uint8_t *>(input_desc.buffer)),
+      input_desc.size);
   }
 
   for (const auto &pkg_output : _model_edges->pkg_outputs)
@@ -208,13 +207,13 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
       find_output_index(_model_edges->pkg_outputs, model_index, subg_index, io_index);
     if (output_pkg_index == -1)
       throw std::runtime_error{"Cannot find multi model output index"};
-    auto output_desc = desc.outputs[output_pkg_index].get();
+    auto &output_desc = desc.outputs[output_pkg_index];
     _pkg_output_tensors[pkg_output] = std::make_unique<backend::builtin::UserTensor>(
-      output_desc->info, reinterpret_cast<uint8_t *>(output_desc->buffer), output_desc->size);
+      output_desc.info, reinterpret_cast<uint8_t *>(output_desc.buffer), output_desc.size);
   }
 }
 
-void MultiModelExecutors::execute(const ExecutionContext &ctx)
+void MultiModelExecutors::execute(ExecutionContext &ctx)
 {
   // TODO: Enable to skip setting user tensor into IOTensor
   for (uint32_t i = 0; i < _model_edges->pkg_outputs.size(); ++i)

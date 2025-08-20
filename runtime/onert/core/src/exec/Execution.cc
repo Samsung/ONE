@@ -32,13 +32,11 @@ Execution::Execution(const std::shared_ptr<IExecutors> &executors) : _executors{
   assert(executors->entryExecutor() != nullptr);
 
   // Initialize I/O description
-  _ctx.desc.inputs.resize(_executors->inputSize());
   for (uint32_t i = 0; i < _executors->inputSize(); ++i)
-    _ctx.desc.inputs.at(i) = std::make_unique<InputDesc>(_executors->inputInfo(ir::IOIndex(i)));
+    _ctx.desc.inputs.emplace_back(_executors->inputInfo(ir::IOIndex(i)));
 
-  _ctx.desc.outputs.resize(_executors->outputSize());
   for (uint32_t i = 0; i < _executors->outputSize(); ++i)
-    _ctx.desc.outputs.at(i) = std::make_unique<OutputDesc>(_executors->outputInfo(ir::IOIndex(i)));
+    _ctx.desc.outputs.emplace_back(_executors->outputInfo(ir::IOIndex(i)));
   _ctx.shape_updated = false;
 
   _is_internal_output_tensor.resize(_executors->outputSize());
@@ -62,9 +60,9 @@ void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_
   // Note that 'compiled' model will not be updated with new_shape
   // but new_shape will change model input shape while 'running' the model
   auto &input_desc = _ctx.desc.inputs.at(index.value());
-  if (new_shape != input_desc->info.shape())
+  if (new_shape != input_desc.info.shape())
   {
-    input_desc->info.shape(new_shape);
+    input_desc.info.shape(new_shape);
     _ctx.shape_updated = true;
 
     VERBOSE(Execution) << "Model input shape will be changed at the start of execute()"
@@ -77,15 +75,8 @@ void Execution::setInput(const ir::IOIndex &index, const void *buffer, size_t le
 {
   // Length validation in execute(): datatype can be changed by API call
   auto &input_desc = _ctx.desc.inputs.at(index.value());
-  input_desc->buffer = buffer;
-  input_desc->size = length;
-}
-
-void Execution::setInput(const ir::IOIndex &index, const ir::Shape &shape, const void *buffer,
-                         size_t length)
-{
-  changeInputShape(index, shape);
-  setInput(index, buffer, length);
+  input_desc.buffer = buffer;
+  input_desc.size = length;
 }
 
 void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length)
@@ -94,17 +85,8 @@ void Execution::setOutput(const ir::IOIndex &index, void *buffer, size_t length)
   // - datatype can be changed by API call
   // - shape can be changed by dynamic shape inference
   auto &output_desc = _ctx.desc.outputs.at(index.value());
-  output_desc->buffer = buffer;
-  output_desc->size = length;
-}
-
-void Execution::setOutput(const ir::IOIndex &index, const ir::Shape &shape, void *buffer,
-                          size_t length)
-{
-  auto &output_desc = _ctx.desc.outputs.at(index.value());
-  output_desc->info.shape(shape);
-
-  setOutput(index, buffer, length);
+  output_desc.buffer = buffer;
+  output_desc.size = length;
 }
 
 void Execution::execute()
@@ -114,7 +96,7 @@ void Execution::execute()
   // Input length validation check
   for (const auto &input : _ctx.desc.inputs)
   {
-    if (input->info.total_size() > input->size)
+    if (input.info.total_size() > input.size)
       throw std::runtime_error{"Too small input buffer length"};
   }
 
@@ -126,9 +108,9 @@ void Execution::execute()
     {
       const bool is_managed_internally = _is_internal_output_tensor.at(i);
       const auto &output = _ctx.desc.outputs.at(i);
-      if (!is_managed_internally && output->info.total_size() > output->size)
+      if (!is_managed_internally && output.info.total_size() > output.size)
         throw std::runtime_error{"Too small output buffer length"};
-      if (is_managed_internally && output->buffer != nullptr)
+      if (is_managed_internally && output.buffer != nullptr)
         VERBOSE(Execution) << "Warning: Output buffer was set from API even though the output "
                               "tensor was allocated internally"
                            << std::endl;
@@ -191,43 +173,6 @@ void Execution::iterateTrainableTensors(
     throw std::runtime_error{"Supported only TrainableExecutors"};
   }
   execs->iterateTrainableTensors(fn);
-}
-
-ir::Shape Execution::getInputShape(ir::IOIndex ind) const
-{
-  return _ctx.desc.inputs.at(ind.value())->info.shape();
-}
-
-// NNAPI return fail if ANeuralNetworksExecution_getOutputOperandRank or
-// ANeuralNetworksExecution_getOutputOperandDimensions is called before execution.
-// On the other hand, NNFW API return static shape inference result if nnfw_output_tensorinfo is
-// called before execution.
-// To handle both case, this method retun static shape inference result and fail will be handled on
-// NNAPI frontend.
-ir::Shape Execution::getOutputShape(ir::IOIndex ind) const
-{
-  return _ctx.desc.outputs.at(ind.value())->info.shape();
-}
-
-size_t Execution::getInputTotalSize(ir::IOIndex ind) const
-{
-  // TODO Support dynamic shape
-  return _ctx.desc.inputs.at(ind.value())->info.total_size();
-}
-
-size_t Execution::getOutputTotalSize(ir::IOIndex ind) const
-{
-  return _ctx.desc.outputs.at(ind.value())->info.total_size();
-}
-
-const void *Execution::getInputBuffer(ir::IOIndex ind) const
-{
-  return _ctx.desc.inputs.at(ind.value())->buffer;
-}
-
-void *Execution::getOutputBuffer(ir::IOIndex ind)
-{
-  return _ctx.desc.outputs.at(ind.value())->buffer;
 }
 
 } // namespace onert::exec

@@ -60,7 +60,7 @@ public:
 
   const backend::IPortableTensor *outputTensor(const ir::IOIndex &index) const final;
 
-  void execute(const ExecutionContext &ctx) override;
+  void execute(ExecutionContext &ctx) override;
 
 private:
   std::unordered_map<ir::SubgraphIndex, std::unique_ptr<IExecutor>> _executors;
