@@ -1,0 +1,149 @@
+operand {
+  name: "Input"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 4
+  }
+}
+operand {
+  name: "RmsNorm/Mul/Square"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 4
+  }
+}
+operand {
+  name: "RmsNorm/Mean/Axis"
+  type: INT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "-1"
+  }
+}
+operand {
+  name: "RmsNorm/Mean/MeanSquare"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "RmsNorm/Add/Epsilon"
+  type: FLOAT32
+  shape {
+  }
+  filler {
+    tag: "explicit"
+    arg: "1e-06"
+  }
+}
+operand {
+  name: "RmsNorm/Add/MeanSquare_plus_eps"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "RmsNorm/Sqrt/RMS"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 1
+  }
+}
+operand {
+  name: "RmsNorm/Mul/RmsNorm"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 4
+  }
+}
+operand {
+  name: "RmsNorm/Mul/Weight"
+  type: FLOAT32
+  shape {
+    dim: 4
+  }
+  filler {
+    tag: "explicit"
+    arg: "1.125"
+    arg: "1.25"
+    arg: "1.375"
+    arg: "0.875"
+  }
+}
+operand {
+  name: "RmsNorm/Mul/RmsNorm_with_weight"
+  type: FLOAT32
+  shape {
+    dim: 1
+    dim: 1
+    dim: 4
+  }
+}
+operation {
+  type: "Mul"
+  input: "Input"
+  input: "Input"
+  output: "RmsNorm/Mul/Square"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mean"
+  input: "RmsNorm/Mul/Square"
+  input: "RmsNorm/Mean/Axis"
+  output: "RmsNorm/Mean/MeanSquare"
+  mean_options {
+    keep_dims: true
+  }
+}
+operation {
+  type: "Add"
+  input: "RmsNorm/Mean/MeanSquare"
+  input: "RmsNorm/Add/Epsilon"
+  output: "RmsNorm/Add/MeanSquare_plus_eps"
+  add_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Rsqrt"
+  input: "RmsNorm/Add/MeanSquare_plus_eps"
+  output: "RmsNorm/Sqrt/RMS"
+}
+operation {
+  type: "Mul"
+  input: "Input"
+  input: "RmsNorm/Sqrt/RMS"
+  output: "RmsNorm/Mul/RmsNorm"
+  mul_options {
+    activation: NONE
+  }
+}
+operation {
+  type: "Mul"
+  input: "RmsNorm/Mul/RmsNorm"
+  input: "RmsNorm/Mul/Weight"
+  output: "RmsNorm/Mul/RmsNorm_with_weight"
+  mul_options {
+    activation: NONE
+  }
+}
+input: "Input"
+output: "RmsNorm/Mul/RmsNorm_with_weight"
