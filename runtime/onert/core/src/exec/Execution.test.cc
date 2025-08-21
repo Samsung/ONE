@@ -621,6 +621,70 @@ TEST(ExecInstance, multi_model_simple)
   }
 }
 
+TEST(ExecInstance, multi_model_shapeinf)
+{
+  auto mockup = MockUpMultiModel();
+  mockup.compile();
+  auto executors = mockup.artifact->_executors;
+
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output = IOIndex{0};
+
+  onert::ir::Shape new_shape{2, 2, 2, 1};
+  const float input1_buffer[8] = {1, 0, -1, -2, 1, 2, 0, -1};
+  const float input2_buffer[8] = {1, -3, 2, -4, 4, -2, 3, 1};
+  float output_buffer[8] = {};
+  const float output_expected[8] = {7, -5, 1, -7, 13, 1, 5, 5};
+
+  onert::exec::Execution execution{executors};
+  execution.changeInputShape(input1, new_shape);
+  execution.changeInputShape(input2, new_shape);
+
+  execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), sizeof(input1_buffer));
+  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), sizeof(input2_buffer));
+  execution.setOutput(output, reinterpret_cast<void *>(output_buffer), sizeof(output_buffer));
+  execution.execute();
+
+  EXPECT_EQ(execution.outputInfo(0).shape(), new_shape);
+  for (auto i = 0; i < 8; i++)
+  {
+    EXPECT_EQ(output_buffer[i], output_expected[i]);
+  }
+}
+
+TEST(ExecInstance, multi_model_internaloutput_shapeinf)
+{
+  auto mockup = MockUpMultiModel();
+  mockup.coptions->internal_output_alloc = true;
+  mockup.compile();
+  auto executors = mockup.artifact->_executors;
+
+  auto input1 = IOIndex{0};
+  auto input2 = IOIndex{1};
+  auto output = IOIndex{0};
+
+  onert::ir::Shape new_shape{2, 2, 2, 1};
+  const float input1_buffer[8] = {1, 0, -1, -2, 1, 2, 0, -1};
+  const float input2_buffer[8] = {1, -3, 2, -4, 4, -2, 3, 1};
+  const float output_expected[8] = {7, -5, 1, -7, 13, 1, 5, 5};
+
+  onert::exec::Execution execution{executors};
+  execution.changeInputShape(input1, new_shape);
+  execution.changeInputShape(input2, new_shape);
+
+  execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), sizeof(input1_buffer));
+  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), sizeof(input2_buffer));
+  execution.execute();
+  const float *output_buffer = reinterpret_cast<const float *>(executors->outputBuffer(output));
+
+  EXPECT_EQ(execution.outputInfo(0).shape(), new_shape);
+  for (auto i = 0; i < 8; i++)
+  {
+    EXPECT_EQ(output_buffer[i], output_expected[i]);
+  }
+}
+
 TEST(ExecInstance, multi_model_twoCompile)
 {
   auto mockup = MockUpMultiModel();

@@ -207,7 +207,20 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
       find_output_index(_model_edges->pkg_outputs, model_index, subg_index, io_index);
     if (output_pkg_index == -1)
       throw std::runtime_error{"Cannot find multi model output index"};
+    const auto output_io_tensor = dynamic_cast<const backend::builtin::IOTensor *>(
+      at(model_index, subg_index)->outputTensor(io_index.value()));
+    if (!output_io_tensor)
+      throw std::runtime_error{"Output tensor must be IOTensor"};
+
+    bool skip_set_output = output_io_tensor->hasBackendTensor();
     auto &output_desc = desc.outputs[output_pkg_index];
+    // If buffer is nullptr, output is optional or internally allocated buffer,
+    // and optional output's size is 0
+    if (output_desc.buffer == nullptr &&
+        (output_desc.size != 0 || output_desc.info.total_size() != 0) && !skip_set_output)
+      throw std::runtime_error{"Output " + std::to_string(output_pkg_index) +
+                               "'s buffer is not set."};
+
     _pkg_output_tensors[pkg_output] = std::make_unique<backend::builtin::UserTensor>(
       output_desc.info, reinterpret_cast<uint8_t *>(output_desc.buffer), output_desc.size);
   }
@@ -215,18 +228,6 @@ void MultiModelExecutors::CreatePkgIOTensors(const IODescription &desc)
 
 void MultiModelExecutors::execute(ExecutionContext &ctx)
 {
-  // TODO: Enable to skip setting user tensor into IOTensor
-  for (uint32_t i = 0; i < _model_edges->pkg_outputs.size(); ++i)
-  {
-    const auto output_io_tensor =
-      dynamic_cast<const backend::builtin::IOTensor *>(outputTensor(ir::IOIndex{i}));
-    if (!output_io_tensor)
-      throw std::runtime_error{"Output tensor must be IOTensor"};
-    if (output_io_tensor->hasBackendTensor())
-      throw std::runtime_error(
-        "MultiModelExecutors does not support allocating output tensors internally");
-  }
-
   auto &desc = ctx.desc;
 
   // Check supported multi model package
@@ -328,6 +329,23 @@ void MultiModelExecutors::execute(ExecutionContext &ctx)
         // Decrease reference count of `from` tensor if input tensor is the `from` tensor
         const auto from_iodesc = find_from(model_index, ir::SubgraphIndex{0}, ir::IOIndex{i});
         _edge_tensors[from_iodesc]->decrease_ref();
+      }
+    }
+
+    // Get dynamic shape inference result
+    for (uint32_t i = 0; i < output_size; i++)
+    {
+      const auto output_pkg_index = find_output_index(_model_edges->pkg_outputs, model_index,
+                                                      ir::SubgraphIndex{0}, ir::IOIndex{i});
+
+      if (output_pkg_index != -1)
+      {
+        const auto output_io_tensor =
+          dynamic_cast<const backend::builtin::IOTensor *>(outputTensor(ir::IOIndex{i}));
+        if (!output_io_tensor)
+          throw std::runtime_error{"Output tensor must be IOTensor"};
+
+        ctx.desc.outputs[output_pkg_index].info.shape(output_io_tensor->get_info().shape());
       }
     }
   }
