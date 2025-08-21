@@ -54,6 +54,13 @@ void QuantizeLayer::configure(const IPortableTensor *input, IPortableTensor *out
       static_cast<double>(input->data_scale()) / static_cast<double>(output->data_scale());
     QuantizeMultiplier(effective_output_scale, &_output_multiplier, &_output_shift);
   }
+  else if (input->data_type() == OperandType::QUANT_INT16_SYMM &&
+           output->data_type() == OperandType::QUANT_INT16_SYMM)
+  {
+    const double effective_output_scale =
+      static_cast<double>(input->data_scale()) / static_cast<double>(output->data_scale());
+    QuantizeMultiplier(effective_output_scale, &_output_multiplier, &_output_shift);
+  }
   else
   {
     throw std::runtime_error{"Quantize: Unsupported  data type"};
