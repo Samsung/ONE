@@ -49,6 +49,7 @@
 #include "luci/Pass/FuseMulWithConvPass.h"
 #include "luci/Pass/FuseMulWithDivPass.h"
 #include "luci/Pass/FuseMulWithFullyConnectedPass.h"
+#include "luci/Pass/FuseMulWithRmsNormPass.h"
 #include "luci/Pass/FusePreActivationBatchNormPass.h"
 #include "luci/Pass/FusePReluPass.h"
 #include "luci/Pass/FuseGeluPass.h"
@@ -333,6 +334,7 @@ void CircleOptimizer::optimize(loco::Graph *g) const
   option_to_pass[Options::Algorithm::FuseMulWithConv] = &createPassInstance<luci::FuseMulWithConvPass>;
   option_to_pass[Options::Algorithm::FuseMulWithDiv] = &createPassInstance<luci::FuseMulWithDivPass>;
   option_to_pass[Options::Algorithm::FuseMulWithFullyConnected] = &createPassInstance<luci::FuseMulWithFullyConnectedPass>;
+  option_to_pass[Options::Algorithm::FuseMulWithRmsNorm] = &createPassInstance<luci::FuseMulWithRmsNormPass>;
   option_to_pass[Options::Algorithm::ResolveCustomOpMaxPoolWithArgmax] = &createPassInstance<luci::ResolveCustomOpMaxPoolWithArgmaxPass>;
   option_to_pass[Options::Algorithm::ResolveCustomOpSplitV] = &createPassInstance<luci::ResolveCustomOpSplitVPass>;
   option_to_pass[Options::Algorithm::FuseInstanceNorm] = &createPassInstance<luci::FuseInstanceNormPass>;
