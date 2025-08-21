@@ -202,6 +202,40 @@ NNFW_STATUS nnfw_set_input_type(nnfw_session *session, uint32_t index, NNFW_TYPE
 NNFW_STATUS nnfw_set_output_type(nnfw_session *session, uint32_t index, NNFW_TYPE type);
 
 /**
+ * @brief     Set the entry signature to prepare
+ *
+ * User can call this function to select entry signature to set input & output feature
+ * for prepare phase. This function should be called after {@link nnfw_load_model_from_file}
+ * and before {@link nnfw_prepare}.
+ *
+ * If this function is not called, default entry (ex. 0th subgraph in circle/tflite model)
+ * will be selected.
+ *
+ * @param[in] session   session to set the entry signature
+ * @param[in] signature name of the entry signature to run
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_signature_prepare(nnfw_session *session, const char *signature);
+
+/**
+ * @brief     Set the entry signature to run
+ *
+ * User can call this function to select entry signature to run.
+ * This function should be called after {@link nnfw_prepare}.
+ *
+ * If this function is not called, default entry (ex. 0th subgraph in circle/tflite model)
+ * will be selected.
+ *
+ * All input and output setting after {@link nnfw_prepare} and before calling this function
+ * will be invalidated.
+ *
+ * @param[in] session   session to set the entry signature
+ * @param[in] signature name of the entry signature to run
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_signature_run(nnfw_session *session, const char *signature);
+
+/**
  *  Training C APIs
  *
  * Training APIs are designed to be used in the following order for training
