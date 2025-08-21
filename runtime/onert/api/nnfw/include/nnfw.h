@@ -422,10 +422,8 @@ NNFW_STATUS nnfw_set_output_layout(nnfw_session *session, uint32_t index, NNFW_L
 /**
  * @brief       Get i-th input tensor info
  *
- * <p>Before {@link nnfw_prepare} is invoked, this function return tensor info in model,
- * so updated tensor info by {@link nnfw_set_input_tensorinfo} is not returned.</p>
- *
- * <p>After {@link nnfw_prepare} is invoked, this function return updated tensor info
+ * <p>This function can be called after {@link nnfw_load_model_from_file} is invoked.
+ * This function returns input tensor info in model or updated input tensor info
  * if tensor info is updated by {@link nnfw_set_input_tensorinfo}.</p>
  *
  * @param[in]   session     Session from input information is to be extracted
@@ -440,14 +438,22 @@ NNFW_STATUS nnfw_input_tensorinfo(nnfw_session *session, uint32_t index,
 /**
  * @brief     Get i-th output tensor info
  *
- * <p>After {@link nnfw_load_model_from_file} and before {@link nnfw_prepare} is invoked, it returns
- * tensor info in the model.</p>
+ * <p>This function can be called after {@link nnfw_load_model_from_file} is invoked.
+ * This function returns output tensor info in model if {@link nnfw_set_input_tensorinfo} is not
+ * called.</p>
  *
- * <p>After {@link nnfw_prepare} and before {@link nnfw_run} is invoked, this function returns
- * updated tensor info if tensor info is updated by {@link nnfw_set_input_tensorinfo}.</p>
+ * <p>Between {@link nnfw_load_model_from_file} and {@link nnfw_prepare}, this function returns
+ * the tensor information as defined in the model. Any propagated tensor information set via
+ * {@link nnfw_set_input_tensorinfo} is not reflected.</p>
+ *
+ * <p>Between {@link nnfw_prepare} and {@link nnfw_run}, this function returns updated tensor info
+ * if tensor info is updated by {@link nnfw_set_input_tensorinfo} before {@link nnfw_prepare} is
+ * invoked. But it does not reflect the tensor information set via
+ * {@link nnfw_set_output_tensorinfo} after {@link nnfw_prepare} is invoked.</p>
  *
  * <p>After {@link nnfw_run} is invoked(at least once), it returns the updated tensor info during
- * the latest execution.</p>
+ * the latest execution. But it does not reflect the tensor information set via
+ * {@link nnfw_set_output_tensorinfo} after the last {@link nnfw_run} is invoked.</p>
  *
  * @param[in]   session     Session from output information is to be extracted
  * @param[in]   index       Index of output
