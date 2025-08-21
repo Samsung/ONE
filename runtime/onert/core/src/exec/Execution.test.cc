@@ -352,9 +352,9 @@ TEST(ExecInstance, shapeinf)
 
   execution.changeInputShape(input1, new_shape);
   execution.changeInputShape(input2, new_shape);
-  execution.setInput(input1, reinterpret_cast<const void *>(input1_buffer), 32);
-  execution.setInput(input2, reinterpret_cast<const void *>(input2_buffer), 32);
-  execution.setOutput(output, reinterpret_cast<void *>(output_buffer), 32);
+  execution.setInput(input1, input1_buffer, sizeof(input1_buffer));
+  execution.setInput(input2, input2_buffer, sizeof(input2_buffer));
+  execution.setOutput(output, output_buffer, sizeof(output_buffer));
   execution.execute();
 
   EXPECT_EQ(execution.outputInfo(0).shape(), new_shape);
@@ -389,6 +389,7 @@ TEST(ExecInstance, internaloutput_shapeinf)
   execution.execute();
 
   const float *output_buffer = reinterpret_cast<const float *>(executors->outputBuffer(output));
+  ASSERT_NE(output_buffer, nullptr);
   EXPECT_EQ(execution.outputInfo(0).shape(), new_shape);
   for (auto i = 0; i < 8; i++)
   {
