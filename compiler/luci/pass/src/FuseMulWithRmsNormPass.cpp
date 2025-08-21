@@ -30,11 +30,11 @@ namespace
     return false;
 
 /**
- *  Fuse Mul to RmsNorm if the RmsNorm has no weight
+ *  Fuse Mul to RmsNorm if the RmsNorm's weight value is 1.0
  *
  *  BEFORE
  *                |
- *         [CircleRmsNorm] (gamma=1)
+ *         [CircleRmsNorm] (gamma=1.0)
  *                |
  *           [CircleMul]
  *                |
