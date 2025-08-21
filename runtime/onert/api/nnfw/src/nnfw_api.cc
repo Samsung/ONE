@@ -245,6 +245,12 @@ NNFW_STATUS nnfw_set_workspace(nnfw_session *session, const char *dir)
   return session->set_workspace(dir);
 }
 
+NNFW_STATUS nnfw_set_signature_run(nnfw_session *session, const char *signature)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_signature_run(signature);
+}
+
 // Training
 
 NNFW_STATUS nnfw_train_get_traininfo(nnfw_session *session, nnfw_train_info *info)

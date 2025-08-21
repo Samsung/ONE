@@ -47,6 +47,15 @@ public:
    */
   Execution(const std::shared_ptr<IExecutors> &executors);
 
+  /**
+   * @brief     Construct a new Execution object for signature
+   * @param[in] executors   Model executors
+   * @param[in] signature   Signature name
+   * @param[in] entry_index Entry subgraph index
+   */
+  Execution(const std::shared_ptr<IExecutors> &executors, const std::string &signature,
+            const ir::SubgraphIndex &entry_index);
+
 public:
   /**
    * @brief   Returns primary graph object

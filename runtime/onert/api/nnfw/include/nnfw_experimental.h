@@ -226,7 +226,7 @@ NNFW_STATUS nnfw_set_signature_prepare(nnfw_session *session, const char *signat
  * If this function is not called, default entry (ex. 0th subgraph in circle/tflite model)
  * will be selected.
  *
- * All input and output setting after {@link nnfw_prepare} and before calling this function
+ * All input, output, and config setting after {@link nnfw_prepare} and before calling this function
  * will be invalidated.
  *
  * @param[in] session   session to set the entry signature

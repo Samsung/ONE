@@ -19,12 +19,14 @@
 namespace onert::exec
 {
 
-SignatureExecutors::SignatureExecutors(std::shared_ptr<SingleModelExecutors> &executors,
+SignatureExecutors::SignatureExecutors(const std::shared_ptr<IExecutors> &executors,
                                        const std::string &signature,
                                        const ir::SubgraphIndex &entry_index)
   : _executors(executors), _signature(signature), _entry_index(entry_index)
 {
-  // TODO Set _entry_index
+  // Check single model
+  // TODO Support multimodel
+  assert(dynamic_cast<SingleModelExecutors *>(executors.get()) != nullptr);
 }
 
 IExecutor *SignatureExecutors::entryExecutor() const

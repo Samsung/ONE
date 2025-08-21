@@ -27,13 +27,13 @@ namespace onert::exec
 
 /**
  * @brief Class to gather executor set for signature entry
- *        Actually it is wrapper of SingleModelExecutors
+ *        Actually it is wrapper of IExecutors(SignatureExecutors)
  */
 class SignatureExecutors : public SingleModelExecutors
 {
 public:
   /**
-   * @brief Construct a new SingleModelExecutors object
+   * @brief Construct a new SignatureExecutors object
    */
   SignatureExecutors(void) = default;
   SignatureExecutors(const SignatureExecutors &) = delete;
@@ -45,19 +45,19 @@ public:
   ~SignatureExecutors() = default;
 
   /**
-   * @brief     Convert SingleModelExecutors to SignatureExecutors
-   * @param[in] executors SingleModelExecutors object to convert
+   * @brief     Convert IExecutors to SignatureExecutors
+   * @param[in] executors Executors object to convert
    * @param[in] signature signature name of the executors
    * @param[in] index     subgraph index of the signature
    */
-  SignatureExecutors(std::shared_ptr<SingleModelExecutors> &executors, const std::string &signature,
+  SignatureExecutors(const std::shared_ptr<IExecutors> &executors, const std::string &signature,
                      const ir::SubgraphIndex &entry_index);
 
 public:
   IExecutor *entryExecutor() const override;
 
 private:
-  std::shared_ptr<SingleModelExecutors> _executors;
+  const std::shared_ptr<IExecutors> _executors;
   std::string _signature;
   ir::SubgraphIndex _entry_index;
 };

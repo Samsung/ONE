@@ -197,6 +197,11 @@ public:
     _signature_map[index] = name;
   }
 
+  const std::unordered_map<ir::SubgraphIndex, std::string> &signatureMap() const
+  {
+    return _signature_map;
+  }
+
 private:
   // TODO: Apply Heterogeneous lookup for unordered containers (transparent hashing) since C++20
   //       to use `std::string_view` with lookup functions in unordered containers
