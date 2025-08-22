@@ -52,10 +52,16 @@ do
 done
 
 # Capture initial zero coverage data
-"${LCOV_PATH}" -c -i -d "${BUILD_WORKSPACE_PATH}" --gcov-tool ${GCOV_PATH} -o "${RAW_BASE_COVERAGE_INFO_PATH}"
+# --ignore-errors mismatch: lcov bug in gcc 13, 14
+"${LCOV_PATH}" -c -i -d "${BUILD_WORKSPACE_PATH}" --gcov-tool ${GCOV_PATH} \
+  -o "${RAW_BASE_COVERAGE_INFO_PATH}" \
+  --ignore-errors mismatch
 
 # Capture tests coverage data
-"${LCOV_PATH}" -c -d "${BUILD_WORKSPACE_PATH}" --gcov-tool ${GCOV_PATH} -o "${RAW_TEST_COVERAGE_INFO_PATH}"
+# --ignore-errors mismatch --ignore-errors negative: lcov bug in gcc 13, 14
+"${LCOV_PATH}" -c -d "${BUILD_WORKSPACE_PATH}" --gcov-tool ${GCOV_PATH} \
+  -o "${RAW_TEST_COVERAGE_INFO_PATH}" \
+  --ignore-errors mismatch --ignore-errors negative
 
 # Append zero coverage data and tests coverage data
 "${LCOV_PATH}" -o "${RAW_COVERAGE_INFO_PATH}" \
@@ -63,13 +69,16 @@ done
     -a "${RAW_TEST_COVERAGE_INFO_PATH}"
 
 # Extract data for particular pathes
-"${LCOV_PATH}" -e "${RAW_COVERAGE_INFO_PATH}" -o "${EXTRACTED_COVERAGE_INFO_PATH}" \
+"${LCOV_PATH}" -e "${RAW_COVERAGE_INFO_PATH}" \
+  -o "${EXTRACTED_COVERAGE_INFO_PATH}" \
   "${CANDIDATES[@]}"
 
 # Exclude test files from coverage report
 # Exclude flatbuffer generated files from coverage report
 # Exclude external source from coverage report
+# --ignore-errors unused: skip unused file/directory pattern error for generalization
 "${LCOV_PATH}" -r "${EXTRACTED_COVERAGE_INFO_PATH}" -o "${EXCLUDED_COVERAGE_INFO_PATH}" \
+  --ignore-errors unused \
   '*.test.cpp' '*.test.cc' '*/test/*' '*/tests/*' '.test.h' '*/test_models/*' \
   '*_generated.h' \
   '*/externals/*' '*/3rdparty/*'
