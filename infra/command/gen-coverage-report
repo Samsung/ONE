@@ -25,6 +25,27 @@ if [[ -z "${GCOV_PATH}" ]]; then
   fi
 fi
 
+# Function to check gcov version
+check_gcov_version() {
+  local gcov_version_output
+  gcov_version_output=$("${GCOV_PATH}" --version)
+  if [[ ${gcov_version_output} =~ gcov\ (GCC)\ ([0-9]+)\.([0-9]+)\.([0-9]+) ]]; then
+    local major_version="${BASH_REMATCH[2]}"
+    # Check if major version is 13 or 14
+    if [[ "${major_version}" == "13" || "${major_version}" == "14" ]]; then
+      return 0 # Version is 13.x.y or 14.x.y
+    fi
+  fi
+  return 1 # Version is not 13.x.y or 14.x.y
+}
+
+# --ignore-errors mismatch --ignore-errors negative: lcov bug in gcc 13, 14
+# Determine if "--ignore-errors mismatch" and "--ignore-errors negative" should be used
+IGNORE_ERRORS_MISMATCH_FLAG=""
+if check_gcov_version; then
+  IGNORE_ERRORS_MISMATCH_FLAG="--ignore-errors mismatch --ignore-errors negative"
+fi
+
 OUTPUT_TAG="${NNAS_COVERAGE:-coverage}"
 OUTPUT_PATH="${NNAS_COVERAGE_PATH:-${NNAS_PROJECT_PATH}/${OUTPUT_TAG}}"
 
@@ -52,16 +73,14 @@ do
 done
 
 # Capture initial zero coverage data
-# --ignore-errors mismatch: lcov bug in gcc 13, 14
 "${LCOV_PATH}" -c -i -d "${BUILD_WORKSPACE_PATH}" --gcov-tool ${GCOV_PATH} \
   -o "${RAW_BASE_COVERAGE_INFO_PATH}" \
-  --ignore-errors mismatch
+  ${IGNORE_ERRORS_MISMATCH_FLAG}
 
 # Capture tests coverage data
-# --ignore-errors mismatch --ignore-errors negative: lcov bug in gcc 13, 14
 "${LCOV_PATH}" -c -d "${BUILD_WORKSPACE_PATH}" --gcov-tool ${GCOV_PATH} \
   -o "${RAW_TEST_COVERAGE_INFO_PATH}" \
-  --ignore-errors mismatch --ignore-errors negative
+  ${IGNORE_ERRORS_MISMATCH_FLAG}
 
 # Append zero coverage data and tests coverage data
 "${LCOV_PATH}" -o "${RAW_COVERAGE_INFO_PATH}" \
