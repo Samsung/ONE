@@ -121,6 +121,9 @@ void ConcatLayer::run()
     case OperandType::QUANT_INT8_ASYMM:
       concatenationGeneral<int8_t>();
       break;
+    case OperandType::QUANT_INT16_SYMM:
+      concatenationGeneral<int16_t>();
+      break;
     case OperandType::INT32:
       concatenationGeneral<int32_t>();
       break;

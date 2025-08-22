@@ -75,6 +75,10 @@ void StridedSliceLayer::run()
   {
     stridedSliceImpl<int64_t>();
   }
+  else if (_input->data_type() == OperandType::QUANT_INT16_SYMM)
+  {
+    stridedSliceImpl<int16_t>();
+  }
   else
   {
     throw std::runtime_error{"StridedSlice: unsupported data type"};
