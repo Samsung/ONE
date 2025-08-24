@@ -6,7 +6,7 @@ var namespacelogo =
     [ "ConstantFoldingPass", "classlogo_1_1_constant_folding_pass.html", "classlogo_1_1_constant_folding_pass" ],
     [ "DeadNodeQueryService", "structlogo_1_1_dead_node_query_service.html", "structlogo_1_1_dead_node_query_service" ],
     [ "Pass", "classlogo_1_1_pass.html", "classlogo_1_1_pass" ],
-    [ "PhaseEventInfo", "structlogo_1_1_phase_event_info.html", null ],
+    [ "PhaseEventInfo", "classlogo_1_1_phase_event_info.html", null ],
     [ "PhaseEventInfo< PhaseEvent::PassBegin >", "classlogo_1_1_phase_event_info_3_01_phase_event_1_1_pass_begin_01_4.html", "classlogo_1_1_phase_event_info_3_01_phase_event_1_1_pass_begin_01_4" ],
     [ "PhaseEventInfo< PhaseEvent::PassEnd >", "classlogo_1_1_phase_event_info_3_01_phase_event_1_1_pass_end_01_4.html", "classlogo_1_1_phase_event_info_3_01_phase_event_1_1_pass_end_01_4" ],
     [ "PhaseEventInfo< PhaseEvent::PhaseBegin >", "classlogo_1_1_phase_event_info_3_01_phase_event_1_1_phase_begin_01_4.html", null ],

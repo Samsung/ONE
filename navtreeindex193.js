@@ -1,6 +1,5 @@
 var NAVTREEINDEX193 =
 {
-"cpu_2ops_2_binary_arithmetic_layer_8h_source.html":[41,0,3,3,1,4,0,9],
 "cpu_2ops_2_convolution_layer_8cc.html":[41,0,3,3,1,4,0,16],
 "cpu_2ops_2_convolution_layer_8cc_source.html":[41,0,3,3,1,4,0,16],
 "cpu_2ops_2_convolution_layer_8h.html":[41,0,3,3,1,4,0,17],
@@ -249,5 +248,6 @@ var NAVTREEINDEX193 =
 "dir_1d1382c010216a185a4d2ec5f2e288f7.html":[41,0,2,4,0,0,1,34],
 "dir_1d1b22ed78dd8590e1e99005752fd452.html":[41,0,0,84,0,0],
 "dir_1d3e5a1e3b3f8881accdef90512438a4.html":[41,0,0,30,0,1,1],
-"dir_1d4782076c6bdb8a0e6f21609e267087.html":[41,0,0,132]
+"dir_1d4782076c6bdb8a0e6f21609e267087.html":[41,0,0,132],
+"dir_1d4ea23bb12990cabb5d9ce9d1ebae0e.html":[41,0,0,96,1,0,0,0]
 };

@@ -1,6 +1,5 @@
 var NAVTREEINDEX211 =
 {
-"luci-interpreter_2include_2luci__interpreter_2test__models_2mul_2_int_mul_kernel_8h.html#ac59b164c335ff3eec8aba8fab4bbdeb7":[41,0,2,4,0,0,1,47,1,6],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2mul_2_int_mul_kernel_8h.html#af4ecebe9eb981c4b557c4c478b3a83b4":[41,0,2,4,0,0,1,47,1,4],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2mul_2_int_mul_kernel_8h_source.html":[41,0,2,4,0,0,1,47,1],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2mul_2_neg_mul_kernel_8h.html":[41,0,2,4,0,0,1,47,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX211 =
 "luci-interpreter_2include_2luci__interpreter_2test__models_2sub_2_neg_sub_kernel_8h.html#aeb675e298f1d8d17e4898f9789a7775a":[41,0,2,4,0,0,1,77,2,4],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2sub_2_neg_sub_kernel_8h_source.html":[41,0,2,4,0,0,1,77,2],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2sub_2_test_data_sub_base_8h.html":[41,0,2,4,0,0,1,77,3],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2sub_2_test_data_sub_base_8h_source.html":[41,0,2,4,0,0,1,77,3]
+"luci-interpreter_2include_2luci__interpreter_2test__models_2sub_2_test_data_sub_base_8h_source.html":[41,0,2,4,0,0,1,77,3],
+"luci-interpreter_2include_2luci__interpreter_2test__models_2sum_2_float_sum_kernel_8h.html":[41,0,2,4,0,0,1,78,0]
 };

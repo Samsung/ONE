@@ -1,6 +1,5 @@
 var NAVTREEINDEX187 =
 {
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_sum_8cpp.html#a0761ad3764150f2d22aabfe2973857d3":[41,0,0,62,2,3,0,90,0],
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_sum_8cpp_source.html":[41,0,0,62,2,3,0,90],
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_tanh_8cpp.html":[41,0,0,62,2,3,0,92],
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_tanh_8cpp.html#a396e88486532da2874b874e1b9e708c0":[41,0,0,62,2,3,0,92,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX187 =
 "compiler_2mir_2src_2mir__onnx__importer_2_op_2_gemm_8h.html#a3f1f499fe7490bc03ab92254726ff594":[41,0,0,80,1,2,0,29,4],
 "compiler_2mir_2src_2mir__onnx__importer_2_op_2_gemm_8h.html#a69cc8bab9d12c5d43edbb1b2f2784f90":[41,0,0,80,1,2,0,29,0],
 "compiler_2mir_2src_2mir__onnx__importer_2_op_2_gemm_8h.html#a6b3af11f31576bc44b63addf9b3d3844":[41,0,0,80,1,2,0,29,2],
-"compiler_2mir_2src_2mir__onnx__importer_2_op_2_gemm_8h.html#aa737a111b6beceb37fefd96afd63b3bc":[41,0,0,80,1,2,0,29,3]
+"compiler_2mir_2src_2mir__onnx__importer_2_op_2_gemm_8h.html#aa737a111b6beceb37fefd96afd63b3bc":[41,0,0,80,1,2,0,29,3],
+"compiler_2mir_2src_2mir__onnx__importer_2_op_2_gemm_8h.html#acc7f97fe4a1c913982e04552a79f4e5d":[41,0,0,80,1,2,0,29,1]
 };

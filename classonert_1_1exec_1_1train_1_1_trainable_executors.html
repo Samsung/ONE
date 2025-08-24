@@ -152,9 +152,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1894f651291261c3246ea0df16db3f1f" id="r_a1894f651291261c3246ea0df16db3f1f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classonert_1_1backend_1_1_i_portable_tensor.html">backend::IPortableTensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#a1894f651291261c3246ea0df16db3f1f">outputTensor</a> (const <a class="el" href="namespaceonert_1_1ir.html#a4c948b78203567852dfbc65ee63ec940">ir::IOIndex</a> &amp;index) const final</td></tr>
 <tr class="memdesc:a1894f651291261c3246ea0df16db3f1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return NN package output tensor.  <br /></td></tr>
 <tr class="separator:a1894f651291261c3246ea0df16db3f1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8019300f0e27dae95b0ad9659b9dab4b" id="r_a8019300f0e27dae95b0ad9659b9dab4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#a8019300f0e27dae95b0ad9659b9dab4b">execute</a> (const <a class="el" href="structonert_1_1exec_1_1_execution_context.html">ExecutionContext</a> &amp;ctx) override</td></tr>
-<tr class="memdesc:a8019300f0e27dae95b0ad9659b9dab4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute NN package executor set.  <br /></td></tr>
-<tr class="separator:a8019300f0e27dae95b0ad9659b9dab4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2f66138d63354496dd40b17409affe7" id="r_ac2f66138d63354496dd40b17409affe7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#ac2f66138d63354496dd40b17409affe7">execute</a> (<a class="el" href="structonert_1_1exec_1_1_execution_context.html">ExecutionContext</a> &amp;ctx) override</td></tr>
+<tr class="memdesc:ac2f66138d63354496dd40b17409affe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Execute NN package executor set.  <br /></td></tr>
+<tr class="separator:ac2f66138d63354496dd40b17409affe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32a6af9024c438b8dcb056b61cf7e5c3" id="r_a32a6af9024c438b8dcb056b61cf7e5c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#a32a6af9024c438b8dcb056b61cf7e5c3">train</a> (const <a class="el" href="structonert_1_1exec_1_1_execution_context.html">ExecutionContext</a> &amp;ctx, uint32_t training_step)</td></tr>
 <tr class="memdesc:a32a6af9024c438b8dcb056b61cf7e5c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Train.  <br /></td></tr>
 <tr class="separator:a32a6af9024c438b8dcb056b61cf7e5c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -433,8 +433,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8019300f0e27dae95b0ad9659b9dab4b" name="a8019300f0e27dae95b0ad9659b9dab4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8019300f0e27dae95b0ad9659b9dab4b">&#9670;&#160;</a></span>execute()</h2>
+<a id="ac2f66138d63354496dd40b17409affe7" name="ac2f66138d63354496dd40b17409affe7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2f66138d63354496dd40b17409affe7">&#9670;&#160;</a></span>execute()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -445,7 +445,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void onert::exec::train::TrainableExecutors::execute </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structonert_1_1exec_1_1_execution_context.html">ExecutionContext</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structonert_1_1exec_1_1_execution_context.html">ExecutionContext</a> &amp;&#160;</td>
           <td class="paramname"><em>ctx</em></td><td>)</td>
           <td></td>
         </tr>
@@ -460,12 +460,12 @@ Public Member Functions</h2></td></tr>
 <p>Execute NN package executor set. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">ctx</td><td>Execution context </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">ctx</td><td>Execution context. It reflects execution result (ex. output shape inference) </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classonert_1_1exec_1_1_i_executors.html#a751f4e6c86754fbf7eb74aaa5be434f2">onert::exec::IExecutors</a>.</p>
+<p>Implements <a class="el" href="classonert_1_1exec_1_1_i_executors.html#ad2b10795033d81d3b9e95eccbf9f73b1">onert::exec::IExecutors</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_trainable_executors_8cc_source.html#l00064">64</a> of file <a class="el" href="_trainable_executors_8cc_source.html">TrainableExecutors.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   65</span>{</div>
@@ -510,7 +510,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_trainable_executors_8h_source.html#l00056">entryExecutor()</a>, and <a class="el" href="_trainable_executor_8cc_source.html#l00194">onert::exec::train::TrainableExecutor::getLoss()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_execution_8cc_source.html#l00173">onert::exec::Execution::getLoss()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_execution_8cc_source.html#l00155">onert::exec::Execution::getLoss()</a>.</p>
 
 </div>
 </div>
@@ -620,7 +620,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_trainable_executors_8h_source.html#l00056">entryExecutor()</a>, and <a class="el" href="_trainable_executor_8cc_source.html#l00212">onert::exec::train::TrainableExecutor::iterateTrainableTensors()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_execution_8cc_source.html#l00184">onert::exec::Execution::iterateTrainableTensors()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_execution_8cc_source.html#l00166">onert::exec::Execution::iterateTrainableTensors()</a>.</p>
 
 </div>
 </div>
@@ -900,7 +900,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_trainable_executor_8cc_source.html#l00133">onert::exec::train::TrainableExecutor::backward()</a>, <a class="el" href="_trainable_executors_8h_source.html#l00056">entryExecutor()</a>, and <a class="el" href="_execution_context_8h_source.html#l00069">onert::exec::ExecutionContext::options</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_execution_8cc_source.html#l00161">onert::exec::Execution::train()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_execution_8cc_source.html#l00143">onert::exec::Execution::train()</a>.</p>
 
 </div>
 </div>

@@ -1,6 +1,5 @@
 var NAVTREEINDEX216 =
 {
-"mbed__config_8h.html#aa0c14b08e63f294c4a4dffb7f9005395":[41,0,2,1,0,0,0,1,129],
 "mbed__config_8h.html#aa1e9bbcdb64d6e152be7f9a3fd122315":[41,0,2,1,0,0,0,1,308],
 "mbed__config_8h.html#aa23fba9b5ee6460b50318513fde22326":[41,0,2,1,0,0,0,1,363],
 "mbed__config_8h.html#aa2c01a36902618c1b0d050134bcdaff9":[41,0,2,1,0,0,0,1,364],
@@ -249,5 +248,6 @@ var NAVTREEINDEX216 =
 "metrics_2_cross_entropy_8h.html":[41,0,2,5,0,7,1,1],
 "metrics_2_cross_entropy_8h_source.html":[41,0,2,5,0,7,1,1],
 "metrics_2_m_s_e_8cpp.html":[41,0,2,5,1,5,2,3],
-"metrics_2_m_s_e_8cpp_source.html":[41,0,2,5,1,5,2,3]
+"metrics_2_m_s_e_8cpp_source.html":[41,0,2,5,1,5,2,3],
+"metrics_2_m_s_e_8h.html":[41,0,2,5,0,7,1,3]
 };

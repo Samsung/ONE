@@ -537,9 +537,9 @@ Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  168</span>{</div>
 <div class="line"><span class="lineno">  169</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a>(<span class="stringliteral">&quot;nnfw_apply_tensorinfo: Deprecated&quot;</span>);</div>
 <div class="line"><span class="lineno">  170</span>}</div>
-<div class="ttc" id="astructnnfw__session_html_a3bae7bb0a97a2a9ac26069b24280374f"><div class="ttname"><a href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a></div><div class="ttdeci">static NNFW_STATUS deprecated(const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__session_8cc_source.html#l00977">nnfw_session.cc:977</a></div></div>
+<div class="ttc" id="astructnnfw__session_html_a3bae7bb0a97a2a9ac26069b24280374f"><div class="ttname"><a href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a></div><div class="ttdeci">static NNFW_STATUS deprecated(const char *msg)</div><div class="ttdef"><b>Definition</b> <a href="nnfw__session_8cc_source.html#l00973">nnfw_session.cc:973</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__session_8cc_source.html#l00977">nnfw_session::deprecated()</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__session_8cc_source.html#l00973">nnfw_session::deprecated()</a>.</p>
 
 </div>
 </div>
@@ -737,8 +737,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get i-th input tensor info. </p>
-<p>Before <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code> is invoked, this function return tensor info in model, so updated tensor info by <code><a class="el" href="nnfw_8h.html#a6da6c1fa7528ff6f15dff4be7e857c89">nnfw_set_input_tensorinfo</a></code> is not returned.</p>
-<p>After <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code> is invoked, this function return updated tensor info if tensor info is updated by <code><a class="el" href="nnfw_8h.html#a6da6c1fa7528ff6f15dff4be7e857c89">nnfw_set_input_tensorinfo</a></code>.</p>
+<p>This function can be called after <code><a class="el" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a></code> is invoked. This function returns input tensor info in model or updated input tensor info if tensor info is updated by <code><a class="el" href="nnfw_8h.html#a6da6c1fa7528ff6f15dff4be7e857c89">nnfw_set_input_tensorinfo</a></code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>Session from input information is to be extracted </td></tr>
@@ -899,9 +898,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get i-th output tensor info. </p>
-<p>After <code><a class="el" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a></code> and before <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code> is invoked, it returns tensor info in the model.</p>
-<p>After <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code> and before <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code> is invoked, this function returns updated tensor info if tensor info is updated by <code><a class="el" href="nnfw_8h.html#a6da6c1fa7528ff6f15dff4be7e857c89">nnfw_set_input_tensorinfo</a></code>.</p>
-<p>After <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code> is invoked(at least once), it returns the updated tensor info during the latest execution.</p>
+<p>This function can be called after <code><a class="el" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a></code> is invoked. This function returns output tensor info in model if <code><a class="el" href="nnfw_8h.html#a6da6c1fa7528ff6f15dff4be7e857c89">nnfw_set_input_tensorinfo</a></code> is not called.</p>
+<p>Between <code><a class="el" href="onert-micro_8h.html#a6c5b342754b564e4dbec4023206fd8ea">nnfw_load_model_from_file</a></code> and <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code>, this function returns the tensor information as defined in the model. Any propagated tensor information set via <code><a class="el" href="nnfw_8h.html#a6da6c1fa7528ff6f15dff4be7e857c89">nnfw_set_input_tensorinfo</a></code> is not reflected.</p>
+<p>Between <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code> and <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code>, this function returns updated tensor info if tensor info is updated by <code><a class="el" href="nnfw_8h.html#a6da6c1fa7528ff6f15dff4be7e857c89">nnfw_set_input_tensorinfo</a></code> before <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code> is invoked. But it does not reflect the tensor information set via <code><a class="el" href="">nnfw_set_output_tensorinfo</a></code> after <code><a class="el" href="nnfw_8h.html#a93da789a116a47c0cb66f26bdff12f24">nnfw_prepare</a></code> is invoked.</p>
+<p>After <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code> is invoked(at least once), it returns the updated tensor info during the latest execution. But it does not reflect the tensor information set via <code><a class="el" href="">nnfw_set_output_tensorinfo</a></code> after the last <code><a class="el" href="nnfw_8h.html#a8e193702b11c77db6580253a4ae8cd1f">nnfw_run</a></code> is invoked.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">session</td><td>Session from output information is to be extracted </td></tr>
@@ -1393,7 +1393,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  187</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="structnnfw__session.html#a3bae7bb0a97a2a9ac26069b24280374f">nnfw_session::deprecated</a>(<span class="stringliteral">&quot;nnfw_set_op_backend: Deprecated&quot;</span>);</div>
 <div class="line"><span class="lineno">  188</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="nnfw__session_8cc_source.html#l00977">nnfw_session::deprecated()</a>.</p>
+<p class="reference">References <a class="el" href="nnfw__session_8cc_source.html#l00973">nnfw_session::deprecated()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="minimal_8cc_source.html#l00031">main()</a>.</p>
 

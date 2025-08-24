@@ -1,6 +1,5 @@
 var NAVTREEINDEX259 =
 {
-"optimized_2_binary_arithmetic_ops_8h.html#acc41c0b6a568f6a484fbfc9618e0a055":[41,0,3,0,1,0,0,3,1,2,15],
 "optimized_2_binary_arithmetic_ops_8h.html#ad0750df2998efe611386c45ffd03b581":[41,0,3,0,1,0,0,3,1,2,25],
 "optimized_2_binary_arithmetic_ops_8h.html#ad3a3cb812bffb092ce5a4791b841b168":[41,0,3,0,1,0,0,3,1,2,8],
 "optimized_2_binary_arithmetic_ops_8h.html#af1a0a78101d8a1152b8c8dafe5834292":[41,0,3,0,1,0,0,3,1,2,31],
@@ -249,5 +248,6 @@ var NAVTREEINDEX259 =
 "partition_2src_2_nodes_2_circle_reverse_sequence_8cpp.html":[41,0,0,59,6,1,0,93],
 "partition_2src_2_nodes_2_circle_reverse_sequence_8cpp_source.html":[41,0,0,59,6,1,0,93],
 "partition_2src_2_nodes_2_circle_reverse_v2_8cpp.html":[41,0,0,59,6,1,0,94],
-"partition_2src_2_nodes_2_circle_reverse_v2_8cpp_source.html":[41,0,0,59,6,1,0,94]
+"partition_2src_2_nodes_2_circle_reverse_v2_8cpp_source.html":[41,0,0,59,6,1,0,94],
+"partition_2src_2_nodes_2_circle_rms_norm_8cpp.html":[41,0,0,59,6,1,0,95]
 };

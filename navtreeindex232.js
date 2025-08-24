@@ -1,6 +1,5 @@
 var NAVTREEINDEX232 =
 {
-"namespacemembers_vars_t.html":[39,1,2,20],
 "namespacemembers_vars_u.html":[39,1,2,21],
 "namespacemembers_vars_v.html":[39,1,2,22],
 "namespacemembers_vars_w.html":[39,1,2,23],
@@ -249,5 +248,6 @@ var NAVTREEINDEX232 =
 "namespacemir__onnx.html#a636e9901ac35385825a89bfbf29a66f9":[39,0,102,79],
 "namespacemir__onnx.html#a63c2466a0c71c591f5b222a73f2b5e3d":[39,0,102,18],
 "namespacemir__onnx.html#a66920c19f38eba68f66ef74751f776a3":[39,0,102,68],
-"namespacemir__onnx.html#a67a1d1da74cb019b35eb9c9985ad2803":[39,0,102,98]
+"namespacemir__onnx.html#a67a1d1da74cb019b35eb9c9985ad2803":[39,0,102,98],
+"namespacemir__onnx.html#a69cc8bab9d12c5d43edbb1b2f2784f90":[39,0,102,34]
 };

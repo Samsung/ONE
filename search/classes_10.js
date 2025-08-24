@@ -79,7 +79,7 @@ var searchData=
   ['pgroup_76',['PGroup',['../structluci_1_1_p_group.html',1,'luci']]],
   ['pgroups_77',['PGroups',['../structluci_1_1_p_groups.html',1,'luci']]],
   ['phaseconstructionpass_78',['PhaseConstructionPass',['../structenco_1_1_phase_construction_pass.html',1,'enco']]],
-  ['phaseeventinfo_79',['PhaseEventInfo',['../structlogo_1_1_phase_event_info.html',1,'logo']]],
+  ['phaseeventinfo_79',['PhaseEventInfo',['../classlogo_1_1_phase_event_info.html',1,'logo']]],
   ['phaseeventinfo_3c_20phaseevent_3a_3apassbegin_20_3e_80',['PhaseEventInfo&lt; PhaseEvent::PassBegin &gt;',['../classlogo_1_1_phase_event_info_3_01_phase_event_1_1_pass_begin_01_4.html',1,'logo']]],
   ['phaseeventinfo_3c_20phaseevent_3a_3apassend_20_3e_81',['PhaseEventInfo&lt; PhaseEvent::PassEnd &gt;',['../classlogo_1_1_phase_event_info_3_01_phase_event_1_1_pass_end_01_4.html',1,'logo']]],
   ['phaseeventinfo_3c_20phaseevent_3a_3aphasebegin_20_3e_82',['PhaseEventInfo&lt; PhaseEvent::PhaseBegin &gt;',['../classlogo_1_1_phase_event_info_3_01_phase_event_1_1_phase_begin_01_4.html',1,'logo']]],

@@ -370,6 +370,7 @@ var namespaceluci =
     [ "FuseMulWithConvPass", "structluci_1_1_fuse_mul_with_conv_pass.html", "structluci_1_1_fuse_mul_with_conv_pass" ],
     [ "FuseMulWithDivPass", "structluci_1_1_fuse_mul_with_div_pass.html", "structluci_1_1_fuse_mul_with_div_pass" ],
     [ "FuseMulWithFullyConnectedPass", "structluci_1_1_fuse_mul_with_fully_connected_pass.html", "structluci_1_1_fuse_mul_with_fully_connected_pass" ],
+    [ "FuseMulWithRmsNormPass", "structluci_1_1_fuse_mul_with_rms_norm_pass.html", "structluci_1_1_fuse_mul_with_rms_norm_pass" ],
     [ "FusePreActivationBatchNormPass", "structluci_1_1_fuse_pre_activation_batch_norm_pass.html", "structluci_1_1_fuse_pre_activation_batch_norm_pass" ],
     [ "FusePReluPass", "structluci_1_1_fuse_p_relu_pass.html", "structluci_1_1_fuse_p_relu_pass" ],
     [ "FuseRmsNormPass", "structluci_1_1_fuse_rms_norm_pass.html", "structluci_1_1_fuse_rms_norm_pass" ],

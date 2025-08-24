@@ -1,5 +1,10 @@
 var NAVTREEINDEX15 =
 {
+"_l2_normalize_options_8cpp.html":[41,0,0,133,2,0,66],
+"_l2_normalize_options_8cpp.html#a5e18d4459f509f90bb35a55c1d193095":[41,0,0,133,2,0,66,0],
+"_l2_normalize_options_8cpp_source.html":[41,0,0,133,2,0,66],
+"_l2_normalize_options_8h.html":[41,0,0,133,2,0,67],
+"_l2_normalize_options_8h.html#a5e18d4459f509f90bb35a55c1d193095":[41,0,0,133,2,0,67,0],
 "_l2_normalize_options_8h_source.html":[41,0,0,133,2,0,67],
 "_l_s_t_m_8cc.html":[41,0,3,3,2,1,5,0,36],
 "_l_s_t_m_8cc_source.html":[41,0,3,3,2,1,5,0,36],
@@ -235,19 +240,14 @@ var NAVTREEINDEX15 =
 "_m_p_q_solver_8cpp_source.html":[41,0,0,15,0,4],
 "_m_p_q_solver_8h.html":[41,0,0,15,0,5],
 "_m_p_q_solver_8h_source.html":[41,0,0,15,0,5],
-"_make_batch_norm_gamma_positive_pass_8cpp.html":[41,0,0,59,7,1,60],
-"_make_batch_norm_gamma_positive_pass_8cpp_source.html":[41,0,0,59,7,1,60],
-"_make_batch_norm_gamma_positive_pass_8h.html":[41,0,0,59,7,0,0,0,50],
-"_make_batch_norm_gamma_positive_pass_8h_source.html":[41,0,0,59,7,0,0,0,50],
+"_make_batch_norm_gamma_positive_pass_8cpp.html":[41,0,0,59,7,1,61],
+"_make_batch_norm_gamma_positive_pass_8cpp_source.html":[41,0,0,59,7,1,61],
+"_make_batch_norm_gamma_positive_pass_8h.html":[41,0,0,59,7,0,0,0,51],
+"_make_batch_norm_gamma_positive_pass_8h_source.html":[41,0,0,59,7,0,0,0,51],
 "_manual_scheduler_8cc.html":[41,0,3,3,2,1,1,19],
 "_manual_scheduler_8cc_source.html":[41,0,3,3,2,1,1,19],
 "_manual_scheduler_8h.html":[41,0,3,3,2,1,1,20],
 "_manual_scheduler_8h_source.html":[41,0,3,3,2,1,1,20],
 "_mat_mul_converter_8cpp.html":[41,0,0,41,1,1,25],
-"_mat_mul_converter_8cpp_source.html":[41,0,0,41,1,1,25],
-"_mat_mul_converter_8h.html":[41,0,0,41,1,1,26],
-"_mat_mul_converter_8h_source.html":[41,0,0,41,1,1,26],
-"_math_common_8cpp.html":[41,0,2,5,1,2,0,43],
-"_math_common_8cpp.html#a12dd1120f82b1ff9fc8997f4397cd4fc":[41,0,2,5,1,2,0,43,0],
-"_math_common_8cpp_source.html":[41,0,2,5,1,2,0,43]
+"_mat_mul_converter_8cpp_source.html":[41,0,0,41,1,1,25]
 };

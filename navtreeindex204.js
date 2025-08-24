@@ -1,6 +1,5 @@
 var NAVTREEINDEX204 =
 {
-"idl_8h.html":[41,0,2,2,0,8],
 "idl_8h.html#a00957b1d3a2dd9f4eef8397de5b36f35":[41,0,2,2,0,8,49],
 "idl_8h.html#a00bf1d8f2dc92792b1c1982981da5655":[41,0,2,2,0,8,15],
 "idl_8h.html#a028f56f6249346d28bab548397c58f4f":[41,0,2,2,0,8,22],
@@ -249,5 +248,6 @@ var NAVTREEINDEX204 =
 "import_2include_2luci_2_import_2_nodes_2_circle_reshape_8h.html":[41,0,0,59,2,0,0,0,0,85],
 "import_2include_2luci_2_import_2_nodes_2_circle_reshape_8h_source.html":[41,0,0,59,2,0,0,0,0,85],
 "import_2include_2luci_2_import_2_nodes_2_circle_resize_bilinear_8h.html":[41,0,0,59,2,0,0,0,0,86],
-"import_2include_2luci_2_import_2_nodes_2_circle_resize_bilinear_8h_source.html":[41,0,0,59,2,0,0,0,0,86]
+"import_2include_2luci_2_import_2_nodes_2_circle_resize_bilinear_8h_source.html":[41,0,0,59,2,0,0,0,0,86],
+"import_2include_2luci_2_import_2_nodes_2_circle_resize_nearest_neighbor_8h.html":[41,0,0,59,2,0,0,0,0,87]
 };

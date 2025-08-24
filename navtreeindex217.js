@@ -1,6 +1,5 @@
 var NAVTREEINDEX217 =
 {
-"metrics_2_m_s_e_8h.html":[41,0,2,5,0,7,1,3],
 "metrics_2_m_s_e_8h_source.html":[41,0,2,5,0,7,1,3],
 "metrics_2registry_8py.html":[41,0,3,3,0,1,1,1,0,1,3],
 "metrics_2registry_8py_source.html":[41,0,3,3,0,1,1,1,0,1,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX217 =
 "mir-interpreter_2src_2ops_2_less_8h.html":[41,0,0,81,1,0,36],
 "mir-interpreter_2src_2ops_2_less_8h.html#a63280d239e3b24bcdd557ce73f5d4ba5":[41,0,0,81,1,0,36,0],
 "mir-interpreter_2src_2ops_2_less_8h_source.html":[41,0,0,81,1,0,36],
-"mir-interpreter_2src_2ops_2_max_8cpp.html":[41,0,0,81,1,0,37]
+"mir-interpreter_2src_2ops_2_max_8cpp.html":[41,0,0,81,1,0,37],
+"mir-interpreter_2src_2ops_2_max_8cpp.html#ad9d7fcc8ca4e7dc1d8c5cff68ef69c3f":[41,0,0,81,1,0,37,2]
 };

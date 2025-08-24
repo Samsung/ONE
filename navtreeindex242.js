@@ -1,6 +1,5 @@
 var NAVTREEINDEX242 =
 {
-"namespaceonert__micro_1_1test__model_1_1neg__conv2d__input__type__mismatch.html#ae13d630f93079ce57535cb9a36c4f90c":[39,0,124,4,102,0],
 "namespaceonert__micro_1_1test__model_1_1neg__conv2d__invalid__input__shape.html":[39,0,124,4,103],
 "namespaceonert__micro_1_1test__model_1_1neg__conv2d__invalid__input__shape.html#ac700d2f6b21263fc9658ec5e867c7fcf":[39,0,124,4,103,0],
 "namespaceonert__micro_1_1test__model_1_1neg__conv2d__no__quant__params.html":[39,0,124,4,104],
@@ -249,5 +248,6 @@ var NAVTREEINDEX242 =
 "namespaceonert__micro_1_1test__model_1_1pad__int8.html":[39,0,124,4,193],
 "namespaceonert__micro_1_1test__model_1_1pad__int8.html#a4de325273ceca5a98093fbf40ebf40a1":[39,0,124,4,193,1],
 "namespaceonert__micro_1_1test__model_1_1pad__int8.html#a8d818d6f51e1c8f6b767e8532cbb0b52":[39,0,124,4,193,0],
-"namespaceonert__micro_1_1test__model_1_1pad__int8.html#ab0d075c4deb143fdebda99bd064a1ad2":[39,0,124,4,193,2]
+"namespaceonert__micro_1_1test__model_1_1pad__int8.html#ab0d075c4deb143fdebda99bd064a1ad2":[39,0,124,4,193,2],
+"namespaceonert__micro_1_1test__model_1_1quantize__float.html":[39,0,124,4,194]
 };

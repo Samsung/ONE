@@ -1,6 +1,5 @@
 var NAVTREEINDEX261 =
 {
-"repeat_8h.html#a7007670273528d917552650c17d22f3c":[41,0,3,0,0,1,0,0,0,4,30],
 "repeat_8h.html#a738d75550700d9ce743f0fac5738ee15":[41,0,3,0,0,1,0,0,0,4,17],
 "repeat_8h.html#a76baa8fe324b6dd78d32adb1fb857f00":[41,0,3,0,0,1,0,0,0,4,46],
 "repeat_8h.html#a7719fb3da3410b3c7326f54e9f1a0908":[41,0,3,0,0,1,0,0,0,4,49],
@@ -249,5 +248,6 @@ var NAVTREEINDEX261 =
 "runtime_2compute_2cker_2include_2cker_2operation_2_helper_2_tensor_8h_source.html":[41,0,3,0,1,0,0,3,0,6],
 "runtime_2compute_2cker_2include_2cker_2operation_2_instance_norm_8h.html":[41,0,3,0,1,0,0,3,31],
 "runtime_2compute_2cker_2include_2cker_2operation_2_instance_norm_8h.html#a93b46a6da775b709f743fa8e2a99af06":[41,0,3,0,1,0,0,3,31,0],
-"runtime_2compute_2cker_2include_2cker_2operation_2_instance_norm_8h_source.html":[41,0,3,0,1,0,0,3,31]
+"runtime_2compute_2cker_2include_2cker_2operation_2_instance_norm_8h_source.html":[41,0,3,0,1,0,0,3,31],
+"runtime_2compute_2cker_2include_2cker_2operation_2_l2_normalize_8h.html":[41,0,3,0,1,0,0,3,32]
 };

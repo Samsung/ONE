@@ -1,6 +1,5 @@
 var NAVTREEINDEX268 =
 {
-"struct_matrix_diag_chef_factory.html":[40,0,330],
 "struct_matrix_diag_chef_factory.html#aae1ccb4cdb12509fd60f44136cc4ab44":[40,0,330,0],
 "struct_matrix_set_diag_chef_factory.html":[40,0,332],
 "struct_matrix_set_diag_chef_factory.html#a341cc342f6b30feefd9fa755bf43414b":[40,0,332,0],
@@ -58,8 +57,8 @@ var NAVTREEINDEX268 =
 "struct_op_chef.html":[40,0,374],
 "struct_op_chef.html#a32acac42ce89c38914d4229bc8f2be62":[40,0,374,3],
 "struct_op_chef.html#a7139f0388f284cb3c20bdbd9085d36c0":[40,0,374,7],
-"struct_op_chef.html#a741fb1e34c5c32757638f20139eae6cc":[40,0,374,9],
 "struct_op_chef.html#a741fb1e34c5c32757638f20139eae6cc":[40,0,374,8],
+"struct_op_chef.html#a741fb1e34c5c32757638f20139eae6cc":[40,0,374,9],
 "struct_op_chef.html#a826d49bed868605eded3b8474a1d2e16":[40,0,374,2],
 "struct_op_chef.html#aa60293dfb6304252fe3723700739b7e1":[40,0,374,6],
 "struct_op_chef.html#ac1f4f54559a8f3aff8aa17775f0db2bc":[40,0,374,5],
@@ -67,8 +66,8 @@ var NAVTREEINDEX268 =
 "struct_op_chef.html#aeb92d15a21ac54d4d37d90c1a773ebf2":[40,0,374,1],
 "struct_op_chef.html#aeb92d15a21ac54d4d37d90c1a773ebf2":[40,0,374,0],
 "struct_op_chef_factory.html":[40,0,375],
-"struct_op_chef_factory.html#a15478222773e6f86990c5a935ed302d5":[40,0,375,1],
 "struct_op_chef_factory.html#a15478222773e6f86990c5a935ed302d5":[40,0,375,0],
+"struct_op_chef_factory.html#a15478222773e6f86990c5a935ed302d5":[40,0,375,1],
 "struct_op_chef_factory.html#a8a07d138773d51f6785b84c2f2f92865":[40,0,375,2],
 "struct_op_chef_factory.html#ae985b3ee49d967db1dd8d40801714bcd":[40,0,375,3],
 "struct_op_printer.html":[40,0,378],
@@ -249,5 +248,6 @@ var NAVTREEINDEX268 =
 "struct_tensor4_d.html#a6a8564124d3dea43de42d28797f6f0ec":[40,0,498,5],
 "struct_tensor4_d.html#ab8c51754e19fd1fcaf51d08f822c0302":[40,0,498,4],
 "struct_tensor4_d.html#ad984d8439e901ef2f7b74c0b2e6bec2b":[40,0,498,2],
-"struct_tensor4_d.html#af47800b1690097080195d2df5a75cd6c":[40,0,498,1]
+"struct_tensor4_d.html#af47800b1690097080195d2df5a75cd6c":[40,0,498,1],
+"struct_tensor4_d.html#af632654392cb8b5070976d60897685d2":[40,0,498,3]
 };

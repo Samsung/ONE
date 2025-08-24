@@ -1,6 +1,5 @@
 var NAVTREEINDEX257 =
 {
-"onert-micro_2onert-micro_2src_2execute_2kernels_2_strided_slice_8cpp_source.html":[41,0,2,5,1,2,0,77],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_sub_8cpp.html":[41,0,2,5,1,2,0,78],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_sub_8cpp.html#af1c3b982442c9336ff4838b8e5f25cf2":[41,0,2,5,1,2,0,78,0],
 "onert-micro_2onert-micro_2src_2execute_2kernels_2_sub_8cpp_source.html":[41,0,2,5,1,2,0,78],
@@ -249,5 +248,6 @@ var NAVTREEINDEX257 =
 "onert-micro_2onert-micro_2src_2import_2kernels_2_tanh_8cpp.html#a958bf6d215442b68abfef7fe6730ec05":[41,0,2,5,1,3,1,73,0],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_tanh_8cpp_source.html":[41,0,2,5,1,3,1,73],
 "onert-micro_2onert-micro_2src_2import_2kernels_2_transpose_8cpp.html":[41,0,2,5,1,3,1,74],
-"onert-micro_2onert-micro_2src_2import_2kernels_2_transpose_8cpp.html#a75f6094fc157e7e6319fe0bbf29f9d4c":[41,0,2,5,1,3,1,74,0]
+"onert-micro_2onert-micro_2src_2import_2kernels_2_transpose_8cpp.html#a75f6094fc157e7e6319fe0bbf29f9d4c":[41,0,2,5,1,3,1,74,0],
+"onert-micro_2onert-micro_2src_2import_2kernels_2_transpose_8cpp_source.html":[41,0,2,5,1,3,1,74]
 };

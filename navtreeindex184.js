@@ -1,6 +1,5 @@
 var NAVTREEINDEX184 =
 {
-"compiler_2luci-interpreter_2pal_2linux_2_p_a_l_depth_to_space_8h.html":[41,0,0,62,1,1,6],
 "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_depth_to_space_8h_source.html":[41,0,0,62,1,1,6],
 "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_depthwise_conv2d_8h.html":[41,0,0,62,1,1,7],
 "compiler_2luci-interpreter_2pal_2linux_2_p_a_l_depthwise_conv2d_8h.html#a6f98040ce5b2f996abbfdc80fb1d5cfd":[41,0,0,62,1,1,7,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX184 =
 "compiler_2luci-interpreter_2src_2kernels_2_logical_or_8cpp.html":[41,0,0,62,2,2,85],
 "compiler_2luci-interpreter_2src_2kernels_2_logical_or_8cpp_source.html":[41,0,0,62,2,2,85],
 "compiler_2luci-interpreter_2src_2kernels_2_logical_or_8h.html":[41,0,0,62,2,2,86],
-"compiler_2luci-interpreter_2src_2kernels_2_logical_or_8h_source.html":[41,0,0,62,2,2,86]
+"compiler_2luci-interpreter_2src_2kernels_2_logical_or_8h_source.html":[41,0,0,62,2,2,86],
+"compiler_2luci-interpreter_2src_2kernels_2_logistic_8cpp.html":[41,0,0,62,2,2,87]
 };

@@ -1,6 +1,5 @@
 var NAVTREEINDEX228 =
 {
-"namespaceluci__interpreter_1_1test__kernel_1_1dequantize__float.html":[39,0,88,2,23],
 "namespaceluci__interpreter_1_1test__kernel_1_1dequantize__float.html#a39ae5a667f589dbb66fa1363fb6d39ad":[39,0,88,2,23,0],
 "namespaceluci__interpreter_1_1test__kernel_1_1dequantize__float.html#aa2d04b42247af4ff64c2a19ca85c55d5":[39,0,88,2,23,2],
 "namespaceluci__interpreter_1_1test__kernel_1_1dequantize__float.html#af4c67ff15a17d42c168151c5351f57bc":[39,0,88,2,23,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX228 =
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__add__no__quant__params.html":[39,0,88,2,81],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__add__no__quant__params.html#a99028f94f6427280b074c100646c1142":[39,0,88,2,81,0],
 "namespaceluci__interpreter_1_1test__kernel_1_1neg__average__pool2d__kernel.html":[39,0,88,2,82],
-"namespaceluci__interpreter_1_1test__kernel_1_1neg__average__pool2d__kernel.html#aff5d1f1c60ca988ad7052836baea7530":[39,0,88,2,82,0]
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__average__pool2d__kernel.html#aff5d1f1c60ca988ad7052836baea7530":[39,0,88,2,82,0],
+"namespaceluci__interpreter_1_1test__kernel_1_1neg__axis__wrong__type__mismatch__reduce__prod__kernel.html":[39,0,88,2,83]
 };
