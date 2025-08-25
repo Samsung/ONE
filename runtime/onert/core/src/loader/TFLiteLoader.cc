@@ -155,10 +155,7 @@ void TFLiteLoader::loadBatchMatMul(const Operator *op, ir::Graph &subg)
 
 std::unique_ptr<ir::Model> loadTFLiteModel(const std::string &filename)
 {
-  auto model = std::make_unique<ir::Model>();
-  TFLiteLoader loader(model);
-  loader.loadFromFile(filename);
-  return model;
+  return TFLiteLoader().loadFromFile(filename);
 }
 
 } // namespace onert::loader

@@ -374,18 +374,12 @@ void CircleLoader::loadCustom(const Operator *op, ir::Graph &subg)
 
 std::unique_ptr<ir::Model> loadCircleModel(const std::string &filename)
 {
-  auto model = std::make_unique<ir::Model>();
-  CircleLoader loader(model);
-  loader.loadFromFile(filename);
-  return model;
+  return CircleLoader().loadFromFile(filename);
 }
 
 std::unique_ptr<ir::Model> loadCircleModel(uint8_t *buffer, size_t size)
 {
-  auto model = std::make_unique<ir::Model>();
-  CircleLoader loader(model);
-  loader.loadFromBuffer(buffer, size);
-  return model;
+  return CircleLoader().loadFromBuffer(buffer, size);
 }
 
 } // namespace onert::loader
