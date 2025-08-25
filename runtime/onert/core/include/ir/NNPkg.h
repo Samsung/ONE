@@ -233,6 +233,7 @@ public:
 
   uint32_t inputSize(SubgraphIndex subg_index) const
   {
+    // signature entry is supported for single model only
     assert(_models.size() == 1);
     return primary_model()->at(subg_index)->getInputs().size();
   }
@@ -248,6 +249,7 @@ public:
 
   uint32_t outputSize(SubgraphIndex subg_index) const
   {
+    // signature entry is supported for single model only
     assert(_models.size() == 1);
     return primary_model()->at(subg_index)->getOutputs().size();
   }

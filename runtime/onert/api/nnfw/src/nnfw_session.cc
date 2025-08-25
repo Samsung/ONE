@@ -1034,8 +1034,8 @@ NNFW_STATUS nnfw_session::set_signature_run(const char *signature)
   {
     if (sig.second == std::string(signature))
     {
-      _execution = std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors,
-                                                            sig.second, sig.first);
+      _execution =
+        std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors, sig.first);
       return NNFW_STATUS_NO_ERROR;
     }
   }

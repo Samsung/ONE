@@ -55,9 +55,9 @@ Execution::Execution(const std::shared_ptr<IExecutors> &executors) : _executors{
   ExecutionOptions::fromGlobalConfig(_ctx.options);
 }
 
-Execution::Execution(const std::shared_ptr<IExecutors> &executors, const std::string &signature,
+Execution::Execution(const std::shared_ptr<IExecutors> &executors,
                      const ir::SubgraphIndex &entry_index)
-  : Execution(std::make_shared<SignatureExecutors>(executors, signature, entry_index))
+  : Execution(std::make_shared<SignatureExecutors>(executors, entry_index))
 {
   // DO NOTHING
 }

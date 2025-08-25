@@ -47,10 +47,9 @@ public:
   /**
    * @brief     Convert IExecutors to SignatureExecutors
    * @param[in] executors Executors object to convert
-   * @param[in] signature signature name of the executors
    * @param[in] index     subgraph index of the signature
    */
-  SignatureExecutors(const std::shared_ptr<IExecutors> &executors, const std::string &signature,
+  SignatureExecutors(const std::shared_ptr<IExecutors> &executors,
                      const ir::SubgraphIndex &entry_index);
 
 public:
@@ -58,7 +57,6 @@ public:
 
 private:
   const std::shared_ptr<IExecutors> _executors;
-  std::string _signature;
   ir::SubgraphIndex _entry_index;
 };
 
