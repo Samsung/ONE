@@ -63,11 +63,8 @@ protected:
 public:
   /**
    * @brief Construct a new Loader object
-   *
-   * @param model reference to model
    */
-  explicit BaseLoader(std::unique_ptr<ir::Model> &model)
-    : _base{nullptr}, _pagesize(getpagesize()), _fd(-1), _model(model), _domain_model{nullptr}
+  explicit BaseLoader() : _base{nullptr}, _pagesize(getpagesize()), _fd(-1), _domain_model{nullptr}
   {
     _use_mmaped_data = util::getConfigBool(util::config::USE_MMAPED_DATA);
   }
@@ -75,20 +72,22 @@ public:
   /**
    * @brief Load a model from file
    *
-   * @param file_path
+   * @param[in] file_path model file path
+   * @return    Loaded model object
    */
-  void loadFromFile(const std::string &file_path);
+  std::unique_ptr<ir::Model> loadFromFile(const std::string &file_path);
   /**
    * @brief Load a model from a buffer
    *
-   * @param buffer buffer pointer
-   * @param size buffer size
+   * @param[in] buffer  buffer pointer
+   * @param[in] size    buffer size
+   * @return    Loaded model object
    */
-  void loadFromBuffer(uint8_t *buffer, size_t size);
+  std::unique_ptr<ir::Model> loadFromBuffer(uint8_t *buffer, size_t size);
 
 protected:
   ~BaseLoader() = default;
-  void loadModel();
+  std::unique_ptr<ir::Model> loadModel();
 
   // Helper functions
   ir::Activation convertActivation(ActivationFunctionType type);
@@ -187,8 +186,6 @@ protected:
   // loaded file description and path
   int _fd;
   std::string _file_path;
-  // Reference to ir::model (to be loaded from _domain_model)
-  std::unique_ptr<ir::Model> &_model;
   const Model *_domain_model;
   // Maps Tensor indices to onert Operands.
   std::vector<ir::OperandIndex> _tensor_to_operand;
@@ -203,7 +200,8 @@ protected:
 };
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const std::string &file_path)
+std::unique_ptr<ir::Model>
+BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const std::string &file_path)
 {
   _file_path = file_path;
   _fd = open(file_path.c_str(), O_RDONLY);
@@ -229,18 +227,21 @@ void BaseLoader<LoaderDomain>::BaseLoader::loadFromFile(const std::string &file_
 
   _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
 
-  loadModel();
+  auto model = loadModel();
   munmap(_base, size);
 
   close(_fd);
+
+  return model;
 }
 
 template <typename LoaderDomain>
-void BaseLoader<LoaderDomain>::BaseLoader::loadFromBuffer(uint8_t *buffer, size_t size)
+std::unique_ptr<ir::Model> BaseLoader<LoaderDomain>::BaseLoader::loadFromBuffer(uint8_t *buffer,
+                                                                                size_t size)
 {
   _base = buffer;
   _verifier = std::make_unique<Verifier>(reinterpret_cast<const std::uint8_t *>(_base), size);
-  loadModel();
+  return loadModel();
 }
 
 template <typename LoaderDomain>
@@ -1691,7 +1692,7 @@ void BaseLoader<LoaderDomain>::loadOperation(const Operator *op, ir::Graph &subg
   }
 }
 
-template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
+template <typename LoaderDomain> std::unique_ptr<ir::Model> BaseLoader<LoaderDomain>::loadModel()
 {
   LoaderDomain::VerifyModelBuffer(*_verifier.get());
   _domain_model = LoaderDomain::GetModel(_base);
@@ -1729,7 +1730,7 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
     // It is okay since overflow is checked the above if-statement.
     model->push(ir::SubgraphIndex(subgraph_index), std::move(subg));
   }
-  _model = std::move(model);
+  return model;
 }
 
 } // namespace onert::loader
