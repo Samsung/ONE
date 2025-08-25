@@ -937,12 +937,12 @@ NNFW_STATUS nnfw_session::get_output(uint32_t index, nnfw_tensorinfo *ti, const 
     }
 
     auto io_index = onert::ir::IOIndex{index};
-    const auto &info = _compiler_artifact->_executors->outputInfo(io_index);
+    const auto &info = _execution->outputInfo(index);
     const auto &shape = info.shape();
     const auto &dtype = info.typeInfo().type();
     fillTensorInfo(ti, shape, dtype);
 
-    *out_buffer = _compiler_artifact->_executors->outputBuffer(io_index);
+    *out_buffer = _execution->outputBuffer(io_index);
   }
   catch (const std::exception &e)
   {
@@ -1120,10 +1120,15 @@ uint32_t nnfw_session::getInputSize()
     throw std::runtime_error{"Model is not loaded yet"};
 
   if (isStateModelLoaded())
+  {
+    if (_selected_signature.valid())
+      return _nnpkg->inputSize(_selected_signature);
+
     return _nnpkg->inputSize();
+  }
 
   // Session is prepared (general inference)
-  return _compiler_artifact->_executors->inputSize();
+  return _execution->inputSize();
 }
 
 uint32_t nnfw_session::getOutputSize()
@@ -1132,10 +1137,15 @@ uint32_t nnfw_session::getOutputSize()
     throw std::runtime_error{"Model is not loaded yet"};
 
   if (isStateModelLoaded())
+  {
+    if (_selected_signature.valid())
+      return _nnpkg->outputSize(_selected_signature);
+
     return _nnpkg->outputSize();
+  }
 
   // Session is prepared (general inference)
-  return _compiler_artifact->_executors->outputSize();
+  return _execution->outputSize();
 }
 
 NNFW_STATUS nnfw_session::loadModelFile(const std::string &model_file_path,

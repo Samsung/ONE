@@ -231,6 +231,12 @@ public:
                                : _edges.pkg_inputs.size();
   }
 
+  uint32_t inputSize(SubgraphIndex subg_index) const
+  {
+    assert(_models.size() == 1);
+    return primary_model()->at(subg_index)->getInputs().size();
+  }
+
   /**
    * @brief   Get model output size
    */
@@ -238,6 +244,12 @@ public:
   {
     return _models.size() == 1 ? primary_model()->primary_subgraph()->getOutputs().size()
                                : _edges.pkg_outputs.size();
+  }
+
+  uint32_t outputSize(SubgraphIndex subg_index) const
+  {
+    assert(_models.size() == 1);
+    return primary_model()->at(subg_index)->getOutputs().size();
   }
 
   /**

@@ -251,6 +251,9 @@ void Args::Initialize(void)
     .help({"Path to export target-dependent model.",
            "If it is not set, the generated model will be exported to the same directory of the "
            "original model/package with target backend extension."});
+  _arser.add_argument("--signature")
+    .type(arser::DataType::STR)
+    .help({"Signature to select.", "If it is not set, 0th subgraph will be selected"});
 }
 
 void Args::Parse(const int argc, char **argv)
@@ -408,6 +411,9 @@ void Args::Parse(const int argc, char **argv)
       _codegen = _arser.get<std::string>("--codegen");
     if (_arser["--cpath"])
       _codegen_model_path = _arser.get<std::string>("--cpath");
+
+    if (_arser["--signature"])
+      _signature = _arser.get<std::string>("--signature");
 
     // This must be run after parsing as `_warm_up_runs` must have been processed before.
     // Instead of EXECUTE to avoid overhead, memory polling runs on WARMUP
