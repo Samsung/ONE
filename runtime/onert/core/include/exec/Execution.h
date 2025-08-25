@@ -92,6 +92,28 @@ public:
   const ir::OperandInfo &outputInfo(uint32_t index) { return _ctx.desc.outputs.at(index).info; }
 
   /**
+   * @brief     Get internally allocated output buffer
+   * @param[in] index Output index
+   * @return    Buffer pointer
+   */
+  const void *outputBuffer(const ir::IOIndex &index) const
+  {
+    return entryExecutor()->outputBuffer(index.value());
+  }
+
+  /**
+   * @brief   Get input size
+   * @return  Input size
+   */
+  uint32_t inputSize() { return _ctx.desc.inputs.size(); }
+
+  /**
+   * @brief   Get output size
+   * @return  Output size
+   */
+  uint32_t outputSize() { return _ctx.desc.outputs.size(); }
+
+  /**
    * @brief  Execution
    * @note   It should be called after setting input and output buffer
    */
