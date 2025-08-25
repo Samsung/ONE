@@ -35,6 +35,7 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include <unordered_map>
 
 struct nnfw_session
 {
@@ -131,6 +132,9 @@ public:
   NNFW_STATUS set_available_backends(const char *backends);
 
   NNFW_STATUS set_workspace(const char *dir);
+
+  NNFW_STATUS set_signature_for_tensorinfo(const char *signature);
+  NNFW_STATUS set_signature_run(const char *signature);
 
   static NNFW_STATUS deprecated(const char *msg);
 
@@ -230,6 +234,8 @@ private:
   //     const uint8 *buf;
   //   }
   std::filesystem::path _model_path;
+  std::unordered_map<onert::ir::SubgraphIndex, std::string> _signature_map;
+  onert::ir::SubgraphIndex _selected_signature;
 };
 
 #endif // __API_NNFW_SESSION_H__

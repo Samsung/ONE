@@ -47,6 +47,13 @@ public:
    */
   Execution(const std::shared_ptr<IExecutors> &executors);
 
+  /**
+   * @brief     Construct a new Execution object for signature
+   * @param[in] executors   Model executors
+   * @param[in] entry_index Entry subgraph index
+   */
+  Execution(const std::shared_ptr<IExecutors> &executors, const ir::SubgraphIndex &entry_index);
+
 public:
   /**
    * @brief   Returns primary graph object
@@ -90,6 +97,23 @@ public:
    * @return    Output info
    */
   const ir::OperandInfo &outputInfo(uint32_t index) { return _ctx.desc.outputs.at(index).info; }
+
+  const void *outputBuffer(const ir::IOIndex &index) const
+  {
+    return entryExecutor()->outputBuffer(index.value());
+  }
+
+  /**
+   * @brief   Get input size
+   * @return  Input size
+   */
+  uint32_t inputSize() { return _ctx.desc.inputs.size(); }
+
+  /**
+   * @brief   Get output size
+   * @return  Output size
+   */
+  uint32_t outputSize() { return _ctx.desc.outputs.size(); }
 
   /**
    * @brief  Execution

@@ -55,7 +55,7 @@ public:
   virtual IExecutor *at(const ir::ModelIndex &model_index,
                         const ir::SubgraphIndex &subg_index) const = 0;
 
-  IExecutor *entryExecutor() const { return at(ir::ModelIndex{0}, ir::SubgraphIndex{0}); }
+  virtual IExecutor *entryExecutor() const { return at(ir::ModelIndex{0}, ir::SubgraphIndex{0}); }
 
   /**
    * @brief   Return executor set's number of input

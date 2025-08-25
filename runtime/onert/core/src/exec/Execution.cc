@@ -16,6 +16,7 @@
 
 #include "exec/Execution.h"
 
+#include "SignatureExecutors.h"
 #include "../backend/builtin/IOTensor.h"
 #include "ir/DataType.h"
 #include "train/TrainableExecutors.h"
@@ -43,7 +44,7 @@ Execution::Execution(const std::shared_ptr<IExecutors> &executors) : _executors{
   for (uint32_t i = 0; i < _executors->outputSize(); ++i)
   {
     const auto output_tensor =
-      dynamic_cast<const backend::builtin::IOTensor *>(executors->outputTensor(ir::IOIndex{i}));
+      dynamic_cast<const backend::builtin::IOTensor *>(_executors->outputTensor(ir::IOIndex{i}));
     if (!output_tensor)
       throw std::runtime_error("Output tensor must be IOTensor");
 
@@ -52,6 +53,13 @@ Execution::Execution(const std::shared_ptr<IExecutors> &executors) : _executors{
 
   // Initialize options
   ExecutionOptions::fromGlobalConfig(_ctx.options);
+}
+
+Execution::Execution(const std::shared_ptr<IExecutors> &executors,
+                     const ir::SubgraphIndex &entry_index)
+  : Execution(std::make_shared<SignatureExecutors>(executors, entry_index))
+{
+  // DO NOTHING
 }
 
 void Execution::changeInputShape(const ir::IOIndex &index, const ir::Shape &new_shape)
