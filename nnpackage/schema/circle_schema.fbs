@@ -36,6 +36,7 @@
 // Version 0.9: GGML_Q{X}_{Y} types are added. Weight compression option is added.
 //              ROPE op is added. MXFP4, MXINT8 types are added.
 //              MXQuantization is added.
+// Version 0.10: RUN_MODEL op is added.
 
 namespace circle;
 
@@ -302,6 +303,7 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
+  RUN_MODEL = -8,
   ROPE = -7,
   RMS_NORM = -6,
   GRU = -5,
@@ -653,6 +655,7 @@ union BuiltinOptions {
   BitcastOptions,
   BitwiseXorOptions,
   RightShiftOptions,
+  RunModelOptions = 248,
   RoPEOptions = 249,
   RmsNormOptions = 250,
   GRUOptions = 251,
@@ -1550,6 +1553,14 @@ enum RoPEMode : int {
 
 table RoPEOptions {
   mode: RoPEMode;
+}
+
+table RunModelOptions {
+  // Relative path from current model directory
+  location:string;
+  // Entry subgraph signature.
+  // Empty means default entry subgraph (ex. 0th on circle & tflite)
+  signature:string;
 }
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a
