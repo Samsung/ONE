@@ -243,7 +243,7 @@ nnfw_session::nnfw_session()
     _compiler_artifact{nullptr}, _execution{nullptr}, _kernel_registry{nullptr},
     _train_info{nullptr}, _quant_manager{std::make_unique<onert::odc::QuantizeManager>()},
     _codegen_manager{std::make_unique<onert::odc::CodegenManager>()}, _model_path{},
-    _signature_map{}
+    _signature_map{}, _selected_signature{onert::ir::SubgraphIndex{}}
 {
   // DO NOTHING
 }
@@ -778,6 +778,11 @@ NNFW_STATUS nnfw_session::set_input_tensorinfo(uint32_t index, const nnfw_tensor
 
   if (!isStatePreparedOrFinishedRun())
   {
+    if (!_selected_signature.undefined())
+    {
+      _nnpkg->changeInputShape(_selected_signature, index, new_shape);
+      return NNFW_STATUS_NO_ERROR;
+    }
 
     // In this case, if we apply input shape, it will propagate after compilation and excution
     _nnpkg->changeInputShape(index, new_shape);
@@ -811,6 +816,14 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 
     if (isStateModelLoaded())
     {
+      if (!_selected_signature.undefined())
+      {
+        auto info = _nnpkg->inputInfo(_selected_signature, index);
+        fillTensorInfo(ti, info.shape(), info.typeInfo().type());
+
+        return NNFW_STATUS_NO_ERROR;
+      }
+
       auto info = _nnpkg->inputInfo(index);
       fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
@@ -851,6 +864,14 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 
     if (isStateModelLoaded())
     {
+      if (!_selected_signature.undefined())
+      {
+        auto info = _nnpkg->outputInfo(_selected_signature, index);
+        fillTensorInfo(ti, info.shape(), info.typeInfo().type());
+
+        return NNFW_STATUS_NO_ERROR;
+      }
+
       auto info = _nnpkg->outputInfo(index);
       fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
@@ -969,6 +990,33 @@ NNFW_STATUS nnfw_session::set_workspace(const char *dir)
   _coptions->workspace_dir = std::string(dir);
 
   return NNFW_STATUS_NO_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_signature_for_tensorinfo(const char *signature)
+{
+  if (!signature)
+    return NNFW_STATUS_UNEXPECTED_NULL;
+
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during nnfw_session::set_signature_for_tensorinfo : invalid state"
+              << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  for (auto &sig : _signature_map)
+  {
+    if (sig.second == std::string(signature))
+    {
+      _selected_signature = sig.first;
+
+      return NNFW_STATUS_NO_ERROR;
+    }
+  }
+
+  std::cerr << "Error during nnfw_session::set_signature_for_tensorinfo : cannot find signature \""
+            << signature << "\"" << std::endl;
+  return NNFW_STATUS_ERROR;
 }
 
 NNFW_STATUS nnfw_session::set_signature_run(const char *signature)
@@ -1098,6 +1146,7 @@ NNFW_STATUS nnfw_session::loadModelFile(const std::string &model_file_path,
     return NNFW_STATUS_ERROR;
 
   _signature_map = model->signatureMap();
+  _selected_signature = onert::ir::SubgraphIndex{};
   _nnpkg = std::make_unique<onert::ir::NNPkg>(std::move(model));
   _model_path = std::filesystem::path(model_file_path);
   _compiler_artifact.reset();

@@ -202,11 +202,15 @@ NNFW_STATUS nnfw_set_input_type(nnfw_session *session, uint32_t index, NNFW_TYPE
 NNFW_STATUS nnfw_set_output_type(nnfw_session *session, uint32_t index, NNFW_TYPE type);
 
 /**
- * @brief     Set the entry signature to prepare
+ * @brief     Set the entry signature to get and set I/O tensorinfo before prepare
  *
- * User can call this function to select entry signature to set input & output feature
+ * User can call this function to select entry signature to get & set I/O features
  * for prepare phase. This function should be called after {@link nnfw_load_model_from_file}
  * and before {@link nnfw_prepare}.
+ *
+ * If this function is called to set I/O for part of entries, {@link nnfw_prepare} will prepare
+ * for all signatures. So user can select entry on {@link nnfw_set_signature_run}
+ * which does not set by this function.
  *
  * If this function is not called, default entry (ex. 0th subgraph in circle/tflite model)
  * will be selected.
@@ -215,7 +219,7 @@ NNFW_STATUS nnfw_set_output_type(nnfw_session *session, uint32_t index, NNFW_TYP
  * @param[in] signature name of the entry signature to run
  * @return    @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_set_signature_prepare(nnfw_session *session, const char *signature);
+NNFW_STATUS nnfw_set_signature_for_tensorinfo(nnfw_session *session, const char *signature);
 
 /**
  * @brief     Set the entry signature to run

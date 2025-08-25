@@ -258,6 +258,16 @@ public:
     return graph->operands().at(operand_index).info();
   }
 
+  const OperandInfo &inputInfo(SubgraphIndex subg_index, uint32_t index) const
+  {
+    // signature entry is supported for single model only
+    assert(_models.size() == 1);
+
+    auto const graph = primary_model()->at(subg_index);
+    auto const operand_index = graph->getInputs().at(index);
+    return graph->operands().at(operand_index).info();
+  }
+
   /**
    * @brief   Get model output info
    */
@@ -276,6 +286,17 @@ public:
     return graph->operands().at(operand_index).info();
   }
 
+  const OperandInfo &outputInfo(SubgraphIndex subg_index, uint32_t index) const
+  {
+    // signature entry is supported for single model only
+    assert(_models.size() == 1);
+
+    auto const graph = primary_model()->at(subg_index);
+
+    auto const operand_index = graph->getOutputs().at(index);
+    return graph->operands().at(operand_index).info();
+  }
+
   void changeInputShape(uint32_t index, const ir::Shape &new_shape)
   {
     if (_models.size() == 1)
@@ -290,6 +311,17 @@ public:
     auto graph = model(std::get<ModelIndex>(desc))->primary_subgraph();
     auto const operand_index = graph->getInputs().at(std::get<IOIndex>(desc).value());
     graph->changeShape(operand_index, new_shape);
+  }
+
+  void changeInputShape(SubgraphIndex subg_index, uint32_t index, const ir::Shape &new_shape)
+  {
+    // signature entry is supported for single model only
+    assert(_models.size() == 1);
+
+    auto graph = primary_model()->at(subg_index);
+    auto const operand_index = graph->getInputs().at(index);
+    graph->changeShape(operand_index, new_shape);
+    return;
   }
 
   /**

@@ -245,6 +245,12 @@ NNFW_STATUS nnfw_set_workspace(nnfw_session *session, const char *dir)
   return session->set_workspace(dir);
 }
 
+NNFW_STATUS nnfw_set_signature_for_tensorinfo(nnfw_session *session, const char *signature)
+{
+  NNFW_RETURN_ERROR_IF_NULL(session);
+  return session->set_signature_for_tensorinfo(signature);
+}
+
 NNFW_STATUS nnfw_set_signature_run(nnfw_session *session, const char *signature)
 {
   NNFW_RETURN_ERROR_IF_NULL(session);
