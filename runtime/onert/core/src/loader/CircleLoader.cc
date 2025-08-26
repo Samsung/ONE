@@ -179,8 +179,8 @@ private:
       case circle::BuiltinOperator::BuiltinOperator_CALL:
         loadCall(op, subg);
         return;
-      case circle::BuiltinOperator::BuiltinOperator_CUSTOM:
-        loadCustom(op, subg);
+      case circle::BuiltinOperator::BuiltinOperator_RUN_MODEL:
+        loadRunModel(op, subg);
         return;
       default:
         BaseLoader::loadOperation(op, subg);
@@ -326,12 +326,9 @@ void CircleLoader::loadRunModel(const Operator *op, ir::Graph &subg)
   //      - Model inlining on optimize phase (compile)
   assert(!_file_path.empty());
   auto model_base_path = std::filesystem::path(_file_path).parent_path();
-  // TODO Get location from BuiltinOptions instead of custom OP option
-  auto location_obj = getCustomOpAttrMap(op)["location"];
-  if (location_obj.IsNull())
-    throw std::runtime_error("Cannot find 'location'");
-
-  auto model_path = model_base_path / location_obj.ToString();
+  auto *options = op->builtin_options_as_RunModelOptions();
+  auto location = options->location()->str();
+  auto model_path = model_base_path / location;
   auto extension_path = model_path.extension();
   if (extension_path.empty())
   {
@@ -351,23 +348,6 @@ void CircleLoader::loadRunModel(const Operator *op, ir::Graph &subg)
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Bulk(inputs, outputs, bulk_op->param()));
   subg.addOperation(std::move(new_op));
-}
-
-void CircleLoader::loadCustom(const Operator *op, ir::Graph &subg)
-{
-  ir::OperandIndexSequence inputs;
-  ir::OperandIndexSequence outputs;
-
-  assert(op->custom_options_format() == CustomOptionsFormat::CustomOptionsFormat_FLEXBUFFERS &&
-         "Unsupported custom operation options format");
-
-  auto *op_code = _domain_model->operator_codes()->Get(op->opcode_index());
-  auto custom_op_name = op_code->custom_code()->str();
-
-  if (custom_op_name == "RunModel")
-    loadRunModel(op, subg);
-  else
-    BaseLoader::loadOperation(op, subg);
 }
 
 } // namespace
