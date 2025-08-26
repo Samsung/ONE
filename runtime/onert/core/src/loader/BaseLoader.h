@@ -1720,10 +1720,11 @@ template <typename LoaderDomain> void BaseLoader<LoaderDomain>::loadModel()
   auto const signature_table = _domain_model->signature_defs();
   if (signature_table != nullptr)
   {
-    std::unordered_map<ir::SubgraphIndex, std::string> signature_map;
     for (uint32_t i = 0; i < signature_table->size(); ++i)
     {
       const auto signature = signature_table->Get(i);
+      if (signature == nullptr)
+        continue;
       const auto signature_key = signature->signature_key();
       if (signature_key == nullptr)
         continue; // signature should have key
