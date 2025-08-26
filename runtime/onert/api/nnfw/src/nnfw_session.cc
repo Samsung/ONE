@@ -775,14 +775,15 @@ NNFW_STATUS nnfw_session::set_input_tensorinfo(uint32_t index, const nnfw_tensor
   for (int32_t i = 0; i < ti->rank; i++)
     new_shape.dim(i) = ti->dims[i];
 
+  const auto input_index = onert::ir::IOIndex(index);
   if (!isStatePreparedOrFinishedRun())
   {
 
     // In this case, if we apply input shape, it will propagate after compilation and excution
-    _nnpkg->changeInputShape(index, new_shape);
+    _nnpkg->changeInputShape(input_index, new_shape);
   }
   else // when called after nnfw_session::prepare()
-    _execution->changeInputShape(onert::ir::IOIndex(index), new_shape);
+    _execution->changeInputShape(input_index, new_shape);
 
   return NNFW_STATUS_NO_ERROR;
 }
@@ -808,14 +809,15 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
       return NNFW_STATUS_ERROR;
     }
 
+    const auto input_index = onert::ir::IOIndex{index};
     if (isStateModelLoaded())
     {
-      auto info = _nnpkg->inputInfo(index);
+      auto info = _nnpkg->inputInfo(input_index);
       fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
     else
     {
-      const auto &info = _execution->inputInfo(index);
+      const auto &info = _execution->inputInfo(input_index);
       fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
   }
@@ -848,14 +850,15 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
       return NNFW_STATUS_ERROR;
     }
 
+    const auto output_index = onert::ir::IOIndex{index};
     if (isStateModelLoaded())
     {
-      auto info = _nnpkg->outputInfo(index);
+      auto info = _nnpkg->outputInfo(output_index);
       fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
     else
     {
-      auto info = _execution->outputInfo(index);
+      auto info = _execution->outputInfo(output_index);
       fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
   }
@@ -915,7 +918,7 @@ NNFW_STATUS nnfw_session::get_output(uint32_t index, nnfw_tensorinfo *ti, const 
     }
 
     auto io_index = onert::ir::IOIndex{index};
-    const auto &info = _execution->outputInfo(index);
+    const auto &info = _execution->outputInfo(io_index);
     const auto &shape = info.shape();
     const auto &dtype = info.typeInfo().type();
     fillTensorInfo(ti, shape, dtype);
@@ -1560,7 +1563,7 @@ NNFW_STATUS nnfw_session::train_set_input(uint32_t index, const void *input,
   try
   {
     auto ind = onert::ir::IOIndex(index);
-    auto size = _execution->inputInfo(index).total_size();
+    auto size = _execution->inputInfo(ind).total_size();
     if (input_tensorinfo && getBufSize(input_tensorinfo) != size)
     {
       std::cerr
@@ -1605,7 +1608,8 @@ NNFW_STATUS nnfw_session::train_set_expected(uint32_t index, const void *expecte
 
   try
   {
-    auto size = _execution->outputInfo(index).total_size();
+    const auto ind = onert::ir::IOIndex{index};
+    auto size = _execution->outputInfo(ind).total_size();
     if (expected_tensorinfo && getBufSize(expected_tensorinfo) != size)
     {
       std::cerr << "Error during nnfw_session::train_set_expected : invalid tensorinfo"
