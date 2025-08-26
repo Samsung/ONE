@@ -82,14 +82,20 @@ public:
    * @param[in] index Input index
    * @return    Input info
    */
-  const ir::OperandInfo &inputInfo(uint32_t index) { return _ctx.desc.inputs.at(index).info; }
+  const ir::OperandInfo &inputInfo(const ir::IOIndex &index)
+  {
+    return _ctx.desc.inputs.at(index.value()).info;
+  }
 
   /**
    * @brief     Get the Output Info object
    * @param[in] index Output index
    * @return    Output info
    */
-  const ir::OperandInfo &outputInfo(uint32_t index) { return _ctx.desc.outputs.at(index).info; }
+  const ir::OperandInfo &outputInfo(const ir::IOIndex &index)
+  {
+    return _ctx.desc.outputs.at(index.value()).info;
+  }
 
   /**
    * @brief     Get internally allocated output buffer

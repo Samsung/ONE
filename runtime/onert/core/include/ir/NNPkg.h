@@ -138,14 +138,14 @@ public:
    * @param[in] index Index of pkg_input to be returned
    * @return IODesc at index
    */
-  const IODesc &input(uint32_t index) const { return _edges.pkg_inputs[index]; }
+  const IODesc &input(const ir::IOIndex &index) const { return _edges.pkg_inputs[index.value()]; }
   /**
    * @brief Get pkg_input at index
    *
    * @param[in] index Index of pkg_input to be returned
    * @return IODesc at index
    */
-  IODesc &input(uint32_t index) { return _edges.pkg_inputs[index]; }
+  IODesc &input(const ir::IOIndex &index) { return _edges.pkg_inputs[index.value()]; }
   /**
    * @brief Add input at the end
    *
@@ -159,14 +159,14 @@ public:
    * @param[in] index Index of pkg_output to be returned
    * @return IODesc at index
    */
-  const IODesc &output(uint32_t index) const { return _edges.pkg_outputs[index]; }
+  const IODesc &output(const ir::IOIndex &index) const { return _edges.pkg_outputs[index.value()]; }
   /**
    * @brief Get pkg_output at index
    *
    * @param[in] index Index of pkg_output to be returned
    * @return IODesc at index
    */
-  IODesc &output(uint32_t index) { return _edges.pkg_outputs[index]; }
+  IODesc &output(const ir::IOIndex &index) { return _edges.pkg_outputs[index.value()]; }
   /**
    * @brief Add output at the end
    *
@@ -243,7 +243,7 @@ public:
   /**
    * @brief   Get model input info
    */
-  const OperandInfo &inputInfo(uint32_t index) const
+  const OperandInfo &inputInfo(const ir::IOIndex &index) const
   {
     if (_models.size() == 1)
     {
@@ -261,7 +261,7 @@ public:
   /**
    * @brief   Get model output info
    */
-  const OperandInfo &outputInfo(uint32_t index) const
+  const OperandInfo &outputInfo(const ir::IOIndex &index) const
   {
     if (_models.size() == 1)
     {
@@ -276,7 +276,7 @@ public:
     return graph->operands().at(operand_index).info();
   }
 
-  void changeInputShape(uint32_t index, const ir::Shape &new_shape)
+  void changeInputShape(const ir::IOIndex &index, const ir::Shape &new_shape)
   {
     if (_models.size() == 1)
     {
