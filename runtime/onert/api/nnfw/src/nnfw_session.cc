@@ -915,12 +915,12 @@ NNFW_STATUS nnfw_session::get_output(uint32_t index, nnfw_tensorinfo *ti, const 
     }
 
     auto io_index = onert::ir::IOIndex{index};
-    const auto &info = _compiler_artifact->_executors->outputInfo(io_index);
+    const auto &info = _execution->outputInfo(index);
     const auto &shape = info.shape();
     const auto &dtype = info.typeInfo().type();
     fillTensorInfo(ti, shape, dtype);
 
-    *out_buffer = _compiler_artifact->_executors->outputBuffer(io_index);
+    *out_buffer = _execution->outputBuffer(io_index);
   }
   catch (const std::exception &e)
   {
@@ -1050,7 +1050,7 @@ uint32_t nnfw_session::getInputSize()
     return _nnpkg->inputSize();
 
   // Session is prepared (general inference)
-  return _compiler_artifact->_executors->inputSize();
+  return _execution->inputSize();
 }
 
 uint32_t nnfw_session::getOutputSize()
@@ -1062,7 +1062,7 @@ uint32_t nnfw_session::getOutputSize()
     return _nnpkg->outputSize();
 
   // Session is prepared (general inference)
-  return _compiler_artifact->_executors->outputSize();
+  return _execution->outputSize();
 }
 
 NNFW_STATUS nnfw_session::loadModelFile(const std::string &model_file_path,
@@ -2275,8 +2275,8 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
         _quant_manager->exportModelPath().substr(dotidx + 1); // + 1 to exclude dot
 
       // Save initial (float) input and output buffers
-      auto input_size = _compiler_artifact->_executors->inputSize();
-      auto output_size = _compiler_artifact->_executors->outputSize();
+      auto input_size = _execution->inputSize();
+      auto output_size = _execution->outputSize();
 
       std::vector<const void *> _input_buffers;
       std::vector<void *> _output_buffers;
