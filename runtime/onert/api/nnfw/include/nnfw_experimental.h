@@ -210,12 +210,12 @@ NNFW_STATUS nnfw_set_output_type(nnfw_session *session, uint32_t index, NNFW_TYP
  *
  * {@link nnfw_prepare} will prepare all entries if this function is never called or
  * called for some part of entries. So user can select signature on {@link nnfw_set_signature_run}
- * which does not used by this function.
+ * which is not used by this function.
  *
  * If this function is not called, default entry (ex. 0th subgraph in circle/tflite model)
  * will be selected.
  *
- * @note TODO: Support selected signature entry's I/O tensorinfo setting
+ * @note TODO: Support selected entry signature's I/O tensorinfo setting
  *
  * @param[in] session   session to set the entry signature
  * @param[in] signature name of the entry signature
