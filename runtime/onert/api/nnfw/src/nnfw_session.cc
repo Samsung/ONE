@@ -639,6 +639,14 @@ NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
       return NNFW_STATUS_ERROR;
     }
 
+    if (_selected_signature.undefined())
+    {
+      // TODO Support this
+      std::cerr << "Error during nnfw_session::set_input_layout : "
+                << "set_input_layout after signature selection is not supported yet" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
     // Insert if not exists, otherwise update the value
     _coptions->input_layout[onert::ir::IOIndex{index}] = convertLayout(layout);
   }
@@ -666,6 +674,14 @@ NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
     {
       std::cerr << "Error during nnfw_session::set_output_layout, not supported layout"
                 << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    if (_selected_signature.undefined())
+    {
+      // TODO Support this
+      std::cerr << "Error during nnfw_session::set_output_layout : "
+                << "set_output_layout after signature selection is not supported yet" << std::endl;
       return NNFW_STATUS_ERROR;
     }
 
@@ -697,6 +713,14 @@ NNFW_STATUS nnfw_session::set_input_type(uint32_t index, NNFW_TYPE type)
       return NNFW_STATUS_ERROR;
     }
 
+    if (_selected_signature.undefined())
+    {
+      // TODO Support this
+      std::cerr << "Error during nnfw_session::set_input_type : "
+                << "set_input_type after signature selection is not supported yet" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
     _coptions->input_type.insert_or_assign(onert::ir::IOIndex{index},
                                            onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
   }
@@ -723,6 +747,14 @@ NNFW_STATUS nnfw_session::set_output_type(uint32_t index, NNFW_TYPE type)
     if (type != NNFW_TYPE_TENSOR_FLOAT32)
     {
       std::cerr << "Error during nnfw_session::set_output_type, not supported type" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    if (_selected_signature.undefined())
+    {
+      // TODO Support this
+      std::cerr << "Error during nnfw_session::set_output_type : "
+                << "set_output_type after signature selection is not supported yet" << std::endl;
       return NNFW_STATUS_ERROR;
     }
 
