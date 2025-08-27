@@ -202,6 +202,46 @@ NNFW_STATUS nnfw_set_input_type(nnfw_session *session, uint32_t index, NNFW_TYPE
 NNFW_STATUS nnfw_set_output_type(nnfw_session *session, uint32_t index, NNFW_TYPE type);
 
 /**
+ * @brief     Set the entry signature to get entry's I/O tensorinfo before prepare
+ *
+ * User can call this function to select entry signature to get specific entry's I/O features
+ * for prepare phase. This function should be called after {@link nnfw_load_model_from_file}
+ * and before {@link nnfw_prepare}.
+ *
+ * {@link nnfw_prepare} will prepare all entries if this function is never called or
+ * called for some part of entries. So user can select signature on {@link nnfw_set_signature_run}
+ * which is not used by this function.
+ *
+ * If this function is not called, default entry (ex. 0th subgraph in circle/tflite model)
+ * will be selected.
+ *
+ * @note TODO: Support selected entry signature's I/O tensorinfo setting
+ *
+ * @param[in] session   session to set the entry signature
+ * @param[in] signature name of the entry signature
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_signature_for_tensorinfo(nnfw_session *session, const char *signature);
+
+/**
+ * @brief     Set the entry signature to run
+ *
+ * User can call this function to select entry signature to run.
+ * This function should be called after {@link nnfw_prepare}.
+ *
+ * If this function is not called, default entry (ex. 0th subgraph in circle/tflite model)
+ * will be selected.
+ *
+ * All input, output, and config setting after {@link nnfw_prepare} and before calling this function
+ * will be invalidated.
+ *
+ * @param[in] session   session to set the entry signature
+ * @param[in] signature name of the entry signature to run
+ * @return    @c NNFW_STATUS_NO_ERROR if successful
+ */
+NNFW_STATUS nnfw_set_signature_run(nnfw_session *session, const char *signature);
+
+/**
  *  Training C APIs
  *
  * Training APIs are designed to be used in the following order for training
