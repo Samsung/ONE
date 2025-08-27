@@ -1717,6 +1717,24 @@ template <typename LoaderDomain> std::unique_ptr<ir::Model> BaseLoader<LoaderDom
     }
   }
 
+  // Load signature map
+  auto const signature_table = _domain_model->signature_defs();
+  if (signature_table != nullptr)
+  {
+    for (uint32_t i = 0; i < signature_table->size(); ++i)
+    {
+      const auto signature = signature_table->Get(i);
+      if (signature == nullptr)
+        continue;
+      const auto signature_key = signature->signature_key();
+      if (signature_key == nullptr)
+        continue; // signature should have key
+      const auto subgraph_index = static_cast<uint16_t>(signature->subgraph_index());
+
+      model->addSignatureMap(ir::SubgraphIndex{subgraph_index}, signature_key->str());
+    }
+  }
+
   // const auto *description = _model->description();
   // Load subgraphs and map operations on subgraph
   const auto subgraphs = _domain_model->subgraphs();
