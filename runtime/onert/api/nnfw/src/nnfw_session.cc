@@ -973,6 +973,37 @@ NNFW_STATUS nnfw_session::set_workspace(const char *dir)
   return NNFW_STATUS_NO_ERROR;
 }
 
+NNFW_STATUS nnfw_session::set_signature_for_tensorinfo(const char *signature)
+{
+  if (!signature)
+    return NNFW_STATUS_UNEXPECTED_NULL;
+
+  if (!isStateModelLoaded())
+  {
+    std::cerr << "Error during nnfw_session::set_signature_for_tensorinfo : invalid state"
+              << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  std::cerr << "Error during nnfw_session::set_signature_for_tensorinfo : NYI" << std::endl;
+  return NNFW_STATUS_ERROR;
+}
+
+NNFW_STATUS nnfw_session::set_signature_run(const char *signature)
+{
+  if (!signature)
+    return NNFW_STATUS_UNEXPECTED_NULL;
+
+  if (!isStatePreparedOrFinishedRun())
+  {
+    std::cerr << "Error during nnfw_session::set_signature_run : invalid state" << std::endl;
+    return NNFW_STATUS_INVALID_STATE;
+  }
+
+  std::cerr << "Error during nnfw_session::set_signature_run : NYI" << std::endl;
+  return NNFW_STATUS_ERROR;
+}
+
 NNFW_STATUS nnfw_session::deprecated(const char *msg)
 {
   std::cerr << msg << std::endl;
