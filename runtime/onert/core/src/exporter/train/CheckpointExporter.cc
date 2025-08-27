@@ -51,7 +51,8 @@ struct DataBuffer
   void setData(const char *data, uint32_t size)
   {
     assert(_offset_it != _offset.end());
-    assert(_data_ptr - _data.data() + size <= _data.size());
+    assert(_data_ptr - _data.data() + size > 0);
+    assert(static_cast<size_t>(_data_ptr - _data.data() + size) <= _data.size());
 
     *_offset_it++ = _start_offset;
     if (data && size > 0)
