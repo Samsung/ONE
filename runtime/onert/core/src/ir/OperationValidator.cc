@@ -56,13 +56,12 @@ bool OperationValidator::isSameType(const OperandIndex &idx1, const OperandIndex
 
 bool OperationValidator::isSameQuantParam(const OperandIndex &idx1, const OperandIndex &idx2)
 {
-  if (_operands.at(idx1).typeInfo().scale() != _operands.at(idx2).typeInfo().scale())
-    return false;
+  const auto &idx1_scales = _operands.at(idx1).typeInfo().scales();
+  const auto &idx2_scales = _operands.at(idx2).typeInfo().scales();
+  const auto &idx1_zero_points = _operands.at(idx1).typeInfo().zero_points();
+  const auto &idx2_zero_points = _operands.at(idx2).typeInfo().zero_points();
 
-  if (_operands.at(idx1).typeInfo().zero_point() != _operands.at(idx2).typeInfo().zero_point())
-    return false;
-
-  return true;
+  return ((idx1_scales == idx2_scales) && (idx1_zero_points == idx2_zero_points));
 }
 
 bool OperationValidator::isValidType(const OperandIndex &idx, const DataType &type)
