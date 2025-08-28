@@ -242,7 +242,8 @@ nnfw_session::nnfw_session()
   : _nnpkg{nullptr}, _coptions{onert::compiler::CompilerOptions::fromGlobalConfig()},
     _compiler_artifact{nullptr}, _execution{nullptr}, _kernel_registry{nullptr},
     _train_info{nullptr}, _quant_manager{std::make_unique<onert::odc::QuantizeManager>()},
-    _codegen_manager{std::make_unique<onert::odc::CodegenManager>()}, _model_path{}
+    _codegen_manager{std::make_unique<onert::odc::CodegenManager>()}, _model_path{},
+    _signature_map{}
 {
   // DO NOTHING
 }
@@ -1000,7 +1001,17 @@ NNFW_STATUS nnfw_session::set_signature_run(const char *signature)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  std::cerr << "Error during nnfw_session::set_signature_run : NYI" << std::endl;
+  for (const auto &[subg_idx, sig_str] : _signature_map)
+  {
+    if (sig_str == std::string(signature))
+    {
+      _execution =
+        std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors, subg_idx);
+      return NNFW_STATUS_NO_ERROR;
+    }
+  }
+
+  std::cerr << "Error during nnfw_session::set_signature_run : cannot find signature" << std::endl;
   return NNFW_STATUS_ERROR;
 }
 
@@ -1106,6 +1117,7 @@ NNFW_STATUS nnfw_session::loadModelFile(const std::string &model_file_path,
   if (model == nullptr)
     return NNFW_STATUS_ERROR;
 
+  _signature_map = model->signatureMap();
   _nnpkg = std::make_unique<onert::ir::NNPkg>(std::move(model));
   _model_path = std::filesystem::path(model_file_path);
   _compiler_artifact.reset();
