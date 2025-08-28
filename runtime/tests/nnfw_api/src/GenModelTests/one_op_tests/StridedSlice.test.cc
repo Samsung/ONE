@@ -55,7 +55,7 @@ TEST_F(GenModelTest, OneOp_StridedSlice_LastDim_Q16)
   int begin = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, begin_buf});
   int end = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, end_buf});
   int strides = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, strides_buf});
-  int out = cgen.addTensor({{1, 3}, circle::TensorType::TensorType_INT16}, 0.7, 0);
+  int out = cgen.addTensor({{1, 3}, circle::TensorType::TensorType_INT16}, 0.8, 0);
   cgen.addOperatorStridedSlice({{input, begin, end, strides}, {out}}, 1, 1);
   cgen.setInputsAndOutputs({input}, {out});
 

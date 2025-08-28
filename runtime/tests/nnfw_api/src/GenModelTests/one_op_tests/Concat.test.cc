@@ -184,23 +184,23 @@ TEST_F(GenModelTest, OneOp_Concat_Subtensor_4D_Q16)
 {
   CircleGen cgen;
   int in1 = cgen.addTensor({{1, 1, 1, 20}, circle::TensorType::TensorType_INT16}, 0.9, 0);
-  int in2 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.8, 0);
+  int in2 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
   std::vector<int32_t> axis_data{3};
   uint32_t axis_buf = cgen.addBuffer(axis_data);
   int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32, axis_buf});
 
-  int s_out1 = cgen.addTensor({{1, 1, 1, 5}, circle::TensorType::TensorType_INT16}, 0.7, 0);
-  int s_out2 = cgen.addTensor({{1, 1, 1, 5}, circle::TensorType::TensorType_INT16}, 0.6, 0);
-  int s_out3 = cgen.addTensor({{1, 1, 1, 5}, circle::TensorType::TensorType_INT16}, 0.5, 0);
-  int s_out4 = cgen.addTensor({{1, 1, 1, 5}, circle::TensorType::TensorType_INT16}, 0.4, 0);
+  int s_out1 = cgen.addTensor({{1, 1, 1, 5}, circle::TensorType::TensorType_INT16}, 0.9, 0);
+  int s_out2 = cgen.addTensor({{1, 1, 1, 5}, circle::TensorType::TensorType_INT16}, 0.9, 0);
+  int s_out3 = cgen.addTensor({{1, 1, 1, 5}, circle::TensorType::TensorType_INT16}, 0.9, 0);
+  int s_out4 = cgen.addTensor({{1, 1, 1, 5}, circle::TensorType::TensorType_INT16}, 0.9, 0);
 
-  int c_out1 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.3, 0);
-  int c_out2 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.2, 0);
-  int c_out3 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.1, 0);
+  int c_out1 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
+  int c_out2 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
+  int c_out3 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
 
-  int a_out1 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.35, 0);
-  int a_out2 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.25, 0);
-  int a_out3 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.15, 0);
+  int a_out1 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
+  int a_out2 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
+  int a_out3 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
 
   int final_out = cgen.addTensor({{1, 1, 1, 35}, circle::TensorType::TensorType_INT16}, 0.45, 0);
 
