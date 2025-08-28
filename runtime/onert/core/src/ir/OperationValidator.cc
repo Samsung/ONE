@@ -221,14 +221,6 @@ void OperationValidator::visit(const operation::DepthToSpace &node)
   OP_REQUIRES(block_size > 0);
 }
 
-void OperationValidator::visit(const operation::DetectionPostProcess &node)
-{
-  const auto &param = node.param();
-
-  // FIXME: number of classes should be 1 for now.
-  OP_REQUIRES(param.num_classes == 1);
-}
-
 void OperationValidator::visit(const operation::DepthwiseConv2D &node)
 {
   const auto input_index{node.getInputs().at(operation::DepthwiseConv2D::Input::INPUT)};
@@ -249,6 +241,14 @@ void OperationValidator::visit(const operation::DepthwiseConv2D &node)
     for (const auto zeropoint : _operands.at(kernel_index).typeInfo().zero_points())
       OP_REQUIRES(zeropoint == 0);
   }
+}
+
+void OperationValidator::visit(const operation::DetectionPostProcess &node)
+{
+  const auto &param = node.param();
+
+  // FIXME: number of classes should be 1 for now.
+  OP_REQUIRES(param.num_classes == 1);
 }
 
 void OperationValidator::visit(const operation::DynamicUpdateSlice &node)
