@@ -1001,12 +1001,12 @@ NNFW_STATUS nnfw_session::set_signature_run(const char *signature)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  for (auto &sig : _signature_map)
+  for (const auto &[subg_idx, sig_str] : _signature_map)
   {
-    if (sig.second == std::string(signature))
+    if (sig_str == std::string(signature))
     {
       _execution =
-        std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors, sig.first);
+        std::make_unique<onert::exec::Execution>(_compiler_artifact->_executors, subg_idx);
       return NNFW_STATUS_NO_ERROR;
     }
   }
