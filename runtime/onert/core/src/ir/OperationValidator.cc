@@ -576,6 +576,11 @@ void OperationValidator::visit(const operation::StridedSlice &node)
   const auto input_index{node.getInputs().at(operation::StridedSlice::Input::INPUT)};
 
   OP_REQUIRES(isSameType(output_index, input_index));
+
+  if (isValidType(output_index, DataType::QUANT_INT16_SYMM))
+  {
+    OP_REQUIRES(isSameQuantParam(input_index, output_index));
+  }
 }
 
 void OperationValidator::visit(const operation::TopKV2 &node)
