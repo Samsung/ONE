@@ -77,6 +77,7 @@ public:
   const std::string &getQuantizedModelPath(void) const { return _quantized_model_path; }
   const std::string &getCodegen(void) const { return _codegen; }
   const std::string &getCodegenModelPath(void) const { return _codegen_model_path; }
+  const std::string &getSignature(void) const { return _signature; }
 
 private:
   void Initialize();
@@ -115,6 +116,7 @@ private:
   std::string _quantized_model_path;
   std::string _codegen;
   std::string _codegen_model_path;
+  std::string _signature;
 };
 
 } // end of namespace onert_run

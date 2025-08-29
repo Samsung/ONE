@@ -136,6 +136,10 @@ int main(const int argc, char **argv)
         NNPR_ENSURE_STATUS(nnfw_load_model_from_file(session, args.getPackageFilename().c_str()));
     });
 
+    const auto &signature = args.getSignature();
+    if (signature != "")
+      NNPR_ENSURE_STATUS(nnfw_set_signature_for_tensorinfo(session, signature.c_str()));
+
     uint32_t num_inputs;
     uint32_t num_outputs;
     NNPR_ENSURE_STATUS(nnfw_input_size(session, &num_inputs));
@@ -340,7 +344,10 @@ int main(const int argc, char **argv)
       NNPR_ENSURE_STATUS(nnfw_prepare(session));
     });
 
-    // Set input shape and buffer after compilation and before execution
+    if (signature != "")
+      NNPR_ENSURE_STATUS(nnfw_set_signature_run(session, signature.c_str()));
+
+      // Set input shape and buffer after compilation and before execution
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
     if (args.getWhenToUseH5Shape() == WhenToUseH5Shape::RUN ||
         (!args.getLoadFilename().empty() && !args.shapeParamProvided()))
