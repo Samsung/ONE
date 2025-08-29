@@ -639,7 +639,7 @@ NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
       return NNFW_STATUS_ERROR;
     }
 
-    if (_selected_signature.undefined())
+    if (_selected_signature.valid())
     {
       // TODO Support this
       std::cerr << "Error during nnfw_session::set_input_layout : "
@@ -677,7 +677,7 @@ NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
       return NNFW_STATUS_ERROR;
     }
 
-    if (_selected_signature.undefined())
+    if (_selected_signature.valid())
     {
       // TODO Support this
       std::cerr << "Error during nnfw_session::set_output_layout : "
@@ -713,7 +713,7 @@ NNFW_STATUS nnfw_session::set_input_type(uint32_t index, NNFW_TYPE type)
       return NNFW_STATUS_ERROR;
     }
 
-    if (_selected_signature.undefined())
+    if (_selected_signature.valid())
     {
       // TODO Support this
       std::cerr << "Error during nnfw_session::set_input_type : "
@@ -750,7 +750,7 @@ NNFW_STATUS nnfw_session::set_output_type(uint32_t index, NNFW_TYPE type)
       return NNFW_STATUS_ERROR;
     }
 
-    if (_selected_signature.undefined())
+    if (_selected_signature.valid())
     {
       // TODO Support this
       std::cerr << "Error during nnfw_session::set_output_type : "
@@ -810,14 +810,9 @@ NNFW_STATUS nnfw_session::set_input_tensorinfo(uint32_t index, const nnfw_tensor
 
   if (!isStatePreparedOrFinishedRun())
   {
-    if (!_selected_signature.undefined())
-    {
-      _nnpkg->changeInputShape(_selected_signature, index, new_shape);
-      return NNFW_STATUS_NO_ERROR;
-    }
-
     // In this case, if we apply input shape, it will propagate after compilation and excution
-    _nnpkg->changeInputShape(index, new_shape);
+    _selected_signature.valid() ? _nnpkg->changeInputShape(_selected_signature, index, new_shape)
+                                : _nnpkg->changeInputShape(index, new_shape);
   }
   else // when called after nnfw_session::prepare()
     _execution->changeInputShape(onert::ir::IOIndex(index), new_shape);
@@ -856,7 +851,8 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
         return NNFW_STATUS_NO_ERROR;
       }
 
-      auto info = _nnpkg->inputInfo(index);
+      const auto &info = _selected_signature.valid() ? _nnpkg->inputInfo(_selected_signature, index)
+                                                     : _nnpkg->inputInfo(index);
       fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
     else
@@ -896,20 +892,14 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
 
     if (isStateModelLoaded())
     {
-      if (!_selected_signature.undefined())
-      {
-        auto info = _nnpkg->outputInfo(_selected_signature, index);
-        fillTensorInfo(ti, info.shape(), info.typeInfo().type());
-
-        return NNFW_STATUS_NO_ERROR;
-      }
-
-      auto info = _nnpkg->outputInfo(index);
+      const auto &info = _selected_signature.valid()
+                           ? _nnpkg->outputInfo(_selected_signature, index)
+                           : _nnpkg->outputInfo(index);
       fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
     else
     {
-      auto info = _execution->outputInfo(index);
+      const auto &info = _execution->outputInfo(index);
       fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
   }
