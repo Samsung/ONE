@@ -243,7 +243,7 @@ nnfw_session::nnfw_session()
     _compiler_artifact{nullptr}, _execution{nullptr}, _kernel_registry{nullptr},
     _train_info{nullptr}, _quant_manager{std::make_unique<onert::odc::QuantizeManager>()},
     _codegen_manager{std::make_unique<onert::odc::CodegenManager>()}, _model_path{},
-    _signature_map{}
+    _signature_map{}, _selected_signature{onert::ir::SubgraphIndex{}}
 {
   // DO NOTHING
 }
@@ -639,6 +639,14 @@ NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
       return NNFW_STATUS_ERROR;
     }
 
+    if (_selected_signature.valid())
+    {
+      // TODO Support this
+      std::cerr << "Error during nnfw_session::set_input_layout : "
+                << "set_input_layout after signature selection is not supported yet" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
     // Insert if not exists, otherwise update the value
     _coptions->input_layout[onert::ir::IOIndex{index}] = convertLayout(layout);
   }
@@ -666,6 +674,14 @@ NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
     {
       std::cerr << "Error during nnfw_session::set_output_layout, not supported layout"
                 << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    if (_selected_signature.valid())
+    {
+      // TODO Support this
+      std::cerr << "Error during nnfw_session::set_output_layout : "
+                << "set_output_layout after signature selection is not supported yet" << std::endl;
       return NNFW_STATUS_ERROR;
     }
 
@@ -697,6 +713,14 @@ NNFW_STATUS nnfw_session::set_input_type(uint32_t index, NNFW_TYPE type)
       return NNFW_STATUS_ERROR;
     }
 
+    if (_selected_signature.valid())
+    {
+      // TODO Support this
+      std::cerr << "Error during nnfw_session::set_input_type : "
+                << "set_input_type after signature selection is not supported yet" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
     _coptions->input_type.insert_or_assign(onert::ir::IOIndex{index},
                                            onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
   }
@@ -723,6 +747,14 @@ NNFW_STATUS nnfw_session::set_output_type(uint32_t index, NNFW_TYPE type)
     if (type != NNFW_TYPE_TENSOR_FLOAT32)
     {
       std::cerr << "Error during nnfw_session::set_output_type, not supported type" << std::endl;
+      return NNFW_STATUS_ERROR;
+    }
+
+    if (_selected_signature.valid())
+    {
+      // TODO Support this
+      std::cerr << "Error during nnfw_session::set_output_type : "
+                << "set_output_type after signature selection is not supported yet" << std::endl;
       return NNFW_STATUS_ERROR;
     }
 
@@ -779,9 +811,9 @@ NNFW_STATUS nnfw_session::set_input_tensorinfo(uint32_t index, const nnfw_tensor
   const auto input_index = onert::ir::IOIndex(index);
   if (!isStatePreparedOrFinishedRun())
   {
-
     // In this case, if we apply input shape, it will propagate after compilation and excution
-    _nnpkg->changeInputShape(input_index, new_shape);
+    _selected_signature.valid() ? _nnpkg->changeInputShape(_selected_signature, index, new_shape)
+                                : _nnpkg->changeInputShape(input_index, new_shape);
   }
   else // when called after nnfw_session::prepare()
     _execution->changeInputShape(input_index, new_shape);
@@ -813,7 +845,8 @@ NNFW_STATUS nnfw_session::input_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     const auto input_index = onert::ir::IOIndex{index};
     if (isStateModelLoaded())
     {
-      auto info = _nnpkg->inputInfo(input_index);
+      const auto &info = _selected_signature.valid() ? _nnpkg->inputInfo(_selected_signature, index)
+                                                     : _nnpkg->inputInfo(input_index);
       fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
     else
@@ -854,7 +887,9 @@ NNFW_STATUS nnfw_session::output_tensorinfo(uint32_t index, nnfw_tensorinfo *ti)
     const auto output_index = onert::ir::IOIndex{index};
     if (isStateModelLoaded())
     {
-      auto info = _nnpkg->outputInfo(output_index);
+      const auto &info = _selected_signature.valid()
+                           ? _nnpkg->outputInfo(_selected_signature, index)
+                           : _nnpkg->outputInfo(output_index);
       fillTensorInfo(ti, info.shape(), info.typeInfo().type());
     }
     else
@@ -986,7 +1021,18 @@ NNFW_STATUS nnfw_session::set_signature_for_tensorinfo(const char *signature)
     return NNFW_STATUS_INVALID_STATE;
   }
 
-  std::cerr << "Error during nnfw_session::set_signature_for_tensorinfo : NYI" << std::endl;
+  for (const auto &[subg_idx, sig_str] : _signature_map)
+  {
+    if (sig_str == std::string(signature))
+    {
+      _selected_signature = subg_idx;
+
+      return NNFW_STATUS_NO_ERROR;
+    }
+  }
+
+  std::cerr << "Error during nnfw_session::set_signature_for_tensorinfo : cannot find signature \""
+            << signature << "\"" << std::endl;
   return NNFW_STATUS_ERROR;
 }
 
@@ -1118,6 +1164,7 @@ NNFW_STATUS nnfw_session::loadModelFile(const std::string &model_file_path,
     return NNFW_STATUS_ERROR;
 
   _signature_map = model->signatureMap();
+  _selected_signature = onert::ir::SubgraphIndex{};
   _nnpkg = std::make_unique<onert::ir::NNPkg>(std::move(model));
   _model_path = std::filesystem::path(model_file_path);
   _compiler_artifact.reset();
