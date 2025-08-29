@@ -60,7 +60,7 @@ TEST_F(GenModelTest, OneOp_StridedSlice_LastDim_Q16)
   cgen.setInputsAndOutputs({input}, {out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->addTestCase(uniformTCD<float>({{1, 2, 3, 4, 5, 6}}, {{4, 5, 6}}));
+  _context->addTestCase(uniformTCD<int16_t>({{1, 2, 3, 4, 5, 6}}, {{4, 5, 6}}));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
   SUCCEED();

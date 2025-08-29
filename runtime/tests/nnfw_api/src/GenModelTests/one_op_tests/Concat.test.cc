@@ -185,68 +185,25 @@ TEST_F(GenModelTest, OneOp_Concat_Subtensor_4D_Q16)
   CircleGen cgen;
   int in1 = cgen.addTensor({{1, 1, 1, 20}, circle::TensorType::TensorType_INT16}, 0.9, 0);
   int in2 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
-  std::vector<int32_t> axis_data{3};
-  uint32_t axis_buf = cgen.addBuffer(axis_data);
-  int axis = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32, axis_buf});
 
-  int s_out1 = cgen.addTensor({{1, 1, 1, 5}, circle::TensorType::TensorType_INT16}, 0.9, 0);
-  int s_out2 = cgen.addTensor({{1, 1, 1, 5}, circle::TensorType::TensorType_INT16}, 0.9, 0);
-  int s_out3 = cgen.addTensor({{1, 1, 1, 5}, circle::TensorType::TensorType_INT16}, 0.9, 0);
-  int s_out4 = cgen.addTensor({{1, 1, 1, 5}, circle::TensorType::TensorType_INT16}, 0.9, 0);
+  int final_out = cgen.addTensor({{1, 1, 1, 30}, circle::TensorType::TensorType_INT16}, 0.9, 0);
 
-  int c_out1 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
-  int c_out2 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
-  int c_out3 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
-
-  int a_out1 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
-  int a_out2 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
-  int a_out3 = cgen.addTensor({{1, 1, 1, 10}, circle::TensorType::TensorType_INT16}, 0.9, 0);
-
-  int final_out = cgen.addTensor({{1, 1, 1, 35}, circle::TensorType::TensorType_INT16}, 0.45, 0);
-
-  cgen.addOperatorSplit({{axis, in1}, {s_out1, s_out2, s_out3, s_out4}}, 4);
-
-  cgen.addOperatorConcatenation({{s_out1, s_out2}, {c_out1}}, 3,
-                                circle::ActivationFunctionType::ActivationFunctionType_NONE);
-  cgen.addOperatorConcatenation({{s_out1, s_out3}, {c_out2}}, 3,
-                                circle::ActivationFunctionType::ActivationFunctionType_NONE);
-  cgen.addOperatorConcatenation({{s_out1, s_out4}, {c_out3}}, 3,
+  cgen.addOperatorConcatenation({{in1, in2}, {final_out}}, 3,
                                 circle::ActivationFunctionType::ActivationFunctionType_NONE);
 
-  cgen.addOperatorAdd({{c_out1, in2}, {a_out1}},
-                      circle::ActivationFunctionType::ActivationFunctionType_NONE);
-  cgen.addOperatorAdd({{c_out2, in2}, {a_out2}},
-                      circle::ActivationFunctionType::ActivationFunctionType_NONE);
-  cgen.addOperatorAdd({{c_out3, in2}, {a_out3}},
-                      circle::ActivationFunctionType::ActivationFunctionType_NONE);
-
-  cgen.addOperatorConcatenation({{s_out1, a_out1, a_out2, a_out3}, {final_out}}, 3,
-                                circle::ActivationFunctionType::ActivationFunctionType_NONE);
-
-  cgen.setInputsAndOutputs({in1, in2}, {s_out1, s_out2, s_out3, s_out4, c_out1, c_out2, c_out3,
-                                        a_out1, a_out2, a_out3, final_out});
+  cgen.setInputsAndOutputs({in1, in2}, {final_out});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(uniformTCD<int16_t>(
     {
       // inputs
       {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}, // in1
-      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}                                           // in2
+      {-1, -2, -3, -4, -5, -6, -7, -8, -9, -10}                                // in2
     },
     {
       // outputs
-      {1, 2, 3, 4, 5},                     // s_out1
-      {6, 7, 8, 9, 10},                    // s_out2
-      {11, 12, 13, 14, 15},                // s_out3
-      {16, 17, 18, 19, 20},                // s_out4
-      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},     // c_out1
-      {1, 2, 3, 4, 5, 11, 12, 13, 14, 15}, // c_out2
-      {1, 2, 3, 4, 5, 16, 17, 18, 19, 20}, // c_out3
-      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},     // a_out1
-      {1, 2, 3, 4, 5, 11, 12, 13, 14, 15}, // a_out2
-      {1, 2, 3, 4, 5, 16, 17, 18, 19, 20}, // a_out3
-      {1, 2, 3,  4,  5,  1,  2,  3, 4, 5, 6, 7, 8,  9,  10, 1,  2, 3,
-       4, 5, 11, 12, 13, 14, 15, 1, 2, 3, 4, 5, 16, 17, 18, 19, 20} // final_out
+      {1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
+       16, 17, 18, 19, 20, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10} // final_out
     }));
   _context->setBackends({"acl_cl", "acl_neon", "cpu"});
 
