@@ -177,8 +177,9 @@ void OperationValidator::visit(const operation::Concat &node)
   {
     OP_REQUIRES(isSameType(input_index, output_index));
 
-    // Int8 quantization requires same scale and zero point
-    if (isValidType(output_index, DataType::QUANT_INT8_ASYMM))
+    // Int8 and Int16 quantization requires same scale and zero point
+    if (isValidType(output_index, DataType::QUANT_INT8_ASYMM) ||
+        isValidType(output_index, DataType::QUANT_INT16_SYMM))
     {
       OP_REQUIRES(isSameQuantParam(input_index, output_index));
     }
@@ -574,6 +575,11 @@ void OperationValidator::visit(const operation::StridedSlice &node)
   const auto input_index{node.getInputs().at(operation::StridedSlice::Input::INPUT)};
 
   OP_REQUIRES(isSameType(output_index, input_index));
+
+  if (isValidType(output_index, DataType::QUANT_INT16_SYMM))
+  {
+    OP_REQUIRES(isSameQuantParam(input_index, output_index));
+  }
 }
 
 void OperationValidator::visit(const operation::TopKV2 &node)
