@@ -270,6 +270,8 @@ ir::DataType asRuntimeDataType(::arm_compute::DataType data_type)
       return ir::DataType::FLOAT16;
     case ::arm_compute::DataType::S64:
       return ir::DataType::INT64;
+    case ::arm_compute::DataType::QSYMM16:
+      return ir::DataType::QUANT_INT16_SYMM;
     default:
       throw std::runtime_error{"Not supported acl data type, yet"};
       break;
