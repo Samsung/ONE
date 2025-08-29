@@ -234,6 +234,7 @@ private:
   //   }
   std::filesystem::path _model_path;
   std::unordered_map<onert::ir::SubgraphIndex, std::string> _signature_map;
+  onert::ir::SubgraphIndex _selected_signature;
 };
 
 #endif // __API_NNFW_SESSION_H__
