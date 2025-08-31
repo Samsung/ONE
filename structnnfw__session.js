@@ -40,6 +40,8 @@ var structnnfw__session =
     [ "set_prepare_config", "structnnfw__session.html#a7b0883889eef9bdb2b137822ea6648ea", null ],
     [ "set_quantization_type", "structnnfw__session.html#a653464551f483ade508f1eb783e6af38", null ],
     [ "set_quantized_model_path", "structnnfw__session.html#ab66351764e0f6efda0f707dd78c1794a", null ],
+    [ "set_signature_for_tensorinfo", "structnnfw__session.html#a1da9af5af67c2699d589ef0fcb2e2e33", null ],
+    [ "set_signature_run", "structnnfw__session.html#abea95b19b61ccb314d7823f6151441c4", null ],
     [ "set_workspace", "structnnfw__session.html#a395437c1432ae31cc6e990aa583b4357", null ],
     [ "train_expected_tensorinfo", "structnnfw__session.html#a3d390ec838d62cf0cb0d99844ca526c7", null ],
     [ "train_expected_tensorinfo", "structnnfw__session.html#a3d390ec838d62cf0cb0d99844ca526c7", null ],

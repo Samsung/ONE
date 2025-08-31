@@ -273,11 +273,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   75</span>  {</div>
 <div class="line"><span class="lineno">   76</span>    stridedSliceImpl&lt;int64_t&gt;();</div>
 <div class="line"><span class="lineno">   77</span>  }</div>
-<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_INT16_SYMM)</div>
 <div class="line"><span class="lineno">   79</span>  {</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;StridedSlice: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">   80</span>    stridedSliceImpl&lt;int16_t&gt;();</div>
 <div class="line"><span class="lineno">   81</span>  }</div>
-<div class="line"><span class="lineno">   82</span>}</div>
+<div class="line"><span class="lineno">   82</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">   83</span>  {</div>
+<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;StridedSlice: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">   85</span>  }</div>
+<div class="line"><span class="lineno">   86</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>

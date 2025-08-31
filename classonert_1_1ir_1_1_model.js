@@ -5,6 +5,7 @@ var classonert_1_1ir_1_1_model =
     [ "Model", "classonert_1_1ir_1_1_model.html#a9a054ea97bcbeac6577feedade27aa0b", null ],
     [ "~Model", "classonert_1_1ir_1_1_model.html#a77acf7e0238e6bc4c783e5bef611bdea", null ],
     [ "add_metadata", "classonert_1_1ir_1_1_model.html#ab6732924c8d20b51952d34959d000602", null ],
+    [ "addSignatureMap", "classonert_1_1ir_1_1_model.html#ab87600c8c2ce7fca734f5d8d9b8e8d95", null ],
     [ "at", "classonert_1_1ir_1_1_model.html#a127a3e05b5d2db7ad3edbddb9997a523", null ],
     [ "at", "classonert_1_1ir_1_1_model.html#afdd0c6d93deba82ce37d3ece50632d5d", null ],
     [ "bindKernelBuilder", "classonert_1_1ir_1_1_model.html#aea718a7f5284571957083f329cf40333", null ],
@@ -20,5 +21,6 @@ var classonert_1_1ir_1_1_model =
     [ "primary_subgraph", "classonert_1_1ir_1_1_model.html#a151a09c78117154049ff91869a27914f", null ],
     [ "push", "classonert_1_1ir_1_1_model.html#aeddcc0b0811ef80e7439fd560f880186", null ],
     [ "remove", "classonert_1_1ir_1_1_model.html#a5eacd7a9bb187cd3ccd13a3696d4c5f6", null ],
+    [ "signatureMap", "classonert_1_1ir_1_1_model.html#aa56319b6187d27dd0459d5ce0a3b465b", null ],
     [ "subgraphs_count", "classonert_1_1ir_1_1_model.html#a6fedb822a98a7b585d0e692d2f10a12c", null ]
 ];

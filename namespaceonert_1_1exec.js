@@ -35,6 +35,7 @@ var namespaceonert_1_1exec =
     [ "PermuteLayer", "classonert_1_1exec_1_1_permute_layer.html", "classonert_1_1exec_1_1_permute_layer" ],
     [ "ProfileObserver", "classonert_1_1exec_1_1_profile_observer.html", "classonert_1_1exec_1_1_profile_observer" ],
     [ "RawMinMaxDumper", "classonert_1_1exec_1_1_raw_min_max_dumper.html", "classonert_1_1exec_1_1_raw_min_max_dumper" ],
+    [ "SignatureExecutors", "classonert_1_1exec_1_1_signature_executors.html", "classonert_1_1exec_1_1_signature_executors" ],
     [ "SingleModelExecutors", "classonert_1_1exec_1_1_single_model_executors.html", "classonert_1_1exec_1_1_single_model_executors" ],
     [ "ThreadPool", "classonert_1_1exec_1_1_thread_pool.html", "classonert_1_1exec_1_1_thread_pool" ],
     [ "TracingObserver", "classonert_1_1exec_1_1_tracing_observer.html", "classonert_1_1exec_1_1_tracing_observer" ],

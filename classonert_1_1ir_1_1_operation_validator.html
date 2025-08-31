@@ -308,18 +308,18 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00087">87</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   88</span>{</div>
-<div class="line"><span class="lineno">   89</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index(node.getOutputs().at(0));</div>
-<div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = node.getInputs().size();</div>
-<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; i++)</div>
-<div class="line"><span class="lineno">   93</span>  {</div>
-<div class="line"><span class="lineno">   94</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>(node.getInputs().at(i));</div>
-<div class="line"><span class="lineno">   95</span>    <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(input_index, {DataType::FLOAT32, DataType::INT32}));</div>
-<div class="line"><span class="lineno">   96</span>    <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(input_index, output_index));</div>
-<div class="line"><span class="lineno">   97</span>  }</div>
-<div class="line"><span class="lineno">   98</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00086">86</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   87</span>{</div>
+<div class="line"><span class="lineno">   88</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index(node.getOutputs().at(0));</div>
+<div class="line"><span class="lineno">   89</span> </div>
+<div class="line"><span class="lineno">   90</span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = node.getInputs().size();</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; i++)</div>
+<div class="line"><span class="lineno">   92</span>  {</div>
+<div class="line"><span class="lineno">   93</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>(node.getInputs().at(i));</div>
+<div class="line"><span class="lineno">   94</span>    <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(input_index, {DataType::FLOAT32, DataType::INT32}));</div>
+<div class="line"><span class="lineno">   95</span>    <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(input_index, output_index));</div>
+<div class="line"><span class="lineno">   96</span>  }</div>
+<div class="line"><span class="lineno">   97</span>}</div>
 <div class="ttc" id="a_shape_validator_8cc_html_a87d485dd6060523a114b325a35bc681e"><div class="ttname"><a href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a></div><div class="ttdeci">#define OP_REQUIRES(EXP)</div><div class="ttdef"><b>Definition</b> <a href="_shape_validator_8cc_source.html#l00025">ShapeValidator.cc:25</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ae2b1c0809b846c696f9011ba5dc18e69"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">GenH5RandomInputs.input_index</a></div><div class="ttdeci">input_index</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00060">GenH5RandomInputs.py:60</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
@@ -352,19 +352,19 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00100">100</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span>{</div>
-<div class="line"><span class="lineno">  102</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>(node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_arg_min_max.html#a533f1f023dd47dd1c5c747fdd6656fa2a5ed8b878768b31e15733883231ad4a94">operation::ArgMinMax::Input::INPUT</a>));</div>
-<div class="line"><span class="lineno">  103</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axis_index(node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_arg_min_max.html#a533f1f023dd47dd1c5c747fdd6656fa2a56df799e1b74c733663918165b8a2a33">operation::ArgMinMax::Input::AXIS</a>));</div>
-<div class="line"><span class="lineno">  104</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index(node.getOutputs().at(0));</div>
-<div class="line"><span class="lineno">  105</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a> = node.param().output_type;</div>
-<div class="line"><span class="lineno">  106</span> </div>
-<div class="line"><span class="lineno">  107</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(input_index, {DataType::FLOAT32, DataType::INT32, DataType::UINT8,</div>
-<div class="line"><span class="lineno">  108</span>                                        DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM}));</div>
-<div class="line"><span class="lineno">  109</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(axis_index, {DataType::INT32, DataType::INT64}));</div>
-<div class="line"><span class="lineno">  110</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(output_index, {DataType::INT32, DataType::INT64}));</div>
-<div class="line"><span class="lineno">  111</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(output_index, output_type));</div>
-<div class="line"><span class="lineno">  112</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00099">99</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span>{</div>
+<div class="line"><span class="lineno">  101</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>(node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_arg_min_max.html#a533f1f023dd47dd1c5c747fdd6656fa2a5ed8b878768b31e15733883231ad4a94">operation::ArgMinMax::Input::INPUT</a>));</div>
+<div class="line"><span class="lineno">  102</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axis_index(node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_arg_min_max.html#a533f1f023dd47dd1c5c747fdd6656fa2a56df799e1b74c733663918165b8a2a33">operation::ArgMinMax::Input::AXIS</a>));</div>
+<div class="line"><span class="lineno">  103</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index(node.getOutputs().at(0));</div>
+<div class="line"><span class="lineno">  104</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">output_type</a> = node.param().output_type;</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(input_index, {DataType::FLOAT32, DataType::INT32, DataType::UINT8,</div>
+<div class="line"><span class="lineno">  107</span>                                        DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM}));</div>
+<div class="line"><span class="lineno">  108</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(axis_index, {DataType::INT32, DataType::INT64}));</div>
+<div class="line"><span class="lineno">  109</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(output_index, {DataType::INT32, DataType::INT64}));</div>
+<div class="line"><span class="lineno">  110</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(output_index, output_type));</div>
+<div class="line"><span class="lineno">  111</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_arg_min_max_html_a533f1f023dd47dd1c5c747fdd6656fa2a56df799e1b74c733663918165b8a2a33"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_arg_min_max.html#a533f1f023dd47dd1c5c747fdd6656fa2a56df799e1b74c733663918165b8a2a33">onert::ir::operation::ArgMinMax::AXIS</a></div><div class="ttdeci">@ AXIS</div><div class="ttdef"><b>Definition</b> <a href="onert_2core_2include_2ir_2operation_2_arg_min_max_8h_source.html#l00032">ArgMinMax.h:31</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_arg_min_max_html_a533f1f023dd47dd1c5c747fdd6656fa2a5ed8b878768b31e15733883231ad4a94"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_arg_min_max.html#a533f1f023dd47dd1c5c747fdd6656fa2a5ed8b878768b31e15733883231ad4a94">onert::ir::operation::ArgMinMax::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition</b> <a href="onert_2core_2include_2ir_2operation_2_arg_min_max_8h_source.html#l00030">ArgMinMax.h:30</a></div></div>
 <div class="ttc" id="anamespacevalidate__onnx2circle_html_a77a6e2a2481a4974cacf87f336d85e1e"><div class="ttname"><a href="namespacevalidate__onnx2circle.html#a77a6e2a2481a4974cacf87f336d85e1e">validate_onnx2circle.output_type</a></div><div class="ttdeci">output_type</div><div class="ttdef"><b>Definition</b> <a href="validate__onnx2circle_8py_source.html#l00129">validate_onnx2circle.py:129</a></div></div>
@@ -397,25 +397,25 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00114">114</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  115</span>{</div>
-<div class="line"><span class="lineno">  116</span>  <span class="keyword">const</span> <span class="keyword">auto</span> lhs_index(node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html#ac173e0d8cd02e617bd476c77de836bcda3704b9c1e1e1313261ff411e7e032d83">operation::BatchMatMul::Input::LHS</a>));</div>
-<div class="line"><span class="lineno">  117</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rhs_index(node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html#ac173e0d8cd02e617bd476c77de836bcda3af45b3f85cffd853eeaa19164a18e31">operation::BatchMatMul::Input::RHS</a>));</div>
-<div class="line"><span class="lineno">  118</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index(node.getOutputs().at(0));</div>
-<div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span>  <span class="comment">// RHS can be constant, but LHS is not constant</span></div>
-<div class="line"><span class="lineno">  121</span>  <span class="comment">// If one of inputs is constant, it must be RHS</span></div>
-<div class="line"><span class="lineno">  122</span>  <span class="comment">// If two inputs are constant, BatchMatMul is optimized into constant by compiler</span></div>
-<div class="line"><span class="lineno">  123</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(!isConstant(lhs_index));</div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span>  <span class="comment">// Allow hybrid quantization (lhs: float / rhs: qint8 / out: float)</span></div>
-<div class="line"><span class="lineno">  126</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(</div>
-<div class="line"><span class="lineno">  127</span>    lhs_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM}));</div>
-<div class="line"><span class="lineno">  128</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(lhs_index, rhs_index) ||</div>
-<div class="line"><span class="lineno">  129</span>              ((operandType(lhs_index) == DataType::FLOAT32) &amp;&amp;</div>
-<div class="line"><span class="lineno">  130</span>               (operandType(rhs_index) == DataType::QUANT_INT8_ASYMM)));</div>
-<div class="line"><span class="lineno">  131</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(lhs_index, output_index));</div>
-<div class="line"><span class="lineno">  132</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00113">113</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  114</span>{</div>
+<div class="line"><span class="lineno">  115</span>  <span class="keyword">const</span> <span class="keyword">auto</span> lhs_index(node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html#ac173e0d8cd02e617bd476c77de836bcda3704b9c1e1e1313261ff411e7e032d83">operation::BatchMatMul::Input::LHS</a>));</div>
+<div class="line"><span class="lineno">  116</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rhs_index(node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html#ac173e0d8cd02e617bd476c77de836bcda3af45b3f85cffd853eeaa19164a18e31">operation::BatchMatMul::Input::RHS</a>));</div>
+<div class="line"><span class="lineno">  117</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index(node.getOutputs().at(0));</div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span>  <span class="comment">// RHS can be constant, but LHS is not constant</span></div>
+<div class="line"><span class="lineno">  120</span>  <span class="comment">// If one of inputs is constant, it must be RHS</span></div>
+<div class="line"><span class="lineno">  121</span>  <span class="comment">// If two inputs are constant, BatchMatMul is optimized into constant by compiler</span></div>
+<div class="line"><span class="lineno">  122</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(!isConstant(lhs_index));</div>
+<div class="line"><span class="lineno">  123</span> </div>
+<div class="line"><span class="lineno">  124</span>  <span class="comment">// Allow hybrid quantization (lhs: float / rhs: qint8 / out: float)</span></div>
+<div class="line"><span class="lineno">  125</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(</div>
+<div class="line"><span class="lineno">  126</span>    lhs_index, {DataType::FLOAT32, DataType::QUANT_UINT8_ASYMM, DataType::QUANT_INT8_ASYMM}));</div>
+<div class="line"><span class="lineno">  127</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(lhs_index, rhs_index) ||</div>
+<div class="line"><span class="lineno">  128</span>              ((operandType(lhs_index) == DataType::FLOAT32) &amp;&amp;</div>
+<div class="line"><span class="lineno">  129</span>               (operandType(rhs_index) == DataType::QUANT_INT8_ASYMM)));</div>
+<div class="line"><span class="lineno">  130</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(lhs_index, output_index));</div>
+<div class="line"><span class="lineno">  131</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_batch_mat_mul_html_ac173e0d8cd02e617bd476c77de836bcda3704b9c1e1e1313261ff411e7e032d83"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html#ac173e0d8cd02e617bd476c77de836bcda3704b9c1e1e1313261ff411e7e032d83">onert::ir::operation::BatchMatMul::LHS</a></div><div class="ttdeci">@ LHS</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_batch_mat_mul_8h_source.html#l00030">BatchMatMul.h:30</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_batch_mat_mul_html_ac173e0d8cd02e617bd476c77de836bcda3af45b3f85cffd853eeaa19164a18e31"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html#ac173e0d8cd02e617bd476c77de836bcda3af45b3f85cffd853eeaa19164a18e31">onert::ir::operation::BatchMatMul::RHS</a></div><div class="ttdeci">@ RHS</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_batch_mat_mul_8h_source.html#l00032">BatchMatMul.h:31</a></div></div>
 </div><!-- fragment -->
@@ -447,13 +447,13 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00134">134</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  135</span>{</div>
-<div class="line"><span class="lineno">  136</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html#a2fa7aa5522d4c5244d9f512053ef7471a89076b2db0b757a5b4b41c68f357e012">operation::BatchToSpaceND::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno">  137</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  138</span> </div>
-<div class="line"><span class="lineno">  139</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(input_index, output_index));</div>
-<div class="line"><span class="lineno">  140</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00133">133</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  134</span>{</div>
+<div class="line"><span class="lineno">  135</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html#a2fa7aa5522d4c5244d9f512053ef7471a89076b2db0b757a5b4b41c68f357e012">operation::BatchToSpaceND::Input::INPUT</a>)};</div>
+<div class="line"><span class="lineno">  136</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  137</span> </div>
+<div class="line"><span class="lineno">  138</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(input_index, output_index));</div>
+<div class="line"><span class="lineno">  139</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_batch_to_space_n_d_html_a2fa7aa5522d4c5244d9f512053ef7471a89076b2db0b757a5b4b41c68f357e012"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html#a2fa7aa5522d4c5244d9f512053ef7471a89076b2db0b757a5b4b41c68f357e012">onert::ir::operation::BatchToSpaceND::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_batch_to_space_n_d_8h_source.html#l00030">BatchToSpaceND.h:30</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00048">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00051">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00054">onert::ir::Operation::getOutputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_batch_to_space_n_d_8h_source.html#l00030">onert::ir::operation::BatchToSpaceND::INPUT</a>, and <a class="el" href="_shape_validator_8cc_source.html#l00025">OP_REQUIRES</a>.</p>
@@ -484,15 +484,15 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00142">142</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  143</span>{</div>
-<div class="line"><span class="lineno">  144</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  145</span>  <span class="keyword">const</span> <span class="keyword">auto</span> lhs_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ad39a00b8b4f153e9c40b43a61cd42126a061c335e2cec99f3fec88dc9dbbed2ba">operation::BinaryArithmetic::Input::LHS</a>)};</div>
-<div class="line"><span class="lineno">  146</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rhs_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ad39a00b8b4f153e9c40b43a61cd42126aa57304131fba529c562d215185dfcff8">operation::BinaryArithmetic::Input::RHS</a>)};</div>
-<div class="line"><span class="lineno">  147</span> </div>
-<div class="line"><span class="lineno">  148</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(lhs_index, rhs_index));</div>
-<div class="line"><span class="lineno">  149</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(lhs_index, output_index));</div>
-<div class="line"><span class="lineno">  150</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00141">141</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  142</span>{</div>
+<div class="line"><span class="lineno">  143</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  144</span>  <span class="keyword">const</span> <span class="keyword">auto</span> lhs_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ad39a00b8b4f153e9c40b43a61cd42126a061c335e2cec99f3fec88dc9dbbed2ba">operation::BinaryArithmetic::Input::LHS</a>)};</div>
+<div class="line"><span class="lineno">  145</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rhs_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ad39a00b8b4f153e9c40b43a61cd42126aa57304131fba529c562d215185dfcff8">operation::BinaryArithmetic::Input::RHS</a>)};</div>
+<div class="line"><span class="lineno">  146</span> </div>
+<div class="line"><span class="lineno">  147</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(lhs_index, rhs_index));</div>
+<div class="line"><span class="lineno">  148</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(lhs_index, output_index));</div>
+<div class="line"><span class="lineno">  149</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_binary_arithmetic_html_ad39a00b8b4f153e9c40b43a61cd42126a061c335e2cec99f3fec88dc9dbbed2ba"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ad39a00b8b4f153e9c40b43a61cd42126a061c335e2cec99f3fec88dc9dbbed2ba">onert::ir::operation::BinaryArithmetic::LHS</a></div><div class="ttdeci">@ LHS</div><div class="ttdef"><b>Definition</b> <a href="onert_2core_2include_2ir_2operation_2_binary_arithmetic_8h_source.html#l00031">BinaryArithmetic.h:31</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_binary_arithmetic_html_ad39a00b8b4f153e9c40b43a61cd42126aa57304131fba529c562d215185dfcff8"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html#ad39a00b8b4f153e9c40b43a61cd42126aa57304131fba529c562d215185dfcff8">onert::ir::operation::BinaryArithmetic::RHS</a></div><div class="ttdeci">@ RHS</div><div class="ttdef"><b>Definition</b> <a href="onert_2core_2include_2ir_2operation_2_binary_arithmetic_8h_source.html#l00033">BinaryArithmetic.h:32</a></div></div>
 </div><!-- fragment -->
@@ -524,15 +524,15 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00152">152</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  153</span>{</div>
-<div class="line"><span class="lineno">  154</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>(node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_broadcast_to.html#a524ff5b4267aff962a6994404a420f92a7ab815ca6e93c294da0d5188e4d9c60a">operation::BroadcastTo::Input::INPUT</a>));</div>
-<div class="line"><span class="lineno">  155</span>  <span class="keyword">const</span> <span class="keyword">auto</span> shape_index(node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_broadcast_to.html#a524ff5b4267aff962a6994404a420f92ac8e253402bc9d0cbfbe76552126addad">operation::BroadcastTo::Input::SHAPE</a>));</div>
-<div class="line"><span class="lineno">  156</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index(node.getOutputs().at(0));</div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(input_index, output_index));</div>
-<div class="line"><span class="lineno">  159</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(shape_index, {DataType::INT32, DataType::INT64}));</div>
-<div class="line"><span class="lineno">  160</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00151">151</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  152</span>{</div>
+<div class="line"><span class="lineno">  153</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>(node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_broadcast_to.html#a524ff5b4267aff962a6994404a420f92a7ab815ca6e93c294da0d5188e4d9c60a">operation::BroadcastTo::Input::INPUT</a>));</div>
+<div class="line"><span class="lineno">  154</span>  <span class="keyword">const</span> <span class="keyword">auto</span> shape_index(node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_broadcast_to.html#a524ff5b4267aff962a6994404a420f92ac8e253402bc9d0cbfbe76552126addad">operation::BroadcastTo::Input::SHAPE</a>));</div>
+<div class="line"><span class="lineno">  155</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index(node.getOutputs().at(0));</div>
+<div class="line"><span class="lineno">  156</span> </div>
+<div class="line"><span class="lineno">  157</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(input_index, output_index));</div>
+<div class="line"><span class="lineno">  158</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(shape_index, {DataType::INT32, DataType::INT64}));</div>
+<div class="line"><span class="lineno">  159</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_broadcast_to_html_a524ff5b4267aff962a6994404a420f92a7ab815ca6e93c294da0d5188e4d9c60a"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_broadcast_to.html#a524ff5b4267aff962a6994404a420f92a7ab815ca6e93c294da0d5188e4d9c60a">onert::ir::operation::BroadcastTo::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_broadcast_to_8h_source.html#l00032">BroadcastTo.h:32</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_broadcast_to_html_a524ff5b4267aff962a6994404a420f92ac8e253402bc9d0cbfbe76552126addad"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_broadcast_to.html#a524ff5b4267aff962a6994404a420f92ac8e253402bc9d0cbfbe76552126addad">onert::ir::operation::BroadcastTo::SHAPE</a></div><div class="ttdeci">@ SHAPE</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_broadcast_to_8h_source.html#l00034">BroadcastTo.h:33</a></div></div>
 </div><!-- fragment -->
@@ -564,16 +564,16 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00162">162</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  163</span>{</div>
-<div class="line"><span class="lineno">  164</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  165</span> </div>
-<div class="line"><span class="lineno">  166</span>  <span class="keyword">const</span> <span class="keyword">auto</span> lhs_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_comparison.html#a487155402ebe50b75d6127ffc821c00aadc06c215d811408779c4b0b29e80e0e3">operation::Comparison::Input::INPUT0</a>)};</div>
-<div class="line"><span class="lineno">  167</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rhs_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_comparison.html#a487155402ebe50b75d6127ffc821c00aa56e3478fb8cfe9c9f1582814e5d77cb5">operation::Comparison::Input::INPUT1</a>)};</div>
-<div class="line"><span class="lineno">  168</span> </div>
-<div class="line"><span class="lineno">  169</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(lhs_index, rhs_index));</div>
-<div class="line"><span class="lineno">  170</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(output_index, DataType::BOOL8));</div>
-<div class="line"><span class="lineno">  171</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00161">161</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  162</span>{</div>
+<div class="line"><span class="lineno">  163</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  164</span> </div>
+<div class="line"><span class="lineno">  165</span>  <span class="keyword">const</span> <span class="keyword">auto</span> lhs_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_comparison.html#a487155402ebe50b75d6127ffc821c00aadc06c215d811408779c4b0b29e80e0e3">operation::Comparison::Input::INPUT0</a>)};</div>
+<div class="line"><span class="lineno">  166</span>  <span class="keyword">const</span> <span class="keyword">auto</span> rhs_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_comparison.html#a487155402ebe50b75d6127ffc821c00aa56e3478fb8cfe9c9f1582814e5d77cb5">operation::Comparison::Input::INPUT1</a>)};</div>
+<div class="line"><span class="lineno">  167</span> </div>
+<div class="line"><span class="lineno">  168</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(lhs_index, rhs_index));</div>
+<div class="line"><span class="lineno">  169</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isValidType(output_index, DataType::BOOL8));</div>
+<div class="line"><span class="lineno">  170</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_comparison_html_a487155402ebe50b75d6127ffc821c00aa56e3478fb8cfe9c9f1582814e5d77cb5"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_comparison.html#a487155402ebe50b75d6127ffc821c00aa56e3478fb8cfe9c9f1582814e5d77cb5">onert::ir::operation::Comparison::INPUT1</a></div><div class="ttdeci">@ INPUT1</div><div class="ttdef"><b>Definition</b> <a href="onert_2core_2include_2ir_2operation_2_comparison_8h_source.html#l00032">Comparison.h:31</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_comparison_html_a487155402ebe50b75d6127ffc821c00aadc06c215d811408779c4b0b29e80e0e3"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_comparison.html#a487155402ebe50b75d6127ffc821c00aadc06c215d811408779c4b0b29e80e0e3">onert::ir::operation::Comparison::INPUT0</a></div><div class="ttdeci">@ INPUT0</div><div class="ttdef"><b>Definition</b> <a href="onert_2core_2include_2ir_2operation_2_comparison_8h_source.html#l00030">Comparison.h:30</a></div></div>
 </div><!-- fragment -->
@@ -605,16 +605,17 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00173">173</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  174</span>{</div>
-<div class="line"><span class="lineno">  175</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  176</span> </div>
-<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;input_index : node.getInputs())</div>
-<div class="line"><span class="lineno">  178</span>  {</div>
-<div class="line"><span class="lineno">  179</span>    <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(input_index, output_index));</div>
-<div class="line"><span class="lineno">  180</span> </div>
-<div class="line"><span class="lineno">  181</span>    <span class="comment">// Int8 quantization requires same scale and zero point</span></div>
-<div class="line"><span class="lineno">  182</span>    <span class="keywordflow">if</span> (isValidType(output_index, DataType::QUANT_INT8_ASYMM))</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00172">172</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  173</span>{</div>
+<div class="line"><span class="lineno">  174</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  175</span> </div>
+<div class="line"><span class="lineno">  176</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;&amp;input_index : node.getInputs())</div>
+<div class="line"><span class="lineno">  177</span>  {</div>
+<div class="line"><span class="lineno">  178</span>    <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(input_index, output_index));</div>
+<div class="line"><span class="lineno">  179</span> </div>
+<div class="line"><span class="lineno">  180</span>    <span class="comment">// Int8 and Int16 quantization requires same scale and zero point</span></div>
+<div class="line"><span class="lineno">  181</span>    <span class="keywordflow">if</span> (isValidType(output_index, DataType::QUANT_INT8_ASYMM) ||</div>
+<div class="line"><span class="lineno">  182</span>        isValidType(output_index, DataType::QUANT_INT16_SYMM))</div>
 <div class="line"><span class="lineno">  183</span>    {</div>
 <div class="line"><span class="lineno">  184</span>      <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameQuantParam(input_index, output_index));</div>
 <div class="line"><span class="lineno">  185</span>    }</div>
@@ -744,27 +745,27 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00233">233</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  234</span>{</div>
-<div class="line"><span class="lineno">  235</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html#af9607012bf67bc02af585e42de5b5445a721c3b15147de0576a30657b49fadfbd">operation::DepthwiseConv2D::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno">  236</span>  <span class="keyword">const</span> <span class="keyword">auto</span> kernel_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html#af9607012bf67bc02af585e42de5b5445ad0d0ab6911f07ec1698e52c2559e5b01">operation::DepthwiseConv2D::Input::KERNEL</a>)};</div>
-<div class="line"><span class="lineno">  237</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  238</span> </div>
-<div class="line"><span class="lineno">  239</span>  uint32_t stride_horizontal = node.param().stride.horizontal;</div>
-<div class="line"><span class="lineno">  240</span>  uint32_t stride_vertical = node.param().stride.vertical;</div>
-<div class="line"><span class="lineno">  241</span>  uint32_t dilation_width = node.param().dilation.width_factor;</div>
-<div class="line"><span class="lineno">  242</span>  uint32_t dilation_height = node.param().dilation.height_factor;</div>
-<div class="line"><span class="lineno">  243</span> </div>
-<div class="line"><span class="lineno">  244</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>((stride_horizontal &gt; 0) &amp;&amp; (stride_vertical &gt; 0));</div>
-<div class="line"><span class="lineno">  245</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>((dilation_width &gt; 0) &amp;&amp; (dilation_height &gt; 0));</div>
-<div class="line"><span class="lineno">  246</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(input_index, output_index));</div>
-<div class="line"><span class="lineno">  247</span> </div>
-<div class="line"><span class="lineno">  248</span>  <span class="keywordflow">if</span> (isConstant(kernel_index) &amp;&amp; operandType(kernel_index) == DataType::QUANT_INT8_ASYMM)</div>
-<div class="line"><span class="lineno">  249</span>  {</div>
-<div class="line"><span class="lineno">  250</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> zeropoint : _operands.at(kernel_index).typeInfo().zero_points())</div>
-<div class="line"><span class="lineno">  251</span>      <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(zeropoint == 0);</div>
-<div class="line"><span class="lineno">  252</span>  }</div>
-<div class="line"><span class="lineno">  253</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00225">225</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  226</span>{</div>
+<div class="line"><span class="lineno">  227</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html#af9607012bf67bc02af585e42de5b5445a721c3b15147de0576a30657b49fadfbd">operation::DepthwiseConv2D::Input::INPUT</a>)};</div>
+<div class="line"><span class="lineno">  228</span>  <span class="keyword">const</span> <span class="keyword">auto</span> kernel_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html#af9607012bf67bc02af585e42de5b5445ad0d0ab6911f07ec1698e52c2559e5b01">operation::DepthwiseConv2D::Input::KERNEL</a>)};</div>
+<div class="line"><span class="lineno">  229</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  230</span> </div>
+<div class="line"><span class="lineno">  231</span>  uint32_t stride_horizontal = node.param().stride.horizontal;</div>
+<div class="line"><span class="lineno">  232</span>  uint32_t stride_vertical = node.param().stride.vertical;</div>
+<div class="line"><span class="lineno">  233</span>  uint32_t dilation_width = node.param().dilation.width_factor;</div>
+<div class="line"><span class="lineno">  234</span>  uint32_t dilation_height = node.param().dilation.height_factor;</div>
+<div class="line"><span class="lineno">  235</span> </div>
+<div class="line"><span class="lineno">  236</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>((stride_horizontal &gt; 0) &amp;&amp; (stride_vertical &gt; 0));</div>
+<div class="line"><span class="lineno">  237</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>((dilation_width &gt; 0) &amp;&amp; (dilation_height &gt; 0));</div>
+<div class="line"><span class="lineno">  238</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(input_index, output_index));</div>
+<div class="line"><span class="lineno">  239</span> </div>
+<div class="line"><span class="lineno">  240</span>  <span class="keywordflow">if</span> (isConstant(kernel_index) &amp;&amp; operandType(kernel_index) == DataType::QUANT_INT8_ASYMM)</div>
+<div class="line"><span class="lineno">  241</span>  {</div>
+<div class="line"><span class="lineno">  242</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> zeropoint : _operands.at(kernel_index).typeInfo().zero_points())</div>
+<div class="line"><span class="lineno">  243</span>      <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(zeropoint == 0);</div>
+<div class="line"><span class="lineno">  244</span>  }</div>
+<div class="line"><span class="lineno">  245</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_depthwise_conv2_d_html_af9607012bf67bc02af585e42de5b5445a721c3b15147de0576a30657b49fadfbd"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html#af9607012bf67bc02af585e42de5b5445a721c3b15147de0576a30657b49fadfbd">onert::ir::operation::DepthwiseConv2D::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_depthwise_conv2_d_8h_source.html#l00034">DepthwiseConv2D.h:34</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_depthwise_conv2_d_html_af9607012bf67bc02af585e42de5b5445ad0d0ab6911f07ec1698e52c2559e5b01"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_depthwise_conv2_d.html#af9607012bf67bc02af585e42de5b5445ad0d0ab6911f07ec1698e52c2559e5b01">onert::ir::operation::DepthwiseConv2D::KERNEL</a></div><div class="ttdeci">@ KERNEL</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_depthwise_conv2_d_8h_source.html#l00035">DepthwiseConv2D.h:35</a></div></div>
 </div><!-- fragment -->
@@ -796,13 +797,13 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00225">225</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  226</span>{</div>
-<div class="line"><span class="lineno">  227</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;param = node.param();</div>
-<div class="line"><span class="lineno">  228</span> </div>
-<div class="line"><span class="lineno">  229</span>  <span class="comment">// FIXME: number of classes should be 1 for now.</span></div>
-<div class="line"><span class="lineno">  230</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(param.num_classes == 1);</div>
-<div class="line"><span class="lineno">  231</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00247">247</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  248</span>{</div>
+<div class="line"><span class="lineno">  249</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;param = node.param();</div>
+<div class="line"><span class="lineno">  250</span> </div>
+<div class="line"><span class="lineno">  251</span>  <span class="comment">// FIXME: number of classes should be 1 for now.</span></div>
+<div class="line"><span class="lineno">  252</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(param.num_classes == 1);</div>
+<div class="line"><span class="lineno">  253</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_shape_validator_8cc_source.html#l00025">OP_REQUIRES</a>, and <a class="el" href="_detection_post_process_8h_source.html#l00075">onert::ir::operation::DetectionPostProcess::param()</a>.</p>
 
@@ -1877,7 +1878,12 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  575</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_strided_slice.html#a274afa35b950a97fc522847a2e178b20a447d0bb113ccf344c466ac99ca83daca">operation::StridedSlice::Input::INPUT</a>)};</div>
 <div class="line"><span class="lineno">  576</span> </div>
 <div class="line"><span class="lineno">  577</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(output_index, input_index));</div>
-<div class="line"><span class="lineno">  578</span>}</div>
+<div class="line"><span class="lineno">  578</span> </div>
+<div class="line"><span class="lineno">  579</span>  <span class="keywordflow">if</span> (isValidType(output_index, DataType::QUANT_INT16_SYMM))</div>
+<div class="line"><span class="lineno">  580</span>  {</div>
+<div class="line"><span class="lineno">  581</span>    <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameQuantParam(input_index, output_index));</div>
+<div class="line"><span class="lineno">  582</span>  }</div>
+<div class="line"><span class="lineno">  583</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_strided_slice_html_a274afa35b950a97fc522847a2e178b20a447d0bb113ccf344c466ac99ca83daca"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_strided_slice.html#a274afa35b950a97fc522847a2e178b20a447d0bb113ccf344c466ac99ca83daca">onert::ir::operation::StridedSlice::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_strided_slice_8h_source.html#l00032">StridedSlice.h:32</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00048">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00051">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00054">onert::ir::Operation::getOutputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_strided_slice_8h_source.html#l00032">onert::ir::operation::StridedSlice::INPUT</a>, and <a class="el" href="_shape_validator_8cc_source.html#l00025">OP_REQUIRES</a>.</p>
@@ -1908,14 +1914,14 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00580">580</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  581</span>{</div>
-<div class="line"><span class="lineno">  582</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_value_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  583</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_top_k_v2.html#a5593f3623418b652c7180f37367dfcd8a6bc832cdcdab28ba81c22f5ebf4521d4">operation::TopKV2::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno">  584</span> </div>
-<div class="line"><span class="lineno">  585</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(output_value_index, input_index));</div>
-<div class="line"><span class="lineno">  586</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(node.param().k &gt;= 0);</div>
-<div class="line"><span class="lineno">  587</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00585">585</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  586</span>{</div>
+<div class="line"><span class="lineno">  587</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_value_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  588</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_top_k_v2.html#a5593f3623418b652c7180f37367dfcd8a6bc832cdcdab28ba81c22f5ebf4521d4">operation::TopKV2::Input::INPUT</a>)};</div>
+<div class="line"><span class="lineno">  589</span> </div>
+<div class="line"><span class="lineno">  590</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(output_value_index, input_index));</div>
+<div class="line"><span class="lineno">  591</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(node.param().k &gt;= 0);</div>
+<div class="line"><span class="lineno">  592</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_top_k_v2_html_a5593f3623418b652c7180f37367dfcd8a6bc832cdcdab28ba81c22f5ebf4521d4"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_top_k_v2.html#a5593f3623418b652c7180f37367dfcd8a6bc832cdcdab28ba81c22f5ebf4521d4">onert::ir::operation::TopKV2::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_top_k_v2_8h_source.html#l00033">TopKV2.h:32</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00048">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00051">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00054">onert::ir::Operation::getOutputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_top_k_v2_8h_source.html#l00032">onert::ir::operation::TopKV2::INPUT</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_top_k_v2_8h_source.html#l00043">onert::ir::operation::TopKV2::Param::k</a>, <a class="el" href="_shape_validator_8cc_source.html#l00025">OP_REQUIRES</a>, and <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_top_k_v2_8h_source.html#l00055">onert::ir::operation::TopKV2::param()</a>.</p>
@@ -1946,13 +1952,13 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00589">589</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  590</span>{</div>
-<div class="line"><span class="lineno">  591</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
-<div class="line"><span class="lineno">  592</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_transpose.html#a5f68c89ddfce825ed43048745a495114a2fdf35a7f1ae4bdd877cf0b58f41371e">operation::Transpose::Input::INPUT</a>)};</div>
-<div class="line"><span class="lineno">  593</span> </div>
-<div class="line"><span class="lineno">  594</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(output_index, input_index));</div>
-<div class="line"><span class="lineno">  595</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00594">594</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  595</span>{</div>
+<div class="line"><span class="lineno">  596</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
+<div class="line"><span class="lineno">  597</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_transpose.html#a5f68c89ddfce825ed43048745a495114a2fdf35a7f1ae4bdd877cf0b58f41371e">operation::Transpose::Input::INPUT</a>)};</div>
+<div class="line"><span class="lineno">  598</span> </div>
+<div class="line"><span class="lineno">  599</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(isSameType(output_index, input_index));</div>
+<div class="line"><span class="lineno">  600</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1operation_1_1_transpose_html_a5f68c89ddfce825ed43048745a495114a2fdf35a7f1ae4bdd877cf0b58f41371e"><div class="ttname"><a href="classonert_1_1ir_1_1operation_1_1_transpose.html#a5f68c89ddfce825ed43048745a495114a2fdf35a7f1ae4bdd877cf0b58f41371e">onert::ir::operation::Transpose::INPUT</a></div><div class="ttdeci">@ INPUT</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2operation_2_transpose_8h_source.html#l00032">Transpose.h:32</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_operand_index_sequence_8h_source.html#l00048">onert::ir::OperandIndexSequence::at()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00051">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00054">onert::ir::Operation::getOutputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_transpose_8h_source.html#l00032">onert::ir::operation::Transpose::INPUT</a>, and <a class="el" href="_shape_validator_8cc_source.html#l00025">OP_REQUIRES</a>.</p>
@@ -1983,11 +1989,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00597">597</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  598</span>{</div>
-<div class="line"><span class="lineno">  599</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>((node.param().padding.type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac706ffd80b0ad0a4ef605c581e95252b">PaddingType::SAME</a>) ||</div>
-<div class="line"><span class="lineno">  600</span>              (node.param().padding.type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac9f1a6384b1c466d4612f513bd8e13ea">PaddingType::VALID</a>));</div>
-<div class="line"><span class="lineno">  601</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00602">602</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  603</span>{</div>
+<div class="line"><span class="lineno">  604</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>((node.param().padding.type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac706ffd80b0ad0a4ef605c581e95252b">PaddingType::SAME</a>) ||</div>
+<div class="line"><span class="lineno">  605</span>              (node.param().padding.type == <a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac9f1a6384b1c466d4612f513bd8e13ea">PaddingType::VALID</a>));</div>
+<div class="line"><span class="lineno">  606</span>}</div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_acc4661130ea3f46e70a67cbf429c8693ac706ffd80b0ad0a4ef605c581e95252b"><div class="ttname"><a href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac706ffd80b0ad0a4ef605c581e95252b">onert::ir::PaddingType::SAME</a></div><div class="ttdeci">@ SAME</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_acc4661130ea3f46e70a67cbf429c8693ac9f1a6384b1c466d4612f513bd8e13ea"><div class="ttname"><a href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693ac9f1a6384b1c466d4612f513bd8e13ea">onert::ir::PaddingType::VALID</a></div><div class="ttdeci">@ VALID</div></div>
 </div><!-- fragment -->
@@ -2019,11 +2025,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00603">603</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  604</span>{</div>
-<div class="line"><span class="lineno">  605</span>  <span class="keyword">const</span> <span class="keyword">auto</span> num{node.param().num};</div>
-<div class="line"><span class="lineno">  606</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(num == <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(node.getOutputs().size()));</div>
-<div class="line"><span class="lineno">  607</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00608">608</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  609</span>{</div>
+<div class="line"><span class="lineno">  610</span>  <span class="keyword">const</span> <span class="keyword">auto</span> num{node.param().num};</div>
+<div class="line"><span class="lineno">  611</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(num == <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(node.getOutputs().size()));</div>
+<div class="line"><span class="lineno">  612</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00054">onert::ir::Operation::getOutputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_unpack_8h_source.html#l00033">onert::ir::operation::Unpack::Param::num</a>, <a class="el" href="_shape_validator_8cc_source.html#l00025">OP_REQUIRES</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2operation_2_unpack_8h_source.html#l00046">onert::ir::operation::Unpack::param()</a>, and <a class="el" href="_operand_index_sequence_8h_source.html#l00047">onert::ir::OperandIndexSequence::size()</a>.</p>
 
@@ -2053,10 +2059,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00609">609</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  610</span>{</div>
-<div class="line"><span class="lineno">  611</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(node.getInputs().size() == node.getOutputs().size());</div>
-<div class="line"><span class="lineno">  612</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_operation_validator_8cc_source.html#l00614">614</a> of file <a class="el" href="_operation_validator_8cc_source.html">OperationValidator.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  615</span>{</div>
+<div class="line"><span class="lineno">  616</span>  <a class="code hl_define" href="_shape_validator_8cc.html#a87d485dd6060523a114b325a35bc681e">OP_REQUIRES</a>(node.getInputs().size() == node.getOutputs().size());</div>
+<div class="line"><span class="lineno">  617</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00051">onert::ir::Operation::getInputs()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_operation_8h_source.html#l00054">onert::ir::Operation::getOutputs()</a>, <a class="el" href="_shape_validator_8cc_source.html#l00025">OP_REQUIRES</a>, and <a class="el" href="_operand_index_sequence_8h_source.html#l00047">onert::ir::OperandIndexSequence::size()</a>.</p>
 

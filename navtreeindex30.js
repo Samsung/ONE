@@ -1,5 +1,9 @@
 var NAVTREEINDEX30 =
 {
+"_t_f_push_canonicalizer_8h.html":[41,0,0,85,1,0,53],
+"_t_f_push_canonicalizer_8h_source.html":[41,0,0,85,1,0,53],
+"_t_f_real_div_8h.html":[41,0,0,83,1,0,0,0,0,19],
+"_t_f_real_div_8h_source.html":[41,0,0,83,1,0,0,0,0,19],
 "_t_f_reduce_canonicalze_helper_8h.html":[41,0,0,85,1,28],
 "_t_f_reduce_canonicalze_helper_8h_source.html":[41,0,0,85,1,28],
 "_t_f_relu6_8h.html":[41,0,0,83,1,0,0,0,0,21],
@@ -245,9 +249,5 @@ var NAVTREEINDEX30 =
 "_test_data_resize_nearest_neighbor_base_8h.html":[41,0,2,4,0,0,1,61,2],
 "_test_data_resize_nearest_neighbor_base_8h_source.html":[41,0,2,4,0,0,1,61,2],
 "_test_data_softmax_base_8h.html":[41,0,2,5,0,6,61,3],
-"_test_data_softmax_base_8h_source.html":[41,0,2,5,0,6,61,3],
-"_test_data_split_v_base_8h.html":[41,0,2,5,0,6,65,2],
-"_test_data_split_v_base_8h_source.html":[41,0,2,5,0,6,65,2],
-"_test_data_squeeze_base_8h.html":[41,0,2,4,0,0,1,75,2],
-"_test_data_squeeze_base_8h_source.html":[41,0,2,4,0,0,1,75,2]
+"_test_data_softmax_base_8h_source.html":[41,0,2,5,0,6,61,3]
 };

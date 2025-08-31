@@ -229,19 +229,22 @@ $(document).ready(function(){initNavTree('_concat_layer_8cc_source.html',''); in
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT8_ASYMM:</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      concatenationGeneral&lt;int8_t&gt;();</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      concatenationGeneral&lt;int32_t&gt;();</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keywordflow">case</span> OperandType::QUANT_INT16_SYMM:</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      concatenationGeneral&lt;int16_t&gt;();</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordflow">case</span> OperandType::INT64:</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      concatenationGeneral&lt;int64_t&gt;();</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordflow">case</span> OperandType::INT32:</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>      concatenationGeneral&lt;int32_t&gt;();</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Concat: unsupported data type&quot;</span>);</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  }</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>}</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordflow">case</span> OperandType::INT64:</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>      concatenationGeneral&lt;int64_t&gt;();</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Concat: unsupported data type&quot;</span>);</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  }</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>}</div>
 </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>} <span class="comment">// namespace onert::backend::cpu::ops</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>} <span class="comment">// namespace onert::backend::cpu::ops</span></div>
 <div class="ttc" id="a_concat_layer_8h_html"><div class="ttname"><a href="_concat_layer_8h.html">ConcatLayer.h</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html">onert::backend::IPortableTensor</a></div><div class="ttdoc">A tensor class that is portable for other backends.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00036">IPortableTensor.h:37</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a56b8936eb8f5a8cbcf5cbe9d6c080ef9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">onert::backend::IPortableTensor::data_scale</a></div><div class="ttdeci">float data_scale() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00055">IPortableTensor.h:55</a></div></div>

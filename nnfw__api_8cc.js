@@ -43,6 +43,8 @@ var nnfw__api_8cc =
     [ "nnfw_set_prepare_config", "nnfw__api_8cc.html#accd52e40d3848265883bd2bca0bd9653", null ],
     [ "nnfw_set_quantization_type", "nnfw__api_8cc.html#a7c18c5f0f8b1746fb5016bb696d215b6", null ],
     [ "nnfw_set_quantized_model_path", "nnfw__api_8cc.html#ae1bb47075976b3334e5df27e4110a9c0", null ],
+    [ "nnfw_set_signature_for_tensorinfo", "nnfw__api_8cc.html#ab7bd67287965a8e76f207160a3eefcfd", null ],
+    [ "nnfw_set_signature_run", "nnfw__api_8cc.html#a802a216914c1f0a588cc721c38a38260", null ],
     [ "nnfw_set_workspace", "nnfw__api_8cc.html#a614f8ef052a7f9cdd4cb8e569f3af2af", null ],
     [ "nnfw_train", "nnfw__api_8cc.html#a73e25145d65236e1dc891d19da0c4ae4", null ],
     [ "nnfw_train_expected_tensorinfo", "nnfw__api_8cc.html#aede2b315e1e4cef364e5372f88827486", null ],

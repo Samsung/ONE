@@ -71,6 +71,8 @@ var nnfw__experimental_8h =
     [ "nnfw_set_prepare_config", "nnfw__experimental_8h.html#a1a4d2e7d154230ba3115b18cc556d9b2", null ],
     [ "nnfw_set_quantization_type", "nnfw__experimental_8h.html#a7c18c5f0f8b1746fb5016bb696d215b6", null ],
     [ "nnfw_set_quantized_model_path", "nnfw__experimental_8h.html#ae1bb47075976b3334e5df27e4110a9c0", null ],
+    [ "nnfw_set_signature_for_tensorinfo", "nnfw__experimental_8h.html#ab7bd67287965a8e76f207160a3eefcfd", null ],
+    [ "nnfw_set_signature_run", "nnfw__experimental_8h.html#a802a216914c1f0a588cc721c38a38260", null ],
     [ "nnfw_train", "nnfw__experimental_8h.html#a73e25145d65236e1dc891d19da0c4ae4", null ],
     [ "nnfw_train_expected_tensorinfo", "nnfw__experimental_8h.html#aede2b315e1e4cef364e5372f88827486", null ],
     [ "nnfw_train_export_checkpoint", "nnfw__experimental_8h.html#a24e5273e85e46f0e1f3f15ed839451ad", null ],

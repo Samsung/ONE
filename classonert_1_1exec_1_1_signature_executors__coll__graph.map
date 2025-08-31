@@ -1,0 +1,7 @@
+<map id="onert::exec::SignatureExecutors" name="onert::exec::SignatureExecutors">
+<area shape="rect" id="Node000001" title="Class to gather executor set for signature entry Actually it is wrapper of IExecutors(SignatureExecut..." alt="" coords="5,168,207,193"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1exec_1_1_single_model_executors.html" title="Class to gather executor set for single model NN package." alt="" coords="26,79,186,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,135,109,167,103,167,103,135"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1exec_1_1_i_executors.html" title="Class to gather NN package&#39;s executor set." alt="" coords="31,5,181,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="109,46,109,79,103,79,103,46"/>
+</map>

@@ -2385,7 +2385,9 @@ var hierarchy =
     ] ],
     [ "onert::exec::IExecutors", "classonert_1_1exec_1_1_i_executors.html", [
       [ "onert::exec::MultiModelExecutors", "classonert_1_1exec_1_1_multi_model_executors.html", null ],
-      [ "onert::exec::SingleModelExecutors", "classonert_1_1exec_1_1_single_model_executors.html", null ],
+      [ "onert::exec::SingleModelExecutors", "classonert_1_1exec_1_1_single_model_executors.html", [
+        [ "onert::exec::SignatureExecutors", "classonert_1_1exec_1_1_signature_executors.html", null ]
+      ] ],
       [ "onert::exec::train::TrainableExecutors", "classonert_1_1exec_1_1train_1_1_trainable_executors.html", null ]
     ] ],
     [ "arm_compute::IFunction", null, [

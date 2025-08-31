@@ -33,7 +33,7 @@ var dir_c9348e4763c5124a9eef9e6530a60018 =
     [ "GELU.h", "runtime_2compute_2cker_2include_2cker_2operation_2_gelu_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_gelu_8h" ],
     [ "InstanceNorm.h", "runtime_2compute_2cker_2include_2cker_2operation_2_instance_norm_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_instance_norm_8h" ],
     [ "L2Normalize.h", "runtime_2compute_2cker_2include_2cker_2operation_2_l2_normalize_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_l2_normalize_8h" ],
-    [ "LeakyReLU.h", "runtime_2compute_2cker_2include_2cker_2operation_2_leaky_relu_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_leaky_relu_8h" ],
+    [ "LeakyReLU.h", "runtime_2compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_leaky_re_l_u_8h" ],
     [ "LogicalAnd.h", "runtime_2compute_2cker_2include_2cker_2operation_2_logical_and_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_logical_and_8h" ],
     [ "LogicalNot.h", "runtime_2compute_2cker_2include_2cker_2operation_2_logical_not_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_logical_not_8h" ],
     [ "LogicalOr.h", "runtime_2compute_2cker_2include_2cker_2operation_2_logical_or_8h.html", "runtime_2compute_2cker_2include_2cker_2operation_2_logical_or_8h" ],

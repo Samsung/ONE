@@ -1,5 +1,9 @@
 var NAVTREEINDEX34 =
 {
+"backend_2ruy_2_backend_context_8h_source.html":[41,0,3,3,1,5,3],
+"backend_2ruy_2_config_8cc.html":[41,0,3,3,1,5,4],
+"backend_2ruy_2_config_8cc_source.html":[41,0,3,3,1,5,4],
+"backend_2ruy_2_external_context_8h.html":[41,0,3,3,1,5,6],
 "backend_2ruy_2_external_context_8h_source.html":[41,0,3,3,1,5,6],
 "backend_2ruy_2_kernel_generator_8cc.html":[41,0,3,3,1,5,7],
 "backend_2ruy_2_kernel_generator_8cc_source.html":[41,0,3,3,1,5,7],
@@ -245,9 +249,5 @@ var NAVTREEINDEX34 =
 "circle-eval-diff_2src_2_tensor_8cpp.html#a37b8f7cb7c3ba44d9834fe0383462107":[41,0,0,9,2,5,5],
 "circle-eval-diff_2src_2_tensor_8cpp.html#a3be1b684ee4b41e386b1eb11ec89215b":[41,0,0,9,2,5,7],
 "circle-eval-diff_2src_2_tensor_8cpp.html#a4346ae0dcbcab826a38fde3387af5c4a":[41,0,0,9,2,5,6],
-"circle-eval-diff_2src_2_tensor_8cpp.html#a4844019bdcc8c3ac531732a734b8d835":[41,0,0,9,2,5,0],
-"circle-eval-diff_2src_2_tensor_8cpp.html#a55e8efd44642a7253c03bfbb6cef2f2d":[41,0,0,9,2,5,3],
-"circle-eval-diff_2src_2_tensor_8cpp.html#a85c6f84d8458cfc1054f36f7c0af0772":[41,0,0,9,2,5,2],
-"circle-eval-diff_2src_2_tensor_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b":[41,0,0,9,2,5,1],
-"circle-eval-diff_2src_2_tensor_8cpp_source.html":[41,0,0,9,2,5]
+"circle-eval-diff_2src_2_tensor_8cpp.html#a4844019bdcc8c3ac531732a734b8d835":[41,0,0,9,2,5,0]
 };

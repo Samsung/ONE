@@ -161,26 +161,26 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_base_loader_8h_source.html#l00344">344</a> of file <a class="el" href="_base_loader_8h_source.html">BaseLoader.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  345</span>{</div>
-<div class="line"><span class="lineno">  346</span>  <span class="keywordflow">if</span> (data_ptr-&gt;values() == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  347</span>  {</div>
-<div class="line"><span class="lineno">  348</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  349</span>  }</div>
-<div class="line"><span class="lineno">  350</span> </div>
-<div class="line"><span class="lineno">  351</span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = data_ptr-&gt;values()-&gt;size();</div>
-<div class="line"><span class="lineno">  352</span>  arr.reserve(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">  353</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; i++)</div>
-<div class="line"><span class="lineno">  354</span>  {</div>
-<div class="line"><span class="lineno">  355</span>    arr.emplace_back(<span class="keyword">static_cast&lt;</span>uint16_t<span class="keyword">&gt;</span>(data_ptr-&gt;values()-&gt;Get(i)));</div>
-<div class="line"><span class="lineno">  356</span>  }</div>
-<div class="line"><span class="lineno">  357</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  358</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_base_loader_8h_source.html#l00345">345</a> of file <a class="el" href="_base_loader_8h_source.html">BaseLoader.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  346</span>{</div>
+<div class="line"><span class="lineno">  347</span>  <span class="keywordflow">if</span> (data_ptr-&gt;values() == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  348</span>  {</div>
+<div class="line"><span class="lineno">  349</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  350</span>  }</div>
+<div class="line"><span class="lineno">  351</span> </div>
+<div class="line"><span class="lineno">  352</span>  <span class="keywordtype">int</span> <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> = data_ptr-&gt;values()-&gt;size();</div>
+<div class="line"><span class="lineno">  353</span>  arr.reserve(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">  354</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>; i++)</div>
+<div class="line"><span class="lineno">  355</span>  {</div>
+<div class="line"><span class="lineno">  356</span>    arr.emplace_back(<span class="keyword">static_cast&lt;</span>uint16_t<span class="keyword">&gt;</span>(data_ptr-&gt;values()-&gt;Get(i)));</div>
+<div class="line"><span class="lineno">  357</span>  }</div>
+<div class="line"><span class="lineno">  358</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  359</span>}</div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_base_loader_8h_source.html#l00515">onert::loader::BaseLoader&lt; LoaderDomain &gt;::loadSparsity()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_base_loader_8h_source.html#l00516">onert::loader::BaseLoader&lt; LoaderDomain &gt;::loadSparsity()</a>.</p>
 
 </div>
 </div>
@@ -200,15 +200,12 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_loader_8cc_source.html#l00375">375</a> of file <a class="el" href="_circle_loader_8cc_source.html">CircleLoader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  376</span>{</div>
-<div class="line"><span class="lineno">  377</span>  <span class="keyword">auto</span> model = std::make_unique&lt;ir::Model&gt;();</div>
-<div class="line"><span class="lineno">  378</span>  CircleLoader loader(model);</div>
-<div class="line"><span class="lineno">  379</span>  loader.loadFromFile(filename);</div>
-<div class="line"><span class="lineno">  380</span>  <span class="keywordflow">return</span> model;</div>
-<div class="line"><span class="lineno">  381</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_loader_8cc_source.html#l00355">355</a> of file <a class="el" href="_circle_loader_8cc_source.html">CircleLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  356</span>{</div>
+<div class="line"><span class="lineno">  357</span>  <span class="keywordflow">return</span> CircleLoader().loadFromFile(filename);</div>
+<div class="line"><span class="lineno">  358</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="nnfw__session_8cc_source.html#l00277">nnfw_session::load_circle_from_buffer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nnfw__session_8cc_source.html#l00278">nnfw_session::load_circle_from_buffer()</a>.</p>
 
 </div>
 </div>
@@ -238,13 +235,10 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_circle_loader_8cc_source.html#l00383">383</a> of file <a class="el" href="_circle_loader_8cc_source.html">CircleLoader.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  384</span>{</div>
-<div class="line"><span class="lineno">  385</span>  <span class="keyword">auto</span> model = std::make_unique&lt;ir::Model&gt;();</div>
-<div class="line"><span class="lineno">  386</span>  CircleLoader loader(model);</div>
-<div class="line"><span class="lineno">  387</span>  loader.loadFromBuffer(buffer, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
-<div class="line"><span class="lineno">  388</span>  <span class="keywordflow">return</span> model;</div>
-<div class="line"><span class="lineno">  389</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_circle_loader_8cc_source.html#l00360">360</a> of file <a class="el" href="_circle_loader_8cc_source.html">CircleLoader.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  361</span>{</div>
+<div class="line"><span class="lineno">  362</span>  <span class="keywordflow">return</span> CircleLoader().loadFromBuffer(buffer, <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>);</div>
+<div class="line"><span class="lineno">  363</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
@@ -365,11 +359,8 @@ template&lt;typename T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="_t_f_lite_loader_8cc_source.html#l00156">156</a> of file <a class="el" href="_t_f_lite_loader_8cc_source.html">TFLiteLoader.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  157</span>{</div>
-<div class="line"><span class="lineno">  158</span>  <span class="keyword">auto</span> model = std::make_unique&lt;ir::Model&gt;();</div>
-<div class="line"><span class="lineno">  159</span>  TFLiteLoader loader(model);</div>
-<div class="line"><span class="lineno">  160</span>  loader.loadFromFile(filename);</div>
-<div class="line"><span class="lineno">  161</span>  <span class="keywordflow">return</span> model;</div>
-<div class="line"><span class="lineno">  162</span>}</div>
+<div class="line"><span class="lineno">  158</span>  <span class="keywordflow">return</span> TFLiteLoader().loadFromFile(filename);</div>
+<div class="line"><span class="lineno">  159</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

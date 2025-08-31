@@ -509,13 +509,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="acl__common_2_convert_8cc_source.html#l00330">330</a> of file <a class="el" href="acl__common_2_convert_8cc_source.html">Convert.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  331</span>{</div>
-<div class="line"><span class="lineno">  332</span>  assert(dilation_width != 0);</div>
-<div class="line"><span class="lineno">  333</span>  assert(dilation_height != 0);</div>
-<div class="line"><span class="lineno">  334</span> </div>
-<div class="line"><span class="lineno">  335</span>  <span class="keywordflow">return</span> arm_compute::Size2D(dilation_width, dilation_height);</div>
-<div class="line"><span class="lineno">  336</span>}</div>
+<p class="definition">Definition at line <a class="el" href="acl__common_2_convert_8cc_source.html#l00332">332</a> of file <a class="el" href="acl__common_2_convert_8cc_source.html">Convert.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  333</span>{</div>
+<div class="line"><span class="lineno">  334</span>  assert(dilation_width != 0);</div>
+<div class="line"><span class="lineno">  335</span>  assert(dilation_height != 0);</div>
+<div class="line"><span class="lineno">  336</span> </div>
+<div class="line"><span class="lineno">  337</span>  <span class="keywordflow">return</span> arm_compute::Size2D(dilation_width, dilation_height);</div>
+<div class="line"><span class="lineno">  338</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -609,26 +609,26 @@ template&lt;typename T_Function &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="acl__common_2_convert_8cc_source.html#l00309">309</a> of file <a class="el" href="acl__common_2_convert_8cc_source.html">Convert.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  310</span>{</div>
-<div class="line"><span class="lineno">  311</span>  assert(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#adf7f1ce514558b7c27e75ba5457c74d7">isConstant</a>());</div>
-<div class="line"><span class="lineno">  312</span>  assert(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a701cef233994b0f0b209ffc7b0517589">shape</a>().num_elements() == 1);</div>
-<div class="line"><span class="lineno">  313</span>  <span class="keywordflow">switch</span> (operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a1d8cca581e5a51292e66e6efd7c7b086">typeInfo</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>())</div>
-<div class="line"><span class="lineno">  314</span>  {</div>
-<div class="line"><span class="lineno">  315</span>    <span class="keywordflow">case</span> ir::DataType::INT32:</div>
-<div class="line"><span class="lineno">  316</span>      <span class="keywordflow">return</span> arm_compute::PixelValue(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a2b4947ecae9fec608f7cc8fdb31e8470">asScalar</a>&lt;int32_t&gt;());</div>
-<div class="line"><span class="lineno">  317</span>    <span class="keywordflow">case</span> ir::DataType::INT64:</div>
-<div class="line"><span class="lineno">  318</span>      <span class="keywordflow">return</span> arm_compute::PixelValue(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a2b4947ecae9fec608f7cc8fdb31e8470">asScalar</a>&lt;int64_t&gt;());</div>
-<div class="line"><span class="lineno">  319</span>    <span class="keywordflow">case</span> ir::DataType::UINT32:</div>
-<div class="line"><span class="lineno">  320</span>      <span class="keywordflow">return</span> arm_compute::PixelValue(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a2b4947ecae9fec608f7cc8fdb31e8470">asScalar</a>&lt;uint64_t&gt;());</div>
-<div class="line"><span class="lineno">  321</span>    <span class="keywordflow">case</span> ir::DataType::UINT8:</div>
-<div class="line"><span class="lineno">  322</span>      <span class="keywordflow">return</span> arm_compute::PixelValue(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a2b4947ecae9fec608f7cc8fdb31e8470">asScalar</a>&lt;uint8_t&gt;());</div>
-<div class="line"><span class="lineno">  323</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
-<div class="line"><span class="lineno">  324</span>      <span class="keywordflow">return</span> arm_compute::PixelValue(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a2b4947ecae9fec608f7cc8fdb31e8470">asScalar</a>&lt;<span class="keywordtype">float</span>&gt;());</div>
-<div class="line"><span class="lineno">  325</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  326</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;asPixelValue : Not supported datatype yet&quot;</span>);</div>
-<div class="line"><span class="lineno">  327</span>  }</div>
-<div class="line"><span class="lineno">  328</span>}</div>
+<p class="definition">Definition at line <a class="el" href="acl__common_2_convert_8cc_source.html#l00311">311</a> of file <a class="el" href="acl__common_2_convert_8cc_source.html">Convert.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  312</span>{</div>
+<div class="line"><span class="lineno">  313</span>  assert(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#adf7f1ce514558b7c27e75ba5457c74d7">isConstant</a>());</div>
+<div class="line"><span class="lineno">  314</span>  assert(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a701cef233994b0f0b209ffc7b0517589">shape</a>().num_elements() == 1);</div>
+<div class="line"><span class="lineno">  315</span>  <span class="keywordflow">switch</span> (operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a1d8cca581e5a51292e66e6efd7c7b086">typeInfo</a>().<a class="code hl_function" href="classonert_1_1ir_1_1_type_info.html#ac59d0c3025a812eba13a113a7c7c85a5">type</a>())</div>
+<div class="line"><span class="lineno">  316</span>  {</div>
+<div class="line"><span class="lineno">  317</span>    <span class="keywordflow">case</span> ir::DataType::INT32:</div>
+<div class="line"><span class="lineno">  318</span>      <span class="keywordflow">return</span> arm_compute::PixelValue(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a2b4947ecae9fec608f7cc8fdb31e8470">asScalar</a>&lt;int32_t&gt;());</div>
+<div class="line"><span class="lineno">  319</span>    <span class="keywordflow">case</span> ir::DataType::INT64:</div>
+<div class="line"><span class="lineno">  320</span>      <span class="keywordflow">return</span> arm_compute::PixelValue(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a2b4947ecae9fec608f7cc8fdb31e8470">asScalar</a>&lt;int64_t&gt;());</div>
+<div class="line"><span class="lineno">  321</span>    <span class="keywordflow">case</span> ir::DataType::UINT32:</div>
+<div class="line"><span class="lineno">  322</span>      <span class="keywordflow">return</span> arm_compute::PixelValue(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a2b4947ecae9fec608f7cc8fdb31e8470">asScalar</a>&lt;uint64_t&gt;());</div>
+<div class="line"><span class="lineno">  323</span>    <span class="keywordflow">case</span> ir::DataType::UINT8:</div>
+<div class="line"><span class="lineno">  324</span>      <span class="keywordflow">return</span> arm_compute::PixelValue(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a2b4947ecae9fec608f7cc8fdb31e8470">asScalar</a>&lt;uint8_t&gt;());</div>
+<div class="line"><span class="lineno">  325</span>    <span class="keywordflow">case</span> ir::DataType::FLOAT32:</div>
+<div class="line"><span class="lineno">  326</span>      <span class="keywordflow">return</span> arm_compute::PixelValue(operand.<a class="code hl_function" href="classonert_1_1ir_1_1_operand.html#a2b4947ecae9fec608f7cc8fdb31e8470">asScalar</a>&lt;<span class="keywordtype">float</span>&gt;());</div>
+<div class="line"><span class="lineno">  327</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  328</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;asPixelValue : Not supported datatype yet&quot;</span>);</div>
+<div class="line"><span class="lineno">  329</span>  }</div>
+<div class="line"><span class="lineno">  330</span>}</div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_html_a1d8cca581e5a51292e66e6efd7c7b086"><div class="ttname"><a href="classonert_1_1ir_1_1_operand.html#a1d8cca581e5a51292e66e6efd7c7b086">onert::ir::Operand::typeInfo</a></div><div class="ttdeci">const TypeInfo &amp; typeInfo(void) const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00045">Operand.h:45</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_html_a2b4947ecae9fec608f7cc8fdb31e8470"><div class="ttname"><a href="classonert_1_1ir_1_1_operand.html#a2b4947ecae9fec608f7cc8fdb31e8470">onert::ir::Operand::asScalar</a></div><div class="ttdeci">T asScalar(void) const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00086">Operand.h:86</a></div></div>
 <div class="ttc" id="aclassonert_1_1ir_1_1_operand_html_a701cef233994b0f0b209ffc7b0517589"><div class="ttname"><a href="classonert_1_1ir_1_1_operand.html#a701cef233994b0f0b209ffc7b0517589">onert::ir::Operand::shape</a></div><div class="ttdeci">const Shape &amp; shape(void) const</div><div class="ttdef"><b>Definition</b> <a href="runtime_2onert_2core_2include_2ir_2_operand_8h_source.html#l00044">Operand.h:44</a></div></div>
@@ -715,11 +715,13 @@ template&lt;typename T_Function &gt; </div>
 <div class="line"><span class="lineno">  270</span>      <span class="keywordflow">return</span> ir::DataType::FLOAT16;</div>
 <div class="line"><span class="lineno">  271</span>    case ::arm_compute::DataType::S64:</div>
 <div class="line"><span class="lineno">  272</span>      <span class="keywordflow">return</span> ir::DataType::INT64;</div>
-<div class="line"><span class="lineno">  273</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  274</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Not supported acl data type, yet&quot;</span>};</div>
-<div class="line"><span class="lineno">  275</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  276</span>  }</div>
-<div class="line"><span class="lineno">  277</span>}</div>
+<div class="line"><span class="lineno">  273</span>    case ::arm_compute::DataType::QSYMM16:</div>
+<div class="line"><span class="lineno">  274</span>      <span class="keywordflow">return</span> ir::DataType::QUANT_INT16_SYMM;</div>
+<div class="line"><span class="lineno">  275</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  276</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Not supported acl data type, yet&quot;</span>};</div>
+<div class="line"><span class="lineno">  277</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  278</span>  }</div>
+<div class="line"><span class="lineno">  279</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_i_a_c_l_tensor_8cc_source.html#l00040">onert::backend::acl_common::IACLTensor::data_type()</a>.</p>
 
@@ -951,20 +953,20 @@ template&lt;typename T_Function &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="acl__common_2_convert_8cc_source.html#l00279">279</a> of file <a class="el" href="acl__common_2_convert_8cc_source.html">Convert.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  280</span>{</div>
-<div class="line"><span class="lineno">  281</span>  <span class="keywordflow">switch</span> (pool_type_ir)</div>
-<div class="line"><span class="lineno">  282</span>  {</div>
-<div class="line"><span class="lineno">  283</span>    <span class="keywordflow">case</span> ir::operation::Pool2D::PoolType::AVG:</div>
-<div class="line"><span class="lineno">  284</span>      <span class="keywordflow">return</span> arm_compute::PoolingType::AVG;</div>
-<div class="line"><span class="lineno">  285</span>    <span class="keywordflow">case</span> ir::operation::Pool2D::PoolType::L2:</div>
-<div class="line"><span class="lineno">  286</span>      <span class="keywordflow">return</span> arm_compute::PoolingType::L2;</div>
-<div class="line"><span class="lineno">  287</span>    <span class="keywordflow">case</span> ir::operation::Pool2D::PoolType::MAX:</div>
-<div class="line"><span class="lineno">  288</span>      <span class="keywordflow">return</span> arm_compute::PoolingType::MAX;</div>
-<div class="line"><span class="lineno">  289</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  290</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;convertPoolType: Not supported operation yet&quot;</span>);</div>
-<div class="line"><span class="lineno">  291</span>  }</div>
-<div class="line"><span class="lineno">  292</span>}</div>
+<p class="definition">Definition at line <a class="el" href="acl__common_2_convert_8cc_source.html#l00281">281</a> of file <a class="el" href="acl__common_2_convert_8cc_source.html">Convert.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  282</span>{</div>
+<div class="line"><span class="lineno">  283</span>  <span class="keywordflow">switch</span> (pool_type_ir)</div>
+<div class="line"><span class="lineno">  284</span>  {</div>
+<div class="line"><span class="lineno">  285</span>    <span class="keywordflow">case</span> ir::operation::Pool2D::PoolType::AVG:</div>
+<div class="line"><span class="lineno">  286</span>      <span class="keywordflow">return</span> arm_compute::PoolingType::AVG;</div>
+<div class="line"><span class="lineno">  287</span>    <span class="keywordflow">case</span> ir::operation::Pool2D::PoolType::L2:</div>
+<div class="line"><span class="lineno">  288</span>      <span class="keywordflow">return</span> arm_compute::PoolingType::L2;</div>
+<div class="line"><span class="lineno">  289</span>    <span class="keywordflow">case</span> ir::operation::Pool2D::PoolType::MAX:</div>
+<div class="line"><span class="lineno">  290</span>      <span class="keywordflow">return</span> arm_compute::PoolingType::MAX;</div>
+<div class="line"><span class="lineno">  291</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  292</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;convertPoolType: Not supported operation yet&quot;</span>);</div>
+<div class="line"><span class="lineno">  293</span>  }</div>
+<div class="line"><span class="lineno">  294</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330afcefd647d6a866603c627b11347c707a">onert::ir::operation::Pool2D::AVG</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330a7e6aa2d53f6ee2b1a34b017fa403cb76">onert::ir::operation::Pool2D::L2</a>, and <a class="el" href="classonert_1_1ir_1_1operation_1_1_pool2_d.html#a46ca72246c956a38f34d94a51b380330a26a4b44a837bf97b972628509912b4a5">onert::ir::operation::Pool2D::MAX</a>.</p>
 
@@ -986,20 +988,20 @@ template&lt;typename T_Function &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="acl__common_2_convert_8cc_source.html#l00294">294</a> of file <a class="el" href="acl__common_2_convert_8cc_source.html">Convert.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  295</span>{</div>
-<div class="line"><span class="lineno">  296</span>  <span class="keywordflow">switch</span> (reduce_type_ir)</div>
-<div class="line"><span class="lineno">  297</span>  {</div>
-<div class="line"><span class="lineno">  298</span>    <span class="keywordflow">case</span> ir::operation::Reduce::ReduceType::MAX:</div>
-<div class="line"><span class="lineno">  299</span>      <span class="keywordflow">return</span> arm_compute::ReductionOperation::MAX;</div>
-<div class="line"><span class="lineno">  300</span>    <span class="keywordflow">case</span> ir::operation::Reduce::ReduceType::MIN:</div>
-<div class="line"><span class="lineno">  301</span>      <span class="keywordflow">return</span> arm_compute::ReductionOperation::MIN;</div>
-<div class="line"><span class="lineno">  302</span>    <span class="keywordflow">case</span> ir::operation::Reduce::ReduceType::SUM:</div>
-<div class="line"><span class="lineno">  303</span>      <span class="keywordflow">return</span> arm_compute::ReductionOperation::SUM;</div>
-<div class="line"><span class="lineno">  304</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  305</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;convertReduceType: Not supported operation yet&quot;</span>);</div>
-<div class="line"><span class="lineno">  306</span>  }</div>
-<div class="line"><span class="lineno">  307</span>}</div>
+<p class="definition">Definition at line <a class="el" href="acl__common_2_convert_8cc_source.html#l00296">296</a> of file <a class="el" href="acl__common_2_convert_8cc_source.html">Convert.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  297</span>{</div>
+<div class="line"><span class="lineno">  298</span>  <span class="keywordflow">switch</span> (reduce_type_ir)</div>
+<div class="line"><span class="lineno">  299</span>  {</div>
+<div class="line"><span class="lineno">  300</span>    <span class="keywordflow">case</span> ir::operation::Reduce::ReduceType::MAX:</div>
+<div class="line"><span class="lineno">  301</span>      <span class="keywordflow">return</span> arm_compute::ReductionOperation::MAX;</div>
+<div class="line"><span class="lineno">  302</span>    <span class="keywordflow">case</span> ir::operation::Reduce::ReduceType::MIN:</div>
+<div class="line"><span class="lineno">  303</span>      <span class="keywordflow">return</span> arm_compute::ReductionOperation::MIN;</div>
+<div class="line"><span class="lineno">  304</span>    <span class="keywordflow">case</span> ir::operation::Reduce::ReduceType::SUM:</div>
+<div class="line"><span class="lineno">  305</span>      <span class="keywordflow">return</span> arm_compute::ReductionOperation::SUM;</div>
+<div class="line"><span class="lineno">  306</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  307</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;convertReduceType: Not supported operation yet&quot;</span>);</div>
+<div class="line"><span class="lineno">  308</span>  }</div>
+<div class="line"><span class="lineno">  309</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a26a4b44a837bf97b972628509912b4a5">onert::ir::operation::Reduce::MAX</a>, <a class="el" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3ace31e2a082d17e038fcc6e3006166653">onert::ir::operation::Reduce::MIN</a>, and <a class="el" href="classonert_1_1ir_1_1operation_1_1_reduce.html#a33b05f2f6bd23cebcbde5512b43d9cf3a6970bdc2201030b9c03fbdcf3973858a">onert::ir::operation::Reduce::SUM</a>.</p>
 

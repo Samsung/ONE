@@ -209,8 +209,8 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">{.loss = <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60">NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</a>,</div>
 <div class="line">                           .reduction_type = <a class="code hl_enumvalue" href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17">NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</a>}</div>
-<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17">NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00234">nnfw_experimental.h:234</a></div></div>
-<div class="ttc" id="annfw__experimental_8h_html_ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60"><div class="ttname"><a href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60">NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00226">nnfw_experimental.h:226</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17"><div class="ttname"><a href="nnfw__experimental_8h.html#a2dcccd7c4d3a96de46f79311ee050ae1a8e1621ab4952d68f862d77758afcde17">NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_REDUCTION_SUM_OVER_BATCH_SIZE</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00274">nnfw_experimental.h:274</a></div></div>
+<div class="ttc" id="annfw__experimental_8h_html_ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60"><div class="ttname"><a href="nnfw__experimental_8h.html#ade1163c5c3fe306a3abad6b83a4d9660af6187b13a9e27e6f0592d8737c09ac60">NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</a></div><div class="ttdeci">@ NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY</div><div class="ttdef"><b>Definition</b> <a href="nnfw__experimental_8h_source.html#l00266">nnfw_experimental.h:266</a></div></div>
 </div><!-- fragment --><p>loss info</p>
 <p>loss info Note that you don't need to worry about whether the model you use does not include softmax when you try to use NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY. Using NNFW_TRAIN_LOSS_CATEGORICAL_CROSSENTROPY will ensure that the predicted input of loss is the result of performing softmax once regardless of whether the output of the model is the result of softmax or not. </p>
 
@@ -235,7 +235,7 @@ Data Fields</h2></td></tr>
 </div><div class="memdoc">
 <p>Number of layers to be trained from the back of the graph. Note that some values have special meaning. "-1" means that all layers will be trained. "0" means that no layer will be trained. Negative value less than -1 means error. The special values are collected in NNFW_TRAIN_NUM_OF_TRAINABLE_OPS_SPECIAL_VALUES enum. </p>
 
-<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00295">295</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nnfw__experimental_8h_source.html#l00335">335</a> of file <a class="el" href="nnfw__experimental_8h_source.html">nnfw_experimental.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nnfw__traininfo__bindings_8cc_source.html#l00063">bind_nnfw_train_info()</a>.</p>
 

@@ -152,6 +152,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9d50f260c636af77fd7bfe379a1c2380"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bb5bbec9fbacc8e9ae1ed7b5617ec78" id="r_a0bb5bbec9fbacc8e9ae1ed7b5617ec78"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; const <a class="el" href="structonert_1_1ir_1_1_data.html">ir::Data</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_model.html#a0bb5bbec9fbacc8e9ae1ed7b5617ec78">extract_metadata</a> (const std::string name)</td></tr>
 <tr class="separator:a0bb5bbec9fbacc8e9ae1ed7b5617ec78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab87600c8c2ce7fca734f5d8d9b8e8d95" id="r_ab87600c8c2ce7fca734f5d8d9b8e8d95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_model.html#ab87600c8c2ce7fca734f5d8d9b8e8d95">addSignatureMap</a> (const <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> &amp;index, const std::string &amp;name)</td></tr>
+<tr class="separator:ab87600c8c2ce7fca734f5d8d9b8e8d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa56319b6187d27dd0459d5ce0a3b465b" id="r_aa56319b6187d27dd0459d5ce0a3b465b"><td class="memItemLeft" align="right" valign="top">const std::unordered_map&lt; <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1ir_1_1_model.html#aa56319b6187d27dd0459d5ce0a3b465b">signatureMap</a> () const</td></tr>
+<tr class="separator:aa56319b6187d27dd0459d5ce0a3b465b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -298,6 +302,49 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  173</span>  {</div>
 <div class="line"><span class="lineno">  174</span>    _metadatas.emplace(name, std::move(data));</div>
 <div class="line"><span class="lineno">  175</span>  }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ab87600c8c2ce7fca734f5d8d9b8e8d95" name="ab87600c8c2ce7fca734f5d8d9b8e8d95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab87600c8c2ce7fca734f5d8d9b8e8d95">&#9670;&#160;</a></span>addSignatureMap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void onert::ir::Model::addSignatureMap </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> &amp;&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_model_8h_source.html#l00195">195</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_model_8h_source.html">Model.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  196</span>  {</div>
+<div class="line"><span class="lineno">  197</span>    _signature_map[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] = <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a>;</div>
+<div class="line"><span class="lineno">  198</span>  }</div>
+<div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
+<div class="ttc" id="anamespacesetup_html_ab3a7a0638d76a01367c5bc3cc699447f"><div class="ttname"><a href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">setup.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00158">setup.py:158</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -519,7 +566,6 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  193</span>  }</div>
 <div class="ttc" id="a_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_html_aa73e018b04368e7afaded77ef0ac69db"><div class="ttname"><a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp.html#aa73e018b04368e7afaded77ef0ac69db">m</a></div><div class="ttdeci">std::mutex m</div><div class="ttdef"><b>Definition</b> <a href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">NEGEMMMatrixAccumulateBiasesKernel.cpp:135</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a57e930c09fd3ed0664cc4dc6c4ab2c88"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">GenH5RandomInputs.data</a></div><div class="ttdeci">data</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00064">GenH5RandomInputs.py:64</a></div></div>
-<div class="ttc" id="anamespacesetup_html_ab3a7a0638d76a01367c5bc3cc699447f"><div class="ttname"><a href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">setup.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00158">setup.py:158</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>.</p>
 
@@ -817,7 +863,6 @@ template&lt;typename <a class="el" href="classonert_1_1ir_1_1_graph.html">Graph<
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_model_8h_source.html#l00052">52</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_model_8h_source.html">Model.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   52</span>{ _subgraphs[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>] = subg; }</div>
-<div class="ttc" id="anamespacemoco_html_a2a0fb57b3701512b54ae18c23908f047"><div class="ttname"><a href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">moco::index</a></div><div class="ttdeci">loco::GraphInputIndex index(const TFPlaceholder *node)</div><div class="ttdef"><b>Definition</b> <a href="_t_f_node_8cpp_source.html#l00054">TFNode.cpp:54</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -856,6 +901,36 @@ template&lt;typename <a class="el" href="classonert_1_1ir_1_1_graph.html">Graph<
 
 <p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_model_8h_source.html#l00060">60</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_model_8h_source.html">Model.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   60</span>{ _subgraphs.erase(index); }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="aa56319b6187d27dd0459d5ce0a3b465b" name="aa56319b6187d27dd0459d5ce0a3b465b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa56319b6187d27dd0459d5ce0a3b465b">&#9670;&#160;</a></span>signatureMap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::unordered_map&lt; <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>, std::string &gt; &amp; onert::ir::Model::signatureMap </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="runtime_2onert_2core_2include_2ir_2_model_8h_source.html#l00200">200</a> of file <a class="el" href="runtime_2onert_2core_2include_2ir_2_model_8h_source.html">Model.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  201</span>  {</div>
+<div class="line"><span class="lineno">  202</span>    <span class="keywordflow">return</span> _signature_map;</div>
+<div class="line"><span class="lineno">  203</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

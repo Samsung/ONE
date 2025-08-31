@@ -111,8 +111,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a57aa05c327c0d2795daea7ebf8341cc0" id="r_a57aa05c327c0d2795daea7ebf8341cc0"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structonert_1_1exec_1_1_i_executor.html">IExecutor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_executors.html#a57aa05c327c0d2795daea7ebf8341cc0">at</a> (const <a class="el" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a> &amp;model_index, const <a class="el" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a> &amp;subg_index) const =0</td></tr>
 <tr class="memdesc:a57aa05c327c0d2795daea7ebf8341cc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return executor of index.  <br /></td></tr>
 <tr class="separator:a57aa05c327c0d2795daea7ebf8341cc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d6f5140cb2508e75931bd3699352f91" id="r_a1d6f5140cb2508e75931bd3699352f91"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structonert_1_1exec_1_1_i_executor.html">IExecutor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_executors.html#a1d6f5140cb2508e75931bd3699352f91">entryExecutor</a> () const</td></tr>
-<tr class="separator:a1d6f5140cb2508e75931bd3699352f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52acf38dec2a133d0fac51f31e6ab661" id="r_a52acf38dec2a133d0fac51f31e6ab661"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structonert_1_1exec_1_1_i_executor.html">IExecutor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_executors.html#a52acf38dec2a133d0fac51f31e6ab661">entryExecutor</a> () const</td></tr>
+<tr class="separator:a52acf38dec2a133d0fac51f31e6ab661"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1b46fbf2e066cb2a1795e4b95b3d222" id="r_af1b46fbf2e066cb2a1795e4b95b3d222"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert_1_1exec_1_1_i_executors.html#af1b46fbf2e066cb2a1795e4b95b3d222">inputSize</a> () const =0</td></tr>
 <tr class="memdesc:af1b46fbf2e066cb2a1795e4b95b3d222"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return executor set's number of input.  <br /></td></tr>
 <tr class="separator:af1b46fbf2e066cb2a1795e4b95b3d222"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -273,8 +273,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a1d6f5140cb2508e75931bd3699352f91" name="a1d6f5140cb2508e75931bd3699352f91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d6f5140cb2508e75931bd3699352f91">&#9670;&#160;</a></span>entryExecutor()</h2>
+<a id="a52acf38dec2a133d0fac51f31e6ab661" name="a52acf38dec2a133d0fac51f31e6ab661"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52acf38dec2a133d0fac51f31e6ab661">&#9670;&#160;</a></span>entryExecutor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -283,7 +283,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structonert_1_1exec_1_1_i_executor.html">IExecutor</a> * onert::exec::IExecutors::entryExecutor </td>
+          <td class="memname">virtual <a class="el" href="structonert_1_1exec_1_1_i_executor.html">IExecutor</a> * onert::exec::IExecutors::entryExecutor </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -291,10 +291,12 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classonert_1_1exec_1_1_signature_executors.html#a2ee4c2ef8c94345b798531cc3e76d8bb">onert::exec::SignatureExecutors</a>, and <a class="el" href="classonert_1_1exec_1_1train_1_1_trainable_executors.html#a60b27e839c1f1ab89b0fb41e72491bf9">onert::exec::train::TrainableExecutors</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="_i_executors_8h_source.html#l00058">58</a> of file <a class="el" href="_i_executors_8h_source.html">IExecutors.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   58</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classonert_1_1exec_1_1_i_executors.html#a57aa05c327c0d2795daea7ebf8341cc0">at</a>(<a class="code hl_typedef" href="namespaceonert_1_1ir.html#ade411191d6afc15a55a4384b8cea2ac9">ir::ModelIndex</a>{0}, <a class="code hl_typedef" href="namespaceonert_1_1ir.html#afff9e77cac191f4fcc8c447e4bea053c">ir::SubgraphIndex</a>{0}); }</div>
