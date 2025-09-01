@@ -37,13 +37,7 @@ def make_tf2tfliteV2_cmd(args, driver_path, input_path, output_path):
         cmd.append('--' + getattr(args, 'model_format'))
     else:
         cmd.append('--graph_def')  # default value
-    # converter version
-    if is_valid_attr(args, 'converter_version_cmd'):
-        cmd.append(getattr(args, 'converter_version_cmd'))
-    elif is_valid_attr(args, 'converter_version'):
-        cmd.append('--' + getattr(args, 'converter_version'))
-    else:
-        cmd.append('--v1')  # default value
+    # NOTE converter_version_cmd is removed as it is deprecated
     # input_path
     if is_valid_attr(args, 'input_path'):
         cmd.append('--input_path')

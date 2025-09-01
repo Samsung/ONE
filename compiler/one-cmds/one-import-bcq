@@ -45,6 +45,7 @@ def _get_parser():
     ## tf2tfliteV2 arguments
     tf2tfliteV2_group = parser.add_argument_group('converter arguments')
 
+    # TODO deprecate converter_version
     # converter version
     converter_version = tf2tfliteV2_group.add_mutually_exclusive_group()
     converter_version.add_argument('--v1',
