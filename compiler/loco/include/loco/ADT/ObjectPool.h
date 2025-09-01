@@ -18,6 +18,7 @@
 #define __LOCO_ADT_OBJECT_POOL_H__
 
 #include <algorithm>
+#include <cstdint>
 #include <memory>
 #include <vector>
 
