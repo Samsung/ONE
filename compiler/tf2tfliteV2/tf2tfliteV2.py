@@ -48,8 +48,10 @@ def _get_parser():
                         action="store_true",
                         help="output additional information to stdout or stderr")
 
+    # TODO deprecate options v1 and v2
+    # TODO add "deprecated" for v1, v2 when python >= 3.13
     # Converter version.
-    converter_version = parser.add_mutually_exclusive_group(required=True)
+    converter_version = parser.add_mutually_exclusive_group(required=False)
     converter_version.add_argument("--v1",
                                    action="store_true",
                                    help="Use TensorFlow Lite Converter 1.x")
@@ -119,23 +121,10 @@ def _check_flags(flags):
   Checks the parsed flags to ensure they are valid.
   """
     if flags.v1:
-        invalid = ""
-        # To be filled
-
-        if invalid:
-            raise ValueError(invalid + " options must be used with v2")
+        print("Warning: option --v1 is deprecated", file=sys.stderr)
 
     if flags.v2:
-        if tf.__version__.find("2.") != 0:
-            raise ValueError(
-                "Imported TensorFlow should have version >= 2.0 but you have " +
-                tf.__version__)
-
-        invalid = ""
-        # To be filled
-
-        if invalid:
-            raise ValueError(invalid + " options must be used with v1")
+        print("Warning: option --v2 is deprecated", file=sys.stderr)
 
     if flags.input_shapes:
         if not flags.input_arrays:
