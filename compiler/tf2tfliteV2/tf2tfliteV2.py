@@ -149,38 +149,6 @@ def _parse_array(arrays, type_fn=str):
     return list(map(type_fn, arrays.split(",")))
 
 
-def _v1_convert(flags):
-    if flags.model_format == "graph_def":
-        if not flags.input_arrays:
-            raise ValueError("--input_arrays must be provided")
-        if not flags.output_arrays:
-            raise ValueError("--output_arrays must be provided")
-        input_shapes = None
-        if flags.input_shapes:
-            input_arrays = _parse_array(flags.input_arrays)
-            input_shapes_list = [
-                _parse_array(shape, type_fn=int)
-                for shape in flags.input_shapes.split(":")
-            ]
-            input_shapes = dict(list(zip(input_arrays, input_shapes_list)))
-
-        converter = tf.compat.v1.lite.TFLiteConverter.from_frozen_graph(
-            flags.input_path, _parse_array(flags.input_arrays),
-            _parse_array(flags.output_arrays), input_shapes)
-
-    if flags.model_format == "saved_model":
-        converter = tf.compat.v1.lite.TFLiteConverter.from_saved_model(flags.input_path)
-
-    if flags.model_format == "keras_model":
-        converter = tf.compat.v1.lite.TFLiteConverter.from_keras_model_file(
-            flags.input_path)
-
-    converter.allow_custom_ops = True
-
-    tflite_model = converter.convert()
-    open(flags.output_path, "wb").write(tflite_model)
-
-
 def _v2_convert(flags):
     if flags.model_format == "graph_def":
         if not flags.input_arrays:
