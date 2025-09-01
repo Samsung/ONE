@@ -54,3 +54,5 @@ macro(add_pal_to_target TGT)
     target_link_libraries(${TGT} PRIVATE luci_interpreter_mcu_pal)
     #target_link_libraries(${TGT} PRIVATE Threads::Threads luci_interpreter_mcu_pal)
 endmacro()
+
+message(FATAL_ERROR "pal/mcu is disabled. please use onert-micro")
