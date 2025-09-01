@@ -48,7 +48,6 @@ while [[ $# -ne 0 ]]; do
     # Generate tflite
     source "${VIRTUALENV}/bin/activate"
     "${VIRTUALENV}/bin/python" "${TF2TFLITEV2_PATH}" \
-      --v1 \
       --input_path "${WORKDIR}/${PREFIX}.pbtxt" \
       --input_arrays "$(awk -F, '/^input/ { print $2 }' ${PREFIX}.info | cut -d: -f1 | tr -d ' ' | paste -d, -s)" \
       --input_shapes "$(cat ${PREFIX}.info | grep '^input' | cut -d '[' -f2 | cut -d ']' -f1 | tr -d ' ' | xargs | tr ' ' ':')" \
