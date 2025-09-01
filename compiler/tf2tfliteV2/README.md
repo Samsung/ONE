@@ -12,13 +12,11 @@ Even though we already have _tf2tflite_, we cannot cover all operators in Tensor
 ## Example
 ```
 python tf2tfliteV2.py \
-> --v1 \
 > -i frozen_graph.pb -o converted.tflite
 > -I model_inputs -O model_outputs
 ```
 ```
 python tf2tfliteV2.py \
-> --v1 \
 > --input_path=frozen_graph.pb \
 > --output_path=converted.tflite \
 > --input_arrays=model_inputs \
@@ -27,7 +25,6 @@ python tf2tfliteV2.py \
 ```
 ```
 python tf2tfliteV2.py \
-> --v2 \
 > --input_path=frozen_graph.pbtxt \
 > --output_path=converted.tflite \
 > --input_arrays=model_inputs \
@@ -35,7 +32,6 @@ python tf2tfliteV2.py \
 ```
 ```
 python tf2tfliteV2.py \
-> --v2 \
 > --input_path=multiple_output_graph.pb \
 > --output_path=converted.tflite \
 > --input_arrays=model_inputs \
@@ -45,8 +41,6 @@ python tf2tfliteV2.py \
 ## Optional arguments
 ```
   -h, --help            show this help message and exit
-  --v1                  Use TensorFlow Lite Converter 1.x
-  --v2                  Use TensorFlow Lite Converter 2.x
   --graph_def           Use graph def file(default)
   --saved_model         Use saved model
   --keras_model         Use keras model

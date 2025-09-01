@@ -48,8 +48,10 @@ def _get_parser():
                         action="store_true",
                         help="output additional information to stdout or stderr")
 
+    # TODO deprecate options v1 and v2
+    # TODO add "deprecated" for v1, v2 when python >= 3.13
     # Converter version.
-    converter_version = parser.add_mutually_exclusive_group(required=True)
+    converter_version = parser.add_mutually_exclusive_group(required=False)
     converter_version.add_argument("--v1",
                                    action="store_true",
                                    help="Use TensorFlow Lite Converter 1.x")
@@ -119,23 +121,10 @@ def _check_flags(flags):
   Checks the parsed flags to ensure they are valid.
   """
     if flags.v1:
-        invalid = ""
-        # To be filled
-
-        if invalid:
-            raise ValueError(invalid + " options must be used with v2")
+        print("Warning: option --v1 is deprecated", file=sys.stderr)
 
     if flags.v2:
-        if tf.__version__.find("2.") != 0:
-            raise ValueError(
-                "Imported TensorFlow should have version >= 2.0 but you have " +
-                tf.__version__)
-
-        invalid = ""
-        # To be filled
-
-        if invalid:
-            raise ValueError(invalid + " options must be used with v1")
+        print("Warning: option --v2 is deprecated", file=sys.stderr)
 
     if flags.input_shapes:
         if not flags.input_arrays:
@@ -147,38 +136,6 @@ def _check_flags(flags):
 
 def _parse_array(arrays, type_fn=str):
     return list(map(type_fn, arrays.split(",")))
-
-
-def _v1_convert(flags):
-    if flags.model_format == "graph_def":
-        if not flags.input_arrays:
-            raise ValueError("--input_arrays must be provided")
-        if not flags.output_arrays:
-            raise ValueError("--output_arrays must be provided")
-        input_shapes = None
-        if flags.input_shapes:
-            input_arrays = _parse_array(flags.input_arrays)
-            input_shapes_list = [
-                _parse_array(shape, type_fn=int)
-                for shape in flags.input_shapes.split(":")
-            ]
-            input_shapes = dict(list(zip(input_arrays, input_shapes_list)))
-
-        converter = tf.compat.v1.lite.TFLiteConverter.from_frozen_graph(
-            flags.input_path, _parse_array(flags.input_arrays),
-            _parse_array(flags.output_arrays), input_shapes)
-
-    if flags.model_format == "saved_model":
-        converter = tf.compat.v1.lite.TFLiteConverter.from_saved_model(flags.input_path)
-
-    if flags.model_format == "keras_model":
-        converter = tf.compat.v1.lite.TFLiteConverter.from_keras_model_file(
-            flags.input_path)
-
-    converter.allow_custom_ops = True
-
-    tflite_model = converter.convert()
-    open(flags.output_path, "wb").write(tflite_model)
 
 
 def _v2_convert(flags):
