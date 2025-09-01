@@ -20,6 +20,11 @@
 
 #include <stdexcept>
 
+#ifndef TIMEOUT_SEC
+// Throw build error
+#error "TIMEOUT_SEC must be defined"
+#endif // TIMEOUT_SEC
+
 namespace onert::backend::trix
 {
 
@@ -267,7 +272,7 @@ void DevContext::runOneBatch(uint32_t dev_num, ModelID model_id, input_buffers *
   std::packaged_task<int(npudev_h, int)> task(submitNPU_request);
   auto f = task.get_future();
   std::thread thread_submit_request(std::move(task), dev_handle, req_id);
-  auto status = f.wait_until(std::chrono::system_clock::now() + std::chrono::seconds(60));
+  auto status = f.wait_until(std::chrono::system_clock::now() + std::chrono::seconds(TIMEOUT_SEC));
   if (status == std::future_status::timeout)
   {
     // There is no way to terminate hanging submitNPU_request from the outside.
