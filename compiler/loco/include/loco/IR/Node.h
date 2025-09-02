@@ -26,6 +26,7 @@
 #include "loco/IR/CastHelpers.h"
 
 #include <array>
+#include <cstdint>
 #include <memory>
 #include <set>
 
