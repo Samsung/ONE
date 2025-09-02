@@ -15,6 +15,9 @@ target_link_libraries(${LIB_ONERT_BACKEND_TRIX} PRIVATE onert_core)
 target_link_libraries(${LIB_ONERT_BACKEND_TRIX} PRIVATE trix-engine)
 target_link_libraries(${LIB_ONERT_BACKEND_TRIX} PRIVATE nnfw_common)
 target_link_libraries(${LIB_ONERT_BACKEND_TRIX} PRIVATE nnfw_coverage)
+# Default TRIX_REQ_TIMEOUT_SEC is set as cmake option default setting
+# If user want to change this value, please use cmake option -DTRIX_REQ_TIMEOUT_SEC=<value> when build. (ex: -DTRIX_REQ_TIMEOUT_SEC=100)
+target_compile_definitions(${LIB_ONERT_BACKEND_TRIX} PRIVATE TIMEOUT_SEC=${TRIX_REQ_TIMEOUT_SEC})
 
 set_target_properties(${LIB_ONERT_BACKEND_TRIX} PROPERTIES
   OUTPUT_NAME backend_trix

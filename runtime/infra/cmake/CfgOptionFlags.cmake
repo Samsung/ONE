@@ -18,6 +18,7 @@ option(ASAN_BUILD "Address Sanitizer build" OFF)
 # Default build configuration for runtime
 #
 option(ENVVAR_ONERT_CONFIG "Use environment variable for onert configuration" ON)
+set(TRIX_REQ_TIMEOUT_SEC 60 CACHE STRING "Timeout for TRIX request")
 
 #
 # Default build configuration for tests
