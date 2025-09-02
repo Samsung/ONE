@@ -73,7 +73,7 @@ RUN ${ANDROID_HOME}/cmdline-tools/${CMDTOOLS_VERSION}/bin/sdkmanager --sdk_root=
 RUN ${ANDROID_HOME}/cmdline-tools/${CMDTOOLS_VERSION}/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platform-tools"
 
 # Env variable for android build (ndk, gradle)
-ENV NDK_DIR=${ANDROID_HOME}/ndk/${NDK_VERSION}
+ENV ANDROID_NDK=${ANDROID_HOME}/ndk/${NDK_VERSION}
 ENV GRADLE_HOME=/opt/android-tools/gradle
 ENV PATH=${PATH}:${GRADLE_HOME}/bin:${ANDROID_HOME}/cmdline-tools/${CMDTOOLS_VERSION}/bin:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
 
