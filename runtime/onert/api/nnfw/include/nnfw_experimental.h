@@ -202,9 +202,9 @@ NNFW_STATUS nnfw_set_input_type(nnfw_session *session, uint32_t index, NNFW_TYPE
 NNFW_STATUS nnfw_set_output_type(nnfw_session *session, uint32_t index, NNFW_TYPE type);
 
 /**
- * @brief     Set the entry signature to get entry's I/O tensorinfo before prepare
+ * @brief     Set the entry signature to configure entry's I/O before prepare
  *
- * User can call this function to select entry signature to get specific entry's I/O features
+ * User can call this function to select entry signature to configure specific entry's I/O features
  * for prepare phase. This function should be called after {@link nnfw_load_model_from_file}
  * and before {@link nnfw_prepare}.
  *
@@ -221,7 +221,7 @@ NNFW_STATUS nnfw_set_output_type(nnfw_session *session, uint32_t index, NNFW_TYP
  * @param[in] signature name of the entry signature
  * @return    @c NNFW_STATUS_NO_ERROR if successful
  */
-NNFW_STATUS nnfw_set_signature_for_tensorinfo(nnfw_session *session, const char *signature);
+NNFW_STATUS nnfw_configure_signature(nnfw_session *session, const char *signature);
 
 /**
  * @brief     Set the entry signature to run
