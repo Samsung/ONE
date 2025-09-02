@@ -251,6 +251,7 @@ void CircleLoader::loadBCQFullyConnected(const Operator *op, ir::Graph &subg)
   const auto *options = op->builtin_options_as_BCQFullyConnectedOptions();
   param.weights_hidden_size = options->weights_hidden_size();
   param.activation = convertActivation(options->fused_activation_function());
+  param.lsh_choices = options->lsh_choices();
 
   std::unique_ptr<ir::Operation> new_op(
     new ir::operation::BCQFullyConnected(inputs, outputs, param));

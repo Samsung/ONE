@@ -1535,6 +1535,7 @@ table BCQGatherOptions {
 table BCQFullyConnectedOptions {
   weights_hidden_size: int;
   fused_activation_function:ActivationFunctionType;
+  lsh_choices: int;
 }
 
 table InstanceNormOptions {

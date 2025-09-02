@@ -41,6 +41,7 @@ public:
   {
     uint32_t weights_hidden_size;
     Activation activation;
+    int32_t lsh_choices;
   };
 
 public:
