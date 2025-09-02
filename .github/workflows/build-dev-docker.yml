@@ -43,6 +43,7 @@ jobs:
   # Build on docker CLI for PR test without login
   build-ubuntu:
     needs: filtering
+    if: github.repository_owner == 'Samsung' && needs.filtering.outputs.ubuntu-target != '[]'
     runs-on: one-x64-linux
     strategy:
       matrix:
