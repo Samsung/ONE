@@ -1,19 +1,23 @@
 nnas_find_package(FlatBuffers EXACT 23.5.26 QUIET)
 
 if(NOT FlatBuffers_FOUND)
-  message(STATUS "Build mio-tflite: FAILED (missing Flatbuffers)")
+  message(STATUS "Build mio-tflite: FAILED (missing Flatbuffers 23.5.26)")
   return()
 endif(NOT FlatBuffers_FOUND)
 
-nnas_find_package(TensorFlowSource EXACT 2.3.0 QUIET)
+nnas_find_package(TensorFlowSource EXACT 2.12.1 QUIET)
 
 if(NOT TensorFlowSource_FOUND)
+  message(STATUS "Build mio-tflite: FAILED (missing TensorFlowSource 2.12.1)")
   return()
 endif(NOT TensorFlowSource_FOUND)
 
 message(STATUS "Build mio-tflite: TRUE")
+message(STATUS "Build mio-tflite: with ${TensorFlowSource_DIR}")
 
-set(SCHEMA_FILE "${TensorFlowSource_DIR}/tensorflow/lite/schema/schema.fbs")
+# TODO rollback to use TensorFlowSource_DIR after upgrade
+#set(SCHEMA_FILE "${TensorFlowSource_DIR}/tensorflow/lite/schema/schema.fbs")
+set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/res/TensorFlowLiteSchema/2.16.1/schema.fbs")
 
 # NOTE Use copy of schema.fbs as to provide unified way for circle also
 add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
@@ -22,7 +26,7 @@ add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/schema.fbs"
   DEPENDS "${SCHEMA_FILE}"
 )
 
-FlatBuffers_Target(mio_tflite
+FlatBuffersMuteable_Target(mio_tflite
   OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen/mio/tflite"
   INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/gen"
   SCHEMA_DIR "${CMAKE_CURRENT_BINARY_DIR}"
@@ -37,12 +41,22 @@ target_link_libraries(mio_tflite_example mio_tflite)
 add_executable(mio_tflite_validate example.cpp)
 target_link_libraries(mio_tflite_validate mio_tflite)
 
-nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.3.0 QUIET)
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE TESTS "src/*.test.cpp")
+list(REMOVE_ITEM SOURCES ${TESTS})
 
-if(NOT TensorFlowGEMMLowpSource_FOUND)
+add_library(mio_tflite_helper STATIC ${SOURCES})
+target_include_directories(mio_tflite_helper PRIVATE src)
+target_include_directories(mio_tflite_helper PUBLIC include)
+target_link_libraries(mio_tflite_helper mio_tflite)
+
+if(NOT ENABLE_TEST)
   return()
-endif(NOT TensorFlowGEMMLowpSource_FOUND)
+endif(NOT ENABLE_TEST)
 
-add_library(mio_tflite_inc INTERFACE)
-target_include_directories(mio_tflite_inc SYSTEM INTERFACE "${TensorFlowSource_DIR}")
-target_include_directories(mio_tflite_inc SYSTEM INTERFACE "${TensorFlowGEMMLowpSource_DIR}")
+nnas_find_package(GTest REQUIRED)
+
+GTest_AddTest(mio_tflite_helper_test ${TESTS})
+target_include_directories(mio_tflite_helper_test PRIVATE src)
+target_link_libraries(mio_tflite_helper_test mio_tflite)
+target_link_libraries(mio_tflite_helper_test mio_tflite_helper)
