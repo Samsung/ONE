@@ -22,7 +22,7 @@
 #include "CircleModel.h"
 #include "DataLookup.h"
 
-#include <mio_tflite2121/Helper.h>
+#include <mio_tflite/Helper.h>
 
 namespace tflite2circle
 {
