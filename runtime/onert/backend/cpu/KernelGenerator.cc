@@ -623,33 +623,6 @@ void KernelGenerator::visit(const ir::operation::OneHot &node)
   _return_fn = std::move(fn);
 }
 
-void KernelGenerator::visit(const ir::operation::Custom &node)
-{
-  auto fill_op_info = [&](const ir::OperandIndexSequence &opSeq,
-                          std::vector<custom::TypeInfo> &types,
-                          std::vector<IPortableTensor *> &tensors) {
-    for (const auto &idx : opSeq)
-    {
-      const auto &operand = _ctx.at(idx);
-      types.emplace_back(custom::TypeInfo{operand.shape(), operand.typeInfo().type()});
-      auto in_tensor = _tensor_reg->getPortableTensor(idx);
-      tensors.emplace_back(in_tensor);
-    }
-  };
-
-  backend::custom::CustomKernelConfigParams params{};
-
-  fill_op_info(node.getInputs(), params.input_types, params.input_tensors);
-  fill_op_info(node.getOutputs(), params.output_types, params.output_tensors);
-
-  params.userdata = node.userdata().data;
-  params.userdata_size = node.userdata().size;
-
-  auto fn = _kernel_builder->buildKernel(node.id(), std::move(params));
-
-  _return_fn = std::move(fn);
-}
-
 void KernelGenerator::visit(const ir::operation::ElementwiseActivation &node)
 {
   const auto output_index{node.getOutputs().at(0)};

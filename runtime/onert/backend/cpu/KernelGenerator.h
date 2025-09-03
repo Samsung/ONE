@@ -49,7 +49,6 @@ public:
   void visit(const ir::operation::Comparison &) override;
   void visit(const ir::operation::Concat &) override;
   void visit(const ir::operation::Conv2D &) override;
-  void visit(const ir::operation::Custom &node) override;
   void visit(const ir::operation::DepthToSpace &) override;
   void visit(const ir::operation::DepthwiseConv2D &) override;
   void visit(const ir::operation::DynamicUpdateSlice &) override;

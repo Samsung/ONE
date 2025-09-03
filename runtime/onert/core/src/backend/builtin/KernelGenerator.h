@@ -23,6 +23,7 @@
 #include "../../compiler/TensorRegistries.h"
 
 #include "backend/basic/KernelGeneratorBase.h"
+#include "backend/CustomKernelBuilder.h"
 #include "exec/IExecutors.h"
 #include "ir/Graph.h"
 
@@ -34,6 +35,7 @@ class KernelGenerator : public basic::KernelGeneratorBase
 public:
   KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,
                   const std::shared_ptr<TensorRegistry> &tensor_reg,
+                  const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
                   const std::shared_ptr<ExternalContext> &external_context);
 
   void setTensorRegistries(const compiler::TensorRegistries &tensor_registries)
@@ -51,6 +53,7 @@ public:
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
 
 private:
+  void visit(const ir::operation::Custom &) override;
   void visit(const ir::operation::Call &) override;
   void visit(const ir::operation::If &) override;
   void visit(const ir::operation::Permute &) override;
@@ -66,6 +69,7 @@ private:
   compiler::TensorRegistries _tensor_registries;
   exec::IExecutors *_executors;
   ir::ModelIndex _model_index;
+  std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
   const std::shared_ptr<ExternalContext> _external_context;
 };
 

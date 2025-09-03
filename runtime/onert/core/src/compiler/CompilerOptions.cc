@@ -110,12 +110,15 @@ std::unique_ptr<CompilerOptions> CompilerOptions::fromGlobalConfig()
 
 void CompilerOptions::forceInternalOptions()
 {
-  // Set control flow backend for control flow operators
+  // Set builtin backend for control flow operators
   auto &builtin_id = backend::builtin::Config::ID;
   manual_scheduler_options.opcode_to_backend[ir::OpCode::If] = builtin_id;
   manual_scheduler_options.opcode_to_backend[ir::OpCode::While] = builtin_id;
   manual_scheduler_options.opcode_to_backend[ir::OpCode::Call] = builtin_id;
   manual_scheduler_options.opcode_to_backend[ir::OpCode::Permute] = builtin_id;
+
+  // Set builtin backend for custom operator
+  manual_scheduler_options.opcode_to_backend[ir::OpCode::Custom] = builtin_id;
 
   // FIXME This is a workaround for bcq operations, should remove it
   manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQFullyConnected] = "bcq";
