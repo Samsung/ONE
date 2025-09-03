@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 #include "execute/OMTestUtils.h"
+#include "test_models/reduce_prod/Int8ReduceProdKernel.h"
 #include "test_models/reduce_prod/ReduceProdKernel.h"
 #include "test_models/reduce_prod/NegReduceProdKernel.h"
 
@@ -31,6 +32,8 @@ class ReduceProdTest : public ::testing::Test
 {
   // Do nothing
 };
+
+// ------------------------------------------------------------------------------------------------
 
 template <typename T>
 std::vector<T> checkReduceProdKernel(test_model::TestDataReduceProdBase<T> *test_data_base)
@@ -53,6 +56,15 @@ std::vector<T> checkReduceProdKernel(test_model::TestDataReduceProdBase<T> *test
   const size_t num_elements = interpreter.getOutputSizeAt(0);
   std::vector<T> output_data_vector(output_data, output_data + num_elements);
   return output_data_vector;
+}
+
+// ------------------------------------------------------------------------------------------------
+
+TEST_F(ReduceProdTest, Int8_P)
+{
+  test_model::TestDataInt8ReduceProd test_data_kernel;
+  std::vector<int8_t> output_data_vector = checkReduceProdKernel(&test_data_kernel);
+  EXPECT_THAT(output_data_vector, test_data_kernel.get_output_data_by_index(0));
 }
 
 TEST_F(ReduceProdTest, Float_P)
