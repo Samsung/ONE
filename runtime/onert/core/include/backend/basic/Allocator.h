@@ -22,6 +22,7 @@
 #ifndef __ONERT_BACKEND_BASIC_ALLOCATOR_H__
 #define __ONERT_BACKEND_BASIC_ALLOCATOR_H__
 
+#include <cstdint>
 #include <memory>
 
 namespace onert::backend::basic
