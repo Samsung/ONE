@@ -17,6 +17,7 @@
 #ifndef __LOCO_NODE_SUMMARY_H__
 #define __LOCO_NODE_SUMMARY_H__
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>
