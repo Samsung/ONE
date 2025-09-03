@@ -82,17 +82,6 @@ you should also give this to makefile template.
 ```
 $ CROSS_BUILD=1 ROOTFS_DIR=/home/user/rootfs/aarch64-jammy TARGET_ARCH=aarch64 make -f Makefile.template
 ```
-You can also omit the `CROSS_BUILD=1` option if you explicitly pass `ROOTFS_DIR`. In that case, if
-the `TARGET_ARCH` are differs from the hostarchitecture, the make script automatically applies
-`CROSS_BUILD=1`. So, if you set `ROOTFS_DIR` as an environment variable, you can simply perform
-normal build and cross build as follows.
-
-```
-$ export ROOTFS_DIR=xxx
-...
-$ make -f Makefile.template                       # do normal build
-$ TARGET_ARCH=aarch64 make -f Makefile.template   # do cross build
-```
 
 ### Run test
 

@@ -28,12 +28,7 @@ ifneq (,$(findstring android,$(TARGET_OS)))
 	# Android only allow aarch64 target-arch
 	TARGET_ARCH_LC=aarch64
 endif
-# Set CROSS_BUILD=1 when ROOTFS_DIR is given, and TARGET_ARCH is different to HOST_ARCH.
-ifneq ($(ROOTFS_DIR),)
-ifneq ($(TARGET_ARCH_LC),$(HOST_ARCH_LC))
-  CROSS_BUILD=$(if $(wildcard $(ROOTFS_DIR)),1,0)
-endif
-endif
+
 # the toolchain file, only for cross build
 ifeq ($(CROSS_BUILD),1)
 	TOOLCHAIN_FILE=cmake/buildtool/cross/toolchain_$(TARGET_ARCH_LC)-$(TARGET_OS).cmake
@@ -91,10 +86,6 @@ OVERLAY_FOLDER?=$(WORKSPACE)/overlay
 INSTALL_ALIAS=$(WORKHOME)/out
 BUILDTOOL_PATH?=$(BUILDTOOL_WORKSPACE)/out
 
-TIMESTAMP_CONFIGURE=$(WORKSPACE)/CONFIGURE
-TIMESTAMP_BUILD=$(WORKSPACE)/BUILD
-TIMESTAMP_INSTALL=$(WORKSPACE)/INSTALL
-
 ###
 ### Common environment variable
 ###
@@ -147,13 +138,11 @@ distclean:
 ###
 ### Command (internal)
 ###
-$(WORKSPACE):
-	mkdir -p $@
-
-prepare_buildtool_internal: $(WORKSPACE)
+prepare_buildtool_internal:
 	cmake -S runtime/infra/buildtool -B $(BUILDTOOL_WORKSPACE)/obj -DBUILDTOOL_PATH=$(BUILDTOOL_PATH)
 	cmake --build $(BUILDTOOL_WORKSPACE)/obj/ -j$(NPROCS)
-prepare_nncc_internal: $(WORKSPACE)
+
+prepare_nncc_internal:
 ifeq (,$(findstring android,$(TARGET_OS)))
 	EXTERNAL_FLATC=$(BUILDTOOL_PATH)/bin/flatc ./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=$(NPROCS) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
 		-DCMAKE_INSTALL_PREFIX=$(OVERLAY_FOLDER) \
@@ -169,11 +158,7 @@ ifeq (,$(findstring android,$(TARGET_OS)))
 	@echo "Done prepare-nncc"
 endif
 
-configure_internal: $(WORKSPACE)
-ifneq ($(DEBIAN_BUILD),)
-	test -d externals || mkdir -p externals
-	find packaging/ -type f -name "*.tar.gz" | xargs -i tar xf {} -C externals
-endif
+configure_internal:
 	./nnfw configure \
 		-DCMAKE_BUILD_TYPE=$(BUILD_TYPE_LC) \
 		-DNNFW_OVERLAY_DIR=$(OVERLAY_FOLDER) \
