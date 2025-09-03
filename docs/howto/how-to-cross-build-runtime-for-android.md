@@ -30,19 +30,29 @@ $ docker build -t nnfw/one-devtools:android-sdk -f infra/docker/android-sdk/Dock
 ### Build and install the runtime
 
 Some tools/libs are still not supported and those are not built by default - mostly due to dependency on HDF5 library.
-Please refer to `infra/nnfw/cmake/options/options_aarch64-android.cmake` for details.
 
 Different from cross build for linux,
 
-- `NDK_DIR` is required
+- Wrapper toolchain file for Android NDK: `runtime/infra/cmake/buildtool/cross/toolchain_aarch64-android.cmake`
+- `ANDROID_NDK` environment variable or `CMAKE_ANDROID_NDK` cmake variable is required
 
-If you are using docker image `nnfw/one-devtools:android-sdk`, you don't need to specify `NDK_DIR` because it is already set in the image.
+If you are using docker image `nnfw/one-devtools:android-sdk`, you don't need to specify above variable because environment variable is already set in the image.
 
 Here is an example of using Makefile.
 
 ```bash
 TARGET_OS=android \
 CROSS_BUILD=1 \
-NDK_DIR=/path/android-sdk/ndk/{ndk-version}/ \
+ANDROID_NDK=/path/android-sdk/ndk/{ndk-version}/ \
 make -f Makefile.template install
+```
+
+Otherwise, you can use command
+```
+$ source .venv/bin/activate
+(.venv)$ ./nnfw configure \
+  -DCMAKE_TOOLCHAIN_FILE=infra/cmake/buildtool/cross/toolchain_aarch64-android.cmake \
+  -DCMAKE_ANDROID_NDK=/path/android-sdk/ndk/{ndk-version}
+(.venv)$ ./nnfw build
+(.venv)$ ./nnfw install --prefix build/onert/out
 ```

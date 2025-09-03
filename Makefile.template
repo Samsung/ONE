@@ -51,9 +51,12 @@ else
 	endif
 endif
 
+# Workaround to use NDK_DIR
+# TODO remove NDK_DIR
 ifeq ($(TARGET_OS),android)
-	OPTIONS+= -DNDK_DIR=$(NDK_DIR)
-	OPTIONS_NNCC+= -DNDK_DIR=$(NDK_DIR)
+ifneq ($(NDK_DIR),)
+	OPTIONS+= -DCMAKE_ANDROID_NDK=$(NDK_DIR)
+endif
 endif
 
 ifneq ($(ANDROID_BUILD_TOOLS_DIR),)
