@@ -47,8 +47,8 @@ public:
   void verifyForward(const std::vector<T> input, const std::vector<T> expected_output,
                      bool expect_eq = true)
   {
-    assert(input.size() == _in_shape.FlatSize());
-    assert(expected_output.size() == _out_shape.FlatSize());
+    assert(input.size() == static_cast<size_t>(_in_shape.FlatSize()));
+    assert(expected_output.size() == static_cast<size_t>(_out_shape.FlatSize()));
 
     std::vector<T> cacluated_output(_out_shape.FlatSize());
     nnfw::cker::train::MaxPool2D(_op_params, _in_shape, input.data(), _out_shape,
@@ -63,8 +63,8 @@ public:
   void verifyBackward(const std::vector<T> incoming_data, const std::vector<T> expected_grad_data,
                       bool expect_eq = true)
   {
-    assert(incoming_data.size() == _out_shape.FlatSize());
-    assert(expected_grad_data.size() == _in_shape.FlatSize());
+    assert(incoming_data.size() == static_cast<size_t>(_out_shape.FlatSize()));
+    assert(expected_grad_data.size() == static_cast<size_t>(_in_shape.FlatSize()));
 
     std::vector<T> calcuated_grad(_in_shape.FlatSize());
     nnfw::cker::train::MaxPool2DGrad(_out_shape, incoming_data.data(), _arg_max_index.data(),

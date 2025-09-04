@@ -75,7 +75,7 @@ public:
                       const nnfw::cker::Shape &input_shape, const T *input_data,
                       const nnfw::cker::Shape &filter_shape, const T *filter_data,
                       const nnfw::cker::Shape &bias_shape, const T *bias_data,
-                      const nnfw::cker::Shape &output_shape, const T *expected)
+                      const nnfw::cker::Shape &output_shape, const T *)
   {
     std::vector<T> output(output_shape.FlatSize());
     EXPECT_ANY_THROW(
