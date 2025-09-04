@@ -60,7 +60,7 @@ add_executable(${TEST_ONERT_CORE} ${TESTS})
 
 target_link_libraries(${TEST_ONERT_CORE} onert_core)
 # Requires linking nnfw_coverage: check header coverage
-target_link_libraries(${TEST_ONERT_CORE} nnfw_coverage)
+target_link_libraries(${TEST_ONERT_CORE} nnfw_common nnfw_coverage)
 target_link_libraries(${TEST_ONERT_CORE} gtest gtest_main dl ${LIB_PTHREAD})
 
 add_test(${TEST_ONERT_CORE} ${TEST_ONERT_CORE})

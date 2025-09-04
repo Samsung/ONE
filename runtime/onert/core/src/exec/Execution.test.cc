@@ -891,12 +891,12 @@ TEST(ExecInstance, multi_model_dequant_input_quant_output)
   float scale = 0.1;
   int32_t zero_point = 128;
 
-  mockup.coptions->input_type.insert_or_assign(input1,
-                                               TypeInfo(DataType::QUANT_UINT8_ASYMM, 0.1, 128));
-  mockup.coptions->input_type.insert_or_assign(input2,
-                                               TypeInfo(DataType::QUANT_UINT8_ASYMM, 0.1, 128));
-  mockup.coptions->output_type.insert_or_assign(output,
-                                                TypeInfo(DataType::QUANT_UINT8_ASYMM, 0.1, 128));
+  mockup.coptions->input_type.insert_or_assign(
+    input1, TypeInfo(DataType::QUANT_UINT8_ASYMM, scale, zero_point));
+  mockup.coptions->input_type.insert_or_assign(
+    input2, TypeInfo(DataType::QUANT_UINT8_ASYMM, scale, zero_point));
+  mockup.coptions->output_type.insert_or_assign(
+    output, TypeInfo(DataType::QUANT_UINT8_ASYMM, scale, zero_point));
   mockup.compile();
   auto executors = mockup.artifact->_executors;
 

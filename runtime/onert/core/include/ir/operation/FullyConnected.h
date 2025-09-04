@@ -37,9 +37,9 @@ public:
 
   struct Param
   {
-    Activation activation;
-    FullyConnectedWeightsFormat weights_format;
-    bool keep_num_dims;
+    Activation activation = Activation::NONE;
+    FullyConnectedWeightsFormat weights_format = FullyConnectedWeightsFormat::Default;
+    bool keep_num_dims = false;
   };
 
 public:

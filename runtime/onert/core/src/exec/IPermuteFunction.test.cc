@@ -34,7 +34,7 @@ class MockUpTensor : public ITensor
 {
 public:
   MockUpTensor(const Shape &shape, const TypeInfo &type_info, Layout layout, size_t pad)
-    : _shape(shape), _type_info(type_info), _data(nullptr), _layout(layout)
+    : _shape(shape), _type_info(type_info), _layout(layout), _data(nullptr)
   {
     _strides.resize(shape.rank());
 
@@ -61,7 +61,7 @@ public:
   size_t calcOffset(const ir::Coordinates &coords) const override
   {
     size_t offset = 0;
-    for (size_t i = 0; i < _shape.rank(); ++i)
+    for (int i = 0; i < _shape.rank(); ++i)
     {
       offset += (_strides[i] * coords[i]);
     }
@@ -547,7 +547,7 @@ TEST(IPermuteFunction, qasymm8_to_float)
 
   int32_t min_val = std::numeric_limits<uint8_t>::min();
   int32_t max_val = std::numeric_limits<uint8_t>::max();
-  for (int32_t i = 0; i < sizeof(expected_buffer) / sizeof(float); ++i)
+  for (uint32_t i = 0; i < sizeof(expected_buffer) / sizeof(float); ++i)
   {
     int32_t unclamped = static_cast<int32_t>(std::round(expected_buffer[i] / scale)) + zero_point;
     input_buffer[i] = std::min(std::max(unclamped, min_val), max_val);
@@ -607,7 +607,7 @@ TEST(IPermuteFunction, qsymm8_to_float)
 
   int32_t min_val = std::numeric_limits<int8_t>::min();
   int32_t max_val = std::numeric_limits<int8_t>::max();
-  for (int32_t i = 0; i < sizeof(expected_buffer) / sizeof(float); ++i)
+  for (uint32_t i = 0; i < sizeof(expected_buffer) / sizeof(float); ++i)
   {
     int32_t unclamped = static_cast<int32_t>(std::round(expected_buffer[i] / scale)) + zero_point;
     input_buffer[i] = std::min(std::max(unclamped, min_val), max_val);
@@ -667,7 +667,7 @@ TEST(IPermuteFunction, qsymm16_to_float)
 
   int32_t min_val = std::numeric_limits<int16_t>::min();
   int32_t max_val = std::numeric_limits<int16_t>::max();
-  for (int32_t i = 0; i < sizeof(expected_buffer) / sizeof(float); ++i)
+  for (uint32_t i = 0; i < sizeof(expected_buffer) / sizeof(float); ++i)
   {
     int32_t unclamped = static_cast<int32_t>(std::round(expected_buffer[i] / scale)) + zero_point;
     input_buffer[i] = std::min(std::max(unclamped, min_val), max_val);
@@ -812,11 +812,11 @@ TEST(IPermuteFunction, float_qasymm8_layout)
                                -80, 90, -100, 110, -120, 130, -140, 150, -160};
     float scale = 10;
     int32_t zero_point = 128;
-    uint8_t input_buffer[18];
+    uint8_t input_buffer[18] = {};
 
     int32_t min_val = std::numeric_limits<int16_t>::min();
     int32_t max_val = std::numeric_limits<int16_t>::max();
-    for (int32_t i = 0; i < sizeof(expected_buffer) / sizeof(float); ++i)
+    for (uint32_t i = 0; i < sizeof(expected_buffer) / sizeof(float); ++i)
     {
       int32_t unclamped = static_cast<int32_t>(std::round(expected_buffer[i] / scale)) + zero_point;
       input_buffer[i] = std::min(std::max(unclamped, min_val), max_val);
@@ -836,7 +836,7 @@ TEST(IPermuteFunction, float_qasymm8_layout)
       }
       TypeInfo type_info{DataType::QUANT_UINT8_ASYMM, scale, zero_point};
       inputs[i] = std::make_unique<MockUpTensor>(shape, type_info, layout, input_pads[i]);
-      inputs[i]->setBuffer(reinterpret_cast<uint8_t *>(expected_buffer));
+      inputs[i]->setBuffer(reinterpret_cast<uint8_t *>(input_buffer));
 
       if (layout == Layout::NHWC)
       {

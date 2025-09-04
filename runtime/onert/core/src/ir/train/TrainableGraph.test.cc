@@ -224,9 +224,9 @@ TEST(TrainableGraph, truncating_backward_topological_order_nonlinear)
     tgraph.addInput({y_true});
     tgraph.addOutput({output});
 
-    auto ea1 = addElementwiseActivationOperation(tgraph, {input}, {u});
+    [[maybe_unused]] auto ea1 = addElementwiseActivationOperation(tgraph, {input}, {u});
     auto fc1 = addFullyConnectedOperation(tgraph, {u, weight1, bias1}, {v});
-    auto ea2 = addElementwiseActivationOperation(tgraph, {input}, {w});
+    [[maybe_unused]] auto ea2 = addElementwiseActivationOperation(tgraph, {input}, {w});
     auto fc2 = addFullyConnectedOperation(tgraph, {w, weight2, bias2}, {x});
     auto add = addAddOperation(tgraph, {v, x}, {y_pred});
     auto loss = addLossOperation(tgraph, {y_pred, y_true}, {output});
@@ -291,10 +291,10 @@ TEST(TrainableGraph, truncating_backward_topological_order_nonlinear)
 
     auto fc3 = addFullyConnectedOperation(tgraph, {input1, weight3}, {r});
     auto add1 = addAddOperation(tgraph, {r, input}, {s});
-    auto add2 = addAddOperation(tgraph, {input, input2}, {t});
+    [[maybe_unused]] auto add2 = addAddOperation(tgraph, {input, input2}, {t});
     auto ea1 = addElementwiseActivationOperation(tgraph, {s}, {u});
     auto fc1 = addFullyConnectedOperation(tgraph, {u, weight1, bias1}, {v});
-    auto ea2 = addElementwiseActivationOperation(tgraph, {t}, {w});
+    [[maybe_unused]] auto ea2 = addElementwiseActivationOperation(tgraph, {t}, {w});
     auto fc2 = addFullyConnectedOperation(tgraph, {w, weight2, bias2}, {x});
     auto add = addAddOperation(tgraph, {v, x}, {y_pred});
     auto loss = addLossOperation(tgraph, {y_pred, y_true}, {output});
@@ -363,10 +363,10 @@ TEST(TrainableGraph, essential_backward_topological_order_nonlinear)
 
     auto fc3 = addFullyConnectedOperation(tgraph, {input1, weight3}, {r});
     auto add1 = addAddOperation(tgraph, {r, input}, {s});
-    auto add2 = addAddOperation(tgraph, {input, input2}, {t});
+    [[maybe_unused]] auto add2 = addAddOperation(tgraph, {input, input2}, {t});
     auto ea1 = addElementwiseActivationOperation(tgraph, {s}, {u});
     auto fc1 = addFullyConnectedOperation(tgraph, {u, weight1, bias1}, {v});
-    auto ea2 = addElementwiseActivationOperation(tgraph, {t}, {w});
+    [[maybe_unused]] auto ea2 = addElementwiseActivationOperation(tgraph, {t}, {w});
     auto fc2 = addFullyConnectedOperation(tgraph, {w, weight2, bias2}, {x});
     auto add = addAddOperation(tgraph, {v, x}, {y_pred});
     auto loss = addLossOperation(tgraph, {y_pred, y_true}, {output});

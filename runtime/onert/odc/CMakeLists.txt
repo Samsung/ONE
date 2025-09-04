@@ -27,7 +27,7 @@ add_executable(${TEST_ONERT_ODC} ${TESTS})
 
 target_link_libraries(${TEST_ONERT_ODC} onert_odc)
 # Requires linking nnfw_coverage: check header coverage
-target_link_libraries(${TEST_ONERT_CORE} nnfw_coverage)
+target_link_libraries(${TEST_ONERT_ODC} nnfw_common nnfw_coverage)
 target_link_libraries(${TEST_ONERT_ODC} gtest gtest_main dl ${LIB_PTHREAD})
 target_include_directories(${TEST_ONERT_ODC} PRIVATE $<TARGET_PROPERTY:onert_odc,INCLUDE_DIRECTORIES>)
 
