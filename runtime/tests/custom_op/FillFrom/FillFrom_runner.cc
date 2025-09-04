@@ -61,10 +61,10 @@ uint64_t NowMicros()
 uint64_t num_elems(const nnfw_tensorinfo *ti)
 {
   uint64_t n = 1;
-  for (uint32_t i = 0; i < ti->rank; ++i)
+  for (int32_t i = 0; i < ti->rank; ++i)
   {
     assert(ti->dims[i] >= 0);
-    n *= ti->dims[i];
+    n *= static_cast<uint64_t>(ti->dims[i]);
   }
   return n;
 };
@@ -190,7 +190,6 @@ int main(const int argc, char **argv)
 
   auto generateInputs = [session, num_inputs, &inputs]() {
     // generate random data
-    const int seed = 1;
     for (uint32_t i = 0; i < num_inputs; ++i)
     {
       nnfw_tensorinfo ti;
