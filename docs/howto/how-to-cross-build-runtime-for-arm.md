@@ -103,18 +103,6 @@ $ source .venv/bin/activate
 CROSS_BUILD=1 TARGET_ARCH=armv7l make -f Makefile.template
 ```
 
-You can also omit the `CROSS_BUILD=1` option if you explicitly pass `ROOTFS_DIR`. In that case, if
-the `TARGET_ARCH` are differs from the hostarchitecture, the make script automatically applies
-`CROSS_BUILD=1`. So, if you set `ROOTFS_DIR` as an environment variable, you can simply perform
-normal build and cross build as follows.
-
-```
-(.venv)$ export ROOTFS_DIR=xxx
-...
-(.venv)$ make -f Makefile.template                     # do normal build
-(.venv)$ TARGET_ARCH=armv7l make -f Makefile.template  # do cross build
-```
-
 Makefile.template will pass crossbuild toolchain setting to cmake automatically by parsing variables.
 
 ### Run test
