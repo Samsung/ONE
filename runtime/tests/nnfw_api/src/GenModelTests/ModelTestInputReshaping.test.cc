@@ -92,6 +92,6 @@ TEST(TestDynamicTensor, input_reshaping)
   NNFW_ENSURE_SUCCESS(nnfw_run(session));
 
   // compare
-  for (int i = 0; i < expected.size(); ++i)
+  for (size_t i = 0; i < expected.size(); ++i)
     ASSERT_EQ(expected[i], actual_output[i]);
 }

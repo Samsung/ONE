@@ -178,9 +178,9 @@ bool tensorInfoEqual(const nnfw_tensorinfo &info1, const nnfw_tensorinfo &info2)
 uint64_t tensorInfoNumElements(const nnfw_tensorinfo &ti)
 {
   uint64_t n = 1;
-  for (uint32_t i = 0; i < ti.rank; ++i)
+  for (int32_t i = 0; i < ti.rank; ++i)
   {
-    n *= ti.dims[i];
+    n *= static_cast<uint64_t>(ti.dims[i]);
   }
   return n;
 }

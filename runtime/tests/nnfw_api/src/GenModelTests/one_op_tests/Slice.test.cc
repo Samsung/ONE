@@ -83,7 +83,7 @@ TEST_P(SliceVariation, Test)
   {
     std::vector<int64_t> begins_64(param.begins.size());
     std::vector<int64_t> sizes_64(param.sizes.size());
-    for (int i = 0; i < param.begins.size(); i++)
+    for (size_t i = 0; i < param.begins.size(); i++)
     {
       begins_64[i] = param.begins[i];
       sizes_64[i] = param.sizes[i];
@@ -148,7 +148,7 @@ TEST_P(SliceVariation, neg_DiffType)
   {
     uint32_t begins_buf = cgen.addBuffer(param.begins);
     std::vector<int64_t> sizes_64(param.sizes.size());
-    for (int i = 0; i < param.begins.size(); i++)
+    for (size_t i = 0; i < param.begins.size(); i++)
     {
       sizes_64[i] = param.sizes[i];
     }
@@ -164,7 +164,7 @@ TEST_P(SliceVariation, neg_DiffType)
   else if (param.begins_type == circle::TensorType::TensorType_INT64)
   {
     std::vector<int64_t> begins_64(param.begins.size());
-    for (int i = 0; i < param.begins.size(); i++)
+    for (size_t i = 0; i < param.begins.size(); i++)
     {
       begins_64[i] = param.begins[i];
     }

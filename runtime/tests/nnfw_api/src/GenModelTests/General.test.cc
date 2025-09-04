@@ -62,11 +62,13 @@ TEST_F(GenModelTest, UnusedConstOutputAndAdd)
 
 TEST_F(GenModelTest, UsedConstOutput)
 {
-  // (( Input 1 )) ---------\
-  //                         |=> [ Add ] -> (( Output 1 ))
-  // (( Const Output 2 )) --<
-  //                         |=> [ Add ] -> (( Output 0 ))
-  // (( Input 0 )) ---------/
+  /*
+   * (( Input 1 )) ---------\
+   *                         |=> [ Add ] -> (( Output 1 ))
+   * (( Const Output 2 )) --<
+   *                         |=> [ Add ] -> (( Output 0 ))
+   * (( Input 0 )) ---------/
+   */
   CircleGen cgen;
   uint32_t rhs_buf = cgen.addBuffer(std::vector<float>{6, 4, 8, 1});
   int in0 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});

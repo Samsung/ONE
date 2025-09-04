@@ -34,6 +34,7 @@ target_link_libraries(${RUNTIME_NNFW_API_TEST} nnfw-dev jsoncpp)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} gtest gmock)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} ${LIB_PTHREAD} dl)
 target_link_libraries(${RUNTIME_NNFW_API_TEST} circle_schema)
+target_link_libraries(${RUNTIME_NNFW_API_TEST} nnfw_common)
 
 install(TARGETS ${RUNTIME_NNFW_API_TEST} DESTINATION unittest)
 

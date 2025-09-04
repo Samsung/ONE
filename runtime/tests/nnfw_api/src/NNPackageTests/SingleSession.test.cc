@@ -52,7 +52,7 @@ TEST_F(ValidationTestSingleSession, neg_set_input_001)
 
 TEST_F(ValidationTestSingleSession, neg_set_input_002)
 {
-  char input[32];
+  char input[32] = {};
   ASSERT_EQ(nnfw_set_input(nullptr, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)),
             NNFW_STATUS_UNEXPECTED_NULL);
 }

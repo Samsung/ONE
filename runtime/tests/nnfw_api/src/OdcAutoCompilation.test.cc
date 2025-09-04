@@ -89,7 +89,7 @@ TEST(TestOdcAutoCompilation, AutoCompilation_test)
 
   // Run FLOAT MODEL
   // prepare input and output data and run model
-  for (size_t idx = 0; idx < RUNS_COUNT_FOR_QUANTIZATION; idx++)
+  for (int idx = 0; idx < RUNS_COUNT_FOR_QUANTIZATION; idx++)
   {
 
     // prepare input
@@ -119,7 +119,7 @@ TEST(TestOdcAutoCompilation, AutoCompilation_test)
   }
 
   // Run COMPILED or QUANTIZED MODEL
-  for (size_t idx = 0; idx < RUNS_COUNT_FOR_QUANTIZATION; idx++)
+  for (int idx = 0; idx < RUNS_COUNT_FOR_QUANTIZATION; idx++)
   {
 
     // prepare input
