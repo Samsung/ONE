@@ -24,6 +24,7 @@
 #define __ONERT_UTIL_SET_H__
 
 #include <cassert>
+#include <cstdint>
 #include <unordered_set>
 
 namespace onert::util
