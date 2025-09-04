@@ -90,7 +90,7 @@ struct MixedTyped {
 typedef std::pair<MixedTyped, MixedTyped> MixedTypedExampleType;
 
 // Mixed-typed examples
-typedef struct {
+typedef struct MixedTypedExample {
     MixedTypedExampleType operands;
     // Specifies the RANDOM_MULTINOMIAL distribution tolerance.
     // If set to greater than zero, the input is compared as log-probabilities

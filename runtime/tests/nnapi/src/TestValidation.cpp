@@ -85,10 +85,14 @@ class ValidationTestIdentify : public ValidationTestModel {
         uint32_t dimensions[]{1};
         ANeuralNetworksOperandType tensorType{.type = ANEURALNETWORKS_TENSOR_FLOAT32,
                                               .dimensionCount = 1,
-                                              .dimensions = dimensions};
+                                              .dimensions = dimensions,
+                                              .scale = 0,
+                                              .zeroPoint = 0};
         ANeuralNetworksOperandType scalarType{.type = ANEURALNETWORKS_INT32,
                                               .dimensionCount = 0,
-                                              .dimensions = nullptr};
+                                              .dimensions = nullptr,
+                                              .scale = 0,
+                                              .zeroPoint = 0};
         ASSERT_EQ(ANeuralNetworksModel_addOperand(mModel, &tensorType), ANEURALNETWORKS_NO_ERROR);
         ASSERT_EQ(ANeuralNetworksModel_addOperand(mModel, &tensorType), ANEURALNETWORKS_NO_ERROR);
         ASSERT_EQ(ANeuralNetworksModel_addOperand(mModel, &scalarType), ANEURALNETWORKS_NO_ERROR);
@@ -115,10 +119,14 @@ protected:
         uint32_t dimensions[]{1};
         ANeuralNetworksOperandType tensorType{.type = ANEURALNETWORKS_TENSOR_FLOAT32,
                                               .dimensionCount = 1,
-                                              .dimensions = dimensions};
+                                              .dimensions = dimensions,
+                                              .scale = 0,
+                                              .zeroPoint = 0};
         ANeuralNetworksOperandType scalarType{.type = ANEURALNETWORKS_INT32,
                                               .dimensionCount = 0,
-                                              .dimensions = nullptr};
+                                              .dimensions = nullptr,
+                                              .scale = 0,
+                                              .zeroPoint = 0};
 
         ASSERT_EQ(ANeuralNetworksModel_addOperand(mModel, &tensorType), ANEURALNETWORKS_NO_ERROR);
         ASSERT_EQ(ANeuralNetworksModel_addOperand(mModel, &tensorType), ANEURALNETWORKS_NO_ERROR);
@@ -169,7 +177,7 @@ TEST_F(ValidationTest, CreateModel) {
 
 TEST_F(ValidationTestModel, AddOperand) {
     ANeuralNetworksOperandType floatType{
-                .type = ANEURALNETWORKS_FLOAT32, .dimensionCount = 0, .dimensions = nullptr};
+                .type = ANEURALNETWORKS_FLOAT32, .dimensionCount = 0, .dimensions = nullptr, .scale = 0, .zeroPoint = 0};
     EXPECT_EQ(ANeuralNetworksModel_addOperand(nullptr, &floatType),
               ANEURALNETWORKS_UNEXPECTED_NULL);
     EXPECT_EQ(ANeuralNetworksModel_addOperand(mModel, nullptr), ANEURALNETWORKS_UNEXPECTED_NULL);
@@ -202,6 +210,8 @@ TEST_F(ValidationTestModel, AddOperand) {
                 // scalar types can only 0 dimensions.
                 .dimensionCount = 1,
                 .dimensions = &dim,
+                .scale = 0,
+                .zeroPoint = 0
               };
     EXPECT_EQ(ANeuralNetworksModel_addOperand(mModel, &invalidScalarType),
               ANEURALNETWORKS_BAD_DATA);
@@ -214,7 +224,7 @@ TEST_F(ValidationTestModel, AddOperand) {
 
 TEST_F(ValidationTestModel, SetOptionalOperand) {
     ANeuralNetworksOperandType floatType{
-                .type = ANEURALNETWORKS_FLOAT32, .dimensionCount = 0, .dimensions = nullptr};
+                .type = ANEURALNETWORKS_FLOAT32, .dimensionCount = 0, .dimensions = nullptr, .scale = 0, .zeroPoint = 0};
     EXPECT_EQ(ANeuralNetworksModel_addOperand(mModel, &floatType), ANEURALNETWORKS_NO_ERROR);
 
     EXPECT_EQ(ANeuralNetworksModel_setOperandValue(mModel, 0, nullptr, 0),
@@ -223,7 +233,7 @@ TEST_F(ValidationTestModel, SetOptionalOperand) {
 
 TEST_F(ValidationTestModel, SetOperandValue) {
     ANeuralNetworksOperandType floatType{
-                .type = ANEURALNETWORKS_FLOAT32, .dimensionCount = 0, .dimensions = nullptr};
+                .type = ANEURALNETWORKS_FLOAT32, .dimensionCount = 0, .dimensions = nullptr, .scale = 0, .zeroPoint = 0};
     EXPECT_EQ(ANeuralNetworksModel_addOperand(mModel, &floatType), ANEURALNETWORKS_NO_ERROR);
 
     char buffer[20];
@@ -255,7 +265,9 @@ TEST_F(ValidationTestModel, SetOperandValueFromMemory) {
     ANeuralNetworksOperandType floatType{
                 .type = ANEURALNETWORKS_TENSOR_FLOAT32,
                 .dimensionCount = 1,
-                .dimensions = dimensions};
+                .dimensions = dimensions,
+                .scale = 0,
+                .zeroPoint = 0};
     EXPECT_EQ(ANeuralNetworksModel_addOperand(mModel, &floatType), ANEURALNETWORKS_NO_ERROR);
 
     const size_t memorySize = 20;
