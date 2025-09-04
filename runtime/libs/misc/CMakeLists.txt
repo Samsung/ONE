@@ -15,7 +15,7 @@ endif(NOT ENABLE_TEST)
 
 add_executable(nnfw_lib_misc_test ${TESTS})
 target_link_libraries(nnfw_lib_misc_test PRIVATE nnfw_lib_misc)
-target_link_libraries(nnfw_lib_misc_test PRIVATE nnfw_coverage)
+target_link_libraries(nnfw_lib_misc_test PRIVATE nnfw_common nnfw_coverage)
 target_link_libraries(nnfw_lib_misc_test PUBLIC gtest gtest_main ${LIB_PTHREAD})
 
 add_test(nnfw_lib_misc_test nnfw_lib_misc_test)
