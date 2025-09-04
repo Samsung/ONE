@@ -138,7 +138,7 @@ int main(const int argc, char **argv)
 
     const auto &signature = args.getSignature();
     if (signature != "")
-      NNPR_ENSURE_STATUS(nnfw_set_signature_for_tensorinfo(session, signature.c_str()));
+      NNPR_ENSURE_STATUS(nnfw_configure_signature(session, signature.c_str()));
 
     uint32_t num_inputs;
     uint32_t num_outputs;

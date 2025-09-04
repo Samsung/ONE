@@ -1009,15 +1009,14 @@ NNFW_STATUS nnfw_session::set_workspace(const char *dir)
   return NNFW_STATUS_NO_ERROR;
 }
 
-NNFW_STATUS nnfw_session::set_signature_for_tensorinfo(const char *signature)
+NNFW_STATUS nnfw_session::configure_signature(const char *signature)
 {
   if (!signature)
     return NNFW_STATUS_UNEXPECTED_NULL;
 
   if (!isStateModelLoaded())
   {
-    std::cerr << "Error during nnfw_session::set_signature_for_tensorinfo : invalid state"
-              << std::endl;
+    std::cerr << "Error during nnfw_session::configure_signature : invalid state" << std::endl;
     return NNFW_STATUS_INVALID_STATE;
   }
 
@@ -1031,7 +1030,7 @@ NNFW_STATUS nnfw_session::set_signature_for_tensorinfo(const char *signature)
     }
   }
 
-  std::cerr << "Error during nnfw_session::set_signature_for_tensorinfo : cannot find signature \""
+  std::cerr << "Error during nnfw_session::configure_signature : cannot find signature \""
             << signature << "\"" << std::endl;
   return NNFW_STATUS_ERROR;
 }
