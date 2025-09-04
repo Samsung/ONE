@@ -66,7 +66,8 @@ public:
     context->tensor_registry = tr;
     context->tensor_builder = tb;
     context->kernel_gen = std::make_shared<KernelGenerator>(
-      *context->graph(), tb->dynamicTensorManager(), tr, context->external_context());
+      *context->graph(), tb->dynamicTensorManager(), tr, context->data().custom_kernel_builder,
+      context->external_context());
     return context;
   }
 
