@@ -263,8 +263,10 @@ install -m 644 %{overlay_path}/lib/libloco*.so %{buildroot}%{_libdir}/nnfw/odc
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 %dir %{_includedir}/nnfw
 %{_includedir}/nnfw/*
+%{_includedir}/ggma/*
 %{_libdir}/pkgconfig/nnfw.pc
 %{_libdir}/pkgconfig/onert.pc
+%{_libdir}/pkgconfig/ggma.pc
 %endif
 
 %files plugin-devel
