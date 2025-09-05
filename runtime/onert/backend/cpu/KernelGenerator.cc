@@ -226,14 +226,12 @@ ops::ReduceType convertReduceType(ir::operation::Reduce::ReduceType reduce_type_
 }
 } // namespace
 
-KernelGenerator::KernelGenerator(
-  const ir::Graph &graph, const std::shared_ptr<TensorBuilder> &tensor_builder,
-  const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
-  const std::shared_ptr<backend::custom::IKernelBuilder> &kernel_builder,
-  const std::shared_ptr<ExternalContext> &external_context)
+KernelGenerator::KernelGenerator(const ir::Graph &graph,
+                                 const std::shared_ptr<TensorBuilder> &tensor_builder,
+                                 const std::shared_ptr<basic::TensorRegistry> &tensor_reg,
+                                 const std::shared_ptr<ExternalContext> &external_context)
   : basic::KernelGeneratorBase{graph}, _ctx(graph.operands()), _operations_ctx{graph.operations()},
-    _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}, _kernel_builder(kernel_builder),
-    _external_context(external_context)
+    _tensor_builder(tensor_builder), _tensor_reg{tensor_reg}, _external_context(external_context)
 {
   // DO NOTHING
 }
