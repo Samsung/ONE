@@ -17852,6 +17852,7 @@ struct BCQFullyConnectedOptionsT : public ::flatbuffers::NativeTable
   typedef BCQFullyConnectedOptions TableType;
   int32_t weights_hidden_size = 0;
   circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE;
+  int32_t lsh_choices = 0;
 };
 
 struct BCQFullyConnectedOptions FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table
@@ -17861,7 +17862,8 @@ struct BCQFullyConnectedOptions FLATBUFFERS_FINAL_CLASS : private ::flatbuffers:
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE
   {
     VT_WEIGHTS_HIDDEN_SIZE = 4,
-    VT_FUSED_ACTIVATION_FUNCTION = 6
+    VT_FUSED_ACTIVATION_FUNCTION = 6,
+    VT_LSH_CHOICES = 8
   };
   int32_t weights_hidden_size() const { return GetField<int32_t>(VT_WEIGHTS_HIDDEN_SIZE, 0); }
   circle::ActivationFunctionType fused_activation_function() const
@@ -17869,11 +17871,13 @@ struct BCQFullyConnectedOptions FLATBUFFERS_FINAL_CLASS : private ::flatbuffers:
     return static_cast<circle::ActivationFunctionType>(
       GetField<int8_t>(VT_FUSED_ACTIVATION_FUNCTION, 0));
   }
+  int32_t lsh_choices() const { return GetField<int32_t>(VT_LSH_CHOICES, 0); }
   bool Verify(::flatbuffers::Verifier &verifier) const
   {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_WEIGHTS_HIDDEN_SIZE, 4) &&
-           VerifyField<int8_t>(verifier, VT_FUSED_ACTIVATION_FUNCTION, 1) && verifier.EndTable();
+           VerifyField<int8_t>(verifier, VT_FUSED_ACTIVATION_FUNCTION, 1) &&
+           VerifyField<int32_t>(verifier, VT_LSH_CHOICES, 4) && verifier.EndTable();
   }
   BCQFullyConnectedOptionsT *
   UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
@@ -17899,6 +17903,10 @@ struct BCQFullyConnectedOptionsBuilder
     fbb_.AddElement<int8_t>(BCQFullyConnectedOptions::VT_FUSED_ACTIVATION_FUNCTION,
                             static_cast<int8_t>(fused_activation_function), 0);
   }
+  void add_lsh_choices(int32_t lsh_choices)
+  {
+    fbb_.AddElement<int32_t>(BCQFullyConnectedOptions::VT_LSH_CHOICES, lsh_choices, 0);
+  }
   explicit BCQFullyConnectedOptionsBuilder(::flatbuffers::FlatBufferBuilder &_fbb) : fbb_(_fbb)
   {
     start_ = fbb_.StartTable();
@@ -17913,9 +17921,11 @@ struct BCQFullyConnectedOptionsBuilder
 
 inline ::flatbuffers::Offset<BCQFullyConnectedOptions> CreateBCQFullyConnectedOptions(
   ::flatbuffers::FlatBufferBuilder &_fbb, int32_t weights_hidden_size = 0,
-  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE)
+  circle::ActivationFunctionType fused_activation_function = circle::ActivationFunctionType_NONE,
+  int32_t lsh_choices = 0)
 {
   BCQFullyConnectedOptionsBuilder builder_(_fbb);
+  builder_.add_lsh_choices(lsh_choices);
   builder_.add_weights_hidden_size(weights_hidden_size);
   builder_.add_fused_activation_function(fused_activation_function);
   return builder_.Finish();
@@ -29435,6 +29445,10 @@ BCQFullyConnectedOptions::UnPackTo(BCQFullyConnectedOptionsT *_o,
     auto _e = fused_activation_function();
     _o->fused_activation_function = _e;
   }
+  {
+    auto _e = lsh_choices();
+    _o->lsh_choices = _e;
+  }
 }
 
 inline ::flatbuffers::Offset<BCQFullyConnectedOptions>
@@ -29461,8 +29475,9 @@ CreateBCQFullyConnectedOptions(::flatbuffers::FlatBufferBuilder &_fbb,
   (void)_va;
   auto _weights_hidden_size = _o->weights_hidden_size;
   auto _fused_activation_function = _o->fused_activation_function;
+  auto _lsh_choices = _o->lsh_choices;
   return circle::CreateBCQFullyConnectedOptions(_fbb, _weights_hidden_size,
-                                                _fused_activation_function);
+                                                _fused_activation_function, _lsh_choices);
 }
 
 inline InstanceNormOptionsT *
