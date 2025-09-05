@@ -19,8 +19,8 @@
 #include "OperationUtils.h"
 
 #include <cker/Shape.h>
-#include <cker/train/operation/ReduceMean.h>
 #include <cker/operation/BinaryArithmeticOps.h>
+#include <cker/train/operation/ReduceMean.h>
 
 namespace onert::backend::train::ops
 {

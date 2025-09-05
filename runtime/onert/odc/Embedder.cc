@@ -15,6 +15,7 @@
  */
 
 #include "Embedder.h"
+
 #include "MinMaxReader.h"
 
 #include <luci/IR/CircleNode.h>

@@ -18,7 +18,6 @@
 #define __ONERT_BACKEND_CPU_OPS_COMPARELAYER_H__
 
 #include <backend/IPortableTensor.h>
-
 #include <exec/IFunction.h>
 #include <ir/operation/Comparison.h>
 

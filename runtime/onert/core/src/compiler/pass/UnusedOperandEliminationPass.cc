@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include "Pass.h"
-
 #include "UnusedOperandEliminationPass.h"
+
+#include "Pass.h"
+#include "ir/Graph.h"
 #include "ir/Index.h"
 #include "util/Set.h"
-#include "ir/Graph.h"
 
 /**
  * @file  UnusedOperandEliminationPass.cc

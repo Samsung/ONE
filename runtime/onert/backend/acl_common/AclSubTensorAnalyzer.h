@@ -18,9 +18,8 @@
 #define __ONERT_BACKEND_ACL_COMMON_ACL_SUB_TENSOR_ANALYZER_H__
 
 #include <cl_common/ParentInfo.h>
-
-#include <ir/OperationVisitor.h>
 #include <ir/Graph.h>
+#include <ir/OperationVisitor.h>
 
 namespace onert::backend::acl_common
 {

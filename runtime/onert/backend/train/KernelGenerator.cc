@@ -22,10 +22,10 @@
 #include "ops/DepthwiseConvolutionLayer.h"
 #include "ops/ElementwiseActivationLayer.h"
 #include "ops/FullyConnectedLayer.h"
-#include "ops/LossMeanSquaredErrorLayer.h"
-#include "ops/LossCategoricalCrossentropyLayer.h"
-#include "ops/MeanLayer.h"
 #include "ops/GradientApplier.h"
+#include "ops/LossCategoricalCrossentropyLayer.h"
+#include "ops/LossMeanSquaredErrorLayer.h"
+#include "ops/MeanLayer.h"
 #include "ops/PadLayer.h"
 #include "ops/PoolLayer.h"
 #include "ops/ReshapeLayer.h"
@@ -33,10 +33,10 @@
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
-#include <memory>
-#include <util/logging.h>
 #include <exec/DynamicShapeInferer.h>
+#include <util/logging.h>
 
+#include <memory>
 #include <stdexcept>
 
 namespace onert::backend::train

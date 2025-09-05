@@ -17,11 +17,11 @@
 #ifndef __ONERT_COMPILER_EXECUTION_BUILDER_H__
 #define __ONERT_COMPILER_EXECUTION_BUILDER_H__
 
-#include <memory>
-
-#include "ir/Index.h"
-#include "exec/FunctionSequence.h"
 #include "CodeMap.h"
+#include "exec/FunctionSequence.h"
+#include "ir/Index.h"
+
+#include <memory>
 
 namespace onert::compiler
 {

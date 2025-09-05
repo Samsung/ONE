@@ -19,10 +19,10 @@
 
 #include "ir/Layout.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cstdint>
 #include <vector>
-#include <algorithm>
 
 namespace onert::ir
 {

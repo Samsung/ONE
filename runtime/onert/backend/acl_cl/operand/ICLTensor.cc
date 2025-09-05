@@ -16,8 +16,8 @@
 
 #include "ICLTensor.h"
 
-#include <arm_compute/runtime/CL/CLScheduler.h>
 #include <arm_compute/core/CL/OpenCL.h>
+#include <arm_compute/runtime/CL/CLScheduler.h>
 
 namespace onert::backend::acl_cl::operand
 {

@@ -18,7 +18,6 @@
 #define __ONERT_COMPILER_TRAIN_PASS_LOSS_INSERTION_PASS_H__
 
 #include "Pass.h"
-
 #include "ir/Index.h"
 
 namespace onert::compiler::train::pass

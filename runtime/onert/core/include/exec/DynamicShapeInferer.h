@@ -17,10 +17,10 @@
 #ifndef __ONERT_EXEC_DYNAMIC_SHAPE_INFERER_H__
 #define __ONERT_EXEC_DYNAMIC_SHAPE_INFERER_H__
 
+#include "backend/ITensorRegistry.h"
+#include "ir/Index.h"
 #include "ir/Operands.h"
 #include "ir/OperationVisitor.h"
-#include "ir/Index.h"
-#include "backend/ITensorRegistry.h"
 
 #include <map>
 

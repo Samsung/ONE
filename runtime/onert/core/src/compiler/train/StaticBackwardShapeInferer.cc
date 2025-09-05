@@ -15,6 +15,7 @@
  */
 
 #include "StaticBackwardShapeInferer.h"
+
 #include "util/ShapeInference.h"
 #include "util/logging.h"
 

@@ -15,8 +15,9 @@
  */
 
 #include "PoolLayer.h"
-#include "OperationUtils.h"
+
 #include "../Tensor.h"
+#include "OperationUtils.h"
 
 #include <cker/Utils.h>
 #include <cker/operation/AveragePool.h>

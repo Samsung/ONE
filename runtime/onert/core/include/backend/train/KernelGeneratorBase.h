@@ -17,12 +17,12 @@
 #ifndef __ONERT_BACKEND_TRAIN_KERNEL_GENERATOR_BASE_H__
 #define __ONERT_BACKEND_TRAIN_KERNEL_GENERATOR_BASE_H__
 
-#include <memory>
-
 #include "backend/ITensorRegistry.h"
 #include "exec/train/TrainableFnSequence.h"
 #include "ir/train/TrainableGraph.h"
 #include "ir/train/TrainableOperationVisitor.h"
+
+#include <memory>
 
 namespace onert::backend::train
 {

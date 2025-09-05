@@ -17,11 +17,11 @@
 #ifndef __ONERT_IR_OPERATION_H__
 #define __ONERT_IR_OPERATION_H__
 
-#include <memory>
-
 #include "ir/IOperation.h"
 #include "ir/Operand.h"
 #include "ir/OperandConstraint.h"
+
+#include <memory>
 
 namespace onert::ir
 {

@@ -18,8 +18,9 @@
 
 #include "OperationUtils.h"
 
-#include <cker/operation/ArgMinMax.h>
 #include <assert.h>
+
+#include <cker/operation/ArgMinMax.h>
 
 namespace onert::backend::cpu::ops
 {

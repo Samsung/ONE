@@ -17,10 +17,11 @@
 #ifndef __ONERT_BACKEND_BUILTIN_KERNEL_CALL_LAYER_H__
 #define __ONERT_BACKEND_BUILTIN_KERNEL_CALL_LAYER_H__
 
+#include "../ExternalContext.h"
+
 #include <backend/IPortableTensor.h>
 #include <exec/IExecutors.h>
 #include <exec/IFunction.h>
-#include "../ExternalContext.h"
 
 namespace onert::backend::builtin::kernel
 {

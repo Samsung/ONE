@@ -18,9 +18,9 @@
 #define __ONERT_BACKEND_TRAIN_KERNEL_GENERATOR_H__
 
 #include "ExternalContext.h"
-#include "backend/basic/TensorRegistry.h"
-#include "TensorBuilder.h"
 #include "Tensor.h"
+#include "TensorBuilder.h"
+#include "backend/basic/TensorRegistry.h"
 
 #include <backend/train/KernelGeneratorBase.h>
 #include <exec/train/IGradientApplier.h>

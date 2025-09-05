@@ -16,12 +16,11 @@
 
 #include "KernelGenerator.h"
 
+#include "exec/FunctionSequence.h"
 #include "kernel/CallLayer.h"
 #include "kernel/IfLayer.h"
 #include "kernel/PermuteLayer.h"
 #include "kernel/WhileLayer.h"
-
-#include "exec/FunctionSequence.h"
 
 namespace onert::backend::builtin
 {

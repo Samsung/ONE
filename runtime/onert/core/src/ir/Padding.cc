@@ -16,8 +16,8 @@
 
 #include "ir/Padding.h"
 
-#include <stdexcept>
 #include <cassert>
+#include <stdexcept>
 
 namespace onert::ir
 {

@@ -17,10 +17,10 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_CONVOLUTIONLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_CONVOLUTIONLAYER_H__
 
-#include <ops/ConvolutionLayer.h>
-
 #include "../Tensor.h"
+
 #include <exec/train/ITrainableFunction.h>
+#include <ops/ConvolutionLayer.h>
 
 namespace onert::backend::train::ops
 {

@@ -18,11 +18,10 @@
 #define __ONERT_EXEC_FEATURE_NCHW_READER_H__
 
 #include "../Reader.h"
-
-#include <cassert>
-
 #include "backend/ITensor.h"
 #include "ir/Shape.h"
+
+#include <cassert>
 
 namespace onert::exec::feature::nchw
 {

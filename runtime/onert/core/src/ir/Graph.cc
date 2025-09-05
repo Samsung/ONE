@@ -17,9 +17,8 @@
 #include "ir/Graph.h"
 
 #include "OperationValidator.h"
-#include "verifier/Verifier.h"
-
 #include "util/Set.h"
+#include "verifier/Verifier.h"
 
 namespace onert::ir
 {

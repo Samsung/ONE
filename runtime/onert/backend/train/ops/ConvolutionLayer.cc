@@ -20,10 +20,9 @@
 
 #include <cker/operation/Conv.h>
 #include <cker/operation/Transpose.h>
+#include <cker/operation/TransposeConv.h>
 #include <cker/train/operation/Conv.h>
 #include <cker/train/operation/ReLU.h>
-
-#include <cker/operation/TransposeConv.h>
 
 namespace
 {

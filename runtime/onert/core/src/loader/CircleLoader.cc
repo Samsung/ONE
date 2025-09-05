@@ -15,10 +15,10 @@
  */
 
 #include "loader/CircleLoader.h"
-#include "loader/ModelLoader.h"
 
 #include "BaseLoader.h"
 #include "circle_schema_generated.h"
+#include "loader/ModelLoader.h"
 
 #include <filesystem>
 

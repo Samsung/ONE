@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-
 #include "MemoryPlanner.h"
+
 #include "ir/Index.h"
+
+#include <gtest/gtest.h>
 
 TEST(Allocator, allocate_test)
 {

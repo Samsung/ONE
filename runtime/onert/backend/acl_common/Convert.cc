@@ -19,6 +19,7 @@
 #include "Swizzle.h"
 #include "ir/DataType.h"
 #include "ir/operation/ElementwiseActivation.h"
+
 #include <memory>
 
 namespace onert::backend::acl_common

@@ -18,8 +18,8 @@
 #define __ONERT_BACKEND_CPU_MEMORY_MANAGER_H__
 
 #include "Allocator.h"
-#include "ir/Index.h"
 #include "IMemoryPlanner.h"
+#include "ir/Index.h"
 
 namespace onert::backend
 {

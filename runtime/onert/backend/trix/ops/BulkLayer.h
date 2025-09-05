@@ -17,9 +17,9 @@
 #ifndef __ONERT_BACKEND_TRIX_OPS_BULKLAYER_H__
 #define __ONERT_BACKEND_TRIX_OPS_BULKLAYER_H__
 
-#include <backend/IPortableTensor.h>
 #include "../DevContext.h"
 
+#include <backend/IPortableTensor.h>
 #include <exec/IFunction.h>
 
 namespace onert::backend::trix::ops

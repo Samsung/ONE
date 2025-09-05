@@ -17,8 +17,8 @@
 #ifndef __ONERT_BACKEND_ICONFIG_H__
 #define __ONERT_BACKEND_ICONFIG_H__
 
-#include "ir/Layout.h"
 #include "ir/IOperation.h"
+#include "ir/Layout.h"
 #include "util/ITimer.h"
 
 #include <memory>

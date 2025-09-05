@@ -15,14 +15,15 @@
  */
 
 #include "ManualScheduler.h"
-#include "ir/OpCode.h"
-#include "ir/Operations.Include.h"
+
 #include "backend/Backend.h"
 #include "backend/IConfig.h"
 #include "compiler/BackendManager.h"
+#include "ir/OpCode.h"
+#include "ir/Operations.Include.h"
+#include "misc/string_helpers.h"
 #include "util/ConfigSource.h"
 #include "util/logging.h"
-#include "misc/string_helpers.h"
 
 namespace onert::compiler
 {

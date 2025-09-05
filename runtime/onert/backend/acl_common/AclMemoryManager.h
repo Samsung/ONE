@@ -17,13 +17,14 @@
 #ifndef __ONERT_BACKEND_ACL_COMMON_MEMORY_MANAGER_H__
 #define __ONERT_BACKEND_ACL_COMMON_MEMORY_MANAGER_H__
 
+#include "Convert.h"
+#include "ir/OperandIndexMap.h"
+#include "util/logging.h"
+
 #include <arm_compute/core/Types.h>
 #include <arm_compute/runtime/IMemoryManager.h>
-#include <cassert>
 
-#include "ir/OperandIndexMap.h"
-#include "Convert.h"
-#include "util/logging.h"
+#include <cassert>
 
 namespace onert::backend::acl_common
 {

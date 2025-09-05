@@ -17,21 +17,20 @@
 #ifndef __ONERT_BACKEND_ACL_NEON_TENSOR_MANAGER_H__
 #define __ONERT_BACKEND_ACL_NEON_TENSOR_MANAGER_H__
 
-#include <arm_compute/runtime/Allocator.h>
-#include <arm_compute/runtime/PoolManager.h>
-#include <arm_compute/runtime/OffsetLifetimeManager.h>
-#include <arm_compute/runtime/MemoryManagerOnDemand.h>
-#include <arm_compute/runtime/MemoryGroup.h>
+#include "operand/NESubTensor.h"
+#include "operand/NETensor.h"
+#include "util/logging.h"
 
-#include <AclMemoryManager.h>
-#include <AclLinearMemoryManager.h>
 #include <AclInternalBufferManager.h>
+#include <AclLinearMemoryManager.h>
+#include <AclMemoryManager.h>
 #include <AclTensorManager.h>
 
-#include "operand/NETensor.h"
-#include "operand/NESubTensor.h"
-
-#include "util/logging.h"
+#include <arm_compute/runtime/Allocator.h>
+#include <arm_compute/runtime/MemoryGroup.h>
+#include <arm_compute/runtime/MemoryManagerOnDemand.h>
+#include <arm_compute/runtime/OffsetLifetimeManager.h>
+#include <arm_compute/runtime/PoolManager.h>
 
 namespace onert::backend::acl_neon
 {

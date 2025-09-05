@@ -19,9 +19,9 @@
 #define __ONERT_IR_TRAIN_TRAINING_INFO_H__
 
 #include "ir/Index.h"
+#include "ir/train/LossInfo.h"
 #include "ir/train/OptimizerCode.h"
 #include "ir/train/OptimizerInfo.h"
-#include "ir/train/LossInfo.h"
 
 #include <set>
 

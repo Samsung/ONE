@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-#include <algorithm>
-
 #include "backend/basic/StaticTensorManager.h"
 
 #include "backend/basic/DynamicTensorManager.h"
 #include "backend/basic/Tensor.h"
+
 #include <util/logging.h>
+
+#include <algorithm>
 
 namespace onert::backend::basic
 {

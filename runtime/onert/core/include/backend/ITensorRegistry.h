@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_ITENSOR_REGISTRY__
 #define __ONERT_BACKEND_ITENSOR_REGISTRY__
 
-#include <memory>
-
-#include "ir/Index.h"
-#include "backend/ITensor.h"
 #include "backend/IPortableTensor.h"
+#include "backend/ITensor.h"
+#include "ir/Index.h"
+
+#include <memory>
 
 namespace onert::backend
 {

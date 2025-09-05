@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_TRAIN_DISPOSABLE_TENSOR_INDEX_H__
 #define __ONERT_BACKEND_TRAIN_DISPOSABLE_TENSOR_INDEX_H__
 
+#include "ir/Index.h"
+
 #include <cassert>
 #include <functional>
 #include <unordered_map>
-
-#include "ir/Index.h"
 
 namespace onert::backend::train
 {

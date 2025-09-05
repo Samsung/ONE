@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_BUILTIN_TRAIN_TENSOR_REGISTRY_H__
 #define __ONERT_BACKEND_BUILTIN_TRAIN_TENSOR_REGISTRY_H__
 
-#include <backend/train/ITensorRegistry.h>
-
 #include "../IOTensor.h"
 #include "../Tensor.h"
 #include "Tensor.h"
+
+#include <backend/train/ITensorRegistry.h>
 
 namespace onert::backend::builtin::train
 {

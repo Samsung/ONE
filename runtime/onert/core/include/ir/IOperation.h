@@ -17,11 +17,11 @@
 #ifndef __ONERT_IR_IOPERATION_H__
 #define __ONERT_IR_IOPERATION_H__
 
-#include <memory>
-
 #include "ir/Index.h"
 #include "ir/OpCode.h"
 #include "ir/OperandIndexSequence.h"
+
+#include <memory>
 
 namespace onert::ir
 {

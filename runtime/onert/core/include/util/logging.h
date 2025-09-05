@@ -17,10 +17,10 @@
 #ifndef __ONERT_UTIL_LOGGING_H__
 #define __ONERT_UTIL_LOGGING_H__
 
-#include <iostream>
-#include <cstring>
-
 #include "util/ConfigSource.h"
+
+#include <cstring>
+#include <iostream>
 
 namespace onert::util::logging
 {

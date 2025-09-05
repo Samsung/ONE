@@ -17,11 +17,12 @@
 #ifndef __ONERT_IR_COORDINATES_H__
 #define __ONERT_IR_COORDINATES_H__
 
-#include <cassert>
-#include <stdint.h>
-#include <vector>
-
 #include "Layout.h"
+
+#include <stdint.h>
+
+#include <cassert>
+#include <vector>
 
 namespace onert::ir
 {

@@ -17,10 +17,9 @@
 #ifndef __ONERT_COMPILER_TRAIN_STATIC_BACKWARD_SHAPE_INFERER_H__
 #define __ONERT_COMPILER_TRAIN_STATIC_BACKWARD_SHAPE_INFERER_H__
 
-#include "ir/train/TrainableOperationVisitor.h"
-
 #include "compiler/train/LoweredTrainableGraph.h"
 #include "ir/Index.h"
+#include "ir/train/TrainableOperationVisitor.h"
 
 #include <memory>
 #include <unordered_map>

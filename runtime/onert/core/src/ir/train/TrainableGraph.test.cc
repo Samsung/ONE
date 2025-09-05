@@ -15,11 +15,12 @@
  */
 
 #include "ir/train/TrainableGraph.h"
+
+#include "ir/train/LossInfo.h"
 #include "ir/train/operation/BinaryArithmetic.h"
 #include "ir/train/operation/ElementwiseActivation.h"
 #include "ir/train/operation/FullyConnected.h"
 #include "ir/train/operation/Loss.h"
-#include "ir/train/LossInfo.h"
 
 #include <gtest/gtest.h>
 

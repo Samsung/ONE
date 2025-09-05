@@ -16,10 +16,10 @@
 
 #include "ParallelScheduler.h"
 
-#include <cassert>
-
-#include <memory>
 #include "util/logging.h"
+
+#include <cassert>
+#include <memory>
 
 namespace onert::exec
 {

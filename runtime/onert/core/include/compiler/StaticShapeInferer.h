@@ -17,9 +17,9 @@
 #ifndef __ONERT_COMPILER_STATIC_SHAPE_INFERER_H__
 #define __ONERT_COMPILER_STATIC_SHAPE_INFERER_H__
 
-#include "ir/OperationVisitor.h"
 #include "compiler/LoweredGraph.h"
 #include "ir/Index.h"
+#include "ir/OperationVisitor.h"
 
 #include <memory>
 #include <unordered_map>

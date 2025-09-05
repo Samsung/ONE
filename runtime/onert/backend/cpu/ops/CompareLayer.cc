@@ -18,6 +18,7 @@
 #include "OperationUtils.h"
 
 #include <assert.h>
+
 #include <cker/operation/Comparison.h>
 using namespace nnfw::cker;
 namespace onert::backend::cpu::ops

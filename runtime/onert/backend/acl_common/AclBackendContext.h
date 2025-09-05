@@ -18,12 +18,11 @@
 #define __ONERT_BACKEND_ACL_COMMON_ACLBACKEND_CONTEXT_H__
 
 #include <backend/BackendContext.h>
+#include <cl_common/BackendContext.h>
 #include <ir/Index.h>
 #include <ir/OperandIndexMap.h>
 #include <ir/OperandIndexSequence.h>
 #include <util/logging.h>
-
-#include <cl_common/BackendContext.h>
 
 namespace onert::backend::acl_common
 {

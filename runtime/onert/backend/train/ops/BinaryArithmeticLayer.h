@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_BINARYARITHMETICLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_BINARYARITHMETICLAYER_H__
 
-#include <ops/BinaryArithmeticLayer.h>
-#include <backend/IPortableTensor.h>
-
 #include "../Tensor.h"
+
+#include <backend/IPortableTensor.h>
 #include <exec/train/ITrainableFunction.h>
+#include <ops/BinaryArithmeticLayer.h>
 
 namespace onert::backend::train::ops
 {

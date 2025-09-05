@@ -17,10 +17,9 @@
 #ifndef __ONERT_IR_TRAIN_USEDEFINITIALIZER_H__
 #define __ONERT_IR_TRAIN_USEDEFINITIALIZER_H__
 
-#include "ir/train/TrainableOperationVisitor.h"
-
-#include "ir/train/UseDefChains.h"
 #include "ir/train/Operations.Include.h"
+#include "ir/train/TrainableOperationVisitor.h"
+#include "ir/train/UseDefChains.h"
 
 namespace onert::ir::train
 {

@@ -17,9 +17,8 @@
 #ifndef __ONERT_IR_TRAIN_OPERATION_UNTRAINABLE_OPERATION_H__
 #define __ONERT_IR_TRAIN_OPERATION_UNTRAINABLE_OPERATION_H__
 
-#include "ir/train/TrainableOperation.h"
-
 #include "ir/OperationVisitor.h"
+#include "ir/train/TrainableOperation.h"
 #include "ir/train/TrainableOperationVisitor.h"
 
 #include <type_traits>

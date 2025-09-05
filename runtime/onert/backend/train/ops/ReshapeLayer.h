@@ -18,7 +18,6 @@
 #define __ONERT_BACKEND_TRAIN_OPS_RESHAPELAYER_H__
 
 #include <backend/IPortableTensor.h>
-
 #include <exec/train/ITrainableFunction.h>
 
 namespace onert::backend::train::ops

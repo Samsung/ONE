@@ -17,12 +17,14 @@
 #ifndef __ONERT_BACKEND_RUY_OPS_CONVOLUTIONLAYER_H__
 #define __ONERT_BACKEND_RUY_OPS_CONVOLUTIONLAYER_H__
 
-#include <backend/IPortableTensor.h>
 #include "../ExternalContext.h"
 #include "OperationUtils.h"
 
-#include <ruy/operation/Conv.h>
+#include <backend/IPortableTensor.h>
 #include <exec/IFunction.h>
+
+#include <ruy/operation/Conv.h>
+
 #include <functional>
 #include <memory>
 

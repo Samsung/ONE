@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include "MemoryPlanner.h"
 
 #include "DisposableTensorIndex.h"
 #include "LayerScopeTensorIndex.h"
-#include "MemoryPlanner.h"
 #include "ir/Index.h"
+
+#include <gtest/gtest.h>
 
 using namespace onert::backend::train;
 using onert::ir::OperandIndex;

@@ -17,8 +17,8 @@
 #ifndef __ONERT_BACKEND_BASIC_TENSOR_REGISTRY__
 #define __ONERT_BACKEND_BASIC_TENSOR_REGISTRY__
 
-#include "backend/ITensorRegistry.h"
 #include "Tensor.h"
+#include "backend/ITensorRegistry.h"
 
 namespace onert::backend::basic
 {

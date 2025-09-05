@@ -18,7 +18,6 @@
 #define __ONERT_BACKEND_TRAIN_OPS_GRADIENT_APPLIER_H__
 
 #include <exec/train/IGradientApplier.h>
-
 #include <exec/train/optimizer/Optimizer.h>
 
 namespace onert::backend::train::ops

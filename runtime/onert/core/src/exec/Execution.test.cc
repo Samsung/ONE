@@ -22,6 +22,7 @@
 #include "util/TracingCtx.h"
 
 #include <gtest/gtest.h>
+
 #include <thread>
 
 namespace

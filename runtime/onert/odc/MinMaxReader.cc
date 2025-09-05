@@ -17,8 +17,8 @@
 #include "MinMaxReader.h"
 
 #include <cstdio>
-#include <stdexcept>
 #include <limits>
+#include <stdexcept>
 
 namespace
 {

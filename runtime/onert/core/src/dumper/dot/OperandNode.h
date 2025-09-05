@@ -24,11 +24,11 @@
 #ifndef __ONERT_DUMPER_DOT_DOT_OPERAND_INFO_H__
 #define __ONERT_DUMPER_DOT_DOT_OPERAND_INFO_H__
 
-#include <vector>
-
 #include "Node.h"
-#include "ir/Operand.h"
 #include "ir/Index.h"
+#include "ir/Operand.h"
+
+#include <vector>
 
 namespace onert::dumper::dot
 {

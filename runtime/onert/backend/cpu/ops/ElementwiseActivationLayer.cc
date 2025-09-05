@@ -19,12 +19,12 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/ELU.h>
+#include <cker/operation/GELU.h>
 #include <cker/operation/LeakyReLU.h>
 #include <cker/operation/Logistic.h>
 #include <cker/operation/ReLU.h>
 #include <cker/operation/ReLU6.h>
 #include <cker/operation/Tanh.h>
-#include <cker/operation/GELU.h>
 
 namespace onert::backend::cpu::ops
 {

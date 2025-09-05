@@ -16,8 +16,8 @@
 
 #include "PowLayer.h"
 
-#include <cker/operation/Pow.h>
 #include <cker/operation/BinaryArithmeticOps.h>
+#include <cker/operation/Pow.h>
 
 namespace onert::backend::cpu::ops
 {

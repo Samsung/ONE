@@ -17,9 +17,8 @@
 #ifndef __ONERT_BACKEND_BASIC_TRAIN_TRAINABLE_TENSOR_H__
 #define __ONERT_BACKEND_BASIC_TRAIN_TRAINABLE_TENSOR_H__
 
-#include "backend/train/ITrainableTensor.h"
-
 #include "backend/basic/Tensor.h"
+#include "backend/train/ITrainableTensor.h"
 
 namespace onert::backend::basic::train
 {

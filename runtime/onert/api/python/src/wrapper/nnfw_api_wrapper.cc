@@ -15,6 +15,7 @@
  */
 
 #include "nnfw_api_wrapper.h"
+
 #include "nnfw_exceptions.h"
 
 #include <iostream>

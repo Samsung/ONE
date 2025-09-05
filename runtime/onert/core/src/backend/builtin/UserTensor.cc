@@ -16,8 +16,8 @@
 
 #include "UserTensor.h"
 
-#include "util/Exceptions.h"
 #include "ir/DataType.h"
+#include "util/Exceptions.h"
 
 namespace onert::backend::builtin
 {

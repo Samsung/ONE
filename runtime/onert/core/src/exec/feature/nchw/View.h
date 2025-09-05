@@ -18,7 +18,6 @@
 #define __ONERT_EXEC_FEATURE_NCHW_VIEW_H__
 
 #include "Reader.h"
-
 #include "backend/ITensor.h"
 #include "ir/Shape.h"
 #include "util/logging.h"

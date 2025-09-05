@@ -17,14 +17,13 @@
 #ifndef __ONERT_DUMPER_DOT_DOT_BUILDER_H__
 #define __ONERT_DUMPER_DOT_DOT_BUILDER_H__
 
-#include <sstream>
-
-#include "ir/Index.h"
-#include "ir/Operation.h"
-#include "ir/Operand.h"
-
-#include "OperationNode.h"
 #include "OperandNode.h"
+#include "OperationNode.h"
+#include "ir/Index.h"
+#include "ir/Operand.h"
+#include "ir/Operation.h"
+
+#include <sstream>
 
 using Operation = onert::ir::Operation;
 using Object = onert::ir::Operand;

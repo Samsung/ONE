@@ -15,6 +15,7 @@
  */
 
 #include "ir/operation/ElementwiseBinary.h"
+
 #include "ir/OperationVisitor.h"
 
 #include <unordered_map>

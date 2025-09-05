@@ -15,6 +15,7 @@
  */
 
 #include "ir/operation/Range.h"
+
 #include "ir/OperationVisitor.h"
 
 namespace onert::ir::operation

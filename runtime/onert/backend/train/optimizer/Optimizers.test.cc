@@ -18,8 +18,9 @@
 
 #include <backend/train/ITrainableTensor.h>
 
-#include <cmath>
 #include <gtest/gtest.h>
+
+#include <cmath>
 #include <vector>
 
 namespace

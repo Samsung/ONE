@@ -18,8 +18,8 @@
 
 #include "OperationUtils.h"
 
-#include <cker/operation/L2Normalize.h>
 #include <cker/Types.h>
+#include <cker/operation/L2Normalize.h>
 
 namespace onert::backend::cpu::ops
 {

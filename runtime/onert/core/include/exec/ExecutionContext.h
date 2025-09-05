@@ -17,12 +17,13 @@
 #ifndef __ONERT_EXEC_EXECUTION_CONTEXT_H__
 #define __ONERT_EXEC_EXECUTION_CONTEXT_H__
 
-#include <vector>
-#include <unordered_map>
+#include "ir/Index.h"
+#include "ir/OperandInfo.h"
+
 #include <semaphore.h>
 
-#include "ir/OperandInfo.h"
-#include "ir/Index.h"
+#include <unordered_map>
+#include <vector>
 
 namespace onert::exec
 {

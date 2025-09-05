@@ -16,8 +16,8 @@
 
 #include "UseDefGenerator.h"
 
-#include "ir/train/TrainableGraph.h"
 #include "ir/train/Operations.Include.h"
+#include "ir/train/TrainableGraph.h"
 
 #include <gtest/gtest.h>
 

@@ -16,7 +16,6 @@
 
 #include "ExecutorFactory.h"
 
-#include "Linear.h"
 #include "../backend/builtin/BackendContext.h"
 #include "../backend/builtin/Config.h"
 #include "../backend/builtin/UserTensor.h"
@@ -30,10 +29,11 @@
 #include "../exec/ParallelExecutor.h"
 #include "../exec/train/TrainableExecutor.h"
 #include "../ir/OperationCloner.h"
+#include "Linear.h"
 
 #include <backend/IPortableTensor.h>
-#include <backend/train/TrainableBackendContext.h>
 #include <backend/train/ITrainableBackend.h>
+#include <backend/train/TrainableBackendContext.h>
 #include <compiler/BackendManager.h>
 #include <compiler/ExecutionBuilder.h>
 #include <util/TracingCtx.h>

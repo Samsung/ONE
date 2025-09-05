@@ -17,12 +17,12 @@
 #ifndef __ONERT_EXEC_PARALLEL_SCHEDULER_H__
 #define __ONERT_EXEC_PARALLEL_SCHEDULER_H__
 
-#include <unordered_map>
-#include <memory>
-
-#include "exec/IFunction.h"
 #include "BackendSet.h"
 #include "ThreadPool.h"
+#include "exec/IFunction.h"
+
+#include <memory>
+#include <unordered_map>
 
 namespace onert::exec
 {

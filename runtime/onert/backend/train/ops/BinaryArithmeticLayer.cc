@@ -19,7 +19,6 @@
 #include "OperationUtils.h"
 
 #include <cker/Shape.h>
-#include <cker/train/operation/BinaryArithmetic.h>
 #include <cker/operation/BinaryArithmeticOps.h>
 #include <cker/train/operation/BinaryArithmetic.h>
 #include <cker/train/operation/ReLU.h>

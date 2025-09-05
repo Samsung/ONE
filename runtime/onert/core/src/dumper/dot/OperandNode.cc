@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-#include <sstream>
-
 #include "OperandNode.h"
+
 #include "ir/Graph.h"
+
+#include <sstream>
 
 namespace onert::dumper::dot
 {

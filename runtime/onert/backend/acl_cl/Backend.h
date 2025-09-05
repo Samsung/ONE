@@ -17,16 +17,17 @@
 #ifndef __ONERT_BACKEND_ACL_CL_BACKEND_H__
 #define __ONERT_BACKEND_ACL_CL_BACKEND_H__
 
-#include <memory>
-#include <backend/Backend.h>
-
+#include "AclTensorRegistry.h"
 #include "BackendContext.h"
 #include "Config.h"
 #include "ConstantInitializer.h"
 #include "KernelGenerator.h"
-#include "TensorManager.h"
 #include "Optimizer.h"
-#include "AclTensorRegistry.h"
+#include "TensorManager.h"
+
+#include <backend/Backend.h>
+
+#include <memory>
 
 namespace onert::backend::acl_cl
 {

@@ -15,6 +15,7 @@
  */
 
 #include "HEScheduler.h"
+
 #include "../exec/ExecTime.h"
 
 #include <ir/DataType.h>

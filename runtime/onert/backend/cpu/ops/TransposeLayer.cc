@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Transpose.h>
+
 #include <numeric>
 
 namespace onert::backend::cpu::ops

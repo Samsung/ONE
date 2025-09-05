@@ -17,10 +17,10 @@
 #ifndef __ONERT_IR_OPERATION_BCQFULLYCONNECTED_H__
 #define __ONERT_IR_OPERATION_BCQFULLYCONNECTED_H__
 
-#include <memory>
-
-#include "ir/Operation.h"
 #include "ir/InternalType.h"
+#include "ir/Operation.h"
+
+#include <memory>
 
 namespace onert::ir::operation
 {

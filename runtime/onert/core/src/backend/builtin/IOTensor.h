@@ -17,8 +17,8 @@
 #ifndef __ONERT_BACKEND_BUILTIN_IO_TENSOR_H__
 #define __ONERT_BACKEND_BUILTIN_IO_TENSOR_H__
 
-#include "backend/IPortableTensor.h"
 #include "UserTensor.h"
+#include "backend/IPortableTensor.h"
 
 namespace onert::backend::builtin
 {

@@ -15,15 +15,14 @@
  */
 
 // For CLKernelLibraryEx initialization
-#include "arm_compute/core/CL/CLHelpers.h"
-#include "arm_compute/core/CL/CLKernelLibrary.h"
-#include "arm_compute/core/CL/CLKernelLibraryEx.h"
+#include "Config.h"
 
 #include <util/ConfigSource.h>
 
+#include "arm_compute/core/CL/CLHelpers.h"
+#include "arm_compute/core/CL/CLKernelLibrary.h"
+#include "arm_compute/core/CL/CLKernelLibraryEx.h"
 #include <arm_compute/runtime/CL/CLScheduler.h>
-
-#include "Config.h"
 
 namespace onert::backend::acl_cl
 {

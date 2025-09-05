@@ -17,8 +17,9 @@
 #ifndef __ONERT_BACKEND_ACL_COMMON_SWIZZLE_H__
 #define __ONERT_BACKEND_ACL_COMMON_SWIZZLE_H__
 
-#include <cassert>
 #include <ir/Layout.h>
+
+#include <cassert>
 
 namespace onert::backend::acl_common
 {

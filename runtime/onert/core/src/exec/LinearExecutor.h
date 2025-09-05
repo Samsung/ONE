@@ -23,7 +23,6 @@
 #define __ONERT_EXEC_EXECUTOR_H_
 
 #include "ExecutorBase.h"
-
 #include "compiler/CodeMap.h"
 #include "ir/Index.h"
 #include "util/TracingCtx.h"

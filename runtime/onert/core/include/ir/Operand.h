@@ -17,15 +17,15 @@
 #ifndef __ONERT_IR_OPERAND_H__
 #define __ONERT_IR_OPERAND_H__
 
-#include <cassert>
-#include <cstdint>
-#include <memory>
-#include <algorithm>
-
 #include "ir/Data.h"
 #include "ir/DataType.h"
 #include "ir/OperandInfo.h"
 #include "ir/OperationIndexSet.h"
+
+#include <algorithm>
+#include <cassert>
+#include <cstdint>
+#include <memory>
 
 namespace onert::ir
 {

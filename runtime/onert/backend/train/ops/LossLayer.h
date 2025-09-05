@@ -18,10 +18,9 @@
 #define __ONERT_BACKEND_TRAIN_OPS_LOSSLAYER_H__
 
 #include <backend/IPortableTensor.h>
-#include <ops/ElementwiseActivationLayer.h>
-
 #include <exec/train/ITrainableFunction.h>
 #include <ir/train/LossInfo.h>
+#include <ops/ElementwiseActivationLayer.h>
 
 namespace onert::backend::train::ops
 {

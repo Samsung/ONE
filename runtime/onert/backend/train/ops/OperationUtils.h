@@ -17,9 +17,10 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_OPERATION_UTILS_H__
 #define __ONERT_BACKEND_TRAIN_OPS_OPERATION_UTILS_H__
 
-#include <ops/OperationUtils.h>
-#include <cker/train/Types.h>
 #include <ir/train/LossInfo.h>
+#include <ops/OperationUtils.h>
+
+#include <cker/train/Types.h>
 
 namespace onert::backend::train::ops
 {

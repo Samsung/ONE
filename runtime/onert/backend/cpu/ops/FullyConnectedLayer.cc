@@ -16,12 +16,13 @@
 
 #include "FullyConnectedLayer.h"
 
+#include "../Tensor.h"
 #include "GGMLHelper.h"
 
-#include "../Tensor.h"
-#include <cker/operation/FullyConnected.h>
-#include <cker/TensorUtils.h>
 #include <misc/polymorphic_downcast.h>
+
+#include <cker/TensorUtils.h>
+#include <cker/operation/FullyConnected.h>
 
 namespace onert::backend::cpu::ops
 {

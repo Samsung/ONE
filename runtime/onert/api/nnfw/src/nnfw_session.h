@@ -17,14 +17,13 @@
 #ifndef __API_NNFW_SESSION_H__
 #define __API_NNFW_SESSION_H__
 
-#include "nnfw.h"
-
 #include "CustomKernelRegistry.h"
 #include "compiler/CompilerOptions.h"
 #include "compiler/ICompiler.h"
 #include "exec/Execution.h"
 #include "ir/NNPkg.h"
 #include "ir/train/TrainingInfo.h"
+#include "nnfw.h"
 #include "odc/CodegenManager.h"
 #include "odc/QuantizeManager.h"
 

@@ -19,8 +19,8 @@
 
 #include "LossCode.h"
 
-#include <variant>
 #include <utility>
+#include <variant>
 
 namespace onert::ir::train
 {

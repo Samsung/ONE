@@ -21,8 +21,8 @@
 #include "nnfw_experimental.h"
 #include "nnfw_internal.h"
 
-#include <pybind11/stl.h>
 #include <pybind11/numpy.h>
+#include <pybind11/stl.h>
 
 namespace onert
 {

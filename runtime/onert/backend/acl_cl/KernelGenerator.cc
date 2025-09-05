@@ -16,21 +16,21 @@
 
 #include "KernelGenerator.h"
 
-#include <arm_compute/runtime/CL/CLFunctions.h>   // Include all ARM Compute CL functions
-#include <arm_compute/runtime/CL/CLFunctionsEx.h> // Include all ARM Compute EX CL functions
+#include "AclKernelGen.h"
+#include "exec/FunctionSequence.h"
+#include "exec/NopFunction.h"
+#include "ir/DataType.h"
+#include "ir/Index.h"
+#include "ir/InternalType.h"
+#include "util/logging.h"
 
 #include <AclActivationBuilder.h>
 #include <AclFunction.h>
 #include <Convert.h>
 #include <Swizzle.h>
 
-#include "ir/Index.h"
-#include "ir/DataType.h"
-#include "ir/InternalType.h"
-#include "exec/NopFunction.h"
-#include "exec/FunctionSequence.h"
-#include "util/logging.h"
-#include "AclKernelGen.h"
+#include <arm_compute/runtime/CL/CLFunctions.h>   // Include all ARM Compute CL functions
+#include <arm_compute/runtime/CL/CLFunctionsEx.h> // Include all ARM Compute EX CL functions
 
 namespace onert::backend::acl_cl
 {

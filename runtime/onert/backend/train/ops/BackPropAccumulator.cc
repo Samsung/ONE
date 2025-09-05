@@ -18,8 +18,9 @@
 
 #include "OperationUtils.h"
 
-#include <cker/operation/BinaryArithmeticOps.h>
 #include <util/CalculateActivationRange.h>
+
+#include <cker/operation/BinaryArithmeticOps.h>
 
 namespace onert::backend::train::ops
 {

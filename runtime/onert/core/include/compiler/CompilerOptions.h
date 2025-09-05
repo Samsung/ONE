@@ -17,9 +17,9 @@
 #ifndef __ONERT_COMPILER_COMPILER_OPTIONS_H_
 #define __ONERT_COMPILER_COMPILER_OPTIONS_H_
 
-#include "ir/OpCode.h"
 #include "ir/Index.h"
 #include "ir/Layout.h"
+#include "ir/OpCode.h"
 #include "ir/TypeInfo.h"
 
 #include <memory>

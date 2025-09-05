@@ -18,11 +18,11 @@
 #define __ONERT_BACKEND_CUSTOM_KERNEL_BUILDER_H__
 
 #include "backend/IPortableTensor.h"
-#include "ir/Shape.h"
 #include "ir/DataType.h"
+#include "ir/Shape.h"
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace onert::exec
 {

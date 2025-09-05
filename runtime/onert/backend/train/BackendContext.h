@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_TRAIN_BACKEND_CONTEXT_H__
 #define __ONERT_BACKEND_TRAIN_BACKEND_CONTEXT_H__
 
-#include <backend/train/TrainableBackendContext.h>
-
 #include "ExternalContext.h"
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
+
+#include <backend/train/TrainableBackendContext.h>
 
 namespace onert::backend::train
 {

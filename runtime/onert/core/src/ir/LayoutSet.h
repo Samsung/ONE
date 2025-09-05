@@ -17,11 +17,11 @@
 #ifndef __ONERT_IR_LAYOUT_SET_H__
 #define __ONERT_IR_LAYOUT_SET_H__
 
+#include "ir/Layout.h"
+
 #include <cstdint>
 #include <initializer_list>
 #include <unordered_set>
-
-#include "ir/Layout.h"
 
 namespace onert::ir
 {

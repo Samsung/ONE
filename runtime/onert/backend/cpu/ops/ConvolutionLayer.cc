@@ -15,11 +15,12 @@
  */
 
 #include "ConvolutionLayer.h"
-#include "OperationUtils.h"
-#include "cker/PortableTensorUtils.h"
 
 #include "../Tensor.h"
+#include "OperationUtils.h"
 #include "ir/Padding.h"
+
+#include "cker/PortableTensorUtils.h"
 #include <cker/operation/Conv.h>
 
 namespace onert::backend::cpu::ops

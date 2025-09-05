@@ -17,12 +17,12 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_DEPTHWISECONVOLUTIONLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_DEPTHWISECONVOLUTIONLAYER_H__
 
-#include <ops/DepthwiseConvolutionLayer.h>
-#include <backend/basic/Allocator.h>
-
-#include "../Tensor.h"
 #include "../ExternalContext.h"
+#include "../Tensor.h"
+
+#include <backend/basic/Allocator.h>
 #include <exec/train/ITrainableFunction.h>
+#include <ops/DepthwiseConvolutionLayer.h>
 
 namespace onert::backend::train::ops
 {

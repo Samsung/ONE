@@ -16,14 +16,14 @@
 
 #include "BackendContext.h"
 
-#include "TensorBuilder.h"
 #include "KernelGenerator.h"
-#include "util/logging.h"
+#include "TensorBuilder.h"
+#include "backend/basic/BackendContextHelpers.h"
+#include "backend/basic/TensorRegistry.h"
 #include "ir/Index.h"
 #include "ir/OperandIndexMap.h"
 #include "ir/OperandIndexSequence.h"
-#include "backend/basic/BackendContextHelpers.h"
-#include "backend/basic/TensorRegistry.h"
+#include "util/logging.h"
 
 #include <misc/polymorphic_downcast.h>
 

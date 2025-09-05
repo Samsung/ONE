@@ -16,25 +16,24 @@
 
 #include "TrainingCompiler.h"
 
-#include "StaticBackwardShapeInferer.h"
-#include "TrainableOperationConverter.h"
-#include "pass/LossInsertionPass.h"
-#include "../CompilerHelpers.h"
-#include "../ExecutorFactory.h"
-#include "../pass/ConstantOutputPass.h"
-#include "../pass/OddOutputPass.h"
-#include "../pass/PassRunner.h"
-#include "../pass/UnusedOperandEliminationPass.h"
-#include "../ShapeValidator.h"
 #include "../../dumper/dot/DotDumper.h"
 #include "../../exec/train/TrainableExecutors.h"
 #include "../../ir/OperationDumper.h"
 #include "../../ir/verifier/Verifier.h"
+#include "../CompilerHelpers.h"
+#include "../ExecutorFactory.h"
+#include "../ShapeValidator.h"
+#include "../pass/ConstantOutputPass.h"
+#include "../pass/OddOutputPass.h"
+#include "../pass/PassRunner.h"
+#include "../pass/UnusedOperandEliminationPass.h"
+#include "StaticBackwardShapeInferer.h"
+#include "TrainableOperationConverter.h"
+#include "pass/LossInsertionPass.h"
 
 #include <compiler/StaticShapeInferer.h>
 #include <compiler/train/LoweredTrainableGraph.h>
 #include <ir/train/TrainableGraph.h>
-
 #include <misc/polymorphic_downcast.h>
 #include <misc/string_helpers.h>
 

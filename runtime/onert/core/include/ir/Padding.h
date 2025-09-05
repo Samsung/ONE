@@ -17,8 +17,8 @@
 #ifndef __ONERT_IR_PADDIGN_H__
 #define __ONERT_IR_PADDIGN_H__
 
-#include "Shape.h"
 #include "InternalType.h"
+#include "Shape.h"
 
 #include <cstdint>
 #include <string>

@@ -16,8 +16,8 @@
 
 #include "GatherLayer.h"
 
-#include "OperationUtils.h"
 #include "GGMLHelper.h"
+#include "OperationUtils.h"
 
 #include <cker/operation/Gather.h>
 

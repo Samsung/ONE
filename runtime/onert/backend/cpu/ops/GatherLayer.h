@@ -20,7 +20,6 @@
 #include "../ExternalContext.h"
 
 #include <backend/IPortableTensor.h>
-
 #include <exec/IFunction.h>
 
 namespace onert::backend::cpu::ops

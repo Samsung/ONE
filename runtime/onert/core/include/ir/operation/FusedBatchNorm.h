@@ -17,8 +17,8 @@
 #ifndef __ONERT_IR_OPERATION_FUSEDBATCHNORM_H__
 #define __ONERT_IR_OPERATION_FUSEDBATCHNORM_H__
 
-#include "ir/Operation.h"
 #include "ir/InternalType.h"
+#include "ir/Operation.h"
 
 namespace onert::ir::operation
 {

@@ -17,12 +17,12 @@
 #ifndef __ONERT_EXEC_WORK_QUEUE_H__
 #define __ONERT_EXEC_WORK_QUEUE_H__
 
+#include "exec/IFunction.h"
+
 #include <condition_variable>
 #include <memory>
 #include <mutex>
 #include <queue>
-
-#include "exec/IFunction.h"
 
 namespace onert::exec
 {

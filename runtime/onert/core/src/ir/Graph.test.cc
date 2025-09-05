@@ -15,6 +15,7 @@
  */
 
 #include "ir/Graph.h"
+
 #include "ir/operation/BinaryArithmetic.h"
 
 #include <gtest/gtest.h>

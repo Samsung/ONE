@@ -18,18 +18,17 @@
 #define __ONERT_GRAPH_SHAPE_INFERENCE_H__
 
 #include "Utils.h"
-
+#include "backend/ITensor.h"
+#include "backend/ITensorRegistry.h"
+#include "compiler/LoweredGraph.h"
+#include "ir/Index.h"
+#include "ir/OperationVisitor.h"
 #include "ir/operation/Concat.h"
 #include "ir/operation/Conv2D.h"
 #include "ir/operation/DepthwiseConv2D.h"
 #include "ir/operation/Pool2D.h"
 #include "ir/operation/Reshape.h"
 #include "ir/operation/StridedSlice.h"
-#include "compiler/LoweredGraph.h"
-#include "ir/Index.h"
-#include "ir/OperationVisitor.h"
-#include "backend/ITensor.h"
-#include "backend/ITensorRegistry.h"
 
 namespace onert::shape_inference
 {

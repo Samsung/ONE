@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-#include "ir/Graph.h"
-
 #include "MockNode.h"
+#include "ir/Graph.h"
 #include "verifier/Verifier.h"
 
 #include <gtest/gtest.h>

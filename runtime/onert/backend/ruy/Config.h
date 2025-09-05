@@ -18,8 +18,9 @@
 #define __ONERT_BACKEND_RUY_CONFIG_H__
 
 #include <backend/IConfig.h>
-#include <memory>
 #include <util/ITimer.h>
+
+#include <memory>
 
 namespace onert::backend::ruy
 {

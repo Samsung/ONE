@@ -16,8 +16,9 @@
 
 #include "ir/Operands.h"
 
-#include <memory>
 #include "util/logging.h"
+
+#include <memory>
 
 namespace onert::ir
 {

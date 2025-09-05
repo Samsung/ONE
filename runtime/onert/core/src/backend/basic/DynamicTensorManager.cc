@@ -16,8 +16,8 @@
 
 #include "backend/basic/DynamicTensorManager.h"
 
-#include "util/logging.h"
 #include "misc/polymorphic_downcast.h"
+#include "util/logging.h"
 
 namespace onert::backend::basic
 {

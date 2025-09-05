@@ -15,6 +15,7 @@
  */
 
 #include "ir/operation/TopKV2.h"
+
 #include "ir/OperationVisitor.h"
 
 namespace onert::ir::operation

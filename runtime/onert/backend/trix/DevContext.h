@@ -20,6 +20,7 @@
 #include "BatchThreadPool.h"
 
 #include <libnpuhost.h>
+
 #include <memory>
 #include <string>
 #include <unordered_map>

@@ -18,7 +18,6 @@
 #define __ONERT_COMPILER_TRAIN_TRAINABLE_OPERATION_CONVERTER_H__
 
 #include "UntrainableOperationConverter.h"
-
 #include "ir/train/TrainingInfo.h"
 
 namespace onert::compiler::train

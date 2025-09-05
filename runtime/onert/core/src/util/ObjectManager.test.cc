@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-#include "util/Index.h"
 #include "util/ObjectManager.h"
+
+#include "util/Index.h"
 
 #include <gtest/gtest.h>
 

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
+#include "compiler/ILoweredGraph.h"
 #include "ir/Graph.h"
 #include "ir/train/TrainableGraph.h"
-#include "compiler/ILoweredGraph.h"
 
 #ifndef __ONERT_DUMPER_DOT_DOT_DUMPER_H__
 #define __ONERT_DUMPER_DOT_DOT_DUMPER_H__

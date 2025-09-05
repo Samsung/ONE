@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-#include "CodegenLoader.h"
 #include "odc/CodegenManager.h"
+
+#include "CodegenLoader.h"
 
 #include <mutex>
 #include <stdexcept>

@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_RUY_EXTERNAL_CONTEXT_H__
 
 #include <util/ConfigSource.h>
+
 #include <ruy/context.h>
 
 #include <memory>

@@ -17,13 +17,13 @@
 #ifndef __ONERT_IR_GRAPH_H__
 #define __ONERT_IR_GRAPH_H__
 
-#include <functional>
-#include <unordered_map>
-
 #include "ir/IGraph.h"
 #include "ir/Model.h"
 #include "ir/Operands.h"
 #include "ir/Operations.h"
+
+#include <functional>
+#include <unordered_map>
 
 namespace onert::ir
 {

@@ -18,7 +18,9 @@
 #define __ONERT_BACKEND_ACL_COMMON_KERNEL_ACL_FUNCTION_H__
 
 #include <exec/IFunction.h>
+
 #include <arm_compute/runtime/IFunction.h>
+
 #include <memory>
 
 namespace onert::backend::acl_common

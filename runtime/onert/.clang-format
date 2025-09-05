@@ -1,0 +1,20 @@
+BasedOnStyle: InheritParentConfig
+IncludeBlocks: Regroup
+IncludeCategories:
+    # external library headers
+  - Regex:           '^(<|")((cker|half|json|absl|arm_compute|Eigen|unsupported/Eigen|flatbuffers|gtest|pybind11|ruy|tensorflow)/|(ggml\.h|h5.*\.h|H5.*\.h|public\/gemmlowp\.h))'
+    Priority:        10
+    # standard library headers
+  - Regex:           '^<[a-z_]+>$'
+    Priority:        100
+    # In same module headers
+  - Regex:           '^".*\.h"$'
+    Priority:        2
+    # Different module headers
+  - Regex:           '^<.*\.h>$'
+    Priority:        3
+    # headers in the same directory
+  - Regex:           '.*.h'
+    Priority:        1
+KeepEmptyLinesAtTheStartOfBlocks: true
+SortIncludes: true

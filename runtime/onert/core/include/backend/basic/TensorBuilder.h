@@ -17,13 +17,12 @@
 #ifndef __ONERT_BACKEND_BASIC_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_BASIC_TENSOR_BUILDER_H__
 
-#include <backend/basic/DynamicTensorManager.h>
-#include <backend/basic/TensorRegistry.h>
-#include <backend/basic/StaticTensorManager.h>
-
-#include <ir/OperandIndexMap.h>
-
 #include "Tensor.h"
+
+#include <backend/basic/DynamicTensorManager.h>
+#include <backend/basic/StaticTensorManager.h>
+#include <backend/basic/TensorRegistry.h>
+#include <ir/OperandIndexMap.h>
 
 #include <unordered_map>
 

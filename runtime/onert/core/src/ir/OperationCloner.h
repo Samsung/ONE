@@ -17,9 +17,10 @@
 #ifndef __ONERT_IR_OPERATION_CLONER_H__
 #define __ONERT_IR_OPERATION_CLONER_H__
 
-#include <memory>
-#include "ir/OperationVisitor.h"
 #include "ir/Operation.h"
+#include "ir/OperationVisitor.h"
+
+#include <memory>
 
 namespace onert::ir
 {

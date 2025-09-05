@@ -20,7 +20,6 @@
 #include "exporter/CircleExporter.h"
 #include "exporter/train/CheckpointExporter.h"
 #include "ir/OpCode.h"
-#include "json/json.h"
 #include "loader/CircleLoader.h"
 #include "loader/ModelLoader.h"
 #include "loader/TFLiteLoader.h"
@@ -28,10 +27,12 @@
 #include "loader/train/CheckpointLoader.h"
 #include "util/ConfigSource.h"
 #include "util/Exceptions.h"
-#include "util/logging.h"
 #include "util/TracingCtx.h"
+#include "util/logging.h"
 
 #include <misc/string_helpers.h>
+
+#include "json/json.h"
 
 #include <fstream>
 #include <iostream>

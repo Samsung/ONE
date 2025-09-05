@@ -18,7 +18,6 @@
 #include "PermutationInsertionPass.h"
 
 #include "../../backend/builtin/Config.h"
-
 #include "ir/operation/Permute.h"
 #include "util/logging.h"
 

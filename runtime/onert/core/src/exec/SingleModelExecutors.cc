@@ -16,10 +16,10 @@
 
 #include "SingleModelExecutors.h"
 
+#include "../backend/builtin/IOTensor.h"
+#include "../backend/builtin/UserTensor.h"
 #include "EdgeTensor.h"
 #include "IPermuteFunction.h"
-#include "../backend/builtin/UserTensor.h"
-#include "../backend/builtin/IOTensor.h"
 
 namespace onert::exec
 {

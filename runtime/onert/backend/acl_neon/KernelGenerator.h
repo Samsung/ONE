@@ -17,12 +17,12 @@
 #ifndef __ONERT_BACKEND_ACL_NEON_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_ACL_NEON_KERNEL_GENERATOR_H__
 
-#include <backend/basic/KernelGeneratorBase.h>
-
-#include "ir/Operands.h"
-#include "TensorBuilder.h"
 #include "AclTensorRegistry.h"
+#include "TensorBuilder.h"
 #include "TensorManager.h"
+#include "ir/Operands.h"
+
+#include <backend/basic/KernelGeneratorBase.h>
 
 namespace onert::backend::acl_neon
 {

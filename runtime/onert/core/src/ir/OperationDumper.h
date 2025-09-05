@@ -18,6 +18,7 @@
 #define __ONERT_OPERATION_DUMPER_H__
 
 #include "ir/OperationVisitor.h"
+
 #include <string>
 
 namespace onert::ir

@@ -15,15 +15,16 @@
  * limitations under the License.
  */
 
+#include "util/ShapeInference.h"
+
 #include "ir/InternalType.h"
 #include "ir/Shape.h"
-#include "util/ShapeInference.h"
 #include "util/logging.h"
 
 #include <cassert>
+#include <cmath>
 #include <numeric>
 #include <sstream>
-#include <cmath>
 
 namespace onert::shape_inference
 {

@@ -17,8 +17,8 @@
 #ifndef __ONERT_COMPILER_ILOWERED_GRAPH_H__
 #define __ONERT_COMPILER_ILOWERED_GRAPH_H__
 
-#include "ir/Graph.h"
 #include "compiler/GraphLowerInfo.h"
+#include "ir/Graph.h"
 
 namespace onert::compiler
 {

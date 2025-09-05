@@ -17,9 +17,9 @@
 #ifndef __ONERT_BACKEND_ACL_CL_OPERAND_I_CL_TENSOR_H__
 #define __ONERT_BACKEND_ACL_CL_OPERAND_I_CL_TENSOR_H__
 
-#include <arm_compute/core/CL/ICLTensor.h>
-
 #include <IACLTensor.h>
+
+#include <arm_compute/core/CL/ICLTensor.h>
 
 namespace onert::backend::acl_cl::operand
 {

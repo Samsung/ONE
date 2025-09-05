@@ -16,8 +16,8 @@
 
 #include "ExecTime.h"
 
-#include "backend/IConfig.h"
 #include "backend/Backend.h"
+#include "backend/IConfig.h"
 
 #include <gtest/gtest.h>
 

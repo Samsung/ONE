@@ -17,10 +17,10 @@
 #ifndef __ONERT_KERNEL_CPU_DEPTHWISECONVOLUTIONLAYER_H__
 #define __ONERT_KERNEL_CPU_DEPTHWISECONVOLUTIONLAYER_H__
 
-#include <backend/IPortableTensor.h>
-#include "OperationUtils.h"
 #include "../ExternalContext.h"
+#include "OperationUtils.h"
 
+#include <backend/IPortableTensor.h>
 #include <exec/IFunction.h>
 
 namespace onert::backend::cpu::ops

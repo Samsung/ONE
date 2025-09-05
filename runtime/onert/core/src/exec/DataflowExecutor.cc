@@ -16,9 +16,9 @@
 
 #include "DataflowExecutor.h"
 
-#include <cassert>
-
 #include "util/logging.h"
+
+#include <cassert>
 
 namespace onert::exec
 {

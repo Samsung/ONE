@@ -17,15 +17,14 @@
 #ifndef __ONERT_BACKEND_BUILTIN_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_BUILTIN_TENSOR_BUILDER_H__
 
-#include <backend/basic/StaticTensorManager.h>
-#include <backend/basic/TensorRegistry.h>
-#include <backend/basic/Tensor.h>
+#include "DynamicTensorManager.h"
 
+#include <backend/basic/StaticTensorManager.h>
+#include <backend/basic/Tensor.h>
+#include <backend/basic/TensorRegistry.h>
 #include <ir/OperandIndexMap.h>
 
 #include <unordered_map>
-
-#include "DynamicTensorManager.h"
 
 namespace onert::backend::builtin
 {

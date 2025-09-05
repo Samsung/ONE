@@ -16,9 +16,9 @@
 
 #include "OperationDumper.h"
 
-#include <string>
-
 #include "util/logging.h"
+
+#include <string>
 
 namespace onert::ir
 {

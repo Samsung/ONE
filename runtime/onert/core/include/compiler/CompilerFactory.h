@@ -17,8 +17,8 @@
 #ifndef __ONERT_COMPILER_COMPILER_FACTORY_H__
 #define __ONERT_COMPILER_COMPILER_FACTORY_H__
 
-#include "ICompiler.h"
 #include "CompilerOptions.h"
+#include "ICompiler.h"
 #include "ir/NNPkg.h"
 #include "ir/train/TrainingInfo.h"
 

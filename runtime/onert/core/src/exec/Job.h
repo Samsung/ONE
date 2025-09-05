@@ -17,12 +17,12 @@
 #ifndef __ONERT_EXEC_JOB_H__
 #define __ONERT_EXEC_JOB_H__
 
-#include <unordered_set>
-
+#include "backend/Backend.h"
 #include "exec/FunctionSequence.h"
 #include "ir/Index.h"
 #include "ir/OperandIndexSequence.h"
-#include "backend/Backend.h"
+
+#include <unordered_set>
 
 namespace onert::exec
 {
