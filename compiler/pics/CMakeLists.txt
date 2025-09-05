@@ -11,13 +11,13 @@ unset(PICS_DEPS)
 ###
 set(CIRCLE_SCHEMA_PYTHON_DIR "${CMAKE_CURRENT_BINARY_DIR}/circle")
 
-get_target_property(SCHEMA_BIN_PATH mio_circle08 BINARY_DIR)
+get_target_property(SCHEMA_BIN_PATH mio_circle BINARY_DIR)
 
 add_custom_command(
   OUTPUT ${CIRCLE_SCHEMA_PYTHON_DIR}
   COMMAND "$<TARGET_FILE:flatbuffers::flatc>" --python
           -o "${CMAKE_CURRENT_BINARY_DIR}" "${SCHEMA_BIN_PATH}/schema.fbs"
-  DEPENDS flatbuffers::flatc mio_circle08
+  DEPENDS flatbuffers::flatc mio_circle
   COMMENT "Generate python interface for circle schema"
 )
 
