@@ -6,5 +6,6 @@ list(APPEND MINIMAL_SRCS "src/minimal.cc")
 
 add_executable(onert-minimal-app ${MINIMAL_SRCS})
 target_link_libraries(onert-minimal-app nnfw-dev)
+target_link_libraries(onert-minimal-app nnfw_common)
 
 install(TARGETS onert-minimal-app DESTINATION ${CMAKE_INSTALL_BINDIR})

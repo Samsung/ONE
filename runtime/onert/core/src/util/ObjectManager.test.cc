@@ -151,12 +151,12 @@ TEST(ObjectManager, const_iterate)
 {
   util::ObjectManager<Index, int> man;
 
-  auto index0 = man.emplace(100);
-  auto index1 = man.emplace(200);
-  auto index2 = man.emplace(300);
+  man.emplace(100);
+  man.emplace(200);
+  man.emplace(300);
 
   int sum = 0;
-  man.iterate([&](const Index &index, const int &val) { sum += val; });
+  man.iterate([&](const Index &, const int &val) { sum += val; });
   ASSERT_EQ(sum, 600);
 }
 
@@ -168,7 +168,7 @@ TEST(ObjectManager, non_const_iterate)
   auto index1 = man.emplace(200);
   auto index2 = man.emplace(300);
 
-  man.iterate([&](const Index &index, int &val) { val += 1; });
+  man.iterate([&](const Index &, int &val) { val += 1; });
   ASSERT_EQ(man.at(index0), 101);
   ASSERT_EQ(man.at(index1), 201);
   ASSERT_EQ(man.at(index2), 301);

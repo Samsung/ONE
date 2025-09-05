@@ -123,7 +123,8 @@ void setExecutor(const std::string &executor) { setenv("EXECUTOR", executor.c_st
 void setProfilingMode(const bool value) { setenv("PROFILING_MODE", value ? "1" : "0", true); }
 
 // Calculate operation size by addition sizes of all input and output operands
-uint32_t calcOpSize(const std::shared_ptr<Graph> &graph, const OperationIndex &op_idx)
+[[maybe_unused]] uint32_t calcOpSize(const std::shared_ptr<Graph> &graph,
+                                     const OperationIndex &op_idx)
 {
   uint32_t size = 0;
   const auto &op = graph->operations().at(op_idx);
@@ -152,7 +153,7 @@ void setOperationsExecutionTime(const std::vector<const Backend *> &backends,
 {
   assert(op_names.size() == op_sizes.size());
   ExecTime et(backends);
-  for (int i = 0; i < op_names.size(); ++i)
+  for (uint32_t i = 0; i < op_names.size(); ++i)
   {
     for (const auto backend : backends)
       setOperationExecTime(et, backend, op_names[i], false, op_sizes[i], exec_time);

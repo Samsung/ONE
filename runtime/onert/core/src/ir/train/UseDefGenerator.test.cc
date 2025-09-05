@@ -610,7 +610,7 @@ TEST(UseDefGenerator, one_op)
     operation::ElementwiseActivation::Param param;
     param.op_type = operation::ElementwiseActivation::Type::RELU;
     param.alpha = std::numeric_limits<float>::infinity();
-    param.beta == 0.f;
+    param.beta = 0.f;
     const auto ea_op = operation::ElementwiseActivation({ea_input}, {y_pred}, param);
     const auto ea_index =
       tgraph.addOperation(std::make_unique<train::operation::ElementwiseActivation>(ea_op));
@@ -1824,7 +1824,7 @@ TEST(UseDefGenerator, one_op)
     operation::ElementwiseActivation::Param ea_param;
     ea_param.op_type = operation::ElementwiseActivation::Type::RELU;
     ea_param.alpha = std::numeric_limits<float>::infinity();
-    ea_param.beta == 0.f;
+    ea_param.beta = 0.f;
     const auto ea_op = operation::ElementwiseActivation({fc_out}, {ea_out}, ea_param);
     const auto ea_index =
       tgraph.addOperation(std::make_unique<train::operation::ElementwiseActivation>(ea_op));

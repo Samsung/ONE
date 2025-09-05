@@ -54,7 +54,7 @@ public: // DUMMY methods
   const std::vector<float> &data_scales() const override { return _dummy_scales; }
   const std::vector<int32_t> &data_zero_points() const override { return _dummy_zerops; }
   bool has_padding() const override { return false; }
-  void access(const std::function<void(ITensor &tensor)> &fn) override {}
+  void access(const std::function<void(ITensor &tensor)> &) override {}
   bool is_dynamic() const override { return false; }
 
 private:
