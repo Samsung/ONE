@@ -65,6 +65,6 @@ O T(3) ofm
 
 ### Dependency
 
-- mio-circle08
+- mio-circle
 - safemain
 - FlatBuffers

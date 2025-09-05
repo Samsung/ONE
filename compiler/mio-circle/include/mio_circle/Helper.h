@@ -19,16 +19,34 @@
 
 #include <mio/circle/schema_generated.h>
 
+#include <vector>
+
 namespace mio
 {
 namespace circle
 {
 
+::circle::BuiltinOperator builtin_code_neutral(const ::circle::OperatorCode *opcode);
 bool is_valid(const ::circle::OperatorCode *opcode);
 bool is_custom(const ::circle::OperatorCode *opcode);
 std::string opcode_name(const ::circle::OperatorCode *opcode);
 const char *tensor_type(const ::circle::Tensor *tensor);
 const char *tensor_name(const ::circle::Tensor *tensor);
+
+template <typename T> std::vector<T> as_index_vector(const flatbuffers::Vector<T> *flat_array)
+{
+  if (flat_array == nullptr)
+  {
+    throw std::runtime_error("flat array is nullptr");
+  }
+
+  std::vector<T> ret(flat_array->size());
+  for (uint32_t i = 0; i < flat_array->size(); i++)
+  {
+    ret[i] = flat_array->Get(i);
+  }
+  return ret;
+}
 
 } // namespace circle
 } // namespace mio
