@@ -231,6 +231,7 @@ include(CMakePackageConfigHelpers)
 
 # [FIX] Add -fPIC option for static
 set_target_properties(ggml PROPERTIES POSITION_INDEPENDENT_CODE ON)
+target_link_libraries(ggml PRIVATE nnfw_common)
 
 if (BUILD_SHARED_LIBS)
     install(TARGETS ggml LIBRARY)
