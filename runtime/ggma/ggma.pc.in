@@ -1,0 +1,10 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${prefix}/@GGMA_INSTALL_APIDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+version=@CMAKE_PROJECT_VERSION@
+
+Name: ggma
+Description: GGMA API
+Version: ${version}
+Libs: -L${libdir} -lggma
+Cflags: -I${includedir}/ggma
