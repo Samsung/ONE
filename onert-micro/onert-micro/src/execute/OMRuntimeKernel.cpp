@@ -99,6 +99,8 @@ OMStatus onert_micro::execute::OMRuntimeKernel::getDataFromStorage(uint16_t op_i
     if (storage.getKernelType(op_index) == core::Inplace)
     {
       assert(i < non_const_input_indxs.size());
+      if (i >= non_const_input_indxs.size())
+        return UnknownError;
 
       outputs_data[i] = inputs_data[non_const_input_indxs[i]];
       status = storage.removeTensorFromTensorIndexToData(inputs_index[non_const_input_indxs[i]]);
