@@ -19,7 +19,7 @@ endif(NOT ENABLE_TEST)
 
 add_executable(ndarray_test src/Array.test.cpp src/ContiguousSpan.test.cpp)
 target_link_libraries(ndarray_test PRIVATE ndarray)
-target_link_libraries(ndarray_test PRIVATE nnfw_coverage)
+target_link_libraries(ndarray_test PRIVATE nnfw_common nnfw_coverage)
 target_link_libraries(ndarray_test PUBLIC gtest gtest_main ${LIB_PTHREAD})
 
 add_test(ndarray_test ndarray_test)
