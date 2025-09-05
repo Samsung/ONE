@@ -60,17 +60,18 @@ void ReverseV2::configure()
 void ReverseV2::execute() const
 {
   int axis_value = getTensorData<int32_t>(axes())[0];
+  std::array<int32_t, 8> axis_array = {axis_value};
   switch (output()->element_type())
   {
     case DataType::FLOAT32:
-      tflite::reference_ops::Reverse<float>(axis_value, getTensorShape(input()),
-                                            getTensorData<float>(input()), getTensorShape(output()),
+      tflite::reference_ops::Reverse<float>(axis_array, 1, getTensorShape(input()),
+                                            getTensorData<float>(input()),
                                             getTensorData<float>(output()));
       break;
     case DataType::U8:
-      tflite::reference_ops::Reverse<uint8_t>(
-        axis_value, getTensorShape(input()), getTensorData<uint8_t>(input()),
-        getTensorShape(output()), getTensorData<uint8_t>(output()));
+      tflite::reference_ops::Reverse<uint8_t>(axis_array, 1, getTensorShape(input()),
+                                              getTensorData<uint8_t>(input()),
+                                              getTensorData<uint8_t>(output()));
       break;
     default:
       throw std::runtime_error("Unsupported output type");

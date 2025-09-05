@@ -25,11 +25,11 @@ elseif("${TARGET_ARCH}" STREQUAL "aarch64")
 endif()
 
 macro(initialize_pal)
-    nnas_find_package(TensorFlowSource EXACT 2.12.1 QUIET)
-    nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.12.1 QUIET)
-    nnas_find_package(TensorFlowEigenSource EXACT 2.12.1 QUIET)
-    nnas_find_package(TensorFlowRuySource EXACT 2.12.1 QUIET)
-    nnas_find_package(TensorFlowThreadpoolSource EXACT 2.12.1 QUIET)
+    nnas_find_package(TensorFlowSource EXACT 2.19.0 QUIET)
+    nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.19.0 QUIET)
+    nnas_find_package(TensorFlowEigenSource EXACT 2.19.0 QUIET)
+    nnas_find_package(TensorFlowRuySource EXACT 2.19.0 QUIET)
+    nnas_find_package(TensorFlowThreadpoolSource EXACT 2.19.0 QUIET)
 
     if (NOT TensorFlowSource_FOUND)
         message(STATUS "Skipping luci-interpreter: TensorFlow not found")
@@ -77,7 +77,11 @@ macro(add_pal_to_target TGT)
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/reference/portable_tensor_utils.cc
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/quantization_util.cc
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/portable_tensor_utils.cc
+            ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/runtime_shape.cc
+            ${TensorFlowSource_DIR}/tensorflow/lite/array.cc
             ${TensorFlowSource_DIR}/tensorflow/lite/kernels/kernel_util.cc
+            ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/common.cc
+            ${TensorFlowSource_DIR}/tensorflow/lite/kernels/internal/reference/comparisons.cc
             ${TensorFlowSource_DIR}/tensorflow/lite/core/c/common.cc)
 
     if(TARGET_ARCH_BASE STREQUAL "arm")
