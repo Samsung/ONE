@@ -342,7 +342,7 @@ protected:
       {
         nnfw_tensorinfo ti;
         NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(_so.session, ind, &ti));
-        uint64_t input_elements = num_elems(&ti);
+        uint64_t input_elements = numElems(ti);
         _so.inputs[ind].resize(input_elements * sizeOfNnfwType(ti.dtype));
         if (_so.inputs[ind].size() == 0)
         {
@@ -373,7 +373,7 @@ protected:
           }
           else
           {
-            uint64_t output_elements = num_elems(&ti);
+            uint64_t output_elements = numElems(ti);
             size = output_elements * sizeOfNnfwType(ti.dtype);
           }
           _so.outputs[ind].resize(size);

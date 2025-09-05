@@ -175,12 +175,13 @@ bool tensorInfoEqual(const nnfw_tensorinfo &info1, const nnfw_tensorinfo &info2)
   return true;
 }
 
-uint64_t tensorInfoNumElements(const nnfw_tensorinfo &ti)
+uint64_t numElems(const nnfw_tensorinfo &ti)
 {
   uint64_t n = 1;
-  for (uint32_t i = 0; i < ti.rank; ++i)
+  for (int32_t i = 0; i < ti.rank; ++i)
   {
-    n *= ti.dims[i];
+    assert(ti.dims[i] >= 0);
+    n *= static_cast<uint64_t>(ti.dims[i]);
   }
   return n;
 }

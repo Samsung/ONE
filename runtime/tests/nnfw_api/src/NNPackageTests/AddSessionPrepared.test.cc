@@ -54,7 +54,7 @@ TEST_F(ValidationTestAddSessionPrepared, run_many_times_dynamic_input)
     // Check if the shape inference is correct
     nnfw_tensorinfo ti_output;
     ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &ti_output), NNFW_STATUS_NO_ERROR);
-    EXPECT_EQ(num_elems(&ti_input), num_elems(&ti_output));
+    EXPECT_EQ(numElems(ti_input), numElems(ti_output));
 
     for (int i = 0; i < v; i++)
       ASSERT_FLOAT_EQ(_output[i], i * 10.0 + 2.0) << "i : " << i;
@@ -72,7 +72,7 @@ TEST_F(ValidationTestAddSessionPrepared, run_async)
 
 TEST_F(ValidationTestAddSessionPrepared, set_input_001)
 {
-  char input[32];
+  char input[32] = {};
   ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)),
             NNFW_STATUS_NO_ERROR);
 }
@@ -135,14 +135,14 @@ TEST_F(ValidationTestAddSessionPrepared, neg_set_input_001)
 
 TEST_F(ValidationTestAddSessionPrepared, neg_set_input_002)
 {
-  char input[1]; // buffer size is too small
+  char input[1] = {}; // buffer size is too small
   NNFW_ENSURE_SUCCESS(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)));
   EXPECT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);
 }
 
 TEST_F(ValidationTestAddSessionPrepared, set_output_001)
 {
-  char buffer[32];
+  char buffer[32] = {};
   ASSERT_EQ(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, buffer, sizeof(buffer)),
             NNFW_STATUS_NO_ERROR);
 }
@@ -185,7 +185,7 @@ TEST_F(ValidationTestAddSessionPrepared, neg_prepare)
 
 TEST_F(ValidationTestAddSessionPrepared, neg_run_without_set_output)
 {
-  uint8_t input[4];
+  uint8_t input[4] = {};
   NNFW_ENSURE_SUCCESS(nnfw_set_input(_session, 0, NNFW_TYPE_TENSOR_FLOAT32, input, sizeof(input)));
   // `nnfw_set_output()` is not called
   ASSERT_EQ(nnfw_run(_session), NNFW_STATUS_ERROR);

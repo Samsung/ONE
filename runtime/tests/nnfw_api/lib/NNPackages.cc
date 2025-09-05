@@ -55,7 +55,10 @@ void NNPackages::init(const char *argv0)
   else
   {
     // If it is a relative path, prepend CWD
-    getcwd(cwd, sizeof(cwd));
+    auto ret = getcwd(cwd, sizeof(cwd));
+    if (ret == nullptr)
+      throw std::runtime_error{"Failed to get current working directory"};
+
     _base_path = cwd;
     _base_path += "/";
     _base_path += dir_path;

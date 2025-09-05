@@ -82,7 +82,7 @@ TEST(TestDynamicTensor, input_reshaping)
   NNFW_ENSURE_SUCCESS(nnfw_set_input(session, 1, NNFW_TYPE_TENSOR_FLOAT32, input2.data(),
                                      sizeof(float) * input2.size()));
 
-  uint64_t output_num_elements = tensorInfoNumElements(ti_output);
+  uint64_t output_num_elements = numElems(ti_output);
   ASSERT_EQ(output_num_elements, expected.size());
   std::vector<float> actual_output(output_num_elements);
   NNFW_ENSURE_SUCCESS(nnfw_set_output(session, 0, NNFW_TYPE_TENSOR_FLOAT32, actual_output.data(),
@@ -92,6 +92,6 @@ TEST(TestDynamicTensor, input_reshaping)
   NNFW_ENSURE_SUCCESS(nnfw_run(session));
 
   // compare
-  for (int i = 0; i < expected.size(); ++i)
+  for (size_t i = 0; i < expected.size(); ++i)
     ASSERT_EQ(expected[i], actual_output[i]);
 }

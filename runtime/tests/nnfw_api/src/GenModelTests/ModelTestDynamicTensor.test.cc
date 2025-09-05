@@ -98,7 +98,7 @@ void verifyOutput(nnfw_session *session, const nnfw_tensorinfo expected_ti,
 
   // value of output
   ASSERT_EQ(expected.size(), actual.size());
-  for (int i = 0; i < expected.size(); i++)
+  for (size_t i = 0; i < expected.size(); i++)
   {
     bool is_output_float = std::is_same<T_OUTPUT, float>::value;
     if (is_output_float)
@@ -437,7 +437,7 @@ TEST(TestDynamicTensor, set_input_tensorinfo_after_compilation_neg)
   std::vector<float> actual_output(20 * 50);
   std::vector<float> expected_output(20 * 50);
 
-  for (int i = 0; i < input0.size(); i++)
+  for (size_t i = 0; i < input0.size(); i++)
   {
     input0[i] = i * 1.1;
     expected_output[i] = -1 * input0[i];
@@ -518,7 +518,7 @@ TEST(TestDynamicTensor, get_dynamic_output_buffer)
   EXPECT_EQ(info.dims[2], 2u);
 
   // output value check
-  for (int i = 0; i < expected.size(); i++)
+  for (size_t i = 0; i < expected.size(); i++)
   {
     const auto actual = static_cast<const float *>(out_buffer);
     ASSERT_FLOAT_EQ(expected[i], actual[i]);
@@ -654,7 +654,7 @@ TEST_F(TestIfDynamicModelLoaded, run_verify)
   }
 
   // Output value check
-  for (int i = 0; i < actual_output0.size(); ++i)
+  for (size_t i = 0; i < actual_output0.size(); ++i)
     ASSERT_NEAR(if_dynamic_output0[i], actual_output0[i], 0.00001);
 }
 
@@ -741,7 +741,6 @@ private:
 // test for https://github.com/Samsung/ONE/issues/4625
 TEST_F(CombinationTest1, combination_of_set_input_tensorinfo_and_nnfw_run)
 {
-  constexpr NNFW_TYPE NNFW_DTYPE = NNFW_TYPE_TENSOR_FLOAT32;
   std::vector<int32_t> cast_in_buf;
   std::vector<int32_t> reshape_shape_in_buf;
   std::vector<float> actual(4), expected(4);
@@ -905,8 +904,6 @@ protected:
     // #0 = input 0 of shape [1]
     // #1 = input 1 of shape [1]
     // #2 = add(#0, #1)
-
-    constexpr circle::TensorType CIRCLE_DTYPE = circle::TensorType::TensorType_FLOAT32;
 
     int in0 = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32});
     int in1 = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32});

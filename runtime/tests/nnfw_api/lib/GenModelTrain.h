@@ -316,7 +316,7 @@ protected:
       {
         nnfw_tensorinfo ti;
         NNFW_ENSURE_SUCCESS(nnfw_input_tensorinfo(_so.session, ind, &ti));
-        uint64_t input_elements = num_elems(&ti);
+        uint64_t input_elements = numElems(ti);
         _so.inputs[ind].resize(input_elements * sizeOfNnfwType(ti.dtype));
 
         // Optional inputs are not supported yet
@@ -334,7 +334,7 @@ protected:
       {
         nnfw_tensorinfo ti;
         NNFW_ENSURE_SUCCESS(nnfw_output_tensorinfo(_so.session, ind, &ti));
-        uint64_t output_elements = num_elems(&ti);
+        uint64_t output_elements = numElems(ti);
         _so.expects[ind].resize(output_elements * sizeOfNnfwType(ti.dtype));
 
         // Setting the output buffer size of specified output tensor is not supported yet
@@ -359,7 +359,7 @@ protected:
         const auto &ref_losses = train_case.losses;
         ASSERT_EQ(ref_losses.size(), num_epoch);
         std::vector<float> actual_losses(num_expecteds, 0.f);
-        for (uint32_t epoch = 0; epoch < num_epoch; ++epoch)
+        for (int epoch = 0; epoch < num_epoch; ++epoch)
         {
           std::fill(actual_losses.begin(), actual_losses.end(), 0.f);
 
@@ -395,7 +395,7 @@ protected:
             NNFW_ENSURE_SUCCESS(nnfw_train(_so.session, true));
 
             // Store loss
-            for (int32_t i = 0; i < num_expecteds; ++i)
+            for (uint32_t i = 0; i < num_expecteds; ++i)
             {
               float temp = 0.f;
               NNFW_ENSURE_SUCCESS(nnfw_train_get_loss(_so.session, i, &temp));
