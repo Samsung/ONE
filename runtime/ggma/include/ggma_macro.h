@@ -32,14 +32,13 @@
     }                                \
   } while (0)
 
+#define GGMA_RETURN_ERROR_IF_NULL(p)      \
+  do                                      \
+  {                                       \
+    if ((p) == NULL)                      \
+      return GGMA_STATUS_UNEXPECTED_NULL; \
+  } while (0)
+
 #define GGMA_UNUSED(x) (void)(x)
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif // __GGMA_GGMA_MACRO_H__

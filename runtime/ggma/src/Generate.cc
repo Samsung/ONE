@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "config.h"
-#include "context.h"
-#include "kv_cache.h"
+#include "Config.h"
+#include "Context.h"
+#include "KVCache.h"
 
 #include <iostream>
 #include <vector>
@@ -36,7 +36,7 @@ namespace ggma
 //
 // The function ensures no buffer overflow by checking against n_tokens_max
 // and stops generation when either the requested number is reached or the array is full.
-GGMA_STATUS context::generate(ggma_token *tokens, size_t n_tokens, size_t n_tokens_max,
+GGMA_STATUS Context::generate(ggma_token *tokens, size_t n_tokens, size_t n_tokens_max,
                               size_t *n_predict)
 {
   try
