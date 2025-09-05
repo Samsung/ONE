@@ -18,8 +18,8 @@
 
 #include "OperationUtils.h"
 
-#include <cker/operation/RmsNorm.h>
 #include <cker/Types.h>
+#include <cker/operation/RmsNorm.h>
 
 namespace onert::backend::cpu::ops
 {

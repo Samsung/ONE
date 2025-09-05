@@ -17,9 +17,9 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_BATCH_MATMUL_LAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_BATCH_MATMUL_LAYER_H__
 
-#include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
+#include <backend/IPortableTensor.h>
 #include <exec/IFunction.h>
 
 namespace nnfw::cker

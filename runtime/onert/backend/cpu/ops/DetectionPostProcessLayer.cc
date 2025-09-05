@@ -18,9 +18,9 @@
 
 #include "ndarray/Array.h"
 
+#include <cmath>
 #include <numeric>
 #include <utility>
-#include <cmath>
 
 namespace onert::backend::cpu::ops
 {

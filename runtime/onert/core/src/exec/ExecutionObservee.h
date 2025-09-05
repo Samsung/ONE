@@ -18,7 +18,6 @@
 #define __ONERT_EXEC_EXECUTION_OBSERVEE_H__
 
 #include "ExecutionObservers.h"
-
 #include "ir/Index.h"
 
 #include <list>

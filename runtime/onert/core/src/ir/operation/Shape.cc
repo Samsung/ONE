@@ -15,6 +15,7 @@
  */
 
 #include "ir/operation/Shape.h"
+
 #include "ir/OperationVisitor.h"
 
 namespace onert::ir::operation

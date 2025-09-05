@@ -22,14 +22,14 @@
 #ifndef __ONERT_BACKEND_BASIC_MEMORY_PLANNER_H__
 #define __ONERT_BACKEND_BASIC_MEMORY_PLANNER_H__
 
-#include <map>
-#include <vector>
-#include <unordered_set>
-#include <memory>
-
 #include "backend/basic/Allocator.h"
 #include "backend/basic/IMemoryPlanner.h"
 #include "ir/OperandIndexMap.h"
+
+#include <map>
+#include <memory>
+#include <unordered_set>
+#include <vector>
 
 namespace onert::backend::basic
 {

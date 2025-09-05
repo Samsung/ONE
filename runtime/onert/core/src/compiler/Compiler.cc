@@ -16,24 +16,23 @@
 
 #include "Compiler.h"
 
-#include "CompilerHelpers.h"
-#include "ExecutorFactory.h"
-#include "ShapeValidator.h"
-#include "pass/ConstantOutputPass.h"
-#include "pass/OddOutputPass.h"
-#include "pass/PassRunner.h"
-#include "pass/PermutationIOPass.h"
-#include "pass/UnusedOperandEliminationPass.h"
 #include "../dumper/dot/DotDumper.h"
 #include "../exec/MultiModelExecutors.h"
 #include "../exec/SingleModelExecutors.h"
 #include "../ir/OperationDumper.h"
 #include "../ir/verifier/Verifier.h"
-
+#include "CompilerHelpers.h"
+#include "ExecutorFactory.h"
+#include "ShapeValidator.h"
 #include "compiler/StaticShapeInferer.h"
+#include "pass/ConstantOutputPass.h"
+#include "pass/OddOutputPass.h"
+#include "pass/PassRunner.h"
+#include "pass/PermutationIOPass.h"
+#include "pass/UnusedOperandEliminationPass.h"
 
-#include <misc/string_helpers.h>
 #include <misc/polymorphic_downcast.h>
+#include <misc/string_helpers.h>
 
 namespace onert::compiler
 {

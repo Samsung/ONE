@@ -17,14 +17,15 @@
 #ifndef __ONERT_BACKEND_BASIC_KERNEL_GENERATOR_BASE_H__
 #define __ONERT_BACKEND_BASIC_KERNEL_GENERATOR_BASE_H__
 
-#include <assert.h>
-#include <memory>
-#include <functional>
-
+#include "backend/ITensorRegistry.h"
+#include "exec/FunctionSequence.h"
 #include "ir/Graph.h"
 #include "ir/OperationVisitor.h"
-#include "exec/FunctionSequence.h"
-#include "backend/ITensorRegistry.h"
+
+#include <assert.h>
+
+#include <functional>
+#include <memory>
 
 namespace onert::backend::basic
 {

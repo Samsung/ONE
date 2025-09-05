@@ -17,7 +17,6 @@
 #include "compiler/CompilerOptions.h"
 
 #include "../backend/builtin/Backend.h"
-
 #include "util/ConfigSource.h"
 #include "util/logging.h"
 

@@ -20,8 +20,9 @@
 #include <ir/Shape.h>
 #include <ir/TypeInfo.h>
 
-#include <cmath>
 #include <gtest/gtest.h>
+
+#include <cmath>
 
 namespace
 {

@@ -17,10 +17,10 @@
 #ifndef __ONERT_BACKEND_TRIX_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_TRIX_KERNEL_GENERATOR_H__
 
+#include "DevContext.h"
+#include "Tensor.h"
 #include "TensorBuilder.h"
 #include "backend/basic/TensorRegistry.h"
-#include "Tensor.h"
-#include "DevContext.h"
 
 #include <backend/basic/KernelGeneratorBase.h>
 #include <ir/Operands.h>

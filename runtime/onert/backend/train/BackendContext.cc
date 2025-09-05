@@ -16,9 +16,9 @@
 
 #include "BackendContext.h"
 
+#include "KernelGenerator.h"
 #include "TensorBuilder.h"
 #include "TensorPlanner.h"
-#include "KernelGenerator.h"
 #include "ops/BackPropInitializer.h"
 
 #include <backend/basic/train/TrainableBackendContextHelpers.h>

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+#include "NETensor.h"
+
 #include <arm_compute/runtime/Memory.h>
 #include <arm_compute/runtime/MemoryRegion.h>
-#include "NETensor.h"
 
 namespace onert::backend::acl_neon::operand
 {

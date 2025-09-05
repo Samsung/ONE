@@ -17,11 +17,11 @@
 #ifndef __ONERT_IR_OPERATION_TRANSPOSE_CONV_H__
 #define __ONERT_IR_OPERATION_TRANSPOSE_CONV_H__
 
-#include <memory>
-
-#include "ir/Operation.h"
 #include "ir/InternalType.h"
+#include "ir/Operation.h"
 #include "ir/Padding.h"
+
+#include <memory>
 
 namespace onert::ir::operation
 {

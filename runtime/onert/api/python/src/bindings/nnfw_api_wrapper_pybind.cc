@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include <pybind11/pybind11.h>
-
 #include "nnfw_exception_bindings.h"
 #include "nnfw_session_bindings.h"
 #include "nnfw_tensorinfo_bindings.h"
 #include "nnfw_traininfo_bindings.h"
+
+#include <pybind11/pybind11.h>
 
 using namespace onert::api::python;
 namespace py = pybind11;

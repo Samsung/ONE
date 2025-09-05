@@ -17,12 +17,12 @@
 #ifndef __ONERT_BACKEND_BASIC_STATICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_BASIC_STATICTENSOR_MANAGER_H__
 
+#include "TensorRegistry.h"
 #include "backend/basic/DynamicTensorManager.h"
 #include "backend/basic/MemoryManager.h"
 #include "backend/basic/TensorRegistry.h"
 #include "ir/OperandIndexMap.h"
 #include "ir/OperandInfo.h"
-#include "TensorRegistry.h"
 
 namespace onert::backend::basic
 {

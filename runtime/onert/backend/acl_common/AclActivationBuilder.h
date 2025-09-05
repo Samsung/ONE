@@ -17,13 +17,13 @@
 #ifndef __ONERT_BACKEND_ACL_COMMON_ACL_ACTIVATION_BUILDER_H__
 #define __ONERT_BACKEND_ACL_COMMON_ACL_ACTIVATION_BUILDER_H__
 
-#include <memory>
+#include "Convert.h"
 
-#include <ir/InternalType.h>
 #include <exec/IFunction.h>
 #include <exec/NopFunction.h>
+#include <ir/InternalType.h>
 
-#include "Convert.h"
+#include <memory>
 
 namespace onert::backend::acl_common
 {

@@ -17,17 +17,17 @@
 #ifndef __ONERT_EXEC_I_PERMUTE_FUNCTION_H__
 #define __ONERT_EXEC_I_PERMUTE_FUNCTION_H__
 
+#include "backend/ITensor.h"
+#include "exec/IFunction.h"
 #include "feature/IndexIterator.h"
 #include "feature/nchw/Reader.h"
 #include "feature/nchw/View.h"
 #include "feature/nhwc/Reader.h"
 #include "feature/nhwc/View.h"
 
-#include "backend/ITensor.h"
-#include "exec/IFunction.h"
 #include <memory>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 namespace onert::exec
 {

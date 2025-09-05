@@ -17,9 +17,9 @@
 #ifndef __ONERT_EXPORTER_TRAININFO_BUILDER_H__
 #define __ONERT_EXPORTER_TRAININFO_BUILDER_H__
 
-#include "ir/train/TrainingInfo.h"
 #include "circle_schema_generated.h"
 #include "circle_traininfo_generated.h"
+#include "ir/train/TrainingInfo.h"
 
 namespace onert::exporter
 {

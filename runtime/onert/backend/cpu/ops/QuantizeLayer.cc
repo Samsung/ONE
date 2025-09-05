@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-#include "OperationUtils.h"
 #include "QuantizeLayer.h"
+
+#include "OperationUtils.h"
 
 #include <cker/operation/Dequantize.h>
 #include <cker/operation/Erf.h>

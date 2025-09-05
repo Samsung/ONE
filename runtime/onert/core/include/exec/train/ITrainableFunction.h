@@ -17,10 +17,10 @@
 #ifndef __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__
 #define __ONERT_EXEC_TRAIN_I_TRAINABLE_FUNCTION_H__
 
+#include "backend/train/LayerScopeTensor.h"
+
 #include <cstdint>
 #include <optional>
-
-#include "backend/train/LayerScopeTensor.h"
 
 namespace onert::exec::train
 {

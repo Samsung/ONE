@@ -18,10 +18,9 @@
 #define __ONERT_IR_TRAIN_OPERATION_LOSS_H__
 
 #include "ir/operation/Loss.h"
-#include "ir/train/TrainableOperation.h"
-
 #include "ir/train/LossCode.h"
 #include "ir/train/LossInfo.h"
+#include "ir/train/TrainableOperation.h"
 
 namespace onert::ir::train::operation
 {

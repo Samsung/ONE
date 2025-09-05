@@ -17,11 +17,11 @@
 #ifndef __ONERT_COMPILER_LINEAR_H__
 #define __ONERT_COMPILER_LINEAR_H__
 
-#include <vector>
-#include <memory>
-
-#include "ir/Index.h"
 #include "compiler/ILoweredGraph.h"
+#include "ir/Index.h"
+
+#include <memory>
+#include <vector>
 
 namespace onert::compiler
 {

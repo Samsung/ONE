@@ -17,11 +17,11 @@
 #ifndef __ONERT_EXEC_THREAD_POOL_H__
 #define __ONERT_EXEC_THREAD_POOL_H__
 
-#include <thread>
-#include <memory>
-#include <vector>
-
 #include "WorkQueue.h"
+
+#include <memory>
+#include <thread>
+#include <vector>
 
 namespace onert::exec
 {

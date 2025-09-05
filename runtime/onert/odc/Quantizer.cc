@@ -19,11 +19,11 @@
 #include "Embedder.h"
 #include "MinMaxReader.h"
 
-#include <util/ConfigSource.h>
-#include <luci/ImporterEx.h>
-#include <luci/CircleQuantizer.h>
 #include <luci/CircleExporter.h>
 #include <luci/CircleFileExpContract.h>
+#include <luci/CircleQuantizer.h>
+#include <luci/ImporterEx.h>
+#include <util/ConfigSource.h>
 
 #include <iostream>
 

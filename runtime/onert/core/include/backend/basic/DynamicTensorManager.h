@@ -20,9 +20,9 @@
 #include "MemoryManager.h"
 #include "TensorRegistry.h"
 
-#include <ir/OperandInfo.h>
 #include <ir/IOperation.h>
 #include <ir/Index.h>
+#include <ir/OperandInfo.h>
 
 #include <unordered_set>
 

@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_ACL_COMMON_TENSOR_MANAGER_H__
 #define __ONERT_BACKEND_ACL_COMMON_TENSOR_MANAGER_H__
 
-#include <arm_compute/runtime/IMemoryManager.h>
-
-#include "AclMemoryManager.h"
 #include "AclInternalBufferManager.h"
+#include "AclMemoryManager.h"
 #include "ir/OperandIndexMap.h"
+
+#include <arm_compute/runtime/IMemoryManager.h>
 
 namespace onert::backend::acl_common
 {
@@ -77,8 +77,9 @@ private:
 
 } // namespace onert::backend::acl_common
 
-#include <cassert>
 #include "util/logging.h"
+
+#include <cassert>
 
 namespace onert::backend::acl_common
 {

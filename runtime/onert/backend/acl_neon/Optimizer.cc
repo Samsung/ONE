@@ -17,7 +17,6 @@
 #include "Optimizer.h"
 
 #include <AclSubTensorAnalyzer.h>
-
 #include <compiler/LoweredGraph.h>
 #include <util/logging.h>
 

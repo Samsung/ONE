@@ -18,7 +18,6 @@
 #define __ONERT_BACKEND_CPU_OPS_DYNAMIC_UPDATE_SLICE_LAYER_H__
 
 #include <backend/IPortableTensor.h>
-
 #include <exec/IFunction.h>
 #include <ir/operation/DynamicUpdateSlice.h>
 

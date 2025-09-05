@@ -17,11 +17,12 @@
 #ifndef __ONERT_BACKEND_ACL_CL_OPERAND_CL_TENSOR_H__
 #define __ONERT_BACKEND_ACL_CL_OPERAND_CL_TENSOR_H__
 
-#include <arm_compute/core/TensorInfo.h>
-#include <arm_compute/runtime/CL/CLTensor.h>
-#include <arm_compute/runtime/CL/CLScheduler.h>
-#include "arm_compute/runtime/CL/CLTensorAllocator.h"
 #include "ICLTensor.h"
+
+#include "arm_compute/runtime/CL/CLTensorAllocator.h"
+#include <arm_compute/core/TensorInfo.h>
+#include <arm_compute/runtime/CL/CLScheduler.h>
+#include <arm_compute/runtime/CL/CLTensor.h>
 
 namespace onert::backend::acl_cl::operand
 {

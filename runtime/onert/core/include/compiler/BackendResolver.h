@@ -17,11 +17,11 @@
 #ifndef __ONERT_COMPILER_BACKEND_RESOLVER_H__
 #define __ONERT_COMPILER_BACKEND_RESOLVER_H__
 
-#include <unordered_map>
-#include <typeindex>
-
 #include "backend/Backend.h"
 #include "ir/OperationIndexMap.h"
+
+#include <typeindex>
+#include <unordered_map>
 
 namespace onert::compiler
 {

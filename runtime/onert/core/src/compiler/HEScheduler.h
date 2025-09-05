@@ -23,9 +23,9 @@
 #ifndef __ONERT_COMPILER_H_E_SCHEDULER_H_
 #define __ONERT_COMPILER_H_E_SCHEDULER_H_
 
-#include "IScheduler.h"
 #include "../backend/builtin/Config.h"
 #include "../exec/ExecTime.h"
+#include "IScheduler.h"
 
 #include <backend/Backend.h>
 #include <compiler/BackendManager.h>

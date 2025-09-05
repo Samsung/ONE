@@ -18,7 +18,6 @@
 
 #include "ir/Graph.h"
 #include "ir/OperationIndexMap.h"
-
 #include "util/logging.h"
 
 namespace

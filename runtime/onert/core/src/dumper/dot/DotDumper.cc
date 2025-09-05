@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-#include <fstream>
-#include <unordered_map>
-
 #include "DotDumper.h"
+
 #include "DotBuilder.h"
-#include "ir/OperandIndexMap.h"
-#include "ir/OperationIndexMap.h"
 #include "backend/Backend.h"
 #include "backend/IConfig.h"
 #include "compiler/BackendManager.h"
+#include "ir/OperandIndexMap.h"
+#include "ir/OperationIndexMap.h"
+
+#include <fstream>
+#include <unordered_map>
 
 namespace onert::dumper::dot
 {

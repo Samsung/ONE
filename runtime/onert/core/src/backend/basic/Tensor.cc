@@ -16,8 +16,8 @@
 
 #include "backend/basic/Tensor.h"
 
-#include "ir/DataType.h"
 #include "backend/basic/MemoryManager.h"
+#include "ir/DataType.h"
 
 namespace onert::backend::basic
 {

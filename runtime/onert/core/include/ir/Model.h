@@ -17,12 +17,12 @@
 #ifndef __ONERT_IR_MODEL_H__
 #define __ONERT_IR_MODEL_H__
 
-#include <memory>
-#include <unordered_map>
-
 #include "ir/IGraph.h"
 #include "ir/Index.h"
 #include "util/ObjectManager.h"
+
+#include <memory>
+#include <unordered_map>
 
 namespace onert::backend::custom
 {

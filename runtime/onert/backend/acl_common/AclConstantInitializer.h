@@ -19,16 +19,16 @@
 
 #include "AclTensorRegistry.h"
 
-#include <unordered_map>
-#include <functional>
-
+#include <backend/ITensorRegistry.h>
 #include <ir/Coordinates.h>
 #include <ir/Layout.h>
 #include <ir/Operand.h>
 #include <ir/Operands.h>
 #include <ir/OperationVisitor.h>
-#include <backend/ITensorRegistry.h>
 #include <util/logging.h>
+
+#include <functional>
+#include <unordered_map>
 
 namespace onert::backend::acl_common
 {

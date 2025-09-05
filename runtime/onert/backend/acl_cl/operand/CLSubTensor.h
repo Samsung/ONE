@@ -17,8 +17,9 @@
 #ifndef __ONERT_BACKEND_ACL_CL_OPERAND_CL_SUB_TENSOR_H__
 #define __ONERT_BACKEND_ACL_CL_OPERAND_CL_SUB_TENSOR_H__
 
-#include <arm_compute/runtime/CL/CLSubTensor.h>
 #include "ICLTensor.h"
+
+#include <arm_compute/runtime/CL/CLSubTensor.h>
 
 namespace onert::backend::acl_cl::operand
 {

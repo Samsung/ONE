@@ -17,10 +17,10 @@
 #ifndef __ONERT_COMPILER_PASS_ODD_OUTPUT_PASS_H__
 #define __ONERT_COMPILER_PASS_ODD_OUTPUT_PASS_H__
 
-#include <unordered_set>
-
 #include "Pass.h"
 #include "ir/Index.h"
+
+#include <unordered_set>
 
 namespace onert::compiler::pass
 {

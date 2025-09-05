@@ -17,11 +17,11 @@
 #ifndef __ONERT_EXEC_EXECUTORS_H__
 #define __ONERT_EXEC_EXECUTORS_H__
 
+#include "../backend/builtin/UserTensor.h"
+#include "EdgeTensor.h"
+#include "IPermuteFunction.h"
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
-#include "IPermuteFunction.h"
-#include "EdgeTensor.h"
-#include "../backend/builtin/UserTensor.h"
 
 namespace std
 {

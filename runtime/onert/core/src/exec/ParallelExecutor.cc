@@ -16,10 +16,10 @@
 
 #include "ParallelExecutor.h"
 
-#include <cassert>
-
-#include "util/logging.h"
 #include "exec/IFunction.h"
+#include "util/logging.h"
+
+#include <cassert>
 
 namespace onert::exec
 {

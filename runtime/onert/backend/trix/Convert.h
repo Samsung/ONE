@@ -20,8 +20,8 @@
 #include <backend/IPortableTensor.h>
 #include <ir/DataType.h>
 #include <ir/Layout.h>
-
 #include <libnpuhost.h>
+
 #include <type_traits>
 
 namespace onert::backend::trix

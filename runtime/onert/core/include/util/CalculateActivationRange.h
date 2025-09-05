@@ -17,9 +17,9 @@
 #ifndef __ONERT_UTIL_CALCULATE_ACTIVATION_RANGE_H__
 #define __ONERT_UTIL_CALCULATE_ACTIVATION_RANGE_H__
 
-#include <limits>
-
 #include "ir/InternalType.h"
+
+#include <limits>
 
 namespace onert::util
 {

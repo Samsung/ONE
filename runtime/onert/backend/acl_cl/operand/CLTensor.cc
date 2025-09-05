@@ -16,11 +16,11 @@
 
 #include "CLTensor.h"
 
-#include <arm_compute/runtime/CL/CLScheduler.h>
+#include <Convert.h>
+
 #include <arm_compute/runtime/CL/CLMemory.h>
 #include <arm_compute/runtime/CL/CLMemoryRegion.h>
-
-#include <Convert.h>
+#include <arm_compute/runtime/CL/CLScheduler.h>
 
 namespace onert::backend::acl_cl::operand
 {

@@ -17,12 +17,12 @@
 #ifndef __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY__
 #define __ONERT_BACKEND_TRAIN_TENSOR_REGISTRY__
 
-#include <backend/train/ITensorRegistry.h>
-#include <backend/train/LayerScopeTensor.h>
-
 #include "DisposableTensorIndex.h"
 #include "LayerScopeTensorIndex.h"
 #include "Tensor.h"
+
+#include <backend/train/ITensorRegistry.h>
+#include <backend/train/LayerScopeTensor.h>
 
 namespace onert::backend::train
 {

@@ -15,7 +15,9 @@
  */
 
 #include "MemoryPlanner.h"
+
 #include "util/logging.h"
+
 #include <cassert>
 
 namespace onert::backend::basic

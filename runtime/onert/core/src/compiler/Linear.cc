@@ -17,7 +17,6 @@
 #include "Linear.h"
 
 #include "../dumper/text/GraphDumper.h"
-
 #include "util/logging.h"
 
 #include <sstream>

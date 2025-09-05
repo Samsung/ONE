@@ -18,7 +18,6 @@
 #define __ONERT_BACKEND_BUILTIN_TRAIN_KERNEL_PERMUTELAYER_H__
 
 #include "../../kernel/PermuteLayer.h"
-
 #include "exec/train/ITrainableFunction.h"
 
 namespace onert::backend::builtin::train::kernel

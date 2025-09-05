@@ -17,8 +17,9 @@
 #ifndef __ONERT_IR_DATA_H__
 #define __ONERT_IR_DATA_H__
 
-#include <algorithm>
 #include <sys/mman.h>
+
+#include <algorithm>
 
 namespace onert::ir
 {

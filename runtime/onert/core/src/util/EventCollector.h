@@ -18,7 +18,6 @@
 #define __ONERT_UTIL_EVENT_COLLECTOR_H__
 
 #include "EventRecorder.h"
-
 #include "util/TracingCtx.h"
 
 #include <string>

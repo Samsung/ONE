@@ -18,13 +18,16 @@
 
 #include "ops/AddNLayer.h"
 #include "ops/ArgMinMaxLayer.h"
+#include "ops/BatchMatMulLayer.h"
 #include "ops/BatchToSpaceNDLayer.h"
 #include "ops/BinaryArithmeticLayer.h"
+#include "ops/BroadcastToLayer.h"
 #include "ops/CompareLayer.h"
 #include "ops/ConcatLayer.h"
 #include "ops/ConvolutionLayer.h"
 #include "ops/DepthToSpaceLayer.h"
 #include "ops/DepthwiseConvolutionLayer.h"
+#include "ops/DetectionPostProcessLayer.h"
 #include "ops/DynamicUpdateSlice.h"
 #include "ops/ElementwiseActivationLayer.h"
 #include "ops/ElementwiseBinaryLayer.h"
@@ -32,10 +35,12 @@
 #include "ops/ExpandDimsLayer.h"
 #include "ops/FillLayer.h"
 #include "ops/FullyConnectedLayer.h"
+#include "ops/FusedBatchNormLayer.h"
 #include "ops/GatherLayer.h"
+#include "ops/L2NormLayer.h"
 #include "ops/LSTMLayer.h"
+#include "ops/LogSoftMaxLayer.h"
 #include "ops/MeanLayer.h"
-#include "ops/DetectionPostProcessLayer.h"
 #include "ops/OneHotLayer.h"
 #include "ops/OperationUtils.h"
 #include "ops/PackLayer.h"
@@ -49,36 +54,31 @@
 #include "ops/ReshapeLayer.h"
 #include "ops/ResizeBilinearLayer.h"
 #include "ops/ReverseLayer.h"
+#include "ops/RmsNormLayer.h"
 #include "ops/RoPELayer.h"
 #include "ops/SelectLayer.h"
 #include "ops/ShapeLayer.h"
 #include "ops/SliceLayer.h"
 #include "ops/SoftMaxLayer.h"
-#include "ops/StridedSliceLayer.h"
 #include "ops/SpaceToBatchNDLayer.h"
 #include "ops/SpaceToDepthLayer.h"
 #include "ops/SplitLayer.h"
 #include "ops/SplitVLayer.h"
+#include "ops/SquaredDiffLayer.h"
+#include "ops/StatelessRandomUniformLayer.h"
+#include "ops/StridedSliceLayer.h"
 #include "ops/TileLayer.h"
 #include "ops/TopKV2Layer.h"
 #include "ops/TransposeLayer.h"
 #include "ops/UnpackLayer.h"
-#include "ops/SquaredDiffLayer.h"
-#include "ops/L2NormLayer.h"
-#include "ops/BatchMatMulLayer.h"
-#include "ops/BroadcastToLayer.h"
-#include "ops/FusedBatchNormLayer.h"
-#include "ops/LogSoftMaxLayer.h"
-#include "ops/StatelessRandomUniformLayer.h"
-#include "ops/RmsNormLayer.h"
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
-#include <memory>
+#include <exec/DynamicShapeInferer.h>
 #include <util/Utils.h>
 #include <util/logging.h>
-#include <exec/DynamicShapeInferer.h>
 
+#include <memory>
 #include <stdexcept>
 
 namespace onert::backend::cpu

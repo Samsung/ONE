@@ -17,10 +17,10 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_BACKPROP_INITIALIZER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_BACKPROP_INITIALIZER_H__
 
+#include "../Tensor.h"
+
 #include <backend/IPortableTensor.h>
 #include <exec/train/ITrainableFunction.h>
-
-#include "../Tensor.h"
 
 namespace onert::backend::train::ops
 {

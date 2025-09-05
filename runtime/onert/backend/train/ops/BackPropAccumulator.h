@@ -18,8 +18,9 @@
 #define __ONERT_BACKEND_TRAIN_OPS_BACKPROP_ACCUMULATOR_H__
 
 #include <backend/IPortableTensor.h>
-#include <cker/Types.h>
 #include <exec/train/ITrainableFunction.h>
+
+#include <cker/Types.h>
 
 namespace onert::backend::train::ops
 {

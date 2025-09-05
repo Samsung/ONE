@@ -15,6 +15,7 @@
  */
 
 #include "ir/operation/Bulk.h"
+
 #include "ir/OperationVisitor.h"
 
 namespace onert::ir::operation

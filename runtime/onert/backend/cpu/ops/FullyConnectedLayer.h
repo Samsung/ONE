@@ -17,10 +17,10 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_FULLYCONNECTEDLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_FULLYCONNECTEDLAYER_H__
 
-#include <backend/IPortableTensor.h>
 #include "../ExternalContext.h"
 #include "OperationUtils.h"
 
+#include <backend/IPortableTensor.h>
 #include <exec/IFunction.h>
 
 namespace nnfw::cker

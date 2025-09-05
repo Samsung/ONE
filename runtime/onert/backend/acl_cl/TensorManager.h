@@ -17,21 +17,20 @@
 #ifndef __ONERT_BACKEND_ACL_CL_TENSOR_MANAGER_H__
 #define __ONERT_BACKEND_ACL_CL_TENSOR_MANAGER_H__
 
-#include <arm_compute/runtime/CL/CLBufferAllocator.h>
-#include <arm_compute/runtime/PoolManager.h>
-#include <arm_compute/runtime/BlobLifetimeManager.h>
-#include <arm_compute/runtime/MemoryManagerOnDemand.h>
-#include <arm_compute/runtime/MemoryGroup.h>
+#include "operand/CLSubTensor.h"
+#include "operand/CLTensor.h"
+#include "util/logging.h"
 
-#include <AclMemoryManager.h>
-#include <AclLinearMemoryManager.h>
 #include <AclInternalBufferManager.h>
+#include <AclLinearMemoryManager.h>
+#include <AclMemoryManager.h>
 #include <AclTensorManager.h>
 
-#include "operand/CLTensor.h"
-#include "operand/CLSubTensor.h"
-
-#include "util/logging.h"
+#include <arm_compute/runtime/BlobLifetimeManager.h>
+#include <arm_compute/runtime/CL/CLBufferAllocator.h>
+#include <arm_compute/runtime/MemoryGroup.h>
+#include <arm_compute/runtime/MemoryManagerOnDemand.h>
+#include <arm_compute/runtime/PoolManager.h>
 
 namespace onert::backend::acl_cl
 {

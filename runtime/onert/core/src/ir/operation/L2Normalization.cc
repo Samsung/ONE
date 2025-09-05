@@ -15,6 +15,7 @@
  */
 
 #include "ir/operation/L2Normalization.h"
+
 #include "ir/OperationVisitor.h"
 
 namespace onert::ir::operation

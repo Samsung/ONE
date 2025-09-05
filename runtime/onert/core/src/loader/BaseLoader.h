@@ -19,20 +19,21 @@
 #define __ONERT_LOADER_BASE_LOADER_H__
 
 #include "ir/Graph.h"
-#include "ir/Shape.h"
 #include "ir/Operations.Include.h"
+#include "ir/Shape.h"
+
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <util/logging.h>
 
 #include "flatbuffers/flexbuffers.h"
 
-#include <map>
-#include <memory>
 #include <fstream>
 #include <limits>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <sys/mman.h>
-#include <unistd.h>
-#include <util/logging.h>
+#include <map>
+#include <memory>
 
 namespace onert::loader
 {

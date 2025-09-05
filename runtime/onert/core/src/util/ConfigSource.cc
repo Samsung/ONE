@@ -15,6 +15,7 @@
  */
 
 #include "util/ConfigSource.h"
+
 #include "util/logging.h"
 
 #include <misc/EnvConfigSource.h>

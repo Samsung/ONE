@@ -17,8 +17,8 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_LOSS_CATEGORICALCROSSENTROPY_LAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_LOSS_CATEGORICALCROSSENTROPY_LAYER_H__
 
-#include "LossLayer.h"
 #include "../Tensor.h"
+#include "LossLayer.h"
 
 namespace onert::backend::train::ops
 {

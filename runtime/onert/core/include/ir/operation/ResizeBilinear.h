@@ -17,9 +17,9 @@
 #ifndef __ONERT_IR_OPERATION_RESIZE_BILINEAR_H__
 #define __ONERT_IR_OPERATION_RESIZE_BILINEAR_H__
 
-#include <memory>
-
 #include "ir/Operation.h"
+
+#include <memory>
 
 namespace onert::ir::operation
 {

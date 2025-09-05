@@ -17,10 +17,9 @@
 #ifndef __ONERT_EXEC_SIGNATURE_EXECUTORS_H__
 #define __ONERT_EXEC_SIGNATURE_EXECUTORS_H__
 
+#include "SingleModelExecutors.h"
 #include "exec/IExecutors.h"
 #include "ir/NNPkg.h"
-
-#include "SingleModelExecutors.h"
 
 namespace onert::exec
 {

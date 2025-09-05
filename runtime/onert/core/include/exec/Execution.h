@@ -21,14 +21,15 @@
 #ifndef __ONERT_EXEC_EXECUTION_H__
 #define __ONERT_EXEC_EXECUTION_H__
 
-#include "backend/train/ITrainableTensor.h"
-#include "ir/Layout.h"
-#include "exec/IExecutors.h"
 #include "ExecutionContext.h"
+#include "backend/train/ITrainableTensor.h"
+#include "exec/IExecutors.h"
+#include "ir/Layout.h"
 
-#include <thread>
-#include <deque>
 #include <semaphore.h>
+
+#include <deque>
+#include <thread>
 
 namespace onert::exec
 {

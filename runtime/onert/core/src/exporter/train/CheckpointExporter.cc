@@ -17,8 +17,8 @@
 #include "exporter/train/CheckpointExporter.h"
 
 #include "exec/Execution.h"
-#include "ir/train/TrainingInfo.h"
 #include "ir/train/Checkpoint.h"
+#include "ir/train/TrainingInfo.h"
 
 #include <fstream>
 #include <iostream>

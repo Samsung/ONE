@@ -15,8 +15,9 @@
  */
 
 #include "nnfw.h"
-#include <vector>
+
 #include <iostream>
+#include <vector>
 
 uint64_t num_elems(const nnfw_tensorinfo *ti)
 {

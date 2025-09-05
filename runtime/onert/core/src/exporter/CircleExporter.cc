@@ -16,11 +16,11 @@
 
 #include "exporter/CircleExporter.h"
 
+#include "TrainInfoBuilder.h"
+#include "circle_schema_generated.h"
 #include "exec/Execution.h"
 #include "ir/train/TrainingInfo.h"
 #include "loader/TrainInfoLoader.h"
-#include "circle_schema_generated.h"
-#include "TrainInfoBuilder.h"
 
 #include <fstream>
 #include <iostream>

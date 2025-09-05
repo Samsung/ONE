@@ -23,8 +23,8 @@
 #include "TensorRegistry.h"
 #include "util/Set.h"
 
-#include <ir/OperationIndexMap.h>
 #include <exec/train/optimizer/Optimizer.h>
+#include <ir/OperationIndexMap.h>
 
 namespace onert::backend::train
 {
