@@ -2,7 +2,7 @@ nnas_include(TargetRequire)
 
 unset(REQUIRED_TARGETS)
 list(APPEND REQUIRED_TARGETS mio_tflite)
-list(APPEND REQUIRED_TARGETS mio_circle08)
+list(APPEND REQUIRED_TARGETS mio_circle)
 TargetRequire_Return(${REQUIRED_TARGETS})
 
 set(DRIVER "driver/Driver.cpp")
@@ -15,7 +15,7 @@ target_link_libraries(tflite2circle foder)
 target_link_libraries(tflite2circle safemain)
 target_link_libraries(tflite2circle mio_tflite)
 target_link_libraries(tflite2circle mio_tflite_helper)
-target_link_libraries(tflite2circle mio_circle08)
+target_link_libraries(tflite2circle mio_circle)
 target_link_libraries(tflite2circle vconone)
 target_link_libraries(tflite2circle nncc_coverage)
 

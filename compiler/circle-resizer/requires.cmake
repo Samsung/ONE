@@ -1,5 +1,5 @@
 require("arser")
 require("common-artifacts")
-require("mio-circle08")
+require("mio-circle")
 require("safemain")
 require("vconone")
