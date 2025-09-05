@@ -34,9 +34,10 @@ OMStatus execute_kernel_CircleRsqrt(const OMExecuteArgs &execute_args)
   uint8_t *input_data = nullptr;
   uint8_t *output_data = nullptr;
 
-  SISOHeader(execute_args, &input, &output, &input_data, &output_data);
+  OMStatus status = SISOHeader(execute_args, &input, &output, &input_data, &output_data);
+  if (status != Ok)
+    return status;
 
-  OMStatus status;
   switch (input->type())
   {
 #ifndef DIS_FLOAT
@@ -62,7 +63,13 @@ OMStatus execute_kernel_CircleRsqrt(const OMExecuteArgs &execute_args)
         core::OMRuntimeShape(input), in_qparams, reinterpret_cast<const int8_t *>(input_data),
         core::OMRuntimeShape(output), out_qparams, reinterpret_cast<int8_t *>(output_data));
     }
+    break;
 #endif
+    default:
+    {
+      status = UnsupportedType;
+      assert(false && "Unsupported type.");
+    }
   }
   return status;
 }

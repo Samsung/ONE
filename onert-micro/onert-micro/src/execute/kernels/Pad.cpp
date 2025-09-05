@@ -58,11 +58,15 @@ OMStatus execute_kernel_CirclePad(const OMExecuteArgs &execute_args)
   uint8_t *input3_data;
   uint8_t *output_data;
 
+  OMStatus status = Ok;
+
   const circle::PadOptions *options;
   // Read kernel
   {
     execute::OMRuntimeKernel runtime_kernel;
-    runtime_kernel.readKernel(op_index, runtime_context);
+    status = runtime_kernel.readKernel(op_index, runtime_context);
+    if (status != Ok)
+      return status;
 
     input1 = runtime_kernel.inputs[input1TensorIdx];
     input2 = runtime_kernel.inputs[input2TensorIdx];
@@ -73,7 +77,9 @@ OMStatus execute_kernel_CirclePad(const OMExecuteArgs &execute_args)
     // input3 - can be nullptr
     assert(output != nullptr);
 
-    runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
+    status = runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
+    if (status != Ok)
+      return status;
 
     input1_data = runtime_kernel.inputs_data[input1TensorIdx];
     input2_data = runtime_kernel.inputs_data[input2TensorIdx];
@@ -86,8 +92,6 @@ OMStatus execute_kernel_CirclePad(const OMExecuteArgs &execute_args)
 
     options = runtime_kernel.first_operator->builtin_options_as_PadOptions();
   }
-
-  OMStatus status = Ok;
 
   core::OMRuntimeShape input1_shape(input1);
   core::OMRuntimeShape input2_shape(input2);
