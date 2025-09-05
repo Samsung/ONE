@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "config.h"
+#include "Config.h"
 
 #include <fstream>
 #include <json/json.h>

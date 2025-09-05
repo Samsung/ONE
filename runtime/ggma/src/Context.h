@@ -17,10 +17,9 @@
 #ifndef __GGMA_CONTEXT_H__
 #define __GGMA_CONTEXT_H__
 
-#include "config.h"
-#include "ggma_api.h"
-#include "kv_cache.h"
-#include "nnfw.h"
+#include "ggma_types.h"
+#include "Config.h"
+#include "KVCache.h"
 
 #include <cstdint>
 #include <memory>
@@ -30,18 +29,10 @@
 namespace ggma
 {
 
-class context
+class Context
 {
 public:
-  /**
-   * @brief Factory method. It creates and initialize ggma_context
-   *
-   * @note  Use factory instead of constructor to get status
-   */
-  static GGMA_STATUS from_package(ggma_context **session, const char *package_path);
-
-private:
-  context(const char *package_path);
+  Context(const char *package_path);
   GGMAConfig load_config(const std::string &package_path);
 
   void prefill(ggma_token *tokens, size_t n_tokens, std::vector<uint8_t> &hidden_state);
@@ -57,7 +48,7 @@ private:
   void init_kv_cache();
 
 public:
-  ~context() = default;
+  ~Context() = default;
 
   GGMA_STATUS generate(ggma_token *tokens, size_t n_tokens, size_t n_tokens_max, size_t *n_predict);
 
