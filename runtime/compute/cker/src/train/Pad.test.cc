@@ -46,8 +46,8 @@ public:
   void verifyForward(const std::vector<T> input, const std::vector<T> expected_output,
                      bool expect_eq = true)
   {
-    assert(input.size() == _in_shape.FlatSize());
-    assert(expected_output.size() == _out_shape.FlatSize());
+    assert(input.size() == static_cast<size_t>(_in_shape.FlatSize()));
+    assert(expected_output.size() == static_cast<size_t>(_out_shape.FlatSize()));
 
     std::vector<T> cacluated_output(_out_shape.FlatSize());
     nnfw::cker::Pad(_op_params.data, _op_params.rank, _in_shape, input.data(), _out_shape,
@@ -62,8 +62,8 @@ public:
   void verifyBackward(const std::vector<T> backward_output,
                       const std::vector<T> expected_backward_input, bool expect_eq = true)
   {
-    assert(backward_output.size() == _out_shape.FlatSize());
-    assert(expected_backward_input.size() == _in_shape.FlatSize());
+    assert(backward_output.size() == static_cast<size_t>(_out_shape.FlatSize()));
+    assert(expected_backward_input.size() == static_cast<size_t>(_in_shape.FlatSize()));
 
     std::vector<T> backward_input(_in_shape.FlatSize());
     nnfw::cker::train::Depad(_op_params.data, _op_params.rank, _out_shape, backward_output.data(),

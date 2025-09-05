@@ -36,7 +36,7 @@ file(GLOB_RECURSE TESTS "src/*.test.cc")
 add_executable(${TEST_CKER} ${TESTS})
 
 target_link_libraries(${TEST_CKER} nnfw_lib_cker)
-target_link_libraries(${TEST_CKER} nnfw_coverage)
+target_link_libraries(${TEST_CKER} nnfw_common nnfw_coverage)
 target_link_libraries(${TEST_CKER} gtest gtest_main ${LIB_PTHREAD})
 
 add_test(${TEST_CKER} ${TEST_CKER})

@@ -56,7 +56,7 @@ TEST(CKer_Operation, StridedSlice5D)
 
 TEST(CKer_Operation, neg_StridedSliceNotSupportedDims)
 {
-  nnfw::cker::StridedSliceParams op_params{};
+  [[maybe_unused]] nnfw::cker::StridedSliceParams op_params{};
   op_params.start_indices_count = 5;
   op_params.stop_indices_count = 5;
   op_params.strides_count = 5;
