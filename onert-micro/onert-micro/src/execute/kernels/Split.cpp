@@ -59,10 +59,12 @@ OMStatus execute_kernel_CircleSplit(const OMExecuteArgs &execute_args)
   // Read kernel
   const circle::SplitOptions *options;
 
+  OMStatus status = Ok;
+
   core::SplitParams params{};
   {
     execute::OMRuntimeKernel runtime_kernel;
-    OMStatus status = runtime_kernel.readKernel(op_index, runtime_context);
+    status = runtime_kernel.readKernel(op_index, runtime_context);
     if (status != Ok)
       return status;
 
@@ -90,7 +92,7 @@ OMStatus execute_kernel_CircleSplit(const OMExecuteArgs &execute_args)
       params.output_data[i] = runtime_kernel.outputs_data[i];
     }
   }
-  OMStatus status;
+
   OMRuntimeShape axis_shape(axis);
   OMRuntimeShape input_shape(input);
   OMRuntimeShape output_shape(output);
@@ -120,7 +122,7 @@ OMStatus execute_kernel_CircleSplit(const OMExecuteArgs &execute_args)
 #endif // DIS_QUANT
     default:
     {
-      status = UnsupportedActivation;
+      status = UnsupportedType;
       assert(false && "Unsupported type.");
     }
   }

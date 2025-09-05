@@ -61,7 +61,7 @@ OMStatus execute_kernel_CircleMean(const OMExecuteArgs &execute_args)
   runtime_kernel.readKernel(op_index, runtime_context);
   runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
 
-  constexpr static size_t kInputTensorIdx = 0;
+  const size_t kInputTensorIdx = 0;
   const circle::Tensor *input = runtime_kernel.inputs[kInputTensorIdx];
 
   switch (input->type())
