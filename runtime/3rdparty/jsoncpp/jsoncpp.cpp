@@ -107,16 +107,6 @@ license you like.
 
 namespace Json
 {
-static inline char getDecimalPoint()
-{
-#ifdef JSONCPP_NO_LOCALE_SUPPORT
-  return '\0';
-#else
-  struct lconv *lc = localeconv();
-  return lc ? *(lc->decimal_point) : '\0';
-#endif
-}
-
 /// Converts a unicode code-point to UTF-8.
 static inline String codePointToUTF8(unsigned int cp)
 {
@@ -194,22 +184,6 @@ template <typename Iter> Iter fixNumericLocale(Iter begin, Iter end)
     }
   }
   return begin;
-}
-
-template <typename Iter> void fixNumericLocaleInput(Iter begin, Iter end)
-{
-  char decimalPoint = getDecimalPoint();
-  if (decimalPoint == '\0' || decimalPoint == '.')
-  {
-    return;
-  }
-  for (; begin != end; ++begin)
-  {
-    if (*begin == '.')
-    {
-      *begin = decimalPoint;
-    }
-  }
 }
 
 /**

@@ -674,7 +674,9 @@ FILE * ggml_fopen(const char * fname, const char * mode) {
 #endif
 #endif
 
+#if 0 // [FIX] disable
 static const size_t CACHE_LINE_SIZE_F32 = CACHE_LINE_SIZE/sizeof(float);
+#endif // [FIX] end
 
 static void ggml_vec_dot_f32(int n, float * restrict s, size_t bs, const float * restrict x, size_t bx, const float * restrict y, size_t by, int nrc);
 static void ggml_vec_dot_f16(int n, float * restrict s, size_t bs, ggml_fp16_t * restrict x, size_t bx, ggml_fp16_t * restrict y, size_t by, int nrc);
@@ -2892,6 +2894,7 @@ static const char * GGML_OP_NAME[GGML_OP_COUNT] = {
 
 static_assert(GGML_OP_COUNT == 74, "GGML_OP_COUNT != 74");
 
+#if 0 // [FIX] disable
 static const char * GGML_OP_SYMBOL[GGML_OP_COUNT] = {
     "none",
 
@@ -2977,6 +2980,7 @@ static const char * GGML_OP_SYMBOL[GGML_OP_COUNT] = {
     "cross_entropy_loss(x,y)",
     "cross_entropy_loss_back(x,y)",
 };
+#endif // [FIX] end
 
 static_assert(GGML_OP_COUNT == 74, "GGML_OP_COUNT != 74");
 
@@ -3554,18 +3558,19 @@ struct ggml_context * ggml_init(struct ggml_init_params params) {
         // initialize GELU, Quick GELU, SILU and EXP F32 tables
         {
             const uint64_t t_start = ggml_time_us(); UNUSED(t_start);
-
             for (int i = 0; i < (1 << 16); ++i) {
                 union {
                     uint16_t u16;
                     ggml_fp16_t fp16;
                 } u = {i};
-                float f = ggml_table_f32_f16[i] = GGML_COMPUTE_FP16_TO_FP32(u.fp16);
+                // [FIX] disable f
+                /* float f = */ggml_table_f32_f16[i] = GGML_COMPUTE_FP16_TO_FP32(u.fp16);
 #if 0 // [FIX] disable
                 ggml_table_gelu_f16[i] = GGML_FP32_TO_FP16(ggml_gelu_f32(f));
                 ggml_table_gelu_quick_f16[i] = GGML_FP32_TO_FP16(ggml_gelu_quick_f32(f));
 #endif // [FIX] end
             }
+
 
             const uint64_t t_end = ggml_time_us(); UNUSED(t_end);
 
@@ -20734,8 +20739,9 @@ size_t ggml_quantize_chunk(
                int64_t   nrows,
                int64_t   n_per_row,
            const float * imatrix) {
+#if 0 // [FIX] disable
     const int64_t n = (int64_t) nrows * n_per_row;
-
+#endif // [FIX] end
     if (ggml_quantize_requires_imatrix(type)) {
         GGML_ASSERT(imatrix != NULL);
     }
