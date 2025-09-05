@@ -146,11 +146,6 @@ If you want to use test package, you should install runtime package which is bui
         -DEXTERNALS_BUILD_THREAD=%{nproc} -DBUILD_MINIMAL_SAMPLE=OFF -DNNFW_OVERLAY_DIR=$(pwd)/%{overlay_path} \\\
         -DCMAKE_INSTALL_PREFIX=%{_prefix} %{option_test} %{option_config} %{extra_option}
 
-%define strip_options %{nil}
-%if %{build_type} == "Release"
-%define strip_options --strip
-%endif
-
 %prep
 %setup -q
 cp %{SOURCE1} .
@@ -191,7 +186,7 @@ tar -xf %{SOURCE3015} -C ./externals
         -DCMAKE_INSTALL_PREFIX=$(pwd)/%{overlay_path} \
 	-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle08;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str"
 %{nncc_env} ./nncc build %{build_jobs}
-cmake --install %{nncc_workspace} %{strip_options}
+cmake --install %{nncc_workspace}
 
 # install angkor TensorIndex and oops InternalExn header (TODO: Remove this)
 mkdir -p %{overlay_path}/include/nncc/core/ADT/tensor
@@ -208,7 +203,7 @@ cp compiler/oops/include/oops/InternalExn.h %{overlay_path}/include/oops
 %install
 %ifarch arm armv7l armv7hl aarch64 x86_64 %ix86 riscv64
 
-%{build_env} ./nnfw install --prefix %{buildroot}%{_prefix} %{strip_options}
+%{build_env} ./nnfw install --prefix %{buildroot}%{_prefix}
 
 # For developer - linking pkg-config files for backward compatibility
 pushd %{buildroot}%{_libdir}/pkgconfig
