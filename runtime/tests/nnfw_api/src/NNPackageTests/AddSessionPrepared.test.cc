@@ -54,7 +54,7 @@ TEST_F(ValidationTestAddSessionPrepared, run_many_times_dynamic_input)
     // Check if the shape inference is correct
     nnfw_tensorinfo ti_output;
     ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &ti_output), NNFW_STATUS_NO_ERROR);
-    EXPECT_EQ(num_elems(&ti_input), num_elems(&ti_output));
+    EXPECT_EQ(numElems(ti_input), numElems(ti_output));
 
     for (int i = 0; i < v; i++)
       ASSERT_FLOAT_EQ(_output[i], i * 10.0 + 2.0) << "i : " << i;

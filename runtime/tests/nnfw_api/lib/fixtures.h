@@ -22,20 +22,11 @@
 #include <nnfw_experimental.h>
 #include <nnfw_internal.h>
 
-#include "NNPackages.h"
 #include "CircleGen.h"
+#include "common.h"
+#include "NNPackages.h"
 
 #define NNFW_ENSURE_SUCCESS(EXPR) ASSERT_EQ((EXPR), NNFW_STATUS_NO_ERROR)
-
-inline uint64_t num_elems(const nnfw_tensorinfo *ti)
-{
-  uint64_t n = 1;
-  for (int32_t i = 0; i < ti->rank; ++i)
-  {
-    n *= static_cast<uint64_t>(ti->dims[i]);
-  }
-  return n;
-}
 
 struct SessionObject
 {
@@ -136,7 +127,7 @@ protected:
   {
     nnfw_tensorinfo ti_input;
     ASSERT_EQ(nnfw_input_tensorinfo(_session, 0, &ti_input), NNFW_STATUS_NO_ERROR);
-    uint64_t input_elements = num_elems(&ti_input);
+    uint64_t input_elements = numElems(ti_input);
     EXPECT_EQ(input_elements, 1);
     _input.resize(input_elements);
     ASSERT_EQ(
@@ -145,7 +136,7 @@ protected:
 
     nnfw_tensorinfo ti_output;
     ASSERT_EQ(nnfw_output_tensorinfo(_session, 0, &ti_output), NNFW_STATUS_NO_ERROR);
-    uint64_t output_elements = num_elems(&ti_output);
+    uint64_t output_elements = numElems(ti_output);
     EXPECT_EQ(output_elements, 1);
     _output.resize(output_elements);
     ASSERT_EQ(nnfw_set_output(_session, 0, ti_output.dtype, _output.data(),
@@ -156,7 +147,7 @@ protected:
   void SetInOutBuffersDynamic(const nnfw_tensorinfo *ti_input)
   {
     NNFW_ENSURE_SUCCESS(nnfw_set_input_tensorinfo(_session, 0, ti_input));
-    uint64_t input_elements = num_elems(ti_input);
+    uint64_t input_elements = numElems(*ti_input);
     _input.resize(input_elements);
     ASSERT_EQ(
       nnfw_set_input(_session, 0, ti_input->dtype, _input.data(), sizeof(float) * input_elements),
@@ -198,7 +189,7 @@ protected:
       {
         nnfw_tensorinfo ti;
         ASSERT_EQ(nnfw_input_tensorinfo(obj.session, ind, &ti), NNFW_STATUS_NO_ERROR);
-        uint64_t input_elements = num_elems(&ti);
+        uint64_t input_elements = numElems(ti);
         obj.inputs[ind].resize(input_elements);
         ASSERT_EQ(nnfw_set_input(obj.session, ind, ti.dtype, obj.inputs[ind].data(),
                                  sizeof(float) * input_elements),
@@ -212,7 +203,7 @@ protected:
       {
         nnfw_tensorinfo ti;
         ASSERT_EQ(nnfw_output_tensorinfo(obj.session, ind, &ti), NNFW_STATUS_NO_ERROR);
-        uint64_t output_elements = num_elems(&ti);
+        uint64_t output_elements = numElems(ti);
         obj.outputs[ind].resize(output_elements);
         ASSERT_EQ(nnfw_set_output(obj.session, ind, ti.dtype, obj.outputs[ind].data(),
                                   sizeof(float) * output_elements),
