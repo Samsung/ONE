@@ -1,7 +1,5 @@
 var NAVTREEINDEX183 =
 {
-"compiler_2dalgona_2src_2_utils_8cpp_source.html":[41,0,0,34,3,8],
-"compiler_2dalgona_2src_2_utils_8h.html":[41,0,0,34,3,9],
 "compiler_2dalgona_2src_2_utils_8h.html#a3f0b632084e62cc77d8f4d0c7155addf":[41,0,0,34,3,9,0],
 "compiler_2dalgona_2src_2_utils_8h.html#a6da5f182ca23f83574865333be440018":[41,0,0,34,3,9,4],
 "compiler_2dalgona_2src_2_utils_8h.html#a71a5a2e849495ab066523f08db993cf8":[41,0,0,34,3,9,5],
@@ -249,5 +247,7 @@ var NAVTREEINDEX183 =
 "compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_fully_connected_8h.html#a90a2d5d095d1e99b34df27491a89fdd6":[41,0,0,62,1,0,8,0],
 "compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html":[41,0,0,62,1,0,8],
 "compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_l2_normalize_8h.html":[41,0,0,62,1,0,9],
-"compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_l2_normalize_8h_source.html":[41,0,0,62,1,0,9]
+"compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_l2_normalize_8h_source.html":[41,0,0,62,1,0,9],
+"compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_l2_pool2_d_8h.html":[41,0,0,62,1,0,10],
+"compiler_2luci-interpreter_2pal_2cmsisnn_2_p_a_l_l2_pool2_d_8h_source.html":[41,0,0,62,1,0,10]
 };

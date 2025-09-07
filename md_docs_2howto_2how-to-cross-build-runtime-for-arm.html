@@ -142,11 +142,6 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-cross-build-run
 <div class="line"># If ROOTFS_DIR is in alternative folder</div>
 <div class="line">(.venv)$ ROOTFS_DIR=/path/to/your/rootfs/arm \</div>
 <div class="line">CROSS_BUILD=1 TARGET_ARCH=armv7l make -f Makefile.template</div>
-</div><!-- fragment --><p>You can also omit the <code>CROSS_BUILD=1</code> option if you explicitly pass <code>ROOTFS_DIR</code>. In that case, if the <code>TARGET_ARCH</code> are differs from the hostarchitecture, the make script automatically applies <code>CROSS_BUILD=1</code>. So, if you set <code>ROOTFS_DIR</code> as an environment variable, you can simply perform normal build and cross build as follows.</p>
-<div class="fragment"><div class="line">(.venv)$ export ROOTFS_DIR=xxx</div>
-<div class="line">...</div>
-<div class="line">(.venv)$ make -f Makefile.template                     # do normal build</div>
-<div class="line">(.venv)$ TARGET_ARCH=armv7l make -f Makefile.template  # do cross build</div>
 </div><!-- fragment --><p>Makefile.template will pass crossbuild toolchain setting to cmake automatically by parsing variables.</p>
 <h2>Run test</h2>
 <p>To run and test the cross-compiled runtime, you need to install library packages and copy the compiled output to the target device of the architecture in which it is executable.</p>

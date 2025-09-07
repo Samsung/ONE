@@ -127,7 +127,7 @@ Protected Member Functions</h2></td></tr>
 class loco::ObjectPool&lt; T &gt;</div><p>Object Pool. </p>
 <dl class="section note"><dt>Note</dt><dd>ObjectPool owns registered objects. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_object_pool_8h_source.html#l00031">31</a> of file <a class="el" href="_object_pool_8h_source.html">ObjectPool.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_object_pool_8h_source.html#l00032">32</a> of file <a class="el" href="_object_pool_8h_source.html">ObjectPool.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ade8a1c697a183c96e056ec6645ec164a" name="ade8a1c697a183c96e056ec6645ec164a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ade8a1c697a183c96e056ec6645ec164a">&#9670;&#160;</a></span>~ObjectPool()</h2>
@@ -185,8 +185,8 @@ template&lt;typename T &gt; </div>
 
 <p>Access N-th object. </p>
 
-<p class="definition">Definition at line <a class="el" href="_object_pool_8h_source.html#l00041">41</a> of file <a class="el" href="_object_pool_8h_source.html">ObjectPool.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   41</span>{ <span class="keywordflow">return</span> _pool.at(n).get(); }</div>
+<p class="definition">Definition at line <a class="el" href="_object_pool_8h_source.html#l00042">42</a> of file <a class="el" href="_object_pool_8h_source.html">ObjectPool.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>{ <span class="keywordflow">return</span> _pool.at(n).get(); }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="_nodes_8cpp_source.html#l00129">loco::Pull::dtype()</a>, <a class="el" href="_nodes_8cpp_source.html#l00147">loco::Pull::dtype()</a>, <a class="el" href="exo_2src_2_test_helper_8h_source.html#l00091">exo::test::find_first_node_bytype()</a>, <a class="el" href="moco-tf_2src_2_test_helper_8h_source.html#l00033">moco::tf::test::find_first_node_bytype()</a>, <a class="el" href="moco_2import_2src_2_test_helper_8h_source.html#l00035">moco::test::find_first_node_bytype()</a>, <a class="el" href="_graph_helper_8h_source.html#l00034">moco::find_node_byname()</a>, <a class="el" href="moco-tf_2src_2_test_helper_8h_source.html#l00049">moco::tf::test::find_nodes_bytype()</a>, <a class="el" href="_nodes_8cpp_source.html#l00090">loco::Pull::index()</a>, <a class="el" href="compiler_2luci-interpreter_2src_2loader_2_graph_loader_8cpp_source.html#l00187">luci_interpreter::GraphLoader::loadTensors()</a>, and <a class="el" href="locomotiv_2src_2_session_8cpp_source.html#l00030">locomotiv::Session::~Session()</a>.</p>
 
@@ -221,19 +221,19 @@ template&lt;typename T &gt; </div>
 <p>Erase an object from the pool. </p>
 <p>erase(p) returns false if p does not belong to this object pool. </p>
 
-<p class="definition">Definition at line <a class="el" href="_object_pool_8h_source.html#l00057">57</a> of file <a class="el" href="_object_pool_8h_source.html">ObjectPool.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>  {</div>
-<div class="line"><span class="lineno">   59</span>    <span class="keyword">auto</span> pred = [ptr](<span class="keyword">const</span> std::unique_ptr&lt;T&gt; &amp;o) { <span class="keywordflow">return</span> o.get() == ptr; };</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keyword">auto</span> it = std::find_if(_pool.begin(), _pool.end(), pred);</div>
-<div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>    <span class="keywordflow">if</span> (it == _pool.end())</div>
-<div class="line"><span class="lineno">   63</span>    {</div>
-<div class="line"><span class="lineno">   64</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   65</span>    }</div>
-<div class="line"><span class="lineno">   66</span> </div>
-<div class="line"><span class="lineno">   67</span>    _pool.erase(it);</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   69</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_object_pool_8h_source.html#l00058">58</a> of file <a class="el" href="_object_pool_8h_source.html">ObjectPool.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>  {</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keyword">auto</span> pred = [ptr](<span class="keyword">const</span> std::unique_ptr&lt;T&gt; &amp;o) { <span class="keywordflow">return</span> o.get() == ptr; };</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keyword">auto</span> it = std::find_if(_pool.begin(), _pool.end(), pred);</div>
+<div class="line"><span class="lineno">   62</span> </div>
+<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">if</span> (it == _pool.end())</div>
+<div class="line"><span class="lineno">   64</span>    {</div>
+<div class="line"><span class="lineno">   65</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   66</span>    }</div>
+<div class="line"><span class="lineno">   67</span> </div>
+<div class="line"><span class="lineno">   68</span>    _pool.erase(it);</div>
+<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   70</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -265,8 +265,8 @@ template&lt;typename T &gt; </div>
 
 <p>Return the number of objects. </p>
 
-<p class="definition">Definition at line <a class="el" href="_object_pool_8h_source.html#l00038">38</a> of file <a class="el" href="_object_pool_8h_source.html">ObjectPool.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{ <span class="keywordflow">return</span> _pool.size(); }</div>
+<p class="definition">Definition at line <a class="el" href="_object_pool_8h_source.html#l00039">39</a> of file <a class="el" href="_object_pool_8h_source.html">ObjectPool.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   39</span>{ <span class="keywordflow">return</span> _pool.size(); }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="exo_2src_2_test_helper_8h_source.html#l00091">exo::test::find_first_node_bytype()</a>, <a class="el" href="moco-tf_2src_2_test_helper_8h_source.html#l00033">moco::tf::test::find_first_node_bytype()</a>, <a class="el" href="moco_2import_2src_2_test_helper_8h_source.html#l00035">moco::test::find_first_node_bytype()</a>, <a class="el" href="_graph_helper_8h_source.html#l00034">moco::find_node_byname()</a>, <a class="el" href="moco-tf_2src_2_test_helper_8h_source.html#l00049">moco::tf::test::find_nodes_bytype()</a>, <a class="el" href="locomotiv_2include_2locomotiv_2_session_8h_source.html#l00070">locomotiv::Session::input_size()</a>, <a class="el" href="loco_2src_2_service_2_graph_builder_8h_source.html#l00147">InputLayer::operator()()</a>, and <a class="el" href="loco_2src_2_service_2_graph_builder_8h_source.html#l00192">OutputLayer::operator()()</a>.</p>
 
@@ -302,12 +302,12 @@ template&lt;typename U &gt; </div>
 
 <p>Take the ownership of a given object and returns its raw pointer. </p>
 
-<p class="definition">Definition at line <a class="el" href="_object_pool_8h_source.html#l00045">45</a> of file <a class="el" href="_object_pool_8h_source.html">ObjectPool.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   46</span>  {</div>
-<div class="line"><span class="lineno">   47</span>    <span class="keyword">auto</span> res = o.get();</div>
-<div class="line"><span class="lineno">   48</span>    _pool.emplace_back(std::move(o));</div>
-<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> res;</div>
-<div class="line"><span class="lineno">   50</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="_object_pool_8h_source.html#l00046">46</a> of file <a class="el" href="_object_pool_8h_source.html">ObjectPool.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>  {</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keyword">auto</span> res = o.get();</div>
+<div class="line"><span class="lineno">   49</span>    _pool.emplace_back(std::move(o));</div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">   51</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="compiler_2loco_2include_2loco_2_i_r_2_graph_8h_source.html#l00181">loco::Graph::SimpleFactoryObjectPool&lt; T &gt;::create()</a>.</p>
 

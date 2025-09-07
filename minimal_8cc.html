@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('minimal_8cc.html',''); initResizable()
 Functions</h2></td></tr>
 <tr class="memitem:a257a0af44a333bcf35bc6517896260de" id="r_a257a0af44a333bcf35bc6517896260de"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="minimal_8cc.html#a257a0af44a333bcf35bc6517896260de">num_elems</a> (const <a class="el" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *ti)</td></tr>
 <tr class="separator:a257a0af44a333bcf35bc6517896260de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa06f5fbe915d0bf149dcf793acea47a1" id="r_aa06f5fbe915d0bf149dcf793acea47a1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="minimal_8cc.html#aa06f5fbe915d0bf149dcf793acea47a1">main</a> (const int argc, char **argv)</td></tr>
-<tr class="separator:aa06f5fbe915d0bf149dcf793acea47a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a867efcd612f56f8d2b3ad73f10deebe5" id="r_a867efcd612f56f8d2b3ad73f10deebe5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="minimal_8cc.html#a867efcd612f56f8d2b3ad73f10deebe5">main</a> (const int, char **argv)</td></tr>
+<tr class="separator:a867efcd612f56f8d2b3ad73f10deebe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="aa06f5fbe915d0bf149dcf793acea47a1" name="aa06f5fbe915d0bf149dcf793acea47a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa06f5fbe915d0bf149dcf793acea47a1">&#9670;&#160;</a></span>main()</h2>
+<a id="a867efcd612f56f8d2b3ad73f10deebe5" name="a867efcd612f56f8d2b3ad73f10deebe5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a867efcd612f56f8d2b3ad73f10deebe5">&#9670;&#160;</a></span>main()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -118,7 +118,7 @@ Functions</h2></td></tr>
           <td class="memname">int main </td>
           <td>(</td>
           <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>argc</em>, </td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -217,9 +217,9 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="minimal_8cc_source.html#l00021">21</a> of file <a class="el" href="minimal_8cc_source.html">minimal.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   22</span>{</div>
 <div class="line"><span class="lineno">   23</span>  uint64_t n = 1;</div>
-<div class="line"><span class="lineno">   24</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; ti-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a>; ++i)</div>
+<div class="line"><span class="lineno">   24</span>  <span class="keywordflow">for</span> (int32_t i = 0; i &lt; ti-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a>; ++i)</div>
 <div class="line"><span class="lineno">   25</span>  {</div>
-<div class="line"><span class="lineno">   26</span>    n *= ti-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">dims</a>[i];</div>
+<div class="line"><span class="lineno">   26</span>    n *= <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(ti-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">dims</a>[i]);</div>
 <div class="line"><span class="lineno">   27</span>  }</div>
 <div class="line"><span class="lineno">   28</span>  <span class="keywordflow">return</span> n;</div>
 <div class="line"><span class="lineno">   29</span>}</div>

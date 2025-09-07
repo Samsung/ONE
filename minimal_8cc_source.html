@@ -121,16 +121,16 @@ $(document).ready(function(){initNavTree('minimal_8cc_source.html',''); initResi
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="minimal_8cc.html#a257a0af44a333bcf35bc6517896260de">   21</a></span>uint64_t <a class="code hl_function" href="minimal_8cc.html#a257a0af44a333bcf35bc6517896260de">num_elems</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> *ti)</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  uint64_t n = 1;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; ti-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a>; ++i)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keywordflow">for</span> (int32_t i = 0; i &lt; ti-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a>; ++i)</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    n *= ti-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">dims</a>[i];</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    n *= <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(ti-&gt;<a class="code hl_variable" href="structnnfw__tensorinfo.html#af5150bc6daf4934c2412fb1effad9b5a">dims</a>[i]);</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  }</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordflow">return</span> n;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
 </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="foldopen" id="foldopen00031" data-start="{" data-end="}">
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="minimal_8cc.html#aa06f5fbe915d0bf149dcf793acea47a1">   31</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv)</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="minimal_8cc.html#a867efcd612f56f8d2b3ad73f10deebe5">   31</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="circle-input-names_8cpp.html#a840291bc02cba5474a4cb46a9b9566fe">main</a>(<span class="keyword">const</span> <span class="keywordtype">int</span>, <span class="keywordtype">char</span> **argv)</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <a class="code hl_struct" href="structnnfw__session.html">nnfw_session</a> *session = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <a class="code hl_function" href="onert-micro_8h.html#a0ce7408d2db97feea17de8a7a84e5032">nnfw_create_session</a>(&amp;session);</div>

@@ -755,7 +755,6 @@ var namespaces_dup =
       [ "_convert", "namespacetf2tflite_v2.html#ab069c2fbfdb953e774b08fecd6d2e672", null ],
       [ "_get_parser", "namespacetf2tflite_v2.html#ab2b61dd90d8bb2b2b2589af8eb81e78c", null ],
       [ "_parse_array", "namespacetf2tflite_v2.html#a72305f201e068e1534a65be63bee1e61", null ],
-      [ "_v1_convert", "namespacetf2tflite_v2.html#ad6b9b7d21f9a1facce29c34d854df72d", null ],
       [ "_v2_convert", "namespacetf2tflite_v2.html#ab24710e25b6a1a8699cf0b2ceb2621f0", null ],
       [ "main", "namespacetf2tflite_v2.html#a0770980e8295ebc3c6732b19b54abb67", null ],
       [ "wrap_frozen_graph", "namespacetf2tflite_v2.html#a543168893bba2c76ec699735bd2574fe", null ],

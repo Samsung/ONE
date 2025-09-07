@@ -1,7 +1,5 @@
 var NAVTREEINDEX190 =
 {
-"compiler_2tflchef_2core_2src_2_op_2_floor_div_8h_source.html":[41,0,0,131,0,1,1,57],
-"compiler_2tflchef_2core_2src_2_op_2_floor_mod_8cpp.html":[41,0,0,131,0,1,1,58],
 "compiler_2tflchef_2core_2src_2_op_2_floor_mod_8cpp_source.html":[41,0,0,131,0,1,1,58],
 "compiler_2tflchef_2core_2src_2_op_2_floor_mod_8h.html":[41,0,0,131,0,1,1,59],
 "compiler_2tflchef_2core_2src_2_op_2_floor_mod_8h_source.html":[41,0,0,131,0,1,1,59],
@@ -249,5 +247,7 @@ var NAVTREEINDEX190 =
 "compiler_2tflchef_2tflite_2src_2_op_2_add_8cpp_source.html":[41,0,0,131,2,1,0,2],
 "compiler_2tflchef_2tflite_2src_2_op_2_add_n_8cpp.html":[41,0,0,131,2,1,0,3],
 "compiler_2tflchef_2tflite_2src_2_op_2_add_n_8cpp_source.html":[41,0,0,131,2,1,0,3],
-"compiler_2tflchef_2tflite_2src_2_op_2_arg_max_8cpp.html":[41,0,0,131,2,1,0,4]
+"compiler_2tflchef_2tflite_2src_2_op_2_arg_max_8cpp.html":[41,0,0,131,2,1,0,4],
+"compiler_2tflchef_2tflite_2src_2_op_2_arg_max_8cpp_source.html":[41,0,0,131,2,1,0,4],
+"compiler_2tflchef_2tflite_2src_2_op_2_arg_min_8cpp.html":[41,0,0,131,2,1,0,5]
 };

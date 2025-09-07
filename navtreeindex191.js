@@ -1,7 +1,5 @@
 var NAVTREEINDEX191 =
 {
-"compiler_2tflchef_2tflite_2src_2_op_2_arg_max_8cpp_source.html":[41,0,0,131,2,1,0,4],
-"compiler_2tflchef_2tflite_2src_2_op_2_arg_min_8cpp.html":[41,0,0,131,2,1,0,5],
 "compiler_2tflchef_2tflite_2src_2_op_2_arg_min_8cpp_source.html":[41,0,0,131,2,1,0,5],
 "compiler_2tflchef_2tflite_2src_2_op_2_average_pool2_d_8cpp.html":[41,0,0,131,2,1,0,6],
 "compiler_2tflchef_2tflite_2src_2_op_2_average_pool2_d_8cpp_source.html":[41,0,0,131,2,1,0,6],
@@ -249,5 +247,7 @@ var NAVTREEINDEX191 =
 "compiler_2tflchef_2tflite_2src_2_op_2include_2_re_l_u6_8h_source.html":[41,0,0,131,2,1,0,0,75],
 "compiler_2tflchef_2tflite_2src_2_op_2include_2_re_l_u_8h.html":[41,0,0,131,2,1,0,0,73],
 "compiler_2tflchef_2tflite_2src_2_op_2include_2_re_l_u_8h_source.html":[41,0,0,131,2,1,0,0,73],
-"compiler_2tflchef_2tflite_2src_2_op_2include_2_reshape_8h.html":[41,0,0,131,2,1,0,0,77]
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_reshape_8h.html":[41,0,0,131,2,1,0,0,77],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_reshape_8h_source.html":[41,0,0,131,2,1,0,0,77],
+"compiler_2tflchef_2tflite_2src_2_op_2include_2_resize_bilinear_8h.html":[41,0,0,131,2,1,0,0,78]
 };

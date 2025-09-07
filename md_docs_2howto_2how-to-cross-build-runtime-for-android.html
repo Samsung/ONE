@@ -105,17 +105,24 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-cross-build-run
 <p>You can build the docker image with following command: </p><div class="fragment"><div class="line">$ docker build -t nnfw/one-devtools:android-sdk -f infra/docker/android-sdk/Dockerfile .</div>
 </div><!-- fragment --><h1>Build</h1>
 <h2>Build and install the runtime</h2>
-<p>Some tools/libs are still not supported and those are not built by default - mostly due to dependency on HDF5 library. Please refer to <code>infra/nnfw/cmake/options/options_aarch64-android.cmake</code> for details.</p>
+<p>Some tools/libs are still not supported and those are not built by default - mostly due to dependency on HDF5 library.</p>
 <p>Different from cross build for linux,</p>
 <ul>
-<li><code>NDK_DIR</code> is required</li>
+<li>Wrapper toolchain file for Android NDK: <code>runtime/infra/cmake/buildtool/cross/toolchain_aarch64-android.cmake</code></li>
+<li><code>ANDROID_NDK</code> environment variable or <code>CMAKE_ANDROID_NDK</code> cmake variable is required</li>
 </ul>
-<p>If you are using docker image <code>nnfw/one-devtools:android-sdk</code>, you don't need to specify <code>NDK_DIR</code> because it is already set in the image.</p>
+<p>If you are using docker image <code>nnfw/one-devtools:android-sdk</code>, you don't need to specify above variable because environment variable is already set in the image.</p>
 <p>Here is an example of using Makefile.</p>
 <div class="fragment"><div class="line">TARGET_OS=android \</div>
 <div class="line">CROSS_BUILD=1 \</div>
-<div class="line">NDK_DIR=/path/android-sdk/ndk/{ndk-version}/ \</div>
+<div class="line">ANDROID_NDK=/path/android-sdk/ndk/{ndk-version}/ \</div>
 <div class="line">make -f Makefile.template install</div>
+</div><!-- fragment --><p>Otherwise, you can use command </p><div class="fragment"><div class="line">$ source .venv/bin/activate</div>
+<div class="line">(.venv)$ ./nnfw configure \</div>
+<div class="line">  -DCMAKE_TOOLCHAIN_FILE=infra/cmake/buildtool/cross/toolchain_aarch64-android.cmake \</div>
+<div class="line">  -DCMAKE_ANDROID_NDK=/path/android-sdk/ndk/{ndk-version}</div>
+<div class="line">(.venv)$ ./nnfw build</div>
+<div class="line">(.venv)$ ./nnfw install --prefix build/onert/out</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

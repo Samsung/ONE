@@ -1,5 +1,6 @@
 var NAVTREEINDEX211 =
 {
+"luci-interpreter_2include_2luci__interpreter_2test__models_2mean_2_float_mean_kernel_8h.html#afd1f5b00d5db653c2f3f9715cb36746d":[41,0,2,4,0,0,1,44,0,3],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2mean_2_float_mean_kernel_8h_source.html":[41,0,2,4,0,0,1,44,0],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2mean_2_neg_mean_kernel_8h.html":[41,0,2,4,0,0,1,44,1],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2mean_2_neg_mean_kernel_8h.html#a9a6b303ff042b2f4f5e26f9f4866f225":[41,0,2,4,0,0,1,44,1,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX211 =
 "luci-interpreter_2include_2luci__interpreter_2test__models_2square_2_neg_square_kernel_8h.html":[41,0,2,4,0,0,1,73,1],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2square_2_neg_square_kernel_8h_source.html":[41,0,2,4,0,0,1,73,1],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2square_2_test_data_square_base_8h.html":[41,0,2,4,0,0,1,73,2],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2square_2_test_data_square_base_8h_source.html":[41,0,2,4,0,0,1,73,2],
-"luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_float_squared_difference_kernel_8h.html":[41,0,2,4,0,0,1,74,0]
+"luci-interpreter_2include_2luci__interpreter_2test__models_2square_2_test_data_square_base_8h_source.html":[41,0,2,4,0,0,1,73,2]
 };

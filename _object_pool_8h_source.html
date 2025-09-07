@@ -117,63 +117,64 @@ $(document).ready(function(){initNavTree('_object_pool_8h_source.html',''); init
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#define __LOCO_ADT_OBJECT_POOL_H__</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceloco.html">loco</a></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="foldopen" id="foldopen00031" data-start="{" data-end="};">
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classloco_1_1_object_pool.html">   31</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">class </span><a class="code hl_class" href="classloco_1_1_object_pool.html">ObjectPool</a></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classloco_1_1_object_pool.html#ade8a1c697a183c96e056ec6645ec164a">   34</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="classloco_1_1_object_pool.html#ade8a1c697a183c96e056ec6645ec164a">~ObjectPool</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classloco_1_1_object_pool.html#ae597fd7efa9f86c07bf1a912c4a63c29">   38</a></span>  uint32_t <a class="code hl_function" href="classloco_1_1_object_pool.html#ae597fd7efa9f86c07bf1a912c4a63c29">size</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _pool.size(); }</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classloco_1_1_object_pool.html#acc190c64d1a5861712739bc7f642bdd6">   41</a></span>  T *<a class="code hl_function" href="classloco_1_1_object_pool.html#acc190c64d1a5861712739bc7f642bdd6">at</a>(uint32_t n)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _pool.at(n).get(); }</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">protected</span>:</div>
-<div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classloco_1_1_object_pool.html#a61fe23ba67e8c0b82462edae25af58a9">   45</a></span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U&gt; U *<a class="code hl_function" href="classloco_1_1_object_pool.html#a61fe23ba67e8c0b82462edae25af58a9">take</a>(std::unique_ptr&lt;U&gt; &amp;&amp;o)</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keyword">auto</span> res = o.get();</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    _pool.emplace_back(std::move(o));</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">return</span> res;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceloco.html">loco</a></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="};">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classloco_1_1_object_pool.html">   32</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">class </span><a class="code hl_class" href="classloco_1_1_object_pool.html">ObjectPool</a></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classloco_1_1_object_pool.html#ade8a1c697a183c96e056ec6645ec164a">   35</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="classloco_1_1_object_pool.html#ade8a1c697a183c96e056ec6645ec164a">~ObjectPool</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classloco_1_1_object_pool.html#ae597fd7efa9f86c07bf1a912c4a63c29">   39</a></span>  uint32_t <a class="code hl_function" href="classloco_1_1_object_pool.html#ae597fd7efa9f86c07bf1a912c4a63c29">size</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _pool.size(); }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classloco_1_1_object_pool.html#acc190c64d1a5861712739bc7f642bdd6">   42</a></span>  T *<a class="code hl_function" href="classloco_1_1_object_pool.html#acc190c64d1a5861712739bc7f642bdd6">at</a>(uint32_t n)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _pool.at(n).get(); }</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">protected</span>:</div>
+<div class="foldopen" id="foldopen00046" data-start="{" data-end="}">
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classloco_1_1_object_pool.html#a61fe23ba67e8c0b82462edae25af58a9">   46</a></span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U&gt; U *<a class="code hl_function" href="classloco_1_1_object_pool.html#a61fe23ba67e8c0b82462edae25af58a9">take</a>(std::unique_ptr&lt;U&gt; &amp;&amp;o)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">auto</span> res = o.get();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    _pool.emplace_back(std::move(o));</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  }</div>
 </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classloco_1_1_object_pool.html#a7e8b9c3c85abc2b54c7c5c4df0f27d76">   57</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classloco_1_1_object_pool.html#a7e8b9c3c85abc2b54c7c5c4df0f27d76">erase</a>(T *ptr)</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">auto</span> pred = [ptr](<span class="keyword">const</span> std::unique_ptr&lt;T&gt; &amp;o) { <span class="keywordflow">return</span> o.get() == ptr; };</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">auto</span> it = std::find_if(_pool.begin(), _pool.end(), pred);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordflow">if</span> (it == _pool.end())</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    {</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    _pool.erase(it);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  }</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="}">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classloco_1_1_object_pool.html#a7e8b9c3c85abc2b54c7c5c4df0f27d76">   58</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classloco_1_1_object_pool.html#a7e8b9c3c85abc2b54c7c5c4df0f27d76">erase</a>(T *ptr)</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">auto</span> pred = [ptr](<span class="keyword">const</span> std::unique_ptr&lt;T&gt; &amp;o) { <span class="keywordflow">return</span> o.get() == ptr; };</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">auto</span> it = std::find_if(_pool.begin(), _pool.end(), pred);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordflow">if</span> (it == _pool.end())</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    _pool.erase(it);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  }</div>
 </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  std::vector&lt;std::unique_ptr&lt;T&gt;&gt; _pool;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>};</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  std::vector&lt;std::unique_ptr&lt;T&gt;&gt; _pool;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>};</div>
 </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>} <span class="comment">// namespace loco</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#endif </span><span class="comment">// __LOCO_ADT_OBJECT_POOL_H__</span></div>
-<div class="ttc" id="aclassloco_1_1_object_pool_html"><div class="ttname"><a href="classloco_1_1_object_pool.html">loco::ObjectPool</a></div><div class="ttdoc">Object Pool.</div><div class="ttdef"><b>Definition</b> <a href="_object_pool_8h_source.html#l00031">ObjectPool.h:32</a></div></div>
-<div class="ttc" id="aclassloco_1_1_object_pool_html_a61fe23ba67e8c0b82462edae25af58a9"><div class="ttname"><a href="classloco_1_1_object_pool.html#a61fe23ba67e8c0b82462edae25af58a9">loco::ObjectPool::take</a></div><div class="ttdeci">U * take(std::unique_ptr&lt; U &gt; &amp;&amp;o)</div><div class="ttdoc">Take the ownership of a given object and returns its raw pointer.</div><div class="ttdef"><b>Definition</b> <a href="_object_pool_8h_source.html#l00045">ObjectPool.h:45</a></div></div>
-<div class="ttc" id="aclassloco_1_1_object_pool_html_a7e8b9c3c85abc2b54c7c5c4df0f27d76"><div class="ttname"><a href="classloco_1_1_object_pool.html#a7e8b9c3c85abc2b54c7c5c4df0f27d76">loco::ObjectPool::erase</a></div><div class="ttdeci">bool erase(T *ptr)</div><div class="ttdoc">Erase an object from the pool.</div><div class="ttdef"><b>Definition</b> <a href="_object_pool_8h_source.html#l00057">ObjectPool.h:57</a></div></div>
-<div class="ttc" id="aclassloco_1_1_object_pool_html_acc190c64d1a5861712739bc7f642bdd6"><div class="ttname"><a href="classloco_1_1_object_pool.html#acc190c64d1a5861712739bc7f642bdd6">loco::ObjectPool::at</a></div><div class="ttdeci">T * at(uint32_t n) const</div><div class="ttdoc">Access N-th object.</div><div class="ttdef"><b>Definition</b> <a href="_object_pool_8h_source.html#l00041">ObjectPool.h:41</a></div></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>} <span class="comment">// namespace loco</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#endif </span><span class="comment">// __LOCO_ADT_OBJECT_POOL_H__</span></div>
+<div class="ttc" id="aclassloco_1_1_object_pool_html"><div class="ttname"><a href="classloco_1_1_object_pool.html">loco::ObjectPool</a></div><div class="ttdoc">Object Pool.</div><div class="ttdef"><b>Definition</b> <a href="_object_pool_8h_source.html#l00032">ObjectPool.h:33</a></div></div>
+<div class="ttc" id="aclassloco_1_1_object_pool_html_a61fe23ba67e8c0b82462edae25af58a9"><div class="ttname"><a href="classloco_1_1_object_pool.html#a61fe23ba67e8c0b82462edae25af58a9">loco::ObjectPool::take</a></div><div class="ttdeci">U * take(std::unique_ptr&lt; U &gt; &amp;&amp;o)</div><div class="ttdoc">Take the ownership of a given object and returns its raw pointer.</div><div class="ttdef"><b>Definition</b> <a href="_object_pool_8h_source.html#l00046">ObjectPool.h:46</a></div></div>
+<div class="ttc" id="aclassloco_1_1_object_pool_html_a7e8b9c3c85abc2b54c7c5c4df0f27d76"><div class="ttname"><a href="classloco_1_1_object_pool.html#a7e8b9c3c85abc2b54c7c5c4df0f27d76">loco::ObjectPool::erase</a></div><div class="ttdeci">bool erase(T *ptr)</div><div class="ttdoc">Erase an object from the pool.</div><div class="ttdef"><b>Definition</b> <a href="_object_pool_8h_source.html#l00058">ObjectPool.h:58</a></div></div>
+<div class="ttc" id="aclassloco_1_1_object_pool_html_acc190c64d1a5861712739bc7f642bdd6"><div class="ttname"><a href="classloco_1_1_object_pool.html#acc190c64d1a5861712739bc7f642bdd6">loco::ObjectPool::at</a></div><div class="ttdeci">T * at(uint32_t n) const</div><div class="ttdoc">Access N-th object.</div><div class="ttdef"><b>Definition</b> <a href="_object_pool_8h_source.html#l00042">ObjectPool.h:42</a></div></div>
 <div class="ttc" id="aclassloco_1_1_object_pool_html_ade8a1c697a183c96e056ec6645ec164a"><div class="ttname"><a href="classloco_1_1_object_pool.html#ade8a1c697a183c96e056ec6645ec164a">loco::ObjectPool::~ObjectPool</a></div><div class="ttdeci">virtual ~ObjectPool()=default</div></div>
-<div class="ttc" id="aclassloco_1_1_object_pool_html_ae597fd7efa9f86c07bf1a912c4a63c29"><div class="ttname"><a href="classloco_1_1_object_pool.html#ae597fd7efa9f86c07bf1a912c4a63c29">loco::ObjectPool::size</a></div><div class="ttdeci">uint32_t size(void) const</div><div class="ttdoc">Return the number of objects.</div><div class="ttdef"><b>Definition</b> <a href="_object_pool_8h_source.html#l00038">ObjectPool.h:38</a></div></div>
+<div class="ttc" id="aclassloco_1_1_object_pool_html_ae597fd7efa9f86c07bf1a912c4a63c29"><div class="ttname"><a href="classloco_1_1_object_pool.html#ae597fd7efa9f86c07bf1a912c4a63c29">loco::ObjectPool::size</a></div><div class="ttdeci">uint32_t size(void) const</div><div class="ttdoc">Return the number of objects.</div><div class="ttdef"><b>Definition</b> <a href="_object_pool_8h_source.html#l00039">ObjectPool.h:39</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

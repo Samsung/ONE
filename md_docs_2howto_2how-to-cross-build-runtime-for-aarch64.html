@@ -131,11 +131,6 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-cross-build-run
 <li>supports <code>armv7l</code> and <code>aarch64</code> for now</li>
 </ul>
 <p>If you used <code>ROOTFS_DIR</code> to prepare in alternative folder, you should also give this to makefile template. </p><div class="fragment"><div class="line">$ CROSS_BUILD=1 ROOTFS_DIR=/home/user/rootfs/aarch64-jammy TARGET_ARCH=aarch64 make -f Makefile.template</div>
-</div><!-- fragment --><p> You can also omit the <code>CROSS_BUILD=1</code> option if you explicitly pass <code>ROOTFS_DIR</code>. In that case, if the <code>TARGET_ARCH</code> are differs from the hostarchitecture, the make script automatically applies <code>CROSS_BUILD=1</code>. So, if you set <code>ROOTFS_DIR</code> as an environment variable, you can simply perform normal build and cross build as follows.</p>
-<div class="fragment"><div class="line">$ export ROOTFS_DIR=xxx</div>
-<div class="line">...</div>
-<div class="line">$ make -f Makefile.template                       # do normal build</div>
-<div class="line">$ TARGET_ARCH=aarch64 make -f Makefile.template   # do cross build</div>
 </div><!-- fragment --><h2>Run test</h2>
 <p>To run and test the cross-compiled runtime, you need to copy the compiled output to the target device of the architecture in which it is executable. Please refer to the following document for details on the test procedure. In the guide, <code>armv7l-linux.debug</code> in path should be replaced by referring to your build result.</p>
 <ul>

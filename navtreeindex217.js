@@ -1,5 +1,6 @@
 var NAVTREEINDEX217 =
 {
+"md_docs_2howto_2how-to-cross-build-runtime-for-android.html":[8],
 "md_docs_2howto_2how-to-cross-build-runtime-for-arm.html":[9],
 "md_docs_2howto_2how-to-introduce-a-new-operation-into-compiler.html":[10],
 "md_docs_2howto_2how-to-introduce-a-new-operation-into-runtime.html":[11],
@@ -43,7 +44,7 @@ var NAVTREEINDEX217 =
 "metrics_2registry_8py_source.html":[41,0,3,3,0,1,1,1,0,1,3],
 "minimal_8cc.html":[41,0,3,3,5,0,0,0],
 "minimal_8cc.html#a257a0af44a333bcf35bc6517896260de":[41,0,3,3,5,0,0,0,1],
-"minimal_8cc.html#aa06f5fbe915d0bf149dcf793acea47a1":[41,0,3,3,5,0,0,0,0],
+"minimal_8cc.html#a867efcd612f56f8d2b3ad73f10deebe5":[41,0,3,3,5,0,0,0,0],
 "minimal_8cc_source.html":[41,0,3,3,5,0,0,0],
 "minimal_8py.html":[41,0,3,3,5,1,3],
 "minimal_8py.html#a1b02f42a4f713242e41972ed5e4c28f2":[41,0,3,3,5,1,3,0],
@@ -247,7 +248,6 @@ var NAVTREEINDEX217 =
 "mio-tflite280_2src_2_helper_8cpp.html#af273aeca3a5d115eefb6e80dde328bb9":[41,0,0,79,1,0,5],
 "mio-tflite280_2src_2_helper_8cpp.html#afad1c5bafb3328093d4a6357b06017d9":[41,0,0,79,1,0,4],
 "mio-tflite280_2src_2_helper_8cpp_source.html":[41,0,0,79,1,0],
-"mio-tflite_2example_8cpp.html":[41,0,0,76,0],
-"mio-tflite_2example_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627":[41,0,0,76,0,0],
-"mio-tflite_2example_8cpp_source.html":[41,0,0,76,0]
+"mio-tflite_2example_8cpp.html":[41,0,0,76,2],
+"mio-tflite_2example_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627":[41,0,0,76,2,0]
 };

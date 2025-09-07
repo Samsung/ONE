@@ -51,6 +51,7 @@ var nnfw__experimental_8h =
       [ "NNFW_TRAIN_OPTIMIZER_ADAM", "nnfw__experimental_8h.html#a66ead5bca803075bd7324609b3388bf4a5d591466c5b60f726052f8c0d83bd8e8", null ]
     ] ],
     [ "nnfw_codegen", "nnfw__experimental_8h.html#a9c434de04d0c57bf7e28a1c7721bdd49", null ],
+    [ "nnfw_configure_signature", "nnfw__experimental_8h.html#a3630f0faadf1f4b47004b8cfb5e5da85", null ],
     [ "nnfw_input_tensorindex", "nnfw__experimental_8h.html#a84b063e69ff8e50612f08a902215c894", null ],
     [ "nnfw_odc_delete_minmax_file", "nnfw__experimental_8h.html#ace880228bdaffc7f35f0e8ad589274da", null ],
     [ "nnfw_output_tensorindex", "nnfw__experimental_8h.html#a5f67df99da7ea81a11625ca7cbc981de", null ],
@@ -71,7 +72,6 @@ var nnfw__experimental_8h =
     [ "nnfw_set_prepare_config", "nnfw__experimental_8h.html#a1a4d2e7d154230ba3115b18cc556d9b2", null ],
     [ "nnfw_set_quantization_type", "nnfw__experimental_8h.html#a7c18c5f0f8b1746fb5016bb696d215b6", null ],
     [ "nnfw_set_quantized_model_path", "nnfw__experimental_8h.html#ae1bb47075976b3334e5df27e4110a9c0", null ],
-    [ "nnfw_set_signature_for_tensorinfo", "nnfw__experimental_8h.html#ab7bd67287965a8e76f207160a3eefcfd", null ],
     [ "nnfw_set_signature_run", "nnfw__experimental_8h.html#a802a216914c1f0a588cc721c38a38260", null ],
     [ "nnfw_train", "nnfw__experimental_8h.html#a73e25145d65236e1dc891d19da0c4ae4", null ],
     [ "nnfw_train_expected_tensorinfo", "nnfw__experimental_8h.html#aede2b315e1e4cef364e5372f88827486", null ],

@@ -1,5 +1,6 @@
 var NAVTREEINDEX216 =
 {
+"mbed__config_8h.html#a88ec58c4c8c9732ed84155fc1947576a":[41,0,2,1,0,0,0,1,32],
 "mbed__config_8h.html#a8a8bce34b9d2d402c0243e29999e57dd":[41,0,2,1,0,0,0,1,330],
 "mbed__config_8h.html#a8b74d8aa2c600cffe0cc7528b3ecaa9d":[41,0,2,1,0,0,0,1,108],
 "mbed__config_8h.html#a8bf34509c71c9f35b5e7f10392026ac4":[41,0,2,1,0,0,0,1,246],
@@ -248,6 +249,5 @@ var NAVTREEINDEX216 =
 "md_docs_2howto_2how-to-build-runtime-using-prebuilt-docker-image.html":[4],
 "md_docs_2howto_2how-to-build-runtime.html":[5],
 "md_docs_2howto_2how-to-contribute.html":[6],
-"md_docs_2howto_2how-to-cross-build-runtime-for-aarch64.html":[7],
-"md_docs_2howto_2how-to-cross-build-runtime-for-android.html":[8]
+"md_docs_2howto_2how-to-cross-build-runtime-for-aarch64.html":[7]
 };

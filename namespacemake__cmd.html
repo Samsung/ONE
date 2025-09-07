@@ -139,7 +139,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   25</span> </div>
 <div class="line"><span class="lineno">   26</span> </div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="make__cmd_8py_source.html#l00081">make_circle2circle_cmd()</a>, and <a class="el" href="make__cmd_8py_source.html#l00027">make_tf2tfliteV2_cmd()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="make__cmd_8py_source.html#l00075">make_circle2circle_cmd()</a>, and <a class="el" href="make__cmd_8py_source.html#l00027">make_tf2tfliteV2_cmd()</a>.</p>
 
 </div>
 </div>
@@ -181,32 +181,32 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">make a command for running circle2circle</pre> 
-<p class="definition">Definition at line <a class="el" href="make__cmd_8py_source.html#l00081">81</a> of file <a class="el" href="make__cmd_8py_source.html">make_cmd.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   81</span><span class="keyword">def </span>make_circle2circle_cmd(args, driver_path, input_path, output_path):</div>
-<div class="line"><span class="lineno">   82</span>    <span class="stringliteral">&quot;&quot;&quot;make a command for running circle2circle&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   83</span>    cmd = [os.path.expanduser(c) <span class="keywordflow">for</span> c <span class="keywordflow">in</span> [driver_path, input_path, output_path]]</div>
-<div class="line"><span class="lineno">   84</span>    <span class="comment"># profiling</span></div>
-<div class="line"><span class="lineno">   85</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;generate_profile_data&#39;</span>):</div>
-<div class="line"><span class="lineno">   86</span>        cmd.append(<span class="stringliteral">&#39;--generate_profile_data&#39;</span>)</div>
-<div class="line"><span class="lineno">   87</span>    <span class="comment"># optimization pass(only true/false options)</span></div>
-<div class="line"><span class="lineno">   88</span>    <span class="comment"># TODO support options whose number of arguments is more than zero</span></div>
-<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">for</span> opt <span class="keywordflow">in</span> _constant.CONSTANT.OPTIMIZATION_OPTS:</div>
-<div class="line"><span class="lineno">   90</span>        <span class="keywordflow">if</span> is_valid_attr(args, opt[0]):</div>
-<div class="line"><span class="lineno">   91</span>            <span class="comment"># ./driver --opt[0]</span></div>
-<div class="line"><span class="lineno">   92</span>            <span class="keywordflow">if</span> type(getattr(args, opt[0])) <span class="keywordflow">is</span> bool:</div>
-<div class="line"><span class="lineno">   93</span>                cmd.append(<span class="stringliteral">&#39;--&#39;</span> + opt[0])</div>
-<div class="line"><span class="lineno">   94</span>            <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   95</span><span class="stringliteral">            This condition check is for config file interface, usually would be</span></div>
-<div class="line"><span class="lineno">   96</span><span class="stringliteral">             SomeOption=True</span></div>
-<div class="line"><span class="lineno">   97</span><span class="stringliteral">            but user can write as follows while development</span></div>
-<div class="line"><span class="lineno">   98</span><span class="stringliteral">             SomeOption=False</span></div>
-<div class="line"><span class="lineno">   99</span><span class="stringliteral">            instead of removing SomeOption option</span></div>
-<div class="line"><span class="lineno">  100</span><span class="stringliteral">            &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  101</span>            <span class="keywordflow">if</span> type(getattr(args, opt[0])) <span class="keywordflow">is</span> str <span class="keywordflow">and</span> <span class="keywordflow">not</span> getattr(</div>
-<div class="line"><span class="lineno">  102</span>                    args, opt[0]).lower() <span class="keywordflow">in</span> [<span class="stringliteral">&#39;false&#39;</span>, <span class="stringliteral">&#39;0&#39;</span>, <span class="stringliteral">&#39;n&#39;</span>]:</div>
-<div class="line"><span class="lineno">  103</span>                cmd.append(<span class="stringliteral">&#39;--&#39;</span> + opt[0])</div>
-<div class="line"><span class="lineno">  104</span> </div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">return</span> cmd</div>
+<p class="definition">Definition at line <a class="el" href="make__cmd_8py_source.html#l00075">75</a> of file <a class="el" href="make__cmd_8py_source.html">make_cmd.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span><span class="keyword">def </span>make_circle2circle_cmd(args, driver_path, input_path, output_path):</div>
+<div class="line"><span class="lineno">   76</span>    <span class="stringliteral">&quot;&quot;&quot;make a command for running circle2circle&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   77</span>    cmd = [os.path.expanduser(c) <span class="keywordflow">for</span> c <span class="keywordflow">in</span> [driver_path, input_path, output_path]]</div>
+<div class="line"><span class="lineno">   78</span>    <span class="comment"># profiling</span></div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;generate_profile_data&#39;</span>):</div>
+<div class="line"><span class="lineno">   80</span>        cmd.append(<span class="stringliteral">&#39;--generate_profile_data&#39;</span>)</div>
+<div class="line"><span class="lineno">   81</span>    <span class="comment"># optimization pass(only true/false options)</span></div>
+<div class="line"><span class="lineno">   82</span>    <span class="comment"># TODO support options whose number of arguments is more than zero</span></div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">for</span> opt <span class="keywordflow">in</span> _constant.CONSTANT.OPTIMIZATION_OPTS:</div>
+<div class="line"><span class="lineno">   84</span>        <span class="keywordflow">if</span> is_valid_attr(args, opt[0]):</div>
+<div class="line"><span class="lineno">   85</span>            <span class="comment"># ./driver --opt[0]</span></div>
+<div class="line"><span class="lineno">   86</span>            <span class="keywordflow">if</span> type(getattr(args, opt[0])) <span class="keywordflow">is</span> bool:</div>
+<div class="line"><span class="lineno">   87</span>                cmd.append(<span class="stringliteral">&#39;--&#39;</span> + opt[0])</div>
+<div class="line"><span class="lineno">   88</span>            <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   89</span><span class="stringliteral">            This condition check is for config file interface, usually would be</span></div>
+<div class="line"><span class="lineno">   90</span><span class="stringliteral">             SomeOption=True</span></div>
+<div class="line"><span class="lineno">   91</span><span class="stringliteral">            but user can write as follows while development</span></div>
+<div class="line"><span class="lineno">   92</span><span class="stringliteral">             SomeOption=False</span></div>
+<div class="line"><span class="lineno">   93</span><span class="stringliteral">            instead of removing SomeOption option</span></div>
+<div class="line"><span class="lineno">   94</span><span class="stringliteral">            &quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   95</span>            <span class="keywordflow">if</span> type(getattr(args, opt[0])) <span class="keywordflow">is</span> str <span class="keywordflow">and</span> <span class="keywordflow">not</span> getattr(</div>
+<div class="line"><span class="lineno">   96</span>                    args, opt[0]).lower() <span class="keywordflow">in</span> [<span class="stringliteral">&#39;false&#39;</span>, <span class="stringliteral">&#39;0&#39;</span>, <span class="stringliteral">&#39;n&#39;</span>]:</div>
+<div class="line"><span class="lineno">   97</span>                cmd.append(<span class="stringliteral">&#39;--&#39;</span> + opt[0])</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">return</span> cmd</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="make__cmd_8py_source.html#l00023">is_valid_attr()</a>.</p>
 
@@ -264,41 +264,35 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   37</span>        cmd.append(<span class="stringliteral">&#39;--&#39;</span> + getattr(args, <span class="stringliteral">&#39;model_format&#39;</span>))</div>
 <div class="line"><span class="lineno">   38</span>    <span class="keywordflow">else</span>:</div>
 <div class="line"><span class="lineno">   39</span>        cmd.append(<span class="stringliteral">&#39;--graph_def&#39;</span>)  <span class="comment"># default value</span></div>
-<div class="line"><span class="lineno">   40</span>    <span class="comment"># converter version</span></div>
-<div class="line"><span class="lineno">   41</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;converter_version_cmd&#39;</span>):</div>
-<div class="line"><span class="lineno">   42</span>        cmd.append(getattr(args, <span class="stringliteral">&#39;converter_version_cmd&#39;</span>))</div>
-<div class="line"><span class="lineno">   43</span>    <span class="keywordflow">elif</span> is_valid_attr(args, <span class="stringliteral">&#39;converter_version&#39;</span>):</div>
-<div class="line"><span class="lineno">   44</span>        cmd.append(<span class="stringliteral">&#39;--&#39;</span> + getattr(args, <span class="stringliteral">&#39;converter_version&#39;</span>))</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">else</span>:</div>
-<div class="line"><span class="lineno">   46</span>        cmd.append(<span class="stringliteral">&#39;--v1&#39;</span>)  <span class="comment"># default value</span></div>
-<div class="line"><span class="lineno">   47</span>    <span class="comment"># input_path</span></div>
-<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;input_path&#39;</span>):</div>
-<div class="line"><span class="lineno">   49</span>        cmd.append(<span class="stringliteral">&#39;--input_path&#39;</span>)</div>
-<div class="line"><span class="lineno">   50</span>        cmd.append(os.path.expanduser(input_path))</div>
-<div class="line"><span class="lineno">   51</span>    <span class="comment"># output_path</span></div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;output_path&#39;</span>):</div>
-<div class="line"><span class="lineno">   53</span>        cmd.append(<span class="stringliteral">&#39;--output_path&#39;</span>)</div>
-<div class="line"><span class="lineno">   54</span>        cmd.append(os.path.expanduser(output_path))</div>
-<div class="line"><span class="lineno">   55</span>    <span class="comment"># input_arrays</span></div>
-<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;input_arrays&#39;</span>):</div>
-<div class="line"><span class="lineno">   57</span>        cmd.append(<span class="stringliteral">&#39;--input_arrays&#39;</span>)</div>
-<div class="line"><span class="lineno">   58</span>        cmd.append(getattr(args, <span class="stringliteral">&#39;input_arrays&#39;</span>))</div>
-<div class="line"><span class="lineno">   59</span>    <span class="comment"># input_shapes</span></div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;input_shapes&#39;</span>):</div>
-<div class="line"><span class="lineno">   61</span>        cmd.append(<span class="stringliteral">&#39;--input_shapes&#39;</span>)</div>
-<div class="line"><span class="lineno">   62</span>        cmd.append(getattr(args, <span class="stringliteral">&#39;input_shapes&#39;</span>))</div>
-<div class="line"><span class="lineno">   63</span>    <span class="comment"># output_arrays</span></div>
-<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;output_arrays&#39;</span>):</div>
-<div class="line"><span class="lineno">   65</span>        cmd.append(<span class="stringliteral">&#39;--output_arrays&#39;</span>)</div>
-<div class="line"><span class="lineno">   66</span>        cmd.append(getattr(args, <span class="stringliteral">&#39;output_arrays&#39;</span>))</div>
+<div class="line"><span class="lineno">   40</span>    <span class="comment"># NOTE converter_version_cmd is removed as it is deprecated</span></div>
+<div class="line"><span class="lineno">   41</span>    <span class="comment"># input_path</span></div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;input_path&#39;</span>):</div>
+<div class="line"><span class="lineno">   43</span>        cmd.append(<span class="stringliteral">&#39;--input_path&#39;</span>)</div>
+<div class="line"><span class="lineno">   44</span>        cmd.append(os.path.expanduser(input_path))</div>
+<div class="line"><span class="lineno">   45</span>    <span class="comment"># output_path</span></div>
+<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;output_path&#39;</span>):</div>
+<div class="line"><span class="lineno">   47</span>        cmd.append(<span class="stringliteral">&#39;--output_path&#39;</span>)</div>
+<div class="line"><span class="lineno">   48</span>        cmd.append(os.path.expanduser(output_path))</div>
+<div class="line"><span class="lineno">   49</span>    <span class="comment"># input_arrays</span></div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;input_arrays&#39;</span>):</div>
+<div class="line"><span class="lineno">   51</span>        cmd.append(<span class="stringliteral">&#39;--input_arrays&#39;</span>)</div>
+<div class="line"><span class="lineno">   52</span>        cmd.append(getattr(args, <span class="stringliteral">&#39;input_arrays&#39;</span>))</div>
+<div class="line"><span class="lineno">   53</span>    <span class="comment"># input_shapes</span></div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;input_shapes&#39;</span>):</div>
+<div class="line"><span class="lineno">   55</span>        cmd.append(<span class="stringliteral">&#39;--input_shapes&#39;</span>)</div>
+<div class="line"><span class="lineno">   56</span>        cmd.append(getattr(args, <span class="stringliteral">&#39;input_shapes&#39;</span>))</div>
+<div class="line"><span class="lineno">   57</span>    <span class="comment"># output_arrays</span></div>
+<div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;output_arrays&#39;</span>):</div>
+<div class="line"><span class="lineno">   59</span>        cmd.append(<span class="stringliteral">&#39;--output_arrays&#39;</span>)</div>
+<div class="line"><span class="lineno">   60</span>        cmd.append(getattr(args, <span class="stringliteral">&#39;output_arrays&#39;</span>))</div>
+<div class="line"><span class="lineno">   61</span> </div>
+<div class="line"><span class="lineno">   62</span>    <span class="comment"># experimental options</span></div>
+<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;experimental_disable_batchmatmul_unfold&#39;</span>):</div>
+<div class="line"><span class="lineno">   64</span>        cmd.append(<span class="stringliteral">&#39;--experimental_disable_batchmatmul_unfold&#39;</span>)</div>
+<div class="line"><span class="lineno">   65</span> </div>
+<div class="line"><span class="lineno">   66</span>    <span class="keywordflow">return</span> cmd</div>
 <div class="line"><span class="lineno">   67</span> </div>
-<div class="line"><span class="lineno">   68</span>    <span class="comment"># experimental options</span></div>
-<div class="line"><span class="lineno">   69</span>    <span class="keywordflow">if</span> is_valid_attr(args, <span class="stringliteral">&#39;experimental_disable_batchmatmul_unfold&#39;</span>):</div>
-<div class="line"><span class="lineno">   70</span>        cmd.append(<span class="stringliteral">&#39;--experimental_disable_batchmatmul_unfold&#39;</span>)</div>
-<div class="line"><span class="lineno">   71</span> </div>
-<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">return</span> cmd</div>
-<div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span> </div>
+<div class="line"><span class="lineno">   68</span> </div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="make__cmd_8py_source.html#l00023">is_valid_attr()</a>.</p>
 
@@ -336,13 +330,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <pre class="fragment">make a command for running tflite2circle</pre> 
-<p class="definition">Definition at line <a class="el" href="make__cmd_8py_source.html#l00075">75</a> of file <a class="el" href="make__cmd_8py_source.html">make_cmd.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   75</span><span class="keyword">def </span>make_tflite2circle_cmd(driver_path, input_path, output_path):</div>
-<div class="line"><span class="lineno">   76</span>    <span class="stringliteral">&quot;&quot;&quot;make a command for running tflite2circle&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">   77</span>    cmd = [driver_path, input_path, output_path]</div>
-<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">return</span> [os.path.expanduser(c) <span class="keywordflow">for</span> c <span class="keywordflow">in</span> cmd]</div>
-<div class="line"><span class="lineno">   79</span> </div>
-<div class="line"><span class="lineno">   80</span> </div>
+<p class="definition">Definition at line <a class="el" href="make__cmd_8py_source.html#l00069">69</a> of file <a class="el" href="make__cmd_8py_source.html">make_cmd.py</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   69</span><span class="keyword">def </span>make_tflite2circle_cmd(driver_path, input_path, output_path):</div>
+<div class="line"><span class="lineno">   70</span>    <span class="stringliteral">&quot;&quot;&quot;make a command for running tflite2circle&quot;&quot;&quot;</span></div>
+<div class="line"><span class="lineno">   71</span>    cmd = [driver_path, input_path, output_path]</div>
+<div class="line"><span class="lineno">   72</span>    <span class="keywordflow">return</span> [os.path.expanduser(c) <span class="keywordflow">for</span> c <span class="keywordflow">in</span> cmd]</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span> </div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -1,5 +1,6 @@
 var NAVTREEINDEX212 =
 {
+"luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_float_squared_difference_kernel_8h.html":[41,0,2,4,0,0,1,74,0],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_float_squared_difference_kernel_8h.html#a15db1d7328ac44e56d75692d6a468b7e":[41,0,2,4,0,0,1,74,0,1],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_float_squared_difference_kernel_8h.html#aaf22703ea7f75f7b9d348db23c4e0b04":[41,0,2,4,0,0,1,74,0,2],
 "luci-interpreter_2include_2luci__interpreter_2test__models_2squared__difference_2_float_squared_difference_kernel_8h.html#ace9e3fb9c5360a390ecd8c51e7e81d69":[41,0,2,4,0,0,1,74,0,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX212 =
 "luci-interpreter_2pal_2common_2_p_a_l_sin_common_8h_source.html":[41,0,2,4,1,1,50],
 "luci-interpreter_2pal_2common_2_p_a_l_softmax_common_8h.html":[41,0,2,4,1,1,51],
 "luci-interpreter_2pal_2common_2_p_a_l_softmax_common_8h.html#ae63c57675d1cfca5c313c2fff99a8177":[41,0,2,4,1,1,51,0],
-"luci-interpreter_2pal_2common_2_p_a_l_softmax_common_8h_source.html":[41,0,2,4,1,1,51],
-"luci-interpreter_2pal_2common_2_p_a_l_sqrt_8h.html":[41,0,2,4,1,1,54]
+"luci-interpreter_2pal_2common_2_p_a_l_softmax_common_8h_source.html":[41,0,2,4,1,1,51]
 };

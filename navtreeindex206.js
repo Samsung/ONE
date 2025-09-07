@@ -1,5 +1,6 @@
 var NAVTREEINDEX206 =
 {
+"import_2src_2_nodes_2_circle_non_max_suppression_v5_8cpp_source.html":[41,0,0,59,2,1,0,66],
 "import_2src_2_nodes_2_circle_not_equal_8cpp.html":[41,0,0,59,2,1,0,67],
 "import_2src_2_nodes_2_circle_not_equal_8cpp_source.html":[41,0,0,59,2,1,0,67],
 "import_2src_2_nodes_2_circle_one_hot_8cpp.html":[41,0,0,59,2,1,0,68],
@@ -248,6 +249,5 @@ var NAVTREEINDEX206 =
 "kernel_2_layout_8cpp_source.html":[41,0,0,1,1,0,1,1],
 "kernel_2_overlay_8h.html":[41,0,0,1,0,1,0,0,1,6],
 "kernel_2_overlay_8h.html#a1fe1262057ac3a313047ee8ccf2181dd":[41,0,0,1,0,1,0,0,1,6,2],
-"kernel_2_overlay_8h_source.html":[41,0,0,1,0,1,0,0,1,6],
-"kernel_2_permute_layer_8cc.html":[41,0,3,3,2,1,0,1,0,4]
+"kernel_2_overlay_8h_source.html":[41,0,0,1,0,1,0,0,1,6]
 };

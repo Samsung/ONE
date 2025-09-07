@@ -1,7 +1,5 @@
 var NAVTREEINDEX186 =
 {
-"compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a972dc14ee97042f40b0555b04b1d8815":[41,0,0,62,2,2,198,7],
-"compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#aaeab94e4b66016c7ac88378ac1c045e0":[41,0,0,62,2,2,198,19],
 "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#ab09e74b805778ace392d93e577c75d73":[41,0,0,62,2,2,198,13],
 "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#abc1fcd91990e1a4189758637adb1fe1b":[41,0,0,62,2,2,198,20],
 "compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#ac3be54c2b358be58058168bfdabbf230":[41,0,0,62,2,2,198,11],
@@ -249,5 +247,7 @@ var NAVTREEINDEX186 =
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_shape_8cpp_source.html":[41,0,0,62,2,3,0,76],
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_sin_8cpp.html":[41,0,0,62,2,3,0,77],
 "compiler_2luci-interpreter_2src_2loader_2nodes_2_sin_8cpp.html#a958e38e7874aeec7e675ec329f0c570b":[41,0,0,62,2,3,0,77,0],
-"compiler_2luci-interpreter_2src_2loader_2nodes_2_sin_8cpp_source.html":[41,0,0,62,2,3,0,77]
+"compiler_2luci-interpreter_2src_2loader_2nodes_2_sin_8cpp_source.html":[41,0,0,62,2,3,0,77],
+"compiler_2luci-interpreter_2src_2loader_2nodes_2_slice_8cpp.html":[41,0,0,62,2,3,0,78],
+"compiler_2luci-interpreter_2src_2loader_2nodes_2_slice_8cpp.html#a6b6257423b2590b815673260427e4c07":[41,0,0,62,2,3,0,78,0]
 };
