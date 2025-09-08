@@ -167,12 +167,12 @@ void append(luci::CircleNode *node, luci::PGroups *pgroups, const std::string &g
     auto input = loco::must_cast<luci::CircleNode *>(node->arg(in));
     if (input->accept(&queryvi))
     {
-      auto pnode = std::make_unique<luci::PNode>();
-      pnode->node = input;
-      pnode->group = group;
-      pnode->pgroup = pgroup.get();
+      auto pnode_in = std::make_unique<luci::PNode>();
+      pnode_in->node = input;
+      pnode_in->group = group;
+      pnode_in->pgroup = pgroup.get();
 
-      pgroup->pnodes.push_back(std::move(pnode));
+      pgroup->pnodes.push_back(std::move(pnode_in));
 
       pgroups->node2group[input] = group;
     }
@@ -193,12 +193,12 @@ void append(luci::CircleNode *node, luci::PGroups *pgroups, const std::string &g
     {
       auto nodeout = loco::must_cast<luci::CircleNode *>(succ_node);
 
-      auto pnode = std::make_unique<luci::PNode>();
-      pnode->node = nodeout;
-      pnode->group = group;
-      pnode->pgroup = pgroup.get();
+      auto pnode_out = std::make_unique<luci::PNode>();
+      pnode_out->node = nodeout;
+      pnode_out->group = group;
+      pnode_out->pgroup = pgroup.get();
 
-      pgroup->pnodes.push_back(std::move(pnode));
+      pgroup->pnodes.push_back(std::move(pnode_out));
 
       pgroups->node2group[nodeout] = group;
 

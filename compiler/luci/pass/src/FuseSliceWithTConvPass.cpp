@@ -199,16 +199,21 @@ bool fuse_slice_with_tconv(luci::CircleSlice *slice)
                                                       tconv_filter->dim(2).value() * in_channels);
     auto const ch_offset = begin->at<loco::DataType::S32>(3);
     // set reduced filter values
-    for (uint32_t out_chan = 0; out_chan < fused_tconv_filter->dim(0).value(); out_chan++)
+    for (uint32_t out_chan_idx = 0; out_chan_idx < fused_tconv_filter->dim(0).value();
+         out_chan_idx++)
     {
-      for (uint32_t out_height = 0; out_height < fused_tconv_filter->dim(1).value(); out_height++)
+      for (uint32_t out_height_idx = 0; out_height_idx < fused_tconv_filter->dim(1).value();
+           out_height_idx++)
       {
-        for (uint32_t out_width = 0; out_width < fused_tconv_filter->dim(2).value(); out_width++)
+        for (uint32_t out_width_idx = 0; out_width_idx < fused_tconv_filter->dim(2).value();
+             out_width_idx++)
         {
-          for (uint32_t in_chan = 0; in_chan < fused_tconv_filter->dim(3).value(); in_chan++)
+          for (uint32_t in_chan_idx = 0; in_chan_idx < fused_tconv_filter->dim(3).value();
+               in_chan_idx++)
           {
-            uint32_t indices[4] = {out_chan, out_height, out_width, in_chan};
-            uint32_t old_indices[4] = {out_chan + ch_offset, out_height, out_width, in_chan};
+            uint32_t indices[4] = {out_chan_idx, out_height_idx, out_width_idx, in_chan_idx};
+            uint32_t old_indices[4] = {out_chan_idx + ch_offset, out_height_idx, out_width_idx,
+                                       in_chan_idx};
             auto const data =
               tconv_filter->at<loco::DataType::FLOAT32>(cal_offset(tconv_filter, old_indices));
             fused_tconv_filter->at<loco::DataType::FLOAT32>(

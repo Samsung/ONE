@@ -61,14 +61,14 @@ bool CircleNodeSummaryBuilder::build(const loco::Node *node, const locop::Symbol
     return ss.str();
   };
 
-  auto shape_to_str = [](const luci::CircleNode *node) {
+  auto shape_to_str = [](const luci::CircleNode *circle_node) {
     std::stringstream ss;
     ss << "<";
-    for (uint32_t i = 0; i < node->rank(); ++i)
+    for (uint32_t i = 0; i < circle_node->rank(); ++i)
     {
       if (i)
         ss << ",";
-      ss << (node->dim(i).known() ? node->dim(i).value() : -1);
+      ss << (circle_node->dim(i).known() ? circle_node->dim(i).value() : -1);
     }
     ss << ">";
     return ss.str();

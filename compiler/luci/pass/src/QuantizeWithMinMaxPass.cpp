@@ -652,14 +652,16 @@ bool QuantizeWithMinMaxPass::run(loco::Graph *g)
   }
 
   // Forward propagation of activation qparam
-  logo::Phase phase;
+  {
+    logo::Phase phase;
 
-  phase.emplace_back(std::make_unique<luci::PropagateQParamForwardPass>(_ctx->TF_style_maxpool));
+    phase.emplace_back(std::make_unique<luci::PropagateQParamForwardPass>(_ctx->TF_style_maxpool));
 
-  ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
-  logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
-  phase_runner.attach(&prog);
-  phase_runner.run(phase);
+    ProgressReporter prog(g, logo::PhaseStrategy::Saturate);
+    logo::PhaseRunner<logo::PhaseStrategy::Saturate> phase_runner{g};
+    phase_runner.attach(&prog);
+    phase_runner.run(phase);
+  }
 
   // Quantize weights
   for (auto node : loco::active_nodes(loco::output_nodes(g)))

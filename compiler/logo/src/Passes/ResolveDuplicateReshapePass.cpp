@@ -63,7 +63,7 @@ void remap_input(loco::FixedReshape *reshape)
 {
   auto input_reshape = loco::must_cast<loco::FixedReshape *>(reshape->input());
 
-  auto volume = [](loco::FixedReshape *node) {
+  [[maybe_unused]] auto volume = [](loco::FixedReshape *node) {
     uint32_t vol = 1;
     for (uint32_t axis = 0; axis < node->rank(); ++axis)
     {

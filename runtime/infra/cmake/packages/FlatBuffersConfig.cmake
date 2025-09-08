@@ -3,6 +3,7 @@ function(_FlatBuffers_import)
     find_package(Flatbuffers QUIET)
     if(Flatbuffers_FOUND)
       set(FlatBuffers_FOUND TRUE PARENT_SCOPE)
+      add_library(flatbuffers::flatbuffers-23.5.26 ALIAS flatbuffers::flatbuffers)
       return()
     endif(Flatbuffers_FOUND)
 
