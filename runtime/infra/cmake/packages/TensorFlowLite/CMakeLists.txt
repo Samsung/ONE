@@ -235,7 +235,7 @@ target_include_directories(tensorflow-lite-2.16.1
 
 target_compile_options(tensorflow-lite-2.16.1 PUBLIC ${TFLITE_TARGET_PUBLIC_OPTIONS})
 set_property(TARGET tensorflow-lite-2.16.1 PROPERTY POSITION_INDEPENDENT_CODE ON)
-target_link_libraries(tensorflow-lite-2.16.1 eigen flatbuffers::flatbuffers-23.5.26 ruy abseil farmhash oourafft::fftsg2d pthreadpool ${LIB_PTHREAD} dl)
+target_link_libraries(tensorflow-lite-2.16.1 eigen flatbuffers::flatbuffers ruy abseil farmhash oourafft::fftsg2d pthreadpool ${LIB_PTHREAD} dl)
 if(NOT ANDROID)
   target_link_libraries(tensorflow-lite-2.16.1 rt)
 endif()
