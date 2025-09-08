@@ -56,7 +56,7 @@ function(add_nnfw_custom_op_kernel NAME STATIC)
   endif()
   target_link_libraries(${LIBNAME} PRIVATE nnfw-dev)
   target_link_libraries(${LIBNAME} PRIVATE nnfw_common)
-  target_link_libraries(${LIBNAME} PRIVATE flatbuffers::flatbuffers-23.5.26)
+  target_link_libraries(${LIBNAME} PRIVATE flatbuffers::flatbuffers)
 endfunction()
 
 # Install custom op kernel built with `add_nnfw_custom_op_kernel`
