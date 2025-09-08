@@ -522,7 +522,7 @@ int main(const int argc, char **argv)
   }
   catch (std::runtime_error &e)
   {
-    std::cerr << "E: Fail to run by runtime error:" << e.what() << std::endl;
+    std::cerr << "E: Fail to run by runtime error: " << e.what() << std::endl;
     exit(-1);
   }
 }
