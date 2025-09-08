@@ -107,14 +107,6 @@ int main(const int argc, char **argv)
   try
   {
     Args args(argc, argv);
-    if (args.printVersion())
-    {
-      uint32_t version;
-      NNPR_ENSURE_STATUS(nnfw_query_info_u32(NULL, NNFW_INFO_ID_VERSION, &version));
-      std::cout << "onert_run (nnfw runtime: v" << (version >> 24) << "."
-                << ((version & 0x0000FF00) >> 8) << "." << (version & 0xFF) << ")" << std::endl;
-      exit(0);
-    }
 
 #ifdef RUY_PROFILER
     ruy::profiler::ScopeProfile ruy_profile;

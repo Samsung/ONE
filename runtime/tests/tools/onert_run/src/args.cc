@@ -15,6 +15,7 @@
  */
 
 #include "args.h"
+#include "nnfw_util.h"
 
 #include <functional>
 #include <unistd.h>
@@ -149,10 +150,7 @@ void Args::Initialize(void)
 {
   _arser.add_argument("path").type(arser::DataType::STR).help("NN Package or NN Modelfile path");
 
-  _arser.add_argument("--version")
-    .nargs(0)
-    .default_value(false)
-    .help("Print version and exit immediately");
+  arser::Helper::add_version(_arser, print_version);
 #if defined(ONERT_HAVE_HDF5) && ONERT_HAVE_HDF5 == 1
   _arser.add_argument("--dump", "-d").type(arser::DataType::STR).help("Output filename");
   _arser.add_argument("--load", "-l").type(arser::DataType::STR).help("Input filename");

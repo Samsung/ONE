@@ -33,6 +33,8 @@ namespace onert_run
 uint64_t num_elems(const nnfw_tensorinfo *ti);
 uint64_t bufsize_for(const nnfw_tensorinfo *ti);
 uint64_t has_dynamic_dim(const nnfw_tensorinfo *ti);
+
+void print_version();
 } // end of namespace onert_run
 
 #endif // __ONERT_RUN_NNFW_UTIL_H__
