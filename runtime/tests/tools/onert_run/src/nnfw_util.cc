@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+#include "nnfw_util.h"
+
 #include <cassert>
+#include <iostream>
 #include <string>
-#include "nnfw.h"
 
 namespace onert_run
 {
@@ -54,6 +56,14 @@ uint64_t has_dynamic_dim(const nnfw_tensorinfo *ti)
       return true;
   }
   return false;
+}
+
+void print_version()
+{
+  uint32_t version;
+  NNPR_ENSURE_STATUS(nnfw_query_info_u32(NULL, NNFW_INFO_ID_VERSION, &version));
+  std::cout << "onert_run (nnfw runtime: v" << (version >> 24) << "."
+            << ((version & 0x0000FF00) >> 8) << "." << (version & 0xFF) << ")" << std::endl;
 }
 
 } // namespace onert_run
