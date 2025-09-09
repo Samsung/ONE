@@ -16,6 +16,7 @@
 
 #include "mio_circle/Helper.h"
 
+#include <algorithm>
 #include <sstream>
 
 namespace mio
@@ -23,15 +24,46 @@ namespace mio
 namespace circle
 {
 
+/**
+ * This will provide v3/v3a/v3b format neutral BuiltinOperator
+ * NOTE circle has minus value opcode (252~254 as uint8_t)
+ *      we cannot use std::max() like tflite as deprecated_builtin_code can be
+ *      minus and builtin_code being 0 for v0.3 files.
+ */
+::circle::BuiltinOperator builtin_code_neutral(const ::circle::OperatorCode *opcode)
+{
+  assert(opcode != nullptr);
+  if (opcode->deprecated_builtin_code() == 127)
+  {
+    assert(opcode->builtin_code() >= 127);
+    return opcode->builtin_code();
+  }
+  // There was no 255(-1) value in v0.3
+  assert(opcode->deprecated_builtin_code() != -1);
+  return static_cast<::circle::BuiltinOperator>(opcode->deprecated_builtin_code());
+}
+
 bool is_valid(const ::circle::OperatorCode *opcode)
 {
-  ::circle::BuiltinOperator code = opcode->builtin_code();
-  return (::circle::BuiltinOperator_MIN <= code && code <= ::circle::BuiltinOperator_MAX);
+  // Valid Range : BuiltinOperator_MIN <= deprecated_builtin_code <= 127
+  const int8_t deprecated_builtin_code = opcode->deprecated_builtin_code();
+  if (deprecated_builtin_code < ::circle::BuiltinOperator_MIN)
+    return false;
+  // There was no 255(-1) value in v0.3
+  if (deprecated_builtin_code == -1)
+    return false;
+
+  const ::circle::BuiltinOperator builtin_code = opcode->builtin_code();
+  if (!(::circle::BuiltinOperator_MIN <= builtin_code &&
+        builtin_code <= ::circle::BuiltinOperator_MAX))
+    return false;
+
+  return true;
 }
 
 bool is_custom(const ::circle::OperatorCode *opcode)
 {
-  ::circle::BuiltinOperator code = opcode->builtin_code();
+  ::circle::BuiltinOperator code = builtin_code_neutral(opcode);
   return (code == ::circle::BuiltinOperator_CUSTOM);
 }
 
@@ -57,7 +89,7 @@ std::string opcode_name(const ::circle::OperatorCode *opcode)
     return custom_op;
   }
 
-  ::circle::BuiltinOperator code = opcode->builtin_code();
+  ::circle::BuiltinOperator code = builtin_code_neutral(opcode);
   return ::circle::EnumNameBuiltinOperator(code);
 }
 
@@ -68,13 +100,10 @@ const char *tensor_type(const ::circle::Tensor *tensor)
 
 const char *tensor_name(const ::circle::Tensor *tensor)
 {
-  static const char *kEmptyTensorName = "(noname)";
+  if (tensor->name() == nullptr || std::string(tensor->name()->c_str()).empty())
+    return "(noname)";
 
-  auto name = tensor->name();
-  if (name)
-    return name->c_str();
-
-  return kEmptyTensorName;
+  return tensor->name()->c_str();
 }
 
 } // namespace circle
