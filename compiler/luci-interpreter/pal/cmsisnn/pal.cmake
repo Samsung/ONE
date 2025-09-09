@@ -64,4 +64,4 @@ macro(add_pal_to_target TGT)
     target_link_libraries(${TGT} PRIVATE luci_interpreter_cmsisnn_pal)
 endmacro()
 
-message(FATAL_ERROR "pal/mcu is disabled. please use onert-micro")
+message(FATAL_ERROR "pal/cmsisnn is disabled. please use onert-micro")
