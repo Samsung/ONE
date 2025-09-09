@@ -37,7 +37,7 @@ inline void Mul(tflite::ArithmeticParams &params, const tflite::RuntimeShape &in
                 const int64_t *input2_data, const tflite::RuntimeShape &output_shape,
                 int64_t *output_data)
 {
-  tflite::optimized_ops::BroadcastMul4DSlow(params, input1_shape, input1_data, input2_shape,
+  tflite::reference_ops::BroadcastMul4DSlow(params, input1_shape, input1_data, input2_shape,
                                             input2_data, output_shape, output_data);
 }
 
@@ -47,7 +47,7 @@ BroadcastMul4DSlow(tflite::ArithmeticParams &params, const tflite::RuntimeShape 
                    const T *input1_data, const tflite::RuntimeShape &input2_shape,
                    const T *input2_data, const tflite::RuntimeShape &output_shape, T *output_data)
 {
-  tflite::optimized_ops::BroadcastMul4DSlow(params, input1_shape, input1_data, input2_shape,
+  tflite::reference_ops::BroadcastMul4DSlow(params, input1_shape, input1_data, input2_shape,
                                             input2_data, output_shape, output_data);
 }
 } // namespace luci_interpreter_pal
