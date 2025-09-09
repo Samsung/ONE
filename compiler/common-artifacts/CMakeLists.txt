@@ -91,7 +91,7 @@ elseif (PYTHON_VERSION_MINOR EQUAL 12)
   list(APPEND PY_PKG_LIST "numpy==1.26.4")
 else()
   # should not enter here
-  message(FATAL_ERROR "Build common-artifacts: FAILED (Invalid pyhon version)")
+  message(FATAL_ERROR "Build common-artifacts: FAILED (Invalid python version)")
 endif()
 
 add_custom_command(
