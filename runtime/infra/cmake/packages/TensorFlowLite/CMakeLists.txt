@@ -8,11 +8,6 @@ set(TSL_SOURCE_DIR "${TensorFlowSource_DIR}/third_party/xla/third_party/tsl")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Generate TensorFlow Lite FlatBuffer code.
-# We used to have an actual compilation logic with flatc but decided to use
-# schema_generated.h since flatc doesn't work with cross compilation.
-set(TFLITE_FLATBUFFERS_SCHEMA_DIR "${TFLITE_SOURCE_DIR}/schema")
-
 macro(populate_source_vars SOURCE_DIR SOURCES_VAR)
   cmake_parse_arguments(ARGS "RECURSE" "" "FILTER" ${ARGN})
   if(ARGS_RECURSE)
@@ -183,6 +178,28 @@ if(NEON2SSESource_FOUND)
   list(APPEND TFLITE_INCLUDE_DIRS "${NEON2SSESource_DIR}")
 endif(NEON2SSESource_FOUND)
 
+# Generate TensorFlow Lite FlatBuffer code.
+set(FLATBUFFERS_FLATC_SCHEMA_EXTRA_ARGS --gen-onefile --gen-object-api)
+message(STATUS "FLATC: ${FLATBUFFERS_FLATC_EXECUTABLE}")
+build_flatbuffers(
+  "${TFLITE_SOURCE_DIR}/schema/schema.fbs"  # flatbuffers_schemas
+  ""                                        # schema_include_dirs
+  tflite_schema_header                      # custom_target_name
+  ""                                        # additional_dependencies
+  "${TFLITE_SOURCE_DIR}/schema"             # generated_includes_dir
+  ""                                        # binary_schemas_dir
+  ""                                        # copy_text_schemas_dir
+)
+build_flatbuffers(
+  "${TFLITE_SOURCE_DIR}/schema/conversion_metadata.fbs" # flatbuffers_schemas
+  ""                                                    # schema_include_dirs
+  conv_metadata_header                                  # custom_target_name
+  ""                                                    # additional_dependencies
+  "${TFLITE_SOURCE_DIR}/schema"                         # generated_includes_dir
+  ""                                                    # binary_schemas_dir
+  ""                                                    # copy_text_schemas_dir
+)
+
 # TFLite library
 set(_ALL_TFLITE_SRCS
   ${TFLITE_CORE_ACCELERATION_SRCS}
@@ -232,7 +249,7 @@ target_include_directories(tensorflow-lite-2.16.1
   SYSTEM PUBLIC
     ${TFLITE_INCLUDE_DIRS}
 )
-
+add_dependencies(tensorflow-lite-2.16.1 tflite_schema_header conv_metadata_header)
 target_compile_options(tensorflow-lite-2.16.1 PUBLIC ${TFLITE_TARGET_PUBLIC_OPTIONS})
 set_property(TARGET tensorflow-lite-2.16.1 PROPERTY POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(tensorflow-lite-2.16.1 eigen flatbuffers::flatbuffers ruy abseil farmhash oourafft::fftsg2d pthreadpool ${LIB_PTHREAD} dl)
