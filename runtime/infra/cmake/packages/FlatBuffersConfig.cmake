@@ -1,41 +1,41 @@
 function(_FlatBuffers_import)
+  if(TARGET flatbuffers::flatbuffers)
+    # Already found
+    return()
+  endif()
 
-    find_package(Flatbuffers QUIET)
-    if(Flatbuffers_FOUND)
-      set(FlatBuffers_FOUND TRUE PARENT_SCOPE)
-      return()
-    endif(Flatbuffers_FOUND)
-
-    nnfw_find_package(FlatBuffersSource QUIET)
-
-    if(NOT FlatBuffersSource_FOUND)
-      set(FlatBuffers_FOUND FALSE PARENT_SCOPE)
-      return()
-    endif(NOT FlatBuffersSource_FOUND)
-
-    # From FlatBuffers's CMakeLists.txt
-    list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/annotated_binary_text_gen.cpp")
-    list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/bfbs_gen_lua.cpp")
-    list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/bfbs_gen_nim.cpp")
-    list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/binary_annotator.cpp")
-    list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/code_generators.cpp")
-    list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/flatc.cpp")
-    list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_fbs.cpp")
-    list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/idl_gen_text.cpp")
-    list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/idl_parser.cpp")
-    list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/reflection.cpp")
-    list(APPEND FlatBuffers_Library_SRCS "${FlatBuffersSource_DIR}/src/util.cpp")
-
-    if(NOT TARGET flatbuffers::flatbuffers)
-      add_library(flatbuffers STATIC ${FlatBuffers_Library_SRCS})
-      target_include_directories(flatbuffers PUBLIC "${FlatBuffersSource_DIR}/include")
-      set_property(TARGET flatbuffers PROPERTY POSITION_INDEPENDENT_CODE ON)
-      target_compile_options(flatbuffers PUBLIC $<$<CONFIG:Debug>:-Wno-sign-compare>)
-
-      add_library(flatbuffers::flatbuffers ALIAS flatbuffers)
-    endif(NOT TARGET flatbuffers::flatbuffers)
-
+  find_package(Flatbuffers 23.5.26 QUIET)
+  if(Flatbuffers_FOUND)
+    message(STATUS "Flatbuffers: found Flatbuffers")
     set(FlatBuffers_FOUND TRUE PARENT_SCOPE)
-  endfunction(_FlatBuffers_import)
+    return()
+  endif(Flatbuffers_FOUND)
 
-  _FlatBuffers_import()
+  nnfw_find_package(FlatBuffersSource QUIET)
+
+  if(NOT FlatBuffersSource_FOUND)
+    message(STATUS "Flatbuffers: cannot find FlatBuffers source")
+    set(FlatBuffers_FOUND FALSE PARENT_SCOPE)
+    return()
+  endif(NOT FlatBuffersSource_FOUND)
+
+  set(FLATBUFFERS_BUILD_TESTS OFF)
+  set(FLATBUFFERS_STATIC_FLATC ON)
+  set(FLATBUFFERS_INSTALL OFF)
+  set(FLATBUFFERS_BUILD_FLATC OFF)
+  add_subdirectory(${FlatBuffersSource_DIR} ${CMAKE_BINARY_DIR}/externals/flatbuffers)
+  if(NOT TARGET flatbuffers)
+    message(STATUS "Flatbuffers: failed to build FlatBuffers")
+    set(FlatBuffers_FOUND FALSE PARENT_SCOPE)
+    return()
+  endif()
+
+  set_property(TARGET flatbuffers PROPERTY POSITION_INDEPENDENT_CODE ON)
+  target_compile_options(flatbuffers PUBLIC $<$<CONFIG:Debug>:-Wno-sign-compare>)
+  add_library(flatbuffers::flatbuffers ALIAS flatbuffers)
+
+  message(STATUS "Flatbuffers: built FlatBuffers from source")
+  set(FlatBuffers_FOUND TRUE PARENT_SCOPE)
+endfunction(_FlatBuffers_import)
+
+_FlatBuffers_import()
