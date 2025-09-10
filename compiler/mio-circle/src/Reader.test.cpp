@@ -19,7 +19,7 @@
 #include <flatbuffers/flatbuffers.h>
 #include <gtest/gtest.h>
 
-class mio_circle08_reader_test : public ::testing::Test
+class mio_circle_reader_test : public ::testing::Test
 {
 protected:
   void initialization_emty(void)
@@ -40,12 +40,12 @@ private:
   std::vector<flatbuffers::Offset<circle::OperatorCode>> _opcodes_vec;
 };
 
-TEST_F(mio_circle08_reader_test, null_Model_NEG)
+TEST_F(mio_circle_reader_test, null_Model_NEG)
 {
   EXPECT_THROW(mio::circle::Reader reader(nullptr), std::runtime_error);
 }
 
-TEST_F(mio_circle08_reader_test, empty_Model)
+TEST_F(mio_circle_reader_test, empty_Model)
 {
   initialization_emty();
 
