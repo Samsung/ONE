@@ -63,7 +63,7 @@ jobs:
     strategy:
       matrix: ${{ fromJSON(needs.prepare.outputs.run_matrix) }}
 
-    runs-on: ubuntu-latest
+    runs-on: one-x64-linux
 
     container:
       image: nnfw/circle-mlir-build:${{ matrix.ubuntu_code }}

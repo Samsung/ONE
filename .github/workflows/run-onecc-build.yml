@@ -42,7 +42,7 @@ concurrency:
 jobs:
   prepare:
     if: github.repository_owner == 'Samsung'
-    runs-on: one-x64-linux
+    runs-on: ubuntu-latest
     outputs:
       run_matrix: ${{ steps.set-matrix.outputs.run_matrix }}
     steps:
