@@ -40,17 +40,36 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  onecc-test:
+  prepare:
     if: github.repository_owner == 'Samsung'
+    runs-on: one-x64-linux
+    outputs:
+      run_matrix: ${{ steps.set-matrix.outputs.run_matrix }}
+    steps:
+      - name: set matrix
+        id: set-matrix
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          JSON='{'
+          if [[ "$EVENT_NAME" == "push" ]]; then
+            JSON+='"type": ["Debug"],'
+            JSON+='"ubuntu_code": ["jammy"]'
+          elif [[ "$EVENT_NAME" == "pull_request" ]]; then
+            JSON+='"type": ["Debug", "Release"],'
+            JSON+='"ubuntu_code": ["focal", "jammy", "noble"],'
+            JSON+='"exclude": [{"ubuntu_code": "focal", "type": "Debug"},'
+            JSON+='{"ubuntu_code": "noble", "type": "Debug"}]'
+          else
+            exit 1
+          fi
+          JSON+='}'
+          echo "run_matrix=$JSON" >> "$GITHUB_OUTPUT"
+
+  onecc-test:
+    needs: [ prepare ]
     strategy:
-      matrix:
-        type: [ Debug, Release ]
-        ubuntu_code: [ focal, jammy, noble ]
-        exclude:
-          - ubuntu_code: focal
-            type: Debug
-          - ubuntu_code: noble
-            type: Debug
+      matrix: ${{ fromJSON(needs.prepare.outputs.run_matrix) }}
     runs-on: one-x64-linux
     container:
       image: samsungonedev.azurecr.io/nnfw/one-devtools:${{ matrix.ubuntu_code }}
