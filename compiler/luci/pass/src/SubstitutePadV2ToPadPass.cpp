@@ -274,11 +274,11 @@ bool used_by_maxpool_only(luci::CircleNode *node, Paddings &paddings)
   // Let's check condition C6)
   if (auto transpose = dynamic_cast<luci::CircleTranspose *>(successor))
   {
-    auto appropriate = [](luci::CircleTranspose *transpose) {
-      luci::CircleConst *perm = loco::must_cast<luci::CircleConst *>(transpose->perm());
+    auto appropriate = [](luci::CircleTranspose *transpose_node) {
+      luci::CircleConst *perm = loco::must_cast<luci::CircleConst *>(transpose_node->perm());
 
       // For Transpose to be an input for MaxPool2D
-      return (transpose->rank() == 4) && (perm && perm->dtype() == loco::DataType::S32) &&
+      return (transpose_node->rank() == 4) && (perm && perm->dtype() == loco::DataType::S32) &&
              (perm->size<loco::DataType::S32>() == 4);
     };
 

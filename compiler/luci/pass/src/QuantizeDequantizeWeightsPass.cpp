@@ -182,8 +182,8 @@ void asymmetric_wdequant_with_minmax_per_layer(CircleConst *node, float scaling_
 struct QuantizeDequantizeWeights final : public luci::CircleNodeMutableVisitor<void>
 {
   QuantizeDequantizeWeights(loco::DataType input, loco::DataType output,
-                            QuantizationGranularity granularity)
-    : input_type(input), output_type(output), granularity(granularity)
+                            QuantizationGranularity gran)
+    : input_type(input), output_type(output), granularity(gran)
   {
   }
 

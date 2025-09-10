@@ -103,13 +103,13 @@ bool fold_fully_connected(luci::CircleFullyConnected *node)
     bias_data = &bias->at<loco::DataType::FLOAT32>(0);
   }
 
-  auto static_shape = [](luci::CircleNode *node) {
+  auto static_shape = [](luci::CircleNode *circle_node) {
     loco::TensorShape shape;
-    if (not node)
+    if (not circle_node)
       return shape;
-    shape.rank(node->rank());
-    for (uint32_t i = 0; i < node->rank(); ++i)
-      shape.dim(i) = node->dim(i);
+    shape.rank(circle_node->rank());
+    for (uint32_t i = 0; i < circle_node->rank(); ++i)
+      shape.dim(i) = circle_node->dim(i);
     return shape;
   };
 

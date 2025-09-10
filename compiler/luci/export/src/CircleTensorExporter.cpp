@@ -281,8 +281,8 @@ void allocateCircleTensor(CircleNode *node, CircleTensorContext &ctx)
   if (node == nullptr)
     throw std::runtime_error("allocateCIrcleTensor Failed : node is nullptr");
 
-  auto isNoOp = [](loco::Node *node) {
-    if (auto circle_node = dynamic_cast<luci::CircleNode *>(node))
+  auto isNoOp = [](loco::Node *loco_node) {
+    if (auto circle_node = dynamic_cast<luci::CircleNode *>(loco_node))
     {
       NoOpDetector d;
       return circle_node->accept(&d);

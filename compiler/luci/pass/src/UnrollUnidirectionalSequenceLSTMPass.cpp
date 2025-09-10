@@ -592,9 +592,9 @@ bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
   auto unpacks = ulstm.input_unpacks(input);
   assert(unpacks.size() == ulstm._timesteps);
   uint32_t step = 0;
-  auto unpackout = unpacks[step];
 
   // First FC
+  auto unpackout = unpacks[step];
   auto fc_1 = ulstm.create_input_matmul(unpackout);
   assert(fc_1 != nullptr);
   auto splits = ulstm.matmul_splits(fc_1, step);
@@ -614,10 +614,10 @@ bool unroll_lstm(luci::CircleUnidirectionalSequenceLSTM *lstm)
 
   for (step = 1; step < ulstm._timesteps; ++step)
   {
-    auto unpackout = unpacks[step];
+    unpackout = unpacks[step];
     auto add_n = ulstm.create_input_matmul(unpackout, mul_gc, step);
 
-    auto splits = ulstm.matmul_splits(add_n, step);
+    splits = ulstm.matmul_splits(add_n, step);
     assert(splits.size() == 4);
 
     prev = this_add;

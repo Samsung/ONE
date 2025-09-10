@@ -1217,10 +1217,10 @@ bool fuse_instance_norm(luci::CircleAdd *add)
   {
     // if Version_1 failed, try with Version_5
     pv = InstanceNormPattern::PatternVersion::Version_5;
-    InstanceNormPattern pattern(add, pv);
-    if (pattern.matched())
+    InstanceNormPattern pattern_v5(add, pv);
+    if (pattern_v5.matched())
     {
-      FuseInstanceNorm fuse(pattern);
+      FuseInstanceNorm fuse(pattern_v5);
       fuse.apply();
       return true;
     }
@@ -1229,10 +1229,10 @@ bool fuse_instance_norm(luci::CircleAdd *add)
   {
     // if Version_2 failed, try with Version_3
     pv = InstanceNormPattern::PatternVersion::Version_3;
-    InstanceNormPattern pattern(add, pv);
-    if (pattern.matched())
+    InstanceNormPattern pattern_v2(add, pv);
+    if (pattern_v2.matched())
     {
-      FuseInstanceNorm fuse(pattern);
+      FuseInstanceNorm fuse(pattern_v2);
       fuse.apply();
       return true;
     }

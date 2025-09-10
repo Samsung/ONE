@@ -60,12 +60,12 @@ void get_FCs_having_same_tensor(std::vector<luci::CircleFullyConnected *> &fc_ve
   auto the_tensor = fc->weights();
   for (auto node : loco::active_nodes(loco::output_nodes(g)))
   {
-    auto fc = dynamic_cast<luci::CircleFullyConnected *>(node);
-    if (not fc)
+    auto fc_check = dynamic_cast<luci::CircleFullyConnected *>(node);
+    if (not fc_check)
       continue;
 
-    if (fc->weights() == the_tensor)
-      fc_vec.push_back(fc);
+    if (fc_check->weights() == the_tensor)
+      fc_vec.push_back(fc_check);
   }
 }
 
@@ -132,10 +132,10 @@ bool ShuffleWeightTo16x1Float32Pass::run(loco::Graph *g)
     auto new_weights = shuffle_weight(fc);
 
     // replace to new weights
-    for (const auto fc : fc_vec)
+    for (const auto fc_elem : fc_vec)
     {
-      fc->weights(new_weights);
-      fc->weights_format(luci::CircleFullyConnected::WeightsFormat::SHUFFLED16x1FLOAT32);
+      fc_elem->weights(new_weights);
+      fc_elem->weights_format(luci::CircleFullyConnected::WeightsFormat::SHUFFLED16x1FLOAT32);
     }
 
     changed = true;

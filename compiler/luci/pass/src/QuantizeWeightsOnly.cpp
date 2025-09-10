@@ -50,8 +50,8 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vec
     compute_sym_scale(min[i], max[i], scaling_factor[i], nudged_min[i], nudged_max[i], out_type);
   }
 
-  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
-    int channel_idx = indices[channel_dim_index];
+  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int chan_dim_index) {
+    int channel_idx = indices[chan_dim_index];
     const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
     auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
     data = data < nudged_min[channel_idx] ? nudged_min[channel_idx] : data;
@@ -119,11 +119,11 @@ void QuantizeWeightsOnly::quantize_weights(luci::CircleConst *weights)
         throw std::runtime_error("Weights-only quantization supports s8 and s16");
       }
 
-      auto quantparam = std::make_unique<CircleQuantParam>();
-      quantparam->scale = scaling_factor;
-      quantparam->zerop = zp;
-      quantparam->quantized_dimension = channel_dim_index;
-      weights->quantparam(std::move(quantparam));
+      auto qparam = std::make_unique<CircleQuantParam>();
+      qparam->scale = scaling_factor;
+      qparam->zerop = zp;
+      qparam->quantized_dimension = channel_dim_index;
+      weights->quantparam(std::move(qparam));
 
       return;
     }

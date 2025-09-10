@@ -85,24 +85,24 @@ bool equal(const Permutation<Domain::Matrix> *lhs, const Permutation<Domain::Mat
 
 void set_input_null(loco::Node *node)
 {
-  if (auto casted = dynamic_cast<loco::FeatureEncode *>(node))
-    casted->input(nullptr);
-  else if (auto casted = dynamic_cast<loco::FeatureDecode *>(node))
-    casted->input(nullptr);
-  else if (auto casted = dynamic_cast<loco::BiasDecode *>(node))
-    casted->input(nullptr);
-  else if (auto casted = dynamic_cast<loco::FilterEncode *>(node))
-    casted->input(nullptr);
-  else if (auto casted = dynamic_cast<loco::FilterDecode *>(node))
-    casted->input(nullptr);
-  else if (auto casted = dynamic_cast<loco::DepthwiseFilterEncode *>(node))
-    casted->input(nullptr);
-  else if (auto casted = dynamic_cast<loco::DepthwiseFilterDecode *>(node))
-    casted->input(nullptr);
-  else if (auto casted = dynamic_cast<loco::MatrixEncode *>(node))
-    casted->input(nullptr);
-  else if (auto casted = dynamic_cast<loco::MatrixDecode *>(node))
-    casted->input(nullptr);
+  if (auto casted_fn = dynamic_cast<loco::FeatureEncode *>(node))
+    casted_fn->input(nullptr);
+  else if (auto casted_fd = dynamic_cast<loco::FeatureDecode *>(node))
+    casted_fd->input(nullptr);
+  else if (auto casted_bd = dynamic_cast<loco::BiasDecode *>(node))
+    casted_bd->input(nullptr);
+  else if (auto casted_fie = dynamic_cast<loco::FilterEncode *>(node))
+    casted_fie->input(nullptr);
+  else if (auto casted_fid = dynamic_cast<loco::FilterDecode *>(node))
+    casted_fid->input(nullptr);
+  else if (auto casted_dfe = dynamic_cast<loco::DepthwiseFilterEncode *>(node))
+    casted_dfe->input(nullptr);
+  else if (auto casted_dfd = dynamic_cast<loco::DepthwiseFilterDecode *>(node))
+    casted_dfd->input(nullptr);
+  else if (auto casted_me = dynamic_cast<loco::MatrixEncode *>(node))
+    casted_me->input(nullptr);
+  else if (auto casted_md = dynamic_cast<loco::MatrixDecode *>(node))
+    casted_md->input(nullptr);
   else
     assert(false && "not supported node type");
 }

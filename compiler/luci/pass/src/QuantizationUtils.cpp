@@ -634,9 +634,9 @@ void cal_minmax_per_channel(CircleConst *node, std::vector<float> &min, std::vec
   min.resize(size);
   max.resize(size);
 
-  auto cal_minmax = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
-    int channel_idx = indices[channel_dim_index];
-    auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
+  auto cal_minmax = [&](uint32_t *indices, loco::TensorShape &dim, int chan_dim_index) {
+    int channel_idx = indices[chan_dim_index];
+    auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dim, indices));
     if (has_min_max_value[channel_idx])
     {
       min[channel_idx] = data < min[channel_idx] ? data : min[channel_idx];

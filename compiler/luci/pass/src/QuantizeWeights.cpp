@@ -41,8 +41,8 @@ void asym_wquant_per_channel(CircleConst *node, std::vector<float> &min,
   uint32_t size = node->size<loco::DataType::FLOAT32>();
   std::vector<int32_t> quantized_values(size);
 
-  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int32_t channel_dim_index) {
-    int channel_idx = indices[channel_dim_index];
+  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int32_t chan_dim_index) {
+    int channel_idx = indices[chan_dim_index];
     const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
     auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
     quantized_values[cal_offset(dimension, indices)] =
@@ -76,8 +76,8 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &min, std::vec
     compute_sym_scale(min[i], max[i], scaling_factor[i], nudged_min[i], nudged_max[i]);
   }
 
-  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
-    int channel_idx = indices[channel_dim_index];
+  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int chan_dim_index) {
+    int channel_idx = indices[chan_dim_index];
     const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
     auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
     data = data < nudged_min[channel_idx] ? nudged_min[channel_idx] : data;
@@ -115,8 +115,8 @@ void asymmetric_wquant_per_channel(CircleConst *node, std::vector<float> &min,
     compute_asym_scale_zp(min[i], max[i], scaling_factor[i], zp[i], nudged_min[i], nudged_max[i]);
   }
 
-  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int channel_dim_index) {
-    int channel_idx = indices[channel_dim_index];
+  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int chan_dim_index) {
+    int channel_idx = indices[chan_dim_index];
     const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
     auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
     data = data < nudged_min[channel_idx] ? nudged_min[channel_idx] : data;
@@ -146,8 +146,8 @@ void sym_wquant_per_channel(CircleConst *node, std::vector<float> &scaling_facto
   uint32_t size = node->size<loco::DataType::FLOAT32>();
   std::vector<int32_t> quantized_values(size);
 
-  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int32_t channel_dim_index) {
-    int channel_idx = indices[channel_dim_index];
+  auto quantize = [&](uint32_t *indices, loco::TensorShape &dimension, int32_t chan_dim_index) {
+    int channel_idx = indices[chan_dim_index];
     const float scaling_factor_inv = 1.0 / scaling_factor[channel_idx];
     auto data = node->at<loco::DataType::FLOAT32>(cal_offset(dimension, indices));
     quantized_values[cal_offset(dimension, indices)] =
@@ -322,11 +322,11 @@ void QuantizeWeights::quantize_weights(luci::CircleConst *weights)
                                channel_dim_index);
       }
 
-      auto quantparam = std::make_unique<CircleQuantParam>();
-      quantparam->scale = scaling_factor;
-      quantparam->zerop = zp;
-      quantparam->quantized_dimension = channel_dim_index;
-      weights->quantparam(std::move(quantparam));
+      auto qparam = std::make_unique<CircleQuantParam>();
+      qparam->scale = scaling_factor;
+      qparam->zerop = zp;
+      qparam->quantized_dimension = channel_dim_index;
+      weights->quantparam(std::move(qparam));
 
       return;
     }
@@ -369,10 +369,10 @@ void QuantizeWeights::quantize_weights(luci::CircleConst *weights)
 
       asymmetric_wquant_with_minmax_per_layer(weights, min, max, scaling_factor, zp, nudged_min,
                                               nudged_max);
-      auto quantparam = std::make_unique<CircleQuantParam>();
-      quantparam->scale.push_back(scaling_factor);
-      quantparam->zerop.push_back(zp);
-      weights->quantparam(std::move(quantparam));
+      auto qparam = std::make_unique<CircleQuantParam>();
+      qparam->scale.push_back(scaling_factor);
+      qparam->zerop.push_back(zp);
+      weights->quantparam(std::move(qparam));
       return;
     }
 
