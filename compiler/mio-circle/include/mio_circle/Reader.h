@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __MIO_CIRCLE08_READER_H__
-#define __MIO_CIRCLE08_READER_H__
+#ifndef __MIO_CIRCLE_READER_H__
+#define __MIO_CIRCLE_READER_H__
 
 #include <mio/circle/schema_generated.h>
 
@@ -100,4 +100,4 @@ private:
 } // namespace circle
 } // namespace mio
 
-#endif // __MIO_CIRCLE08_READER_H__
+#endif // __MIO_CIRCLE_READER_H__

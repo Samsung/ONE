@@ -21,7 +21,7 @@
 
 #include <vector>
 
-class mio_circle08_helper_test : public ::testing::Test
+class mio_circle_helper_test : public ::testing::Test
 {
 protected:
   void initialization_finish(void)
@@ -47,7 +47,7 @@ private:
   std::vector<flatbuffers::Offset<circle::OperatorCode>> _opcodes_vec;
 };
 
-TEST_F(mio_circle08_helper_test, v08)
+TEST_F(mio_circle_helper_test, check_ops)
 {
   // BuiltinOperator_ADD = 0
   // BuiltinOperator_CONV_2D = 3
@@ -60,7 +60,7 @@ TEST_F(mio_circle08_helper_test, v08)
   ASSERT_FALSE(mio::circle::is_custom(get_operator_code(0)));
 }
 
-TEST_F(mio_circle08_helper_test, v08_custom_old)
+TEST_F(mio_circle_helper_test, custom_old)
 {
   // BuiltinOperator_ADD = 0
   // BuiltinOperator_CUSTOM = 32
@@ -73,7 +73,7 @@ TEST_F(mio_circle08_helper_test, v08_custom_old)
   ASSERT_TRUE(mio::circle::is_custom(get_operator_code(0)));
 }
 
-TEST_F(mio_circle08_helper_test, v08_NEG)
+TEST_F(mio_circle_helper_test, valid_NEG)
 {
   // BuiltinOperator_ADD = 0
   // BuiltinOperator_CUMSUM = 128
@@ -84,7 +84,7 @@ TEST_F(mio_circle08_helper_test, v08_NEG)
   ASSERT_FALSE(mio::circle::is_valid(get_operator_code(0)));
 }
 
-TEST_F(mio_circle08_helper_test, v08_under127)
+TEST_F(mio_circle_helper_test, under127)
 {
   // BuiltinOperator_CONV_2D = 3
   add_operator_code(3, "", circle::BuiltinOperator_CONV_2D);
@@ -96,7 +96,7 @@ TEST_F(mio_circle08_helper_test, v08_under127)
   ASSERT_FALSE(mio::circle::is_custom(get_operator_code(0)));
 }
 
-TEST_F(mio_circle08_helper_test, v08_under127_NEG)
+TEST_F(mio_circle_helper_test, under127_NEG)
 {
   // BuiltinOperator_CONV_2D = 3
   // BuiltinOperator_CUMSUM = 128
@@ -107,7 +107,7 @@ TEST_F(mio_circle08_helper_test, v08_under127_NEG)
   ASSERT_FALSE(mio::circle::is_valid(get_operator_code(0)));
 }
 
-TEST_F(mio_circle08_helper_test, v08_custom)
+TEST_F(mio_circle_helper_test, custom)
 {
   // BuiltinOperator_CUSTOM = 32
   add_operator_code(32, "custom", circle::BuiltinOperator_CUSTOM);
@@ -119,7 +119,7 @@ TEST_F(mio_circle08_helper_test, v08_custom)
   ASSERT_TRUE(mio::circle::is_custom(get_operator_code(0)));
 }
 
-TEST_F(mio_circle08_helper_test, v08_custom_NEG)
+TEST_F(mio_circle_helper_test, custom_NEG)
 {
   // BuiltinOperator_CUMSUM = 128
   // deprecated_builtin_code cannot be negative value
@@ -129,7 +129,7 @@ TEST_F(mio_circle08_helper_test, v08_custom_NEG)
   ASSERT_FALSE(mio::circle::is_valid(get_operator_code(0)));
 }
 
-TEST_F(mio_circle08_helper_test, v08_over127)
+TEST_F(mio_circle_helper_test, over127)
 {
   // BuiltinOperator_PLACEHOLDER_FOR_GREATER_OP_CODES = 127
   // BuiltinOperator_CUMSUM = 128
@@ -142,7 +142,7 @@ TEST_F(mio_circle08_helper_test, v08_over127)
   ASSERT_FALSE(mio::circle::is_custom(get_operator_code(0)));
 }
 
-TEST_F(mio_circle08_helper_test, v08_over127_NEG)
+TEST_F(mio_circle_helper_test, over127_NEG)
 {
   // BuiltinOperator_CUMSUM = 128
   // deprecated_builtin_code cannot be negative value
