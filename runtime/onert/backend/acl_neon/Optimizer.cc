@@ -28,7 +28,7 @@ namespace onert::backend::acl_neon
 
 Optimizer::Optimizer(BackendContext *context)
   : _context{context},
-    _tensor_builder{std::dynamic_pointer_cast<TensorBuilder>(context->tensor_builder)}
+    _tensor_builder{std::dynamic_pointer_cast<TensorBuilder>(context->_tensor_builder)}
 {
   assert(context);
 }

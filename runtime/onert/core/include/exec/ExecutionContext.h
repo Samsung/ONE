@@ -34,7 +34,7 @@ struct InputDesc
   size_t size;
 
   InputDesc(void) = delete;
-  InputDesc(const ir::OperandInfo &info) : info(info), buffer(nullptr), size(0) {}
+  InputDesc(const ir::OperandInfo &info_) : info(info_), buffer(nullptr), size(0) {}
 };
 
 struct OutputDesc
@@ -44,7 +44,7 @@ struct OutputDesc
   size_t size;
 
   OutputDesc(void) = delete;
-  OutputDesc(const ir::OperandInfo &info) : info(info), buffer(nullptr), size(0) {}
+  OutputDesc(const ir::OperandInfo &info_) : info(info_), buffer(nullptr), size(0) {}
 };
 
 struct IODescription

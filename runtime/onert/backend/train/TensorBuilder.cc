@@ -62,20 +62,17 @@ void TensorBuilder::registerBackwardTensorInfo(const ir::OperandIndex &index,
   assert(_as_constants[index] == info.isConstant());
   if (_as_constants[index])
   {
-    auto tensor = std::make_unique<GradientTensor>(info);
-    _tensor_reg->setGradientTensor(index, std::move(tensor));
+    _tensor_reg->setGradientTensor(index, std::make_unique<GradientTensor>(info));
 
     // Initialize tensors for gradient variables
     for (uint32_t i = 0; i < _optimizer->getVarCount(); ++i)
     {
-      auto tensor = std::make_unique<Tensor>(info);
-      _tensor_reg->getTrainableTensor(index)->appendOptVar(std::move(tensor));
+      _tensor_reg->getTrainableTensor(index)->appendOptVar(std::make_unique<Tensor>(info));
     }
   }
   else
   {
-    auto tensor = std::make_unique<BackPropTensor>(info);
-    _tensor_reg->setBackPropTensor(index, std::move(tensor));
+    _tensor_reg->setBackPropTensor(index, std::make_unique<BackPropTensor>(info));
   }
 }
 

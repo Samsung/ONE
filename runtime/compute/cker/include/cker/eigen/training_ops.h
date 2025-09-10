@@ -75,15 +75,16 @@ namespace functor
 
 template <typename Device, typename T> struct ApplyAdamNonCuda
 {
-  void operator()(const Device &d, typename TTypes<T>::Flat var, typename TTypes<T>::Flat m,
-                  typename TTypes<T>::Flat v, typename TTypes<T>::ConstScalar beta1_power,
+  void operator()(const Device &d, typename TTypes<T>::Flat var_flat,
+                  typename TTypes<T>::Flat m_flat, typename TTypes<T>::Flat v_flat,
+                  typename TTypes<T>::ConstScalar beta1_power,
                   typename TTypes<T>::ConstScalar beta2_power, typename TTypes<T>::ConstScalar lr,
                   typename TTypes<T>::ConstScalar beta1, typename TTypes<T>::ConstScalar beta2,
                   typename TTypes<T>::ConstScalar epsilon, typename TTypes<T>::ConstFlat grad,
                   bool use_nesterov)
   {
     // Get params length and check if they can be vectorized by packet size.
-    Index length = var.size();
+    Index length = var_flat.size();
     Index packet_size = Eigen::internal::packet_traits<T>::size;
     if (length % packet_size == 0)
     {
@@ -94,9 +95,9 @@ template <typename Device, typename T> struct ApplyAdamNonCuda
       packet_size = 1;
     }
 
-    T *var_ptr = var.data();
-    T *m_ptr = m.data();
-    T *v_ptr = v.data();
+    T *var_ptr = var_flat.data();
+    T *m_ptr = m_flat.data();
+    T *v_ptr = v_flat.data();
     const T *g_ptr = grad.data();
     const T alpha = lr() * Eigen::numext::sqrt(T(1) - beta2_power()) / (T(1) - beta1_power());
     // beta1 == μ

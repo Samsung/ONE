@@ -53,7 +53,7 @@ public:
                  std::unique_ptr<exec::train::optimizer::Optimizer> optimizer = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
     : onert::backend::train::TrainableBackendContext(backend, std::move(tdata), tensor_registry),
-      kernel_gen{kernel_gen}, _external_context(new ExternalContext),
+      _kernel_gen{kernel_gen}, _external_context(new ExternalContext),
       _tensor_builder{tensor_builder}, _optimizer{std::move(optimizer)}
   {
   }
@@ -81,7 +81,7 @@ private:
 
 public:
   // TODO Make it private
-  std::shared_ptr<KernelGenerator> kernel_gen;
+  std::shared_ptr<KernelGenerator> _kernel_gen;
 
 private:
   // NOTE ruy context has a thread pool, and when multiple ruy contexts are created,

@@ -32,7 +32,6 @@ Reduce::Reduce(const OperandIndexSequence &inputs, const OperandIndexSequence &o
 
 std::string Reduce::name() const
 {
-  using ReduceType = onert::ir::operation::Reduce::ReduceType;
   static const std::unordered_map<ReduceType, std::string> name_map{
     {ReduceType::ALL, std::string{toString(opcode())} + "All"},
     {ReduceType::ANY, std::string{toString(opcode())} + "Any"},

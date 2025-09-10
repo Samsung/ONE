@@ -496,8 +496,8 @@ void KernelGenerator::visit(const ir::train::operation::Pool2D &node)
 
   auto fn = std::make_unique<ops::PoolLayer>();
 
-  auto convertToInferPoolType = [](const train::ops::PoolType &pool_type) {
-    switch (pool_type)
+  auto convertToInferPoolType = [](const train::ops::PoolType &type) {
+    switch (type)
     {
       case train::ops::PoolType::kMax:
         return cpu::ops::PoolType::kMax;
@@ -626,8 +626,8 @@ IPortableTensor *KernelGenerator::getBackPropIn(const ir::IOperation &node,
       _tgraph.trainingUseDefs().at(backwarding_operand_index);
     assert(std::count_if(training_usedefs.getTrainingDefs().begin(),
                          training_usedefs.getTrainingDefs().end(),
-                         [&](const ir::train::TrainingOperationIndex &op_index) {
-                           return _tgraph.operation(op_index.index()).isRequiredForBackward();
+                         [&](const ir::train::TrainingOperationIndex &index) {
+                           return _tgraph.operation(index.index()).isRequiredForBackward();
                          }) > 1);
 
     return disposable_tensor;

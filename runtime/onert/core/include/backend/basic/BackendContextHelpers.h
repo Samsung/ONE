@@ -233,8 +233,8 @@ ITensorRegistry *genTensors(const std::shared_ptr<T_TensorBuilder> &tensor_build
 
 template <typename T_BackendContext> ITensorRegistry *genTensors(T_BackendContext &ctx)
 {
-  return genTensors(ctx.tensor_builder, *ctx.graph(), ctx.external_operands(), ctx.tensor_registry,
-                    ctx.data().op_order, {});
+  return genTensors(ctx._tensor_builder, *ctx.graph(), ctx.external_operands(),
+                    ctx._tensor_registry, ctx.data().op_order, {});
 }
 
 inline void
@@ -295,7 +295,7 @@ inline void initConsts(const ir::Operands &operands,
 
 inline void initConsts(BackendContext &ctx)
 {
-  initConsts(ctx.graph()->operands(), ctx.external_operands(), ctx.tensor_registry.get(), {});
+  initConsts(ctx.graph()->operands(), ctx.external_operands(), ctx._tensor_registry.get(), {});
 }
 
 } // namespace onert::backend::basic

@@ -46,7 +46,7 @@ void IfLayer::run()
 
   auto getResultCond = [](backend::IPortableTensor *tensor) -> bool {
     bool ret = false;
-    tensor->access([&](ITensor &tensor) { ret = *reinterpret_cast<bool *>(tensor.buffer()); });
+    tensor->access([&](ITensor &t) { ret = *reinterpret_cast<bool *>(t.buffer()); });
     return ret;
   };
 

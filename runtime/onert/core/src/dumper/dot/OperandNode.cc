@@ -26,8 +26,8 @@ Operand::Operand(const ir::OperandIndex &index, Type type)
   : Node{"operand" + std::to_string(index.value())}
 {
   {
-    auto type_to_shape = [](Type type) -> const std::string & {
-      switch (type)
+    auto type_to_shape = [](Type t) -> const std::string & {
+      switch (t)
       {
         case Type::MODEL_INPUT:
           return INPUT_SHAPE;

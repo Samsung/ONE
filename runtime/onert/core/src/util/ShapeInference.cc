@@ -642,19 +642,16 @@ ir::Shape inferReshapeShape(const ir::Shape &input_shape, const int32_t *shape_b
 ir::Shape inferSelectShape(const ir::Shape &input_cond_shape, const ir::Shape &input_true_shape,
                            const ir::Shape &input_false_shape)
 {
-  auto haveSameShapes = [](const ir::Shape &input_cond_shape, const ir::Shape &input_true_shape,
-                           const ir::Shape &input_false_shape) {
-    if ((input_cond_shape.rank() != input_true_shape.rank()) ||
-        input_cond_shape.rank() != input_false_shape.rank())
+  auto haveSameShapes = [](const ir::Shape &s1, const ir::Shape &s2, const ir::Shape &s3) {
+    if ((s1.rank() != s2.rank()) || s1.rank() != s3.rank())
     {
       return false;
     }
 
-    int rank = input_cond_shape.rank();
+    int rank = s1.rank();
     for (int i = 0; i < rank; ++i)
     {
-      if (input_cond_shape.dim(i) != input_true_shape.dim(i) ||
-          input_cond_shape.dim(i) != input_false_shape.dim(i))
+      if (s1.dim(i) != s2.dim(i) || s1.dim(i) != s3.dim(i))
       {
         return false;
       }
@@ -663,32 +660,27 @@ ir::Shape inferSelectShape(const ir::Shape &input_cond_shape, const ir::Shape &i
     return true;
   };
 
-  auto calculateShape = [](const ir::Shape &input_cond_shape, const ir::Shape &input_true_shape,
-                           const ir::Shape &input_false_shape, ir::Shape &new_shape) {
-    ir::Shape cond_shape = input_cond_shape;
-    ir::Shape true_shape = input_true_shape;
-    ir::Shape false_shape = input_false_shape;
-    int most_rank =
-      (cond_shape.rank() >= true_shape.rank()) && (cond_shape.rank() >= false_shape.rank())
-        ? cond_shape.rank()
-        : (false_shape.rank() >= true_shape.rank() ? false_shape.rank() : true_shape.rank());
+  // Require copy (not reference) argument s1, s2, s3 to extend shape
+  auto calculateShape = [](ir::Shape s1, ir::Shape s2, ir::Shape s3, ir::Shape &new_shape) {
+    int most_rank = (s1.rank() >= s2.rank()) && (s1.rank() >= s3.rank())
+                      ? s1.rank()
+                      : (s3.rank() >= s2.rank() ? s3.rank() : s2.rank());
 
     ir::Shape calculate_shape(most_rank);
 
-    cond_shape.extendRank(most_rank);
-    true_shape.extendRank(most_rank);
-    false_shape.extendRank(most_rank);
+    s1.extendRank(most_rank);
+    s2.extendRank(most_rank);
+    s3.extendRank(most_rank);
 
     for (int i = 0; i < most_rank; ++i)
     {
-      calculate_shape.dim(i) =
-        (cond_shape.dim(i) >= true_shape.dim(i)) && (cond_shape.dim(i) >= false_shape.dim(i))
-          ? cond_shape.dim(i)
-          : (false_shape.dim(i) >= true_shape.dim(i) ? false_shape.dim(i) : true_shape.dim(i));
+      calculate_shape.dim(i) = (s1.dim(i) >= s2.dim(i)) && (s1.dim(i) >= s3.dim(i))
+                                 ? s1.dim(i)
+                                 : (s3.dim(i) >= s2.dim(i) ? s3.dim(i) : s2.dim(i));
 
-      if ((cond_shape.dim(i) != calculate_shape.dim(i) && cond_shape.dim(i) != 1) ||
-          (true_shape.dim(i) != calculate_shape.dim(i) && true_shape.dim(i) != 1) ||
-          (false_shape.dim(i) != calculate_shape.dim(i) && false_shape.dim(i) != 1))
+      if ((s1.dim(i) != calculate_shape.dim(i) && s1.dim(i) != 1) ||
+          (s2.dim(i) != calculate_shape.dim(i) && s2.dim(i) != 1) ||
+          (s3.dim(i) != calculate_shape.dim(i) && s3.dim(i) != 1))
       {
         return false;
       }

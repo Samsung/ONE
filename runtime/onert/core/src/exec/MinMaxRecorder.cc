@@ -67,7 +67,7 @@ std::pair<float, float> minmaxFrom(const backend::ITensor *tensor)
 void MinMaxRecorder::handleJobEnd(IExecutor *, std::pair<ir::ModelIndex, ir::SubgraphIndex> idx,
                                   ir::OperationIndex op_idx, const backend::Backend *backend)
 {
-  const auto &tensor_reg = _backend_contexts.at(backend)->tensor_registry;
+  const auto &tensor_reg = _backend_contexts.at(backend)->_tensor_registry;
   const auto &op = _graph.operations().at(op_idx);
   const auto &outputs = op.getOutputs();
   // TODO: Support multiple output
@@ -116,7 +116,7 @@ void MinMaxRecorder::handleSubgraphBegin(std::pair<ir::ModelIndex, ir::SubgraphI
     backend_names.insert(backend->config()->id());
     if (backend->config()->id() == "cpu")
     {
-      tensor_reg = bctx->tensor_registry.get();
+      tensor_reg = bctx->_tensor_registry.get();
     }
   }
   if (backend_names != std::set<std::string>{"builtin", "cpu"})

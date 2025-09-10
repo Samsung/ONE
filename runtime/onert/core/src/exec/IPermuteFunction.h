@@ -219,10 +219,6 @@ private:
         if (src_offsets.size() == 0)
         {
           assert(dst_offsets.size() == 0);
-
-          auto loop_shape = src->getShape();
-          const auto copy_axis = loop_shape.rank() - 1;
-          loop_shape.dim(copy_axis) = 1;
           UpdateOffsets(src, dst, loop_shape, src_offsets, dst_offsets);
         }
         CopyStatic(src->buffer(), dst_buffer, src_offsets, dst_offsets, copy_len);

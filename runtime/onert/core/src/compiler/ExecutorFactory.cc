@@ -103,7 +103,7 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
     if (backend->config()->id() == backend::builtin::Config::ID)
     {
       builtin_tensor_reg =
-        std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(context->tensor_registry);
+        std::dynamic_pointer_cast<backend::builtin::TensorRegistry>(context->_tensor_registry);
     }
   }
   assert(builtin_tensor_reg);
@@ -307,7 +307,7 @@ void bindInternalOutputTensors(const compiler::ILoweredGraph &lgraph,
     auto &backend_ctx = backend_contexts.at(backend);
 
     if (auto backend_tensor =
-          dynamic_cast<backend::IPortableTensor *>(backend_ctx->tensor_registry->getITensor(idx));
+          dynamic_cast<backend::IPortableTensor *>(backend_ctx->_tensor_registry->getITensor(idx));
         backend_tensor == nullptr)
       throw std::runtime_error("When io tensors are allocated internally, io tensor must be "
                                "present and IPortableTensor");
@@ -363,13 +363,13 @@ void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_gra
         // If an Operation's input/output tensor does not have an own tensor object,
         // it must be using migrant tensors, so find the tensor from other tensor registries and
         // register it to the current tensor registry if it is portable
-        if (!backend_ctx->tensor_registry->getITensor(ind))
+        if (!backend_ctx->_tensor_registry->getITensor(ind))
         {
           auto tensor = tensor_regs.getITensor(ind);
           assert(tensor); // The tensor must have been registered
           auto ptensor = dynamic_cast<backend::IPortableTensor *>(tensor);
           if (ptensor)
-            backend_ctx->tensor_registry->setMigrantTensor(ind, ptensor);
+            backend_ctx->_tensor_registry->setMigrantTensor(ind, ptensor);
         }
       }
     });
@@ -385,7 +385,7 @@ void ExecutorFactory::prepareBuiltinBackend(const TensorRegistries &tensor_regs,
     auto builtin_context = dynamic_cast<backend::builtin::BackendContext *>(pair.second.get());
     if (builtin_context != nullptr)
     {
-      auto builtin_kernel_gen = builtin_context->kernel_gen;
+      auto builtin_kernel_gen = builtin_context->_kernel_gen;
       builtin_kernel_gen->setTensorRegistries(tensor_regs);
       builtin_kernel_gen->setExecutors(executors);
       builtin_kernel_gen->setModelIndex(index);
@@ -803,7 +803,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
       dynamic_cast<backend::builtin::train::BackendContext *>(pair.second.get());
     if (builtin_context != nullptr)
     {
-      auto builtin_kernel_gen = builtin_context->kernel_gen;
+      auto builtin_kernel_gen = builtin_context->_kernel_gen;
       builtin_kernel_gen->setTensorRegistries(tensor_regs);
       builtin_kernel_gen->setWholeGraphOutputs(lowered_graph->trainable_graph().getOutputs());
     }

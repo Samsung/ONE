@@ -33,7 +33,7 @@ backend::train::FunctionMap BackendContext::gen()
 
   for (auto &&op_ind : _tdata->op_order)
   {
-    auto tn_seq = kernel_gen->generate(op_ind);
+    auto tn_seq = _kernel_gen->generate(op_ind);
     fn_map.emplace(op_ind, std::move(tn_seq));
   }
 

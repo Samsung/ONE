@@ -32,26 +32,26 @@ namespace onert::backend::cpu
 
 ITensorRegistry *BackendContext::genTensors()
 {
-  return basic::genTensors(tensor_builder, *graph(), external_operands(), tensor_registry,
-                           data().op_order, tensor_builder->getSharedMemoryOperandIndexes());
+  return basic::genTensors(_tensor_builder, *graph(), external_operands(), _tensor_registry,
+                           data().op_order, _tensor_builder->getSharedMemoryOperandIndexes());
 }
 
 FunctionMap BackendContext::genKernels()
 {
   FunctionMap ret;
 
-  basic::initConsts(graph()->operands(), external_operands(), tensor_registry.get(),
-                    tensor_builder->getSharedMemoryOperandIndexes());
+  basic::initConsts(graph()->operands(), external_operands(), _tensor_registry.get(),
+                    _tensor_builder->getSharedMemoryOperandIndexes());
 
   // TODO: Change type of tensor_registry field to TensorRegistry
   auto tensor_registry_concreted =
-    nnfw::misc::polymorphic_downcast<basic::TensorRegistry *>(tensor_registry.get());
+    nnfw::misc::polymorphic_downcast<basic::TensorRegistry *>(_tensor_registry.get());
   basic::initSharedMemoryConsts(graph()->operands(), external_operands(), tensor_registry_concreted,
-                                tensor_builder->getSharedMemoryOperandIndexes());
+                                _tensor_builder->getSharedMemoryOperandIndexes());
 
   for (auto &&op_ind : _data.op_order)
   {
-    auto fn_seq = kernel_gen->generate(op_ind);
+    auto fn_seq = _kernel_gen->generate(op_ind);
     ret.emplace(op_ind, std::move(fn_seq));
   }
 

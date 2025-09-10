@@ -35,9 +35,9 @@ std::string backend_to_fillcolor(const backend::Backend *backend)
   static const auto map = []() {
     std::unordered_map<const backend::Backend *, std::string> ret;
     uint32_t index = 1; // Start from 1 to avoid 0(red) which is too dark :(
-    for (const auto backend : compiler::BackendManager::get().getAll())
+    for (const auto backend_elem : compiler::BackendManager::get().getAll())
     {
-      ret.emplace(backend, Node::BG_COLORS[index]);
+      ret.emplace(backend_elem, Node::BG_COLORS[index]);
       index = (index + 1) % (sizeof(Node::BG_COLORS) / sizeof(Node::BG_COLORS[0]));
     }
     return ret;

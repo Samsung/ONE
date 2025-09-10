@@ -760,13 +760,8 @@ flatbuffers::Offset<circle::Tensor> CircleGen::buildTensor(const TensorParams &p
 flatbuffers::Offset<circle::SparsityParameters>
 CircleGen::buildSparsityParameters(const SparsityParams &sp)
 {
-  flatbuffers::Offset<flatbuffers::Vector<int32_t>> traversal_order;
-  flatbuffers::Offset<flatbuffers::Vector<int32_t>> block_map;
-  flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<circle::DimensionMetadata>>>
-    dim_metadata;
-
-  traversal_order = _fbb.CreateVector(sp.traversal_order);
-  block_map = _fbb.CreateVector(sp.block_map);
+  auto traversal_order = _fbb.CreateVector(sp.traversal_order);
+  auto block_map = _fbb.CreateVector(sp.block_map);
 
   std::vector<flatbuffers::Offset<circle::DimensionMetadata>> dim_metadata_vec;
   for (auto &it : sp.dim_metadata)
@@ -778,7 +773,7 @@ CircleGen::buildSparsityParameters(const SparsityParams &sp)
       it._array_indices_type, fb_array_indices.Union());
     dim_metadata_vec.emplace_back(dim_metadata);
   }
-  dim_metadata = _fbb.CreateVector(dim_metadata_vec);
+  auto dim_metadata = _fbb.CreateVector(dim_metadata_vec);
 
   return circle::CreateSparsityParameters(_fbb, traversal_order, block_map, dim_metadata);
 }

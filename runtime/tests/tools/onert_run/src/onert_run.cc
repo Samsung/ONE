@@ -273,9 +273,9 @@ int main(const int argc, char **argv)
           }
           else
           {
-            for (int32_t i = 0; i < ti.rank; i++)
+            for (int32_t j = 0; j < ti.rank; j++)
             {
-              if (ti.dims[i] != shape.at(i))
+              if (ti.dims[j] != shape.at(i))
               {
                 set_input = true;
                 break;
@@ -286,8 +286,8 @@ int main(const int argc, char **argv)
           if (set_input)
           {
             ti.rank = shape.size();
-            for (int32_t i = 0; i < ti.rank; i++)
-              ti.dims[i] = shape.at(i);
+            for (int32_t j = 0; j < ti.rank; j++)
+              ti.dims[j] = shape.at(j);
             NNPR_ENSURE_STATUS(nnfw_set_input_tensorinfo(session, i, &ti));
           }
         }

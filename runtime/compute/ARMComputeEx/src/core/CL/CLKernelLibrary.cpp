@@ -235,12 +235,12 @@ Kernel CLKernelLibraryEx::create_kernel(const std::string &kernel_name,
   const std::string built_program_name = program_name + "_" + build_options;
   auto built_program_it = _built_programs_map.find(built_program_name);
 
-  cl::Program cl_program;
+  cl::Program clprogram;
 
   if (_built_programs_map.end() != built_program_it)
   {
     // If program has been built, retrieve to create kernel from it
-    cl_program = built_program_it->second;
+    clprogram = built_program_it->second;
   }
   else
   {
@@ -248,14 +248,14 @@ Kernel CLKernelLibraryEx::create_kernel(const std::string &kernel_name,
     Program program = load_program(program_name);
 
     // Build program
-    cl_program = program.build(build_options);
+    clprogram = program.build(build_options);
 
     // Add built program to internal map
-    _built_programs_map.emplace(built_program_name, cl_program);
+    _built_programs_map.emplace(built_program_name, clprogram);
   }
 
   // Create and return kernel
-  return Kernel(kernel_name, cl_program);
+  return Kernel(kernel_name, clprogram);
 }
 
 void CLKernelLibraryEx::add_built_program(const std::string &built_program_name,

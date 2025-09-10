@@ -51,7 +51,7 @@ class BackendContext
 public:
   BackendContext(const Backend *backend, ContextData &&data,
                  std::shared_ptr<ITensorRegistry> tensor_registry = nullptr)
-    : _backend{backend}, _data{std::move(data)}, tensor_registry{tensor_registry}
+    : _backend{backend}, _data{std::move(data)}, _tensor_registry{tensor_registry}
   {
   }
 
@@ -70,7 +70,7 @@ protected:
   ContextData _data;
 
 public:
-  std::shared_ptr<ITensorRegistry> tensor_registry;
+  std::shared_ptr<ITensorRegistry> _tensor_registry;
 };
 
 using BackendContexts = std::unordered_map<const Backend *, std::unique_ptr<BackendContext>>;

@@ -994,17 +994,17 @@ template <typename T> struct LaunchDepthwiseConvBackpropFilterOp<CPUDevice, T>
     // Computes one shard of depthwise conv2d backprop filter.
     // auto shard = [&ctx, &args, &out_backprop, &input, &output_buffer_data](
     auto shard = [&](int64_t start, int64_t limit) {
-      static const int64_t kPacketSize = (sizeof(Packet) / sizeof(T));
-      const int64_t filter_spatial_size = filter_rows * filter_cols;
-      const int64_t padded_out_depth_size =
-        ((out_depth + kPacketSize - 1) / kPacketSize) * kPacketSize;
+      static const int64_t shard_kPacketSize = (sizeof(Packet) / sizeof(T));
+      const int64_t shard_filter_spatial_size = filter_rows * filter_cols;
+      const int64_t shard_padded_out_depth_size =
+        ((out_depth + shard_kPacketSize - 1) / shard_kPacketSize) * shard_kPacketSize;
 
       int cur_id = d.currentThreadId() + 1;
       assert(cur_id >= 0 && cur_id < d.numThreads() + 1);
 
       const int64_t input_image_size = in_rows * in_cols * in_depth;
       const int64_t output_image_size = out_rows * out_cols * out_depth;
-      const int64_t padded_filter_size = filter_spatial_size * padded_out_depth_size;
+      const int64_t padded_filter_size = shard_filter_spatial_size * shard_padded_out_depth_size;
 
       T *input_buffer_data = in_bprop + cur_id * padded_filter_size;
 
@@ -1021,12 +1021,12 @@ template <typename T> struct LaunchDepthwiseConvBackpropFilterOp<CPUDevice, T>
             // Populate 'input_buffer_data' with data from local input region.
             functor::DepthwiseInputCopyOp<T>()(
               batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,
-              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_out_depth_size, out_r,
+              pad_rows, pad_cols, out_rows, out_cols, out_depth, shard_padded_out_depth_size, out_r,
               out_c, input + b * input_image_size, input_buffer_data);
             // Compute depthwise backprop filter.
             ComputeBackpropFilter(
               batch, in_rows, in_cols, in_depth, filter_rows, filter_cols, depth_multiplier, stride,
-              pad_rows, pad_cols, out_rows, out_cols, out_depth, padded_out_depth_size, out_r,
+              pad_rows, pad_cols, out_rows, out_cols, out_depth, shard_padded_out_depth_size, out_r,
               out_c, out_backprop + b * output_image_size, input_buffer_data, output_buffer);
           }
         }

@@ -141,16 +141,16 @@ void GeneratedTests::executeWithCompilation(const Model* model, Compilation* com
         {
             NNTRACE_APP(NNTRACE_PHASE_INPUTS_AND_OUTPUTS, "executeWithCompilation example");
             // Set all inputs
-            for_all(inputs, [&execution](int idx, const void* p, size_t s) {
-                const void* buffer = s == 0 ? nullptr : p;
-                ASSERT_EQ(Result::NO_ERROR, execution.setInput(idx, buffer, s));
+            for_all(inputs, [&execution](int idx, const void* p, size_t size) {
+                const void* buffer = size == 0 ? nullptr : p;
+                ASSERT_EQ(Result::NO_ERROR, execution.setInput(idx, buffer, size));
             });
 
             // Go through all typed outputs
             resize_accordingly(golden, test);
-            for_all(test, [&execution](int idx, void* p, size_t s) {
-                void* buffer = s == 0 ? nullptr : p;
-                ASSERT_EQ(Result::NO_ERROR, execution.setOutput(idx, buffer, s));
+            for_all(test, [&execution](int idx, void* p, size_t size) {
+                void* buffer = size == 0 ? nullptr : p;
+                ASSERT_EQ(Result::NO_ERROR, execution.setOutput(idx, buffer, size));
             });
         }
 
@@ -231,10 +231,10 @@ void GeneratedTests::execute(std::function<void(Model*)> createModel,
     createModel(&model);
     model.finish();
     auto executeInternal = [&model, &isIgnored, &examples,
-                            this]([[maybe_unused]] std::string dumpFile) {
+                            this]([[maybe_unused]] std::string file) {
         SCOPED_TRACE("TestCompilationCaching = " + std::to_string(mTestCompilationCaching));
 #ifndef NNTEST_MULTITHREADED
-        executeOnce(&model, isIgnored, examples, dumpFile);
+        executeOnce(&model, isIgnored, examples, file);
 #else   // defined(NNTEST_MULTITHREADED)
         executeMultithreadedOwnCompilation(&model, isIgnored, examples);
         executeMultithreadedSharedCompilation(&model, isIgnored, examples);

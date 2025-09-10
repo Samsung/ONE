@@ -38,7 +38,7 @@ public:
   {
     for (const auto &[backend, ctx] : backend_contexts)
     {
-      auto tensor_reg = ctx->tensor_registry;
+      auto tensor_reg = ctx->_tensor_registry;
       if (backend->config()->id() == backend::builtin::Config::ID)
       {
         _builtin_tensor_reg =

@@ -34,9 +34,10 @@ struct CodeAndInfo
   const backend::Backend *op_backend;
   std::unique_ptr<exec::FunctionSequence> fn_seq;
 
-  CodeAndInfo(const ir::OperationIndex op_ind, const ir::IOperation *op,
-              const backend::Backend *op_backend, std::unique_ptr<exec::FunctionSequence> &&fn_seq)
-    : op_ind{op_ind}, op{op}, op_backend{op_backend}, fn_seq{std::move(fn_seq)}
+  CodeAndInfo(const ir::OperationIndex op_ind_, const ir::IOperation *op_,
+              const backend::Backend *op_backend_,
+              std::unique_ptr<exec::FunctionSequence> &&fn_seq_)
+    : op_ind{op_ind_}, op{op_}, op_backend{op_backend_}, fn_seq{std::move(fn_seq_)}
   {
   }
 };

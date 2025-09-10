@@ -32,7 +32,6 @@ Pool2D::Pool2D(const OperandIndexSequence &inputs, const OperandIndexSequence &o
 
 std::string Pool2D::name() const
 {
-  using PoolType = onert::ir::operation::Pool2D::PoolType;
   static const std::unordered_map<PoolType, std::string> name_map{
     {PoolType::AVG, "Avg" + std::string{toString(opcode())}},
     {PoolType::L2, "L2" + std::string{toString(opcode())}},

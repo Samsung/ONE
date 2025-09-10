@@ -37,8 +37,8 @@ public:
                  std::shared_ptr<T_ConstantInitializer> constant_initializer = nullptr,
                  std::shared_ptr<T_KernelGenerator> kernel_gen = nullptr)
     : onert::backend::BackendContext(backend, std::move(data), tensor_registry),
-      tensor_builder{tensor_builder}, constant_initializer{constant_initializer},
-      kernel_gen{kernel_gen}
+      _tensor_builder{tensor_builder}, _constant_initializer{constant_initializer},
+      _kernel_gen{kernel_gen}
   {
   }
 
@@ -49,11 +49,11 @@ public:
     // kernel_gen
     for (auto &&op_ind : _data.op_order)
     {
-      auto fn_seq = kernel_gen->generate(op_ind);
+      auto fn_seq = _kernel_gen->generate(op_ind);
       ret.emplace(op_ind, std::move(fn_seq));
     }
 
-    tensor_builder->allocate();
+    _tensor_builder->allocate();
     initConsts();
 
     // NOTE For memory optimization, we want to free some operand data
@@ -66,7 +66,7 @@ public:
       auto &fn_seq = it.second;
       fn_seq->iterate([&](exec::IFunction &ifunc) {
         ifunc.prepare();
-        tensor_builder->postFunctionPrepare();
+        _tensor_builder->postFunctionPrepare();
       });
     }
 
@@ -77,20 +77,20 @@ protected:
   void initConsts()
   {
     _data.graph->operations().iterate([&](const ir::OperationIndex &, const ir::IOperation &op) {
-      op.accept(*constant_initializer);
+      op.accept(*_constant_initializer);
     });
 
     _data.graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &operand) {
       if (_data.external_operands.contains(ind) || !operand.isConstant())
         return;
       const auto &obj = graph()->operands().at(ind);
-      if (obj.isConstant() && !constant_initializer->exist(ind))
+      if (obj.isConstant() && !_constant_initializer->exist(ind))
       {
-        constant_initializer->registerDefaultInitializer(ind, obj);
+        _constant_initializer->registerDefaultInitializer(ind, obj);
       }
     });
 
-    constant_initializer->run();
+    _constant_initializer->run();
   }
 
   virtual void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info) = 0;
@@ -112,7 +112,7 @@ protected:
       if (obj.isConstant())
         constants.append(ind);
 
-      if (!tensor_builder->isRegistered(ind))
+      if (!_tensor_builder->isRegistered(ind))
       {
         // These tensors do not exist in any operation (No use and def)
         const auto &info = obj.info();
@@ -129,7 +129,7 @@ protected:
     for (const auto &ind : constants)
     {
       uses_map[ind]++;
-      tensor_builder->notifyFirstUse(ind);
+      _tensor_builder->notifyFirstUse(ind);
     }
 
     // At each operation,
@@ -145,13 +145,13 @@ protected:
       // Define outputs
       for (const auto &ind : op_outputs)
       {
-        if (!tensor_builder->isRegistered(ind))
+        if (!_tensor_builder->isRegistered(ind))
           continue;
         assert(def_map.find(ind) != def_map.end());
         if (def_map[ind])
         {
           def_map[ind] = 0;
-          tensor_builder->notifyFirstUse(ind);
+          _tensor_builder->notifyFirstUse(ind);
         }
       }
 
@@ -160,7 +160,7 @@ protected:
       // non-constant because of less memory usage by memory planning in here
       for (const auto &ind : op_inputs)
       {
-        if (!tensor_builder->isRegistered(ind))
+        if (!_tensor_builder->isRegistered(ind))
           continue;
         const auto &operand = graph()->operands().at(ind);
         if (operand.info().isVariable())
@@ -169,13 +169,13 @@ protected:
           assert(operand.data() == nullptr);
           assert(operand.getUses().size() == 1 && !operand.getDef().valid());
           assert(uses_map[ind] == 1 && def_map[ind] == 0);
-          tensor_builder->notifyFirstUse(ind);
+          _tensor_builder->notifyFirstUse(ind);
         }
       }
 
       for (const auto &ind : op_inputs)
       {
-        if (!tensor_builder->isRegistered(ind))
+        if (!_tensor_builder->isRegistered(ind))
           continue;
         assert(uses_map.find(ind) != uses_map.end());
         assert(uses_map[ind] > 0);
@@ -183,7 +183,7 @@ protected:
         if (uses_map[ind] == 0)
         {
           // plan for deallocation of static tensornode
-          tensor_builder->notifyLastUse(ind);
+          _tensor_builder->notifyLastUse(ind);
         }
       }
     }
@@ -191,7 +191,7 @@ protected:
     _data.graph->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
       if (uses_map[ind] == 0)
       {
-        tensor_builder->notifyLastUse(ind);
+        _tensor_builder->notifyLastUse(ind);
       }
     });
 
@@ -201,7 +201,7 @@ protected:
       --uses_map[ind];
       if (uses_map[ind] == 0) // To prevent notifyLastUse from being called twice
       {
-        tensor_builder->notifyLastUse(ind);
+        _tensor_builder->notifyLastUse(ind);
       }
     }
 
@@ -216,9 +216,9 @@ protected:
 
 public:
   // TODO Make it protected
-  std::shared_ptr<T_TensorBuilder> tensor_builder;
-  std::shared_ptr<T_ConstantInitializer> constant_initializer;
-  std::shared_ptr<T_KernelGenerator> kernel_gen;
+  std::shared_ptr<T_TensorBuilder> _tensor_builder;
+  std::shared_ptr<T_ConstantInitializer> _constant_initializer;
+  std::shared_ptr<T_KernelGenerator> _kernel_gen;
 };
 
 } // namespace onert::backend::cl_common
