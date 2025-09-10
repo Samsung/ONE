@@ -32,7 +32,6 @@ ElementwiseBinary::ElementwiseBinary(const OperandIndexSequence &inputs,
 
 std::string ElementwiseBinary::name() const
 {
-  using ElementwiseBinaryType = onert::ir::operation::ElementwiseBinary::ElementwiseBinaryType;
   static const std::unordered_map<ElementwiseBinaryType, std::string> name_map{
     {ElementwiseBinaryType::FLOOR_DIV, std::string{"FloorDiv"}},
     {ElementwiseBinaryType::FLOOR_MOD, std::string{"FloorMod"}},

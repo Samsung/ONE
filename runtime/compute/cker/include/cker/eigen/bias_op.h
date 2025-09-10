@@ -67,11 +67,10 @@ template <typename Device, typename T> struct Bias
     Eigen::DSizes<Eigen::Index, 1> bcast(rest_size);
     MaybeWith32BitIndexing<Device>(
       [&](auto input32, auto bias32, typename TTypes<T>::Flat output32, const auto &bcast32,
-          T activation_min, T activation_max) {
-        output32.device(d) =
-          (input32 + bias32.broadcast(bcast32))
-            .template cwiseMax<Eigen::PropagateNaN>(static_cast<T>(activation_min))
-            .template cwiseMin<Eigen::PropagateNaN>(static_cast<T>(activation_max));
+          T act_min, T act_max) {
+        output32.device(d) = (input32 + bias32.broadcast(bcast32))
+                               .template cwiseMax<Eigen::PropagateNaN>(static_cast<T>(act_min))
+                               .template cwiseMin<Eigen::PropagateNaN>(static_cast<T>(act_max));
       },
       input, bias, output, bcast, activation_min, activation_max);
   }

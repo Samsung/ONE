@@ -51,9 +51,9 @@ std::unique_ptr<exec::FunctionSequence> KernelGenerator::generate(ir::OperationI
   assert(_return_fn); // _return_fn must have been generated
   ret->append(std::move(_return_fn));
 
-  for (const auto &ind : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
+  for (const auto &index : (op.getInputs() | ir::Remove::UNDEFINED) + op.getOutputs())
   {
-    auto tensor = _tensor_reg->getNativeTensor(ind);
+    auto tensor = _tensor_reg->getNativeTensor(index);
     if (tensor)
     {
       tensor->increase_ref();

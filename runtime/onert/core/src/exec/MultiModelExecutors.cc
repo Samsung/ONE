@@ -312,7 +312,7 @@ void MultiModelExecutors::execute(ExecutionContext &ctx)
         outputs_inter[i] = _edge_tensors[from_iodesc].get();
 
         // Increase reference count of `from` tensors for edges
-        for (uint32_t i = 0; i < _edge_map[from_iodesc].size(); i++)
+        for (uint32_t j = 0; j < _edge_map[from_iodesc].size(); j++)
           _edge_tensors[from_iodesc]->increase_ref();
       }
     }

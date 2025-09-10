@@ -41,7 +41,7 @@ public:
 
   void push(Tidx a)
   {
-    auto comparator = [this](Tidx a, Tidx b) { return compare_fun(a, b); };
+    auto comparator = [this](Tidx a_, Tidx b_) { return compare_fun(a_, b_); };
     if (!is_heap_)
     {
       container_.push_back(a);

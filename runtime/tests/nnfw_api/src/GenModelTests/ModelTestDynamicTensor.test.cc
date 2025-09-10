@@ -193,10 +193,9 @@ TEST_F(GenModelTest, reshape_multiple_executions)
 
 TEST_F(GenModelTest, neg_reshape_multiple_executions)
 {
-  std::vector<int> new_shape;
   std::vector<float> expected = {-1.5, -1.0, -0.5, 0.5, 1.0, 1.5};
 
-  auto add_tcd = [&](const decltype(new_shape) &&new_shape, bool expect_fail_on_run) {
+  auto add_tcd = [&](const std::vector<int> &&new_shape, bool expect_fail_on_run) {
     TestCaseData tcd;
     tcd.addInput(new_shape).addOutput(expected);
     if (expect_fail_on_run)
@@ -748,9 +747,9 @@ TEST_F(CombinationTest1, combination_of_set_input_tensorinfo_and_nnfw_run)
   nnfw_session *session = nullptr;
   auto &cbuf = getCircleBuffer();
 
-  auto create_prepare_session = [&](const CircleBuffer &cbuf) {
+  auto create_prepare_session = [&](const CircleBuffer &cb) {
     NNFW_ENSURE_SUCCESS(nnfw_create_session(&session));
-    NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, cbuf.buffer(), cbuf.size()));
+    NNFW_ENSURE_SUCCESS(nnfw_load_circle_from_buffer(session, cb.buffer(), cb.size()));
     NNFW_ENSURE_SUCCESS(nnfw_set_available_backends(session, "cpu"));
     NNFW_ENSURE_SUCCESS(nnfw_prepare(session));
   };

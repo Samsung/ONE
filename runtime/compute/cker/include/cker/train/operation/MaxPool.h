@@ -62,22 +62,24 @@ inline void MaxPool2D(const PoolParams &params, const Shape &input_shape, const 
   std::fill(arg_max_index, arg_max_index + output_shape.FlatSize(), -1);
 
   // initialize projected area with lowest float
-  const int h_start =
-    (pad_height < filter_height) ? 0 : (pad_height - filter_height) / stride_height + 1;
-  const int h_end = std::min((input_height + pad_height - 1) / stride_height + 1, output_height);
-
-  const int w_start =
-    (pad_width < filter_width) ? 0 : (pad_width - filter_width) / stride_width + 1;
-  const int w_end = std::min((input_width + pad_width - 1) / stride_width + 1, output_width);
-
-  for (int b = 0; b < batches; ++b)
   {
-    for (int h_idx = h_start; h_idx < h_end; h_idx++)
+    const int h_start =
+      (pad_height < filter_height) ? 0 : (pad_height - filter_height) / stride_height + 1;
+    const int h_end = std::min((input_height + pad_height - 1) / stride_height + 1, output_height);
+
+    const int w_start =
+      (pad_width < filter_width) ? 0 : (pad_width - filter_width) / stride_width + 1;
+    const int w_end = std::min((input_width + pad_width - 1) / stride_width + 1, output_width);
+
+    for (int b = 0; b < batches; ++b)
     {
-      for (int w_idx = w_start; w_idx < w_end; w_idx++)
+      for (int h_idx = h_start; h_idx < h_end; h_idx++)
       {
-        const int offset = NodeOffset(b, h_idx, w_idx, output_height, output_width);
-        out_mat.col(offset).setConstant(std::numeric_limits<float>::lowest());
+        for (int w_idx = w_start; w_idx < w_end; w_idx++)
+        {
+          const int offset = NodeOffset(b, h_idx, w_idx, output_height, output_width);
+          out_mat.col(offset).setConstant(std::numeric_limits<float>::lowest());
+        }
       }
     }
   }

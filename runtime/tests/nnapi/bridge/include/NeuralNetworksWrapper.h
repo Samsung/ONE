@@ -131,15 +131,15 @@ struct OperandType {
         };
     }
 
-    OperandType(Type type, std::vector<uint32_t> data, float scale, int32_t zeroPoint,
-                SymmPerChannelQuantParams&& channelQuant)
-        : dimensions(std::move(data)), channelQuant(std::move(channelQuant)) {
+    OperandType(Type type, std::vector<uint32_t> data_, float scale_, int32_t zeroPoint_,
+                SymmPerChannelQuantParams&& channelQuant_)
+        : dimensions(std::move(data_)), channelQuant(std::move(channelQuant_)) {
         operandType = {
                 .type = static_cast<int32_t>(type),
                 .dimensionCount = static_cast<uint32_t>(dimensions.size()),
                 .dimensions = dimensions.size() > 0 ? dimensions.data() : nullptr,
-                .scale = scale,
-                .zeroPoint = zeroPoint,
+                .scale = scale_,
+                .zeroPoint = zeroPoint_,
         };
     }
 };

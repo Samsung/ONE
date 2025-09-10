@@ -53,8 +53,7 @@ CompilerOptions Compiler::optionForSingleModel(const ir::ModelIndex &model_index
   model_opts.output_type.clear();
 
   // Set option for selected model
-  auto option_for_model = [](const auto &src_opt, auto &dst_opt, const ir::ModelIndex &model_index,
-                             auto io_desc_getter) {
+  auto option_for_model = [&model_index](const auto &src_opt, auto &dst_opt, auto io_desc_getter) {
     for (const auto &[index, val] : src_opt)
     {
       const auto &io_desc = io_desc_getter(index);
@@ -63,13 +62,13 @@ CompilerOptions Compiler::optionForSingleModel(const ir::ModelIndex &model_index
     }
   };
 
-  option_for_model(_options->input_layout, model_opts.input_layout, model_index,
+  option_for_model(_options->input_layout, model_opts.input_layout,
                    [this](const ir::IOIndex &idx) { return _nnpkg->input(idx); });
-  option_for_model(_options->output_layout, model_opts.output_layout, model_index,
+  option_for_model(_options->output_layout, model_opts.output_layout,
                    [this](const ir::IOIndex &idx) { return _nnpkg->output(idx); });
-  option_for_model(_options->input_type, model_opts.input_type, model_index,
+  option_for_model(_options->input_type, model_opts.input_type,
                    [this](const ir::IOIndex &idx) { return _nnpkg->input(idx); });
-  option_for_model(_options->output_type, model_opts.output_type, model_index,
+  option_for_model(_options->output_type, model_opts.output_type,
                    [this](const ir::IOIndex &idx) { return _nnpkg->output(idx); });
 
   // Pass input type info for edges because edge's from_tensor info can be different

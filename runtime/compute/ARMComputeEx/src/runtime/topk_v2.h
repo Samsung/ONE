@@ -90,7 +90,7 @@ public:
    */
   void push(int32 a)
   {
-    auto comparator = [this](int32 a, int32 b) { return compare_fun(a, b); };
+    auto comparator = [this](int32 x, int32 y) { return compare_fun(x, y); };
     if (container_.size() <= (size_t)k_)
     {
       container_.push_back(a);

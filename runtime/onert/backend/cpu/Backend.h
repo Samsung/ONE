@@ -42,9 +42,9 @@ public:
     auto context = std::make_unique<BackendContext>(this, std::move(data));
     auto tr = std::make_shared<basic::TensorRegistry>();
     auto tb = std::make_shared<TensorBuilder>(tr, findSharedMemoryOperandIndexes(graph));
-    context->tensor_registry = tr;
-    context->tensor_builder = tb;
-    context->kernel_gen =
+    context->_tensor_registry = tr;
+    context->_tensor_builder = tb;
+    context->_kernel_gen =
       std::make_shared<KernelGenerator>(graph, tb, tr, context->external_context());
     return context;
   }

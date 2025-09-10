@@ -72,7 +72,7 @@ void WhileLayer::run()
 
   auto getResultCond = [](backend::ITensor *tensor) -> bool {
     bool ret = false;
-    tensor->access([&](ITensor &tensor) { ret = *reinterpret_cast<bool *>(tensor.buffer()); });
+    tensor->access([&](ITensor &t) { ret = *reinterpret_cast<bool *>(t.buffer()); });
     return ret;
   };
 

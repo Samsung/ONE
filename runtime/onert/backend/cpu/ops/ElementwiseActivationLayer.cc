@@ -91,9 +91,8 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
     case ElementwiseActivationType::kElu:
       if (input->data_type() == OperandType::FLOAT32)
       {
-        _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-          nnfw::cker::ELU(getShape(input), getBuffer<float>(input), getShape(output),
-                          getBuffer<float>(output));
+        _kernel = [](const IPortableTensor *i, IPortableTensor *o) {
+          nnfw::cker::ELU(getShape(i), getBuffer<float>(i), getShape(o), getBuffer<float>(o));
         };
       }
       else
@@ -110,9 +109,8 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       }
       else if (_input->data_type() == OperandType::FLOAT32)
       {
-        _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-          nnfw::cker::Logistic(getShape(input), getBuffer<float>(input), getShape(output),
-                               getBuffer<float>(output));
+        _kernel = [](const IPortableTensor *i, IPortableTensor *o) {
+          nnfw::cker::Logistic(getShape(i), getBuffer<float>(i), getShape(o), getBuffer<float>(o));
         };
       }
       else
@@ -125,16 +123,14 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       {
         if (alpha == std::numeric_limits<float>::infinity() && beta == 0.f)
         {
-          _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-            nnfw::cker::ReLU(getShape(input), getBuffer<float>(input), getShape(output),
-                             getBuffer<float>(output));
+          _kernel = [](const IPortableTensor *i, IPortableTensor *o) {
+            nnfw::cker::ReLU(getShape(i), getBuffer<float>(i), getShape(o), getBuffer<float>(o));
           };
         }
         else if (alpha == 6.f && beta == 0.f)
         {
-          _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-            nnfw::cker::ReLU6(getShape(input), getBuffer<float>(input), getShape(output),
-                              getBuffer<float>(output));
+          _kernel = [](const IPortableTensor *i, IPortableTensor *o) {
+            nnfw::cker::ReLU6(getShape(i), getBuffer<float>(i), getShape(o), getBuffer<float>(o));
           };
         }
         else
@@ -157,9 +153,8 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       }
       else if (_input->data_type() == OperandType::FLOAT32)
       {
-        _kernel = [](const IPortableTensor *input, IPortableTensor *output) {
-          nnfw::cker::Tanh(getShape(input), getBuffer<float>(input), getShape(output),
-                           getBuffer<float>(output));
+        _kernel = [](const IPortableTensor *i, IPortableTensor *o) {
+          nnfw::cker::Tanh(getShape(i), getBuffer<float>(i), getShape(o), getBuffer<float>(o));
         };
       }
       else
@@ -170,10 +165,9 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
     case ElementwiseActivationType::kLeakyReLU:
       if (_input->data_type() == OperandType::FLOAT32)
       {
-        _kernel = [alpha](const IPortableTensor *input, IPortableTensor *output) {
-          nnfw::cker::LeakyReLU(nnfw::cker::LeakyReluParams{alpha}, getShape(input),
-                                getBuffer<float>(input), getShape(output),
-                                getBuffer<float>(output));
+        _kernel = [alpha](const IPortableTensor *i, IPortableTensor *o) {
+          nnfw::cker::LeakyReLU(nnfw::cker::LeakyReluParams{alpha}, getShape(i),
+                                getBuffer<float>(i), getShape(o), getBuffer<float>(o));
         };
       }
       else
@@ -184,9 +178,9 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
     case ElementwiseActivationType::kGELU:
       if (_input->data_type() == OperandType::FLOAT32)
       {
-        _kernel = [approximate](const IPortableTensor *input, IPortableTensor *output) {
-          nnfw::cker::GELU(nnfw::cker::GELUParams{approximate}, getShape(input),
-                           getBuffer<float>(input), getShape(output), getBuffer<float>(output));
+        _kernel = [approximate](const IPortableTensor *i, IPortableTensor *o) {
+          nnfw::cker::GELU(nnfw::cker::GELUParams{approximate}, getShape(i), getBuffer<float>(i),
+                           getShape(o), getBuffer<float>(o));
         };
       }
       else

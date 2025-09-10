@@ -58,7 +58,7 @@ public:
 
       ir::OperandInfo backend_info{obj.shape(), obj.typeInfo(), obj.info().memAllocType(),
                                    obj.isConstant()};
-      this->tensor_builder->registerTensorInfo(ind, backend_info);
+      this->_tensor_builder->registerTensorInfo(ind, backend_info);
     });
 
     // TODO Get compiler options from compiler, and use it rather than getting it from Env
@@ -71,20 +71,20 @@ public:
       // For the executors that does not have fixed linear execution order:
       // To make tensors never be deallocated, this is a workaround to use static memory planner
       this->graph()->operands().iterate([&](const ir::OperandIndex &ind, const ir::Operand &) {
-        if (this->tensor_builder->isRegistered(ind))
-          this->tensor_builder->notifyFirstUse(ind);
+        if (this->_tensor_builder->isRegistered(ind))
+          this->_tensor_builder->notifyFirstUse(ind);
       });
     }
 
-    this->tensor_builder->prepare();
+    this->_tensor_builder->prepare();
 
-    return this->tensor_registry.get();
+    return this->_tensor_registry.get();
   }
 
 protected:
   void registerTensorInfo(const ir::OperandIndex &ind, const ir::OperandInfo &info) override
   {
-    this->tensor_builder->registerTensorInfo(ind, info);
+    this->_tensor_builder->registerTensorInfo(ind, info);
   }
 
 public:

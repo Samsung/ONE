@@ -127,7 +127,6 @@ template <int N>
 BCastList<N>::BCastList(const BCastList::Vec (&x)[N], const bool fewer_dims_optimization,
                         const bool return_flattened_batch_indices)
 {
-  typedef BCastList::Vec Vec;
   bool all_equal = true;
   size_t largest_rank = 0;
   output_batch_size_ = 1;

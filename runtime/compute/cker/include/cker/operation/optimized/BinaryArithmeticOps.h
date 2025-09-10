@@ -785,8 +785,8 @@ inline void AddScalarBroadcast(int size, const BinaryArithmeticOpParam &params, 
   if (i < size)
   {
     // Process broadcast scalar.
-    const int32_t input1_val = params.input1_offset + input1_data;
-    const int32_t shifted_input1_val = input1_val * (1 << params.left_shift);
+    const int32_t base_input1_val = params.input1_offset + input1_data;
+    const int32_t shifted_input1_val = base_input1_val * (1 << params.left_shift);
     const int32_t scaled_input1_val = MultiplyByQuantizedMultiplierSmallerThanOneExp(
       shifted_input1_val, params.input1_multiplier, params.input1_shift);
 
@@ -816,8 +816,8 @@ BroadcastAddDispatch(const BinaryArithmeticOpParam &params, const Shape &input1_
   if (params.broadcast_category == BroadcastableOpCategory::kGenericBroadcast)
   {
     const std::function<T(const BinaryArithmeticOpParam &, const T &, const T &)> fn =
-      [](const BinaryArithmeticOpParam &params, const T &a, const T &b) {
-        return static_cast<T>(quant8_sum(params, a, b));
+      [](const BinaryArithmeticOpParam &p, const T &a, const T &b) {
+        return static_cast<T>(quant8_sum(p, a, b));
       };
     reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
                                                input2_data, output_shape, output_data, fn);
@@ -1180,8 +1180,8 @@ BroadcastMulDispatch(const BinaryArithmeticOpParam &params, const Shape &input1_
   if (params.broadcast_category == BroadcastableOpCategory::kGenericBroadcast)
   {
     const std::function<T(const BinaryArithmeticOpParam &, const T &, const T &)> fn =
-      [](const BinaryArithmeticOpParam &params, const T &a, const T &b) {
-        return static_cast<T>(quant8_mul(params, a, b));
+      [](const BinaryArithmeticOpParam &p, const T &a, const T &b) {
+        return static_cast<T>(quant8_mul(p, a, b));
       };
     reference::BroadcastBinaryArithmeticOpSlow(params, input1_shape, input1_data, input2_shape,
                                                input2_data, output_shape, output_data, fn);

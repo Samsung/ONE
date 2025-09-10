@@ -114,14 +114,8 @@ endif(${ENABLE_COVERAGE} AND NOT ${ENABLE_TEST})
 
 add_library(nnfw_common INTERFACE)
 if(ENABLE_STRICT_BUILD)
-  target_compile_options(nnfw_common INTERFACE -Werror -Wall -Wextra)
+  target_compile_options(nnfw_common INTERFACE -Werror -Wall -Wextra -Wshadow)
 endif(ENABLE_STRICT_BUILD)
-
-macro(nnfw_strict_build TARGET)
-  if(ENABLE_STRICT_BUILD)
-    target_compile_options(${TARGET} PRIVATE -Werror -Wall -Wextra)
-  endif(ENABLE_STRICT_BUILD)
-endmacro(nnfw_strict_build)
 
 # TODO Replace using default build option setting in cmake/buildtool/config/config_linux.cmake
 #      to link nnfw_coverage on each module which want to check coverage

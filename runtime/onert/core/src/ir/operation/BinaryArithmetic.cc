@@ -32,7 +32,6 @@ BinaryArithmetic::BinaryArithmetic(const OperandIndexSequence &inputs,
 
 std::string BinaryArithmetic::name() const
 {
-  using ArithmeticType = onert::ir::operation::BinaryArithmetic::ArithmeticType;
   static const std::unordered_map<ArithmeticType, std::string> name_map{
     {ArithmeticType::ADD, std::string{"Add"}},
     {ArithmeticType::SUB, std::string{"Sub"}},

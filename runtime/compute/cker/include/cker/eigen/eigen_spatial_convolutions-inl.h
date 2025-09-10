@@ -352,8 +352,8 @@ private:
     {
       return packetWithPossibleZero(patchId, rowIndex, colIndex, otherIndex);
     }
-    typedef decltype(m_impl) TensorEvaluatorT;
-    return loadPacketStandard<Packet, TensorEvaluatorT>(patchId, rowIndex, colIndex, otherIndex);
+    typedef decltype(m_impl) TensorEvaluatorTT;
+    return loadPacketStandard<Packet, TensorEvaluatorTT>(patchId, rowIndex, colIndex, otherIndex);
   }
 
   // Helper function to load a 'partial' packet - this is the single column
@@ -757,8 +757,8 @@ public:
   }
   EIGEN_DEVICE_FUNC EIGEN_ALWAYS_INLINE Packet loadPacketStandard(Index i) const
   {
-    typedef decltype(m_base_mapper.m_impl) TensorEvaluatorT;
-    return m_base_mapper.template loadPacketStandard<Packet, TensorEvaluatorT>(
+    typedef decltype(m_base_mapper.m_impl) TensorEvaluatorTT;
+    return m_base_mapper.template loadPacketStandard<Packet, TensorEvaluatorTT>(
       i + m_depth_offset, m_rowIndex, m_colIndex, m_otherIndex);
   }
   template <typename Packet> EIGEN_DEVICE_FUNC bool aligned(Index) const { return false; }

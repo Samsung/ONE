@@ -35,7 +35,7 @@ public:
                  std::shared_ptr<TensorBuilder> tensor_builder = nullptr,
                  std::shared_ptr<KernelGenerator> kernel_gen = nullptr)
     : backend::train::TrainableBackendContext(backend, std::move(data), tensor_registry),
-      kernel_gen{kernel_gen}, _external_context(new ExternalContext),
+      _kernel_gen{kernel_gen}, _external_context(new ExternalContext),
       _tensor_builder{tensor_builder}
   {
   }
@@ -47,7 +47,7 @@ public:
 
 public:
   // TODO Make it private
-  std::shared_ptr<KernelGenerator> kernel_gen;
+  std::shared_ptr<KernelGenerator> _kernel_gen;
 
 private:
   // NOTE ruy context has a thread pool, and when multiple ruy contexts are created,

@@ -63,9 +63,9 @@ public:
     // TODO Support Consecutive controflow operation's intermediate tensor
     auto tr = std::make_shared<TensorRegistry>();
     auto tb = std::make_shared<TensorBuilder>(tr);
-    context->tensor_registry = tr;
-    context->tensor_builder = tb;
-    context->kernel_gen = std::make_shared<KernelGenerator>(
+    context->_tensor_registry = tr;
+    context->_tensor_builder = tb;
+    context->_kernel_gen = std::make_shared<KernelGenerator>(
       *context->graph(), tb->dynamicTensorManager(), tr, context->data().custom_kernel_builder,
       context->external_context());
     return context;
@@ -80,7 +80,7 @@ public:
     auto tdata_ptr = std::make_unique<backend::train::TrainableContextData>(std::move(tdata));
     auto context = std::make_unique<train::BackendContext>(this, std::move(tdata_ptr), tr);
 
-    context->kernel_gen =
+    context->_kernel_gen =
       std::make_shared<train::KernelGenerator>(tgraph, tr, context->external_context());
     return context;
   }
