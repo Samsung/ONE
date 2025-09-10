@@ -1,20 +1,20 @@
-nnas_find_package(TensorFlowSource EXACT 2.16.1 QUIET)
-nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.16.1 QUIET)
-nnas_find_package(TensorFlowRuySource EXACT 2.16.1 QUIET)
+nnas_find_package(TensorFlowSource EXACT 2.19.0 QUIET)
+nnas_find_package(TensorFlowGEMMLowpSource EXACT 2.19.0 QUIET)
+nnas_find_package(TensorFlowRuySource EXACT 2.19.0 QUIET)
 nnas_find_package(NEON2SSESource QUIET)
 
 if(NOT TensorFlowSource_FOUND)
-  message(STATUS "Build luci-compute: FAILED (missing TensorFlowSource 2.16.1)")
+  message(STATUS "Build luci-compute: FAILED (missing TensorFlowSource 2.19.0)")
   return()
 endif(NOT TensorFlowSource_FOUND)
 
 if(NOT TensorFlowGEMMLowpSource_FOUND)
-  message(STATUS "Build luci-compute: FAILED (missing TensorFlowGEMMLowpSource 2.16.1)")
+  message(STATUS "Build luci-compute: FAILED (missing TensorFlowGEMMLowpSource 2.19.0)")
   return()
 endif(NOT TensorFlowGEMMLowpSource_FOUND)
 
 if(NOT TensorFlowRuySource_FOUND)
-  message(STATUS "Build luci-compute: FAILED (missing TensorFlowRuySource 2.16.1)")
+  message(STATUS "Build luci-compute: FAILED (missing TensorFlowRuySource 2.19.0)")
   return()
 endif(NOT TensorFlowRuySource_FOUND)
 
