@@ -28,7 +28,11 @@ void TFliteOpPRelu::filler(const tflite::Operator *op, TFliteImport *import,
 
   assert(inputs.size() == 2);
 
-  import->set_tensor_filler(inputs.at(1)); // alpha
+  int32_t idx = inputs.at(1);
+  const tflite::Tensor *tensor = import->tensors()->Get(idx);
+  const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
+  if (buffer && buffer->data())
+    import->set_tensor_filler(idx); // alpha
 }
 
 tflchef::Operation *TFliteOpPRelu::build(RecipeChefContext *ctx) const

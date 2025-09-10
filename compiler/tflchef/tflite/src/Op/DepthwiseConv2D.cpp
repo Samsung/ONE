@@ -29,9 +29,19 @@ void TFliteOpDepthwiseConv2D::filler(const tflite::Operator *op, TFliteImport *i
   bool hasBias = (inputs.size() == 3);
   assert(inputs.size() == 2 || hasBias);
 
-  import->set_tensor_filler(inputs.at(1)); // kernel
+  int32_t idx = inputs.at(1);
+  const tflite::Tensor *tensor = import->tensors()->Get(idx);
+  const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
+  if (buffer && buffer->data())
+    import->set_tensor_filler(idx); // kernel
   if (hasBias)
-    import->set_tensor_filler(inputs.at(2)); // bias
+  {
+    int32_t idx = inputs.at(2);
+    const tflite::Tensor *tensor = import->tensors()->Get(idx);
+    const tflite::Buffer *buffer = import->buffers()->Get(tensor->buffer());
+    if (buffer && buffer->data())
+      import->set_tensor_filler(idx); // bias
+  }
 }
 
 tflchef::Operation *TFliteOpDepthwiseConv2D::build(RecipeChefContext *ctx) const
