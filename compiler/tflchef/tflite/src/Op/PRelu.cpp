@@ -17,6 +17,7 @@
 #include "PRelu.h"
 
 #include "Convert.h"
+#include "FillerHelper.h"
 
 namespace tflchef
 {
@@ -28,7 +29,7 @@ void TFliteOpPRelu::filler(const tflite::Operator *op, TFliteImport *import,
 
   assert(inputs.size() == 2);
 
-  import->set_tensor_filler(inputs.at(1)); // alpha
+  fill_tensor_to_import(inputs.at(1), import); // alpha
 }
 
 tflchef::Operation *TFliteOpPRelu::build(RecipeChefContext *ctx) const
