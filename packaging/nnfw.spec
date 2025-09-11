@@ -27,11 +27,7 @@ Source3016: XNNPACK.tar.gz
 
 %{!?build_type:     %define build_type      Release}
 %{!?trix_support:   %define trix_support    1}
-%if "%{?profile}" == "tv"
 %{!?odc_build:      %define odc_build       0}
-%else # "%{?profile}" == "tv"
-%{!?odc_build:      %define odc_build       1}
-%endif
 %{!?test_build:     %define test_build      0}
 %{!?extra_option:   %define extra_option    %{nil}}
 # Define nproc on gbs build option if you want to set number of build threads manually (ex. CI/CD infra)
