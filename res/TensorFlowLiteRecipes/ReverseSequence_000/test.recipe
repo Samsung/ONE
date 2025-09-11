@@ -28,5 +28,4 @@ operation {
   output: "ofm"
 }
 input: "ifm"
-input: "seq_lengths"
 output: "ofm"

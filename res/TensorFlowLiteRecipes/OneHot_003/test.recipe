@@ -38,6 +38,4 @@ operation {
   output: "ofm"
 }
 input: "indices"
-input: "on_value"
-input: "off_value"
 output: "ofm"

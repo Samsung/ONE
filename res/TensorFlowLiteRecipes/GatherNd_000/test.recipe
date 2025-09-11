@@ -22,5 +22,4 @@ operation {
   output: "ofm"
 }
 input: "param"
-input: "indices"
 output: "ofm"

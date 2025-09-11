@@ -26,5 +26,4 @@ operation {
   output: "ofm"
 }
 input: "ifm"
-input: "axis"
 output: "ofm"
