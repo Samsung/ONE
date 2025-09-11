@@ -21,6 +21,7 @@
 // Internal Name
 OP(AddN)
 OP(ArgMinMax)
+OP(Attention)
 OP(BatchMatMul)
 OP(BatchToSpaceND)
 OP(BCQFullyConnected)
