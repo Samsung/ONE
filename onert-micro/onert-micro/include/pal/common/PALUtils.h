@@ -135,67 +135,6 @@ template <typename P> inline void getActivationParams(const P &params, int64_t *
   *max = params.int64_activation_max;
 }
 
-// Gets offset of index if reducing on axis. When reducing, the flattened offset
-// will not change, if the input index changes on the given axis. For example,
-// if you have a 3D tensor and you are reducing to 2D by eliminating axis 0,
-// then index (0, 1, 2) and index (1, 1, 2) will map to the same flattened
-// offset.
-inline size_t reducedOutputOffset(const int32_t num_dims, const int32_t *dims, const int32_t *index,
-                                  const int32_t num_axis, const int32_t *axis)
-{
-  if (num_dims == 0)
-  {
-    return 0;
-  }
-  size_t offset = 0;
-  for (int idx = 0; idx < num_dims; ++idx)
-  {
-    // if we need to skip this axis
-    bool is_axis = false;
-    if (axis != nullptr)
-    {
-      for (int axis_idx = 0; axis_idx < num_axis; ++axis_idx)
-      {
-        if (idx == axis[axis_idx])
-        {
-          is_axis = true;
-          break;
-        }
-      }
-    }
-    if (!is_axis)
-    {
-      offset = offset * static_cast<size_t>(dims[idx]) + static_cast<size_t>(index[idx]);
-    }
-  }
-  return offset;
-}
-
-// Gets next index to iterate through a multidimensional array.
-inline bool nextIndex(const int32_t num_dims, const int32_t *dims, int32_t *current)
-{
-  if (num_dims == 0)
-  {
-    return false;
-  }
-  int carry = 1;
-  for (int idx = num_dims - 1; idx >= 0; --idx)
-  {
-    int current_val = current[idx] + carry;
-    if (dims[idx] == current_val)
-    {
-      current[idx] = 0;
-    }
-    else
-    {
-      current[idx] = current_val;
-      carry = 0;
-      break;
-    }
-  }
-  return (carry == 0);
-}
-
 // Get common shape dim, assert that they all agree.
 inline int MatchingDim(const core::OMRuntimeShape &shape1, int index1,
                        const core::OMRuntimeShape &shape2, int index2)
