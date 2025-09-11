@@ -57,5 +57,4 @@ operation {
   output: "ofm"
 }
 input: "ifm"
-input: "ker"
 output: "ofm"

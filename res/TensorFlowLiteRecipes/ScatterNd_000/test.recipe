@@ -35,6 +35,5 @@ operation {
   input: "shape"
   output: "ofm"
 }
-input: "indices"
 input: "updates"
 output: "ofm"
