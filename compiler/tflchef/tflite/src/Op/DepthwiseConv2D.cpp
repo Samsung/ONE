@@ -17,6 +17,7 @@
 #include "DepthwiseConv2D.h"
 
 #include "Convert.h"
+#include "FillerHelper.h"
 
 namespace tflchef
 {
@@ -29,9 +30,9 @@ void TFliteOpDepthwiseConv2D::filler(const tflite::Operator *op, TFliteImport *i
   bool hasBias = (inputs.size() == 3);
   assert(inputs.size() == 2 || hasBias);
 
-  import->set_tensor_filler(inputs.at(1)); // kernel
+  fill_tensor_to_import(inputs.at(1), import); // kernel
   if (hasBias)
-    import->set_tensor_filler(inputs.at(2)); // bias
+    fill_tensor_to_import(inputs.at(2), import); // bias
 }
 
 tflchef::Operation *TFliteOpDepthwiseConv2D::build(RecipeChefContext *ctx) const
