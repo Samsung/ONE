@@ -120,3 +120,49 @@ TEST_F(GenModelTest, neg_OneOp_Gather_Q4_0_shape)
 
   SUCCEED();
 }
+
+TEST_F(GenModelTest, OneOp_Gather_Bool)
+{
+  CircleGen cgen;
+
+  std::vector<int32_t> index_data{0, 2};
+  auto index_buf = cgen.addBuffer(index_data);
+
+  int input = cgen.addTensor({{4}, circle::TensorType::TensorType_BOOL});
+  int indice = cgen.addTensor({{2}, circle::TensorType::TensorType_INT32, index_buf});
+  int output = cgen.addTensor({{2}, circle::TensorType::TensorType_BOOL});
+
+  cgen.addOperatorGather({{input, indice}, {output}}, 0 /*axis*/);
+  cgen.setInputsAndOutputs({input}, {output});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+
+  TestCaseData tc;
+  tc.addInput<bool>({true, false, true, false});
+  tc.addOutput<bool>({true, true});
+  _context->addTestCase(tc);
+  _context->setBackends({"cpu"});
+
+  SUCCEED();
+}
+
+TEST_F(GenModelTest, neg_OneOp_Gather_Bool_InvalidOutputType)
+{
+  CircleGen cgen;
+
+  std::vector<int32_t> index_data{0};
+  auto index_buf = cgen.addBuffer(index_data);
+
+  int input = cgen.addTensor({{4}, circle::TensorType::TensorType_BOOL});
+  int indice = cgen.addTensor({{1}, circle::TensorType::TensorType_INT32, index_buf});
+  int output = cgen.addTensor({{1}, circle::TensorType::TensorType_FLOAT32});
+
+  cgen.addOperatorGather({{input, indice}, {output}}, 0 /*axis*/);
+  cgen.setInputsAndOutputs({input}, {output});
+
+  _context = std::make_unique<GenModelTestContext>(cgen.finish());
+  _context->setBackends({"cpu"});
+  _context->expectFailModelLoad();
+
+  SUCCEED();
+}
