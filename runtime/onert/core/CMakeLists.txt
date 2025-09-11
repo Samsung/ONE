@@ -16,6 +16,19 @@ nnfw_find_package(FlatBuffers EXACT 23.5.26 REQUIRED)
 target_link_libraries(onert_core PRIVATE flatbuffers::flatbuffers)
 target_link_libraries(onert_core PRIVATE circle_schema)
 
+# Generate header from TFLite schema
+set(FLATBUFFERS_FLATC_SCHEMA_EXTRA_ARGS --gen-onefile)
+build_flatbuffers(
+  "src/loader/tflite_schema.fbs"  # flatbuffers_schemas
+  ""                              # schema_include_dirs
+  tflite_loader_schema_header     # custom_target_name
+  ""                              # additional_dependencies
+  "src/loader"                    # generated_includes_dir
+  ""                              # binary_schemas_dir
+  ""                              # copy_text_schemas_dir
+)
+add_dependencies(onert_core tflite_loader_schema_header)
+
 target_link_libraries(onert_core PRIVATE jsoncpp half)
 target_link_libraries(onert_core PRIVATE nnfw_lib_misc nnfw_lib_cker)
 target_link_libraries(onert_core PRIVATE nnfw_common)
