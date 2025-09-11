@@ -35,7 +35,8 @@ function(_HDF5_build)
                                  "-DHDF5_BUILD_EXAMPLES:BOOL=OFF"
                                  "-DHDF5_BUILD_TOOLS:BOOL=ON"
                                  "-DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF"
-                                 "-DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF")
+                                 "-DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF"
+                                 "-DCMAKE_POLICY_VERSION_MINIMUM=3.5")
 
 endfunction(_HDF5_build)
 
