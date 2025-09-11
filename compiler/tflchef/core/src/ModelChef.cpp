@@ -318,6 +318,18 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
     // Create Buffer if filler is specified
     if (operand.has_filler())
     {
+      // prohibit constant as graph input/output
+      for (auto it = input_names.begin(); it != input_names.end(); ++it)
+      {
+        if (*it == operand.name())
+          throw std::runtime_error{"Constant '" + *it + "' cannot be graph I/O"};
+      }
+      for (auto it = output_names.begin(); it != output_names.end(); ++it)
+      {
+        if (*it == operand.name())
+          throw std::runtime_error{"Constant '" + *it + "' cannot be graph I/O"};
+      }
+
       const auto &filler = operand.filler();
 
       assert(filler.has_tag());
