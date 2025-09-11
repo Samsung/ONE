@@ -61,10 +61,14 @@ OMStatus execute_kernel_CircleSquaredDifference(const OMExecuteArgs &execute_arg
   uint8_t *input2_data;
   uint8_t *output_data;
 
+  OMStatus status = Ok;
+
   // Read kernel
   {
     execute::OMRuntimeKernel runtime_kernel;
-    runtime_kernel.readKernel(op_index, runtime_context);
+    status = runtime_kernel.readKernel(op_index, runtime_context);
+    if (status != Ok)
+      return status;
 
     input1 = runtime_kernel.inputs[input1TensorIdx];
     input2 = runtime_kernel.inputs[input2TensorIdx];
@@ -73,7 +77,9 @@ OMStatus execute_kernel_CircleSquaredDifference(const OMExecuteArgs &execute_arg
     assert(input2 != nullptr);
     assert(output != nullptr);
 
-    runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
+    status = runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
+    if (status != Ok)
+      return status;
 
     input1_data = runtime_kernel.inputs_data[input1TensorIdx];
     input2_data = runtime_kernel.inputs_data[input2TensorIdx];
@@ -82,8 +88,6 @@ OMStatus execute_kernel_CircleSquaredDifference(const OMExecuteArgs &execute_arg
     assert(input2_data != nullptr);
     assert(output_data != nullptr);
   }
-
-  OMStatus status;
 
   core::OMRuntimeShape input1_shape(input1);
   core::OMRuntimeShape input2_shape(input2);

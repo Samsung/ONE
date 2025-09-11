@@ -56,10 +56,12 @@ OMStatus execute_kernel_CircleTranspose(const OMExecuteArgs &execute_args)
   uint8_t *perm_data;
   uint8_t *output_data;
 
+  OMStatus status = Ok;
+
   // Read kernel
   {
     execute::OMRuntimeKernel runtime_kernel;
-    OMStatus status = runtime_kernel.readKernel(op_index, runtime_context);
+    status = runtime_kernel.readKernel(op_index, runtime_context);
     if (status != Ok)
       return status;
 
@@ -81,7 +83,7 @@ OMStatus execute_kernel_CircleTranspose(const OMExecuteArgs &execute_args)
     assert(perm_data != nullptr);
     assert(output_data != nullptr);
   }
-  OMStatus status;
+
   OMRuntimeShape perm_shape(perm);
   OMRuntimeShape input_shape(input);
   OMRuntimeShape output_shape(output);
