@@ -116,7 +116,7 @@ CircleTranspose *create_cloned_transpose(CircleTranspose *transpose)
   assert(transpose != nullptr);  // FIX_CALLER_UNLESS
   assert(check_perm(transpose)); // FIX_CALLER_UNLESS
 
-  auto perm = loco::must_cast<CircleConst *>(transpose->perm());
+  auto perm = luci::must_cast<CircleConst *>(transpose->perm());
   assert(perm); // FIX_CALLER_UNLESS
 
   CircleConst *cloned_perm = clone(perm);
@@ -311,7 +311,7 @@ private:
     assert(c);             // FIX_CALLER_UNLESS
     assert(check_perm(t)); // FIX_CALLER_UNLESS
 
-    const auto perm = loco::must_cast<CircleConst *>(t->perm());
+    const auto perm = luci::must_cast<CircleConst *>(t->perm());
     assert(perm); // FIX_ME_UNLESS
 
     std::vector<uint32_t> perm_data;

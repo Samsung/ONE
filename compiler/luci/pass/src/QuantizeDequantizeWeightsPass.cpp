@@ -307,7 +307,7 @@ private:
     if (not is_quantizable(node->filter()))
       return;
 
-    auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
+    auto weights = luci::must_cast<luci::CircleConst *>(node->filter());
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
     fake_quantize(new_weights);
@@ -321,7 +321,7 @@ private:
     if (not is_quantizable(node->filter()))
       return;
 
-    auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
+    auto weights = luci::must_cast<luci::CircleConst *>(node->filter());
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
     fake_quantize(new_weights);
@@ -335,7 +335,7 @@ private:
     if (not is_quantizable(node->filter()))
       return;
 
-    auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
+    auto weights = luci::must_cast<luci::CircleConst *>(node->filter());
     auto new_weights = luci::clone(weights);
     node->filter(new_weights);
     fake_quantize(new_weights);
@@ -349,7 +349,7 @@ private:
     if (not is_quantizable(node->weights()))
       return;
 
-    auto weights = loco::must_cast<luci::CircleConst *>(node->weights());
+    auto weights = luci::must_cast<luci::CircleConst *>(node->weights());
     auto new_weights = luci::clone(weights);
     node->weights(new_weights);
     fake_quantize(new_weights);

@@ -176,7 +176,7 @@ namespace luci
 CircleConst *QuantizeBias::quantized_bias(CircleNode *input, const CircleNode *weight,
                                           CircleNode *bias)
 {
-  auto const_bias = loco::must_cast<luci::CircleConst *>(bias);
+  auto const_bias = luci::must_cast<luci::CircleConst *>(bias);
   assert(const_bias->dtype() == loco::DataType::FLOAT32);
 
   // If input is const, it is quantized here, not in QuantizeActivation

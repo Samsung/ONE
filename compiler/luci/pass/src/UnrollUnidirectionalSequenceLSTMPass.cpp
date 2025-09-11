@@ -246,20 +246,20 @@ luci::CircleFullyConnected *UnrollLSTM::create_input_matmul(luci::CircleNode *in
   assert(input != nullptr);
 
   // weights
-  auto iw = loco::must_cast<luci::CircleConst *>(_lstm->input_to_input_weights());
-  auto fw = loco::must_cast<luci::CircleConst *>(_lstm->input_to_forget_weights());
-  auto cw = loco::must_cast<luci::CircleConst *>(_lstm->input_to_cell_weights());
-  auto ow = loco::must_cast<luci::CircleConst *>(_lstm->input_to_output_weights());
+  auto iw = luci::must_cast<luci::CircleConst *>(_lstm->input_to_input_weights());
+  auto fw = luci::must_cast<luci::CircleConst *>(_lstm->input_to_forget_weights());
+  auto cw = luci::must_cast<luci::CircleConst *>(_lstm->input_to_cell_weights());
+  auto ow = luci::must_cast<luci::CircleConst *>(_lstm->input_to_output_weights());
 
   auto fcw = merged_weights(iw, fw, cw, ow);
   fcw->name(_name + "_fc_w");
   luci::add_origin(fcw, luci::get_origin(_lstm));
 
   // bias
-  auto ib = loco::must_cast<luci::CircleConst *>(_lstm->input_gate_bias());
-  auto fb = loco::must_cast<luci::CircleConst *>(_lstm->forget_gate_bias());
-  auto cb = loco::must_cast<luci::CircleConst *>(_lstm->cell_gate_bias());
-  auto ob = loco::must_cast<luci::CircleConst *>(_lstm->output_gate_bias());
+  auto ib = luci::must_cast<luci::CircleConst *>(_lstm->input_gate_bias());
+  auto fb = luci::must_cast<luci::CircleConst *>(_lstm->forget_gate_bias());
+  auto cb = luci::must_cast<luci::CircleConst *>(_lstm->cell_gate_bias());
+  auto ob = luci::must_cast<luci::CircleConst *>(_lstm->output_gate_bias());
 
   auto fcb = merged_weights(ib, fb, cb, ob);
   fcb->name(_name + "_fc_b");
@@ -286,10 +286,10 @@ luci::CircleAdd *UnrollLSTM::create_input_matmul(luci::CircleNode *input, luci::
   auto base_name = _name + "_matmul" + std::to_string(step);
 
   // input weights
-  auto iw = loco::must_cast<luci::CircleConst *>(_lstm->input_to_input_weights());
-  auto fw = loco::must_cast<luci::CircleConst *>(_lstm->input_to_forget_weights());
-  auto cw = loco::must_cast<luci::CircleConst *>(_lstm->input_to_cell_weights());
-  auto ow = loco::must_cast<luci::CircleConst *>(_lstm->input_to_output_weights());
+  auto iw = luci::must_cast<luci::CircleConst *>(_lstm->input_to_input_weights());
+  auto fw = luci::must_cast<luci::CircleConst *>(_lstm->input_to_forget_weights());
+  auto cw = luci::must_cast<luci::CircleConst *>(_lstm->input_to_cell_weights());
+  auto ow = luci::must_cast<luci::CircleConst *>(_lstm->input_to_output_weights());
 
   auto fcw = merged_weights(iw, fw, cw, ow);
   fcw->name(base_name + "_fc_w");
@@ -306,10 +306,10 @@ luci::CircleAdd *UnrollLSTM::create_input_matmul(luci::CircleNode *input, luci::
   luci::add_origin(fc, luci::get_origin(_lstm));
 
   // recurrent weights
-  auto ri = loco::must_cast<luci::CircleConst *>(_lstm->recurrent_to_input_weights());
-  auto rf = loco::must_cast<luci::CircleConst *>(_lstm->recurrent_to_forget_weights());
-  auto rc = loco::must_cast<luci::CircleConst *>(_lstm->recurrent_to_cell_weights());
-  auto ro = loco::must_cast<luci::CircleConst *>(_lstm->recurrent_to_output_weights());
+  auto ri = luci::must_cast<luci::CircleConst *>(_lstm->recurrent_to_input_weights());
+  auto rf = luci::must_cast<luci::CircleConst *>(_lstm->recurrent_to_forget_weights());
+  auto rc = luci::must_cast<luci::CircleConst *>(_lstm->recurrent_to_cell_weights());
+  auto ro = luci::must_cast<luci::CircleConst *>(_lstm->recurrent_to_output_weights());
 
   auto fcrw = merged_weights(ri, rf, rc, ro);
   fcrw->name(base_name + "_fcr_w");
@@ -333,10 +333,10 @@ luci::CircleAdd *UnrollLSTM::create_input_matmul(luci::CircleNode *input, luci::
   luci::add_origin(add_fc, luci::get_origin(_lstm));
 
   // bias
-  auto ib = loco::must_cast<luci::CircleConst *>(_lstm->input_gate_bias());
-  auto fb = loco::must_cast<luci::CircleConst *>(_lstm->forget_gate_bias());
-  auto cb = loco::must_cast<luci::CircleConst *>(_lstm->cell_gate_bias());
-  auto ob = loco::must_cast<luci::CircleConst *>(_lstm->output_gate_bias());
+  auto ib = luci::must_cast<luci::CircleConst *>(_lstm->input_gate_bias());
+  auto fb = luci::must_cast<luci::CircleConst *>(_lstm->forget_gate_bias());
+  auto cb = luci::must_cast<luci::CircleConst *>(_lstm->cell_gate_bias());
+  auto ob = luci::must_cast<luci::CircleConst *>(_lstm->output_gate_bias());
 
   auto bias = merged_weights(ib, fb, cb, ob);
   bias->name(base_name + "_bias");

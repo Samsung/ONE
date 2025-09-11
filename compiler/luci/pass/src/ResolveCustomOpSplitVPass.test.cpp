@@ -153,13 +153,13 @@ TEST_F(SplitVGraphTest, simple_test)
   sv = dynamic_cast<luci::CircleSplitV *>(svo_3->input());
   EXPECT_NE(nullptr, sv);
 
-  auto size_splits = loco::must_cast<luci::CircleConst *>(sv->size_splits());
+  auto size_splits = luci::must_cast<luci::CircleConst *>(sv->size_splits());
   EXPECT_EQ(loco::DataType::S32, size_splits->dtype());
   EXPECT_EQ(32, size_splits->at<loco::DataType::S32>(0));
   EXPECT_EQ(32, size_splits->at<loco::DataType::S32>(1));
   EXPECT_EQ(128, size_splits->at<loco::DataType::S32>(2));
 
-  auto split_dim = loco::must_cast<luci::CircleConst *>(sv->split_dim());
+  auto split_dim = luci::must_cast<luci::CircleConst *>(sv->split_dim());
   EXPECT_EQ(loco::DataType::S32, split_dim->dtype());
   EXPECT_EQ(3, split_dim->scalar<loco::DataType::S32>());
 }

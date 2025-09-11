@@ -35,7 +35,7 @@ bool satisfy_precondition(luci::CircleFullyConnected *fc)
   if (fc->dtype() != loco::DataType::FLOAT32)
     return false;
 
-  auto weights = loco::must_cast<luci::CircleConst *>(fc->weights());
+  auto weights = luci::must_cast<luci::CircleConst *>(fc->weights());
   // rank must be 2
   if (weights->rank() != 2)
     return false;
@@ -71,7 +71,7 @@ void get_FCs_having_same_tensor(std::vector<luci::CircleFullyConnected *> &fc_ve
 
 luci::CircleConst *shuffle_weight(luci::CircleFullyConnected *fc)
 {
-  auto the_weights = loco::must_cast<luci::CircleConst *>(fc->weights());
+  auto the_weights = luci::must_cast<luci::CircleConst *>(fc->weights());
 
   auto name = fc->name();
   assert(name.length() > 0);
