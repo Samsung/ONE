@@ -1,5 +1,6 @@
 OP(AddN)
 OP(ArgMinMax)
+OP(Attention)
 OP(BatchMatMul)
 OP(BatchToSpaceND)
 OP(BinaryArithmetic)
