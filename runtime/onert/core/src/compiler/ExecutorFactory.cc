@@ -145,7 +145,6 @@ void initializeSubgraphIOTensors(compiler::ILoweredGraph &lowered_graph,
 
 backend::BackendContexts
 createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
-                      std::shared_ptr<backend::custom::IKernelBuilder> custom_kernel_builder,
                       const util::Set<ir::OperandIndex> &internal_io_indexes)
 {
   backend::BackendContexts contexts;
@@ -251,7 +250,6 @@ createBackendContexts(compiler::ILoweredGraph &lgraph, bool linear_executor,
     std::copy_if(whole_op_order.begin(), whole_op_order.end(), std::back_inserter(op_order),
                  [&](const auto &ind) { return graph->operations().exist(ind); });
     data.is_linear_executor = linear_executor;
-    data.custom_kernel_builder = custom_kernel_builder;
     contexts.emplace(backend, backend->newContext(std::move(data)));
   }
   return contexts;
@@ -375,10 +373,10 @@ void ExecutorFactory::prepareMigrantTensors(compiler::ILoweredGraph &lowered_gra
     });
 }
 
-void ExecutorFactory::prepareBuiltinBackend(const TensorRegistries &tensor_regs,
-                                            const std::shared_ptr<exec::IExecutors> &executors,
-                                            const backend::BackendContexts &backend_contexts,
-                                            const ir::ModelIndex &index)
+void ExecutorFactory::prepareBuiltinBackend(
+  const TensorRegistries &tensor_regs, const std::shared_ptr<exec::IExecutors> &executors,
+  const backend::BackendContexts &backend_contexts, const ir::ModelIndex &index,
+  const std::shared_ptr<backend::custom::IKernelBuilder> &custom_kernel_builder)
 {
   for (auto &&pair : backend_contexts)
   {
@@ -389,6 +387,7 @@ void ExecutorFactory::prepareBuiltinBackend(const TensorRegistries &tensor_regs,
       builtin_kernel_gen->setTensorRegistries(tensor_regs);
       builtin_kernel_gen->setExecutors(executors);
       builtin_kernel_gen->setModelIndex(index);
+      builtin_kernel_gen->setCustomKernelBuilder(custom_kernel_builder);
     }
   }
 }
@@ -422,8 +421,8 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   auto custom_kernel_builder = args.custom_kernel_builder;
   auto &graph = lowered_graph->graph();
 
-  backend::BackendContexts backend_contexts = createBackendContexts(
-    *lowered_graph, options->executor == "Linear", custom_kernel_builder, args.internal_io_indexes);
+  backend::BackendContexts backend_contexts =
+    createBackendContexts(*lowered_graph, options->executor == "Linear", args.internal_io_indexes);
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -446,8 +445,9 @@ ExecutorFactory::createLinearExecutor(std::unique_ptr<compiler::LoweredGraph> lo
   bindInternalOutputTensors(*lowered_graph, backend_contexts, args.internal_io_indexes,
                             tensor_regs);
 
-  // Give some runtime objects to builtin KernelGenerator
-  prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);
+  // Give some builtin backend specific runtime objects to builtin KernelGenerator
+  prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index,
+                        custom_kernel_builder);
 
   ExecutionBuilder builder;
 
@@ -553,8 +553,8 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
   const auto tracing_ctx = args.tracing_ctx;
   auto custom_kernel_builder = args.custom_kernel_builder;
 
-  backend::BackendContexts backend_contexts = createBackendContexts(
-    *lowered_graph, options->executor == "Linear", custom_kernel_builder, args.internal_io_indexes);
+  backend::BackendContexts backend_contexts =
+    createBackendContexts(*lowered_graph, options->executor == "Linear", args.internal_io_indexes);
 
   TensorRegistries tensor_regs{backend_contexts, true};
 
@@ -574,7 +574,8 @@ ExecutorFactory::createDataflowExecutor(std::unique_ptr<compiler::LoweredGraph> 
                             tensor_regs);
 
   // Give some runtime objects to builtin KernelGenerator
-  prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index);
+  prepareBuiltinBackend(tensor_regs, executors, backend_contexts, model_index,
+                        custom_kernel_builder);
 
   ExecutionBuilder builder;
 
@@ -701,7 +702,7 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
   // TODO Create context only once instead of replacing
   backend::train::TrainableBackendContexts tbackend_contexts;
   backend::BackendContexts base_backend_contexts =
-    createBackendContexts(*lowered_graph, true, custom_kernel_builder, args.internal_io_indexes);
+    createBackendContexts(*lowered_graph, true, args.internal_io_indexes);
 
   // Replace BackendContext with TrainbleBackendContext
   for (auto &&[backend, ctx] : base_backend_contexts)
@@ -747,7 +748,6 @@ exec::IExecutor *ExecutorFactory::createTrainableExecutor(
     tdata.tgraph = std::move(tgraph);
     tdata.op_order = std::move(data.op_order);
     tdata.external_operands = std::move(data.external_operands);
-    tdata.custom_kernel_builder = std::move(data.custom_kernel_builder);
     tdata.is_linear_executor = data.is_linear_executor;
     tdata.optim_info = training_info.optimizerInfo();
 

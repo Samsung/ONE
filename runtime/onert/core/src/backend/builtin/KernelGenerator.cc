@@ -28,11 +28,10 @@ namespace onert::backend::builtin
 
 KernelGenerator::KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,
                                  const std::shared_ptr<TensorRegistry> &tensor_reg,
-                                 const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
                                  const std::shared_ptr<ExternalContext> &external_context)
   : basic::KernelGeneratorBase{graph}, _dyn_tensor_manager{dyn_tensor_manager},
     _tensor_reg{tensor_reg}, _tensor_registries{}, _executors{nullptr}, _model_index{},
-    _kernel_builder{kernel_builder}, _external_context{external_context}
+    _external_context{external_context}
 {
   // DO NOTHING
 }
@@ -82,7 +81,7 @@ void KernelGenerator::visit(const ir::operation::Custom &node)
   params.userdata = node.userdata().data;
   params.userdata_size = node.userdata().size;
 
-  auto fn = _kernel_builder->buildKernel(node.id(), std::move(params));
+  auto fn = _custom_kernel_builder->buildKernel(node.id(), std::move(params));
 
   _return_fn = std::move(fn);
 }

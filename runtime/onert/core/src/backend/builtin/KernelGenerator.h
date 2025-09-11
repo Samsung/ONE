@@ -35,7 +35,6 @@ class KernelGenerator : public basic::KernelGeneratorBase
 public:
   KernelGenerator(const ir::Graph &graph, DynamicTensorManager *dyn_tensor_manager,
                   const std::shared_ptr<TensorRegistry> &tensor_reg,
-                  const std::shared_ptr<custom::IKernelBuilder> &kernel_builder,
                   const std::shared_ptr<ExternalContext> &external_context);
 
   void setTensorRegistries(const compiler::TensorRegistries &tensor_registries)
@@ -49,6 +48,11 @@ public:
   }
 
   void setModelIndex(const ir::ModelIndex &index) { _model_index = index; }
+
+  void setCustomKernelBuilder(const std::shared_ptr<custom::IKernelBuilder> &custom_kernel_builder)
+  {
+    _custom_kernel_builder = custom_kernel_builder;
+  }
 
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
 
@@ -69,7 +73,7 @@ private:
   compiler::TensorRegistries _tensor_registries;
   exec::IExecutors *_executors;
   ir::ModelIndex _model_index;
-  std::shared_ptr<backend::custom::IKernelBuilder> _kernel_builder;
+  std::shared_ptr<backend::custom::IKernelBuilder> _custom_kernel_builder;
   const std::shared_ptr<ExternalContext> _external_context;
 };
 
