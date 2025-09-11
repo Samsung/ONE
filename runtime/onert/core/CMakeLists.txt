@@ -25,7 +25,6 @@ target_link_libraries(onert_core PRIVATE dl ${LIB_PTHREAD})
 # Ruy
 nnfw_find_package(Ruy REQUIRED)
 target_link_libraries(onert_core PRIVATE ruy)
-target_link_libraries(onert_core INTERFACE ruy_instrumentation)
 
 # NOTE Below line is added to remove warning for android build
 #      It will be removed after android build uses gold linker

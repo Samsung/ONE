@@ -20,18 +20,18 @@ function(_Ruy_Build)
     return()
   endif(NOT CpuInfo_FOUND)
 
-  # Ruy's cmake requires cmake >= 3.14
-  # If we ready cmake >= 3.14, enable below comment out code
-  #if(PROFILE_RUY)
-  #  # Will be used on ruy build
-  #  set(RUY_PROFILER ON)
-  #endif(PROFILE_RUY)
-  #add_extdirectory("${RuySource_DIR}" Ruy)
+  if(PROFILE_RUY)
+    # Will be used on ruy build
+    set(RUY_PROFILER ON)
+  endif(PROFILE_RUY)
+  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+  add_extdirectory("${RuySource_DIR}" Ruy)
+
   #
   ## Ignore warning from ruy
   #target_compile_options(ruy INTERFACE -Wno-comment)
 
-  add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/Ruy" ruy)
+  #add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/Ruy" ruy)
   set(Ruy_FOUND TRUE PARENT_SCOPE)
 endfunction(_Ruy_Build)
 

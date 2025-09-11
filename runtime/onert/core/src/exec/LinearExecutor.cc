@@ -34,7 +34,7 @@ void LinearExecutor::executeImpl(const ExecutionObservee &subject)
       const auto backend = code.op_backend;
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
-      ruy::profiler::ScopeLabel label(code.op->name());
+      ruy::profiler::ScopeLabel label(code.op->name().c_str());
 #endif
       subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
@@ -57,7 +57,7 @@ void LinearExecutor::executeImpl(const ExecutionObservee &subject)
     {
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
-      ruy::profiler::ScopeLabel label(code.op->name());
+      ruy::profiler::ScopeLabel label(code.op->name().c_str());
 #endif
 
       auto &fn_seq = code.fn_seq;

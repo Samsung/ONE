@@ -104,7 +104,7 @@ void TrainableExecutor::forwardImpl(const ExecutionObservee &subject, bool train
       const auto backend = code.op_backend;
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
-      ruy::profiler::ScopeLabel label(code.op->name());
+      ruy::profiler::ScopeLabel label(code.op->name().c_str());
 #endif
       subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
@@ -122,7 +122,7 @@ void TrainableExecutor::forwardImpl(const ExecutionObservee &subject, bool train
       const auto &code = _code_map.at(index);
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
-      ruy::profiler::ScopeLabel label(code.op->name());
+      ruy::profiler::ScopeLabel label(code.op->name().c_str());
 #endif
       auto &tn_seq = code.tn_seq;
       tn_seq->forward(training && code.op->isRequiredForBackward());
@@ -161,7 +161,7 @@ void TrainableExecutor::backwardImpl(const ExecutionObservee &subject, uint32_t 
       const auto backend = code.op_backend;
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
-      ruy::profiler::ScopeLabel label(code.op->name());
+      ruy::profiler::ScopeLabel label(code.op->name().c_str());
 #endif
       subject.notifyJobBegin(this, profiling_subg_index, code.op_ind, backend);
 
@@ -183,7 +183,7 @@ void TrainableExecutor::backwardImpl(const ExecutionObservee &subject, uint32_t 
       }
 // TODO : Move ruy profiler into ExecutionObserver
 #ifdef RUY_PROFILER
-      ruy::profiler::ScopeLabel label(code.op->name());
+      ruy::profiler::ScopeLabel label(code.op->name().c_str());
 #endif
       auto &tn_seq = code.tn_seq;
       tn_seq->backward(training_step, code.op->isWeightsUpdateEnabled());
