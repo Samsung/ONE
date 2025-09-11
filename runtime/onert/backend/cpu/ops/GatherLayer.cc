@@ -131,6 +131,9 @@ void GatherLayer::run()
     case OperandType::QUANT_GGML_Q4_0:
       runByGGMLQuantInputType();
       break;
+    case OperandType::BOOL8:
+      runByInputType<bool>();
+      break;
     default:
       throw std::runtime_error("Gather: unsupported input data type");
   }
