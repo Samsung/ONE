@@ -121,7 +121,12 @@ flatbuffers::Offset<void> get_circle_builtin_options(flatbuffers::FlatBufferBuil
 #include "TFLBuiltinOptions.lst"
 #undef TFL_BUILTIN_OPTIONS
     default:
-      throw std::runtime_error("tflite2circle: wrong builtin options type.");
+    {
+      auto type = op->builtin_options_type();
+      std::string msg = "tflite2circle: wrong builtin options type: ";
+      msg = msg + tflite::EnumNameBuiltinOptions(type);
+      throw std::runtime_error(msg.c_str());
+    }
   }
 }
 
@@ -137,7 +142,12 @@ circle::BuiltinOptions get_circle_builtin_options_type(const tflite::Operator *o
 #include "TFLBuiltinOptions.lst"
 #undef TFL_BUILTIN_OPTIONS
     default:
-      throw std::runtime_error("tflite2circle: wrong builtin options type.");
+    {
+      auto type = op->builtin_options_type();
+      std::string msg = "tflite2circle: wrong builtin options type: ";
+      msg = msg + tflite::EnumNameBuiltinOptions(type);
+      throw std::runtime_error(msg.c_str());
+    }
   }
 }
 
