@@ -6,12 +6,19 @@ function(_FlatBuffers_import)
 
   # Don't use pre-installed FlatBuffers when cross-compiling
   if(NOT CMAKE_CROSSCOMPILING)
-    find_package(Flatbuffers 23.5.26 QUIET)
-    if(Flatbuffers_FOUND)
-      message(STATUS "Flatbuffers: found Flatbuffers")
+    # Clear to avoid infinite recursion
+    # Not need to backup & restore cache value
+    # - We will use same flatbuffers/flatc setting here with installed package on native build
+    # - If we fail to find installed package, cache value will be filled again on 2nd attempt,
+    #   and will not reach here again because of above TARGET checking condition
+    # Require 23.5.8 or later - schema's "(deprecated)" keyword is not supported in older version
+    unset(FlatBuffers_DIR CACHE)
+    find_package(FlatBuffers 23.5.8 QUIET NO_CMAKE_PATH)
+    if(FlatBuffers_FOUND)
+      message(STATUS "Flatbuffers: found FlatBuffers ${FlatBuffers_FIND_VERSION}")
       set(FlatBuffers_FOUND TRUE PARENT_SCOPE)
       return()
-    endif(Flatbuffers_FOUND)
+    endif(FlatBuffers_FOUND)
   endif(NOT CMAKE_CROSSCOMPILING)
 
   nnfw_find_package(FlatBuffersSource QUIET)
