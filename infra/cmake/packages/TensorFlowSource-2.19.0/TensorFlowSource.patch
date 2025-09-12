@@ -1,0 +1,13 @@
+diff --git a/tensorflow/lite/kernels/internal/reference/fully_connected.h b/tensorflow/lite/kernels/internal/reference/fully_connected.h
+index ba51cbcfe3e..d9d4e6ec5f7 100644
+--- a/tensorflow/lite/kernels/internal/reference/fully_connected.h
++++ b/tensorflow/lite/kernels/internal/reference/fully_connected.h
+@@ -17,7 +17,7 @@ limitations under the License.
+
+ #include <algorithm>
+
+-#include "ruy/profiler/instrumentation.h"  // from @ruy
++// #include "ruy/profiler/instrumentation.h"  // from @ruy
+ #include "tensorflow/lite/kernels/internal/common.h"
+ #include "tensorflow/lite/kernels/internal/cppmath.h"
+ #include "tensorflow/lite/kernels/internal/quantization_util.h"
