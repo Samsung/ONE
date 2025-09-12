@@ -37,8 +37,8 @@ template <loco::DataType IndexT, loco::DataType ValueT>
 bool fold_sparse_to_dense(luci::CircleSparseToDense *stod)
 {
   const auto indices = loco::must_cast<luci::CircleNode *>(stod->indices());
-  const auto default_value = loco::must_cast<luci::CircleConst *>(stod->default_value());
-  const auto output_shape = loco::must_cast<luci::CircleConst *>(stod->output_shape());
+  const auto default_value = luci::must_cast<luci::CircleConst *>(stod->default_value());
+  const auto output_shape = luci::must_cast<luci::CircleConst *>(stod->output_shape());
 
   bool has_zero = false;
   for (uint32_t i = 0; i < indices->rank(); i++)

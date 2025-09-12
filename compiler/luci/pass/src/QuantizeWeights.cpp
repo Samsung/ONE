@@ -390,7 +390,7 @@ void QuantizeWeights::visit(luci::CircleConv2D *node)
   LOGGER(l);
   INFO(l) << "QuantizeWeights QuantizeWeights::visit node: " << node->name() << std::endl;
 
-  auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
+  auto weights = luci::must_cast<luci::CircleConst *>(node->filter());
   if (!is_quantized(weights))
   {
     auto new_weights = luci::clone(weights);
@@ -404,7 +404,7 @@ void QuantizeWeights::visit(luci::CircleDepthwiseConv2D *node)
   LOGGER(l);
   INFO(l) << "QuantizeWeights QuantizeWeights::visit node: " << node->name() << std::endl;
 
-  auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
+  auto weights = luci::must_cast<luci::CircleConst *>(node->filter());
   if (!is_quantized(weights))
   {
     auto new_weights = luci::clone(weights);
@@ -418,8 +418,8 @@ void QuantizeWeights::visit(luci::CircleInstanceNorm *node)
   LOGGER(l);
   INFO(l) << "QuantizeWeights QuantizeWeights::visit node: " << node->name() << std::endl;
 
-  auto gamma = loco::must_cast<luci::CircleConst *>(node->gamma());
-  auto beta = loco::must_cast<luci::CircleConst *>(node->beta());
+  auto gamma = luci::must_cast<luci::CircleConst *>(node->gamma());
+  auto beta = luci::must_cast<luci::CircleConst *>(node->beta());
 
   if (!is_quantized(gamma))
   {
@@ -448,7 +448,7 @@ void QuantizeWeights::visit(luci::CircleRmsNorm *node)
   LOGGER(l);
   INFO(l) << "QuantizeWeights QuantizeWeights::visit node: " << node->name() << std::endl;
 
-  auto gamma = loco::must_cast<luci::CircleConst *>(node->gamma());
+  auto gamma = luci::must_cast<luci::CircleConst *>(node->gamma());
 
   if (!is_quantized(gamma))
   {
@@ -467,7 +467,7 @@ void QuantizeWeights::visit(luci::CirclePRelu *node)
   LOGGER(l);
   INFO(l) << "QuantizeWeights QuantizeWeights::visit node: " << node->name() << std::endl;
 
-  auto alpha = loco::must_cast<luci::CircleConst *>(node->alpha());
+  auto alpha = luci::must_cast<luci::CircleConst *>(node->alpha());
 
   if (!is_quantized(alpha))
   {
@@ -486,7 +486,7 @@ void QuantizeWeights::visit(luci::CircleTransposeConv *node)
   LOGGER(l);
   INFO(l) << "QuantizeWeights QuantizeWeights::visit node: " << node->name() << std::endl;
 
-  auto weights = loco::must_cast<luci::CircleConst *>(node->filter());
+  auto weights = luci::must_cast<luci::CircleConst *>(node->filter());
   if (!is_quantized(weights))
   {
     auto new_weights = luci::clone(weights);
@@ -500,7 +500,7 @@ void QuantizeWeights::visit(luci::CircleFullyConnected *node)
   LOGGER(l);
   INFO(l) << "QuantizeWeights QuantizeWeights::visit node: " << node->name() << std::endl;
 
-  auto weights = loco::must_cast<luci::CircleConst *>(node->weights());
+  auto weights = luci::must_cast<luci::CircleConst *>(node->weights());
   if (!is_quantized(weights))
   {
     auto new_weights = luci::clone(weights);

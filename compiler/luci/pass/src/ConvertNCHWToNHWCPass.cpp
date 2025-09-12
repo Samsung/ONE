@@ -744,7 +744,7 @@ template <class T> bool convert_pad(T *node)
   pre_trans->a(pred_node);
   node->input(pre_trans);
 
-  auto nchw_paddings = loco::must_cast<luci::CircleConst *>(node->paddings());
+  auto nchw_paddings = luci::must_cast<luci::CircleConst *>(node->paddings());
   const auto nhwc_paddings = create_NHWC_paddings(nchw_paddings);
   node->paddings(nhwc_paddings);
 

@@ -27,6 +27,7 @@
 #include "CircleQuantParam.h"
 #include "CircleMXQuantParam.h"
 #include "SparsityParam.h"
+#include "CastHelpers.h"
 
 #include <memory>
 
@@ -90,6 +91,16 @@ template <CircleOpcode Code> struct CircleNodeImpl : public CircleNode
   uint32_t opnum(void) const final { return static_cast<uint32_t>(Code); }
   CircleOpcode opcode(void) const final { return Code; }
 };
+
+template <typename T> T must_cast(loco::Node *node)
+{
+  return luci::_must_cast<T, loco::Node *>(node);
+}
+
+template <typename T> T must_cast(const loco::Node *node)
+{
+  return luci::_must_cast<T, const loco::Node *>(node);
+}
 
 } // namespace luci
 

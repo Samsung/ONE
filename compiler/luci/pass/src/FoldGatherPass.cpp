@@ -41,8 +41,8 @@ namespace
 template <loco::DataType InputT, loco::DataType IndexT>
 bool fold_gather(luci::CircleGather *gather_node)
 {
-  const auto params = loco::must_cast<luci::CircleConst *>(gather_node->params());
-  const auto indices = loco::must_cast<luci::CircleConst *>(gather_node->indices());
+  const auto params = luci::must_cast<luci::CircleConst *>(gather_node->params());
+  const auto indices = luci::must_cast<luci::CircleConst *>(gather_node->indices());
 
   const auto rank = params->rank();
   auto axis = gather_node->axis();

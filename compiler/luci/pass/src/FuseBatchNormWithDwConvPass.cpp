@@ -116,7 +116,7 @@ bool fused_batch_norm_with_dwconv(luci::CircleAdd *add)
   // get weight of dwconv
   if (not valid_const_dtype_rank(dwconv->filter(), loco::DataType::FLOAT32, 4 /* rank */))
     return false;
-  auto filter = loco::must_cast<luci::CircleConst *>(dwconv->filter());
+  auto filter = luci::must_cast<luci::CircleConst *>(dwconv->filter());
 
   // check attributes of dwconv
   if (dwconv->fusedActivationFunction() != luci::FusedActFunc::NONE)
@@ -127,7 +127,7 @@ bool fused_batch_norm_with_dwconv(luci::CircleAdd *add)
   // get bias of dwconv
   if (not valid_const_dtype_rank(dwconv->bias(), loco::DataType::FLOAT32, 1 /* rank */))
     return false;
-  auto bias = loco::must_cast<luci::CircleConst *>(dwconv->bias());
+  auto bias = luci::must_cast<luci::CircleConst *>(dwconv->bias());
 
   // filter represents as [1, H, W, C*M] where M is multiplier.
   auto filter_out_chn = filter->dim(3).value();

@@ -163,7 +163,7 @@ void propagate_pack_quantparam(luci::CirclePack *pack)
     // Quantize constant values
     if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
     {
-      luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
+      luci::CircleConst *const_node = luci::must_cast<luci::CircleConst *>(node);
       if (const_node->dtype() != loco::DataType::FLOAT32)
         throw std::runtime_error("Unsupported data type for constant input of pack Op");
 
@@ -231,7 +231,7 @@ void propagate_one_hot_quantparam(luci::CircleOneHot *one_hot)
     // Quantize constant values
     if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
     {
-      luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
+      luci::CircleConst *const_node = luci::must_cast<luci::CircleConst *>(node);
       if (is_quantized(const_node))
         return;
 
@@ -317,7 +317,7 @@ void propagate_concat_quantparam(luci::CircleConcatenation *concat)
     // Quantize constant values
     if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
     {
-      luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
+      luci::CircleConst *const_node = luci::must_cast<luci::CircleConst *>(node);
 
       const auto concat_qparam = concat->quantparam();
       assert(concat_qparam->scale.size() == 1);
@@ -383,7 +383,7 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2)
     auto pad_v2_input = loco::must_cast<luci::CircleNode *>(pad_v2->arg(0));
     overwrite_quantparam(pad_v2_input, pad_v2);
 
-    auto const_value_node = loco::must_cast<luci::CircleConst *>(
+    auto const_value_node = luci::must_cast<luci::CircleConst *>(
       pad_v2->arg(2)); // FIX ignore_pad_v2_const_quantization UNLESS
     auto new_const = luci::clone(const_value_node);
 
@@ -407,7 +407,7 @@ void propagate_pad_v2_quantparam(luci::CirclePadV2 *pad_v2)
     // Quantize constant values
     if (node->opcode() == luci::CircleOpcode::CIRCLECONST)
     {
-      luci::CircleConst *const_node = loco::must_cast<luci::CircleConst *>(node);
+      luci::CircleConst *const_node = luci::must_cast<luci::CircleConst *>(node);
       if (is_quantized(const_node))
         return;
 
