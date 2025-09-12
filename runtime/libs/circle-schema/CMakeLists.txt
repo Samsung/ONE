@@ -1,6 +1,6 @@
 add_library(circle_schema INTERFACE)
 
-nnfw_find_package(FlatBuffers EXACT 23.5.26 REQUIRED)
+nnfw_find_package(FlatBuffers 23.5.26 REQUIRED)
 
 set(FLATBUFFERS_FLATC_SCHEMA_EXTRA_ARGS --gen-onefile --gen-object-api)
 build_flatbuffers(
