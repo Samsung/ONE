@@ -62,19 +62,27 @@ else()
   list(APPEND TFLITE_SRCS ${TFLITE_SOURCE_DIR}/minimal_logging_default.cc)
 endif()
 
+# Enable interpreter and NNAPI delegate only
 populate_tflite_source_vars("core" TFLITE_CORE_SRCS)
-populate_tflite_source_vars("core/acceleration/configuration" TFLITE_CORE_ACCELERATION_SRCS)
+# populate_tflite_source_vars("core/acceleration/configuration" TFLITE_CORE_ACCELERATION_SRCS)
 populate_tflite_source_vars("core/api" TFLITE_CORE_API_SRCS)
 populate_tflite_source_vars("core/async" TFLITE_CORE_ASYNC_SRCS)
 populate_tflite_source_vars("core/async/c" TFLITE_CORE_ASYNC_C_SRCS)
 populate_tflite_source_vars("core/async/interop" TFLITE_CORE_ASYNC_INTEROP_SRCS)
 populate_tflite_source_vars("core/async/interop/c" TFLITE_CORE_ASYNC_INTEROP_C_SRCS)
 populate_tflite_source_vars("core/c" TFLITE_CORE_C_SRCS)
-populate_tflite_source_vars("core/experimental/acceleration/configuration" TFLITE_CORE_EXPERIMENTAL_SRCS)
+# populate_tflite_source_vars("core/experimental/acceleration/configuration" TFLITE_CORE_EXPERIMENTAL_SRCS)
 populate_tflite_source_vars("core/kernels" TFLITE_CORE_KERNELS_SRCS)
 populate_tflite_source_vars("core/tools" TFLITE_CORE_TOOLS_SRCS)
 populate_tflite_source_vars("c" TFLITE_C_SRCS)
-populate_tflite_source_vars("delegates" TFLITE_DELEGATES_SRCS)
+# populate_tflite_source_vars("delegates" TFLITE_DELEGATES_SRCS)
+set(TFLITE_DELEGATES_SRCS
+  ${TFLITE_SOURCE_DIR}/delegates/interpreter_utils.cc
+  ${TFLITE_SOURCE_DIR}/delegates/interpreter_utils.h
+  ${TFLITE_SOURCE_DIR}/delegates/serialization.cc
+  ${TFLITE_SOURCE_DIR}/delegates/serialization.h
+  ${TFLITE_SOURCE_DIR}/delegates/utils.cc
+  ${TFLITE_SOURCE_DIR}/delegates/utils.h)
 
 # Enable NNAPI
 populate_tflite_source_vars("delegates/nnapi"
@@ -88,11 +96,7 @@ list(APPEND TFLITE_NNAPI_SRCS
   "${TFLITE_SOURCE_DIR}/nnapi/sl/SupportLibrary.cc"
 )
 
-# Enable experimental delegate
-populate_tflite_source_vars("delegates/external"
-  TFLITE_DELEGATES_EXTERNAL_SRCS
-  FILTER ".*(_test|_tester)\\.(cc|h)"
-)
+# Disable experimental delegate
 
 populate_tflite_source_vars("experimental/remat"
   TFLITE_EXPERIMENTAL_REMAT_SRCS
