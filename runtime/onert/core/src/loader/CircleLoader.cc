@@ -76,6 +76,7 @@ protected:
   void loadCall(const Operator *op, ir::Graph &subg);
   void loadRunModel(const Operator *op, ir::Graph &subg);
   void loadCustom(const Operator *op, ir::Graph &subg);
+  void loadAttention(const Operator *op, ir::Graph &subg);
 
 public:
   using BaseLoader::BaseLoader;
@@ -182,6 +183,9 @@ private:
       case circle::BuiltinOperator::BuiltinOperator_RUN_MODEL:
         loadRunModel(op, subg);
         return;
+      case circle::BuiltinOperator::BuiltinOperator_ATTENTION:
+        loadAttention(op, subg);
+        return;
       default:
         BaseLoader::loadOperation(op, subg);
         return;
@@ -247,13 +251,11 @@ void CircleLoader::loadBCQFullyConnected(const Operator *op, ir::Graph &subg)
 
   loadOperationIO(op, inputs, outputs);
 
-  ir::operation::BCQFullyConnected::Param param;
-  const auto *options = op->builtin_options_as_BCQFullyConnectedOptions();
-  param.weights_hidden_size = options->weights_hidden_size();
-  param.activation = convertActivation(options->fused_activation_function());
+  ir::operation::Attention::Param param;
+  const auto *options = op->builtin_options_as_AttentionOptions();
+  param.layer_idx = options->layer_idx();
 
-  std::unique_ptr<ir::Operation> new_op(
-    new ir::operation::BCQFullyConnected(inputs, outputs, param));
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Attention(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
@@ -347,6 +349,18 @@ void CircleLoader::loadRunModel(const Operator *op, ir::Graph &subg)
   const auto bulk_op = dynamic_cast<const ir::operation::Bulk *>(&op_bulk);
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Bulk(inputs, outputs, bulk_op->param()));
+  subg.addOperation(std::move(new_op));
+}
+
+void CircleLoader::loadAttention(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::Attention::Param param;
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Attention(inputs, outputs, param));
   subg.addOperation(std::move(new_op));
 }
 
