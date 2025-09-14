@@ -32,12 +32,12 @@ bool is_batchnorm_add(const luci::CircleAdd *add, luci::CircleMul *&mul, luci::C
   if (x->opcode() == luci::CircleOpcode::CIRCLECONST && y->opcode() == luci::CircleOpcode::MUL)
   {
     pred = loco::must_cast<luci::CircleMul *>(y);
-    constant = loco::must_cast<luci::CircleConst *>(x);
+    constant = luci::must_cast<luci::CircleConst *>(x);
   }
   else if (x->opcode() == luci::CircleOpcode::MUL && y->opcode() == luci::CircleOpcode::CIRCLECONST)
   {
     pred = loco::must_cast<luci::CircleMul *>(x);
-    constant = loco::must_cast<luci::CircleConst *>(y);
+    constant = luci::must_cast<luci::CircleConst *>(y);
   }
   else
   {
