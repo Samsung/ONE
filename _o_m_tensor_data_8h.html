@@ -91,22 +91,19 @@ $(document).ready(function(){initNavTree('_o_m_tensor_data_8h.html',''); initRes
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">OMTensorData.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="_o_m_quantization_data_8h_source.html">OMQuantizationData.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="core_2_o_m_utils_8h_source.html">OMUtils.h</a>&quot;</code><br />
-<code>#include &lt;map&gt;</code><br />
-<code>#include &lt;memory&gt;</code><br />
-<code>#include &lt;type_traits&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_o_m_runtime_shape_8h_source.html">OMRuntimeShape.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_o_m_type_traits_8h_source.html">OMTypeTraits.h</a>&quot;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 </div>
 <p><a href="_o_m_tensor_data_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_tensor_data.html">onert_micro::core::OMTensorData&lt; T &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_tensor_data.html">onert_micro::core::OMTensorData&lt; TData, TValue &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -115,15 +112,6 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceonert__micro_1_1core" id="r_namespaceonert__micro_1_1core"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html">onert_micro::core</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ad6ebd8d38cf03b13f593ee3b45eeb4da" id="r_ad6ebd8d38cf03b13f593ee3b45eeb4da"><td class="memTemplParams" colspan="2">template&lt;class T , class RuntimeKernel &gt; </td></tr>
-<tr class="memitem:ad6ebd8d38cf03b13f593ee3b45eeb4da"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classonert__micro_1_1core_1_1_o_m_tensor_data.html">OMTensorData</a>&lt; const T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html#ad6ebd8d38cf03b13f593ee3b45eeb4da">onert_micro::core::MakeInputData</a> (RuntimeKernel &amp;rtk, size_t input_idx)</td></tr>
-<tr class="separator:ad6ebd8d38cf03b13f593ee3b45eeb4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94ef28ea3fd11068858ad9979574c6e9" id="r_a94ef28ea3fd11068858ad9979574c6e9"><td class="memTemplParams" colspan="2">template&lt;class T , class RuntimeKernel &gt; </td></tr>
-<tr class="memitem:a94ef28ea3fd11068858ad9979574c6e9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classonert__micro_1_1core_1_1_o_m_tensor_data.html">OMTensorData</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html#a94ef28ea3fd11068858ad9979574c6e9">onert_micro::core::MakeOutputData</a> (RuntimeKernel &amp;rtk, size_t output_idx)</td></tr>
-<tr class="separator:a94ef28ea3fd11068858ad9979574c6e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

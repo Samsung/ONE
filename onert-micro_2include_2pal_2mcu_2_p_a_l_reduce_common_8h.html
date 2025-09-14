@@ -91,14 +91,16 @@ $(document).ready(function(){initNavTree('onert-micro_2include_2pal_2mcu_2_p_a_l
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">PALReduceCommon.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;PALUtils.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="_o_m_custom_runtime_data_8h_source.html">core/OMCustomRuntimeData.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_o_m_runtime_shape_8h_source.html">core/OMRuntimeShape.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_o_m_type_traits_8h_source.html">core/OMTypeTraits.h</a>&quot;</code><br />
+<code>#include &lt;set&gt;</code><br />
+<code>#include &lt;unordered_map&gt;</code><br />
 </div>
 <p><a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -106,11 +108,9 @@ $(document).ready(function(){initNavTree('onert-micro_2include_2pal_2mcu_2_p_a_l
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html">onert_micro::execute::pal::ReduceSumFn&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_3_01int8__t_01_4.html">onert_micro::execute::pal::ReduceSumFn&lt; int8_t &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html">onert_micro::execute::pal::ReduceProductFn&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_3_01int8__t_01_4.html">onert_micro::execute::pal::ReduceProductFn&lt; int8_t &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html">onert_micro::execute::pal::Reducer&lt; T, ReduceFn &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -121,26 +121,6 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceonert__micro_1_1execute_1_1pal" id="r_namespaceonert__micro_1_1execute_1_1pal"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html">onert_micro::execute::pal</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a154bf5fc19295305f91c1968e708760b" id="r_a154bf5fc19295305f91c1968e708760b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a154bf5fc19295305f91c1968e708760b">onert_micro::execute::pal::resolveAxis</a> (const int num_dims, const int *axis, const int64_t num_axis, int *out_axis, int *out_num_axis)</td></tr>
-<tr class="separator:a154bf5fc19295305f91c1968e708760b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7735cf76aa7f6e29f5b0695a060da5ac" id="r_a7735cf76aa7f6e29f5b0695a060da5ac"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a7735cf76aa7f6e29f5b0695a060da5ac"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a7735cf76aa7f6e29f5b0695a060da5ac">onert_micro::execute::pal::ReduceGeneric</a> (const T *input_data, const int *input_dims, const int input_num_dims, T *output_data, const int *axis, const int64_t num_axis_dimensions, T init_value, const int output_flat_size, T reducer(const T, const T))</td></tr>
-<tr class="separator:a7735cf76aa7f6e29f5b0695a060da5ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff349297371b587eae0e3afa8e57b512" id="r_aff349297371b587eae0e3afa8e57b512"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aff349297371b587eae0e3afa8e57b512"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#aff349297371b587eae0e3afa8e57b512">onert_micro::execute::pal::reduceSumImpl</a> (const T *input_data, const int *input_dims, const int input_num_dims, T *output_data, const int *axis, const int num_axis, const int num_outputs)</td></tr>
-<tr class="separator:aff349297371b587eae0e3afa8e57b512"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b6fb7abee062cb7da367950a6104717" id="r_a2b6fb7abee062cb7da367950a6104717"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a2b6fb7abee062cb7da367950a6104717"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a2b6fb7abee062cb7da367950a6104717">onert_micro::execute::pal::MeanROWH</a> (const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;unextended_input_shape, const T *input_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;unextended_output_shape, T *output_data)</td></tr>
-<tr class="separator:a2b6fb7abee062cb7da367950a6104717"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5af1d1e868d9ec1f723ec73d75619034" id="r_a5af1d1e868d9ec1f723ec73d75619034"><td class="memTemplParams" colspan="2">template&lt;typename T , template&lt; typename &gt; class ReduceFn&gt; </td></tr>
-<tr class="memitem:a5af1d1e868d9ec1f723ec73d75619034"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a5af1d1e868d9ec1f723ec73d75619034">onert_micro::execute::pal::ReduceGeneric</a> (<a class="el" href="classonert__micro_1_1core_1_1_o_m_reduce_data_context.html">OMReduceDataContext</a>&lt; T &gt; &amp;ctx)</td></tr>
-<tr class="separator:a5af1d1e868d9ec1f723ec73d75619034"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b92ff182109cd73bc942894d883b925" id="r_a0b92ff182109cd73bc942894d883b925"><td class="memTemplParams" colspan="2">template&lt;typename T , template&lt; typename &gt; class ReduceFn&gt; </td></tr>
-<tr class="memitem:a0b92ff182109cd73bc942894d883b925"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a0b92ff182109cd73bc942894d883b925">onert_micro::execute::pal::Reduce</a> (<a class="el" href="classonert__micro_1_1core_1_1_o_m_reduce_data_context.html">OMReduceDataContext</a>&lt; T &gt; &amp;ctx, bool mean=false)</td></tr>
-<tr class="separator:a0b92ff182109cd73bc942894d883b925"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

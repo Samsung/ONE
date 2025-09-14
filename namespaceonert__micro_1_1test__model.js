@@ -888,6 +888,11 @@ var namespaceonert__micro_1_1test__model =
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1reduce__prod__int.html#a462cb894293c61ba7bc78496a8626b06", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1reduce__prod__int.html#a0ef101617d00bc421f407e4b9c97e220", null ]
     ] ],
+    [ "reduce_prod_int8", "namespaceonert__micro_1_1test__model_1_1reduce__prod__int8.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1reduce__prod__int8.html#a38db6925e300a4c9eb3ce84b7ee5089a", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1reduce__prod__int8.html#ac4ea78d83ed331ea9c45f032f5402fa4", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1reduce__prod__int8.html#a3c68c83111f3e6a7059c627f74318836", null ]
+    ] ],
     [ "relu6_float", "namespaceonert__micro_1_1test__model_1_1relu6__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1relu6__float.html#a2fc292ec55a3d8cb36cc7c79546d74c0", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1relu6__float.html#a873f98932894ae5f236fd556bf06d1f1", null ],
@@ -1420,6 +1425,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataInt8Mean", "classonert__micro_1_1test__model_1_1_test_data_int8_mean.html", "classonert__micro_1_1test__model_1_1_test_data_int8_mean" ],
     [ "TestDataInt8Mul", "classonert__micro_1_1test__model_1_1_test_data_int8_mul.html", "classonert__micro_1_1test__model_1_1_test_data_int8_mul" ],
     [ "TestDataInt8Pad", "classonert__micro_1_1test__model_1_1_test_data_int8_pad.html", "classonert__micro_1_1test__model_1_1_test_data_int8_pad" ],
+    [ "TestDataInt8ReduceProd", "classonert__micro_1_1test__model_1_1_test_data_int8_reduce_prod.html", "classonert__micro_1_1test__model_1_1_test_data_int8_reduce_prod" ],
     [ "TestDataInt8Rsqrt", "classonert__micro_1_1test__model_1_1_test_data_int8_rsqrt.html", "classonert__micro_1_1test__model_1_1_test_data_int8_rsqrt" ],
     [ "TestDataInt8Softmax", "classonert__micro_1_1test__model_1_1_test_data_int8_softmax.html", "classonert__micro_1_1test__model_1_1_test_data_int8_softmax" ],
     [ "TestDataInt8SquaredDifference", "classonert__micro_1_1test__model_1_1_test_data_int8_squared_difference.html", "classonert__micro_1_1test__model_1_1_test_data_int8_squared_difference" ],

@@ -104,6 +104,8 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ae833fa8c55869bac78dd55fab7d14415" id="r_ae833fa8c55869bac78dd55fab7d14415"><td class="memItemLeft" align="right" valign="top">::circle::BuiltinOperator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemio_1_1circle.html#ae833fa8c55869bac78dd55fab7d14415">builtin_code_neutral</a> (const ::circle::OperatorCode *opcode)</td></tr>
+<tr class="separator:ae833fa8c55869bac78dd55fab7d14415"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4941377cebadf44ad88df3a1d78e47e" id="r_ac4941377cebadf44ad88df3a1d78e47e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemio_1_1circle.html#ac4941377cebadf44ad88df3a1d78e47e">is_valid</a> (const ::circle::OperatorCode *opcode)</td></tr>
 <tr class="separator:ac4941377cebadf44ad88df3a1d78e47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e1bec489c1665f854174c6c772c6cef" id="r_a9e1bec489c1665f854174c6c772c6cef"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemio_1_1circle.html#a9e1bec489c1665f854174c6c772c6cef">is_custom</a> (const ::circle::OperatorCode *opcode)</td></tr>
@@ -114,8 +116,6 @@ Functions</h2></td></tr>
 <tr class="separator:a9dadcab3fa3288500db94ffb281ea65b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b3c17ce2e43636c2722c2a203fbd866" id="r_a0b3c17ce2e43636c2722c2a203fbd866"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemio_1_1circle.html#a0b3c17ce2e43636c2722c2a203fbd866">tensor_name</a> (const ::circle::Tensor *tensor)</td></tr>
 <tr class="separator:a0b3c17ce2e43636c2722c2a203fbd866"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae833fa8c55869bac78dd55fab7d14415" id="r_ae833fa8c55869bac78dd55fab7d14415"><td class="memItemLeft" align="right" valign="top">::circle::BuiltinOperator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemio_1_1circle.html#ae833fa8c55869bac78dd55fab7d14415">builtin_code_neutral</a> (const ::circle::OperatorCode *opcode)</td></tr>
-<tr class="separator:ae833fa8c55869bac78dd55fab7d14415"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83b506ea8b310e5116b6259985f72136" id="r_a83b506ea8b310e5116b6259985f72136"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a83b506ea8b310e5116b6259985f72136"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemio_1_1circle.html#a83b506ea8b310e5116b6259985f72136">as_index_vector</a> (const <a class="el" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a>&lt; T &gt; *flat_array)</td></tr>
 <tr class="separator:a83b506ea8b310e5116b6259985f72136"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,25 +139,26 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mio-circle04_2include_2mio__circle_2_helper_8h_source.html#l00036">36</a> of file <a class="el" href="mio-circle04_2include_2mio__circle_2_helper_8h_source.html">Helper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mio-circle_2include_2mio__circle_2_helper_8h_source.html#l00036">36</a> of file <a class="el" href="mio-circle_2include_2mio__circle_2_helper_8h_source.html">Helper.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
 <div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (flat_array == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   39</span>  {</div>
 <div class="line"><span class="lineno">   40</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;flat array is nullptr&quot;</span>);</div>
 <div class="line"><span class="lineno">   41</span>  }</div>
 <div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>  std::vector&lt;T&gt; ret(flat_array-&gt;Length());</div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; flat_array-&gt;Length(); i++)</div>
+<div class="line"><span class="lineno">   43</span>  std::vector&lt;T&gt; ret(flat_array-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>());</div>
+<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; flat_array-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>(); i++)</div>
 <div class="line"><span class="lineno">   45</span>  {</div>
 <div class="line"><span class="lineno">   46</span>    ret[i] = flat_array-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a0c322798bd0cebd2d20b0b0f92de2f9b">Get</a>(i);</div>
 <div class="line"><span class="lineno">   47</span>  }</div>
 <div class="line"><span class="lineno">   48</span>  <span class="keywordflow">return</span> ret;</div>
 <div class="line"><span class="lineno">   49</span>}</div>
 <div class="ttc" id="aclassflatbuffers_1_1_vector_html_a0c322798bd0cebd2d20b0b0f92de2f9b"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a0c322798bd0cebd2d20b0b0f92de2f9b">flatbuffers::Vector::Get</a></div><div class="ttdeci">return_type Get(uoffset_t i) const</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00286">flatbuffers.h:286</a></div></div>
+<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a602e093850b2984a95581edc0b47b2f3"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">flatbuffers::Vector::size</a></div><div class="ttdeci">uoffset_t size() const</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00276">flatbuffers.h:276</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l00286">flatbuffers::Vector&lt; T &gt;::Get()</a>.</p>
+<p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l00286">flatbuffers::Vector&lt; T &gt;::Get()</a>, and <a class="el" href="flatbuffers_8h_source.html#l00276">flatbuffers::Vector&lt; T &gt;::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00125">circledump::dump_sub_graph()</a>, <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00233">circledump::ReshapePrinter::options()</a>, <a class="el" href="mio-circle04_2src_2_reader_8cpp_source.html#l00101">mio::circle::Reader::outputs()</a>, <a class="el" href="circle-inspect_2src_2_dump_8cpp_source.html#l00097">circleinspect::DumpConv2DWeight::run()</a>, and <a class="el" href="mio-circle04_2src_2_reader_8cpp_source.html#l00116">mio::circle::Reader::select_subgraph()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00125">circledump::dump_sub_graph()</a>, <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00233">circledump::ReshapePrinter::options()</a>, <a class="el" href="mio-circle_2src_2_reader_8cpp_source.html#l00177">mio::circle::Reader::outputs()</a>, <a class="el" href="circle-inspect_2src_2_dump_8cpp_source.html#l00097">circleinspect::DumpConv2DWeight::run()</a>, and <a class="el" href="mio-circle_2src_2_reader_8cpp_source.html#l00192">mio::circle::Reader::select_subgraph()</a>.</p>
 
 </div>
 </div>
@@ -178,7 +179,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <p>This will provide v3/v3a/v3b format neutral BuiltinOperator NOTE circle has minus value opcode (252~254 as uint8_t) we cannot use std::max() like tflite as deprecated_builtin_code can be minus and builtin_code being 0 for v0.3 files. </p>
 
-<p class="definition">Definition at line <a class="el" href="mio-circle04_2src_2_helper_8cpp_source.html#l00033">33</a> of file <a class="el" href="mio-circle04_2src_2_helper_8cpp_source.html">Helper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00033">33</a> of file <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html">Helper.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   34</span>{</div>
 <div class="line"><span class="lineno">   35</span>  assert(opcode != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (opcode-&gt;deprecated_builtin_code() == 127)</div>
@@ -191,7 +192,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>::circle::BuiltinOperator<span class="keyword">&gt;</span>(opcode-&gt;deprecated_builtin_code());</div>
 <div class="line"><span class="lineno">   44</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="mio-circle04_2src_2_reader_8cpp_source.html#l00076">mio::circle::Reader::builtin_code()</a>, <a class="el" href="_circle_import_8cpp_source.html#l00064">circlechef::CircleImport::builtin_code()</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00349">luci::CircleReader::builtin_code()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="mio-circle_2src_2_reader_8cpp_source.html#l00152">mio::circle::Reader::builtin_code()</a>, <a class="el" href="_circle_import_8cpp_source.html#l00064">circlechef::CircleImport::builtin_code()</a>, <a class="el" href="_circle_reader_8cpp_source.html#l00349">luci::CircleReader::builtin_code()</a>, <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00064">is_custom()</a>, and <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00070">opcode_name()</a>.</p>
 
 </div>
 </div>
@@ -211,13 +212,16 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00032">32</a> of file <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html">Helper.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   33</span>{</div>
-<div class="line"><span class="lineno">   34</span>  ::circle::BuiltinOperator code = opcode-&gt;builtin_code();</div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordflow">return</span> (code == ::circle::BuiltinOperator_CUSTOM);</div>
-<div class="line"><span class="lineno">   36</span>}</div>
+<p class="definition">Definition at line <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00064">64</a> of file <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html">Helper.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   65</span>{</div>
+<div class="line"><span class="lineno">   66</span>  ::circle::BuiltinOperator code = <a class="code hl_function" href="namespacemio_1_1circle.html#ae833fa8c55869bac78dd55fab7d14415">builtin_code_neutral</a>(opcode);</div>
+<div class="line"><span class="lineno">   67</span>  <span class="keywordflow">return</span> (code == ::circle::BuiltinOperator_CUSTOM);</div>
+<div class="line"><span class="lineno">   68</span>}</div>
+<div class="ttc" id="anamespacemio_1_1circle_html_ae833fa8c55869bac78dd55fab7d14415"><div class="ttname"><a href="namespacemio_1_1circle.html#ae833fa8c55869bac78dd55fab7d14415">mio::circle::builtin_code_neutral</a></div><div class="ttdeci">::circle::BuiltinOperator builtin_code_neutral(const ::circle::OperatorCode *opcode)</div><div class="ttdef"><b>Definition</b> <a href="mio-circle_2src_2_helper_8cpp_source.html#l00033">Helper.cpp:33</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00038">opcode_name()</a>, and <a class="el" href="_circle_import_8cpp_source.html#l00073">circlechef::CircleImport::opcode_name()</a>.</p>
+<p class="reference">References <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00033">builtin_code_neutral()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00070">opcode_name()</a>, and <a class="el" href="_circle_import_8cpp_source.html#l00073">circlechef::CircleImport::opcode_name()</a>.</p>
 
 </div>
 </div>
@@ -237,13 +241,25 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00026">26</a> of file <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html">Helper.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  ::circle::BuiltinOperator code = opcode-&gt;builtin_code();</div>
-<div class="line"><span class="lineno">   29</span>  <span class="keywordflow">return</span> (::circle::BuiltinOperator_MIN &lt;= code &amp;&amp; code &lt;= ::circle::BuiltinOperator_MAX);</div>
-<div class="line"><span class="lineno">   30</span>}</div>
+<p class="definition">Definition at line <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00046">46</a> of file <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html">Helper.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   47</span>{</div>
+<div class="line"><span class="lineno">   48</span>  <span class="comment">// Valid Range : BuiltinOperator_MIN &lt;= deprecated_builtin_code &lt;= 127</span></div>
+<div class="line"><span class="lineno">   49</span>  <span class="keyword">const</span> int8_t deprecated_builtin_code = opcode-&gt;deprecated_builtin_code();</div>
+<div class="line"><span class="lineno">   50</span>  <span class="keywordflow">if</span> (deprecated_builtin_code &lt; ::circle::BuiltinOperator_MIN)</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   52</span>  <span class="comment">// There was no 255(-1) value in v0.3</span></div>
+<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">if</span> (deprecated_builtin_code == -1)</div>
+<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   55</span> </div>
+<div class="line"><span class="lineno">   56</span>  const ::circle::BuiltinOperator builtin_code = opcode-&gt;builtin_code();</div>
+<div class="line"><span class="lineno">   57</span>  <span class="keywordflow">if</span> (!(::circle::BuiltinOperator_MIN &lt;= builtin_code &amp;&amp;</div>
+<div class="line"><span class="lineno">   58</span>        builtin_code &lt;= ::circle::BuiltinOperator_MAX))</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   60</span> </div>
+<div class="line"><span class="lineno">   61</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   62</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="mio-circle04_2src_2_reader_8cpp_source.html#l00085">mio::circle::Reader::opcode_name()</a>, <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00038">opcode_name()</a>, and <a class="el" href="_circle_import_8cpp_source.html#l00073">circlechef::CircleImport::opcode_name()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="mio-circle_2src_2_reader_8cpp_source.html#l00161">mio::circle::Reader::opcode_name()</a>, <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00070">opcode_name()</a>, and <a class="el" href="_circle_import_8cpp_source.html#l00073">circlechef::CircleImport::opcode_name()</a>.</p>
 
 </div>
 </div>
@@ -263,36 +279,36 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00038">38</a> of file <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html">Helper.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
-<div class="line"><span class="lineno">   40</span>  assert(opcode);</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacemio_1_1circle.html#ac4941377cebadf44ad88df3a1d78e47e">is_valid</a>(opcode))</div>
-<div class="line"><span class="lineno">   43</span>  {</div>
-<div class="line"><span class="lineno">   44</span>    std::ostringstream oss;</div>
-<div class="line"><span class="lineno">   45</span>    oss &lt;&lt; <span class="stringliteral">&quot;(invalid)&quot;</span>;</div>
-<div class="line"><span class="lineno">   46</span>    <span class="keywordflow">return</span> oss.str();</div>
-<div class="line"><span class="lineno">   47</span>  }</div>
-<div class="line"><span class="lineno">   48</span> </div>
-<div class="line"><span class="lineno">   49</span>  <span class="keywordflow">if</span> (is_custom(opcode))</div>
-<div class="line"><span class="lineno">   50</span>  {</div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> (!opcode-&gt;custom_code())</div>
-<div class="line"><span class="lineno">   52</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;(invalid custom)&quot;</span>;</div>
-<div class="line"><span class="lineno">   53</span> </div>
-<div class="line"><span class="lineno">   54</span>    std::string custom_op = <span class="stringliteral">&quot;CUSTOM(&quot;</span>;</div>
-<div class="line"><span class="lineno">   55</span>    custom_op += opcode-&gt;custom_code()-&gt;c_str();</div>
-<div class="line"><span class="lineno">   56</span>    custom_op += <span class="stringliteral">&quot;)&quot;</span>;</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">return</span> custom_op;</div>
-<div class="line"><span class="lineno">   58</span>  }</div>
-<div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>  ::circle::BuiltinOperator code = opcode-&gt;builtin_code();</div>
-<div class="line"><span class="lineno">   61</span>  return ::circle::EnumNameBuiltinOperator(code);</div>
-<div class="line"><span class="lineno">   62</span>}</div>
-<div class="ttc" id="anamespacemio_1_1circle_html_ac4941377cebadf44ad88df3a1d78e47e"><div class="ttname"><a href="namespacemio_1_1circle.html#ac4941377cebadf44ad88df3a1d78e47e">mio::circle::is_valid</a></div><div class="ttdeci">bool is_valid(const ::circle::OperatorCode *opcode)</div><div class="ttdef"><b>Definition</b> <a href="mio-circle_2src_2_helper_8cpp_source.html#l00026">Helper.cpp:26</a></div></div>
+<p class="definition">Definition at line <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00070">70</a> of file <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html">Helper.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   71</span>{</div>
+<div class="line"><span class="lineno">   72</span>  assert(opcode);</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacemio_1_1circle.html#ac4941377cebadf44ad88df3a1d78e47e">is_valid</a>(opcode))</div>
+<div class="line"><span class="lineno">   75</span>  {</div>
+<div class="line"><span class="lineno">   76</span>    std::ostringstream oss;</div>
+<div class="line"><span class="lineno">   77</span>    oss &lt;&lt; <span class="stringliteral">&quot;(invalid)&quot;</span>;</div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">return</span> oss.str();</div>
+<div class="line"><span class="lineno">   79</span>  }</div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">if</span> (is_custom(opcode))</div>
+<div class="line"><span class="lineno">   82</span>  {</div>
+<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">if</span> (!opcode-&gt;custom_code())</div>
+<div class="line"><span class="lineno">   84</span>      <span class="keywordflow">return</span> <span class="stringliteral">&quot;(invalid custom)&quot;</span>;</div>
+<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   86</span>    std::string custom_op = <span class="stringliteral">&quot;CUSTOM(&quot;</span>;</div>
+<div class="line"><span class="lineno">   87</span>    custom_op += opcode-&gt;custom_code()-&gt;c_str();</div>
+<div class="line"><span class="lineno">   88</span>    custom_op += <span class="stringliteral">&quot;)&quot;</span>;</div>
+<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">return</span> custom_op;</div>
+<div class="line"><span class="lineno">   90</span>  }</div>
+<div class="line"><span class="lineno">   91</span> </div>
+<div class="line"><span class="lineno">   92</span>  ::circle::BuiltinOperator code = builtin_code_neutral(opcode);</div>
+<div class="line"><span class="lineno">   93</span>  return ::circle::EnumNameBuiltinOperator(code);</div>
+<div class="line"><span class="lineno">   94</span>}</div>
+<div class="ttc" id="anamespacemio_1_1circle_html_ac4941377cebadf44ad88df3a1d78e47e"><div class="ttname"><a href="namespacemio_1_1circle.html#ac4941377cebadf44ad88df3a1d78e47e">mio::circle::is_valid</a></div><div class="ttdeci">bool is_valid(const ::circle::OperatorCode *opcode)</div><div class="ttdef"><b>Definition</b> <a href="mio-circle_2src_2_helper_8cpp_source.html#l00046">Helper.cpp:46</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00032">is_custom()</a>, and <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00026">is_valid()</a>.</p>
+<p class="reference">References <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00033">builtin_code_neutral()</a>, <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00064">is_custom()</a>, and <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00046">is_valid()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00354">circledump::dump_model()</a>, <a class="el" href="mio-circle04_2src_2_reader_8cpp_source.html#l00085">mio::circle::Reader::opcode_name()</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00362">luci::CircleReader::opcode_name()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00354">circledump::dump_model()</a>, <a class="el" href="mio-circle_2src_2_reader_8cpp_source.html#l00161">mio::circle::Reader::opcode_name()</a>, and <a class="el" href="_circle_reader_8cpp_source.html#l00362">luci::CircleReader::opcode_name()</a>.</p>
 
 </div>
 </div>
@@ -312,18 +328,15 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00069">69</a> of file <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html">Helper.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
-<div class="line"><span class="lineno">   71</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *kEmptyTensorName = <span class="stringliteral">&quot;(noname)&quot;</span>;</div>
-<div class="line"><span class="lineno">   72</span> </div>
-<div class="line"><span class="lineno">   73</span>  <span class="keyword">auto</span> name = tensor-&gt;name();</div>
-<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">if</span> (name)</div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">return</span> name-&gt;c_str();</div>
-<div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">return</span> kEmptyTensorName;</div>
-<div class="line"><span class="lineno">   78</span>}</div>
+<p class="definition">Definition at line <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00101">101</a> of file <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html">Helper.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span>{</div>
+<div class="line"><span class="lineno">  103</span>  <span class="keywordflow">if</span> (tensor-&gt;name() == <span class="keyword">nullptr</span> || std::string(tensor-&gt;name()-&gt;c_str()).empty())</div>
+<div class="line"><span class="lineno">  104</span>    <span class="keywordflow">return</span> <span class="stringliteral">&quot;(noname)&quot;</span>;</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">return</span> tensor-&gt;name()-&gt;c_str();</div>
+<div class="line"><span class="lineno">  107</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00125">circledump::dump_sub_graph()</a>, <a class="el" href="circlechef_2circle_2src_2_recipe_chef_8cpp_source.html#l00071">circlechef::generate_recipe()</a>, <a class="el" href="circlechef_2circle_2src_2_recipe_chef_8cpp_source.html#l00032">circlechef::set_inputs()</a>, <a class="el" href="circlechef_2circle_2src_2_recipe_chef_8cpp_source.html#l00052">circlechef::set_outputs()</a>, and <a class="el" href="mio-circle04_2src_2_reader_8cpp_source.html#l00106">mio::circle::Reader::tensor_name()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00125">circledump::dump_sub_graph()</a>, <a class="el" href="circlechef_2circle_2src_2_recipe_chef_8cpp_source.html#l00071">circlechef::generate_recipe()</a>, <a class="el" href="circlechef_2circle_2src_2_recipe_chef_8cpp_source.html#l00032">circlechef::set_inputs()</a>, <a class="el" href="circlechef_2circle_2src_2_recipe_chef_8cpp_source.html#l00052">circlechef::set_outputs()</a>, and <a class="el" href="mio-circle_2src_2_reader_8cpp_source.html#l00182">mio::circle::Reader::tensor_name()</a>.</p>
 
 </div>
 </div>
@@ -343,12 +356,12 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00064">64</a> of file <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html">Helper.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   65</span>{</div>
-<div class="line"><span class="lineno">   66</span>  return ::circle::EnumNameTensorType(tensor-&gt;type());</div>
-<div class="line"><span class="lineno">   67</span>}</div>
+<p class="definition">Definition at line <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html#l00096">96</a> of file <a class="el" href="mio-circle_2src_2_helper_8cpp_source.html">Helper.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   97</span>{</div>
+<div class="line"><span class="lineno">   98</span>  return ::circle::EnumNameTensorType(tensor-&gt;type());</div>
+<div class="line"><span class="lineno">   99</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00125">circledump::dump_sub_graph()</a>, and <a class="el" href="mio-circle04_2src_2_reader_8cpp_source.html#l00111">mio::circle::Reader::tensor_dtype()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00125">circledump::dump_sub_graph()</a>, and <a class="el" href="mio-circle_2src_2_reader_8cpp_source.html#l00187">mio::circle::Reader::tensor_dtype()</a>.</p>
 
 </div>
 </div>

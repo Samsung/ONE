@@ -91,28 +91,24 @@ $(document).ready(function(){initNavTree('_o_m_runtime_data_8h.html',''); initRe
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">OMRuntimeData.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="_o_m_tensor_data_8h_source.html">OMTensorData.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_o_m_custom_tensor_data_8h_source.html">OMCustomTensorData.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="core_2_o_m_utils_8h_source.html">OMUtils.h</a>&quot;</code><br />
-<code>#include &lt;memory&gt;</code><br />
-<code>#include &lt;type_traits&gt;</code><br />
 </div>
 <p><a href="_o_m_runtime_data_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_base_context.html">onert_micro::core::OMBaseContext</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_input_context.html">onert_micro::core::OMInputContext&lt; T, InputTensorIdx &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_output_context.html">onert_micro::core::OMOutputContext&lt; T, OutputTensorIdx &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_tensor_context.html">onert_micro::core::OMTensorContext&lt; T, TensorData &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_data_context.html">onert_micro::core::OMDataContext&lt; T, Mixins &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_axis_context_mixin.html">onert_micro::core::OMAxisContextMixin&lt; AxisTensorIdx &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1core_1_1_o_m_axis_context_mixin.html">onert_micro::core::OMAxisContextMixin&lt; IntType, AxisTensorIdx &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -121,6 +117,29 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceonert__micro_1_1core" id="r_namespaceonert__micro_1_1core"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html">onert_micro::core</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ab97af15539dcabbd1870f60315a57c30" id="r_ab97af15539dcabbd1870f60315a57c30"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ab97af15539dcabbd1870f60315a57c30"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html#ab97af15539dcabbd1870f60315a57c30">onert_micro::core::OMInputContext</a> = <a class="el" href="classonert__micro_1_1core_1_1_o_m_tensor_context.html">OMTensorContext</a>&lt; const T, <a class="el" href="classonert__micro_1_1core_1_1_i_o_tensor_data.html">IOTensorData</a>&lt; const T &gt; &gt;</td></tr>
+<tr class="separator:ab97af15539dcabbd1870f60315a57c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5da612e9aa2a744e8b02627d8ee22c2" id="r_ad5da612e9aa2a744e8b02627d8ee22c2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ad5da612e9aa2a744e8b02627d8ee22c2"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html#ad5da612e9aa2a744e8b02627d8ee22c2">onert_micro::core::OMOutputContext</a> = <a class="el" href="classonert__micro_1_1core_1_1_o_m_tensor_context.html">OMTensorContext</a>&lt; T, <a class="el" href="classonert__micro_1_1core_1_1_i_o_tensor_data.html">IOTensorData</a>&lt; T &gt; &gt;</td></tr>
+<tr class="separator:ad5da612e9aa2a744e8b02627d8ee22c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab44275b38e9b53b130430cad6860308f" id="r_ab44275b38e9b53b130430cad6860308f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html#ab44275b38e9b53b130430cad6860308f">onert_micro::core::OMAxisContext</a> = <a class="el" href="classonert__micro_1_1core_1_1_o_m_tensor_context.html">OMTensorContext</a>&lt; uint32_t, <a class="el" href="classonert__micro_1_1core_1_1_o_m_axis_data.html">OMAxisData</a>&lt; uint32_t &gt; &gt;</td></tr>
+<tr class="separator:ab44275b38e9b53b130430cad6860308f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aa589fe5cff57064cc1b2ad10d7b75226" id="r_aa589fe5cff57064cc1b2ad10d7b75226"><td class="memTemplParams" colspan="2">template&lt;typename T , class RuntimeKernel &gt; </td></tr>
+<tr class="memitem:aa589fe5cff57064cc1b2ad10d7b75226"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro_1_1core.html#ab97af15539dcabbd1870f60315a57c30">OMInputContext</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html#aa589fe5cff57064cc1b2ad10d7b75226">onert_micro::core::MakeInputContext</a> (RuntimeKernel &amp;rtk, size_t inputIdx=0)</td></tr>
+<tr class="separator:aa589fe5cff57064cc1b2ad10d7b75226"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23a6000bdf45f8f86f777ddaeabf12c2" id="r_a23a6000bdf45f8f86f777ddaeabf12c2"><td class="memTemplParams" colspan="2">template&lt;typename T , class RuntimeKernel &gt; </td></tr>
+<tr class="memitem:a23a6000bdf45f8f86f777ddaeabf12c2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro_1_1core.html#ad5da612e9aa2a744e8b02627d8ee22c2">OMOutputContext</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html#a23a6000bdf45f8f86f777ddaeabf12c2">onert_micro::core::MakeOutputContext</a> (RuntimeKernel &amp;rtk, size_t outputIdx=0)</td></tr>
+<tr class="separator:a23a6000bdf45f8f86f777ddaeabf12c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfd03999926539911c520494f30ac4af" id="r_adfd03999926539911c520494f30ac4af"><td class="memTemplParams" colspan="2">template&lt;class RuntimeKernel &gt; </td></tr>
+<tr class="memitem:adfd03999926539911c520494f30ac4af"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro_1_1core.html#ab44275b38e9b53b130430cad6860308f">OMAxisContext</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1core.html#adfd03999926539911c520494f30ac4af">onert_micro::core::MakeAxisContext</a> (RuntimeKernel &amp;rtk, size_t axisInputIdx=1)</td></tr>
+<tr class="separator:adfd03999926539911c520494f30ac4af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

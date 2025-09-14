@@ -120,421 +120,357 @@ $(document).ready(function(){initNavTree('onert-micro_2include_2pal_2mcu_2_p_a_l
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;PALUtils.h&quot;</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_custom_runtime_data_8h.html">core/OMCustomRuntimeData.h</a>&quot;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_runtime_shape_8h.html">core/OMRuntimeShape.h</a>&quot;</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespaceonert__micro_1_1core.html">onert_micro::core</a>;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert__micro.html">onert_micro</a></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span>execute</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">namespace </span>pal</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>{</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// clang-format off</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">// ------------------------------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_type_traits_8h.html">core/OMTypeTraits.h</a>&quot;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &lt;set&gt;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert__micro_1_1core.html">core</a> = <a class="code hl_namespace" href="namespaceonert__micro_1_1core.html">onert_micro::core</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">using </span><a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">using </span><a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_reduce_data_context.html">core::OMReduceDataContext</a>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">using </span>core::type_traits::IsQuantized;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert__micro_1_1execute_1_1pal.html">onert_micro::execute::pal</a></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="foldopen" id="foldopen00039" data-start="{" data-end="};">
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html">   39</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html">ReduceSumFn</a></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>{</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html#a493634eaee74eba282386ab4ec5399cc">   41</a></span>  <span class="keyword">constexpr</span> <span class="keyword">static</span> T <a class="code hl_variable" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html#a493634eaee74eba282386ab4ec5399cc">InitValue</a> = T(0);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="foldopen" id="foldopen00043" data-start="{" data-end="}">
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html#ad3734748543659ebd49b9ddd5d6b8f71">   43</a></span>  T <a class="code hl_function" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html#ad3734748543659ebd49b9ddd5d6b8f71">operator()</a>(<span class="keyword">const</span> T current, <span class="keyword">const</span> T in)</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">return</span> in + current;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// clang-format off</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">// ------------------------------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="foldopen" id="foldopen00043" data-start="{" data-end="};">
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html">   43</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html">ReduceSumFn</a></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>{</div>
+<div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html#a8d36a657bab55bebf36117a879683f5a">   45</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html#a8d36a657bab55bebf36117a879683f5a">operator()</a>(T&amp; total, <span class="keyword">const</span> T value)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    total += value;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  }</div>
 </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>};</div>
 </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="foldopen" id="foldopen00050" data-start="{" data-end="};">
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_3_01int8__t_01_4.html">   50</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html">ReduceSumFn</a>&lt;int8_t&gt;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>{</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_3_01int8__t_01_4.html#a444db3a88d29a59bafb5a7b82c0c6dae">   52</a></span>  <span class="keyword">constexpr</span> <span class="keyword">static</span> <span class="keywordtype">float</span> <a class="code hl_variable" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html#a493634eaee74eba282386ab4ec5399cc">InitValue</a> = 0.f;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="foldopen" id="foldopen00054" data-start="{" data-end="}">
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_3_01int8__t_01_4.html#a650914e1bfbcc4376a687856617330a1">   54</a></span>  <span class="keywordtype">float</span> <a class="code hl_function" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_3_01int8__t_01_4.html#a650914e1bfbcc4376a687856617330a1">operator()</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> current, <span class="keyword">const</span> <span class="keywordtype">float</span> in)</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  {</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">return</span> in + current;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">// ------------------------------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00054" data-start="{" data-end="};">
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html">   54</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html">ReduceProductFn</a></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>{</div>
+<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html#a2cb3272992d26f3dccea1b9125e7c75a">   56</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html#a2cb3272992d26f3dccea1b9125e7c75a">operator()</a>(T&amp; total, <span class="keyword">const</span> T value)</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    total *= value;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  }</div>
 </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>};</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>};</div>
 </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">// ------------------------------------------------------------------------------------------------</span></div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="foldopen" id="foldopen00063" data-start="{" data-end="};">
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html">   63</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html">ReduceProductFn</a></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>{</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html#a2ecd663c6df00f4fdad3c247f3e717cf">   65</a></span>  <span class="keyword">constexpr</span> <span class="keyword">static</span> T <a class="code hl_variable" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html#a2ecd663c6df00f4fdad3c247f3e717cf">InitValue</a> = T(1);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html#a43fbed0d5a421b79fa605237f97d00ce">   67</a></span>  T <a class="code hl_function" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html#a43fbed0d5a421b79fa605237f97d00ce">operator()</a>(<span class="keyword">const</span> T current, <span class="keyword">const</span> T in)</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  {</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">return</span> in * current;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">// ------------------------------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">template</span> &lt;<span class="keyword">typename</span>&gt; <span class="keyword">class </span>ReduceFn&gt;</div>
+<div class="foldopen" id="foldopen00065" data-start="{" data-end="};">
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html">   65</a></span><span class="keyword">class </span><a class="code hl_class" href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html">Reducer</a></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>{</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keyword">using </span>ValueType = std::conditional_t&lt;IsQuantized&lt;T&gt;, float, T&gt;;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_tensor_context.html">core::OMInputContext&lt;T&gt;</a> &amp;_input;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_tensor_context.html">core::OMOutputContext&lt;T&gt;</a> &amp;_output;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_tensor_context.html">core::OMAxisContext</a> &amp;_axes;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  T _init_value;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  ReduceFn&lt;ValueType&gt; _reducer;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  std::unordered_map&lt;size_t, size_t&gt; _curr_index = {};</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  std::unordered_map&lt;size_t, uint32_t&gt; _resolved_axes = {};</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  std::unordered_map&lt;size_t, ValueType&gt; _accumulator = {};</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00082" data-start="{" data-end="}">
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html#a31b7e3036d5728e65fc5fd99af5841f1">   82</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html#a31b7e3036d5728e65fc5fd99af5841f1">Reducer</a>(<a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_reduce_data_context.html">core::OMReduceDataContext&lt;T&gt;</a> &amp;ctx, T init_value)</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    : _input(ctx.Input())</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    , _output(ctx.Output())</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    , _axes(ctx.Axis())</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    , _init_value(init_value)</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  {}</div>
 </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>};</div>
-</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="foldopen" id="foldopen00074" data-start="{" data-end="};">
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_3_01int8__t_01_4.html">   74</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html">ReduceProductFn</a>&lt;int8_t&gt;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>{</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_3_01int8__t_01_4.html#aba066161a98199ec2ae7bd0ef88204b6">   76</a></span>  <span class="keyword">constexpr</span> <span class="keyword">static</span> <span class="keywordtype">float</span> <a class="code hl_variable" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html#a2ecd663c6df00f4fdad3c247f3e717cf">InitValue</a> = 1.f;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="foldopen" id="foldopen00078" data-start="{" data-end="}">
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_3_01int8__t_01_4.html#ab5daa0ca3203f02c4b198220d1c7a62d">   78</a></span>  <span class="keywordtype">float</span> <a class="code hl_function" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_3_01int8__t_01_4.html#ab5daa0ca3203f02c4b198220d1c7a62d">operator()</a>(<span class="keyword">const</span> <span class="keywordtype">float</span> current, <span class="keyword">const</span> <span class="keywordtype">float</span> in)</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  {</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">return</span> in * current;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  }</div>
-</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>};</div>
-</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">// ------------------------------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">// clang-format on</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment">// This method parses the input &#39;axis&#39; to remove duplicates and handle negative</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">// values, and returns a valid &#39;out_axis&#39;</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="keyword">public</span>:</div>
 <div class="foldopen" id="foldopen00090" data-start="{" data-end="}">
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1execute_1_1pal.html#a154bf5fc19295305f91c1968e708760b">   90</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a154bf5fc19295305f91c1968e708760b">resolveAxis</a>(<span class="keyword">const</span> <span class="keywordtype">int</span> num_dims, <span class="keyword">const</span> <span class="keywordtype">int</span> *axis, <span class="keyword">const</span> int64_t num_axis, <span class="keywordtype">int</span> *out_axis,</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                        <span class="keywordtype">int</span> *out_num_axis)</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>{</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  *out_num_axis = 0; <span class="comment">// Just in case.</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="comment">// Short-circuit axis resolution for scalars; the axis will go unused.</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keywordflow">if</span> (num_dims == 0)</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  {</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  }</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="comment">// o(n^2) is fine since out_num_axis should be really small, mostly &lt;= 4</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keywordflow">for</span> (int64_t idx = 0; idx &lt; num_axis; ++idx)</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="comment">// Handle negative index. A positive index &#39;p_idx&#39; can be represented as a</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="comment">// negative index &#39;n_idx&#39; as: n_idx = p_idx-num_dims</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="comment">// eg: For num_dims=3, [0, 1, 2] is the same as [-3, -2, -1]  */</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordtype">int</span> current = axis[idx] &lt; 0 ? (axis[idx] + num_dims) : axis[idx];</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keywordflow">if</span> (current &lt; 0 || current &gt;= num_dims)</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    {</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    }</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordtype">bool</span> is_dup = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; *out_num_axis; ++j)</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    {</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      <span class="keywordflow">if</span> (out_axis[j] == current)</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>      {</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        is_dup = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>      }</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    }</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">if</span> (!is_dup)</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    {</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>      <span class="keywordflow">if</span> (*out_num_axis &gt; 1)</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      {</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>      }</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>      out_axis[*out_num_axis] = current;</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      *out_num_axis += 1;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    }</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  }</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>}</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html#a9d9fd270e710f2d40e3bf31de02e585b">   90</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html#a9d9fd270e710f2d40e3bf31de02e585b">Mean</a>()</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">if</span> (SpecialCaseMeanImpl())</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordflow">return</span> ReduceImpl(<span class="keyword">true</span>);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  }</div>
 </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="foldopen" id="foldopen00098" data-start="{" data-end="}">
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html#a873a9ee8e369391c0250793c699733d6">   98</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html#a873a9ee8e369391c0250793c699733d6">Reduce</a>()</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  {</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">return</span> ReduceImpl();</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  }</div>
+</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keywordtype">bool</span> ReduceImpl(<span class="keywordtype">bool</span> mean = <span class="keyword">false</span>);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="keywordtype">bool</span> SpecialCaseMeanImpl();</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keywordtype">bool</span> ResolveAxis();</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  T ResolvedAxisLength();</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keywordtype">size_t</span> ReducedOutputOffset(<span class="keywordtype">int</span> num_axes, <span class="keyword">const</span> uint32_t *axes);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordtype">bool</span> NextIndex();</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>};</div>
+</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="comment">// ------------------------------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">template</span> &lt;<span class="keyword">typename</span>&gt; <span class="keyword">class </span>ReduceFn&gt;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="keywordtype">bool</span> Reducer&lt;T, ReduceFn&gt;::ResolveAxis()</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>{</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordtype">size_t</span> num_resolved_axes = 0;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  _resolved_axes.clear();</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keywordflow">if</span> (_input.IsScalar())</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; _axes.DimsCount(); ++i)</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  {</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordtype">int</span> current = _axes.Data().At(i);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordflow">if</span> (_resolved_axes.count(current) &gt; 0)</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>      <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment">// ------------------------------------------------------------------------------------------------</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">// Old version (used in Sum and ReduceProd), to be replaced with the new one (see below).</span></div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment">// Computes the generic value (i.e., sum/max/min/prod) of elements across</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="comment">// dimensions given in axis. It needs to pass in init_value and reducer.</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="foldopen" id="foldopen00138" data-start="{" data-end="}">
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1execute_1_1pal.html#a7735cf76aa7f6e29f5b0695a060da5ac">  138</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a7735cf76aa7f6e29f5b0695a060da5ac">ReduceGeneric</a>(<span class="keyword">const</span> T *input_data, <span class="keyword">const</span> <span class="keywordtype">int</span> *input_dims, <span class="keyword">const</span> <span class="keywordtype">int</span> input_num_dims,</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                          T *output_data, <span class="keyword">const</span> <span class="keywordtype">int</span> *axis, <span class="keyword">const</span> int64_t num_axis_dimensions,</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                          T init_value, <span class="keyword">const</span> <span class="keywordtype">int</span> output_flat_size, T reducer(<span class="keyword">const</span> T, <span class="keyword">const</span> T))</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>{</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  <span class="comment">// Return early when input shape has zero dim.</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; input_num_dims; ++i)</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  {</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keywordflow">if</span> (input_dims[i] == 0)</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  }</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; output_flat_size; ++idx)</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  {</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    output_data[idx] = init_value;</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  }</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keywordflow">if</span> (_resolved_axes.size() &gt; 1)</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    _resolved_axes[num_resolved_axes++] = current;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  }</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>}</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">template</span> &lt;<span class="keyword">typename</span>&gt; <span class="keyword">class </span>ReduceFn&gt;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="keywordtype">bool</span> Reducer&lt;T, ReduceFn&gt;::SpecialCaseMeanImpl()</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>{</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="comment">/*</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">    Case: Mean over WH of axis 1 and 2.</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="comment">    Detail: for tensor with rank=4 and simultaneous reduction over width and height.</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment">  */</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <span class="keyword">const</span> uint32_t *axes_data = _axes.Data().Get();</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  std::set&lt;uint32_t&gt; axes_values = { axes_data[0], axes_data[1] };</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="keywordflow">if</span> (_input.DimsCount() != 4)</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="comment">// Resolve axis.</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="keywordtype">int</span> num_resolved_axis = 0;</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="keywordtype">int</span> resolved_axis[2];</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a154bf5fc19295305f91c1968e708760b">resolveAxis</a>(input_num_dims, axis, num_axis_dimensions, resolved_axis, &amp;num_resolved_axis))</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>  {</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  }</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <span class="keywordflow">if</span> (_axes.ElementsCount() != 2)</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <span class="keywordflow">if</span> (axes_values.count(1) != 1 || axes_values.count(2) != 1)</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="keyword">auto</span> input_shape = OMRuntimeShape::extendedShape(4, _input.Shape());</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = OMRuntimeShape::extendedShape(4, _output.Shape());</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="keywordtype">int</span> temp_index[5];</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="comment">// Reset input iterator.</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; input_num_dims; ++idx)</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  {</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    temp_index[idx] = 0;</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>  }</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="comment">// Iterate through input_data.</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  <span class="keywordflow">do</span></div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  {</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keywordtype">size_t</span> input_offset = <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a917c4ed35594d1bdbf9d7480dd2cc80b">reducedOutputOffset</a>(input_num_dims, input_dims, temp_index, 0, <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordtype">size_t</span> output_offset =</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>      <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a917c4ed35594d1bdbf9d7480dd2cc80b">reducedOutputOffset</a>(input_num_dims, input_dims, temp_index, num_resolved_axis, axis);</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    output_data[output_offset] = reducer(output_data[output_offset], input_data[input_offset]);</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>  } <span class="keywordflow">while</span> (<a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a36e759f35baf92c43b698cd711aea733">nextIndex</a>(input_num_dims, input_dims, temp_index));</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>}</div>
-</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="comment">// This method expects that output_data has been initialized.</span></div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="foldopen" id="foldopen00183" data-start="{" data-end="}">
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1execute_1_1pal.html#aff349297371b587eae0e3afa8e57b512">  183</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#aff349297371b587eae0e3afa8e57b512">reduceSumImpl</a>(<span class="keyword">const</span> T *input_data, <span class="keyword">const</span> <span class="keywordtype">int</span> *input_dims, <span class="keyword">const</span> <span class="keywordtype">int</span> input_num_dims,</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                          T *output_data, <span class="keyword">const</span> <span class="keywordtype">int</span> *axis, <span class="keyword">const</span> <span class="keywordtype">int</span> num_axis,</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                          <span class="keyword">const</span> <span class="keywordtype">int</span> num_outputs)</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>{</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>  <span class="keywordflow">return</span> ReduceGeneric&lt;T&gt;(input_data, input_dims, input_num_dims, output_data, axis, num_axis,</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                          <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0), num_outputs,</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                          [](<span class="keyword">const</span> T current, <span class="keyword">const</span> T in) -&gt; T { <span class="keywordflow">return</span> in + current; });</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>}</div>
-</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment">// Mean over WH of axis 1,2</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="foldopen" id="foldopen00194" data-start="{" data-end="}">
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1execute_1_1pal.html#a2b6fb7abee062cb7da367950a6104717">  194</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a2b6fb7abee062cb7da367950a6104717">MeanROWH</a>(<span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;unextended_input_shape, <span class="keyword">const</span> T *input_data,</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                     <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;unextended_output_shape, T *output_data)</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>{</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  <span class="comment">// Current implementation only supports dimension equals 4 and simultaneous</span></div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="comment">// reduction over width and height.</span></div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> input_shape = <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aad8a01291216c921715e1b627fbd14c8">OMRuntimeShape::extendedShape</a>(4, unextended_input_shape);</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aad8a01291216c921715e1b627fbd14c8">OMRuntimeShape::extendedShape</a>(4, unextended_output_shape);</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_batch = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(0);</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_depth = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(3);</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_height = input_shape.dims(1);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_width = input_shape.dims(2);</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_b = 0; out_b &lt; output_batch; ++out_b)</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  {</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_d = 0; out_d &lt; output_depth; ++out_d)</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    {</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>      <span class="keywordtype">float</span> value = 0;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_h = 0; in_h &lt; input_height; ++in_h)</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>      {</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_w = 0; in_w &lt; input_width; ++in_w)</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        {</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>          <span class="keywordtype">size_t</span> idx = <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#abee9a45bb904d8290e56177ad969867f">offset</a>(input_shape.dimsData(), out_b, in_h, in_w, out_d);</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>          value += <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(_input.Data().At(idx));</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        }</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>      }</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>      <span class="keywordtype">float</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a> = value / (input_width * input_height);</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>      <span class="keywordtype">size_t</span> idx = <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#abee9a45bb904d8290e56177ad969867f">offset</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#ad88064d35675a5ccc00747a1496c8304">dimsData</a>(), out_b, 0, 0, out_d);</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>      _output.Data().SetAt(idx, result);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    }</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  }</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>}</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">template</span> &lt;<span class="keyword">typename</span>&gt; <span class="keyword">class </span>ReduceFn&gt;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="keywordtype">bool</span> Reducer&lt;T, ReduceFn&gt;::ReduceImpl(<span class="keywordtype">bool</span> mean)</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>{</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>  _accumulator.clear();</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  _curr_index.clear();</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="keyword">auto</span> *axes_data = _axes.Data().Get();</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespaceluci__eval__verifier__ref.html#a7fbf2bdb31dffced1708502a6c405cd3">num_outputs</a> = _output.ElementsCount();</div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_batch = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(0);</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_depth = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(3);</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_height = input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">dims</a>(1);</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_width = input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">dims</a>(2);</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_b = 0; out_b &lt; output_batch; ++out_b)</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  {</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_d = 0; out_d &lt; output_depth; ++out_d)</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    {</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>      <span class="keywordtype">float</span> value = 0;</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_h = 0; in_h &lt; input_height; ++in_h)</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>      {</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_w = 0; in_w &lt; input_width; ++in_w)</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        {</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>          value += <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>            input_data[<a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#abee9a45bb904d8290e56177ad969867f">offset</a>(input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>(), out_b, in_h, in_w, out_d)]);</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>        }</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>      }</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>      <span class="keywordtype">float</span> result = value / (input_width * input_height);</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>      output_data[<a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#abee9a45bb904d8290e56177ad969867f">offset</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#ad88064d35675a5ccc00747a1496c8304">dimsData</a>(), out_b, 0, 0, out_d)] = <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(result);</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    }</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  }</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>}</div>
-</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="comment">// New version (used in Mean).</span></div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">template</span> &lt;<span class="keyword">typename</span>&gt; <span class="keyword">class </span>ReduceFn&gt;</div>
-<div class="foldopen" id="foldopen00228" data-start="{" data-end="}">
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1execute_1_1pal.html#a5af1d1e868d9ec1f723ec73d75619034">  228</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a7735cf76aa7f6e29f5b0695a060da5ac">ReduceGeneric</a>(<a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_reduce_data_context.html">OMReduceDataContext&lt;T&gt;</a> &amp;ctx)</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>{</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  <span class="keyword">auto</span> &amp;input = ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">Input</a>();</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>  <span class="keyword">auto</span> &amp;input_data = input.Data();</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>  <span class="keyword">auto</span> input_dims = input.Dims();</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  <span class="keyword">auto</span> input_num_dims = input.DimsCount();</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  <span class="keyword">auto</span> &amp;output = ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#abdc6889474f382c94082ff21fe94b925">Output</a>();</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  <span class="keyword">auto</span> &amp;output_data = output.Data();</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  <span class="keyword">auto</span> output_flat_size = output.ShapeFlatSize();</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>  <span class="keyword">auto</span> &amp;axis_ctx = ctx.Axis();</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  <span class="keyword">auto</span> &amp;axis = axis_ctx.Data();</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>  <span class="keyword">auto</span> num_axis_dimensions = axis_ctx.DimsCount();</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;<a class="code hl_variable" href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">input_data</a> = _input.Data();</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>  <span class="keywordflow">if</span> (_input.HasZeroSizeDims())</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  {</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  }</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="namespaceluci__eval__verifier__ref.html#a7fbf2bdb31dffced1708502a6c405cd3">num_outputs</a>; ++i)</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  {</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    _accumulator[i] = _init_value;</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  }</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacennfw_1_1cker.html#a8fad551fcd78b2f8c9c53704029f0cc3">ResolveAxis</a>())</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>  {</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  }</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>  <span class="keywordflow">do</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>  {</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    <span class="keywordtype">size_t</span> input_offset = <a class="code hl_function" href="namespacennfw_1_1cker.html#a757324a1a73d98f1a822a08d4bedffb9">ReducedOutputOffset</a>(0, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="keywordtype">size_t</span> output_offset = <a class="code hl_function" href="namespacennfw_1_1cker.html#a757324a1a73d98f1a822a08d4bedffb9">ReducedOutputOffset</a>(_resolved_axes.size(), axes_data);</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    _reducer(_accumulator[output_offset], <a class="code hl_variable" href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">input_data</a>.ValueAt(input_offset));</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  } <span class="keywordflow">while</span> (<a class="code hl_function" href="namespacennfw_1_1cker.html#a6d8c0220b027bc83d5d7d0e19c38f42f">NextIndex</a>());</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="namespaceluci__eval__verifier__ref.html#a7fbf2bdb31dffced1708502a6c405cd3">num_outputs</a>; ++i)</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>  {</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    <span class="keyword">auto</span> value = _accumulator.at(i);</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="keywordflow">if</span> (mean)</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    {</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>      value /= ResolvedAxisLength();</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    }</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    _output.Data().SetValueAt(i, value);</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>  }</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>}</div>
 <div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>  <span class="comment">// Return early when input shape has zero dim.</span></div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; input_num_dims; ++i)</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  {</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="keywordflow">if</span> (input_dims[i] == 0)</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>  }</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; output_flat_size; ++idx)</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  {</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    output_data.SetValueAt(idx, ReduceFn&lt;T&gt;::InitValue);</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  }</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  <span class="comment">// Resolve axis.</span></div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <span class="keywordtype">int</span> num_resolved_axis = 0;</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  <span class="keywordtype">int</span> resolved_axis[2];</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a154bf5fc19295305f91c1968e708760b">resolveAxis</a>(input_num_dims, axis.Get(), num_axis_dimensions, resolved_axis,</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>                   &amp;num_resolved_axis))</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  {</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  }</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  <span class="keywordtype">int</span> temp_index[5];</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>  <span class="comment">// Reset input iterator.</span></div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; input_num_dims; ++idx)</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  {</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    temp_index[idx] = 0;</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  }</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  <span class="comment">// Iterate through input_data.</span></div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  <span class="keywordflow">do</span></div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>  {</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    <span class="keywordtype">size_t</span> input_offset = <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a917c4ed35594d1bdbf9d7480dd2cc80b">reducedOutputOffset</a>(input_num_dims, input_dims, temp_index, 0, <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    <span class="keywordtype">size_t</span> output_offset =</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>      <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a917c4ed35594d1bdbf9d7480dd2cc80b">reducedOutputOffset</a>(input_num_dims, input_dims, temp_index, num_resolved_axis, axis.Get());</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    ReduceFn&lt;T&gt; reducer;</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    <span class="keyword">auto</span> value = reducer(output_data.ValueAt(output_offset), input_data.ValueAt(input_offset));</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    output_data.SetValueAt(output_offset, value);</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>  } <span class="keywordflow">while</span> (<a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a36e759f35baf92c43b698cd711aea733">nextIndex</a>(input_num_dims, input_dims, temp_index));</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>}</div>
-</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="comment">// ------------------------------------------------------------------------------------------------</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">template</span> &lt;<span class="keyword">typename</span>&gt; <span class="keyword">class </span>ReduceFn&gt;</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>T Reducer&lt;T, ReduceFn&gt;::ResolvedAxisLength()</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>{</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>  T axis_length = 1;</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>  <span class="keyword">constexpr</span> <span class="keyword">static</span> <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7aa0b1ac8aae6b1cfbbe89085c642b3b4b">kMax</a> = std::numeric_limits&lt;size_t&gt;::max();</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = 0u; i &lt; _resolved_axes.size(); ++i)</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>  {</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keyword">auto</span> &amp;axis = _resolved_axes.at(i);</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="keyword">auto</span> current = <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(_input.Dims()[axis]);</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="keywordflow">if</span> (current == 0)</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="comment">// Overflow prevention.</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    <span class="keywordflow">if</span> (current &gt; (kMax / axis_length))</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    axis_length *= current;</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  }</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(axis_length);</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>}</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="comment">  Gets offset of index if reducing on axis. When reducing, the flattened offset</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="comment">  will not change, if the input index changes on the given axis.</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="comment">  For example, if you have a 3D tensor and you are reducing to 2D by eliminating axis 0,</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="comment">  then index (0, 1, 2) and index (1, 1, 2) will map to the same flattened offset.</span></div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">template</span> &lt;<span class="keyword">typename</span>&gt; <span class="keyword">class </span>ReduceFn&gt;</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="keywordtype">size_t</span> Reducer&lt;T, ReduceFn&gt;::ReducedOutputOffset(<span class="keywordtype">int</span> num_axes, <span class="keyword">const</span> uint32_t *axes_data)</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>{</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#abee9a45bb904d8290e56177ad969867f">offset</a> = 0;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> dim_idx = 0u; dim_idx &lt; _input.DimsCount(); ++dim_idx)</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  {</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    <span class="keywordtype">bool</span> skip_axis = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <span class="keywordflow">if</span> (axes_data != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    {</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>      skip_axis = std::any_of(axes_data, axes_data + num_axes, [&amp;dim_idx](<span class="keyword">auto</span> axis)</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>      {</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        <span class="keywordflow">return</span> axis == dim_idx;</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>      });</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    }</div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">template</span> &lt;<span class="keyword">typename</span>&gt; <span class="keyword">class </span>ReduceFn&gt;</div>
-<div class="foldopen" id="foldopen00291" data-start="{" data-end="}">
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno"><a class="line" href="namespaceonert__micro_1_1execute_1_1pal.html#a0b92ff182109cd73bc942894d883b925">  291</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a0b92ff182109cd73bc942894d883b925">Reduce</a>(<a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_reduce_data_context.html">OMReduceDataContext&lt;T&gt;</a> &amp;ctx, <span class="keywordtype">bool</span> mean = <span class="keyword">false</span>)</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>{</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  <span class="comment">// Special case mean implementation exists for 4D mean across axes 1</span></div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  <span class="comment">// and 2</span></div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> *axis_value = ctx.Axis().Data().Get();</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  <span class="keywordtype">bool</span> special_case_4d_axes_1_and_2 =</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">Input</a>().DimsCount() == 4 &amp;&amp; ctx.Axis().ShapeFlatSize() == 2 &amp;&amp;</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    ((axis_value[0] == 1 &amp;&amp; axis_value[1] == 2) || (axis_value[0] == 2 &amp;&amp; axis_value[1] == 1));</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>  <span class="keywordflow">if</span> (special_case_4d_axes_1_and_2)</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  {</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> input_shape(ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">Input</a>().Shape());</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>(ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#abdc6889474f382c94082ff21fe94b925">Output</a>().Shape());</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    MeanROWH&lt;T&gt;(input_shape, ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">Input</a>().Data().Get(), <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#abdc6889474f382c94082ff21fe94b925">Output</a>().Data().Get());</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  }</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span> </div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  <span class="keyword">constexpr</span> <span class="keyword">static</span> T kInitValue = T(0);</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  <span class="keywordflow">if</span> (!ReduceGeneric&lt;T, ReduceFn&gt;(ctx))</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  {</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  }</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  <span class="keyword">auto</span> &amp;input = ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">Input</a>();</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>  <span class="keyword">auto</span> input_dims = input.Dims();</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>  <span class="keyword">auto</span> input_num_dims = input.DimsCount();</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>  <span class="keyword">auto</span> &amp;output = ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#abdc6889474f382c94082ff21fe94b925">Output</a>();</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>  <span class="keyword">auto</span> &amp;output_data = output.Data();</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  <span class="keyword">auto</span> num_outputs = output.ShapeFlatSize();</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  <span class="keyword">auto</span> &amp;axis = ctx.Axis().Data();</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  <span class="keyword">auto</span> num_axis_dimensions = ctx.Axis().DimsCount();</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>  <span class="comment">// Resolve axis again for computing mean</span></div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  <span class="keywordtype">int</span> num_resolved_axis = 0;</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  <span class="keywordtype">int</span> resolved_axis[2];</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    <span class="keywordflow">if</span> (!skip_axis)</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    {</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>      <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#abee9a45bb904d8290e56177ad969867f">offset</a> *= _input.DimLength(dim_idx);</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>      <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#abee9a45bb904d8290e56177ad969867f">offset</a> += _curr_index[dim_idx];</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    }</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>  }</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#abee9a45bb904d8290e56177ad969867f">offset</a>;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>}</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="comment">  Gets next index to iterate through a multidimensional array.</span></div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">template</span> &lt;<span class="keyword">typename</span>&gt; <span class="keyword">class </span>ReduceFn&gt;</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="keywordtype">bool</span> Reducer&lt;T, ReduceFn&gt;::NextIndex()</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>{</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>  <span class="keywordflow">if</span> (_input.DimsCount() == 0)</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>  {</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  }</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span> </div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = _input.DimsCount() - 1; idx &gt;= 0; --idx)</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  {</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    <span class="keyword">auto</span> current_val = _curr_index[idx] + 1;</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>    <span class="keywordflow">if</span> (_input.DimLength(idx) != current_val)</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    {</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>      _curr_index[idx] = current_val;</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>    }</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span> </div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>    _curr_index[idx] = 0;</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>  }</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span> </div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>}</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span><span class="comment">// ------------------------------------------------------------------------------------------------</span></div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span> </div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a154bf5fc19295305f91c1968e708760b">resolveAxis</a>(input_num_dims, axis.Get(), num_axis_dimensions, resolved_axis,</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>                   &amp;num_resolved_axis))</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>  {</div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>  }</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>  <span class="comment">// clang-format off</span></div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>  <span class="keyword">auto</span> fnReduceOutput = [&amp;](<span class="keywordtype">size_t</span> divide_by = 1)</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>  {</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>      <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; num_outputs; ++idx)</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>      {</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>        <span class="keyword">auto</span> value = output_data.ValueAt(idx);</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>        value /= <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(divide_by);</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>        output_data.SetAt(idx, value);</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>      }</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>  };</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>  <span class="comment">// clang-format on</span></div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>  <span class="keywordflow">if</span> (!mean)</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>  {</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>    fnReduceOutput();</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>  }</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span> </div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>  <span class="comment">// Calculate mean by dividing output_data by num of aggregated element.</span></div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>  <span class="keywordtype">size_t</span> num_elements_in_axis = 1;</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; num_resolved_axis; ++idx)</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>  {</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    <span class="keywordtype">size_t</span> current = <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(input_dims[resolved_axis[idx]]);</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    <span class="comment">// Overflow prevention.</span></div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    <span class="keywordflow">if</span> (current &gt; (std::numeric_limits&lt;size_t&gt;::max() / num_elements_in_axis))</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    {</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>    }</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>    num_elements_in_axis *= current;</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>  }</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>  <span class="keywordflow">if</span> (num_elements_in_axis &gt; 0)</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>  {</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    fnReduceOutput(num_elements_in_axis);</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>  }</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span> </div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>}</div>
-</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span> </div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>} <span class="comment">// namespace pal</span></div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>} <span class="comment">// namespace execute</span></div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>} <span class="comment">// namespace onert_micro</span></div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span> </div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_PAL_REDUCE_COMMON_H</span></div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>} <span class="comment">// namespace onert_micro::execute::pal</span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_PAL_REDUCE_COMMON_H</span></div>
 <div class="ttc" id="a_o_m_custom_runtime_data_8h_html"><div class="ttname"><a href="_o_m_custom_runtime_data_8h.html">OMCustomRuntimeData.h</a></div></div>
 <div class="ttc" id="a_o_m_runtime_shape_8h_html"><div class="ttname"><a href="_o_m_runtime_shape_8h.html">OMRuntimeShape.h</a></div></div>
+<div class="ttc" id="a_o_m_type_traits_8h_html"><div class="ttname"><a href="_o_m_type_traits_8h.html">OMTypeTraits.h</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_a21afbf00a49a9fb5b67c40f78e408b23"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">luci_interpreter::RuntimeShape::dims</a></div><div class="ttdeci">int32_t dims(int i) const</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">Tensor.h:108</a></div></div>
 <div class="ttc" id="aclassluci__interpreter_1_1_runtime_shape_html_ad88064d35675a5ccc00747a1496c8304"><div class="ttname"><a href="classluci__interpreter_1_1_runtime_shape.html#ad88064d35675a5ccc00747a1496c8304">luci_interpreter::RuntimeShape::dimsData</a></div><div class="ttdeci">int32_t * dimsData()</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">Tensor.h:56</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_data_context_html_a1d8c3554f691ca6cde4ed47c66d3e67c"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">onert_micro::core::OMDataContext::Input</a></div><div class="ttdeci">auto &amp; Input()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_data_8h_source.html#l00149">OMRuntimeData.h:149</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_data_context_html_abdc6889474f382c94082ff21fe94b925"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_data_context.html#abdc6889474f382c94082ff21fe94b925">onert_micro::core::OMDataContext::Output</a></div><div class="ttdeci">auto &amp; Output()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_data_8h_source.html#l00154">OMRuntimeData.h:154</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_reduce_data_context_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_reduce_data_context.html">onert_micro::core::OMReduceDataContext</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_custom_runtime_data_8h_source.html#l00031">OMCustomRuntimeData.h:32</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">onert_micro::core::OMRuntimeShape</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00030">OMRuntimeShape.h:31</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a166a4cc1a3ef3ec54191257141c81ca9"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">onert_micro::core::OMRuntimeShape::dimsData</a></div><div class="ttdeci">int32_t * dimsData()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00138">OMRuntimeShape.h:138</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_aad8a01291216c921715e1b627fbd14c8"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aad8a01291216c921715e1b627fbd14c8">onert_micro::core::OMRuntimeShape::extendedShape</a></div><div class="ttdeci">static OMRuntimeShape extendedShape(size_t new_shape_size, const OMRuntimeShape &amp;shape)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00111">OMRuntimeShape.h:111</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_ac88876c13dc96f9077561ad9715809cd"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">onert_micro::core::OMRuntimeShape::dims</a></div><div class="ttdeci">int32_t dims(size_t i) const</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00153">OMRuntimeShape.h:153</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_tensor_context_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_tensor_context.html">onert_micro::core::OMTensorContext</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_data_8h_source.html#l00030">OMRuntimeData.h:31</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1execute_1_1pal_1_1_reducer_html"><div class="ttname"><a href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html">onert_micro::execute::pal::Reducer</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00065">PALReduceCommon.h:66</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1execute_1_1pal_1_1_reducer_html_a31b7e3036d5728e65fc5fd99af5841f1"><div class="ttname"><a href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html#a31b7e3036d5728e65fc5fd99af5841f1">onert_micro::execute::pal::Reducer::Reducer</a></div><div class="ttdeci">Reducer(core::OMReduceDataContext&lt; T &gt; &amp;ctx, T init_value)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00082">PALReduceCommon.h:82</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1execute_1_1pal_1_1_reducer_html_a873a9ee8e369391c0250793c699733d6"><div class="ttname"><a href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html#a873a9ee8e369391c0250793c699733d6">onert_micro::execute::pal::Reducer::Reduce</a></div><div class="ttdeci">bool Reduce()</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00098">PALReduceCommon.h:98</a></div></div>
+<div class="ttc" id="aclassonert__micro_1_1execute_1_1pal_1_1_reducer_html_a9d9fd270e710f2d40e3bf31de02e585b"><div class="ttname"><a href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html#a9d9fd270e710f2d40e3bf31de02e585b">onert_micro::execute::pal::Reducer::Mean</a></div><div class="ttdeci">bool Mean()</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00090">PALReduceCommon.h:90</a></div></div>
 <div class="ttc" id="aluci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_html_a74a475996321e12d590d9029e114d8d0"><div class="ttname"><a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a></div><div class="ttdeci">const luci_interpreter::RuntimeShape output_shape</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">PALComparisons.h:32</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_a3c1509497a6687dc3572748c3917f011"><div class="ttname"><a href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">infer.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00103">infer.py:103</a></div></div>
+<div class="ttc" id="anamespaceinfer_html_a48a40d2cc016f1f0d2fd9a8e04098678"><div class="ttname"><a href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">infer.input_data</a></div><div class="ttdeci">list input_data</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00029">infer.py:29</a></div></div>
+<div class="ttc" id="anamespaceluci__eval__verifier__ref_html_a7fbf2bdb31dffced1708502a6c405cd3"><div class="ttname"><a href="namespaceluci__eval__verifier__ref.html#a7fbf2bdb31dffced1708502a6c405cd3">luci_eval_verifier_ref.num_outputs</a></div><div class="ttdeci">int num_outputs</div><div class="ttdef"><b>Definition</b> <a href="luci__eval__verifier__ref_8py_source.html#l00090">luci_eval_verifier_ref.py:90</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a6d8c0220b027bc83d5d7d0e19c38f42f"><div class="ttname"><a href="namespacennfw_1_1cker.html#a6d8c0220b027bc83d5d7d0e19c38f42f">nnfw::cker::NextIndex</a></div><div class="ttdeci">bool NextIndex(const int num_dims, const int *dims, int *current)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00411">Utils.h:411</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a757324a1a73d98f1a822a08d4bedffb9"><div class="ttname"><a href="namespacennfw_1_1cker.html#a757324a1a73d98f1a822a08d4bedffb9">nnfw::cker::ReducedOutputOffset</a></div><div class="ttdeci">size_t ReducedOutputOffset(const int num_dims, const int *dims, const int *index, const int num_axis, const int *axis)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2_utils_8h_source.html#l00444">Utils.h:444</a></div></div>
+<div class="ttc" id="anamespacennfw_1_1cker_html_a8fad551fcd78b2f8c9c53704029f0cc3"><div class="ttname"><a href="namespacennfw_1_1cker.html#a8fad551fcd78b2f8c9c53704029f0cc3">nnfw::cker::ResolveAxis</a></div><div class="ttdeci">bool ResolveAxis(const int num_dims, const std::vector&lt; int &gt; &amp;axes, int *out_axis, int *out_num_axis)</div><div class="ttdef"><b>Definition</b> <a href="compute_2cker_2include_2cker_2operation_2_reduce_8h_source.html#l00169">Reduce.h:169</a></div></div>
+<div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a76beaf5f1eaf7a6eccfd2c624a8143f7aa0b1ac8aae6b1cfbbe89085c642b3b4b"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7aa0b1ac8aae6b1cfbbe89085c642b3b4b">onert::backend::cpu::ops::ElementwiseBinaryType::kMax</a></div><div class="ttdeci">@ kMax</div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1core_html"><div class="ttname"><a href="namespaceonert__micro_1_1core.html">onert_micro::core</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8h_source.html#l00027">OMMemoryManager.h:28</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a0b92ff182109cd73bc942894d883b925"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a0b92ff182109cd73bc942894d883b925">onert_micro::execute::pal::Reduce</a></div><div class="ttdeci">bool Reduce(OMReduceDataContext&lt; T &gt; &amp;ctx, bool mean=false)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00291">PALReduceCommon.h:291</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a154bf5fc19295305f91c1968e708760b"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a154bf5fc19295305f91c1968e708760b">onert_micro::execute::pal::resolveAxis</a></div><div class="ttdeci">bool resolveAxis(const int num_dims, const int *axis, const int64_t num_axis, int *out_axis, int *out_num_axis)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00090">PALReduceCommon.h:90</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a2b6fb7abee062cb7da367950a6104717"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a2b6fb7abee062cb7da367950a6104717">onert_micro::execute::pal::MeanROWH</a></div><div class="ttdeci">void MeanROWH(const OMRuntimeShape &amp;unextended_input_shape, const T *input_data, const OMRuntimeShape &amp;unextended_output_shape, T *output_data)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00194">PALReduceCommon.h:194</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a36e759f35baf92c43b698cd711aea733"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a36e759f35baf92c43b698cd711aea733">onert_micro::execute::pal::nextIndex</a></div><div class="ttdeci">bool nextIndex(const int32_t num_dims, const int32_t *dims, int32_t *current)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00175">PALUtils.h:175</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a7735cf76aa7f6e29f5b0695a060da5ac"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a7735cf76aa7f6e29f5b0695a060da5ac">onert_micro::execute::pal::ReduceGeneric</a></div><div class="ttdeci">bool ReduceGeneric(const T *input_data, const int *input_dims, const int input_num_dims, T *output_data, const int *axis, const int64_t num_axis_dimensions, T init_value, const int output_flat_size, T reducer(const T, const T))</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00138">PALReduceCommon.h:138</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a917c4ed35594d1bdbf9d7480dd2cc80b"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a917c4ed35594d1bdbf9d7480dd2cc80b">onert_micro::execute::pal::reducedOutputOffset</a></div><div class="ttdeci">size_t reducedOutputOffset(const int32_t num_dims, const int32_t *dims, const int32_t *index, const int32_t num_axis, const int32_t *axis)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00143">PALUtils.h:143</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_abee9a45bb904d8290e56177ad969867f"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#abee9a45bb904d8290e56177ad969867f">onert_micro::execute::pal::offset</a></div><div class="ttdeci">int offset(const int32_t *dims_data, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00220">PALUtils.h:220</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_aff349297371b587eae0e3afa8e57b512"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#aff349297371b587eae0e3afa8e57b512">onert_micro::execute::pal::reduceSumImpl</a></div><div class="ttdeci">bool reduceSumImpl(const T *input_data, const int *input_dims, const int input_num_dims, T *output_data, const int *axis, const int num_axis, const int num_outputs)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00183">PALReduceCommon.h:183</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_html"><div class="ttname"><a href="namespaceonert__micro.html">onert_micro</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8h_source.html#l00025">OMMemoryManager.h:26</a></div></div>
-<div class="ttc" id="astructonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_3_01int8__t_01_4_html_ab5daa0ca3203f02c4b198220d1c7a62d"><div class="ttname"><a href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_3_01int8__t_01_4.html#ab5daa0ca3203f02c4b198220d1c7a62d">onert_micro::execute::pal::ReduceProductFn&lt; int8_t &gt;::operator()</a></div><div class="ttdeci">float operator()(const float current, const float in)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00078">PALReduceCommon.h:78</a></div></div>
-<div class="ttc" id="astructonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_html"><div class="ttname"><a href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html">onert_micro::execute::pal::ReduceProductFn</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00063">PALReduceCommon.h:64</a></div></div>
-<div class="ttc" id="astructonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_html_a2ecd663c6df00f4fdad3c247f3e717cf"><div class="ttname"><a href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html#a2ecd663c6df00f4fdad3c247f3e717cf">onert_micro::execute::pal::ReduceProductFn::InitValue</a></div><div class="ttdeci">static constexpr T InitValue</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00065">PALReduceCommon.h:65</a></div></div>
-<div class="ttc" id="astructonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_html_a43fbed0d5a421b79fa605237f97d00ce"><div class="ttname"><a href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html#a43fbed0d5a421b79fa605237f97d00ce">onert_micro::execute::pal::ReduceProductFn::operator()</a></div><div class="ttdeci">T operator()(const T current, const T in)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00067">PALReduceCommon.h:67</a></div></div>
-<div class="ttc" id="astructonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_3_01int8__t_01_4_html_a650914e1bfbcc4376a687856617330a1"><div class="ttname"><a href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_3_01int8__t_01_4.html#a650914e1bfbcc4376a687856617330a1">onert_micro::execute::pal::ReduceSumFn&lt; int8_t &gt;::operator()</a></div><div class="ttdeci">float operator()(const float current, const float in)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00054">PALReduceCommon.h:54</a></div></div>
-<div class="ttc" id="astructonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_html"><div class="ttname"><a href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html">onert_micro::execute::pal::ReduceSumFn</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00039">PALReduceCommon.h:40</a></div></div>
-<div class="ttc" id="astructonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_html_a493634eaee74eba282386ab4ec5399cc"><div class="ttname"><a href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html#a493634eaee74eba282386ab4ec5399cc">onert_micro::execute::pal::ReduceSumFn::InitValue</a></div><div class="ttdeci">static constexpr T InitValue</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00041">PALReduceCommon.h:41</a></div></div>
-<div class="ttc" id="astructonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_html_ad3734748543659ebd49b9ddd5d6b8f71"><div class="ttname"><a href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html#ad3734748543659ebd49b9ddd5d6b8f71">onert_micro::execute::pal::ReduceSumFn::operator()</a></div><div class="ttdeci">T operator()(const T current, const T in)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00043">PALReduceCommon.h:43</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html">onert_micro::execute::pal</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2cmsisnn_2_p_a_l_add_8h_source.html#l00030">PALAdd.h:31</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_abee9a45bb904d8290e56177ad969867f"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#abee9a45bb904d8290e56177ad969867f">onert_micro::execute::pal::offset</a></div><div class="ttdeci">int offset(const int32_t *dims_data, int i0, int i1, int i2, int i3)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00159">PALUtils.h:159</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_html"><div class="ttname"><a href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html">onert_micro::execute::pal::ReduceProductFn</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00054">PALReduceCommon.h:55</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_html_a2cb3272992d26f3dccea1b9125e7c75a"><div class="ttname"><a href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html#a2cb3272992d26f3dccea1b9125e7c75a">onert_micro::execute::pal::ReduceProductFn::operator()</a></div><div class="ttdeci">void operator()(T &amp;total, const T value)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00056">PALReduceCommon.h:56</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_html"><div class="ttname"><a href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html">onert_micro::execute::pal::ReduceSumFn</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00043">PALReduceCommon.h:44</a></div></div>
+<div class="ttc" id="astructonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_html_a8d36a657bab55bebf36117a879683f5a"><div class="ttname"><a href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html#a8d36a657bab55bebf36117a879683f5a">onert_micro::execute::pal::ReduceSumFn::operator()</a></div><div class="ttdeci">void operator()(T &amp;total, const T value)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00045">PALReduceCommon.h:45</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

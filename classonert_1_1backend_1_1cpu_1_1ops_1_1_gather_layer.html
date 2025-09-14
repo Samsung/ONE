@@ -262,10 +262,13 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  131</span>    <span class="keywordflow">case</span> OperandType::QUANT_GGML_Q4_0:</div>
 <div class="line"><span class="lineno">  132</span>      runByGGMLQuantInputType();</div>
 <div class="line"><span class="lineno">  133</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  134</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  135</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Gather: unsupported input data type&quot;</span>);</div>
-<div class="line"><span class="lineno">  136</span>  }</div>
-<div class="line"><span class="lineno">  137</span>}</div>
+<div class="line"><span class="lineno">  134</span>    <span class="keywordflow">case</span> OperandType::BOOL8:</div>
+<div class="line"><span class="lineno">  135</span>      runByInputType&lt;bool&gt;();</div>
+<div class="line"><span class="lineno">  136</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  137</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  138</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Gather: unsupported input data type&quot;</span>);</div>
+<div class="line"><span class="lineno">  139</span>  }</div>
+<div class="line"><span class="lineno">  140</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
 

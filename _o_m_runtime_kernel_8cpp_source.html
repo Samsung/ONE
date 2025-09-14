@@ -201,19 +201,21 @@ $(document).ready(function(){initNavTree('_o_m_runtime_kernel_8cpp_source.html',
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">if</span> (storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#a6efb3e797b1ff342f6a2592f49d78887">getKernelType</a>(op_index) == <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#aa8207dbb94c1edf390c8d19d2da15402aac4a4a991a9caaf70cd1a8d7734e4e8a">core::Inplace</a>)</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    {</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      assert(i &lt; non_const_input_indxs.size());</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      outputs_data[i] = inputs_data[non_const_input_indxs[i]];</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>      status = storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#aab61ff9d6fbef0db2fc3dce3b5a28e60">removeTensorFromTensorIndexToData</a>(inputs_index[non_const_input_indxs[i]]);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      <span class="keywordflow">if</span> (status != <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>)</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="keywordflow">return</span> status;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>      status = storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#ad601ae1e83b2c5d8b4023bc23e69c710">saveDataToTensorIndex</a>(outputs_data[i], outputs_index[i]);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    }</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  }</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keywordflow">return</span> status;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>}</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>      <span class="keywordflow">if</span> (i &gt;= non_const_input_indxs.size())</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      outputs_data[i] = inputs_data[non_const_input_indxs[i]];</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>      status = storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#aab61ff9d6fbef0db2fc3dce3b5a28e60">removeTensorFromTensorIndexToData</a>(inputs_index[non_const_input_indxs[i]]);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      <span class="keywordflow">if</span> (status != <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keywordflow">return</span> status;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>      status = storage.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_storage.html#ad601ae1e83b2c5d8b4023bc23e69c710">saveDataToTensorIndex</a>(outputs_data[i], outputs_index[i]);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    }</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  }</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keywordflow">return</span> status;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>}</div>
 </div>
 <div class="ttc" id="a_o_m_runtime_kernel_8h_html"><div class="ttname"><a href="_o_m_runtime_kernel_8h.html">OMRuntimeKernel.h</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_context_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_context.html">onert_micro::core::OMRuntimeContext</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_context_8h_source.html#l00036">OMRuntimeContext.h:37</a></div></div>

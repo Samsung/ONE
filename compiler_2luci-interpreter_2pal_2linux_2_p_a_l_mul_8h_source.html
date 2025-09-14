@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('compiler_2luci-interpreter_2pal_2linux
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                <span class="keyword">const</span> int64_t *input2_data, <span class="keyword">const</span> tflite::RuntimeShape &amp;<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>,</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                int64_t *output_data)</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>{</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  tflite::optimized_ops::BroadcastMul4DSlow(params, input1_shape, input1_data, input2_shape,</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  tflite::reference_ops::BroadcastMul4DSlow(params, input1_shape, input1_data, input2_shape,</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                                            input2_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}</div>
 </div>
@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('compiler_2luci-interpreter_2pal_2linux
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                   <span class="keyword">const</span> T *input1_data, <span class="keyword">const</span> tflite::RuntimeShape &amp;input2_shape,</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                   <span class="keyword">const</span> T *input2_data, <span class="keyword">const</span> tflite::RuntimeShape &amp;<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>{</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  tflite::optimized_ops::BroadcastMul4DSlow(params, input1_shape, input1_data, input2_shape,</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  tflite::reference_ops::BroadcastMul4DSlow(params, input1_shape, input1_data, input2_shape,</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                                            input2_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>}</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>} <span class="comment">// namespace luci_interpreter_pal</span></div>

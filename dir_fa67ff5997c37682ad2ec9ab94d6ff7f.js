@@ -4,6 +4,7 @@ var dir_fa67ff5997c37682ad2ec9ab94d6ff7f =
     [ "reader", "dir_0df2cc4588466e31bc5e47b5d5049200.html", "dir_0df2cc4588466e31bc5e47b5d5049200" ],
     [ "train", "dir_7d4a88535888526b2664006c9103ddf4.html", "dir_7d4a88535888526b2664006c9103ddf4" ],
     [ "OMCustomRuntimeData.h", "_o_m_custom_runtime_data_8h.html", "_o_m_custom_runtime_data_8h" ],
+    [ "OMCustomTensorData.h", "_o_m_custom_tensor_data_8h.html", "_o_m_custom_tensor_data_8h" ],
     [ "OMDataType.h", "_o_m_data_type_8h.html", "_o_m_data_type_8h" ],
     [ "OMKernelData.h", "_o_m_kernel_data_8h.html", "_o_m_kernel_data_8h" ],
     [ "OMKernelType.h", "_o_m_kernel_type_8h.html", "_o_m_kernel_type_8h" ],
@@ -16,5 +17,6 @@ var dir_fa67ff5997c37682ad2ec9ab94d6ff7f =
     [ "OMRuntimeStorage.h", "_o_m_runtime_storage_8h.html", "_o_m_runtime_storage_8h" ],
     [ "OMTensorData.h", "_o_m_tensor_data_8h.html", "_o_m_tensor_data_8h" ],
     [ "OMTrainingRuntimeModule.h", "_o_m_training_runtime_module_8h.html", "_o_m_training_runtime_module_8h" ],
+    [ "OMTypeTraits.h", "_o_m_type_traits_8h.html", "_o_m_type_traits_8h" ],
     [ "OMUtils.h", "core_2_o_m_utils_8h.html", "core_2_o_m_utils_8h" ]
 ];

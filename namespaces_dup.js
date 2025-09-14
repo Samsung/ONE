@@ -300,6 +300,7 @@ var namespaces_dup =
     [ "hermes", "namespacehermes.html", "namespacehermes" ],
     [ "impl", "namespaceimpl.html", [
       [ "CircleMean", "namespaceimpl.html#a2690faf39c23af19d5ae9ead63b7af25", null ],
+      [ "CircleReduceProd", "namespaceimpl.html#a04fb8e5be2b8e79bad88a56302e081e1", null ],
       [ "CircleSum", "namespaceimpl.html#ac4093b3e0c9b41e5a427a7cdc8d72258", null ]
     ] ],
     [ "infer", "namespaceinfer.html", [

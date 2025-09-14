@@ -12,6 +12,7 @@ var classonert__micro_1_1core_1_1_o_m_runtime_shape =
     [ "dimsData", "classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9", null ],
     [ "dimsData", "classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a57aecf5dcea2f51423468be2a3a78fd0", null ],
     [ "flatSize", "classonert__micro_1_1core_1_1_o_m_runtime_shape.html#afa93963083a5896bdfb53e1781d8e040", null ],
+    [ "hasZeroSizeDims", "classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a92b4375cfc6b60abfc7665be1dc15e5e", null ],
     [ "isScalar", "classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a7a9d86b1c025a4cf87869fb8a151810b", null ],
     [ "operator==", "classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a858002a736383dcc3fdcac2db577046e", null ],
     [ "resize", "classonert__micro_1_1core_1_1_o_m_runtime_shape.html#abdcce5253d877271aaeead008b9dd5b1", null ],

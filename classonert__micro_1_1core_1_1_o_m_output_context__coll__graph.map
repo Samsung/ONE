@@ -1,7 +1,0 @@
-<map id="onert_micro::core::OMOutputContext&lt; T, OutputTensorIdx &gt;" name="onert_micro::core::OMOutputContext&lt; T, OutputTensorIdx &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,199,154,255"/>
-<area shape="rect" id="Node000002" href="$classonert__micro_1_1core_1_1_o_m_base_context.html" title=" " alt="" coords="16,109,143,150"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,165,82,199,77,199,77,165"/>
-<area shape="rect" id="Node000003" href="$classonert__micro_1_1core_1_1_o_m_runtime_shape.html" title=" " alt="" coords="16,5,143,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="82,62,82,109,77,109,77,62"/>
-</map>

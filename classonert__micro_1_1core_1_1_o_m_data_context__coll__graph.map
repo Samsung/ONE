@@ -1,5 +1,12 @@
 <map id="onert_micro::core::OMDataContext&lt; T, Mixins &gt;" name="onert_micro::core::OMDataContext&lt; T, Mixins &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,193,120"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="70,5,128,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,46,102,79,96,79,96,46"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="703,26,891,67"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="505,5,563,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="579,20,703,34,702,39,578,25"/>
+<area shape="rect" id="Node000003" href="$classonert__micro_1_1core_1_1_o_m_tensor_context.html" title=" " alt="" coords="456,55,612,96"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="628,71,679,67,703,63,704,69,680,72,628,76"/>
+<area shape="rect" id="Node000004" href="$classonert__micro_1_1core_1_1_o_m_runtime_shape.html" title=" " alt="" coords="5,65,133,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="148,77,157,77,455,72,455,78,157,82,148,83"/>
+<area shape="rect" id="Node000005" href="$classonert__micro_1_1core_1_1_o_m_tensor_context.html" title=" " alt="" coords="226,96,375,151"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="148,95,226,108,225,114,147,101"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="390,103,455,89,456,94,391,108"/>
 </map>

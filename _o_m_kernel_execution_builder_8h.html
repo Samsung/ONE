@@ -187,7 +187,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   55</span>  }</div>
 <div class="line"><span class="lineno">   56</span> </div>
 <div class="line"><span class="lineno">   57</span><span class="keyword">public</span>:</div>
-<div class="line"><span class="lineno">   58</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> getKernelExecuteFunc(core::OMBuilderID builderID, KernelExecuteFunc **execute_func)<span class="keyword"> const</span></div>
+<div class="line"><span class="lineno">   58</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> getKernelExecuteFunc(<a class="code hl_enumeration" href="namespaceonert__micro_1_1core.html#ab1fab592efb734841ceeb8519c002374">core::OMBuilderID</a> builderID, KernelExecuteFunc **execute_func)<span class="keyword"> const</span></div>
 <div class="line"><span class="lineno">   59</span><span class="keyword">  </span>{</div>
 <div class="line"><span class="lineno">   60</span>    <span class="keyword">const</span> <span class="keyword">auto</span> builder_id_opcode = size_t(builderID);</div>
 <div class="line"><span class="lineno">   61</span>    assert(builder_id_opcode &lt; <span class="keywordtype">size_t</span>(core::OMBuilderID::BuiltinOperatorsSize));</div>
@@ -201,7 +201,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   69</span>  }</div>
 <div class="line"><span class="lineno">   70</span> </div>
 <div class="line"><span class="lineno">   71</span><span class="keyword">private</span>:</div>
-<div class="line"><span class="lineno">   72</span>  <span class="keyword">constexpr</span> <span class="keywordtype">void</span> registerKernelExecute(core::OMBuilderID <span class="keywordtype">id</span>, KernelExecuteFunc *func)</div>
+<div class="line"><span class="lineno">   72</span>  <span class="keyword">constexpr</span> <span class="keywordtype">void</span> registerKernelExecute(<a class="code hl_enumeration" href="namespaceonert__micro_1_1core.html#ab1fab592efb734841ceeb8519c002374">core::OMBuilderID</a> <span class="keywordtype">id</span>, KernelExecuteFunc *func)</div>
 <div class="line"><span class="lineno">   73</span>  {</div>
 <div class="line"><span class="lineno">   74</span>    assert(<span class="keywordtype">size_t</span>(<span class="keywordtype">id</span>) &lt; <span class="keywordtype">size_t</span>(core::OMBuilderID::BuiltinOperatorsSize));</div>
 <div class="line"><span class="lineno">   75</span>    _operator_execute[size_t(<span class="keywordtype">id</span>)] = func;</div>
@@ -225,7 +225,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">   93</span>  }</div>
 <div class="line"><span class="lineno">   94</span> </div>
 <div class="line"><span class="lineno">   95</span><span class="keyword">public</span>:</div>
-<div class="line"><span class="lineno">   96</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> getKernelExecuteFunc(core::OMBuilderID builderID, KernelExecuteFunc **execute_func)<span class="keyword"> const</span></div>
+<div class="line"><span class="lineno">   96</span>  <a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> getKernelExecuteFunc(<a class="code hl_enumeration" href="namespaceonert__micro_1_1core.html#ab1fab592efb734841ceeb8519c002374">core::OMBuilderID</a> builderID, KernelExecuteFunc **execute_func)<span class="keyword"> const</span></div>
 <div class="line"><span class="lineno">   97</span><span class="keyword">  </span>{</div>
 <div class="line"><span class="lineno">   98</span>    <span class="keyword">auto</span> builder_id_opcode = size_t(builderID);</div>
 <div class="line"><span class="lineno">   99</span>    <span class="keywordflow">if</span> (builder_id_opcode &gt;= <span class="keywordtype">size_t</span>(core::OMBuilderID::Size))</div>
@@ -241,7 +241,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  109</span>  }</div>
 <div class="line"><span class="lineno">  110</span> </div>
 <div class="line"><span class="lineno">  111</span><span class="keyword">private</span>:</div>
-<div class="line"><span class="lineno">  112</span>  <span class="keyword">constexpr</span> <span class="keywordtype">void</span> registerKernelExecute(core::OMBuilderID <span class="keywordtype">id</span>, KernelExecuteFunc *func)</div>
+<div class="line"><span class="lineno">  112</span>  <span class="keyword">constexpr</span> <span class="keywordtype">void</span> registerKernelExecute(<a class="code hl_enumeration" href="namespaceonert__micro_1_1core.html#ab1fab592efb734841ceeb8519c002374">core::OMBuilderID</a> <span class="keywordtype">id</span>, KernelExecuteFunc *func)</div>
 <div class="line"><span class="lineno">  113</span>  {</div>
 <div class="line"><span class="lineno">  114</span>    <span class="keyword">auto</span> builder_id_opcode = size_t(<span class="keywordtype">id</span>);</div>
 <div class="line"><span class="lineno">  115</span>    <span class="keyword">const</span> <span class="keyword">auto</span> builder_id_offset = size_t(core::OMBuilderID::BuiltinOperatorsSize);</div>
@@ -262,6 +262,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  130</span>} <span class="comment">// namespace onert_micro</span></div>
 <div class="line"><span class="lineno">  131</span> </div>
 <div class="line"><span class="lineno">  132</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_EXECUTE_KERNEL_EXECUTION_BUILDER_H</span></div>
+<div class="ttc" id="anamespaceonert__micro_1_1core_html_ab1fab592efb734841ceeb8519c002374"><div class="ttname"><a href="namespaceonert__micro_1_1core.html#ab1fab592efb734841ceeb8519c002374">onert_micro::core::OMBuilderID</a></div><div class="ttdeci">OMBuilderID</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_type_8h_source.html#l00051">OMKernelType.h:52</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1execute_html_a628d7ac02011d8c04aff4375f9803240"><div class="ttname"><a href="namespaceonert__micro_1_1execute.html#a628d7ac02011d8c04aff4375f9803240">onert_micro::execute::kernel_builtin_execute</a></div><div class="ttdeci">constexpr KernelBuiltinExecuteRegistry kernel_builtin_execute</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_execution_builder_8h_source.html#l00126">OMKernelExecutionBuilder.h:126</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1execute_html_a9d940352336b4e93813c268fbc8e59ee"><div class="ttname"><a href="namespaceonert__micro_1_1execute.html#a9d940352336b4e93813c268fbc8e59ee">onert_micro::execute::kernel_custom_execute</a></div><div class="ttdeci">constexpr KernelCustomExecuteRegistry kernel_custom_execute</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_execution_builder_8h_source.html#l00127">OMKernelExecutionBuilder.h:127</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1execute_html_ab90de3f7fdbbdb89137a6c571b0dba73"><div class="ttname"><a href="namespaceonert__micro_1_1execute.html#ab90de3f7fdbbdb89137a6c571b0dba73">onert_micro::execute::KernelExecuteFunc</a></div><div class="ttdeci">OMStatus(const OMExecuteArgs &amp;) KernelExecuteFunc</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_execution_builder_8h_source.html#l00031">OMKernelExecutionBuilder.h:31</a></div></div>

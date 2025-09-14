@@ -121,11 +121,9 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html">ReduceProductFn</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_3_01int8__t_01_4.html">ReduceProductFn&lt; int8_t &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html">Reducer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html">ReduceSumFn</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_3_01int8__t_01_4.html">ReduceSumFn&lt; int8_t &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_squared_difference_fn.html">SquaredDifferenceFn</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -481,10 +479,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a3a9088e032c86c38e008041efb706da0" id="r_a3a9088e032c86c38e008041efb706da0"><td class="memTemplParams" colspan="2">template&lt;typename P &gt; </td></tr>
 <tr class="memitem:a3a9088e032c86c38e008041efb706da0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a3a9088e032c86c38e008041efb706da0">getActivationParams</a> (const P &amp;params, int64_t *min, int64_t *max)</td></tr>
 <tr class="separator:a3a9088e032c86c38e008041efb706da0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a917c4ed35594d1bdbf9d7480dd2cc80b" id="r_a917c4ed35594d1bdbf9d7480dd2cc80b"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a917c4ed35594d1bdbf9d7480dd2cc80b">reducedOutputOffset</a> (const int32_t num_dims, const int32_t *dims, const int32_t *index, const int32_t num_axis, const int32_t *axis)</td></tr>
-<tr class="separator:a917c4ed35594d1bdbf9d7480dd2cc80b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36e759f35baf92c43b698cd711aea733" id="r_a36e759f35baf92c43b698cd711aea733"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a36e759f35baf92c43b698cd711aea733">nextIndex</a> (const int32_t num_dims, const int32_t *dims, int32_t *current)</td></tr>
-<tr class="separator:a36e759f35baf92c43b698cd711aea733"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c8c03685f5fa37b89c40a060337cf19" id="r_a7c8c03685f5fa37b89c40a060337cf19"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a7c8c03685f5fa37b89c40a060337cf19">MatchingDim</a> (const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;shape1, int index1, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;shape2, int index2)</td></tr>
 <tr class="separator:a7c8c03685f5fa37b89c40a060337cf19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e920b35ff417ca8a6278ace0624f19c" id="r_a0e920b35ff417ca8a6278ace0624f19c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a0e920b35ff417ca8a6278ace0624f19c">flatSizeSkipDim</a> (const int32_t *dims_data, int skip_dim, int num_dims)</td></tr>
@@ -535,23 +529,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a3cf1a7726cf6b598a3864c11e7328754" id="r_a3cf1a7726cf6b598a3864c11e7328754"><td class="memTemplParams" colspan="2">template&lt;typename InputType , typename OutputType &gt; </td></tr>
 <tr class="memitem:a3cf1a7726cf6b598a3864c11e7328754"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a3cf1a7726cf6b598a3864c11e7328754">Mul</a> (const <a class="el" href="structonert__micro_1_1core_1_1_arithmetic_quant_params.html">core::ArithmeticQuantParams</a> &amp;params, uint32_t <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>, const InputType *input1_data, const InputType *input2_data, OutputType *output_data)</td></tr>
 <tr class="separator:a3cf1a7726cf6b598a3864c11e7328754"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a154bf5fc19295305f91c1968e708760b" id="r_a154bf5fc19295305f91c1968e708760b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a154bf5fc19295305f91c1968e708760b">resolveAxis</a> (const int num_dims, const int *axis, const int64_t num_axis, int *out_axis, int *out_num_axis)</td></tr>
-<tr class="separator:a154bf5fc19295305f91c1968e708760b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7735cf76aa7f6e29f5b0695a060da5ac" id="r_a7735cf76aa7f6e29f5b0695a060da5ac"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a7735cf76aa7f6e29f5b0695a060da5ac"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a7735cf76aa7f6e29f5b0695a060da5ac">ReduceGeneric</a> (const T *input_data, const int *input_dims, const int input_num_dims, T *output_data, const int *axis, const int64_t num_axis_dimensions, T init_value, const int output_flat_size, T reducer(const T, const T))</td></tr>
-<tr class="separator:a7735cf76aa7f6e29f5b0695a060da5ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff349297371b587eae0e3afa8e57b512" id="r_aff349297371b587eae0e3afa8e57b512"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aff349297371b587eae0e3afa8e57b512"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#aff349297371b587eae0e3afa8e57b512">reduceSumImpl</a> (const T *input_data, const int *input_dims, const int input_num_dims, T *output_data, const int *axis, const int num_axis, const int num_outputs)</td></tr>
-<tr class="separator:aff349297371b587eae0e3afa8e57b512"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b6fb7abee062cb7da367950a6104717" id="r_a2b6fb7abee062cb7da367950a6104717"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a2b6fb7abee062cb7da367950a6104717"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a2b6fb7abee062cb7da367950a6104717">MeanROWH</a> (const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;unextended_input_shape, const T *input_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;unextended_output_shape, T *output_data)</td></tr>
-<tr class="separator:a2b6fb7abee062cb7da367950a6104717"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5af1d1e868d9ec1f723ec73d75619034" id="r_a5af1d1e868d9ec1f723ec73d75619034"><td class="memTemplParams" colspan="2">template&lt;typename T , template&lt; typename &gt; class ReduceFn&gt; </td></tr>
-<tr class="memitem:a5af1d1e868d9ec1f723ec73d75619034"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a5af1d1e868d9ec1f723ec73d75619034">ReduceGeneric</a> (<a class="el" href="classonert__micro_1_1core_1_1_o_m_reduce_data_context.html">OMReduceDataContext</a>&lt; T &gt; &amp;ctx)</td></tr>
-<tr class="separator:a5af1d1e868d9ec1f723ec73d75619034"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b92ff182109cd73bc942894d883b925" id="r_a0b92ff182109cd73bc942894d883b925"><td class="memTemplParams" colspan="2">template&lt;typename T , template&lt; typename &gt; class ReduceFn&gt; </td></tr>
-<tr class="memitem:a0b92ff182109cd73bc942894d883b925"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a0b92ff182109cd73bc942894d883b925">Reduce</a> (<a class="el" href="classonert__micro_1_1core_1_1_o_m_reduce_data_context.html">OMReduceDataContext</a>&lt; T &gt; &amp;ctx, bool mean=false)</td></tr>
-<tr class="separator:a0b92ff182109cd73bc942894d883b925"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64484c85cce292ff6d4cab042b28ea35" id="r_a64484c85cce292ff6d4cab042b28ea35"><td class="memTemplParams" colspan="2">template&lt;typename D , typename T &gt; </td></tr>
 <tr class="memitem:a64484c85cce292ff6d4cab042b28ea35"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceonert__micro_1_1execute_1_1pal.html#a64484c85cce292ff6d4cab042b28ea35">Select</a> (const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_condition_shape, const D *input_condition_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_x_shape, const T *input_x_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;input_y_shape, const T *input_y_data, const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">core::OMRuntimeShape</a> &amp;<a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, T *output_data)</td></tr>
 <tr class="separator:a64484c85cce292ff6d4cab042b28ea35"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -675,12 +652,12 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00231">231</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  232</span>{</div>
-<div class="line"><span class="lineno">  233</span>  <span class="keyword">using </span>std::max;</div>
-<div class="line"><span class="lineno">  234</span>  <span class="keyword">using </span>std::min;</div>
-<div class="line"><span class="lineno">  235</span>  <span class="keywordflow">return</span> min(max(x, output_activation_min), output_activation_max);</div>
-<div class="line"><span class="lineno">  236</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00170">170</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  171</span>{</div>
+<div class="line"><span class="lineno">  172</span>  <span class="keyword">using </span>std::max;</div>
+<div class="line"><span class="lineno">  173</span>  <span class="keyword">using </span>std::min;</div>
+<div class="line"><span class="lineno">  174</span>  <span class="keywordflow">return</span> min(max(x, output_activation_min), output_activation_max);</div>
+<div class="line"><span class="lineno">  175</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_depthwise_conv2_d_common_8h_source.html#l00042">DepthwiseConv2D&lt; float &gt;()</a>, <a class="el" href="_p_a_l_l2_pool2_d_common_8h_source.html#l00034">L2Pool()</a>, and <a class="el" href="_p_a_l_transpose_conv_common_8h_source.html#l00043">TransposeConv&lt; float &gt;()</a>.</p>
 
@@ -1878,7 +1855,7 @@ template&lt;typename T &gt; </div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_runtime_shape_html_a166a4cc1a3ef3ec54191257141c81ca9"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">onert_micro::core::OMRuntimeShape::dimsData</a></div><div class="ttdeci">int32_t * dimsData()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_shape_8h_source.html#l00138">OMRuntimeShape.h:138</a></div></div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00220">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00159">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -4747,7 +4724,7 @@ template&lt;&gt; </div>
 <div class="ttc" id="anamespaceluci__interpreter__pal_html_afdecaeb89ff3e89a7c3b8994aab89924"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#afdecaeb89ff3e89a7c3b8994aab89924">luci_interpreter_pal::activationFunctionWithMinMax</a></div><div class="ttdeci">T activationFunctionWithMinMax(T x, T output_activation_min, T output_activation_max)</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_utils_8h_source.html#l00204">PALUtils.h:204</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_float_conv2_d_html_afd64f2db9f91fbcc46391422ae52a027"><div class="ttname"><a href="structonert__micro_1_1core_1_1_float_conv2_d.html#afd64f2db9f91fbcc46391422ae52a027">onert_micro::core::FloatConv2D::depth_multiplier</a></div><div class="ttdeci">int32_t depth_multiplier</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00172">OMKernelData.h:172</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_kernel_data_8h_source.html#l00176">onert_micro::core::FloatConv2D::activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00175">onert_micro::core::FloatConv2D::activation_min</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00231">activationFunctionWithMinMax()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00172">onert_micro::core::FloatConv2D::depth_multiplier</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00171">onert_micro::core::FloatConv2D::dilation_height_factor</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00170">onert_micro::core::FloatConv2D::dilation_width_factor</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00220">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00173">onert_micro::core::FloatConv2D::pad_h</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00174">onert_micro::core::FloatConv2D::pad_w</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00169">onert_micro::core::FloatConv2D::stride_h</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00168">onert_micro::core::FloatConv2D::stride_w</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_kernel_data_8h_source.html#l00176">onert_micro::core::FloatConv2D::activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00175">onert_micro::core::FloatConv2D::activation_min</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00170">activationFunctionWithMinMax()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00172">onert_micro::core::FloatConv2D::depth_multiplier</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00171">onert_micro::core::FloatConv2D::dilation_height_factor</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00170">onert_micro::core::FloatConv2D::dilation_width_factor</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="_n_e_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00135">m</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00159">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00173">onert_micro::core::FloatConv2D::pad_h</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00174">onert_micro::core::FloatConv2D::pad_w</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00169">onert_micro::core::FloatConv2D::stride_h</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00168">onert_micro::core::FloatConv2D::stride_w</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_depthwise_conv2_d_8cpp_source.html#l00050">onert_micro::execute::execute_kernel_CircleDepthwiseConv2D()</a>.</p>
 
@@ -5363,15 +5340,15 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00210">210</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  211</span>{</div>
-<div class="line"><span class="lineno">  212</span>  <span class="keywordtype">int</span> flat_size = 1;</div>
-<div class="line"><span class="lineno">  213</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_dims; ++i)</div>
-<div class="line"><span class="lineno">  214</span>  {</div>
-<div class="line"><span class="lineno">  215</span>    flat_size *= (i == skip_dim) ? 1 : dims_data[i];</div>
-<div class="line"><span class="lineno">  216</span>  }</div>
-<div class="line"><span class="lineno">  217</span>  <span class="keywordflow">return</span> flat_size;</div>
-<div class="line"><span class="lineno">  218</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00149">149</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  150</span>{</div>
+<div class="line"><span class="lineno">  151</span>  <span class="keywordtype">int</span> flat_size = 1;</div>
+<div class="line"><span class="lineno">  152</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; num_dims; ++i)</div>
+<div class="line"><span class="lineno">  153</span>  {</div>
+<div class="line"><span class="lineno">  154</span>    flat_size *= (i == skip_dim) ? 1 : dims_data[i];</div>
+<div class="line"><span class="lineno">  155</span>  }</div>
+<div class="line"><span class="lineno">  156</span>  <span class="keywordflow">return</span> flat_size;</div>
+<div class="line"><span class="lineno">  157</span>}</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_l2_normalize_8cpp_source.html#l00044">onert_micro::execute::execute_kernel_CircleL2Normalize()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00080">FullyConnected()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_fully_connected_common_8h_source.html#l00034">FullyConnected()</a>, <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00098">FullyConnected()</a>, and <a class="el" href="onert-micro_2onert-micro_2include_2pal_2cmsisnn_2_p_a_l_fully_connected_8h_source.html#l00032">FullyConnected&lt; int8_t &gt;()</a>.</p>
 
@@ -5689,7 +5666,7 @@ template&lt;typename WeightType &gt; </div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_fully_connected_params_html_ab4e6eeea871e75a3bbe0aed410419aa5"><div class="ttname"><a href="structonert__micro_1_1core_1_1_fully_connected_params.html#ab4e6eeea871e75a3bbe0aed410419aa5">onert_micro::core::FullyConnectedParams::float_activation_max</a></div><div class="ttdeci">float float_activation_max</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00183">OMKernelData.h:183</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_fully_connected_params_html_acc8a83cd24cac22bc637697b862abe27"><div class="ttname"><a href="structonert__micro_1_1core_1_1_fully_connected_params.html#acc8a83cd24cac22bc637697b862abe27">onert_micro::core::FullyConnectedParams::weights_scales</a></div><div class="ttdeci">const float * weights_scales</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00189">OMKernelData.h:189</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00210">flatSizeSkipDim()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00183">onert_micro::core::FullyConnectedParams::float_activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00182">onert_micro::core::FullyConnectedParams::float_activation_min</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00190">onert_micro::core::FullyConnectedParams::is_channel_wise_quant</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00189">onert_micro::core::FullyConnectedParams::weights_scales</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00149">flatSizeSkipDim()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00183">onert_micro::core::FullyConnectedParams::float_activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00182">onert_micro::core::FullyConnectedParams::float_activation_min</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00190">onert_micro::core::FullyConnectedParams::is_channel_wise_quant</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00189">onert_micro::core::FullyConnectedParams::weights_scales</a>.</p>
 
 </div>
 </div>
@@ -5800,7 +5777,7 @@ template&lt;typename InputType , typename WeightType , typename OutputType , typ
 <div class="ttc" id="astructonert__micro_1_1core_1_1_fully_connected_params_html_a907cfe2e7a585fe148acbeaa464d1017"><div class="ttname"><a href="structonert__micro_1_1core_1_1_fully_connected_params.html#a907cfe2e7a585fe148acbeaa464d1017">onert_micro::core::FullyConnectedParams::quantized_activation_min</a></div><div class="ttdeci">int32_t quantized_activation_min</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00193">OMKernelData.h:193</a></div></div>
 <div class="ttc" id="astructonert__micro_1_1core_1_1_fully_connected_params_html_a92356d8305efcd56d941b1ef22097201"><div class="ttname"><a href="structonert__micro_1_1core_1_1_fully_connected_params.html#a92356d8305efcd56d941b1ef22097201">onert_micro::core::FullyConnectedParams::output_offset</a></div><div class="ttdeci">int32_t output_offset</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_data_8h_source.html#l00187">OMKernelData.h:187</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00210">flatSizeSkipDim()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00185">onert_micro::core::FullyConnectedParams::input_offset</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00104">multiplyByQuantizedMultiplier()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00188">onert_micro::core::FullyConnectedParams::output_multiplier</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00187">onert_micro::core::FullyConnectedParams::output_offset</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00191">onert_micro::core::FullyConnectedParams::output_shift</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00194">onert_micro::core::FullyConnectedParams::quantized_activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00193">onert_micro::core::FullyConnectedParams::quantized_activation_min</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00186">onert_micro::core::FullyConnectedParams::weights_offset</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00149">flatSizeSkipDim()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00185">onert_micro::core::FullyConnectedParams::input_offset</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00104">multiplyByQuantizedMultiplier()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00188">onert_micro::core::FullyConnectedParams::output_multiplier</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00187">onert_micro::core::FullyConnectedParams::output_offset</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00191">onert_micro::core::FullyConnectedParams::output_shift</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00194">onert_micro::core::FullyConnectedParams::quantized_activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00193">onert_micro::core::FullyConnectedParams::quantized_activation_min</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00186">onert_micro::core::FullyConnectedParams::weights_offset</a>.</p>
 
 </div>
 </div>
@@ -5925,7 +5902,7 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">  161</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">  162</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00037">onert_micro::CmsisNNError</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00210">flatSizeSkipDim()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00185">onert_micro::core::FullyConnectedParams::input_offset</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00188">onert_micro::core::FullyConnectedParams::output_multiplier</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00187">onert_micro::core::FullyConnectedParams::output_offset</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00191">onert_micro::core::FullyConnectedParams::output_shift</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00194">onert_micro::core::FullyConnectedParams::quantized_activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00193">onert_micro::core::FullyConnectedParams::quantized_activation_min</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00186">onert_micro::core::FullyConnectedParams::weights_offset</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00037">onert_micro::CmsisNNError</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00149">flatSizeSkipDim()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00185">onert_micro::core::FullyConnectedParams::input_offset</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00188">onert_micro::core::FullyConnectedParams::output_multiplier</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00187">onert_micro::core::FullyConnectedParams::output_offset</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00191">onert_micro::core::FullyConnectedParams::output_shift</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00194">onert_micro::core::FullyConnectedParams::quantized_activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00193">onert_micro::core::FullyConnectedParams::quantized_activation_min</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00186">onert_micro::core::FullyConnectedParams::weights_offset</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_fully_connected_8cpp_source.html#l00098">onert_micro::execute::execute_kernel_CircleFullyConnected()</a>.</p>
 
@@ -6051,7 +6028,7 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   94</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">   95</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00037">onert_micro::CmsisNNError</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00210">flatSizeSkipDim()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00185">onert_micro::core::FullyConnectedParams::input_offset</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00188">onert_micro::core::FullyConnectedParams::output_multiplier</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00187">onert_micro::core::FullyConnectedParams::output_offset</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00191">onert_micro::core::FullyConnectedParams::output_shift</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00194">onert_micro::core::FullyConnectedParams::quantized_activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00193">onert_micro::core::FullyConnectedParams::quantized_activation_min</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00186">onert_micro::core::FullyConnectedParams::weights_offset</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00037">onert_micro::CmsisNNError</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00106">luci_interpreter::RuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00149">flatSizeSkipDim()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00185">onert_micro::core::FullyConnectedParams::input_offset</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00188">onert_micro::core::FullyConnectedParams::output_multiplier</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00187">onert_micro::core::FullyConnectedParams::output_offset</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00191">onert_micro::core::FullyConnectedParams::output_shift</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00194">onert_micro::core::FullyConnectedParams::quantized_activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00193">onert_micro::core::FullyConnectedParams::quantized_activation_min</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00186">onert_micro::core::FullyConnectedParams::weights_offset</a>.</p>
 
 </div>
 </div>
@@ -6160,7 +6137,7 @@ template&lt;typename ParamsT , typename IndicesT &gt; </div>
 <div class="line"><span class="lineno">   85</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">   86</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00121">onert_micro::core::OMRuntimeShape::flatSize()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_gather_n_d_8h_source.html#l00032">MAX_INDICES_ND</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00220">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00121">onert_micro::core::OMRuntimeShape::flatSize()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_gather_n_d_8h_source.html#l00032">MAX_INDICES_ND</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00159">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
 </div>
 </div>
@@ -6356,12 +6333,12 @@ template&lt;typename P &gt; </div>
 <div class="line"><span class="lineno">   34</span> </div>
 <div class="line"><span class="lineno">   35</span>  <span class="keywordflow">switch</span> (rank)</div>
 <div class="line"><span class="lineno">   36</span>  {</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">case</span> core::ALL:</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749a05502a64b81947ce33b300a53a12b342">core::ALL</a>:</div>
 <div class="line"><span class="lineno">   38</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">case</span> core::UP_1_2_PART:</div>
+<div class="line"><span class="lineno">   39</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749a06685102e8cc3455e0830d632ab6bceb">core::UP_1_2_PART</a>:</div>
 <div class="line"><span class="lineno">   40</span>      result.second = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(output_depth) / 2.f);</div>
 <div class="line"><span class="lineno">   41</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">case</span> core::LOWER_1_2_PART:</div>
+<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749ac9b0a2bc16e36bbcc402e849355822e9">core::LOWER_1_2_PART</a>:</div>
 <div class="line"><span class="lineno">   43</span>      result.first = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(output_depth) / 2.f);</div>
 <div class="line"><span class="lineno">   44</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   45</span>    <span class="keywordflow">default</span>:</div>
@@ -6371,6 +6348,9 @@ template&lt;typename P &gt; </div>
 <div class="line"><span class="lineno">   49</span> </div>
 <div class="line"><span class="lineno">   50</span>  <span class="keywordflow">return</span> result;</div>
 <div class="line"><span class="lineno">   51</span>}</div>
+<div class="ttc" id="anamespaceonert__micro_1_1core_html_a7868252a8f08b25e0105db392ad7f749a05502a64b81947ce33b300a53a12b342"><div class="ttname"><a href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749a05502a64b81947ce33b300a53a12b342">onert_micro::core::ALL</a></div><div class="ttdeci">@ ALL</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_type_8h_source.html#l00031">OMKernelType.h:31</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1core_html_a7868252a8f08b25e0105db392ad7f749a06685102e8cc3455e0830d632ab6bceb"><div class="ttname"><a href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749a06685102e8cc3455e0830d632ab6bceb">onert_micro::core::UP_1_2_PART</a></div><div class="ttdeci">@ UP_1_2_PART</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_type_8h_source.html#l00033">OMKernelType.h:33</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_1_1core_html_a7868252a8f08b25e0105db392ad7f749ac9b0a2bc16e36bbcc402e849355822e9"><div class="ttname"><a href="namespaceonert__micro_1_1core.html#a7868252a8f08b25e0105db392ad7f749ac9b0a2bc16e36bbcc402e849355822e9">onert_micro::core::LOWER_1_2_PART</a></div><div class="ttdeci">@ LOWER_1_2_PART</div><div class="ttdef"><b>Definition</b> <a href="_o_m_kernel_type_8h_source.html#l00034">OMKernelType.h:34</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_kernel_type_8h_source.html#l00031">onert_micro::core::ALL</a>, <a class="el" href="_o_m_kernel_type_8h_source.html#l00034">onert_micro::core::LOWER_1_2_PART</a>, and <a class="el" href="_o_m_kernel_type_8h_source.html#l00033">onert_micro::core::UP_1_2_PART</a>.</p>
 
@@ -6777,7 +6757,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   91</span>}</div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba5e809b2e8aae7dc97c176d5a250cf0f6"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba5e809b2e8aae7dc97c176d5a250cf0f6">onert_micro::FailedCheckCondition</a></div><div class="ttdeci">@ FailedCheckCondition</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00032">OMStatus.h:32</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_kernel_data_8h_source.html#l00083">onert_micro::core::Pool2DParams::activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00082">onert_micro::core::Pool2DParams::activation_min</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00231">activationFunctionWithMinMax()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="_o_m_status_8h_source.html#l00032">onert_micro::FailedCheckCondition</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00078">onert_micro::core::Pool2DParams::filter_h</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00079">onert_micro::core::Pool2DParams::filter_w</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00220">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00080">onert_micro::core::Pool2DParams::pad_h</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00081">onert_micro::core::Pool2DParams::pad_w</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00075">onert_micro::core::Pool2DParams::stride_h</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00074">onert_micro::core::Pool2DParams::stride_w</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_kernel_data_8h_source.html#l00083">onert_micro::core::Pool2DParams::activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00082">onert_micro::core::Pool2DParams::activation_min</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00170">activationFunctionWithMinMax()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="_o_m_status_8h_source.html#l00032">onert_micro::FailedCheckCondition</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00078">onert_micro::core::Pool2DParams::filter_h</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00079">onert_micro::core::Pool2DParams::filter_w</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00159">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00080">onert_micro::core::Pool2DParams::pad_h</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00081">onert_micro::core::Pool2DParams::pad_w</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00075">onert_micro::core::Pool2DParams::stride_h</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00074">onert_micro::core::Pool2DParams::stride_w</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_l2_pool2_d_8cpp_source.html#l00029">onert_micro::execute::execute_kernel_CircleL2Pool2D()</a>.</p>
 
@@ -7360,11 +7340,11 @@ template&lt;class Fn &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00200">200</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  202</span>{</div>
-<div class="line"><span class="lineno">  203</span>  assert(shape1.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">dims</a>(index1) == shape2.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">dims</a>(index2));</div>
-<div class="line"><span class="lineno">  204</span>  <span class="keywordflow">return</span> shape1.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">dims</a>(index1);</div>
-<div class="line"><span class="lineno">  205</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00139">139</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  141</span>{</div>
+<div class="line"><span class="lineno">  142</span>  assert(shape1.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">dims</a>(index1) == shape2.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">dims</a>(index2));</div>
+<div class="line"><span class="lineno">  143</span>  <span class="keywordflow">return</span> shape1.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">dims</a>(index1);</div>
+<div class="line"><span class="lineno">  144</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>.</p>
 
@@ -7619,90 +7599,6 @@ template&lt;class Fn &gt; </div>
 <p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00037">onert_micro::CmsisNNError</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00078">onert_micro::core::Pool2DParams::filter_h</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00079">onert_micro::core::Pool2DParams::filter_w</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00080">onert_micro::core::Pool2DParams::pad_h</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00081">onert_micro::core::Pool2DParams::pad_w</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00085">onert_micro::core::Pool2DParams::quantized_activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00084">onert_micro::core::Pool2DParams::quantized_activation_min</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00075">onert_micro::core::Pool2DParams::stride_h</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00074">onert_micro::core::Pool2DParams::stride_w</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_max_pool2_d_8cpp_source.html#l00029">onert_micro::execute::execute_kernel_CircleMaxPool2D()</a>.</p>
-
-</div>
-</div>
-<a id="a2b6fb7abee062cb7da367950a6104717" name="a2b6fb7abee062cb7da367950a6104717"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b6fb7abee062cb7da367950a6104717">&#9670;&#160;</a></span>MeanROWH()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void onert_micro::execute::pal::MeanROWH </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;&#160;</td>
-          <td class="paramname"><em>unextended_input_shape</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const T *&#160;</td>
-          <td class="paramname"><em>input_data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> &amp;&#160;</td>
-          <td class="paramname"><em>unextended_output_shape</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T *&#160;</td>
-          <td class="paramname"><em>output_data</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00194">194</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  196</span>{</div>
-<div class="line"><span class="lineno">  197</span>  <span class="comment">// Current implementation only supports dimension equals 4 and simultaneous</span></div>
-<div class="line"><span class="lineno">  198</span>  <span class="comment">// reduction over width and height.</span></div>
-<div class="line"><span class="lineno">  199</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> input_shape = <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aad8a01291216c921715e1b627fbd14c8">OMRuntimeShape::extendedShape</a>(4, unextended_input_shape);</div>
-<div class="line"><span class="lineno">  200</span>  <span class="keyword">const</span> <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a> = <a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#aad8a01291216c921715e1b627fbd14c8">OMRuntimeShape::extendedShape</a>(4, unextended_output_shape);</div>
-<div class="line"><span class="lineno">  201</span> </div>
-<div class="line"><span class="lineno">  202</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_batch = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(0);</div>
-<div class="line"><span class="lineno">  203</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> output_depth = <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#a21afbf00a49a9fb5b67c40f78e408b23">dims</a>(3);</div>
-<div class="line"><span class="lineno">  204</span> </div>
-<div class="line"><span class="lineno">  205</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_height = input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">dims</a>(1);</div>
-<div class="line"><span class="lineno">  206</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> input_width = input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#ac88876c13dc96f9077561ad9715809cd">dims</a>(2);</div>
-<div class="line"><span class="lineno">  207</span> </div>
-<div class="line"><span class="lineno">  208</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_b = 0; out_b &lt; output_batch; ++out_b)</div>
-<div class="line"><span class="lineno">  209</span>  {</div>
-<div class="line"><span class="lineno">  210</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> out_d = 0; out_d &lt; output_depth; ++out_d)</div>
-<div class="line"><span class="lineno">  211</span>    {</div>
-<div class="line"><span class="lineno">  212</span>      <span class="keywordtype">float</span> value = 0;</div>
-<div class="line"><span class="lineno">  213</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_h = 0; in_h &lt; input_height; ++in_h)</div>
-<div class="line"><span class="lineno">  214</span>      {</div>
-<div class="line"><span class="lineno">  215</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> in_w = 0; in_w &lt; input_width; ++in_w)</div>
-<div class="line"><span class="lineno">  216</span>        {</div>
-<div class="line"><span class="lineno">  217</span>          value += <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(</div>
-<div class="line"><span class="lineno">  218</span>            input_data[<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>(input_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>(), out_b, in_h, in_w, out_d)]);</div>
-<div class="line"><span class="lineno">  219</span>        }</div>
-<div class="line"><span class="lineno">  220</span>      }</div>
-<div class="line"><span class="lineno">  221</span>      <span class="keywordtype">float</span> result = value / (input_width * input_height);</div>
-<div class="line"><span class="lineno">  222</span>      output_data[<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>(<a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>.<a class="code hl_function" href="classluci__interpreter_1_1_runtime_shape.html#ad88064d35675a5ccc00747a1496c8304">dimsData</a>(), out_b, 0, 0, out_d)] = <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(result);</div>
-<div class="line"><span class="lineno">  223</span>    }</div>
-<div class="line"><span class="lineno">  224</span>  }</div>
-<div class="line"><span class="lineno">  225</span>}</div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00111">onert_micro::core::OMRuntimeShape::extendedShape()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00220">offset()</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -8347,74 +8243,6 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a36e759f35baf92c43b698cd711aea733" name="a36e759f35baf92c43b698cd711aea733"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36e759f35baf92c43b698cd711aea733">&#9670;&#160;</a></span>nextIndex()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool onert_micro::execute::pal::nextIndex </td>
-          <td>(</td>
-          <td class="paramtype">const int32_t&#160;</td>
-          <td class="paramname"><em>num_dims</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int32_t *&#160;</td>
-          <td class="paramname"><em>dims</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int32_t *&#160;</td>
-          <td class="paramname"><em>current</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00175">175</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  176</span>{</div>
-<div class="line"><span class="lineno">  177</span>  <span class="keywordflow">if</span> (num_dims == 0)</div>
-<div class="line"><span class="lineno">  178</span>  {</div>
-<div class="line"><span class="lineno">  179</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  180</span>  }</div>
-<div class="line"><span class="lineno">  181</span>  <span class="keywordtype">int</span> carry = 1;</div>
-<div class="line"><span class="lineno">  182</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = num_dims - 1; idx &gt;= 0; --idx)</div>
-<div class="line"><span class="lineno">  183</span>  {</div>
-<div class="line"><span class="lineno">  184</span>    <span class="keywordtype">int</span> current_val = current[idx] + carry;</div>
-<div class="line"><span class="lineno">  185</span>    <span class="keywordflow">if</span> (dims[idx] == current_val)</div>
-<div class="line"><span class="lineno">  186</span>    {</div>
-<div class="line"><span class="lineno">  187</span>      current[idx] = 0;</div>
-<div class="line"><span class="lineno">  188</span>    }</div>
-<div class="line"><span class="lineno">  189</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  190</span>    {</div>
-<div class="line"><span class="lineno">  191</span>      current[idx] = current_val;</div>
-<div class="line"><span class="lineno">  192</span>      carry = 0;</div>
-<div class="line"><span class="lineno">  193</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  194</span>    }</div>
-<div class="line"><span class="lineno">  195</span>  }</div>
-<div class="line"><span class="lineno">  196</span>  <span class="keywordflow">return</span> (carry == 0);</div>
-<div class="line"><span class="lineno">  197</span>}</div>
-</div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00138">ReduceGeneric()</a>, and <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00228">ReduceGeneric()</a>.</p>
-
-</div>
-</div>
 <a id="a33e0e80e8a4caa242ec164ea967b0568" name="a33e0e80e8a4caa242ec164ea967b0568"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a33e0e80e8a4caa242ec164ea967b0568">&#9670;&#160;</a></span>NotEqualFn()</h2>
 
@@ -8510,12 +8338,12 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00220">220</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  221</span>{</div>
-<div class="line"><span class="lineno">  222</span>  <span class="keywordflow">return</span> ((i0 * dims_data[1] + i1) * dims_data[2] + i2) * dims_data[3] + i3;</div>
-<div class="line"><span class="lineno">  223</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00159">159</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  160</span>{</div>
+<div class="line"><span class="lineno">  161</span>  <span class="keywordflow">return</span> ((i0 * dims_data[1] + i1) * dims_data[2] + i2) * dims_data[3] + i3;</div>
+<div class="line"><span class="lineno">  162</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_p_a_l_batch_to_space_n_d_common_8h_source.html#l00051">BatchToSpaceND()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_depthwise_conv2_d_common_8h_source.html#l00042">DepthwiseConv2D&lt; float &gt;()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_gather_n_d_8h_source.html#l00035">GatherND()</a>, <a class="el" href="_p_a_l_l2_pool2_d_common_8h_source.html#l00034">L2Pool()</a>, <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00194">MeanROWH()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00143">reducedOutputOffset()</a>, <a class="el" href="_p_a_l_space_to_batch_n_d_common_8h_source.html#l00051">SpaceToBatchND()</a>, <a class="el" href="_p_a_l_space_to_depth_common_8h_source.html#l00032">SpaceToDepth()</a>, and <a class="el" href="_p_a_l_transpose_conv_common_8h_source.html#l00043">TransposeConv&lt; float &gt;()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_p_a_l_batch_to_space_n_d_common_8h_source.html#l00051">BatchToSpaceND()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_depthwise_conv2_d_common_8h_source.html#l00042">DepthwiseConv2D&lt; float &gt;()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_gather_n_d_8h_source.html#l00035">GatherND()</a>, <a class="el" href="_p_a_l_l2_pool2_d_common_8h_source.html#l00034">L2Pool()</a>, <a class="el" href="_p_a_l_space_to_batch_n_d_common_8h_source.html#l00051">SpaceToBatchND()</a>, <a class="el" href="_p_a_l_space_to_depth_common_8h_source.html#l00032">SpaceToDepth()</a>, and <a class="el" href="_p_a_l_transpose_conv_common_8h_source.html#l00043">TransposeConv&lt; float &gt;()</a>.</p>
 
 </div>
 </div>
@@ -8577,10 +8405,10 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00225">225</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  226</span>{</div>
-<div class="line"><span class="lineno">  227</span>  <span class="keywordflow">return</span> (((i0 * dims_data[1] + i1) * dims_data[2] + i2) * dims_data[3] + i3) * dims_data[4] + i4;</div>
-<div class="line"><span class="lineno">  228</span>}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00164">164</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  165</span>{</div>
+<div class="line"><span class="lineno">  166</span>  <span class="keywordflow">return</span> (((i0 * dims_data[1] + i1) * dims_data[2] + i2) * dims_data[3] + i3) * dims_data[4] + i4;</div>
+<div class="line"><span class="lineno">  167</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -9601,125 +9429,6 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a0b92ff182109cd73bc942894d883b925" name="a0b92ff182109cd73bc942894d883b925"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b92ff182109cd73bc942894d883b925">&#9670;&#160;</a></span>Reduce()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , template&lt; typename &gt; class ReduceFn&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool onert_micro::execute::pal::Reduce </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classonert__micro_1_1core_1_1_o_m_reduce_data_context.html">OMReduceDataContext</a>&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>ctx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>mean</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00291">291</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  292</span>{</div>
-<div class="line"><span class="lineno">  293</span>  <span class="comment">// Special case mean implementation exists for 4D mean across axes 1</span></div>
-<div class="line"><span class="lineno">  294</span>  <span class="comment">// and 2</span></div>
-<div class="line"><span class="lineno">  295</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> *axis_value = ctx.Axis().Data().Get();</div>
-<div class="line"><span class="lineno">  296</span>  <span class="keywordtype">bool</span> special_case_4d_axes_1_and_2 =</div>
-<div class="line"><span class="lineno">  297</span>    ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">Input</a>().DimsCount() == 4 &amp;&amp; ctx.Axis().ShapeFlatSize() == 2 &amp;&amp;</div>
-<div class="line"><span class="lineno">  298</span>    ((axis_value[0] == 1 &amp;&amp; axis_value[1] == 2) || (axis_value[0] == 2 &amp;&amp; axis_value[1] == 1));</div>
-<div class="line"><span class="lineno">  299</span>  <span class="keywordflow">if</span> (special_case_4d_axes_1_and_2)</div>
-<div class="line"><span class="lineno">  300</span>  {</div>
-<div class="line"><span class="lineno">  301</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> input_shape(ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">Input</a>().Shape());</div>
-<div class="line"><span class="lineno">  302</span>    <a class="code hl_class" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html">OMRuntimeShape</a> <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>(ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#abdc6889474f382c94082ff21fe94b925">Output</a>().Shape());</div>
-<div class="line"><span class="lineno">  303</span>    MeanROWH&lt;T&gt;(input_shape, ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">Input</a>().Data().Get(), <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#abdc6889474f382c94082ff21fe94b925">Output</a>().Data().Get());</div>
-<div class="line"><span class="lineno">  304</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  305</span>  }</div>
-<div class="line"><span class="lineno">  306</span> </div>
-<div class="line"><span class="lineno">  307</span>  <span class="keyword">constexpr</span> <span class="keyword">static</span> T kInitValue = T(0);</div>
-<div class="line"><span class="lineno">  308</span> </div>
-<div class="line"><span class="lineno">  309</span>  <span class="keywordflow">if</span> (!ReduceGeneric&lt;T, ReduceFn&gt;(ctx))</div>
-<div class="line"><span class="lineno">  310</span>  {</div>
-<div class="line"><span class="lineno">  311</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  312</span>  }</div>
-<div class="line"><span class="lineno">  313</span> </div>
-<div class="line"><span class="lineno">  314</span>  <span class="keyword">auto</span> &amp;input = ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">Input</a>();</div>
-<div class="line"><span class="lineno">  315</span>  <span class="keyword">auto</span> input_dims = input.Dims();</div>
-<div class="line"><span class="lineno">  316</span>  <span class="keyword">auto</span> input_num_dims = input.DimsCount();</div>
-<div class="line"><span class="lineno">  317</span> </div>
-<div class="line"><span class="lineno">  318</span>  <span class="keyword">auto</span> &amp;output = ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#abdc6889474f382c94082ff21fe94b925">Output</a>();</div>
-<div class="line"><span class="lineno">  319</span>  <span class="keyword">auto</span> &amp;output_data = output.Data();</div>
-<div class="line"><span class="lineno">  320</span>  <span class="keyword">auto</span> num_outputs = output.ShapeFlatSize();</div>
-<div class="line"><span class="lineno">  321</span> </div>
-<div class="line"><span class="lineno">  322</span>  <span class="keyword">auto</span> &amp;axis = ctx.Axis().Data();</div>
-<div class="line"><span class="lineno">  323</span>  <span class="keyword">auto</span> num_axis_dimensions = ctx.Axis().DimsCount();</div>
-<div class="line"><span class="lineno">  324</span> </div>
-<div class="line"><span class="lineno">  325</span>  <span class="comment">// Resolve axis again for computing mean</span></div>
-<div class="line"><span class="lineno">  326</span>  <span class="keywordtype">int</span> num_resolved_axis = 0;</div>
-<div class="line"><span class="lineno">  327</span>  <span class="keywordtype">int</span> resolved_axis[2];</div>
-<div class="line"><span class="lineno">  328</span> </div>
-<div class="line"><span class="lineno">  329</span>  <span class="keywordflow">if</span> (!resolveAxis(input_num_dims, axis.Get(), num_axis_dimensions, resolved_axis,</div>
-<div class="line"><span class="lineno">  330</span>                   &amp;num_resolved_axis))</div>
-<div class="line"><span class="lineno">  331</span>  {</div>
-<div class="line"><span class="lineno">  332</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  333</span>  }</div>
-<div class="line"><span class="lineno">  334</span> </div>
-<div class="line"><span class="lineno">  335</span>  <span class="comment">// clang-format off</span></div>
-<div class="line"><span class="lineno">  336</span> </div>
-<div class="line"><span class="lineno">  337</span>  <span class="keyword">auto</span> fnReduceOutput = [&amp;](<span class="keywordtype">size_t</span> divide_by = 1)</div>
-<div class="line"><span class="lineno">  338</span>  {</div>
-<div class="line"><span class="lineno">  339</span>      <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; num_outputs; ++idx)</div>
-<div class="line"><span class="lineno">  340</span>      {</div>
-<div class="line"><span class="lineno">  341</span>        <span class="keyword">auto</span> value = output_data.ValueAt(idx);</div>
-<div class="line"><span class="lineno">  342</span>        value /= <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(divide_by);</div>
-<div class="line"><span class="lineno">  343</span>        output_data.SetAt(idx, value);</div>
-<div class="line"><span class="lineno">  344</span>      }</div>
-<div class="line"><span class="lineno">  345</span>  };</div>
-<div class="line"><span class="lineno">  346</span> </div>
-<div class="line"><span class="lineno">  347</span>  <span class="comment">// clang-format on</span></div>
-<div class="line"><span class="lineno">  348</span> </div>
-<div class="line"><span class="lineno">  349</span>  <span class="keywordflow">if</span> (!mean)</div>
-<div class="line"><span class="lineno">  350</span>  {</div>
-<div class="line"><span class="lineno">  351</span>    fnReduceOutput();</div>
-<div class="line"><span class="lineno">  352</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  353</span>  }</div>
-<div class="line"><span class="lineno">  354</span> </div>
-<div class="line"><span class="lineno">  355</span>  <span class="comment">// Calculate mean by dividing output_data by num of aggregated element.</span></div>
-<div class="line"><span class="lineno">  356</span>  <span class="keywordtype">size_t</span> num_elements_in_axis = 1;</div>
-<div class="line"><span class="lineno">  357</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; num_resolved_axis; ++idx)</div>
-<div class="line"><span class="lineno">  358</span>  {</div>
-<div class="line"><span class="lineno">  359</span>    <span class="keywordtype">size_t</span> current = <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(input_dims[resolved_axis[idx]]);</div>
-<div class="line"><span class="lineno">  360</span>    <span class="comment">// Overflow prevention.</span></div>
-<div class="line"><span class="lineno">  361</span>    <span class="keywordflow">if</span> (current &gt; (std::numeric_limits&lt;size_t&gt;::max() / num_elements_in_axis))</div>
-<div class="line"><span class="lineno">  362</span>    {</div>
-<div class="line"><span class="lineno">  363</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  364</span>    }</div>
-<div class="line"><span class="lineno">  365</span>    num_elements_in_axis *= current;</div>
-<div class="line"><span class="lineno">  366</span>  }</div>
-<div class="line"><span class="lineno">  367</span> </div>
-<div class="line"><span class="lineno">  368</span>  <span class="keywordflow">if</span> (num_elements_in_axis &gt; 0)</div>
-<div class="line"><span class="lineno">  369</span>  {</div>
-<div class="line"><span class="lineno">  370</span>    fnReduceOutput(num_elements_in_axis);</div>
-<div class="line"><span class="lineno">  371</span>  }</div>
-<div class="line"><span class="lineno">  372</span> </div>
-<div class="line"><span class="lineno">  373</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  374</span>}</div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_data_context_html_a1d8c3554f691ca6cde4ed47c66d3e67c"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">onert_micro::core::OMDataContext::Input</a></div><div class="ttdeci">auto &amp; Input()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_data_8h_source.html#l00149">OMRuntimeData.h:149</a></div></div>
-<div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_data_context_html_abdc6889474f382c94082ff21fe94b925"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_data_context.html#abdc6889474f382c94082ff21fe94b925">onert_micro::core::OMDataContext::Output</a></div><div class="ttdeci">auto &amp; Output()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_data_8h_source.html#l00154">OMRuntimeData.h:154</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_data_8h_source.html#l00149">onert_micro::core::OMDataContext&lt; T, Mixins &gt;::Input()</a>, <a class="el" href="_o_m_runtime_data_8h_source.html#l00154">onert_micro::core::OMDataContext&lt; T, Mixins &gt;::Output()</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, and <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00090">resolveAxis()</a>.</p>
-
-</div>
-</div>
 <a id="a6d854845904479887b91aa4c69d2a0e2" name="a6d854845904479887b91aa4c69d2a0e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d854845904479887b91aa4c69d2a0e2">&#9670;&#160;</a></span>ReduceDimensionsForBroadcast()</h2>
 
@@ -9766,522 +9475,151 @@ template&lt;int MAX_DIM = 6&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00242">242</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  246</span>{</div>
-<div class="line"><span class="lineno">  247</span>  <span class="keywordtype">size_t</span> num_compressed_dims = 0;</div>
-<div class="line"><span class="lineno">  248</span>  <span class="keywordtype">size_t</span> compressed_input1_shape[MAX_DIM];</div>
-<div class="line"><span class="lineno">  249</span>  <span class="keywordtype">size_t</span> compressed_input2_shape[MAX_DIM];</div>
-<div class="line"><span class="lineno">  250</span>  std::fill(compressed_input1_shape, compressed_input1_shape + MAX_DIM, 1);</div>
-<div class="line"><span class="lineno">  251</span>  std::fill(compressed_input2_shape, compressed_input2_shape + MAX_DIM, 1);</div>
-<div class="line"><span class="lineno">  252</span>  std::fill(compressed_output_shape, compressed_output_shape + MAX_DIM, 1);</div>
-<div class="line"><span class="lineno">  253</span>  <span class="keywordtype">bool</span> broadcast_input1 = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  254</span>  <span class="keywordtype">bool</span> broadcast_input2 = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  255</span>  <span class="keywordtype">bool</span> first_nonunit = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  256</span> </div>
-<div class="line"><span class="lineno">  257</span>  <span class="keywordflow">if</span> (input1_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a929c3011317f97161feda8a1f3e6c16a">dimensionsCount</a>() &lt; 0 || input2_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a929c3011317f97161feda8a1f3e6c16a">dimensionsCount</a>() &lt; 0)</div>
-<div class="line"><span class="lineno">  258</span>  {</div>
-<div class="line"><span class="lineno">  259</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  260</span>  }</div>
-<div class="line"><span class="lineno">  261</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_input1_dims = input1_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a929c3011317f97161feda8a1f3e6c16a">dimensionsCount</a>();</div>
-<div class="line"><span class="lineno">  262</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_input2_dims = input2_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a929c3011317f97161feda8a1f3e6c16a">dimensionsCount</a>();</div>
-<div class="line"><span class="lineno">  263</span>  <span class="keyword">const</span> int32_t *input1_dims = input1_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>();</div>
-<div class="line"><span class="lineno">  264</span>  <span class="keyword">const</span> int32_t *input2_dims = input2_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>();</div>
-<div class="line"><span class="lineno">  265</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_common_dims = std::min(num_input1_dims, num_input2_dims);</div>
-<div class="line"><span class="lineno">  266</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt;= num_common_dims; i++)</div>
-<div class="line"><span class="lineno">  267</span>  {</div>
-<div class="line"><span class="lineno">  268</span>    <span class="keywordflow">if</span> (input1_dims[num_input1_dims - i] &lt; 0 || input2_dims[num_input2_dims - i] &lt; 0)</div>
-<div class="line"><span class="lineno">  269</span>    {</div>
-<div class="line"><span class="lineno">  270</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  271</span>    }</div>
-<div class="line"><span class="lineno">  272</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> input1_dim = input1_dims[num_input1_dims - i];</div>
-<div class="line"><span class="lineno">  273</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> input2_dim = input2_dims[num_input2_dims - i];</div>
-<div class="line"><span class="lineno">  274</span>    <span class="keywordflow">if</span> (input1_dim == 0 || input2_dim == 0)</div>
-<div class="line"><span class="lineno">  275</span>    {</div>
-<div class="line"><span class="lineno">  276</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00181">181</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  185</span>{</div>
+<div class="line"><span class="lineno">  186</span>  <span class="keywordtype">size_t</span> num_compressed_dims = 0;</div>
+<div class="line"><span class="lineno">  187</span>  <span class="keywordtype">size_t</span> compressed_input1_shape[MAX_DIM];</div>
+<div class="line"><span class="lineno">  188</span>  <span class="keywordtype">size_t</span> compressed_input2_shape[MAX_DIM];</div>
+<div class="line"><span class="lineno">  189</span>  std::fill(compressed_input1_shape, compressed_input1_shape + MAX_DIM, 1);</div>
+<div class="line"><span class="lineno">  190</span>  std::fill(compressed_input2_shape, compressed_input2_shape + MAX_DIM, 1);</div>
+<div class="line"><span class="lineno">  191</span>  std::fill(compressed_output_shape, compressed_output_shape + MAX_DIM, 1);</div>
+<div class="line"><span class="lineno">  192</span>  <span class="keywordtype">bool</span> broadcast_input1 = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  193</span>  <span class="keywordtype">bool</span> broadcast_input2 = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  194</span>  <span class="keywordtype">bool</span> first_nonunit = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  195</span> </div>
+<div class="line"><span class="lineno">  196</span>  <span class="keywordflow">if</span> (input1_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a929c3011317f97161feda8a1f3e6c16a">dimensionsCount</a>() &lt; 0 || input2_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a929c3011317f97161feda8a1f3e6c16a">dimensionsCount</a>() &lt; 0)</div>
+<div class="line"><span class="lineno">  197</span>  {</div>
+<div class="line"><span class="lineno">  198</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  199</span>  }</div>
+<div class="line"><span class="lineno">  200</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_input1_dims = input1_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a929c3011317f97161feda8a1f3e6c16a">dimensionsCount</a>();</div>
+<div class="line"><span class="lineno">  201</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_input2_dims = input2_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a929c3011317f97161feda8a1f3e6c16a">dimensionsCount</a>();</div>
+<div class="line"><span class="lineno">  202</span>  <span class="keyword">const</span> int32_t *input1_dims = input1_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>();</div>
+<div class="line"><span class="lineno">  203</span>  <span class="keyword">const</span> int32_t *input2_dims = input2_shape.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_runtime_shape.html#a166a4cc1a3ef3ec54191257141c81ca9">dimsData</a>();</div>
+<div class="line"><span class="lineno">  204</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> num_common_dims = std::min(num_input1_dims, num_input2_dims);</div>
+<div class="line"><span class="lineno">  205</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 1; i &lt;= num_common_dims; i++)</div>
+<div class="line"><span class="lineno">  206</span>  {</div>
+<div class="line"><span class="lineno">  207</span>    <span class="keywordflow">if</span> (input1_dims[num_input1_dims - i] &lt; 0 || input2_dims[num_input2_dims - i] &lt; 0)</div>
+<div class="line"><span class="lineno">  208</span>    {</div>
+<div class="line"><span class="lineno">  209</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  210</span>    }</div>
+<div class="line"><span class="lineno">  211</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> input1_dim = input1_dims[num_input1_dims - i];</div>
+<div class="line"><span class="lineno">  212</span>    <span class="keyword">const</span> <span class="keywordtype">size_t</span> input2_dim = input2_dims[num_input2_dims - i];</div>
+<div class="line"><span class="lineno">  213</span>    <span class="keywordflow">if</span> (input1_dim == 0 || input2_dim == 0)</div>
+<div class="line"><span class="lineno">  214</span>    {</div>
+<div class="line"><span class="lineno">  215</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  216</span>    }</div>
+<div class="line"><span class="lineno">  217</span>    <span class="keywordflow">if</span> (input1_dim == 1 &amp;&amp; input2_dim == 1)</div>
+<div class="line"><span class="lineno">  218</span>    {</div>
+<div class="line"><span class="lineno">  219</span>      <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  220</span>    }</div>
+<div class="line"><span class="lineno">  221</span>    assert(!broadcast_input1 || !broadcast_input2);</div>
+<div class="line"><span class="lineno">  222</span> </div>
+<div class="line"><span class="lineno">  223</span>    <span class="keywordflow">if</span> (input1_dim == 1)</div>
+<div class="line"><span class="lineno">  224</span>    {</div>
+<div class="line"><span class="lineno">  225</span>      <span class="keywordflow">if</span> (!broadcast_input1)</div>
+<div class="line"><span class="lineno">  226</span>      {</div>
+<div class="line"><span class="lineno">  227</span>        broadcast_input1 = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  228</span>        broadcast_input2 = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  229</span>        num_compressed_dims++;</div>
+<div class="line"><span class="lineno">  230</span>      }</div>
+<div class="line"><span class="lineno">  231</span>      compressed_input2_shape[num_compressed_dims - 1] *= input2_dim;</div>
+<div class="line"><span class="lineno">  232</span>      compressed_output_shape[num_compressed_dims - 1] *= input2_dim;</div>
+<div class="line"><span class="lineno">  233</span>    }</div>
+<div class="line"><span class="lineno">  234</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (input2_dim == 1)</div>
+<div class="line"><span class="lineno">  235</span>    {</div>
+<div class="line"><span class="lineno">  236</span>      <span class="keywordflow">if</span> (!broadcast_input2)</div>
+<div class="line"><span class="lineno">  237</span>      {</div>
+<div class="line"><span class="lineno">  238</span>        broadcast_input1 = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  239</span>        broadcast_input2 = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  240</span>        num_compressed_dims++;</div>
+<div class="line"><span class="lineno">  241</span>      }</div>
+<div class="line"><span class="lineno">  242</span>      compressed_input1_shape[num_compressed_dims - 1] *= input1_dim;</div>
+<div class="line"><span class="lineno">  243</span>      compressed_output_shape[num_compressed_dims - 1] *= input1_dim;</div>
+<div class="line"><span class="lineno">  244</span>    }</div>
+<div class="line"><span class="lineno">  245</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  246</span>    {</div>
+<div class="line"><span class="lineno">  247</span>      assert(input1_dim == input2_dim);</div>
+<div class="line"><span class="lineno">  248</span>      <span class="keywordflow">if</span> (broadcast_input1 || broadcast_input2 || first_nonunit)</div>
+<div class="line"><span class="lineno">  249</span>      {</div>
+<div class="line"><span class="lineno">  250</span>        broadcast_input1 = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  251</span>        broadcast_input2 = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  252</span>        num_compressed_dims++;</div>
+<div class="line"><span class="lineno">  253</span>      }</div>
+<div class="line"><span class="lineno">  254</span>      compressed_input1_shape[num_compressed_dims - 1] *= input1_dim;</div>
+<div class="line"><span class="lineno">  255</span>      compressed_input2_shape[num_compressed_dims - 1] *= input1_dim;</div>
+<div class="line"><span class="lineno">  256</span>      compressed_output_shape[num_compressed_dims - 1] *= input1_dim;</div>
+<div class="line"><span class="lineno">  257</span>    }</div>
+<div class="line"><span class="lineno">  258</span>    first_nonunit = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  259</span>  }</div>
+<div class="line"><span class="lineno">  260</span>  <span class="keywordflow">if</span> (num_input1_dims &gt; num_input2_dims)</div>
+<div class="line"><span class="lineno">  261</span>  {</div>
+<div class="line"><span class="lineno">  262</span>    <span class="keywordflow">if</span> (!broadcast_input2)</div>
+<div class="line"><span class="lineno">  263</span>    {</div>
+<div class="line"><span class="lineno">  264</span>      num_compressed_dims++;</div>
+<div class="line"><span class="lineno">  265</span>    }</div>
+<div class="line"><span class="lineno">  266</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; num_input1_dims - num_input2_dims; i++)</div>
+<div class="line"><span class="lineno">  267</span>    {</div>
+<div class="line"><span class="lineno">  268</span>      <span class="keywordflow">if</span> (input1_dims[i] &lt; 0)</div>
+<div class="line"><span class="lineno">  269</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  270</span>      <span class="keyword">const</span> <span class="keywordtype">size_t</span> input1_dim = input1_dims[i];</div>
+<div class="line"><span class="lineno">  271</span>      <span class="keywordflow">if</span> (input1_dim == 0)</div>
+<div class="line"><span class="lineno">  272</span>      {</div>
+<div class="line"><span class="lineno">  273</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  274</span>      }</div>
+<div class="line"><span class="lineno">  275</span>      compressed_input1_shape[num_compressed_dims - 1] *= input1_dim;</div>
+<div class="line"><span class="lineno">  276</span>      compressed_output_shape[num_compressed_dims - 1] *= input1_dim;</div>
 <div class="line"><span class="lineno">  277</span>    }</div>
-<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">if</span> (input1_dim == 1 &amp;&amp; input2_dim == 1)</div>
-<div class="line"><span class="lineno">  279</span>    {</div>
-<div class="line"><span class="lineno">  280</span>      <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  281</span>    }</div>
-<div class="line"><span class="lineno">  282</span>    assert(!broadcast_input1 || !broadcast_input2);</div>
-<div class="line"><span class="lineno">  283</span> </div>
-<div class="line"><span class="lineno">  284</span>    <span class="keywordflow">if</span> (input1_dim == 1)</div>
-<div class="line"><span class="lineno">  285</span>    {</div>
-<div class="line"><span class="lineno">  286</span>      <span class="keywordflow">if</span> (!broadcast_input1)</div>
-<div class="line"><span class="lineno">  287</span>      {</div>
-<div class="line"><span class="lineno">  288</span>        broadcast_input1 = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  289</span>        broadcast_input2 = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  290</span>        num_compressed_dims++;</div>
-<div class="line"><span class="lineno">  291</span>      }</div>
-<div class="line"><span class="lineno">  292</span>      compressed_input2_shape[num_compressed_dims - 1] *= input2_dim;</div>
-<div class="line"><span class="lineno">  293</span>      compressed_output_shape[num_compressed_dims - 1] *= input2_dim;</div>
-<div class="line"><span class="lineno">  294</span>    }</div>
-<div class="line"><span class="lineno">  295</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (input2_dim == 1)</div>
-<div class="line"><span class="lineno">  296</span>    {</div>
-<div class="line"><span class="lineno">  297</span>      <span class="keywordflow">if</span> (!broadcast_input2)</div>
-<div class="line"><span class="lineno">  298</span>      {</div>
-<div class="line"><span class="lineno">  299</span>        broadcast_input1 = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  300</span>        broadcast_input2 = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  301</span>        num_compressed_dims++;</div>
-<div class="line"><span class="lineno">  302</span>      }</div>
-<div class="line"><span class="lineno">  303</span>      compressed_input1_shape[num_compressed_dims - 1] *= input1_dim;</div>
-<div class="line"><span class="lineno">  304</span>      compressed_output_shape[num_compressed_dims - 1] *= input1_dim;</div>
-<div class="line"><span class="lineno">  305</span>    }</div>
-<div class="line"><span class="lineno">  306</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  307</span>    {</div>
-<div class="line"><span class="lineno">  308</span>      assert(input1_dim == input2_dim);</div>
-<div class="line"><span class="lineno">  309</span>      <span class="keywordflow">if</span> (broadcast_input1 || broadcast_input2 || first_nonunit)</div>
-<div class="line"><span class="lineno">  310</span>      {</div>
-<div class="line"><span class="lineno">  311</span>        broadcast_input1 = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  312</span>        broadcast_input2 = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  313</span>        num_compressed_dims++;</div>
-<div class="line"><span class="lineno">  314</span>      }</div>
-<div class="line"><span class="lineno">  315</span>      compressed_input1_shape[num_compressed_dims - 1] *= input1_dim;</div>
-<div class="line"><span class="lineno">  316</span>      compressed_input2_shape[num_compressed_dims - 1] *= input1_dim;</div>
-<div class="line"><span class="lineno">  317</span>      compressed_output_shape[num_compressed_dims - 1] *= input1_dim;</div>
-<div class="line"><span class="lineno">  318</span>    }</div>
-<div class="line"><span class="lineno">  319</span>    first_nonunit = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  320</span>  }</div>
-<div class="line"><span class="lineno">  321</span>  <span class="keywordflow">if</span> (num_input1_dims &gt; num_input2_dims)</div>
-<div class="line"><span class="lineno">  322</span>  {</div>
-<div class="line"><span class="lineno">  323</span>    <span class="keywordflow">if</span> (!broadcast_input2)</div>
-<div class="line"><span class="lineno">  324</span>    {</div>
-<div class="line"><span class="lineno">  325</span>      num_compressed_dims++;</div>
-<div class="line"><span class="lineno">  326</span>    }</div>
-<div class="line"><span class="lineno">  327</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; num_input1_dims - num_input2_dims; i++)</div>
-<div class="line"><span class="lineno">  328</span>    {</div>
-<div class="line"><span class="lineno">  329</span>      <span class="keywordflow">if</span> (input1_dims[i] &lt; 0)</div>
-<div class="line"><span class="lineno">  330</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  331</span>      <span class="keyword">const</span> <span class="keywordtype">size_t</span> input1_dim = input1_dims[i];</div>
-<div class="line"><span class="lineno">  332</span>      <span class="keywordflow">if</span> (input1_dim == 0)</div>
-<div class="line"><span class="lineno">  333</span>      {</div>
-<div class="line"><span class="lineno">  334</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  335</span>      }</div>
-<div class="line"><span class="lineno">  336</span>      compressed_input1_shape[num_compressed_dims - 1] *= input1_dim;</div>
-<div class="line"><span class="lineno">  337</span>      compressed_output_shape[num_compressed_dims - 1] *= input1_dim;</div>
-<div class="line"><span class="lineno">  338</span>    }</div>
-<div class="line"><span class="lineno">  339</span>  }</div>
-<div class="line"><span class="lineno">  340</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (num_input2_dims &gt; num_input1_dims)</div>
-<div class="line"><span class="lineno">  341</span>  {</div>
-<div class="line"><span class="lineno">  342</span>    <span class="keywordflow">if</span> (!broadcast_input1)</div>
-<div class="line"><span class="lineno">  343</span>    {</div>
-<div class="line"><span class="lineno">  344</span>      num_compressed_dims++;</div>
-<div class="line"><span class="lineno">  345</span>    }</div>
-<div class="line"><span class="lineno">  346</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; num_input2_dims - num_input1_dims; i++)</div>
-<div class="line"><span class="lineno">  347</span>    {</div>
-<div class="line"><span class="lineno">  348</span>      <span class="keywordflow">if</span> (input2_dims[i] &lt; 0)</div>
-<div class="line"><span class="lineno">  349</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  350</span>      <span class="keyword">const</span> <span class="keywordtype">size_t</span> input2_dim = input2_dims[i];</div>
-<div class="line"><span class="lineno">  351</span>      <span class="keywordflow">if</span> (input2_dim == 0)</div>
-<div class="line"><span class="lineno">  352</span>      {</div>
-<div class="line"><span class="lineno">  353</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  354</span>      }</div>
-<div class="line"><span class="lineno">  355</span>      compressed_input2_shape[num_compressed_dims - 1] *= input2_dim;</div>
-<div class="line"><span class="lineno">  356</span>      compressed_output_shape[num_compressed_dims - 1] *= input2_dim;</div>
-<div class="line"><span class="lineno">  357</span>    }</div>
-<div class="line"><span class="lineno">  358</span>  }</div>
-<div class="line"><span class="lineno">  359</span>  num_compressed_dims = (num_compressed_dims &gt; 1) ? num_compressed_dims : 1;</div>
-<div class="line"><span class="lineno">  360</span> </div>
-<div class="line"><span class="lineno">  361</span>  <span class="keywordtype">int</span> input1_stride = 1;</div>
-<div class="line"><span class="lineno">  362</span>  <span class="keywordtype">int</span> input2_stride = 1;</div>
-<div class="line"><span class="lineno">  363</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; MAX_DIM; ++i)</div>
-<div class="line"><span class="lineno">  364</span>  {</div>
-<div class="line"><span class="lineno">  365</span>    compressed_input1_stride[i] = input1_stride;</div>
-<div class="line"><span class="lineno">  366</span>    input1_stride *= compressed_input1_shape[i];</div>
-<div class="line"><span class="lineno">  367</span>    compressed_input2_stride[i] = input2_stride;</div>
-<div class="line"><span class="lineno">  368</span>    input2_stride *= compressed_input2_shape[i];</div>
-<div class="line"><span class="lineno">  369</span>  }</div>
-<div class="line"><span class="lineno">  370</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; MAX_DIM; ++i)</div>
-<div class="line"><span class="lineno">  371</span>  {</div>
-<div class="line"><span class="lineno">  372</span>    <span class="keywordflow">if</span> (compressed_input1_shape[i] != compressed_input2_shape[i])</div>
-<div class="line"><span class="lineno">  373</span>    {</div>
-<div class="line"><span class="lineno">  374</span>      <span class="keywordflow">if</span> (compressed_input1_shape[i] == 1)</div>
-<div class="line"><span class="lineno">  375</span>      {</div>
-<div class="line"><span class="lineno">  376</span>        compressed_input1_stride[i] = 0;</div>
-<div class="line"><span class="lineno">  377</span>      }</div>
-<div class="line"><span class="lineno">  378</span>      <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  379</span>      {</div>
-<div class="line"><span class="lineno">  380</span>        assert(compressed_input2_shape[i] == 1);</div>
-<div class="line"><span class="lineno">  381</span>        compressed_input2_stride[i] = 0;</div>
-<div class="line"><span class="lineno">  382</span>      }</div>
-<div class="line"><span class="lineno">  383</span>    }</div>
-<div class="line"><span class="lineno">  384</span>  }</div>
-<div class="line"><span class="lineno">  385</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  386</span>}</div>
+<div class="line"><span class="lineno">  278</span>  }</div>
+<div class="line"><span class="lineno">  279</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (num_input2_dims &gt; num_input1_dims)</div>
+<div class="line"><span class="lineno">  280</span>  {</div>
+<div class="line"><span class="lineno">  281</span>    <span class="keywordflow">if</span> (!broadcast_input1)</div>
+<div class="line"><span class="lineno">  282</span>    {</div>
+<div class="line"><span class="lineno">  283</span>      num_compressed_dims++;</div>
+<div class="line"><span class="lineno">  284</span>    }</div>
+<div class="line"><span class="lineno">  285</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; num_input2_dims - num_input1_dims; i++)</div>
+<div class="line"><span class="lineno">  286</span>    {</div>
+<div class="line"><span class="lineno">  287</span>      <span class="keywordflow">if</span> (input2_dims[i] &lt; 0)</div>
+<div class="line"><span class="lineno">  288</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  289</span>      <span class="keyword">const</span> <span class="keywordtype">size_t</span> input2_dim = input2_dims[i];</div>
+<div class="line"><span class="lineno">  290</span>      <span class="keywordflow">if</span> (input2_dim == 0)</div>
+<div class="line"><span class="lineno">  291</span>      {</div>
+<div class="line"><span class="lineno">  292</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  293</span>      }</div>
+<div class="line"><span class="lineno">  294</span>      compressed_input2_shape[num_compressed_dims - 1] *= input2_dim;</div>
+<div class="line"><span class="lineno">  295</span>      compressed_output_shape[num_compressed_dims - 1] *= input2_dim;</div>
+<div class="line"><span class="lineno">  296</span>    }</div>
+<div class="line"><span class="lineno">  297</span>  }</div>
+<div class="line"><span class="lineno">  298</span>  num_compressed_dims = (num_compressed_dims &gt; 1) ? num_compressed_dims : 1;</div>
+<div class="line"><span class="lineno">  299</span> </div>
+<div class="line"><span class="lineno">  300</span>  <span class="keywordtype">int</span> input1_stride = 1;</div>
+<div class="line"><span class="lineno">  301</span>  <span class="keywordtype">int</span> input2_stride = 1;</div>
+<div class="line"><span class="lineno">  302</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; MAX_DIM; ++i)</div>
+<div class="line"><span class="lineno">  303</span>  {</div>
+<div class="line"><span class="lineno">  304</span>    compressed_input1_stride[i] = input1_stride;</div>
+<div class="line"><span class="lineno">  305</span>    input1_stride *= compressed_input1_shape[i];</div>
+<div class="line"><span class="lineno">  306</span>    compressed_input2_stride[i] = input2_stride;</div>
+<div class="line"><span class="lineno">  307</span>    input2_stride *= compressed_input2_shape[i];</div>
+<div class="line"><span class="lineno">  308</span>  }</div>
+<div class="line"><span class="lineno">  309</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; MAX_DIM; ++i)</div>
+<div class="line"><span class="lineno">  310</span>  {</div>
+<div class="line"><span class="lineno">  311</span>    <span class="keywordflow">if</span> (compressed_input1_shape[i] != compressed_input2_shape[i])</div>
+<div class="line"><span class="lineno">  312</span>    {</div>
+<div class="line"><span class="lineno">  313</span>      <span class="keywordflow">if</span> (compressed_input1_shape[i] == 1)</div>
+<div class="line"><span class="lineno">  314</span>      {</div>
+<div class="line"><span class="lineno">  315</span>        compressed_input1_stride[i] = 0;</div>
+<div class="line"><span class="lineno">  316</span>      }</div>
+<div class="line"><span class="lineno">  317</span>      <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  318</span>      {</div>
+<div class="line"><span class="lineno">  319</span>        assert(compressed_input2_shape[i] == 1);</div>
+<div class="line"><span class="lineno">  320</span>        compressed_input2_stride[i] = 0;</div>
+<div class="line"><span class="lineno">  321</span>      }</div>
+<div class="line"><span class="lineno">  322</span>    }</div>
+<div class="line"><span class="lineno">  323</span>  }</div>
+<div class="line"><span class="lineno">  324</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  325</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, and <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>.</p>
 
-</div>
-</div>
-<a id="a917c4ed35594d1bdbf9d7480dd2cc80b" name="a917c4ed35594d1bdbf9d7480dd2cc80b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a917c4ed35594d1bdbf9d7480dd2cc80b">&#9670;&#160;</a></span>reducedOutputOffset()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t onert_micro::execute::pal::reducedOutputOffset </td>
-          <td>(</td>
-          <td class="paramtype">const int32_t&#160;</td>
-          <td class="paramname"><em>num_dims</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int32_t *&#160;</td>
-          <td class="paramname"><em>dims</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int32_t *&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int32_t&#160;</td>
-          <td class="paramname"><em>num_axis</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int32_t *&#160;</td>
-          <td class="paramname"><em>axis</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00143">143</a> of file <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html">PALUtils.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  145</span>{</div>
-<div class="line"><span class="lineno">  146</span>  <span class="keywordflow">if</span> (num_dims == 0)</div>
-<div class="line"><span class="lineno">  147</span>  {</div>
-<div class="line"><span class="lineno">  148</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">  149</span>  }</div>
-<div class="line"><span class="lineno">  150</span>  <span class="keywordtype">size_t</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = 0;</div>
-<div class="line"><span class="lineno">  151</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; num_dims; ++idx)</div>
-<div class="line"><span class="lineno">  152</span>  {</div>
-<div class="line"><span class="lineno">  153</span>    <span class="comment">// if we need to skip this axis</span></div>
-<div class="line"><span class="lineno">  154</span>    <span class="keywordtype">bool</span> is_axis = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">if</span> (axis != <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">  156</span>    {</div>
-<div class="line"><span class="lineno">  157</span>      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> axis_idx = 0; axis_idx &lt; num_axis; ++axis_idx)</div>
-<div class="line"><span class="lineno">  158</span>      {</div>
-<div class="line"><span class="lineno">  159</span>        <span class="keywordflow">if</span> (idx == axis[axis_idx])</div>
-<div class="line"><span class="lineno">  160</span>        {</div>
-<div class="line"><span class="lineno">  161</span>          is_axis = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  162</span>          <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  163</span>        }</div>
-<div class="line"><span class="lineno">  164</span>      }</div>
-<div class="line"><span class="lineno">  165</span>    }</div>
-<div class="line"><span class="lineno">  166</span>    <span class="keywordflow">if</span> (!is_axis)</div>
-<div class="line"><span class="lineno">  167</span>    {</div>
-<div class="line"><span class="lineno">  168</span>      <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> = <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> * <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>[idx]) + <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(index[idx]);</div>
-<div class="line"><span class="lineno">  169</span>    }</div>
-<div class="line"><span class="lineno">  170</span>  }</div>
-<div class="line"><span class="lineno">  171</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>;</div>
-<div class="line"><span class="lineno">  172</span>}</div>
-<div class="ttc" id="anamespacekbenchmark_html_a0f4026f3dfa7f3d4d876efc26dca96ea"><div class="ttname"><a href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">kbenchmark::dims</a></div><div class="ttdeci">std::vector&lt; int &gt; dims(const std::string &amp;src)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2_utils_8h_source.html#l00035">Utils.h:35</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00220">offset()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00138">ReduceGeneric()</a>, and <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00228">ReduceGeneric()</a>.</p>
-
-</div>
-</div>
-<a id="a7735cf76aa7f6e29f5b0695a060da5ac" name="a7735cf76aa7f6e29f5b0695a060da5ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7735cf76aa7f6e29f5b0695a060da5ac">&#9670;&#160;</a></span>ReduceGeneric() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool onert_micro::execute::pal::ReduceGeneric </td>
-          <td>(</td>
-          <td class="paramtype">const T *&#160;</td>
-          <td class="paramname"><em>input_data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int *&#160;</td>
-          <td class="paramname"><em>input_dims</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>input_num_dims</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T *&#160;</td>
-          <td class="paramname"><em>output_data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int *&#160;</td>
-          <td class="paramname"><em>axis</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int64_t&#160;</td>
-          <td class="paramname"><em>num_axis_dimensions</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>init_value</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>output_flat_size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T &#160;</td>
-          <td class="paramname"><em>reducer</em>const T, const T&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00138">138</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  141</span>{</div>
-<div class="line"><span class="lineno">  142</span>  <span class="comment">// Return early when input shape has zero dim.</span></div>
-<div class="line"><span class="lineno">  143</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; input_num_dims; ++i)</div>
-<div class="line"><span class="lineno">  144</span>  {</div>
-<div class="line"><span class="lineno">  145</span>    <span class="keywordflow">if</span> (input_dims[i] == 0)</div>
-<div class="line"><span class="lineno">  146</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  147</span>  }</div>
-<div class="line"><span class="lineno">  148</span> </div>
-<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; output_flat_size; ++idx)</div>
-<div class="line"><span class="lineno">  150</span>  {</div>
-<div class="line"><span class="lineno">  151</span>    output_data[idx] = init_value;</div>
-<div class="line"><span class="lineno">  152</span>  }</div>
-<div class="line"><span class="lineno">  153</span> </div>
-<div class="line"><span class="lineno">  154</span>  <span class="comment">// Resolve axis.</span></div>
-<div class="line"><span class="lineno">  155</span>  <span class="keywordtype">int</span> num_resolved_axis = 0;</div>
-<div class="line"><span class="lineno">  156</span>  <span class="keywordtype">int</span> resolved_axis[2];</div>
-<div class="line"><span class="lineno">  157</span> </div>
-<div class="line"><span class="lineno">  158</span>  <span class="keywordflow">if</span> (!resolveAxis(input_num_dims, axis, num_axis_dimensions, resolved_axis, &amp;num_resolved_axis))</div>
-<div class="line"><span class="lineno">  159</span>  {</div>
-<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  161</span>  }</div>
-<div class="line"><span class="lineno">  162</span> </div>
-<div class="line"><span class="lineno">  163</span>  <span class="keywordtype">int</span> temp_index[5];</div>
-<div class="line"><span class="lineno">  164</span>  <span class="comment">// Reset input iterator.</span></div>
-<div class="line"><span class="lineno">  165</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idx = 0; idx &lt; input_num_dims; ++idx)</div>
-<div class="line"><span class="lineno">  166</span>  {</div>
-<div class="line"><span class="lineno">  167</span>    temp_index[idx] = 0;</div>
-<div class="line"><span class="lineno">  168</span>  }</div>
-<div class="line"><span class="lineno">  169</span>  <span class="comment">// Iterate through input_data.</span></div>
-<div class="line"><span class="lineno">  170</span>  <span class="keywordflow">do</span></div>
-<div class="line"><span class="lineno">  171</span>  {</div>
-<div class="line"><span class="lineno">  172</span>    <span class="keywordtype">size_t</span> input_offset = <a class="code hl_function" href="namespaceluci__interpreter__pal.html#ac67e9b769452d80a83023ec03abde2b7">reducedOutputOffset</a>(input_num_dims, input_dims, temp_index, 0, <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  173</span>    <span class="keywordtype">size_t</span> output_offset =</div>
-<div class="line"><span class="lineno">  174</span>      <a class="code hl_function" href="namespaceluci__interpreter__pal.html#ac67e9b769452d80a83023ec03abde2b7">reducedOutputOffset</a>(input_num_dims, input_dims, temp_index, num_resolved_axis, axis);</div>
-<div class="line"><span class="lineno">  175</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>[output_offset] = reducer(output_data[output_offset], input_data[input_offset]);</div>
-<div class="line"><span class="lineno">  176</span>  } <span class="keywordflow">while</span> (<a class="code hl_function" href="namespaceluci__interpreter__pal.html#a5e63d69906e6cf5b21554e36ce52adad">nextIndex</a>(input_num_dims, input_dims, temp_index));</div>
-<div class="line"><span class="lineno">  177</span> </div>
-<div class="line"><span class="lineno">  178</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  179</span>}</div>
-<div class="ttc" id="anamespaceluci__interpreter__pal_html_a5e63d69906e6cf5b21554e36ce52adad"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#a5e63d69906e6cf5b21554e36ce52adad">luci_interpreter_pal::nextIndex</a></div><div class="ttdeci">bool nextIndex(const int num_dims, const int *dims, int *current)</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_utils_8h_source.html#l00148">PALUtils.h:148</a></div></div>
-<div class="ttc" id="anamespaceluci__interpreter__pal_html_ac67e9b769452d80a83023ec03abde2b7"><div class="ttname"><a href="namespaceluci__interpreter__pal.html#ac67e9b769452d80a83023ec03abde2b7">luci_interpreter_pal::reducedOutputOffset</a></div><div class="ttdeci">size_t reducedOutputOffset(const int num_dims, const int *dims, const int *index, const int num_axis, const int *axis)</div><div class="ttdef"><b>Definition</b> <a href="luci-interpreter_2pal_2common_2_p_a_l_utils_8h_source.html#l00116">PALUtils.h:116</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00175">nextIndex()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00143">reducedOutputOffset()</a>, and <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00090">resolveAxis()</a>.</p>
-
-</div>
-</div>
-<a id="a5af1d1e868d9ec1f723ec73d75619034" name="a5af1d1e868d9ec1f723ec73d75619034"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5af1d1e868d9ec1f723ec73d75619034">&#9670;&#160;</a></span>ReduceGeneric() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , template&lt; typename &gt; class ReduceFn&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool onert_micro::execute::pal::ReduceGeneric </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classonert__micro_1_1core_1_1_o_m_reduce_data_context.html">OMReduceDataContext</a>&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>ctx</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00228">228</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  229</span>{</div>
-<div class="line"><span class="lineno">  230</span>  <span class="keyword">auto</span> &amp;input = ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">Input</a>();</div>
-<div class="line"><span class="lineno">  231</span>  <span class="keyword">auto</span> &amp;input_data = input.Data();</div>
-<div class="line"><span class="lineno">  232</span>  <span class="keyword">auto</span> input_dims = input.Dims();</div>
-<div class="line"><span class="lineno">  233</span>  <span class="keyword">auto</span> input_num_dims = input.DimsCount();</div>
-<div class="line"><span class="lineno">  234</span> </div>
-<div class="line"><span class="lineno">  235</span>  <span class="keyword">auto</span> &amp;output = ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#abdc6889474f382c94082ff21fe94b925">Output</a>();</div>
-<div class="line"><span class="lineno">  236</span>  <span class="keyword">auto</span> &amp;output_data = output.Data();</div>
-<div class="line"><span class="lineno">  237</span>  <span class="keyword">auto</span> output_flat_size = output.ShapeFlatSize();</div>
-<div class="line"><span class="lineno">  238</span> </div>
-<div class="line"><span class="lineno">  239</span>  <span class="keyword">auto</span> &amp;axis_ctx = ctx.Axis();</div>
-<div class="line"><span class="lineno">  240</span>  <span class="keyword">auto</span> &amp;axis = axis_ctx.Data();</div>
-<div class="line"><span class="lineno">  241</span>  <span class="keyword">auto</span> num_axis_dimensions = axis_ctx.DimsCount();</div>
-<div class="line"><span class="lineno">  242</span> </div>
-<div class="line"><span class="lineno">  243</span>  <span class="comment">// Return early when input shape has zero dim.</span></div>
-<div class="line"><span class="lineno">  244</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; input_num_dims; ++i)</div>
-<div class="line"><span class="lineno">  245</span>  {</div>
-<div class="line"><span class="lineno">  246</span>    <span class="keywordflow">if</span> (input_dims[i] == 0)</div>
-<div class="line"><span class="lineno">  247</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  248</span>  }</div>
-<div class="line"><span class="lineno">  249</span> </div>
-<div class="line"><span class="lineno">  250</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; output_flat_size; ++idx)</div>
-<div class="line"><span class="lineno">  251</span>  {</div>
-<div class="line"><span class="lineno">  252</span>    output_data.SetValueAt(idx, ReduceFn&lt;T&gt;::InitValue);</div>
-<div class="line"><span class="lineno">  253</span>  }</div>
-<div class="line"><span class="lineno">  254</span> </div>
-<div class="line"><span class="lineno">  255</span>  <span class="comment">// Resolve axis.</span></div>
-<div class="line"><span class="lineno">  256</span>  <span class="keywordtype">int</span> num_resolved_axis = 0;</div>
-<div class="line"><span class="lineno">  257</span>  <span class="keywordtype">int</span> resolved_axis[2];</div>
-<div class="line"><span class="lineno">  258</span> </div>
-<div class="line"><span class="lineno">  259</span>  <span class="keywordflow">if</span> (!resolveAxis(input_num_dims, axis.Get(), num_axis_dimensions, resolved_axis,</div>
-<div class="line"><span class="lineno">  260</span>                   &amp;num_resolved_axis))</div>
-<div class="line"><span class="lineno">  261</span>  {</div>
-<div class="line"><span class="lineno">  262</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  263</span>  }</div>
-<div class="line"><span class="lineno">  264</span> </div>
-<div class="line"><span class="lineno">  265</span>  <span class="keywordtype">int</span> temp_index[5];</div>
-<div class="line"><span class="lineno">  266</span>  <span class="comment">// Reset input iterator.</span></div>
-<div class="line"><span class="lineno">  267</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> idx = 0; idx &lt; input_num_dims; ++idx)</div>
-<div class="line"><span class="lineno">  268</span>  {</div>
-<div class="line"><span class="lineno">  269</span>    temp_index[idx] = 0;</div>
-<div class="line"><span class="lineno">  270</span>  }</div>
-<div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span>  <span class="comment">// Iterate through input_data.</span></div>
-<div class="line"><span class="lineno">  273</span>  <span class="keywordflow">do</span></div>
-<div class="line"><span class="lineno">  274</span>  {</div>
-<div class="line"><span class="lineno">  275</span>    <span class="keywordtype">size_t</span> input_offset = <a class="code hl_function" href="namespaceluci__interpreter__pal.html#ac67e9b769452d80a83023ec03abde2b7">reducedOutputOffset</a>(input_num_dims, input_dims, temp_index, 0, <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  276</span>    <span class="keywordtype">size_t</span> output_offset =</div>
-<div class="line"><span class="lineno">  277</span>      <a class="code hl_function" href="namespaceluci__interpreter__pal.html#ac67e9b769452d80a83023ec03abde2b7">reducedOutputOffset</a>(input_num_dims, input_dims, temp_index, num_resolved_axis, axis.Get());</div>
-<div class="line"><span class="lineno">  278</span> </div>
-<div class="line"><span class="lineno">  279</span>    ReduceFn&lt;T&gt; reducer;</div>
-<div class="line"><span class="lineno">  280</span>    <span class="keyword">auto</span> value = reducer(<a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>.ValueAt(output_offset), <a class="code hl_variable" href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">input_data</a>.ValueAt(input_offset));</div>
-<div class="line"><span class="lineno">  281</span>    <a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a>.SetValueAt(output_offset, value);</div>
-<div class="line"><span class="lineno">  282</span> </div>
-<div class="line"><span class="lineno">  283</span>  } <span class="keywordflow">while</span> (<a class="code hl_function" href="namespaceluci__interpreter__pal.html#a5e63d69906e6cf5b21554e36ce52adad">nextIndex</a>(input_num_dims, input_dims, temp_index));</div>
-<div class="line"><span class="lineno">  284</span> </div>
-<div class="line"><span class="lineno">  285</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  286</span>}</div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_data_8h_source.html#l00149">onert_micro::core::OMDataContext&lt; T, Mixins &gt;::Input()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00175">nextIndex()</a>, <a class="el" href="_o_m_runtime_data_8h_source.html#l00154">onert_micro::core::OMDataContext&lt; T, Mixins &gt;::Output()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00143">reducedOutputOffset()</a>, and <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00090">resolveAxis()</a>.</p>
-
-</div>
-</div>
-<a id="aff349297371b587eae0e3afa8e57b512" name="aff349297371b587eae0e3afa8e57b512"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff349297371b587eae0e3afa8e57b512">&#9670;&#160;</a></span>reduceSumImpl()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool onert_micro::execute::pal::reduceSumImpl </td>
-          <td>(</td>
-          <td class="paramtype">const T *&#160;</td>
-          <td class="paramname"><em>input_data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int *&#160;</td>
-          <td class="paramname"><em>input_dims</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>input_num_dims</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T *&#160;</td>
-          <td class="paramname"><em>output_data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int *&#160;</td>
-          <td class="paramname"><em>axis</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>num_axis</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>num_outputs</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00183">183</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  186</span>{</div>
-<div class="line"><span class="lineno">  187</span>  <span class="keywordflow">return</span> ReduceGeneric&lt;T&gt;(input_data, input_dims, input_num_dims, output_data, axis, num_axis,</div>
-<div class="line"><span class="lineno">  188</span>                          <span class="keyword">static_cast&lt;</span>T<span class="keyword">&gt;</span>(0), num_outputs,</div>
-<div class="line"><span class="lineno">  189</span>                          [](<span class="keyword">const</span> T current, <span class="keyword">const</span> T in) -&gt; T { <span class="keywordflow">return</span> in + current; });</div>
-<div class="line"><span class="lineno">  190</span>}</div>
-</div><!-- fragment -->
 </div>
 </div>
 <a id="ae7c6c1023d423e2e98faa76374b28b38" name="ae7c6c1023d423e2e98faa76374b28b38"></a>
@@ -10425,103 +9763,6 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   60</span>}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>.</p>
-
-</div>
-</div>
-<a id="a154bf5fc19295305f91c1968e708760b" name="a154bf5fc19295305f91c1968e708760b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a154bf5fc19295305f91c1968e708760b">&#9670;&#160;</a></span>resolveAxis()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool onert_micro::execute::pal::resolveAxis </td>
-          <td>(</td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>num_dims</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int *&#160;</td>
-          <td class="paramname"><em>axis</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const int64_t&#160;</td>
-          <td class="paramname"><em>num_axis</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>out_axis</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>out_num_axis</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00090">90</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>{</div>
-<div class="line"><span class="lineno">   93</span>  *out_num_axis = 0; <span class="comment">// Just in case.</span></div>
-<div class="line"><span class="lineno">   94</span>  <span class="comment">// Short-circuit axis resolution for scalars; the axis will go unused.</span></div>
-<div class="line"><span class="lineno">   95</span>  <span class="keywordflow">if</span> (num_dims == 0)</div>
-<div class="line"><span class="lineno">   96</span>  {</div>
-<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   98</span>  }</div>
-<div class="line"><span class="lineno">   99</span>  <span class="comment">// o(n^2) is fine since out_num_axis should be really small, mostly &lt;= 4</span></div>
-<div class="line"><span class="lineno">  100</span>  <span class="keywordflow">for</span> (int64_t idx = 0; idx &lt; num_axis; ++idx)</div>
-<div class="line"><span class="lineno">  101</span>  {</div>
-<div class="line"><span class="lineno">  102</span>    <span class="comment">// Handle negative index. A positive index &#39;p_idx&#39; can be represented as a</span></div>
-<div class="line"><span class="lineno">  103</span>    <span class="comment">// negative index &#39;n_idx&#39; as: n_idx = p_idx-num_dims</span></div>
-<div class="line"><span class="lineno">  104</span>    <span class="comment">// eg: For num_dims=3, [0, 1, 2] is the same as [-3, -2, -1]  */</span></div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordtype">int</span> current = axis[idx] &lt; 0 ? (axis[idx] + num_dims) : axis[idx];</div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">if</span> (current &lt; 0 || current &gt;= num_dims)</div>
-<div class="line"><span class="lineno">  107</span>    {</div>
-<div class="line"><span class="lineno">  108</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  109</span>    }</div>
-<div class="line"><span class="lineno">  110</span>    <span class="keywordtype">bool</span> is_dup = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = 0; j &lt; *out_num_axis; ++j)</div>
-<div class="line"><span class="lineno">  112</span>    {</div>
-<div class="line"><span class="lineno">  113</span>      <span class="keywordflow">if</span> (out_axis[j] == current)</div>
-<div class="line"><span class="lineno">  114</span>      {</div>
-<div class="line"><span class="lineno">  115</span>        is_dup = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  116</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  117</span>      }</div>
-<div class="line"><span class="lineno">  118</span>    }</div>
-<div class="line"><span class="lineno">  119</span>    <span class="keywordflow">if</span> (!is_dup)</div>
-<div class="line"><span class="lineno">  120</span>    {</div>
-<div class="line"><span class="lineno">  121</span>      <span class="keywordflow">if</span> (*out_num_axis &gt; 1)</div>
-<div class="line"><span class="lineno">  122</span>      {</div>
-<div class="line"><span class="lineno">  123</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  124</span>      }</div>
-<div class="line"><span class="lineno">  125</span>      out_axis[*out_num_axis] = current;</div>
-<div class="line"><span class="lineno">  126</span>      *out_num_axis += 1;</div>
-<div class="line"><span class="lineno">  127</span>    }</div>
-<div class="line"><span class="lineno">  128</span>  }</div>
-<div class="line"><span class="lineno">  129</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  130</span>}</div>
-</div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00291">Reduce()</a>, <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00138">ReduceGeneric()</a>, and <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00228">ReduceGeneric()</a>.</p>
 
 </div>
 </div>
@@ -11605,7 +10846,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  106</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">  107</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00220">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00148">onert_micro::core::OMRuntimeShape::dimensionsCount()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00159">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -11705,7 +10946,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   74</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">   75</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00111">onert_micro::core::OMRuntimeShape::extendedShape()</a>, <a class="el" href="_o_m_status_8h_source.html#l00032">onert_micro::FailedCheckCondition</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00220">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00111">onert_micro::core::OMRuntimeShape::extendedShape()</a>, <a class="el" href="_o_m_status_8h_source.html#l00032">onert_micro::FailedCheckCondition</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00159">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>.</p>
 
 </div>
 </div>
@@ -13124,7 +12365,7 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">  137</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">  138</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_kernel_data_8h_source.html#l00176">onert_micro::core::FloatConv2D::activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00175">onert_micro::core::FloatConv2D::activation_min</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00231">activationFunctionWithMinMax()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00220">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00173">onert_micro::core::FloatConv2D::pad_h</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00174">onert_micro::core::FloatConv2D::pad_w</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00169">onert_micro::core::FloatConv2D::stride_h</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00168">onert_micro::core::FloatConv2D::stride_w</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_kernel_data_8h_source.html#l00176">onert_micro::core::FloatConv2D::activation_max</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00175">onert_micro::core::FloatConv2D::activation_min</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00170">activationFunctionWithMinMax()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">luci_interpreter::RuntimeShape::dims()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00153">onert_micro::core::OMRuntimeShape::dims()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00056">luci_interpreter::RuntimeShape::dimsData()</a>, <a class="el" href="_o_m_runtime_shape_8h_source.html#l00138">onert_micro::core::OMRuntimeShape::dimsData()</a>, <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00045">luci_interpreter::RuntimeShape::flatSize()</a>, <a class="el" href="onert-micro_2include_2pal_2common_2_p_a_l_utils_8h_source.html#l00159">offset()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h_source.html#l00032">output_shape</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00173">onert_micro::core::FloatConv2D::pad_h</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00174">onert_micro::core::FloatConv2D::pad_w</a>, <a class="el" href="_o_m_kernel_data_8h_source.html#l00169">onert_micro::core::FloatConv2D::stride_h</a>, and <a class="el" href="_o_m_kernel_data_8h_source.html#l00168">onert_micro::core::FloatConv2D::stride_w</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_transpose_conv_8cpp_source.html#l00053">onert_micro::execute::execute_kernel_CircleTransposeConv()</a>.</p>
 

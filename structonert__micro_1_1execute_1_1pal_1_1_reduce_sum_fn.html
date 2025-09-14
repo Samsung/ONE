@@ -90,8 +90,7 @@ $(document).ready(function(){initNavTree('structonert__micro_1_1execute_1_1pal_1
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a>  </div>
+<a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle"><div class="title">onert_micro::execute::pal::ReduceSumFn&lt; T &gt; Struct Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -100,21 +99,16 @@ $(document).ready(function(){initNavTree('structonert__micro_1_1execute_1_1pal_1
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad3734748543659ebd49b9ddd5d6b8f71" id="r_ad3734748543659ebd49b9ddd5d6b8f71"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html#ad3734748543659ebd49b9ddd5d6b8f71">operator()</a> (const T current, const T in)</td></tr>
-<tr class="separator:ad3734748543659ebd49b9ddd5d6b8f71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a493634eaee74eba282386ab4ec5399cc" id="r_a493634eaee74eba282386ab4ec5399cc"><td class="memItemLeft" align="right" valign="top">static constexpr T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html#a493634eaee74eba282386ab4ec5399cc">InitValue</a> = T(0)</td></tr>
-<tr class="separator:a493634eaee74eba282386ab4ec5399cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d36a657bab55bebf36117a879683f5a" id="r_a8d36a657bab55bebf36117a879683f5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html#a8d36a657bab55bebf36117a879683f5a">operator()</a> (T &amp;total, const T value)</td></tr>
+<tr class="separator:a8d36a657bab55bebf36117a879683f5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />
 struct onert_micro::execute::pal::ReduceSumFn&lt; T &gt;</div>
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00039">39</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00043">43</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad3734748543659ebd49b9ddd5d6b8f71" name="ad3734748543659ebd49b9ddd5d6b8f71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3734748543659ebd49b9ddd5d6b8f71">&#9670;&#160;</a></span>operator()()</h2>
+<a id="a8d36a657bab55bebf36117a879683f5a" name="a8d36a657bab55bebf36117a879683f5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d36a657bab55bebf36117a879683f5a">&#9670;&#160;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -125,16 +119,16 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T <a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html">onert_micro::execute::pal::ReduceSumFn</a>&lt; T &gt;::operator() </td>
+          <td class="memname">void <a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html">onert_micro::execute::pal::ReduceSumFn</a>&lt; T &gt;::operator() </td>
           <td>(</td>
-          <td class="paramtype">const T&#160;</td>
-          <td class="paramname"><em>current</em>, </td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>total</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const T&#160;</td>
-          <td class="paramname"><em>in</em>&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -149,38 +143,11 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00043">43</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   44</span>  {</div>
-<div class="line"><span class="lineno">   45</span>    <span class="keywordflow">return</span> in + current;</div>
-<div class="line"><span class="lineno">   46</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00045">45</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>  {</div>
+<div class="line"><span class="lineno">   47</span>    total += value;</div>
+<div class="line"><span class="lineno">   48</span>  }</div>
 </div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Field Documentation</h2>
-<a id="a493634eaee74eba282386ab4ec5399cc" name="a493634eaee74eba282386ab4ec5399cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a493634eaee74eba282386ab4ec5399cc">&#9670;&#160;</a></span>InitValue</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr T <a class="el" href="structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html">onert_micro::execute::pal::ReduceSumFn</a>&lt; T &gt;::InitValue = T(0)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00041">41</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>

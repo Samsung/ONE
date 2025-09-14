@@ -9007,7 +9007,7 @@ template&lt;typename T , typename U &gt; </div>
 <div class="line"><span class="lineno">  130</span> </div>
 <div class="line"><span class="lineno">  131</span>  <span class="comment">// Resolve axis.</span></div>
 <div class="line"><span class="lineno">  132</span>  <span class="keywordtype">int</span> num_resolved_axis = 0;</div>
-<div class="line"><span class="lineno">  133</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a154bf5fc19295305f91c1968e708760b">resolveAxis</a>(input_num_dims, axis, num_axis_dimensions, resolved_axis, &amp;num_resolved_axis))</div>
+<div class="line"><span class="lineno">  133</span>  <span class="keywordflow">if</span> (!resolveAxis(input_num_dims, axis, num_axis_dimensions, resolved_axis, &amp;num_resolved_axis))</div>
 <div class="line"><span class="lineno">  134</span>  {</div>
 <div class="line"><span class="lineno">  135</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  136</span>  }</div>
@@ -9041,7 +9041,6 @@ template&lt;typename T , typename U &gt; </div>
 <div class="line"><span class="lineno">  164</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  165</span>}</div>
 <div class="ttc" id="anamespaceluci__eval__verifier__ref_html_a7fbf2bdb31dffced1708502a6c405cd3"><div class="ttname"><a href="namespaceluci__eval__verifier__ref.html#a7fbf2bdb31dffced1708502a6c405cd3">luci_eval_verifier_ref.num_outputs</a></div><div class="ttdeci">int num_outputs</div><div class="ttdef"><b>Definition</b> <a href="luci__eval__verifier__ref_8py_source.html#l00090">luci_eval_verifier_ref.py:90</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_1_1execute_1_1pal_html_a154bf5fc19295305f91c1968e708760b"><div class="ttname"><a href="namespaceonert__micro_1_1execute_1_1pal.html#a154bf5fc19295305f91c1968e708760b">onert_micro::execute::pal::resolveAxis</a></div><div class="ttdeci">bool resolveAxis(const int num_dims, const int *axis, const int64_t num_axis, int *out_axis, int *out_num_axis)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00090">PALReduceCommon.h:90</a></div></div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_mean_8cpp_source.html#l00061">luci_interpreter::execute_kernel_CircleMean()</a>.</p>
 
@@ -9325,7 +9324,7 @@ template&lt;&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="compiler_2luci-interpreter_2pal_2linux_2_p_a_l_mul_8h_source.html#l00035">35</a> of file <a class="el" href="compiler_2luci-interpreter_2pal_2linux_2_p_a_l_mul_8h_source.html">PALMul.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
-<div class="line"><span class="lineno">   40</span>  tflite::optimized_ops::BroadcastMul4DSlow(params, input1_shape, input1_data, input2_shape,</div>
+<div class="line"><span class="lineno">   40</span>  tflite::reference_ops::BroadcastMul4DSlow(params, input1_shape, input1_data, input2_shape,</div>
 <div class="line"><span class="lineno">   41</span>                                            input2_data, <a class="code hl_variable" href="luci-interpreter_2pal_2common_2_p_a_l_comparisons_8h.html#a74a475996321e12d590d9029e114d8d0">output_shape</a>, output_data);</div>
 <div class="line"><span class="lineno">   42</span>}</div>
 </div><!-- fragment -->
@@ -10878,7 +10877,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   88</span> </div>
 <div class="line"><span class="lineno">   89</span>  <span class="comment">// Resolve axis.</span></div>
 <div class="line"><span class="lineno">   90</span>  <span class="keywordtype">int</span> num_resolved_axis = 0;</div>
-<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceonert__micro_1_1execute_1_1pal.html#a154bf5fc19295305f91c1968e708760b">resolveAxis</a>(input_num_dims, axis, num_axis_dimensions, &amp;num_resolved_axis))</div>
+<div class="line"><span class="lineno">   91</span>  <span class="keywordflow">if</span> (!resolveAxis(input_num_dims, axis, num_axis_dimensions, &amp;num_resolved_axis))</div>
 <div class="line"><span class="lineno">   92</span>  {</div>
 <div class="line"><span class="lineno">   93</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">   94</span>  }</div>

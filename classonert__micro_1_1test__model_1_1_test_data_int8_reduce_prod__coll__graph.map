@@ -1,0 +1,11 @@
+<map id="onert_micro::test_model::TestDataInt8ReduceProd" name="onert_micro::test_model::TestDataInt8ReduceProd">
+<area shape="rect" id="Node000001" title=" " alt="" coords="761,37,934,78"/>
+<area shape="rect" id="Node000002" href="$classonert__micro_1_1test__model_1_1_test_data_reduce_prod_base.html" title=" " alt="" coords="530,30,712,86"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="727,55,760,55,760,60,727,60"/>
+<area shape="rect" id="Node000003" href="$classonert__micro_1_1test__model_1_1_test_data_base.html" title=" " alt="" coords="240,5,399,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="415,33,530,45,530,51,414,38"/>
+<area shape="rect" id="Node000004" href="$classonert__micro_1_1test__model_1_1_test_data_reduce_prod_base.html" title=" " alt="" coords="214,71,425,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="440,75,530,65,530,70,441,80"/>
+<area shape="rect" id="Node000005" href="$classonert__micro_1_1test__model_1_1_test_data_base.html" title=" " alt="" coords="5,71,165,111"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="180,88,214,88,214,94,180,94"/>
+</map>

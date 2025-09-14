@@ -3324,7 +3324,7 @@ var hierarchy =
       [ "loco::GraphOutput", "classloco_1_1_graph_output.html", null ]
     ] ],
     [ "Mixins", null, [
-      [ "onert_micro::core::OMDataContext< T, OMAxisContextMixin< 1 > >", "classonert__micro_1_1core_1_1_o_m_data_context.html", [
+      [ "onert_micro::core::OMDataContext< T, OMAxisContextMixin< uint32_t, 1 > >", "classonert__micro_1_1core_1_1_o_m_data_context.html", [
         [ "onert_micro::core::OMReduceDataContext< T >", "classonert__micro_1_1core_1_1_o_m_reduce_data_context.html", null ]
       ] ],
       [ "loco::CanonicalNodeDef< Code, Mixins >", "structloco_1_1_canonical_node_def.html", null ],
@@ -3754,14 +3754,9 @@ var hierarchy =
     [ "flatbuffers::Offset< flatbuffers::String >", "structflatbuffers_1_1_offset.html", null ],
     [ "flatbuffers::Offset< flatbuffers::Vector< typename T::CIR > >", "structflatbuffers_1_1_offset.html", null ],
     [ "flatbuffers::Offset< void >", "structflatbuffers_1_1_offset.html", null ],
-    [ "onert_micro::core::OMAxisContextMixin< AxisTensorIdx >", "classonert__micro_1_1core_1_1_o_m_axis_context_mixin.html", null ],
+    [ "onert_micro::core::OMAxisContextMixin< IntType, AxisTensorIdx >", "classonert__micro_1_1core_1_1_o_m_axis_context_mixin.html", null ],
     [ "onert_micro::train::OMBackpropExecute", "structonert__micro_1_1train_1_1_o_m_backprop_execute.html", null ],
     [ "onert_micro::train::OMBackpropExecuteArgs", "structonert__micro_1_1train_1_1_o_m_backprop_execute_args.html", null ],
-    [ "onert_micro::core::OMBaseContext", "classonert__micro_1_1core_1_1_o_m_base_context.html", [
-      [ "onert_micro::core::OMInputContext< int32_t, 1 >", "classonert__micro_1_1core_1_1_o_m_input_context.html", null ],
-      [ "onert_micro::core::OMInputContext< T, InputTensorIdx >", "classonert__micro_1_1core_1_1_o_m_input_context.html", null ],
-      [ "onert_micro::core::OMOutputContext< T, OutputTensorIdx >", "classonert__micro_1_1core_1_1_o_m_output_context.html", null ]
-    ] ],
     [ "onert_micro::core::train::OMCheckpointLoader", "classonert__micro_1_1core_1_1train_1_1_o_m_checkpoint_loader.html", null ],
     [ "onert_micro::core::train::OMCheckpointSaver", "classonert__micro_1_1core_1_1train_1_1_o_m_checkpoint_saver.html", null ],
     [ "onert_micro::core::reader::OMCircleReader", "classonert__micro_1_1core_1_1reader_1_1_o_m_circle_reader.html", null ],
@@ -3799,9 +3794,17 @@ var hierarchy =
     ] ],
     [ "onert_micro::core::OMRuntimeShape", "classonert__micro_1_1core_1_1_o_m_runtime_shape.html", null ],
     [ "onert_micro::core::OMRuntimeStorage", "classonert__micro_1_1core_1_1_o_m_runtime_storage.html", null ],
-    [ "onert_micro::core::OMTensorData< T >", "classonert__micro_1_1core_1_1_o_m_tensor_data.html", null ],
-    [ "onert_micro::core::OMTensorData< const int32_t >", "classonert__micro_1_1core_1_1_o_m_tensor_data.html", null ],
-    [ "onert_micro::core::OMTensorData< const T >", "classonert__micro_1_1core_1_1_o_m_tensor_data.html", null ],
+    [ "onert_micro::core::OMTensorContext< T, TensorData >", "classonert__micro_1_1core_1_1_o_m_tensor_context.html", null ],
+    [ "onert_micro::core::OMTensorContext< T >", "classonert__micro_1_1core_1_1_o_m_tensor_context.html", null ],
+    [ "onert_micro::core::OMTensorContext< uint32_t, OMAxisData< uint32_t > >", "classonert__micro_1_1core_1_1_o_m_tensor_context.html", null ],
+    [ "onert_micro::core::OMTensorData< TData, TValue >", "classonert__micro_1_1core_1_1_o_m_tensor_data.html", [
+      [ "onert_micro::core::OMAxisData< uint32_t >", "classonert__micro_1_1core_1_1_o_m_axis_data.html", null ],
+      [ "onert_micro::core::OMAxisData< IntType >", "classonert__micro_1_1core_1_1_o_m_axis_data.html", null ]
+    ] ],
+    [ "onert_micro::core::OMTensorData< int32_t, uint32_t >", "classonert__micro_1_1core_1_1_o_m_tensor_data.html", null ],
+    [ "onert_micro::core::OMTensorData< T >", "classonert__micro_1_1core_1_1_o_m_tensor_data.html", [
+      [ "onert_micro::core::IOTensorData< T >", "classonert__micro_1_1core_1_1_i_o_tensor_data.html", null ]
+    ] ],
     [ "onert_micro::core::reader::OMTrainingConfigReader", "classonert__micro_1_1core_1_1reader_1_1_o_m_training_config_reader.html", null ],
     [ "onert_micro::OMTrainingContext", "structonert__micro_1_1_o_m_training_context.html", null ],
     [ "onert_micro::core::train::OMTrainingHandler", "classonert__micro_1_1core_1_1train_1_1_o_m_training_handler.html", null ],
@@ -4861,10 +4864,9 @@ var hierarchy =
     [ "mir_interpreter::ReduceMeanImpl< T >", "structmir__interpreter_1_1_reduce_mean_impl.html", null ],
     [ "nnfw::cker::functor::ReduceOuterDimensions< Device, InputT, AccumT, OutputT, BinaryFunctor >", "structnnfw_1_1cker_1_1functor_1_1_reduce_outer_dimensions.html", null ],
     [ "onert_micro::execute::pal::ReduceProductFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html", null ],
-    [ "onert_micro::execute::pal::ReduceProductFn< int8_t >", "structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn_3_01int8__t_01_4.html", null ],
+    [ "onert_micro::execute::pal::Reducer< T, ReduceFn >", "classonert__micro_1_1execute_1_1pal_1_1_reducer.html", null ],
     [ "luci_interpreter::ReducerParams", "structluci__interpreter_1_1_reducer_params.html", null ],
     [ "onert_micro::execute::pal::ReduceSumFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html", null ],
-    [ "onert_micro::execute::pal::ReduceSumFn< int8_t >", "structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn_3_01int8__t_01_4.html", null ],
     [ "flexbuffers::Reference", "classflexbuffers_1_1_reference.html", null ],
     [ "mir::Region< T >", "structmir_1_1_region.html", [
       [ "mir::ExternalRegion< T >", "classmir_1_1_external_region.html", null ]
@@ -5645,6 +5647,9 @@ var hierarchy =
       ] ],
       [ "onert_micro::test_model::TestDataReduceProdBase< float >", "classonert__micro_1_1test__model_1_1_test_data_reduce_prod_base.html", [
         [ "onert_micro::test_model::TestDataFloatReduceProd", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_prod.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataReduceProdBase< int8_t >", "classonert__micro_1_1test__model_1_1_test_data_reduce_prod_base.html", [
+        [ "onert_micro::test_model::TestDataInt8ReduceProd", "classonert__micro_1_1test__model_1_1_test_data_int8_reduce_prod.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataReduceProdBase< int32_t >", "classonert__micro_1_1test__model_1_1_test_data_reduce_prod_base.html", [
         [ "onert_micro::test_model::TestDataIntReduceProd", "classonert__micro_1_1test__model_1_1_test_data_int_reduce_prod.html", null ]
