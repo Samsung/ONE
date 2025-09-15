@@ -97,6 +97,8 @@ public:
       CommonSubExpressionElimination,
       RemoveUnnecessaryAdd,
       RemoveUnnecessaryCast,
+      RemoveUnnecessaryDiv,
+      RemoveUnnecessaryMul,
       RemoveUnnecessarySlice,
       RemoveUnnecessaryStridedSlice,
       RemoveUnnecessarySplit,
