@@ -163,6 +163,8 @@ class CONSTANT:
         ('remove_redundant_transpose', 'fuse or remove subsequent Transpose ops'),
         ('remove_unnecessary_add', 'remove unnecessary add ops'),
         ('remove_unnecessary_cast', 'remove unnecessary cast ops'),
+        ('remove_unnecessary_div', 'remove unnecessary div ops'),
+        ('remove_unnecessary_mul', 'remove unnecessary mul ops'),
         ('remove_unnecessary_reshape', 'remove unnecessary reshape ops'),
         ('remove_unnecessary_slice', 'remove unnecessary slice ops'),
         ('remove_unnecessary_strided_slice', 'remove unnecessary strided slice ops'),
