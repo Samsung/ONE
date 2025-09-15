@@ -20,7 +20,7 @@
 template <typename T> class MockTensor : public onert::backend::ITensor
 {
 public:
-  MockTensor<T>(onert::ir::Shape &shape, T *buf, onert::ir::Layout layout)
+  MockTensor(onert::ir::Shape &shape, T *buf, onert::ir::Layout layout)
     : _buf(reinterpret_cast<uint8_t *>(buf)), _shape(shape), _layout(layout)
   {
   }
