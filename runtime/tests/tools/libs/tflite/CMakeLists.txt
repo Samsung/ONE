@@ -22,3 +22,4 @@ endif(NOT ENABLE_TEST)
 
 add_executable(nnfw_lib_tflite_test_TensorView src/TensorView.test.cpp)
 target_link_libraries(nnfw_lib_tflite_test_TensorView nnfw_lib_tflite)
+target_link_libraries(nnfw_lib_tflite_test_TensorView nnfw_common)
