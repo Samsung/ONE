@@ -204,6 +204,8 @@ Current transformation options are
 - remove_redundant_transpose : This fuses or removes redundant transpose operators.
 - remove_unnecessary_add : This removes unnecessary add operators.
 - remove_unnecessary_cast : This will remove unnecessary cast with the same input and output type.
+- remove_unnecessary_div : This removes unnecessary div operators.
+- remove_unnecessary_mul : This removes unnecessary mul operators.
 - remove_unnecessary_reshape : This removes unnecessary reshape operators.
 - remove_unnecessary_slice : This removes unnecessary slice operators.
 - remove_unnecessary_strided_slice : This removes unnecessary strided slice operators.
