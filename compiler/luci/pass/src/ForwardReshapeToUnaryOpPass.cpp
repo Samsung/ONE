@@ -93,7 +93,7 @@ bool forward_reshape(luci::CircleReshape *reshape, luci::CircleMean *mean, uint3
   new_reshape->tensor(mean);
 
   // Change const shape axis value
-  auto *shape_reshape = loco::must_cast<luci::CircleConst *>(new_reshape->shape());
+  auto *shape_reshape = luci::must_cast<luci::CircleConst *>(new_reshape->shape());
   assert(shape_reshape->dtype() == loco::DataType::S32);     // FIX_CALLER_UNLESS
   assert(axis < shape_reshape->size<loco::DataType::S32>()); // FIX_CALLER_UNLESS
   // Mean reduction will make value to '1'

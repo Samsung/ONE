@@ -369,9 +369,9 @@ private:
 
     // Converter in TensorFlow v1.x sometimes generate Reshape op
     if (auto reshape = dynamic_cast<luci::CircleReshape *>(node))
-      const_node = loco::must_cast<luci::CircleConst *>(reshape->tensor());
+      const_node = luci::must_cast<luci::CircleConst *>(reshape->tensor());
     else
-      const_node = loco::must_cast<luci::CircleConst *>(node);
+      const_node = luci::must_cast<luci::CircleConst *>(node);
 
     if (metadata_type == MetadataType::DO_W_X)
       _do_w_x[prefix] = const_node;
@@ -394,7 +394,7 @@ private:
     for (auto n : _fusable_op)
     {
       auto prefix = n.first;
-      auto w_before = loco::must_cast<luci::CircleConst *>(n.second);
+      auto w_before = luci::must_cast<luci::CircleConst *>(n.second);
       if (is_fusable_const(w_before, w_after, _do_w_x[prefix]->at<loco::DataType::BOOL>(0)))
         return prefix;
     }

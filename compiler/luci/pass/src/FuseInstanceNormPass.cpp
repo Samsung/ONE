@@ -1097,7 +1097,7 @@ luci::CircleConst *PostFusion::match_const_channel(luci::CircleConst *input_cons
     float value = input_const->at<loco::DataType::FLOAT32>(0);
     auto clone = luci::clone_node(input_const, input_const->graph());
 
-    new_input_const = loco::must_cast<luci::CircleConst *>(clone);
+    new_input_const = luci::must_cast<luci::CircleConst *>(clone);
     new_input_const->rank(1);
     new_input_const->dim(0).set(C);
     new_input_const->size<loco::DataType::FLOAT32>(C);

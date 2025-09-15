@@ -154,7 +154,7 @@ struct Paddings
   void apply(luci::CircleTranspose *transpose)
   {
     assert(transpose);
-    luci::CircleConst *perm = loco::must_cast<luci::CircleConst *>(transpose->perm());
+    luci::CircleConst *perm = luci::must_cast<luci::CircleConst *>(transpose->perm());
 
     std::vector<Pad> transposed_pos;
     transposed_pos.resize(4);
@@ -275,7 +275,7 @@ bool used_by_maxpool_only(luci::CircleNode *node, Paddings &paddings)
   if (auto transpose = dynamic_cast<luci::CircleTranspose *>(successor))
   {
     auto appropriate = [](luci::CircleTranspose *transpose) {
-      luci::CircleConst *perm = loco::must_cast<luci::CircleConst *>(transpose->perm());
+      luci::CircleConst *perm = luci::must_cast<luci::CircleConst *>(transpose->perm());
 
       // For Transpose to be an input for MaxPool2D
       return (transpose->rank() == 4) && (perm && perm->dtype() == loco::DataType::S32) &&
@@ -300,7 +300,7 @@ bool used_by_maxpool_only(luci::CirclePadV2 *pad_v2)
   if (pad_v2->rank() != 4)
     return false;
 
-  Paddings paddings(loco::must_cast<luci::CircleConst *>(pad_v2->paddings()));
+  Paddings paddings(luci::must_cast<luci::CircleConst *>(pad_v2->paddings()));
 
   return used_by_maxpool_only(pad_v2, paddings);
 }
@@ -356,8 +356,8 @@ bool substitute_padv2_to_pad(luci::CircleMaxPool2D *maxp)
 
   assert(pad_v2->input());
 
-  auto paddings = loco::must_cast<luci::CircleConst *>(pad_v2->paddings());
-  auto constant_values = loco::must_cast<luci::CircleConst *>(pad_v2->constant_values());
+  auto paddings = luci::must_cast<luci::CircleConst *>(pad_v2->paddings());
+  auto constant_values = luci::must_cast<luci::CircleConst *>(pad_v2->constant_values());
 
   (void)paddings;
   assert(paddings);
