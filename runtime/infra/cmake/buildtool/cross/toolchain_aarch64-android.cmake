@@ -27,10 +27,6 @@ set(ANDROID_API_LEVEL 29)
 set(ANDROID_PLATFORM android-${ANDROID_API_LEVEL})
 set(ANDROID_STL c++_shared)
 
-# Find package in the host. `nnfw_find_package` won't work without this
-# Others (library, path) will follow android.toolchain.cmake settings
-set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE NEVER)
-
 # Use the toolchain file that NDK provides
 include(${CMAKE_ANDROID_NDK}/build/cmake/android.toolchain.cmake)
 

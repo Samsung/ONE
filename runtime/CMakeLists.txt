@@ -56,7 +56,7 @@ macro(nnfw_include PREFIX)
   include("${ONERT_PROJECT_SOURCE_DIR}/infra/cmake/modules/${PREFIX}.cmake")
 endmacro(nnfw_include)
 
-# Runtime 'find_package()' wrapper to find in cmake/packages folder
+# Runtime 'find_package()' wrapper to find in infra/cmake/packages folder
 #
 # Example:
 #  nnfw_find_package(Eigen): Load settings from 'EigenConfig.cmake' file
@@ -64,7 +64,8 @@ endmacro(nnfw_include)
 #  nnfw_find_package(Eigen QUIET): Load settings silently, without warnings
 #  nnfw_find_package(Eigen REQUIRED): Load settings but stop with error when failed
 macro(nnfw_find_package PREFIX)
-  find_package(${PREFIX} CONFIG NO_DEFAULT_PATH
+  find_package(${PREFIX} CONFIG
+    NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH
     PATHS ${ONERT_PROJECT_SOURCE_DIR}/infra/cmake/packages
     ${ARGN}
   )
