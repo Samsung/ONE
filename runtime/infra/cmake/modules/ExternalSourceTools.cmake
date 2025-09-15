@@ -36,8 +36,13 @@ function(ExternalSource_Download PREFIX)
     file(MAKE_DIRECTORY "${CACHE_DIR}")
   endif(NOT EXISTS "${CACHE_DIR}")
 
-  # Compare URL in STAMP file and the given URL
-  Stamp_Check(URL_CHECK "${STAMP_PATH}" "${URL}")
+  # Compare content in STAMP file and the given URL and patch file
+  set(STAMP_CONTENT "${URL}")
+  if(ARG_PATCH)
+    file(MD5 ${ARG_PATCH} PATCH_MD5)
+    set(STAMP_CONTENT "${URL} ${ARG_PATCH} ${PATCH_MD5}")
+  endif(ARG_PATCH)
+  Stamp_Check(URL_CHECK "${STAMP_PATH}" "${STAMP_CONTENT}")
 
   if(NOT EXISTS "${OUT_DIR}" OR NOT URL_CHECK)
     file(REMOVE "${STAMP_PATH}")
@@ -141,7 +146,7 @@ function(ExternalSource_Download PREFIX)
     endif(ARG_PATCH)
 
     file(REMOVE_RECURSE "${TMP_DIR}")
-    file(WRITE "${STAMP_PATH}" "${URL}")
+    file(WRITE "${STAMP_PATH}" "${STAMP_CONTENT}")
     message(STATUS "Cleanup ${PREFIX} - done")
   endif()
 
