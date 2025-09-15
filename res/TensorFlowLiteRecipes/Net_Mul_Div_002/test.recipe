@@ -1,0 +1,48 @@
+# for remove unnecessary div
+operand {
+  name: "ifm"
+  type: FLOAT32
+  shape { dim: 3 dim: 5 dim: 1 }
+}
+operand {
+  name: "mul_const"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "1.0" }
+}
+operand {
+  name: "mul_out"
+  type: FLOAT32
+  shape { dim: 3 dim: 5 dim: 1}
+}
+operation {
+  type: "Mul"
+  input: "ifm"
+  input: "mul_const"
+  output: "mul_out"
+  mul_options {
+    activation: NONE
+  }
+}
+operand {
+  name: "div_const"
+  type: FLOAT32
+  shape { dim: 1 }
+  filler { tag: "explicit" arg: "1.0" }
+}
+operand {
+  name: "ofm"
+  type: FLOAT32
+  shape { dim: 3 dim: 5 dim: 1 }
+}
+operation {
+  type: "Div"
+  input: "mul_out"
+  input: "div_const"
+  output: "ofm"
+  div_options {
+    activation: NONE
+  }
+}
+input: "ifm"
+output: "ofm"
