@@ -17,8 +17,8 @@
 #ifndef __ONERT_BACKEND_BUILTIN_DYNAMICTENSOR_MANAGER_H__
 #define __ONERT_BACKEND_BUILTIN_DYNAMICTENSOR_MANAGER_H__
 
-#include "TensorRegistry.h"
 #include "Tensor.h"
+#include "TensorRegistry.h"
 
 #include <backend/basic/DynamicTensorManager.h>
 

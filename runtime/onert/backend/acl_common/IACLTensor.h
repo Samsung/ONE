@@ -17,9 +17,11 @@
 #ifndef __ONERT_BACKEND_ACL_COMMON_I_ACL_TENSOR_H__
 #define __ONERT_BACKEND_ACL_COMMON_I_ACL_TENSOR_H__
 
-#include <backend/ITensor.h>
-#include <arm_compute/core/ITensor.h>
 #include "Swizzle.h"
+
+#include <backend/ITensor.h>
+
+#include <arm_compute/core/ITensor.h>
 
 namespace onert::backend::acl_common
 {

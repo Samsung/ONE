@@ -17,12 +17,12 @@
 #ifndef __ONERT_IR_TRAIN_TRAINABLE_GRAPH_H__
 #define __ONERT_IR_TRAIN_TRAINABLE_GRAPH_H__
 
-#include <functional>
-#include <unordered_map>
-
 #include "ir/Graph.h"
 #include "ir/train/ITrainableOperation.h"
 #include "ir/train/UseDefChains.h"
+
+#include <functional>
+#include <unordered_map>
 
 namespace onert::ir::train
 {

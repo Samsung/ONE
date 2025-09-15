@@ -17,8 +17,9 @@
 #include "FullyConnectedLayer.h"
 
 #include "../Tensor.h"
-#include <ruy/operation/FullyConnected.h>
+
 #include <ruy/TensorUtils.h>
+#include <ruy/operation/FullyConnected.h>
 
 namespace onert::backend::ruy::ops
 {

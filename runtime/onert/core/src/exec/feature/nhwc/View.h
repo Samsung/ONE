@@ -18,13 +18,12 @@
 #define __ONERT_EXEC_FEATURE_NHWC_VIEW_H__
 
 #include "Reader.h"
-
-#include <cassert>
-#include <cstddef>
-
 #include "backend/ITensor.h"
 #include "ir/Shape.h"
 #include "util/Utils.h"
+
+#include <cassert>
+#include <cstddef>
 
 namespace onert::exec::feature::nhwc
 {

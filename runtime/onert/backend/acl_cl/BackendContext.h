@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_ACL_CL_BACKEND_CONTEXT_H__
 #define __ONERT_BACKEND_ACL_CL_BACKEND_CONTEXT_H__
 
-#include <AclBackendContext.h>
-
 #include "ConstantInitializer.h"
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
+
+#include <AclBackendContext.h>
 
 namespace onert::backend::acl_cl
 {

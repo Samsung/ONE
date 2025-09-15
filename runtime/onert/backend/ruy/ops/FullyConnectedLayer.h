@@ -17,10 +17,10 @@
 #ifndef __ONERT_BACKEND_RUY_OPS_FULLYCONNECTEDLAYER_H__
 #define __ONERT_BACKEND_RUY_OPS_FULLYCONNECTEDLAYER_H__
 
-#include <backend/IPortableTensor.h>
 #include "../ExternalContext.h"
 #include "OperationUtils.h"
 
+#include <backend/IPortableTensor.h>
 #include <exec/IFunction.h>
 
 namespace onert::backend::ruy::ops

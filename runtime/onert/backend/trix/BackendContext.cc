@@ -16,13 +16,13 @@
 
 #include "BackendContext.h"
 
-#include "TensorBuilder.h"
 #include "KernelGenerator.h"
-#include "util/logging.h"
+#include "TensorBuilder.h"
+#include "backend/basic/BackendContextHelpers.h"
 #include "ir/Index.h"
 #include "ir/OperandIndexMap.h"
 #include "ir/OperandIndexSequence.h"
-#include "backend/basic/BackendContextHelpers.h"
+#include "util/logging.h"
 
 namespace onert::backend::trix
 {

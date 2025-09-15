@@ -22,14 +22,14 @@
 #ifndef __ONERT_BACKEND_TRAIN_MEMORY_PLANNER_H__
 #define __ONERT_BACKEND_TRAIN_MEMORY_PLANNER_H__
 
-#include <backend/basic/IMemoryPlanner.h>
-
 #include "DisposableTensorIndex.h"
 
+#include <backend/basic/IMemoryPlanner.h>
+
 #include <map>
-#include <vector>
-#include <unordered_set>
 #include <memory>
+#include <unordered_set>
+#include <vector>
 
 namespace onert::backend::train
 {

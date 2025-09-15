@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-#include <sstream>
-
 #include "OperationNode.h"
-#include "ir/Graph.h"
-#include "backend/IConfig.h"
+
 #include "backend/Backend.h"
+#include "backend/IConfig.h"
+#include "ir/Graph.h"
+
+#include <sstream>
 
 namespace onert::dumper::dot
 {

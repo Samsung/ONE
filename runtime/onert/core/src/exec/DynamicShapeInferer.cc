@@ -15,7 +15,9 @@
  */
 
 #include "exec/DynamicShapeInferer.h"
+
 #include "util/ShapeInference.h"
+
 #include <assert.h>
 
 namespace onert::exec

@@ -18,6 +18,7 @@
 #define __ONERT_MODEL_OPERAND_CONSTRAINT_H__
 
 #include <stdint.h>
+
 #include <limits>
 #include <set>
 

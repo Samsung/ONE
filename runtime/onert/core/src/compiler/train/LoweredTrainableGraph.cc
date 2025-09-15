@@ -16,21 +16,20 @@
 
 #include "compiler/train/LoweredTrainableGraph.h"
 
+#include "../../backend/builtin/Config.h"
+#include "../../dumper/text/GraphDumper.h"
+#include "../../ir/verifier/Verifier.h"
 #include "../ManualScheduler.h"
 #include "../pass/ConstantInsertionPass.h"
 #include "../pass/ConstantLoweringPass.h"
 #include "../pass/PassRunner.h"
 #include "../pass/PermutationEliminationPass.h"
 #include "../pass/PermutationInsertionPass.h"
-#include "../../backend/builtin/Config.h"
-#include "../../dumper/text/GraphDumper.h"
-#include "../../ir/verifier/Verifier.h"
-#include "pass/TrainableConstantInsertionPass.h"
 #include "TrainableOperationConverter.h"
-
 #include "backend/Backend.h"
 #include "backend/train/ITrainableBackend.h"
 #include "compiler/BackendResolver.h"
+#include "pass/TrainableConstantInsertionPass.h"
 #include "util/logging.h"
 
 #include <cassert>

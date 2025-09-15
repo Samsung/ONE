@@ -17,10 +17,11 @@
 #ifndef __ONERT_BACKEND_ACL_NEON_OPERAND_NE_TENSOR_H__
 #define __ONERT_BACKEND_ACL_NEON_OPERAND_NE_TENSOR_H__
 
+#include "INETensor.h"
+
+#include "arm_compute/runtime/TensorAllocator.h"
 #include <arm_compute/core/TensorInfo.h>
 #include <arm_compute/runtime/Tensor.h>
-#include "arm_compute/runtime/TensorAllocator.h"
-#include "INETensor.h"
 
 namespace onert::backend::acl_neon::operand
 {

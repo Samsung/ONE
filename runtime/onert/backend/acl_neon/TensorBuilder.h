@@ -17,10 +17,10 @@
 #ifndef __ONERT_BACKEND_ACL_NEON_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_ACL_NEON_TENSOR_BUILDER_H__
 
-#include <AclTensorBuilder.h>
-
-#include "operand/NETensor.h"
 #include "operand/NESubTensor.h"
+#include "operand/NETensor.h"
+
+#include <AclTensorBuilder.h>
 
 namespace onert::backend::acl_neon
 {

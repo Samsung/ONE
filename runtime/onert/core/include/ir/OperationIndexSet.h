@@ -17,12 +17,12 @@
 #ifndef __ONERT_MODEL_OPERATION_INDEX_SET_H__
 #define __ONERT_MODEL_OPERATION_INDEX_SET_H__
 
+#include "ir/Index.h"
+
 #include <algorithm>
 #include <cassert>
 #include <initializer_list>
 #include <unordered_set>
-
-#include "ir/Index.h"
 
 namespace onert::ir
 {

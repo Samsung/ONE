@@ -17,8 +17,8 @@
 #ifndef __ONERT_IR_TRAIN_USEDEFCHAINS_H__
 #define __ONERT_IR_TRAIN_USEDEFCHAINS_H__
 
-#include "ir/train/UseDefChain.h"
 #include "ir/train/Index.h"
+#include "ir/train/UseDefChain.h"
 
 #include <unordered_map>
 

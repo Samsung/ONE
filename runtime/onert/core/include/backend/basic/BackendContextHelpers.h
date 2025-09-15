@@ -17,15 +17,15 @@
 #ifndef __ONERT_BACKEND_BASIC_BACKEND_CONTEXT_HELPERS_H__
 #define __ONERT_BACKEND_BASIC_BACKEND_CONTEXT_HELPERS_H__
 
-#include <vector>
-
-#include "ir/Index.h"
-#include "compiler/GraphLowerInfo.h"
-#include "util/logging.h"
-#include "backend/ITensorRegistry.h"
-#include "backend/BackendContext.h"
-#include "backend/basic/TensorRegistry.h"
 #include "Tensor.h"
+#include "backend/BackendContext.h"
+#include "backend/ITensorRegistry.h"
+#include "backend/basic/TensorRegistry.h"
+#include "compiler/GraphLowerInfo.h"
+#include "ir/Index.h"
+#include "util/logging.h"
+
+#include <vector>
 
 namespace onert::backend::basic
 {

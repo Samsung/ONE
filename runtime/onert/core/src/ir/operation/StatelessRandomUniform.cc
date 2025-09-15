@@ -15,6 +15,7 @@
  */
 
 #include "ir/operation/StatelessRandomUniform.h"
+
 #include "ir/OperationVisitor.h"
 
 namespace onert::ir::operation

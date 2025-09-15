@@ -18,8 +18,9 @@
 
 #include "OperationUtils.h"
 
-#include <cker/operation/AddN.h>
 #include <assert.h>
+
+#include <cker/operation/AddN.h>
 
 namespace onert::backend::cpu::ops
 {

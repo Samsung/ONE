@@ -17,16 +17,17 @@
 #ifndef __ONERT_BACKEND_ACL_NEON_BACKEND_H__
 #define __ONERT_BACKEND_ACL_NEON_BACKEND_H__
 
-#include <memory>
-#include <backend/Backend.h>
-#include <ir/Operands.h>
-
 #include "BackendContext.h"
 #include "Config.h"
 #include "ConstantInitializer.h"
 #include "KernelGenerator.h"
-#include "TensorManager.h"
 #include "Optimizer.h"
+#include "TensorManager.h"
+
+#include <backend/Backend.h>
+#include <ir/Operands.h>
+
+#include <memory>
 
 namespace onert::backend::acl_neon
 {

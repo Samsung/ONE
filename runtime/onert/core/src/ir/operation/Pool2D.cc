@@ -15,6 +15,7 @@
  */
 
 #include "ir/operation/Pool2D.h"
+
 #include "ir/OperationVisitor.h"
 
 #include <unordered_map>

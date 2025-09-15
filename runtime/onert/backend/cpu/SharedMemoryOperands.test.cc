@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
-
-#include <memory>
-
 #include "SharedMemoryOperands.h"
 
 #include "ir/Graph.h"
 #include "ir/operation/Permute.h"
-#include "ir/operation/Squeeze.h"
 #include "ir/operation/Reshape.h"
+#include "ir/operation/Squeeze.h"
+
+#include <gtest/gtest.h>
+
+#include <memory>
 
 using namespace onert::backend::cpu;
 using namespace onert::ir;

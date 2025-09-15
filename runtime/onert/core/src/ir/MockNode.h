@@ -17,8 +17,8 @@
 #ifndef __ONERT_TEST_GRAPH_MOCK_NODE_H__
 #define __ONERT_TEST_GRAPH_MOCK_NODE_H__
 
-#include "ir/Operation.h"
 #include "ir/OperandIndexSequence.h"
+#include "ir/Operation.h"
 
 namespace onert_test::ir
 {

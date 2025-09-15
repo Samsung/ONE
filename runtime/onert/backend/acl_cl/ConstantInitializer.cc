@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+#include "ConstantInitializer.h"
+
 #include <AclActivationBuilder.h>
 #include <AclFunction.h>
 #include <Convert.h>
 #include <Swizzle.h>
-
-#include "ConstantInitializer.h"
 
 namespace onert::backend::acl_cl
 {

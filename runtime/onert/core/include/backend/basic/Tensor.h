@@ -20,8 +20,8 @@
 #include "Allocator.h"
 
 #include <backend/IPortableTensor.h>
-#include <ir/OperandInfo.h>
 #include <ir/Data.h>
+#include <ir/OperandInfo.h>
 
 namespace onert::backend::basic
 {

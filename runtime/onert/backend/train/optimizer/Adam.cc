@@ -17,9 +17,12 @@
 #include "Adam.h"
 
 #include "../ops/OperationUtils.h"
-#include <cker/train/optimizer/Adam.h>
-#include <cmath>
+
 #include <misc/polymorphic_downcast.h>
+
+#include <cker/train/optimizer/Adam.h>
+
+#include <cmath>
 
 namespace onert::backend::train::optimizer
 {

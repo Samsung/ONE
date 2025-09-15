@@ -18,9 +18,12 @@
 #define __ONERT_BACKEND_ACL_CL_CONFIG_H__
 
 #include "CLTimer.h"
-#include <memory>
+
 #include <backend/IConfig.h>
+
 #include <arm_compute/runtime/CL/CLScheduler.h>
+
+#include <memory>
 
 namespace onert::backend::acl_cl
 {

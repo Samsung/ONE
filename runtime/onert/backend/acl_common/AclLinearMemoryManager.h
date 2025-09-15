@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_ACL_COMMON_LINEAR_MEMORY_MANAGER_H__
 #define __ONERT_BACKEND_ACL_COMMON_LINEAR_MEMORY_MANAGER_H__
 
-#include <cassert>
-
 #include "AclMemoryManager.h"
 #include "ir/OperandIndexMap.h"
 #include "util/logging.h"
+
+#include <cassert>
 
 namespace onert::backend::acl_common
 {

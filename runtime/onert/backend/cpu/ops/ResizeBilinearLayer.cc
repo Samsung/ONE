@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "OperationUtils.h"
 #include "ResizeBilinearLayer.h"
+
+#include "OperationUtils.h"
+
 #include "cker/operation/ResizeBilinear.h"
 #include <cker/Types.h>
 

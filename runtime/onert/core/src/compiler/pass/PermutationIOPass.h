@@ -18,8 +18,8 @@
 #define __ONERT_COMPILER_PASS_PERMUTATION_IO_PASS_H__
 
 #include "Pass.h"
-#include "compiler/ILoweredGraph.h"
 #include "compiler/CompilerOptions.h"
+#include "compiler/ILoweredGraph.h"
 
 namespace onert
 {

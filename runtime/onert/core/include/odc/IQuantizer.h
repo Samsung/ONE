@@ -18,6 +18,7 @@
 #define __ONERT_ODC_IQUANTIZER_H__
 
 #include "odc/QuantizeType.h"
+
 #include <cstdint>
 
 namespace onert::odc

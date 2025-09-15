@@ -18,8 +18,10 @@
 #define __ONERT_BACKEND_ACL_CL_CLTIMER_H__
 
 #include <util/ITimer.h>
+
 #include <arm_compute/core/CL/OpenCL.h>
 #include <arm_compute/runtime/CL/CLScheduler.h>
+
 #include <chrono>
 #include <list>
 #include <sstream>

@@ -17,10 +17,11 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_CONVOLUTIONLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_CONVOLUTIONLAYER_H__
 
-#include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
+#include <backend/IPortableTensor.h>
 #include <exec/IFunction.h>
+
 #include <functional>
 #include <memory>
 

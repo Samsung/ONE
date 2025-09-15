@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_PADLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_PADLAYER_H__
 
-#include <ops/PadLayer.h>
-#include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
 
+#include <backend/IPortableTensor.h>
 #include <exec/train/ITrainableFunction.h>
+#include <ops/PadLayer.h>
 
 namespace onert::backend::train::ops
 {

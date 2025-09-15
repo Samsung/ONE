@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-#include "QuantizerLoader.h"
 #include "odc/QuantizeManager.h"
+
+#include "QuantizerLoader.h"
 
 #include <iostream>
 #include <mutex>

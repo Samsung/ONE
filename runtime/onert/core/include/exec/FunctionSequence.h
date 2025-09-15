@@ -17,15 +17,15 @@
 #ifndef __ONERT_EXEC_FUNCTION_SEQUENCE_H__
 #define __ONERT_EXEC_FUNCTION_SEQUENCE_H__
 
-#include <memory>
-#include <cassert>
-#include <vector>
-#include <functional>
-
-#include "exec/IFunction.h"
-#include "exec/DynamicShapeInferer.h"
-#include "ir/Operations.h"
 #include "backend/ITensorRegistry.h"
+#include "exec/DynamicShapeInferer.h"
+#include "exec/IFunction.h"
+#include "ir/Operations.h"
+
+#include <cassert>
+#include <functional>
+#include <memory>
+#include <vector>
 
 namespace onert::exec
 {

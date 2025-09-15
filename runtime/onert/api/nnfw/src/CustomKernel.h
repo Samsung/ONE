@@ -17,10 +17,9 @@
 #ifndef __ONERT_API_CUSTOM_KERNEL_H__
 #define __ONERT_API_CUSTOM_KERNEL_H__
 
-#include "nnfw_experimental.h"
-
 #include "backend/CustomKernelBuilder.h"
 #include "exec/IFunction.h"
+#include "nnfw_experimental.h"
 
 #include <vector>
 

@@ -15,6 +15,7 @@
  */
 
 #include "ir/operation/SpaceToBatchND.h"
+
 #include "ir/OperationVisitor.h"
 
 namespace onert::ir::operation

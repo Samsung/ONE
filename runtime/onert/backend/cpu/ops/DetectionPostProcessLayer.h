@@ -17,9 +17,9 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_DPP_H__
 #define __ONERT_BACKEND_CPU_OPS_DPP_H__
 
-#include <exec/IFunction.h>
-
 #include "OperationUtils.h"
+
+#include <exec/IFunction.h>
 
 namespace onert::backend::cpu::ops
 {

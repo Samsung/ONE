@@ -16,9 +16,9 @@
 
 #include "OperationPass.h"
 
-#include "ir/Index.h"
-#include "ir/IOperation.h"
 #include "ir/Graph.h"
+#include "ir/IOperation.h"
+#include "ir/Index.h"
 
 namespace onert::compiler::pass
 {

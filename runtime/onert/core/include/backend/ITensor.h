@@ -17,15 +17,15 @@
 #ifndef __ONERT_BACKEND_OPERAND_I_TENSOR_H__
 #define __ONERT_BACKEND_OPERAND_I_TENSOR_H__
 
-#include <cstring>
-#include <cstdint>
-#include <functional>
-#include <stdexcept>
-
+#include "ir/Coordinates.h"
 #include "ir/DataType.h"
 #include "ir/Layout.h"
 #include "ir/Shape.h"
-#include "ir/Coordinates.h"
+
+#include <cstdint>
+#include <cstring>
+#include <functional>
+#include <stdexcept>
 
 namespace onert::backend
 {

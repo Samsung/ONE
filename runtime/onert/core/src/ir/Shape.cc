@@ -16,10 +16,10 @@
 
 #include "ir/Shape.h"
 
+#include <algorithm>
 #include <cassert>
 #include <functional>
 #include <numeric>
-#include <algorithm>
 
 namespace onert::ir
 {

@@ -16,9 +16,9 @@
 
 #include "UseDefGenerator.h"
 
-#include "ir/train/TrainableGraph.h"
-#include "ir/train/Index.h"
 #include "../verifier/Verifier.h"
+#include "ir/train/Index.h"
+#include "ir/train/TrainableGraph.h"
 
 #include <cassert>
 #include <memory>

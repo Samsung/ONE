@@ -18,8 +18,8 @@
 #define __ONERT_EXEC_MINMAX_RECORDER__
 
 #include "ExecutionObservers.h"
-#include "ir/Index.h"
 #include "exec/MinMaxMap.h"
+#include "ir/Index.h"
 
 #include <string>
 

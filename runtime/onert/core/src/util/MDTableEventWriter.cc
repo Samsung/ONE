@@ -16,11 +16,12 @@
 
 #include "EventWriter.h"
 
+#include <stdint.h>
+
 #include <cassert>
 #include <map>
 #include <set>
 #include <sstream>
-#include <stdint.h>
 #include <unordered_map>
 #include <utility>
 #include <vector>

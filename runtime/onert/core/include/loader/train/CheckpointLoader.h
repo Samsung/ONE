@@ -17,8 +17,8 @@
 #ifndef __ONERT_LOADER_TRAIN_CHECKPOINT_LOADER_H__
 #define __ONERT_LOADER_TRAIN_CHECKPOINT_LOADER_H__
 
-#include <string>
 #include <memory>
+#include <string>
 
 namespace onert::exec
 {

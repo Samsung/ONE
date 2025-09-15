@@ -17,10 +17,11 @@
 #ifndef __ONERT_BACKEND_BUILTIN_TENSOR_REGISTRY_H__
 #define __ONERT_BACKEND_BUILTIN_TENSOR_REGISTRY_H__
 
-#include "backend/basic/TensorRegistry.h"
-#include "backend/ITensorRegistry.h"
-#include "Tensor.h"
 #include "IOTensor.h"
+#include "Tensor.h"
+#include "backend/ITensorRegistry.h"
+#include "backend/basic/TensorRegistry.h"
+
 #include <assert.h>
 
 namespace onert::backend::builtin

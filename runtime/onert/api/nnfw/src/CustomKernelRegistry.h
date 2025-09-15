@@ -19,11 +19,10 @@
 
 #include "CustomKernel.h"
 
-#include <unordered_map>
 #include <functional>
-#include <memory>
-
 #include <iostream>
+#include <memory>
+#include <unordered_map>
 
 namespace onert
 {

@@ -17,10 +17,10 @@
 #ifndef __ONERT_MODEL_OPERAND_INDEX_SEQUENCE_H__
 #define __ONERT_MODEL_OPERAND_INDEX_SEQUENCE_H__
 
+#include "ir/Index.h"
+
 #include <initializer_list>
 #include <vector>
-
-#include "ir/Index.h"
 
 namespace onert::ir
 {

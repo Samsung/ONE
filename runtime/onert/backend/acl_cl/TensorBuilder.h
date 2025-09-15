@@ -17,10 +17,10 @@
 #ifndef __ONERT_BACKEND_ACL_CL_TENSOR_BUILDER_H__
 #define __ONERT_BACKEND_ACL_CL_TENSOR_BUILDER_H__
 
-#include <AclTensorBuilder.h>
-
-#include "operand/CLTensor.h"
 #include "operand/CLSubTensor.h"
+#include "operand/CLTensor.h"
+
+#include <AclTensorBuilder.h>
 
 namespace onert::backend::acl_cl
 {

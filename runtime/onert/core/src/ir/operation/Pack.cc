@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include "ir/operation/Pack.h"
+
 #include "ir/OperationVisitor.h"
 
 namespace onert::ir::operation

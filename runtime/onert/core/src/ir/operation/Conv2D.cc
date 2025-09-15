@@ -15,6 +15,7 @@
  */
 
 #include "ir/operation/Conv2D.h"
+
 #include "ir/OperationVisitor.h"
 
 namespace onert::ir::operation

@@ -17,9 +17,8 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPTIMIZER_ADAM_H__
 #define __ONERT_BACKEND_TRAIN_OPTIMIZER_ADAM_H__
 
-#include "exec/train/optimizer/Optimizer.h"
-
 #include "backend/basic/Tensor.h"
+#include "exec/train/optimizer/Optimizer.h"
 #include "ir/OperandIndexMap.h"
 
 namespace onert::backend::train::optimizer

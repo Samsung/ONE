@@ -17,8 +17,8 @@
 #ifndef __ONERT_BACKEND_CL_COMMON_PARENT_INFO_H__
 #define __ONERT_BACKEND_CL_COMMON_PARENT_INFO_H__
 
-#include <ir/Index.h>
 #include <ir/Coordinates.h>
+#include <ir/Index.h>
 
 namespace onert::backend::cl_common
 {

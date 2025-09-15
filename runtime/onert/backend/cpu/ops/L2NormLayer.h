@@ -18,7 +18,6 @@
 #define __ONERT_BACKEND_CPU_OPS_L2NORM_LAYER_H__
 
 #include <backend/IPortableTensor.h>
-
 #include <exec/IFunction.h>
 
 namespace onert::backend::cpu::ops

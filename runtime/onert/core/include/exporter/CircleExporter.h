@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include <string>
 #include <memory>
 #include <mutex>
+#include <string>
 
 namespace circle
 {

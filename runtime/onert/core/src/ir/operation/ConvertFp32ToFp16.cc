@@ -15,6 +15,7 @@
  */
 
 #include "ir/operation/ConvertFp32ToFp16.h"
+
 #include "ir/OperationVisitor.h"
 
 namespace onert::ir::operation

@@ -17,26 +17,25 @@
 #ifndef __ONERT_BACKEND_ACL_COMMON_CONVERT_H__
 #define __ONERT_BACKEND_ACL_COMMON_CONVERT_H__
 
-#include <arm_compute/core/PixelValue.h>
-#include <arm_compute/core/TensorInfo.h>
-#include <arm_compute/core/SubTensorInfo.h>
-#include <arm_compute/core/TensorShape.h>
-#include <arm_compute/core/TypesEx.h>
-
-#include "ir/Layout.h"
+#include "AclFunction.h"
+#include "ir/Coordinates.h"
 #include "ir/InternalType.h"
+#include "ir/Layout.h"
 #include "ir/Operand.h"
-#include "ir/operation/Pool2D.h"
-#include "ir/operation/Reduce.h"
-#include "ir/operation/ElementwiseActivation.h"
+#include "ir/Padding.h"
 #include "ir/Shape.h"
 #include "ir/TypeInfo.h"
-#include "ir/Coordinates.h"
-#include "ir/Padding.h"
+#include "ir/operation/ElementwiseActivation.h"
+#include "ir/operation/Pool2D.h"
+#include "ir/operation/Reduce.h"
 #include "misc/feature/Shape.h"
 #include "misc/kernel/Shape.h"
 
-#include "AclFunction.h"
+#include <arm_compute/core/PixelValue.h>
+#include <arm_compute/core/SubTensorInfo.h>
+#include <arm_compute/core/TensorInfo.h>
+#include <arm_compute/core/TensorShape.h>
+#include <arm_compute/core/TypesEx.h>
 
 #include <set>
 

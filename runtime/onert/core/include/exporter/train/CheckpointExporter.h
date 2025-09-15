@@ -17,9 +17,9 @@
 #ifndef __ONERT_EXPORTER_TRAIN_CHECKPOINT_EXPORTER_H__
 #define __ONERT_EXPORTER_TRAIN_CHECKPOINT_EXPORTER_H__
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 namespace onert::exec
 {

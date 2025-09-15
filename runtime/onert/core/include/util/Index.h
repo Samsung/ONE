@@ -17,9 +17,10 @@
 #ifndef __ONERT_UTIL_INDEX_H__
 #define __ONERT_UTIL_INDEX_H__
 
+#include <stdint.h>
+
 #include <functional>
 #include <limits>
-#include <stdint.h>
 #include <string>
 
 namespace onert::util

@@ -17,9 +17,9 @@
 #ifndef __ONERT_BACKEND_BUTIN_TRAIN_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_BUTIN_TRAIN_KERNEL_GENERATOR_H__
 
+#include "../../../compiler/train/TensorRegistries.h"
 #include "../ExternalContext.h"
 #include "../train/TensorRegistry.h"
-#include "../../../compiler/train/TensorRegistries.h"
 
 #include <backend/train/KernelGeneratorBase.h>
 #include <exec/train/TrainableFnSequence.h>
