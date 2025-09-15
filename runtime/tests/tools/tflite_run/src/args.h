@@ -34,13 +34,13 @@ public:
   const std::string &getCompareFilename(void) const { return _compare_filename; }
   const std::string &getInputFilename(void) const { return _input_filename; }
   const std::vector<int> &getInputShapes(void) const { return _input_shapes; }
-  const int getNumRuns(void) const { return _num_runs; }
-  const int getWarmupRuns(void) const { return _warmup_runs; }
-  const int getRunDelay(void) const { return _run_delay; }
-  const bool getGpuMemoryPoll(void) const { return _gpumem_poll; }
-  const bool getMemoryPoll(void) const { return _mem_poll; }
-  const bool getWriteReport(void) const { return _write_report; }
-  const int getVerboseLevel(void) const { return _verbose_level; }
+  int getNumRuns(void) const { return _num_runs; }
+  int getWarmupRuns(void) const { return _warmup_runs; }
+  int getRunDelay(void) const { return _run_delay; }
+  bool getGpuMemoryPoll(void) const { return _gpumem_poll; }
+  bool getMemoryPoll(void) const { return _mem_poll; }
+  bool getWriteReport(void) const { return _write_report; }
+  int getVerboseLevel(void) const { return _verbose_level; }
 
 private:
   void Initialize();

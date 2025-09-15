@@ -56,8 +56,6 @@ int main(const int argc, char **argv)
 {
   TFLiteRun::Args args(argc, argv);
 
-  std::chrono::milliseconds t_model_load(0), t_prepare(0);
-
   // TODO Apply verbose level to phases
   const int verbose = args.getVerboseLevel();
   benchmark::Phases phases(
@@ -100,7 +98,7 @@ int main(const int argc, char **argv)
   if (args.getInputShapes().size() != 0)
   {
     const auto dim_values = args.getInputShapes().size();
-    int32_t offset = 0;
+    uint32_t offset = 0;
 
     auto const input_count = TfLiteInterpreterGetInputTensorCount(interpreter);
     for (int32_t id = 0; id < input_count; id++)

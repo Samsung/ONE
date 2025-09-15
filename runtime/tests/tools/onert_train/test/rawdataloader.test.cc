@@ -134,7 +134,7 @@ TEST_F(RawDataLoaderTest, loadDatas_1)
   for (uint32_t i = 0; i < num_input; ++i)
   {
     in[i].resize(num_elems(&in_infos[i]) / batch_size);
-    std::generate(in[i].begin(), in[i].end(), [this] {
+    std::generate(in[i].begin(), in[i].end(), [] {
       static uint32_t i = 0;
       return i++;
     });
@@ -196,7 +196,7 @@ TEST_F(RawDataLoaderTest, loadDatas_1)
   uint32_t num_sample = data_length / batch_size;
   for (uint32_t i = 0; i < num_sample; ++i)
   {
-    auto data = generator(i, inputs, expecteds);
+    ASSERT_TRUE(generator(i, inputs, expecteds));
 
     std::vector<std::vector<uint32_t>> gen_in(num_input);
     for (uint32_t h = 0; h < num_input; ++h)

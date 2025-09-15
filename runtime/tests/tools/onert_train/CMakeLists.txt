@@ -50,6 +50,7 @@ list(APPEND ONERT_TRAIN_TEST_SRCS "src/nnfw_util.cc")
 add_executable(${TEST_ONERT_TRAIN} ${ONERT_TRAIN_TEST_SRCS})
 
 target_link_libraries(${TEST_ONERT_TRAIN} nnfw-dev)
+target_link_libraries(${TEST_ONERT_TRAIN} nnfw_common)
 target_link_libraries(${TEST_ONERT_TRAIN} gtest gtest_main dl ${LIB_PTHREAD})
 
 add_test(${TEST_ONERT_TRAIN} ${TEST_ONERT_TRAIN})
