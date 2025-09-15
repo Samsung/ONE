@@ -93,9 +93,9 @@ struct StridedSliceContext
     params.shrink_axis_mask = node->shrink_axis_mask();
 
     input = loco::must_cast<luci::CircleNode *>(node->input());
-    begin = loco::must_cast<luci::CircleConst *>(node->begin());
-    end = loco::must_cast<luci::CircleConst *>(node->end());
-    strides = loco::must_cast<luci::CircleConst *>(node->strides());
+    begin = luci::must_cast<luci::CircleConst *>(node->begin());
+    end = luci::must_cast<luci::CircleConst *>(node->end());
+    strides = luci::must_cast<luci::CircleConst *>(node->strides());
 
     loco::TensorShape input_shape = circle_shape(input);
     input_dims = static_cast<int64_t>(input_shape.rank());
