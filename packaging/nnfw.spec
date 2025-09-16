@@ -53,6 +53,8 @@ BuildRequires:  libaec-devel
 BuildRequires:  pkgconfig(zlib)
 %endif
 BuildRequires:  gtest-devel
+BuildRequires:  python3
+BuildRequires:  python3-numpy
 %endif
 
 %if %{trix_support} == 1
@@ -157,23 +159,12 @@ If you want to use test package, you should install runtime package which is bui
 %setup -q
 cp %{SOURCE1} .
 mkdir ./runtime/externals
-tar -xf %{SOURCE1001} -C ./runtime/tests/nnapi/src/
-tar -xf %{SOURCE3001} -C ./runtime/externals
+
+# For compute library
 tar -xf %{SOURCE3002} -C ./runtime/externals
-tar -xf %{SOURCE3003} -C ./runtime/externals
-tar -xf %{SOURCE3004} -C ./runtime/externals
-tar -xf %{SOURCE3005} -C ./runtime/externals
-tar -xf %{SOURCE3006} -C ./runtime/externals
-tar -xf %{SOURCE3007} -C ./runtime/externals
-tar -xf %{SOURCE3008} -C ./runtime/externals
-tar -xf %{SOURCE3009} -C ./runtime/externals
-tar -xf %{SOURCE3010} -C ./runtime/externals
-tar -xf %{SOURCE3011} -C ./runtime/externals
 tar -xf %{SOURCE3012} -C ./runtime/externals
 tar -xf %{SOURCE3013} -C ./runtime/externals
 tar -xf %{SOURCE3014} -C ./runtime/externals
-tar -xf %{SOURCE3015} -C ./runtime/externals
-tar -xf %{SOURCE3016} -C ./runtime/externals
 
 %if %{odc_build} == 1
 mkdir ./externals
