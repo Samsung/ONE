@@ -78,4 +78,4 @@ jobs:
 
       - name: Build
         run: |
-          gbs -c runtime/infra/gbs/gbs.conf build -A ${{ matrix.arch }} --profile ${{ matrix.profile }} --buildroot .gbs
+          gbs -c runtime/infra/gbs/gbs.conf build -A ${{ matrix.arch }} --profile ${{ matrix.profile }} --buildroot .gbs --define 'odc_build 0'
