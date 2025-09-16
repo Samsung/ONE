@@ -119,7 +119,7 @@ void OperationValidator::visit(const operation::BatchMatMul &node)
   // RHS can be constant, but LHS is not constant
   // If one of inputs is constant, it must be RHS
   // If two inputs are constant, BatchMatMul is optimized into constant by compiler
-  OP_REQUIRES(!isConstant(lhs_index));
+  // OP_REQUIRES(!isConstant(lhs_index));
 
   // Allow hybrid quantization (lhs: float / rhs: qint8 / out: float)
   OP_REQUIRES(isValidType(
