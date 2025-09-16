@@ -24,6 +24,7 @@ Source3013: TENSORFLOW-2.16.1-GEMMLOWP.tar.gz
 Source3014: TENSORFLOW-2.16.1-RUY.tar.gz
 Source3015: TENSORFLOW-2.16.1.tar.gz
 Source3016: XNNPACK.tar.gz
+Source4001: EXTERNALS_FOR_ODC.tar.gz
 
 %{!?build_type:     %define build_type      Release}
 %{!?trix_support:   %define trix_support    1}
@@ -172,12 +173,7 @@ tar -xf %{SOURCE3016} -C ./runtime/externals
 
 %if %{odc_build} == 1
 mkdir ./externals
-tar -xf %{SOURCE3004} -C ./externals
-tar -xf %{SOURCE3005} -C ./externals
-tar -xf %{SOURCE3008} -C ./externals
-tar -xf %{SOURCE3013} -C ./externals
-tar -xf %{SOURCE3014} -C ./externals
-tar -xf %{SOURCE3015} -C ./externals
+tar -xf %{SOURCE4001} -C ./externals
 %endif # odc_build
 
 %build
@@ -186,7 +182,7 @@ tar -xf %{SOURCE3015} -C ./externals
 %if %{odc_build} == 1
 %{nncc_env} ./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=%{nproc} -DCMAKE_BUILD_TYPE=%{build_type} -DTARGET_ARCH=%{target_arch} -DTARGET_OS=tizen \
         -DCMAKE_INSTALL_PREFIX=$(pwd)/%{overlay_path} \
-        -DDOWNLOAD_FLATBUFFERS=OFF \
+        -DDOWNLOAD_FLATBUFFERS=OFF -DDOWNLOAD_NEON2SSE=OFF \
 	-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str"
 %{nncc_env} ./nncc build %{build_jobs}
 cmake --install %{nncc_workspace}
