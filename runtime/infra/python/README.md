@@ -31,7 +31,7 @@ To create the Python wheel (complete Python API package) execute the following c
 python3 setup.py bdist_wheel --plat-name PLATFORM
 ```
 
-where `PLATFORM` is one of the supported target architectures: aarch64, x86_64, armv7l
+where `PLATFORM` is one of the supported target architectures: aarch64, linux_x86_64, armv7l
 
 The wheel is then created in the `dist` subdirectory.
 
