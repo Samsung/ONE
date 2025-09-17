@@ -7,7 +7,7 @@ function(_AbseilSource_import)
   nnfw_include(ExternalSourceTools)
   nnfw_include(OptionTools)
 
-  # NOTE TensorFlow 2.16.1 downloads abseil from the following URL
+  # NOTE TensorFlow 2.18.1 downloads abseil from the following URL
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(ABSEIL_URL ${EXTERNAL_DOWNLOAD_SERVER}/abseil/abseil-cpp/archive/fb3621f4f897824c0dbe0615fa94543df6192f30.tar.gz)
   ExternalSource_Download(ABSEIL

@@ -8,11 +8,10 @@ function(_FlatBuffersSource_import)
   nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  envoption(FLATBUFFERS_23_5_26_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/flatbuffers/archive/v23.5.26.tar.gz)
+  envoption(FLATBUFFERS_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/flatbuffers/archive/v25.2.10.tar.gz)
   ExternalSource_Download(FLATBUFFERS
-    DIRNAME FLATBUFFERS-23.5.26
-    CHECKSUM MD5=2ef00eaaa86ab5e9ad5eafe09c2e7b60
-    URL ${FLATBUFFERS_23_5_26_URL}
+    DIRNAME FLATBUFFERS
+    URL ${FLATBUFFERS_URL}
   )
 
   set(FlatBuffersSource_DIR ${FLATBUFFERS_SOURCE_DIR} PARENT_SCOPE)

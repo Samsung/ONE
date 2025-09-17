@@ -7,7 +7,7 @@ function(_OouraFFTSource_import)
   nnfw_include(ExternalSourceTools)
   nnfw_include(OptionTools)
 
-  # NOTE TensorFlow 2.3 downloads OOURAFFT from the following URL
+  # NOTE TensorFlow 2.18.1 downloads OOURAFFT from the following URL
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(OOURAFFT_URL ${EXTERNAL_DOWNLOAD_SERVER}/petewarden/OouraFFT/archive/v1.0.tar.gz)
 
