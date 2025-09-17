@@ -40,6 +40,7 @@ public:
 
   void visit(const ir::operation::AddN &) override;
   void visit(const ir::operation::ArgMinMax &) override;
+  void visit(const ir::operation::Attention &node) override;
   void visit(const ir::operation::BatchMatMul &) override;
   void visit(const ir::operation::BatchToSpaceND &) override;
   void visit(const ir::operation::BinaryArithmetic &) override;
