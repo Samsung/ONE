@@ -200,6 +200,9 @@ private:
                          std::vector<int> &traversal_order_vec, SparsityDims_t &format_vec,
                          souschef::Data &data_vec, SparsityParams_t &sparsity_index);
 
+  void buffer_dense(int32_t &buffer_index, const tflchef::Operand &operand, int32_t count,
+                    souschef::Data &data_vec);
+
   template <typename T> void cook_operands(const T &graph);
 
   template <typename T> void prepare_tensor_symbols(const T &graph, SymboleTable_t &symbol_table);
@@ -336,6 +339,47 @@ void ModelChef::buffer_sparse_f32(int32_t &buffer_index, DimsI32_t &dims,
   auto dim_metadata = _flatbuffer_builder->CreateVector(dim_metadata_vec);
   sparsity_index = tflite::CreateSparsityParameters(*_flatbuffer_builder, traversal_order,
                                                     block_map, dim_metadata);
+}
+
+void ModelChef::buffer_dense(int32_t &buffer_index, const tflchef::Operand &operand, int32_t count,
+                             souschef::Data &data_vec)
+{
+  // pack for INT4 and replace data_vec
+  if (operand.type() == tflchef::TensorType::INT4)
+  {
+    uint32_t packed = (count + 1) / 2;
+    std::vector<uint8_t> data_packed(packed);
+    for (uint32_t idx = 0; idx < packed; ++idx)
+    {
+      uint32_t sidx = idx * 2;
+      data_packed[idx] = data_vec[sidx++] & 0x0f;
+      if (sidx < count)
+        data_packed[idx] |= data_vec[sidx] << 4;
+    }
+    data_vec = data_packed;
+  }
+
+  if (_ext_offset)
+  {
+    buffer_index = _buffer_vec.size();
+    _buffer_data_map[buffer_index] = data_vec;
+
+    auto buffer = tflite::CreateBuffer(*_flatbuffer_builder, 0, 1, 1);
+    _buffer_vec.emplace_back(buffer);
+  }
+  else
+  {
+    auto data = _flatbuffer_builder->CreateVector(data_vec);
+
+    // Create Buffer
+    tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
+    buffer_builder.add_data(data);
+    auto buffer = buffer_builder.Finish();
+
+    // Update Buffer Index & Vector
+    buffer_index = _buffer_vec.size();
+    _buffer_vec.emplace_back(buffer);
+  }
 }
 
 template <typename T> void ModelChef::cook_operands(const T &graph)
@@ -489,42 +533,7 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
       }
       else
       {
-        // pack for INT4 and replace data_vec
-        if (operand.type() == tflchef::TensorType::INT4)
-        {
-          uint32_t packed = (count + 1) / 2;
-          std::vector<uint8_t> data_packed(packed);
-          for (uint32_t idx = 0; idx < packed; ++idx)
-          {
-            uint32_t sidx = idx * 2;
-            data_packed[idx] = data_vec[sidx++] & 0x0f;
-            if (sidx < count)
-              data_packed[idx] |= data_vec[sidx] << 4;
-          }
-          data_vec = data_packed;
-        }
-
-        if (_ext_offset)
-        {
-          buffer_index = _buffer_vec.size();
-          _buffer_data_map[buffer_index] = data_vec;
-
-          auto buffer = tflite::CreateBuffer(*_flatbuffer_builder, 0, 1, 1);
-          _buffer_vec.emplace_back(buffer);
-        }
-        else
-        {
-          auto data = _flatbuffer_builder->CreateVector(data_vec);
-
-          // Create Buffer
-          tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
-          buffer_builder.add_data(data);
-          auto buffer = buffer_builder.Finish();
-
-          // Update Buffer Index & Vector
-          buffer_index = _buffer_vec.size();
-          _buffer_vec.emplace_back(buffer);
-        }
+        buffer_dense(buffer_index, operand, count, data_vec);
       }
     }
     else
