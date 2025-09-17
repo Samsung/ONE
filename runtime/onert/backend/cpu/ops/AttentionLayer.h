@@ -34,9 +34,9 @@ public:
 public:
   void configure(const IPortableTensor *input, const IPortableTensor *wq, const IPortableTensor *wk,
                  const IPortableTensor *wv, const IPortableTensor *wo, const IPortableTensor *cos,
-                 const IPortableTensor *sin, const IPortableTensor *mask,
-                 const IPortableTensor *k_cache, const IPortableTensor *v_cache,
-                 const IPortableTensor *pos, int layer_idx, IPortableTensor *output);
+                 const IPortableTensor *sin, const IPortableTensor *mask, IPortableTensor *k_cache,
+                 IPortableTensor *v_cache, const IPortableTensor *pos, int layer_idx,
+                 IPortableTensor *output);
 
   void run() override;
 
@@ -52,9 +52,9 @@ private:
   const IPortableTensor *_cos;
   const IPortableTensor *_sin;
   const IPortableTensor *_mask;
-  const IPortableTensor *_k_cache;
-  const IPortableTensor *_v_cache;
-  const IPortableTensor *_pos;
+  IPortableTensor *_k_cache;
+  IPortableTensor *_v_cache;
+  const IPortableTensor *_cache_pos;
   IPortableTensor *_output;
 
   int _layer_idx;
