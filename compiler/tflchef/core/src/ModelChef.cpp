@@ -202,6 +202,8 @@ private:
   void buffer_sparse_f16(int32_t &buffer_index, DimsI32_t &dims,
                          std::vector<int> &traversal_order_vec, SparsityDims_t &format_vec,
                          souschef::Data &data_vec, SparsityParams_t &sparsity_index);
+  void buffer_sparse(int32_t &buffer_index, const tflchef::Operand &operand, DimsI32_t &dims,
+                     souschef::Data &data_vec, SparsityParams_t &sparsity_index);
 
   void buffer_dense(int32_t &buffer_index, const tflchef::Operand &operand, int32_t count,
                     souschef::Data &data_vec);
@@ -404,6 +406,39 @@ void ModelChef::buffer_sparse_f16(int32_t &buffer_index, DimsI32_t &dims,
                                                     block_map, dim_metadata);
 }
 
+void ModelChef::buffer_sparse(int32_t &buffer_index, const tflchef::Operand &operand,
+                              DimsI32_t &dims, souschef::Data &data_vec,
+                              SparsityParams_t &sparsity_index)
+{
+  assert(not operand.has_sparsity());
+  assert(operand.has_shape());
+  assert(operand.type() != tflchef::TensorType::INT4);
+
+  const int32_t dims_count = dims.size();
+  std::vector<int> traversal_order_vec;
+  SparsityDims_t format_vec;
+  for (int32_t o = 0; o < dims_count; ++o)
+    traversal_order_vec.push_back(o);
+  for (int32_t o = 0; o < dims_count - 1; ++o)
+    format_vec.push_back(sparsity::kTfLiteDimDense);
+  format_vec.push_back(sparsity::kTfLiteDimSparseCSR);
+
+  if (operand.type() == tflchef::FLOAT32)
+  {
+    buffer_sparse_f32(buffer_index, dims, traversal_order_vec, format_vec, data_vec,
+                      sparsity_index);
+  }
+  else if (operand.type() == tflchef::FLOAT16)
+  {
+    buffer_sparse_f16(buffer_index, dims, traversal_order_vec, format_vec, data_vec,
+                      sparsity_index);
+  }
+  else
+  {
+    throw std::runtime_error{"NYI: unsupported operand type"};
+  }
+}
+
 void ModelChef::buffer_dense(int32_t &buffer_index, const tflchef::Operand &operand, int32_t count,
                              souschef::Data &data_vec)
 {
@@ -554,33 +589,7 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
 
       if (operand.has_make_sparse() && operand.make_sparse())
       {
-        assert(not operand.has_sparsity());
-        assert(operand.has_shape());
-        assert(operand.type() != tflchef::TensorType::INT4);
-
-        const int32_t dims_count = dims.size();
-        std::vector<int> traversal_order_vec;
-        SparsityDims_t format_vec;
-        for (int32_t o = 0; o < dims_count; ++o)
-          traversal_order_vec.push_back(o);
-        for (int32_t o = 0; o < dims_count - 1; ++o)
-          format_vec.push_back(sparsity::kTfLiteDimDense);
-        format_vec.push_back(sparsity::kTfLiteDimSparseCSR);
-
-        if (operand.type() == tflchef::FLOAT32)
-        {
-          buffer_sparse_f32(buffer_index, dims, traversal_order_vec, format_vec, data_vec,
-                            sparsity_index);
-        }
-        else if (operand.type() == tflchef::FLOAT16)
-        {
-          buffer_sparse_f16(buffer_index, dims, traversal_order_vec, format_vec, data_vec,
-                            sparsity_index);
-        }
-        else
-        {
-          throw std::runtime_error{"NYI: unsupported operand type"};
-        }
+        buffer_sparse(buffer_index, operand, dims, data_vec, sparsity_index);
       }
       else
       {
