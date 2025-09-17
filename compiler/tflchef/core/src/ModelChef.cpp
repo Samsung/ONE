@@ -177,6 +177,11 @@ std::set<std::string> gather_customcode_set(const ::tflchef::ModelRecipe &model_
 namespace
 {
 
+using SymboleTable_t = std::map<std::string, int32_t>;
+using SparsityParams_t = flatbuffers::Offset<tflite::SparsityParameters>;
+using SparsityDims_t = std::vector<sparsity::TfLiteDimensionType>;
+using QuantParams_t = flatbuffers::Offset<tflite::QuantizationParameters>;
+
 class ModelChef
 {
 public:
@@ -193,11 +198,9 @@ private:
 
   template <typename T> void cook_operands(const T &graph);
 
-  template <typename T>
-  void cook_operations(const T &graph, std::map<std::string, int32_t> &symbol_table);
+  template <typename T> void cook_operations(const T &graph, SymboleTable_t &symbol_table);
 
-  template <typename T>
-  void cook_graph(const T &graph, std::map<std::string, int32_t> &symbol_table);
+  template <typename T> void cook_graph(const T &graph, SymboleTable_t &symbol_table);
 
   bool finalize_ext_buffer(void);
 
@@ -216,7 +219,7 @@ private:
   std::vector<std::string> _custom_code_vec;
   // _symbol_tables stores symbol_table of each sub graph
   // this is used to find tensor ID(index) with tensor name
-  std::vector<std::map<std::string, int32_t>> _symbol_tables;
+  std::vector<SymboleTable_t> _symbol_tables;
 
   // per graph that needs clear afer graph is processed
   // Operand-related
@@ -240,8 +243,7 @@ void ModelChef::init(void)
 
 std::vector<flatbuffers::Offset<tflite::DimensionMetadata>>
 make_dim_metadata_vec(flatbuffers::FlatBufferBuilder *flatbuffer_builder, int32_t dims_count,
-                      const std::vector<int> &traversal_order_vec,
-                      const std::vector<sparsity::TfLiteDimensionType> &format_vec,
+                      const std::vector<int> &traversal_order_vec, const SparsityDims_t &format_vec,
                       const std::vector<std::vector<int32_t>> &dim_metadata_src)
 {
   // Build sparsity parameter.
@@ -301,7 +303,7 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
     assert(operand.has_name());
     assert(operand.has_type());
 
-    flatbuffers::Offset<tflite::SparsityParameters> sparsity_index;
+    SparsityParams_t sparsity_index;
 
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape;
     std::vector<int32_t> dims;
@@ -351,7 +353,7 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
 
         const int32_t dims_count = dims.size();
         std::vector<int> traversal_order_vec;
-        std::vector<sparsity::TfLiteDimensionType> format_vec;
+        SparsityDims_t format_vec;
         for (int32_t o = 0; o < dims_count; ++o)
           traversal_order_vec.push_back(o);
         for (int32_t o = 0; o < dims_count - 1; ++o)
@@ -545,7 +547,7 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
     }
     assert(buffer_index != 0);
 
-    flatbuffers::Offset<tflite::QuantizationParameters> quant_index;
+    QuantParams_t quant_index;
 
     // Create QuantizationParameters if quant is specified
     if (operand.has_quant())
@@ -656,8 +658,7 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
   }
 }
 
-template <typename T>
-void ModelChef::cook_operations(const T &graph, std::map<std::string, int32_t> &symbol_table)
+template <typename T> void ModelChef::cook_operations(const T &graph, SymboleTable_t &symbol_table)
 {
   auto lookup = [&](const std::string &name) {
     if (symbol_table.find(name) != symbol_table.end())
@@ -731,8 +732,7 @@ void ModelChef::cook_operations(const T &graph, std::map<std::string, int32_t> &
   }
 }
 
-template <typename T>
-void ModelChef::cook_graph(const T &graph, std::map<std::string, int32_t> &symbol_table)
+template <typename T> void ModelChef::cook_graph(const T &graph, SymboleTable_t &symbol_table)
 {
   LOGGER(l);
 
@@ -1008,7 +1008,7 @@ void ModelChef::cook(const ::tflchef::ModelRecipe &model_recipe)
 
   _graph_name = "main";
   // Tensor Name -> Tensor ID mapping (per Graph)
-  std::map<std::string, int32_t> symbol_table;
+  SymboleTable_t symbol_table;
   cook_graph<::tflchef::ModelRecipe>(model_recipe, symbol_table);
   _symbol_tables.push_back(symbol_table);
 
