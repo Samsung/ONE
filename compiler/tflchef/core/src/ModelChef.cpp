@@ -208,6 +208,8 @@ private:
 
   void operand_quant(const tflchef::Operand &operand, QuantParams_t &quant_index);
 
+  void operand_sparsity(const tflchef::Operand &operand, SparsityParams_t &sparsity_index);
+
   template <typename T> void cook_operands(const T &graph);
 
   template <typename T> void prepare_tensor_symbols(const T &graph, SymboleTable_t &symbol_table);
@@ -482,6 +484,51 @@ void ModelChef::operand_quant(const tflchef::Operand &operand, QuantParams_t &qu
   quant_index = quant_builder.Finish();
 }
 
+void ModelChef::operand_sparsity(const tflchef::Operand &operand, SparsityParams_t &sparsity_index)
+{
+  const auto &sparsity = operand.sparsity();
+
+  // Create traversal order
+  std::vector<int> traversal_order_vec{sparsity.traversal_order().dim().begin(),
+                                       sparsity.traversal_order().dim().end()};
+  auto traversal_order = _flatbuffer_builder->CreateVector(traversal_order_vec);
+
+  // Create block map
+  std::vector<int> block_map_vec{sparsity.block_map().dim().begin(),
+                                 sparsity.block_map().dim().end()};
+  auto block_map = _flatbuffer_builder->CreateVector(block_map_vec);
+
+  // Create dimension metadata
+  std::vector<flatbuffers::Offset<tflite::DimensionMetadata>> dim_metadata_vec;
+  auto recipe_dim_metadata = sparsity.dim_metadata();
+  for (const auto &dm : recipe_dim_metadata)
+  {
+    // Create array segments
+    auto tflite_array_segments =
+      as_tflite_sparse_index_vec(*_flatbuffer_builder, dm.array_segments());
+
+    // Create array indices
+    auto tflite_array_indices =
+      as_tflite_sparse_index_vec(*_flatbuffer_builder, dm.array_indices());
+
+    auto tflite_dim_metadata_builder = tflite::DimensionMetadataBuilder{*_flatbuffer_builder};
+    tflite_dim_metadata_builder.add_format(as_tflite_dimensiontype(dm.format()));
+    tflite_dim_metadata_builder.add_dense_size(dm.dense_size());
+    tflite_dim_metadata_builder.add_array_segments(tflite_array_segments);
+    tflite_dim_metadata_builder.add_array_segments_type(
+      as_tflite_sparse_idx_vec_type(dm.array_segments().type()));
+    tflite_dim_metadata_builder.add_array_indices(tflite_array_indices);
+    tflite_dim_metadata_builder.add_array_indices_type(
+      as_tflite_sparse_idx_vec_type(dm.array_indices().type()));
+    auto tflite_dim_metadata = tflite_dim_metadata_builder.Finish();
+    dim_metadata_vec.emplace_back(tflite_dim_metadata);
+  }
+  auto dim_metadata = _flatbuffer_builder->CreateVector(dim_metadata_vec);
+
+  sparsity_index = tflite::CreateSparsityParameters(*_flatbuffer_builder, traversal_order,
+                                                    block_map, dim_metadata);
+}
+
 template <typename T> void ModelChef::cook_operands(const T &graph)
 {
   int32_t buffer_start = _buffer_vec.size();
@@ -632,47 +679,7 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
 
     if (operand.has_sparsity())
     {
-      const auto &sparsity = operand.sparsity();
-
-      // Create traversal order
-      std::vector<int> traversal_order_vec{sparsity.traversal_order().dim().begin(),
-                                           sparsity.traversal_order().dim().end()};
-      auto traversal_order = _flatbuffer_builder->CreateVector(traversal_order_vec);
-
-      // Create block map
-      std::vector<int> block_map_vec{sparsity.block_map().dim().begin(),
-                                     sparsity.block_map().dim().end()};
-      auto block_map = _flatbuffer_builder->CreateVector(block_map_vec);
-
-      // Create dimension metadata
-      std::vector<flatbuffers::Offset<tflite::DimensionMetadata>> dim_metadata_vec;
-      auto recipe_dim_metadata = sparsity.dim_metadata();
-      for (const auto &dm : recipe_dim_metadata)
-      {
-        // Create array segments
-        auto tflite_array_segments =
-          as_tflite_sparse_index_vec(*_flatbuffer_builder, dm.array_segments());
-
-        // Create array indices
-        auto tflite_array_indices =
-          as_tflite_sparse_index_vec(*_flatbuffer_builder, dm.array_indices());
-
-        auto tflite_dim_metadata_builder = tflite::DimensionMetadataBuilder{*_flatbuffer_builder};
-        tflite_dim_metadata_builder.add_format(as_tflite_dimensiontype(dm.format()));
-        tflite_dim_metadata_builder.add_dense_size(dm.dense_size());
-        tflite_dim_metadata_builder.add_array_segments(tflite_array_segments);
-        tflite_dim_metadata_builder.add_array_segments_type(
-          as_tflite_sparse_idx_vec_type(dm.array_segments().type()));
-        tflite_dim_metadata_builder.add_array_indices(tflite_array_indices);
-        tflite_dim_metadata_builder.add_array_indices_type(
-          as_tflite_sparse_idx_vec_type(dm.array_indices().type()));
-        auto tflite_dim_metadata = tflite_dim_metadata_builder.Finish();
-        dim_metadata_vec.emplace_back(tflite_dim_metadata);
-      }
-      auto dim_metadata = _flatbuffer_builder->CreateVector(dim_metadata_vec);
-
-      sparsity_index = tflite::CreateSparsityParameters(*_flatbuffer_builder, traversal_order,
-                                                        block_map, dim_metadata);
+      operand_sparsity(operand, sparsity_index);
     }
 
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape_signature;
