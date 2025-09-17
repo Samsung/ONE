@@ -206,6 +206,8 @@ private:
   void buffer_dense(int32_t &buffer_index, const tflchef::Operand &operand, int32_t count,
                     souschef::Data &data_vec);
 
+  void operand_quant(const tflchef::Operand &operand, QuantParams_t &quant_index);
+
   template <typename T> void cook_operands(const T &graph);
 
   template <typename T> void prepare_tensor_symbols(const T &graph, SymboleTable_t &symbol_table);
@@ -443,6 +445,43 @@ void ModelChef::buffer_dense(int32_t &buffer_index, const tflchef::Operand &oper
   }
 }
 
+void ModelChef::operand_quant(const tflchef::Operand &operand, QuantParams_t &quant_index)
+{
+  const auto &quant = operand.quant();
+
+  // Create each parameters
+  // NOTE if some parameters are not given, those will be set to default value
+  std::vector<float> quant_max_vec(quant.max_size());
+  std::vector<float> quant_min_vec(quant.min_size());
+  std::vector<float> quant_scale_vec(quant.scale_size());
+  std::vector<int64_t> quant_zero_point_vec(quant.zero_point_size());
+
+  for (uint32_t i = 0; i < quant.max_size(); ++i)
+    quant_max_vec.at(i) = quant.max(i);
+  for (uint32_t i = 0; i < quant.min_size(); ++i)
+    quant_min_vec.at(i) = quant.min(i);
+  for (uint32_t i = 0; i < quant.scale_size(); ++i)
+    quant_scale_vec.at(i) = quant.scale(i);
+  for (uint32_t i = 0; i < quant.zero_point_size(); ++i)
+    quant_zero_point_vec.at(i) = quant.zero_point(i);
+
+  auto quant_max = _flatbuffer_builder->CreateVector(quant_max_vec);
+  auto quant_min = _flatbuffer_builder->CreateVector(quant_min_vec);
+  auto quant_scale = _flatbuffer_builder->CreateVector(quant_scale_vec);
+  auto quant_zero_point = _flatbuffer_builder->CreateVector(quant_zero_point_vec);
+
+  // Create QuantizationParameters
+  tflite::QuantizationParametersBuilder quant_builder{*_flatbuffer_builder};
+  quant_builder.add_max(quant_max);
+  quant_builder.add_min(quant_min);
+  quant_builder.add_scale(quant_scale);
+  quant_builder.add_zero_point(quant_zero_point);
+  quant_builder.add_quantized_dimension(quant.quantized_dimension());
+
+  // Update QuantizationParameters Index
+  quant_index = quant_builder.Finish();
+}
+
 template <typename T> void ModelChef::cook_operands(const T &graph)
 {
   int32_t buffer_start = _buffer_vec.size();
@@ -588,39 +627,7 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
     // Create QuantizationParameters if quant is specified
     if (operand.has_quant())
     {
-      const auto &quant = operand.quant();
-
-      // Create each parameters
-      // NOTE if some parameters are not given, those will be set to default value
-      std::vector<float> quant_max_vec(quant.max_size());
-      std::vector<float> quant_min_vec(quant.min_size());
-      std::vector<float> quant_scale_vec(quant.scale_size());
-      std::vector<int64_t> quant_zero_point_vec(quant.zero_point_size());
-
-      for (uint32_t i = 0; i < quant.max_size(); ++i)
-        quant_max_vec.at(i) = quant.max(i);
-      for (uint32_t i = 0; i < quant.min_size(); ++i)
-        quant_min_vec.at(i) = quant.min(i);
-      for (uint32_t i = 0; i < quant.scale_size(); ++i)
-        quant_scale_vec.at(i) = quant.scale(i);
-      for (uint32_t i = 0; i < quant.zero_point_size(); ++i)
-        quant_zero_point_vec.at(i) = quant.zero_point(i);
-
-      auto quant_max = _flatbuffer_builder->CreateVector(quant_max_vec);
-      auto quant_min = _flatbuffer_builder->CreateVector(quant_min_vec);
-      auto quant_scale = _flatbuffer_builder->CreateVector(quant_scale_vec);
-      auto quant_zero_point = _flatbuffer_builder->CreateVector(quant_zero_point_vec);
-
-      // Create QuantizationParameters
-      tflite::QuantizationParametersBuilder quant_builder{*_flatbuffer_builder};
-      quant_builder.add_max(quant_max);
-      quant_builder.add_min(quant_min);
-      quant_builder.add_scale(quant_scale);
-      quant_builder.add_zero_point(quant_zero_point);
-      quant_builder.add_quantized_dimension(quant.quantized_dimension());
-
-      // Update QuantizationParameters Index
-      quant_index = quant_builder.Finish();
+      operand_quant(operand, quant_index);
     }
 
     if (operand.has_sparsity())
