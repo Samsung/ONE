@@ -198,6 +198,8 @@ private:
 
   template <typename T> void cook_operands(const T &graph);
 
+  template <typename T> void prepare_tensor_symbols(const T &graph, SymboleTable_t &symbol_table);
+
   template <typename T> void cook_operations(const T &graph, SymboleTable_t &symbol_table);
 
   template <typename T> void cook_graph(const T &graph, SymboleTable_t &symbol_table);
@@ -658,6 +660,23 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
   }
 }
 
+template <typename T>
+void ModelChef::prepare_tensor_symbols(const T &graph, SymboleTable_t &symbol_table)
+{
+  LOGGER(l);
+
+  for (const auto &operand : graph.operand())
+  {
+    // Update Tensor Name -> Tensor Index Map
+    int32_t tensor_index = symbol_table.size();
+    const auto &tensor_name = operand.name();
+
+    INFO(l) << "Symbol [" << tensor_name << "] = Tensor " << tensor_index << std::endl;
+
+    symbol_table[tensor_name] = tensor_index;
+  }
+}
+
 template <typename T> void ModelChef::cook_operations(const T &graph, SymboleTable_t &symbol_table)
 {
   auto lookup = [&](const std::string &name) {
@@ -758,16 +777,7 @@ template <typename T> void ModelChef::cook_graph(const T &graph, SymboleTable_t 
 
   cook_operands(graph);
 
-  for (const auto &operand : graph.operand())
-  {
-    // Update Tensor Name -> Tensor Index Map
-    int32_t tensor_index = symbol_table.size();
-    const auto &tensor_name = operand.name();
-
-    INFO(l) << "Symbol [" << tensor_name << "] = Tensor " << tensor_index << std::endl;
-
-    symbol_table[tensor_name] = tensor_index;
-  }
+  prepare_tensor_symbols(graph, symbol_table);
 
   cook_operations(graph, symbol_table);
 
