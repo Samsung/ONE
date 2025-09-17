@@ -19,9 +19,9 @@ Source3008: NEON2SSE.tar.gz
 Source3009: OOURAFFT.tar.gz
 Source3010: PSIMD.tar.gz
 Source3011: PTHREADPOOL.tar.gz
-Source3012: TENSORFLOW-2.16.1-EIGEN.tar.gz
-Source3013: TENSORFLOW-2.16.1-GEMMLOWP.tar.gz
-Source3014: TENSORFLOW-2.16.1-RUY.tar.gz
+Source3012: EIGEN.tar.gz
+Source3013: GEMMLOWP.tar.gz
+Source3014: RUY.tar.gz
 Source3015: TENSORFLOW-2.16.1.tar.gz
 Source3016: XNNPACK.tar.gz
 Source4001: EXTERNALS_FOR_ODC.tar.gz
