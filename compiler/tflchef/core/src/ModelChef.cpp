@@ -199,6 +199,9 @@ private:
   void buffer_sparse_f32(int32_t &buffer_index, DimsI32_t &dims,
                          std::vector<int> &traversal_order_vec, SparsityDims_t &format_vec,
                          souschef::Data &data_vec, SparsityParams_t &sparsity_index);
+  void buffer_sparse_f16(int32_t &buffer_index, DimsI32_t &dims,
+                         std::vector<int> &traversal_order_vec, SparsityDims_t &format_vec,
+                         souschef::Data &data_vec, SparsityParams_t &sparsity_index);
 
   void buffer_dense(int32_t &buffer_index, const tflchef::Operand &operand, int32_t count,
                     souschef::Data &data_vec);
@@ -315,6 +318,64 @@ void ModelChef::buffer_sparse_f32(int32_t &buffer_index, DimsI32_t &dims,
   else
   {
     auto data = _flatbuffer_builder->CreateVector(sparse_uint8);
+    // Create Buffer
+    tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
+    buffer_builder.add_data(data);
+    auto buffer = buffer_builder.Finish();
+
+    // Update Buffer Index & Vector
+    buffer_index = _buffer_vec.size();
+    _buffer_vec.emplace_back(buffer);
+  }
+
+  // save SparsityParameters
+  auto traversal_order = _flatbuffer_builder->CreateVector(traversal_order_vec);
+
+  // Create block map
+  std::vector<int> block_map_vec{};
+  auto block_map = _flatbuffer_builder->CreateVector(block_map_vec);
+
+  // Create dimension metadata
+  const auto &dim_metadata_src = converter.GetDimMetadata();
+  auto dim_metadata_vec = make_dim_metadata_vec(_flatbuffer_builder.get(), dims_count,
+                                                traversal_order_vec, format_vec, dim_metadata_src);
+  auto dim_metadata = _flatbuffer_builder->CreateVector(dim_metadata_vec);
+  sparsity_index = tflite::CreateSparsityParameters(*_flatbuffer_builder, traversal_order,
+                                                    block_map, dim_metadata);
+}
+
+void ModelChef::buffer_sparse_f16(int32_t &buffer_index, DimsI32_t &dims,
+                                  std::vector<int> &traversal_order_vec, SparsityDims_t &format_vec,
+                                  souschef::Data &data_vec, SparsityParams_t &sparsity_index)
+{
+  const int32_t dims_count = dims.size();
+
+  ::sparsity::FormatConverter<uint16_t> converter(dims, traversal_order_vec, format_vec);
+  converter.DenseToSparse(reinterpret_cast<const uint16_t *>(data_vec.data()));
+  const auto &sparse_data = converter.GetData();
+
+  std::vector<uint8_t> sparse_uint8;
+  for (int c = 0; c < sparse_data.size(); ++c)
+  {
+    const uint16_t value = sparse_data.at(c);
+    const uint8_t *arr = reinterpret_cast<const uint8_t *>(&value);
+    for (uint32_t b = 0; b < sizeof(uint16_t); ++b)
+    {
+      sparse_uint8.emplace_back(arr[b]);
+    }
+  }
+  if (_ext_offset)
+  {
+    buffer_index = _buffer_vec.size();
+    _buffer_data_map[buffer_index] = sparse_uint8;
+
+    auto buffer = tflite::CreateBuffer(*_flatbuffer_builder, 0, 1, 1);
+    _buffer_vec.emplace_back(buffer);
+  }
+  else
+  {
+    auto data = _flatbuffer_builder->CreateVector(sparse_uint8);
+
     // Create Buffer
     tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
     buffer_builder.add_data(data);
@@ -474,57 +535,8 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
         }
         else if (operand.type() == tflchef::FLOAT16)
         {
-          ::sparsity::FormatConverter<uint16_t> converter(dims, traversal_order_vec, format_vec);
-          converter.DenseToSparse(reinterpret_cast<const uint16_t *>(data_vec.data()));
-          const auto &sparse_data = converter.GetData();
-
-          std::vector<uint8_t> sparse_uint8;
-          for (int c = 0; c < sparse_data.size(); ++c)
-          {
-            const uint16_t value = sparse_data.at(c);
-            const uint8_t *arr = reinterpret_cast<const uint8_t *>(&value);
-            for (uint32_t b = 0; b < sizeof(uint16_t); ++b)
-            {
-              sparse_uint8.emplace_back(arr[b]);
-            }
-          }
-          if (_ext_offset)
-          {
-            buffer_index = _buffer_vec.size();
-            _buffer_data_map[buffer_index] = sparse_uint8;
-
-            auto buffer = tflite::CreateBuffer(*_flatbuffer_builder, 0, 1, 1);
-            _buffer_vec.emplace_back(buffer);
-          }
-          else
-          {
-            auto data = _flatbuffer_builder->CreateVector(sparse_uint8);
-
-            // Create Buffer
-            tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
-            buffer_builder.add_data(data);
-            auto buffer = buffer_builder.Finish();
-
-            // Update Buffer Index & Vector
-            buffer_index = _buffer_vec.size();
-            _buffer_vec.emplace_back(buffer);
-          }
-
-          // save SparsityParameters
-          auto traversal_order = _flatbuffer_builder->CreateVector(traversal_order_vec);
-
-          // Create block map
-          std::vector<int> block_map_vec{};
-          auto block_map = _flatbuffer_builder->CreateVector(block_map_vec);
-
-          // Create dimension metadata
-          const auto &dim_metadata_src = converter.GetDimMetadata();
-          auto dim_metadata_vec =
-            make_dim_metadata_vec(_flatbuffer_builder.get(), dims_count, traversal_order_vec,
-                                  format_vec, dim_metadata_src);
-          auto dim_metadata = _flatbuffer_builder->CreateVector(dim_metadata_vec);
-          sparsity_index = tflite::CreateSparsityParameters(*_flatbuffer_builder, traversal_order,
-                                                            block_map, dim_metadata);
+          buffer_sparse_f16(buffer_index, dims, traversal_order_vec, format_vec, data_vec,
+                            sparsity_index);
         }
         else
         {
