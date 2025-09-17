@@ -177,6 +177,11 @@ std::set<std::string> gather_customcode_set(const ::tflchef::ModelRecipe &model_
 namespace
 {
 
+using SymboleTable_t = std::map<std::string, int32_t>;
+using SparsityParams_t = flatbuffers::Offset<tflite::SparsityParameters>;
+using SparsityDims_t = std::vector<sparsity::TfLiteDimensionType>;
+using QuantParams_t = flatbuffers::Offset<tflite::QuantizationParameters>;
+
 class ModelChef
 {
 public:
@@ -191,13 +196,33 @@ private:
   void gather_operator_codes(const ::tflchef::ModelRecipe &model_recipe);
   void gather_signature_defs(const ::tflchef::ModelRecipe &model_recipe);
 
+  void buffer_sparse_f32(int32_t &buffer_index, DimsI32_t &dims,
+                         std::vector<int> &traversal_order_vec, SparsityDims_t &format_vec,
+                         souschef::Data &data_vec, SparsityParams_t &sparsity_index);
+  void buffer_sparse_f16(int32_t &buffer_index, DimsI32_t &dims,
+                         std::vector<int> &traversal_order_vec, SparsityDims_t &format_vec,
+                         souschef::Data &data_vec, SparsityParams_t &sparsity_index);
+  void buffer_sparse(int32_t &buffer_index, const tflchef::Operand &operand, DimsI32_t &dims,
+                     souschef::Data &data_vec, SparsityParams_t &sparsity_index);
+
+  void buffer_dense(int32_t &buffer_index, const tflchef::Operand &operand, int32_t count,
+                    souschef::Data &data_vec);
+
+  void buffer_empty(int32_t &buffer_index, int32_t buffer_start, const int size_input,
+                    const tflchef::Operand &operand, const std::vector<std::string> &input_names,
+                    const std::vector<std::string> &output_names);
+
+  void operand_quant(const tflchef::Operand &operand, QuantParams_t &quant_index);
+
+  void operand_sparsity(const tflchef::Operand &operand, SparsityParams_t &sparsity_index);
+
   template <typename T> void cook_operands(const T &graph);
 
-  template <typename T>
-  void cook_operations(const T &graph, std::map<std::string, int32_t> &symbol_table);
+  template <typename T> void prepare_tensor_symbols(const T &graph, SymboleTable_t &symbol_table);
 
-  template <typename T>
-  void cook_graph(const T &graph, std::map<std::string, int32_t> &symbol_table);
+  template <typename T> void cook_operations(const T &graph, SymboleTable_t &symbol_table);
+
+  template <typename T> void cook_graph(const T &graph, SymboleTable_t &symbol_table);
 
   bool finalize_ext_buffer(void);
 
@@ -216,7 +241,7 @@ private:
   std::vector<std::string> _custom_code_vec;
   // _symbol_tables stores symbol_table of each sub graph
   // this is used to find tensor ID(index) with tensor name
-  std::vector<std::map<std::string, int32_t>> _symbol_tables;
+  std::vector<SymboleTable_t> _symbol_tables;
 
   // per graph that needs clear afer graph is processed
   // Operand-related
@@ -240,8 +265,7 @@ void ModelChef::init(void)
 
 std::vector<flatbuffers::Offset<tflite::DimensionMetadata>>
 make_dim_metadata_vec(flatbuffers::FlatBufferBuilder *flatbuffer_builder, int32_t dims_count,
-                      const std::vector<int> &traversal_order_vec,
-                      const std::vector<sparsity::TfLiteDimensionType> &format_vec,
+                      const std::vector<int> &traversal_order_vec, const SparsityDims_t &format_vec,
                       const std::vector<std::vector<int32_t>> &dim_metadata_src)
 {
   // Build sparsity parameter.
@@ -273,6 +297,314 @@ make_dim_metadata_vec(flatbuffers::FlatBufferBuilder *flatbuffer_builder, int32_
   return dim_metadata_vec;
 }
 
+void ModelChef::buffer_sparse_f32(int32_t &buffer_index, DimsI32_t &dims,
+                                  std::vector<int> &traversal_order_vec, SparsityDims_t &format_vec,
+                                  souschef::Data &data_vec, SparsityParams_t &sparsity_index)
+{
+  const int32_t dims_count = dims.size();
+
+  ::sparsity::FormatConverter<float> converter(dims, traversal_order_vec, format_vec);
+  converter.DenseToSparse(reinterpret_cast<const float *>(data_vec.data()));
+  const auto &sparse_data = converter.GetData();
+
+  std::vector<uint8_t> sparse_uint8;
+  for (int c = 0; c < sparse_data.size(); ++c)
+  {
+    const float value = sparse_data.at(c);
+    const uint8_t *arr = reinterpret_cast<const uint8_t *>(&value);
+    for (uint32_t b = 0; b < sizeof(float); ++b)
+    {
+      sparse_uint8.emplace_back(arr[b]);
+    }
+  }
+  if (_ext_offset)
+  {
+    buffer_index = _buffer_vec.size();
+    _buffer_data_map[buffer_index] = sparse_uint8;
+
+    auto buffer = tflite::CreateBuffer(*_flatbuffer_builder, 0, 1, 1);
+    _buffer_vec.emplace_back(buffer);
+  }
+  else
+  {
+    auto data = _flatbuffer_builder->CreateVector(sparse_uint8);
+    // Create Buffer
+    tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
+    buffer_builder.add_data(data);
+    auto buffer = buffer_builder.Finish();
+
+    // Update Buffer Index & Vector
+    buffer_index = _buffer_vec.size();
+    _buffer_vec.emplace_back(buffer);
+  }
+
+  // save SparsityParameters
+  auto traversal_order = _flatbuffer_builder->CreateVector(traversal_order_vec);
+
+  // Create block map
+  std::vector<int> block_map_vec{};
+  auto block_map = _flatbuffer_builder->CreateVector(block_map_vec);
+
+  // Create dimension metadata
+  const auto &dim_metadata_src = converter.GetDimMetadata();
+  auto dim_metadata_vec = make_dim_metadata_vec(_flatbuffer_builder.get(), dims_count,
+                                                traversal_order_vec, format_vec, dim_metadata_src);
+  auto dim_metadata = _flatbuffer_builder->CreateVector(dim_metadata_vec);
+  sparsity_index = tflite::CreateSparsityParameters(*_flatbuffer_builder, traversal_order,
+                                                    block_map, dim_metadata);
+}
+
+void ModelChef::buffer_sparse_f16(int32_t &buffer_index, DimsI32_t &dims,
+                                  std::vector<int> &traversal_order_vec, SparsityDims_t &format_vec,
+                                  souschef::Data &data_vec, SparsityParams_t &sparsity_index)
+{
+  const int32_t dims_count = dims.size();
+
+  ::sparsity::FormatConverter<uint16_t> converter(dims, traversal_order_vec, format_vec);
+  converter.DenseToSparse(reinterpret_cast<const uint16_t *>(data_vec.data()));
+  const auto &sparse_data = converter.GetData();
+
+  std::vector<uint8_t> sparse_uint8;
+  for (int c = 0; c < sparse_data.size(); ++c)
+  {
+    const uint16_t value = sparse_data.at(c);
+    const uint8_t *arr = reinterpret_cast<const uint8_t *>(&value);
+    for (uint32_t b = 0; b < sizeof(uint16_t); ++b)
+    {
+      sparse_uint8.emplace_back(arr[b]);
+    }
+  }
+  if (_ext_offset)
+  {
+    buffer_index = _buffer_vec.size();
+    _buffer_data_map[buffer_index] = sparse_uint8;
+
+    auto buffer = tflite::CreateBuffer(*_flatbuffer_builder, 0, 1, 1);
+    _buffer_vec.emplace_back(buffer);
+  }
+  else
+  {
+    auto data = _flatbuffer_builder->CreateVector(sparse_uint8);
+
+    // Create Buffer
+    tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
+    buffer_builder.add_data(data);
+    auto buffer = buffer_builder.Finish();
+
+    // Update Buffer Index & Vector
+    buffer_index = _buffer_vec.size();
+    _buffer_vec.emplace_back(buffer);
+  }
+
+  // save SparsityParameters
+  auto traversal_order = _flatbuffer_builder->CreateVector(traversal_order_vec);
+
+  // Create block map
+  std::vector<int> block_map_vec{};
+  auto block_map = _flatbuffer_builder->CreateVector(block_map_vec);
+
+  // Create dimension metadata
+  const auto &dim_metadata_src = converter.GetDimMetadata();
+  auto dim_metadata_vec = make_dim_metadata_vec(_flatbuffer_builder.get(), dims_count,
+                                                traversal_order_vec, format_vec, dim_metadata_src);
+  auto dim_metadata = _flatbuffer_builder->CreateVector(dim_metadata_vec);
+  sparsity_index = tflite::CreateSparsityParameters(*_flatbuffer_builder, traversal_order,
+                                                    block_map, dim_metadata);
+}
+
+void ModelChef::buffer_sparse(int32_t &buffer_index, const tflchef::Operand &operand,
+                              DimsI32_t &dims, souschef::Data &data_vec,
+                              SparsityParams_t &sparsity_index)
+{
+  assert(not operand.has_sparsity());
+  assert(operand.has_shape());
+  assert(operand.type() != tflchef::TensorType::INT4);
+
+  const int32_t dims_count = dims.size();
+  std::vector<int> traversal_order_vec;
+  SparsityDims_t format_vec;
+  for (int32_t o = 0; o < dims_count; ++o)
+    traversal_order_vec.push_back(o);
+  for (int32_t o = 0; o < dims_count - 1; ++o)
+    format_vec.push_back(sparsity::kTfLiteDimDense);
+  format_vec.push_back(sparsity::kTfLiteDimSparseCSR);
+
+  if (operand.type() == tflchef::FLOAT32)
+  {
+    buffer_sparse_f32(buffer_index, dims, traversal_order_vec, format_vec, data_vec,
+                      sparsity_index);
+  }
+  else if (operand.type() == tflchef::FLOAT16)
+  {
+    buffer_sparse_f16(buffer_index, dims, traversal_order_vec, format_vec, data_vec,
+                      sparsity_index);
+  }
+  else
+  {
+    throw std::runtime_error{"NYI: unsupported operand type"};
+  }
+}
+
+void ModelChef::buffer_dense(int32_t &buffer_index, const tflchef::Operand &operand, int32_t count,
+                             souschef::Data &data_vec)
+{
+  // pack for INT4 and replace data_vec
+  if (operand.type() == tflchef::TensorType::INT4)
+  {
+    uint32_t packed = (count + 1) / 2;
+    std::vector<uint8_t> data_packed(packed);
+    for (uint32_t idx = 0; idx < packed; ++idx)
+    {
+      uint32_t sidx = idx * 2;
+      data_packed[idx] = data_vec[sidx++] & 0x0f;
+      if (sidx < count)
+        data_packed[idx] |= data_vec[sidx] << 4;
+    }
+    data_vec = data_packed;
+  }
+
+  if (_ext_offset)
+  {
+    buffer_index = _buffer_vec.size();
+    _buffer_data_map[buffer_index] = data_vec;
+
+    auto buffer = tflite::CreateBuffer(*_flatbuffer_builder, 0, 1, 1);
+    _buffer_vec.emplace_back(buffer);
+  }
+  else
+  {
+    auto data = _flatbuffer_builder->CreateVector(data_vec);
+
+    // Create Buffer
+    tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
+    buffer_builder.add_data(data);
+    auto buffer = buffer_builder.Finish();
+
+    // Update Buffer Index & Vector
+    buffer_index = _buffer_vec.size();
+    _buffer_vec.emplace_back(buffer);
+  }
+}
+
+void ModelChef::buffer_empty(int32_t &buffer_index, int32_t buffer_start, const int size_input,
+                             const tflchef::Operand &operand,
+                             const std::vector<std::string> &input_names,
+                             const std::vector<std::string> &output_names)
+{
+  // if this is input or output, assign to that buffer_index
+  int idx = 0;
+  for (auto it = input_names.begin(); it != input_names.end(); ++it, ++idx)
+  {
+    if (*it == operand.name())
+    {
+      buffer_index = buffer_start + idx;
+      break;
+    }
+  }
+  if (buffer_index == 0)
+  {
+    idx = 0;
+    for (auto it = output_names.begin(); it != output_names.end(); ++it, ++idx)
+    {
+      if (*it == operand.name())
+      {
+        buffer_index = buffer_start + size_input + idx;
+        break;
+      }
+    }
+  }
+  if (buffer_index == 0)
+  {
+    // we couldn't find the buffer; create an empty buffer for this tensor
+    buffer_index = _buffer_vec.size();
+
+    tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
+    _buffer_vec.emplace_back(buffer_builder.Finish());
+  }
+}
+
+void ModelChef::operand_quant(const tflchef::Operand &operand, QuantParams_t &quant_index)
+{
+  const auto &quant = operand.quant();
+
+  // Create each parameters
+  // NOTE if some parameters are not given, those will be set to default value
+  std::vector<float> quant_max_vec(quant.max_size());
+  std::vector<float> quant_min_vec(quant.min_size());
+  std::vector<float> quant_scale_vec(quant.scale_size());
+  std::vector<int64_t> quant_zero_point_vec(quant.zero_point_size());
+
+  for (uint32_t i = 0; i < quant.max_size(); ++i)
+    quant_max_vec.at(i) = quant.max(i);
+  for (uint32_t i = 0; i < quant.min_size(); ++i)
+    quant_min_vec.at(i) = quant.min(i);
+  for (uint32_t i = 0; i < quant.scale_size(); ++i)
+    quant_scale_vec.at(i) = quant.scale(i);
+  for (uint32_t i = 0; i < quant.zero_point_size(); ++i)
+    quant_zero_point_vec.at(i) = quant.zero_point(i);
+
+  auto quant_max = _flatbuffer_builder->CreateVector(quant_max_vec);
+  auto quant_min = _flatbuffer_builder->CreateVector(quant_min_vec);
+  auto quant_scale = _flatbuffer_builder->CreateVector(quant_scale_vec);
+  auto quant_zero_point = _flatbuffer_builder->CreateVector(quant_zero_point_vec);
+
+  // Create QuantizationParameters
+  tflite::QuantizationParametersBuilder quant_builder{*_flatbuffer_builder};
+  quant_builder.add_max(quant_max);
+  quant_builder.add_min(quant_min);
+  quant_builder.add_scale(quant_scale);
+  quant_builder.add_zero_point(quant_zero_point);
+  quant_builder.add_quantized_dimension(quant.quantized_dimension());
+
+  // Update QuantizationParameters Index
+  quant_index = quant_builder.Finish();
+}
+
+void ModelChef::operand_sparsity(const tflchef::Operand &operand, SparsityParams_t &sparsity_index)
+{
+  const auto &sparsity = operand.sparsity();
+
+  // Create traversal order
+  std::vector<int> traversal_order_vec{sparsity.traversal_order().dim().begin(),
+                                       sparsity.traversal_order().dim().end()};
+  auto traversal_order = _flatbuffer_builder->CreateVector(traversal_order_vec);
+
+  // Create block map
+  std::vector<int> block_map_vec{sparsity.block_map().dim().begin(),
+                                 sparsity.block_map().dim().end()};
+  auto block_map = _flatbuffer_builder->CreateVector(block_map_vec);
+
+  // Create dimension metadata
+  std::vector<flatbuffers::Offset<tflite::DimensionMetadata>> dim_metadata_vec;
+  auto recipe_dim_metadata = sparsity.dim_metadata();
+  for (const auto &dm : recipe_dim_metadata)
+  {
+    // Create array segments
+    auto tflite_array_segments =
+      as_tflite_sparse_index_vec(*_flatbuffer_builder, dm.array_segments());
+
+    // Create array indices
+    auto tflite_array_indices =
+      as_tflite_sparse_index_vec(*_flatbuffer_builder, dm.array_indices());
+
+    auto tflite_dim_metadata_builder = tflite::DimensionMetadataBuilder{*_flatbuffer_builder};
+    tflite_dim_metadata_builder.add_format(as_tflite_dimensiontype(dm.format()));
+    tflite_dim_metadata_builder.add_dense_size(dm.dense_size());
+    tflite_dim_metadata_builder.add_array_segments(tflite_array_segments);
+    tflite_dim_metadata_builder.add_array_segments_type(
+      as_tflite_sparse_idx_vec_type(dm.array_segments().type()));
+    tflite_dim_metadata_builder.add_array_indices(tflite_array_indices);
+    tflite_dim_metadata_builder.add_array_indices_type(
+      as_tflite_sparse_idx_vec_type(dm.array_indices().type()));
+    auto tflite_dim_metadata = tflite_dim_metadata_builder.Finish();
+    dim_metadata_vec.emplace_back(tflite_dim_metadata);
+  }
+  auto dim_metadata = _flatbuffer_builder->CreateVector(dim_metadata_vec);
+
+  sparsity_index = tflite::CreateSparsityParameters(*_flatbuffer_builder, traversal_order,
+                                                    block_map, dim_metadata);
+}
+
 template <typename T> void ModelChef::cook_operands(const T &graph)
 {
   int32_t buffer_start = _buffer_vec.size();
@@ -296,15 +628,17 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
   auto input_names = as_dataset(graph.input()).vectorize();
   auto output_names = as_dataset(graph.output()).vectorize();
 
+  std::vector<std::string> &aa = input_names;
+
   for (const auto &operand : graph.operand())
   {
     assert(operand.has_name());
     assert(operand.has_type());
 
-    flatbuffers::Offset<tflite::SparsityParameters> sparsity_index;
+    SparsityParams_t sparsity_index;
 
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape;
-    std::vector<int32_t> dims;
+    DimsI32_t dims;
     if (operand.has_shape())
     {
       dims = as_dims(operand.shape());
@@ -345,289 +679,30 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
 
       if (operand.has_make_sparse() && operand.make_sparse())
       {
-        assert(not operand.has_sparsity());
-        assert(operand.has_shape());
-        assert(operand.type() != tflchef::TensorType::INT4);
-
-        const int32_t dims_count = dims.size();
-        std::vector<int> traversal_order_vec;
-        std::vector<sparsity::TfLiteDimensionType> format_vec;
-        for (int32_t o = 0; o < dims_count; ++o)
-          traversal_order_vec.push_back(o);
-        for (int32_t o = 0; o < dims_count - 1; ++o)
-          format_vec.push_back(sparsity::kTfLiteDimDense);
-        format_vec.push_back(sparsity::kTfLiteDimSparseCSR);
-
-        if (operand.type() == tflchef::FLOAT32)
-        {
-          ::sparsity::FormatConverter<float> converter(dims, traversal_order_vec, format_vec);
-          converter.DenseToSparse(reinterpret_cast<const float *>(data_vec.data()));
-          const auto &sparse_data = converter.GetData();
-
-          std::vector<uint8_t> sparse_uint8;
-          for (int c = 0; c < sparse_data.size(); ++c)
-          {
-            const float value = sparse_data.at(c);
-            const uint8_t *arr = reinterpret_cast<const uint8_t *>(&value);
-            for (uint32_t b = 0; b < sizeof(float); ++b)
-            {
-              sparse_uint8.emplace_back(arr[b]);
-            }
-          }
-          if (_ext_offset)
-          {
-            buffer_index = _buffer_vec.size();
-            _buffer_data_map[buffer_index] = sparse_uint8;
-
-            auto buffer = tflite::CreateBuffer(*_flatbuffer_builder, 0, 1, 1);
-            _buffer_vec.emplace_back(buffer);
-          }
-          else
-          {
-            auto data = _flatbuffer_builder->CreateVector(sparse_uint8);
-            // Create Buffer
-            tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
-            buffer_builder.add_data(data);
-            auto buffer = buffer_builder.Finish();
-
-            // Update Buffer Index & Vector
-            buffer_index = _buffer_vec.size();
-            _buffer_vec.emplace_back(buffer);
-          }
-
-          // save SparsityParameters
-          auto traversal_order = _flatbuffer_builder->CreateVector(traversal_order_vec);
-
-          // Create block map
-          std::vector<int> block_map_vec{};
-          auto block_map = _flatbuffer_builder->CreateVector(block_map_vec);
-
-          // Create dimension metadata
-          const auto &dim_metadata_src = converter.GetDimMetadata();
-          auto dim_metadata_vec =
-            make_dim_metadata_vec(_flatbuffer_builder.get(), dims_count, traversal_order_vec,
-                                  format_vec, dim_metadata_src);
-          auto dim_metadata = _flatbuffer_builder->CreateVector(dim_metadata_vec);
-          sparsity_index = tflite::CreateSparsityParameters(*_flatbuffer_builder, traversal_order,
-                                                            block_map, dim_metadata);
-        }
-        else if (operand.type() == tflchef::FLOAT16)
-        {
-          ::sparsity::FormatConverter<uint16_t> converter(dims, traversal_order_vec, format_vec);
-          converter.DenseToSparse(reinterpret_cast<const uint16_t *>(data_vec.data()));
-          const auto &sparse_data = converter.GetData();
-
-          std::vector<uint8_t> sparse_uint8;
-          for (int c = 0; c < sparse_data.size(); ++c)
-          {
-            const uint16_t value = sparse_data.at(c);
-            const uint8_t *arr = reinterpret_cast<const uint8_t *>(&value);
-            for (uint32_t b = 0; b < sizeof(uint16_t); ++b)
-            {
-              sparse_uint8.emplace_back(arr[b]);
-            }
-          }
-          if (_ext_offset)
-          {
-            buffer_index = _buffer_vec.size();
-            _buffer_data_map[buffer_index] = sparse_uint8;
-
-            auto buffer = tflite::CreateBuffer(*_flatbuffer_builder, 0, 1, 1);
-            _buffer_vec.emplace_back(buffer);
-          }
-          else
-          {
-            auto data = _flatbuffer_builder->CreateVector(sparse_uint8);
-
-            // Create Buffer
-            tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
-            buffer_builder.add_data(data);
-            auto buffer = buffer_builder.Finish();
-
-            // Update Buffer Index & Vector
-            buffer_index = _buffer_vec.size();
-            _buffer_vec.emplace_back(buffer);
-          }
-
-          // save SparsityParameters
-          auto traversal_order = _flatbuffer_builder->CreateVector(traversal_order_vec);
-
-          // Create block map
-          std::vector<int> block_map_vec{};
-          auto block_map = _flatbuffer_builder->CreateVector(block_map_vec);
-
-          // Create dimension metadata
-          const auto &dim_metadata_src = converter.GetDimMetadata();
-          auto dim_metadata_vec =
-            make_dim_metadata_vec(_flatbuffer_builder.get(), dims_count, traversal_order_vec,
-                                  format_vec, dim_metadata_src);
-          auto dim_metadata = _flatbuffer_builder->CreateVector(dim_metadata_vec);
-          sparsity_index = tflite::CreateSparsityParameters(*_flatbuffer_builder, traversal_order,
-                                                            block_map, dim_metadata);
-        }
-        else
-        {
-          throw std::runtime_error{"NYI: unsupported operand type"};
-        }
+        buffer_sparse(buffer_index, operand, dims, data_vec, sparsity_index);
       }
       else
       {
-        // pack for INT4 and replace data_vec
-        if (operand.type() == tflchef::TensorType::INT4)
-        {
-          uint32_t packed = (count + 1) / 2;
-          std::vector<uint8_t> data_packed(packed);
-          for (uint32_t idx = 0; idx < packed; ++idx)
-          {
-            uint32_t sidx = idx * 2;
-            data_packed[idx] = data_vec[sidx++] & 0x0f;
-            if (sidx < count)
-              data_packed[idx] |= data_vec[sidx] << 4;
-          }
-          data_vec = data_packed;
-        }
-
-        if (_ext_offset)
-        {
-          buffer_index = _buffer_vec.size();
-          _buffer_data_map[buffer_index] = data_vec;
-
-          auto buffer = tflite::CreateBuffer(*_flatbuffer_builder, 0, 1, 1);
-          _buffer_vec.emplace_back(buffer);
-        }
-        else
-        {
-          auto data = _flatbuffer_builder->CreateVector(data_vec);
-
-          // Create Buffer
-          tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
-          buffer_builder.add_data(data);
-          auto buffer = buffer_builder.Finish();
-
-          // Update Buffer Index & Vector
-          buffer_index = _buffer_vec.size();
-          _buffer_vec.emplace_back(buffer);
-        }
+        buffer_dense(buffer_index, operand, count, data_vec);
       }
     }
     else
     {
-      // if this is input or output, assign to that buffer_index
-      int idx = 0;
-      for (auto it = input_names.begin(); it != input_names.end(); ++it, ++idx)
-      {
-        if (*it == operand.name())
-        {
-          buffer_index = buffer_start + idx;
-          break;
-        }
-      }
-      if (buffer_index == 0)
-      {
-        idx = 0;
-        for (auto it = output_names.begin(); it != output_names.end(); ++it, ++idx)
-        {
-          if (*it == operand.name())
-          {
-            buffer_index = buffer_start + size_input + idx;
-            break;
-          }
-        }
-      }
-      if (buffer_index == 0)
-      {
-        // we couldn't find the buffer; create an empty buffer for this tensor
-        buffer_index = _buffer_vec.size();
-
-        tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
-        _buffer_vec.emplace_back(buffer_builder.Finish());
-      }
+      buffer_empty(buffer_index, buffer_start, size_input, operand, input_names, output_names);
     }
     assert(buffer_index != 0);
 
-    flatbuffers::Offset<tflite::QuantizationParameters> quant_index;
+    QuantParams_t quant_index;
 
     // Create QuantizationParameters if quant is specified
     if (operand.has_quant())
     {
-      const auto &quant = operand.quant();
-
-      // Create each parameters
-      // NOTE if some parameters are not given, those will be set to default value
-      std::vector<float> quant_max_vec(quant.max_size());
-      std::vector<float> quant_min_vec(quant.min_size());
-      std::vector<float> quant_scale_vec(quant.scale_size());
-      std::vector<int64_t> quant_zero_point_vec(quant.zero_point_size());
-
-      for (uint32_t i = 0; i < quant.max_size(); ++i)
-        quant_max_vec.at(i) = quant.max(i);
-      for (uint32_t i = 0; i < quant.min_size(); ++i)
-        quant_min_vec.at(i) = quant.min(i);
-      for (uint32_t i = 0; i < quant.scale_size(); ++i)
-        quant_scale_vec.at(i) = quant.scale(i);
-      for (uint32_t i = 0; i < quant.zero_point_size(); ++i)
-        quant_zero_point_vec.at(i) = quant.zero_point(i);
-
-      auto quant_max = _flatbuffer_builder->CreateVector(quant_max_vec);
-      auto quant_min = _flatbuffer_builder->CreateVector(quant_min_vec);
-      auto quant_scale = _flatbuffer_builder->CreateVector(quant_scale_vec);
-      auto quant_zero_point = _flatbuffer_builder->CreateVector(quant_zero_point_vec);
-
-      // Create QuantizationParameters
-      tflite::QuantizationParametersBuilder quant_builder{*_flatbuffer_builder};
-      quant_builder.add_max(quant_max);
-      quant_builder.add_min(quant_min);
-      quant_builder.add_scale(quant_scale);
-      quant_builder.add_zero_point(quant_zero_point);
-      quant_builder.add_quantized_dimension(quant.quantized_dimension());
-
-      // Update QuantizationParameters Index
-      quant_index = quant_builder.Finish();
+      operand_quant(operand, quant_index);
     }
 
     if (operand.has_sparsity())
     {
-      const auto &sparsity = operand.sparsity();
-
-      // Create traversal order
-      std::vector<int> traversal_order_vec{sparsity.traversal_order().dim().begin(),
-                                           sparsity.traversal_order().dim().end()};
-      auto traversal_order = _flatbuffer_builder->CreateVector(traversal_order_vec);
-
-      // Create block map
-      std::vector<int> block_map_vec{sparsity.block_map().dim().begin(),
-                                     sparsity.block_map().dim().end()};
-      auto block_map = _flatbuffer_builder->CreateVector(block_map_vec);
-
-      // Create dimension metadata
-      std::vector<flatbuffers::Offset<tflite::DimensionMetadata>> dim_metadata_vec;
-      auto recipe_dim_metadata = sparsity.dim_metadata();
-      for (const auto &dm : recipe_dim_metadata)
-      {
-        // Create array segments
-        auto tflite_array_segments =
-          as_tflite_sparse_index_vec(*_flatbuffer_builder, dm.array_segments());
-
-        // Create array indices
-        auto tflite_array_indices =
-          as_tflite_sparse_index_vec(*_flatbuffer_builder, dm.array_indices());
-
-        auto tflite_dim_metadata_builder = tflite::DimensionMetadataBuilder{*_flatbuffer_builder};
-        tflite_dim_metadata_builder.add_format(as_tflite_dimensiontype(dm.format()));
-        tflite_dim_metadata_builder.add_dense_size(dm.dense_size());
-        tflite_dim_metadata_builder.add_array_segments(tflite_array_segments);
-        tflite_dim_metadata_builder.add_array_segments_type(
-          as_tflite_sparse_idx_vec_type(dm.array_segments().type()));
-        tflite_dim_metadata_builder.add_array_indices(tflite_array_indices);
-        tflite_dim_metadata_builder.add_array_indices_type(
-          as_tflite_sparse_idx_vec_type(dm.array_indices().type()));
-        auto tflite_dim_metadata = tflite_dim_metadata_builder.Finish();
-        dim_metadata_vec.emplace_back(tflite_dim_metadata);
-      }
-      auto dim_metadata = _flatbuffer_builder->CreateVector(dim_metadata_vec);
-
-      sparsity_index = tflite::CreateSparsityParameters(*_flatbuffer_builder, traversal_order,
-                                                        block_map, dim_metadata);
+      operand_sparsity(operand, sparsity_index);
     }
 
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape_signature;
@@ -657,7 +732,23 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
 }
 
 template <typename T>
-void ModelChef::cook_operations(const T &graph, std::map<std::string, int32_t> &symbol_table)
+void ModelChef::prepare_tensor_symbols(const T &graph, SymboleTable_t &symbol_table)
+{
+  LOGGER(l);
+
+  for (const auto &operand : graph.operand())
+  {
+    // Update Tensor Name -> Tensor Index Map
+    int32_t tensor_index = symbol_table.size();
+    const auto &tensor_name = operand.name();
+
+    INFO(l) << "Symbol [" << tensor_name << "] = Tensor " << tensor_index << std::endl;
+
+    symbol_table[tensor_name] = tensor_index;
+  }
+}
+
+template <typename T> void ModelChef::cook_operations(const T &graph, SymboleTable_t &symbol_table)
 {
   auto lookup = [&](const std::string &name) {
     if (symbol_table.find(name) != symbol_table.end())
@@ -731,8 +822,7 @@ void ModelChef::cook_operations(const T &graph, std::map<std::string, int32_t> &
   }
 }
 
-template <typename T>
-void ModelChef::cook_graph(const T &graph, std::map<std::string, int32_t> &symbol_table)
+template <typename T> void ModelChef::cook_graph(const T &graph, SymboleTable_t &symbol_table)
 {
   LOGGER(l);
 
@@ -758,16 +848,7 @@ void ModelChef::cook_graph(const T &graph, std::map<std::string, int32_t> &symbo
 
   cook_operands(graph);
 
-  for (const auto &operand : graph.operand())
-  {
-    // Update Tensor Name -> Tensor Index Map
-    int32_t tensor_index = symbol_table.size();
-    const auto &tensor_name = operand.name();
-
-    INFO(l) << "Symbol [" << tensor_name << "] = Tensor " << tensor_index << std::endl;
-
-    symbol_table[tensor_name] = tensor_index;
-  }
+  prepare_tensor_symbols(graph, symbol_table);
 
   cook_operations(graph, symbol_table);
 
@@ -1008,7 +1089,7 @@ void ModelChef::cook(const ::tflchef::ModelRecipe &model_recipe)
 
   _graph_name = "main";
   // Tensor Name -> Tensor ID mapping (per Graph)
-  std::map<std::string, int32_t> symbol_table;
+  SymboleTable_t symbol_table;
   cook_graph<::tflchef::ModelRecipe>(model_recipe, symbol_table);
   _symbol_tables.push_back(symbol_table);
 

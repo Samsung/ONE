@@ -27,7 +27,9 @@ namespace souschef
 
 template <typename T> using Dims = std::vector<T>;
 
-template <typename SHAPETYPE> Dims<int32_t> as_dims(const SHAPETYPE &shape)
+using DimsI32_t = Dims<int32_t>;
+
+template <typename SHAPETYPE> DimsI32_t as_dims(const SHAPETYPE &shape)
 {
   std::vector<int32_t> res;
 
@@ -39,7 +41,7 @@ template <typename SHAPETYPE> Dims<int32_t> as_dims(const SHAPETYPE &shape)
   return res;
 }
 
-int32_t element_count(const Dims<int32_t> &dims)
+int32_t element_count(const DimsI32_t &dims)
 {
   return std::accumulate(dims.begin(), dims.end(), 1, std::multiplies<int32_t>());
 }
