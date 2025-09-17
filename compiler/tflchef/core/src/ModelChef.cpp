@@ -206,6 +206,10 @@ private:
   void buffer_dense(int32_t &buffer_index, const tflchef::Operand &operand, int32_t count,
                     souschef::Data &data_vec);
 
+  void buffer_empty(int32_t &buffer_index, int32_t buffer_start, const int size_input,
+                    const tflchef::Operand &operand, const std::vector<std::string> &input_names,
+                    const std::vector<std::string> &output_names);
+
   void operand_quant(const tflchef::Operand &operand, QuantParams_t &quant_index);
 
   template <typename T> void cook_operands(const T &graph);
@@ -445,6 +449,43 @@ void ModelChef::buffer_dense(int32_t &buffer_index, const tflchef::Operand &oper
   }
 }
 
+void ModelChef::buffer_empty(int32_t &buffer_index, int32_t buffer_start, const int size_input,
+                             const tflchef::Operand &operand,
+                             const std::vector<std::string> &input_names,
+                             const std::vector<std::string> &output_names)
+{
+  // if this is input or output, assign to that buffer_index
+  int idx = 0;
+  for (auto it = input_names.begin(); it != input_names.end(); ++it, ++idx)
+  {
+    if (*it == operand.name())
+    {
+      buffer_index = buffer_start + idx;
+      break;
+    }
+  }
+  if (buffer_index == 0)
+  {
+    idx = 0;
+    for (auto it = output_names.begin(); it != output_names.end(); ++it, ++idx)
+    {
+      if (*it == operand.name())
+      {
+        buffer_index = buffer_start + size_input + idx;
+        break;
+      }
+    }
+  }
+  if (buffer_index == 0)
+  {
+    // we couldn't find the buffer; create an empty buffer for this tensor
+    buffer_index = _buffer_vec.size();
+
+    tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
+    _buffer_vec.emplace_back(buffer_builder.Finish());
+  }
+}
+
 void ModelChef::operand_quant(const tflchef::Operand &operand, QuantParams_t &quant_index)
 {
   const auto &quant = operand.quant();
@@ -589,36 +630,7 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
     }
     else
     {
-      // if this is input or output, assign to that buffer_index
-      int idx = 0;
-      for (auto it = input_names.begin(); it != input_names.end(); ++it, ++idx)
-      {
-        if (*it == operand.name())
-        {
-          buffer_index = buffer_start + idx;
-          break;
-        }
-      }
-      if (buffer_index == 0)
-      {
-        idx = 0;
-        for (auto it = output_names.begin(); it != output_names.end(); ++it, ++idx)
-        {
-          if (*it == operand.name())
-          {
-            buffer_index = buffer_start + size_input + idx;
-            break;
-          }
-        }
-      }
-      if (buffer_index == 0)
-      {
-        // we couldn't find the buffer; create an empty buffer for this tensor
-        buffer_index = _buffer_vec.size();
-
-        tflite::BufferBuilder buffer_builder{*_flatbuffer_builder};
-        _buffer_vec.emplace_back(buffer_builder.Finish());
-      }
+      buffer_empty(buffer_index, buffer_start, size_input, operand, input_names, output_names);
     }
     assert(buffer_index != 0);
 
