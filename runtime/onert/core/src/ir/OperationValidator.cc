@@ -135,6 +135,14 @@ void OperationValidator::visit(const operation::Attention &node)
   OP_REQUIRES(sin_shape.rank() == 3);
   OP_REQUIRES(sin_shape.dim(0) == 1); // batch_size
   OP_REQUIRES(sin_shape.dim(1) == 1); // seq_len
+
+  const auto pos_idx = node.getInputs().at(operation::Attention::Input::POS);
+  const auto &pos_shape = _operands.at(pos_idx).shape();
+
+  // Check pos tensor type and shape
+  OP_REQUIRES(isValidType(pos_idx, DataType::INT64));
+  OP_REQUIRES(pos_shape.rank() == 1);
+  OP_REQUIRES(pos_shape.dim(0) == 1);
 }
 
 void OperationValidator::visit(const operation::BatchMatMul &node)
