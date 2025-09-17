@@ -32,9 +32,9 @@ public:
   ~AttentionLayer();
 
 public:
-  void configure(const IPortableTensor *input, const IPortableTensor *wq,
-                 const IPortableTensor *wk, const IPortableTensor *wv, const IPortableTensor *wo,
-                 const IPortableTensor *cos, const IPortableTensor *sin, const IPortableTensor *mask,
+  void configure(const IPortableTensor *input, const IPortableTensor *wq, const IPortableTensor *wk,
+                 const IPortableTensor *wv, const IPortableTensor *wo, const IPortableTensor *cos,
+                 const IPortableTensor *sin, const IPortableTensor *mask,
                  const IPortableTensor *k_cache, const IPortableTensor *v_cache,
                  const IPortableTensor *pos, int layer_idx, IPortableTensor *output);
 
