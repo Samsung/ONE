@@ -15,6 +15,12 @@
  */
 
 #include "AttentionLayer.h"
+#include "cker/operation/FullyConnected.h"
+#include "cker/operation/RoPE.h" // Added for RoPE kernel
+#include "cker/Shape.h"
+#include <cassert>
+#include <stdexcept>
+#include <vector>
 
 namespace onert::backend::cpu::ops
 {
@@ -67,32 +73,100 @@ void AttentionLayer::configure(const IPortableTensor *input, const IPortableTens
 
 void AttentionLayer::attentionFloat32()
 {
-  // Expected tensor shapes based on current assumptions:
-  // _input: [batch_size=1, seq_len=1, d_model]
-  // _wq, _wk, _wv, _wo: [d_model, d_model]
-  // _cos, _sin: [batch_size=1, seq_len=1, d_head]
-  // _output: [batch_size=1, seq_len=1, d_model] // Assuming WO projects back to d_model
+  // Assuming seq_len = 1 for decode-only attention
 
-  // Internal buffer shapes during computation:
-  // q_proj_buffer (after FullyConnected): [batch_size=1, seq_len=1, d_model]
-  // k_proj_buffer (after FullyConnected): [batch_size=1, seq_len=1, d_model]
-  // q_reshaped (before RoPE): [batch_size=1, seq_len=1, num_heads, d_head] // d_model = num_heads * d_head
-  // k_reshaped (before RoPE): [batch_size=1, seq_len=1, num_heads, d_head] // d_model = num_heads * d_head
-
-  // TODO: Get shapes for all input and output tensors
-  // nnfw::cker::Shape input_shape = getShape(_input);
-  // nnfw::cker::Shape wq_shape = getShape(_wq);
-  // ... and so on for all relevant tensors
-  // nnfw::cker::Shape output_shape = getShape(_output);
+  // Input tensor: _input
+  //   Shape: [batch_size, seq_len, d_model]
+  //   Data: float*
+  // Weight tensors: _wq, _wk, _wv, _wo
+  //   Shape: [d_model, d_model] (assuming d_q = d_k = d_v = d_model for now)
+  //   Data: float*
+  // RoPE tensors: _cos, _sin
+  //   Shape: [1, seq_len, d_head] (batch_size=1, seq_len=1 for decode)
+  //   Data: float*
+  // Output tensor: _output
+  //   Shape: [batch_size, seq_len, d_model]
+  //   Data: float*
 
   // TODO: Call cker Attention kernel functions directly or implement logic here
   // For example:
   // nnfw::cker::AttentionParams params;
   // ... set up params ...
-  // nnfw::cker::Attention(params, input_shape, getBuffer<float>(_input), wq_shape, getBuffer<float>(_wq),
+  // nnfw::cker::Attention(params, input_shape, getBuffer<float>(_input), wq_shape,
+  // getBuffer<float>(_wq),
   //                       ... , _layer_idx, output_shape, getBuffer<float>(_output));
 
-  throw std::runtime_error{"AttentionLayer::attentionFloat32() not implemented yet."};
+  const uint32_t batch_size = getShape(_input).Dims(0);
+  const uint32_t seq_len = getShape(_input).Dims(1); // Expected to be 1
+  const uint32_t d_model = getShape(_input).Dims(2);
+
+  // TODO: d_model should be configurable or derived.
+  // For now, assuming num_heads is a known value, e.g., 32.
+  // This needs to be aligned with how the model is defined.
+  const uint32_t num_heads = 16; // Example value, make this configurable
+  if (d_model % num_heads != 0)
+  {
+    throw std::runtime_error{"d_model must be divisible by num_heads"};
+  }
+  const uint32_t d_head = d_model / num_heads;
+
+  // Define the output shape for Q and K projections
+  int32_t proj_output_dims_array[3] = {
+    static_cast<int32_t>(batch_size), static_cast<int32_t>(seq_len), static_cast<int32_t>(d_model)};
+  nnfw::cker::Shape proj_output_shape(3, proj_output_dims_array);
+
+  // 1. Q, K, V Projections (using FullyConnected)
+  //    Input: [batch_size, seq_len, d_model]
+  //    Weights: WQ: [d_model, d_model], WK: [d_model, d_model], WV: [d_model, d_model]
+  //    Output: Q_proj: [batch_size, seq_len, d_model], K_proj: [batch_size, seq_len, d_model],
+  //    V_proj: [batch_size, seq_len, d_model]
+
+  // Q Projection
+  std::vector<float> q_proj_buffer(batch_size * seq_len * d_model);
+  nnfw::cker::FullyConnectedParams fc_params_q;
+  nnfw::cker::FullyConnected(fc_params_q, getShape(_input), getBuffer<float>(_input), getShape(_wq),
+                             getBuffer<float>(_wq), getShape(nullptr) /*bias_shape=*/,
+                             /*bias_data=*/nullptr, proj_output_shape, q_proj_buffer.data());
+
+  // K Projection
+  std::vector<float> k_proj_buffer(batch_size * seq_len * d_model);
+  nnfw::cker::FullyConnectedParams fc_params_k;
+  nnfw::cker::FullyConnected(fc_params_k, getShape(_input), getBuffer<float>(_input), getShape(_wk),
+                             getBuffer<float>(_wk), getShape(nullptr) /*bias_shape=*/,
+                             /*bias_data=*/nullptr, proj_output_shape, k_proj_buffer.data());
+
+  // 2. Apply RoPE to K
+
+  // 2.1 nullcheck
+  if (_cos == nullptr || _sin == nullptr)
+  {
+    throw std::runtime_error{"RoPE _cos and _sin tensors cannot be nullptr"};
+  }
+
+  // 2.2 reshape
+  // Rope expects 4D tensor for input and sin/con tables.
+  int32_t qk_reshaped_dims_array[4] = {
+    static_cast<int32_t>(batch_size), static_cast<int32_t>(seq_len),
+    static_cast<int32_t>(num_heads), static_cast<int32_t>(d_head)};
+  nnfw::cker::Shape qk_reshaped_shape(4, qk_reshaped_dims_array);
+  int32_t sin_cos_dims[4] = {1, 1, 1, static_cast<int32_t>(d_head)};
+  nnfw::cker::Shape sin_cos_shape(4, sin_cos_dims);
+
+  // 2.3 prepare output buffer
+  std::vector<float> q_rope_buffer(batch_size * seq_len * num_heads * d_head);
+  std::vector<float> k_rope_buffer(batch_size * seq_len * num_heads * d_head);
+
+  nnfw::cker::RoPEMode rope_mode = nnfw::cker::RoPEMode::kGptNeox;
+
+  // 2.4 finally call kernel
+  nnfw::cker::RoPE<float>(rope_mode, qk_reshaped_shape, k_proj_buffer.data(), sin_cos_shape,
+                          getBuffer<float>(_sin), sin_cos_shape, getBuffer<float>(_cos),
+                          qk_reshaped_shape, k_rope_buffer.data());
+  nnfw::cker::RoPE<float>(rope_mode, qk_reshaped_shape, q_proj_buffer.data(), sin_cos_shape,
+                          getBuffer<float>(_sin), sin_cos_shape, getBuffer<float>(_cos),
+                          qk_reshaped_shape, q_rope_buffer.data());
+
+  // Next steps: V projection, attention scores, softmax, etc.
 }
 
 void AttentionLayer::run()
