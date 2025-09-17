@@ -37,7 +37,7 @@
 //              ROPE op is added. MXFP4, MXINT8 types are added.
 //              MXQuantization is added.
 // Version 0.10: RUN_MODEL op is added.
-// Version 0.11: ATTENTION op is added.
+//               ATTENTION op is added.
 
 namespace circle;
 
