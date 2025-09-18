@@ -62,7 +62,7 @@ VER_TENSORFLOW=2.19.0
 VER_ONNX=1.18.0
 VER_ONNXRUNTIME=1.21.1
 VER_PYDOT=1.4.2
-VER_TORCH="2.7.0+cpu"
+VER_TORCH="2.7.0"
 VER_PROTOBUF="5.29.4"
 VER_NUMPY="1.26.4"
 VER_TICO="0.1.0"
@@ -96,7 +96,7 @@ fi
 
 # Install PyTorch and ONNX related
 # NOTE set ONE_PREPVENV_TORCH_SOURCE to override options for source URL.
-TORCH_SOURCE_OPTION="-f https://download.pytorch.org/whl/torch"
+TORCH_SOURCE_OPTION="--extra-index-url https://download.pytorch.org/whl/cpu"
 if [[ ! -z "$ONE_PREPVENV_TORCH_SOURCE" ]]; then
   TORCH_SOURCE_OPTION="${ONE_PREPVENV_TORCH_SOURCE}"
 fi
