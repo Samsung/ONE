@@ -49,8 +49,10 @@ function(_FlatBuffers_import)
   if(CMAKE_CROSSCOMPILING)
     # Build flatc for host manually: set buildtool to gcc/g++ explicitly
     message(STATUS "Flatbuffers: build flatbuffers for host...")
+    # Use ${FlatBufferSource_VERSION} as suffix to distinguish version change
+    set(FLATC_HOST_BINARY_DIR ${CMAKE_BINARY_DIR}/externals/flatc-host-${FlatBuffersSource_VERSION})
     execute_process(
-      COMMAND cmake -S ${FlatBuffersSource_DIR} -B ${CMAKE_BINARY_DIR}/externals/flatc-host
+      COMMAND cmake -S ${FlatBuffersSource_DIR} -B ${FLATC_HOST_BINARY_DIR}
         -DFLATBUFFERS_BUILD_FLATC=ON -DFLATBUFFERS_BUILD_FLATLIB=OFF -DFLATBUFFERS_BUILD_TESTS=OFF
         -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
       RESULT_VARIABLE FLATC_CONFIG_RESULT
@@ -66,7 +68,7 @@ function(_FlatBuffers_import)
       set(NUM_BUILD_THREADS ${EXTERNALS_BUILD_THREADS})
     endif(DEFINED EXTERNALS_BUILD_THREADS)
     execute_process(
-      COMMAND cmake --build ${CMAKE_BINARY_DIR}/externals/flatc-host -j ${NUM_BUILD_THREADS}
+      COMMAND cmake --build ${FLATC_HOST_BINARY_DIR} -j ${NUM_BUILD_THREADS}
       RESULT_VARIABLE FLATC_BUILD_RESULT
     )
     if (NOT FLATC_BUILD_RESULT EQUAL 0)
@@ -78,7 +80,7 @@ function(_FlatBuffers_import)
     add_executable(flatbuffers::flatc IMPORTED GLOBAL)
     set_property(TARGET flatbuffers::flatc APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
     set_target_properties(flatbuffers::flatc PROPERTIES
-      IMPORTED_LOCATION_RELEASE "${CMAKE_BINARY_DIR}/externals/flatc-host/flatc"
+      IMPORTED_LOCATION_RELEASE "${FLATC_HOST_BINARY_DIR}/flatc"
     )
   endif()
 
