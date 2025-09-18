@@ -589,7 +589,7 @@ template <typename T> void ModelChef::cook_operands(const T &graph)
     SparsityParams_t sparsity_index;
 
     flatbuffers::Offset<flatbuffers::Vector<int32_t>> shape;
-    std::vector<int32_t> dims;
+    DimsI32_t dims;
     if (operand.has_shape())
     {
       dims = as_dims(operand.shape());
