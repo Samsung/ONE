@@ -7,24 +7,11 @@ License: Apache-2.0 and MIT and BSD-2-Clause and MPL-2.0
 
 Source0: %{name}-%{version}.tar.gz
 Source1: %{name}.manifest
-Source1001: nnapi_test_generated.tar.gz
-Source3001: ABSEIL.tar.gz
-Source3002: CPUINFO.tar.gz
-Source3003: FARMHASH.tar.gz
-Source3004: FLATBUFFERS-23.5.26.tar.gz
-Source3005: FP16.tar.gz
-Source3006: FXDIV.tar.gz
-Source3007: MLDTYPES.tar.gz
-Source3008: NEON2SSE.tar.gz
-Source3009: OOURAFFT.tar.gz
-Source3010: PSIMD.tar.gz
-Source3011: PTHREADPOOL.tar.gz
-Source3012: EIGEN.tar.gz
-Source3013: GEMMLOWP.tar.gz
-Source3014: RUY.tar.gz
-Source3015: TENSORFLOW-2.16.1.tar.gz
-Source3016: XNNPACK.tar.gz
-Source4001: EXTERNALS_FOR_ODC.tar.gz
+Source1001: CPUINFO.tar.gz
+Source1002: EIGEN.tar.gz
+Source1003: GEMMLOWP.tar.gz
+Source1004: RUY.tar.gz
+Source2001: EXTERNALS_FOR_ODC.tar.gz
 
 %{!?build_type:     %define build_type      Release}
 %{!?trix_support:   %define trix_support    1}
@@ -161,14 +148,14 @@ cp %{SOURCE1} .
 mkdir ./runtime/externals
 
 # For compute library
-tar -xf %{SOURCE3002} -C ./runtime/externals
-tar -xf %{SOURCE3012} -C ./runtime/externals
-tar -xf %{SOURCE3013} -C ./runtime/externals
-tar -xf %{SOURCE3014} -C ./runtime/externals
+tar -xf %{SOURCE1001} -C ./runtime/externals
+tar -xf %{SOURCE1002} -C ./runtime/externals
+tar -xf %{SOURCE1003} -C ./runtime/externals
+tar -xf %{SOURCE1004} -C ./runtime/externals
 
 %if %{odc_build} == 1
 mkdir ./externals
-tar -xf %{SOURCE4001} -C ./externals
+tar -xf %{SOURCE2001} -C ./externals
 %endif # odc_build
 
 %build
