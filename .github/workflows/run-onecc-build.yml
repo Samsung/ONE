@@ -41,7 +41,7 @@ concurrency:
 
 jobs:
   prepare:
-    if: github.repository_owner == 'Samsung'
+    if: github.repository_owner == 'Samsung' && !contains(github.event.pull_request.labels.*.name, 'PR/NO TEST')
     runs-on: ubuntu-latest
     outputs:
       run_matrix: ${{ steps.set-matrix.outputs.run_matrix }}
