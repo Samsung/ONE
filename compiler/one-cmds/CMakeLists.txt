@@ -31,7 +31,6 @@ set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 # NOTE these files should not have extensions.
 #      below code will remove extension when copy and install.
 set(ONE_COMMAND_FILES
-    one-build
     one-create-quant-dataset
     one-import
     one-import-bcq
@@ -102,7 +101,6 @@ if(DEFINED ONNX2CIRCLE_SOURCE_PATH AND EXISTS ${ONNX2CIRCLE_SOURCE_PATH})
 endif()
 
 set(ONE_UTILITY_FILES
-    one-build.template.cfg
     onecc.template.cfg
     onnx_legalizer.py
 )

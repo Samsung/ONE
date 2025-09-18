@@ -40,7 +40,7 @@ option_1=...
 
 ```
 
-You can see a template file for how to write a configuration file in `one-build.template.cfg`.
+You can see a template file for how to write a configuration file in `onecc.template.cfg`.
 
 [options to write]
 
@@ -54,18 +54,18 @@ $ ./one-import tf -C my-conf.cfg -i path/to/overwrite.pb
 ```
 
 
-one-build
----------
+onecc
+-----
 
-one-build is an integrated driver that can execute one-commands at once. It's nice to run each
+onecc is an integrated driver that can execute one-commands at once. It's nice to run each
 driver individually, but sometimes you'll want to put together the most frequently used commands
-and run them all at once. You can do this with one-build and its configuration file.
+and run them all at once. You can do this with onecc and its configuration file.
 
-For one-build, the configuration file needs 'one-build' section that consists of list of driver.
+For onecc, the configuration file needs 'onecc' section that consists of list of driver.
 
 ```
-# one-build.template.cfg
-[one-build]
+# onecc.template.cfg
+[onecc]
 one-import-tf=True
 one-import-tflite=False
 one-import-bcq=False
@@ -84,7 +84,7 @@ one-codegen=False
 ...
 
 ```
-See 'one-build.template.cfg' for more details.
+See 'onecc.template.cfg' for more details.
 
 
 one-import

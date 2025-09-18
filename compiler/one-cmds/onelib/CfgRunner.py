@@ -62,18 +62,12 @@ class CfgRunner:
 
     def _verify_cfg(self, cfgparser):
         if not cfgparser.has_section('onecc'):
-            if cfgparser.has_section('one-build'):
-                warnings.formatwarning = _simple_warning
-                warnings.warn(
-                    "[one-build] section will be deprecated. Please use [onecc] section.")
-            else:
-                raise ImportError('[onecc] section is required in configuration file')
+            raise ImportError('[onecc] section is required in configuration file')
 
     def _is_available(self, driver):
-        # if there's no `onecc` section, it will find `one-build` section because of backward compatibility
-        return (self.cfgparser.has_option('onecc', driver) and self.cfgparser.getboolean(
-            'onecc', driver)) or (self.cfgparser.has_option('one-build', driver)
-                                  and self.cfgparser.getboolean('one-build', driver))
+        # check if there's `onecc` section
+        return (self.cfgparser.has_option('onecc', driver)
+                and self.cfgparser.getboolean('onecc', driver))
 
     def add_opt(self, opt: Optional[str]):
         if not opt:
