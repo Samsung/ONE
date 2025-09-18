@@ -8,9 +8,12 @@ function(_GTestSource_import)
   nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  envoption(GTEST_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/googletest/archive/release-1.12.1.tar.gz)
+  envoption(GTEST_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/googletest/archive/v1.15.2.tar.gz)
 
-  ExternalSource_Download(GTEST ${GTEST_URL})
+  ExternalSource_Download(GTEST
+    DIRNAME GTEST-1.15.2
+    URL ${GTEST_URL}
+  )
 
   set(GTestSource_DIR ${GTEST_SOURCE_DIR} PARENT_SCOPE)
   set(GTestSource_FOUND TRUE PARENT_SCOPE)
