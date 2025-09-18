@@ -1,3 +1,9 @@
+one (1.30.1) focal jammy noble; urgency=medium
+
+  * Update PyTorch installation options to use `--extra-index-url` with the CPU wheel repo.
+
+ -- seongwoo <mhs4670go@naver.com>  Thu, 18 Sep 2025 13:48:25 +0900
+
 one (1.30.0) focal jammy noble; urgency=medium
 
   * Support more optimization option(s): `--dynamic_batch_to_single_batch`, 
