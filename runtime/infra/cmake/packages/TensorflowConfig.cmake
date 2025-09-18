@@ -33,7 +33,7 @@ function(_Tensorflow_Import)
     target_link_libraries(tensorflow-core INTERFACE -Wl,--whole-archive "${TENSORFLOW_GEN_DIR}/lib/libtensorflow-core.a" -Wl,--no-whole-archive)
     target_link_libraries(tensorflow-core INTERFACE "${TENSORFLOW_GEN_DIR}/protobuf/lib/libprotobuf.a")
     target_link_libraries(tensorflow-core INTERFACE "${TENSORFLOW_DOWNLOADS_DIR}/nsync/builds/${NSYNC_ARCH}.linux.c++11/libnsync.a")
-    target_link_libraries(tensorflow-core INTERFACE ${LIB_PTHREAD} dl)
+    target_link_libraries(tensorflow-core INTERFACE Threads::Threads dl)
 
     message(STATUS "Found Tensorflow (lib: ${TENSORFLOW_GEN_DIR}/lib/libtensorflow-core.a")
   endif()

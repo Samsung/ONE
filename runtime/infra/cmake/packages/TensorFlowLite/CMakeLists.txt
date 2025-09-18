@@ -256,7 +256,7 @@ add_dependencies(tensorflow-lite-2.16.1 tflite_schema_header conv_metadata_heade
 
 target_compile_options(tensorflow-lite-2.16.1 PUBLIC ${TFLITE_TARGET_PUBLIC_OPTIONS})
 set_property(TARGET tensorflow-lite-2.16.1 PROPERTY POSITION_INDEPENDENT_CODE ON)
-target_link_libraries(tensorflow-lite-2.16.1 eigen flatbuffers::flatbuffers ruy abseil farmhash oourafft::fftsg2d pthreadpool ${LIB_PTHREAD} dl)
+target_link_libraries(tensorflow-lite-2.16.1 eigen flatbuffers::flatbuffers ruy abseil farmhash oourafft::fftsg2d pthreadpool Threads::Threads dl)
 if(NOT ANDROID)
   target_link_libraries(tensorflow-lite-2.16.1 rt)
 endif()

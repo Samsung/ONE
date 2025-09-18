@@ -90,13 +90,6 @@ if(Flatbuffers_FOUND)
   target_link_libraries(tensorflow-lite-2.16.1 INTERFACE flatbuffers::flatbuffers)
 endif(Flatbuffers_FOUND)
 
-# Prefer -pthread to -lpthread
-set(THREADS_PREFER_PTHREAD_FLAG TRUE)
-set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
-find_package(Threads QUIET)
-
-if(Threads_FOUND)
-  target_link_libraries(tensorflow-lite-2.16.1 INTERFACE ${CMAKE_THREAD_LIBS_INIT})
-endif(Threads_FOUND)
+target_link_libraries(tensorflow-lite-2.16.1 INTERFACE Threads::Threads)
 
 set(TensorFlowLite_FOUND TRUE)

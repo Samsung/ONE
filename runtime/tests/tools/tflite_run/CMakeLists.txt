@@ -19,6 +19,6 @@ install(TARGETS tflite_run DESTINATION ${CMAKE_INSTALL_BINDIR})
 add_executable(tflite_test src/tflite_test.cc)
 target_link_libraries(tflite_test nnfw_common)
 ## Link test executable against gtest & gtest_main
-target_link_libraries(tflite_test gtest gtest_main ${LIB_PTHREAD})
+target_link_libraries(tflite_test gtest gtest_main Threads::Threads)
 ## install test binary for packaging
 install(TARGETS tflite_test DESTINATION unittest)

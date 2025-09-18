@@ -31,13 +31,3 @@ endforeach()
 foreach(FLAG ${FLAGS_CXXONLY})
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FLAG}")
 endforeach()
-
-# lib pthread as a variable (finding pthread build option must be disabled on android)
-# Define here to use on external lib build
-set(LIB_PTHREAD lib_pthread)
-add_library(${LIB_PTHREAD} INTERFACE)
-if(NOT TARGET_OS STREQUAL "android")
-  # Get compile option (ex. "-pthread" on linux GNU build tool)
-  find_package(Threads)
-  target_link_libraries(${LIB_PTHREAD} INTERFACE Threads::Threads)
-endif()
