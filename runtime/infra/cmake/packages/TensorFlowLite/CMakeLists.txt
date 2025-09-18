@@ -1,9 +1,11 @@
-# Reference: https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/lite/CMakeLists.txt
+# Reference: https://github.com/tensorflow/tensorflow/blob/v2.18.1/tensorflow/lite/CMakeLists.txt
 #
-# Tensorflow Lite library 2.16.1
+# Tensorflow Lite library 2.18.1
 #
 set(TFLITE_SOURCE_DIR ${TensorFlowSource_DIR}/tensorflow/lite)
+set(TF_SOURCE_DIR "${TensorFlowSource_DIR}/tensorflow")
 set(TSL_SOURCE_DIR "${TensorFlowSource_DIR}/third_party/xla/third_party/tsl")
+set(XLA_SOURCE_DIR "${TensorFlowSource_DIR}/third_party/xla/")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -35,6 +37,12 @@ endmacro()
 
 # Additional compiler flags used when compiling TF Lite.
 set(TFLITE_TARGET_PUBLIC_OPTIONS "-DEIGEN_NEON_GEBP_NR=4")
+set(TFLITE_TARGET_PRIVATE_OPTIONS "")
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang$")
+  # TFLite uses deprecated methods in neon2sse which generates a huge number of
+  # warnings so surpress these until they're fixed.
+  list(APPEND TFLITE_TARGET_PRIVATE_OPTIONS "-Wno-deprecated-declarations")
+endif()
 
 # Build a list of source files to compile into the TF Lite library.
 populate_tflite_source_vars("." TFLITE_SRCS)
@@ -48,9 +56,6 @@ list(FILTER TFLITE_SRCS EXCLUDE REGEX ".*with_selected_ops\\.cc$")
 
 # Exclude tensorflow_profiler_logger files.
 list(FILTER TFLITE_SRCS EXCLUDE REGEX ".*tensorflow_profiler_logger\\.cc$")
-
-# Use MMAP
-list(FILTER TFLITE_SRCS EXCLUDE REGEX ".*mmap_allocation_disabled\\.cc$")
 
 # Handle TFLite logging source.
 list(FILTER TFLITE_SRCS EXCLUDE REGEX ".*minimal_logging_.*\\.cc$")
@@ -84,6 +89,8 @@ set(TFLITE_DELEGATES_SRCS
   ${TFLITE_SOURCE_DIR}/delegates/utils.cc
   ${TFLITE_SOURCE_DIR}/delegates/utils.h)
 
+# Disable TFLite GPU
+
 # Enable NNAPI
 populate_tflite_source_vars("delegates/nnapi"
   TFLITE_DELEGATES_NNAPI_SRCS
@@ -97,6 +104,15 @@ list(APPEND TFLITE_NNAPI_SRCS
 )
 
 # Disable experimental delegate
+set(TFLITE_DELEGATES_NNAPI_SRCS
+  "${TFLITE_SOURCE_DIR}/delegates/nnapi/nnapi_delegate_disabled.cc"
+)
+set(TFLITE_NNAPI_SRCS
+  "${TFLITE_SOURCE_DIR}/nnapi/nnapi_implementation_disabled.cc"
+)
+
+# Disable XNNPack
+# Disable external delegate
 
 populate_tflite_source_vars("experimental/remat"
   TFLITE_EXPERIMENTAL_REMAT_SRCS
@@ -107,8 +123,6 @@ populate_tflite_source_vars("experimental/remat"
 populate_tflite_source_vars("experimental/resource"
 TFLITE_EXPERIMENTAL_RESOURCE_SRCS
 )
-
-# Disable XNNPack
 
 populate_tflite_source_vars("experimental/ruy"
   TFLITE_EXPERIMENTAL_RUY_SRCS
@@ -171,6 +185,7 @@ endif()
 
 # include headers
 list(APPEND TFLITE_INCLUDE_DIRS "${TSL_SOURCE_DIR}")
+list(APPEND TFLITE_INCLUDE_DIRS "${XLA_SOURCE_DIR}")
 list(APPEND TFLITE_INCLUDE_DIRS "${TensorFlowSource_DIR}")
 list(APPEND TFLITE_INCLUDE_DIRS "${GEMMLowpSource_DIR}")
 list(APPEND TFLITE_INCLUDE_DIRS "${Fp16Source_DIR}/include")
@@ -185,22 +200,40 @@ endif(NEON2SSESource_FOUND)
 # Overwrite generated headers by flatc to match flatbuffers version to linked flatbuffers library
 set(FLATBUFFERS_FLATC_SCHEMA_EXTRA_ARGS --gen-object-api)
 build_flatbuffers(
-  "${TFLITE_SOURCE_DIR}/schema/schema.fbs"  # flatbuffers_schemas
-  ""                                        # schema_include_dirs
-  tflite_schema_header                      # custom_target_name
-  ""                                        # additional_dependencies
-  "${TFLITE_SOURCE_DIR}/schema"             # generated_includes_dir
-  ""                                        # binary_schemas_dir
-  ""                                        # copy_text_schemas_dir
+  "${TF_SOURCE_DIR}/compiler/mlir/lite/schema/schema.fbs" # flatbuffers_schemas
+  ""                                                      # schema_include_dirs
+  tflite_schema_header                                    # custom_target_name
+  ""                                                      # additional_dependencies
+  "${TFLITE_SOURCE_DIR}/schema"                           # generated_includes_dir
+  ""                                                      # binary_schemas_dir
+  ""                                                      # copy_text_schemas_dir
 )
 build_flatbuffers(
-  "${TFLITE_SOURCE_DIR}/schema/conversion_metadata.fbs" # flatbuffers_schemas
-  ""                                                    # schema_include_dirs
-  conv_metadata_header                                  # custom_target_name
-  ""                                                    # additional_dependencies
-  "${TFLITE_SOURCE_DIR}/schema"                         # generated_includes_dir
-  ""                                                    # binary_schemas_dir
-  ""                                                    # copy_text_schemas_dir
+  "${TF_SOURCE_DIR}/compiler/mlir/lite/schema/conversion_metadata.fbs"  # flatbuffers_schemas
+  ""                                                                    # schema_include_dirs
+  conv_metadata_header                                                  # custom_target_name
+  ""                                                                    # additional_dependencies
+  "${TFLITE_SOURCE_DIR}/schema"                                         # generated_includes_dir
+  ""                                                                    # binary_schemas_dir
+  ""                                                                    # copy_text_schemas_dir
+)
+build_flatbuffers(
+  "${TF_SOURCE_DIR}/compiler/mlir/lite/schema/schema.fbs" # flatbuffers_schemas
+  ""                                                      # schema_include_dirs
+  mlir_tflite_schema_header                               # custom_target_name
+  ""                                                      # additional_dependencies
+  "${TF_SOURCE_DIR}/compiler/mlir/lite/schema"            # generated_includes_dir
+  ""                                                      # binary_schemas_dir
+  ""                                                      # copy_text_schemas_dir
+)
+build_flatbuffers(
+  "${TF_SOURCE_DIR}/compiler/mlir/lite/schema/conversion_metadata.fbs"  # flatbuffers_schemas
+  ""                                                                    # schema_include_dirs
+  mlir_conv_metadata_header                                             # custom_target_name
+  ""                                                                    # additional_dependencies
+  "${TF_SOURCE_DIR}/compiler/mlir/lite/schema"                          # generated_includes_dir
+  ""                                                                    # binary_schemas_dir
+  ""                                                                    # copy_text_schemas_dir
 )
 
 # TFLite library
@@ -242,32 +275,56 @@ set(_ALL_TFLITE_SRCS
   ${TFLITE_SOURCE_DIR}/internal/signature_def.h
   ${TFLITE_SOURCE_DIR}/kernels/internal/utils/sparsity_format_converter.cc
   ${TFLITE_SOURCE_DIR}/schema/conversion_metadata_generated.h
-  ${TFLITE_SOURCE_DIR}/schema/schema_utils.cc
   ${TFLITE_SOURCE_DIR}/schema/schema_generated.h
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/schema/schema_utils.cc
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/schema/schema_generated.h
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/schema/conversion_metadata_generated.h
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/utils/control_edges.h
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/utils/string_utils.cc
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/utils/string_utils.h
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/experimental/remat/metadata_util.h
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/experimental/remat/metadata_util.cc
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/core/macros.h
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/core/model_builder_base.h
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/core/model_builder_base.cc
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/core/api/error_reporter.h
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/core/api/error_reporter.cc
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/core/api/verifier.h
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/allocation.h
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/allocation.cc
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/mmap_allocation.cc
+  ${TF_SOURCE_DIR}/compiler/mlir/lite/mmap_allocation_disabled.cc
 )
-add_library(tensorflow-lite-2.16.1 STATIC
+
+# Enable MMAP
+list(FILTER _ALL_TFLITE_SRCS EXCLUDE REGEX ".*mmap_allocation_disabled\\.cc$")
+
+add_library(tensorflow-lite STATIC
   ${_ALL_TFLITE_SRCS}
 )
-target_include_directories(tensorflow-lite-2.16.1
+target_include_directories(tensorflow-lite
   SYSTEM PUBLIC
     ${TFLITE_INCLUDE_DIRS}
 )
-add_dependencies(tensorflow-lite-2.16.1 tflite_schema_header conv_metadata_header)
+add_dependencies(tensorflow-lite tflite_schema_header conv_metadata_header mlir_tflite_schema_header mlir_conv_metadata_header)
 
-target_compile_options(tensorflow-lite-2.16.1 PUBLIC ${TFLITE_TARGET_PUBLIC_OPTIONS})
-set_property(TARGET tensorflow-lite-2.16.1 PROPERTY POSITION_INDEPENDENT_CODE ON)
-target_link_libraries(tensorflow-lite-2.16.1 eigen flatbuffers::flatbuffers ruy abseil farmhash oourafft::fftsg2d pthreadpool Threads::Threads dl)
+target_compile_options(tensorflow-lite
+  PUBLIC ${TFLITE_TARGET_PUBLIC_OPTIONS}
+  PRIVATE ${TFLITE_TARGET_PRIVATE_OPTIONS}
+)
+set_property(TARGET tensorflow-lite PROPERTY POSITION_INDEPENDENT_CODE ON)
+target_link_libraries(tensorflow-lite eigen flatbuffers::flatbuffers ruy abseil farmhash oourafft::fftsg2d pthreadpool Threads::Threads dl)
 if(NOT ANDROID)
-  target_link_libraries(tensorflow-lite-2.16.1 rt)
+  target_link_libraries(tensorflow-lite rt)
 endif()
 
 # Define TF_LITE_DISABLE_X86_NEON for debug build
 # If we upgrade NEON2SSE version, we can remove below line
 if(NEON2SSESource_FOUND)
-  target_compile_definitions(tensorflow-lite-2.16.1 PRIVATE $<$<CONFIG:Debug>:TF_LITE_DISABLE_X86_NEON>)
+  target_compile_definitions(tensorflow-lite PRIVATE $<$<CONFIG:Debug>:TF_LITE_DISABLE_X86_NEON>)
 endif(NEON2SSESource_FOUND)
 
 if(ANDROID)
-  target_link_libraries(tensorflow-lite-2.16.1 log)
+  target_link_libraries(tensorflow-lite log)
   #target_include_directories(tensorflow-lite-2.16.1 PUBLIC "${NDK_DIR}/..")
 endif()

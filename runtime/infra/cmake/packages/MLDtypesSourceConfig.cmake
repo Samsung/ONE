@@ -7,6 +7,8 @@ function(_MLDtypesSource_import)
   nnfw_include(ExternalSourceTools)
   nnfw_include(OptionTools)
 
+  # ml_dtypes in tensorflow v2.18.1
+  # Refer third_party/xla/third_party/tsl/third_party/py/ml_dtypes/workspace.bzl
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(MLDTYPES_URL ${EXTERNAL_DOWNLOAD_SERVER}/jax-ml/ml_dtypes/archive/2ca30a2b3c0744625ae3d6988f5596740080bbd0/ml_dtypes-2ca30a2b3c0744625ae3d6988f5596740080bbd0.tar.gz)
 
