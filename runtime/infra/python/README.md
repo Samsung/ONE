@@ -13,11 +13,14 @@ It uses `onert.infer.session` interface defined in `runtime/onert/api/python/pac
 Prior to the build of the bindings you need to compile and install the part of the project being exposed to Python. You can check the instructions in `docs/howto/how-to-build-runtime.md` but for simplicity you can use the following commands. This demonstrates the build for the x86 architecture, for cross-compilation it is very similar though.
 
 ```sh
-make -f Makefile.template prepare-buildtool BUILD_TYPE=Release
-make -f Makefile.template prepare-nncc BUILD_TYPE=Release
 make -f Makefile.template configure BUILD_TYPE=Release
 make -f Makefile.template build BUILD_TYPE=Release
 make -f Makefile.template install BUILD_TYPE=Release
+```
+
+or in a single command
+```sh
+make -f Makefile.template configure build install BUILD_TYPE=Release
 ```
 
 After the build is done, the required binaries should be installed in the `Product/out` directory. This is where the native part of the Python bindings is as well. 
@@ -28,10 +31,17 @@ You can use a custom installation of the binaries as a starting point of the Pyt
 To create the Python wheel (complete Python API package) execute the following command in the `runtime/infra/python` directory:
 
 ```sh
-python3 setup.py bdist_wheel --plat-name PLATFORM
+python3 setup.py bdist_wheel --plat-name manylinux_[X]_[Y]_[PLATFORM]
 ```
 
-where `PLATFORM` is one of the supported target architectures: aarch64, linux_x86_64, armv7l
+where:
+- `[X]` and `[Y]` are the major and minor version of glibc used by the bindings (`ldd --version`)
+- `[PLATFORM]` is one of the supported target architectures: aarch64, x86_64, armv7l
+
+An example call should look like this:
+```sh
+python3 setup.py bdist_wheel --plat-name manylinux_2_35_x86_64
+```
 
 The wheel is then created in the `dist` subdirectory.
 
