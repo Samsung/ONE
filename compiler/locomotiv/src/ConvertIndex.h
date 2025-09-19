@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Samsung Electronics Co., Ltd. All Rights Reserved
+ * Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,35 +14,17 @@
  * limitations under the License.
  */
 
-#ifndef __LOCO_IR_TENSOR_INDEX_H__
-#define __LOCO_IR_TENSOR_INDEX_H__
+#include "loco/IR/TensorIndex.h"
 
-#include <cstdint>
-#include <initializer_list>
-#include <vector>
+#include <nncc/core/ADT/tensor/Index.h>
 
-namespace loco
+namespace locomotiv
 {
 
-class TensorIndex
-{
-public:
-  TensorIndex();
+// convert TensorIndex to nncc::core::ADT::tensor::Index
+nncc::core::ADT::tensor::Index as_nncc_index(const loco::TensorIndex &index);
 
-public:
-  uint32_t rank(void) const;
+// convert nncc::core::ADT::tensor::Index to TensorIndex
+loco::TensorIndex as_loco_index(const nncc::core::ADT::tensor::Index &index);
 
-public:
-  TensorIndex &resize(uint32_t size);
-
-public:
-  uint32_t &at(uint32_t axis);
-  uint32_t at(uint32_t axis) const;
-
-private:
-  std::vector<uint32_t> _indices;
-};
-
-} // namespace loco
-
-#endif // __LOCO_IR_TENSOR_INDEX_H__
+} // namespace locomotiv
