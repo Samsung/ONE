@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/SpaceToBatchND.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -96,7 +97,7 @@ void SpaceToBatchNDLayer::run()
   }
   else
   {
-    throw std::runtime_error{"SpaceToBatchND: unsupported data type"};
+    throw UnsupportedDataTypeException{"SpaceToBatchND", _input->data_type()};
   }
 }
 

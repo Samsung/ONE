@@ -18,6 +18,7 @@
 
 #include "../Tensor.h"
 #include "ir/Padding.h"
+#include <util/Exceptions.h>
 
 namespace onert::backend::ruy::ops
 {
@@ -123,7 +124,7 @@ void ConvolutionLayer::run()
   }
   else
   {
-    throw std::runtime_error{"Conv: unsupported data type"};
+    throw UnsupportedDataTypeException{"Conv2D", _input->data_type()};
   }
 }
 

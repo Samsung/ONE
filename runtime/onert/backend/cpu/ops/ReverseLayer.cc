@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Reverse.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -43,7 +44,7 @@ void ReverseLayer::run()
                                  getShape(_output), getBuffer<float>(_output));
       break;
     default:
-      throw std::runtime_error{"Reverse: unsupported data type"};
+      throw UnsupportedDataTypeException{"Reverse", _input->data_type()};
   }
 }
 

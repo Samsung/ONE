@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/OneHot.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -51,7 +52,7 @@ void OneHotLayer::run()
   }
   else
   {
-    throw std::runtime_error{"OneHot: unsupported data type"};
+    throw UnsupportedDataTypeException{"OneHot", _output->data_type()};
   }
 }
 

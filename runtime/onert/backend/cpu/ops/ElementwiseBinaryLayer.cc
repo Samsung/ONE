@@ -23,6 +23,7 @@
 #include <cker/operation/LogicalAnd.h>
 #include <cker/operation/LogicalOr.h>
 #include <cker/operation/MaxMin.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -140,7 +141,7 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
       }
       else
       {
-        throw std::runtime_error{"Max: unsupported data type"};
+        throw UnsupportedDataTypeException{"FloorDiv", _lhs->data_type()};
       }
       break;
     case ElementwiseBinaryType::kFloorMod:
@@ -154,7 +155,7 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
       }
       else
       {
-        throw std::runtime_error{"FloorMod: unsupported data type"};
+        throw UnsupportedDataTypeException{"FloorMod", _lhs->data_type()};
       }
       break;
     case ElementwiseBinaryType::kLogicalAnd:
@@ -165,7 +166,7 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
       }
       else
       {
-        throw std::runtime_error{"LogicalOr: Unsupported data type"};
+        throw UnsupportedDataTypeException{"LogicalAnd", _lhs->data_type()};
       }
       break;
     case ElementwiseBinaryType::kLogicalOr:
@@ -176,7 +177,7 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
       }
       else
       {
-        throw std::runtime_error{"LogicalOr: Unsupported data type"};
+        throw UnsupportedDataTypeException{"LogicalOr", _lhs->data_type()};
       }
       break;
     case ElementwiseBinaryType::kMax:
@@ -194,7 +195,7 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
       }
       else
       {
-        throw std::runtime_error{"Max: unsupported data type"};
+        throw UnsupportedDataTypeException{"Max", _lhs->data_type()};
       }
       break;
     case ElementwiseBinaryType::kMin:
@@ -216,7 +217,7 @@ void ElementwiseBinaryLayer::configure(const IPortableTensor *lhs, const IPortab
       }
       else
       {
-        throw std::runtime_error{"Min: unsupported data type"};
+        throw UnsupportedDataTypeException{"Min", _lhs->data_type()};
       }
       break;
     default:

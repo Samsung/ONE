@@ -17,6 +17,7 @@
 #include "PadLayer.h"
 
 #include <cker/train/operation/Pad.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::train::ops
 {
@@ -60,7 +61,7 @@ void PadLayer::backward()
       depad<int8_t>();
       break;
     default:
-      throw std::runtime_error{"Pad: unsupported data type"};
+      throw UnsupportedDataTypeException{"train Pad", _back_prop_output->data_type()};
   }
 }
 

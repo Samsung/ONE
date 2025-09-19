@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Pack.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -79,7 +80,7 @@ void PackLayer::run()
   }
   else
   {
-    throw std::runtime_error{"Pack: unsupported data type"};
+    throw UnsupportedDataTypeException{"Pack", _output->data_type()};
   }
 }
 

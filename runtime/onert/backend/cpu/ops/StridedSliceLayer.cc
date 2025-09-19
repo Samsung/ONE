@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/StridedSlice.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -81,7 +82,7 @@ void StridedSliceLayer::run()
   }
   else
   {
-    throw std::runtime_error{"StridedSlice: unsupported data type"};
+    throw UnsupportedDataTypeException{"StridedSlice", _input->data_type()};
   }
 }
 

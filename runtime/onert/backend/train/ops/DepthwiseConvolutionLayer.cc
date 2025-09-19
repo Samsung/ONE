@@ -21,6 +21,7 @@
 #include <cker/eigen/EigenSupport.h>
 #include <cker/train/operation/DepthwiseConv.h>
 #include <cker/train/operation/ReLU.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::train::ops
 {
@@ -64,7 +65,7 @@ void DepthwiseConvolutionLayer::configureBackward(IPortableTensor *back_prop_inp
         return nnfw::cker::eigen_support::kPacketSize<float>();
       }
       default:
-        throw std::runtime_error("train DepthwiseConvolutionLayer: unsupported data type");
+        throw UnsupportedDataTypeException{"train DepthwiseConv", data_type};
     }
   }();
 
@@ -121,7 +122,7 @@ void DepthwiseConvolutionLayer::backward()
       break;
     }
     default:
-      throw std::runtime_error{"train DepthwiseConvolutionLayer: unsupported data type"};
+      throw UnsupportedDataTypeException{"train DepthwiseConv", data_type};
   }
 }
 

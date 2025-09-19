@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/AddN.h>
+#include <util/Exceptions.h>
 #include <assert.h>
 
 namespace onert::backend::cpu::ops
@@ -53,7 +54,7 @@ void AddNLayer::run()
   }
   else
   {
-    throw std::runtime_error("AddN: unsupported data type");
+    throw UnsupportedDataTypeException{"AddN", _output->data_type()};
   }
 }
 

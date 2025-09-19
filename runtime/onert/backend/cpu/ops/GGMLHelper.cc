@@ -16,10 +16,12 @@
 
 #include "GGMLHelper.h"
 
+#include <util/Exceptions.h>
+
 namespace onert::backend::cpu::ops
 {
 
-ggml_type getGGMLType(ir::DataType type)
+ggml_type getGGMLType(std::string op, ir::DataType type)
 {
   switch (type)
   {
@@ -34,15 +36,15 @@ ggml_type getGGMLType(ir::DataType type)
     case ir::DataType::INT64:
       return GGML_TYPE_I64;
     default:
-      throw std::runtime_error("Unsupported data type");
+      throw UnsupportedDataTypeException{std::move(op), type};
   }
 }
 
-struct ggml_tensor getGGMLTensor(const IPortableTensor *tensor)
+struct ggml_tensor getGGMLTensor(std::string op, const IPortableTensor *tensor)
 {
   struct ggml_tensor res;
 
-  res.type = getGGMLType(tensor->data_type());
+  res.type = getGGMLType(std::move(op), tensor->data_type());
   const auto rank = tensor->getShape().rank();
   for (int i = 0; i < GGML_MAX_DIMS; ++i)
   {

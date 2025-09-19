@@ -18,6 +18,7 @@
 #include "OperationUtils.h"
 
 #include <cker/train/operation/Loss.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::train::ops
 {
@@ -40,7 +41,7 @@ void LossMeanSquaredErrorLayer::forward(bool)
   }
   else
   {
-    throw std::runtime_error("LossMeanSquaredErrorLayer: unsupported data type");
+    throw UnsupportedDataTypeException{"train LossMeanSquaredError", _y_pred->data_type()};
   }
 }
 
@@ -57,7 +58,7 @@ void LossMeanSquaredErrorLayer::backward()
   }
   else
   {
-    throw std::runtime_error("LossMeanSquaredErrorLayer: unsupported data type");
+    throw UnsupportedDataTypeException{"train LossMeanSquaredError", _y_pred->data_type()};
   }
 }
 

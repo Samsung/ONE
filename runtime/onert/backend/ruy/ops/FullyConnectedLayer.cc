@@ -19,6 +19,7 @@
 #include "../Tensor.h"
 #include <ruy/operation/FullyConnected.h>
 #include <ruy/TensorUtils.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::ruy::ops
 {
@@ -73,7 +74,7 @@ void FullyConnectedLayer::run()
   }
   else
   {
-    throw std::runtime_error{"FullyConnected: unsupported data type"};
+    throw UnsupportedDataTypeException{"FullyConnected", _input->data_type()};
   }
 }
 

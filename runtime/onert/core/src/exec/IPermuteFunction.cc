@@ -24,6 +24,7 @@
 #include "ir/Shape.h"
 #include <memory>
 #include <misc/polymorphic_downcast.h>
+#include <util/Exceptions.h>
 #include <typeinfo>
 #include "util/Utils.h"
 #include <vector>
@@ -144,10 +145,12 @@ template <typename SRC_T, typename DST_T,
                            bool> = true>
 void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor, const ir::PermuteType &type)
 {
+  const auto src_data_type = src_tensor->data_type();
+  const auto dst_data_type = dst_tensor->data_type();
   // TODO Support other types
-  if (src_tensor->data_type() == ir::DataType::FLOAT32)
+  if (src_data_type == ir::DataType::FLOAT32)
   {
-    switch (dst_tensor->data_type())
+    switch (dst_data_type)
     {
       case ir::DataType::QUANT_UINT8_ASYMM:
       {
@@ -166,14 +169,14 @@ void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor, const ir::Per
       }
       default:
       {
-        throw std::runtime_error("IPermuteFunction: Unsupported quantization type");
+        throw UnsupportedDataTypeException{"IPermuteFunction: Quantize", dst_data_type};
         break;
       }
     }
   }
-  else if (dst_tensor->data_type() == ir::DataType::FLOAT32)
+  else if (dst_data_type == ir::DataType::FLOAT32)
   {
-    switch (src_tensor->data_type())
+    switch (src_data_type)
     {
       case ir::DataType::QUANT_UINT8_ASYMM:
       {
@@ -192,7 +195,7 @@ void typeAwareQuantize(const SRC_T *src_tensor, DST_T *dst_tensor, const ir::Per
       }
       default:
       {
-        throw std::runtime_error("IPermuteFunction: Unsupported dequantization type");
+        throw UnsupportedDataTypeException{"IPermuteFunction: Dequantize", src_data_type};
         break;
       }
     }
@@ -280,7 +283,7 @@ void IPermuteFunction::permute(backend::ITensor *src_tensor, backend::ITensor *d
       permute<int16_t>(src_tensor, dst_tensor, rank, src_offsets, dst_offsets, permute_type);
       break;
     default:
-      throw std::runtime_error("IPermuteFunction: Not supported data type");
+      throw UnsupportedDataTypeException{"IPermuteFunction", src_tensor->data_type()};
       break;
   }
 }
@@ -307,7 +310,7 @@ const std::type_info &IPermuteFunction::underlying_type(ir::DataType type) const
     case ir::DataType::QUANT_INT16_SYMM:
       return typeid(int16_t);
     default:
-      throw std::runtime_error("IPermuteFunction: Not supported data type");
+      throw UnsupportedDataTypeException{"IPermuteFunction", type};
   }
 }
 

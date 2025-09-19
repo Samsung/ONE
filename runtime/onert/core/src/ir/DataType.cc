@@ -18,6 +18,7 @@
 
 #include <stdexcept>
 #include <Half.h>
+#include <util/Exceptions.h>
 
 using float16 = Half;
 
@@ -48,10 +49,12 @@ size_t sizeOfDataType(DataType data_type)
       return sizeof(int64_t);
     case DataType::QUANT_INT16_SYMM:
       return sizeof(int16_t);
-    default:
-      // ggml block quantize type data size is not supported
-      throw std::runtime_error{"Unsupported type size"};
+    case DataType::QUANT_GGML_Q4_0:
+    case DataType::QUANT_GGML_Q8_0:
+      // GGML block quantize type data size is not supported
+      break;
   }
+  throw UnsupportedDataTypeException{data_type};
 }
 
 bool requireQuantParam(DataType data_type)
@@ -85,9 +88,47 @@ bool requireQuantParam(DataType data_type)
     case DataType::QUANT_GGML_Q8_0:
       // Quantize type, but no quantization parameter
       return false;
-    default:
-      throw std::runtime_error{"Unsupported type"};
   }
+  throw UnsupportedDataTypeException{data_type};
+}
+
+std::string_view toString(DataType data_type)
+{
+  switch (data_type)
+  {
+    case DataType::FLOAT32:
+      return "FLOAT32";
+    case DataType::INT32:
+      return "INT32";
+    case DataType::UINT32:
+      return "UINT32";
+    case DataType::QUANT_UINT8_ASYMM:
+      return "QUANT_UINT8_ASYMM";
+    case DataType::BOOL8:
+      return "BOOL8";
+    case DataType::UINT8:
+      return "UINT8";
+    case DataType::QUANT_INT8_SYMM:
+      return "QUANT_INT8_SYMM";
+    case DataType::FLOAT16:
+      return "FLOAT16";
+    case DataType::INT64:
+      return "INT64";
+    case DataType::QUANT_INT8_ASYMM:
+      return "QUANT_INT8_ASYMM";
+    case DataType::QUANT_INT8_SYMM_PER_CHANNEL:
+      return "QUANT_INT8_SYMM_PER_CHANNEL";
+    case DataType::QUANT_INT16_SYMM:
+      return "QUANT_INT16_SYMM";
+    case DataType::QUANT_GGML_Q4_0:
+      return "QUANT_GGML_Q4_0";
+    case DataType::QUANT_GGML_Q8_0:
+      return "QUANT_GGML_Q8_0";
+  }
+  // XXX: This function is used by the UnsupportedDataTypeException, so it can
+  //      not throw UnsupportedDataTypeException again. However, the list of
+  //      data types is fixed, so compiler should warn us if we miss any case.
+  throw std::runtime_error{"Unsupported data type"};
 }
 
 } // namespace onert::ir

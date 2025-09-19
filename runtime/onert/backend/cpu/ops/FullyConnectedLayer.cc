@@ -22,6 +22,7 @@
 #include <cker/operation/FullyConnected.h>
 #include <cker/TensorUtils.h>
 #include <misc/polymorphic_downcast.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -179,9 +180,9 @@ void FullyConnectedLayer::fullyConnectedGGMLWeight()
     throw std::runtime_error{"FullyConnected: GGML weights format does not support bias yet."};
 
   // convert tensor
-  auto input = getGGMLTensor(_input);
-  auto weights = getGGMLTensor(_weights);
-  auto output = getGGMLTensor(_output);
+  auto input = getGGMLTensor("FullyConnected", _input);
+  auto weights = getGGMLTensor("FullyConnected", _weights);
+  auto output = getGGMLTensor("FullyConnected", _output);
   {
     output.op = GGML_OP_MUL_MAT;
     output.src[0] = &weights;
@@ -277,7 +278,7 @@ void FullyConnectedLayer::run()
   }
   else
   {
-    throw std::runtime_error{"FullyConnected: unsupported data type"};
+    throw UnsupportedDataTypeException{"FullyConnected", _input->data_type()};
   }
 }
 

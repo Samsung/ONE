@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Concatenation.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -131,7 +132,7 @@ void ConcatLayer::run()
       concatenationGeneral<int64_t>();
       break;
     default:
-      throw std::runtime_error("Concat: unsupported data type");
+      throw UnsupportedDataTypeException{"Concat", _output->data_type()};
   }
 }
 

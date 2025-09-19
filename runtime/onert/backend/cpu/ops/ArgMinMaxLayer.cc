@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/ArgMinMax.h>
+#include <util/Exceptions.h>
 #include <assert.h>
 
 namespace onert::backend::cpu::ops
@@ -79,7 +80,7 @@ void ArgMinMaxLayer::run()
         TF_LITE_ARG_MIN_MAX(int32_t, int32_t, int32_t);
         break;
       default:
-        throw std::runtime_error("ArgMinMax: unsupported data type");
+        throw UnsupportedDataTypeException{"ArgMinMax", _input->data_type()};
     }
   }
   else if (_output->data_type() == ir::DataType::INT64)
@@ -100,12 +101,12 @@ void ArgMinMaxLayer::run()
         TF_LITE_ARG_MIN_MAX(int32_t, int32_t, int64_t);
         break;
       default:
-        throw std::runtime_error("ArgMinMax: unsupported data type");
+        throw UnsupportedDataTypeException{"ArgMinMax", _input->data_type()};
     }
   }
   else
   {
-    throw std::runtime_error("ArgMinMax: unsupported data type");
+    throw UnsupportedDataTypeException{"ArgMinMax", _output->data_type()};
   }
 
 #undef TF_LITE_ARG_MIN_MAX

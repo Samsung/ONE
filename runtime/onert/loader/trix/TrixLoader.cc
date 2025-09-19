@@ -17,6 +17,7 @@
 #include "ir/Graph.h"
 #include "ir/operation/Bulk.h"
 #include "loader/ILoader.h"
+#include <util/Exceptions.h>
 
 #include <libnpuhost.h>
 #include <npubinfmt.h>
@@ -120,7 +121,7 @@ ir::DataType TrixLoader::toDataType(const data_type type) const
     case DATA_TYPE_QSYMM16:
       return ir::DataType::QUANT_INT16_SYMM;
     default:
-      throw std::runtime_error("Unsupported data type from trix model");
+      throw UnsupportedDataTypeException{"TRIX model", type};
   }
 }
 

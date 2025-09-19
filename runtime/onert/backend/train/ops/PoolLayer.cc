@@ -23,6 +23,7 @@
 #include <cker/train/operation/AveragePool.h>
 #include <cker/train/operation/MaxPool.h>
 #include <cker/train/operation/ReLU.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::train::ops
 {
@@ -198,7 +199,7 @@ void PoolLayer::configureBackward(const uint32_t paddingLeft, const uint32_t pad
 
   if (output->data_type() != OperandType::FLOAT32)
   {
-    throw std::runtime_error("PoolLayer : Unsupported data type for training");
+    throw UnsupportedDataTypeException{"train Pool", output->data_type()};
   }
 
   // ready training kernel

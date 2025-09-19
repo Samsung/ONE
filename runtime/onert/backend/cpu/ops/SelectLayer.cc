@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Select.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -46,15 +47,15 @@ void SelectLayer::run()
                  getBuffer<type>(_input_true), getShape(_input_false),              \
                  getBuffer<type>(_input_false), getShape(_output), getBuffer<type>(_output));
 
-#define KERNEL_SWITCH(type, op)                                  \
-  switch (type)                                                  \
-  {                                                              \
-    break;                                                       \
-    case OperandType::FLOAT32:                                   \
-      KERNEL_SELECT(float, op);                                  \
-      break;                                                     \
-    default:                                                     \
-      throw std::runtime_error{"Select: unsupported data type"}; \
+#define KERNEL_SWITCH(type, op)                           \
+  switch (type)                                           \
+  {                                                       \
+    break;                                                \
+    case OperandType::FLOAT32:                            \
+      KERNEL_SELECT(float, op);                           \
+      break;                                              \
+    default:                                              \
+      throw UnsupportedDataTypeException{"Select", type}; \
   }
 
   auto input_type = _input_true->data_type();
