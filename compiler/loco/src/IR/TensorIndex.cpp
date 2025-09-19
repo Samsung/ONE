@@ -16,4 +16,23 @@
 
 #include "loco/IR/TensorIndex.h"
 
-// NOTE This file validates "TensorIndex.h". Please DO NOT remove this file.
+#include <stdexcept>
+
+namespace loco
+{
+
+TensorIndex::TensorIndex() = default;
+
+uint32_t TensorIndex::rank(void) const { return _indices.size(); }
+
+TensorIndex &TensorIndex::resize(uint32_t size)
+{
+  _indices.resize(size);
+  return *this;
+}
+
+uint32_t &TensorIndex::at(uint32_t axis) { return _indices.at(axis); }
+
+uint32_t TensorIndex::at(uint32_t axis) const { return _indices.at(axis); }
+
+} // namespace loco
