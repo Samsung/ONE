@@ -17,13 +17,31 @@
 #ifndef __LOCO_IR_TENSOR_INDEX_H__
 #define __LOCO_IR_TENSOR_INDEX_H__
 
-#include <nncc/core/ADT/tensor/Index.h>
+#include <cstdint>
+#include <initializer_list>
+#include <vector>
 
 namespace loco
 {
 
-// TODO Remove dependencies on angkor
-using TensorIndex = nncc::core::ADT::tensor::Index;
+class TensorIndex
+{
+public:
+  TensorIndex();
+
+public:
+  uint32_t rank(void) const;
+
+public:
+  TensorIndex &resize(uint32_t size);
+
+public:
+  uint32_t &at(uint32_t axis);
+  uint32_t at(uint32_t axis) const;
+
+private:
+  std::vector<uint32_t> _indices;
+};
 
 } // namespace loco
 
