@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NNFW_API_TEST_WHILE_TEST_MODEL_H__
-#define __NNFW_API_TEST_WHILE_TEST_MODEL_H__
+#ifndef __NNFW_API_TEST_GEN_WHILE_TEST_MODEL_H__
+#define __NNFW_API_TEST_GEN_WHILE_TEST_MODEL_H__
 
 #include "GenModelTest.h"
 
@@ -79,4 +79,4 @@ public:
   CircleBuffer cbuf;
 };
 
-#endif // __NNFW_API_TEST_WHILE_TEST_MODEL_H__
+#endif // __NNFW_API_TEST_GEN_WHILE_TEST_MODEL_H__
