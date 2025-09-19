@@ -18,6 +18,7 @@
 #include "OperationUtils.h"
 
 #include <cker/train/operation/Loss.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::train::ops
 {
@@ -44,7 +45,7 @@ void LossCategoricalCrossentropyLayer::forward(bool)
   }
   else
   {
-    throw std::runtime_error("LossCategoricalCrossentropyLayer: unsupported data type");
+    throw UnsupportedDataTypeException{"train LossCategoricalCrossEntropy", _y_pred->data_type()};
   }
 }
 
@@ -72,7 +73,7 @@ void LossCategoricalCrossentropyLayer::backward()
   }
   else
   {
-    throw std::runtime_error("LossCategoricalCrossentropyLayer: unsupported data type");
+    throw UnsupportedDataTypeException{"train LossCategoricalCrossEntropy", _y_pred->data_type()};
   }
 }
 

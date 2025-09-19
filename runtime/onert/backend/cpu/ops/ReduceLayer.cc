@@ -21,6 +21,7 @@
 #include "cker/neon/neon_check.h"
 #include <cker/operation/Reduce.h>
 #include <cker/operation/ReduceMean.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -113,7 +114,7 @@ generateKernelGeneric(const IPortableTensor *input, bool keep_dims,
     case OperandType::BOOL8:
       return evalType<bool>(keep_dims, reduce_kernel, reduce_type);
     default:
-      throw std::runtime_error{"Reduce(generic): unsupported data type"};
+      throw UnsupportedDataTypeException{"Reduce(generic)", input->data_type()};
   }
 }
 
@@ -203,7 +204,7 @@ void ReduceLayer::configure(const IPortableTensor *input, const IPortableTensor 
 
 void ReduceLayer::run()
 {
-  const auto axes = getReducerAxes(_axes);
+  const auto axes = getReducerAxes("Reduce", _axes);
 #ifdef USE_NEON
   int32_t rank = _input->getShape().rank();
   if (_input->data_type() == ir::DataType::FLOAT32 && _reduceType == ReduceType::kSum &&
@@ -224,7 +225,7 @@ MeanLayer::MeanLayer() : _input(nullptr), _axes(nullptr), _output(nullptr), _kee
 void MeanLayer::MeanFloat32()
 {
   const auto inputShape = getShape(_input);
-  const auto axisVec = getReducerAxes(_axes);
+  const auto axisVec = getReducerAxes("Mean", _axes);
   bool axis_is_1_and_2 =
     _keep_dims && inputShape.DimensionsCount() == 4 && axisVec.size() == 2 &&
     ((axisVec[0] == 1 && axisVec[1] == 2) || (axisVec[0] == 2 && axisVec[1] == 1));
@@ -245,7 +246,8 @@ void MeanLayer::MeanQuant8()
 {
   nnfw::cker::MeanQ8Asymm(getShape(_input), getBuffer<uint8_t>(_input), _input->data_scale(),
                           _input->data_zero_point(), getShape(_output), getBuffer<uint8_t>(_output),
-                          _output->data_scale(), _output->data_zero_point(), getReducerAxes(_axes));
+                          _output->data_scale(), _output->data_zero_point(),
+                          getReducerAxes("Mean", _axes));
 }
 
 void MeanLayer::configure(const IPortableTensor *input, const IPortableTensor *axes,
@@ -258,7 +260,7 @@ void MeanLayer::configure(const IPortableTensor *input, const IPortableTensor *a
 
   if (_input->data_type() != OperandType::FLOAT32 &&
       _input->data_type() != OperandType::QUANT_UINT8_ASYMM)
-    throw std::runtime_error{"Mean: unsupported data type"};
+    throw UnsupportedDataTypeException{"Mean", _input->data_type()};
 }
 
 void MeanLayer::run()
@@ -273,7 +275,7 @@ void MeanLayer::run()
   }
   else
   {
-    throw std::runtime_error{"Mean: unsupported data type"};
+    throw UnsupportedDataTypeException{"Mean", _input->data_type()};
   }
 }
 

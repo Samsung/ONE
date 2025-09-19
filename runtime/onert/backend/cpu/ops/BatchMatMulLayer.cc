@@ -17,6 +17,7 @@
 #include "BatchMatMulLayer.h"
 
 #include <cker/operation/BatchMatMul.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -60,14 +61,11 @@ void BatchMatMulLayer::configure(const IPortableTensor *lhs, const IPortableTens
 
 void BatchMatMulLayer::run()
 {
-  if ((_lhs->data_type() == OperandType::FLOAT32) && (_rhs->data_type() == OperandType::FLOAT32))
-  {
-    batchMatMulFloat32();
-  }
-  else
-  {
-    throw std::runtime_error{"BatchMatMul: unsupported data type"};
-  }
+  if (_lhs->data_type() != OperandType::FLOAT32)
+    throw UnsupportedDataTypeException{"BatchMatMul", _lhs->data_type()};
+  if (_rhs->data_type() != OperandType::FLOAT32)
+    throw UnsupportedDataTypeException{"BatchMatMul", _rhs->data_type()};
+  batchMatMulFloat32();
 }
 
 #undef AVGPOOLING_PARAMETERS

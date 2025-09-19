@@ -21,6 +21,7 @@
 #include "../Tensor.h"
 #include "ir/Padding.h"
 #include <cker/operation/Conv.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -271,7 +272,7 @@ void ConvolutionLayer::run()
   }
   else
   {
-    throw std::runtime_error{"Conv: unsupported data type"};
+    throw UnsupportedDataTypeException{"Conv2D", _input->data_type()};
   }
 }
 

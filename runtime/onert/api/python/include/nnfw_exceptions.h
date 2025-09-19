@@ -49,6 +49,10 @@ struct NnfwDeprecatedApiError : public NnfwError
 {
   using NnfwError::NnfwError;
 };
+struct NnfwUnsupportedDataTypeError : public NnfwError
+{
+  using NnfwError::NnfwError;
+};
 
 } // namespace onert::api::python
 

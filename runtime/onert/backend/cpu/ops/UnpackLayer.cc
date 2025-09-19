@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Unpack.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -76,7 +77,7 @@ void UnpackLayer::run()
   else if (_input->data_type() == OperandType::INT32)
     unpackImpl<int32_t>();
   else
-    throw std::runtime_error{"Unpack: Unsupported data type"};
+    throw UnsupportedDataTypeException{"Unpack", _input->data_type()};
 }
 
 } // namespace onert::backend::cpu::ops

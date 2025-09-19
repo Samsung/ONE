@@ -18,6 +18,8 @@
 
 #include "OperationUtils.h"
 
+#include <util/Exceptions.h>
+
 namespace onert::backend::cpu::ops
 {
 
@@ -57,7 +59,7 @@ void ShapeLayer::run()
   }
   else
   {
-    throw std::runtime_error{"NYI : not supported output type for ShapeLayer"};
+    throw UnsupportedDataTypeException{"Shape", _output->data_type()};
   }
 }
 

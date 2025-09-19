@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/SqDiff.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -50,7 +51,7 @@ void SqDiffLayer::run()
   }
   else
   {
-    throw std::runtime_error{"SquaredDiff: unsupported data type"};
+    throw UnsupportedDataTypeException{"SquaredDiff", _input1->data_type()};
   }
 }
 } // namespace onert::backend::cpu::ops

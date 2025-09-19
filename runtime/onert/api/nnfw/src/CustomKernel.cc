@@ -16,6 +16,8 @@
 
 #include "CustomKernel.h"
 
+#include <util/Exceptions.h>
+
 namespace onert::api
 {
 
@@ -54,7 +56,7 @@ public:
         api_type.dtype = NNFW_TYPE_TENSOR_BOOL;
         break;
       default:
-        throw std::runtime_error("Unsupported tensor datatype");
+        throw UnsupportedDataTypeException("Converter", type.dtype);
     }
     return api_type;
   }

@@ -16,6 +16,7 @@
 
 #include "exec/DynamicShapeInferer.h"
 #include "util/ShapeInference.h"
+#include <util/Exceptions.h>
 #include <assert.h>
 
 namespace onert::exec
@@ -846,22 +847,18 @@ void DynamicShapeInferer::visit(const ir::operation::Reduce &op)
   std::vector<int32_t> axes_vec;
   for (uint32_t i = 0; i < axes->getShape().num_elements(); ++i)
   {
+    const auto type = axes->data_type();
     const auto buffer = axes->buffer() + axes->calcOffset({i});
-    switch (axes->data_type())
+    switch (type)
     {
       case ir::DataType::INT32:
-      {
         axes_vec.emplace_back(*reinterpret_cast<const int32_t *>(buffer));
         break;
-      }
       case ir::DataType::INT64:
-      {
         axes_vec.emplace_back(*reinterpret_cast<const int64_t *>(buffer));
         break;
-      }
       default:
-        throw std::runtime_error("DynamicShapeInferer " + op.name() + ": Not supported data type");
-        break;
+        throw UnsupportedDataTypeException{"DynamicShapeInferer " + op.name(), type};
     }
   }
   const auto keep_dims = op.param().keep_dims;
@@ -978,7 +975,7 @@ void DynamicShapeInferer::visit(const ir::operation::ResizeBilinear &op)
     }
     else
     {
-      throw std::runtime_error("DynamicShapeInferer ResizeBilinear : Unsupported data type");
+      throw UnsupportedDataTypeException{"DynamicShapeInferer ResizeBilinear", size->data_type()};
     }
   }
   else

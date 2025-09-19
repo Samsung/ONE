@@ -19,6 +19,7 @@
 #include "Swizzle.h"
 #include "ir/DataType.h"
 #include "ir/operation/ElementwiseActivation.h"
+#include <util/Exceptions.h>
 #include <memory>
 
 namespace onert::backend::acl_common
@@ -96,8 +97,7 @@ namespace onert::backend::acl_common
     case ir::DataType::QUANT_INT8_SYMM_PER_CHANNEL:
       return ::arm_compute::DataType::QSYMM8_PER_CHANNEL;
     default:
-      throw std::runtime_error("Not supported internal data type, yet");
-      break;
+      throw UnsupportedDataTypeException(type);
   }
 }
 
@@ -224,7 +224,8 @@ std::set<uint32_t> asSet(const ir::Operand &operand, int32_t rank)
   for (size_t i = 0; i < operand.shape().num_elements(); ++i)
   {
     int32_t axis = 0;
-    switch (operand.typeInfo().type())
+    const auto data_type = operand.typeInfo().type();
+    switch (data_type)
     {
       case ir::DataType::INT32:
         axis = reinterpret_cast<const int32_t *>(operand.data()->base())[i];
@@ -233,7 +234,7 @@ std::set<uint32_t> asSet(const ir::Operand &operand, int32_t rank)
         axis = reinterpret_cast<const int64_t *>(operand.data()->base())[i];
         break;
       default:
-        throw std::runtime_error("acl_common::asSet: Not supported data type");
+        throw UnsupportedDataTypeException("asSet", data_type);
     }
     if (axis < 0)
       axis += rank;
@@ -273,8 +274,7 @@ ir::DataType asRuntimeDataType(::arm_compute::DataType data_type)
     case ::arm_compute::DataType::QSYMM16:
       return ir::DataType::QUANT_INT16_SYMM;
     default:
-      throw std::runtime_error{"Not supported acl data type, yet"};
-      break;
+      throw UnsupportedDataTypeException("asRuntimeDataType", data_type);
   }
 }
 
@@ -312,7 +312,8 @@ arm_compute::PixelValue asPixelValue(const ir::Operand &operand)
 {
   assert(operand.isConstant());
   assert(operand.shape().num_elements() == 1);
-  switch (operand.typeInfo().type())
+  const auto data_type = operand.typeInfo().type();
+  switch (data_type)
   {
     case ir::DataType::INT32:
       return arm_compute::PixelValue(operand.asScalar<int32_t>());
@@ -325,7 +326,7 @@ arm_compute::PixelValue asPixelValue(const ir::Operand &operand)
     case ir::DataType::FLOAT32:
       return arm_compute::PixelValue(operand.asScalar<float>());
     default:
-      throw std::runtime_error("asPixelValue : Not supported datatype yet");
+      throw UnsupportedDataTypeException("asPixelValue", data_type);
   }
 }
 

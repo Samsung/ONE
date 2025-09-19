@@ -19,6 +19,8 @@
 
 #include <assert.h>
 #include <cker/operation/Comparison.h>
+#include <util/Exceptions.h>
+
 using namespace nnfw::cker;
 namespace onert::backend::cpu::ops
 {
@@ -156,7 +158,7 @@ void CompareLayer::run()
   }
   else
   {
-    throw std::runtime_error{"Compare: unsupported data type"};
+    throw UnsupportedDataTypeException{"Compare", _lhs->data_type()};
   }
 }
 

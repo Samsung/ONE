@@ -18,6 +18,7 @@
 
 #include <cker/operation/AveragePool.h>
 #include <cker/operation/MaxPool.h>
+#include <util/Exceptions.h>
 
 #include <unordered_map>
 
@@ -129,7 +130,7 @@ void PoolLayer::configure(const IPortableTensor *input, const uint32_t paddingLe
       break;
     }
     default:
-      throw std::runtime_error{"Pool: unsupported data type"};
+      throw UnsupportedDataTypeException{"Pool", input->data_type()};
   }
 }
 

@@ -162,7 +162,7 @@ uint32_t sizeOfData(OperandType type, const std::vector<int32_t> &dimensions);
 
 nnfw::cker::PaddingType getPaddingType(ir::PaddingType ir_padding_type);
 
-std::vector<int32_t> getReducerAxes(const IPortableTensor *axes);
+std::vector<int32_t> getReducerAxes(std::string op, const IPortableTensor *axes);
 
 nnfw::cker::RoPEMode getRoPEMode(ir::operation::RoPE::RoPEMode rope_mode);
 

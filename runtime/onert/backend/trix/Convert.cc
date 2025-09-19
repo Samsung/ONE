@@ -16,6 +16,8 @@
 
 #include "Convert.h"
 
+#include <util/Exceptions.h>
+
 namespace onert::backend::trix
 {
 
@@ -28,7 +30,7 @@ data_type convertDataType(const ir::DataType type)
     case ir::DataType::QUANT_INT16_SYMM:
       return DATA_TYPE_QSYMM16;
     default:
-      throw std::runtime_error("Unsupported data type");
+      throw UnsupportedDataTypeException{type};
   }
 }
 

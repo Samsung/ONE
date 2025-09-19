@@ -15,6 +15,7 @@
  */
 
 #include "ir/OperandInfo.h"
+#include "util/Exceptions.h"
 
 #include <gtest/gtest.h>
 
@@ -37,7 +38,7 @@ TEST(ir_OperandInfo, total_size)
 TEST(ir_OperandInfo, neg_total_size_type)
 {
   auto info = OperandInfo::createStaticInfo(Shape{1, 2, 3}, TypeInfo{DataType{-1}});
-  EXPECT_THROW(info.total_size(), std::runtime_error);
+  EXPECT_THROW(info.total_size(), onert::UnsupportedDataTypeException);
 }
 
 // Unsupported shape

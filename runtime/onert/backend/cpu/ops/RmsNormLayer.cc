@@ -20,6 +20,7 @@
 
 #include <cker/operation/RmsNorm.h>
 #include <cker/Types.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -48,7 +49,7 @@ void RmsNormLayer::run()
       break;
 
     default:
-      throw std::runtime_error{"RmsNorm: Unsupported data type"};
+      throw UnsupportedDataTypeException{"RmsNorm", _input->data_type()};
   }
 }
 

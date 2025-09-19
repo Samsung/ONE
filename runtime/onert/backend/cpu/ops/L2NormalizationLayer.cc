@@ -20,6 +20,7 @@
 
 #include <cker/operation/L2Normalize.h>
 #include <cker/Types.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -53,7 +54,7 @@ void L2NormLayer::run()
     break;
 
     default:
-      throw std::runtime_error{"L2Norm: Unsupported data type"};
+      throw UnsupportedDataTypeException{"L2Norm", _input->data_type()};
   }
 }
 

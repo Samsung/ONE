@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Slice.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -59,7 +60,7 @@ template <typename T> void SliceLayer::sliceImpl()
   }
   else
   {
-    throw std::runtime_error{"Slice: unsupported begin and/or size data type"};
+    throw UnsupportedDataTypeException{"Slice", _begin->data_type()};
   }
 
   // begins : 0-based, sizes : 1-based
@@ -103,7 +104,7 @@ void SliceLayer::run()
   }
   else
   {
-    throw std::runtime_error{"Slice: unsupported data type"};
+    throw UnsupportedDataTypeException{"Slice", _input->data_type()};
   }
 }
 

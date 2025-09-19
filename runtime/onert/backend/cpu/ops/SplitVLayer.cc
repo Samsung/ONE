@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/SplitV.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -83,7 +84,7 @@ void SplitVLayer::run()
   }
   else
   {
-    throw std::runtime_error{"SplitV: unsupported input type"};
+    throw UnsupportedDataTypeException{"SplitV", _input->data_type()};
   }
 }
 

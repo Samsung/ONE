@@ -19,14 +19,16 @@
 
 #include <string>
 
+#include <ir/DataType.h>
+
 namespace onert
 {
 
-class OnertException : public std::exception
+class Exception : public std::exception
 {
 public:
-  OnertException(const std::string &msg) : _msg{msg} {}
-  OnertException(const std::string &tag, const std::string &msg) : _msg{tag + " : " + msg} {}
+  Exception(const std::string &msg) : _msg{msg} {}
+  Exception(const std::string &tag, const std::string &msg) : _msg{tag + ": " + msg} {}
 
   const char *what() const noexcept override { return _msg.c_str(); }
 
@@ -34,11 +36,24 @@ private:
   std::string _msg;
 };
 
-class InsufficientBufferSizeException : public OnertException
+class InsufficientBufferSizeException : public Exception
 {
 public:
   InsufficientBufferSizeException(const std::string &msg)
-    : OnertException{"InsufficientBufferSize", msg}
+    : Exception{"Insufficient buffer size", msg}
+  {
+  }
+};
+
+class UnsupportedDataTypeException : public Exception
+{
+public:
+  UnsupportedDataTypeException(ir::DataType dt)
+    : Exception{"Unsupported data type", ir::toString(dt)}
+  {
+  }
+  UnsupportedDataTypeException(const std::string &tag, ir::DataType dt)
+    : Exception{tag + ": Unsupported data type", ir::toString(dt)}
   {
   }
 };

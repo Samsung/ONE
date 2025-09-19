@@ -17,6 +17,7 @@
 #include "RoPELayer.h"
 
 #include <cker/operation/RoPE.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -76,7 +77,7 @@ void RoPELayer::run()
       rope<int8_t>();
       break;
     default:
-      throw std::runtime_error("RoPE: unsupported data type");
+      throw UnsupportedDataTypeException{"RoPE", _input->data_type()};
   }
 }
 

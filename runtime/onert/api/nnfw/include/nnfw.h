@@ -125,6 +125,8 @@ typedef enum
   NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE = 5,
   /** When API is deprecated */
   NNFW_STATUS_DEPRECATED_API = 6,
+  /** When given input or ouput data type is not supported. */
+  NNFW_STATUS_UNSUPPORTED_DATA_TYPE = 7,
 } NNFW_STATUS;
 
 /**

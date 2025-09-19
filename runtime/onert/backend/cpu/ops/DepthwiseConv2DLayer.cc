@@ -18,6 +18,7 @@
 
 #include "cker/PortableTensorUtils.h"
 #include <cker/operation/DepthwiseConv.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -317,7 +318,7 @@ void DepthwiseConvolutionLayer::run()
   }
   else
   {
-    throw std::runtime_error{"DepthwiseConv: unsupported data type"};
+    throw UnsupportedDataTypeException{"DepthwiseConv", _input->data_type()};
   }
 }
 

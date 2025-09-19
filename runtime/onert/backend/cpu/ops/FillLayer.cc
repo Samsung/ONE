@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Fill.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -55,7 +56,7 @@ void FillLayer::run()
                                  getBuffer<uint32_t>(_output));
       break;
     default:
-      throw std::runtime_error{"Fill: unsupported data type"};
+      throw UnsupportedDataTypeException{"Fill", _output->data_type()};
   }
 }
 
