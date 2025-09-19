@@ -7,11 +7,9 @@ function(_GEMMLowp_import)
   endif(NOT GEMMLowpSource_FOUND)
 
   if(NOT TARGET gemmlowp)
-    find_package(Threads REQUIRED)
-
     add_library(gemmlowp INTERFACE)
     target_include_directories(gemmlowp SYSTEM INTERFACE ${GEMMLowpSource_DIR})
-    target_link_libraries(gemmlowp INTERFACE ${LIB_PTHREAD})
+    target_link_libraries(gemmlowp INTERFACE Threads::Threads)
   endif(NOT TARGET gemmlowp)
 
   set(GEMMLowp_FOUND TRUE PARENT_SCOPE)

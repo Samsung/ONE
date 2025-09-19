@@ -98,6 +98,9 @@ include("${CMAKE_CURRENT_LIST_DIR}/infra/cmake/CfgOptionFlags.cmake")
 #      because compile flag setting can be decided using option (ex. ENABLE_COVERAGE)
 include("${CMAKE_CURRENT_LIST_DIR}/infra/cmake/ApplyCompileFlags.cmake")
 
+set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+find_package(Threads REQUIRED)
+
 nnfw_find_package(GTest QUIET)
 
 option(ENABLE_TEST "Build Tests using Google Test" ${GTest_FOUND})

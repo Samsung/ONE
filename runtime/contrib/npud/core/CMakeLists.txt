@@ -12,7 +12,7 @@ target_include_directories(npud_core PUBLIC ${GLIB2.0_INCLUDE_DIRS})
 target_include_directories(npud_core PUBLIC ${DBUS_INCLUDE_DIRS})
 target_link_libraries(npud_core PRIVATE nnfw_lib_misc)
 target_link_libraries(npud_core PRIVATE ${GLIB2.0_LIBRARIES})
-target_link_libraries(npud_core PRIVATE ${LIB_PTHREAD})
+target_link_libraries(npud_core PRIVATE Threads::Threads)
 target_link_libraries(npud_core PRIVATE dl)
 target_link_libraries(npud_core PRIVATE npud_dbus)
 

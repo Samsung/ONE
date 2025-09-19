@@ -37,7 +37,7 @@ add_executable(${TEST_CKER} ${TESTS})
 
 target_link_libraries(${TEST_CKER} nnfw_lib_cker)
 target_link_libraries(${TEST_CKER} nnfw_common nnfw_coverage)
-target_link_libraries(${TEST_CKER} gtest gtest_main ${LIB_PTHREAD})
+target_link_libraries(${TEST_CKER} gtest gtest_main Threads::Threads)
 
 add_test(${TEST_CKER} ${TEST_CKER})
 install(TARGETS ${TEST_CKER} DESTINATION unittest)
