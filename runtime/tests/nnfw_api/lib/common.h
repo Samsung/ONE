@@ -17,7 +17,6 @@
 #ifndef __NNFW_API_TEST_COMMON_H__
 #define __NNFW_API_TEST_COMMON_H__
 
-#include <gtest/gtest.h>
 #include <nnfw.h>
 #include <circle_schema_generated.h>
 
