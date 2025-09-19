@@ -8,7 +8,7 @@ function(_Fp16Source_import)
   nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  # fp16 commit in xnnpack (tflite v2.16.1)
+  # fp16 commit in xnnpack (xnnpack in tflite v2.18.1)
   envoption(FP16_URL ${EXTERNAL_DOWNLOAD_SERVER}/Maratyszcza/FP16/archive/0a92994d729ff76a58f692d3028ca1b64b145d91.tar.gz)
   ExternalSource_Download(FP16
     DIRNAME FP16

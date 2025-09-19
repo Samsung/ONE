@@ -7,7 +7,7 @@ function(_FarmhashSource_import)
   nnfw_include(ExternalSourceTools)
   nnfw_include(OptionTools)
 
-  # NOTE TensorFlow 2.16.1 downloads farmhash from the following URL
+  # NOTE TensorFlow 2.18.1 downloads farmhash from the following URL
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
   envoption(FARMHASH_URL ${EXTERNAL_DOWNLOAD_SERVER}/google/farmhash/archive/0d859a811870d10f53a594927d0d0b97573ad06d.tar.gz)
 

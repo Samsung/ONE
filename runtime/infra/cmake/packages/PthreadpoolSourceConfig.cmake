@@ -8,7 +8,7 @@ function(_PthreadpoolSource_import)
   nnfw_include(OptionTools)
 
   envoption(EXTERNAL_DOWNLOAD_SERVER "https://github.com")
-  # pthreadpool commit in xnnpack (tflite v2.16.1)
+  # pthreadpool commit in xnnpack (xnnpack in tflite v2.18.1)
   envoption(PTHREADPOOL_URL ${EXTERNAL_DOWNLOAD_SERVER}/Maratyszcza/pthreadpool/archive/4fe0e1e183925bf8cfa6aae24237e724a96479b8.tar.gz)
   ExternalSource_Download(PTHREADPOOL
     DIRNAME PTHREADPOOL
