@@ -9,7 +9,7 @@ var dir_37e79ccccdadaf9e1e00b1976f52885f =
     [ "CanonicalNodeVisitor.forward.h", "_canonical_node_visitor_8forward_8h.html", null ],
     [ "CanonicalNodeVisitor.h", "_canonical_node_visitor_8h.html", "_canonical_node_visitor_8h" ],
     [ "CanonicalOpcode.h", "_canonical_opcode_8h.html", "_canonical_opcode_8h" ],
-    [ "CastHelpers.h", "_cast_helpers_8h.html", "_cast_helpers_8h" ],
+    [ "CastHelpers.h", "loco_2include_2loco_2_i_r_2_cast_helpers_8h.html", "loco_2include_2loco_2_i_r_2_cast_helpers_8h" ],
     [ "DataType.h", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h.html", "compiler_2loco_2include_2loco_2_i_r_2_data_type_8h" ],
     [ "DataTypeTraits.h", "_data_type_traits_8h.html", "_data_type_traits_8h" ],
     [ "DepthwiseFilterAxis.h", "_depthwise_filter_axis_8h.html", "_depthwise_filter_axis_8h" ],

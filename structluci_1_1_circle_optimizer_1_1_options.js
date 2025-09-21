@@ -64,6 +64,8 @@ var structluci_1_1_circle_optimizer_1_1_options =
       [ "CommonSubExpressionElimination", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea2cb7d2ba443d5073c00131655e4ec76e", null ],
       [ "RemoveUnnecessaryAdd", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeade2d267f8421dae432460f10553ae93a", null ],
       [ "RemoveUnnecessaryCast", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeafe6c98f33e7adc89b4bc50546c8a0188", null ],
+      [ "RemoveUnnecessaryDiv", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea50263738d02b6bda61c3f83bff8b1373", null ],
+      [ "RemoveUnnecessaryMul", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea9639e35ae7ec7c000b45f262df4f98ea", null ],
       [ "RemoveUnnecessarySlice", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea974f010258b0adfc130675a9e41de1e6", null ],
       [ "RemoveUnnecessaryStridedSlice", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aeabba5346a5fc7ba1725308742b0ff0851", null ],
       [ "RemoveUnnecessarySplit", "structluci_1_1_circle_optimizer_1_1_options.html#a1ee7e941e078e6d514ec028c3d3043aea2183117cb0c8523c632c024094069109", null ],

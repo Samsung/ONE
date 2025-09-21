@@ -126,33 +126,36 @@ $(document).ready(function(){initNavTree('souschef_2include_2souschef_2_dims_8h_
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="namespacesouschef.html#af6901c7c7d76de2d622df38926a477da">   28</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">using </span><a class="code hl_struct" href="struct_dims.html">Dims</a> = std::vector&lt;T&gt;;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="namespacesouschef.html#a10d51f2d9d0d47521dab1a8eee903de4">   30</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> SHAPETYPE&gt; <a class="code hl_struct" href="struct_dims.html">Dims&lt;int32_t&gt;</a> <a class="code hl_function" href="namespacesouschef.html#a10d51f2d9d0d47521dab1a8eee903de4">as_dims</a>(<span class="keyword">const</span> SHAPETYPE &amp;shape)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  std::vector&lt;int32_t&gt; res;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;dim : shape.dim())</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    res.emplace_back(<span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(dim));</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  }</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordflow">return</span> res;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>}</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="namespacesouschef.html#ae159774c9caa78103e6a8ba05b45edb4">   30</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespacesouschef.html#ae159774c9caa78103e6a8ba05b45edb4">DimsI32_t</a> = <a class="code hl_struct" href="struct_dims.html">Dims&lt;int32_t&gt;</a>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="}">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="namespacesouschef.html#a7518c620edf53d408d8a3d152b217974">   32</a></span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> SHAPETYPE&gt; <a class="code hl_typedef" href="namespacesouschef.html#ae159774c9caa78103e6a8ba05b45edb4">DimsI32_t</a> <a class="code hl_function" href="namespacesouschef.html#a7518c620edf53d408d8a3d152b217974">as_dims</a>(<span class="keyword">const</span> SHAPETYPE &amp;shape)</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>{</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  std::vector&lt;int32_t&gt; res;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;dim : shape.dim())</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    res.emplace_back(<span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(dim));</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>}</div>
 </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="namespacesouschef.html#a7e8607f8d2dc0b463db477b36c6ab989">   42</a></span>int32_t <a class="code hl_function" href="namespacesouschef.html#a7e8607f8d2dc0b463db477b36c6ab989">element_count</a>(<span class="keyword">const</span> <a class="code hl_struct" href="struct_dims.html">Dims&lt;int32_t&gt;</a> &amp;dims)</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>{</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">return</span> std::accumulate(dims.begin(), dims.end(), 1, std::multiplies&lt;int32_t&gt;());</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="namespacesouschef.html#ade596d7d155ca83258ee6c8c915193a0">   44</a></span>int32_t <a class="code hl_function" href="namespacesouschef.html#ade596d7d155ca83258ee6c8c915193a0">element_count</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespacesouschef.html#ae159774c9caa78103e6a8ba05b45edb4">DimsI32_t</a> &amp;dims)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>{</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordflow">return</span> std::accumulate(dims.begin(), dims.end(), 1, std::multiplies&lt;int32_t&gt;());</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
 </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>} <span class="comment">// namespace souschef</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#endif </span><span class="comment">// __SOUSCHEF_DIMS_H__</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>} <span class="comment">// namespace souschef</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#endif </span><span class="comment">// __SOUSCHEF_DIMS_H__</span></div>
 <div class="ttc" id="anamespacesouschef_html"><div class="ttname"><a href="namespacesouschef.html">souschef</a></div><div class="ttdoc">This file provides string &lt;-&gt; number cast helpers.</div><div class="ttdef"><b>Definition</b> <a href="souschef_2include_2souschef_2_arguments_8h_source.html#l00023">Arguments.h:24</a></div></div>
-<div class="ttc" id="anamespacesouschef_html_a10d51f2d9d0d47521dab1a8eee903de4"><div class="ttname"><a href="namespacesouschef.html#a10d51f2d9d0d47521dab1a8eee903de4">souschef::as_dims</a></div><div class="ttdeci">Dims&lt; int32_t &gt; as_dims(const SHAPETYPE &amp;shape)</div><div class="ttdef"><b>Definition</b> <a href="souschef_2include_2souschef_2_dims_8h_source.html#l00030">Dims.h:30</a></div></div>
-<div class="ttc" id="anamespacesouschef_html_a7e8607f8d2dc0b463db477b36c6ab989"><div class="ttname"><a href="namespacesouschef.html#a7e8607f8d2dc0b463db477b36c6ab989">souschef::element_count</a></div><div class="ttdeci">int32_t element_count(const Dims&lt; int32_t &gt; &amp;dims)</div><div class="ttdef"><b>Definition</b> <a href="souschef_2include_2souschef_2_dims_8h_source.html#l00042">Dims.h:42</a></div></div>
+<div class="ttc" id="anamespacesouschef_html_a7518c620edf53d408d8a3d152b217974"><div class="ttname"><a href="namespacesouschef.html#a7518c620edf53d408d8a3d152b217974">souschef::as_dims</a></div><div class="ttdeci">DimsI32_t as_dims(const SHAPETYPE &amp;shape)</div><div class="ttdef"><b>Definition</b> <a href="souschef_2include_2souschef_2_dims_8h_source.html#l00032">Dims.h:32</a></div></div>
+<div class="ttc" id="anamespacesouschef_html_ade596d7d155ca83258ee6c8c915193a0"><div class="ttname"><a href="namespacesouschef.html#ade596d7d155ca83258ee6c8c915193a0">souschef::element_count</a></div><div class="ttdeci">int32_t element_count(const DimsI32_t &amp;dims)</div><div class="ttdef"><b>Definition</b> <a href="souschef_2include_2souschef_2_dims_8h_source.html#l00044">Dims.h:44</a></div></div>
+<div class="ttc" id="anamespacesouschef_html_ae159774c9caa78103e6a8ba05b45edb4"><div class="ttname"><a href="namespacesouschef.html#ae159774c9caa78103e6a8ba05b45edb4">souschef::DimsI32_t</a></div><div class="ttdeci">Dims&lt; int32_t &gt; DimsI32_t</div><div class="ttdef"><b>Definition</b> <a href="souschef_2include_2souschef_2_dims_8h_source.html#l00030">Dims.h:30</a></div></div>
 <div class="ttc" id="astruct_dims_html"><div class="ttname"><a href="struct_dims.html">Dims</a></div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00025">Dims.h:26</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

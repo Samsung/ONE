@@ -51,6 +51,7 @@ var dir_9c303a4cdd47269491d349bda3a65357 =
     [ "pack", "dir_d8b5620bf7cf3bc574d034971f996601.html", "dir_d8b5620bf7cf3bc574d034971f996601" ],
     [ "pad", "dir_b1a2f2ccff592fca94413c52e8da807f.html", "dir_b1a2f2ccff592fca94413c52e8da807f" ],
     [ "quantize", "dir_bb55d248e07b22dc6670d9fc73ab3c9b.html", "dir_bb55d248e07b22dc6670d9fc73ab3c9b" ],
+    [ "reduce_max", "dir_e3dc33afcee5fa85c89e7a88bd998dcf.html", "dir_e3dc33afcee5fa85c89e7a88bd998dcf" ],
     [ "reduce_prod", "dir_94d58ccbbdb90b7ecf37d71596b76300.html", "dir_94d58ccbbdb90b7ecf37d71596b76300" ],
     [ "relu", "dir_3de5159be7c42621dbb0eb21156a1a0a.html", "dir_3de5159be7c42621dbb0eb21156a1a0a" ],
     [ "relu6", "dir_c34bae464d9efee2898a3be1f0bd3ecf.html", "dir_c34bae464d9efee2898a3be1f0bd3ecf" ],

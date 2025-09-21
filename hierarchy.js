@@ -3555,6 +3555,7 @@ var hierarchy =
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchPadKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_pad_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchReLU6Kernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchReLUKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u_kernel.html", null ],
+      [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchReduceMaxKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_reduce_max_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchRoundKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_round_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchRsqrtKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_rsqrt_kernel.html", null ],
       [ "onert_micro::test_model::NegTestDataInputOutputTypeMismatchSVDFKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_s_v_d_f_kernel.html", null ],
@@ -4658,6 +4659,8 @@ var hierarchy =
       [ "luci::RemoveRedundantTransposePass", "structluci_1_1_remove_redundant_transpose_pass.html", null ],
       [ "luci::RemoveUnnecessaryAddPass", "structluci_1_1_remove_unnecessary_add_pass.html", null ],
       [ "luci::RemoveUnnecessaryCastPass", "structluci_1_1_remove_unnecessary_cast_pass.html", null ],
+      [ "luci::RemoveUnnecessaryDivPass", "structluci_1_1_remove_unnecessary_div_pass.html", null ],
+      [ "luci::RemoveUnnecessaryMulPass", "structluci_1_1_remove_unnecessary_mul_pass.html", null ],
       [ "luci::RemoveUnnecessaryReshapeNetPass", "structluci_1_1_remove_unnecessary_reshape_net_pass.html", null ],
       [ "luci::RemoveUnnecessaryReshapePass", "structluci_1_1_remove_unnecessary_reshape_pass.html", null ],
       [ "luci::RemoveUnnecessarySlicePass", "structluci_1_1_remove_unnecessary_slice_pass.html", null ],
@@ -5864,6 +5867,11 @@ var hierarchy =
       ] ],
       [ "onert_micro::test_model::TestDataReLUBase< T >", "classonert__micro_1_1test__model_1_1_test_data_re_l_u_base.html", [
         [ "onert_micro::test_model::TestDataFloatReLU", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u.html", null ]
+      ] ],
+      [ "onert_micro::test_model::TestDataReduceMaxBase< T >", "classonert__micro_1_1test__model_1_1_test_data_reduce_max_base.html", [
+        [ "onert_micro::test_model::TestDataFloatReduceMax", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_max.html", null ],
+        [ "onert_micro::test_model::TestDataFloatReduceMax3D", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_max3_d.html", null ],
+        [ "onert_micro::test_model::TestDataFloatReduceMax4D_2axis", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_max4_d__2axis.html", null ]
       ] ],
       [ "onert_micro::test_model::TestDataReduceProdBase< T >", "classonert__micro_1_1test__model_1_1_test_data_reduce_prod_base.html", null ],
       [ "onert_micro::test_model::TestDataReshapeKernel< T >", "classonert__micro_1_1test__model_1_1_test_data_reshape_kernel.html", null ],

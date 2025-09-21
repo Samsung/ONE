@@ -51,6 +51,7 @@ var dir_ff970b087a976e02e2a0b395feb12740 =
     [ "Pack.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_pack_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_pack_8cpp" ],
     [ "Pad.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_pad_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_pad_8cpp" ],
     [ "Quantize.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_quantize_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_quantize_8cpp" ],
+    [ "ReduceMax.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_reduce_max_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_reduce_max_8cpp" ],
     [ "ReduceProd.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_reduce_prod_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_reduce_prod_8cpp" ],
     [ "Relu.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_re_l_u_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_re_l_u_8cpp" ],
     [ "Relu6.cpp", "onert-micro_2onert-micro_2src_2import_2kernels_2_re_l_u6_8cpp.html", "onert-micro_2onert-micro_2src_2import_2kernels_2_re_l_u6_8cpp" ],

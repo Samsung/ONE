@@ -462,9 +462,9 @@ $(document).ready(function(){initNavTree('_fuse_b_c_q_pass_8cpp_source.html','')
 <div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span> </div>
 <div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    <span class="comment">// Converter in TensorFlow v1.x sometimes generate Reshape op</span></div>
 <div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> reshape = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *<span class="keyword">&gt;</span>(node))</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>      const_node = loco::must_cast&lt;luci::CircleConst *&gt;(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a6772929049d1fe5ed11069fbdd554840">reshape</a>-&gt;tensor());</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>      const_node = luci::must_cast&lt;luci::CircleConst *&gt;(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a6772929049d1fe5ed11069fbdd554840">reshape</a>-&gt;tensor());</div>
 <div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>    <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>      const_node = loco::must_cast&lt;luci::CircleConst *&gt;(node);</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>      const_node = luci::must_cast&lt;luci::CircleConst *&gt;(node);</div>
 <div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span> </div>
 <div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    <span class="keywordflow">if</span> (metadata_type == MetadataType::DO_W_X)</div>
 <div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>      _do_w_x[prefix] = const_node;</div>
@@ -487,7 +487,7 @@ $(document).ready(function(){initNavTree('_fuse_b_c_q_pass_8cpp_source.html','')
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> n : _fusable_op)</div>
 <div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>    {</div>
 <div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>      <span class="keyword">auto</span> prefix = n.first;</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>      <span class="keyword">auto</span> w_before = loco::must_cast&lt;luci::CircleConst *&gt;(n.second);</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>      <span class="keyword">auto</span> w_before = luci::must_cast&lt;luci::CircleConst *&gt;(n.second);</div>
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>      <span class="keywordflow">if</span> (is_fusable_const(w_before, w_after, _do_w_x[prefix]-&gt;at&lt;loco::DataType::BOOL&gt;(0)))</div>
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>        <span class="keywordflow">return</span> prefix;</div>
 <div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>    }</div>
@@ -829,7 +829,7 @@ $(document).ready(function(){initNavTree('_fuse_b_c_q_pass_8cpp_source.html','')
 <div class="ttc" id="anamespaceluci_html_afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea"><div class="ttname"><a href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a></div><div class="ttdeci">@ VALID</div></div>
 <div class="ttc" id="anamespacemir__caffe2_html_ad673211adad8f4f6c0abf122bd4e54e8a6772929049d1fe5ed11069fbdd554840"><div class="ttname"><a href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a6772929049d1fe5ed11069fbdd554840">mir_caffe2::SupportedCaffe2OpType::reshape</a></div><div class="ttdeci">@ reshape</div></div>
 <div class="ttc" id="anamespacesetup_html_ab3a7a0638d76a01367c5bc3cc699447f"><div class="ttname"><a href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">setup.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="setup_8py_source.html#l00158">setup.py:158</a></div></div>
-<div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00038">CircleNodeDecl.h:41</a></div></div>
+<div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00039">CircleNodeDecl.h:42</a></div></div>
 <div class="ttc" id="astructluci_1_1_fuse_b_c_q_pass_html_a10ebe323f34e9b165050de3a7a08811d"><div class="ttname"><a href="structluci_1_1_fuse_b_c_q_pass.html#a10ebe323f34e9b165050de3a7a08811d">luci::FuseBCQPass::run</a></div><div class="ttdeci">bool run(luci::Module *m) final</div><div class="ttdef"><b>Definition</b> <a href="_fuse_b_c_q_pass_8cpp_source.html#l00613">FuseBCQPass.cpp:613</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,13 +1,7 @@
 var NAVTREEINDEX33 =
 {
-"_verify_quantized_node_granularity_8h.html#a21d1b8802dcf1c397c10cfe8aa2d433d":[41,0,0,59,7,1,138,4],
-"_verify_quantized_node_granularity_8h.html#aa04d5e646f4e595a5ba6f44fec9ed430":[41,0,0,59,7,1,138,3],
-"_verify_quantized_node_granularity_8h_source.html":[41,0,0,59,7,1,138],
-"_verify_quantized_node_type_8cpp.html":[41,0,0,59,7,1,139],
-"_verify_quantized_node_type_8cpp.html#aa04d5e646f4e595a5ba6f44fec9ed430":[41,0,0,59,7,1,139,0],
-"_verify_quantized_node_type_8cpp_source.html":[41,0,0,59,7,1,139],
-"_verify_quantized_node_type_8h.html":[41,0,0,59,7,1,140],
-"_verify_quantized_node_type_8h_source.html":[41,0,0,59,7,1,140],
+"_verify_quantized_node_type_8h.html":[41,0,0,59,7,1,141],
+"_verify_quantized_node_type_8h_source.html":[41,0,0,59,7,1,141],
 "_view_impl_8h.html":[41,0,0,1,0,1,0,0,1,10],
 "_view_impl_8h_source.html":[41,0,0,1,0,1,0,0,1,10],
 "_weight_8h.html":[41,0,0,38,1,1,0,0,12],
@@ -47,10 +41,10 @@ var NAVTREEINDEX33 =
 "_write_tester_8cpp.html":[41,0,0,59,11,0,3],
 "_write_tester_8cpp.html#a0bd2da0b208d77121c01ef3a7e7ae198":[41,0,0,59,11,0,3,0],
 "_write_tester_8cpp_source.html":[41,0,0,59,11,0,3],
-"_xp_sep_act_from_transpose_conv_pass_8cpp.html":[41,0,0,59,7,1,141],
-"_xp_sep_act_from_transpose_conv_pass_8cpp_source.html":[41,0,0,59,7,1,141],
-"_xp_sep_act_from_transpose_conv_pass_8h.html":[41,0,0,59,7,0,0,0,101],
-"_xp_sep_act_from_transpose_conv_pass_8h_source.html":[41,0,0,59,7,0,0,0,101],
+"_xp_sep_act_from_transpose_conv_pass_8cpp.html":[41,0,0,59,7,1,142],
+"_xp_sep_act_from_transpose_conv_pass_8cpp_source.html":[41,0,0,59,7,1,142],
+"_xp_sep_act_from_transpose_conv_pass_8h.html":[41,0,0,59,7,0,0,0,102],
+"_xp_sep_act_from_transpose_conv_pass_8h_source.html":[41,0,0,59,7,0,0,0,102],
 "_zeros_like_options_8cpp.html":[41,0,0,133,2,0,184],
 "_zeros_like_options_8cpp.html#a31d423c061f4b29f8f2650764f38466e":[41,0,0,133,2,0,184,0],
 "_zeros_like_options_8cpp_source.html":[41,0,0,133,2,0,184],
@@ -249,5 +243,11 @@ var NAVTREEINDEX33 =
 "backend_2cl__common_2include_2cl__common_2_backend_context_8h_source.html":[41,0,3,3,1,3,0,0,0],
 "backend_2cpu_2_backend_context_8cc.html":[41,0,3,3,1,4,2],
 "backend_2cpu_2_backend_context_8cc_source.html":[41,0,3,3,1,4,2],
-"backend_2cpu_2_backend_context_8h.html":[41,0,3,3,1,4,3]
+"backend_2cpu_2_backend_context_8h.html":[41,0,3,3,1,4,3],
+"backend_2cpu_2_backend_context_8h_source.html":[41,0,3,3,1,4,3],
+"backend_2cpu_2_config_8cc.html":[41,0,3,3,1,4,4],
+"backend_2cpu_2_config_8cc_source.html":[41,0,3,3,1,4,4],
+"backend_2cpu_2_external_context_8h.html":[41,0,3,3,1,4,8],
+"backend_2cpu_2_external_context_8h_source.html":[41,0,3,3,1,4,8],
+"backend_2cpu_2_kernel_generator_8cc.html":[41,0,3,3,1,4,9]
 };

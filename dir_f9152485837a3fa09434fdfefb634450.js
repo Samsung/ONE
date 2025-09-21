@@ -56,6 +56,7 @@ var dir_f9152485837a3fa09434fdfefb634450 =
     [ "PoolingCommon.cpp", "_pooling_common_8cpp.html", "_pooling_common_8cpp" ],
     [ "Quantize.cpp", "onert-micro_2onert-micro_2src_2execute_2kernels_2_quantize_8cpp.html", "onert-micro_2onert-micro_2src_2execute_2kernels_2_quantize_8cpp" ],
     [ "ReadKernelDataCommon.cpp", "_read_kernel_data_common_8cpp.html", "_read_kernel_data_common_8cpp" ],
+    [ "ReduceMax.cpp", "onert-micro_2onert-micro_2src_2execute_2kernels_2_reduce_max_8cpp.html", "onert-micro_2onert-micro_2src_2execute_2kernels_2_reduce_max_8cpp" ],
     [ "ReduceProd.cpp", "onert-micro_2onert-micro_2src_2execute_2kernels_2_reduce_prod_8cpp.html", "onert-micro_2onert-micro_2src_2execute_2kernels_2_reduce_prod_8cpp" ],
     [ "Relu.cpp", "onert-micro_2onert-micro_2src_2execute_2kernels_2_re_l_u_8cpp.html", "onert-micro_2onert-micro_2src_2execute_2kernels_2_re_l_u_8cpp" ],
     [ "Relu6.cpp", "onert-micro_2onert-micro_2src_2execute_2kernels_2_re_l_u6_8cpp.html", "onert-micro_2onert-micro_2src_2execute_2kernels_2_re_l_u6_8cpp" ],

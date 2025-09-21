@@ -655,6 +655,9 @@ var namespaceonert__micro_1_1test__model =
     [ "neg_input_output_type_mismatch_pad_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__pad__kernel.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__pad__kernel.html#a702be386a489157e04b78f0c9ae8d7c7", null ]
     ] ],
+    [ "neg_input_output_type_mismatch_reduce_max_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__reduce__max__kernel.html", [
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__reduce__max__kernel.html#ad841e3156325c8435a549cfcc1f8d181", null ]
+    ] ],
     [ "neg_input_output_type_mismatch_round_kernel", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__round__kernel.html", [
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1neg__input__output__type__mismatch__round__kernel.html#a96a7dee15c533bcfb731b6c1caa1485a", null ]
     ] ],
@@ -877,6 +880,21 @@ var namespaceonert__micro_1_1test__model =
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1quantize__float.html#a2360d469beaa51bbf708e2f007739a9b", null ],
       [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1quantize__float.html#a72fa4a9bc3c5804e6ca4186b67f683af", null ],
       [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1quantize__float.html#ab6cb4234822e2c7472c118bc53d26832", null ]
+    ] ],
+    [ "reduce_max_float", "namespaceonert__micro_1_1test__model_1_1reduce__max__float.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1reduce__max__float.html#a41a50531a5bd3152fb6fb4515cb7ca8a", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1reduce__max__float.html#a89ad396d90bfdac9a1dce26121f1be5a", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1reduce__max__float.html#af66cff422731b1bef612c9443642aabc", null ]
+    ] ],
+    [ "reduce_max_float_3d_axis_1", "namespaceonert__micro_1_1test__model_1_1reduce__max__float__3d__axis__1.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1reduce__max__float__3d__axis__1.html#ae1a094d4fad50844e4c117e5c5c9c0bb", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1reduce__max__float__3d__axis__1.html#ab57f5fc5d9ad65e864d56134f322c747", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1reduce__max__float__3d__axis__1.html#a08545af065b42eda0ca6fac07a9fa45d", null ]
+    ] ],
+    [ "reduce_max_float_4d_axis_1_2", "namespaceonert__micro_1_1test__model_1_1reduce__max__float__4d__axis__1__2.html", [
+      [ "input_data", "namespaceonert__micro_1_1test__model_1_1reduce__max__float__4d__axis__1__2.html#aa356c9ee5a903abb9229ca2d020b9205", null ],
+      [ "reference_output_data", "namespaceonert__micro_1_1test__model_1_1reduce__max__float__4d__axis__1__2.html#a8c47a7e546852dbaffbcf68753992dd9", null ],
+      [ "test_kernel_model_circle", "namespaceonert__micro_1_1test__model_1_1reduce__max__float__4d__axis__1__2.html#a7eb3c85ce9e2dafafd1d11dbeebf2e44", null ]
     ] ],
     [ "reduce_prod_float", "namespaceonert__micro_1_1test__model_1_1reduce__prod__float.html", [
       [ "input_data", "namespaceonert__micro_1_1test__model_1_1reduce__prod__float.html#aff519eaaa13dfd144400e8b23bd0f391", null ],
@@ -1246,6 +1264,7 @@ var namespaceonert__micro_1_1test__model =
     [ "NegTestDataInputOutputTypeMismatchMeanKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_mean_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_mean_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchNegKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_neg_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_neg_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchPadKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_pad_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_pad_kernel" ],
+    [ "NegTestDataInputOutputTypeMismatchReduceMaxKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_reduce_max_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_reduce_max_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchReLU6Kernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u6_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchReLUKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_re_l_u_kernel" ],
     [ "NegTestDataInputOutputTypeMismatchRoundKernel", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_round_kernel.html", "classonert__micro_1_1test__model_1_1_neg_test_data_input_output_type_mismatch_round_kernel" ],
@@ -1380,6 +1399,9 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataFloatPack", "classonert__micro_1_1test__model_1_1_test_data_float_pack.html", "classonert__micro_1_1test__model_1_1_test_data_float_pack" ],
     [ "TestDataFloatPad", "classonert__micro_1_1test__model_1_1_test_data_float_pad.html", "classonert__micro_1_1test__model_1_1_test_data_float_pad" ],
     [ "TestDataFloatQuantize", "classonert__micro_1_1test__model_1_1_test_data_float_quantize.html", "classonert__micro_1_1test__model_1_1_test_data_float_quantize" ],
+    [ "TestDataFloatReduceMax", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_max.html", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_max" ],
+    [ "TestDataFloatReduceMax3D", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_max3_d.html", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_max3_d" ],
+    [ "TestDataFloatReduceMax4D_2axis", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_max4_d__2axis.html", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_max4_d__2axis" ],
     [ "TestDataFloatReduceProd", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_prod.html", "classonert__micro_1_1test__model_1_1_test_data_float_reduce_prod" ],
     [ "TestDataFloatReLU", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u.html", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u" ],
     [ "TestDataFloatReLU6", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u6.html", "classonert__micro_1_1test__model_1_1_test_data_float_re_l_u6" ],
@@ -1465,6 +1487,7 @@ var namespaceonert__micro_1_1test__model =
     [ "TestDataQuantizeBase", "classonert__micro_1_1test__model_1_1_test_data_quantize_base.html", "classonert__micro_1_1test__model_1_1_test_data_quantize_base" ],
     [ "TestDataQuantLess", "classonert__micro_1_1test__model_1_1_test_data_quant_less.html", "classonert__micro_1_1test__model_1_1_test_data_quant_less" ],
     [ "TestDataQuantU8Pack", "classonert__micro_1_1test__model_1_1_test_data_quant_u8_pack.html", "classonert__micro_1_1test__model_1_1_test_data_quant_u8_pack" ],
+    [ "TestDataReduceMaxBase", "classonert__micro_1_1test__model_1_1_test_data_reduce_max_base.html", "classonert__micro_1_1test__model_1_1_test_data_reduce_max_base" ],
     [ "TestDataReduceProdBase", "classonert__micro_1_1test__model_1_1_test_data_reduce_prod_base.html", "classonert__micro_1_1test__model_1_1_test_data_reduce_prod_base" ],
     [ "TestDataReLU6Base", "classonert__micro_1_1test__model_1_1_test_data_re_l_u6_base.html", "classonert__micro_1_1test__model_1_1_test_data_re_l_u6_base" ],
     [ "TestDataReLUBase", "classonert__micro_1_1test__model_1_1_test_data_re_l_u_base.html", "classonert__micro_1_1test__model_1_1_test_data_re_l_u_base" ],
