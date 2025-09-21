@@ -9,11 +9,4 @@ set -e
 # which causes invalid permission problem.
 # e.g. When `pip` installs user packages, it proceeds based on $HOME.
 # To proper installation, $HOME should be root.
-CODENAME=$(awk -F "=" '/UBUNTU_CODENAME/ {print $2}' /etc/os-release)
-if [[ $CODENAME == "bionic" ]]; then
-  # Ubuntu 18.04 doesn't support w option.
-  su - $(whoami) -p -c '/usr/share/one/bin/one-prepare-venv' # $(whoami) = root
-else
-  su - $(whoami) -w ONE_PREPVENV_TORCH_SOURCE -c '/usr/share/one/bin/one-prepare-venv' # $(whoami) = root
-fi
-
+su - $(whoami) -w ONE_PREPVENV_TORCH_SOURCE -c '/usr/share/one/bin/one-prepare-venv' # $(whoami) = root
