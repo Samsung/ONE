@@ -4,8 +4,6 @@ list(REMOVE_ITEM SOURCES ${TESTS})
 
 add_library(loco SHARED ${SOURCES})
 target_include_directories(loco PUBLIC include)
-# TODO Remove dependencies on angkor library
-target_link_libraries(loco PUBLIC angkor)
 # Let's apply nncc common compile options
 #
 # NOTE This will enable strict compilation (warnings as error).
