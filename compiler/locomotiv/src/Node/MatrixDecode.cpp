@@ -16,6 +16,7 @@
 
 #include "NodeExecution.h"
 
+#include "ConvertIndex.h"
 #include "NodeDataImpl.h"
 #include "NodeDomain.h"
 #include "Validation.h"
@@ -57,7 +58,7 @@ std::unique_ptr<locomotiv::NodeData> matrix_decode(const loco::MatrixDecode *nod
   // Copy buffer in an order arranged by decoder
   for (IndexEnumerator e{node_buf.shape()}; e.valid(); e.advance())
   {
-    loco::MatrixIndex matrix_index = decoder->value(e.current());
+    loco::MatrixIndex matrix_index = decoder->value(locomotiv::as_loco_index(e.current()));
     Index buf_index({matrix_index.row(), matrix_index.column()});
 
     node_buf.at(e.current()) = input_buf->at(buf_index);

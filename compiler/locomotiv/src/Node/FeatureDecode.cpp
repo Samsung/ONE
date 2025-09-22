@@ -16,6 +16,7 @@
 
 #include "NodeExecution.h"
 
+#include "ConvertIndex.h"
 #include "NodeDataImpl.h"
 #include "NodeDomain.h"
 #include "Validation.h"
@@ -60,7 +61,7 @@ std::unique_ptr<locomotiv::NodeData> feature_decode(const loco::FeatureDecode *n
   // Copy buffer in an order arranged by decoder
   for (IndexEnumerator e{node_buf.shape()}; e.valid(); e.advance())
   {
-    loco::FeatureIndex feature_index = decoder->value(e.current());
+    loco::FeatureIndex feature_index = decoder->value(locomotiv::as_loco_index(e.current()));
     Index buf_index({feature_index.batch(), feature_index.row(), feature_index.column(),
                      feature_index.channel()});
 
