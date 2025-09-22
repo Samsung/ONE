@@ -16,6 +16,7 @@
 
 #include "NodeExecution.h"
 
+#include "ConvertIndex.h"
 #include "NodeDataImpl.h"
 #include "NodeDomain.h"
 #include "Validation.h"
@@ -63,7 +64,7 @@ std::unique_ptr<locomotiv::NodeData> matrix_encode(const loco::MatrixEncode *nod
     index.row() = e.current().at(0);
     index.column() = e.current().at(1);
 
-    node_buf.at(e.current()) = input_buf->at(encoder->value(index));
+    node_buf.at(e.current()) = input_buf->at(locomotiv::as_nncc_index(encoder->value(index)));
   }
 
   return locomotiv::make_data(node_buf);
