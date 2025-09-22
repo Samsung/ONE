@@ -150,11 +150,6 @@ ifeq (,$(findstring android,$(TARGET_OS)))
 		$(OPTIONS_NNCC)
 	./nncc build -j$(NPROCS)
 	cmake --install $(NNCC_FOLDER) $(INSTALL_OPTIONS)
-# install angkor TensorIndex and oops InternalExn header (TODO: Remove this)
-	@mkdir -p ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
-	@mkdir -p ${OVERLAY_FOLDER}/include/oops
-	@cp compiler/angkor/include/nncc/core/ADT/tensor/Index.h ${OVERLAY_FOLDER}/include/nncc/core/ADT/tensor
-	@cp compiler/oops/include/oops/InternalExn.h ${OVERLAY_FOLDER}/include/oops
 	@echo "Done prepare-nncc"
 endif
 
