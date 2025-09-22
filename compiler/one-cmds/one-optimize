@@ -68,7 +68,7 @@ def _get_parser():
         # opt = (option_name, help_message)
         circle2circle_group.add_argument('--' + opt[0], action='store_true', help=opt[1])
 
-    # optimization option from one-build
+    # optimization option from onecc
     parser.add_argument('-O', type=str, help=argparse.SUPPRESS)
 
     return parser
