@@ -56,6 +56,11 @@ jobs:
           source ./venv/bin/activate
           pip3 install -U setuptools wheel
 
+      # For flatc build
+      - name: Install glibc-static
+        run: |
+          yum install -y glibc-static
+
       - name: Build
         run: |
           source ./venv/bin/activate
