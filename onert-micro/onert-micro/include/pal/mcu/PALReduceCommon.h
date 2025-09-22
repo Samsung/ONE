@@ -61,6 +61,17 @@ struct ReduceProductFn
 
 // ------------------------------------------------------------------------------------------------
 
+template <typename T>
+struct ReduceMaxFn
+{
+  void operator()(T& total, const T value)
+  {
+    total = std::max(total, value);
+  }
+};
+
+// ------------------------------------------------------------------------------------------------
+
 template <typename T, template <typename> class ReduceFn>
 class Reducer
 {
