@@ -26,33 +26,26 @@
 using namespace onert_micro;
 using namespace onert_micro::execute;
 
-namespace
+namespace impl
 {
 
-constexpr uint32_t input1TensorIdx = 0;
-constexpr uint32_t input2TensorIdx = 1;
-constexpr uint32_t outputTensorIdx = 0;
-
-template <typename T>
-OMStatus reduceMaxGeneric(core::OMRuntimeShape &input_shape, const T *input_data,
-                          core::OMRuntimeShape &axis_shape, const int *axis_data,
-                          core::OMRuntimeShape &output_shape, T *output_data, bool keep_dims)
+template <typename T> OMStatus CircleReduceMax(OMRuntimeKernel &rt_kernel)
 {
-  int64_t num_axises = (axis_shape.dimensionsCount() > 0) ? axis_shape.dims(0) : 0;
+  constexpr static T kInitValue = std::numeric_limits<T>::lowest();
 
-  bool result = onert_micro::execute::pal::ReduceGeneric<T>(
-    input_data, input_shape.dimsData(), input_shape.dimensionsCount(), output_data, axis_data,
-    num_axises,
-    /*init_value=*/T(std::numeric_limits<T>::lowest()), output_shape.flatSize(),
-    [](const T current, const T in) -> T { return std::max(in, current); });
+  core::OMReduceDataContext<T> ctx(rt_kernel);
+  pal::Reducer<T, pal::ReduceMaxFn> reducer(ctx, kInitValue);
 
-  if (result)
-    return Ok;
-  else
+  bool is_ok = reducer.Reduce();
+  if (!is_ok)
+  {
     return UnknownError;
+  }
+
+  return Ok;
 }
 
-} // namespace
+} // namespace impl
 
 namespace onert_micro
 {
@@ -61,80 +54,45 @@ namespace execute
 
 OMStatus execute_kernel_CircleReduceMax(const OMExecuteArgs &execute_args)
 {
-  core::OMRuntimeContext &runtime_context = execute_args.runtime_context;
-  core::OMRuntimeStorage &runtime_storage = execute_args.runtime_storage;
+  core::OMRuntimeContext &rt_context = execute_args.runtime_context;
+  core::OMRuntimeStorage &rt_storage = execute_args.runtime_storage;
+
   uint16_t op_index = execute_args.kernel_index;
 
-  const circle::Tensor *input = nullptr;
-  const circle::Tensor *axis = nullptr;
-  const circle::Tensor *output = nullptr;
+  OMRuntimeKernel rt_kernel;
+  rt_kernel.readKernel(op_index, rt_context);
+  rt_kernel.getDataFromStorage(op_index, rt_storage, rt_context);
 
-  uint8_t *input_data = nullptr;
-  uint8_t *axis_data = nullptr;
-  uint8_t *output_data = nullptr;
+  constexpr static size_t kInputTensorIdx = 0;
 
-  uint16_t input_index = 0;
-  uint16_t axis_index = 0;
+  const circle::Tensor *input = rt_kernel.inputs[kInputTensorIdx];
 
-  const circle::ReducerOptions *options;
-  // Read kernel
-  {
-    execute::OMRuntimeKernel runtime_kernel;
-    runtime_kernel.readKernel(op_index, runtime_context);
-
-    input = runtime_kernel.inputs[input1TensorIdx];
-    axis = runtime_kernel.inputs[input2TensorIdx];
-    output = runtime_kernel.outputs[outputTensorIdx];
-    assert(input != nullptr);
-    assert(axis != nullptr);
-    assert(output != nullptr);
-
-    runtime_kernel.getDataFromStorage(op_index, runtime_storage, runtime_context);
-
-    input_data = runtime_kernel.inputs_data[input1TensorIdx];
-    axis_data = runtime_kernel.inputs_data[input2TensorIdx];
-    output_data = runtime_kernel.outputs_data[outputTensorIdx];
-    assert(input_data != nullptr);
-    assert(axis_data != nullptr);
-    assert(output_data != nullptr);
-
-    options = runtime_kernel.first_operator->builtin_options_as_ReducerOptions();
-
-    input_index = runtime_kernel.inputs_index[input1TensorIdx];
-    axis_index = runtime_kernel.inputs_index[input2TensorIdx];
-  }
-
-  OMStatus status = Ok;
-
-  core::OMRuntimeShape input_shape(input);
-  core::OMRuntimeShape axis_shape(axis);
-  core::OMRuntimeShape output_shape(output);
+  // TODO: Add ReducerOptions support
 
   switch (input->type())
   {
 #ifndef DIS_FLOAT
     case circle::TensorType_FLOAT32:
-
-      // TODO: support keep_dims correctly
-      status =
-        reduceMaxGeneric(input_shape, core::utils::castInputData<float>(input_data), axis_shape,
-                         core::utils::castInputData<int>(axis_data), output_shape,
-                         core::utils::castOutputData<float>(output_data), options->keep_dims()
-
-        );
-
-      break;
+      return impl::CircleReduceMax<float>(rt_kernel);
 #endif // DIS_FLOAT
+
+#ifndef DIS_QUANT
+    case circle::TensorType_INT8:
+      return impl::CircleReduceMax<int8_t>(rt_kernel);
+#endif // DIS_QUANT
+
     case circle::TensorType_INT32:
+      return impl::CircleReduceMax<int32_t>(rt_kernel);
+
     case circle::TensorType_INT64:
+      return impl::CircleReduceMax<int64_t>(rt_kernel);
+
     default:
-    {
-      status = UnsupportedType;
-      assert(false && "Unsupported type.");
-    }
+      assert(false && "Unsupported type");
+      return UnsupportedType;
   }
 
-  return status;
+  return Ok;
 }
 
 } // namespace execute
