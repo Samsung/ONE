@@ -91,7 +91,7 @@ else ()
             SCHEMA_FILES "schema.fbs"
             )
 
-    set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/runtime/libs/circle-schema/include/circle_traininfo.fbs")
+    set(SCHEMA_FILE "${NNAS_PROJECT_SOURCE_DIR}/runtime/libs/circle-schema/circle_traininfo.fbs")
 
     # NOTE Copy circle_schema.fbs as schema.fbs to generate "schema_generated.fbs" instead of "circle_schema_generated.fbs"
     add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/traininfo.fbs"
@@ -219,7 +219,7 @@ add_custom_command(
         OUTPUT "${MICRO_ARM_BINARY}"
         COMMAND "${CMAKE_MAKE_PROGRAM}" onert_micro_dev -j ${CPU_COUNT}
         WORKING_DIRECTORY "${MICRO_ARM_BUILD_DIR}"
-        DEPENDS onert_micro_arm_cmake ${OM_CIRCLE_SCHEMA}
+        DEPENDS onert_micro_arm_cmake ${OM_CIRCLE_SCHEMA} ${OM_TRAININFO_SCHEMA}
         VERBATIM
 )
 
