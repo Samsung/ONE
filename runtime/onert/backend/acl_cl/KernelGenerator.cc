@@ -1229,7 +1229,7 @@ void KernelGenerator::visit(const ir::operation::Gather &node)
     acl_common::disableDimCorrection(indices_tensor);
   }
 
-  auto fn = acl_common::generateLayer<arm_compute::CLGatherEx>(
+  auto fn = acl_common::generateLayer<arm_compute::CLGather>(
     ifm_tensor->handle(), indices_tensor->handle(), ofm_tensor->handle(), axis);
 
   // Revert disabling applied dim_correction
