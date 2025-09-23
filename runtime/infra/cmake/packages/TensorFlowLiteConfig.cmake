@@ -1,17 +1,19 @@
 # NOTE This line prevents multiple definitions of tensorflow-lite target
-if(TARGET tensorflow-lite-2.16.1)
+if(TARGET tensorflow-lite)
   set(TensorFlowLite_FOUND TRUE)
   return()
-endif(TARGET tensorflow-lite-2.16.1)
+endif(TARGET tensorflow-lite)
 
 if(BUILD_TENSORFLOW_LITE)
   macro(return_unless VAR)
-  if(NOT ${VAR})
-    message("TFLite 2.16.1: ${VAR} NOT TRUE")
-    set(TensorFlowLite_FOUND FALSE)
-    return()
-  endif(NOT ${VAR})
+    if(NOT ${VAR})
+      message("TFLite 2.18.1: ${VAR} NOT TRUE")
+      set(TensorFlowLite_FOUND FALSE)
+      return()
+    endif(NOT ${VAR})
   endmacro(return_unless)
+
+  message(STATUS "Building TFLite 2.18.1...")
 
   nnfw_include(ExternalSourceTools)
   nnfw_include(OptionTools)
@@ -19,7 +21,7 @@ if(BUILD_TENSORFLOW_LITE)
   nnfw_find_package(TensorFlowSource QUIET)
   return_unless(TensorFlowSource_FOUND)
 
-  # Below urls come from https://github.com/tensorflow/tensorflow/blob/v2.16.1/tensorflow/workspace2.bzl
+  # Below urls come from https://github.com/tensorflow/tensorflow/blob/v2.18.1/tensorflow/workspace2.bzl
   nnfw_find_package(Abseil QUIET)
   return_unless(Abseil_FOUND)
   nnfw_find_package(Eigen QUIET)
@@ -55,7 +57,7 @@ if(BUILD_TENSORFLOW_LITE)
   nnfw_find_package(NEON2SSESource QUIET)
 
   nnfw_include(ExternalProjectTools)
-  add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/TensorFlowLite" tflite-2.16.1)
+  add_extdirectory("${CMAKE_CURRENT_LIST_DIR}/TensorFlowLite" tflite-2.18.1)
 
   set(TensorFlowLite_FOUND TRUE)
   return()
@@ -66,7 +68,7 @@ find_path(TFLITE_INCLUDE_DIR NAMES  tensorflow/lite/c/c_api.h)
 find_library(TFLITE_LIB NAMES       tensorflow2-lite)
 
 if(NOT TFLITE_INCLUDE_DIR)
-  # Tizen install TensorFlow Lite 2.16.1 headers in /usr/include/tensorflow2
+  # Tizen install TensorFlow Lite 2.x headers in /usr/include/tensorflow2
   find_path(TFLITE_INCLUDE_DIR NAMES tensorflow/lite/c/c_api.h PATHS "/usr/include/tensorflow2")
   if(NOT TFLITE_INCLUDE_DIR)
     set(TensorFlowLite_FOUND FALSE)
@@ -82,14 +84,14 @@ endif(NOT TFLITE_LIB)
 message(STATUS "Found TensorFlow Lite: TRUE (include: ${TFLITE_INCLUDE_DIR}, lib: ${TFLITE_LIB}")
 
 # TODO Use IMPORTED target
-add_library(tensorflow-lite-2.16.1 INTERFACE)
-target_include_directories(tensorflow-lite-2.16.1 SYSTEM INTERFACE ${TFLITE_INCLUDE_DIR})
-target_link_libraries(tensorflow-lite-2.16.1 INTERFACE ${TFLITE_LIB})
+add_library(tensorflow-lite INTERFACE)
+target_include_directories(tensorflow-lite SYSTEM INTERFACE ${TFLITE_INCLUDE_DIR})
+target_link_libraries(tensorflow-lite INTERFACE ${TFLITE_LIB})
 find_package(Flatbuffers)
 if(Flatbuffers_FOUND)
-  target_link_libraries(tensorflow-lite-2.16.1 INTERFACE flatbuffers::flatbuffers)
+  target_link_libraries(tensorflow-lite INTERFACE flatbuffers::flatbuffers)
 endif(Flatbuffers_FOUND)
 
-target_link_libraries(tensorflow-lite-2.16.1 INTERFACE Threads::Threads)
+target_link_libraries(tensorflow-lite INTERFACE Threads::Threads)
 
 set(TensorFlowLite_FOUND TRUE)
