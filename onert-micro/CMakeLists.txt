@@ -217,7 +217,7 @@ set(MICRO_ARM_BINARY "${MICRO_ARM_BUILD_DIR}/onert_micro/src/libonert_micro_dev.
 
 add_custom_command(
         OUTPUT "${MICRO_ARM_BINARY}"
-        COMMAND "${CMAKE_MAKE_PROGRAM}" onert_micro_dev -j ${CPU_COUNT}
+        COMMAND "${CMAKE_MAKE_PROGRAM}" onert_micro_dev -j2
         WORKING_DIRECTORY "${MICRO_ARM_BUILD_DIR}"
         DEPENDS onert_micro_arm_cmake ${OM_CIRCLE_SCHEMA} ${OM_TRAININFO_SCHEMA}
         VERBATIM
