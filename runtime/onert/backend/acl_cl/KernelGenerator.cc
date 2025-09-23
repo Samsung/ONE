@@ -621,14 +621,13 @@ void KernelGenerator::visit(const ir::operation::ElementwiseBinary &node)
   {
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_AND:
     {
-      fn = acl_common::generateLayer<arm_compute::CLBinaryLogicalOp>(
-        lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle(),
-        arm_compute::BinaryLogicalOperation::AND);
+      fn = acl_common::generateLayer<arm_compute::CLLogicalAnd>(
+        lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
       break;
     }
     case ir::operation::ElementwiseBinary::ElementwiseBinaryType::LOGICAL_OR:
     {
-      fn = acl_common::generateLayer<arm_compute::CLBitwiseOr>(
+      fn = acl_common::generateLayer<arm_compute::CLLogicalOr>(
         lhs_tensor->handle(), rhs_tensor->handle(), output_tensor->handle());
       break;
     }
