@@ -16,7 +16,6 @@
 #ifndef __ARM_COMPUTE_CLFUNCTIONSEX_H__
 #define __ARM_COMPUTE_CLFUNCTIONSEX_H__
 
-#include <arm_compute/runtime/CL/functions/CLBinaryLogicalOp.h>
 #include <arm_compute/runtime/CL/functions/CLCastBool.h>
 #include <arm_compute/runtime/CL/functions/CLEmbeddingLookup.h>
 #include <arm_compute/runtime/CL/functions/CLFullyConnectedReshapingLayer.h>

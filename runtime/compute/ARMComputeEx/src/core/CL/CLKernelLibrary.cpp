@@ -59,7 +59,6 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
   {"arg_min_max_ex_y", "arg_min_max_ex.cl"},
   {"arg_min_max_ex_z", "arg_min_max_ex.cl"},
   {"arg_min_max_ex_w", "arg_min_max_ex.cl"},
-  {"binary_logical_op", "binary_logical_op.cl"},
   {"cast_bool", "cast.cl"},
   {"embedding_lookup", "embedding_lookup.cl"},
   {"gather_ex", "gather_ex.cl"},
@@ -92,10 +91,6 @@ const std::map<std::string, std::string, std::less<>> CLKernelLibraryEx::_progra
   {
     "activation_float_helpers.h",
 #include "./cl_kernels/activation_float_helpers.hembed"
-  },
-  {
-    "binary_logical_op.cl",
-#include "./cl_kernels/binary_logical_op.clembed"
   },
   {
     "cast.cl",

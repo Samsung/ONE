@@ -51,13 +51,6 @@ enum class ArgOperation
   MIN,
 };
 
-/** Available binary logical operations */
-enum class BinaryLogicalOperation
-{
-  AND, /**< AND */
-  OR,  /**< OR */
-};
-
 enum class ComparisonOperationEx
 {
   EQUAL,     /**< EQUAL */
