@@ -351,7 +351,7 @@ std::optional<BufferOffset<circle::Buffer>> Translator::BuildBuffer(mlir::Value 
       break;
     default:
       // TODO support other types
-      throw std::runtime_error("FYI convert mlir::ElementsAttr to flatbuffers vector");
+      throw std::runtime_error("NYI convert mlir::ElementsAttr to flatbuffers vector");
   }
   if (use_buffer_offset_)
   {
