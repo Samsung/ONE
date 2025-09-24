@@ -33,8 +33,6 @@
 #include "ir/TypeInfo.h"
 #include "ir/Coordinates.h"
 #include "ir/Padding.h"
-#include "misc/feature/Shape.h"
-#include "misc/kernel/Shape.h"
 
 #include "AclFunction.h"
 
