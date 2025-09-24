@@ -17,7 +17,6 @@
 #define __ARM_COMPUTE_NEFUNCTIONSEX_H__
 
 #include <arm_compute/runtime/NEON/functions/NECastBool.h>
-#include <arm_compute/runtime/NEON/functions/NEEmbeddingLookup.h>
 #include <arm_compute/runtime/NEON/functions/NEFullyConnectedReshapingLayer.h>
 #include <arm_compute/runtime/NEON/functions/NEHashtableLookup.h>
 #include <arm_compute/runtime/NEON/functions/NEInstanceNormalizationLayerEx.h>

@@ -499,8 +499,37 @@ void KernelGenerator::visit(const ir::operation::EmbeddingLookup &node)
   auto lookups_tensor = _tensor_reg->getAclTensor(lookups_index);
   auto values_tensor = _tensor_reg->getAclTensor(values_index);
 
-  auto fn = acl_common::generateLayer<arm_compute::NEEmbeddingLookup>(
-    values_tensor->handle(), output_tensor->handle(), lookups_tensor->handle());
+  size_t n = _ctx.at(values_index).shape().rank();
+  assert(n == values_tensor->num_dimensions());
+  size_t k = _ctx.at(lookups_index).shape().rank();
+  assert(k == lookups_tensor->num_dimensions());
+
+  const int axis = ::onert::backend::acl_common::ToARMComputeAxis(n, 0).value();
+
+  // Disable applied dim_correction
+  if (n != values_tensor->info()->num_dimensions())
+  {
+    // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
+    acl_common::disableDimCorrection(values_tensor);
+  }
+  if (k != lookups_tensor->info()->num_dimensions())
+  {
+    // This means that high dimension's value is 1 and indices tensor is applied dim_correction
+    acl_common::disableDimCorrection(lookups_tensor);
+  }
+
+  auto fn = acl_common::generateLayer<arm_compute::NEGather>(
+    values_tensor->handle(), lookups_tensor->handle(), output_tensor->handle(), axis);
+
+  // Revert disabling applied dim_correction
+  if (values_tensor->dimension(0) == 1)
+  {
+    acl_common::enableDimCorrection(values_tensor);
+  }
+  if (lookups_tensor->dimension(0) == 1)
+  {
+    acl_common::enableDimCorrection(lookups_tensor);
+  }
 
   _return_fn = asAclFunction(std::move(fn));
 }
