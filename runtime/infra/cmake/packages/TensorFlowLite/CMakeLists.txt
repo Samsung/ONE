@@ -91,19 +91,7 @@ set(TFLITE_DELEGATES_SRCS
 
 # Disable TFLite GPU
 
-# Enable NNAPI
-populate_tflite_source_vars("delegates/nnapi"
-  TFLITE_DELEGATES_NNAPI_SRCS
-  FILTER "(_test_list|_disabled)\\.(cc|h)$"
-)
-populate_tflite_source_vars(
-  "nnapi" TFLITE_NNAPI_SRCS FILTER "(_disabled)\\.(cc|h)$"
-)
-list(APPEND TFLITE_NNAPI_SRCS
-  "${TFLITE_SOURCE_DIR}/nnapi/sl/SupportLibrary.cc"
-)
-
-# Disable experimental delegate
+# Disable NNAPI
 set(TFLITE_DELEGATES_NNAPI_SRCS
   "${TFLITE_SOURCE_DIR}/delegates/nnapi/nnapi_delegate_disabled.cc"
 )
@@ -188,7 +176,7 @@ list(APPEND TFLITE_INCLUDE_DIRS "${TSL_SOURCE_DIR}")
 list(APPEND TFLITE_INCLUDE_DIRS "${XLA_SOURCE_DIR}")
 list(APPEND TFLITE_INCLUDE_DIRS "${TensorFlowSource_DIR}")
 list(APPEND TFLITE_INCLUDE_DIRS "${GEMMLowpSource_DIR}")
-list(APPEND TFLITE_INCLUDE_DIRS "${Fp16Source_DIR}/include")
+#list(APPEND TFLITE_INCLUDE_DIRS "${Fp16Source_DIR}/include")
 #list(APPEND TFLITE_INCLUDE_DIRS "${Pybind11Source_DIR}/include")
 list(APPEND TFLITE_INCLUDE_DIRS "${CpuInfoSource_DIR}")
 list(APPEND TFLITE_INCLUDE_DIRS "${MLDtypesSource_DIR}")
