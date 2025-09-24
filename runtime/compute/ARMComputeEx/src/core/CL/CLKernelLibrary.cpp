@@ -60,7 +60,6 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
   {"arg_min_max_ex_z", "arg_min_max_ex.cl"},
   {"arg_min_max_ex_w", "arg_min_max_ex.cl"},
   {"cast_bool", "cast.cl"},
-  {"embedding_lookup", "embedding_lookup.cl"},
   {"gemmlowp_mm_midgard_ex", "gemmlowp_ex.cl"},
   {"gemm_accumulate_biases", "gemm.cl"},
   {"hashtable_lookup", "hashtable_lookup.cl"},
@@ -92,10 +91,6 @@ const std::map<std::string, std::string, std::less<>> CLKernelLibraryEx::_progra
   {
     "cast.cl",
 #include "./cl_kernels/cast.clembed"
-  },
-  {
-    "embedding_lookup.cl",
-#include "./cl_kernels/embedding_lookup.clembed"
   },
   {
     "gemmlowp_ex.cl",
