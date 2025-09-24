@@ -6,3 +6,13 @@ add_library(${OM_CIRCLE_SCHEMA} STATIC ${SOURCES})
 set_target_properties(${OM_CIRCLE_SCHEMA} PROPERTIES LINKER_LANGUAGE CXX)
 target_include_directories(${OM_CIRCLE_SCHEMA} PUBLIC "${ONERT_MICRO_EXTERNAL_DIR}/gen")
 target_include_directories(${OM_CIRCLE_SCHEMA} PUBLIC "${ONERT_MICRO_EXTERNAL_DIR}")
+
+# Add traininfo schema target
+unset(TRAININFO_SOURCES)
+set(TRAININFO_SOURCES "${ONERT_MICRO_EXTERNAL_DIR}/gen/circle-generated/circle/traininfo_generated.h")
+
+# NOTE This header-only library
+add_library(${OM_TRAININFO_SCHEMA} STATIC ${TRAININFO_SOURCES})
+set_target_properties(${OM_TRAININFO_SCHEMA} PROPERTIES LINKER_LANGUAGE CXX)
+target_include_directories(${OM_TRAININFO_SCHEMA} PUBLIC "${ONERT_MICRO_EXTERNAL_DIR}/gen")
+target_include_directories(${OM_TRAININFO_SCHEMA} PUBLIC "${ONERT_MICRO_EXTERNAL_DIR}")
