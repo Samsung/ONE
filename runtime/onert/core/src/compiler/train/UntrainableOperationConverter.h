@@ -17,8 +17,8 @@
 #ifndef __ONERT_COMPILER_TRAIN_UNTRAINABLE_OPERATION_CONVERTER_H__
 #define __ONERT_COMPILER_TRAIN_UNTRAINABLE_OPERATION_CONVERTER_H__
 
-#include "ir/Operations.Include.h"
 #include "ir/OperationVisitor.h"
+#include "ir/Operations.Include.h"
 #include "ir/train/TrainableGraph.h"
 
 #include <memory>

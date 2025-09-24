@@ -15,6 +15,7 @@
  */
 
 #include "ir/operation/DetectionPostProcess.h"
+
 #include "ir/OperationVisitor.h"
 
 namespace onert::ir::operation

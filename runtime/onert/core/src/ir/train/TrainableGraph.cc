@@ -16,15 +16,16 @@
 
 #include "ir/train/TrainableGraph.h"
 
-#include "ir/OperandIndexMap.h"
-#include "UseDefGenerator.h"
-#include "util/Set.h"
 #include "../verifier/Verifier.h"
+#include "UseDefGenerator.h"
+#include "ir/OperandIndexMap.h"
+#include "util/Set.h"
+
+#include <misc/polymorphic_downcast.h>
 
 #include <algorithm>
-#include <set>
 #include <map>
-#include <misc/polymorphic_downcast.h>
+#include <set>
 
 namespace
 {

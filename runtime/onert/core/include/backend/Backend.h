@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_BACKEND_H__
 #define __ONERT_BACKEND_BACKEND_H__
 
-#include <memory>
-
-#include "ir/Graph.h"
-#include "backend/IConfig.h"
 #include "backend/BackendContext.h"
+#include "backend/IConfig.h"
+#include "ir/Graph.h"
+
+#include <memory>
 
 namespace onert::backend
 {

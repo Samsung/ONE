@@ -18,8 +18,8 @@
 
 #include "backend/Backend.h"
 #include "ir/Graph.h"
-#include "util/logging.h"
 #include "util/Utils.h"
+#include "util/logging.h"
 
 namespace onert::compiler::pass
 {

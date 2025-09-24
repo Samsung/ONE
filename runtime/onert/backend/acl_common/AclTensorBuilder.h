@@ -22,7 +22,6 @@
 
 #include <cl_common/LifetimeMap.h>
 #include <cl_common/ParentInfo.h>
-
 #include <ir/OperandIndexMap.h>
 #include <ir/Operands.h>
 #include <util/Utils.h>
@@ -104,12 +103,11 @@ private:
 
 } // namespace onert::backend::acl_common
 
+#include "Convert.h"
+#include "util/logging.h"
+
 #include <cassert>
 #include <stack>
-
-#include "Convert.h"
-
-#include "util/logging.h"
 
 namespace onert::backend::acl_common
 {

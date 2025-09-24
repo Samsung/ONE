@@ -17,14 +17,14 @@
 #ifndef __ONERT_BACKEND_BUILTIN_KERNEL_WHILE_LAYER_H__
 #define __ONERT_BACKEND_BUILTIN_KERNEL_WHILE_LAYER_H__
 
+#include "../ExternalContext.h"
+#include "backend/basic/MemoryManager.h"
+
 #include <backend/IPortableTensor.h>
 #include <exec/IExecutors.h>
 #include <exec/IFunction.h>
-#include <ir/OperandIndexSequence.h>
 #include <ir/Graph.h>
-#include "../ExternalContext.h"
-
-#include "backend/basic/MemoryManager.h"
+#include <ir/OperandIndexSequence.h>
 
 namespace onert::backend::builtin::kernel
 {

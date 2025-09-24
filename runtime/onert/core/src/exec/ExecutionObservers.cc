@@ -17,13 +17,12 @@
 #include "ExecutionObservers.h"
 
 #include "../util/EventWriter.h"
-
 #include "util/logging.h"
 
 #include <misc/polymorphic_downcast.h>
 
-#include <string>
 #include <sstream>
+#include <string>
 
 namespace
 {

@@ -15,6 +15,7 @@
  */
 
 #include "MinMaxRecorder.h"
+
 #include "MinMaxData.h"
 #include "backend/ITensor.h"
 

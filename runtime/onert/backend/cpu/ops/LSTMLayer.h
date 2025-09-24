@@ -17,11 +17,12 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_LSTMLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_LSTMLAYER_H__
 
-#include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
+
+#include <backend/IPortableTensor.h>
+#include <exec/IFunction.h>
 #include <ir/InternalType.h>
 #include <ir/operation/LSTM.h>
-#include <exec/IFunction.h>
 
 namespace nnfw::cker
 {

@@ -24,10 +24,10 @@
 #ifndef __ONERT_DUMPER_DOT_NODE_H__
 #define __ONERT_DUMPER_DOT_NODE_H__
 
-#include <string>
 #include <memory>
-#include <vector>
+#include <string>
 #include <unordered_map>
+#include <vector>
 
 namespace onert::dumper::dot
 {

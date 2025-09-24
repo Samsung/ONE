@@ -17,13 +17,12 @@
 #ifndef __ONERT_EXEC_EXECUTOR_BASE_H__
 #define __ONERT_EXEC_EXECUTOR_BASE_H__
 
-#include "ExecutionObservee.h"
 #include "../backend/builtin/IOTensor.h"
 #include "../compiler/TensorRegistries.h"
-
+#include "ExecutionObservee.h"
 #include "compiler/LoweredGraph.h"
-#include "exec/IExecutor.h"
 #include "exec/ExecutionContext.h"
+#include "exec/IExecutor.h"
 #include "ir/Graph.h"
 #include "ir/OperationIndexMap.h"
 #include "util/TracingCtx.h"

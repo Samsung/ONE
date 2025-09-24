@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include <backend/basic/MemoryManager.h>
-
-#include <cassert>
-
 #include "MemoryPlannerFactory.h"
 #include "util/ConfigSource.h"
 #include "util/logging.h"
+
+#include <backend/basic/MemoryManager.h>
+
+#include <cassert>
 
 namespace onert::backend::basic
 {

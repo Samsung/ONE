@@ -16,8 +16,9 @@
 
 #include "ir/DataType.h"
 
-#include <stdexcept>
 #include <Half.h>
+
+#include <stdexcept>
 
 using float16 = Half;
 

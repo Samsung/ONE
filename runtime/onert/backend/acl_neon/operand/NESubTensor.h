@@ -17,8 +17,9 @@
 #ifndef __ONERT_BACKEND_ACL_NEON_OPERAND_NE_SUB_TENSOR_H__
 #define __ONERT_BACKEND_ACL_NEON_OPERAND_NE_SUB_TENSOR_H__
 
-#include <arm_compute/runtime/SubTensor.h>
 #include "INETensor.h"
+
+#include <arm_compute/runtime/SubTensor.h>
 
 namespace onert::backend::acl_neon::operand
 {

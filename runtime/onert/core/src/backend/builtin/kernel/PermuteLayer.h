@@ -17,8 +17,8 @@
 #ifndef __ONERT_BACKEND_BUILTIN_KERNEL_PERMUTELAYER_H__
 #define __ONERT_BACKEND_BUILTIN_KERNEL_PERMUTELAYER_H__
 
-#include "../ExternalContext.h"
 #include "../../../exec/IPermuteFunction.h"
+#include "../ExternalContext.h"
 
 #include <ruy/thread_pool.h> // from @ruy
 

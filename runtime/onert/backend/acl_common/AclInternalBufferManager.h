@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_ACL_COMMON_INTERNAL_BUFFER_MANAGER_H__
 
 #include <arm_compute/runtime/IMemoryManager.h>
+
 #include <cassert>
 #include <memory>
 

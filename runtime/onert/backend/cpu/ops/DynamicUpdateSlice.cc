@@ -15,6 +15,7 @@
  */
 
 #include "DynamicUpdateSlice.h"
+
 #include "OperationUtils.h"
 
 #include <cker/operation/DynamicUpdateSlice.h>

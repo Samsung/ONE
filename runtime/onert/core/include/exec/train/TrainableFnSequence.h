@@ -17,12 +17,12 @@
 #ifndef __ONERT_EXEC_TRAIN_TRAINABLE_FN_SEQUENCE_H__
 #define __ONERT_EXEC_TRAIN_TRAINABLE_FN_SEQUENCE_H__
 
-#include "exec/train/ITrainableFunction.h"
 #include "exec/train/IGradientApplier.h"
+#include "exec/train/ITrainableFunction.h"
 
+#include <functional>
 #include <memory>
 #include <vector>
-#include <functional>
 
 namespace onert::exec::train
 {

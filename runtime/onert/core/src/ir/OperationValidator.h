@@ -17,9 +17,9 @@
 #ifndef __ONERT_IR_OPERATION_VALIDATOR_H__
 #define __ONERT_IR_OPERATION_VALIDATOR_H__
 
+#include "ir/Operands.h"
 #include "ir/OperationVisitor.h"
 #include "ir/Operations.h"
-#include "ir/Operands.h"
 
 namespace onert::ir
 {

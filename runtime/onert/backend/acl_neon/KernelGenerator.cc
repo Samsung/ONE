@@ -16,20 +16,20 @@
 
 #include "KernelGenerator.h"
 
-#include <arm_compute/runtime/NEON/NEFunctions.h>   // Include all ARM Compute NEON functions
-#include <arm_compute/runtime/NEON/NEFunctionsEx.h> // Include all ARM Compute EX NEON functions
+#include "AclKernelGen.h"
+#include "exec/NopFunction.h"
+#include "ir/DataType.h"
+#include "ir/Index.h"
+#include "ir/InternalType.h"
+#include "util/logging.h"
 
 #include <AclActivationBuilder.h>
 #include <AclFunction.h>
 #include <Convert.h>
 #include <Swizzle.h>
 
-#include "ir/Index.h"
-#include "ir/DataType.h"
-#include "ir/InternalType.h"
-#include "exec/NopFunction.h"
-#include "util/logging.h"
-#include "AclKernelGen.h"
+#include <arm_compute/runtime/NEON/NEFunctions.h>   // Include all ARM Compute NEON functions
+#include <arm_compute/runtime/NEON/NEFunctionsEx.h> // Include all ARM Compute EX NEON functions
 
 namespace onert::backend::acl_neon
 {

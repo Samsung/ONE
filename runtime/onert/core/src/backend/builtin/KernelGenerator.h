@@ -17,13 +17,12 @@
 #ifndef __ONERT_BACKEND_BUILTIN_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_BUILTIN_KERNEL_GENERATOR_H__
 
+#include "../../compiler/TensorRegistries.h"
 #include "DynamicTensorManager.h"
 #include "ExternalContext.h"
 #include "TensorRegistry.h"
-#include "../../compiler/TensorRegistries.h"
-
-#include "backend/basic/KernelGeneratorBase.h"
 #include "backend/CustomKernelBuilder.h"
+#include "backend/basic/KernelGeneratorBase.h"
 #include "exec/IExecutors.h"
 #include "ir/Graph.h"
 

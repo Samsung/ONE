@@ -15,6 +15,7 @@
  */
 
 #include "LossCategoricalCrossentropyLayer.h"
+
 #include "OperationUtils.h"
 
 #include <cker/train/operation/Loss.h>

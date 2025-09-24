@@ -16,18 +16,21 @@
 
 #include "IPermuteFunction.h"
 
-#include <cker/operation/Quantize.h>
-#include <cker/operation/Dequantize.h>
 #include "backend/IPortableTensor.h"
 #include "exec/IFunction.h"
 #include "ir/Index.h"
 #include "ir/Shape.h"
-#include <memory>
-#include <misc/polymorphic_downcast.h>
-#include <typeinfo>
 #include "util/Utils.h"
-#include <vector>
+
+#include <misc/polymorphic_downcast.h>
+
+#include <cker/operation/Dequantize.h>
+#include <cker/operation/Quantize.h>
+
+#include <memory>
+#include <typeinfo>
 #include <unordered_map>
+#include <vector>
 
 namespace
 {

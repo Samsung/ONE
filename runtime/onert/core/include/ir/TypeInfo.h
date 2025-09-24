@@ -17,14 +17,14 @@
 #ifndef __ONERT_IR_TYPEINFO_H__
 #define __ONERT_IR_TYPEINFO_H__
 
+#include "ir/DataType.h"
+#include "ir/Sparsity.h"
+
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
 #include <memory>
 #include <vector>
-
-#include "ir/DataType.h"
-#include "ir/Sparsity.h"
 
 namespace onert::ir
 {

@@ -17,8 +17,9 @@
 #ifndef __ONERT_IR_TRAIN_OPTIMIZER_CODE_H__
 #define __ONERT_IR_TRAIN_OPTIMIZER_CODE_H__
 
-#include <functional>
 #include <stdint.h>
+
+#include <functional>
 #include <string>
 
 namespace onert::ir::train

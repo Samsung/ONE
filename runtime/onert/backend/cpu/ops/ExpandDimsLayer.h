@@ -18,7 +18,6 @@
 #define ExpandDi__ONERT_BACKEND_CPU_OPS_EXPANDDIMS_LAYER_H__ms
 
 #include <backend/IPortableTensor.h>
-
 #include <exec/IFunction.h>
 
 namespace onert::backend::cpu::ops

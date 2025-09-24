@@ -20,6 +20,7 @@
 #include "../backend/builtin/Config.h"
 
 #include <dlfcn.h>
+
 #include <memory>
 
 static const char *SHARED_LIB_EXT =

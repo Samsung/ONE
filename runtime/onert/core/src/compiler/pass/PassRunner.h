@@ -17,12 +17,12 @@
 #ifndef __ONERT_COMPILER_PASS_PASS_RUNNER_H__
 #define __ONERT_COMPILER_PASS_PASS_RUNNER_H__
 
+#include "IPass.h"
+#include "util/logging.h"
+
 #include <initializer_list>
 #include <memory>
 #include <vector>
-
-#include "IPass.h"
-#include "util/logging.h"
 
 namespace onert::compiler::pass
 {

@@ -17,12 +17,12 @@
 #ifndef __ONERT_IR_NNPKG_H__
 #define __ONERT_IR_NNPKG_H__
 
+#include "ir/Index.h"
+#include "ir/Model.h"
+
 #include <memory>
 #include <unordered_set>
 #include <vector>
-
-#include "ir/Index.h"
-#include "ir/Model.h"
 
 namespace onert::ir
 {

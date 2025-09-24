@@ -20,11 +20,11 @@
 
 #include <backend/Backend.h>
 #include <backend/IConfig.h>
-#include <memory>
+#include <exec/DynamicShapeInferer.h>
 #include <util/Utils.h>
 #include <util/logging.h>
-#include <exec/DynamicShapeInferer.h>
 
+#include <memory>
 #include <stdexcept>
 
 namespace onert::backend::trix

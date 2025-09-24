@@ -17,7 +17,6 @@
 #include "Verifier.h"
 
 #include "../MockNode.h"
-
 #include "ir/Graph.h"
 
 #include <gtest/gtest.h>

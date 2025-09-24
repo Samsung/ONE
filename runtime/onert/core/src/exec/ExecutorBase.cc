@@ -17,8 +17,10 @@
 #include "ExecutorBase.h"
 
 #include "util/ConfigSource.h"
-#include <algorithm>
+
 #include <misc/polymorphic_downcast.h>
+
+#include <algorithm>
 
 namespace onert::exec
 {

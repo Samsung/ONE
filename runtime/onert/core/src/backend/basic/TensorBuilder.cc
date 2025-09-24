@@ -15,7 +15,6 @@
  */
 
 #include <backend/basic/TensorBuilder.h>
-
 #include <util/logging.h>
 
 #include <cassert>

@@ -16,9 +16,8 @@
 
 #include "nnfw.h"
 #include "nnfw_experimental.h"
-#include "nnfw_version.h"
-
 #include "nnfw_session.h"
+#include "nnfw_version.h"
 
 // Double-check enum value changes
 

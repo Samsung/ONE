@@ -16,18 +16,17 @@
 
 #include "compiler/LoweredGraph.h"
 
+#include "../dumper/text/GraphDumper.h"
+#include "../ir/verifier/Verifier.h"
 #include "HEScheduler.h"
 #include "ManualScheduler.h"
+#include "backend/Backend.h"
+#include "compiler/BackendResolver.h"
 #include "pass/ConstantInsertionPass.h"
 #include "pass/ConstantLoweringPass.h"
 #include "pass/PassRunner.h"
 #include "pass/PermutationEliminationPass.h"
 #include "pass/PermutationInsertionPass.h"
-#include "../dumper/text/GraphDumper.h"
-#include "../ir/verifier/Verifier.h"
-
-#include "backend/Backend.h"
-#include "compiler/BackendResolver.h"
 #include "util/logging.h"
 
 #include <cassert>

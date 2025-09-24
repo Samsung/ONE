@@ -17,6 +17,7 @@
 #include "loader/TrainInfoLoader.h"
 
 #include "circle_traininfo_generated.h"
+
 #include "flatbuffers/flatbuffers.h"
 
 namespace onert::loader

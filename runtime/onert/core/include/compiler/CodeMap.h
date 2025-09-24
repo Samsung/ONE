@@ -19,8 +19,8 @@
 
 #include "backend/Backend.h"
 #include "exec/FunctionSequence.h"
-#include "ir/Index.h"
 #include "ir/IOperation.h"
+#include "ir/Index.h"
 
 #include <unordered_map>
 

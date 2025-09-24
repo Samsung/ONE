@@ -17,10 +17,10 @@
 #ifndef __ONERT_BACKEND_TRAIN_MEMORY_MANAGER_H__
 #define __ONERT_BACKEND_TRAIN_MEMORY_MANAGER_H__
 
-#include <backend/basic/MemoryManager.h>
-
 #include "DisposableTensorIndex.h"
 #include "LayerScopeTensorIndex.h"
+
+#include <backend/basic/MemoryManager.h>
 
 namespace onert::backend::train
 {

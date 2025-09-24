@@ -17,16 +17,14 @@
 #ifndef __ONERT_EXEC_TRAIN_TRAINABLE_EXECUTOR_H_
 #define __ONERT_EXEC_TRAIN_TRAINABLE_EXECUTOR_H_
 
-#include "exec/IExecutor.h"
-
-#include "../ExecutionObservee.h"
 #include "../../compiler/train/TensorRegistries.h"
-
+#include "../ExecutionObservee.h"
 #include "backend/train/TrainableBackendContext.h"
-#include "compiler/train/TrainableCodeMap.h"
 #include "compiler/train/LoweredTrainableGraph.h"
-#include "ir/train/LossInfo.h"
+#include "compiler/train/TrainableCodeMap.h"
+#include "exec/IExecutor.h"
 #include "ir/Index.h"
+#include "ir/train/LossInfo.h"
 #include "util/TracingCtx.h"
 
 namespace onert::exec::train

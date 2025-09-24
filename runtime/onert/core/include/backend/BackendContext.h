@@ -17,12 +17,13 @@
 #ifndef __ONERT_BACKEND_BACKEND_CONTEXT_H__
 #define __ONERT_BACKEND_BACKEND_CONTEXT_H__
 
-#include <memory>
-#include "ir/Graph.h"
-#include "ir/OperationIndexMap.h"
-#include "ir/OperandIndexMap.h"
 #include "exec/FunctionSequence.h"
+#include "ir/Graph.h"
+#include "ir/OperandIndexMap.h"
+#include "ir/OperationIndexMap.h"
 #include "util/Set.h"
+
+#include <memory>
 
 namespace onert::backend
 {

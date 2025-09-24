@@ -17,14 +17,13 @@
 #ifndef __ONERT_EXEC_OBSREVERS_H__
 #define __ONERT_EXEC_OBSREVERS_H__
 
-#include "ExecTime.h"
 #include "../util/EventCollector.h"
 #include "../util/EventRecorder.h"
 #include "../util/EventWriter.h"
-
+#include "ExecTime.h"
 #include "exec/IExecutor.h"
-#include "ir/Index.h"
 #include "ir/IOperation.h"
+#include "ir/Index.h"
 #include "util/ITimer.h"
 #include "util/TracingCtx.h"
 

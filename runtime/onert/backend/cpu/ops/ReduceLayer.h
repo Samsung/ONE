@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_CPU_OPS_REDUCESUMLAYER_H__
 #define __ONERT_BACKEND_CPU_OPS_REDUCESUMLAYER_H__
 
+#include <backend/IPortableTensor.h>
+#include <exec/IFunction.h>
+
 #include "cker/neon/neon_check.h"
 
-#include <backend/IPortableTensor.h>
-
-#include <exec/IFunction.h>
 #include <memory>
 
 namespace nnfw::cker

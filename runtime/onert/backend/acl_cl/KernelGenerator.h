@@ -17,11 +17,11 @@
 #ifndef __ONERT_BACKEND_ACL_CL_KERNEL_GENERATOR_H__
 #define __ONERT_BACKEND_ACL_CL_KERNEL_GENERATOR_H__
 
-#include <backend/basic/KernelGeneratorBase.h>
-
-#include "TensorBuilder.h"
 #include "AclTensorRegistry.h"
+#include "TensorBuilder.h"
 #include "TensorManager.h"
+
+#include <backend/basic/KernelGeneratorBase.h>
 
 namespace onert::backend::acl_cl
 {

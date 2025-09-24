@@ -17,9 +17,9 @@
 #ifndef __ONERT_IR_OPERAND_INDEX_MAP_H__
 #define __ONERT_IR_OPERAND_INDEX_MAP_H__
 
-#include <unordered_map>
-
 #include "ir/Index.h"
+
+#include <unordered_map>
 
 namespace onert::ir
 {

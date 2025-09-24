@@ -16,8 +16,8 @@
 
 #include "WhileLayer.h"
 
-#include "PermuteLayer.h"
 #include "../../../exec/ExecutorBase.h"
+#include "PermuteLayer.h"
 
 #include <misc/polymorphic_downcast.h>
 

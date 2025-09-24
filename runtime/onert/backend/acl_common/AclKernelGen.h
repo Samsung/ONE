@@ -19,8 +19,8 @@
 
 #include <exec/IFunction.h>
 #include <ir/Operands.h>
-
 #include <ir/operation/LSTM.h>
+
 #include <arm_compute/runtime/CL/CLFunctions.h>
 
 namespace onert::backend::acl_common

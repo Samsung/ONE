@@ -17,12 +17,12 @@
 #ifndef __ONERT_IR_OPERANDS_H__
 #define __ONERT_IR_OPERANDS_H__
 
+#include "ir/Index.h"
+#include "ir/Operand.h"
+#include "util/ObjectManager.h"
+
 #include <memory>
 #include <unordered_map>
-
-#include "ir/Operand.h"
-#include "ir/Index.h"
-#include "util/ObjectManager.h"
 
 namespace onert::ir
 {

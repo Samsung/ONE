@@ -19,7 +19,6 @@
 
 #include "DataflowExecutor.h"
 #include "ParallelScheduler.h"
-
 #include "util/TracingCtx.h"
 
 #include <memory>

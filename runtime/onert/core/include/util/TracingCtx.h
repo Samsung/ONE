@@ -21,8 +21,8 @@
 #include "ir/Index.h"
 #include "ir/Model.h"
 
-#include <unordered_map>
 #include <mutex>
+#include <unordered_map>
 
 namespace onert::util
 {

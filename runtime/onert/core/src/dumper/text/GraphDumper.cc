@@ -16,11 +16,11 @@
 
 #include "GraphDumper.h"
 
-#include "ir/Graph.h"
 #include "compiler/LoweredGraph.h"
 #include "compiler/train/LoweredTrainableGraph.h"
-#include "util/logging.h"
+#include "ir/Graph.h"
 #include "misc/string_helpers.h"
+#include "util/logging.h"
 
 namespace onert::dumper::text
 {

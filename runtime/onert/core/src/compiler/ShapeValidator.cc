@@ -17,10 +17,10 @@
 
 #include "ShapeValidator.h"
 
-#include <typeinfo>
-
 #include "ir/Graph.h"
 #include "util/logging.h"
+
+#include <typeinfo>
 
 #define OP_REQUIRES(EXP)                                                                     \
   do                                                                                         \

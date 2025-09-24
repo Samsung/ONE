@@ -17,8 +17,9 @@
 #ifndef __ONERT_COMPILER_PASS_CONSTANT_LOWERING_PASS_H__
 #define __ONERT_COMPILER_PASS_CONSTANT_LOWERING_PASS_H__
 
-#include <ir/Index.h>
 #include "LoweredOperationPass.h"
+
+#include <ir/Index.h>
 
 namespace onert::compiler::pass
 {

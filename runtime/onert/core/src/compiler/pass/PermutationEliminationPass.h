@@ -17,8 +17,8 @@
 #ifndef __ONERT_COMPILER_PASS_PERMUTATION_ELIMINATION_PASS_H__
 #define __ONERT_COMPILER_PASS_PERMUTATION_ELIMINATION_PASS_H__
 
-#include "ir/OperationVisitor.h"
 #include "LoweredOperationPass.h"
+#include "ir/OperationVisitor.h"
 
 namespace onert::compiler::pass
 {

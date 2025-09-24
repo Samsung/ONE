@@ -18,7 +18,6 @@
 #define __ONERT_COMPILER_EXECUTOR_FACTORY_H__
 
 #include "TensorRegistries.h"
-
 #include "backend/ITensor.h"
 #include "backend/train/TrainableBackendContext.h"
 #include "compiler/LoweredGraph.h"
