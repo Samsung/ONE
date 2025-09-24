@@ -180,7 +180,7 @@ OMStatus OMRuntimeAllocator::allocateGraphInputs(OMRuntimeContext *context,
   OMStatus status = Ok;
   const auto &graph_inputs = context->getCircleInputs();
 
-  for (uint i = 0; i < graph_inputs->size(); ++i)
+  for (uint32_t i = 0; i < graph_inputs->size(); ++i)
   {
     auto tensor_index = graph_inputs->operator[](i);
     const circle::Tensor *tensor = context->getTensorByIndex(tensor_index);
