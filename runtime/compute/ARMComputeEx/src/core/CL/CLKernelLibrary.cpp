@@ -63,7 +63,6 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
   {"gemmlowp_mm_midgard_ex", "gemmlowp_ex.cl"},
   {"gemm_accumulate_biases", "gemm.cl"},
   {"hashtable_lookup", "hashtable_lookup.cl"},
-  {"instance_normalization_ex", "instance_normalization_ex.cl"},
   {"memset", "memset.cl"},
   {"multiply_scale_factor", "multiply_scale_factor.cl"},
   {"neg_tensor", "neg_tensor.cl"},
@@ -111,10 +110,6 @@ const std::map<std::string, std::string, std::less<>> CLKernelLibraryEx::_progra
   {
     "helpers_asymm.h",
 #include "./cl_kernels/helpers_asymm.hembed"
-  },
-  {
-    "instance_normalization_ex.cl",
-#include "./cl_kernels/instance_normalization_ex.clembed"
   },
   {
     "gemm.cl",

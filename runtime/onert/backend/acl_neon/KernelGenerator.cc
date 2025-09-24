@@ -633,14 +633,16 @@ void KernelGenerator::visit(const ir::operation::InstanceNorm &node)
 
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
-  auto gamma_tensor = _tensor_reg->getAclTensor(gamma_index);
-  auto beta_tensor = _tensor_reg->getAclTensor(beta_index);
   auto epsilon = node.param().epsilon;
   auto activation = node.param().activation;
 
-  auto fn = acl_common::generateLayer<arm_compute::NEInstanceNormalizationLayerEx>(
-    ifm_tensor->handle(), ofm_tensor->handle(), gamma_tensor->handle(), beta_tensor->handle(),
-    epsilon);
+  if (!_ctx.at(gamma_index).isConstant() || !_ctx.at(beta_index).isConstant())
+    throw std::runtime_error{"Non-constant gamma or beta for acl_neon backend InstanceNorm"};
+
+  auto gamma = _ctx.at(gamma_index).asScalar<float>();
+  auto beta = _ctx.at(beta_index).asScalar<float>();
+  auto fn = acl_common::generateLayer<arm_compute::NEInstanceNormalizationLayer>(
+    ifm_tensor->handle(), ofm_tensor->handle(), gamma, beta, epsilon);
 
   _return_fn = std::make_unique<exec::FunctionSequence>(
     asAclFunction(std::move(fn)), ActivationBuilder::generate(activation, ofm_tensor->handle()));
