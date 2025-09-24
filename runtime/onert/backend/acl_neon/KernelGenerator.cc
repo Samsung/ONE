@@ -1209,24 +1209,14 @@ void KernelGenerator::visit(const ir::operation::TransposeConv &node)
   auto padding = ir::calculatePadding(node.param().padding, ofm_shape, ifm_shape, stride,
                                       ker_shape.W, ker_shape.H);
 
-  uint32_t invalid_horizontal = 0;
-  uint32_t invalid_vertical = 0;
-  if (node.param().padding.type == ir::PaddingType::VALID)
-  {
-    invalid_horizontal =
-      ofm_shape.W - (1 + (ifm_shape.W - 1) * stride.horizontal) - (ker_shape.W - 1);
-    invalid_vertical = ofm_shape.H - (1 + (ifm_shape.H - 1) * stride.vertical) - (ker_shape.H - 1);
-  }
-
   auto ofm_tensor = _tensor_reg->getAclTensor(ofm_index);
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
   auto ker_tensor = _tensor_reg->getAclTensor(ker_index);
 
   const auto tconv_info = acl_common::asPadStrideInfo(padding, stride);
 
-  auto fn = acl_common::generateLayer<arm_compute::NETransposeConvLayer>(
-    ifm_tensor->handle(), ker_tensor->handle(), nullptr, ofm_tensor->handle(), tconv_info,
-    invalid_horizontal, invalid_vertical);
+  auto fn = acl_common::generateLayer<arm_compute::NEDeconvolutionLayer>(
+    ifm_tensor->handle(), ker_tensor->handle(), nullptr, ofm_tensor->handle(), tconv_info);
 
   _return_fn = asAclFunction(std::move(fn));
 }
