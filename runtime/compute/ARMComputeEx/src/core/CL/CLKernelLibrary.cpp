@@ -55,10 +55,6 @@ using namespace arm_compute;
 
 const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map = {
   // ARMComputeEx kernels
-  {"arg_min_max_ex_x", "arg_min_max_ex.cl"},
-  {"arg_min_max_ex_y", "arg_min_max_ex.cl"},
-  {"arg_min_max_ex_z", "arg_min_max_ex.cl"},
-  {"arg_min_max_ex_w", "arg_min_max_ex.cl"},
   {"cast_bool", "cast.cl"},
   {"gemmlowp_mm_midgard_ex", "gemmlowp_ex.cl"},
   {"gemm_accumulate_biases", "gemm.cl"},
