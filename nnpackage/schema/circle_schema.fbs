@@ -37,6 +37,7 @@
 //              ROPE op is added. MXFP4, MXINT8 types are added.
 //              MXQuantization is added.
 // Version 0.10: RUN_MODEL op is added.
+//               ATTENTION op is added.
 
 namespace circle;
 
@@ -303,6 +304,7 @@ table Tensor {
 // set of acceptable options.
 // LINT.IfChange
 enum BuiltinOperator : int32 {
+  ATTENTION = -9,
   RUN_MODEL = -8,
   ROPE = -7,
   RMS_NORM = -6,
@@ -655,6 +657,7 @@ union BuiltinOptions {
   BitcastOptions,
   BitwiseXorOptions,
   RightShiftOptions,
+  AttentionOptions = 247,
   RunModelOptions = 248,
   RoPEOptions = 249,
   RmsNormOptions = 250,
@@ -1561,6 +1564,10 @@ table RunModelOptions {
   // Entry subgraph signature.
   // Empty means default entry subgraph (ex. 0th on circle & tflite)
   signature:string;
+}
+
+table AttentionOptions {
+  layer_idx: int;
 }
 
 // An OperatorCode can be an enum value (BuiltinOperator) if the operator is a
