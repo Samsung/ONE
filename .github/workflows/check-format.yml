@@ -50,9 +50,9 @@ jobs:
 
       # Refer https://github.com/rhysd/actionlint/blob/main/docs/usage.md#use-actionlint-on-github-actions
       - name: Check workflow files
-        uses: docker://rhysd/actionlint:latest
-        with:
-          args: -color
+        run: |
+          bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+          ./actionlint -color
 
   check-copyright:
     name: Check copyright
