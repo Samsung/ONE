@@ -21,7 +21,6 @@
 #include <arm_compute/core/TensorInfo.h>
 #include <arm_compute/core/SubTensorInfo.h>
 #include <arm_compute/core/TensorShape.h>
-#include <arm_compute/core/TypesEx.h>
 
 #include "ir/Layout.h"
 #include "ir/InternalType.h"
