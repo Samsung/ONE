@@ -1,0 +1,10 @@
+# Target configuration (required)
+target/{TARGET_NAME}/{TARGET_NAME}.ini usr/share/one/target/
+
+# Backend command schema (required to enable key-value style options)
+backend/{BACKEND_NAME}/one-cmds/codegen.py usr/share/one/backends/command/{BACKEND_NAME}/
+backend/{BACKEND_NAME}/one-cmds/profile.py usr/share/one/backends/command/{BACKEND_NAME}/
+
+# (Optional) Ship backend-side static configuration for your compiler
+# Adjust the left-hand path to your repo layout.
+# backend/{BACKEND_NAME}/conf/compile/target usr/share/one/backends/{ARCH_FAMILY_NAME}/conf/compile

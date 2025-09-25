@@ -1,0 +1,4 @@
+#!/usr/bin/make -f
+# Minimal dh(1) rules file for a simple data-only package.
+%:
+	dh $@
