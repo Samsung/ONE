@@ -1,0 +1,16 @@
+Source: one-global-conf-{TARGET_NAME}
+Section: devel
+Priority: optional
+Maintainer: Your Name <you@example.com>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.2
+Homepage: https://example.com/one-global-conf-{TARGET_NAME}
+
+Package: one-global-conf-{TARGET_NAME}
+Architecture: all
+Depends: ${misc:Depends}
+Description: Global target configuration for ONE ({TARGET_NAME})
+ This package installs the global Target config for ONE and the backend
+ command schema for {BACKEND_NAME}, enabling onecc to pass options to
+ backend tools via key-value entries instead of free-form command strings.
+ 

@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+# Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""
+Sample backend profiling driver wrapper.
+
+This mock executable:
+- Parses options defined in the profile schema.
+- Writes a small JSON report if --report is provided.
+"""
+import argparse
+import json
+import os
+import random
+import sys
+import time
+
+
+def main():
+    p = argparse.ArgumentParser(prog="{BACKEND_NAME}-profile")
+    p.add_argument("--target", required=True, help="Target name propagated by onecc")
+    p.add_argument("--report", dest="report_path")
+    p.add_argument("--warmup", type=int, default=5)
+    p.add_argument("--repeat", type=int, default=50)
+    p.add_argument("input", help="Input .circle (optimized)")
+
+    args = p.parse_args()
+
+    # Emulate warmup/repeat timing
+    time.sleep(0.01)  # trivial delay
+    latencies_ms = [round(random.uniform(0.08, 0.12) * 1000, 3) for _ in range(args.repeat)]
+
+    report = {
+        "driver": "{BACKEND_NAME}-profile",
+        "target": args.target,
+        "input": os.path.abspath(args.input),
+        "warmup": args.warmup,
+        "repeat": args.repeat,
+        "latency_ms": {
+            "p50": float(sorted(latencies_ms)[int(0.50 * len(latencies_ms))]),
+            "p90": float(sorted(latencies_ms)[int(0.90 * len(latencies_ms))]),
+            "p99": float(sorted(latencies_ms)[int(0.99 * len(latencies_ms)) - 1]),
+            "mean": float(sum(latencies_ms) / len(latencies_ms)),
+        },
+    }
+
+    print(json.dumps(report, indent=2))
+
+    if args.report_path:
+        os.makedirs(os.path.dirname(args.report_path) or ".", exist_ok=True)
+        with open(args.report_path, "w", encoding="utf-8") as f:
+            json.dump(report, f, indent=2)
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
