@@ -29,7 +29,7 @@ import time
 
 
 def main():
-    p = argparse.ArgumentParser(prog="{BACKEND_NAME}-profile")
+    p = argparse.ArgumentParser(prog="{BACKEND_NAME}-profile") # e.g. dummy-profile
     p.add_argument("--target", required=True, help="Target name propagated by onecc")
     p.add_argument("--report", dest="report_path")
     p.add_argument("--warmup", type=int, default=5)

@@ -15,7 +15,7 @@ By following this template, anyone can create and install a new target configura
 ## Repository Layout
 
 ```
-one-global-conf-template/
+one-global-conf-{ARCH_FAMILY_NAME}/
 ├── backend/
 │   └── {BACKEND_NAME}/
 │       ├── bin/ (as an example)

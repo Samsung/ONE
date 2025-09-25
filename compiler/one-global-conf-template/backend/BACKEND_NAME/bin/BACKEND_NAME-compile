@@ -30,7 +30,7 @@ import sys
 
 
 def main():
-    p = argparse.ArgumentParser(prog="{BACKEND_NAME}-compile")
+    p = argparse.ArgumentParser(prog="{BACKEND_NAME}-compile") # e.g. dummy-compile
     p.add_argument("--target", required=True, help="Target name propagated by onecc")
     p.add_argument("--verbose", action="store_true")
     p.add_argument("--output", dest="output_path", required=True)
