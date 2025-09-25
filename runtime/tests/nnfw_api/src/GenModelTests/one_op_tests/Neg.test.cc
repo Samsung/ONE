@@ -26,7 +26,7 @@ TEST_F(GenModelTest, OneOp_Neg_Float32)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(uniformTCD<float>({{1.1, -2.2, 3.3, -4.4}}, {{-1.1, 2.2, -3.3, 4.4}}));
-  _context->setBackends({"cpu"});
+  _context->setBackends({"cpu", "acl_cl", "acl_neon"});
 
   SUCCEED();
 }
@@ -41,7 +41,7 @@ TEST_F(GenModelTest, OneOp_Neg_Int32)
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
   _context->addTestCase(uniformTCD<int32_t>({{1, -2, 3, -4}}, {{-1, 2, -3, 4}}));
-  _context->setBackends({"cpu"});
+  _context->setBackends({"cpu", "acl_cl", "acl_neon"});
 
   SUCCEED();
 }
@@ -68,11 +68,11 @@ TEST_F(GenModelTest, neg_OneOp_Neg_Float32_TwoOperand)
   int in2 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   int out1 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
   int out2 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_FLOAT32});
-  cgen.addOperatorCos({{in1, in2}, {out1, out2}});
+  cgen.addOperatorNeg({{in1, in2}, {out1, out2}});
   cgen.setInputsAndOutputs({in1, in2}, {out1, out2});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->setBackends({"cpu"});
+  _context->setBackends({"cpu", "acl_cl", "acl_neon"});
   _context->expectFailModelLoad();
 
   SUCCEED();
@@ -85,11 +85,11 @@ TEST_F(GenModelTest, neg_OneOp_Neg_Int32_TwoOperand)
   int in2 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT32});
   int out1 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT32});
   int out2 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT32});
-  cgen.addOperatorCos({{in1, in2}, {out1, out2}});
+  cgen.addOperatorNeg({{in1, in2}, {out1, out2}});
   cgen.setInputsAndOutputs({in1, in2}, {out1, out2});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->setBackends({"cpu"});
+  _context->setBackends({"cpu", "acl_cl", "acl_neon"});
   _context->expectFailModelLoad();
 
   SUCCEED();
@@ -102,11 +102,11 @@ TEST_F(GenModelTest, neg_OneOp_Neg_Int64_TwoOperand)
   int in2 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT64});
   int out1 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT64});
   int out2 = cgen.addTensor({{1, 2, 2, 1}, circle::TensorType::TensorType_INT64});
-  cgen.addOperatorCos({{in1, in2}, {out1, out2}});
+  cgen.addOperatorNeg({{in1, in2}, {out1, out2}});
   cgen.setInputsAndOutputs({in1, in2}, {out1, out2});
 
   _context = std::make_unique<GenModelTestContext>(cgen.finish());
-  _context->setBackends({"cpu"});
+  _context->setBackends({"cpu", "acl_cl", "acl_neon"});
   _context->expectFailModelLoad();
 
   SUCCEED();
