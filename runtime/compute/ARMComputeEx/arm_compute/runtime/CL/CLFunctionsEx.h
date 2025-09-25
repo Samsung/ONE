@@ -19,7 +19,6 @@
 #include <arm_compute/runtime/CL/functions/CLCastBool.h>
 #include <arm_compute/runtime/CL/functions/CLFullyConnectedReshapingLayer.h>
 #include <arm_compute/runtime/CL/functions/CLHashtableLookup.h>
-#include <arm_compute/runtime/CL/functions/CLNeg.h>
 #include <arm_compute/runtime/CL/functions/CLOneHot.h>
 #include <arm_compute/runtime/CL/functions/CLPadLayerEx.h>
 #include <arm_compute/runtime/CL/functions/CLReduceOperation.h>

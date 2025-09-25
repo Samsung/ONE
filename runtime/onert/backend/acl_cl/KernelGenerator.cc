@@ -721,8 +721,8 @@ void KernelGenerator::visit(const ir::operation::ElementwiseUnary &node)
     }
     case ir::operation::ElementwiseUnary::Type::NEG:
     {
-      fn = acl_common::generateLayer<arm_compute::CLNeg>(input_tensor->handle(),
-                                                         output_tensor->handle());
+      fn = acl_common::generateLayer<arm_compute::CLNegLayer>(input_tensor->handle(),
+                                                              output_tensor->handle());
       break;
     }
     case ir::operation::ElementwiseUnary::Type::RSQRT:
