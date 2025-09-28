@@ -9,6 +9,8 @@ var namespacelocomotiv =
     [ "UnaryFunc", "structlocomotiv_1_1_unary_func.html", "structlocomotiv_1_1_unary_func" ],
     [ "annot_domain", "namespacelocomotiv.html#acdafee833758a8f9d324bfe65f4b6fd2", null ],
     [ "annot_domain", "namespacelocomotiv.html#a862e72be14bb8aa33cb565d7801b3f9b", null ],
+    [ "as_loco_index", "namespacelocomotiv.html#a1518dcc4c198ef4fad72a4c6b8019c1a", null ],
+    [ "as_nncc_index", "namespacelocomotiv.html#a96f88c26f401f05c20ad305f5c4956ad", null ],
     [ "erase_annot_domain", "namespacelocomotiv.html#a782b6d3d8124751b73da57e78003437f", null ],
     [ "make_data", "namespacelocomotiv.html#ad750a0925e408bf4823cb69dd293c37b", null ],
     [ "make_data", "namespacelocomotiv.html#a46eae6c469dfe48cd515f324df6a588f", null ],

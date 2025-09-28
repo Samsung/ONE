@@ -431,7 +431,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  169</span>  {</div>
 <div class="line"><span class="lineno">  170</span>  }</div>
 <div class="line"><span class="lineno">  171</span> </div>
-<div class="line"><span class="lineno">  172</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="vector_8h.html#af65c5bd70d5e46f206d9e9cf5051f979">operator==</a>(<span class="keyword">const</span> Type &amp;o)</div>
+<div class="line"><span class="lineno">  172</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceadt.html#a7e7b9416c6b0303babc1f72b82193177">operator==</a>(<span class="keyword">const</span> Type &amp;o)</div>
 <div class="line"><span class="lineno">  173</span>  {</div>
 <div class="line"><span class="lineno">  174</span>    <span class="keywordflow">return</span> base_type == o.base_type &amp;&amp; element == o.element &amp;&amp; struct_def == o.struct_def &amp;&amp;</div>
 <div class="line"><span class="lineno">  175</span>           enum_def == o.enum_def;</div>
@@ -666,7 +666,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  404</span><span class="keyword">private</span>:</div>
 <div class="line"><span class="lineno">  405</span>  <span class="keyword">friend</span> EnumDef;</div>
 <div class="line"><span class="lineno">  406</span>  <span class="keyword">friend</span> EnumValBuilder;</div>
-<div class="line"><span class="lineno">  407</span>  <span class="keyword">friend</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="vector_8h.html#af65c5bd70d5e46f206d9e9cf5051f979">operator==</a>(<span class="keyword">const</span> EnumVal &amp;lhs, <span class="keyword">const</span> EnumVal &amp;rhs);</div>
+<div class="line"><span class="lineno">  407</span>  <span class="keyword">friend</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceadt.html#a7e7b9416c6b0303babc1f72b82193177">operator==</a>(<span class="keyword">const</span> EnumVal &amp;lhs, <span class="keyword">const</span> EnumVal &amp;rhs);</div>
 <div class="line"><span class="lineno">  408</span> </div>
 <div class="line"><span class="lineno">  409</span>  EnumVal(<span class="keyword">const</span> std::string &amp;_name, int64_t _val) : <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a>(_name), value(_val) {}</div>
 <div class="line"><span class="lineno">  410</span>  EnumVal() : value(0) {}</div>
@@ -766,7 +766,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  504</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceflatbuffers.html#aa89d9c109036aa74bbe5424cfec458cb">SizeOf</a>(<a class="code hl_variable" href="namespaceinfer.html#ab89ed5258ead024638290064e52469c8">type</a>.base_type);</div>
 <div class="line"><span class="lineno">  505</span>  }</div>
 <div class="line"><span class="lineno">  506</span>}</div>
-<div class="line"><span class="lineno">  507</span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="vector_8h.html#af65c5bd70d5e46f206d9e9cf5051f979">operator==</a>(<span class="keyword">const</span> EnumVal &amp;lhs, <span class="keyword">const</span> EnumVal &amp;rhs) { <span class="keywordflow">return</span> lhs.value == rhs.value; }</div>
+<div class="line"><span class="lineno">  507</span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceadt.html#a7e7b9416c6b0303babc1f72b82193177">operator==</a>(<span class="keyword">const</span> EnumVal &amp;lhs, <span class="keyword">const</span> EnumVal &amp;rhs) { <span class="keywordflow">return</span> lhs.value == rhs.value; }</div>
 <div class="line"><span class="lineno">  508</span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceflatbuffers.html#a0402bd09c199eb848b440120fd99176d">operator!=</a>(<span class="keyword">const</span> EnumVal &amp;lhs, <span class="keyword">const</span> EnumVal &amp;rhs) { <span class="keywordflow">return</span> !(lhs == rhs); }</div>
 <div class="line"><span class="lineno">  509</span> </div>
 <div class="line"><span class="lineno">  510</span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceflatbuffers.html#af1b78b12b14bc7f5bbe7ced0d6efd16c">EqualByName</a>(<span class="keyword">const</span> Type &amp;a, <span class="keyword">const</span> Type &amp;b)</div>
@@ -1415,6 +1415,7 @@ Variables</h2></td></tr>
 <div class="ttc" id="aidl_8h_html_a00bf1d8f2dc92792b1c1982981da5655"><div class="ttname"><a href="idl_8h.html#a00bf1d8f2dc92792b1c1982981da5655">FLATBUFFERS_CHECKED_ERROR</a></div><div class="ttdeci">#define FLATBUFFERS_CHECKED_ERROR</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00746">idl.h:746</a></div></div>
 <div class="ttc" id="aidl_8h_html_a028f56f6249346d28bab548397c58f4f"><div class="ttname"><a href="idl_8h.html#a028f56f6249346d28bab548397c58f4f">FLATBUFFERS_TD</a></div><div class="ttdeci">#define FLATBUFFERS_TD(ENUM,...)</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00120">idl.h:120</a></div></div>
 <div class="ttc" id="aidl_8h_html_a3abcc09468ed6e9f75762a77f2b056fd"><div class="ttname"><a href="idl_8h.html#a3abcc09468ed6e9f75762a77f2b056fd">FLATBUFFERS_GEN_TYPES</a></div><div class="ttdeci">#define FLATBUFFERS_GEN_TYPES(TD)</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00110">idl.h:110</a></div></div>
+<div class="ttc" id="anamespaceadt_html_a7e7b9416c6b0303babc1f72b82193177"><div class="ttname"><a href="namespaceadt.html#a7e7b9416c6b0303babc1f72b82193177">adt::operator==</a></div><div class="ttdeci">bool operator==(const small_vector&lt; T, LCapacity &gt; &amp;lhs, const small_vector&lt; T, RCapacity &gt; &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="_small_vector_8h_source.html#l00137">SmallVector.h:137</a></div></div>
 <div class="ttc" id="anamespacecoco_html_a55b4bb21a18e07134908bf81ec60c9d9"><div class="ttname"><a href="namespacecoco.html#a55b4bb21a18e07134908bf81ec60c9d9">coco::operator&lt;</a></div><div class="ttdeci">bool operator&lt;(const ElemID &amp;lhs, const ElemID &amp;rhs)</div><div class="ttdef"><b>Definition</b> <a href="_elem_i_d_8cpp_source.html#l00023">ElemID.cpp:23</a></div></div>
 <div class="ttc" id="anamespaceconstant_html"><div class="ttname"><a href="namespaceconstant.html">constant</a></div><div class="ttdef"><b>Definition</b> <a href="constant_8py_source.html#l00001">constant.py:1</a></div></div>
 <div class="ttc" id="anamespaceflatbuffers_html_a00957b1d3a2dd9f4eef8397de5b36f35"><div class="ttname"><a href="namespaceflatbuffers.html#a00957b1d3a2dd9f4eef8397de5b36f35">flatbuffers::GenerateSwiftGRPC</a></div><div class="ttdeci">bool GenerateSwiftGRPC(const Parser &amp;parser, const std::string &amp;path, const std::string &amp;file_name)</div></div>
@@ -1493,7 +1494,6 @@ Variables</h2></td></tr>
 <div class="ttc" id="astruct_vector_html"><div class="ttname"><a href="struct_vector.html">Vector</a></div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00357">helpers.h:358</a></div></div>
 <div class="ttc" id="astructflatbuffers_1_1_i_d_l_options_html"><div class="ttname"><a href="structflatbuffers_1_1_i_d_l_options.html">flatbuffers::IDLOptions</a></div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00535">idl.h:536</a></div></div>
 <div class="ttc" id="astructflatbuffers_1_1_offset_html"><div class="ttname"><a href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a></div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00069">flatbuffers.h:70</a></div></div>
-<div class="ttc" id="avector_8h_html_af65c5bd70d5e46f206d9e9cf5051f979"><div class="ttname"><a href="vector_8h.html#af65c5bd70d5e46f206d9e9cf5051f979">operator==</a></div><div class="ttdeci">bool operator==(const std::vector&lt; T &gt; &amp;lhs, const std::vector&lt; T &gt; &amp;rhs)</div><div class="ttdoc">Compare elements of two vectors.</div><div class="ttdef"><b>Definition</b> <a href="vector_8h_source.html#l00034">vector.h:34</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

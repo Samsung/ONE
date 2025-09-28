@@ -102,9 +102,9 @@ $(document).ready(function(){initNavTree('classluci_1_1_index_tensor_outputs.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7fb474807216d8d8e3e9fe3877d4e2b6" id="r_a7fb474807216d8d8e3e9fe3877d4e2b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_index_tensor_outputs.html#a7fb474807216d8d8e3e9fe3877d4e2b6">enroll</a> (<a class="el" href="namespaceluci.html#a2aa822957acee7a5fa3cf81b967e4bc0">TensorIndex</a> idx)</td></tr>
+<tr class="memitem:a7fb474807216d8d8e3e9fe3877d4e2b6" id="r_a7fb474807216d8d8e3e9fe3877d4e2b6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_index_tensor_outputs.html#a7fb474807216d8d8e3e9fe3877d4e2b6">enroll</a> (<a class="el" href="namespaceluci.html#a2aa822957acee7a5fa3cf81b967e4bc0">TensorIndex</a> <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">idx</a>)</td></tr>
 <tr class="separator:a7fb474807216d8d8e3e9fe3877d4e2b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ee9d52381d00676ed15fa86fa181bf3" id="r_a2ee9d52381d00676ed15fa86fa181bf3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_index_tensor_outputs.html#a2ee9d52381d00676ed15fa86fa181bf3">find</a> (<a class="el" href="namespaceluci.html#a2aa822957acee7a5fa3cf81b967e4bc0">TensorIndex</a> idx)</td></tr>
+<tr class="memitem:a2ee9d52381d00676ed15fa86fa181bf3" id="r_a2ee9d52381d00676ed15fa86fa181bf3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_index_tensor_outputs.html#a2ee9d52381d00676ed15fa86fa181bf3">find</a> (<a class="el" href="namespaceluci.html#a2aa822957acee7a5fa3cf81b967e4bc0">TensorIndex</a> <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">idx</a>)</td></tr>
 <tr class="separator:a2ee9d52381d00676ed15fa86fa181bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -119,7 +119,7 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void luci::IndexTensorOutputs::enroll </td>
+          <td class="memname"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a> luci::IndexTensorOutputs::enroll </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceluci.html#a2aa822957acee7a5fa3cf81b967e4bc0">TensorIndex</a>&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
@@ -130,19 +130,20 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="luci_2import_2src_2_graph_builder_context_8cpp_source.html#l00048">48</a> of file <a class="el" href="luci_2import_2src_2_graph_builder_context_8cpp_source.html">GraphBuilderContext.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   49</span>{</div>
-<div class="line"><span class="lineno">   50</span>  <span class="keyword">auto</span> iter = _set.find(idx);</div>
+<div class="line"><span class="lineno">   50</span>  <span class="keyword">auto</span> iter = _set.find(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">idx</a>);</div>
 <div class="line"><span class="lineno">   51</span>  <span class="keywordflow">if</span> (iter != _set.end())</div>
 <div class="line"><span class="lineno">   52</span>  {</div>
 <div class="line"><span class="lineno">   53</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
-<div class="line"><span class="lineno">   54</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;[luci] TensorOutputs SKIP (&quot;</span> &lt;&lt; idx &lt;&lt; <span class="stringliteral">&quot;) existing&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   54</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;[luci] TensorOutputs SKIP (&quot;</span> &lt;&lt; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">idx</a> &lt;&lt; <span class="stringliteral">&quot;) existing&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">   56</span>  }</div>
-<div class="line"><span class="lineno">   57</span>  _set.insert(idx);</div>
+<div class="line"><span class="lineno">   57</span>  _set.insert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">idx</a>);</div>
 <div class="line"><span class="lineno">   58</span>}</div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00065">Log.h:65</a></div></div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a7af9b9d1a859db99acb5e3447167b029"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a></div><div class="ttdeci">#define INFO(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00068">Log.h:68</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, and <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>.</p>
+<p class="reference">References <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, and <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>.</p>
 
 </div>
 </div>
@@ -153,7 +154,7 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool luci::IndexTensorOutputs::find </td>
+          <td class="memname"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">bool</a> luci::IndexTensorOutputs::find </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceluci.html#a2aa822957acee7a5fa3cf81b967e4bc0">TensorIndex</a>&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
@@ -163,8 +164,10 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="luci_2import_2src_2_graph_builder_context_8cpp_source.html#l00060">60</a> of file <a class="el" href="luci_2import_2src_2_graph_builder_context_8cpp_source.html">GraphBuilderContext.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>{ <span class="keywordflow">return</span> (_set.find(idx) != _set.end()); }</div>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>{ <span class="keywordflow">return</span> (_set.find(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">idx</a>) != _set.end()); }</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

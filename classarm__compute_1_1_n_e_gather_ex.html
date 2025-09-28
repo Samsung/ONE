@@ -115,11 +115,11 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aa4f147bdba997483be628f90376ab341" id="r_aa4f147bdba997483be628f90376ab341"><td class="memItemLeft" align="right" valign="top">static Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarm__compute_1_1_n_e_gather_ex.html#aa4f147bdba997483be628f90376ab341">validate</a> (const ITensorInfo *input, const ITensorInfo *indices, const ITensorInfo *output, int axis)</td></tr>
-<tr class="separator:aa4f147bdba997483be628f90376ab341"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2980dfe9bf3ae249584213582dc10bbf" id="r_a2980dfe9bf3ae249584213582dc10bbf"><td class="memItemLeft" align="right" valign="top">static Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classarm__compute_1_1_n_e_gather_ex.html#a2980dfe9bf3ae249584213582dc10bbf">validate</a> (const ITensorInfo *input, const ITensorInfo *indices, const ITensorInfo *output, int axis)</td></tr>
+<tr class="separator:a2980dfe9bf3ae249584213582dc10bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Basic function to run <a class="el" href="classarm__compute_1_1_n_e_gather_kernel_ex.html">NEGatherKernelEx</a> </p>
+<div class="textblock"><p>Basic function to run NEGatherKernelEx </p>
 
 <p class="definition">Definition at line <a class="el" href="_n_e_gather_ex_8h_source.html#l00053">53</a> of file <a class="el" href="_n_e_gather_ex_8h_source.html">NEGatherEx.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
@@ -171,17 +171,10 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_n_e_gather_ex_8cpp_source.html#l00049">49</a> of file <a class="el" href="_n_e_gather_ex_8cpp_source.html">NEGatherEx.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   50</span>{</div>
-<div class="line"><span class="lineno">   51</span>  <span class="keyword">auto</span> k = std::make_unique&lt;NEGatherKernelEx&gt;();</div>
-<div class="line"><span class="lineno">   52</span>  k-&gt;configure(input, indices, output, axis);</div>
-<div class="line"><span class="lineno">   53</span>  _kernel = std::move(k);</div>
-<div class="line"><span class="lineno">   54</span>}</div>
-</div><!-- fragment -->
 </div>
 </div>
-<a id="aa4f147bdba997483be628f90376ab341" name="aa4f147bdba997483be628f90376ab341"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4f147bdba997483be628f90376ab341">&#9670;&#160;</a></span>validate()</h2>
+<a id="a2980dfe9bf3ae249584213582dc10bbf" name="a2980dfe9bf3ae249584213582dc10bbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2980dfe9bf3ae249584213582dc10bbf">&#9670;&#160;</a></span>validate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,7 +183,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Status arm_compute::NEGatherEx::validate </td>
+          <td class="memname">static Status arm_compute::NEGatherEx::validate </td>
           <td>(</td>
           <td class="paramtype">const ITensorInfo *&#160;</td>
           <td class="paramname"><em>input</em>, </td>
@@ -225,7 +218,7 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Static function to check if given info will lead to a valid configuration of <a class="el" href="classarm__compute_1_1_n_e_gather_kernel_ex.html">NEGatherKernelEx</a></p>
+<p>Static function to check if given info will lead to a valid configuration of NEGatherKernelEx</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">input</td><td>Source tensor info. Supported tensor rank: up to 4. Data type supported: U8/S8/QASYMM8/U16/S16/U32/S32/F16/F32 </td></tr>
@@ -237,19 +230,10 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a status </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_n_e_gather_ex_8cpp_source.html#l00056">56</a> of file <a class="el" href="_n_e_gather_ex_8cpp_source.html">NEGatherEx.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   58</span>{</div>
-<div class="line"><span class="lineno">   59</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="classarm__compute_1_1_n_e_gather_kernel_ex.html#a28a19e45798e81a03948a1a4046d23f1">NEGatherKernelEx::validate</a>(input, indices, output, axis);</div>
-<div class="line"><span class="lineno">   60</span>}</div>
-<div class="ttc" id="aclassarm__compute_1_1_n_e_gather_kernel_ex_html_a28a19e45798e81a03948a1a4046d23f1"><div class="ttname"><a href="classarm__compute_1_1_n_e_gather_kernel_ex.html#a28a19e45798e81a03948a1a4046d23f1">arm_compute::NEGatherKernelEx::validate</a></div><div class="ttdeci">static Status validate(const ITensorInfo *input, const ITensorInfo *indices, const ITensorInfo *output, int axis)</div><div class="ttdef"><b>Definition</b> <a href="_n_e_gather_kernel_ex_8cpp_source.html#l00231">NEGatherKernelEx.cpp:231</a></div></div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="_n_e_gather_kernel_ex_8cpp_source.html#l00231">arm_compute::NEGatherKernelEx::validate()</a>.</p>
-
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>runtime/compute/ARMComputeEx/arm_compute/runtime/NEON/functions/<a class="el" href="_n_e_gather_ex_8h_source.html">NEGatherEx.h</a></li>
-<li>runtime/compute/ARMComputeEx/src/runtime/NEON/functions/<a class="el" href="_n_e_gather_ex_8cpp_source.html">NEGatherEx.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

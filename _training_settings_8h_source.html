@@ -123,34 +123,34 @@ $(document).ready(function(){initNavTree('_training_settings_8h_source.html','')
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci__interpreter.html">luci_interpreter</a></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>{</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span>training</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span><a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">training</a></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">enum</span> Status</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>,</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  Error,</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  EnableTrainModeError,</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  DoubleTrainModeError</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">EnableTrainModeError</a>,</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">DoubleTrainModeError</a></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>};</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">enum</span> MetricsTypeEnum</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">enum</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">MetricsTypeEnum</a></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>{</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6">MSE</a>,</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c">MAE</a></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>};</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">enum</span> LossTypeEnum</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">enum</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">LossTypeEnum</a></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>{</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  MSE_Loss</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">MSE_Loss</a></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">enum</span> OptimizerTypeEnum</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">enum</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">OptimizerTypeEnum</a></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>{</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_enumvalue" href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">SGD</a></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">struct </span>TrainingSettings</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">struct </span><a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">TrainingSettings</a></div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>{</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  MetricsTypeEnum metric = <a class="code hl_enumvalue" href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6">MSE</a>;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  LossTypeEnum error_type = MSE_Loss;</div>
@@ -168,6 +168,7 @@ $(document).ready(function(){initNavTree('_training_settings_8h_source.html','')
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#endif </span><span class="comment">// ENABLE_TRAINING</span></div>
 <div class="ttc" id="anamespaceluci__interpreter_html"><div class="ttname"><a href="namespaceluci__interpreter.html">luci_interpreter</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2_buddy_memory_manager_8h_source.html#l00021">BuddyMemoryManager.h:22</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fda8c01d6a249b948a0c1de0547a90864d6">onert_micro::MSE</a></div><div class="ttdeci">@ MSE</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00055">OMConfig.h:55</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c"><div class="ttname"><a href="namespaceonert__micro.html#a19286e39871396769ee22d2d9a5ed3fdafb23fb64dda5d4812f10bf216599bb9c">onert_micro::MAE</a></div><div class="ttdeci">@ MAE</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00056">OMConfig.h:56</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9"><div class="ttname"><a href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">onert_micro::SGD</a></div><div class="ttdeci">@ SGD</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00031">OMConfig.h:31</a></div></div>

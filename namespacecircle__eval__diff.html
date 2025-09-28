@@ -339,7 +339,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   55</span> </div>
 <div class="line"><span class="lineno">   56</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> node : nodes)</div>
 <div class="line"><span class="lineno">   57</span>  {</div>
-<div class="line"><span class="lineno">   58</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_node = loco::must_cast&lt;const luci::CircleInput *&gt;(node);</div>
+<div class="line"><span class="lineno">   58</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;const luci::CircleInput *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   59</span>    <span class="keyword">const</span> <span class="keyword">auto</span> dtype_size = <a class="code hl_function" href="namespaceluci.html#af979a00d2e6c772309aaf5f6ef03a148">luci::size</a>(input_node-&gt;dtype());</div>
 <div class="line"><span class="lineno">   60</span>    <span class="keywordtype">size_t</span> element_size = 1;</div>
 <div class="line"><span class="lineno">   61</span> </div>
@@ -353,9 +353,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   69</span> </div>
 <div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> vec;</div>
 <div class="line"><span class="lineno">   71</span>}</div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 <div class="ttc" id="anamespaceluci_html_af979a00d2e6c772309aaf5f6ef03a148"><div class="ttname"><a href="namespaceluci.html#af979a00d2e6c772309aaf5f6ef03a148">luci::size</a></div><div class="ttdeci">uint32_t size(loco::DataType data_type)</div><div class="ttdoc">Returns the size of the data type.</div><div class="ttdef"><b>Definition</b> <a href="_data_type_helper_8h_source.html#l00031">DataTypeHelper.h:31</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_data_type_helper_8h_source.html#l00031">luci::size()</a>.</p>
+<p class="reference">References <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, and <a class="el" href="_data_type_helper_8h_source.html#l00031">luci::size()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00184">circle_eval_diff::DirectoryLoader::get()</a>.</p>
 
@@ -383,7 +384,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   76</span> </div>
 <div class="line"><span class="lineno">   77</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> node : nodes)</div>
 <div class="line"><span class="lineno">   78</span>  {</div>
-<div class="line"><span class="lineno">   79</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_node = loco::must_cast&lt;const luci::CircleInput *&gt;(node);</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keyword">const</span> <span class="keyword">auto</span> input_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;const luci::CircleInput *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   80</span>    <span class="keywordtype">size_t</span> byte_size = <a class="code hl_function" href="namespaceluci.html#af979a00d2e6c772309aaf5f6ef03a148">luci::size</a>(input_node-&gt;dtype());</div>
 <div class="line"><span class="lineno">   81</span> </div>
 <div class="line"><span class="lineno">   82</span>    <span class="keywordflow">for</span> (uint32_t index = 0; index &lt; input_node-&gt;rank(); index++)</div>
@@ -397,7 +398,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   90</span>  <span class="keywordflow">return</span> total_byte_size;</div>
 <div class="line"><span class="lineno">   91</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_data_type_helper_8h_source.html#l00031">luci::size()</a>.</p>
+<p class="reference">References <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, and <a class="el" href="_data_type_helper_8h_source.html#l00031">luci::size()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_input_data_loader_8cpp_source.html#l00158">circle_eval_diff::DirectoryLoader::DirectoryLoader()</a>, and <a class="el" href="_input_data_loader_8cpp_source.html#l00184">circle_eval_diff::DirectoryLoader::get()</a>.</p>
 
@@ -528,7 +529,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  116</span> </div>
 <div class="line"><span class="lineno">  117</span>  <span class="keywordflow">for</span> (uint32_t input_idx = 0; input_idx &lt; data.size(); input_idx++)</div>
 <div class="line"><span class="lineno">  118</span>  {</div>
-<div class="line"><span class="lineno">  119</span>    <span class="keyword">auto</span> input_node = loco::must_cast&lt;const luci::CircleInput *&gt;(input_nodes[input_idx]);</div>
+<div class="line"><span class="lineno">  119</span>    <span class="keyword">auto</span> input_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;const luci::CircleInput *&gt;</a>(input_nodes[input_idx]);</div>
 <div class="line"><span class="lineno">  120</span>    assert(input_node-&gt;<a class="code hl_function" href="classluci_1_1_circle_input.html#af33538d35d43dfdb4324487daf61eada">index</a>() == input_idx);</div>
 <div class="line"><span class="lineno">  121</span> </div>
 <div class="line"><span class="lineno">  122</span>    <span class="keyword">auto</span> input_data = data.at(input_idx);</div>
@@ -540,7 +541,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  128</span>  std::vector&lt;std::shared_ptr&lt;Tensor&gt;&gt; outputs;</div>
 <div class="line"><span class="lineno">  129</span>  <span class="keywordflow">for</span> (uint32_t output_idx = 0; output_idx &lt; output_nodes.size(); output_idx++)</div>
 <div class="line"><span class="lineno">  130</span>  {</div>
-<div class="line"><span class="lineno">  131</span>    <span class="keyword">auto</span> output_node = loco::must_cast&lt;const luci::CircleOutput *&gt;(output_nodes[output_idx]);</div>
+<div class="line"><span class="lineno">  131</span>    <span class="keyword">auto</span> output_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;const luci::CircleOutput *&gt;</a>(output_nodes[output_idx]);</div>
 <div class="line"><span class="lineno">  132</span>    assert(output_node-&gt;<a class="code hl_function" href="classluci_1_1_circle_output.html#ab0d44d509bd1fc0529fc384ddd9fb947">index</a>() == output_idx);</div>
 <div class="line"><span class="lineno">  133</span> </div>
 <div class="line"><span class="lineno">  134</span>    <span class="keyword">auto</span> tensor = createEmptyTensor(output_node);</div>
@@ -553,7 +554,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="aclassluci_1_1_circle_input_html_af33538d35d43dfdb4324487daf61eada"><div class="ttname"><a href="classluci_1_1_circle_input.html#af33538d35d43dfdb4324487daf61eada">luci::CircleInput::index</a></div><div class="ttdeci">void index(const loco::GraphInputIndex &amp;index)</div><div class="ttdef"><b>Definition</b> <a href="_circle_input_8cpp_source.html#l00025">CircleInput.cpp:25</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_output_html_ab0d44d509bd1fc0529fc384ddd9fb947"><div class="ttname"><a href="classluci_1_1_circle_output.html#ab0d44d509bd1fc0529fc384ddd9fb947">luci::CircleOutput::index</a></div><div class="ttdeci">void index(const loco::GraphOutputIndex &amp;index)</div><div class="ttdef"><b>Definition</b> <a href="lang_2src_2_nodes_2_circle_output_8cpp_source.html#l00025">CircleOutput.cpp:25</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="circle-eval-diff_2src_2_tensor_8cpp_source.html#l00090">createEmptyTensor()</a>, <a class="el" href="_circle_input_8cpp_source.html#l00025">luci::CircleInput::index()</a>, and <a class="el" href="lang_2src_2_nodes_2_circle_output_8cpp_source.html#l00025">luci::CircleOutput::index()</a>.</p>
+<p class="reference">References <a class="el" href="circle-eval-diff_2src_2_tensor_8cpp_source.html#l00090">createEmptyTensor()</a>, <a class="el" href="_circle_input_8cpp_source.html#l00025">luci::CircleInput::index()</a>, <a class="el" href="lang_2src_2_nodes_2_circle_output_8cpp_source.html#l00025">luci::CircleOutput::index()</a>, and <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_circle_eval_diff_8cpp_source.html#l00201">circle_eval_diff::CircleEvalDiff::evalDiff()</a>.</p>
 

@@ -132,7 +132,7 @@ $(document).ready(function(){initNavTree('import_2src_2_nodes_2_circle_logical_n
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;inputs = args.op.inputs;</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensors = args.reader.tensors();</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor = tensors.at(inputs.at(0));</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(tensor != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">if</span> (tensor-&gt;type() != circle::TensorType::TensorType_BOOL)</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
@@ -160,6 +160,7 @@ $(document).ready(function(){initNavTree('import_2src_2_nodes_2_circle_logical_n
 <div class="ttc" id="alang_2include_2luci_2_i_r_2_nodes_2_circle_logical_not_8h_html"><div class="ttname"><a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_logical_not_8h.html">CircleLogicalNot.h</a></div></div>
 <div class="ttc" id="aloco_8h_html"><div class="ttname"><a href="loco_8h.html">loco.h</a></div></div>
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition</b> <a href="circle-resizer_2include_2_circle_model_8h_source.html#l00026">CircleModel.h:27</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00039">CircleNodeDecl.h:42</a></div></div>
 <div class="ttc" id="astructluci_1_1_graph_builder_base_1_1_validate_args_html"><div class="ttname"><a href="structluci_1_1_graph_builder_base_1_1_validate_args.html">luci::GraphBuilderBase::ValidateArgs</a></div><div class="ttdef"><b>Definition</b> <a href="_graph_builder_base_8h_source.html#l00034">GraphBuilderBase.h:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

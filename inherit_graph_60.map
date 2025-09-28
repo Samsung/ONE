@@ -1,17 +1,17 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classcirclechef_1_1_circle_op_chef.html" title="Interface for each operators to build circlechef." alt="" coords="5,185,166,211"/>
 <area shape="rect" id="Node000001" href="$classcirclechef_1_1_circle_op_b_c_q_fully_connected.html" title="circlechef operator builder for BCQFullyConnected" alt="" coords="227,5,416,46"/>
-<area shape="poly" id="edge42_Node000000_Node000001" title=" " alt="" coords="101,170,147,112,178,82,212,55,234,44,236,49,215,60,181,86,151,116,106,174"/>
+<area shape="poly" id="edge40_Node000000_Node000001" title=" " alt="" coords="101,170,147,112,178,82,212,55,234,44,236,49,215,60,181,86,151,116,106,174"/>
 <area shape="rect" id="Node000002" href="$classcirclechef_1_1_circle_op_b_c_q_gather.html" title="circlechef operator builder for BCQGather" alt="" coords="221,70,422,96"/>
-<area shape="poly" id="edge43_Node000000_Node000002" title=" " alt="" coords="112,172,157,138,213,106,246,94,248,99,215,111,160,142,115,177"/>
+<area shape="poly" id="edge41_Node000000_Node000002" title=" " alt="" coords="112,172,157,138,213,106,246,94,248,99,215,111,160,142,115,177"/>
 <area shape="rect" id="Node000003" href="$classcirclechef_1_1_circle_op_batch_mat_mul.html" title="circlechef operator builder for batchmatmul" alt="" coords="238,120,405,161"/>
-<area shape="poly" id="edge44_Node000000_Node000003" title=" " alt="" coords="155,178,237,158,238,163,157,183"/>
+<area shape="poly" id="edge42_Node000000_Node000003" title=" " alt="" coords="155,178,237,158,238,163,157,183"/>
 <area shape="rect" id="Node000004" href="$classcirclechef_1_1_circle_op_g_r_u.html" title="circlechef operator builder for GRU" alt="" coords="240,185,403,211"/>
-<area shape="poly" id="edge45_Node000000_Node000004" title=" " alt="" coords="181,195,240,195,240,200,181,200"/>
+<area shape="poly" id="edge43_Node000000_Node000004" title=" " alt="" coords="181,195,240,195,240,200,181,200"/>
 <area shape="rect" id="Node000005" href="$classcirclechef_1_1_circle_op_instance_norm.html" title="circlechef operator builder for INSTANCE_NORM" alt="" coords="214,234,429,260"/>
-<area shape="poly" id="edge46_Node000000_Node000005" title=" " alt="" coords="166,212,257,231,256,236,165,217"/>
+<area shape="poly" id="edge44_Node000000_Node000005" title=" " alt="" coords="166,212,257,231,256,236,165,217"/>
 <area shape="rect" id="Node000006" href="$classcirclechef_1_1_circle_op_rms_norm.html" title="circlechef operator builder for RMS_NORM" alt="" coords="225,284,418,309"/>
-<area shape="poly" id="edge47_Node000000_Node000006" title=" " alt="" coords="119,217,163,245,215,270,247,280,246,285,213,275,161,249,116,222"/>
+<area shape="poly" id="edge45_Node000000_Node000006" title=" " alt="" coords="119,217,163,245,215,270,247,280,246,285,213,275,161,249,116,222"/>
 <area shape="rect" id="Node000007" href="$classcirclechef_1_1_circle_op_ro_p_e.html" title="circlechef operator builder for RoPE" alt="" coords="238,333,405,359"/>
-<area shape="poly" id="edge48_Node000000_Node000007" title=" " alt="" coords="108,221,153,272,182,298,215,319,240,330,238,335,212,324,179,302,149,276,104,225"/>
+<area shape="poly" id="edge46_Node000000_Node000007" title=" " alt="" coords="108,221,153,272,182,298,215,319,240,330,238,335,212,324,179,302,149,276,104,225"/>
 </map>

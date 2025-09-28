@@ -139,15 +139,16 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">if</span> (!py::hasattr(_analysis, #OP_NAME <span class="stringliteral">&quot;Pre&quot;</span>))              \</div>
 <div class="line">  {                                                         \</div>
-<div class="line">    visit(loco::must_cast&lt;const luci::CircleNode *&gt;(node)); \</div>
+<div class="line">    visit(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;const luci::CircleNode *&gt;</a>(node)); \</div>
 <div class="line">    <span class="keywordflow">return</span>;                                                 \</div>
 <div class="line">  }                                                         \</div>
 <div class="line">  py::object hook = _analysis.attr(#OP_NAME <span class="stringliteral">&quot;Pre&quot;</span>);         \</div>
 <div class="line">  <span class="keyword">auto</span> inputs = inputsPyArray(node, _interpreter);</div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="_pre_operator_hook_8h_source.html#l00043">43</a> of file <a class="el" href="_pre_operator_hook_8h_source.html">PreOperatorHook.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   45</span>  {                                                         \</div>
-<div class="line"><span class="lineno">   46</span>    visit(loco::must_cast&lt;const luci::CircleNode *&gt;(node)); \</div>
+<div class="line"><span class="lineno">   46</span>    visit(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;const luci::CircleNode *&gt;</a>(node)); \</div>
 <div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span>;                                                 \</div>
 <div class="line"><span class="lineno">   48</span>  }                                                         \</div>
 <div class="line"><span class="lineno">   49</span>  py::object hook = _analysis.attr(#OP_NAME <span class="stringliteral">&quot;Pre&quot;</span>);         \</div>

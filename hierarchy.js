@@ -1,5 +1,11 @@
 var hierarchy =
 [
+    [ "validate_global_conf._Action", "classvalidate__global__conf_1_1___action.html", [
+      [ "validate_global_conf.DriverName", "classvalidate__global__conf_1_1_driver_name.html", null ],
+      [ "validate_global_conf.NormalOption", "classvalidate__global__conf_1_1_normal_option.html", null ],
+      [ "validate_global_conf.TargetOption", "classvalidate__global__conf_1_1_target_option.html", null ]
+    ] ],
+    [ "validate_global_conf._ArgSpec", "classvalidate__global__conf_1_1___arg_spec.html", null ],
     [ "ndarray::Strides::_calc_offset< Seq, Ts >", "structndarray_1_1_strides_1_1__calc__offset.html", null ],
     [ "ndarray::Strides::_calc_offset< index_sequence< Num >, T >", "structndarray_1_1_strides_1_1__calc__offset_3_01index__sequence_3_01_num_01_4_00_01_t_01_4.html", null ],
     [ "ndarray::Strides::_calc_offset< index_sequence< Num, Nums... >, T, Ts... >", "structndarray_1_1_strides_1_1__calc__offset_3_01index__sequence_3_01_num_00_01_nums_8_8_8_01_4_00_01_t_00_01_ts_8_8_8_01_4.html", null ],
@@ -1215,6 +1221,7 @@ var hierarchy =
     [ "kbenchmark::Args", "classkbenchmark_1_1_args.html", null ],
     [ "arser::Argument", "classarser_1_1_argument.html", null ],
     [ "argumentparse.ArgumentParser", "classargumentparse_1_1_argument_parser.html", null ],
+    [ "validate_global_conf.ArgumentParser", "classvalidate__global__conf_1_1_argument_parser.html", null ],
     [ "Arguments", "struct_arguments.html", null ],
     [ "souschef::Arguments", "structsouschef_1_1_arguments.html", [
       [ "souschef::RangedArguments< InputIt >", "classsouschef_1_1_ranged_arguments.html", null ]
@@ -2053,7 +2060,6 @@ var hierarchy =
     [ "luci_interpreter::lstm::GateParameters", "structluci__interpreter_1_1lstm_1_1_gate_parameters.html", null ],
     [ "mir_interpreter::GatherByT< T >", "structmir__interpreter_1_1_gather_by_t.html", null ],
     [ "mir_interpreter::GatherImpl< T, IndicesT >", "structmir__interpreter_1_1_gather_impl.html", null ],
-    [ "tflite::reference_ops::GatherNdHelperResult", "structtflite_1_1reference__ops_1_1_gather_nd_helper_result.html", null ],
     [ "luci_interpreter::GatherParams", "structluci__interpreter_1_1_gather_params.html", null ],
     [ "nnfw::cker::GatherParams", "structnnfw_1_1cker_1_1_gather_params.html", null ],
     [ "luci_interpreter::GeluParams", "structluci__interpreter_1_1_gelu_params.html", null ],
@@ -2316,7 +2322,6 @@ var hierarchy =
       [ "nnc::ArtifactGeneratorCppDecl", "classnnc_1_1_artifact_generator_cpp_decl.html", null ]
     ] ],
     [ "ICLKernel", null, [
-      [ "arm_compute::CLBinaryLogicalOpKernel", "classarm__compute_1_1_c_l_binary_logical_op_kernel.html", null ],
       [ "arm_compute::CLEmbeddingLookupKernel", "classarm__compute_1_1_c_l_embedding_lookup_kernel.html", null ],
       [ "arm_compute::CLGEMMMatrixAccumulateBiasesKernel", "classarm__compute_1_1_c_l_g_e_m_m_matrix_accumulate_biases_kernel.html", null ],
       [ "arm_compute::CLGatherExKernel", "classarm__compute_1_1_c_l_gather_ex_kernel.html", null ],
@@ -2335,12 +2340,8 @@ var hierarchy =
       [ "arm_compute::CLCastBoolKernel", "classarm__compute_1_1_c_l_cast_bool_kernel.html", null ]
     ] ],
     [ "ICLSimpleFunction", null, [
-      [ "arm_compute::CLBinaryLogicalOp", "classarm__compute_1_1_c_l_binary_logical_op.html", null ],
       [ "arm_compute::CLCastBool", "classarm__compute_1_1_c_l_cast_bool.html", null ],
-      [ "arm_compute::CLEmbeddingLookup", "classarm__compute_1_1_c_l_embedding_lookup.html", null ],
-      [ "arm_compute::CLGatherEx", "classarm__compute_1_1_c_l_gather_ex.html", null ],
       [ "arm_compute::CLHashtableLookup", "classarm__compute_1_1_c_l_hashtable_lookup.html", null ],
-      [ "arm_compute::CLInstanceNormalizationLayerEx", "classarm__compute_1_1_c_l_instance_normalization_layer_ex.html", null ],
       [ "arm_compute::CLNeg", "classarm__compute_1_1_c_l_neg.html", null ]
     ] ],
     [ "onert::odc::ICodegen", "classonert_1_1odc_1_1_i_codegen.html", null ],
@@ -2401,10 +2402,8 @@ var hierarchy =
       [ "arm_compute::NEFullyConnectedHybridLayer", "classarm__compute_1_1_n_e_fully_connected_hybrid_layer.html", null ],
       [ "arm_compute::NEFullyConnectedLayerEx", "classarm__compute_1_1_n_e_fully_connected_layer_ex.html", null ],
       [ "arm_compute::NEFullyConnectedReshapingLayer", "classarm__compute_1_1_n_e_fully_connected_reshaping_layer.html", null ],
-      [ "arm_compute::NEInstanceNormalizationLayerEx", "classarm__compute_1_1_n_e_instance_normalization_layer_ex.html", null ],
       [ "arm_compute::NEReduceOperation", "classarm__compute_1_1_n_e_reduce_operation.html", null ],
-      [ "arm_compute::NEReduceSum", "classarm__compute_1_1_n_e_reduce_sum.html", null ],
-      [ "arm_compute::NETransposeConvLayer", "classarm__compute_1_1_n_e_transpose_conv_layer.html", null ]
+      [ "arm_compute::NEReduceSum", "classarm__compute_1_1_n_e_reduce_sum.html", null ]
     ] ],
     [ "IFunction", null, [
       [ "arm_compute::CLDirectTransposeConvLayer", "classarm__compute_1_1_c_l_direct_transpose_conv_layer.html", null ],
@@ -2552,7 +2551,6 @@ var hierarchy =
     [ "pp::IndentedStringBuilder", "classpp_1_1_indented_string_builder.html", null ],
     [ "mir::Index", "classmir_1_1_index.html", null ],
     [ "nncc::core::ADT::tensor::Index", "classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_index.html", null ],
-    [ "nnfw::misc::feature::Index", "classnnfw_1_1misc_1_1feature_1_1_index.html", null ],
     [ "nnfw::misc::tensor::Index", "structnnfw_1_1misc_1_1tensor_1_1_index.html", null ],
     [ "onert::util::Index< T, DummyTag >", "classonert_1_1util_1_1_index.html", null ],
     [ "onert::util::Index< uint16_t, ModelIndexTag >", "classonert_1_1util_1_1_index.html", null ],
@@ -2564,9 +2562,6 @@ var hierarchy =
     [ "nncc::core::ADT::tensor::IndexEnumerator", "classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_index_enumerator.html", null ],
     [ "nnfw::misc::tensor::IndexEnumerator", "classnnfw_1_1misc_1_1tensor_1_1_index_enumerator.html", null ],
     [ "nnfw::misc::tensor::IndexFormatter", "classnnfw_1_1misc_1_1tensor_1_1_index_formatter.html", null ],
-    [ "nnfw::misc::feature::IndexIterator", "classnnfw_1_1misc_1_1feature_1_1_index_iterator.html", null ],
-    [ "nnfw::misc::kernel::IndexIterator", "classnnfw_1_1misc_1_1kernel_1_1_index_iterator.html", null ],
-    [ "nnfw::misc::matrix::IndexIterator", "classnnfw_1_1misc_1_1matrix_1_1_index_iterator.html", null ],
     [ "nnfw::misc::tensor::IndexIterator", "classnnfw_1_1misc_1_1tensor_1_1_index_iterator.html", null ],
     [ "onert::exec::feature::IndexIterator", "classonert_1_1exec_1_1feature_1_1_index_iterator.html", null ],
     [ "luci::IndexNodeFinder", "classluci_1_1_index_node_finder.html", null ],
@@ -2578,7 +2573,6 @@ var hierarchy =
       [ "arm_compute::NECastBoolKernel", "classarm__compute_1_1_n_e_cast_bool_kernel.html", null ],
       [ "arm_compute::NEEmbeddingLookupKernel", "classarm__compute_1_1_n_e_embedding_lookup_kernel.html", null ],
       [ "arm_compute::NEGEMMMatrixAccumulateBiasesKernel", "classarm__compute_1_1_n_e_g_e_m_m_matrix_accumulate_biases_kernel.html", null ],
-      [ "arm_compute::NEGatherKernelEx", "classarm__compute_1_1_n_e_gather_kernel_ex.html", null ],
       [ "arm_compute::NEHashtableLookupKernel", "classarm__compute_1_1_n_e_hashtable_lookup_kernel.html", null ],
       [ "arm_compute::NEInstanceNormalizationLayerKernelEx", "classarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex.html", null ],
       [ "arm_compute::NEMultiplyScaleFactorKernel", "classarm__compute_1_1_n_e_multiply_scale_factor_kernel.html", null ],
@@ -2587,7 +2581,6 @@ var hierarchy =
     ] ],
     [ "INESimpleFunctionNoBorder", null, [
       [ "arm_compute::NECastBool", "classarm__compute_1_1_n_e_cast_bool.html", null ],
-      [ "arm_compute::NEEmbeddingLookup", "classarm__compute_1_1_n_e_embedding_lookup.html", null ],
       [ "arm_compute::NEGatherEx", "classarm__compute_1_1_n_e_gather_ex.html", null ],
       [ "arm_compute::NEHashtableLookup", "classarm__compute_1_1_n_e_hashtable_lookup.html", null ],
       [ "arm_compute::NEOneHot", "classarm__compute_1_1_n_e_one_hot.html", null ]
@@ -4837,16 +4830,8 @@ var hierarchy =
     [ "nncc::core::ADT::tensor::Reader< T >", "structnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_reader.html", [
       [ "nncc::core::ADT::tensor::View< T >", "classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_view.html", null ]
     ] ],
-    [ "nnfw::misc::feature::Reader< T >", "structnnfw_1_1misc_1_1feature_1_1_reader.html", [
-      [ "nnfw::misc::feature::Object< T >", "classnnfw_1_1misc_1_1feature_1_1_object.html", null ]
-    ] ],
-    [ "nnfw::misc::kernel::Reader< T >", "structnnfw_1_1misc_1_1kernel_1_1_reader.html", null ],
-    [ "nnfw::misc::matrix::Reader< T >", "structnnfw_1_1misc_1_1matrix_1_1_reader.html", null ],
     [ "nnfw::misc::tensor::Reader< T >", "structnnfw_1_1misc_1_1tensor_1_1_reader.html", [
       [ "nnfw::misc::tensor::Object< T >", "classnnfw_1_1misc_1_1tensor_1_1_object.html", null ]
-    ] ],
-    [ "nnfw::misc::vector::Reader< T >", "structnnfw_1_1misc_1_1vector_1_1_reader.html", [
-      [ "nnfw::misc::vector::Object< T >", "classnnfw_1_1misc_1_1vector_1_1_object.html", null ]
     ] ],
     [ "onert::exec::feature::Reader< T >", "structonert_1_1exec_1_1feature_1_1_reader.html", [
       [ "onert::exec::feature::nchw::Reader< T >", "classonert_1_1exec_1_1feature_1_1nchw_1_1_reader.html", [
@@ -4864,6 +4849,7 @@ var hierarchy =
     [ "nnfw::cker::Reduce", "classnnfw_1_1cker_1_1_reduce.html", [
       [ "nnfw::cker::ReduceMean", "classnnfw_1_1cker_1_1_reduce_mean.html", null ]
     ] ],
+    [ "onert_micro::execute::pal::ReduceMaxFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_reduce_max_fn.html", null ],
     [ "mir_interpreter::ReduceMeanImpl< T >", "structmir__interpreter_1_1_reduce_mean_impl.html", null ],
     [ "nnfw::cker::functor::ReduceOuterDimensions< Device, InputT, AccumT, OutputT, BinaryFunctor >", "structnnfw_1_1cker_1_1functor_1_1_reduce_outer_dimensions.html", null ],
     [ "onert_micro::execute::pal::ReduceProductFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html", null ],
@@ -4935,6 +4921,7 @@ var hierarchy =
     [ "luci_interpreter::RuntimeToIR", "structluci__interpreter_1_1_runtime_to_i_r.html", null ],
     [ "onert::ir::operation::DetectionPostProcess::Scale", "structonert_1_1ir_1_1operation_1_1_detection_post_process_1_1_scale.html", null ],
     [ "nest::Schedule", "classnest_1_1_schedule.html", null ],
+    [ "validate_global_conf.SchemaReport", "classvalidate__global__conf_1_1_schema_report.html", null ],
     [ "crew::Section", "structcrew_1_1_section.html", null ],
     [ "nnfw::cker::SequentialTensorWriter< T >", "classnnfw_1_1cker_1_1_sequential_tensor_writer.html", null ],
     [ "luci::SerializedModelData", "structluci_1_1_serialized_model_data.html", null ],
@@ -4957,9 +4944,6 @@ var hierarchy =
     [ "nncc::core::ADT::kernel::Shape", "classnncc_1_1core_1_1_a_d_t_1_1kernel_1_1_shape.html", null ],
     [ "nncc::core::ADT::tensor::Shape", "classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_shape.html", null ],
     [ "nnfw::cker::Shape", "classnnfw_1_1cker_1_1_shape.html", null ],
-    [ "nnfw::misc::feature::Shape", "structnnfw_1_1misc_1_1feature_1_1_shape.html", null ],
-    [ "nnfw::misc::kernel::Shape", "structnnfw_1_1misc_1_1kernel_1_1_shape.html", null ],
-    [ "nnfw::misc::matrix::Shape", "structnnfw_1_1misc_1_1matrix_1_1_shape.html", null ],
     [ "nnfw::misc::tensor::Shape", "classnnfw_1_1misc_1_1tensor_1_1_shape.html", null ],
     [ "nnfw::ruy::Shape", "classnnfw_1_1ruy_1_1_shape.html", null ],
     [ "onert::ir::Shape", "structonert_1_1ir_1_1_shape.html", null ],
@@ -5154,6 +5138,7 @@ var hierarchy =
       [ "circlechef::CircleImport", "classcirclechef_1_1_circle_import.html", null ],
       [ "tflchef::TFliteImport", "classtflchef_1_1_t_flite_import.html", null ]
     ] ],
+    [ "loco::TensorIndex", "classloco_1_1_tensor_index.html", null ],
     [ "onert::api::python::tensorinfo", "structonert_1_1api_1_1python_1_1tensorinfo.html", null ],
     [ "onert::backend::train::TensorManager", "classonert_1_1backend_1_1train_1_1_tensor_manager.html", null ],
     [ "moco::TensorName", "structmoco_1_1_tensor_name.html", null ],
@@ -5992,7 +5977,6 @@ var hierarchy =
       [ "luci::CommonSubExpressionEliminationTestGraph", "classluci_1_1_common_sub_expression_elimination_test_graph.html", null ]
     ] ],
     [ "test_utils.TestRunner", "classtest__utils_1_1_test_runner.html", null ],
-    [ "nnfw::misc::feature::TextFormatter< T >", "classnnfw_1_1misc_1_1feature_1_1_text_formatter.html", null ],
     [ "tflimport::TflBufferContext::TflBuffer< T >", "structtflimport_1_1_tfl_buffer_context_1_1_tfl_buffer.html", null ],
     [ "tflimport::TflBufferContext", "classtflimport_1_1_tfl_buffer_context.html", null ],
     [ "exo::TFLExporter", "classexo_1_1_t_f_l_exporter.html", null ],

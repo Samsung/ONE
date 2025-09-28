@@ -237,10 +237,10 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>N/A </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00261">261</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  263</span>{</div>
-<div class="line"><span class="lineno">  264</span>  _built_programs_map.emplace(built_program_name, program);</div>
-<div class="line"><span class="lineno">  265</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00239">239</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  241</span>{</div>
+<div class="line"><span class="lineno">  242</span>  _built_programs_map.emplace(built_program_name, program);</div>
+<div class="line"><span class="lineno">  243</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -347,69 +347,69 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The created kernel. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00201">201</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  203</span>{</div>
-<div class="line"><span class="lineno">  204</span>  <span class="comment">// Find which program contains the kernel</span></div>
-<div class="line"><span class="lineno">  205</span>  <span class="keyword">auto</span> kernel_program_it = _kernel_program_map.find(kernel_name);</div>
-<div class="line"><span class="lineno">  206</span> </div>
-<div class="line"><span class="lineno">  207</span>  <span class="keywordflow">if</span> (_kernel_program_map.end() == kernel_program_it)</div>
-<div class="line"><span class="lineno">  208</span>  {</div>
-<div class="line"><span class="lineno">  209</span>    ARM_COMPUTE_ERROR_VAR(<span class="stringliteral">&quot;Kernel %s not found in the CLKernelLibrary&quot;</span>, kernel_name.c_str());</div>
-<div class="line"><span class="lineno">  210</span>  }</div>
-<div class="line"><span class="lineno">  211</span>  std::string concat_str;</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00179">179</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  181</span>{</div>
+<div class="line"><span class="lineno">  182</span>  <span class="comment">// Find which program contains the kernel</span></div>
+<div class="line"><span class="lineno">  183</span>  <span class="keyword">auto</span> kernel_program_it = _kernel_program_map.find(kernel_name);</div>
+<div class="line"><span class="lineno">  184</span> </div>
+<div class="line"><span class="lineno">  185</span>  <span class="keywordflow">if</span> (_kernel_program_map.end() == kernel_program_it)</div>
+<div class="line"><span class="lineno">  186</span>  {</div>
+<div class="line"><span class="lineno">  187</span>    ARM_COMPUTE_ERROR_VAR(<span class="stringliteral">&quot;Kernel %s not found in the CLKernelLibrary&quot;</span>, kernel_name.c_str());</div>
+<div class="line"><span class="lineno">  188</span>  }</div>
+<div class="line"><span class="lineno">  189</span>  std::string concat_str;</div>
+<div class="line"><span class="lineno">  190</span> </div>
+<div class="line"><span class="lineno">  191</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#ad17b3563eaa42b80ca518f2b591324fd">fp16_supported</a>())</div>
+<div class="line"><span class="lineno">  192</span>  {</div>
+<div class="line"><span class="lineno">  193</span>    concat_str += <span class="stringliteral">&quot; -DARM_COMPUTE_OPENCL_FP16_ENABLED=1 &quot;</span>;</div>
+<div class="line"><span class="lineno">  194</span>  }</div>
+<div class="line"><span class="lineno">  195</span> </div>
+<div class="line"><span class="lineno">  196</span>  <span class="keywordflow">if</span> (get_cl_version(_device) == CLVersion::CL20)</div>
+<div class="line"><span class="lineno">  197</span>  {</div>
+<div class="line"><span class="lineno">  198</span>    concat_str += <span class="stringliteral">&quot; -cl-std=CL2.0 &quot;</span>;</div>
+<div class="line"><span class="lineno">  199</span>  }</div>
+<div class="line"><span class="lineno">  200</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (arm_non_uniform_workgroup_supported(_device))</div>
+<div class="line"><span class="lineno">  201</span>  {</div>
+<div class="line"><span class="lineno">  202</span>    concat_str += <span class="stringliteral">&quot; -cl-arm-non-uniform-work-group-size &quot;</span>;</div>
+<div class="line"><span class="lineno">  203</span>  }</div>
+<div class="line"><span class="lineno">  204</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  205</span>  {</div>
+<div class="line"><span class="lineno">  206</span>    ARM_COMPUTE_ERROR(<span class="stringliteral">&quot;Non uniform workgroup size is not supported!!&quot;</span>);</div>
+<div class="line"><span class="lineno">  207</span>  }</div>
+<div class="line"><span class="lineno">  208</span> </div>
+<div class="line"><span class="lineno">  209</span>  <span class="comment">// Check if the program has been built before with same build options.</span></div>
+<div class="line"><span class="lineno">  210</span>  <span class="keyword">const</span> std::string program_name = kernel_program_it-&gt;second;</div>
+<div class="line"><span class="lineno">  211</span>  <span class="keyword">const</span> std::string build_options = stringify_set(build_options_set) + concat_str;</div>
 <div class="line"><span class="lineno">  212</span> </div>
-<div class="line"><span class="lineno">  213</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classarm__compute_1_1_c_l_kernel_library_ex.html#ad17b3563eaa42b80ca518f2b591324fd">fp16_supported</a>())</div>
-<div class="line"><span class="lineno">  214</span>  {</div>
-<div class="line"><span class="lineno">  215</span>    concat_str += <span class="stringliteral">&quot; -DARM_COMPUTE_OPENCL_FP16_ENABLED=1 &quot;</span>;</div>
-<div class="line"><span class="lineno">  216</span>  }</div>
+<div class="line"><span class="lineno">  213</span>  <span class="keyword">const</span> std::string built_program_name = program_name + <span class="stringliteral">&quot;_&quot;</span> + build_options;</div>
+<div class="line"><span class="lineno">  214</span>  <span class="keyword">auto</span> built_program_it = _built_programs_map.find(built_program_name);</div>
+<div class="line"><span class="lineno">  215</span> </div>
+<div class="line"><span class="lineno">  216</span>  cl::Program cl_program;</div>
 <div class="line"><span class="lineno">  217</span> </div>
-<div class="line"><span class="lineno">  218</span>  <span class="keywordflow">if</span> (get_cl_version(_device) == CLVersion::CL20)</div>
+<div class="line"><span class="lineno">  218</span>  <span class="keywordflow">if</span> (_built_programs_map.end() != built_program_it)</div>
 <div class="line"><span class="lineno">  219</span>  {</div>
-<div class="line"><span class="lineno">  220</span>    concat_str += <span class="stringliteral">&quot; -cl-std=CL2.0 &quot;</span>;</div>
-<div class="line"><span class="lineno">  221</span>  }</div>
-<div class="line"><span class="lineno">  222</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (arm_non_uniform_workgroup_supported(_device))</div>
-<div class="line"><span class="lineno">  223</span>  {</div>
-<div class="line"><span class="lineno">  224</span>    concat_str += <span class="stringliteral">&quot; -cl-arm-non-uniform-work-group-size &quot;</span>;</div>
-<div class="line"><span class="lineno">  225</span>  }</div>
-<div class="line"><span class="lineno">  226</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  227</span>  {</div>
-<div class="line"><span class="lineno">  228</span>    ARM_COMPUTE_ERROR(<span class="stringliteral">&quot;Non uniform workgroup size is not supported!!&quot;</span>);</div>
-<div class="line"><span class="lineno">  229</span>  }</div>
+<div class="line"><span class="lineno">  220</span>    <span class="comment">// If program has been built, retrieve to create kernel from it</span></div>
+<div class="line"><span class="lineno">  221</span>    cl_program = built_program_it-&gt;second;</div>
+<div class="line"><span class="lineno">  222</span>  }</div>
+<div class="line"><span class="lineno">  223</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  224</span>  {</div>
+<div class="line"><span class="lineno">  225</span>    <span class="comment">// Get program</span></div>
+<div class="line"><span class="lineno">  226</span>    Program program = load_program(program_name);</div>
+<div class="line"><span class="lineno">  227</span> </div>
+<div class="line"><span class="lineno">  228</span>    <span class="comment">// Build program</span></div>
+<div class="line"><span class="lineno">  229</span>    cl_program = program.build(build_options);</div>
 <div class="line"><span class="lineno">  230</span> </div>
-<div class="line"><span class="lineno">  231</span>  <span class="comment">// Check if the program has been built before with same build options.</span></div>
-<div class="line"><span class="lineno">  232</span>  <span class="keyword">const</span> std::string program_name = kernel_program_it-&gt;second;</div>
-<div class="line"><span class="lineno">  233</span>  <span class="keyword">const</span> std::string build_options = stringify_set(build_options_set) + concat_str;</div>
+<div class="line"><span class="lineno">  231</span>    <span class="comment">// Add built program to internal map</span></div>
+<div class="line"><span class="lineno">  232</span>    _built_programs_map.emplace(built_program_name, cl_program);</div>
+<div class="line"><span class="lineno">  233</span>  }</div>
 <div class="line"><span class="lineno">  234</span> </div>
-<div class="line"><span class="lineno">  235</span>  <span class="keyword">const</span> std::string built_program_name = program_name + <span class="stringliteral">&quot;_&quot;</span> + build_options;</div>
-<div class="line"><span class="lineno">  236</span>  <span class="keyword">auto</span> built_program_it = _built_programs_map.find(built_program_name);</div>
-<div class="line"><span class="lineno">  237</span> </div>
-<div class="line"><span class="lineno">  238</span>  cl::Program cl_program;</div>
-<div class="line"><span class="lineno">  239</span> </div>
-<div class="line"><span class="lineno">  240</span>  <span class="keywordflow">if</span> (_built_programs_map.end() != built_program_it)</div>
-<div class="line"><span class="lineno">  241</span>  {</div>
-<div class="line"><span class="lineno">  242</span>    <span class="comment">// If program has been built, retrieve to create kernel from it</span></div>
-<div class="line"><span class="lineno">  243</span>    cl_program = built_program_it-&gt;second;</div>
-<div class="line"><span class="lineno">  244</span>  }</div>
-<div class="line"><span class="lineno">  245</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  246</span>  {</div>
-<div class="line"><span class="lineno">  247</span>    <span class="comment">// Get program</span></div>
-<div class="line"><span class="lineno">  248</span>    Program program = load_program(program_name);</div>
-<div class="line"><span class="lineno">  249</span> </div>
-<div class="line"><span class="lineno">  250</span>    <span class="comment">// Build program</span></div>
-<div class="line"><span class="lineno">  251</span>    cl_program = program.build(build_options);</div>
-<div class="line"><span class="lineno">  252</span> </div>
-<div class="line"><span class="lineno">  253</span>    <span class="comment">// Add built program to internal map</span></div>
-<div class="line"><span class="lineno">  254</span>    _built_programs_map.emplace(built_program_name, cl_program);</div>
-<div class="line"><span class="lineno">  255</span>  }</div>
-<div class="line"><span class="lineno">  256</span> </div>
-<div class="line"><span class="lineno">  257</span>  <span class="comment">// Create and return kernel</span></div>
-<div class="line"><span class="lineno">  258</span>  <span class="keywordflow">return</span> Kernel(kernel_name, cl_program);</div>
-<div class="line"><span class="lineno">  259</span>}</div>
-<div class="ttc" id="aclassarm__compute_1_1_c_l_kernel_library_ex_html_ad17b3563eaa42b80ca518f2b591324fd"><div class="ttname"><a href="classarm__compute_1_1_c_l_kernel_library_ex.html#ad17b3563eaa42b80ca518f2b591324fd">arm_compute::CLKernelLibraryEx::fp16_supported</a></div><div class="ttdeci">bool fp16_supported() const</div><div class="ttdoc">Returns true if FP16 is supported by the CL device.</div><div class="ttdef"><b>Definition</b> <a href="_c_l_kernel_library_8cpp_source.html#l00267">CLKernelLibrary.cpp:267</a></div></div>
+<div class="line"><span class="lineno">  235</span>  <span class="comment">// Create and return kernel</span></div>
+<div class="line"><span class="lineno">  236</span>  <span class="keywordflow">return</span> Kernel(kernel_name, cl_program);</div>
+<div class="line"><span class="lineno">  237</span>}</div>
+<div class="ttc" id="aclassarm__compute_1_1_c_l_kernel_library_ex_html_ad17b3563eaa42b80ca518f2b591324fd"><div class="ttname"><a href="classarm__compute_1_1_c_l_kernel_library_ex.html#ad17b3563eaa42b80ca518f2b591324fd">arm_compute::CLKernelLibraryEx::fp16_supported</a></div><div class="ttdeci">bool fp16_supported() const</div><div class="ttdoc">Returns true if FP16 is supported by the CL device.</div><div class="ttdef"><b>Definition</b> <a href="_c_l_kernel_library_8cpp_source.html#l00245">CLKernelLibrary.cpp:245</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00267">fp16_supported()</a>.</p>
+<p class="reference">References <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00245">fp16_supported()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="_c_l_pad_layer_kernel_ex_8cpp_source.html#l00140">arm_compute::CLPadLayerKernelEx::configure()</a>, <a class="el" href="_c_l_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00107">arm_compute::CLGEMMMatrixAccumulateBiasesKernel::configure()</a>, <a class="el" href="_c_l_memset_kernel_8cpp_source.html#l00059">arm_compute::CLMemsetKernel::configure()</a>, <a class="el" href="_c_l_gather_ex_kernel_8cpp_source.html#l00111">arm_compute::CLGatherExKernel::configure()</a>, <a class="el" href="_c_l_quantization_symmetric_kernel_8cpp_source.html#l00112">arm_compute::CLQuantizationSymmetricKernel::configure()</a>, <a class="el" href="_c_l_multiply_scale_factor_kernel_8cpp_source.html#l00110">arm_compute::CLMultiplyScaleFactorKernel::configure()</a>, <a class="el" href="_c_l_cast_bool_kernel_8cpp_source.html#l00085">arm_compute::CLCastBoolKernel::configure()</a>, <a class="el" href="_c_l_neg_kernel_8cpp_source.html#l00071">arm_compute::CLNegKernel::configure()</a>, <a class="el" href="_c_l_scale_factor_symm8_kernel_8cpp_source.html#l00109">arm_compute::CLScaleFactorSymm8Kernel::configure()</a>, <a class="el" href="_c_l_embedding_lookup_kernel_8cpp_source.html#l00094">arm_compute::CLEmbeddingLookupKernel::configure()</a>, <a class="el" href="_c_l_reduce_operation_kernel_8cpp_source.html#l00103">arm_compute::CLReduceOperationKernel::configure()</a>, <a class="el" href="_c_l_binary_logical_op_kernel_8cpp_source.html#l00085">arm_compute::CLBinaryLogicalOpKernel::configure()</a>, <a class="el" href="_c_l_hashtable_lookup_kernel_8cpp_source.html#l00102">arm_compute::CLHashtableLookupKernel::configure()</a>, and <a class="el" href="_c_l_instance_normalization_layer_kernel_ex_8cpp_source.html#l00106">arm_compute::CLInstanceNormalizationLayerKernelEx::configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_c_l_pad_layer_kernel_ex_8cpp_source.html#l00140">arm_compute::CLPadLayerKernelEx::configure()</a>, <a class="el" href="_c_l_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00107">arm_compute::CLGEMMMatrixAccumulateBiasesKernel::configure()</a>, <a class="el" href="_c_l_memset_kernel_8cpp_source.html#l00059">arm_compute::CLMemsetKernel::configure()</a>, <a class="el" href="_c_l_gather_ex_kernel_8cpp_source.html#l00111">arm_compute::CLGatherExKernel::configure()</a>, <a class="el" href="_c_l_quantization_symmetric_kernel_8cpp_source.html#l00112">arm_compute::CLQuantizationSymmetricKernel::configure()</a>, <a class="el" href="_c_l_multiply_scale_factor_kernel_8cpp_source.html#l00110">arm_compute::CLMultiplyScaleFactorKernel::configure()</a>, <a class="el" href="_c_l_cast_bool_kernel_8cpp_source.html#l00085">arm_compute::CLCastBoolKernel::configure()</a>, <a class="el" href="_c_l_neg_kernel_8cpp_source.html#l00071">arm_compute::CLNegKernel::configure()</a>, <a class="el" href="_c_l_scale_factor_symm8_kernel_8cpp_source.html#l00109">arm_compute::CLScaleFactorSymm8Kernel::configure()</a>, <a class="el" href="_c_l_reduce_operation_kernel_8cpp_source.html#l00103">arm_compute::CLReduceOperationKernel::configure()</a>, and <a class="el" href="_c_l_hashtable_lookup_kernel_8cpp_source.html#l00102">arm_compute::CLHashtableLookupKernel::configure()</a>.</p>
 
 </div>
 </div>
@@ -431,27 +431,27 @@ Static Public Member Functions</h2></td></tr>
 <p>Return the default NDRange for the device. </p>
 <dl class="section return"><dt>Returns</dt><dd>default NDRangeof the device </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00363">363</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  364</span>{</div>
-<div class="line"><span class="lineno">  365</span>  <span class="comment">//    GPUTarget   _target = get_target_from_device(_device);</span></div>
-<div class="line"><span class="lineno">  366</span>  cl::Device device = cl::Device::getDefault();</div>
-<div class="line"><span class="lineno">  367</span>  GPUTarget _target = get_target_from_device(device);</div>
-<div class="line"><span class="lineno">  368</span>  cl::NDRange default_range;</div>
-<div class="line"><span class="lineno">  369</span> </div>
-<div class="line"><span class="lineno">  370</span>  <span class="keywordflow">switch</span> (_target)</div>
-<div class="line"><span class="lineno">  371</span>  {</div>
-<div class="line"><span class="lineno">  372</span>    <span class="keywordflow">case</span> GPUTarget::MIDGARD:</div>
-<div class="line"><span class="lineno">  373</span>    <span class="keywordflow">case</span> GPUTarget::T600:</div>
-<div class="line"><span class="lineno">  374</span>    <span class="keywordflow">case</span> GPUTarget::T700:</div>
-<div class="line"><span class="lineno">  375</span>    <span class="keywordflow">case</span> GPUTarget::T800:</div>
-<div class="line"><span class="lineno">  376</span>      default_range = cl::NDRange(128u, 1);</div>
-<div class="line"><span class="lineno">  377</span>      <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  378</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  379</span>      default_range = cl::NullRange;</div>
-<div class="line"><span class="lineno">  380</span>  }</div>
-<div class="line"><span class="lineno">  381</span> </div>
-<div class="line"><span class="lineno">  382</span>  <span class="keywordflow">return</span> default_range;</div>
-<div class="line"><span class="lineno">  383</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00341">341</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  342</span>{</div>
+<div class="line"><span class="lineno">  343</span>  <span class="comment">//    GPUTarget   _target = get_target_from_device(_device);</span></div>
+<div class="line"><span class="lineno">  344</span>  cl::Device device = cl::Device::getDefault();</div>
+<div class="line"><span class="lineno">  345</span>  GPUTarget _target = get_target_from_device(device);</div>
+<div class="line"><span class="lineno">  346</span>  cl::NDRange default_range;</div>
+<div class="line"><span class="lineno">  347</span> </div>
+<div class="line"><span class="lineno">  348</span>  <span class="keywordflow">switch</span> (_target)</div>
+<div class="line"><span class="lineno">  349</span>  {</div>
+<div class="line"><span class="lineno">  350</span>    <span class="keywordflow">case</span> GPUTarget::MIDGARD:</div>
+<div class="line"><span class="lineno">  351</span>    <span class="keywordflow">case</span> GPUTarget::T600:</div>
+<div class="line"><span class="lineno">  352</span>    <span class="keywordflow">case</span> GPUTarget::T700:</div>
+<div class="line"><span class="lineno">  353</span>    <span class="keywordflow">case</span> GPUTarget::T800:</div>
+<div class="line"><span class="lineno">  354</span>      default_range = cl::NDRange(128u, 1);</div>
+<div class="line"><span class="lineno">  355</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  356</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  357</span>      default_range = cl::NullRange;</div>
+<div class="line"><span class="lineno">  358</span>  }</div>
+<div class="line"><span class="lineno">  359</span> </div>
+<div class="line"><span class="lineno">  360</span>  <span class="keywordflow">return</span> default_range;</div>
+<div class="line"><span class="lineno">  361</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -473,10 +473,10 @@ Static Public Member Functions</h2></td></tr>
 <p>Returns true if FP16 is supported by the CL device. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if the CL device supports FP16 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00267">267</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  267</span>{ return ::fp16_supported(_device); }</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00245">245</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  245</span>{ return ::fp16_supported(_device); }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00201">create_kernel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00179">create_kernel()</a>.</p>
 
 </div>
 </div>
@@ -506,14 +506,14 @@ Static Public Member Functions</h2></td></tr>
 <p>Get the KernelLibrary singleton. </p>
 <dl class="section return"><dt>Returns</dt><dd>The KernelLibrary instance </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00195">195</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  196</span>{</div>
-<div class="line"><span class="lineno">  197</span>  <span class="keyword">static</span> <a class="code hl_class" href="classarm__compute_1_1_c_l_kernel_library_ex.html">CLKernelLibraryEx</a> _kernel_library;</div>
-<div class="line"><span class="lineno">  198</span>  <span class="keywordflow">return</span> _kernel_library;</div>
-<div class="line"><span class="lineno">  199</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00173">173</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  174</span>{</div>
+<div class="line"><span class="lineno">  175</span>  <span class="keyword">static</span> <a class="code hl_class" href="classarm__compute_1_1_c_l_kernel_library_ex.html">CLKernelLibraryEx</a> _kernel_library;</div>
+<div class="line"><span class="lineno">  176</span>  <span class="keywordflow">return</span> _kernel_library;</div>
+<div class="line"><span class="lineno">  177</span>}</div>
 <div class="ttc" id="aclassarm__compute_1_1_c_l_kernel_library_ex_html"><div class="ttname"><a href="classarm__compute_1_1_c_l_kernel_library_ex.html">arm_compute::CLKernelLibraryEx</a></div><div class="ttdoc">Class to build OpenCL kernels added from nnfw.</div><div class="ttdef"><b>Definition</b> <a href="_c_l_kernel_library_ex_8h_source.html#l00064">CLKernelLibraryEx.h:65</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="_c_l_pad_layer_kernel_ex_8cpp_source.html#l00140">arm_compute::CLPadLayerKernelEx::configure()</a>, <a class="el" href="_c_l_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00107">arm_compute::CLGEMMMatrixAccumulateBiasesKernel::configure()</a>, <a class="el" href="_c_l_memset_kernel_8cpp_source.html#l00059">arm_compute::CLMemsetKernel::configure()</a>, <a class="el" href="_c_l_gather_ex_kernel_8cpp_source.html#l00111">arm_compute::CLGatherExKernel::configure()</a>, <a class="el" href="_c_l_quantization_symmetric_kernel_8cpp_source.html#l00112">arm_compute::CLQuantizationSymmetricKernel::configure()</a>, <a class="el" href="_c_l_multiply_scale_factor_kernel_8cpp_source.html#l00110">arm_compute::CLMultiplyScaleFactorKernel::configure()</a>, <a class="el" href="_c_l_cast_bool_kernel_8cpp_source.html#l00085">arm_compute::CLCastBoolKernel::configure()</a>, <a class="el" href="_c_l_neg_kernel_8cpp_source.html#l00071">arm_compute::CLNegKernel::configure()</a>, <a class="el" href="_c_l_scale_factor_symm8_kernel_8cpp_source.html#l00109">arm_compute::CLScaleFactorSymm8Kernel::configure()</a>, <a class="el" href="_c_l_embedding_lookup_kernel_8cpp_source.html#l00094">arm_compute::CLEmbeddingLookupKernel::configure()</a>, <a class="el" href="_c_l_reduce_operation_kernel_8cpp_source.html#l00103">arm_compute::CLReduceOperationKernel::configure()</a>, <a class="el" href="_c_l_binary_logical_op_kernel_8cpp_source.html#l00085">arm_compute::CLBinaryLogicalOpKernel::configure()</a>, <a class="el" href="_c_l_hashtable_lookup_kernel_8cpp_source.html#l00102">arm_compute::CLHashtableLookupKernel::configure()</a>, <a class="el" href="_c_l_instance_normalization_layer_kernel_ex_8cpp_source.html#l00106">arm_compute::CLInstanceNormalizationLayerKernelEx::configure()</a>, and <a class="el" href="backend_2acl__cl_2_config_8cc_source.html#l00031">onert::backend::acl_cl::Config::initialize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_c_l_pad_layer_kernel_ex_8cpp_source.html#l00140">arm_compute::CLPadLayerKernelEx::configure()</a>, <a class="el" href="_c_l_g_e_m_m_matrix_accumulate_biases_kernel_8cpp_source.html#l00107">arm_compute::CLGEMMMatrixAccumulateBiasesKernel::configure()</a>, <a class="el" href="_c_l_memset_kernel_8cpp_source.html#l00059">arm_compute::CLMemsetKernel::configure()</a>, <a class="el" href="_c_l_gather_ex_kernel_8cpp_source.html#l00111">arm_compute::CLGatherExKernel::configure()</a>, <a class="el" href="_c_l_quantization_symmetric_kernel_8cpp_source.html#l00112">arm_compute::CLQuantizationSymmetricKernel::configure()</a>, <a class="el" href="_c_l_multiply_scale_factor_kernel_8cpp_source.html#l00110">arm_compute::CLMultiplyScaleFactorKernel::configure()</a>, <a class="el" href="_c_l_cast_bool_kernel_8cpp_source.html#l00085">arm_compute::CLCastBoolKernel::configure()</a>, <a class="el" href="_c_l_neg_kernel_8cpp_source.html#l00071">arm_compute::CLNegKernel::configure()</a>, <a class="el" href="_c_l_scale_factor_symm8_kernel_8cpp_source.html#l00109">arm_compute::CLScaleFactorSymm8Kernel::configure()</a>, <a class="el" href="_c_l_reduce_operation_kernel_8cpp_source.html#l00103">arm_compute::CLReduceOperationKernel::configure()</a>, <a class="el" href="_c_l_hashtable_lookup_kernel_8cpp_source.html#l00102">arm_compute::CLHashtableLookupKernel::configure()</a>, and <a class="el" href="backend_2acl__cl_2_config_8cc_source.html#l00031">onert::backend::acl_cl::Config::initialize()</a>.</p>
 
 </div>
 </div>
@@ -599,8 +599,8 @@ Static Public Member Functions</h2></td></tr>
 <p>Return the device version. </p>
 <dl class="section return"><dt>Returns</dt><dd>The content of CL_DEVICE_VERSION </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00385">385</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  385</span>{ <span class="keywordflow">return</span> _device.getInfo&lt;CL_DEVICE_VERSION&gt;(); }</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00363">363</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  363</span>{ <span class="keywordflow">return</span> _device.getInfo&lt;CL_DEVICE_VERSION&gt;(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -660,17 +660,17 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Source of the selected program. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00338">338</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  339</span>{</div>
-<div class="line"><span class="lineno">  340</span>  <span class="keyword">const</span> <span class="keyword">auto</span> program_source_it = _program_source_map.find(program_name);</div>
-<div class="line"><span class="lineno">  341</span> </div>
-<div class="line"><span class="lineno">  342</span>  <span class="keywordflow">if</span> (program_source_it == _program_source_map.end())</div>
-<div class="line"><span class="lineno">  343</span>  {</div>
-<div class="line"><span class="lineno">  344</span>    ARM_COMPUTE_ERROR_VAR(<span class="stringliteral">&quot;Embedded program for %s does not exist.&quot;</span>, program_name.data());</div>
-<div class="line"><span class="lineno">  345</span>  }</div>
-<div class="line"><span class="lineno">  346</span> </div>
-<div class="line"><span class="lineno">  347</span>  <span class="keywordflow">return</span> program_source_it-&gt;second;</div>
-<div class="line"><span class="lineno">  348</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00316">316</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  317</span>{</div>
+<div class="line"><span class="lineno">  318</span>  <span class="keyword">const</span> <span class="keyword">auto</span> program_source_it = _program_source_map.find(program_name);</div>
+<div class="line"><span class="lineno">  319</span> </div>
+<div class="line"><span class="lineno">  320</span>  <span class="keywordflow">if</span> (program_source_it == _program_source_map.end())</div>
+<div class="line"><span class="lineno">  321</span>  {</div>
+<div class="line"><span class="lineno">  322</span>    ARM_COMPUTE_ERROR_VAR(<span class="stringliteral">&quot;Embedded program for %s does not exist.&quot;</span>, program_name.data());</div>
+<div class="line"><span class="lineno">  323</span>  }</div>
+<div class="line"><span class="lineno">  324</span> </div>
+<div class="line"><span class="lineno">  325</span>  <span class="keywordflow">return</span> program_source_it-&gt;second;</div>
+<div class="line"><span class="lineno">  326</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -757,10 +757,10 @@ Static Public Member Functions</h2></td></tr>
 <p>Returns true if int64_base_atomics extension is supported by the CL device. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if the CL device supports int64_base_atomics extension </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00269">269</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  270</span>{</div>
-<div class="line"><span class="lineno">  271</span>  <span class="keywordflow">return</span> device_supports_extension(_device, <span class="stringliteral">&quot;cl_khr_int64_base_atomics&quot;</span>);</div>
-<div class="line"><span class="lineno">  272</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00247">247</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  248</span>{</div>
+<div class="line"><span class="lineno">  249</span>  <span class="keywordflow">return</span> device_supports_extension(_device, <span class="stringliteral">&quot;cl_khr_int64_base_atomics&quot;</span>);</div>
+<div class="line"><span class="lineno">  250</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -788,18 +788,18 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00350">350</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  351</span>{</div>
-<div class="line"><span class="lineno">  352</span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
-<div class="line"><span class="lineno">  353</span> </div>
-<div class="line"><span class="lineno">  354</span>  <span class="keywordtype">size_t</span> err = kernel.getWorkGroupInfo(_device, CL_KERNEL_WORK_GROUP_SIZE, &amp;result);</div>
-<div class="line"><span class="lineno">  355</span>  ARM_COMPUTE_ERROR_ON_MSG(</div>
-<div class="line"><span class="lineno">  356</span>    err != 0,</div>
-<div class="line"><span class="lineno">  357</span>    <span class="stringliteral">&quot;clGetKernelWorkGroupInfo failed to return the maximum workgroup size for the kernel&quot;</span>);</div>
-<div class="line"><span class="lineno">  358</span>  ARM_COMPUTE_UNUSED(err);</div>
-<div class="line"><span class="lineno">  359</span> </div>
-<div class="line"><span class="lineno">  360</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
-<div class="line"><span class="lineno">  361</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_c_l_kernel_library_8cpp_source.html#l00328">328</a> of file <a class="el" href="_c_l_kernel_library_8cpp_source.html">CLKernelLibrary.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  329</span>{</div>
+<div class="line"><span class="lineno">  330</span>  <span class="keywordtype">size_t</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
+<div class="line"><span class="lineno">  331</span> </div>
+<div class="line"><span class="lineno">  332</span>  <span class="keywordtype">size_t</span> err = kernel.getWorkGroupInfo(_device, CL_KERNEL_WORK_GROUP_SIZE, &amp;result);</div>
+<div class="line"><span class="lineno">  333</span>  ARM_COMPUTE_ERROR_ON_MSG(</div>
+<div class="line"><span class="lineno">  334</span>    err != 0,</div>
+<div class="line"><span class="lineno">  335</span>    <span class="stringliteral">&quot;clGetKernelWorkGroupInfo failed to return the maximum workgroup size for the kernel&quot;</span>);</div>
+<div class="line"><span class="lineno">  336</span>  ARM_COMPUTE_UNUSED(err);</div>
+<div class="line"><span class="lineno">  337</span> </div>
+<div class="line"><span class="lineno">  338</span>  <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">result</a>;</div>
+<div class="line"><span class="lineno">  339</span>}</div>
 <div class="ttc" id="anamespaceinfer_html_a3c1509497a6687dc3572748c3917f011"><div class="ttname"><a href="namespaceinfer.html#a3c1509497a6687dc3572748c3917f011">infer.result</a></div><div class="ttdeci">result</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00103">infer.py:103</a></div></div>
 </div><!-- fragment -->
 </div>

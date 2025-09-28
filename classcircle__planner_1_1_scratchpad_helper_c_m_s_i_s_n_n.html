@@ -192,7 +192,7 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   48</span>  {</div>
 <div class="line"><span class="lineno">   49</span>    <span class="comment">// Main logic of arm_avgpool_s8_get_buffer_size</span></div>
 <div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>    <span class="keyword">const</span> <span class="keyword">auto</span> avg_pool_input = loco::must_cast&lt;luci::CircleNode *&gt;(avg_pool-&gt;<a class="code hl_function" href="classluci_1_1_circle_average_pool2_d.html#ab6a9a4fd02703b2baac292df654e9ee4">value</a>());</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keyword">const</span> <span class="keyword">auto</span> avg_pool_input = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(avg_pool-&gt;<a class="code hl_function" href="classluci_1_1_circle_average_pool2_d.html#ab6a9a4fd02703b2baac292df654e9ee4">value</a>());</div>
 <div class="line"><span class="lineno">   52</span> </div>
 <div class="line"><span class="lineno">   53</span>    <span class="keywordflow">if</span> (avg_pool_input-&gt;dtype() != loco::DataType::S8 or !_use_dsp)</div>
 <div class="line"><span class="lineno">   54</span>      <span class="keywordflow">return</span> 0;</div>
@@ -202,7 +202,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   58</span>    <span class="keywordflow">return</span> depth * <span class="keyword">sizeof</span>(int32_t);</div>
 <div class="line"><span class="lineno">   59</span>  }</div>
 <div class="ttc" id="aclassluci_1_1_circle_average_pool2_d_html_ab6a9a4fd02703b2baac292df654e9ee4"><div class="ttname"><a href="classluci_1_1_circle_average_pool2_d.html#ab6a9a4fd02703b2baac292df654e9ee4">luci::CircleAveragePool2D::value</a></div><div class="ttdeci">loco::Node * value(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_average_pool2_d_8h_source.html#l00040">CircleAveragePool2D.h:40</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>.</p>
+
 </div>
 </div>
 <a id="ab28d32c1c32c1154374057127595c71f" name="ab28d32c1c32c1154374057127595c71f"></a>
@@ -271,8 +274,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   71</span>    <span class="keyword">const</span> <span class="keyword">auto</span> dilation_height_factor = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;dilation()-&gt;h());</div>
 <div class="line"><span class="lineno">   72</span>    <span class="keyword">const</span> <span class="keyword">auto</span> dilation_width_factor = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(<a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;dilation()-&gt;w());</div>
 <div class="line"><span class="lineno">   73</span> </div>
-<div class="line"><span class="lineno">   74</span>    <span class="keyword">const</span> <span class="keyword">auto</span> conv_input = loco::must_cast&lt;luci::CircleNode *&gt;(<a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;input());</div>
-<div class="line"><span class="lineno">   75</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a">filter</a> = loco::must_cast&lt;luci::CircleNode *&gt;(<a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;filter());</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keyword">const</span> <span class="keyword">auto</span> conv_input = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(<a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;input());</div>
+<div class="line"><span class="lineno">   75</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a">filter</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(<a class="code hl_function" href="namespacennop.html#acf3d089479785117472a0b30cebc048d">conv</a>-&gt;filter());</div>
 <div class="line"><span class="lineno">   76</span> </div>
 <div class="line"><span class="lineno">   77</span>    <span class="keywordflow">if</span> (dilation_width_factor != 1 or dilation_height_factor != 1 or</div>
 <div class="line"><span class="lineno">   78</span>        conv_input-&gt;dtype() != loco::DataType::S8)</div>
@@ -319,6 +322,8 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a">mir_caffe::CaffeOpType::filter</a></div><div class="ttdeci">@ filter</div></div>
 <div class="ttc" id="anamespacennop_html_acf3d089479785117472a0b30cebc048d"><div class="ttname"><a href="namespacennop.html#acf3d089479785117472a0b30cebc048d">nnop::conv</a></div><div class="ttdeci">void conv(const nncc::core::ADT::feature::Shape &amp;out_shape, nncc::core::ADT::feature::Accessor&lt; OutputDType &gt; &amp;out_data, const nncc::core::ADT::feature::Shape &amp;in_shape, const nncc::core::ADT::feature::Reader&lt; InputDType &gt; &amp;in_data, const nncc::core::ADT::kernel::Shape &amp;ker_shape, const nncc::core::ADT::kernel::Reader&lt; KernelDType &gt; &amp;ker_data, const PadInfo &amp;pad_info, const StrideInfo &amp;stride_info)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2nnop_2include_2nnop_2_conv2_d_8h_source.html#l00034">Conv2D.h:34</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>.</p>
+
 </div>
 </div>
 <a id="a35e74296b0133cad480ddde55223116d" name="a35e74296b0133cad480ddde55223116d"></a>
@@ -354,8 +359,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  124</span>    <span class="keyword">const</span> <span class="keyword">auto</span> dilation_height_factor = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(depthwise_conv-&gt;<a class="code hl_function" href="classluci_1_1_circle_depthwise_conv2_d.html#a24e60d6cd93343a17dcb997fbb89473f">dilation</a>()-&gt;<a class="code hl_function" href="classluci_1_1_dilation.html#aa1e13a5b6774aa1ba486fa264d58bb6d">h</a>());</div>
 <div class="line"><span class="lineno">  125</span>    <span class="keyword">const</span> <span class="keyword">auto</span> dilation_width_factor = <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(depthwise_conv-&gt;<a class="code hl_function" href="classluci_1_1_circle_depthwise_conv2_d.html#a24e60d6cd93343a17dcb997fbb89473f">dilation</a>()-&gt;<a class="code hl_function" href="classluci_1_1_dilation.html#ad4614dddb311542054ccfd95cea985fb">w</a>());</div>
 <div class="line"><span class="lineno">  126</span> </div>
-<div class="line"><span class="lineno">  127</span>    <span class="keyword">const</span> <span class="keyword">auto</span> depthwise_conv_input = loco::must_cast&lt;luci::CircleNode *&gt;(depthwise_conv-&gt;<a class="code hl_function" href="classluci_1_1_circle_depthwise_conv2_d.html#ab9ed667196be22a547c5d21fddddabd7">input</a>());</div>
-<div class="line"><span class="lineno">  128</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a">filter</a> = loco::must_cast&lt;luci::CircleNode *&gt;(depthwise_conv-&gt;<a class="code hl_function" href="classluci_1_1_circle_depthwise_conv2_d.html#a0e17d9bccd61ba3e299c51d5f04d1424">filter</a>());</div>
+<div class="line"><span class="lineno">  127</span>    <span class="keyword">const</span> <span class="keyword">auto</span> depthwise_conv_input = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(depthwise_conv-&gt;<a class="code hl_function" href="classluci_1_1_circle_depthwise_conv2_d.html#ab9ed667196be22a547c5d21fddddabd7">input</a>());</div>
+<div class="line"><span class="lineno">  128</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8ab2c97ae425dd751b0e48a3acae79cf4a">filter</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(depthwise_conv-&gt;<a class="code hl_function" href="classluci_1_1_circle_depthwise_conv2_d.html#a0e17d9bccd61ba3e299c51d5f04d1424">filter</a>());</div>
 <div class="line"><span class="lineno">  129</span> </div>
 <div class="line"><span class="lineno">  130</span>    <span class="keywordflow">if</span> (dilation_width_factor != 1 or dilation_height_factor != 1 or</div>
 <div class="line"><span class="lineno">  131</span>        depthwise_conv_input-&gt;dtype() != loco::DataType::S8)</div>
@@ -381,6 +386,8 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassluci_1_1_dilation_html_aa1e13a5b6774aa1ba486fa264d58bb6d"><div class="ttname"><a href="classluci_1_1_dilation.html#aa1e13a5b6774aa1ba486fa264d58bb6d">luci::Dilation::h</a></div><div class="ttdeci">uint32_t h() const</div><div class="ttdef"><b>Definition</b> <a href="_attr_dilation_8h_source.html#l00034">AttrDilation.h:34</a></div></div>
 <div class="ttc" id="aclassluci_1_1_dilation_html_ad4614dddb311542054ccfd95cea985fb"><div class="ttname"><a href="classluci_1_1_dilation.html#ad4614dddb311542054ccfd95cea985fb">luci::Dilation::w</a></div><div class="ttdeci">uint32_t w() const</div><div class="ttdef"><b>Definition</b> <a href="_attr_dilation_8h_source.html#l00030">AttrDilation.h:30</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>.</p>
+
 </div>
 </div>
 <a id="a6e759937013f8b1953bc383c05964c0e" name="a6e759937013f8b1953bc383c05964c0e"></a>
@@ -411,8 +418,8 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_scratchpad_helper_c_m_s_i_s_n_n_8h_source.html#l00149">149</a> of file <a class="el" href="_scratchpad_helper_c_m_s_i_s_n_n_8h_source.html">ScratchpadHelperCMSISNN.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  150</span>  {</div>
-<div class="line"><span class="lineno">  151</span>    <span class="keyword">const</span> <span class="keyword">auto</span> svdf_input = loco::must_cast&lt;luci::CircleNode *&gt;(svdf-&gt;<a class="code hl_function" href="classluci_1_1_circle_s_v_d_f.html#a5b4bf59b887f7bd0282316577d061616">input</a>());</div>
-<div class="line"><span class="lineno">  152</span>    <span class="keyword">const</span> <span class="keyword">auto</span> weight_feature_input = loco::must_cast&lt;luci::CircleNode *&gt;(svdf-&gt;<a class="code hl_function" href="classluci_1_1_circle_s_v_d_f.html#ad0aba42ce9f0c0d0678f06e5f2e87781">weight_feature</a>());</div>
+<div class="line"><span class="lineno">  151</span>    <span class="keyword">const</span> <span class="keyword">auto</span> svdf_input = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(svdf-&gt;<a class="code hl_function" href="classluci_1_1_circle_s_v_d_f.html#a5b4bf59b887f7bd0282316577d061616">input</a>());</div>
+<div class="line"><span class="lineno">  152</span>    <span class="keyword">const</span> <span class="keyword">auto</span> weight_feature_input = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(svdf-&gt;<a class="code hl_function" href="classluci_1_1_circle_s_v_d_f.html#ad0aba42ce9f0c0d0678f06e5f2e87781">weight_feature</a>());</div>
 <div class="line"><span class="lineno">  153</span> </div>
 <div class="line"><span class="lineno">  154</span>    <span class="keywordflow">if</span> (svdf_input-&gt;dtype() == loco::DataType::FLOAT32 and</div>
 <div class="line"><span class="lineno">  155</span>        (weight_feature_input-&gt;dtype() == loco::DataType::S8 or</div>
@@ -444,6 +451,8 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassluci_1_1_circle_s_v_d_f_html_ad0aba42ce9f0c0d0678f06e5f2e87781"><div class="ttname"><a href="classluci_1_1_circle_s_v_d_f.html#ad0aba42ce9f0c0d0678f06e5f2e87781">luci::CircleSVDF::weight_feature</a></div><div class="ttdeci">loco::Node * weight_feature(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_s_v_d_f_8h_source.html#l00041">CircleSVDF.h:41</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_s_v_d_f_html_af018041d03893ad0f32c9c8b5dc314e9"><div class="ttname"><a href="classluci_1_1_circle_s_v_d_f.html#af018041d03893ad0f32c9c8b5dc314e9">luci::CircleSVDF::svdf_rank</a></div><div class="ttdeci">int32_t svdf_rank() const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_s_v_d_f_8h_source.html#l00060">CircleSVDF.h:60</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

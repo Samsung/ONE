@@ -1,15 +1,11 @@
 var namespacennfw_1_1misc =
 [
-    [ "feature", "namespacennfw_1_1misc_1_1feature.html", "namespacennfw_1_1misc_1_1feature" ],
     [ "fp32", "namespacennfw_1_1misc_1_1fp32.html", [
       [ "absolute_epsilon_equal", "namespacennfw_1_1misc_1_1fp32.html#acb4dd61c65baf6a2cfbc2b15ad88e7b3", null ],
       [ "epsilon_equal", "namespacennfw_1_1misc_1_1fp32.html#a3bf8223bfdadde9f233a05fab9a3d867", null ],
       [ "relative_diff", "namespacennfw_1_1misc_1_1fp32.html#a5ad7ef750b1b01622050952639c4be40", null ]
     ] ],
-    [ "kernel", "namespacennfw_1_1misc_1_1kernel.html", "namespacennfw_1_1misc_1_1kernel" ],
-    [ "matrix", "namespacennfw_1_1misc_1_1matrix.html", "namespacennfw_1_1misc_1_1matrix" ],
     [ "tensor", "namespacennfw_1_1misc_1_1tensor.html", "namespacennfw_1_1misc_1_1tensor" ],
-    [ "vector", "namespacennfw_1_1misc_1_1vector.html", "namespacennfw_1_1misc_1_1vector" ],
     [ "EnvConfigSource", "classnnfw_1_1misc_1_1_env_config_source.html", "classnnfw_1_1misc_1_1_env_config_source" ],
     [ "EnvVar", "classnnfw_1_1misc_1_1_env_var.html", "classnnfw_1_1misc_1_1_env_var" ],
     [ "GeneralConfigSource", "classnnfw_1_1misc_1_1_general_config_source.html", "classnnfw_1_1misc_1_1_general_config_source" ],

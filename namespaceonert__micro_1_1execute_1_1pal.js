@@ -10,6 +10,7 @@ var namespaceonert__micro_1_1execute_1_1pal =
     [ "MinimumFn", "structonert__micro_1_1execute_1_1pal_1_1_minimum_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_minimum_fn" ],
     [ "MulFn", "structonert__micro_1_1execute_1_1pal_1_1_mul_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_mul_fn" ],
     [ "NdArrayDesc", "structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc.html", "structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc" ],
+    [ "ReduceMaxFn", "structonert__micro_1_1execute_1_1pal_1_1_reduce_max_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_reduce_max_fn" ],
     [ "ReduceProductFn", "structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn" ],
     [ "Reducer", "classonert__micro_1_1execute_1_1pal_1_1_reducer.html", "classonert__micro_1_1execute_1_1pal_1_1_reducer" ],
     [ "ReduceSumFn", "structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn" ],

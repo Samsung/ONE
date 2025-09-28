@@ -239,7 +239,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   45</span>    <span class="keyword">auto</span> inputs = <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a>(graph);</div>
 <div class="line"><span class="lineno">   46</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;node : inputs)</div>
 <div class="line"><span class="lineno">   47</span>    {</div>
-<div class="line"><span class="lineno">   48</span>      <span class="keyword">auto</span> cnode = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">   48</span>      <span class="keyword">auto</span> cnode = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   49</span>      to_process.emplace_back(cnode);</div>
 <div class="line"><span class="lineno">   50</span>      nodes_depth[cnode] = 0.f;</div>
 <div class="line"><span class="lineno">   51</span>      named_depth[cnode-&gt;name()] = 0.f;</div>
@@ -261,7 +261,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   67</span>    <span class="keyword">auto</span> children = <a class="code hl_function" href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a>(cur_node);</div>
 <div class="line"><span class="lineno">   68</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;child : children)</div>
 <div class="line"><span class="lineno">   69</span>    {</div>
-<div class="line"><span class="lineno">   70</span>      <span class="keyword">auto</span> cichild = loco::must_cast&lt;luci::CircleNode *&gt;(child);</div>
+<div class="line"><span class="lineno">   70</span>      <span class="keyword">auto</span> cichild = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(child);</div>
 <div class="line"><span class="lineno">   71</span>      <span class="keyword">auto</span> node_depth = nodes_depth.find(cichild);</div>
 <div class="line"><span class="lineno">   72</span>      <span class="keywordflow">if</span> (node_depth == nodes_depth.end() || node_depth-&gt;second &lt; cur_depth)</div>
 <div class="line"><span class="lineno">   73</span>      {</div>
@@ -286,8 +286,9 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   92</span>}</div>
 <div class="ttc" id="anamespaceloco_html_a43df4bfde8658322cb87ab5654ba4052"><div class="ttname"><a href="namespaceloco.html#a43df4bfde8658322cb87ab5654ba4052">loco::succs</a></div><div class="ttdeci">std::set&lt; Node * &gt; succs(const Node *node)</div><div class="ttdoc">Enumerate all the successors of a given node.</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">Node.cpp:46</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a8cce79e9630e01c2bc5d128df05b5372"><div class="ttname"><a href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">loco::input_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; input_nodes(const Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">Graph.cpp:71</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespacempqsolver_1_1bisection.html#a1ef117c0ef64a624663fbf7ea12a7cf0a36fc6065a3e970bc3e6b2e59da52bf2a">FAILURE</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, <a class="el" href="namespacempqsolver_1_1bisection.html#a1ef117c0ef64a624663fbf7ea12a7cf0ad0749aaba8b833466dfcbb0428e4f89c">SUCCESS</a>, and <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">loco::succs()</a>.</p>
+<p class="reference">References <a class="el" href="namespacempqsolver_1_1bisection.html#a1ef117c0ef64a624663fbf7ea12a7cf0a36fc6065a3e970bc3e6b2e59da52bf2a">FAILURE</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00071">loco::input_nodes()</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="namespacempqsolver_1_1bisection.html#a1ef117c0ef64a624663fbf7ea12a7cf0ad0749aaba8b833466dfcbb0428e4f89c">SUCCESS</a>, and <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00046">loco::succs()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_bisection_solver_8cpp_source.html#l00108">mpqsolver::bisection::BisectionSolver::run()</a>.</p>
 

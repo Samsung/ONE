@@ -99,9 +99,9 @@ $(document).ready(function(){initNavTree('classluci_1_1_index_node_finder.html',
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a16bf3d38f21b6b903343bc9a0cfb98f7" id="r_a16bf3d38f21b6b903343bc9a0cfb98f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_index_node_finder.html#a16bf3d38f21b6b903343bc9a0cfb98f7">enroll</a> (<a class="el" href="namespaceluci.html#a2aa822957acee7a5fa3cf81b967e4bc0">TensorIndex</a> idx, <a class="el" href="structluci_1_1_circle_node.html">CircleNode</a> *<a class="el" href="classluci_1_1_index_node_finder.html#ad8003ffb55979000e9c4b6d2d35f9785">node</a>)</td></tr>
+<tr class="memitem:a16bf3d38f21b6b903343bc9a0cfb98f7" id="r_a16bf3d38f21b6b903343bc9a0cfb98f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_index_node_finder.html#a16bf3d38f21b6b903343bc9a0cfb98f7">enroll</a> (<a class="el" href="namespaceluci.html#a2aa822957acee7a5fa3cf81b967e4bc0">TensorIndex</a> <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">idx</a>, <a class="el" href="structluci_1_1_circle_node.html">CircleNode</a> *<a class="el" href="classluci_1_1_index_node_finder.html#ad8003ffb55979000e9c4b6d2d35f9785">node</a>)</td></tr>
 <tr class="separator:a16bf3d38f21b6b903343bc9a0cfb98f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8003ffb55979000e9c4b6d2d35f9785" id="r_ad8003ffb55979000e9c4b6d2d35f9785"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structluci_1_1_circle_node.html">CircleNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_index_node_finder.html#ad8003ffb55979000e9c4b6d2d35f9785">node</a> (<a class="el" href="namespaceluci.html#a2aa822957acee7a5fa3cf81b967e4bc0">TensorIndex</a> idx) const</td></tr>
+<tr class="memitem:ad8003ffb55979000e9c4b6d2d35f9785" id="r_ad8003ffb55979000e9c4b6d2d35f9785"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structluci_1_1_circle_node.html">CircleNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_index_node_finder.html#ad8003ffb55979000e9c4b6d2d35f9785">node</a> (<a class="el" href="namespaceluci.html#a2aa822957acee7a5fa3cf81b967e4bc0">TensorIndex</a> <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">idx</a>) <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a></td></tr>
 <tr class="separator:ad8003ffb55979000e9c4b6d2d35f9785"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -115,7 +115,7 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void luci::IndexNodeFinder::enroll </td>
+          <td class="memname"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a> luci::IndexNodeFinder::enroll </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceluci.html#a2aa822957acee7a5fa3cf81b967e4bc0">TensorIndex</a>&#160;</td>
           <td class="paramname"><em>idx</em>, </td>
@@ -136,23 +136,24 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="luci_2import_2src_2_graph_builder_context_8cpp_source.html#l00026">26</a> of file <a class="el" href="luci_2import_2src_2_graph_builder_context_8cpp_source.html">GraphBuilderContext.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  <span class="keyword">auto</span> iter = _table.find(idx);</div>
+<div class="line"><span class="lineno">   28</span>  <span class="keyword">auto</span> iter = _table.find(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">idx</a>);</div>
 <div class="line"><span class="lineno">   29</span>  <span class="keywordflow">if</span> (iter != _table.end())</div>
 <div class="line"><span class="lineno">   30</span>  {</div>
 <div class="line"><span class="lineno">   31</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
-<div class="line"><span class="lineno">   32</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;[luci] NodeFinder SKIP (&quot;</span> &lt;&lt; idx &lt;&lt; <span class="stringliteral">&quot;) &quot;</span> &lt;&lt; <a class="code hl_function" href="classluci_1_1_index_node_finder.html#ad8003ffb55979000e9c4b6d2d35f9785">node</a> &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; <a class="code hl_function" href="classluci_1_1_index_node_finder.html#ad8003ffb55979000e9c4b6d2d35f9785">node</a>-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>()</div>
+<div class="line"><span class="lineno">   32</span>    <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a>(l) &lt;&lt; <span class="stringliteral">&quot;[luci] NodeFinder SKIP (&quot;</span> &lt;&lt; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">idx</a> &lt;&lt; <span class="stringliteral">&quot;) &quot;</span> &lt;&lt; <a class="code hl_function" href="classluci_1_1_index_node_finder.html#ad8003ffb55979000e9c4b6d2d35f9785">node</a> &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; <a class="code hl_function" href="classluci_1_1_index_node_finder.html#ad8003ffb55979000e9c4b6d2d35f9785">node</a>-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>()</div>
 <div class="line"><span class="lineno">   33</span>            &lt;&lt; <span class="stringliteral">&quot; existing: &quot;</span> &lt;&lt; iter-&gt;second &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; iter-&gt;second-&gt;name() &lt;&lt; std::endl;</div>
 <div class="line"><span class="lineno">   34</span>    <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">   35</span>  }</div>
 <div class="line"><span class="lineno">   36</span> </div>
-<div class="line"><span class="lineno">   37</span>  _table[idx] = <a class="code hl_function" href="classluci_1_1_index_node_finder.html#ad8003ffb55979000e9c4b6d2d35f9785">node</a>;</div>
+<div class="line"><span class="lineno">   37</span>  _table[<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">idx</a>] = <a class="code hl_function" href="classluci_1_1_index_node_finder.html#ad8003ffb55979000e9c4b6d2d35f9785">node</a>;</div>
 <div class="line"><span class="lineno">   38</span>}</div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00065">Log.h:65</a></div></div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a7af9b9d1a859db99acb5e3447167b029"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a></div><div class="ttdeci">#define INFO(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00068">Log.h:68</a></div></div>
 <div class="ttc" id="aclassluci_1_1_index_node_finder_html_ad8003ffb55979000e9c4b6d2d35f9785"><div class="ttname"><a href="classluci_1_1_index_node_finder.html#ad8003ffb55979000e9c4b6d2d35f9785">luci::IndexNodeFinder::node</a></div><div class="ttdeci">CircleNode * node(TensorIndex idx) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2import_2src_2_graph_builder_context_8cpp_source.html#l00040">GraphBuilderContext.cpp:40</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a62b544dcd4be48302c214c3aa6ff5855"><div class="ttname"><a href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">luci::CircleNode::name</a></div><div class="ttdeci">NodeName name(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">CircleNodeDecl.h:51</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">luci::CircleNode::name()</a>, and <a class="el" href="luci_2import_2src_2_graph_builder_context_8cpp_source.html#l00040">node()</a>.</p>
+<p class="reference">References <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00068">INFO</a>, <a class="el" href="circlechef_2log_2include_2_log_8h_source.html#l00065">LOGGER</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">luci::CircleNode::name()</a>, and <a class="el" href="luci_2import_2src_2_graph_builder_context_8cpp_source.html#l00040">node()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="luci_2import_2src_2_graph_builder_8cpp_source.html#l00024">luci::GraphBuilder::build()</a>, <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, and <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>.</p>
 
@@ -176,12 +177,14 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="luci_2import_2src_2_graph_builder_context_8cpp_source.html#l00040">40</a> of file <a class="el" href="luci_2import_2src_2_graph_builder_context_8cpp_source.html">GraphBuilderContext.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   41</span>{</div>
-<div class="line"><span class="lineno">   42</span>  MapIndexNode_t::const_iterator iter = _table.find(idx);</div>
+<div class="line"><span class="lineno">   42</span>  MapIndexNode_t::const_iterator iter = _table.find(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">idx</a>);</div>
 <div class="line"><span class="lineno">   43</span> </div>
 <div class="line"><span class="lineno">   44</span>  <span class="comment">// dangle output node may exist that are not enrolled</span></div>
 <div class="line"><span class="lineno">   45</span>  <span class="keywordflow">return</span> (iter != _table.end()) ? iter-&gt;second : <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">   46</span>}</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="luci_2import_2src_2_graph_builder_8cpp_source.html#l00024">luci::GraphBuilder::build()</a>, <a class="el" href="_graph_builder_multi_output_8cpp_source.html#l00024">luci::GraphBuilderMultiOutput::build()</a>, <a class="el" href="import_2src_2_nodes_2_circle_while_8cpp_source.html#l00061">luci::CircleWhileGraphBuilder::build()</a>, and <a class="el" href="luci_2import_2src_2_graph_builder_context_8cpp_source.html#l00026">enroll()</a>.</p>
 
 </div>

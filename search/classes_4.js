@@ -136,7 +136,7 @@ var searchData=
   ['downsamplingconv2dkernel_133',['DownsamplingConv2DKernel',['../classluci__interpreter_1_1kernels_1_1_downsampling_conv2_d_kernel.html',1,'luci_interpreter::kernels']]],
   ['driver_134',['Driver',['../classnnc_1_1_driver.html',1,'nnc']]],
   ['driverexception_135',['DriverException',['../classnnc_1_1_driver_exception.html',1,'nnc']]],
-  ['drivername_136',['DriverName',['../classargumentparse_1_1_driver_name.html',1,'argumentparse']]],
+  ['drivername_136',['drivername',['../classargumentparse_1_1_driver_name.html',1,'argumentparse.DriverName'],['../classvalidate__global__conf_1_1_driver_name.html',1,'validate_global_conf.DriverName']]],
   ['dummybackendcontext_137',['DummyBackendContext',['../classonert_1_1backend_1_1train_1_1_dummy_backend_context.html',1,'onert::backend::train']]],
   ['dummypass1_138',['DummyPass1',['../class_dummy_pass1.html',1,'']]],
   ['dummypass2_139',['DummyPass2',['../class_dummy_pass2.html',1,'']]],

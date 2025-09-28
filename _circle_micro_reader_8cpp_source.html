@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('_circle_micro_reader_8cpp_source.html'
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">default</span>:</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordflow">return</span> DataType::Unknown;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
 </div>
@@ -173,7 +173,7 @@ $(document).ready(function(){initNavTree('_circle_micro_reader_8cpp_source.html'
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">default</span>:</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceluci__interpreter.html#a43d157784df8ea24209eb53c2e02e1f3a0db45d2a4141101bdfe48e3314cfbca3">FusedActFunc::UNDEFINED</a>;</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}</div>
 </div>
@@ -188,7 +188,7 @@ $(document).ready(function(){initNavTree('_circle_micro_reader_8cpp_source.html'
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordflow">case</span> circle::Padding::Padding_VALID:</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>      <span class="keywordflow">return</span> Padding::VALID;</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  }</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keywordflow">return</span> Padding::UNDEFINED;</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}</div>
 </div>
@@ -203,27 +203,27 @@ $(document).ready(function(){initNavTree('_circle_micro_reader_8cpp_source.html'
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">case</span> circle::MirrorPadMode::MirrorPadMode_SYMMETRIC:</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      <span class="keywordflow">return</span> MirrorPadMode::SYMMETRIC;</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  }</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keywordflow">return</span> MirrorPadMode::UNDEFINED;</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>}</div>
 </div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>circle::BuiltinOperator <a class="code hl_function" href="classluci__interpreter_1_1_circle_reader.html#a92d3eb40f5440a480efbd0ebef1dc1a4">CircleReader::builtin_code</a>(<span class="keyword">const</span> circle::Operator *op)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  assert(op != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(op != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keyword">const</span> <span class="keyword">auto</span> op_codes = <a class="code hl_function" href="classluci_1_1_circle_reader.html#a0b74a15b1e89b081d47fc391f140522c">opcodes</a>();</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  uint32_t index = op-&gt;opcode_index();</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  assert(index &lt; op_codes.size());</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">const</span> <span class="keyword">auto</span> opcode = op_codes[index];</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  assert(opcode != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">op_codes</a> = <a class="code hl_function" href="classluci_1_1_circle_reader.html#a0b74a15b1e89b081d47fc391f140522c">opcodes</a>();</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">uint32_t</a> index = op-&gt;opcode_index();</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(index &lt; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">op_codes</a>.size());</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">const</span> <span class="keyword">auto</span> opcode = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">op_codes</a>[index];</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(opcode != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacecircle.html#aadae7218f7f9bca3b2ef910b11ac1486">circle::builtin_code_neutral</a>(opcode);</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>}</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="keywordtype">bool</span> <a class="code hl_function" href="classluci_1_1_circle_reader.html#abd03654bf4885531d1a1228db0cfa335">CircleReader::parse</a>(<span class="keyword">const</span> circle::Model *model)</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>{</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  assert(model != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(model != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="comment">// for direct pointer access</span></div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  _model = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>;</div>
@@ -231,22 +231,22 @@ $(document).ready(function(){initNavTree('_circle_micro_reader_8cpp_source.html'
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>}</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="keywordtype">bool</span> <a class="code hl_function" href="classluci_1_1_circle_reader.html#a521013fe39256de7e187b2519c7b5db9">CircleReader::select_subgraph</a>(uint32_t sgindex)</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="keywordtype">bool</span> <a class="code hl_function" href="classluci_1_1_circle_reader.html#a521013fe39256de7e187b2519c7b5db9">CircleReader::select_subgraph</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">uint32_t</a> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">sgindex</a>)</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>{</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classluci_1_1_circle_reader.html#af4cff3b58ad7abdf3df5ca5f944c21ae">num_subgraph</a>() &lt;= sgindex)</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classluci_1_1_circle_reader.html#af4cff3b58ad7abdf3df5ca5f944c21ae">num_subgraph</a>() &lt;= <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">sgindex</a>)</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  {</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  }</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="comment">// for direct pointer access</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <span class="keyword">auto</span> subgraphs = _model-&gt;subgraphs();</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  assert(subgraphs != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">subgraphs</a> = _model-&gt;subgraphs();</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">subgraphs</a> != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  _current_subgraph = subgraphs-&gt;Get(sgindex);</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  assert(_current_subgraph != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>  _current_subgraph = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">subgraphs</a>-&gt;Get(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">sgindex</a>);</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_current_subgraph != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  _current_subgraph_index = sgindex;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>  _current_subgraph_index = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">sgindex</a>;</div>
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>}</div>
@@ -333,6 +333,7 @@ $(document).ready(function(){initNavTree('_circle_micro_reader_8cpp_source.html'
 <div class="ttc" id="anamespaceluci_html_a29e69e1d36ff270ef86f341d85d0a22e"><div class="ttname"><a href="namespaceluci.html#a29e69e1d36ff270ef86f341d85d0a22e">luci::MirrorPadMode</a></div><div class="ttdeci">MirrorPadMode</div><div class="ttdef"><b>Definition</b> <a href="_attr_mirror_pad_mode_8h_source.html#l00023">AttrMirrorPadMode.h:24</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a2e83620deea300e0affbd8c5878d0ff4"><div class="ttname"><a href="namespaceluci.html#a2e83620deea300e0affbd8c5878d0ff4">luci::luci_datatype</a></div><div class="ttdeci">loco::DataType luci_datatype(circle::TensorType type)</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00045">CircleReader.cpp:45</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a50d4e9fca61e54bee349208fb919cdcb"><div class="ttname"><a href="namespaceluci.html#a50d4e9fca61e54bee349208fb919cdcb">luci::Padding</a></div><div class="ttdeci">Padding</div><div class="ttdef"><b>Definition</b> <a href="_attr_padding_8h_source.html#l00023">AttrPadding.h:24</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a74041f680f0151e1d8bbb3b88260f3d5"><div class="ttname"><a href="namespaceluci.html#a74041f680f0151e1d8bbb3b88260f3d5">luci::luci_padding</a></div><div class="ttdeci">Padding luci_padding(const circle::Padding padding)</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00107">CircleReader.cpp:107</a></div></div>
 <div class="ttc" id="anamespaceluci_html_aadc51aac82492942392bd3e255b4c945"><div class="ttname"><a href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945">luci::FusedActFunc</a></div><div class="ttdeci">FusedActFunc</div><div class="ttdef"><b>Definition</b> <a href="_attr_fused_act_func_8h_source.html#l00024">AttrFusedActFunc.h:25</a></div></div>
 <div class="ttc" id="anamespaceluci_html_ac4c75545009edf35d9f53e105648cced"><div class="ttname"><a href="namespaceluci.html#ac4c75545009edf35d9f53e105648cced">luci::luci_actfunc</a></div><div class="ttdeci">FusedActFunc luci_actfunc(const circle::ActivationFunctionType type)</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8cpp_source.html#l00084">CircleReader.cpp:84</a></div></div>

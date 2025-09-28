@@ -312,8 +312,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  413</span> </div>
 <div class="line"><span class="lineno">  414</span>  <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; first_output.size(); i++)</div>
 <div class="line"><span class="lineno">  415</span>  {</div>
-<div class="line"><span class="lineno">  416</span>    <span class="keyword">const</span> <span class="keyword">auto</span> first_node = loco::must_cast&lt;luci::CircleOutput *&gt;(first_output[i]);</div>
-<div class="line"><span class="lineno">  417</span>    <span class="keyword">const</span> <span class="keyword">auto</span> second_node = loco::must_cast&lt;luci::CircleOutput *&gt;(second_output[i]);</div>
+<div class="line"><span class="lineno">  416</span>    <span class="keyword">const</span> <span class="keyword">auto</span> first_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleOutput *&gt;</a>(first_output[i]);</div>
+<div class="line"><span class="lineno">  417</span>    <span class="keyword">const</span> <span class="keyword">auto</span> second_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleOutput *&gt;</a>(second_output[i]);</div>
 <div class="line"><span class="lineno">  418</span> </div>
 <div class="line"><span class="lineno">  419</span>    <span class="comment">// Create places to store intermediate results</span></div>
 <div class="line"><span class="lineno">  420</span>    _intermediate.emplace_back(0.0);</div>
@@ -334,9 +334,10 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="a_metric_printer_8cpp_html_ad1515c4010b62f2e17704bb149a64d6b"><div class="ttname"><a href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a></div><div class="ttdeci">#define THROW_UNLESS(COND, MSG)</div><div class="ttdef"><b>Definition</b> <a href="_metric_printer_8cpp_source.html#l00027">MetricPrinter.cpp:27</a></div></div>
 <div class="ttc" id="aclassluci_1_1_module_html_a89e77805ad90f36bde620a13403a0b1d"><div class="ttname"><a href="classluci_1_1_module.html#a89e77805ad90f36bde620a13403a0b1d">luci::Module::graph</a></div><div class="ttdeci">loco::Graph * graph(void) const</div><div class="ttdoc">provide main graph</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2src_2_module_8cpp_source.html#l00032">Module.cpp:32</a></div></div>
 <div class="ttc" id="aminimal_8cc_html_a257a0af44a333bcf35bc6517896260de"><div class="ttname"><a href="minimal_8cc.html#a257a0af44a333bcf35bc6517896260de">num_elems</a></div><div class="ttdeci">uint64_t num_elems(const nnfw_tensorinfo *ti)</div><div class="ttdef"><b>Definition</b> <a href="minimal_8cc_source.html#l00021">minimal.cc:21</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2lang_2src_2_module_8cpp_source.html#l00032">luci::Module::graph()</a>, <a class="el" href="minimal_8cc_source.html#l00021">num_elems()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, and <a class="el" href="_metric_printer_8cpp_source.html#l00027">THROW_UNLESS</a>.</p>
+<p class="reference">References <a class="el" href="luci_2lang_2src_2_module_8cpp_source.html#l00032">luci::Module::graph()</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="minimal_8cc_source.html#l00021">num_elems()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, and <a class="el" href="_metric_printer_8cpp_source.html#l00027">THROW_UNLESS</a>.</p>
 
 </div>
 </div>

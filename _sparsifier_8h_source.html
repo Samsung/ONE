@@ -146,7 +146,7 @@ $(document).ready(function(){initNavTree('_sparsifier_8h_source.html',''); initR
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classluci_1_1_sparsifier.html#ac93bae6fe48faea6e4e15f8a90581aa7">   46</a></span>  std::vector&lt;T&gt; <a class="code hl_function" href="classluci_1_1_sparsifier.html#ac93bae6fe48faea6e4e15f8a90581aa7">GetData</a>() { <span class="keywordflow">return</span> _data; }</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classluci_1_1_sparsifier.html#ac4deb2dc5228545742b57bc93c67ea29">   47</a></span>  std::vector&lt;std::vector&lt;int&gt;&gt; <a class="code hl_function" href="classluci_1_1_sparsifier.html#ac4deb2dc5228545742b57bc93c67ea29">GetDimMetadata</a>() { <span class="keywordflow">return</span> _dim_metadata; }</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classluci_1_1_sparsifier.html#aa8aacea90105e3b1ac9b644413ff5fbc">DenseToSparse</a>(<span class="keyword">const</span> T *src_data);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classluci_1_1_sparsifier.html#aa8aacea90105e3b1ac9b644413ff5fbc">DenseToSparse</a>(<span class="keyword">const</span> T *<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">src_data</a>);</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="comment">// Check if val is equal to zero.</span></div>
@@ -158,7 +158,7 @@ $(document).ready(function(){initNavTree('_sparsifier_8h_source.html',''); initR
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">// tensor with (2, 2) block has blocked_shape (2, 2).</span></div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  std::vector&lt;int&gt; _blocked_shape;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="comment">// Total number of elements in the dense tensor.</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  uint64_t _dense_size;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">uint64_t</a> _dense_size;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="comment">// Has n(original dimension)+k(block_dimension) elements.</span></div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  std::vector&lt;int&gt; _traversal_order;</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">// Format of each dimension in the traversal order.</span></div>
@@ -179,9 +179,9 @@ $(document).ready(function(){initNavTree('_sparsifier_8h_source.html',''); initR
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
 </div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">class </span>Sparsifier&lt;int32_t&gt;;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">class </span>Sparsifier&lt;int8_t&gt;;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">class </span>Sparsifier&lt;float&gt;;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">class </span><a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">Sparsifier&lt;int32_t&gt;</a>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">class </span><a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">Sparsifier&lt;int8_t&gt;</a>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="keyword">extern</span> <span class="keyword">template</span> <span class="keyword">class </span><a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">Sparsifier&lt;float&gt;</a>;</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>} <span class="comment">// namespace luci</span></div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
@@ -192,6 +192,7 @@ $(document).ready(function(){initNavTree('_sparsifier_8h_source.html',''); initR
 <div class="ttc" id="aclassluci_1_1_sparsifier_html_ac4deb2dc5228545742b57bc93c67ea29"><div class="ttname"><a href="classluci_1_1_sparsifier.html#ac4deb2dc5228545742b57bc93c67ea29">luci::Sparsifier::GetDimMetadata</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; int &gt; &gt; GetDimMetadata()</div><div class="ttdef"><b>Definition</b> <a href="_sparsifier_8h_source.html#l00047">Sparsifier.h:47</a></div></div>
 <div class="ttc" id="aclassluci_1_1_sparsifier_html_ac93bae6fe48faea6e4e15f8a90581aa7"><div class="ttname"><a href="classluci_1_1_sparsifier.html#ac93bae6fe48faea6e4e15f8a90581aa7">luci::Sparsifier::GetData</a></div><div class="ttdeci">std::vector&lt; T &gt; GetData()</div><div class="ttdef"><b>Definition</b> <a href="_sparsifier_8h_source.html#l00046">Sparsifier.h:46</a></div></div>
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition</b> <a href="circle-resizer_2include_2_circle_model_8h_source.html#l00026">CircleModel.h:27</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

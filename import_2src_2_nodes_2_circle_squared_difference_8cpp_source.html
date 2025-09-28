@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('import_2src_2_nodes_2_circle_squared_d
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="comment">// bfloat16, half(float16), float32, float64, int32, int64, complex64, complex128</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensors = args.reader.tensors();</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor = tensors.at(inputs.at(0));</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(tensor != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">switch</span> (tensor-&gt;type())</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  {</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordflow">case</span> circle::TensorType_FLOAT16:</div>
@@ -154,12 +154,12 @@ $(document).ready(function(){initNavTree('import_2src_2_nodes_2_circle_squared_d
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="comment">// Input types must match</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  assert(tensors.at(inputs.at(0)) != <span class="keyword">nullptr</span> &amp;&amp; tensors.at(inputs.at(1)) != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(tensors.at(inputs.at(0)) != <span class="keyword">nullptr</span> &amp;&amp; tensors.at(inputs.at(1)) != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordflow">if</span> (tensors.at(inputs.at(0))-&gt;type() != tensors.at(inputs.at(1))-&gt;type())</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="comment">// Input and output types must match</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  assert(tensors.at(outputs[0]) != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(tensors.at(outputs[0]) != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordflow">if</span> (tensors.at(inputs.at(0))-&gt;type() != tensors.at(outputs[0])-&gt;type())</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
@@ -188,6 +188,7 @@ $(document).ready(function(){initNavTree('import_2src_2_nodes_2_circle_squared_d
 <div class="ttc" id="alang_2include_2luci_2_i_r_2_nodes_2_circle_squared_difference_8h_html"><div class="ttname"><a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_squared_difference_8h.html">CircleSquaredDifference.h</a></div></div>
 <div class="ttc" id="aloco_8h_html"><div class="ttname"><a href="loco_8h.html">loco.h</a></div></div>
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition</b> <a href="circle-resizer_2include_2_circle_model_8h_source.html#l00026">CircleModel.h:27</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00039">CircleNodeDecl.h:42</a></div></div>
 <div class="ttc" id="astructluci_1_1_graph_builder_base_1_1_validate_args_html"><div class="ttname"><a href="structluci_1_1_graph_builder_base_1_1_validate_args.html">luci::GraphBuilderBase::ValidateArgs</a></div><div class="ttdef"><b>Definition</b> <a href="_graph_builder_base_8h_source.html#l00034">GraphBuilderBase.h:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

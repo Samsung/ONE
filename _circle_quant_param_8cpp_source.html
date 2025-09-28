@@ -129,14 +129,14 @@ $(document).ready(function(){initNavTree('_circle_quant_param_8cpp_source.html',
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    dst-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>(<span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  {</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">auto</span> qparam = std::make_unique&lt;luci::CircleQuantParam&gt;();</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    qparam-&gt;scale = q-&gt;scale;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    qparam-&gt;zerop = q-&gt;zerop;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    qparam-&gt;min = q-&gt;min;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    qparam-&gt;max = q-&gt;max;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    qparam-&gt;quantized_dimension = q-&gt;quantized_dimension;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">qparam</a> = std::make_unique&lt;luci::CircleQuantParam&gt;();</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">qparam</a>-&gt;scale = q-&gt;scale;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">qparam</a>-&gt;zerop = q-&gt;zerop;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">qparam</a>-&gt;min = q-&gt;min;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">qparam</a>-&gt;max = q-&gt;max;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">qparam</a>-&gt;quantized_dimension = q-&gt;quantized_dimension;</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    dst-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>(std::move(qparam));</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    dst-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>(std::move(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">qparam</a>));</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  }</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}</div>
 </div>
@@ -146,6 +146,7 @@ $(document).ready(function(){initNavTree('_circle_quant_param_8cpp_source.html',
 <div class="ttc" id="aluci_2lang_2include_2luci_2_i_r_2_circle_node_8h_html"><div class="ttname"><a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_8h.html">CircleNode.h</a></div></div>
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition</b> <a href="circle-resizer_2include_2_circle_model_8h_source.html#l00026">CircleModel.h:27</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a06df091370e8e4390d8686e22624d928"><div class="ttname"><a href="namespaceluci.html#a06df091370e8e4390d8686e22624d928">luci::copy_quantparam</a></div><div class="ttdeci">void copy_quantparam(const luci::CircleNode *src, luci::CircleNode *dst)</div><div class="ttdoc">copy CircleQuantParam of src to dst</div><div class="ttdef"><b>Definition</b> <a href="_circle_quant_param_8cpp_source.html#l00028">CircleQuantParam.cpp:28</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00039">CircleNodeDecl.h:42</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a0a3c6486c3eb1a728d5dc2b1b57f3b8b"><div class="ttname"><a href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">luci::CircleNode::quantparam</a></div><div class="ttdeci">CircleQuantParam * quantparam(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00054">CircleNodeDecl.h:54</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -127,9 +127,9 @@ $(document).ready(function(){initNavTree('_validate_helpers_8cpp_source.html',''
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="comment">// input 1 and 2 should have INT32/INT64 type</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensors = args.reader.tensors();</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_1 = tensors.at(inputs.at(1));</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  assert(tensor_1 != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordflow">switch</span> (tensor_1-&gt;type())</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_1</a> = tensors.at(inputs.at(1));</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_1</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordflow">switch</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_1</a>-&gt;type())</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  {</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">case</span> circle::TensorType_INT32:</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">case</span> circle::TensorType_INT64:</div>
@@ -137,9 +137,9 @@ $(document).ready(function(){initNavTree('_validate_helpers_8cpp_source.html',''
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">default</span>:</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_2 = tensors.at(inputs.at(2));</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  assert(tensor_2 != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">switch</span> (tensor_2-&gt;type())</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_2</a> = tensors.at(inputs.at(2));</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_2</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordflow">switch</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_2</a>-&gt;type())</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  {</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordflow">case</span> circle::TensorType_INT32:</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">case</span> circle::TensorType_INT64:</div>
@@ -149,10 +149,10 @@ $(document).ready(function(){initNavTree('_validate_helpers_8cpp_source.html',''
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// Only support input shape dimension 3 and 4 only</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_0 = tensors.at(inputs.at(0));</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  assert(tensor_0 != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keyword">const</span> <span class="keyword">auto</span> t_0_s = <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(tensor_0-&gt;shape()).size();</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">if</span> (t_0_s != 3 &amp;&amp; t_0_s != 4)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_0</a> = tensors.at(inputs.at(0));</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_0</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">t_0_s</a> = <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_0</a>-&gt;shape()).size();</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">t_0_s</a> != 3 &amp;&amp; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">t_0_s</a> != 4)</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">// TODO check input shape</span></div>
@@ -175,7 +175,7 @@ $(document).ready(function(){initNavTree('_validate_helpers_8cpp_source.html',''
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensors = args.reader.tensors();</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor = tensors.at(inputs.at(0));</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  assert(tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(tensor != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordflow">switch</span> (tensor-&gt;type())</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  {</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">case</span> circle::TensorType_FLOAT16:</div>
@@ -190,11 +190,11 @@ $(document).ready(function(){initNavTree('_validate_helpers_8cpp_source.html',''
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  }</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  assert(tensors[inputs.at(1)] != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(tensors[inputs.at(1)] != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keywordflow">if</span> (tensors[inputs.at(1)]-&gt;type() != tensor-&gt;type())</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  assert(tensors[outputs[0]] != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(tensors[outputs[0]] != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keywordflow">if</span> (tensors[outputs[0]]-&gt;type() != tensor-&gt;type())</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
@@ -215,9 +215,9 @@ $(document).ready(function(){initNavTree('_validate_helpers_8cpp_source.html',''
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensors = args.reader.tensors();</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensor_axis = tensors.at(inputs.at(1));</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  assert(tensor_axis != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keywordflow">switch</span> (tensor_axis-&gt;type())</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_axis</a> = tensors.at(inputs.at(1));</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_axis</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keywordflow">switch</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_axis</a>-&gt;type())</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  {</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">case</span> circle::TensorType_INT32:</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">case</span> circle::TensorType_INT64:</div>
@@ -234,6 +234,7 @@ $(document).ready(function(){initNavTree('_validate_helpers_8cpp_source.html',''
 <div class="ttc" id="a_validate_helpers_8h_html"><div class="ttname"><a href="_validate_helpers_8h.html">ValidateHelpers.h</a></div></div>
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition</b> <a href="circle-resizer_2include_2_circle_model_8h_source.html#l00026">CircleModel.h:27</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a109d9664d4c0196988e0a0de049f2b28"><div class="ttname"><a href="namespaceluci.html#a109d9664d4c0196988e0a0de049f2b28">luci::validate_minmax</a></div><div class="ttdeci">bool validate_minmax(const GraphBuilderBase::ValidateArgs &amp;args)</div><div class="ttdef"><b>Definition</b> <a href="_validate_helpers_8cpp_source.html#l00063">ValidateHelpers.cpp:63</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a727b91def9b4553b7e3aeb4a146b7f22"><div class="ttname"><a href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">luci::wrap</a></div><div class="ttdeci">VectorWrapper&lt; T &gt; wrap(const flatbuffers::Vector&lt; T &gt; *vec)</div><div class="ttdef"><b>Definition</b> <a href="_circle_reader_8h_source.html#l00084">CircleReader.h:84</a></div></div>
 <div class="ttc" id="anamespaceluci_html_ab6ffc3a98546f83252a1cde7cdd5de98"><div class="ttname"><a href="namespaceluci.html#ab6ffc3a98546f83252a1cde7cdd5de98">luci::validate_reduce_minmax</a></div><div class="ttdeci">bool validate_reduce_minmax(const GraphBuilderBase::ValidateArgs &amp;args)</div><div class="ttdef"><b>Definition</b> <a href="_validate_helpers_8cpp_source.html#l00102">ValidateHelpers.cpp:102</a></div></div>
 <div class="ttc" id="anamespaceluci_html_abef6c9f5ade09f021a887cf5553334bf"><div class="ttname"><a href="namespaceluci.html#abef6c9f5ade09f021a887cf5553334bf">luci::validate_batch_space_nd</a></div><div class="ttdeci">bool validate_batch_space_nd(const GraphBuilderBase::ValidateArgs &amp;args)</div><div class="ttdef"><b>Definition</b> <a href="_validate_helpers_8cpp_source.html#l00022">ValidateHelpers.cpp:22</a></div></div>

@@ -105,7 +105,7 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6a4db0511a56c7eb9bbb47196348fba7" id="r_a6a4db0511a56c7eb9bbb47196348fba7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1pass.html#a6a4db0511a56c7eb9bbb47196348fba7">operator==</a> (const <a class="el" href="structluci_1_1pass_1_1_expression.html">Expression</a> &amp;x, const <a class="el" href="structluci_1_1pass_1_1_expression.html">Expression</a> &amp;y)</td></tr>
+<tr class="memitem:a6a4db0511a56c7eb9bbb47196348fba7" id="r_a6a4db0511a56c7eb9bbb47196348fba7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1pass.html#a6a4db0511a56c7eb9bbb47196348fba7">operator==</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="structluci_1_1pass_1_1_expression.html">Expression</a> &amp;x, <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="structluci_1_1pass_1_1_expression.html">Expression</a> &amp;y)</td></tr>
 <tr class="separator:a6a4db0511a56c7eb9bbb47196348fba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -116,15 +116,15 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool luci::pass::operator== </td>
+          <td class="memname"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">bool</a> luci::pass::operator== </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structluci_1_1pass_1_1_expression.html">Expression</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="structluci_1_1pass_1_1_expression.html">Expression</a> &amp;&#160;</td>
           <td class="paramname"><em>x</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structluci_1_1pass_1_1_expression.html">Expression</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="structluci_1_1pass_1_1_expression.html">Expression</a> &amp;&#160;</td>
           <td class="paramname"><em>y</em>&#160;</td>
         </tr>
         <tr>
@@ -157,8 +157,8 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  214</span>    }</div>
 <div class="line"><span class="lineno">  215</span>    <span class="keywordflow">case</span> luci::CircleOpcode::TRANSPOSE:</div>
 <div class="line"><span class="lineno">  216</span>    {</div>
-<div class="line"><span class="lineno">  217</span>      <span class="keyword">const</span> <span class="keyword">auto</span> trans_x = loco::must_cast&lt;luci::CircleTranspose *&gt;(x.<a class="code hl_variable" href="structluci_1_1pass_1_1_expression.html#a8e9529feccfda85588d34ef70ee85b4a">op</a>);</div>
-<div class="line"><span class="lineno">  218</span>      <span class="keyword">const</span> <span class="keyword">auto</span> trans_y = loco::must_cast&lt;luci::CircleTranspose *&gt;(y.<a class="code hl_variable" href="structluci_1_1pass_1_1_expression.html#a8e9529feccfda85588d34ef70ee85b4a">op</a>);</div>
+<div class="line"><span class="lineno">  217</span>      <span class="keyword">const</span> <span class="keyword">auto</span> trans_x = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleTranspose *&gt;</a>(x.<a class="code hl_variable" href="structluci_1_1pass_1_1_expression.html#a8e9529feccfda85588d34ef70ee85b4a">op</a>);</div>
+<div class="line"><span class="lineno">  218</span>      <span class="keyword">const</span> <span class="keyword">auto</span> trans_y = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleTranspose *&gt;</a>(y.<a class="code hl_variable" href="structluci_1_1pass_1_1_expression.html#a8e9529feccfda85588d34ef70ee85b4a">op</a>);</div>
 <div class="line"><span class="lineno">  219</span> </div>
 <div class="line"><span class="lineno">  220</span>      <span class="keywordflow">return</span> same_attributes(trans_x, trans_y);</div>
 <div class="line"><span class="lineno">  221</span>    }</div>
@@ -170,11 +170,12 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  227</span> </div>
 <div class="line"><span class="lineno">  228</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  229</span>}</div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a963f9812635ceac6d5a207594b5028af"><div class="ttname"><a href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode</a></div><div class="ttdeci">virtual CircleOpcode opcode(void) const =0</div></div>
 <div class="ttc" id="astructluci_1_1pass_1_1_expression_html_a8e9529feccfda85588d34ef70ee85b4a"><div class="ttname"><a href="structluci_1_1pass_1_1_expression.html#a8e9529feccfda85588d34ef70ee85b4a">luci::pass::Expression::op</a></div><div class="ttdeci">luci::CircleNode * op</div><div class="ttdef"><b>Definition</b> <a href="_expression_cache_8h_source.html#l00040">ExpressionCache.h:40</a></div></div>
 <div class="ttc" id="astructluci_1_1pass_1_1_expression_html_ad3c509cf98697f3b86568a7f3e2cbbdd"><div class="ttname"><a href="structluci_1_1pass_1_1_expression.html#ad3c509cf98697f3b86568a7f3e2cbbdd">luci::pass::Expression::inputs</a></div><div class="ttdeci">std::vector&lt; loco::Node * &gt; inputs</div><div class="ttdef"><b>Definition</b> <a href="_expression_cache_8h_source.html#l00039">ExpressionCache.h:39</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_expression_cache_8h_source.html#l00039">luci::pass::Expression::inputs</a>, <a class="el" href="_expression_cache_8h_source.html#l00040">luci::pass::Expression::op</a>, and <a class="el" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode()</a>.</p>
+<p class="reference">References <a class="el" href="_expression_cache_8h_source.html#l00039">luci::pass::Expression::inputs</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>, <a class="el" href="_expression_cache_8h_source.html#l00040">luci::pass::Expression::op</a>, and <a class="el" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode()</a>.</p>
 
 </div>
 </div>

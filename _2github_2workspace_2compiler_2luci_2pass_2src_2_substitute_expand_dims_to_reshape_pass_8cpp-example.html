@@ -168,7 +168,7 @@ $(document).ready(function(){initNavTree('_2github_2workspace_2compiler_2luci_2p
 <div class="line">  <span class="keyword">auto</span> target_node = <span class="keyword">dynamic_cast&lt;</span><a id="_a2" name="_a2"></a><a class="code hl_class" href="classluci_1_1_circle_expand_dims.html">luci::CircleExpandDims</a> *<span class="keyword">&gt;</span>(node);</div>
 <div class="line">  <span class="keywordflow">if</span> (target_node == <span class="keyword">nullptr</span>)</div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line">  <span class="keyword">auto</span> input_node = loco::must_cast&lt;luci::CircleNode *&gt;(target_node-&gt;input());</div>
+<div class="line">  <span class="keyword">auto</span> input_node = <a id="a3" name="a3"></a><a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(target_node-&gt;input());</div>
 <div class="line">  <span class="keywordflow">if</span> (input_node-&gt;rank() &lt;= 0)</div>
 <div class="line">    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line">  <span class="keyword">auto</span> axis_node = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a> *<span class="keyword">&gt;</span>(target_node-&gt;axis());</div>
@@ -188,19 +188,19 @@ $(document).ready(function(){initNavTree('_2github_2workspace_2compiler_2luci_2p
 <div class="line">    <span class="comment">// it must expect the new expanded(+1) rank.</span></div>
 <div class="line">    axis = axis + <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(input_node-&gt;rank()) + 1;</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">auto</span> name = node-&gt;<a id="a3" name="a3"></a><a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>();</div>
+<div class="line">  <span class="keyword">auto</span> name = node-&gt;<a id="a4" name="a4"></a><a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>();</div>
 <div class="line">  assert(name.length() &gt; 0);</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">auto</span> graph = target_node-&gt;graph();</div>
-<div class="line">  <span class="keyword">auto</span> reshape_node = graph-&gt;nodes()-&gt;create&lt;<a id="_a4" name="_a4"></a><a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a>&gt;();</div>
-<div class="line">  reshape_node-&gt;<a id="a5" name="a5"></a><a class="code hl_function" href="classluci_1_1_circle_reshape.html#a7d61e674bf5b1a8572bb8f25bf2947b2">tensor</a>(input_node);</div>
+<div class="line">  <span class="keyword">auto</span> reshape_node = graph-&gt;nodes()-&gt;create&lt;<a id="_a5" name="_a5"></a><a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a>&gt;();</div>
+<div class="line">  reshape_node-&gt;<a id="a6" name="a6"></a><a class="code hl_function" href="classluci_1_1_circle_reshape.html#a7d61e674bf5b1a8572bb8f25bf2947b2">tensor</a>(input_node);</div>
 <div class="line">  reshape_node-&gt;name(name + <span class="stringliteral">&quot;/Reshape&quot;</span>);</div>
 <div class="line">  luci::add_origin(reshape_node, luci::get_origin(node));</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">auto</span> const_node = graph-&gt;nodes()-&gt;create&lt;<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a>&gt;();</div>
 <div class="line">  const_node-&gt;dtype(loco::DataType::S32);</div>
-<div class="line">  const_node-&gt;<a id="a6" name="a6"></a><a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;loco::DataType::S32&gt;(input_node-&gt;rank() + 1);</div>
-<div class="line">  const_node-&gt;shape_status(<a id="a7" name="a7"></a><a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
+<div class="line">  const_node-&gt;<a id="a7" name="a7"></a><a class="code hl_function" href="classluci_1_1_circle_const.html#a8afe1c3255b77a5d8e2a2a8efefdccba">size</a>&lt;loco::DataType::S32&gt;(input_node-&gt;rank() + 1);</div>
+<div class="line">  const_node-&gt;shape_status(<a id="a8" name="a8"></a><a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
 <div class="line">  const_node-&gt;rank(1);</div>
 <div class="line">  const_node-&gt;dim(0).set(input_node-&gt;rank() + 1);</div>
 <div class="line">  luci::add_origin(const_node, luci::get_origin(node));</div>
@@ -217,12 +217,12 @@ $(document).ready(function(){initNavTree('_2github_2workspace_2compiler_2luci_2p
 <div class="line">    }</div>
 <div class="line">    <span class="keywordflow">else</span></div>
 <div class="line">    {</div>
-<div class="line">      const_node-&gt;<a id="a8" name="a8"></a><a class="code hl_function" href="classluci_1_1_fixed_arity_node.html#a0b5b5435bb9338e58c190babfb597a0c">at</a>&lt;loco::DataType::S32&gt;(i) = input_node-&gt;dim(i - 1).value();</div>
+<div class="line">      const_node-&gt;<a id="a9" name="a9"></a><a class="code hl_function" href="classluci_1_1_fixed_arity_node.html#a0b5b5435bb9338e58c190babfb597a0c">at</a>&lt;loco::DataType::S32&gt;(i) = input_node-&gt;dim(i - 1).value();</div>
 <div class="line">    }</div>
 <div class="line">  }</div>
 <div class="line">  const_node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>(name + <span class="stringliteral">&quot;/Reshape/shape&quot;</span>);</div>
 <div class="line">  reshape_node-&gt;shape(const_node);</div>
-<div class="line">  replace(target_node).<a id="a9" name="a9"></a><a class="code hl_function" href="classloco_1_1_subst_3_01_subst_qualifier_1_1_default_01_4.html#a2c26d1107a76876180e9f3dbfc6fdde0">with</a>(reshape_node);</div>
+<div class="line">  replace(target_node).<a id="a10" name="a10"></a><a class="code hl_function" href="classloco_1_1_subst_3_01_subst_qualifier_1_1_default_01_4.html#a2c26d1107a76876180e9f3dbfc6fdde0">with</a>(reshape_node);</div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -231,13 +231,13 @@ $(document).ready(function(){initNavTree('_2github_2workspace_2compiler_2luci_2p
 <div class="line"><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
 <div class="line">{</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">bool</span> <a id="a10" name="a10"></a><a class="code hl_function" href="structluci_1_1_substitute_expand_dims_to_reshape_pass.html#a8e1f4c2b069b30261f8f5ad5695c998f">SubstituteExpandDimsToReshapePass::run</a>(<a id="_a11" name="_a11"></a><a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
+<div class="line"><span class="keywordtype">bool</span> <a id="a11" name="a11"></a><a class="code hl_function" href="structluci_1_1_substitute_expand_dims_to_reshape_pass.html#a8e1f4c2b069b30261f8f5ad5695c998f">SubstituteExpandDimsToReshapePass::run</a>(<a id="_a12" name="_a12"></a><a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
 <div class="line">{</div>
 <div class="line">  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
 <div class="line">  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::active_nodes(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::output_nodes(g)))</div>
 <div class="line">  {</div>
-<div class="line">    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
-<div class="line">    <span class="keywordflow">if</span> (unknown_dim_count(circle_node) == 0 &amp;&amp; substitute_expand_dims_to_reshape(circle_node))</div>
+<div class="line">    <span class="keyword">auto</span> <a id="a13" name="a13"></a><a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(node);</div>
+<div class="line">    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">unknown_dim_count</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>) == 0 &amp;&amp; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">substitute_expand_dims_to_reshape</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>))</div>
 <div class="line">    {</div>
 <div class="line">      changed = <span class="keyword">true</span>;</div>
 <div class="line">    }</div>
@@ -258,7 +258,9 @@ $(document).ready(function(){initNavTree('_2github_2workspace_2compiler_2luci_2p
 <div class="ttc" id="aclassluci_1_1_fixed_arity_node_html_a0b5b5435bb9338e58c190babfb597a0c"><div class="ttname"><a href="classluci_1_1_fixed_arity_node.html#a0b5b5435bb9338e58c190babfb597a0c">luci::FixedArityNode::at</a></div><div class="ttdeci">loco::Use * at(uint32_t n) const</div><div class="ttdef"><b>Definition</b> <a href="_circle_node_mixins_8h_source.html#l00099">CircleNodeMixins.h:99</a></div></div>
 <div class="ttc" id="aluci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h_html"><div class="ttname"><a href="luci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h.html">CircleNodes.h</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition</b> <a href="circle-resizer_2include_2_circle_model_8h_source.html#l00026">CircleModel.h:27</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="anamespaceluci_html_afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea"><div class="ttname"><a href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a></div><div class="ttdeci">@ VALID</div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00039">CircleNodeDecl.h:42</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a62b544dcd4be48302c214c3aa6ff5855"><div class="ttname"><a href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">luci::CircleNode::name</a></div><div class="ttdeci">NodeName name(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">CircleNodeDecl.h:51</a></div></div>

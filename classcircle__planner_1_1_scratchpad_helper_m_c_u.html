@@ -290,8 +290,8 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_scratchpad_helper_m_c_u_8h_source.html#l00053">53</a> of file <a class="el" href="_scratchpad_helper_m_c_u_8h_source.html">ScratchpadHelperMCU.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   54</span>  {</div>
-<div class="line"><span class="lineno">   55</span>    <span class="keyword">const</span> <span class="keyword">auto</span> svdf_input = loco::must_cast&lt;luci::CircleNode *&gt;(svdf-&gt;<a class="code hl_function" href="classluci_1_1_circle_s_v_d_f.html#a5b4bf59b887f7bd0282316577d061616">input</a>());</div>
-<div class="line"><span class="lineno">   56</span>    <span class="keyword">const</span> <span class="keyword">auto</span> weight_feature_input = loco::must_cast&lt;luci::CircleNode *&gt;(svdf-&gt;<a class="code hl_function" href="classluci_1_1_circle_s_v_d_f.html#ad0aba42ce9f0c0d0678f06e5f2e87781">weight_feature</a>());</div>
+<div class="line"><span class="lineno">   55</span>    <span class="keyword">const</span> <span class="keyword">auto</span> svdf_input = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(svdf-&gt;<a class="code hl_function" href="classluci_1_1_circle_s_v_d_f.html#a5b4bf59b887f7bd0282316577d061616">input</a>());</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keyword">const</span> <span class="keyword">auto</span> weight_feature_input = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(svdf-&gt;<a class="code hl_function" href="classluci_1_1_circle_s_v_d_f.html#ad0aba42ce9f0c0d0678f06e5f2e87781">weight_feature</a>());</div>
 <div class="line"><span class="lineno">   57</span> </div>
 <div class="line"><span class="lineno">   58</span>    <span class="keywordflow">if</span> (svdf_input-&gt;dtype() == loco::DataType::FLOAT32 and</div>
 <div class="line"><span class="lineno">   59</span>        (weight_feature_input-&gt;dtype() == loco::DataType::S8 or</div>
@@ -322,7 +322,10 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassluci_1_1_circle_s_v_d_f_html_a5b4bf59b887f7bd0282316577d061616"><div class="ttname"><a href="classluci_1_1_circle_s_v_d_f.html#a5b4bf59b887f7bd0282316577d061616">luci::CircleSVDF::input</a></div><div class="ttdeci">loco::Node * input(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_s_v_d_f_8h_source.html#l00038">CircleSVDF.h:38</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_s_v_d_f_html_ad0aba42ce9f0c0d0678f06e5f2e87781"><div class="ttname"><a href="classluci_1_1_circle_s_v_d_f.html#ad0aba42ce9f0c0d0678f06e5f2e87781">luci::CircleSVDF::weight_feature</a></div><div class="ttdeci">loco::Node * weight_feature(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_s_v_d_f_8h_source.html#l00041">CircleSVDF.h:41</a></div></div>
 <div class="ttc" id="aclassluci_1_1_circle_s_v_d_f_html_af018041d03893ad0f32c9c8b5dc314e9"><div class="ttname"><a href="classluci_1_1_circle_s_v_d_f.html#af018041d03893ad0f32c9c8b5dc314e9">luci::CircleSVDF::svdf_rank</a></div><div class="ttdeci">int32_t svdf_rank() const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_s_v_d_f_8h_source.html#l00060">CircleSVDF.h:60</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

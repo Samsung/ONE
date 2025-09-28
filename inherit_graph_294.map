@@ -1,31 +1,29 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,410,85,436"/>
-<area shape="rect" id="Node000001" href="$classarm__compute_1_1_c_l_binary_logical_op_kernel.html" title=" " alt="" coords="158,5,360,46"/>
-<area shape="poly" id="edge269_Node000000_Node000001" title=" " alt="" coords="47,394,57,316,74,216,98,120,114,83,131,57,156,39,159,43,135,61,118,85,104,122,79,217,62,317,52,395"/>
-<area shape="rect" id="Node000002" href="$classarm__compute_1_1_c_l_embedding_lookup_kernel.html" title="Class to perform EmbeddingLookup operation with opencl kernel." alt="" coords="165,71,353,111"/>
-<area shape="poly" id="edge270_Node000000_Node000002" title=" " alt="" coords="43,395,46,338,58,265,69,226,85,189,105,153,131,122,146,110,164,102,166,106,149,115,135,126,109,156,89,191,74,228,64,266,52,339,49,395"/>
-<area shape="rect" id="Node000003" href="$classarm__compute_1_1_c_l_g_e_m_m_matrix_accumulate_biases_kernel.html" title=" " alt="" coords="160,136,358,177"/>
-<area shape="poly" id="edge271_Node000000_Node000003" title=" " alt="" coords="46,395,53,349,67,293,92,236,110,209,131,186,158,169,161,174,134,190,114,213,97,238,72,295,58,350,51,395"/>
-<area shape="rect" id="Node000004" href="$classarm__compute_1_1_c_l_gather_ex_kernel.html" title="Class to define an interface for the gather kernel." alt="" coords="152,201,366,227"/>
-<area shape="poly" id="edge272_Node000000_Node000004" title=" " alt="" coords="49,394,58,358,74,315,98,273,131,237,151,225,154,229,134,241,102,276,79,318,63,360,54,396"/>
-<area shape="rect" id="Node000005" href="$classarm__compute_1_1_c_l_hashtable_lookup_kernel.html" title="Class to perform HashtableLookup operation with opencl kernel." alt="" coords="168,251,350,291"/>
-<area shape="poly" id="edge273_Node000000_Node000005" title=" " alt="" coords="57,395,86,347,107,323,131,302,166,285,169,289,134,307,111,327,91,350,61,398"/>
-<area shape="rect" id="Node000006" href="$classarm__compute_1_1_c_l_instance_normalization_layer_kernel_ex.html" title=" " alt="" coords="133,316,385,357"/>
-<area shape="poly" id="edge274_Node000000_Node000006" title=" " alt="" coords="75,398,132,366,162,355,164,360,134,371,78,403"/>
-<area shape="rect" id="Node000007" href="$classarm__compute_1_1_c_l_memset_kernel.html" title=" " alt="" coords="155,381,363,407"/>
-<area shape="poly" id="edge275_Node000000_Node000007" title=" " alt="" coords="99,413,160,404,161,410,100,418"/>
-<area shape="rect" id="Node000008" href="$classarm__compute_1_1_c_l_multiply_scale_factor_kernel.html" title=" " alt="" coords="159,431,359,471"/>
-<area shape="poly" id="edge276_Node000000_Node000008" title=" " alt="" coords="100,427,159,435,158,440,100,433"/>
-<area shape="rect" id="Node000009" href="$classarm__compute_1_1_c_l_neg_kernel.html" title=" " alt="" coords="167,496,351,521"/>
-<area shape="poly" id="edge277_Node000000_Node000009" title=" " alt="" coords="74,444,102,463,134,481,169,492,167,497,132,485,99,468,71,448"/>
-<area shape="rect" id="Node000010" href="$classarm__compute_1_1_c_l_one_hot_kernel.html" title=" " alt="" coords="156,545,362,571"/>
-<area shape="poly" id="edge278_Node000000_Node000010" title=" " alt="" coords="62,449,91,492,111,514,134,531,157,542,155,547,131,536,108,518,87,496,58,451"/>
-<area shape="rect" id="Node000011" href="$classarm__compute_1_1_c_l_pad_layer_kernel_ex.html" title=" " alt="" coords="144,594,374,620"/>
-<area shape="poly" id="edge279_Node000000_Node000011" title=" " alt="" coords="56,450,67,481,83,517,105,552,134,581,152,591,150,596,131,585,101,555,78,520,62,483,51,452"/>
-<area shape="rect" id="Node000012" href="$classarm__compute_1_1_c_l_quantization_symmetric_kernel.html" title=" " alt="" coords="161,644,357,685"/>
-<area shape="poly" id="edge280_Node000000_Node000012" title=" " alt="" coords="52,451,61,491,76,540,100,589,116,611,134,630,162,647,159,652,131,634,112,614,95,592,71,542,56,492,47,452"/>
-<area shape="rect" id="Node000013" href="$classarm__compute_1_1_c_l_reduce_operation_kernel.html" title="Class to define interface for the reduce operation kernel." alt="" coords="147,709,371,750"/>
-<area shape="poly" id="edge281_Node000000_Node000013" title=" " alt="" coords="49,451,54,503,67,569,78,603,92,636,111,667,134,694,151,707,148,711,131,698,107,670,88,639,73,605,62,570,49,504,44,451"/>
-<area shape="rect" id="Node000014" href="$classarm__compute_1_1_c_l_scale_factor_symm8_kernel.html" title=" " alt="" coords="162,775,356,815"/>
-<area shape="poly" id="edge282_Node000000_Node000014" title=" " alt="" coords="53,451,63,524,81,617,105,704,119,737,135,760,163,779,160,783,131,764,115,740,100,706,76,618,58,525,47,452"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,373,85,399"/>
+<area shape="rect" id="Node000001" href="$classarm__compute_1_1_c_l_embedding_lookup_kernel.html" title="Class to perform EmbeddingLookup operation with opencl kernel." alt="" coords="165,5,353,46"/>
+<area shape="poly" id="edge267_Node000000_Node000001" title=" " alt="" coords="47,357,59,286,77,197,101,113,115,80,131,57,146,45,164,36,166,41,149,49,135,61,120,82,106,115,82,198,64,287,53,358"/>
+<area shape="rect" id="Node000002" href="$classarm__compute_1_1_c_l_g_e_m_m_matrix_accumulate_biases_kernel.html" title=" " alt="" coords="160,71,358,111"/>
+<area shape="poly" id="edge268_Node000000_Node000002" title=" " alt="" coords="44,357,50,307,63,243,89,178,108,147,131,121,158,104,161,108,134,125,112,151,94,180,68,245,55,307,50,358"/>
+<area shape="rect" id="Node000003" href="$classarm__compute_1_1_c_l_gather_ex_kernel.html" title="Class to define an interface for the gather kernel." alt="" coords="152,136,366,161"/>
+<area shape="poly" id="edge269_Node000000_Node000003" title=" " alt="" coords="47,357,55,315,70,265,94,214,111,191,131,172,150,159,153,164,134,176,115,195,99,217,75,267,60,317,52,358"/>
+<area shape="rect" id="Node000004" href="$classarm__compute_1_1_c_l_hashtable_lookup_kernel.html" title="Class to perform HashtableLookup operation with opencl kernel." alt="" coords="168,185,350,226"/>
+<area shape="poly" id="edge270_Node000000_Node000004" title=" " alt="" coords="53,357,81,296,103,264,131,237,166,218,169,223,134,241,107,268,86,299,58,359"/>
+<area shape="rect" id="Node000005" href="$classarm__compute_1_1_c_l_instance_normalization_layer_kernel_ex.html" title=" " alt="" coords="133,251,385,291"/>
+<area shape="poly" id="edge271_Node000000_Node000005" title=" " alt="" coords="64,359,94,328,131,301,156,289,158,294,134,305,97,332,68,362"/>
+<area shape="rect" id="Node000006" href="$classarm__compute_1_1_c_l_memset_kernel.html" title=" " alt="" coords="155,316,363,341"/>
+<area shape="poly" id="edge272_Node000000_Node000006" title=" " alt="" coords="92,364,132,351,181,339,182,344,133,356,94,369"/>
+<area shape="rect" id="Node000007" href="$classarm__compute_1_1_c_l_multiply_scale_factor_kernel.html" title=" " alt="" coords="159,365,359,406"/>
+<area shape="poly" id="edge273_Node000000_Node000007" title=" " alt="" coords="100,383,158,383,158,388,100,388"/>
+<area shape="rect" id="Node000008" href="$classarm__compute_1_1_c_l_neg_kernel.html" title=" " alt="" coords="167,430,351,456"/>
+<area shape="poly" id="edge274_Node000000_Node000008" title=" " alt="" coords="94,402,133,415,182,427,181,432,132,420,92,407"/>
+<area shape="rect" id="Node000009" href="$classarm__compute_1_1_c_l_one_hot_kernel.html" title=" " alt="" coords="156,480,362,505"/>
+<area shape="poly" id="edge275_Node000000_Node000009" title=" " alt="" coords="67,409,97,439,134,466,160,477,158,481,131,471,93,443,64,412"/>
+<area shape="rect" id="Node000010" href="$classarm__compute_1_1_c_l_pad_layer_kernel_ex.html" title=" " alt="" coords="144,529,374,555"/>
+<area shape="poly" id="edge276_Node000000_Node000010" title=" " alt="" coords="59,412,87,466,109,493,134,515,154,526,152,531,131,520,105,497,83,469,54,414"/>
+<area shape="rect" id="Node000011" href="$classarm__compute_1_1_c_l_quantization_symmetric_kernel.html" title=" " alt="" coords="161,579,357,619"/>
+<area shape="poly" id="edge277_Node000000_Node000011" title=" " alt="" coords="54,413,64,448,80,489,103,530,134,565,162,581,159,586,131,569,99,533,75,491,59,450,49,414"/>
+<area shape="rect" id="Node000012" href="$classarm__compute_1_1_c_l_reduce_operation_kernel.html" title="Class to define interface for the reduce operation kernel." alt="" coords="147,644,371,685"/>
+<area shape="poly" id="edge278_Node000000_Node000012" title=" " alt="" coords="51,414,57,461,71,519,96,578,113,605,134,629,152,641,149,646,131,633,109,609,91,581,66,521,52,462,45,415"/>
+<area shape="rect" id="Node000013" href="$classarm__compute_1_1_c_l_scale_factor_symm8_kernel.html" title=" " alt="" coords="162,709,356,750"/>
+<area shape="poly" id="edge279_Node000000_Node000013" title=" " alt="" coords="48,414,51,473,62,548,73,588,88,627,109,663,134,694,163,713,160,718,131,698,104,666,83,629,68,590,57,550,45,473,43,414"/>
 </map>

@@ -126,12 +126,12 @@ $(document).ready(function(){initNavTree('loco_2src_2_i_r_2_use_8cpp_source.html
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keywordflow">if</span> (_node != <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  {</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    assert(_node-&gt;_uses.find(<span class="keyword">this</span>) != _node-&gt;_uses.end());</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(_node-&gt;_uses.find(<span class="keyword">this</span>) != _node-&gt;_uses.end());</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    _node-&gt;_uses.erase(<span class="keyword">this</span>);</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    _node = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  }</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  assert(_node == <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(_node == <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classloco_1_1_use.html#a53502d2c51b0bc94df5884ddbab79843">node</a> != <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  {</div>
@@ -139,7 +139,7 @@ $(document).ready(function(){initNavTree('loco_2src_2_i_r_2_use_8cpp_source.html
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    _node-&gt;_uses.insert(<span class="keyword">this</span>);</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  }</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  assert(_node == <a class="code hl_function" href="classloco_1_1_use.html#a53502d2c51b0bc94df5884ddbab79843">node</a>);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(_node == <a class="code hl_function" href="classloco_1_1_use.html#a53502d2c51b0bc94df5884ddbab79843">node</a>);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}</div>
 </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
@@ -149,6 +149,7 @@ $(document).ready(function(){initNavTree('loco_2src_2_i_r_2_use_8cpp_source.html
 <div class="ttc" id="acompiler_2loco_2include_2loco_2_i_r_2_node_8h_html"><div class="ttname"><a href="compiler_2loco_2include_2loco_2_i_r_2_node_8h.html">Node.h</a></div></div>
 <div class="ttc" id="aloco_2include_2loco_2_i_r_2_use_8h_html"><div class="ttname"><a href="loco_2include_2loco_2_i_r_2_use_8h.html">Use.h</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

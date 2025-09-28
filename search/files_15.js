@@ -38,7 +38,7 @@ var searchData=
   ['upsample_2eh_35',['Upsample.h',['../_upsample_8h.html',1,'']]],
   ['usage_2ecpp_36',['Usage.cpp',['../_usage_8cpp.html',1,'']]],
   ['usage_2eh_37',['Usage.h',['../_usage_8h.html',1,'']]],
-  ['use_2ecpp_38',['use.cpp',['../coco_2core_2src_2_i_r_2_use_8cpp.html',1,'(Global Namespace)'],['../loco_2src_2_i_r_2_use_8cpp.html',1,'(Global Namespace)']]],
+  ['use_2ecpp_38',['use.cpp',['../loco_2src_2_i_r_2_use_8cpp.html',1,'(Global Namespace)'],['../coco_2core_2src_2_i_r_2_use_8cpp.html',1,'(Global Namespace)']]],
   ['use_2eforward_2eh_39',['Use.forward.h',['../_use_8forward_8h.html',1,'']]],
   ['use_2eh_40',['use.h',['../coco_2core_2include_2coco_2_i_r_2_use_8h.html',1,'(Global Namespace)'],['../loco_2include_2loco_2_i_r_2_use_8h.html',1,'(Global Namespace)']]],
   ['usedefchain_2ecc_41',['UseDefChain.cc',['../_use_def_chain_8cc.html',1,'']]],

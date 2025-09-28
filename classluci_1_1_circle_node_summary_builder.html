@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('classluci_1_1_circle_node_summary_buil
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a40baf01e6612b4df2e541ef2952d06cb" id="r_a40baf01e6612b4df2e541ef2952d06cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_circle_node_summary_builder.html#a40baf01e6612b4df2e541ef2952d06cb">build</a> (const <a class="el" href="classloco_1_1_node.html">loco::Node</a> *node, const <a class="el" href="structlocop_1_1_symbol_table.html">locop::SymbolTable</a> *tbl, <a class="el" href="namespacelocop.html#a387ee1cce78b5796d258e5e786c84b7d">locop::NodeSummary</a> &amp;s)</td></tr>
+<tr class="memitem:a40baf01e6612b4df2e541ef2952d06cb" id="r_a40baf01e6612b4df2e541ef2952d06cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_circle_node_summary_builder.html#a40baf01e6612b4df2e541ef2952d06cb">build</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="classloco_1_1_node.html">loco::Node</a> *node, <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="structlocop_1_1_symbol_table.html">locop::SymbolTable</a> *<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tbl</a>, <a class="el" href="namespacelocop.html#a387ee1cce78b5796d258e5e786c84b7d">locop::NodeSummary</a> &amp;s)</td></tr>
 <tr class="separator:a40baf01e6612b4df2e541ef2952d06cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -113,15 +113,15 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool luci::CircleNodeSummaryBuilder::build </td>
+          <td class="memname"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">bool</a> luci::CircleNodeSummaryBuilder::build </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classloco_1_1_node.html">loco::Node</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="classloco_1_1_node.html">loco::Node</a> *&#160;</td>
           <td class="paramname"><em>node</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structlocop_1_1_symbol_table.html">locop::SymbolTable</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="structlocop_1_1_symbol_table.html">locop::SymbolTable</a> *&#160;</td>
           <td class="paramname"><em>tbl</em>, </td>
         </tr>
         <tr>
@@ -143,45 +143,45 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   55</span>  <span class="keywordflow">if</span> (node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#ac4f4b9b1810179561c1d192747c0599b">dialect</a>() != <a class="code hl_function" href="classluci_1_1_circle_dialect.html#afb0f4a1160d1f4da59d7a65aee89986d">luci::CircleDialect::get</a>())</div>
 <div class="line"><span class="lineno">   56</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>  <span class="keyword">auto</span> ptr_to_str = [](<span class="keyword">const</span> <span class="keywordtype">void</span> *ptr) {</div>
-<div class="line"><span class="lineno">   59</span>    std::stringstream ss;</div>
-<div class="line"><span class="lineno">   60</span>    ss &lt;&lt; ptr;</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> ss.str();</div>
+<div class="line"><span class="lineno">   58</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ptr_to_str</a> = [](<span class="keyword">const</span> <span class="keywordtype">void</span> *ptr) {</div>
+<div class="line"><span class="lineno">   59</span>    std::stringstream <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ss</a>;</div>
+<div class="line"><span class="lineno">   60</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ss</a> &lt;&lt; ptr;</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ss</a>.str();</div>
 <div class="line"><span class="lineno">   62</span>  };</div>
 <div class="line"><span class="lineno">   63</span> </div>
-<div class="line"><span class="lineno">   64</span>  <span class="keyword">auto</span> shape_to_str = [](<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node) {</div>
-<div class="line"><span class="lineno">   65</span>    std::stringstream ss;</div>
-<div class="line"><span class="lineno">   66</span>    ss &lt;&lt; <span class="stringliteral">&quot;&lt;&quot;</span>;</div>
-<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; node-&gt;rank(); ++i)</div>
+<div class="line"><span class="lineno">   64</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">shape_to_str</a> = [](<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node) {</div>
+<div class="line"><span class="lineno">   65</span>    std::stringstream <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ss</a>;</div>
+<div class="line"><span class="lineno">   66</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ss</a> &lt;&lt; <span class="stringliteral">&quot;&lt;&quot;</span>;</div>
+<div class="line"><span class="lineno">   67</span>    <span class="keywordflow">for</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">uint32_t</a> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> = 0; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> &lt; node-&gt;rank(); ++<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a>)</div>
 <div class="line"><span class="lineno">   68</span>    {</div>
-<div class="line"><span class="lineno">   69</span>      <span class="keywordflow">if</span> (i)</div>
-<div class="line"><span class="lineno">   70</span>        ss &lt;&lt; <span class="stringliteral">&quot;,&quot;</span>;</div>
-<div class="line"><span class="lineno">   71</span>      ss &lt;&lt; (node-&gt;dim(i).known() ? node-&gt;dim(i).value() : -1);</div>
+<div class="line"><span class="lineno">   69</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a>)</div>
+<div class="line"><span class="lineno">   70</span>        <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ss</a> &lt;&lt; <span class="stringliteral">&quot;,&quot;</span>;</div>
+<div class="line"><span class="lineno">   71</span>      <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ss</a> &lt;&lt; (node-&gt;dim(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a>).known() ? node-&gt;dim(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a>).value() : -1);</div>
 <div class="line"><span class="lineno">   72</span>    }</div>
-<div class="line"><span class="lineno">   73</span>    ss &lt;&lt; <span class="stringliteral">&quot;&gt;&quot;</span>;</div>
-<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">return</span> ss.str();</div>
+<div class="line"><span class="lineno">   73</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ss</a> &lt;&lt; <span class="stringliteral">&quot;&gt;&quot;</span>;</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ss</a>.str();</div>
 <div class="line"><span class="lineno">   75</span>  };</div>
 <div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>  <span class="keyword">auto</span> circle_node = loco::must_cast&lt;const luci::CircleNode *&gt;(node);</div>
-<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">if</span> (<span class="keyword">const</span> <span class="keyword">auto</span> builder = create_builder(circle_node))</div>
+<div class="line"><span class="lineno">   77</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;const luci::CircleNode *&gt;</a>(node);</div>
+<div class="line"><span class="lineno">   78</span>  <span class="keywordflow">if</span> (<span class="keyword">const</span> <span class="keyword">auto</span> builder = create_builder(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>))</div>
 <div class="line"><span class="lineno">   79</span>  {</div>
-<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">if</span> (!builder-&gt;validate(circle_node))</div>
+<div class="line"><span class="lineno">   80</span>    <span class="keywordflow">if</span> (!builder-&gt;validate(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>))</div>
 <div class="line"><span class="lineno">   81</span>    {</div>
 <div class="line"><span class="lineno">   82</span>      <a class="code hl_variable" href="namespacejpeg2hdf5.html#ae532513a6ac25a9cbbc1efe7fb01f679">s</a>.state(<a class="code hl_enumvalue" href="structlocop_1_1_node_desc.html#a76aad081471eff9ece2ebdeaa9716c96a4bbb8f967da6d1a610596d7257179c2b">locop::NodeDesc::State::Invalid</a>);</div>
 <div class="line"><span class="lineno">   83</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   84</span>    }</div>
 <div class="line"><span class="lineno">   85</span> </div>
-<div class="line"><span class="lineno">   86</span>    <span class="keyword">auto</span> input_names = builder-&gt;get_input_names(circle_node);</div>
-<div class="line"><span class="lineno">   87</span>    assert(node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a5473adc0c367676e384bc06241e23d3b">arity</a>() == input_names.size());</div>
-<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">for</span> (uint32_t i = 0; i &lt; node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a5473adc0c367676e384bc06241e23d3b">arity</a>(); ++i)</div>
-<div class="line"><span class="lineno">   89</span>      <a class="code hl_variable" href="namespacejpeg2hdf5.html#ae532513a6ac25a9cbbc1efe7fb01f679">s</a>.args().append(input_names.at(i), tbl-&gt;<a class="code hl_function" href="structlocop_1_1_symbol_table.html#af66b5974ccab43965767ed31aea1b72c">lookup</a>(node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a0fbc9384bdfbbaf14fec1b9b712fc7c1">arg</a>(i)));</div>
+<div class="line"><span class="lineno">   86</span>    <span class="keyword">auto</span> input_names = builder-&gt;get_input_names(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>);</div>
+<div class="line"><span class="lineno">   87</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a5473adc0c367676e384bc06241e23d3b">arity</a>() == input_names.size());</div>
+<div class="line"><span class="lineno">   88</span>    <span class="keywordflow">for</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">uint32_t</a> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> = 0; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> &lt; node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a5473adc0c367676e384bc06241e23d3b">arity</a>(); ++<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a>)</div>
+<div class="line"><span class="lineno">   89</span>      <a class="code hl_variable" href="namespacejpeg2hdf5.html#ae532513a6ac25a9cbbc1efe7fb01f679">s</a>.args().append(input_names.at(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a>), <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tbl</a>-&gt;lookup(node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a0fbc9384bdfbbaf14fec1b9b712fc7c1">arg</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a>)));</div>
 <div class="line"><span class="lineno">   90</span> </div>
-<div class="line"><span class="lineno">   91</span>    builder-&gt;build_attributes(circle_node, s);</div>
+<div class="line"><span class="lineno">   91</span>    builder-&gt;build_attributes(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>, s);</div>
 <div class="line"><span class="lineno">   92</span>    builder-&gt;update_status(s);</div>
 <div class="line"><span class="lineno">   93</span> </div>
-<div class="line"><span class="lineno">   94</span>    <a class="code hl_variable" href="namespacejpeg2hdf5.html#ae532513a6ac25a9cbbc1efe7fb01f679">s</a>.opname(circle_opname(circle_node-&gt;opcode()));</div>
-<div class="line"><span class="lineno">   95</span>    <a class="code hl_variable" href="namespacejpeg2hdf5.html#ae532513a6ac25a9cbbc1efe7fb01f679">s</a>.comments().append(<span class="stringliteral">&quot;[&quot;</span> + circle_node-&gt;name() + <span class="stringliteral">&quot; &quot;</span> + shape_to_str(circle_node) +</div>
-<div class="line"><span class="lineno">   96</span>                        <span class="stringliteral">&quot;] = &quot;</span> + ptr_to_str(node));</div>
+<div class="line"><span class="lineno">   94</span>    <a class="code hl_variable" href="namespacejpeg2hdf5.html#ae532513a6ac25a9cbbc1efe7fb01f679">s</a>.opname(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_opname</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>-&gt;opcode()));</div>
+<div class="line"><span class="lineno">   95</span>    <a class="code hl_variable" href="namespacejpeg2hdf5.html#ae532513a6ac25a9cbbc1efe7fb01f679">s</a>.comments().append(<span class="stringliteral">&quot;[&quot;</span> + <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>-&gt;name() + <span class="stringliteral">&quot; &quot;</span> + <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">shape_to_str</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>) +</div>
+<div class="line"><span class="lineno">   96</span>                        <span class="stringliteral">&quot;] = &quot;</span> + <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ptr_to_str</a>(node));</div>
 <div class="line"><span class="lineno">   97</span> </div>
 <div class="line"><span class="lineno">   98</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">   99</span>  }</div>
@@ -196,11 +196,12 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassloco_1_1_node_html_ac4f4b9b1810179561c1d192747c0599b"><div class="ttname"><a href="classloco_1_1_node.html#ac4f4b9b1810179561c1d192747c0599b">loco::Node::dialect</a></div><div class="ttdeci">virtual const Dialect * dialect(void) const =0</div><div class="ttdoc">Return &quot;Dialect&quot; identifier that this node belongs to.</div></div>
 <div class="ttc" id="aclassluci_1_1_circle_dialect_html_afb0f4a1160d1f4da59d7a65aee89986d"><div class="ttname"><a href="classluci_1_1_circle_dialect.html#afb0f4a1160d1f4da59d7a65aee89986d">luci::CircleDialect::get</a></div><div class="ttdeci">static loco::Dialect * get(void)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2src_2_circle_dialect_8cpp_source.html#l00082">CircleDialect.cpp:82</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_ae532513a6ac25a9cbbc1efe7fb01f679"><div class="ttname"><a href="namespacejpeg2hdf5.html#ae532513a6ac25a9cbbc1efe7fb01f679">jpeg2hdf5.s</a></div><div class="ttdeci">s</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00103">jpeg2hdf5.py:103</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="astructlocop_1_1_node_desc_html_a76aad081471eff9ece2ebdeaa9716c96a4bbb8f967da6d1a610596d7257179c2b"><div class="ttname"><a href="structlocop_1_1_node_desc.html#a76aad081471eff9ece2ebdeaa9716c96a4bbb8f967da6d1a610596d7257179c2b">locop::NodeDesc::State::Invalid</a></div><div class="ttdeci">@ Invalid</div></div>
-<div class="ttc" id="astructlocop_1_1_symbol_table_html_af66b5974ccab43965767ed31aea1b72c"><div class="ttname"><a href="structlocop_1_1_symbol_table.html#af66b5974ccab43965767ed31aea1b72c">locop::SymbolTable::lookup</a></div><div class="ttdeci">virtual std::string lookup(const loco::Node *) const =0</div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00039">CircleNodeDecl.h:42</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classloco_1_1_node.html#a0fbc9384bdfbbaf14fec1b9b712fc7c1">loco::Node::arg()</a>, <a class="el" href="classloco_1_1_node.html#a5473adc0c367676e384bc06241e23d3b">loco::Node::arity()</a>, <a class="el" href="classloco_1_1_node.html#ac4f4b9b1810179561c1d192747c0599b">loco::Node::dialect()</a>, <a class="el" href="luci_2lang_2src_2_circle_dialect_8cpp_source.html#l00082">luci::CircleDialect::get()</a>, <a class="el" href="structlocop_1_1_node_desc.html#a76aad081471eff9ece2ebdeaa9716c96a4bbb8f967da6d1a610596d7257179c2b">locop::NodeDesc::Invalid</a>, and <a class="el" href="structlocop_1_1_symbol_table.html#af66b5974ccab43965767ed31aea1b72c">locop::SymbolTable::lookup()</a>.</p>
+<p class="reference">References <a class="el" href="classloco_1_1_node.html#a0fbc9384bdfbbaf14fec1b9b712fc7c1">loco::Node::arg()</a>, <a class="el" href="classloco_1_1_node.html#a5473adc0c367676e384bc06241e23d3b">loco::Node::arity()</a>, <a class="el" href="classloco_1_1_node.html#ac4f4b9b1810179561c1d192747c0599b">loco::Node::dialect()</a>, <a class="el" href="luci_2lang_2src_2_circle_dialect_8cpp_source.html#l00082">luci::CircleDialect::get()</a>, <a class="el" href="structlocop_1_1_node_desc.html#a76aad081471eff9ece2ebdeaa9716c96a4bbb8f967da6d1a610596d7257179c2b">locop::NodeDesc::Invalid</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, and <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="circle-input-names_8cpp_source.html#l00142">create_circle_node_summary()</a>.</p>
 

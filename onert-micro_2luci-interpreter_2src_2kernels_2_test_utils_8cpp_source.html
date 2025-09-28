@@ -126,15 +126,15 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>using ::testing::FloatNear;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>using ::testing::Matcher;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>Matcher&lt;std::vector&lt;float&gt;&gt; <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels_1_1testing.html#aa650ac8cd35c630b0a8592285d4f2657">FloatArrayNear</a>(<span class="keyword">const</span> std::vector&lt;float&gt; &amp;values, <span class="keywordtype">float</span> max_abs_error)</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">Matcher&lt;std::vector&lt;float&gt;</a>&gt; <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels_1_1testing.html#aa650ac8cd35c630b0a8592285d4f2657">FloatArrayNear</a>(<span class="keyword">const</span> std::vector&lt;float&gt; &amp;values, <span class="keywordtype">float</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">max_abs_error</a>)</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  std::vector&lt;Matcher&lt;float&gt;&gt; matchers;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  matchers.reserve(values.size());</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  std::vector&lt;Matcher&lt;float&gt;&gt; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">matchers</a>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">matchers</a>.reserve(values.size());</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keywordtype">float</span> v : values)</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    matchers.emplace_back(FloatNear(v, max_abs_error));</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">matchers</a>.emplace_back(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">FloatNear</a>(v, <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">max_abs_error</a>));</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  }</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">return</span> ElementsAreArray(matchers);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">ElementsAreArray</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">matchers</a>);</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>}</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>} <span class="comment">// namespace testing</span></div>
@@ -142,6 +142,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>} <span class="comment">// namespace luci_interpreter</span></div>
 <div class="ttc" id="anamespaceluci__interpreter_1_1kernels_1_1testing_html_aa650ac8cd35c630b0a8592285d4f2657"><div class="ttname"><a href="namespaceluci__interpreter_1_1kernels_1_1testing.html#aa650ac8cd35c630b0a8592285d4f2657">luci_interpreter::kernels::testing::FloatArrayNear</a></div><div class="ttdeci">Matcher&lt; std::vector&lt; float &gt; &gt; FloatArrayNear(const std::vector&lt; float &gt; &amp;values, float max_abs_error)</div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2src_2kernels_2_test_utils_8cpp_source.html#l00104">TestUtils.cpp:104</a></div></div>
 <div class="ttc" id="anamespaceluci__interpreter_html"><div class="ttname"><a href="namespaceluci__interpreter.html">luci_interpreter</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci-interpreter_2include_2luci__interpreter_2_buddy_memory_manager_8h_source.html#l00021">BuddyMemoryManager.h:22</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

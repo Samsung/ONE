@@ -111,7 +111,7 @@ Collaboration diagram for luci::PhaseRunner&lt; logo::PhaseStrategy::Restart &gt
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a040cec8a38a65428269f25ab2f14d91c" id="r_a040cec8a38a65428269f25ab2f14d91c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_phase_runner_3_01logo_1_1_phase_strategy_1_1_restart_01_4.html#a040cec8a38a65428269f25ab2f14d91c">PhaseRunner</a> (<a class="el" href="classluci_1_1_module.html">luci::Module</a> *module)</td></tr>
 <tr class="separator:a040cec8a38a65428269f25ab2f14d91c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9868f0d4af5c8ad5aa4a30a6448b4c47" id="r_a9868f0d4af5c8ad5aa4a30a6448b4c47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_phase_runner_3_01logo_1_1_phase_strategy_1_1_restart_01_4.html#a9868f0d4af5c8ad5aa4a30a6448b4c47">run</a> (const <a class="el" href="namespaceluci.html#a5fd29b268980eddca0a25bd63831ea83">Phase</a> &amp;) const</td></tr>
+<tr class="memitem:a9868f0d4af5c8ad5aa4a30a6448b4c47" id="r_a9868f0d4af5c8ad5aa4a30a6448b4c47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_phase_runner_3_01logo_1_1_phase_strategy_1_1_restart_01_4.html#a9868f0d4af5c8ad5aa4a30a6448b4c47">run</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="namespaceluci.html#a5fd29b268980eddca0a25bd63831ea83">Phase</a> &amp;) <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a></td></tr>
 <tr class="separator:a9868f0d4af5c8ad5aa4a30a6448b4c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classlogo_1_1_phase_runner_mixin_observable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classlogo_1_1_phase_runner_mixin_observable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classlogo_1_1_phase_runner_mixin_observable.html">logo::PhaseRunnerMixinObservable</a></td></tr>
 <tr class="memitem:ac8d5453800676a445d554012cb5bf48f inherit pub_methods_classlogo_1_1_phase_runner_mixin_observable" id="r_ac8d5453800676a445d554012cb5bf48f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlogo_1_1_phase_runner_mixin_observable.html#ac8d5453800676a445d554012cb5bf48f">PhaseRunnerMixinObservable</a> ()=default</td></tr>
@@ -173,9 +173,9 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classluci_1_1_phase_runner.html">luci::PhaseRunner</a>&lt; <a class="el" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2">logo::PhaseStrategy::Restart</a> &gt;::run </td>
+          <td class="memname"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a> <a class="el" href="classluci_1_1_phase_runner.html">luci::PhaseRunner</a>&lt; <a class="el" href="namespacelogo.html#a9a8b3c8cbccc78429eb48d016d4eadb6a51cfbcff36da74a9fc47f3a5140f99f2">logo::PhaseStrategy::Restart</a> &gt;::run </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespaceluci.html#a5fd29b268980eddca0a25bd63831ea83">Phase</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="namespaceluci.html#a5fd29b268980eddca0a25bd63831ea83">Phase</a> &amp;&#160;</td>
           <td class="paramname"><em>phase</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -190,14 +190,14 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   49</span>  {</div>
 <div class="line"><span class="lineno">   50</span>    changed = <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   51</span> </div>
-<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pass : phase)</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pass : <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">phase</a>)</div>
 <div class="line"><span class="lineno">   53</span>    {</div>
 <div class="line"><span class="lineno">   54</span>      <a class="code hl_function" href="classlogo_1_1_phase_runner_mixin_observable.html#ad38037251fde6f53a002145b42bf8247">notifyPassBegin</a>(pass.get());</div>
 <div class="line"><span class="lineno">   55</span> </div>
-<div class="line"><span class="lineno">   56</span>      <span class="keywordtype">bool</span> pass_changed = pass-&gt;run(_module);</div>
-<div class="line"><span class="lineno">   57</span>      changed = changed || pass_changed;</div>
+<div class="line"><span class="lineno">   56</span>      <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">pass_changed</a> = pass-&gt;run(_module);</div>
+<div class="line"><span class="lineno">   57</span>      changed = changed || <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">pass_changed</a>;</div>
 <div class="line"><span class="lineno">   58</span> </div>
-<div class="line"><span class="lineno">   59</span>      <a class="code hl_function" href="classlogo_1_1_phase_runner_mixin_observable.html#a11a09b652f2fd7c51ad18f8443643fe0">notifyPassEnd</a>(pass.get(), pass_changed);</div>
+<div class="line"><span class="lineno">   59</span>      <a class="code hl_function" href="classlogo_1_1_phase_runner_mixin_observable.html#a11a09b652f2fd7c51ad18f8443643fe0">notifyPassEnd</a>(pass.get(), <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">pass_changed</a>);</div>
 <div class="line"><span class="lineno">   60</span> </div>
 <div class="line"><span class="lineno">   61</span>      <span class="keywordflow">if</span> (changed)</div>
 <div class="line"><span class="lineno">   62</span>      {</div>
@@ -212,7 +212,10 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclasslogo_1_1_phase_runner_mixin_observable_html_a25cd6a63b1fbf196fbabbd1cd11e5136"><div class="ttname"><a href="classlogo_1_1_phase_runner_mixin_observable.html#a25cd6a63b1fbf196fbabbd1cd11e5136">logo::PhaseRunnerMixinObservable::notifyPhaseEnd</a></div><div class="ttdeci">void notifyPhaseEnd(void) const</div><div class="ttdef"><b>Definition</b> <a href="_phase_8h_source.html#l00111">Phase.h:111</a></div></div>
 <div class="ttc" id="aclasslogo_1_1_phase_runner_mixin_observable_html_ac6806b9193416efd599d717ccd9c511e"><div class="ttname"><a href="classlogo_1_1_phase_runner_mixin_observable.html#ac6806b9193416efd599d717ccd9c511e">logo::PhaseRunnerMixinObservable::notifyPhaseBegin</a></div><div class="ttdeci">void notifyPhaseBegin(void) const</div><div class="ttdef"><b>Definition</b> <a href="_phase_8h_source.html#l00101">Phase.h:101</a></div></div>
 <div class="ttc" id="aclasslogo_1_1_phase_runner_mixin_observable_html_ad38037251fde6f53a002145b42bf8247"><div class="ttname"><a href="classlogo_1_1_phase_runner_mixin_observable.html#ad38037251fde6f53a002145b42bf8247">logo::PhaseRunnerMixinObservable::notifyPassBegin</a></div><div class="ttdeci">void notifyPassBegin(Pass *pass) const</div><div class="ttdef"><b>Definition</b> <a href="_phase_8h_source.html#l00121">Phase.h:121</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

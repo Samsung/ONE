@@ -138,15 +138,15 @@ $(document).ready(function(){initNavTree('_annotated_item_8h_source.html',''); i
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">  </span>{</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="comment">// TODO Insert static_assert(T derives Annotation);</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">auto</span> it = _attrs.find(<span class="keyword">typeid</span>(T));</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">it</a> = _attrs.find(<span class="keyword">typeid</span>(T));</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">if</span> (it == _attrs.end())</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">it</a> == _attrs.end())</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    {</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    }</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">// TODO Insert null check</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> <span class="keyword">dynamic_cast&lt;</span>T *<span class="keyword">&gt;</span>(it-&gt;second.get());</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> <span class="keyword">dynamic_cast&lt;</span>T *<span class="keyword">&gt;</span>(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">it</a>-&gt;second.get());</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  }</div>
 </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
@@ -181,6 +181,7 @@ $(document).ready(function(){initNavTree('_annotated_item_8h_source.html',''); i
 <div class="ttc" id="aclassloco_1_1_annotated_item_html_a42b9bc433d4d4eedbc0a6a68872b6505"><div class="ttname"><a href="classloco_1_1_annotated_item.html#a42b9bc433d4d4eedbc0a6a68872b6505">loco::AnnotatedItem::AnnotatedItem</a></div><div class="ttdeci">AnnotatedItem()=default</div></div>
 <div class="ttc" id="aclassloco_1_1_annotated_item_html_aaf2146c1e5dec7f9170543ac6d864dde"><div class="ttname"><a href="classloco_1_1_annotated_item.html#aaf2146c1e5dec7f9170543ac6d864dde">loco::AnnotatedItem::annot</a></div><div class="ttdeci">const T * annot(void) const</div><div class="ttdoc">Retrieve a stored annotation of type T.</div><div class="ttdef"><b>Definition</b> <a href="_annotated_item_8h_source.html#l00041">AnnotatedItem.h:41</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 <div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

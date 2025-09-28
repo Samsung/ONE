@@ -114,7 +114,7 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6a4db0511a56c7eb9bbb47196348fba7" id="r_a6a4db0511a56c7eb9bbb47196348fba7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1pass.html#a6a4db0511a56c7eb9bbb47196348fba7">luci::pass::operator==</a> (const <a class="el" href="structluci_1_1pass_1_1_expression.html">Expression</a> &amp;x, const <a class="el" href="structluci_1_1pass_1_1_expression.html">Expression</a> &amp;y)</td></tr>
+<tr class="memitem:a6a4db0511a56c7eb9bbb47196348fba7" id="r_a6a4db0511a56c7eb9bbb47196348fba7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceluci_1_1pass.html#a6a4db0511a56c7eb9bbb47196348fba7">luci::pass::operator==</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="structluci_1_1pass_1_1_expression.html">Expression</a> &amp;x, <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="structluci_1_1pass_1_1_expression.html">Expression</a> &amp;y)</td></tr>
 <tr class="separator:a6a4db0511a56c7eb9bbb47196348fba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -310,10 +310,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  197</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  198</span> </div>
 <div class="line"><span class="lineno">  199</span>  <span class="comment">// Check general (non-op-specific) attributes</span></div>
-<div class="line"><span class="lineno">  200</span>  <span class="keywordflow">if</span> (not same_common_attributes(x.op, y.op))</div>
+<div class="line"><span class="lineno">  200</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">not</a> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">same_common_attributes</a>(x.op, y.op))</div>
 <div class="line"><span class="lineno">  201</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  202</span> </div>
-<div class="line"><span class="lineno">  203</span>  assert(x.op-&gt;opcode() == y.op-&gt;opcode()); <span class="comment">// FIX_ME_UNLESS</span></div>
+<div class="line"><span class="lineno">  203</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(x.op-&gt;opcode() == y.op-&gt;opcode()); <span class="comment">// FIX_ME_UNLESS</span></div>
 <div class="line"><span class="lineno">  204</span> </div>
 <div class="line"><span class="lineno">  205</span>  <span class="comment">// Check op-specific attributes</span></div>
 <div class="line"><span class="lineno">  206</span>  <span class="keywordflow">switch</span> (x.op-&gt;opcode())</div>
@@ -326,10 +326,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  213</span>    }</div>
 <div class="line"><span class="lineno">  214</span>    <span class="keywordflow">case</span> luci::CircleOpcode::TRANSPOSE:</div>
 <div class="line"><span class="lineno">  215</span>    {</div>
-<div class="line"><span class="lineno">  216</span>      <span class="keyword">const</span> <span class="keyword">auto</span> trans_x = loco::must_cast&lt;luci::CircleTranspose *&gt;(x.op);</div>
-<div class="line"><span class="lineno">  217</span>      <span class="keyword">const</span> <span class="keyword">auto</span> trans_y = loco::must_cast&lt;luci::CircleTranspose *&gt;(y.op);</div>
+<div class="line"><span class="lineno">  216</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">trans_x</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleTranspose *&gt;</a>(x.op);</div>
+<div class="line"><span class="lineno">  217</span>      <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">trans_y</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleTranspose *&gt;</a>(y.op);</div>
 <div class="line"><span class="lineno">  218</span> </div>
-<div class="line"><span class="lineno">  219</span>      <span class="keywordflow">return</span> same_attributes(trans_x, trans_y);</div>
+<div class="line"><span class="lineno">  219</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">same_attributes</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">trans_x</a>, <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">trans_y</a>);</div>
 <div class="line"><span class="lineno">  220</span>    }</div>
 <div class="line"><span class="lineno">  221</span>    <span class="comment">// TODO Implement more operators</span></div>
 <div class="line"><span class="lineno">  222</span>    <span class="keywordflow">default</span>:</div>
@@ -342,13 +342,13 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  229</span> </div>
 <div class="line"><span class="lineno">  230</span>std::size_t <a class="code hl_function" href="structluci_1_1pass_1_1_expression_1_1_hash.html#a9a56383a944e0a9203902785eea092a4">Expression::Hash::call</a>(<span class="keyword">const</span> Expression &amp;k) <span class="keyword">const</span> <span class="keyword">noexcept</span></div>
 <div class="line"><span class="lineno">  231</span>{</div>
-<div class="line"><span class="lineno">  232</span>  std::size_t res = 0;</div>
+<div class="line"><span class="lineno">  232</span>  std::size_t <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">res</a> = 0;</div>
 <div class="line"><span class="lineno">  233</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> input : k.<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>)</div>
-<div class="line"><span class="lineno">  234</span>    hash_combine(res, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>);</div>
+<div class="line"><span class="lineno">  234</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">hash_combine</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">res</a>, <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>);</div>
 <div class="line"><span class="lineno">  235</span> </div>
-<div class="line"><span class="lineno">  236</span>  hash_combine(res, k.op);</div>
+<div class="line"><span class="lineno">  236</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">hash_combine</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">res</a>, k.op);</div>
 <div class="line"><span class="lineno">  237</span> </div>
-<div class="line"><span class="lineno">  238</span>  <span class="keywordflow">return</span> res;</div>
+<div class="line"><span class="lineno">  238</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">res</a>;</div>
 <div class="line"><span class="lineno">  239</span>}</div>
 <div class="line"><span class="lineno">  240</span> </div>
 <div class="line"><span class="lineno">  241</span>} <span class="comment">// namespace pass</span></div>
@@ -363,8 +363,10 @@ Functions</h2></td></tr>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_abcab13752e1826b70991e56f8e9a834d"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">GenH5RandomInputs.inputs</a></div><div class="ttdeci">inputs</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00049">GenH5RandomInputs.py:49</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_a01a00f16b6bc56ca12c4a42576612bd8"><div class="ttname"><a href="namespacejpeg2hdf5.html#a01a00f16b6bc56ca12c4a42576612bd8">jpeg2hdf5.h</a></div><div class="ttdeci">h</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00101">jpeg2hdf5.py:101</a></div></div>
 <div class="ttc" id="anamespacejpeg2hdf5_html_ae532513a6ac25a9cbbc1efe7fb01f679"><div class="ttname"><a href="namespacejpeg2hdf5.html#ae532513a6ac25a9cbbc1efe7fb01f679">jpeg2hdf5.s</a></div><div class="ttdeci">s</div><div class="ttdef"><b>Definition</b> <a href="jpeg2hdf5_8py_source.html#l00103">jpeg2hdf5.py:103</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 <div class="ttc" id="anamespaceluci_1_1pass_html_a6a4db0511a56c7eb9bbb47196348fba7"><div class="ttname"><a href="namespaceluci_1_1pass.html#a6a4db0511a56c7eb9bbb47196348fba7">luci::pass::operator==</a></div><div class="ttdeci">bool operator==(const Expression &amp;x, const Expression &amp;y)</div><div class="ttdef"><b>Definition</b> <a href="_expression_cache_8cpp_source.html#l00195">ExpressionCache.cpp:195</a></div></div>
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition</b> <a href="circle-resizer_2include_2_circle_model_8h_source.html#l00026">CircleModel.h:27</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00039">CircleNodeDecl.h:42</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a61f4b5a868629e0d3e79762682826328"><div class="ttname"><a href="structluci_1_1_circle_node.html#a61f4b5a868629e0d3e79762682826328">luci::CircleNode::op_version</a></div><div class="ttdeci">int32_t op_version(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00075">CircleNodeDecl.h:75</a></div></div>

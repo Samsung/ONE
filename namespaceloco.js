@@ -133,6 +133,7 @@ var namespaceloco =
     [ "TensorBroadcast", "classloco_1_1_tensor_broadcast.html", "classloco_1_1_tensor_broadcast" ],
     [ "TensorConcat", "classloco_1_1_tensor_concat.html", "classloco_1_1_tensor_concat" ],
     [ "TensorConstantPad", "classloco_1_1_tensor_constant_pad.html", "classloco_1_1_tensor_constant_pad" ],
+    [ "TensorIndex", "classloco_1_1_tensor_index.html", "classloco_1_1_tensor_index" ],
     [ "TensorReduce", "classloco_1_1_tensor_reduce.html", "classloco_1_1_tensor_reduce" ],
     [ "TensorShape", "classloco_1_1_tensor_shape.html", "classloco_1_1_tensor_shape" ],
     [ "TensorTranspose", "classloco_1_1_tensor_transpose.html", "classloco_1_1_tensor_transpose" ],
@@ -150,7 +151,6 @@ var namespaceloco =
     [ "GraphOutputIndex", "namespaceloco.html#a27932a2560d139db05c994be67d3af35", null ],
     [ "TensorAxis", "namespaceloco.html#a4f6fb4f97557d63dcf98b6d33956dee9", null ],
     [ "TensorBiasAdd", "namespaceloco.html#a0f97fba0588df3e1aa75524220522604", null ],
-    [ "TensorIndex", "namespaceloco.html#a15a5379b867611a63683291d96392f0f", null ],
     [ "TensorSoftmax", "namespaceloco.html#a3385a35620ce7f742a4e9e0bdcae05bf", null ],
     [ "CanonicalOpcode", "namespaceloco.html#a37505b370d66b9733eb2dde1506ee256", [
       [ "CANONICAL_NODE", "namespaceloco.html#a37505b370d66b9733eb2dde1506ee256a2fb98efdce6825345c256250bae9bc9a", null ]

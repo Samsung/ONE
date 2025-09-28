@@ -199,7 +199,7 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_simplify_domain_conversion_pass_8cpp_source.html#l00115">115</a> of file <a class="el" href="_simplify_domain_conversion_pass_8cpp_source.html">SimplifyDomainConversionPass.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  116</span>{</div>
 <div class="line"><span class="lineno">  117</span>  <span class="comment">// TODO Introduce and Use &quot;Pattern Match&quot;</span></div>
-<div class="line"><span class="lineno">  118</span>  <span class="keyword">struct </span>Collector final : <span class="keyword">public</span> <a class="code hl_struct" href="structloco_1_1_canonical_node_mutable_visitor.html">loco::CanonicalNodeMutableVisitor</a>&lt;void&gt;</div>
+<div class="line"><span class="lineno">  118</span>  <span class="keyword">struct </span>Collector <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">final</a> : <span class="keyword">public</span> <a class="code hl_struct" href="structloco_1_1_canonical_node_mutable_visitor.html">loco::CanonicalNodeMutableVisitor</a>&lt;void&gt;</div>
 <div class="line"><span class="lineno">  119</span>  {</div>
 <div class="line"><span class="lineno">  120</span>    <span class="comment">// Let&#39;s find FeatureDecode followed by FeatureEncode</span></div>
 <div class="line"><span class="lineno">  121</span>    <span class="keywordtype">void</span> visit(<a class="code hl_class" href="classloco_1_1_feature_encode.html">loco::FeatureEncode</a> *encode_node) <span class="keyword">final</span></div>
@@ -211,26 +211,26 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  127</span>      {</div>
 <div class="line"><span class="lineno">  128</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  129</span>      }</div>
-<div class="line"><span class="lineno">  130</span>      assert(decode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  130</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(decode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  131</span> </div>
 <div class="line"><span class="lineno">  132</span>      <span class="keyword">auto</span> encoder = encode_node-&gt;encoder();</div>
-<div class="line"><span class="lineno">  133</span>      assert(encoder != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  133</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(encoder != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  134</span> </div>
 <div class="line"><span class="lineno">  135</span>      <span class="keyword">auto</span> decoder = decode_node-&gt;decoder();</div>
-<div class="line"><span class="lineno">  136</span>      assert(decoder != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  136</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(decoder != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  137</span> </div>
 <div class="line"><span class="lineno">  138</span>      <span class="comment">// NOTE Work only for permuting codec</span></div>
-<div class="line"><span class="lineno">  139</span>      <span class="keyword">auto</span> perm_decoder = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_decoder.html">PermutingDecoder&lt;Domain::Feature&gt;</a> *<span class="keyword">&gt;</span>(decoder);</div>
-<div class="line"><span class="lineno">  140</span>      <span class="keyword">auto</span> perm_encoder = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_encoder.html">PermutingEncoder&lt;Domain::Feature&gt;</a> *<span class="keyword">&gt;</span>(encoder);</div>
+<div class="line"><span class="lineno">  139</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a> = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_decoder.html">PermutingDecoder&lt;Domain::Feature&gt;</a> *<span class="keyword">&gt;</span>(decoder);</div>
+<div class="line"><span class="lineno">  140</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a> = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_encoder.html">PermutingEncoder&lt;Domain::Feature&gt;</a> *<span class="keyword">&gt;</span>(encoder);</div>
 <div class="line"><span class="lineno">  141</span> </div>
-<div class="line"><span class="lineno">  142</span>      <span class="keywordflow">if</span> (perm_encoder == <span class="keyword">nullptr</span> || perm_decoder == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  142</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a> == <span class="keyword">nullptr</span> || <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a> == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">  143</span>      {</div>
 <div class="line"><span class="lineno">  144</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  145</span>      }</div>
 <div class="line"><span class="lineno">  146</span> </div>
-<div class="line"><span class="lineno">  147</span>      <span class="keywordflow">if</span> (equal(perm_encoder-&gt;perm(), perm_decoder-&gt;perm()))</div>
+<div class="line"><span class="lineno">  147</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">equal</a>(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a>-&gt;perm(), <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a>-&gt;perm()))</div>
 <div class="line"><span class="lineno">  148</span>      {</div>
-<div class="line"><span class="lineno">  149</span>        forwardCandidates.insert({encode_node, decode_node-&gt;input()});</div>
+<div class="line"><span class="lineno">  149</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">forwardCandidates</a>.insert({encode_node, decode_node-&gt;input()});</div>
 <div class="line"><span class="lineno">  150</span>      }</div>
 <div class="line"><span class="lineno">  151</span>    }</div>
 <div class="line"><span class="lineno">  152</span> </div>
@@ -244,26 +244,26 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  160</span>      {</div>
 <div class="line"><span class="lineno">  161</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  162</span>      }</div>
-<div class="line"><span class="lineno">  163</span>      assert(encode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  163</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(encode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  164</span> </div>
 <div class="line"><span class="lineno">  165</span>      <span class="keyword">auto</span> encoder = encode_node-&gt;encoder();</div>
-<div class="line"><span class="lineno">  166</span>      assert(encoder != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  166</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(encoder != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  167</span> </div>
 <div class="line"><span class="lineno">  168</span>      <span class="keyword">auto</span> decoder = decode_node-&gt;decoder();</div>
-<div class="line"><span class="lineno">  169</span>      assert(decoder != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  169</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(decoder != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  170</span> </div>
 <div class="line"><span class="lineno">  171</span>      <span class="comment">// NOTE Work only for permuting codec</span></div>
-<div class="line"><span class="lineno">  172</span>      <span class="keyword">auto</span> perm_decoder = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_decoder.html">PermutingDecoder&lt;Domain::Feature&gt;</a> *<span class="keyword">&gt;</span>(decoder);</div>
-<div class="line"><span class="lineno">  173</span>      <span class="keyword">auto</span> perm_encoder = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_encoder.html">PermutingEncoder&lt;Domain::Feature&gt;</a> *<span class="keyword">&gt;</span>(encoder);</div>
+<div class="line"><span class="lineno">  172</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a> = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_decoder.html">PermutingDecoder&lt;Domain::Feature&gt;</a> *<span class="keyword">&gt;</span>(decoder);</div>
+<div class="line"><span class="lineno">  173</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a> = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_encoder.html">PermutingEncoder&lt;Domain::Feature&gt;</a> *<span class="keyword">&gt;</span>(encoder);</div>
 <div class="line"><span class="lineno">  174</span> </div>
-<div class="line"><span class="lineno">  175</span>      <span class="keywordflow">if</span> (perm_encoder == <span class="keyword">nullptr</span> || perm_decoder == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  175</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a> == <span class="keyword">nullptr</span> || <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a> == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">  176</span>      {</div>
 <div class="line"><span class="lineno">  177</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  178</span>      }</div>
 <div class="line"><span class="lineno">  179</span> </div>
-<div class="line"><span class="lineno">  180</span>      <span class="keywordflow">if</span> (equal(perm_encoder-&gt;perm(), perm_decoder-&gt;perm()))</div>
+<div class="line"><span class="lineno">  180</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">equal</a>(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a>-&gt;perm(), <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a>-&gt;perm()))</div>
 <div class="line"><span class="lineno">  181</span>      {</div>
-<div class="line"><span class="lineno">  182</span>        forwardCandidates.insert({decode_node, encode_node-&gt;input()});</div>
+<div class="line"><span class="lineno">  182</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">forwardCandidates</a>.insert({decode_node, encode_node-&gt;input()});</div>
 <div class="line"><span class="lineno">  183</span>      }</div>
 <div class="line"><span class="lineno">  184</span>    }</div>
 <div class="line"><span class="lineno">  185</span> </div>
@@ -277,45 +277,45 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  193</span>      {</div>
 <div class="line"><span class="lineno">  194</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  195</span>      }</div>
-<div class="line"><span class="lineno">  196</span>      assert(encode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  196</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(encode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  197</span> </div>
 <div class="line"><span class="lineno">  198</span>      <span class="keyword">auto</span> encoder = encode_node-&gt;encoder();</div>
-<div class="line"><span class="lineno">  199</span>      assert(encoder != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  199</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(encoder != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  200</span> </div>
 <div class="line"><span class="lineno">  201</span>      <span class="keyword">auto</span> decoder = decode_node-&gt;decoder();</div>
-<div class="line"><span class="lineno">  202</span>      assert(decoder != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  202</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(decoder != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  203</span> </div>
 <div class="line"><span class="lineno">  204</span>      <span class="comment">// NOTE Work only for permuting codec</span></div>
-<div class="line"><span class="lineno">  205</span>      <span class="keyword">auto</span> perm_decoder = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_decoder.html">PermutingDecoder&lt;Domain::Filter&gt;</a> *<span class="keyword">&gt;</span>(decoder);</div>
-<div class="line"><span class="lineno">  206</span>      <span class="keyword">auto</span> perm_encoder = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_encoder.html">PermutingEncoder&lt;Domain::Filter&gt;</a> *<span class="keyword">&gt;</span>(encoder);</div>
+<div class="line"><span class="lineno">  205</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a> = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_decoder.html">PermutingDecoder&lt;Domain::Filter&gt;</a> *<span class="keyword">&gt;</span>(decoder);</div>
+<div class="line"><span class="lineno">  206</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a> = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_encoder.html">PermutingEncoder&lt;Domain::Filter&gt;</a> *<span class="keyword">&gt;</span>(encoder);</div>
 <div class="line"><span class="lineno">  207</span> </div>
-<div class="line"><span class="lineno">  208</span>      <span class="keywordflow">if</span> (perm_encoder == <span class="keyword">nullptr</span> || perm_decoder == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  208</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a> == <span class="keyword">nullptr</span> || <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a> == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">  209</span>      {</div>
 <div class="line"><span class="lineno">  210</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  211</span>      }</div>
 <div class="line"><span class="lineno">  212</span> </div>
-<div class="line"><span class="lineno">  213</span>      <span class="keywordflow">if</span> (equal(perm_encoder-&gt;perm(), perm_decoder-&gt;perm()))</div>
+<div class="line"><span class="lineno">  213</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">equal</a>(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a>-&gt;perm(), <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a>-&gt;perm()))</div>
 <div class="line"><span class="lineno">  214</span>      {</div>
-<div class="line"><span class="lineno">  215</span>        forwardCandidates.insert({decode_node, encode_node-&gt;input()});</div>
+<div class="line"><span class="lineno">  215</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">forwardCandidates</a>.insert({decode_node, encode_node-&gt;input()});</div>
 <div class="line"><span class="lineno">  216</span>      }</div>
 <div class="line"><span class="lineno">  217</span>      <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  218</span>      {</div>
-<div class="line"><span class="lineno">  219</span>        std::vector&lt;loco::TensorAxis&gt; perm_vec;</div>
-<div class="line"><span class="lineno">  220</span>        perm_vec.resize(4);</div>
+<div class="line"><span class="lineno">  219</span>        std::vector&lt;loco::TensorAxis&gt; <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>;</div>
+<div class="line"><span class="lineno">  220</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>.resize(4);</div>
 <div class="line"><span class="lineno">  221</span> </div>
-<div class="line"><span class="lineno">  222</span>        <span class="keyword">auto</span> enc_perm = perm_encoder-&gt;perm();</div>
-<div class="line"><span class="lineno">  223</span>        <span class="keyword">auto</span> dec_perm = perm_decoder-&gt;perm();</div>
+<div class="line"><span class="lineno">  222</span>        <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">enc_perm</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a>-&gt;perm();</div>
+<div class="line"><span class="lineno">  223</span>        <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">dec_perm</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a>-&gt;perm();</div>
 <div class="line"><span class="lineno">  224</span> </div>
 <div class="line"><span class="lineno">  225</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;axis :</div>
 <div class="line"><span class="lineno">  226</span>             {FilterAxis::Count, FilterAxis::Height, FilterAxis::Width, FilterAxis::Depth})</div>
 <div class="line"><span class="lineno">  227</span>        {</div>
-<div class="line"><span class="lineno">  228</span>          <span class="keyword">auto</span> from = enc_perm-&gt;axis(axis);</div>
-<div class="line"><span class="lineno">  229</span>          <span class="keyword">auto</span> to = dec_perm-&gt;axis(axis);</div>
-<div class="line"><span class="lineno">  230</span>          perm_vec[to] = from;</div>
+<div class="line"><span class="lineno">  228</span>          <span class="keyword">auto</span> from = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">enc_perm</a>-&gt;axis(axis);</div>
+<div class="line"><span class="lineno">  229</span>          <span class="keyword">auto</span> to = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">dec_perm</a>-&gt;axis(axis);</div>
+<div class="line"><span class="lineno">  230</span>          <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>[to] = from;</div>
 <div class="line"><span class="lineno">  231</span>        }</div>
 <div class="line"><span class="lineno">  232</span> </div>
-<div class="line"><span class="lineno">  233</span>        transposeCandidates.insert(</div>
-<div class="line"><span class="lineno">  234</span>          std::make_unique&lt;TransposeCtx&gt;(encode_node, decode_node, encode_node-&gt;input(), perm_vec));</div>
+<div class="line"><span class="lineno">  233</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">transposeCandidates</a>.insert(</div>
+<div class="line"><span class="lineno">  234</span>          std::make_unique&lt;TransposeCtx&gt;(encode_node, decode_node, encode_node-&gt;input(), <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>));</div>
 <div class="line"><span class="lineno">  235</span>      }</div>
 <div class="line"><span class="lineno">  236</span>    }</div>
 <div class="line"><span class="lineno">  237</span> </div>
@@ -324,8 +324,8 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  240</span>    {</div>
 <div class="line"><span class="lineno">  241</span>      <span class="keywordflow">if</span> (<span class="keyword">auto</span> encode_node = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classloco_1_1_bias_encode.html">loco::BiasEncode</a> *<span class="keyword">&gt;</span>(decode_node-&gt;input()))</div>
 <div class="line"><span class="lineno">  242</span>      {</div>
-<div class="line"><span class="lineno">  243</span>        assert(encode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  244</span>        forwardCandidates.insert({decode_node, encode_node-&gt;input()});</div>
+<div class="line"><span class="lineno">  243</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(encode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  244</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">forwardCandidates</a>.insert({decode_node, encode_node-&gt;input()});</div>
 <div class="line"><span class="lineno">  245</span>      }</div>
 <div class="line"><span class="lineno">  246</span>    }</div>
 <div class="line"><span class="lineno">  247</span> </div>
@@ -339,45 +339,45 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  255</span>      {</div>
 <div class="line"><span class="lineno">  256</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  257</span>      }</div>
-<div class="line"><span class="lineno">  258</span>      assert(encode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  258</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(encode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  259</span> </div>
 <div class="line"><span class="lineno">  260</span>      <span class="keyword">auto</span> encoder = encode_node-&gt;encoder();</div>
-<div class="line"><span class="lineno">  261</span>      assert(encoder != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  261</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(encoder != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  262</span> </div>
 <div class="line"><span class="lineno">  263</span>      <span class="keyword">auto</span> decoder = decode_node-&gt;decoder();</div>
-<div class="line"><span class="lineno">  264</span>      assert(decoder != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  264</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(decoder != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  265</span> </div>
 <div class="line"><span class="lineno">  266</span>      <span class="comment">// NOTE Work only for permuting codec</span></div>
-<div class="line"><span class="lineno">  267</span>      <span class="keyword">auto</span> perm_decoder = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_decoder.html">PermutingDecoder&lt;Domain::DepthwiseFilter&gt;</a> *<span class="keyword">&gt;</span>(decoder);</div>
-<div class="line"><span class="lineno">  268</span>      <span class="keyword">auto</span> perm_encoder = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_encoder.html">PermutingEncoder&lt;Domain::DepthwiseFilter&gt;</a> *<span class="keyword">&gt;</span>(encoder);</div>
+<div class="line"><span class="lineno">  267</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a> = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_decoder.html">PermutingDecoder&lt;Domain::DepthwiseFilter&gt;</a> *<span class="keyword">&gt;</span>(decoder);</div>
+<div class="line"><span class="lineno">  268</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a> = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_encoder.html">PermutingEncoder&lt;Domain::DepthwiseFilter&gt;</a> *<span class="keyword">&gt;</span>(encoder);</div>
 <div class="line"><span class="lineno">  269</span> </div>
-<div class="line"><span class="lineno">  270</span>      <span class="keywordflow">if</span> (perm_encoder == <span class="keyword">nullptr</span> || perm_decoder == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  270</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a> == <span class="keyword">nullptr</span> || <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a> == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">  271</span>      {</div>
 <div class="line"><span class="lineno">  272</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  273</span>      }</div>
 <div class="line"><span class="lineno">  274</span> </div>
-<div class="line"><span class="lineno">  275</span>      <span class="keywordflow">if</span> (equal(perm_encoder-&gt;perm(), perm_decoder-&gt;perm()))</div>
+<div class="line"><span class="lineno">  275</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">equal</a>(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a>-&gt;perm(), <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a>-&gt;perm()))</div>
 <div class="line"><span class="lineno">  276</span>      {</div>
-<div class="line"><span class="lineno">  277</span>        forwardCandidates.insert({decode_node, encode_node-&gt;input()});</div>
+<div class="line"><span class="lineno">  277</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">forwardCandidates</a>.insert({decode_node, encode_node-&gt;input()});</div>
 <div class="line"><span class="lineno">  278</span>      }</div>
 <div class="line"><span class="lineno">  279</span>      <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  280</span>      {</div>
-<div class="line"><span class="lineno">  281</span>        std::vector&lt;TensorAxis&gt; perm_vec;</div>
-<div class="line"><span class="lineno">  282</span>        perm_vec.resize(4);</div>
+<div class="line"><span class="lineno">  281</span>        std::vector&lt;TensorAxis&gt; <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>;</div>
+<div class="line"><span class="lineno">  282</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>.resize(4);</div>
 <div class="line"><span class="lineno">  283</span> </div>
-<div class="line"><span class="lineno">  284</span>        <span class="keyword">auto</span> enc_perm = perm_encoder-&gt;perm();</div>
-<div class="line"><span class="lineno">  285</span>        <span class="keyword">auto</span> dec_perm = perm_decoder-&gt;perm();</div>
+<div class="line"><span class="lineno">  284</span>        <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">enc_perm</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a>-&gt;perm();</div>
+<div class="line"><span class="lineno">  285</span>        <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">dec_perm</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a>-&gt;perm();</div>
 <div class="line"><span class="lineno">  286</span> </div>
 <div class="line"><span class="lineno">  287</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;axis : {DepthwiseFilterAxis::Depth, DepthwiseFilterAxis::Height,</div>
 <div class="line"><span class="lineno">  288</span>                                 DepthwiseFilterAxis::Width, DepthwiseFilterAxis::Multiplier})</div>
 <div class="line"><span class="lineno">  289</span>        {</div>
-<div class="line"><span class="lineno">  290</span>          <span class="keyword">auto</span> from = enc_perm-&gt;axis(axis);</div>
-<div class="line"><span class="lineno">  291</span>          <span class="keyword">auto</span> to = dec_perm-&gt;axis(axis);</div>
-<div class="line"><span class="lineno">  292</span>          perm_vec[to] = from;</div>
+<div class="line"><span class="lineno">  290</span>          <span class="keyword">auto</span> from = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">enc_perm</a>-&gt;axis(axis);</div>
+<div class="line"><span class="lineno">  291</span>          <span class="keyword">auto</span> to = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">dec_perm</a>-&gt;axis(axis);</div>
+<div class="line"><span class="lineno">  292</span>          <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>[to] = from;</div>
 <div class="line"><span class="lineno">  293</span>        }</div>
 <div class="line"><span class="lineno">  294</span> </div>
-<div class="line"><span class="lineno">  295</span>        transposeCandidates.insert(</div>
-<div class="line"><span class="lineno">  296</span>          std::make_unique&lt;TransposeCtx&gt;(encode_node, decode_node, encode_node-&gt;input(), perm_vec));</div>
+<div class="line"><span class="lineno">  295</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">transposeCandidates</a>.insert(</div>
+<div class="line"><span class="lineno">  296</span>          std::make_unique&lt;TransposeCtx&gt;(encode_node, decode_node, encode_node-&gt;input(), <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>));</div>
 <div class="line"><span class="lineno">  297</span>      }</div>
 <div class="line"><span class="lineno">  298</span>    }</div>
 <div class="line"><span class="lineno">  299</span> </div>
@@ -391,26 +391,26 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  307</span>      {</div>
 <div class="line"><span class="lineno">  308</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  309</span>      }</div>
-<div class="line"><span class="lineno">  310</span>      assert(decode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  310</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(decode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  311</span> </div>
 <div class="line"><span class="lineno">  312</span>      <span class="keyword">auto</span> encoder = encode_node-&gt;encoder();</div>
-<div class="line"><span class="lineno">  313</span>      assert(encoder != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  313</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(encoder != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  314</span> </div>
 <div class="line"><span class="lineno">  315</span>      <span class="keyword">auto</span> decoder = decode_node-&gt;decoder();</div>
-<div class="line"><span class="lineno">  316</span>      assert(decoder != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  316</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(decoder != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  317</span> </div>
 <div class="line"><span class="lineno">  318</span>      <span class="comment">// NOTE Work only for permuting codec</span></div>
-<div class="line"><span class="lineno">  319</span>      <span class="keyword">auto</span> perm_decoder = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_decoder.html">PermutingDecoder&lt;Domain::Matrix&gt;</a> *<span class="keyword">&gt;</span>(decoder);</div>
-<div class="line"><span class="lineno">  320</span>      <span class="keyword">auto</span> perm_encoder = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_encoder.html">PermutingEncoder&lt;Domain::Matrix&gt;</a> *<span class="keyword">&gt;</span>(encoder);</div>
+<div class="line"><span class="lineno">  319</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a> = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_decoder.html">PermutingDecoder&lt;Domain::Matrix&gt;</a> *<span class="keyword">&gt;</span>(decoder);</div>
+<div class="line"><span class="lineno">  320</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a> = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_encoder.html">PermutingEncoder&lt;Domain::Matrix&gt;</a> *<span class="keyword">&gt;</span>(encoder);</div>
 <div class="line"><span class="lineno">  321</span> </div>
-<div class="line"><span class="lineno">  322</span>      <span class="keywordflow">if</span> (perm_encoder == <span class="keyword">nullptr</span> || perm_decoder == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  322</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a> == <span class="keyword">nullptr</span> || <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a> == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">  323</span>      {</div>
 <div class="line"><span class="lineno">  324</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  325</span>      }</div>
 <div class="line"><span class="lineno">  326</span> </div>
-<div class="line"><span class="lineno">  327</span>      <span class="keywordflow">if</span> (equal(perm_encoder-&gt;perm(), perm_decoder-&gt;perm()))</div>
+<div class="line"><span class="lineno">  327</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">equal</a>(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a>-&gt;perm(), <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a>-&gt;perm()))</div>
 <div class="line"><span class="lineno">  328</span>      {</div>
-<div class="line"><span class="lineno">  329</span>        forwardCandidates.insert({encode_node, decode_node-&gt;input()});</div>
+<div class="line"><span class="lineno">  329</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">forwardCandidates</a>.insert({encode_node, decode_node-&gt;input()});</div>
 <div class="line"><span class="lineno">  330</span>      }</div>
 <div class="line"><span class="lineno">  331</span>    }</div>
 <div class="line"><span class="lineno">  332</span> </div>
@@ -424,90 +424,90 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  340</span>      {</div>
 <div class="line"><span class="lineno">  341</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  342</span>      }</div>
-<div class="line"><span class="lineno">  343</span>      assert(encode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  343</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(encode_node-&gt;input() != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  344</span> </div>
 <div class="line"><span class="lineno">  345</span>      <span class="keyword">auto</span> encoder = encode_node-&gt;encoder();</div>
-<div class="line"><span class="lineno">  346</span>      assert(encoder != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  346</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(encoder != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  347</span> </div>
 <div class="line"><span class="lineno">  348</span>      <span class="keyword">auto</span> decoder = decode_node-&gt;decoder();</div>
-<div class="line"><span class="lineno">  349</span>      assert(decoder != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  349</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(decoder != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  350</span> </div>
 <div class="line"><span class="lineno">  351</span>      <span class="comment">// NOTE Work only for permuting codec</span></div>
-<div class="line"><span class="lineno">  352</span>      <span class="keyword">auto</span> perm_decoder = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_decoder.html">PermutingDecoder&lt;Domain::Matrix&gt;</a> *<span class="keyword">&gt;</span>(decoder);</div>
-<div class="line"><span class="lineno">  353</span>      <span class="keyword">auto</span> perm_encoder = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_encoder.html">PermutingEncoder&lt;Domain::Matrix&gt;</a> *<span class="keyword">&gt;</span>(encoder);</div>
+<div class="line"><span class="lineno">  352</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a> = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_decoder.html">PermutingDecoder&lt;Domain::Matrix&gt;</a> *<span class="keyword">&gt;</span>(decoder);</div>
+<div class="line"><span class="lineno">  353</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a> = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_class" href="classloco_1_1_permuting_encoder.html">PermutingEncoder&lt;Domain::Matrix&gt;</a> *<span class="keyword">&gt;</span>(encoder);</div>
 <div class="line"><span class="lineno">  354</span> </div>
-<div class="line"><span class="lineno">  355</span>      <span class="keywordflow">if</span> (perm_encoder == <span class="keyword">nullptr</span> || perm_decoder == <span class="keyword">nullptr</span>)</div>
+<div class="line"><span class="lineno">  355</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a> == <span class="keyword">nullptr</span> || <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a> == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">  356</span>      {</div>
 <div class="line"><span class="lineno">  357</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><span class="lineno">  358</span>      }</div>
 <div class="line"><span class="lineno">  359</span> </div>
-<div class="line"><span class="lineno">  360</span>      <span class="keywordflow">if</span> (equal(perm_encoder-&gt;perm(), perm_decoder-&gt;perm()))</div>
+<div class="line"><span class="lineno">  360</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">equal</a>(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a>-&gt;perm(), <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a>-&gt;perm()))</div>
 <div class="line"><span class="lineno">  361</span>      {</div>
-<div class="line"><span class="lineno">  362</span>        forwardCandidates.insert({decode_node, encode_node-&gt;input()});</div>
+<div class="line"><span class="lineno">  362</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">forwardCandidates</a>.insert({decode_node, encode_node-&gt;input()});</div>
 <div class="line"><span class="lineno">  363</span>      }</div>
 <div class="line"><span class="lineno">  364</span>      <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  365</span>      {</div>
-<div class="line"><span class="lineno">  366</span>        std::vector&lt;loco::TensorAxis&gt; perm_vec;</div>
-<div class="line"><span class="lineno">  367</span>        perm_vec.resize(2);</div>
+<div class="line"><span class="lineno">  366</span>        std::vector&lt;loco::TensorAxis&gt; <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>;</div>
+<div class="line"><span class="lineno">  367</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>.resize(2);</div>
 <div class="line"><span class="lineno">  368</span> </div>
-<div class="line"><span class="lineno">  369</span>        <span class="keyword">auto</span> enc_perm = perm_encoder-&gt;perm();</div>
-<div class="line"><span class="lineno">  370</span>        <span class="keyword">auto</span> dec_perm = perm_decoder-&gt;perm();</div>
+<div class="line"><span class="lineno">  369</span>        <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">enc_perm</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_encoder</a>-&gt;perm();</div>
+<div class="line"><span class="lineno">  370</span>        <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">dec_perm</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_decoder</a>-&gt;perm();</div>
 <div class="line"><span class="lineno">  371</span> </div>
 <div class="line"><span class="lineno">  372</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;axis : {MatrixAxis::Height, MatrixAxis::Width})</div>
 <div class="line"><span class="lineno">  373</span>        {</div>
-<div class="line"><span class="lineno">  374</span>          <span class="keyword">auto</span> from = enc_perm-&gt;axis(axis);</div>
-<div class="line"><span class="lineno">  375</span>          <span class="keyword">auto</span> to = dec_perm-&gt;axis(axis);</div>
-<div class="line"><span class="lineno">  376</span>          perm_vec[to] = from;</div>
+<div class="line"><span class="lineno">  374</span>          <span class="keyword">auto</span> from = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">enc_perm</a>-&gt;axis(axis);</div>
+<div class="line"><span class="lineno">  375</span>          <span class="keyword">auto</span> to = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">dec_perm</a>-&gt;axis(axis);</div>
+<div class="line"><span class="lineno">  376</span>          <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>[to] = from;</div>
 <div class="line"><span class="lineno">  377</span>        }</div>
 <div class="line"><span class="lineno">  378</span> </div>
-<div class="line"><span class="lineno">  379</span>        transposeCandidates.insert(</div>
-<div class="line"><span class="lineno">  380</span>          std::make_unique&lt;TransposeCtx&gt;(encode_node, decode_node, encode_node-&gt;input(), perm_vec));</div>
+<div class="line"><span class="lineno">  379</span>        <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">transposeCandidates</a>.insert(</div>
+<div class="line"><span class="lineno">  380</span>          std::make_unique&lt;TransposeCtx&gt;(encode_node, decode_node, encode_node-&gt;input(), <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>));</div>
 <div class="line"><span class="lineno">  381</span>      }</div>
 <div class="line"><span class="lineno">  382</span>    }</div>
 <div class="line"><span class="lineno">  383</span> </div>
 <div class="line"><span class="lineno">  384</span>    <span class="keywordtype">void</span> visit(<a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *) <span class="keyword">final</span> { <span class="keywordflow">return</span>; }</div>
 <div class="line"><span class="lineno">  385</span> </div>
-<div class="line"><span class="lineno">  386</span>    <span class="keyword">using </span>SimplifyingInfo = std::pair&lt;<a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> * <span class="comment">/* end node of subgraph that will be replaced*/</span>,</div>
+<div class="line"><span class="lineno">  386</span>    <span class="keyword">using </span><a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">SimplifyingInfo</a> = std::pair&lt;<a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> * <span class="comment">/* end node of subgraph that will be replaced*/</span>,</div>
 <div class="line"><span class="lineno">  387</span>                                      <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> * <span class="comment">/* input of subgraph */</span>&gt;;</div>
-<div class="line"><span class="lineno">  388</span>    std::set&lt;SimplifyingInfo&gt; forwardCandidates;</div>
+<div class="line"><span class="lineno">  388</span>    std::set&lt;SimplifyingInfo&gt; <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">forwardCandidates</a>;</div>
 <div class="line"><span class="lineno">  389</span> </div>
-<div class="line"><span class="lineno">  390</span>    <span class="keyword">struct </span>TransposeCtx</div>
+<div class="line"><span class="lineno">  390</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">TransposeCtx</a></div>
 <div class="line"><span class="lineno">  391</span>    {</div>
 <div class="line"><span class="lineno">  392</span>      <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *first_node;                 <span class="comment">// starting node of subgraph that will be replaced</span></div>
 <div class="line"><span class="lineno">  393</span>      <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *last_node;                  <span class="comment">// end node of subgraph that will be replaced</span></div>
 <div class="line"><span class="lineno">  394</span>      <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *<a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>;                 <span class="comment">// input of subgraph</span></div>
-<div class="line"><span class="lineno">  395</span>      std::vector&lt;loco::TensorAxis&gt; perm_vec; <span class="comment">// perm vector for transpose</span></div>
+<div class="line"><span class="lineno">  395</span>      std::vector&lt;loco::TensorAxis&gt; <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>; <span class="comment">// perm vector for transpose</span></div>
 <div class="line"><span class="lineno">  396</span> </div>
-<div class="line"><span class="lineno">  397</span>      TransposeCtx(<a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *first, <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *last, <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *input,</div>
+<div class="line"><span class="lineno">  397</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">TransposeCtx</a>(<a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">first</a>, <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">last</a>, <a class="code hl_class" href="classloco_1_1_node.html">loco::Node</a> *input,</div>
 <div class="line"><span class="lineno">  398</span>                   std::vector&lt;loco::TensorAxis&gt; perm)</div>
-<div class="line"><span class="lineno">  399</span>        : first_node(first), last_node(last), <a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>), perm_vec(perm)</div>
+<div class="line"><span class="lineno">  399</span>        : first_node(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">first</a>), last_node(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">last</a>), <a class="code hl_function" href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">input_node</a>(<a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>), <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">perm_vec</a>(perm)</div>
 <div class="line"><span class="lineno">  400</span>      { <span class="comment">/* empty */</span></div>
 <div class="line"><span class="lineno">  401</span>      }</div>
 <div class="line"><span class="lineno">  402</span>    };</div>
 <div class="line"><span class="lineno">  403</span> </div>
-<div class="line"><span class="lineno">  404</span>    std::set&lt;std::unique_ptr&lt;TransposeCtx&gt;&gt; transposeCandidates;</div>
+<div class="line"><span class="lineno">  404</span>    std::set&lt;std::unique_ptr&lt;TransposeCtx&gt;&gt; <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">transposeCandidates</a>;</div>
 <div class="line"><span class="lineno">  405</span>  };</div>
 <div class="line"><span class="lineno">  406</span> </div>
-<div class="line"><span class="lineno">  407</span>  Collector collector;</div>
+<div class="line"><span class="lineno">  407</span>  Collector <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">collector</a>;</div>
 <div class="line"><span class="lineno">  408</span> </div>
 <div class="line"><span class="lineno">  409</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
 <div class="line"><span class="lineno">  410</span>  {</div>
 <div class="line"><span class="lineno">  411</span>    <span class="keywordflow">if</span> (node-&gt;dialect() == <a class="code hl_function" href="classloco_1_1_canonical_dialect.html#a1c371d59aeaa1c245bd708555e02c069">loco::CanonicalDialect::get</a>())</div>
 <div class="line"><span class="lineno">  412</span>    {</div>
-<div class="line"><span class="lineno">  413</span>      <span class="keyword">auto</span> canonical_node = loco::must_cast&lt;loco::CanonicalNode *&gt;(node);</div>
-<div class="line"><span class="lineno">  414</span>      canonical_node-&gt;accept(&amp;collector);</div>
+<div class="line"><span class="lineno">  413</span>      <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">canonical_node</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;loco::CanonicalNode *&gt;</a>(node);</div>
+<div class="line"><span class="lineno">  414</span>      <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">canonical_node</a>-&gt;accept(&amp;<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">collector</a>);</div>
 <div class="line"><span class="lineno">  415</span>    }</div>
 <div class="line"><span class="lineno">  416</span>  }</div>
 <div class="line"><span class="lineno">  417</span> </div>
-<div class="line"><span class="lineno">  418</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> : collector.forwardCandidates)</div>
+<div class="line"><span class="lineno">  418</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> <a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a> : <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">collector</a>.<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">forwardCandidates</a>)</div>
 <div class="line"><span class="lineno">  419</span>  {</div>
-<div class="line"><span class="lineno">  420</span>    <span class="keyword">auto</span> forward_node = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>-&gt;nodes()-&gt;create&lt;<a class="code hl_class" href="classloco_1_1_forward.html">loco::Forward</a>&gt;();</div>
-<div class="line"><span class="lineno">  421</span>    forward_node-&gt;<a class="code hl_function" href="classloco_1_1_forward.html#afff8ab90b5521895726f52b8d494b7fd">input</a>(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.second);</div>
-<div class="line"><span class="lineno">  422</span>    <a class="code hl_function" href="namespaceloco.html#af9c60952072b2f7c290459bfc4aabaf5">replace</a>(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.first).<a class="code hl_function" href="classloco_1_1_subst_3_01_subst_qualifier_1_1_default_01_4.html#a2c26d1107a76876180e9f3dbfc6fdde0">with</a>(forward_node);</div>
-<div class="line"><span class="lineno">  423</span>    set_input_null(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.first);</div>
+<div class="line"><span class="lineno">  420</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">forward_node</a> = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>-&gt;nodes()-&gt;create&lt;<a class="code hl_class" href="classloco_1_1_forward.html">loco::Forward</a>&gt;();</div>
+<div class="line"><span class="lineno">  421</span>    <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">forward_node</a>-&gt;<a class="code hl_function" href="classloco_1_1_forward.html#afff8ab90b5521895726f52b8d494b7fd">input</a>(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.second);</div>
+<div class="line"><span class="lineno">  422</span>    <a class="code hl_function" href="namespaceloco.html#af9c60952072b2f7c290459bfc4aabaf5">replace</a>(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.first).<a class="code hl_function" href="classloco_1_1_subst_3_01_subst_qualifier_1_1_default_01_4.html#a2c26d1107a76876180e9f3dbfc6fdde0">with</a>(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">forward_node</a>);</div>
+<div class="line"><span class="lineno">  423</span>    <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">set_input_null</a>(<a class="code hl_variable" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a>.first);</div>
 <div class="line"><span class="lineno">  424</span>  }</div>
 <div class="line"><span class="lineno">  425</span> </div>
-<div class="line"><span class="lineno">  426</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;ctx : collector.transposeCandidates)</div>
+<div class="line"><span class="lineno">  426</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;ctx : <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">collector</a>.<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">transposeCandidates</a>)</div>
 <div class="line"><span class="lineno">  427</span>  {</div>
 <div class="line"><span class="lineno">  428</span>    <span class="keyword">auto</span> transpose_node = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>-&gt;nodes()-&gt;create&lt;<a class="code hl_class" href="classloco_1_1_tensor_transpose.html">loco::TensorTranspose</a>&gt;();</div>
 <div class="line"><span class="lineno">  429</span>    {</div>
@@ -519,10 +519,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  435</span> </div>
 <div class="line"><span class="lineno">  436</span>    transpose_node-&gt;input(ctx-&gt;input_node);</div>
 <div class="line"><span class="lineno">  437</span>    <a class="code hl_function" href="namespaceloco.html#af9c60952072b2f7c290459bfc4aabaf5">replace</a>(ctx-&gt;last_node).<a class="code hl_function" href="classloco_1_1_subst_3_01_subst_qualifier_1_1_default_01_4.html#a2c26d1107a76876180e9f3dbfc6fdde0">with</a>(transpose_node);</div>
-<div class="line"><span class="lineno">  438</span>    set_input_null(ctx-&gt;first_node);</div>
+<div class="line"><span class="lineno">  438</span>    <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">set_input_null</a>(ctx-&gt;first_node);</div>
 <div class="line"><span class="lineno">  439</span>  }</div>
 <div class="line"><span class="lineno">  440</span> </div>
-<div class="line"><span class="lineno">  441</span>  <span class="keywordflow">return</span> (collector.forwardCandidates.size() &gt; 0 or collector.transposeCandidates.size() &gt; 0);</div>
+<div class="line"><span class="lineno">  441</span>  <span class="keywordflow">return</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">collector</a>.forwardCandidates.size() &gt; 0 <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">or</a> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">collector</a>.transposeCandidates.size() &gt; 0);</div>
 <div class="line"><span class="lineno">  442</span>}</div>
 <div class="ttc" id="aclassloco_1_1_bias_decode_html"><div class="ttname"><a href="classloco_1_1_bias_decode.html">loco::BiasDecode</a></div><div class="ttdoc">Create a &quot;Tensor&quot; from a &quot;Bias&quot;.</div><div class="ttdef"><b>Definition</b> <a href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l00742">Nodes.h:743</a></div></div>
 <div class="ttc" id="aclassloco_1_1_bias_encode_html"><div class="ttname"><a href="classloco_1_1_bias_encode.html">loco::BiasEncode</a></div><div class="ttdoc">Create a &quot;Bias&quot; from a &quot;Tensor&quot;.</div><div class="ttdef"><b>Definition</b> <a href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l00757">Nodes.h:758</a></div></div>
@@ -548,6 +548,7 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a4f6fb4f97557d63dcf98b6d33956dee9"><div class="ttname"><a href="namespaceloco.html#a4f6fb4f97557d63dcf98b6d33956dee9">loco::TensorAxis</a></div><div class="ttdeci">uint32_t TensorAxis</div><div class="ttdef"><b>Definition</b> <a href="_tensor_axis_8h_source.html#l00025">TensorAxis.h:25</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a91be999912c01878c820e684adc124da"><div class="ttname"><a href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a></div><div class="ttdeci">std::set&lt; loco::Node * &gt; active_nodes(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Enumerate all the nodes required to compute &quot;roots&quot;.</div><div class="ttdef"><b>Definition</b> <a href="_algorithm_8cpp_source.html#l00112">Algorithm.cpp:112</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
 <div class="ttc" id="anamespaceloco_html_af9c60952072b2f7c290459bfc4aabaf5"><div class="ttname"><a href="namespaceloco.html#af9c60952072b2f7c290459bfc4aabaf5">loco::replace</a></div><div class="ttdeci">Subst&lt; SubstQualifier::Default &gt; replace(Node *node)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_node_8cpp_source.html#l00082">Node.cpp:82</a></div></div>
 <div class="ttc" id="anamespaceluci_html_acdc0d1304581e414efebea14d789750e"><div class="ttname"><a href="namespaceluci.html#acdc0d1304581e414efebea14d789750e">luci::input_node</a></div><div class="ttdeci">CircleInput * input_node(loco::Graph *g, const loco::GraphInputIndex &amp;index)</div><div class="ttdoc">Find a Pull node with a given input index.</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2src_2_circle_nodes_8cpp_source.html#l00045">CircleNodes.cpp:45</a></div></div>
@@ -555,7 +556,7 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 <div class="ttc" id="astructloco_1_1_canonical_node_mutable_visitor_html"><div class="ttname"><a href="structloco_1_1_canonical_node_mutable_visitor.html">loco::CanonicalNodeMutableVisitor</a></div><div class="ttdef"><b>Definition</b> <a href="_canonical_node_visitor_8h_source.html#l00064">CanonicalNodeVisitor.h:65</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l00405">loco::FeatureDecode::decoder()</a>, <a class="el" href="classloco_1_1_node.html#ac4f4b9b1810179561c1d192747c0599b">loco::Node::dialect()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l00386">loco::FeatureEncode::encoder()</a>, <a class="el" href="_canonical_dialect_8cpp_source.html#l00060">loco::CanonicalDialect::get()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l00151">loco::Forward::input()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l00382">loco::FeatureEncode::input()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l00401">loco::FeatureDecode::input()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l01114">loco::TensorTranspose::perm()</a>, <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00082">loco::replace()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l01104">loco::TensorTranspose::Perm::size()</a>, and <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00066">loco::Subst&lt; SubstQualifier::Default &gt;::with()</a>.</p>
+<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l00405">loco::FeatureDecode::decoder()</a>, <a class="el" href="classloco_1_1_node.html#ac4f4b9b1810179561c1d192747c0599b">loco::Node::dialect()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l00386">loco::FeatureEncode::encoder()</a>, <a class="el" href="_canonical_dialect_8cpp_source.html#l00060">loco::CanonicalDialect::get()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l00151">loco::Forward::input()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l00382">loco::FeatureEncode::input()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l00401">loco::FeatureDecode::input()</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l01114">loco::TensorTranspose::perm()</a>, <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00082">loco::replace()</a>, <a class="el" href="loco_2include_2loco_2_i_r_2_nodes_8h_source.html#l01104">loco::TensorTranspose::Perm::size()</a>, and <a class="el" href="loco_2src_2_i_r_2_node_8cpp_source.html#l00066">loco::Subst&lt; SubstQualifier::Default &gt;::with()</a>.</p>
 
 </div>
 </div>

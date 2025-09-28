@@ -1,3 +1,73 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classonert_1_1compiler_1_1_execution_builder.html" title=" " alt="" coords="5,5,173,46"/>
+<area shape="rect" id="Node000000" href="$structonert_1_1compiler_1_1pass_1_1_i_pass.html" title=" " alt="" coords="5,235,145,275"/>
+<area shape="rect" id="Node000001" href="$classonert_1_1compiler_1_1pass_1_1_pass.html" title=" " alt="" coords="193,169,332,210"/>
+<area shape="poly" id="edge2404_Node000000_Node000001" title=" " alt="" coords="149,227,201,208,203,213,150,232"/>
+<area shape="rect" id="Node000034" href="$classonert_1_1compiler_1_1train_1_1pass_1_1_pass.html" title=" " alt="" coords="194,267,331,307"/>
+<area shape="poly" id="edge2418_Node000000_Node000034" title=" " alt="" coords="160,267,194,273,194,278,159,272"/>
+<area shape="rect" id="Node000002" href="$classonert_1_1compiler_1_1pass_1_1_odd_output_pass.html" title="Pass to specially handle odd outputs in a subgraph." alt="" coords="418,5,557,46"/>
+<area shape="poly" id="edge2405_Node000001_Node000002" title=" " alt="" coords="283,155,324,104,350,79,379,57,416,39,418,44,381,61,353,83,328,108,288,158"/>
+<area shape="rect" id="Node000003" href="$classonert_1_1compiler_1_1pass_1_1_operand_pass.html" title=" " alt="" coords="418,71,557,111"/>
+<area shape="poly" id="edge2406_Node000001_Node000003" title=" " alt="" coords="308,159,379,122,416,108,418,113,381,127,311,163"/>
+<area shape="rect" id="Node000007" href="$classonert_1_1compiler_1_1pass_1_1_operation_pass.html" title="Class to iterate over operations and calls callback() method." alt="" coords="418,136,557,177"/>
+<area shape="poly" id="edge2410_Node000001_Node000007" title=" " alt="" coords="347,175,417,164,418,169,347,180"/>
+<area shape="rect" id="Node000032" href="$classonert_1_1compiler_1_1pass_1_1_permutation_i_o_pass.html" title="Pass to insert permutation operations for input and output for layout and/or data type conversions." alt="" coords="417,201,558,242"/>
+<area shape="poly" id="edge2416_Node000001_Node000032" title=" " alt="" coords="347,199,416,209,416,214,346,204"/>
+<area shape="rect" id="Node000033" href="$classonert_1_1compiler_1_1pass_1_1_unused_operand_elimination_pass.html" title="A pass to eliminate unused operands from the graph." alt="" coords="380,267,594,307"/>
+<area shape="poly" id="edge2417_Node000001_Node000033" title=" " alt="" coords="312,216,381,251,414,264,412,269,379,256,309,221"/>
+<area shape="rect" id="Node000004" href="$classonert_1_1compiler_1_1pass_1_1_constant_output_pass.html" title="Pass to specially handle constant model outputs." alt="" coords="650,5,798,46"/>
+<area shape="poly" id="edge2407_Node000003_Node000004" title=" " alt="" coords="571,65,649,44,650,49,573,70"/>
+<area shape="rect" id="Node000005" href="$classonert_1_1compiler_1_1pass_1_1_lowered_operand_pass.html" title=" " alt="" coords="646,71,802,111"/>
+<area shape="poly" id="edge2408_Node000003_Node000005" title=" " alt="" coords="573,88,646,88,646,94,573,94"/>
+<area shape="rect" id="Node000006" href="$classonert_1_1compiler_1_1pass_1_1_permutation_insertion_pass.html" title=" " alt="" coords="888,37,1066,78"/>
+<area shape="poly" id="edge2409_Node000005_Node000006" title=" " alt="" coords="817,76,887,67,888,72,818,81"/>
+<area shape="rect" id="Node000008" href="$classonert_1_1compiler_1_1pass_1_1_lowered_operation_pass.html" title=" " alt="" coords="642,168,806,209"/>
+<area shape="poly" id="edge2411_Node000007_Node000008" title=" " alt="" coords="572,165,642,175,641,180,572,170"/>
+<area shape="rect" id="Node000009" href="$classonert_1_1compiler_1_1pass_1_1_constant_insertion_pass.html" title=" " alt="" coords="897,103,1057,143"/>
+<area shape="poly" id="edge2412_Node000008_Node000009" title=" " alt="" coords="819,161,896,141,897,146,821,166"/>
+<area shape="rect" id="Node000010" href="$classonert_1_1compiler_1_1pass_1_1_constant_lowering_pass.html" title=" " alt="" coords="896,168,1058,209"/>
+<area shape="poly" id="edge2413_Node000008_Node000010" title=" " alt="" coords="822,186,895,186,895,191,822,191"/>
+<area shape="rect" id="Node000011" href="$classonert_1_1compiler_1_1pass_1_1_permutation_elimination_pass.html" title="An optimization pass that removes Permute operations if possible." alt="" coords="882,299,1072,339"/>
+<area shape="poly" id="edge2414_Node000008_Node000011" title=" " alt="" coords="760,217,804,252,855,283,885,296,883,301,852,288,800,256,757,221"/>
+<area shape="rect" id="Node000031" href="$classonert_1_1compiler_1_1train_1_1pass_1_1_trainable_constant_insertion_pass.html" title=" " alt="" coords="854,233,1100,274"/>
+<area shape="poly" id="edge2415_Node000008_Node000031" title=" " alt="" coords="821,211,896,230,895,235,820,216"/>
+<area shape="rect" id="Node000035" href="$classonert_1_1compiler_1_1train_1_1pass_1_1_loss_insertion_pass.html" title=" " alt="" coords="402,332,572,373"/>
+<area shape="poly" id="edge2419_Node000034_Node000035" title=" " alt="" coords="346,309,415,329,414,334,345,314"/>
+<area shape="rect" id="Node000012" href="$structonert_1_1ir_1_1_operation_visitor.html" title=" " alt="" coords="643,621,805,647"/>
+<area shape="poly" id="edge2433_Node000012_Node000011" title=" " alt="" coords="727,605,740,551,763,482,800,411,824,379,852,350,880,333,883,338,855,354,828,382,804,414,768,485,745,553,733,607"/>
+<area shape="rect" id="Node000013" href="$classonert_1_1backend_1_1acl__common_1_1_acl_constant_initializer.html" title=" " alt="" coords="874,364,1080,405"/>
+<area shape="poly" id="edge2420_Node000012_Node000013" title=" " alt="" coords="736,606,782,531,815,488,852,449,887,423,924,403,927,408,890,428,855,453,819,491,787,534,741,609"/>
+<area shape="rect" id="Node000016" href="$classonert_1_1backend_1_1acl__common_1_1_acl_sub_tensor_analyzer.html" title="Class to analyze tensor subsumption." alt="" coords="869,463,1085,503"/>
+<area shape="poly" id="edge2423_Node000012_Node000016" title=" " alt="" coords="744,607,790,560,820,535,852,514,880,501,882,506,855,519,823,539,794,564,748,611"/>
+<area shape="rect" id="Node000017" href="$classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html" title=" " alt="" coords="901,528,1053,569"/>
+<area shape="poly" id="edge2424_Node000012_Node000017" title=" " alt="" coords="767,612,853,578,900,564,902,569,855,583,769,616"/>
+<area shape="rect" id="Node000024" href="$classonert_1_1compiler_1_1_shape_validator.html" title=" " alt="" coords="877,593,1077,619"/>
+<area shape="poly" id="edge2431_Node000012_Node000024" title=" " alt="" coords="820,620,877,614,877,619,821,626"/>
+<area shape="rect" id="Node000025" href="$classonert_1_1compiler_1_1_static_shape_inferer.html" title="Class to infer shape before running kernels. It does the following:" alt="" coords="886,643,1068,683"/>
+<area shape="poly" id="edge2432_Node000012_Node000025" title=" " alt="" coords="821,642,886,650,885,655,820,647"/>
+<area shape="rect" id="Node000026" href="$classonert_1_1compiler_1_1train_1_1_untrainable_operation_converter.html" title=" " alt="" coords="874,708,1080,749"/>
+<area shape="poly" id="edge2434_Node000012_Node000026" title=" " alt="" coords="764,652,855,693,892,705,891,710,853,697,762,656"/>
+<area shape="rect" id="Node000028" href="$classonert_1_1exec_1_1_dynamic_shape_inferer.html" title="Class to infer shape of output tensor at execution time and allocate memory fo output tensor if neede..." alt="" coords="889,773,1065,814"/>
+<area shape="poly" id="edge2436_Node000012_Node000028" title=" " alt="" coords="746,657,792,709,822,735,855,758,889,773,887,778,852,763,819,740,788,712,742,661"/>
+<area shape="rect" id="Node000029" href="$classonert_1_1ir_1_1_operation_dumper.html" title=" " alt="" coords="892,838,1062,864"/>
+<area shape="poly" id="edge2437_Node000012_Node000029" title=" " alt="" coords="738,660,755,698,781,742,814,787,855,823,892,840,890,845,852,828,810,790,776,745,751,700,733,662"/>
+<area shape="rect" id="Node000030" href="$classonert_1_1ir_1_1_operation_validator.html" title=" " alt="" coords="889,888,1065,913"/>
+<area shape="poly" id="edge2438_Node000012_Node000030" title=" " alt="" coords="734,661,748,708,772,767,808,825,830,852,855,874,889,891,887,895,852,879,826,855,803,829,768,769,743,710,729,662"/>
+<area shape="rect" id="Node000014" href="$classonert_1_1backend_1_1acl__cl_1_1_constant_initializer.html" title=" " alt="" coords="1171,267,1318,307"/>
+<area shape="poly" id="edge2421_Node000013_Node000014" title=" " alt="" coords="1080,356,1099,349,1123,334,1147,318,1176,305,1178,310,1149,323,1126,338,1101,353,1082,361"/>
+<area shape="rect" id="Node000015" href="$classonert_1_1backend_1_1acl__neon_1_1_constant_initializer.html" title=" " alt="" coords="1162,332,1327,373"/>
+<area shape="poly" id="edge2422_Node000013_Node000015" title=" " alt="" coords="1095,367,1161,360,1161,365,1096,373"/>
+<area shape="rect" id="Node000018" href="$classonert_1_1backend_1_1acl__cl_1_1_kernel_generator.html" title=" " alt="" coords="1175,397,1313,438"/>
+<area shape="poly" id="edge2425_Node000017_Node000018" title=" " alt="" coords="1066,529,1098,513,1114,498,1122,482,1130,466,1146,449,1173,434,1176,438,1150,453,1135,469,1127,485,1118,501,1102,517,1068,534"/>
+<area shape="rect" id="Node000019" href="$classonert_1_1backend_1_1acl__neon_1_1_kernel_generator.html" title=" " alt="" coords="1166,463,1322,503"/>
+<area shape="poly" id="edge2426_Node000017_Node000019" title=" " alt="" coords="1067,524,1165,500,1166,505,1068,529"/>
+<area shape="rect" id="Node000020" href="$classonert_1_1backend_1_1builtin_1_1_kernel_generator.html" title=" " alt="" coords="1172,528,1317,569"/>
+<area shape="poly" id="edge2427_Node000017_Node000020" title=" " alt="" coords="1068,546,1171,546,1171,551,1068,551"/>
+<area shape="rect" id="Node000021" href="$classonert_1_1backend_1_1cpu_1_1_kernel_generator.html" title=" " alt="" coords="1178,593,1310,634"/>
+<area shape="poly" id="edge2428_Node000017_Node000021" title=" " alt="" coords="1068,568,1178,595,1177,600,1067,573"/>
+<area shape="rect" id="Node000022" href="$classonert_1_1backend_1_1ruy_1_1_kernel_generator.html" title=" " alt="" coords="1180,659,1308,699"/>
+<area shape="poly" id="edge2429_Node000017_Node000022" title=" " alt="" coords="1069,562,1102,578,1118,594,1127,611,1135,628,1150,644,1181,660,1178,665,1146,648,1130,631,1122,614,1114,598,1098,583,1067,567"/>
+<area shape="rect" id="Node000023" href="$classonert_1_1backend_1_1trix_1_1_kernel_generator.html" title=" " alt="" coords="1180,724,1308,765"/>
+<area shape="poly" id="edge2430_Node000017_Node000023" title=" " alt="" coords="1068,558,1102,578,1116,595,1123,611,1127,645,1131,677,1137,693,1150,709,1164,720,1181,729,1178,733,1161,725,1146,713,1133,696,1126,679,1122,645,1118,613,1111,598,1098,582,1066,563"/>
+<area shape="rect" id="Node000027" href="$classonert_1_1compiler_1_1train_1_1_trainable_operation_converter.html" title=" " alt="" coords="1148,789,1340,830"/>
+<area shape="poly" id="edge2435_Node000026_Node000027" title=" " alt="" coords="1072,751,1101,759,1184,786,1182,791,1099,764,1071,756"/>
 </map>

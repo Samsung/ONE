@@ -114,9 +114,9 @@ Collaboration diagram for luci::LoggerConfig:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3540f8d2e2a1d8dc90ed299790841221" id="r_a3540f8d2e2a1d8dc90ed299790841221"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_logger_config.html#a3540f8d2e2a1d8dc90ed299790841221">LoggerConfig</a> ()</td></tr>
 <tr class="separator:a3540f8d2e2a1d8dc90ed299790841221"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c1ce6e230a3f21b027e45288479af81" id="r_a1c1ce6e230a3f21b027e45288479af81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_logger_config.html#a1c1ce6e230a3f21b027e45288479af81">configure</a> (const <a class="el" href="classhermes_1_1_source.html">hermes::Source</a> *, <a class="el" href="classhermes_1_1_source.html#ac6e92b2c07ecbdc81378e685c490d12d">hermes::Source::Setting</a> &amp;) const final</td></tr>
+<tr class="memitem:a1c1ce6e230a3f21b027e45288479af81" id="r_a1c1ce6e230a3f21b027e45288479af81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_logger_config.html#a1c1ce6e230a3f21b027e45288479af81">configure</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="classhermes_1_1_source.html">hermes::Source</a> *, <a class="el" href="classhermes_1_1_source.html#ac6e92b2c07ecbdc81378e685c490d12d">hermes::Source::Setting</a> &amp;) <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">final</a></td></tr>
 <tr class="separator:a1c1ce6e230a3f21b027e45288479af81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaeb7ca0133e4d54754444848884d211c" id="r_aaeb7ca0133e4d54754444848884d211c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_logger_config.html#aaeb7ca0133e4d54754444848884d211c">configure</a> (const <a class="el" href="classluci_1_1_logger.html">Logger</a> *, <a class="el" href="classhermes_1_1_source.html#ac6e92b2c07ecbdc81378e685c490d12d">hermes::Source::Setting</a> &amp;) const</td></tr>
+<tr class="memitem:aaeb7ca0133e4d54754444848884d211c" id="r_aaeb7ca0133e4d54754444848884d211c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classluci_1_1_logger_config.html#aaeb7ca0133e4d54754444848884d211c">configure</a> (<a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="classluci_1_1_logger.html">Logger</a> *, <a class="el" href="classhermes_1_1_source.html#ac6e92b2c07ecbdc81378e685c490d12d">hermes::Source::Setting</a> &amp;) <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a></td></tr>
 <tr class="separator:aaeb7ca0133e4d54754444848884d211c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structhermes_1_1_config"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structhermes_1_1_config')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structhermes_1_1_config.html">hermes::Config</a></td></tr>
 <tr class="memitem:af9d3c515ebe2b856343ca89889be8e6d inherit pub_methods_structhermes_1_1_config" id="r_af9d3c515ebe2b856343ca89889be8e6d"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhermes_1_1_config.html#af9d3c515ebe2b856343ca89889be8e6d">~Config</a> ()=default</td></tr>
@@ -151,12 +151,13 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   65</span> </div>
 <div class="line"><span class="lineno">   66</span>  <span class="comment">// Turn on verbose logging if LUCI_LOG is set to some level</span></div>
 <div class="line"><span class="lineno">   67</span>  <span class="comment">// VERBOSE(l, 1) will be visible with LUCI_LOG=2 and VERBOSE(l, 2) with LUCI_LOG=3 and so on</span></div>
-<div class="line"><span class="lineno">   68</span>  _show_verbose = safecast&lt;int&gt;(std::getenv(<span class="stringliteral">&quot;LUCI_LOG&quot;</span>), 0);</div>
+<div class="line"><span class="lineno">   68</span>  _show_verbose = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">safecast&lt;int&gt;</a>(std::getenv(<span class="stringliteral">&quot;LUCI_LOG&quot;</span>), 0);</div>
 <div class="line"><span class="lineno">   69</span>}</div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="astructluci_1_1_user_settings_html_a3bdb4f451fdade571d10cf59348f8b1f"><div class="ttname"><a href="structluci_1_1_user_settings.html#a3bdb4f451fdade571d10cf59348f8b1f">luci::UserSettings::settings</a></div><div class="ttdeci">static UserSettings * settings()</div><div class="ttdef"><b>Definition</b> <a href="_user_settings_8cpp_source.html#l00083">UserSettings.cpp:83</a></div></div>
 <div class="ttc" id="astructluci_1_1_user_settings_html_acbbd046f4dbc1be62f2a04ef16cb8c8ba168c980d7a29984a17fafba8d9918efc"><div class="ttname"><a href="structluci_1_1_user_settings.html#acbbd046f4dbc1be62f2a04ef16cb8c8ba168c980d7a29984a17fafba8d9918efc">luci::UserSettings::MuteWarnings</a></div><div class="ttdeci">@ MuteWarnings</div><div class="ttdef"><b>Definition</b> <a href="_user_settings_8h_source.html#l00033">UserSettings.h:33</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_user_settings_8h_source.html#l00033">luci::UserSettings::MuteWarnings</a>, and <a class="el" href="_user_settings_8cpp_source.html#l00083">luci::UserSettings::settings()</a>.</p>
+<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>, <a class="el" href="_user_settings_8h_source.html#l00033">luci::UserSettings::MuteWarnings</a>, and <a class="el" href="_user_settings_8cpp_source.html#l00083">luci::UserSettings::settings()</a>.</p>
 
 </div>
 </div>
@@ -171,9 +172,9 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void luci::LoggerConfig::configure </td>
+          <td class="memname"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a> luci::LoggerConfig::configure </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classhermes_1_1_source.html">hermes::Source</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="classhermes_1_1_source.html">hermes::Source</a> *&#160;</td>
           <td class="paramname"><em>source</em>, </td>
         </tr>
         <tr>
@@ -200,14 +201,14 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html#l00071">71</a> of file <a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html">Log.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   72</span>{</div>
 <div class="line"><span class="lineno">   73</span>  <span class="comment">// Let&#39;s ignore hermes::Sources if that is not a moco logger</span></div>
-<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">if</span> (<span class="keyword">auto</span> logger = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span>Logger *<span class="keyword">&gt;</span>(source))</div>
+<div class="line"><span class="lineno">   74</span>  <span class="keywordflow">if</span> (<span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">logger</a> = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span>Logger *<span class="keyword">&gt;</span>(source))</div>
 <div class="line"><span class="lineno">   75</span>  {</div>
-<div class="line"><span class="lineno">   76</span>    <a class="code hl_function" href="classluci_1_1_logger_config.html#a1c1ce6e230a3f21b027e45288479af81">configure</a>(logger, setting);</div>
+<div class="line"><span class="lineno">   76</span>    <a class="code hl_function" href="classluci_1_1_logger_config.html#a1c1ce6e230a3f21b027e45288479af81">configure</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">logger</a>, setting);</div>
 <div class="line"><span class="lineno">   77</span>  }</div>
 <div class="line"><span class="lineno">   78</span>}</div>
 <div class="ttc" id="aclassluci_1_1_logger_config_html_a1c1ce6e230a3f21b027e45288479af81"><div class="ttname"><a href="classluci_1_1_logger_config.html#a1c1ce6e230a3f21b027e45288479af81">luci::LoggerConfig::configure</a></div><div class="ttdeci">void configure(const hermes::Source *, hermes::Source::Setting &amp;) const final</div><div class="ttdef"><b>Definition</b> <a href="compiler_2luci_2log_2src_2_log_8cpp_source.html#l00071">Log.cpp:71</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html#l00071">configure()</a>.</p>
+<p class="reference">References <a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html#l00071">configure()</a>, and <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="compiler_2luci_2log_2src_2_log_8cpp_source.html#l00071">configure()</a>.</p>
 
@@ -220,9 +221,9 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void luci::LoggerConfig::configure </td>
+          <td class="memname"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a> luci::LoggerConfig::configure </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classluci_1_1_logger.html">Logger</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const</a> <a class="el" href="classluci_1_1_logger.html">Logger</a> *&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>

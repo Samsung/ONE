@@ -202,14 +202,15 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  284</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  285</span>  }</div>
 <div class="line"><span class="lineno">  286</span> </div>
-<div class="line"><span class="lineno">  287</span>  <span class="keyword">auto</span> canonical_node = loco::must_cast&lt;const loco::CanonicalNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  287</span>  <span class="keyword">auto</span> canonical_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;const loco::CanonicalNode *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">  288</span>  out = canonical_node_desc(*_tbl, canonical_node);</div>
 <div class="line"><span class="lineno">  289</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  290</span>}</div>
 <div class="ttc" id="aclassloco_1_1_canonical_dialect_html_a1c371d59aeaa1c245bd708555e02c069"><div class="ttname"><a href="classloco_1_1_canonical_dialect.html#a1c371d59aeaa1c245bd708555e02c069">loco::CanonicalDialect::get</a></div><div class="ttdeci">static Dialect * get(void)</div><div class="ttdef"><b>Definition</b> <a href="_canonical_dialect_8cpp_source.html#l00060">CanonicalDialect.cpp:60</a></div></div>
 <div class="ttc" id="aclassloco_1_1_node_html_ac4f4b9b1810179561c1d192747c0599b"><div class="ttname"><a href="classloco_1_1_node.html#ac4f4b9b1810179561c1d192747c0599b">loco::Node::dialect</a></div><div class="ttdeci">virtual const Dialect * dialect(void) const =0</div><div class="ttdoc">Return &quot;Dialect&quot; identifier that this node belongs to.</div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classloco_1_1_node.html#ac4f4b9b1810179561c1d192747c0599b">loco::Node::dialect()</a>, and <a class="el" href="_canonical_dialect_8cpp_source.html#l00060">loco::CanonicalDialect::get()</a>.</p>
+<p class="reference">References <a class="el" href="classloco_1_1_node.html#ac4f4b9b1810179561c1d192747c0599b">loco::Node::dialect()</a>, <a class="el" href="_canonical_dialect_8cpp_source.html#l00060">loco::CanonicalDialect::get()</a>, and <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>.</p>
 
 </div>
 </div>

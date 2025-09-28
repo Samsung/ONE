@@ -312,7 +312,7 @@ $(document).ready(function(){initNavTree('_q_implant_8cpp_source.html',''); init
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  std::unordered_map&lt;std::string, luci::CircleNode *&gt; name_to_node;</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a2316705571d54991d81041a0b9cbc557">loco::all_nodes</a>(g))</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  {</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    <span class="keyword">auto</span> circle_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(node);</div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    <span class="keywordflow">if</span> (circle_node-&gt;opcode() == luci::CircleOpcode::CIRCLEOUTPUT)</div>
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    {</div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>      <span class="keywordflow">continue</span>;</div>
@@ -348,7 +348,7 @@ $(document).ready(function(){initNavTree('_q_implant_8cpp_source.html',''); init
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keywordflow">if</span> (tensor.isMember(<span class="stringliteral">&quot;value&quot;</span>))</div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    {</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>      <span class="keyword">auto</span> const_node = loco::must_cast&lt;luci::CircleConst *&gt;(node);</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>      <span class="keyword">auto</span> const_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleConst *&gt;</a>(node);</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>      <span class="keyword">const</span> <span class="keyword">auto</span> value_path = dir_path + <span class="charliteral">&#39;/&#39;</span> + tensor[<span class="stringliteral">&quot;value&quot;</span>].asString();</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>      set_value(const_node, value_path, dtype);</div>
@@ -362,8 +362,8 @@ $(document).ready(function(){initNavTree('_q_implant_8cpp_source.html',''); init
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  assert(graph_outputs); <span class="comment">// FIX_CALLER_UNLESS</span></div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g))</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  {</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    <span class="keyword">auto</span> out_node = loco::must_cast&lt;luci::CircleOutput *&gt;(node);</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    <span class="keyword">auto</span> from_node = loco::must_cast&lt;luci::CircleNode *&gt;(out_node-&gt;from());</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    <span class="keyword">auto</span> out_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleOutput *&gt;</a>(node);</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    <span class="keyword">auto</span> from_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(out_node-&gt;from());</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    <a class="code hl_define" href="_metric_printer_8cpp.html#ad1515c4010b62f2e17704bb149a64d6b">THROW_UNLESS</a>(from_node-&gt;quantparam());</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
@@ -380,7 +380,7 @@ $(document).ready(function(){initNavTree('_q_implant_8cpp_source.html',''); init
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <span class="comment">// Verify quantized model</span></div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a>(<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a>(g)))</div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  {</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="keyword">auto</span> circle_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(node);</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    <span class="comment">// Throw an exception if dtype is not float32</span></div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <span class="comment">// TODO Operator-level verification (ex: using QuantizedModelVerifier)</span></div>
@@ -411,7 +411,7 @@ $(document).ready(function(){initNavTree('_q_implant_8cpp_source.html',''); init
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::active_nodes(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::output_nodes(g)))</div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>  {</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    <span class="keyword">auto</span> circle_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(node);</div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    <span class="keyword">auto</span> quantparam = circle_node-&gt;quantparam();</div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    <span class="keywordflow">if</span> (quantparam == <span class="keyword">nullptr</span>)</div>
@@ -419,7 +419,7 @@ $(document).ready(function(){initNavTree('_q_implant_8cpp_source.html',''); init
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> successor : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::succs(node))</div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>    {</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>      <span class="keyword">auto</span> successor_node = loco::must_cast&lt;luci::CircleNode *&gt;(successor);</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>      <span class="keyword">auto</span> successor_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(successor);</div>
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>      <span class="keywordflow">if</span> (successor_node-&gt;quantparam() == <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>      {</div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>        <span class="keywordflow">if</span> (!forwardable(successor_node-&gt;opcode()))</div>
@@ -443,6 +443,7 @@ $(document).ready(function(){initNavTree('_q_implant_8cpp_source.html',''); init
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a2316705571d54991d81041a0b9cbc557"><div class="ttname"><a href="namespaceloco.html#a2316705571d54991d81041a0b9cbc557">loco::all_nodes</a></div><div class="ttdeci">std::set&lt; Node * &gt; all_nodes(Graph *)</div><div class="ttdoc">Enumerate all the nodes in a given graph.</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00059">Graph.cpp:59</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a91be999912c01878c820e684adc124da"><div class="ttname"><a href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a></div><div class="ttdeci">std::set&lt; loco::Node * &gt; active_nodes(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Enumerate all the nodes required to compute &quot;roots&quot;.</div><div class="ttdef"><b>Definition</b> <a href="_algorithm_8cpp_source.html#l00112">Algorithm.cpp:112</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ad30d86ce5bd365deae8ef4398fb16d3c"><div class="ttname"><a href="namespaceloco.html#ad30d86ce5bd365deae8ef4398fb16d3c">loco::DataType</a></div><div class="ttdeci">DataType</div><div class="ttdoc">&quot;scalar&quot; value type</div><div class="ttdef"><b>Definition</b> <a href="compiler_2loco_2include_2loco_2_i_r_2_data_type_8h_source.html#l00026">DataType.h:27</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a311e4e8fc7a65afbda7a68d7a12d3ffc"><div class="ttname"><a href="namespaceluci.html#a311e4e8fc7a65afbda7a68d7a12d3ffc">luci::CircleOpcode</a></div><div class="ttdeci">CircleOpcode</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_op_code_8h_source.html#l00023">CircleOpcode.h:24</a></div></div>

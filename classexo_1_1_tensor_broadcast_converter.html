@@ -197,7 +197,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  139</span>  {</div>
 <div class="line"><span class="lineno">  140</span>    <span class="keywordflow">if</span> (node-&gt;dialect() == <a class="code hl_function" href="classlocoex_1_1_t_f_l_dialect.html#acab3cc8189a02c8f2136f1591a2acebe">locoex::TFLDialect::get</a>())</div>
 <div class="line"><span class="lineno">  141</span>    {</div>
-<div class="line"><span class="lineno">  142</span>      <span class="keyword">auto</span> tfl_node = loco::must_cast&lt;locoex::TFLNode *&gt;(node);</div>
+<div class="line"><span class="lineno">  142</span>      <span class="keyword">auto</span> tfl_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;locoex::TFLNode *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">  143</span>      tfl_node-&gt;accept(&amp;collector);</div>
 <div class="line"><span class="lineno">  144</span>    }</div>
 <div class="line"><span class="lineno">  145</span>  }</div>
@@ -251,9 +251,10 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclasslocoex_1_1_t_f_l_mul_html"><div class="ttname"><a href="classlocoex_1_1_t_f_l_mul.html">locoex::TFLMul</a></div><div class="ttdoc">MUL in TensorFlow Lite.</div><div class="ttdef"><b>Definition</b> <a href="_t_f_l_nodes_8h_source.html#l00373">TFLNodes.h:375</a></div></div>
 <div class="ttc" id="aclasslocoex_1_1_t_f_l_sub_html"><div class="ttname"><a href="classlocoex_1_1_t_f_l_sub.html">locoex::TFLSub</a></div><div class="ttdoc">SUB in TensorFlow Lite.</div><div class="ttdef"><b>Definition</b> <a href="_t_f_l_nodes_8h_source.html#l00486">TFLNodes.h:488</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a91be999912c01878c820e684adc124da"><div class="ttname"><a href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a></div><div class="ttdeci">std::set&lt; loco::Node * &gt; active_nodes(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Enumerate all the nodes required to compute &quot;roots&quot;.</div><div class="ttdef"><b>Definition</b> <a href="_algorithm_8cpp_source.html#l00112">Algorithm.cpp:112</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="_t_f_l_dialect_8cpp_source.html#l00022">locoex::TFLDialect::get()</a>, and <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>.</p>
+<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="_t_f_l_dialect_8cpp_source.html#l00022">locoex::TFLDialect::get()</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, and <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>.</p>
 
 </div>
 </div>

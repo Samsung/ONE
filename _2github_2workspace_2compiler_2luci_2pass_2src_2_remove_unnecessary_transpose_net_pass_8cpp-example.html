@@ -354,7 +354,7 @@ Output(1, 49, 448)
 <div class="line">                               <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *mid_reshape,</div>
 <div class="line">                               <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *back_transpose)</div>
 <div class="line">{</div>
-<div class="line">  _in = loco::must_cast&lt;luci::CircleNode *&gt;(front_transpose-&gt;<a id="a8" name="a8"></a><a class="code hl_function" href="classluci_1_1_circle_transpose.html#a18ee6f9ec1ab4fdc80ab14b15251bea1">a</a>());</div>
+<div class="line">  _in = <a id="a8" name="a8"></a><a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(front_transpose-&gt;<a id="a9" name="a9"></a><a class="code hl_function" href="classluci_1_1_circle_transpose.html#a18ee6f9ec1ab4fdc80ab14b15251bea1">a</a>());</div>
 <div class="line">  _front_transpose = front_transpose;</div>
 <div class="line">  _mid_reshape = mid_reshape;</div>
 <div class="line">  _back_transpose = back_transpose;</div>
@@ -429,18 +429,18 @@ Output(1, 49, 448)
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">template</span> &lt;loco::DataType ShapeType&gt;</div>
-<div class="line"><a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *create_reshape_node(<a id="_a9" name="_a9"></a><a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *graph,</div>
+<div class="line"><a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *create_reshape_node(<a id="_a10" name="_a10"></a><a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *graph,</div>
 <div class="line">                                         <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *front_transpose,</div>
 <div class="line">                                         <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *mid_reshape,</div>
 <div class="line">                                         <span class="keyword">const</span> <a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *back_transpose)</div>
 <div class="line">{</div>
 <div class="line">  std::string composed_name =</div>
-<div class="line">    front_transpose-&gt;<a id="a10" name="a10"></a><a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot;;&quot;</span> + mid_reshape-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot;;&quot;</span> + back_transpose-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>();</div>
+<div class="line">    front_transpose-&gt;<a id="a11" name="a11"></a><a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot;;&quot;</span> + mid_reshape-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>() + <span class="stringliteral">&quot;;&quot;</span> + back_transpose-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">name</a>();</div>
 <div class="line"> </div>
 <div class="line">  std::vector&lt;std::shared_ptr&lt;luci::CircleNodeOrigin&gt;&gt; src_origin{luci::get_origin(front_transpose),</div>
 <div class="line">                                                                  luci::get_origin(mid_reshape),</div>
 <div class="line">                                                                  luci::get_origin(back_transpose)};</div>
-<div class="line">  <span class="keyword">auto</span> <span class="keyword">const</span> composed_origin = <a id="a11" name="a11"></a><a class="code hl_function" href="namespaceluci.html#a39f2a346aed87be9f6be0b865668e387">luci::composite_origin</a>(src_origin);</div>
+<div class="line">  <span class="keyword">auto</span> <span class="keyword">const</span> composed_origin = <a id="a12" name="a12"></a><a class="code hl_function" href="namespaceluci.html#a39f2a346aed87be9f6be0b865668e387">luci::composite_origin</a>(src_origin);</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">auto</span> shape_node = graph-&gt;nodes()-&gt;create&lt;<a class="code hl_class" href="classluci_1_1_circle_const.html">luci::CircleConst</a>&gt;();</div>
 <div class="line">  {</div>
@@ -453,7 +453,7 @@ Output(1, 49, 448)
 <div class="line">    {</div>
 <div class="line">      shape_node-&gt;at&lt;ShapeType&gt;(i) = back_transpose-&gt;dim(i).value();</div>
 <div class="line">    }</div>
-<div class="line">    shape_node-&gt;<a id="a12" name="a12"></a><a class="code hl_function" href="structluci_1_1_circle_node.html#acacef6d89b0ea391f613395f920074b4">shape_status</a>(<a id="a13" name="a13"></a><a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
+<div class="line">    shape_node-&gt;<a id="a13" name="a13"></a><a class="code hl_function" href="structluci_1_1_circle_node.html#acacef6d89b0ea391f613395f920074b4">shape_status</a>(<a id="a14" name="a14"></a><a class="code hl_enumvalue" href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a>);</div>
 <div class="line">    shape_node-&gt;name(composed_name + <span class="stringliteral">&quot;/shape&quot;</span>);</div>
 <div class="line">    luci::add_origin(shape_node, composed_origin);</div>
 <div class="line">  }</div>
@@ -476,7 +476,7 @@ Output(1, 49, 448)
 <div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> mid_reshape = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *<span class="keyword">&gt;</span>(back_transpose-&gt;<a class="code hl_function" href="classluci_1_1_circle_transpose.html#a18ee6f9ec1ab4fdc80ab14b15251bea1">a</a>());</div>
 <div class="line">  <a class="code hl_define" href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(mid_reshape != <span class="keyword">nullptr</span>);</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> front_transpose = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *<span class="keyword">&gt;</span>(mid_reshape-&gt;<a id="a14" name="a14"></a><a class="code hl_function" href="classluci_1_1_circle_reshape.html#a7d61e674bf5b1a8572bb8f25bf2947b2">tensor</a>());</div>
+<div class="line">  <span class="keyword">const</span> <span class="keyword">auto</span> front_transpose = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *<span class="keyword">&gt;</span>(mid_reshape-&gt;<a id="a15" name="a15"></a><a class="code hl_function" href="classluci_1_1_circle_reshape.html#a7d61e674bf5b1a8572bb8f25bf2947b2">tensor</a>());</div>
 <div class="line">  <a class="code hl_define" href="_pattern_resolver_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51">CHECK_OR_FALSE</a>(front_transpose != <span class="keyword">nullptr</span>);</div>
 <div class="line"> </div>
 <div class="line">  TaggedShapeAnalyzer analyzer;</div>
@@ -485,9 +485,9 @@ Output(1, 49, 448)
 <div class="line"> </div>
 <div class="line">  <span class="comment">// repalce with new_node</span></div>
 <div class="line">  <a class="code hl_class" href="classluci_1_1_circle_reshape.html">luci::CircleReshape</a> *new_node = create_reshape_node&lt;loco::DataType::S32&gt;(</div>
-<div class="line">    node-&gt;<a id="a15" name="a15"></a><a class="code hl_function" href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">graph</a>(), front_transpose, mid_reshape, back_transpose);</div>
+<div class="line">    node-&gt;<a id="a16" name="a16"></a><a class="code hl_function" href="classloco_1_1_node.html#a117bfe99976cf71eb9d85f4b018f26ad">graph</a>(), front_transpose, mid_reshape, back_transpose);</div>
 <div class="line"> </div>
-<div class="line">  replace(node).<a id="a16" name="a16"></a><a class="code hl_function" href="classloco_1_1_subst_3_01_subst_qualifier_1_1_default_01_4.html#a2c26d1107a76876180e9f3dbfc6fdde0">with</a>(new_node);</div>
+<div class="line">  replace(node).<a id="a17" name="a17"></a><a class="code hl_function" href="classloco_1_1_subst_3_01_subst_qualifier_1_1_default_01_4.html#a2c26d1107a76876180e9f3dbfc6fdde0">with</a>(new_node);</div>
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line">}</div>
@@ -497,7 +497,7 @@ Output(1, 49, 448)
 <div class="line"><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceluci.html">luci</a></div>
 <div class="line">{</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">bool</span> <a id="a17" name="a17"></a><a class="code hl_function" href="structluci_1_1_remove_unnecessary_transpose_net_pass.html#ae67319dd51cf61ce6807ccd78233d19d">RemoveUnnecessaryTransposeNetPass::run</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
+<div class="line"><span class="keywordtype">bool</span> <a id="a18" name="a18"></a><a class="code hl_function" href="structluci_1_1_remove_unnecessary_transpose_net_pass.html#ae67319dd51cf61ce6807ccd78233d19d">RemoveUnnecessaryTransposeNetPass::run</a>(<a class="code hl_class" href="classloco_1_1_graph.html">loco::Graph</a> *g)</div>
 <div class="line">{</div>
 <div class="line">  <span class="keywordtype">bool</span> changed = <span class="keyword">false</span>;</div>
 <div class="line"> </div>
@@ -505,7 +505,7 @@ Output(1, 49, 448)
 <div class="line">  {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> transpose_node = <span class="keyword">dynamic_cast&lt;</span><a class="code hl_class" href="classluci_1_1_circle_transpose.html">luci::CircleTranspose</a> *<span class="keyword">&gt;</span>(node))</div>
 <div class="line">    {</div>
-<div class="line">      <span class="keywordflow">if</span> (remove_unnecessary_transpose(transpose_node))</div>
+<div class="line">      <span class="keywordflow">if</span> (<a id="a19" name="a19"></a><a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">remove_unnecessary_transpose</a>(transpose_node))</div>
 <div class="line">        changed = <span class="keyword">true</span>;</div>
 <div class="line">    }</div>
 <div class="line">  }</div>
@@ -529,8 +529,10 @@ Output(1, 49, 448)
 <div class="ttc" id="aclassluci_1_1_circle_transpose_html_a18ee6f9ec1ab4fdc80ab14b15251bea1"><div class="ttname"><a href="classluci_1_1_circle_transpose.html#a18ee6f9ec1ab4fdc80ab14b15251bea1">luci::CircleTranspose::a</a></div><div class="ttdeci">loco::Node * a(void) const</div><div class="ttdef"><b>Definition</b> <a href="lang_2include_2luci_2_i_r_2_nodes_2_circle_transpose_8h_source.html#l00034">CircleTranspose.h:34</a></div></div>
 <div class="ttc" id="aluci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h_html"><div class="ttname"><a href="luci_2lang_2include_2luci_2_i_r_2_circle_nodes_8h.html">CircleNodes.h</a></div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition</b> <a href="circle-resizer_2include_2_circle_model_8h_source.html#l00026">CircleModel.h:27</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a39f2a346aed87be9f6be0b865668e387"><div class="ttname"><a href="namespaceluci.html#a39f2a346aed87be9f6be0b865668e387">luci::composite_origin</a></div><div class="ttdeci">std::shared_ptr&lt; CircleNodeOrigin &gt; composite_origin(const std::initializer_list&lt; std::shared_ptr&lt; CircleNodeOrigin &gt; &gt; origins)</div><div class="ttdef"><b>Definition</b> <a href="_circle_node_origin_8cpp_source.html#l00126">CircleNodeOrigin.cpp:126</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="anamespaceluci_html_afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea"><div class="ttname"><a href="namespaceluci.html#afb90d250392bef9190f8277d358e0172ac9f1a6384b1c466d4612f513bd8e13ea">luci::ShapeStatus::VALID</a></div><div class="ttdeci">@ VALID</div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00039">CircleNodeDecl.h:42</a></div></div>

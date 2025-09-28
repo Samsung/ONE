@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('_module_phase_8cpp_source.html',''); i
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>{</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
 <div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classluci_1_1_phase_runner_3_01logo_1_1_phase_strategy_1_1_saturate_01_4.html#a542ffecb23a923f144550723623481bd">   22</a></span><span class="keywordtype">void</span> <a class="code hl_class" href="classluci_1_1_phase_runner.html">PhaseRunner&lt;logo::PhaseStrategy::Saturate&gt;::run</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceluci.html#a5fd29b268980eddca0a25bd63831ea83">Phase</a> &amp;phase)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classluci_1_1_phase_runner_3_01logo_1_1_phase_strategy_1_1_saturate_01_4.html#a542ffecb23a923f144550723623481bd">   22</a></span><span class="keywordtype">void</span> <a class="code hl_class" href="classluci_1_1_phase_runner.html">PhaseRunner&lt;logo::PhaseStrategy::Saturate&gt;::run</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceluci.html#a5fd29b268980eddca0a25bd63831ea83">Phase</a> &amp;<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">phase</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  notifyPhaseBegin();</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
@@ -127,14 +127,14 @@ $(document).ready(function(){initNavTree('_module_phase_8cpp_source.html',''); i
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  {</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    changed = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pass : phase)</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pass : <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">phase</a>)</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    {</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>      notifyPassBegin(pass.get());</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      <span class="keywordtype">bool</span> pass_changed = pass-&gt;run(_module);</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      changed = changed || pass_changed;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">pass_changed</a> = pass-&gt;run(_module);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      changed = changed || <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">pass_changed</a>;</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      notifyPassEnd(pass.get(), pass_changed);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      notifyPassEnd(pass.get(), <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">pass_changed</a>);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    }</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  }</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('_module_phase_8cpp_source.html',''); i
 </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classluci_1_1_phase_runner_3_01logo_1_1_phase_strategy_1_1_restart_01_4.html#a9868f0d4af5c8ad5aa4a30a6448b4c47">   44</a></span><span class="keywordtype">void</span> <a class="code hl_class" href="classluci_1_1_phase_runner.html">PhaseRunner&lt;logo::PhaseStrategy::Restart&gt;::run</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceluci.html#a5fd29b268980eddca0a25bd63831ea83">Phase</a> &amp;phase)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classluci_1_1_phase_runner_3_01logo_1_1_phase_strategy_1_1_restart_01_4.html#a9868f0d4af5c8ad5aa4a30a6448b4c47">   44</a></span><span class="keywordtype">void</span> <a class="code hl_class" href="classluci_1_1_phase_runner.html">PhaseRunner&lt;logo::PhaseStrategy::Restart&gt;::run</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="namespaceluci.html#a5fd29b268980eddca0a25bd63831ea83">Phase</a> &amp;<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">phase</a>)<span class="keyword"> const</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  notifyPhaseBegin();</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
@@ -151,14 +151,14 @@ $(document).ready(function(){initNavTree('_module_phase_8cpp_source.html',''); i
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  {</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    changed = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pass : phase)</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;pass : <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">phase</a>)</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    {</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>      notifyPassBegin(pass.get());</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <span class="keywordtype">bool</span> pass_changed = pass-&gt;run(_module);</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      changed = changed || pass_changed;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">pass_changed</a> = pass-&gt;run(_module);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>      changed = changed || <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">pass_changed</a>;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      notifyPassEnd(pass.get(), pass_changed);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>      notifyPassEnd(pass.get(), <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">pass_changed</a>);</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      <span class="keywordflow">if</span> (changed)</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      {</div>
@@ -175,6 +175,7 @@ $(document).ready(function(){initNavTree('_module_phase_8cpp_source.html',''); i
 <div class="ttc" id="a_module_phase_8h_html"><div class="ttname"><a href="_module_phase_8h.html">ModulePhase.h</a></div></div>
 <div class="ttc" id="aclassluci_1_1_phase_runner_html"><div class="ttname"><a href="classluci_1_1_phase_runner.html">luci::PhaseRunner</a></div><div class="ttdef"><b>Definition</b> <a href="_module_phase_8h_source.html#l00031">ModulePhase.h:31</a></div></div>
 <div class="ttc" id="anamespaceluci_html"><div class="ttname"><a href="namespaceluci.html">luci</a></div><div class="ttdef"><b>Definition</b> <a href="circle-resizer_2include_2_circle_model_8h_source.html#l00026">CircleModel.h:27</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a5fd29b268980eddca0a25bd63831ea83"><div class="ttname"><a href="namespaceluci.html#a5fd29b268980eddca0a25bd63831ea83">luci::Phase</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; Pass &gt; &gt; Phase</div><div class="ttdef"><b>Definition</b> <a href="_module_phase_8h_source.html#l00029">ModulePhase.h:29</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

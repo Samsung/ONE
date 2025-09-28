@@ -40,6 +40,9 @@ var namespaces_dup =
     [ "cli", "namespacecli.html", "namespacecli" ],
     [ "cmdline", "namespacecmdline.html", "namespacecmdline" ],
     [ "coco", "namespacecoco.html", "namespacecoco" ],
+    [ "codegen", "namespacecodegen.html", [
+      [ "command_schema", "namespacecodegen.html#acd93bc99427a74c456f507a22684c94e", null ]
+    ] ],
     [ "Command", "namespace_command.html", "namespace_command" ],
     [ "common_place", "namespacecommon__place.html", [
       [ "read_input", "namespacecommon__place.html#a844a1aa802c2558b5b98bdc46fa21ec4", null ],
@@ -300,6 +303,7 @@ var namespaces_dup =
     [ "hermes", "namespacehermes.html", "namespacehermes" ],
     [ "impl", "namespaceimpl.html", [
       [ "CircleMean", "namespaceimpl.html#a2690faf39c23af19d5ae9ead63b7af25", null ],
+      [ "CircleReduceMax", "namespaceimpl.html#a26440f16d55acf284083d798d39124b3", null ],
       [ "CircleReduceProd", "namespaceimpl.html#a04fb8e5be2b8e79bad88a56302e081e1", null ],
       [ "CircleSum", "namespaceimpl.html#ac4093b3e0c9b41e5a427a7cdc8d72258", null ]
     ] ],
@@ -627,6 +631,9 @@ var namespaces_dup =
     [ "pepper", "namespacepepper.html", "namespacepepper" ],
     [ "plier", "namespaceplier.html", "namespaceplier" ],
     [ "pp", "namespacepp.html", "namespacepp" ],
+    [ "profile", "namespaceprofile.html", [
+      [ "command_schema", "namespaceprofile.html#ac2ae44ecfbf2d313c54371b9f225bbb0", null ]
+    ] ],
     [ "prunner", "namespaceprunner.html", "namespaceprunner" ],
     [ "q_implant", "namespaceq__implant.html", "namespaceq__implant" ],
     [ "q_implant_qparam_test", "namespaceq__implant__qparam__test.html", [
@@ -768,7 +775,6 @@ var namespaces_dup =
     [ "tfldump", "namespacetfldump.html", "namespacetfldump" ],
     [ "tflimport", "namespacetflimport.html", "namespacetflimport" ],
     [ "tflinspect", "namespacetflinspect.html", "namespacetflinspect" ],
-    [ "tflite", "namespacetflite.html", "namespacetflite" ],
     [ "tflite2circle", "namespacetflite2circle.html", "namespacetflite2circle" ],
     [ "tflread", "namespacetflread.html", "namespacetflread" ],
     [ "TopologicalSortHelper", "namespace_topological_sort_helper.html", "namespace_topological_sort_helper" ],
@@ -812,6 +818,7 @@ var namespaces_dup =
       [ "safemain", "namespaceutils.html#ad649859d6b883a0cc14c3f37f7f86773", null ],
       [ "ONE_CMD", "namespaceutils.html#a86abd957ffb10c3c9efa74ade08d8e28", null ]
     ] ],
+    [ "validate_global_conf", "namespacevalidate__global__conf.html", "namespacevalidate__global__conf" ],
     [ "validate_onnx2circle", "namespacevalidate__onnx2circle.html", "namespacevalidate__onnx2circle" ],
     [ "vconone", "namespacevconone.html", "namespacevconone" ],
     [ "WorkflowRunner", "namespace_workflow_runner.html", "namespace_workflow_runner" ]

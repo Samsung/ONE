@@ -110,7 +110,7 @@ Data Structures</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a574a9db699b40acd03dcbd90de07306b" id="r_a574a9db699b40acd03dcbd90de07306b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantized_model_verifier.html#a574a9db699b40acd03dcbd90de07306b">QuantizedModelVerifier</a> (std::unique_ptr&lt; <a class="el" href="structluci_1_1_quantized_model_verifier_1_1_context.html">Context</a> &gt; &amp;&amp;ctx)</td></tr>
 <tr class="separator:a574a9db699b40acd03dcbd90de07306b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc985326e99c5e6024f3df6342dce68c" id="r_afc985326e99c5e6024f3df6342dce68c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantized_model_verifier.html#afc985326e99c5e6024f3df6342dce68c">verify</a> (<a class="el" href="classloco_1_1_graph.html">loco::Graph</a> *g)</td></tr>
+<tr class="memitem:afc985326e99c5e6024f3df6342dce68c" id="r_afc985326e99c5e6024f3df6342dce68c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_quantized_model_verifier.html#afc985326e99c5e6024f3df6342dce68c">verify</a> (<a class="el" href="classloco_1_1_graph.html">loco::Graph</a> *g)</td></tr>
 <tr class="separator:afc985326e99c5e6024f3df6342dce68c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -159,7 +159,7 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void luci::QuantizedModelVerifier::verify </td>
+          <td class="memname"><a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">void</a> luci::QuantizedModelVerifier::verify </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classloco_1_1_graph.html">loco::Graph</a> *&#160;</td>
           <td class="paramname"><em>g</em></td><td>)</td>
@@ -173,24 +173,24 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   31</span>  <span class="keywordflow">if</span> (_ctx-&gt;granularity != Granularity::ChannelWise &amp;&amp; _ctx-&gt;granularity != Granularity::LayerWise)</div>
 <div class="line"><span class="lineno">   32</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unsupported granularity&quot;</span>);</div>
 <div class="line"><span class="lineno">   33</span> </div>
-<div class="line"><span class="lineno">   34</span>  <span class="keyword">auto</span> info_by_name = <a class="code hl_function" href="namespaceluci.html#a22258d95f19cad911e52309c50613e07">layer_info_map</a>(g, _ctx-&gt;layers_info);</div>
+<div class="line"><span class="lineno">   34</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">info_by_name</a> = <a class="code hl_function" href="namespaceluci.html#a22258d95f19cad911e52309c50613e07">layer_info_map</a>(g, _ctx-&gt;layers_info);</div>
 <div class="line"><span class="lineno">   35</span> </div>
-<div class="line"><span class="lineno">   36</span>  <span class="keyword">auto</span> quantize_dtype = [&amp;](<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node) {</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keyword">auto</span> iter = info_by_name.find(node-&gt;name());</div>
+<div class="line"><span class="lineno">   36</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">quantize_dtype</a> = [&amp;](<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node) {</div>
+<div class="line"><span class="lineno">   37</span>    <span class="keyword">auto</span> iter = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">info_by_name</a>.find(node-&gt;name());</div>
 <div class="line"><span class="lineno">   38</span> </div>
 <div class="line"><span class="lineno">   39</span>    <span class="comment">// Return designated quantization dtype</span></div>
-<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">if</span> (iter != info_by_name.end())</div>
+<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">if</span> (iter != <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">info_by_name</a>.end())</div>
 <div class="line"><span class="lineno">   41</span>      <span class="keywordflow">return</span> iter-&gt;second.dtype;</div>
 <div class="line"><span class="lineno">   42</span> </div>
 <div class="line"><span class="lineno">   43</span>    <span class="comment">// Return default quantization dtype</span></div>
 <div class="line"><span class="lineno">   44</span>    <span class="keywordflow">return</span> _ctx-&gt;output_model_dtype;</div>
 <div class="line"><span class="lineno">   45</span>  };</div>
 <div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>  <span class="keyword">auto</span> quantize_granularity = [&amp;](<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node) {</div>
-<div class="line"><span class="lineno">   48</span>    <span class="keyword">auto</span> iter = info_by_name.find(node-&gt;name());</div>
+<div class="line"><span class="lineno">   47</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">quantize_granularity</a> = [&amp;](<span class="keyword">const</span> <a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node) {</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keyword">auto</span> iter = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">info_by_name</a>.find(node-&gt;name());</div>
 <div class="line"><span class="lineno">   49</span> </div>
 <div class="line"><span class="lineno">   50</span>    <span class="comment">// Return designated quantization granularity</span></div>
-<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> (iter != info_by_name.end())</div>
+<div class="line"><span class="lineno">   51</span>    <span class="keywordflow">if</span> (iter != <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">info_by_name</a>.end())</div>
 <div class="line"><span class="lineno">   52</span>      <span class="keywordflow">return</span> iter-&gt;second.granularity;</div>
 <div class="line"><span class="lineno">   53</span> </div>
 <div class="line"><span class="lineno">   54</span>    <span class="comment">// Return default quantization granularity</span></div>
@@ -199,27 +199,27 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   57</span> </div>
 <div class="line"><span class="lineno">   58</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#a91be999912c01878c820e684adc124da">active_nodes</a>(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::<a class="code hl_function" href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">output_nodes</a>(<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#a7210f017c15aa9fb47b012adefcf31dd">g</a>)))</div>
 <div class="line"><span class="lineno">   59</span>  {</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keyword">auto</span> circle_node = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   61</span> </div>
-<div class="line"><span class="lineno">   62</span>    <span class="keyword">auto</span> node_name = [&amp;circle_node]() {</div>
-<div class="line"><span class="lineno">   63</span>      <span class="keywordflow">if</span> (circle_node-&gt;name().length() == 0)</div>
+<div class="line"><span class="lineno">   62</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">node_name</a> = [&amp;<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>]() {</div>
+<div class="line"><span class="lineno">   63</span>      <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>-&gt;name().length() == 0)</div>
 <div class="line"><span class="lineno">   64</span>        <span class="keywordflow">return</span> std::string(<span class="stringliteral">&quot;(noname)&quot;</span>);</div>
 <div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>      <span class="keywordflow">return</span> circle_node-&gt;name();</div>
+<div class="line"><span class="lineno">   66</span>      <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>-&gt;name();</div>
 <div class="line"><span class="lineno">   67</span>    };</div>
 <div class="line"><span class="lineno">   68</span> </div>
 <div class="line"><span class="lineno">   69</span>    <span class="comment">// Verify Type</span></div>
-<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="classluci_1_1_verify_quantized_node_type.html#a8f81621ebf973d61dbe92b3dbcfa769c">VerifyQuantizedNodeType::create</a>(quantize_dtype(circle_node))-&gt;verify(circle_node))</div>
-<div class="line"><span class="lineno">   71</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Wrong data type detected in &quot;</span> + node_name());</div>
+<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="classluci_1_1_verify_quantized_node_type.html#a8f81621ebf973d61dbe92b3dbcfa769c">VerifyQuantizedNodeType::create</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">quantize_dtype</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>))-&gt;verify(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>))</div>
+<div class="line"><span class="lineno">   71</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Wrong data type detected in &quot;</span> + <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">node_name</a>());</div>
 <div class="line"><span class="lineno">   72</span> </div>
 <div class="line"><span class="lineno">   73</span>    <span class="comment">// Verify Granularity</span></div>
-<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> (!circle_node-&gt;accept(</div>
-<div class="line"><span class="lineno">   75</span>          <a class="code hl_function" href="classluci_1_1_verify_quantized_node_granularity.html#ac8371e8de452007cf3dc76147a2dc0bd">VerifyQuantizedNodeGranularity::create</a>(quantize_granularity(circle_node)).<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>()))</div>
-<div class="line"><span class="lineno">   76</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Wrong granularity detected in &quot;</span> + node_name());</div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>-&gt;accept(</div>
+<div class="line"><span class="lineno">   75</span>          <a class="code hl_function" href="classluci_1_1_verify_quantized_node_granularity.html#ac8371e8de452007cf3dc76147a2dc0bd">VerifyQuantizedNodeGranularity::create</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">quantize_granularity</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>)).<a class="code hl_function" href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">get</a>()))</div>
+<div class="line"><span class="lineno">   76</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Wrong granularity detected in &quot;</span> + <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">node_name</a>());</div>
 <div class="line"><span class="lineno">   77</span> </div>
 <div class="line"><span class="lineno">   78</span>    <span class="comment">// Verify Bias scale</span></div>
-<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="classluci_1_1_verify_quantized_bias_scale.html#ab38302542fc053bf8dddf98999806d6c">VerifyQuantizedBiasScale::create</a>()-&gt;verify(circle_node))</div>
-<div class="line"><span class="lineno">   80</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Wrong bias scale detected in &quot;</span> + node_name());</div>
+<div class="line"><span class="lineno">   79</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="classluci_1_1_verify_quantized_bias_scale.html#ab38302542fc053bf8dddf98999806d6c">VerifyQuantizedBiasScale::create</a>()-&gt;verify(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>))</div>
+<div class="line"><span class="lineno">   80</span>      <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Wrong bias scale detected in &quot;</span> + <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">node_name</a>());</div>
 <div class="line"><span class="lineno">   81</span>  }</div>
 <div class="line"><span class="lineno">   82</span>}</div>
 <div class="ttc" id="aclassluci_1_1_verify_quantized_bias_scale_html_ab38302542fc053bf8dddf98999806d6c"><div class="ttname"><a href="classluci_1_1_verify_quantized_bias_scale.html#ab38302542fc053bf8dddf98999806d6c">luci::VerifyQuantizedBiasScale::create</a></div><div class="ttdeci">static std::shared_ptr&lt; VerifyQuantizedBiasScale &gt; create()</div><div class="ttdef"><b>Definition</b> <a href="_verify_quantized_bias_scale_8h_source.html#l00039">VerifyQuantizedBiasScale.h:39</a></div></div>
@@ -229,11 +229,13 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespaceexo_html_aff46e62f58bb005a0fc63b6bed6f8698"><div class="ttname"><a href="namespaceexo.html#aff46e62f58bb005a0fc63b6bed6f8698">exo::get</a></div><div class="ttdeci">KnobTrait&lt; K &gt;::ValueType get(void)</div></div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
 <div class="ttc" id="anamespaceloco_html_a91be999912c01878c820e684adc124da"><div class="ttname"><a href="namespaceloco.html#a91be999912c01878c820e684adc124da">loco::active_nodes</a></div><div class="ttdeci">std::set&lt; loco::Node * &gt; active_nodes(const std::vector&lt; loco::Node * &gt; &amp;roots)</div><div class="ttdoc">Enumerate all the nodes required to compute &quot;roots&quot;.</div><div class="ttdef"><b>Definition</b> <a href="_algorithm_8cpp_source.html#l00112">Algorithm.cpp:112</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 <div class="ttc" id="anamespaceloco_html_ac026f76015947855f2cecfd0aab1d23a"><div class="ttname"><a href="namespaceloco.html#ac026f76015947855f2cecfd0aab1d23a">loco::output_nodes</a></div><div class="ttdeci">std::vector&lt; Node * &gt; output_nodes(Graph *)</div><div class="ttdef"><b>Definition</b> <a href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">Graph.cpp:101</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a22258d95f19cad911e52309c50613e07"><div class="ttname"><a href="namespaceluci.html#a22258d95f19cad911e52309c50613e07">luci::layer_info_map</a></div><div class="ttdeci">LayerInfoMap layer_info_map(loco::Graph *g, std::vector&lt; LayerInfo &gt; &amp;layers_info)</div><div class="ttdef"><b>Definition</b> <a href="_layer_info_map_8cpp_source.html#l00142">LayerInfoMap.cpp:142</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html"><div class="ttname"><a href="structluci_1_1_circle_node.html">luci::CircleNode</a></div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00039">CircleNodeDecl.h:42</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="_verify_quantized_bias_scale_8h_source.html#l00039">luci::VerifyQuantizedBiasScale::create()</a>, <a class="el" href="_verify_quantized_node_granularity_8cpp_source.html#l00028">luci::VerifyQuantizedNodeGranularity::create()</a>, <a class="el" href="_verify_quantized_node_type_8cpp_source.html#l00032">luci::VerifyQuantizedNodeType::create()</a>, <a class="el" href="_layer_info_map_8cpp_source.html#l00142">luci::layer_info_map()</a>, and <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>.</p>
+<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="_verify_quantized_bias_scale_8h_source.html#l00039">luci::VerifyQuantizedBiasScale::create()</a>, <a class="el" href="_verify_quantized_node_granularity_8cpp_source.html#l00028">luci::VerifyQuantizedNodeGranularity::create()</a>, <a class="el" href="_verify_quantized_node_type_8cpp_source.html#l00032">luci::VerifyQuantizedNodeType::create()</a>, <a class="el" href="_layer_info_map_8cpp_source.html#l00142">luci::layer_info_map()</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>, and <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>.</p>
 
 </div>
 </div>

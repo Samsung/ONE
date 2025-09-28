@@ -40,22 +40,17 @@ var annotated_dup =
       [ "weights_transformations", "namespacearm__compute_1_1weights__transformations.html", [
         [ "CLFullyConnectedLayerReshapeWeightsExManaged", "classarm__compute_1_1weights__transformations_1_1_c_l_fully_connected_layer_reshape_weights_ex_managed.html", "classarm__compute_1_1weights__transformations_1_1_c_l_fully_connected_layer_reshape_weights_ex_managed" ]
       ] ],
-      [ "CLBinaryLogicalOp", "classarm__compute_1_1_c_l_binary_logical_op.html", "classarm__compute_1_1_c_l_binary_logical_op" ],
-      [ "CLBinaryLogicalOpKernel", "classarm__compute_1_1_c_l_binary_logical_op_kernel.html", "classarm__compute_1_1_c_l_binary_logical_op_kernel" ],
       [ "CLCastBool", "classarm__compute_1_1_c_l_cast_bool.html", "classarm__compute_1_1_c_l_cast_bool" ],
       [ "CLCastBoolKernel", "classarm__compute_1_1_c_l_cast_bool_kernel.html", "classarm__compute_1_1_c_l_cast_bool_kernel" ],
       [ "CLDirectTransposeConvLayer", "classarm__compute_1_1_c_l_direct_transpose_conv_layer.html", "classarm__compute_1_1_c_l_direct_transpose_conv_layer" ],
-      [ "CLEmbeddingLookup", "classarm__compute_1_1_c_l_embedding_lookup.html", "classarm__compute_1_1_c_l_embedding_lookup" ],
       [ "CLEmbeddingLookupKernel", "classarm__compute_1_1_c_l_embedding_lookup_kernel.html", "classarm__compute_1_1_c_l_embedding_lookup_kernel" ],
       [ "CLFullyConnectedHybridLayer", "classarm__compute_1_1_c_l_fully_connected_hybrid_layer.html", "classarm__compute_1_1_c_l_fully_connected_hybrid_layer" ],
       [ "CLFullyConnectedLayerEx", "classarm__compute_1_1_c_l_fully_connected_layer_ex.html", "classarm__compute_1_1_c_l_fully_connected_layer_ex" ],
       [ "CLFullyConnectedReshapingLayer", "classarm__compute_1_1_c_l_fully_connected_reshaping_layer.html", "classarm__compute_1_1_c_l_fully_connected_reshaping_layer" ],
-      [ "CLGatherEx", "classarm__compute_1_1_c_l_gather_ex.html", "classarm__compute_1_1_c_l_gather_ex" ],
       [ "CLGatherExKernel", "classarm__compute_1_1_c_l_gather_ex_kernel.html", "classarm__compute_1_1_c_l_gather_ex_kernel" ],
       [ "CLGEMMMatrixAccumulateBiasesKernel", "classarm__compute_1_1_c_l_g_e_m_m_matrix_accumulate_biases_kernel.html", "classarm__compute_1_1_c_l_g_e_m_m_matrix_accumulate_biases_kernel" ],
       [ "CLHashtableLookup", "classarm__compute_1_1_c_l_hashtable_lookup.html", "classarm__compute_1_1_c_l_hashtable_lookup" ],
       [ "CLHashtableLookupKernel", "classarm__compute_1_1_c_l_hashtable_lookup_kernel.html", "classarm__compute_1_1_c_l_hashtable_lookup_kernel" ],
-      [ "CLInstanceNormalizationLayerEx", "classarm__compute_1_1_c_l_instance_normalization_layer_ex.html", "classarm__compute_1_1_c_l_instance_normalization_layer_ex" ],
       [ "CLInstanceNormalizationLayerKernelEx", "classarm__compute_1_1_c_l_instance_normalization_layer_kernel_ex.html", "classarm__compute_1_1_c_l_instance_normalization_layer_kernel_ex" ],
       [ "CLKernelLibraryEx", "classarm__compute_1_1_c_l_kernel_library_ex.html", "classarm__compute_1_1_c_l_kernel_library_ex" ],
       [ "CLMemsetKernel", "classarm__compute_1_1_c_l_memset_kernel.html", "classarm__compute_1_1_c_l_memset_kernel" ],
@@ -75,25 +70,21 @@ var annotated_dup =
       [ "CLTransposeConvLayer", "classarm__compute_1_1_c_l_transpose_conv_layer.html", "classarm__compute_1_1_c_l_transpose_conv_layer" ],
       [ "NECastBool", "classarm__compute_1_1_n_e_cast_bool.html", "classarm__compute_1_1_n_e_cast_bool" ],
       [ "NECastBoolKernel", "classarm__compute_1_1_n_e_cast_bool_kernel.html", "classarm__compute_1_1_n_e_cast_bool_kernel" ],
-      [ "NEEmbeddingLookup", "classarm__compute_1_1_n_e_embedding_lookup.html", "classarm__compute_1_1_n_e_embedding_lookup" ],
       [ "NEEmbeddingLookupKernel", "classarm__compute_1_1_n_e_embedding_lookup_kernel.html", "classarm__compute_1_1_n_e_embedding_lookup_kernel" ],
       [ "NEFullyConnectedHybridLayer", "classarm__compute_1_1_n_e_fully_connected_hybrid_layer.html", "classarm__compute_1_1_n_e_fully_connected_hybrid_layer" ],
       [ "NEFullyConnectedLayerEx", "classarm__compute_1_1_n_e_fully_connected_layer_ex.html", "classarm__compute_1_1_n_e_fully_connected_layer_ex" ],
       [ "NEFullyConnectedReshapingLayer", "classarm__compute_1_1_n_e_fully_connected_reshaping_layer.html", "classarm__compute_1_1_n_e_fully_connected_reshaping_layer" ],
       [ "NEGatherEx", "classarm__compute_1_1_n_e_gather_ex.html", "classarm__compute_1_1_n_e_gather_ex" ],
-      [ "NEGatherKernelEx", "classarm__compute_1_1_n_e_gather_kernel_ex.html", "classarm__compute_1_1_n_e_gather_kernel_ex" ],
       [ "NEGEMMMatrixAccumulateBiasesKernel", "classarm__compute_1_1_n_e_g_e_m_m_matrix_accumulate_biases_kernel.html", "classarm__compute_1_1_n_e_g_e_m_m_matrix_accumulate_biases_kernel" ],
       [ "NEHashtableLookup", "classarm__compute_1_1_n_e_hashtable_lookup.html", "classarm__compute_1_1_n_e_hashtable_lookup" ],
       [ "NEHashtableLookupKernel", "classarm__compute_1_1_n_e_hashtable_lookup_kernel.html", "classarm__compute_1_1_n_e_hashtable_lookup_kernel" ],
-      [ "NEInstanceNormalizationLayerEx", "classarm__compute_1_1_n_e_instance_normalization_layer_ex.html", "classarm__compute_1_1_n_e_instance_normalization_layer_ex" ],
       [ "NEInstanceNormalizationLayerKernelEx", "classarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex.html", "classarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex" ],
       [ "NEMultiplyScaleFactorKernel", "classarm__compute_1_1_n_e_multiply_scale_factor_kernel.html", "classarm__compute_1_1_n_e_multiply_scale_factor_kernel" ],
       [ "NEOneHot", "classarm__compute_1_1_n_e_one_hot.html", "classarm__compute_1_1_n_e_one_hot" ],
       [ "NEOneHotKernel", "classarm__compute_1_1_n_e_one_hot_kernel.html", "classarm__compute_1_1_n_e_one_hot_kernel" ],
       [ "NEQuantizationSymmetricKernel", "classarm__compute_1_1_n_e_quantization_symmetric_kernel.html", "classarm__compute_1_1_n_e_quantization_symmetric_kernel" ],
       [ "NEReduceOperation", "classarm__compute_1_1_n_e_reduce_operation.html", "classarm__compute_1_1_n_e_reduce_operation" ],
-      [ "NEReduceSum", "classarm__compute_1_1_n_e_reduce_sum.html", "classarm__compute_1_1_n_e_reduce_sum" ],
-      [ "NETransposeConvLayer", "classarm__compute_1_1_n_e_transpose_conv_layer.html", "classarm__compute_1_1_n_e_transpose_conv_layer" ]
+      [ "NEReduceSum", "classarm__compute_1_1_n_e_reduce_sum.html", "classarm__compute_1_1_n_e_reduce_sum" ]
     ] ],
     [ "arser", "namespacearser.html", [
       [ "Argument", "classarser_1_1_argument.html", "classarser_1_1_argument" ],
@@ -796,6 +787,7 @@ var annotated_dup =
       [ "TensorBroadcast", "classloco_1_1_tensor_broadcast.html", "classloco_1_1_tensor_broadcast" ],
       [ "TensorConcat", "classloco_1_1_tensor_concat.html", "classloco_1_1_tensor_concat" ],
       [ "TensorConstantPad", "classloco_1_1_tensor_constant_pad.html", "classloco_1_1_tensor_constant_pad" ],
+      [ "TensorIndex", "classloco_1_1_tensor_index.html", "classloco_1_1_tensor_index" ],
       [ "TensorReduce", "classloco_1_1_tensor_reduce.html", "classloco_1_1_tensor_reduce" ],
       [ "TensorShape", "classloco_1_1_tensor_shape.html", "classloco_1_1_tensor_shape" ],
       [ "TensorTranspose", "classloco_1_1_tensor_transpose.html", "classloco_1_1_tensor_transpose" ],
@@ -2694,24 +2686,6 @@ var annotated_dup =
         [ "UNUSED_ALL", "structnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l.html", "structnnfw_1_1cker_1_1_u_n_u_s_e_d___a_l_l" ]
       ] ],
       [ "misc", "namespacennfw_1_1misc.html", [
-        [ "feature", "namespacennfw_1_1misc_1_1feature.html", [
-          [ "Index", "classnnfw_1_1misc_1_1feature_1_1_index.html", "classnnfw_1_1misc_1_1feature_1_1_index" ],
-          [ "IndexIterator", "classnnfw_1_1misc_1_1feature_1_1_index_iterator.html", "classnnfw_1_1misc_1_1feature_1_1_index_iterator" ],
-          [ "Object", "classnnfw_1_1misc_1_1feature_1_1_object.html", "classnnfw_1_1misc_1_1feature_1_1_object" ],
-          [ "Reader", "structnnfw_1_1misc_1_1feature_1_1_reader.html", "structnnfw_1_1misc_1_1feature_1_1_reader" ],
-          [ "Shape", "structnnfw_1_1misc_1_1feature_1_1_shape.html", "structnnfw_1_1misc_1_1feature_1_1_shape" ],
-          [ "TextFormatter", "classnnfw_1_1misc_1_1feature_1_1_text_formatter.html", "classnnfw_1_1misc_1_1feature_1_1_text_formatter" ]
-        ] ],
-        [ "kernel", "namespacennfw_1_1misc_1_1kernel.html", [
-          [ "IndexIterator", "classnnfw_1_1misc_1_1kernel_1_1_index_iterator.html", "classnnfw_1_1misc_1_1kernel_1_1_index_iterator" ],
-          [ "Reader", "structnnfw_1_1misc_1_1kernel_1_1_reader.html", "structnnfw_1_1misc_1_1kernel_1_1_reader" ],
-          [ "Shape", "structnnfw_1_1misc_1_1kernel_1_1_shape.html", "structnnfw_1_1misc_1_1kernel_1_1_shape" ]
-        ] ],
-        [ "matrix", "namespacennfw_1_1misc_1_1matrix.html", [
-          [ "IndexIterator", "classnnfw_1_1misc_1_1matrix_1_1_index_iterator.html", "classnnfw_1_1misc_1_1matrix_1_1_index_iterator" ],
-          [ "Reader", "structnnfw_1_1misc_1_1matrix_1_1_reader.html", "structnnfw_1_1misc_1_1matrix_1_1_reader" ],
-          [ "Shape", "structnnfw_1_1misc_1_1matrix_1_1_shape.html", "structnnfw_1_1misc_1_1matrix_1_1_shape" ]
-        ] ],
         [ "tensor", "namespacennfw_1_1misc_1_1tensor.html", [
           [ "Comparator", "classnnfw_1_1misc_1_1tensor_1_1_comparator.html", "classnnfw_1_1misc_1_1tensor_1_1_comparator" ],
           [ "Diff", "structnnfw_1_1misc_1_1tensor_1_1_diff.html", "structnnfw_1_1misc_1_1tensor_1_1_diff" ],
@@ -2724,10 +2698,6 @@ var annotated_dup =
           [ "Reader", "structnnfw_1_1misc_1_1tensor_1_1_reader.html", "structnnfw_1_1misc_1_1tensor_1_1_reader" ],
           [ "Shape", "classnnfw_1_1misc_1_1tensor_1_1_shape.html", "classnnfw_1_1misc_1_1tensor_1_1_shape" ],
           [ "Zipper", "classnnfw_1_1misc_1_1tensor_1_1_zipper.html", "classnnfw_1_1misc_1_1tensor_1_1_zipper" ]
-        ] ],
-        [ "vector", "namespacennfw_1_1misc_1_1vector.html", [
-          [ "Object", "classnnfw_1_1misc_1_1vector_1_1_object.html", "classnnfw_1_1misc_1_1vector_1_1_object" ],
-          [ "Reader", "structnnfw_1_1misc_1_1vector_1_1_reader.html", "structnnfw_1_1misc_1_1vector_1_1_reader" ]
         ] ],
         [ "EnvConfigSource", "classnnfw_1_1misc_1_1_env_config_source.html", "classnnfw_1_1misc_1_1_env_config_source" ],
         [ "EnvVar", "classnnfw_1_1misc_1_1_env_var.html", "classnnfw_1_1misc_1_1_env_var" ],
@@ -3462,6 +3432,7 @@ var annotated_dup =
           [ "MinimumFn", "structonert__micro_1_1execute_1_1pal_1_1_minimum_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_minimum_fn" ],
           [ "MulFn", "structonert__micro_1_1execute_1_1pal_1_1_mul_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_mul_fn" ],
           [ "NdArrayDesc", "structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc.html", "structonert__micro_1_1execute_1_1pal_1_1_nd_array_desc" ],
+          [ "ReduceMaxFn", "structonert__micro_1_1execute_1_1pal_1_1_reduce_max_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_reduce_max_fn" ],
           [ "ReduceProductFn", "structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_reduce_product_fn" ],
           [ "Reducer", "classonert__micro_1_1execute_1_1pal_1_1_reducer.html", "classonert__micro_1_1execute_1_1pal_1_1_reducer" ],
           [ "ReduceSumFn", "structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn.html", "structonert__micro_1_1execute_1_1pal_1_1_reduce_sum_fn" ],
@@ -4258,11 +4229,6 @@ var annotated_dup =
       [ "DumpOperatorVersion", "classtflinspect_1_1_dump_operator_version.html", "classtflinspect_1_1_dump_operator_version" ],
       [ "Reader", "classtflinspect_1_1_reader.html", "classtflinspect_1_1_reader" ]
     ] ],
-    [ "tflite", "namespacetflite.html", [
-      [ "reference_ops", "namespacetflite_1_1reference__ops.html", [
-        [ "GatherNdHelperResult", "structtflite_1_1reference__ops_1_1_gather_nd_helper_result.html", "structtflite_1_1reference__ops_1_1_gather_nd_helper_result" ]
-      ] ]
-    ] ],
     [ "tflite2circle", "namespacetflite2circle.html", [
       [ "BufferLink", "structtflite2circle_1_1_buffer_link.html", "structtflite2circle_1_1_buffer_link" ],
       [ "CircleModel", "classtflite2circle_1_1_circle_model.html", "classtflite2circle_1_1_circle_model" ],
@@ -4282,6 +4248,15 @@ var annotated_dup =
       [ "TrainConfigFileData", "structtraining__configure__tool_1_1_train_config_file_data.html", "structtraining__configure__tool_1_1_train_config_file_data" ],
       [ "TrainData", "structtraining__configure__tool_1_1_train_data.html", "structtraining__configure__tool_1_1_train_data" ],
       [ "TrainResult", "structtraining__configure__tool_1_1_train_result.html", "structtraining__configure__tool_1_1_train_result" ]
+    ] ],
+    [ "validate_global_conf", "namespacevalidate__global__conf.html", [
+      [ "_Action", "classvalidate__global__conf_1_1___action.html", null ],
+      [ "_ArgSpec", "classvalidate__global__conf_1_1___arg_spec.html", null ],
+      [ "ArgumentParser", "classvalidate__global__conf_1_1_argument_parser.html", "classvalidate__global__conf_1_1_argument_parser" ],
+      [ "DriverName", "classvalidate__global__conf_1_1_driver_name.html", null ],
+      [ "NormalOption", "classvalidate__global__conf_1_1_normal_option.html", null ],
+      [ "SchemaReport", "classvalidate__global__conf_1_1_schema_report.html", null ],
+      [ "TargetOption", "classvalidate__global__conf_1_1_target_option.html", null ]
     ] ],
     [ "validate_onnx2circle", "namespacevalidate__onnx2circle.html", [
       [ "OnnxRunner", "classvalidate__onnx2circle_1_1_onnx_runner.html", "classvalidate__onnx2circle_1_1_onnx_runner" ]

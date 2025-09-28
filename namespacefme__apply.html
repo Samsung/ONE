@@ -172,7 +172,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   41</span>  {</div>
 <div class="line"><span class="lineno">   42</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_namespace" href="namespaceloco.html">loco</a>::active_nodes(<a class="code hl_namespace" href="namespaceloco.html">loco</a>::output_nodes(g)))</div>
 <div class="line"><span class="lineno">   43</span>    {</div>
-<div class="line"><span class="lineno">   44</span>      <span class="keyword">auto</span> cnode = loco::must_cast&lt;luci::CircleNode *&gt;(node);</div>
+<div class="line"><span class="lineno">   44</span>      <span class="keyword">auto</span> cnode = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   45</span>      node_by_name[cnode-&gt;name()] = cnode;</div>
 <div class="line"><span class="lineno">   46</span>    }</div>
 <div class="line"><span class="lineno">   47</span>  }</div>
@@ -195,9 +195,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   64</span>  }</div>
 <div class="line"><span class="lineno">   65</span>}</div>
 <div class="ttc" id="anamespaceloco_html"><div class="ttname"><a href="namespaceloco.html">loco</a></div><div class="ttdef"><b>Definition</b> <a href="exo_2src_2_log_helper_8cpp_source.html#l00019">LogHelper.cpp:20</a></div></div>
+<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 <div class="ttc" id="aruntime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_html_a8204e48658a0c33145b4ae178e645ae8"><div class="ttname"><a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp.html#a8204e48658a0c33145b4ae178e645ae8">p</a></div><div class="ttdeci">Configuration p</div><div class="ttdef"><b>Definition</b> <a href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">Convolution.cpp:289</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, and <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
+<p class="reference">References <a class="el" href="_algorithm_8cpp_source.html#l00112">loco::active_nodes()</a>, <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="loco_2src_2_i_r_2_graph_8cpp_source.html#l00101">loco::output_nodes()</a>, and <a class="el" href="runtime_2tools_2kbenchmark_2kernels_2acl__cl_2_convolution_8cpp_source.html#l00289">p</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_f_m_equalizer_8cpp_source.html#l00063">fme_apply::FMEqualizer::equalize()</a>.</p>
 
@@ -288,7 +289,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  180</span>  <span class="keyword">const</span> <span class="keyword">auto</span> arity = node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a5473adc0c367676e384bc06241e23d3b">arity</a>();</div>
 <div class="line"><span class="lineno">  181</span>  <span class="keywordflow">for</span> (uint32_t idx = 0; idx &lt; arity; idx++)</div>
 <div class="line"><span class="lineno">  182</span>  {</div>
-<div class="line"><span class="lineno">  183</span>    <span class="keyword">auto</span> front_node = loco::must_cast&lt;luci::CircleNode *&gt;(node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a0fbc9384bdfbbaf14fec1b9b712fc7c1">arg</a>(idx));</div>
+<div class="line"><span class="lineno">  183</span>    <span class="keyword">auto</span> front_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(node-&gt;<a class="code hl_function" href="classloco_1_1_node.html#a0fbc9384bdfbbaf14fec1b9b712fc7c1">arg</a>(idx));</div>
 <div class="line"><span class="lineno">  184</span>    <span class="keywordflow">if</span> (front_node-&gt;name() == name)</div>
 <div class="line"><span class="lineno">  185</span>      <span class="keywordflow">return</span> front_node;</div>
 <div class="line"><span class="lineno">  186</span>    front_node = <a class="code hl_function" href="namespacefme__apply.html#a40e5483942e412d96167570070388447">find_arg_with_name</a>(front_node, name, depth - 1);</div>
@@ -301,7 +302,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="aclassloco_1_1_node_html_a5473adc0c367676e384bc06241e23d3b"><div class="ttname"><a href="classloco_1_1_node.html#a5473adc0c367676e384bc06241e23d3b">loco::Node::arity</a></div><div class="ttdeci">virtual uint32_t arity(void) const =0</div><div class="ttdoc">Return the number of arguments.</div></div>
 <div class="ttc" id="anamespacefme__apply_html_a40e5483942e412d96167570070388447"><div class="ttname"><a href="namespacefme__apply.html#a40e5483942e412d96167570070388447">fme_apply::find_arg_with_name</a></div><div class="ttdeci">luci::CircleNode * find_arg_with_name(const luci::CircleNode *node, const std::string &amp;name, const uint32_t &amp;depth)</div><div class="ttdef"><b>Definition</b> <a href="_support_8_misc_8cpp_source.html#l00174">Support.Misc.cpp:174</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classloco_1_1_node.html#a0fbc9384bdfbbaf14fec1b9b712fc7c1">loco::Node::arg()</a>, <a class="el" href="classloco_1_1_node.html#a5473adc0c367676e384bc06241e23d3b">loco::Node::arity()</a>, and <a class="el" href="_support_8_misc_8cpp_source.html#l00174">find_arg_with_name()</a>.</p>
+<p class="reference">References <a class="el" href="classloco_1_1_node.html#a0fbc9384bdfbbaf14fec1b9b712fc7c1">loco::Node::arg()</a>, <a class="el" href="classloco_1_1_node.html#a5473adc0c367676e384bc06241e23d3b">loco::Node::arity()</a>, <a class="el" href="_support_8_misc_8cpp_source.html#l00174">find_arg_with_name()</a>, and <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_support_8_misc_8cpp_source.html#l00174">find_arg_with_name()</a>.</p>
 
@@ -330,47 +331,47 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   43</span>  {</div>
 <div class="line"><span class="lineno">   44</span>    <span class="keywordflow">case</span> luci::CircleOpcode::CONV_2D:</div>
 <div class="line"><span class="lineno">   45</span>    {</div>
-<div class="line"><span class="lineno">   46</span>      <span class="keyword">auto</span> conv = loco::must_cast&lt;luci::CircleConv2D *&gt;(node);</div>
+<div class="line"><span class="lineno">   46</span>      <span class="keyword">auto</span> conv = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleConv2D *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   47</span>      <span class="keywordflow">return</span> conv-&gt;input();</div>
 <div class="line"><span class="lineno">   48</span>    }</div>
 <div class="line"><span class="lineno">   49</span>    <span class="keywordflow">case</span> luci::CircleOpcode::DEPTHWISE_CONV_2D:</div>
 <div class="line"><span class="lineno">   50</span>    {</div>
-<div class="line"><span class="lineno">   51</span>      <span class="keyword">auto</span> dconv = loco::must_cast&lt;luci::CircleDepthwiseConv2D *&gt;(node);</div>
+<div class="line"><span class="lineno">   51</span>      <span class="keyword">auto</span> dconv = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleDepthwiseConv2D *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   52</span>      <span class="keywordflow">return</span> dconv-&gt;input();</div>
 <div class="line"><span class="lineno">   53</span>    }</div>
 <div class="line"><span class="lineno">   54</span>    <span class="keywordflow">case</span> luci::CircleOpcode::FULLY_CONNECTED:</div>
 <div class="line"><span class="lineno">   55</span>    {</div>
-<div class="line"><span class="lineno">   56</span>      <span class="keyword">auto</span> fc = loco::must_cast&lt;luci::CircleFullyConnected *&gt;(node);</div>
+<div class="line"><span class="lineno">   56</span>      <span class="keyword">auto</span> fc = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleFullyConnected *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   57</span>      <span class="keywordflow">return</span> fc-&gt;input();</div>
 <div class="line"><span class="lineno">   58</span>    }</div>
 <div class="line"><span class="lineno">   59</span>    <span class="keywordflow">case</span> luci::CircleOpcode::GELU:</div>
 <div class="line"><span class="lineno">   60</span>    {</div>
-<div class="line"><span class="lineno">   61</span>      <span class="keyword">auto</span> gelu = loco::must_cast&lt;luci::CircleGelu *&gt;(node);</div>
+<div class="line"><span class="lineno">   61</span>      <span class="keyword">auto</span> gelu = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleGelu *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   62</span>      <span class="keywordflow">return</span> gelu-&gt;features();</div>
 <div class="line"><span class="lineno">   63</span>    }</div>
 <div class="line"><span class="lineno">   64</span>    <span class="keywordflow">case</span> luci::CircleOpcode::LEAKY_RELU:</div>
 <div class="line"><span class="lineno">   65</span>    {</div>
-<div class="line"><span class="lineno">   66</span>      <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8abc5ce62b39aff2f661146911808eadc1">relu</a> = loco::must_cast&lt;luci::CircleLeakyRelu *&gt;(node);</div>
+<div class="line"><span class="lineno">   66</span>      <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8abc5ce62b39aff2f661146911808eadc1">relu</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleLeakyRelu *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   67</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8abc5ce62b39aff2f661146911808eadc1">relu</a>-&gt;features();</div>
 <div class="line"><span class="lineno">   68</span>    }</div>
 <div class="line"><span class="lineno">   69</span>    <span class="keywordflow">case</span> luci::CircleOpcode::MAX_POOL_2D:</div>
 <div class="line"><span class="lineno">   70</span>    {</div>
-<div class="line"><span class="lineno">   71</span>      <span class="keyword">auto</span> maxpool = loco::must_cast&lt;luci::CircleMaxPool2D *&gt;(node);</div>
+<div class="line"><span class="lineno">   71</span>      <span class="keyword">auto</span> maxpool = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleMaxPool2D *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   72</span>      <span class="keywordflow">return</span> maxpool-&gt;value();</div>
 <div class="line"><span class="lineno">   73</span>    }</div>
 <div class="line"><span class="lineno">   74</span>    <span class="keywordflow">case</span> luci::CircleOpcode::PAD:</div>
 <div class="line"><span class="lineno">   75</span>    {</div>
-<div class="line"><span class="lineno">   76</span>      <span class="keyword">auto</span> pad = loco::must_cast&lt;luci::CirclePad *&gt;(node);</div>
+<div class="line"><span class="lineno">   76</span>      <span class="keyword">auto</span> pad = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CirclePad *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   77</span>      <span class="keywordflow">return</span> pad-&gt;input();</div>
 <div class="line"><span class="lineno">   78</span>    }</div>
 <div class="line"><span class="lineno">   79</span>    <span class="keywordflow">case</span> luci::CircleOpcode::RELU:</div>
 <div class="line"><span class="lineno">   80</span>    {</div>
-<div class="line"><span class="lineno">   81</span>      <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8abc5ce62b39aff2f661146911808eadc1">relu</a> = loco::must_cast&lt;luci::CircleLeakyRelu *&gt;(node);</div>
+<div class="line"><span class="lineno">   81</span>      <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8abc5ce62b39aff2f661146911808eadc1">relu</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleLeakyRelu *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   82</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8abc5ce62b39aff2f661146911808eadc1">relu</a>-&gt;features();</div>
 <div class="line"><span class="lineno">   83</span>    }</div>
 <div class="line"><span class="lineno">   84</span>    <span class="keywordflow">case</span> luci::CircleOpcode::TRANSPOSE_CONV:</div>
 <div class="line"><span class="lineno">   85</span>    {</div>
-<div class="line"><span class="lineno">   86</span>      <span class="keyword">auto</span> tconv = loco::must_cast&lt;luci::CircleTransposeConv *&gt;(node);</div>
+<div class="line"><span class="lineno">   86</span>      <span class="keyword">auto</span> tconv = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleTransposeConv *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">   87</span>      <span class="keywordflow">return</span> tconv-&gt;outBackprop();</div>
 <div class="line"><span class="lineno">   88</span>    }</div>
 <div class="line"><span class="lineno">   89</span>    <span class="keywordflow">default</span>:</div>
@@ -383,7 +384,7 @@ Functions</h2></td></tr>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a62b544dcd4be48302c214c3aa6ff5855"><div class="ttname"><a href="structluci_1_1_circle_node.html#a62b544dcd4be48302c214c3aa6ff5855">luci::CircleNode::name</a></div><div class="ttdeci">NodeName name(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">CircleNodeDecl.h:51</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a963f9812635ceac6d5a207594b5028af"><div class="ttname"><a href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode</a></div><div class="ttdeci">virtual CircleOpcode opcode(void) const =0</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">luci::CircleNode::name()</a>, and <a class="el" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode()</a>.</p>
+<p class="reference">References <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">luci::CircleNode::name()</a>, and <a class="el" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode()</a>.</p>
 
 </div>
 </div>
@@ -558,55 +559,55 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  107</span>  {</div>
 <div class="line"><span class="lineno">  108</span>    <span class="keywordflow">case</span> luci::CircleOpcode::CONV_2D:</div>
 <div class="line"><span class="lineno">  109</span>    {</div>
-<div class="line"><span class="lineno">  110</span>      <span class="keyword">auto</span> conv = loco::must_cast&lt;luci::CircleConv2D *&gt;(node);</div>
+<div class="line"><span class="lineno">  110</span>      <span class="keyword">auto</span> conv = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleConv2D *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">  111</span>      conv-&gt;input(input);</div>
 <div class="line"><span class="lineno">  112</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  113</span>    }</div>
 <div class="line"><span class="lineno">  114</span>    <span class="keywordflow">case</span> luci::CircleOpcode::DEPTHWISE_CONV_2D:</div>
 <div class="line"><span class="lineno">  115</span>    {</div>
-<div class="line"><span class="lineno">  116</span>      <span class="keyword">auto</span> dconv = loco::must_cast&lt;luci::CircleDepthwiseConv2D *&gt;(node);</div>
+<div class="line"><span class="lineno">  116</span>      <span class="keyword">auto</span> dconv = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleDepthwiseConv2D *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">  117</span>      dconv-&gt;input(input);</div>
 <div class="line"><span class="lineno">  118</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  119</span>    }</div>
 <div class="line"><span class="lineno">  120</span>    <span class="keywordflow">case</span> luci::CircleOpcode::FULLY_CONNECTED:</div>
 <div class="line"><span class="lineno">  121</span>    {</div>
-<div class="line"><span class="lineno">  122</span>      <span class="keyword">auto</span> fc = loco::must_cast&lt;luci::CircleFullyConnected *&gt;(node);</div>
+<div class="line"><span class="lineno">  122</span>      <span class="keyword">auto</span> fc = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleFullyConnected *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">  123</span>      fc-&gt;input(input);</div>
 <div class="line"><span class="lineno">  124</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  125</span>    }</div>
 <div class="line"><span class="lineno">  126</span>    <span class="keywordflow">case</span> luci::CircleOpcode::GELU:</div>
 <div class="line"><span class="lineno">  127</span>    {</div>
-<div class="line"><span class="lineno">  128</span>      <span class="keyword">auto</span> gelu = loco::must_cast&lt;luci::CircleGelu *&gt;(node);</div>
+<div class="line"><span class="lineno">  128</span>      <span class="keyword">auto</span> gelu = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleGelu *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">  129</span>      gelu-&gt;features(input);</div>
 <div class="line"><span class="lineno">  130</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  131</span>    }</div>
 <div class="line"><span class="lineno">  132</span>    <span class="keywordflow">case</span> luci::CircleOpcode::LEAKY_RELU:</div>
 <div class="line"><span class="lineno">  133</span>    {</div>
-<div class="line"><span class="lineno">  134</span>      <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8abc5ce62b39aff2f661146911808eadc1">relu</a> = loco::must_cast&lt;luci::CircleLeakyRelu *&gt;(node);</div>
+<div class="line"><span class="lineno">  134</span>      <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8abc5ce62b39aff2f661146911808eadc1">relu</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleLeakyRelu *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">  135</span>      <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8abc5ce62b39aff2f661146911808eadc1">relu</a>-&gt;features(input);</div>
 <div class="line"><span class="lineno">  136</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  137</span>    }</div>
 <div class="line"><span class="lineno">  138</span>    <span class="keywordflow">case</span> luci::CircleOpcode::MAX_POOL_2D:</div>
 <div class="line"><span class="lineno">  139</span>    {</div>
-<div class="line"><span class="lineno">  140</span>      <span class="keyword">auto</span> maxpool = loco::must_cast&lt;luci::CircleMaxPool2D *&gt;(node);</div>
+<div class="line"><span class="lineno">  140</span>      <span class="keyword">auto</span> maxpool = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleMaxPool2D *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">  141</span>      maxpool-&gt;value(input);</div>
 <div class="line"><span class="lineno">  142</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  143</span>    }</div>
 <div class="line"><span class="lineno">  144</span>    <span class="keywordflow">case</span> luci::CircleOpcode::PAD:</div>
 <div class="line"><span class="lineno">  145</span>    {</div>
-<div class="line"><span class="lineno">  146</span>      <span class="keyword">auto</span> pad = loco::must_cast&lt;luci::CirclePad *&gt;(node);</div>
+<div class="line"><span class="lineno">  146</span>      <span class="keyword">auto</span> pad = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CirclePad *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">  147</span>      pad-&gt;input(input);</div>
 <div class="line"><span class="lineno">  148</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  149</span>    }</div>
 <div class="line"><span class="lineno">  150</span>    <span class="keywordflow">case</span> luci::CircleOpcode::RELU:</div>
 <div class="line"><span class="lineno">  151</span>    {</div>
-<div class="line"><span class="lineno">  152</span>      <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8abc5ce62b39aff2f661146911808eadc1">relu</a> = loco::must_cast&lt;luci::CircleLeakyRelu *&gt;(node);</div>
+<div class="line"><span class="lineno">  152</span>      <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8abc5ce62b39aff2f661146911808eadc1">relu</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleLeakyRelu *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">  153</span>      <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8abc5ce62b39aff2f661146911808eadc1">relu</a>-&gt;features(input);</div>
 <div class="line"><span class="lineno">  154</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  155</span>    }</div>
 <div class="line"><span class="lineno">  156</span>    <span class="keywordflow">case</span> luci::CircleOpcode::TRANSPOSE_CONV:</div>
 <div class="line"><span class="lineno">  157</span>    {</div>
-<div class="line"><span class="lineno">  158</span>      <span class="keyword">auto</span> tconv = loco::must_cast&lt;luci::CircleTransposeConv *&gt;(node);</div>
+<div class="line"><span class="lineno">  158</span>      <span class="keyword">auto</span> tconv = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleTransposeConv *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">  159</span>      tconv-&gt;outBackprop(input);</div>
 <div class="line"><span class="lineno">  160</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  161</span>    }</div>
@@ -617,7 +618,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  166</span>  }</div>
 <div class="line"><span class="lineno">  167</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">luci::CircleNode::name()</a>, and <a class="el" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode()</a>.</p>
+<p class="reference">References <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00051">luci::CircleNode::name()</a>, and <a class="el" href="structluci_1_1_circle_node.html#a963f9812635ceac6d5a207594b5028af">luci::CircleNode::opcode()</a>.</p>
 
 </div>
 </div>

@@ -109,7 +109,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T, template&lt; typename &gt; class ReduceFn&gt;<br />
 class onert_micro::execute::pal::Reducer&lt; T, ReduceFn &gt;</div>
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00065">65</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00076">76</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a31b7e3036d5728e65fc5fd99af5841f1" name="a31b7e3036d5728e65fc5fd99af5841f1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a31b7e3036d5728e65fc5fd99af5841f1">&#9670;&#160;</a></span>Reducer()</h2>
@@ -147,12 +147,12 @@ template&lt;typename T , template&lt; typename &gt; class ReduceFn&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00082">82</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   83</span>    : _input(ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">Input</a>())</div>
-<div class="line"><span class="lineno">   84</span>    , _output(ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#abdc6889474f382c94082ff21fe94b925">Output</a>())</div>
-<div class="line"><span class="lineno">   85</span>    , _axes(ctx.Axis())</div>
-<div class="line"><span class="lineno">   86</span>    , _init_value(init_value)</div>
-<div class="line"><span class="lineno">   87</span>  {}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00093">93</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>    : _input(ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">Input</a>())</div>
+<div class="line"><span class="lineno">   95</span>    , _output(ctx.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_data_context.html#abdc6889474f382c94082ff21fe94b925">Output</a>())</div>
+<div class="line"><span class="lineno">   96</span>    , _axes(ctx.Axis())</div>
+<div class="line"><span class="lineno">   97</span>    , _init_value(init_value)</div>
+<div class="line"><span class="lineno">   98</span>  {}</div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_data_context_html_a1d8c3554f691ca6cde4ed47c66d3e67c"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_data_context.html#a1d8c3554f691ca6cde4ed47c66d3e67c">onert_micro::core::OMDataContext::Input</a></div><div class="ttdeci">auto &amp; Input()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_data_8h_source.html#l00157">OMRuntimeData.h:157</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_data_context_html_abdc6889474f382c94082ff21fe94b925"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_data_context.html#abdc6889474f382c94082ff21fe94b925">onert_micro::core::OMDataContext::Output</a></div><div class="ttdeci">auto &amp; Output()</div><div class="ttdef"><b>Definition</b> <a href="_o_m_runtime_data_8h_source.html#l00162">OMRuntimeData.h:162</a></div></div>
 </div><!-- fragment -->
@@ -184,13 +184,13 @@ template&lt;typename T , template&lt; typename &gt; class ReduceFn&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00090">90</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   91</span>  {</div>
-<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">if</span> (SpecialCaseMeanImpl())</div>
-<div class="line"><span class="lineno">   93</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   94</span> </div>
-<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">return</span> ReduceImpl(<span class="keyword">true</span>);</div>
-<div class="line"><span class="lineno">   96</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00101">101</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  102</span>  {</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">if</span> (SpecialCaseMeanImpl())</div>
+<div class="line"><span class="lineno">  104</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">return</span> ReduceImpl(<span class="keyword">true</span>);</div>
+<div class="line"><span class="lineno">  107</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_mean_8cpp_source.html#l00032">impl::CircleMean()</a>.</p>
 
@@ -221,12 +221,12 @@ template&lt;typename T , template&lt; typename &gt; class ReduceFn&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00098">98</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   99</span>  {</div>
-<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">return</span> ReduceImpl();</div>
-<div class="line"><span class="lineno">  101</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00109">109</a> of file <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html">PALReduceCommon.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  110</span>  {</div>
+<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">return</span> ReduceImpl();</div>
+<div class="line"><span class="lineno">  112</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_reduce_prod_8cpp_source.html#l00034">impl::CircleReduceProd()</a>, and <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_sum_8cpp_source.html#l00030">impl::CircleSum()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_reduce_max_8cpp_source.html#l00032">impl::CircleReduceMax()</a>, <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_reduce_prod_8cpp_source.html#l00034">impl::CircleReduceProd()</a>, and <a class="el" href="onert-micro_2onert-micro_2src_2execute_2kernels_2_sum_8cpp_source.html#l00030">impl::CircleSum()</a>.</p>
 
 </div>
 </div>

@@ -1,11 +1,8 @@
 var dir_5ef36d6062e4a553334b9e2c845cd8cf =
 [
-    [ "CLBinaryLogicalOpKernel.cpp", "_c_l_binary_logical_op_kernel_8cpp.html", null ],
     [ "CLCastBoolKernel.cpp", "_c_l_cast_bool_kernel_8cpp.html", null ],
-    [ "CLEmbeddingLookupKernel.cpp", "_c_l_embedding_lookup_kernel_8cpp.html", null ],
     [ "CLGatherExKernel.cpp", "_c_l_gather_ex_kernel_8cpp.html", null ],
     [ "CLHashtableLookupKernel.cpp", "_c_l_hashtable_lookup_kernel_8cpp.html", null ],
-    [ "CLInstanceNormalizationLayerKernelEx.cpp", "_c_l_instance_normalization_layer_kernel_ex_8cpp.html", null ],
     [ "CLMemsetKernel.cpp", "_c_l_memset_kernel_8cpp.html", null ],
     [ "CLMultiplyScaleFactorKernel.cpp", "_c_l_multiply_scale_factor_kernel_8cpp.html", null ],
     [ "CLNegKernel.cpp", "_c_l_neg_kernel_8cpp.html", null ],
