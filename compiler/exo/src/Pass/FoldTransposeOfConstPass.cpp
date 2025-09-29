@@ -115,8 +115,8 @@ void fold_transpose_of_const(locoex::TFLTranspose *transpose)
 
   for (; e.valid(); e.advance())
   {
-    loco::TensorIndex index_new = e.current();
-    loco::TensorIndex index_orig;
+    nncc::core::ADT::tensor::Index index_new = e.current();
+    nncc::core::ADT::tensor::Index index_orig;
 
     // Set original index from matching new index
     index_orig.resize(rank);
