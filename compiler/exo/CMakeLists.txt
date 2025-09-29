@@ -46,6 +46,7 @@ target_link_libraries(exo PRIVATE locop)
 target_link_libraries(exo PRIVATE hermes_std)
 target_link_libraries(exo PRIVATE logo)
 target_link_libraries(exo PRIVATE oops)
+target_link_libraries(exo PRIVATE angkor)
 install(TARGETS exo DESTINATION lib)
 
 # Let's apply nncc common compile options

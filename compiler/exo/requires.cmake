@@ -1,3 +1,4 @@
+require("angkor")
 require("loco")
 require("locoex-customop")
 require("logo")
