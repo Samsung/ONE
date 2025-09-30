@@ -6,6 +6,13 @@
 
 #include "flatbuffers/flatbuffers.h"
 
+// Ensure the included flatbuffers.h is the same version as when this file was
+// generated, otherwise it may not be compatible.
+static_assert(FLATBUFFERS_VERSION_MAJOR == 23 &&
+              FLATBUFFERS_VERSION_MINOR == 5 &&
+              FLATBUFFERS_VERSION_REVISION == 26,
+             "Non-compatible flatbuffers version included");
+
 namespace circle {
 
 struct SGDOptions;
@@ -57,7 +64,7 @@ inline const char * const *EnumNamesOptimizer() {
 }
 
 inline const char *EnumNameOptimizer(Optimizer e) {
-  if (flatbuffers::IsOutRange(e, Optimizer_SGD, Optimizer_ADAM)) return "";
+  if (::flatbuffers::IsOutRange(e, Optimizer_SGD, Optimizer_ADAM)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOptimizer()[index];
 }
@@ -90,7 +97,7 @@ inline const char * const *EnumNamesOptimizerOptions() {
 }
 
 inline const char *EnumNameOptimizerOptions(OptimizerOptions e) {
-  if (flatbuffers::IsOutRange(e, OptimizerOptions_NONE, OptimizerOptions_AdamOptions)) return "";
+  if (::flatbuffers::IsOutRange(e, OptimizerOptions_NONE, OptimizerOptions_AdamOptions)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesOptimizerOptions()[index];
 }
@@ -104,6 +111,18 @@ template<> struct OptimizerOptionsTraits<circle::SGDOptions> {
 };
 
 template<> struct OptimizerOptionsTraits<circle::AdamOptions> {
+  static const OptimizerOptions enum_value = OptimizerOptions_AdamOptions;
+};
+
+template<typename T> struct OptimizerOptionsUnionTraits {
+  static const OptimizerOptions enum_value = OptimizerOptions_NONE;
+};
+
+template<> struct OptimizerOptionsUnionTraits<circle::SGDOptionsT> {
+  static const OptimizerOptions enum_value = OptimizerOptions_SGDOptions;
+};
+
+template<> struct OptimizerOptionsUnionTraits<circle::AdamOptionsT> {
   static const OptimizerOptions enum_value = OptimizerOptions_AdamOptions;
 };
 
@@ -124,20 +143,18 @@ struct OptimizerOptionsUnion {
 
   void Reset();
 
-#ifndef FLATBUFFERS_CPP98_STL
   template <typename T>
   void Set(T&& val) {
-    using RT = typename std::remove_reference<T>::type;
+    typedef typename std::remove_reference<T>::type RT;
     Reset();
-    type = OptimizerOptionsTraits<typename RT::TableType>::enum_value;
+    type = OptimizerOptionsUnionTraits<RT>::enum_value;
     if (type != OptimizerOptions_NONE) {
       value = new RT(std::forward<T>(val));
     }
   }
-#endif  // FLATBUFFERS_CPP98_STL
 
-  static void *UnPack(const void *obj, OptimizerOptions type, const flatbuffers::resolver_function_t *resolver);
-  flatbuffers::Offset<void> Pack(flatbuffers::FlatBufferBuilder &_fbb, const flatbuffers::rehasher_function_t *_rehasher = nullptr) const;
+  static void *UnPack(const void *obj, OptimizerOptions type, const ::flatbuffers::resolver_function_t *resolver);
+  ::flatbuffers::Offset<void> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr) const;
 
   circle::SGDOptionsT *AsSGDOptions() {
     return type == OptimizerOptions_SGDOptions ?
@@ -157,8 +174,8 @@ struct OptimizerOptionsUnion {
   }
 };
 
-bool VerifyOptimizerOptions(flatbuffers::Verifier &verifier, const void *obj, OptimizerOptions type);
-bool VerifyOptimizerOptionsVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<uint8_t> *types);
+bool VerifyOptimizerOptions(::flatbuffers::Verifier &verifier, const void *obj, OptimizerOptions type);
+bool VerifyOptimizerOptionsVector(::flatbuffers::Verifier &verifier, const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values, const ::flatbuffers::Vector<uint8_t> *types);
 
 enum LossFn : int8_t {
   LossFn_SPARSE_CATEGORICAL_CROSSENTROPY = 0,
@@ -188,7 +205,7 @@ inline const char * const *EnumNamesLossFn() {
 }
 
 inline const char *EnumNameLossFn(LossFn e) {
-  if (flatbuffers::IsOutRange(e, LossFn_SPARSE_CATEGORICAL_CROSSENTROPY, LossFn_MEAN_SQUARED_ERROR)) return "";
+  if (::flatbuffers::IsOutRange(e, LossFn_SPARSE_CATEGORICAL_CROSSENTROPY, LossFn_MEAN_SQUARED_ERROR)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesLossFn()[index];
 }
@@ -224,7 +241,7 @@ inline const char * const *EnumNamesLossFnOptions() {
 }
 
 inline const char *EnumNameLossFnOptions(LossFnOptions e) {
-  if (flatbuffers::IsOutRange(e, LossFnOptions_NONE, LossFnOptions_MeanSquaredErrorOptions)) return "";
+  if (::flatbuffers::IsOutRange(e, LossFnOptions_NONE, LossFnOptions_MeanSquaredErrorOptions)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesLossFnOptions()[index];
 }
@@ -245,6 +262,22 @@ template<> struct LossFnOptionsTraits<circle::MeanSquaredErrorOptions> {
   static const LossFnOptions enum_value = LossFnOptions_MeanSquaredErrorOptions;
 };
 
+template<typename T> struct LossFnOptionsUnionTraits {
+  static const LossFnOptions enum_value = LossFnOptions_NONE;
+};
+
+template<> struct LossFnOptionsUnionTraits<circle::SparseCategoricalCrossentropyOptionsT> {
+  static const LossFnOptions enum_value = LossFnOptions_SparseCategoricalCrossentropyOptions;
+};
+
+template<> struct LossFnOptionsUnionTraits<circle::CategoricalCrossentropyOptionsT> {
+  static const LossFnOptions enum_value = LossFnOptions_CategoricalCrossentropyOptions;
+};
+
+template<> struct LossFnOptionsUnionTraits<circle::MeanSquaredErrorOptionsT> {
+  static const LossFnOptions enum_value = LossFnOptions_MeanSquaredErrorOptions;
+};
+
 struct LossFnOptionsUnion {
   LossFnOptions type;
   void *value;
@@ -262,20 +295,18 @@ struct LossFnOptionsUnion {
 
   void Reset();
 
-#ifndef FLATBUFFERS_CPP98_STL
   template <typename T>
   void Set(T&& val) {
-    using RT = typename std::remove_reference<T>::type;
+    typedef typename std::remove_reference<T>::type RT;
     Reset();
-    type = LossFnOptionsTraits<typename RT::TableType>::enum_value;
+    type = LossFnOptionsUnionTraits<RT>::enum_value;
     if (type != LossFnOptions_NONE) {
       value = new RT(std::forward<T>(val));
     }
   }
-#endif  // FLATBUFFERS_CPP98_STL
 
-  static void *UnPack(const void *obj, LossFnOptions type, const flatbuffers::resolver_function_t *resolver);
-  flatbuffers::Offset<void> Pack(flatbuffers::FlatBufferBuilder &_fbb, const flatbuffers::rehasher_function_t *_rehasher = nullptr) const;
+  static void *UnPack(const void *obj, LossFnOptions type, const ::flatbuffers::resolver_function_t *resolver);
+  ::flatbuffers::Offset<void> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr) const;
 
   circle::SparseCategoricalCrossentropyOptionsT *AsSparseCategoricalCrossentropyOptions() {
     return type == LossFnOptions_SparseCategoricalCrossentropyOptions ?
@@ -303,8 +334,8 @@ struct LossFnOptionsUnion {
   }
 };
 
-bool VerifyLossFnOptions(flatbuffers::Verifier &verifier, const void *obj, LossFnOptions type);
-bool VerifyLossFnOptionsVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<uint8_t> *types);
+bool VerifyLossFnOptions(::flatbuffers::Verifier &verifier, const void *obj, LossFnOptions type);
+bool VerifyLossFnOptionsVector(::flatbuffers::Verifier &verifier, const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values, const ::flatbuffers::Vector<uint8_t> *types);
 
 enum LossReductionType : int8_t {
   LossReductionType_SumOverBatchSize = 0,
@@ -331,17 +362,17 @@ inline const char * const *EnumNamesLossReductionType() {
 }
 
 inline const char *EnumNameLossReductionType(LossReductionType e) {
-  if (flatbuffers::IsOutRange(e, LossReductionType_SumOverBatchSize, LossReductionType_Sum)) return "";
+  if (::flatbuffers::IsOutRange(e, LossReductionType_SumOverBatchSize, LossReductionType_Sum)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesLossReductionType()[index];
 }
 
-struct SGDOptionsT : public flatbuffers::NativeTable {
+struct SGDOptionsT : public ::flatbuffers::NativeTable {
   typedef SGDOptions TableType;
   float learning_rate = 0.0f;
 };
 
-struct SGDOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct SGDOptions FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef SGDOptionsT NativeTableType;
   typedef SGDOptionsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -350,45 +381,45 @@ struct SGDOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   float learning_rate() const {
     return GetField<float>(VT_LEARNING_RATE, 0.0f);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_LEARNING_RATE) &&
+           VerifyField<float>(verifier, VT_LEARNING_RATE, 4) &&
            verifier.EndTable();
   }
-  SGDOptionsT *UnPack(const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  void UnPackTo(SGDOptionsT *_o, const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  static flatbuffers::Offset<SGDOptions> Pack(flatbuffers::FlatBufferBuilder &_fbb, const SGDOptionsT* _o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+  SGDOptionsT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(SGDOptionsT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<SGDOptions> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const SGDOptionsT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 };
 
 struct SGDOptionsBuilder {
   typedef SGDOptions Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_learning_rate(float learning_rate) {
     fbb_.AddElement<float>(SGDOptions::VT_LEARNING_RATE, learning_rate, 0.0f);
   }
-  explicit SGDOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit SGDOptionsBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<SGDOptions> Finish() {
+  ::flatbuffers::Offset<SGDOptions> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SGDOptions>(end);
+    auto o = ::flatbuffers::Offset<SGDOptions>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<SGDOptions> CreateSGDOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<SGDOptions> CreateSGDOptions(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     float learning_rate = 0.0f) {
   SGDOptionsBuilder builder_(_fbb);
   builder_.add_learning_rate(learning_rate);
   return builder_.Finish();
 }
 
-flatbuffers::Offset<SGDOptions> CreateSGDOptions(flatbuffers::FlatBufferBuilder &_fbb, const SGDOptionsT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+::flatbuffers::Offset<SGDOptions> CreateSGDOptions(::flatbuffers::FlatBufferBuilder &_fbb, const SGDOptionsT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
-struct AdamOptionsT : public flatbuffers::NativeTable {
+struct AdamOptionsT : public ::flatbuffers::NativeTable {
   typedef AdamOptions TableType;
   float learning_rate = 0.0f;
   float beta_1 = 0.0f;
@@ -396,7 +427,7 @@ struct AdamOptionsT : public flatbuffers::NativeTable {
   float epsilon = 0.0f;
 };
 
-struct AdamOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct AdamOptions FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef AdamOptionsT NativeTableType;
   typedef AdamOptionsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -417,23 +448,23 @@ struct AdamOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   float epsilon() const {
     return GetField<float>(VT_EPSILON, 0.0f);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<float>(verifier, VT_LEARNING_RATE) &&
-           VerifyField<float>(verifier, VT_BETA_1) &&
-           VerifyField<float>(verifier, VT_BETA_2) &&
-           VerifyField<float>(verifier, VT_EPSILON) &&
+           VerifyField<float>(verifier, VT_LEARNING_RATE, 4) &&
+           VerifyField<float>(verifier, VT_BETA_1, 4) &&
+           VerifyField<float>(verifier, VT_BETA_2, 4) &&
+           VerifyField<float>(verifier, VT_EPSILON, 4) &&
            verifier.EndTable();
   }
-  AdamOptionsT *UnPack(const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  void UnPackTo(AdamOptionsT *_o, const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  static flatbuffers::Offset<AdamOptions> Pack(flatbuffers::FlatBufferBuilder &_fbb, const AdamOptionsT* _o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+  AdamOptionsT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(AdamOptionsT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<AdamOptions> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const AdamOptionsT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 };
 
 struct AdamOptionsBuilder {
   typedef AdamOptions Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_learning_rate(float learning_rate) {
     fbb_.AddElement<float>(AdamOptions::VT_LEARNING_RATE, learning_rate, 0.0f);
   }
@@ -446,19 +477,19 @@ struct AdamOptionsBuilder {
   void add_epsilon(float epsilon) {
     fbb_.AddElement<float>(AdamOptions::VT_EPSILON, epsilon, 0.0f);
   }
-  explicit AdamOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit AdamOptionsBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<AdamOptions> Finish() {
+  ::flatbuffers::Offset<AdamOptions> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<AdamOptions>(end);
+    auto o = ::flatbuffers::Offset<AdamOptions>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<AdamOptions> CreateAdamOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<AdamOptions> CreateAdamOptions(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     float learning_rate = 0.0f,
     float beta_1 = 0.0f,
     float beta_2 = 0.0f,
@@ -471,14 +502,14 @@ inline flatbuffers::Offset<AdamOptions> CreateAdamOptions(
   return builder_.Finish();
 }
 
-flatbuffers::Offset<AdamOptions> CreateAdamOptions(flatbuffers::FlatBufferBuilder &_fbb, const AdamOptionsT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+::flatbuffers::Offset<AdamOptions> CreateAdamOptions(::flatbuffers::FlatBufferBuilder &_fbb, const AdamOptionsT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
-struct SparseCategoricalCrossentropyOptionsT : public flatbuffers::NativeTable {
+struct SparseCategoricalCrossentropyOptionsT : public ::flatbuffers::NativeTable {
   typedef SparseCategoricalCrossentropyOptions TableType;
   bool from_logits = false;
 };
 
-struct SparseCategoricalCrossentropyOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct SparseCategoricalCrossentropyOptions FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef SparseCategoricalCrossentropyOptionsT NativeTableType;
   typedef SparseCategoricalCrossentropyOptionsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -487,50 +518,50 @@ struct SparseCategoricalCrossentropyOptions FLATBUFFERS_FINAL_CLASS : private fl
   bool from_logits() const {
     return GetField<uint8_t>(VT_FROM_LOGITS, 0) != 0;
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_FROM_LOGITS) &&
+           VerifyField<uint8_t>(verifier, VT_FROM_LOGITS, 1) &&
            verifier.EndTable();
   }
-  SparseCategoricalCrossentropyOptionsT *UnPack(const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  void UnPackTo(SparseCategoricalCrossentropyOptionsT *_o, const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  static flatbuffers::Offset<SparseCategoricalCrossentropyOptions> Pack(flatbuffers::FlatBufferBuilder &_fbb, const SparseCategoricalCrossentropyOptionsT* _o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+  SparseCategoricalCrossentropyOptionsT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(SparseCategoricalCrossentropyOptionsT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<SparseCategoricalCrossentropyOptions> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const SparseCategoricalCrossentropyOptionsT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 };
 
 struct SparseCategoricalCrossentropyOptionsBuilder {
   typedef SparseCategoricalCrossentropyOptions Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_from_logits(bool from_logits) {
     fbb_.AddElement<uint8_t>(SparseCategoricalCrossentropyOptions::VT_FROM_LOGITS, static_cast<uint8_t>(from_logits), 0);
   }
-  explicit SparseCategoricalCrossentropyOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit SparseCategoricalCrossentropyOptionsBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<SparseCategoricalCrossentropyOptions> Finish() {
+  ::flatbuffers::Offset<SparseCategoricalCrossentropyOptions> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SparseCategoricalCrossentropyOptions>(end);
+    auto o = ::flatbuffers::Offset<SparseCategoricalCrossentropyOptions>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<SparseCategoricalCrossentropyOptions> CreateSparseCategoricalCrossentropyOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<SparseCategoricalCrossentropyOptions> CreateSparseCategoricalCrossentropyOptions(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     bool from_logits = false) {
   SparseCategoricalCrossentropyOptionsBuilder builder_(_fbb);
   builder_.add_from_logits(from_logits);
   return builder_.Finish();
 }
 
-flatbuffers::Offset<SparseCategoricalCrossentropyOptions> CreateSparseCategoricalCrossentropyOptions(flatbuffers::FlatBufferBuilder &_fbb, const SparseCategoricalCrossentropyOptionsT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+::flatbuffers::Offset<SparseCategoricalCrossentropyOptions> CreateSparseCategoricalCrossentropyOptions(::flatbuffers::FlatBufferBuilder &_fbb, const SparseCategoricalCrossentropyOptionsT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
-struct CategoricalCrossentropyOptionsT : public flatbuffers::NativeTable {
+struct CategoricalCrossentropyOptionsT : public ::flatbuffers::NativeTable {
   typedef CategoricalCrossentropyOptions TableType;
   bool from_logits = false;
 };
 
-struct CategoricalCrossentropyOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct CategoricalCrossentropyOptions FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef CategoricalCrossentropyOptionsT NativeTableType;
   typedef CategoricalCrossentropyOptionsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -539,84 +570,84 @@ struct CategoricalCrossentropyOptions FLATBUFFERS_FINAL_CLASS : private flatbuff
   bool from_logits() const {
     return GetField<uint8_t>(VT_FROM_LOGITS, 0) != 0;
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_FROM_LOGITS) &&
+           VerifyField<uint8_t>(verifier, VT_FROM_LOGITS, 1) &&
            verifier.EndTable();
   }
-  CategoricalCrossentropyOptionsT *UnPack(const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  void UnPackTo(CategoricalCrossentropyOptionsT *_o, const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  static flatbuffers::Offset<CategoricalCrossentropyOptions> Pack(flatbuffers::FlatBufferBuilder &_fbb, const CategoricalCrossentropyOptionsT* _o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+  CategoricalCrossentropyOptionsT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(CategoricalCrossentropyOptionsT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<CategoricalCrossentropyOptions> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const CategoricalCrossentropyOptionsT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 };
 
 struct CategoricalCrossentropyOptionsBuilder {
   typedef CategoricalCrossentropyOptions Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_from_logits(bool from_logits) {
     fbb_.AddElement<uint8_t>(CategoricalCrossentropyOptions::VT_FROM_LOGITS, static_cast<uint8_t>(from_logits), 0);
   }
-  explicit CategoricalCrossentropyOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit CategoricalCrossentropyOptionsBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<CategoricalCrossentropyOptions> Finish() {
+  ::flatbuffers::Offset<CategoricalCrossentropyOptions> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<CategoricalCrossentropyOptions>(end);
+    auto o = ::flatbuffers::Offset<CategoricalCrossentropyOptions>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<CategoricalCrossentropyOptions> CreateCategoricalCrossentropyOptions(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<CategoricalCrossentropyOptions> CreateCategoricalCrossentropyOptions(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     bool from_logits = false) {
   CategoricalCrossentropyOptionsBuilder builder_(_fbb);
   builder_.add_from_logits(from_logits);
   return builder_.Finish();
 }
 
-flatbuffers::Offset<CategoricalCrossentropyOptions> CreateCategoricalCrossentropyOptions(flatbuffers::FlatBufferBuilder &_fbb, const CategoricalCrossentropyOptionsT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+::flatbuffers::Offset<CategoricalCrossentropyOptions> CreateCategoricalCrossentropyOptions(::flatbuffers::FlatBufferBuilder &_fbb, const CategoricalCrossentropyOptionsT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
-struct MeanSquaredErrorOptionsT : public flatbuffers::NativeTable {
+struct MeanSquaredErrorOptionsT : public ::flatbuffers::NativeTable {
   typedef MeanSquaredErrorOptions TableType;
 };
 
-struct MeanSquaredErrorOptions FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct MeanSquaredErrorOptions FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef MeanSquaredErrorOptionsT NativeTableType;
   typedef MeanSquaredErrorOptionsBuilder Builder;
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            verifier.EndTable();
   }
-  MeanSquaredErrorOptionsT *UnPack(const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  void UnPackTo(MeanSquaredErrorOptionsT *_o, const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  static flatbuffers::Offset<MeanSquaredErrorOptions> Pack(flatbuffers::FlatBufferBuilder &_fbb, const MeanSquaredErrorOptionsT* _o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+  MeanSquaredErrorOptionsT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(MeanSquaredErrorOptionsT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<MeanSquaredErrorOptions> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const MeanSquaredErrorOptionsT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 };
 
 struct MeanSquaredErrorOptionsBuilder {
   typedef MeanSquaredErrorOptions Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  explicit MeanSquaredErrorOptionsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit MeanSquaredErrorOptionsBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<MeanSquaredErrorOptions> Finish() {
+  ::flatbuffers::Offset<MeanSquaredErrorOptions> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<MeanSquaredErrorOptions>(end);
+    auto o = ::flatbuffers::Offset<MeanSquaredErrorOptions>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<MeanSquaredErrorOptions> CreateMeanSquaredErrorOptions(
-    flatbuffers::FlatBufferBuilder &_fbb) {
+inline ::flatbuffers::Offset<MeanSquaredErrorOptions> CreateMeanSquaredErrorOptions(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
   MeanSquaredErrorOptionsBuilder builder_(_fbb);
   return builder_.Finish();
 }
 
-flatbuffers::Offset<MeanSquaredErrorOptions> CreateMeanSquaredErrorOptions(flatbuffers::FlatBufferBuilder &_fbb, const MeanSquaredErrorOptionsT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+::flatbuffers::Offset<MeanSquaredErrorOptions> CreateMeanSquaredErrorOptions(::flatbuffers::FlatBufferBuilder &_fbb, const MeanSquaredErrorOptionsT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
-struct ModelTrainingT : public flatbuffers::NativeTable {
+struct ModelTrainingT : public ::flatbuffers::NativeTable {
   typedef ModelTraining TableType;
   uint32_t version = 0;
   circle::Optimizer optimizer = circle::Optimizer_SGD;
@@ -629,7 +660,7 @@ struct ModelTrainingT : public flatbuffers::NativeTable {
   std::vector<int32_t> trainable_ops{};
 };
 
-struct ModelTraining FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct ModelTraining FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef ModelTrainingT NativeTableType;
   typedef ModelTrainingBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -692,30 +723,30 @@ struct ModelTraining FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   circle::LossReductionType loss_reduction_type() const {
     return static_cast<circle::LossReductionType>(GetField<int8_t>(VT_LOSS_REDUCTION_TYPE, 0));
   }
-  const flatbuffers::Vector<int32_t> *trainable_ops() const {
-    return GetPointer<const flatbuffers::Vector<int32_t> *>(VT_TRAINABLE_OPS);
+  const ::flatbuffers::Vector<int32_t> *trainable_ops() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_TRAINABLE_OPS);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint32_t>(verifier, VT_VERSION) &&
-           VerifyField<int8_t>(verifier, VT_OPTIMIZER) &&
-           VerifyField<uint8_t>(verifier, VT_OPTIMIZER_OPT_TYPE) &&
+           VerifyField<uint32_t>(verifier, VT_VERSION, 4) &&
+           VerifyField<int8_t>(verifier, VT_OPTIMIZER, 1) &&
+           VerifyField<uint8_t>(verifier, VT_OPTIMIZER_OPT_TYPE, 1) &&
            VerifyOffset(verifier, VT_OPTIMIZER_OPT) &&
            VerifyOptimizerOptions(verifier, optimizer_opt(), optimizer_opt_type()) &&
-           VerifyField<int8_t>(verifier, VT_LOSSFN) &&
-           VerifyField<uint8_t>(verifier, VT_LOSSFN_OPT_TYPE) &&
+           VerifyField<int8_t>(verifier, VT_LOSSFN, 1) &&
+           VerifyField<uint8_t>(verifier, VT_LOSSFN_OPT_TYPE, 1) &&
            VerifyOffset(verifier, VT_LOSSFN_OPT) &&
            VerifyLossFnOptions(verifier, lossfn_opt(), lossfn_opt_type()) &&
-           VerifyField<int32_t>(verifier, VT_EPOCHS) &&
-           VerifyField<int32_t>(verifier, VT_BATCH_SIZE) &&
-           VerifyField<int8_t>(verifier, VT_LOSS_REDUCTION_TYPE) &&
+           VerifyField<int32_t>(verifier, VT_EPOCHS, 4) &&
+           VerifyField<int32_t>(verifier, VT_BATCH_SIZE, 4) &&
+           VerifyField<int8_t>(verifier, VT_LOSS_REDUCTION_TYPE, 1) &&
            VerifyOffset(verifier, VT_TRAINABLE_OPS) &&
            verifier.VerifyVector(trainable_ops()) &&
            verifier.EndTable();
   }
-  ModelTrainingT *UnPack(const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  void UnPackTo(ModelTrainingT *_o, const flatbuffers::resolver_function_t *_resolver = nullptr) const;
-  static flatbuffers::Offset<ModelTraining> Pack(flatbuffers::FlatBufferBuilder &_fbb, const ModelTrainingT* _o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+  ModelTrainingT *UnPack(const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  void UnPackTo(ModelTrainingT *_o, const ::flatbuffers::resolver_function_t *_resolver = nullptr) const;
+  static ::flatbuffers::Offset<ModelTraining> Pack(::flatbuffers::FlatBufferBuilder &_fbb, const ModelTrainingT* _o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 };
 
 template<> inline const circle::SGDOptions *ModelTraining::optimizer_opt_as<circle::SGDOptions>() const {
@@ -740,8 +771,8 @@ template<> inline const circle::MeanSquaredErrorOptions *ModelTraining::lossfn_o
 
 struct ModelTrainingBuilder {
   typedef ModelTraining Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
   void add_version(uint32_t version) {
     fbb_.AddElement<uint32_t>(ModelTraining::VT_VERSION, version, 0);
   }
@@ -751,7 +782,7 @@ struct ModelTrainingBuilder {
   void add_optimizer_opt_type(circle::OptimizerOptions optimizer_opt_type) {
     fbb_.AddElement<uint8_t>(ModelTraining::VT_OPTIMIZER_OPT_TYPE, static_cast<uint8_t>(optimizer_opt_type), 0);
   }
-  void add_optimizer_opt(flatbuffers::Offset<void> optimizer_opt) {
+  void add_optimizer_opt(::flatbuffers::Offset<void> optimizer_opt) {
     fbb_.AddOffset(ModelTraining::VT_OPTIMIZER_OPT, optimizer_opt);
   }
   void add_lossfn(circle::LossFn lossfn) {
@@ -760,7 +791,7 @@ struct ModelTrainingBuilder {
   void add_lossfn_opt_type(circle::LossFnOptions lossfn_opt_type) {
     fbb_.AddElement<uint8_t>(ModelTraining::VT_LOSSFN_OPT_TYPE, static_cast<uint8_t>(lossfn_opt_type), 0);
   }
-  void add_lossfn_opt(flatbuffers::Offset<void> lossfn_opt) {
+  void add_lossfn_opt(::flatbuffers::Offset<void> lossfn_opt) {
     fbb_.AddOffset(ModelTraining::VT_LOSSFN_OPT, lossfn_opt);
   }
   void add_epochs(int32_t epochs) {
@@ -772,33 +803,33 @@ struct ModelTrainingBuilder {
   void add_loss_reduction_type(circle::LossReductionType loss_reduction_type) {
     fbb_.AddElement<int8_t>(ModelTraining::VT_LOSS_REDUCTION_TYPE, static_cast<int8_t>(loss_reduction_type), 0);
   }
-  void add_trainable_ops(flatbuffers::Offset<flatbuffers::Vector<int32_t>> trainable_ops) {
+  void add_trainable_ops(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> trainable_ops) {
     fbb_.AddOffset(ModelTraining::VT_TRAINABLE_OPS, trainable_ops);
   }
-  explicit ModelTrainingBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ModelTrainingBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ModelTraining> Finish() {
+  ::flatbuffers::Offset<ModelTraining> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ModelTraining>(end);
+    auto o = ::flatbuffers::Offset<ModelTraining>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ModelTraining> CreateModelTraining(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<ModelTraining> CreateModelTraining(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     uint32_t version = 0,
     circle::Optimizer optimizer = circle::Optimizer_SGD,
     circle::OptimizerOptions optimizer_opt_type = circle::OptimizerOptions_NONE,
-    flatbuffers::Offset<void> optimizer_opt = 0,
+    ::flatbuffers::Offset<void> optimizer_opt = 0,
     circle::LossFn lossfn = circle::LossFn_SPARSE_CATEGORICAL_CROSSENTROPY,
     circle::LossFnOptions lossfn_opt_type = circle::LossFnOptions_NONE,
-    flatbuffers::Offset<void> lossfn_opt = 0,
+    ::flatbuffers::Offset<void> lossfn_opt = 0,
     int32_t epochs = 0,
     int32_t batch_size = 0,
     circle::LossReductionType loss_reduction_type = circle::LossReductionType_SumOverBatchSize,
-    flatbuffers::Offset<flatbuffers::Vector<int32_t>> trainable_ops = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> trainable_ops = 0) {
   ModelTrainingBuilder builder_(_fbb);
   builder_.add_trainable_ops(trainable_ops);
   builder_.add_batch_size(batch_size);
@@ -814,15 +845,15 @@ inline flatbuffers::Offset<ModelTraining> CreateModelTraining(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<ModelTraining> CreateModelTrainingDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<ModelTraining> CreateModelTrainingDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     uint32_t version = 0,
     circle::Optimizer optimizer = circle::Optimizer_SGD,
     circle::OptimizerOptions optimizer_opt_type = circle::OptimizerOptions_NONE,
-    flatbuffers::Offset<void> optimizer_opt = 0,
+    ::flatbuffers::Offset<void> optimizer_opt = 0,
     circle::LossFn lossfn = circle::LossFn_SPARSE_CATEGORICAL_CROSSENTROPY,
     circle::LossFnOptions lossfn_opt_type = circle::LossFnOptions_NONE,
-    flatbuffers::Offset<void> lossfn_opt = 0,
+    ::flatbuffers::Offset<void> lossfn_opt = 0,
     int32_t epochs = 0,
     int32_t batch_size = 0,
     circle::LossReductionType loss_reduction_type = circle::LossReductionType_SumOverBatchSize,
@@ -843,41 +874,41 @@ inline flatbuffers::Offset<ModelTraining> CreateModelTrainingDirect(
       trainable_ops__);
 }
 
-flatbuffers::Offset<ModelTraining> CreateModelTraining(flatbuffers::FlatBufferBuilder &_fbb, const ModelTrainingT *_o, const flatbuffers::rehasher_function_t *_rehasher = nullptr);
+::flatbuffers::Offset<ModelTraining> CreateModelTraining(::flatbuffers::FlatBufferBuilder &_fbb, const ModelTrainingT *_o, const ::flatbuffers::rehasher_function_t *_rehasher = nullptr);
 
-inline SGDOptionsT *SGDOptions::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
+inline SGDOptionsT *SGDOptions::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
   auto _o = std::unique_ptr<SGDOptionsT>(new SGDOptionsT());
   UnPackTo(_o.get(), _resolver);
   return _o.release();
 }
 
-inline void SGDOptions::UnPackTo(SGDOptionsT *_o, const flatbuffers::resolver_function_t *_resolver) const {
+inline void SGDOptions::UnPackTo(SGDOptionsT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
   (void)_o;
   (void)_resolver;
   { auto _e = learning_rate(); _o->learning_rate = _e; }
 }
 
-inline flatbuffers::Offset<SGDOptions> SGDOptions::Pack(flatbuffers::FlatBufferBuilder &_fbb, const SGDOptionsT* _o, const flatbuffers::rehasher_function_t *_rehasher) {
+inline ::flatbuffers::Offset<SGDOptions> SGDOptions::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const SGDOptionsT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
   return CreateSGDOptions(_fbb, _o, _rehasher);
 }
 
-inline flatbuffers::Offset<SGDOptions> CreateSGDOptions(flatbuffers::FlatBufferBuilder &_fbb, const SGDOptionsT *_o, const flatbuffers::rehasher_function_t *_rehasher) {
+inline ::flatbuffers::Offset<SGDOptions> CreateSGDOptions(::flatbuffers::FlatBufferBuilder &_fbb, const SGDOptionsT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
   (void)_rehasher;
   (void)_o;
-  struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const SGDOptionsT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const SGDOptionsT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
   auto _learning_rate = _o->learning_rate;
   return circle::CreateSGDOptions(
       _fbb,
       _learning_rate);
 }
 
-inline AdamOptionsT *AdamOptions::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
+inline AdamOptionsT *AdamOptions::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
   auto _o = std::unique_ptr<AdamOptionsT>(new AdamOptionsT());
   UnPackTo(_o.get(), _resolver);
   return _o.release();
 }
 
-inline void AdamOptions::UnPackTo(AdamOptionsT *_o, const flatbuffers::resolver_function_t *_resolver) const {
+inline void AdamOptions::UnPackTo(AdamOptionsT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
   (void)_o;
   (void)_resolver;
   { auto _e = learning_rate(); _o->learning_rate = _e; }
@@ -886,14 +917,14 @@ inline void AdamOptions::UnPackTo(AdamOptionsT *_o, const flatbuffers::resolver_
   { auto _e = epsilon(); _o->epsilon = _e; }
 }
 
-inline flatbuffers::Offset<AdamOptions> AdamOptions::Pack(flatbuffers::FlatBufferBuilder &_fbb, const AdamOptionsT* _o, const flatbuffers::rehasher_function_t *_rehasher) {
+inline ::flatbuffers::Offset<AdamOptions> AdamOptions::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const AdamOptionsT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
   return CreateAdamOptions(_fbb, _o, _rehasher);
 }
 
-inline flatbuffers::Offset<AdamOptions> CreateAdamOptions(flatbuffers::FlatBufferBuilder &_fbb, const AdamOptionsT *_o, const flatbuffers::rehasher_function_t *_rehasher) {
+inline ::flatbuffers::Offset<AdamOptions> CreateAdamOptions(::flatbuffers::FlatBufferBuilder &_fbb, const AdamOptionsT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
   (void)_rehasher;
   (void)_o;
-  struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const AdamOptionsT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const AdamOptionsT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
   auto _learning_rate = _o->learning_rate;
   auto _beta_1 = _o->beta_1;
   auto _beta_2 = _o->beta_2;
@@ -906,88 +937,88 @@ inline flatbuffers::Offset<AdamOptions> CreateAdamOptions(flatbuffers::FlatBuffe
       _epsilon);
 }
 
-inline SparseCategoricalCrossentropyOptionsT *SparseCategoricalCrossentropyOptions::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
+inline SparseCategoricalCrossentropyOptionsT *SparseCategoricalCrossentropyOptions::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
   auto _o = std::unique_ptr<SparseCategoricalCrossentropyOptionsT>(new SparseCategoricalCrossentropyOptionsT());
   UnPackTo(_o.get(), _resolver);
   return _o.release();
 }
 
-inline void SparseCategoricalCrossentropyOptions::UnPackTo(SparseCategoricalCrossentropyOptionsT *_o, const flatbuffers::resolver_function_t *_resolver) const {
+inline void SparseCategoricalCrossentropyOptions::UnPackTo(SparseCategoricalCrossentropyOptionsT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
   (void)_o;
   (void)_resolver;
   { auto _e = from_logits(); _o->from_logits = _e; }
 }
 
-inline flatbuffers::Offset<SparseCategoricalCrossentropyOptions> SparseCategoricalCrossentropyOptions::Pack(flatbuffers::FlatBufferBuilder &_fbb, const SparseCategoricalCrossentropyOptionsT* _o, const flatbuffers::rehasher_function_t *_rehasher) {
+inline ::flatbuffers::Offset<SparseCategoricalCrossentropyOptions> SparseCategoricalCrossentropyOptions::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const SparseCategoricalCrossentropyOptionsT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
   return CreateSparseCategoricalCrossentropyOptions(_fbb, _o, _rehasher);
 }
 
-inline flatbuffers::Offset<SparseCategoricalCrossentropyOptions> CreateSparseCategoricalCrossentropyOptions(flatbuffers::FlatBufferBuilder &_fbb, const SparseCategoricalCrossentropyOptionsT *_o, const flatbuffers::rehasher_function_t *_rehasher) {
+inline ::flatbuffers::Offset<SparseCategoricalCrossentropyOptions> CreateSparseCategoricalCrossentropyOptions(::flatbuffers::FlatBufferBuilder &_fbb, const SparseCategoricalCrossentropyOptionsT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
   (void)_rehasher;
   (void)_o;
-  struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const SparseCategoricalCrossentropyOptionsT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const SparseCategoricalCrossentropyOptionsT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
   auto _from_logits = _o->from_logits;
   return circle::CreateSparseCategoricalCrossentropyOptions(
       _fbb,
       _from_logits);
 }
 
-inline CategoricalCrossentropyOptionsT *CategoricalCrossentropyOptions::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
+inline CategoricalCrossentropyOptionsT *CategoricalCrossentropyOptions::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
   auto _o = std::unique_ptr<CategoricalCrossentropyOptionsT>(new CategoricalCrossentropyOptionsT());
   UnPackTo(_o.get(), _resolver);
   return _o.release();
 }
 
-inline void CategoricalCrossentropyOptions::UnPackTo(CategoricalCrossentropyOptionsT *_o, const flatbuffers::resolver_function_t *_resolver) const {
+inline void CategoricalCrossentropyOptions::UnPackTo(CategoricalCrossentropyOptionsT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
   (void)_o;
   (void)_resolver;
   { auto _e = from_logits(); _o->from_logits = _e; }
 }
 
-inline flatbuffers::Offset<CategoricalCrossentropyOptions> CategoricalCrossentropyOptions::Pack(flatbuffers::FlatBufferBuilder &_fbb, const CategoricalCrossentropyOptionsT* _o, const flatbuffers::rehasher_function_t *_rehasher) {
+inline ::flatbuffers::Offset<CategoricalCrossentropyOptions> CategoricalCrossentropyOptions::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const CategoricalCrossentropyOptionsT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
   return CreateCategoricalCrossentropyOptions(_fbb, _o, _rehasher);
 }
 
-inline flatbuffers::Offset<CategoricalCrossentropyOptions> CreateCategoricalCrossentropyOptions(flatbuffers::FlatBufferBuilder &_fbb, const CategoricalCrossentropyOptionsT *_o, const flatbuffers::rehasher_function_t *_rehasher) {
+inline ::flatbuffers::Offset<CategoricalCrossentropyOptions> CreateCategoricalCrossentropyOptions(::flatbuffers::FlatBufferBuilder &_fbb, const CategoricalCrossentropyOptionsT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
   (void)_rehasher;
   (void)_o;
-  struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const CategoricalCrossentropyOptionsT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const CategoricalCrossentropyOptionsT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
   auto _from_logits = _o->from_logits;
   return circle::CreateCategoricalCrossentropyOptions(
       _fbb,
       _from_logits);
 }
 
-inline MeanSquaredErrorOptionsT *MeanSquaredErrorOptions::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
+inline MeanSquaredErrorOptionsT *MeanSquaredErrorOptions::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
   auto _o = std::unique_ptr<MeanSquaredErrorOptionsT>(new MeanSquaredErrorOptionsT());
   UnPackTo(_o.get(), _resolver);
   return _o.release();
 }
 
-inline void MeanSquaredErrorOptions::UnPackTo(MeanSquaredErrorOptionsT *_o, const flatbuffers::resolver_function_t *_resolver) const {
+inline void MeanSquaredErrorOptions::UnPackTo(MeanSquaredErrorOptionsT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
   (void)_o;
   (void)_resolver;
 }
 
-inline flatbuffers::Offset<MeanSquaredErrorOptions> MeanSquaredErrorOptions::Pack(flatbuffers::FlatBufferBuilder &_fbb, const MeanSquaredErrorOptionsT* _o, const flatbuffers::rehasher_function_t *_rehasher) {
+inline ::flatbuffers::Offset<MeanSquaredErrorOptions> MeanSquaredErrorOptions::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const MeanSquaredErrorOptionsT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
   return CreateMeanSquaredErrorOptions(_fbb, _o, _rehasher);
 }
 
-inline flatbuffers::Offset<MeanSquaredErrorOptions> CreateMeanSquaredErrorOptions(flatbuffers::FlatBufferBuilder &_fbb, const MeanSquaredErrorOptionsT *_o, const flatbuffers::rehasher_function_t *_rehasher) {
+inline ::flatbuffers::Offset<MeanSquaredErrorOptions> CreateMeanSquaredErrorOptions(::flatbuffers::FlatBufferBuilder &_fbb, const MeanSquaredErrorOptionsT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
   (void)_rehasher;
   (void)_o;
-  struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const MeanSquaredErrorOptionsT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const MeanSquaredErrorOptionsT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
   return circle::CreateMeanSquaredErrorOptions(
       _fbb);
 }
 
-inline ModelTrainingT *ModelTraining::UnPack(const flatbuffers::resolver_function_t *_resolver) const {
+inline ModelTrainingT *ModelTraining::UnPack(const ::flatbuffers::resolver_function_t *_resolver) const {
   auto _o = std::unique_ptr<ModelTrainingT>(new ModelTrainingT());
   UnPackTo(_o.get(), _resolver);
   return _o.release();
 }
 
-inline void ModelTraining::UnPackTo(ModelTrainingT *_o, const flatbuffers::resolver_function_t *_resolver) const {
+inline void ModelTraining::UnPackTo(ModelTrainingT *_o, const ::flatbuffers::resolver_function_t *_resolver) const {
   (void)_o;
   (void)_resolver;
   { auto _e = version(); _o->version = _e; }
@@ -1000,17 +1031,17 @@ inline void ModelTraining::UnPackTo(ModelTrainingT *_o, const flatbuffers::resol
   { auto _e = epochs(); _o->epochs = _e; }
   { auto _e = batch_size(); _o->batch_size = _e; }
   { auto _e = loss_reduction_type(); _o->loss_reduction_type = _e; }
-  { auto _e = trainable_ops(); if (_e) { _o->trainable_ops.resize(_e->size()); for (flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { _o->trainable_ops[_i] = _e->Get(_i); } } }
+  { auto _e = trainable_ops(); if (_e) { _o->trainable_ops.resize(_e->size()); for (::flatbuffers::uoffset_t _i = 0; _i < _e->size(); _i++) { _o->trainable_ops[_i] = _e->Get(_i); } } else { _o->trainable_ops.resize(0); } }
 }
 
-inline flatbuffers::Offset<ModelTraining> ModelTraining::Pack(flatbuffers::FlatBufferBuilder &_fbb, const ModelTrainingT* _o, const flatbuffers::rehasher_function_t *_rehasher) {
+inline ::flatbuffers::Offset<ModelTraining> ModelTraining::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const ModelTrainingT* _o, const ::flatbuffers::rehasher_function_t *_rehasher) {
   return CreateModelTraining(_fbb, _o, _rehasher);
 }
 
-inline flatbuffers::Offset<ModelTraining> CreateModelTraining(flatbuffers::FlatBufferBuilder &_fbb, const ModelTrainingT *_o, const flatbuffers::rehasher_function_t *_rehasher) {
+inline ::flatbuffers::Offset<ModelTraining> CreateModelTraining(::flatbuffers::FlatBufferBuilder &_fbb, const ModelTrainingT *_o, const ::flatbuffers::rehasher_function_t *_rehasher) {
   (void)_rehasher;
   (void)_o;
-  struct _VectorArgs { flatbuffers::FlatBufferBuilder *__fbb; const ModelTrainingT* __o; const flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
+  struct _VectorArgs { ::flatbuffers::FlatBufferBuilder *__fbb; const ModelTrainingT* __o; const ::flatbuffers::rehasher_function_t *__rehasher; } _va = { &_fbb, _o, _rehasher}; (void)_va;
   auto _version = _o->version;
   auto _optimizer = _o->optimizer;
   auto _optimizer_opt_type = _o->optimizer_opt.type;
@@ -1037,7 +1068,7 @@ inline flatbuffers::Offset<ModelTraining> CreateModelTraining(flatbuffers::FlatB
       _trainable_ops);
 }
 
-inline bool VerifyOptimizerOptions(flatbuffers::Verifier &verifier, const void *obj, OptimizerOptions type) {
+inline bool VerifyOptimizerOptions(::flatbuffers::Verifier &verifier, const void *obj, OptimizerOptions type) {
   switch (type) {
     case OptimizerOptions_NONE: {
       return true;
@@ -1054,10 +1085,10 @@ inline bool VerifyOptimizerOptions(flatbuffers::Verifier &verifier, const void *
   }
 }
 
-inline bool VerifyOptimizerOptionsVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<uint8_t> *types) {
+inline bool VerifyOptimizerOptionsVector(::flatbuffers::Verifier &verifier, const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values, const ::flatbuffers::Vector<uint8_t> *types) {
   if (!values || !types) return !values && !types;
   if (values->size() != types->size()) return false;
-  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+  for (::flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
     if (!VerifyOptimizerOptions(
         verifier,  values->Get(i), types->GetEnum<OptimizerOptions>(i))) {
       return false;
@@ -1066,7 +1097,8 @@ inline bool VerifyOptimizerOptionsVector(flatbuffers::Verifier &verifier, const 
   return true;
 }
 
-inline void *OptimizerOptionsUnion::UnPack(const void *obj, OptimizerOptions type, const flatbuffers::resolver_function_t *resolver) {
+inline void *OptimizerOptionsUnion::UnPack(const void *obj, OptimizerOptions type, const ::flatbuffers::resolver_function_t *resolver) {
+  (void)resolver;
   switch (type) {
     case OptimizerOptions_SGDOptions: {
       auto ptr = reinterpret_cast<const circle::SGDOptions *>(obj);
@@ -1080,7 +1112,8 @@ inline void *OptimizerOptionsUnion::UnPack(const void *obj, OptimizerOptions typ
   }
 }
 
-inline flatbuffers::Offset<void> OptimizerOptionsUnion::Pack(flatbuffers::FlatBufferBuilder &_fbb, const flatbuffers::rehasher_function_t *_rehasher) const {
+inline ::flatbuffers::Offset<void> OptimizerOptionsUnion::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const ::flatbuffers::rehasher_function_t *_rehasher) const {
+  (void)_rehasher;
   switch (type) {
     case OptimizerOptions_SGDOptions: {
       auto ptr = reinterpret_cast<const circle::SGDOptionsT *>(value);
@@ -1127,7 +1160,7 @@ inline void OptimizerOptionsUnion::Reset() {
   type = OptimizerOptions_NONE;
 }
 
-inline bool VerifyLossFnOptions(flatbuffers::Verifier &verifier, const void *obj, LossFnOptions type) {
+inline bool VerifyLossFnOptions(::flatbuffers::Verifier &verifier, const void *obj, LossFnOptions type) {
   switch (type) {
     case LossFnOptions_NONE: {
       return true;
@@ -1148,10 +1181,10 @@ inline bool VerifyLossFnOptions(flatbuffers::Verifier &verifier, const void *obj
   }
 }
 
-inline bool VerifyLossFnOptionsVector(flatbuffers::Verifier &verifier, const flatbuffers::Vector<flatbuffers::Offset<void>> *values, const flatbuffers::Vector<uint8_t> *types) {
+inline bool VerifyLossFnOptionsVector(::flatbuffers::Verifier &verifier, const ::flatbuffers::Vector<::flatbuffers::Offset<void>> *values, const ::flatbuffers::Vector<uint8_t> *types) {
   if (!values || !types) return !values && !types;
   if (values->size() != types->size()) return false;
-  for (flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
+  for (::flatbuffers::uoffset_t i = 0; i < values->size(); ++i) {
     if (!VerifyLossFnOptions(
         verifier,  values->Get(i), types->GetEnum<LossFnOptions>(i))) {
       return false;
@@ -1160,7 +1193,8 @@ inline bool VerifyLossFnOptionsVector(flatbuffers::Verifier &verifier, const fla
   return true;
 }
 
-inline void *LossFnOptionsUnion::UnPack(const void *obj, LossFnOptions type, const flatbuffers::resolver_function_t *resolver) {
+inline void *LossFnOptionsUnion::UnPack(const void *obj, LossFnOptions type, const ::flatbuffers::resolver_function_t *resolver) {
+  (void)resolver;
   switch (type) {
     case LossFnOptions_SparseCategoricalCrossentropyOptions: {
       auto ptr = reinterpret_cast<const circle::SparseCategoricalCrossentropyOptions *>(obj);
@@ -1178,7 +1212,8 @@ inline void *LossFnOptionsUnion::UnPack(const void *obj, LossFnOptions type, con
   }
 }
 
-inline flatbuffers::Offset<void> LossFnOptionsUnion::Pack(flatbuffers::FlatBufferBuilder &_fbb, const flatbuffers::rehasher_function_t *_rehasher) const {
+inline ::flatbuffers::Offset<void> LossFnOptionsUnion::Pack(::flatbuffers::FlatBufferBuilder &_fbb, const ::flatbuffers::rehasher_function_t *_rehasher) const {
+  (void)_rehasher;
   switch (type) {
     case LossFnOptions_SparseCategoricalCrossentropyOptions: {
       auto ptr = reinterpret_cast<const circle::SparseCategoricalCrossentropyOptionsT *>(value);
@@ -1239,11 +1274,11 @@ inline void LossFnOptionsUnion::Reset() {
 }
 
 inline const circle::ModelTraining *GetModelTraining(const void *buf) {
-  return flatbuffers::GetRoot<circle::ModelTraining>(buf);
+  return ::flatbuffers::GetRoot<circle::ModelTraining>(buf);
 }
 
 inline const circle::ModelTraining *GetSizePrefixedModelTraining(const void *buf) {
-  return flatbuffers::GetSizePrefixedRoot<circle::ModelTraining>(buf);
+  return ::flatbuffers::GetSizePrefixedRoot<circle::ModelTraining>(buf);
 }
 
 inline const char *ModelTrainingIdentifier() {
@@ -1251,17 +1286,22 @@ inline const char *ModelTrainingIdentifier() {
 }
 
 inline bool ModelTrainingBufferHasIdentifier(const void *buf) {
-  return flatbuffers::BufferHasIdentifier(
+  return ::flatbuffers::BufferHasIdentifier(
       buf, ModelTrainingIdentifier());
 }
 
+inline bool SizePrefixedModelTrainingBufferHasIdentifier(const void *buf) {
+  return ::flatbuffers::BufferHasIdentifier(
+      buf, ModelTrainingIdentifier(), true);
+}
+
 inline bool VerifyModelTrainingBuffer(
-    flatbuffers::Verifier &verifier) {
+    ::flatbuffers::Verifier &verifier) {
   return verifier.VerifyBuffer<circle::ModelTraining>(ModelTrainingIdentifier());
 }
 
 inline bool VerifySizePrefixedModelTrainingBuffer(
-    flatbuffers::Verifier &verifier) {
+    ::flatbuffers::Verifier &verifier) {
   return verifier.VerifySizePrefixedBuffer<circle::ModelTraining>(ModelTrainingIdentifier());
 }
 
@@ -1270,26 +1310,26 @@ inline const char *ModelTrainingExtension() {
 }
 
 inline void FinishModelTrainingBuffer(
-    flatbuffers::FlatBufferBuilder &fbb,
-    flatbuffers::Offset<circle::ModelTraining> root) {
+    ::flatbuffers::FlatBufferBuilder &fbb,
+    ::flatbuffers::Offset<circle::ModelTraining> root) {
   fbb.Finish(root, ModelTrainingIdentifier());
 }
 
 inline void FinishSizePrefixedModelTrainingBuffer(
-    flatbuffers::FlatBufferBuilder &fbb,
-    flatbuffers::Offset<circle::ModelTraining> root) {
+    ::flatbuffers::FlatBufferBuilder &fbb,
+    ::flatbuffers::Offset<circle::ModelTraining> root) {
   fbb.FinishSizePrefixed(root, ModelTrainingIdentifier());
 }
 
 inline std::unique_ptr<circle::ModelTrainingT> UnPackModelTraining(
     const void *buf,
-    const flatbuffers::resolver_function_t *res = nullptr) {
+    const ::flatbuffers::resolver_function_t *res = nullptr) {
   return std::unique_ptr<circle::ModelTrainingT>(GetModelTraining(buf)->UnPack(res));
 }
 
 inline std::unique_ptr<circle::ModelTrainingT> UnPackSizePrefixedModelTraining(
     const void *buf,
-    const flatbuffers::resolver_function_t *res = nullptr) {
+    const ::flatbuffers::resolver_function_t *res = nullptr) {
   return std::unique_ptr<circle::ModelTrainingT>(GetSizePrefixedModelTraining(buf)->UnPack(res));
 }
 
