@@ -1,0 +1,88 @@
+#!/usr/bin/env python
+
+# Copyright (c) 2025 Samsung Electronics Co., Ltd. All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This script will open folder in 'unit' or 'net' and produce ONNX model.
+# refer circle-mlir/tools-test/gen-onnx/run_gen_onnx.py
+# Usage example)
+#   python3 gen_models.py Add_F32_R4 Add_F32_R4_C1
+
+import torch
+import onnx
+import importlib
+import argparse
+
+from pathlib import Path
+
+print("PyTorch version=", torch.__version__)
+print("ONNX version=", onnx.__version__)
+
+parser = argparse.ArgumentParser(description='Process PyTorch model')
+parser.add_argument('models', metavar='MODELS', nargs='+')
+args = parser.parse_args()
+
+output_folder = "./output/"
+Path(output_folder).mkdir(parents=True, exist_ok=True)
+
+for model in args.models:
+    # load model code in 'unit' folder
+    module = None
+    try:
+        module = importlib.import_module("unit." + model)
+    except Exception as e:
+        print("Error:", e)
+        print("loading unit module failed, try load from net.")
+
+    # retry with 'net' folder if failed(not found)
+    if not module:
+        module = importlib.import_module("net." + model)
+
+    # save .pth
+    torch.save(module._model_, output_folder + model + ".pth")
+    print("Generate '" + model + ".pth' - Done")
+
+    opset_version = 14
+    if hasattr(module._model_, 'onnx_opset_version'):
+        opset_version = module._model_.onnx_opset_version()
+
+    onnx_model_path = output_folder + model + ".onnx"
+
+    m_keys = module.__dict__.keys()
+    if '_io_names_' in m_keys and '_dynamic_axes_' in m_keys:
+        torch.onnx.export(module._model_,
+                          module._inputs_,
+                          onnx_model_path,
+                          input_names=module._io_names_[0],
+                          output_names=module._io_names_[1],
+                          dynamic_axes=module._dynamic_axes_,
+                          opset_version=opset_version)
+    else:
+        torch.onnx.export(module._model_,
+                          module._inputs_,
+                          onnx_model_path,
+                          opset_version=opset_version)
+
+    if hasattr(module._model_, 'post_process'):
+        module._model_.post_process(onnx_model_path)
+
+    # check and run shape inference
+    onnx_model = onnx.load(onnx_model_path)
+    onnx.checker.check_model(onnx_model)
+
+    inferred_model = onnx.shape_inference.infer_shapes(onnx_model)
+    onnx.checker.check_model(inferred_model)
+    onnx.save(inferred_model, onnx_model_path)
+
+    print("Generate '" + model + ".onnx' - Done")
