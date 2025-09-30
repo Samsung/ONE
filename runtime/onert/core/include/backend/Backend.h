@@ -31,6 +31,29 @@ namespace custom
 class IKernelBuilder;
 }
 
+class ValidatorBase : public ir::OperationVisitor
+{
+public:
+  virtual ~ValidatorBase() = default;
+  ValidatorBase() = delete;
+  ValidatorBase(const ir::Graph &graph) : _graph(graph), _supported(false) {}
+
+public:
+  bool supported() const { return _supported; }
+
+protected:
+  using OperationVisitor::visit;
+
+#define OP(InternalName) \
+  void visit(const ir::operation::InternalName &) override { _supported = false; }
+#include "ir/Operations.lst"
+#undef OP
+
+protected:
+  const ir::Graph &_graph;
+  bool _supported;
+};
+
 class Backend
 {
 public:
@@ -38,6 +61,11 @@ public:
   virtual std::shared_ptr<onert::backend::IConfig> config() const = 0;
 
   virtual std::unique_ptr<BackendContext> newContext(ContextData &&) const = 0;
+
+  virtual std::unique_ptr<ValidatorBase> validator(const ir::Graph &graph) const
+  {
+    return std::make_unique<ValidatorBase>(graph);
+  }
 };
 
 } // namespace onert::backend

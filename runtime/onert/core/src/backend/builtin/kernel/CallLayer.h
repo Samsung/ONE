@@ -35,6 +35,7 @@ public:
             const std::shared_ptr<ExternalContext> &external_context);
 
 public:
+  static bool validate();
   void run() override;
 
 private:

@@ -22,6 +22,7 @@
 #include "KernelGenerator.h"
 #include "TensorBuilder.h"
 #include "Tensor.h"
+#include "Validator.h"
 #include "train/BackendContext.h"
 #include "train/KernelGenerator.h"
 #include "train/TensorRegistry.h"
@@ -82,6 +83,11 @@ public:
     context->kernel_gen =
       std::make_shared<train::KernelGenerator>(tgraph, tr, context->external_context());
     return context;
+  }
+
+  std::unique_ptr<ValidatorBase> validator(const ir::Graph &graph) const override
+  {
+    return std::make_unique<Validator>(graph);
   }
 
 private:
