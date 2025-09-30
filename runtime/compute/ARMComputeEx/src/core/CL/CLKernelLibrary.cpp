@@ -61,7 +61,6 @@ const std::map<std::string, std::string> CLKernelLibraryEx::_kernel_program_map 
   {"hashtable_lookup", "hashtable_lookup.cl"},
   {"memset", "memset.cl"},
   {"multiply_scale_factor", "multiply_scale_factor.cl"},
-  {"neg_tensor", "neg_tensor.cl"},
   {"one_hot", "one_hot.cl"},
   {"one_hot_only_on_value", "one_hot.cl"},
   {"pad_layer_constant", "pad_layer.cl"},
@@ -118,10 +117,6 @@ const std::map<std::string, std::string, std::less<>> CLKernelLibraryEx::_progra
   {
     "multiply_scale_factor.cl",
 #include "./cl_kernels/multiply_scale_factor.clembed"
-  },
-  {
-    "neg_tensor.cl",
-#include "./cl_kernels/neg_tensor.clembed"
   },
   {
     "one_hot.cl",
