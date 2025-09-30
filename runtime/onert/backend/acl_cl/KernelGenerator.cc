@@ -1384,6 +1384,13 @@ void KernelGenerator::visit(const ir::operation::SplitV &node)
   const auto split_dim_index{node.getInputs().at(ir::operation::SplitV::Input::SPLIT_DIM)};
 
   assert(node.param().num_splits == static_cast<int>(node.getOutputs().size()));
+  if (!_ctx.at(split_dim_index).isConstant() || !_ctx.at(size_split_index).isConstant())
+  {
+    throw std::runtime_error(
+      "Non-constant split_dim and size_split is not supported in acl_cl backend");
+  }
+
+  // size_split is not used because acl_cl backend is not supporting dynamic shape
 
   const size_t ifm_rank = _ctx.at(ifm_index).shape().rank();
   std::vector<ir::OperandIndex> output_indexes;
@@ -1391,38 +1398,17 @@ void KernelGenerator::visit(const ir::operation::SplitV &node)
     output_indexes.emplace_back(output);
 
   auto ifm_tensor = _tensor_reg->getAclTensor(ifm_index);
-  auto size_split_tensor = _tensor_reg->getAclTensor(size_split_index);
-
   std::vector<arm_compute::ICLTensor *> output_tensors;
   for (const auto &ofm_ind : output_indexes)
     output_tensors.emplace_back(_tensor_reg->getAclTensor(ofm_ind)->handle());
 
-  auto fn = std::make_unique<arm_compute::CLSplitVEx>();
-  const auto &split_dim_op = _ctx.at(split_dim_index);
-  if (split_dim_op.isConstant())
-  {
-    int32_t split_dim = split_dim_op.asScalar<int32_t>();
-    uint32_t split_dim_revised = (split_dim < 0) ? (split_dim + ifm_rank) : split_dim;
+  auto axis = _ctx.at(split_dim_index).asScalar<int32_t>();
+  if (axis < 0)
+    axis += ifm_rank;
+  axis = acl_common::ToARMComputeAxis(ifm_rank, axis).value();
 
-    if (ifm_tensor->num_dimensions() != ifm_tensor->info()->num_dimensions())
-    {
-      // This means that high dimension's value is 1 and ifm tensor is applied dim_correction
-      acl_common::disableDimCorrection(ifm_tensor);
-    }
-
-    split_dim_revised = acl_common::ToARMComputeAxis(ifm_rank, split_dim_revised).value();
-    fn->configure(ifm_tensor->handle(), size_split_tensor->handle(), split_dim_revised,
-                  output_tensors, node.param().num_splits);
-
-    if (ifm_tensor->dimension(0) == 1)
-    {
-      acl_common::enableDimCorrection(ifm_tensor);
-    }
-  }
-  else
-  {
-    throw std::runtime_error("Non-constant split_dim NYI for acl_cl backend");
-  }
+  auto fn =
+    acl_common::generateLayer<arm_compute::CLSplit>(ifm_tensor->handle(), output_tensors, axis);
 
   _return_fn = asAclFunction(std::move(fn));
 }

@@ -23,7 +23,6 @@
 #include <arm_compute/runtime/CL/functions/CLOneHot.h>
 #include <arm_compute/runtime/CL/functions/CLPadLayerEx.h>
 #include <arm_compute/runtime/CL/functions/CLReduceOperation.h>
-#include <arm_compute/runtime/CL/functions/CLSplitVEx.h>
 #include <arm_compute/runtime/CL/functions/CLTopKV2.h>
 #include <arm_compute/runtime/CL/functions/CLTransposeConvLayer.h>
 
