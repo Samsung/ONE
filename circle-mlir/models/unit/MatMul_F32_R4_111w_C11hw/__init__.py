@@ -9,8 +9,8 @@ class net_MatMul(torch.nn.Module):
         rng = np.random.default_rng(seed=123)
         self.B = torch.from_numpy(rng.random((1, 1, 4, 6), dtype=np.float32))
 
-    def forward(self, inputs):
-        return torch.matmul(inputs[0], self.B)
+    def forward(self, input):
+        return torch.matmul(input, self.B)
 
     def onnx_opset_version(self):
         # TODO set to appropriate value
@@ -19,4 +19,4 @@ class net_MatMul(torch.nn.Module):
 
 _model_ = net_MatMul()
 
-_inputs_ = [torch.randn(1, 1, 1, 4)]
+_inputs_ = torch.randn(1, 1, 1, 4)

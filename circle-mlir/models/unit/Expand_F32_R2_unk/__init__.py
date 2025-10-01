@@ -7,8 +7,8 @@ class net_Expand(torch.nn.Module):
     def __init__(self):
         super().__init__()
 
-    def forward(self, inputs):
-        return inputs[0].expand(inputs[1].shape)
+    def forward(self, input0, input1):
+        return input0.expand(input1.shape)
 
     def onnx_opset_version(self):
         # TODO set to appropriate value
@@ -17,7 +17,7 @@ class net_Expand(torch.nn.Module):
 
 _model_ = net_Expand()
 
-_inputs_ = [torch.Tensor(1, 4), torch.Tensor(3, 4)]
+_inputs_ = (torch.Tensor(1, 4), torch.Tensor(3, 4))
 
 # refer https://github.com/onnx/onnx/issues/654#issuecomment-521233285
 _io_names_ = [['input'], ['output']]

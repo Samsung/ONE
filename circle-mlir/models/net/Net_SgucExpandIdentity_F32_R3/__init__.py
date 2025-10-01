@@ -10,11 +10,11 @@ class net_SgucExpandIdentity(torch.nn.Module):
         self.C3 = torch.tensor([4], dtype=torch.int64)
         self.index = 1
 
-    def forward(self, inputs):
-        ginput = inputs[0]
+    def forward(self, input0, input1):
+        ginput = input0
         gather = ginput[self.index]
         unsqueeze = torch.unsqueeze(gather, 0)
-        return torch.cat((self.C1, unsqueeze, self.C3)), inputs[1]
+        return torch.cat((self.C1, unsqueeze, self.C3)), input1
 
     def onnx_opset_version(self):
         return 11
@@ -92,4 +92,4 @@ class net_SgucExpandIdentity(torch.nn.Module):
 
 _model_ = net_SgucExpandIdentity()
 
-_inputs_ = [torch.tensor([1, 1, 4], dtype=torch.int64), torch.randn(1, 1, 4)]
+_inputs_ = (torch.tensor([1, 1, 4], dtype=torch.int64), torch.randn(1, 1, 4))

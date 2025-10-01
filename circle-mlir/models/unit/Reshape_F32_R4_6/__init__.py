@@ -6,8 +6,8 @@ class net_Reshape(torch.nn.Module):
     def __init__(self):
         super().__init__()
 
-    def forward(self, input):
-        a = input[0].reshape_as(input[1])
+    def forward(self, input0, input1):
+        a = input0.reshape_as(input1)
         b = torch.reshape(a, (1, 8, -1))
         c = torch.transpose(b, 1, 2)
         d = c + 1
@@ -19,4 +19,4 @@ class net_Reshape(torch.nn.Module):
 
 _model_ = net_Reshape()
 
-_inputs_ = [torch.randn(1, 3, 3, 8), torch.randn(1, 8, 3, 3)]
+_inputs_ = torch.randn(1, 3, 3, 8), torch.randn(1, 8, 3, 3)

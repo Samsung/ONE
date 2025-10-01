@@ -16,8 +16,8 @@ class net_Slice(torch.nn.Module):
     def __init__(self):
         super().__init__()
 
-    def forward(self, inputs):
-        return inputs[0], inputs[1], inputs[2]
+    def forward(self, input0, input1, input2):
+        return input0, input1, input2
 
     def onnx_opset_version(self):
         return 12
@@ -93,8 +93,5 @@ class net_Slice(torch.nn.Module):
 
 _model_ = net_Slice()
 
-_inputs_ = [
-    torch.randn(2, 2, 12),
-    torch.tensor([4], dtype=torch.int64),
-    torch.tensor([8], dtype=torch.int64)
-]
+_inputs_ = (torch.randn(2, 2, 12), torch.tensor([4], dtype=torch.int64),
+            torch.tensor([8], dtype=torch.int64))
