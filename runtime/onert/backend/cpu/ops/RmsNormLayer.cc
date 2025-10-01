@@ -21,6 +21,34 @@
 #include <cker/operation/RmsNorm.h>
 #include <cker/Types.h>
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void KernelGenerator::visit(const ir::operation::RmsNorm &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(ir::operation::RmsNorm::Input::INPUT)};
+  const auto gamma_index{node.getInputs().at(ir::operation::RmsNorm::Input::GAMMA)};
+
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index);
+  auto gamma_tensor = _tensor_reg->getPortableTensor(gamma_index);
+  auto epsilon = node.param().epsilon;
+
+  auto fn = std::make_unique<ops::RmsNormLayer>();
+
+  fn->configure(ifm_tensor, gamma_tensor, epsilon, ofm_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void Validator::visit(const ir::operation::RmsNorm &) { _supported = true; }
+
+} // namespace onert::backend::cpu
+
 namespace onert::backend::cpu::ops
 {
 

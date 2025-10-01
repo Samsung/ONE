@@ -26,7 +26,7 @@ namespace nnfw
 namespace cker
 {
 
-float round_nearest(float value)
+inline float round_nearest(float value)
 {
   if (value < 0)
   {

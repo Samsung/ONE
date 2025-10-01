@@ -14,10 +14,41 @@
  * limitations under the License.
  */
 
-#include "DynamicUpdateSlice.h"
+#include "DynamicUpdateSliceLayer.h"
 #include "OperationUtils.h"
 
 #include <cker/operation/DynamicUpdateSlice.h>
+
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void KernelGenerator::visit(const ir::operation::DynamicUpdateSlice &node)
+{
+  using ir::operation::DynamicUpdateSlice;
+
+  const auto output_index{node.getOutputs().at(0)};
+  const auto operand_index{node.getInputs().at(DynamicUpdateSlice::Input::OPERAND)};
+  const auto update_index{node.getInputs().at(DynamicUpdateSlice::Input::UPDATE)};
+  const auto indices_index{node.getInputs().at(DynamicUpdateSlice::Input::INDICES)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto operand_tensor = _tensor_reg->getPortableTensor(operand_index);
+  auto update_tensor = _tensor_reg->getPortableTensor(update_index);
+  auto indices_tensor = _tensor_reg->getPortableTensor(indices_index);
+
+  auto fn = std::make_unique<ops::DynamicUpdateSliceLayer>();
+
+  fn->configure(operand_tensor, update_tensor, indices_tensor, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void Validator::visit(const ir::operation::DynamicUpdateSlice &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

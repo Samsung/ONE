@@ -18,6 +18,33 @@
 
 #include <cker/operation/BroadcastTo.h>
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void KernelGenerator::visit(const ir::operation::BroadcastTo &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::BroadcastTo::INPUT)};
+  const auto shape_index{node.getInputs().at(ir::operation::BroadcastTo::SHAPE)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto shape_tensor = _tensor_reg->getPortableTensor(shape_index);
+
+  auto fn = std::make_unique<ops::BroadcastToLayer>();
+
+  fn->configure(input_tensor, shape_tensor, output_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void Validator::visit(const ir::operation::BroadcastTo &) { _supported = true; }
+
+} // namespace onert::backend::cpu
+
 namespace onert::backend::cpu::ops
 {
 

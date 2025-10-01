@@ -20,6 +20,40 @@
 
 #include <cker/operation/SplitV.h>
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void KernelGenerator::visit(const ir::operation::SplitV &node)
+{
+  const auto num_splits = node.param().num_splits;
+  assert(num_splits == static_cast<int>(node.getOutputs().size()));
+
+  const auto input_idx{node.getInputs().at(ir::operation::SplitV::Input::INPUT)};
+  const auto size_splits{node.getInputs().at(ir::operation::SplitV::Input::SIZE_SPLITS)};
+  const auto split_dim{node.getInputs().at(ir::operation::SplitV::Input::SPLIT_DIM)};
+
+  auto in_tensor = _tensor_reg->getPortableTensor(input_idx);
+  auto in_size_splits = _tensor_reg->getPortableTensor(size_splits);
+  auto in_split_dim = _tensor_reg->getPortableTensor(split_dim);
+
+  std::vector<IPortableTensor *> out_tensors;
+  for (const auto &output_idx : node.getOutputs())
+    out_tensors.emplace_back(_tensor_reg->getPortableTensor(output_idx));
+
+  auto fn = std::make_unique<ops::SplitVLayer>();
+
+  fn->configure(in_tensor, in_size_splits, in_split_dim, num_splits, out_tensors);
+
+  _return_fn = std::move(fn);
+}
+
+void Validator::visit(const ir::operation::SplitV &) { _supported = true; }
+
+} // namespace onert::backend::cpu
+
 namespace onert::backend::cpu::ops
 {
 

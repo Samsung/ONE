@@ -18,6 +18,36 @@
 
 #include <cker/operation/RoPE.h>
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void KernelGenerator::visit(const ir::operation::RoPE &node)
+{
+  const auto input_index{node.getInputs().at(ir::operation::RoPE::Input::INPUT)};
+  const auto sin_table{node.getInputs().at(ir::operation::RoPE::Input::SIN_TABLE)};
+  const auto cos_table{node.getInputs().at(ir::operation::RoPE::Input::COS_TABLE)};
+  const auto output_index{node.getOutputs().at(ir::operation::RoPE::Output::OUTPUT)};
+
+  auto mode = ops::getRoPEMode(node.param().mode);
+
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+  auto sin_tensor = _tensor_reg->getPortableTensor(sin_table);
+  auto cos_tensor = _tensor_reg->getPortableTensor(cos_table);
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+
+  auto fn = std::make_unique<ops::RoPELayer>();
+
+  fn->configure(input_tensor, sin_tensor, cos_tensor, mode, output_tensor);
+  _return_fn = std::move(fn);
+}
+
+void Validator::visit(const ir::operation::RoPE &) { _supported = true; }
+
+} // namespace onert::backend::cpu
+
 namespace onert::backend::cpu::ops
 {
 
