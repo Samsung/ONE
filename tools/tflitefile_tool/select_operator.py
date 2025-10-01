@@ -135,7 +135,8 @@ def GenerateOperatorCodes(new_builder, sample_model, used_opcodes_dic,
             tflite.OperatorCode.OperatorCodeStart(new_builder)
             tflite.OperatorCode.OperatorCodeAddBuiltinCode(new_builder,
                                                            operator_code.BuiltinCode())
-
+            tflite.OperatorCode.OperatorCodeAddDeprecatedBuiltinCode(new_builder,
+                                                           operator_code.DeprecatedBuiltinCode())
             new_operator_code_string = operator_code.CustomCode()
             if new_operator_code_string in new_operator_code_string_list:
                 tflite.OperatorCode.OperatorCodeAddCustomCode(
@@ -986,6 +987,22 @@ def GenerateBuiltinOption(new_builder, selected_builtin_option, builtin_option_t
         tflite.WhileOptions.WhileOptionsAddCondSubgraphIndex(
             new_builder, used_subgraphs_dic[while_option.CondSubgraphIndex()])
         return tflite.WhileOptions.WhileOptionsEnd(new_builder)
+
+    # BatchMatMulOptions
+    import tflite.BatchMatMulOptions
+    if builtin_option_type == tflite.BuiltinOptions.BuiltinOptions().BatchMatMulOptions:
+
+        batchmatmul_option = tflite.BatchMatMulOptions.BatchMatMulOptions()
+        batchmatmul_option.Init(selected_builtin_option.Bytes,
+                                 selected_builtin_option.Pos)
+
+        tflite.BatchMatMulOptions.BatchMatMulOptionsStart(new_builder)
+        tflite.BatchMatMulOptions.BatchMatMulOptionsAddAdjX(new_builder, batchmatmul_option.AdjX())
+        tflite.BatchMatMulOptions.BatchMatMulOptionsAddAdjY(new_builder, batchmatmul_option.AdjY())
+        tflite.BatchMatMulOptions.BatchMatMulOptionsAddAsymmetricQuantizeInputs(new_builder, batchmatmul_option.AsymmetricQuantizeInputs())
+
+        return tflite.BatchMatMulOptions.BatchMatMulOptionsEnd(new_builder)
+
 
     # Cannot handle builtin option type yet
     print("Cannot handle BuiltinOptions {} yet. See BuiltinOptions.py for op name".format(
