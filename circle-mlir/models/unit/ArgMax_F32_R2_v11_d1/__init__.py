@@ -15,4 +15,4 @@ class net_ArgMax(torch.nn.Module):
 
 _model_ = net_ArgMax()
 
-_inputs_ = torch.randn(4, 6)
+_inputs_ = (torch.randn(4, 6))

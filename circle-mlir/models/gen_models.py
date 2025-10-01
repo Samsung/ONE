@@ -16,43 +16,60 @@
 
 # This script will open folder in 'unit' or 'net' and produce ONNX model.
 # refer circle-mlir/tools-test/gen-onnx/run_gen_onnx.py
+# it would be good to run in venv of infra/overlay.
 # Usage example)
+#   source infra/overlay/venv/bin/activate
+#   # optional) you can install ai-dedge-torch to produce reference tflite model
+#   python3 -m pip install ai-edge-torch
 #   python3 gen_models.py Add_F32_R4 Add_F32_R4_C1
 
 import torch
 import onnx
 import importlib
 import argparse
+import glob
 
 from pathlib import Path
+
+from onnx_utils import _decide_input_format
+
+try:
+    import ai_edge_torch
+    _ai_edge_torch_exist = True
+except ImportError:
+    _ai_edge_torch_exist = False
 
 print("PyTorch version=", torch.__version__)
 print("ONNX version=", onnx.__version__)
 
-parser = argparse.ArgumentParser(description='Process PyTorch model')
-parser.add_argument('models', metavar='MODELS', nargs='+')
-args = parser.parse_args()
 
-output_folder = "./output/"
-Path(output_folder).mkdir(parents=True, exist_ok=True)
-
-for model in args.models:
+def load_module(model):
     # load model code in 'unit' folder
     module = None
+    model_init_path = Path("./unit") / model / "__init__.py"
+    model_name = "unit." + model
+    if not model_init_path.exists():
+        model_init_path = Path("./net") / model / "__init__.py"
+        model_name = "net." + model
+        if not model_init_path.exists():
+            print("model of " + model + " not found.")
+            return None
     try:
-        module = importlib.import_module("unit." + model)
+        module = importlib.import_module(model_name)
     except Exception as e:
         print("Error:", e)
-        print("loading unit module failed, try load from net.")
+        return None
 
-    # retry with 'net' folder if failed(not found)
-    if not module:
-        module = importlib.import_module("net." + model)
+    return module
 
+
+def generate_pth(output_folder, model, module):
     # save .pth
     torch.save(module._model_, output_folder + model + ".pth")
     print("Generate '" + model + ".pth' - Done")
 
+
+def generate_onnx(output_folder, model, module):
     opset_version = 14
     if hasattr(module._model_, 'onnx_opset_version'):
         opset_version = module._model_.onnx_opset_version()
@@ -86,3 +103,64 @@ for model in args.models:
     onnx.save(inferred_model, onnx_model_path)
 
     print("Generate '" + model + ".onnx' - Done")
+
+
+def generate_tflite(output_folder, model, module):
+    if not _ai_edge_torch_exist:
+        return
+
+    module._model_.eval()
+    conv_input = module._inputs_
+
+    conv_input = _decide_input_format(module._model_, conv_input)
+    if isinstance(conv_input, (torch.Tensor, int, float, bool)):
+        conv_input = (conv_input, )
+
+    tflite_model = ai_edge_torch.convert(module._model_, conv_input)
+    tflite_model_path = output_folder + model + ".tflite"
+    tflite_model.export(tflite_model_path)
+
+    print("Generate '" + model + ".tflite' - Done")
+
+
+def generate_models(models, excludes):
+    output_folder = "./output/"
+    Path(output_folder).mkdir(parents=True, exist_ok=True)
+
+    for model in models:
+        module = load_module(model)
+        if module != None:
+            generate_pth(output_folder, model, module)
+            generate_onnx(output_folder, model, module)
+            if excludes != None:
+                if model in excludes:
+                    print("Skip tflite generate: ", model)
+                    continue
+            generate_tflite(output_folder, model, module)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Process PyTorch model')
+    parser.add_argument('models', metavar='MODELS', nargs='+')
+    args = parser.parse_args()
+    models = args.models
+    if len(models) == 1 and models[0] == '@':
+        globs = [f for f in glob.glob('./unit/*')]
+        globs.sort()
+        models_unit = [Path(f).stem for f in globs]
+
+        globs = [f for f in glob.glob('./net/*')]
+        globs.sort()
+        models_net = [Path(f).stem for f in globs]
+        models = models_unit + models_net
+
+        excludes = [
+            'Cast_F32_R4_U8', 'ConvTranspose2d_F32_R4_op01', 'QuantizeLinear_F32_R3_i16',
+            'QuantizeLinear_F32_R3_i16_cw', 'QuantizeLinear_F32_R3_ui8',
+            'QuantizeLinear_F32_R3_ui8_fq', 'QuantizeLinear_F32_R4_i16_cw',
+            'QuantizeLinear_F32_R4_ui8_cw', 'Slice_F32_R3_unk_1', 'Slice_F32_R3_unk_2'
+        ]
+        generate_models(models, excludes)
+    else:
+        print(models)
+        generate_models(models, None)

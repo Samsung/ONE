@@ -7,8 +7,8 @@ class net_MatMul(torch.nn.Module):
     def __init__(self):
         super().__init__()
 
-    def forward(self, inputs):
-        return torch.matmul(inputs[0], inputs[1])
+    def forward(self, input0, input1):
+        return torch.matmul(input0, input1)
 
     def onnx_opset_version(self):
         return 14
@@ -16,4 +16,4 @@ class net_MatMul(torch.nn.Module):
 
 _model_ = net_MatMul()
 
-_inputs_ = [torch.randn(4, 1, 8), torch.randn(4, 8, 1)]
+_inputs_ = (torch.randn(4, 1, 8), torch.randn(4, 8, 1))

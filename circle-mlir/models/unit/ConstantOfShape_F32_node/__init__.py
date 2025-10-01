@@ -10,8 +10,8 @@ class net_ConstantOfShape(torch.nn.Module):
         rng = np.random.default_rng(seed=123)
         self.C1 = torch.from_numpy(rng.random((1, 8, 4), dtype=np.float32))
 
-    def forward(self, input):
-        res = input[0].reshape_as(input[1])
+    def forward(self, input0, input1):
+        res = input0.reshape_as(input1)
         return torch.add(res, self.C1)
 
     def onnx_opset_version(self):
@@ -75,4 +75,4 @@ class net_ConstantOfShape(torch.nn.Module):
 
 _model_ = net_ConstantOfShape()
 
-_inputs_ = [torch.randn(1, 2, 4, 4), torch.randn(1, 8, 4)]
+_inputs_ = (torch.randn(1, 2, 4, 4), torch.randn(1, 8, 4))

@@ -6,9 +6,9 @@ class net_Slice(torch.nn.Module):
     def __init__(self):
         super().__init__()
 
-    def forward(self, inputs):
-        input = inputs[0]
-        ends = inputs[1]
+    def forward(self, input0, input1):
+        input = input0
+        ends = input1
         return input[:, :, :ends:]
 
     def onnx_opset_version(self):
@@ -18,7 +18,7 @@ class net_Slice(torch.nn.Module):
 _model_ = net_Slice()
 
 val = [2]
-_inputs_ = [torch.randn(2, 8, 6), torch.tensor(val)]
+_inputs_ = (torch.randn(2, 8, 6), torch.tensor(val))
 
 _io_names_ = [['input', 'ends'], ['out']]
 _dynamic_axes_ = {'input': {0: '?'}}

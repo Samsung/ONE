@@ -6,8 +6,8 @@ class net_concat(torch.nn.Module):
     def __init__(self):
         super().__init__()
 
-    def forward(self, inputs):
-        return torch.cat((inputs[0], inputs[1]), 0)
+    def forward(self, input0, input1):
+        return torch.cat((input0, input1), 0)
 
     def onnx_opset_version(self):
         # TODO set to appropriate value
@@ -16,4 +16,4 @@ class net_concat(torch.nn.Module):
 
 _model_ = net_concat()
 
-_inputs_ = [torch.randn(1, 32, 1, 8), torch.randn(1, 32, 1, 8)]
+_inputs_ = (torch.randn(1, 32, 1, 8), torch.randn(1, 32, 1, 8))
