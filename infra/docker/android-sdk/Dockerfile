@@ -68,7 +68,7 @@ RUN tmp/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} "cmdline-tools;${CMDTOOL
 RUN rm -rf tmp
 
 # Install android ndk and tools (other packages will be installed by gradle build)
-ARG NDK_VERSION=26.3.11579264
+ARG NDK_VERSION=27.3.13750724
 RUN ${ANDROID_HOME}/cmdline-tools/${CMDTOOLS_VERSION}/bin/sdkmanager --sdk_root=${ANDROID_HOME} "ndk;${NDK_VERSION}"
 RUN ${ANDROID_HOME}/cmdline-tools/${CMDTOOLS_VERSION}/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platform-tools"
 
