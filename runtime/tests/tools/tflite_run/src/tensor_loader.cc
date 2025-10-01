@@ -41,8 +41,9 @@ void TensorLoader::loadDumpedTensors(const std::string &filename)
   uint32_t num_tensors = 0;
   file.read(reinterpret_cast<char *>(&num_tensors), sizeof(num_tensors));
 
-  int tensor_indices_raw[num_tensors];
-  file.read(reinterpret_cast<char *>(tensor_indices_raw), sizeof(tensor_indices_raw));
+  std::vector<int> tensor_indices_raw(num_tensors);
+  file.read(reinterpret_cast<char *>(tensor_indices_raw.data()),
+            tensor_indices_raw.size() * sizeof(int));
 
   _raw_data = std::unique_ptr<float[]>(new float[file_size]);
   file.read(reinterpret_cast<char *>(_raw_data.get()), file_size);
@@ -52,8 +53,8 @@ void TensorLoader::loadDumpedTensors(const std::string &filename)
     loadInputTensorsFromRawData() + loadOutputTensorsFromRawData();
 
   // The file size and total output tensor size must match
-  assert(file_size ==
-         sizeof(num_tensors) + sizeof(tensor_indices_raw) + read_bytes * sizeof(float));
+  assert(file_size == sizeof(num_tensors) + tensor_indices_raw.size() * sizeof(int) +
+                        read_bytes * sizeof(float));
 }
 
 void TensorLoader::loadRawInputTensors(const std::string &filename)
