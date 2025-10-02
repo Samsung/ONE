@@ -33,15 +33,19 @@ print("ONNX version=", onnx.__version__)
 def load_module(model):
     # load model code in 'unit' folder
     module = None
+    model_init_path = Path("./unit") / model / "__init__.py"
+    model_name = "unit." + model
+    if not model_init_path.exists():
+        model_init_path = Path("./net") / model / "__init__.py"
+        model_name = "net." + model
+        if not model_init_path.exists():
+            print("model of " + model + " not found.")
+            return None
     try:
-        module = importlib.import_module("unit." + model)
+        module = importlib.import_module(model_name)
     except Exception as e:
         print("Error:", e)
-        print("loading unit module failed, try load from net.")
-
-    # retry with 'net' folder if failed(not found)
-    if not module:
-        module = importlib.import_module("net." + model)
+        return None
 
     return module
 
