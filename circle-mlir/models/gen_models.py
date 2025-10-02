@@ -16,7 +16,11 @@
 
 # This script will open folder in 'unit' or 'net' and produce ONNX model.
 # refer circle-mlir/tools-test/gen-onnx/run_gen_onnx.py
+# it would be good to run in venv of infra/overlay.
 # Usage example)
+#   source infra/overlay/venv/bin/activate
+#   # optional) you can install ai-dedge-torch to produce tflite model
+#   python3 -m pip install ai-edge-torch
 #   python3 gen_models.py Add_F32_R4 Add_F32_R4_C1
 
 import torch
@@ -26,6 +30,14 @@ import argparse
 import glob
 
 from pathlib import Path
+
+from onnx_utils import _decide_input_format
+
+try:
+    import ai_edge_torch
+    _ai_edge_torch_exist = True
+except ImportError:
+    _ai_edge_torch_exist = False
 
 print("PyTorch version=", torch.__version__)
 print("ONNX version=", onnx.__version__)
@@ -93,6 +105,26 @@ def generate_onnx(output_folder, model, module):
     print("Generate '" + model + ".onnx' - Done")
 
 
+def generate_tflite(output_folder, model, module):
+    if not _ai_edge_torch_exist:
+        return
+
+    # ai_edge_torch requires moodel to be eval mode
+    module._model_.eval()
+    conv_input = module._inputs_
+
+    # conversion came from onnx export to make type compatible to torch export
+    conv_input = _decide_input_format(module._model_, conv_input)
+    if isinstance(conv_input, (torch.Tensor, int, float, bool)):
+        conv_input = (conv_input, )
+
+    tflite_model = ai_edge_torch.convert(module._model_, conv_input)
+    tflite_model_path = output_folder + model + ".tflite"
+    tflite_model.export(tflite_model_path)
+
+    print("Generate '" + model + ".tflite' - Done")
+
+
 def generate_models(models):
     output_folder = "./output/"
     Path(output_folder).mkdir(parents=True, exist_ok=True)
@@ -102,6 +134,7 @@ def generate_models(models):
         if module != None:
             generate_pth(output_folder, model, module)
             generate_onnx(output_folder, model, module)
+            generate_tflite(output_folder, model, module)
 
 
 if __name__ == '__main__':
