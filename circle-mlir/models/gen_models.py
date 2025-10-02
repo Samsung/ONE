@@ -19,7 +19,7 @@
 # it would be good to run in venv of infra/overlay.
 # Usage example)
 #   source infra/overlay/venv/bin/activate
-#   # optional) you can install ai-dedge-torch to produce tflite model
+#   # optional) you can install ai-edge-torch to produce tflite model
 #   python3 -m pip install ai-edge-torch
 #   python3 gen_models.py Add_F32_R4 Add_F32_R4_C1
 
