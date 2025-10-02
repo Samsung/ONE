@@ -23,6 +23,7 @@ import torch
 import onnx
 import importlib
 import argparse
+import glob
 
 from pathlib import Path
 
@@ -109,4 +110,18 @@ if __name__ == '__main__':
     args = parser.parse_args()
     models = args.models
 
-    generate_models(models)
+    if len(models) == 1 and models[0] == '@':
+        # generate for all models in unit and net folder
+        globs = [f for f in glob.glob('./unit/*')]
+        globs.sort()
+        models_unit = [Path(f).stem for f in globs]
+
+        globs = [f for f in glob.glob('./net/*')]
+        globs.sort()
+        models_net = [Path(f).stem for f in globs]
+
+        models = models_unit + models_net
+
+        generate_models(models)
+    else:
+        generate_models(models)
