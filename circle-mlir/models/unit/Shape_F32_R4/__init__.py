@@ -16,4 +16,4 @@ class net_Shape(torch.nn.Module):
 
 _model_ = net_Shape()
 
-_inputs_ = torch.randn(1, 2, 4, 4), torch.randn(1, 8, 4)
+_inputs_ = (torch.randn(1, 2, 4, 4), torch.randn(1, 8, 4))
