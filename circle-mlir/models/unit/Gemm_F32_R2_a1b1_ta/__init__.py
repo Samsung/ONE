@@ -14,13 +14,12 @@ class net_Gemm(torch.nn.Module):
         self.mat2 = torch.randn(4, 5)
         self.bias = torch.randn(3, 5)
 
-    def forward(self, inputs):
+    def forward(self, input0, input1):
         beta = 1.0
         alpha = 1.0
         # torch.addmm(input, mat1i, mat2i, *, beta=1, alpha=1, out=None)
         # out=βinput + α(mat1i ​@ mat2i​)
-        return torch.addmm(self.bias, inputs[0], self.mat2, beta=beta,
-                           alpha=alpha), inputs[1]
+        return torch.addmm(self.bias, input0, self.mat2, beta=beta, alpha=alpha), input1
 
     def onnx_opset_version(self):
         # TODO set to appropriate value
@@ -49,4 +48,4 @@ class net_Gemm(torch.nn.Module):
 
 _model_ = net_Gemm()
 
-_inputs_ = [torch.randn(3, 4), torch.randn(4, 3)]
+_inputs_ = (torch.randn(3, 4), torch.randn(4, 3))
