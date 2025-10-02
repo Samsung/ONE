@@ -50,6 +50,13 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           # Fetch all history and branch (default: 1)
           fetch-depth: 0
+      - name: Build for Cortex ARM
+        run: |
+          mkdir build_arm
+          cd build_arm
+          cmake ../infra/onert-micro/ -DCMAKE_BUILD_TYPE=Release -DNOT_BUILD_EXTERNALS=0
+          cmake --build . --target onert_micro_arm -j1
+
       - name: Build and Run Tests
         run: |
           mkdir build
