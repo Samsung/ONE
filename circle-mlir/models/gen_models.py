@@ -29,14 +29,8 @@ from pathlib import Path
 print("PyTorch version=", torch.__version__)
 print("ONNX version=", onnx.__version__)
 
-parser = argparse.ArgumentParser(description='Process PyTorch model')
-parser.add_argument('models', metavar='MODELS', nargs='+')
-args = parser.parse_args()
 
-output_folder = "./output/"
-Path(output_folder).mkdir(parents=True, exist_ok=True)
-
-for model in args.models:
+def load_module(model):
     # load model code in 'unit' folder
     module = None
     try:
@@ -49,10 +43,16 @@ for model in args.models:
     if not module:
         module = importlib.import_module("net." + model)
 
+    return module
+
+
+def generate_pth(output_folder, model, module):
     # save .pth
     torch.save(module._model_, output_folder + model + ".pth")
     print("Generate '" + model + ".pth' - Done")
 
+
+def generate_onnx(output_folder, model, module):
     opset_version = 14
     if hasattr(module._model_, 'onnx_opset_version'):
         opset_version = module._model_.onnx_opset_version()
@@ -86,3 +86,23 @@ for model in args.models:
     onnx.save(inferred_model, onnx_model_path)
 
     print("Generate '" + model + ".onnx' - Done")
+
+
+def generate_models(models):
+    output_folder = "./output/"
+    Path(output_folder).mkdir(parents=True, exist_ok=True)
+
+    for model in models:
+        module = load_module(model)
+        if module != None:
+            generate_pth(output_folder, model, module)
+            generate_onnx(output_folder, model, module)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Process PyTorch model')
+    parser.add_argument('models', metavar='MODELS', nargs='+')
+    args = parser.parse_args()
+    models = args.models
+
+    generate_models(models)
