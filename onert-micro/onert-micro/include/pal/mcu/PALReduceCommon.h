@@ -133,7 +133,7 @@ bool Reducer<T, ReduceFn>::ResolveAxis()
   if (_input.IsScalar())
     return 0;
 
-  for (size_t i = 0; i < _axes.DimsCount(); ++i)
+  for (size_t i = 0; i < _axes.ElementsCount(); ++i)
   {
     int current = _axes.Data().At(i);
 
