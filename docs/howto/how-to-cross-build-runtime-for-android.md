@@ -2,7 +2,7 @@
 
 **Note: To set up a basic build environment on your development PC, please read the [how-to-build-runtime.md](how-to-build-runtime.md) document first. The cross build covered in this document assumes that you have an environment in which the native build operates normally without problems.**
 
-Supported Architecture : AARCH64 only (ARM32 is not supported yet)
+Supported Architecture : AARCH64 only
 
 ## Prepare Android NDK
 
@@ -10,11 +10,31 @@ There are two ways to get Android NDK: install Android NDK on your PC or use doc
 
 ### Install Android NDK
 
-Use `tools/cross/install_android_ndk.sh` script to prepare Android NDK. This is recommended way to build Android NDK.
+You can use `tools/cross/install_android_sdk.sh` script to prepare Android SDK including NDK.
 
-Or you can use `tools/cross/install_android_sdk.sh` script to prepare Android SDK including NDK. You can find NDK in `{android-sdk-dir}/ndk/{ndk-version}` directory.
+```bash
+$ tools/cross/install_android_sdk.sh --install-dir /path/to/android-sdk
+```
 
-CMake 3.6.0 or later is required for Android NDK r26d CMake support.
+If `--install-dir` is not specified, Android SDK will be installed in `tools/cross/android_sdk`.
+
+You can find NDK in `{android-sdk-dir}/ndk/{ndk-version}` directory.
+
+You can check default install NDK version by running `tools/cross/install_android_sdk.sh -h` command.
+
+Installed NDK version can be changed by specifying `--ndk-version` option like below:
+
+```bash
+$ tools/cross/install_android_sdk.sh --ndk-version {ndk-version} --install-dir /path/to/android-sdk
+```
+
+If you want to install NDK version in existing android sdk directory, you can use `--update` option like below:
+
+```bash
+$ tools/cross/install_android_sdk.sh --update --install-dir /path/to/android-sdk
+```
+
+CMake 3.6.0 or later is required for Android NDK r27d CMake support.
 
 ### Host Environment Requirements
 

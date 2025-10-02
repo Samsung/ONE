@@ -19,18 +19,21 @@ SCRIPT_HOME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd ) # absolute path to
 INSTALL_PATH=$SCRIPT_HOME/android_sdk # path to directory where android sdk will be installed
 PLATFORMS_PACKAGE_VERSION="29" # version of platfroms package which will be installed
 BUILD_TOOLS_PACKAGE_VERSION="29.0.3" # version of build-tools package which will be installed
-NDK_VERSION="26.3.11579264" # version of ndk which will be installed
-COMMAND_LINE_TOOLS_ARCHIVE="commandlinetools-linux-6514223_latest.zip" # command line tools archive name from site https://developer.android.com/studio/#downloads for bootstrap
+NDK_VERSION="27.3.13750724" # version of ndk which will be installed
+COMMAND_LINE_TOOLS_ARCHIVE="commandlinetools-linux-13114758_latest.zip" # command line tools archive name from site https://developer.android.com/studio/#downloads for bootstrap
 COMMAND_LINE_TOOLS_VERSION="10.0" # version of command line tools which will be installed
+UPDATE_TOOLS="0" # update tools flag, if set to 1 then tools will be updated, not new installed
 
 
 usage() {
  printf "usage: ./build_android_sdk.sh [--option [option_value]]\n"
- printf "  --install-dir                 - absolute path to directory where android sdk will be installed, by default: $INSTALL_PATH\n"
+ printf "  --install-dir                 - absolute path to directory where android sdk will be installed or updated, by default: $INSTALL_PATH\n"
+ printf "  --ndk-version                 - version of ndk which will be installed, by default: $NDK_VERSION\n"
  printf "  --platforms-package-version   - version of platforms package which will be installed, by default: $PLATFORMS_PACKAGE_VERSION\n"
  printf "  --build-tools-package-version - version of build-tools package which will be installed, by default: $BUILD_TOOLS_PACKAGE_VERSION\n"
  printf "  --command-line-tools-version  - version of cmdline-tools package which will be installed, by default: $COMMAND_LINE_TOOLS_VERSION\n"
  printf "  --command-line-tools-archive  - name of command line tools archive from site https://developer.android.com/studio/#downloads, by default: $COMMAND_LINE_TOOLS_ARCHIVE\n"
+ printf "  --update                      - update android sdk, not new install \n"
  printf "  --help                        - show this text\n"
 }
 
@@ -61,8 +64,10 @@ check_that_android_sdk_have_not_been_installed_yet() {
 
 make_environment() {
   local root=${1}
-  check_that_android_sdk_have_not_been_installed_yet $root
-  mkdir -p $root
+  if [ $UPDATE_TOOLS == "0" ]; then
+    check_that_android_sdk_have_not_been_installed_yet $root
+    mkdir -p $root
+  fi
 
   pushd $root > /dev/null
   export ANDROID_HOME=$root
@@ -160,6 +165,10 @@ while [[ $# -gt 0 ]]; do
       COMMAND_LINE_TOOLS_ARCHIVE=${1}
       shift
       ;;
+    --update)
+      UPDATE_TOOLS="1"
+      shift
+      ;;
     *)
       echo "Invalid option '$1'"
       usage
@@ -170,6 +179,8 @@ done
 
 check_preconditions
 make_environment $INSTALL_PATH
-install_command_line_tools $INSTALL_PATH
+if [ $UPDATE_TOOLS == "0" ]; then
+  install_command_line_tools $INSTALL_PATH
+fi
 install_android_ndk $INSTALL_PATH
 install_android_sdk $INSTALL_PATH
