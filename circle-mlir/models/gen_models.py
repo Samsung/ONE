@@ -125,7 +125,7 @@ def generate_tflite(output_folder, model, module):
     print("Generate '" + model + ".tflite' - Done")
 
 
-def generate_models(models):
+def generate_models(models, excludes):
     output_folder = "./output/"
     Path(output_folder).mkdir(parents=True, exist_ok=True)
 
@@ -134,6 +134,10 @@ def generate_models(models):
         if module != None:
             generate_pth(output_folder, model, module)
             generate_onnx(output_folder, model, module)
+            if excludes != None:
+                if model in excludes:
+                    print("Skip tflite generate: ", model)
+                    continue
             generate_tflite(output_folder, model, module)
 
 
@@ -155,6 +159,13 @@ if __name__ == '__main__':
 
         models = models_unit + models_net
 
-        generate_models(models)
+        # these items are not supported in ai-edge-torch as of editing this file.
+        excludes = [
+            'Cast_F32_R4_U8', 'ConvTranspose2d_F32_R4_op01', 'QuantizeLinear_F32_R3_i16',
+            'QuantizeLinear_F32_R3_i16_cw', 'QuantizeLinear_F32_R3_ui8',
+            'QuantizeLinear_F32_R3_ui8_fq', 'QuantizeLinear_F32_R4_i16_cw',
+            'QuantizeLinear_F32_R4_ui8_cw', 'Slice_F32_R3_unk_1', 'Slice_F32_R3_unk_2'
+        ]
+        generate_models(models, excludes)
     else:
-        generate_models(models)
+        generate_models(models, None)
