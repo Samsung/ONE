@@ -18,6 +18,39 @@
 
 #include <cker/operation/Pad.h>
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void KernelGenerator::visit(const ir::operation::Pad &node)
+{
+  const auto input_index{node.getInputs().at(ir::operation::Pad::Input::INPUT)};
+  const auto pad_index{node.getInputs().at(ir::operation::Pad::Input::PAD)};
+  const auto output_index{node.getOutputs().at(0)};
+
+  auto input = _tensor_reg->getPortableTensor(input_index);
+  auto pad = _tensor_reg->getPortableTensor(pad_index);
+  auto output = _tensor_reg->getPortableTensor(output_index);
+
+  auto fn = std::make_unique<ops::PadLayer>();
+
+  IPortableTensor *value = nullptr;
+  if (node.getInputs().size() == 3) // isPadV2
+  {
+    const auto value_index{node.getInputs().at(ir::operation::Pad::Input::VALUE)};
+    value = _tensor_reg->getPortableTensor(value_index);
+  }
+
+  fn->configure(input, pad, value, output);
+  _return_fn = std::move(fn);
+}
+
+void Validator::visit(const ir::operation::Pad &) { _supported = true; }
+
+} // namespace onert::backend::cpu
+
 namespace onert::backend::cpu::ops
 {
 

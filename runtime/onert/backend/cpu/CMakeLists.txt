@@ -1,8 +1,14 @@
 nnfw_find_package(Ruy REQUIRED)
 
-file(GLOB_RECURSE SOURCES "*.cc")
-file(GLOB_RECURSE TESTS "*.test.cc")
+file(GLOB SOURCES "*.cc")
+file(GLOB TESTS "*.test.cc")
+list(APPEND SOURCES ops/GGMLHelper.cc ops/OperationUtils.cc)
 list(REMOVE_ITEM SOURCES ${TESTS})
+
+macro(OP NAME)
+  list(APPEND SOURCES ops/${NAME}Layer.cc)
+endmacro(OP)
+include(Supported.lst)
 
 add_library(${LIB_ONERT_BACKEND_CPU} SHARED ${SOURCES})
 

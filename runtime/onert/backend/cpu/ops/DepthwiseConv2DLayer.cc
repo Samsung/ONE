@@ -14,10 +14,57 @@
  * limitations under the License.
  */
 
-#include "DepthwiseConvolutionLayer.h"
+#include "DepthwiseConv2DLayer.h"
 
 #include "cker/PortableTensorUtils.h"
 #include <cker/operation/DepthwiseConv.h>
+
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void KernelGenerator::visit(const ir::operation::DepthwiseConv2D &node)
+{
+  using ir::operation::DepthwiseConv2D;
+
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto ifm_index{node.getInputs().at(DepthwiseConv2D::Input::INPUT)};
+  const auto ker_index{node.getInputs().at(DepthwiseConv2D::Input::KERNEL)};
+  const auto bias_index{node.getInputs().at(DepthwiseConv2D::Input::BIAS)};
+
+  const auto stride = node.param().stride;
+  const auto ifm_shape = _ctx.at(ifm_index).shape().asFeature();
+  const auto ofm_shape = _ctx.at(ofm_index).shape().asFeature();
+  // Kernel format is [1, kernel_height, kernel_width, depth_out].
+  const auto &ker_shape = _ctx.at(ker_index).shape();
+  const auto ker_height = ker_shape.dim(1);
+  const auto ker_width = ker_shape.dim(2);
+  const auto dilation_width = node.param().dilation.width_factor;
+  const auto dilation_height = node.param().dilation.height_factor;
+  const auto padding = ir::calculatePadding(node.param().padding, ifm_shape, ofm_shape, stride,
+                                            ker_width, ker_height, dilation_width, dilation_height);
+  const auto multiplier = node.param().multiplier;
+  const auto activation = node.param().activation;
+
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
+  auto ifm_tensor = _tensor_reg->getPortableTensor(ifm_index);
+  auto ker_tensor = _tensor_reg->getPortableTensor(ker_index);
+  auto bias_tensor = _tensor_reg->getPortableTensor(bias_index);
+
+  auto fn = std::make_unique<ops::DepthwiseConvolutionLayer>();
+
+  fn->configure(ifm_tensor, ker_tensor, bias_tensor, padding.left, padding.right, padding.top,
+                padding.bottom, stride.horizontal, stride.vertical, multiplier, dilation_width,
+                dilation_height, activation, ofm_tensor, _external_context);
+
+  _return_fn = std::move(fn);
+}
+
+void Validator::visit(const ir::operation::DepthwiseConv2D &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

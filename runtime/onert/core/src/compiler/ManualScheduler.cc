@@ -24,6 +24,9 @@
 #include "util/logging.h"
 #include "misc/string_helpers.h"
 
+#include <unordered_map>
+#include <vector>
+
 namespace onert::compiler
 {
 
@@ -39,26 +42,27 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
   auto backend_resolver = std::make_unique<compiler::BackendResolver>();
 
   // This fallback will be used in case that `backend_for_all` is unavailable
-  auto fallback = [&]() -> const backend::Backend * {
-    for (auto &&backend_id : _options.backend_list)
-    {
-      auto backend = resolveBackend(backend_id);
-      if (backend)
-        return backend;
-    }
-    return nullptr;
-  }();
-  if (fallback == nullptr)
+  std::vector<const backend::Backend *> backends;
+  for (auto &&backend_id : _options.backend_list)
+  {
+    auto backend = resolveBackend(backend_id);
+    if (backend)
+      backends.push_back(backend);
+  }
+  if (backends.size() == 0)
     throw std::runtime_error{"No loaded backends available."};
 
   // 1. Backend for All operations
-  const backend::Backend *backend_all = resolveBackend(manual_options.backend_for_all, fallback);
-  VERBOSE(ManualScheduler) << "Default backend for all ops: " << backend_all->config()->id()
-                           << std::endl;
+  const backend::Backend *backend_all = resolveBackend(manual_options.backend_for_all);
+  if (backend_all)
+  {
+    VERBOSE(ManualScheduler) << "Default backend for all ops: " << backend_all->config()->id()
+                             << std::endl;
 
-  graph.operations().iterate([&](const ir::OperationIndex &index, const ir::IOperation &) {
-    backend_resolver->setBackend(index, backend_all);
-  });
+    graph.operations().iterate([&](const ir::OperationIndex &index, const ir::IOperation &) {
+      backend_resolver->setBackend(index, backend_all);
+    });
+  }
 
   // 2. Backend per operation type
   std::unordered_map<ir::OpCode, backend::Backend *> op_type_map;
@@ -89,6 +93,46 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
                                << " -> \"" << val << "\"" << std::endl;
     }
   }
+
+  // 4. Fallback - backend priority order
+  std::unordered_map<const backend::Backend *, std::unique_ptr<backend::ValidatorBase>> validators;
+  for (auto &&backend : backends)
+  {
+    // Skip train backend because it's not supported validator
+    // TODO: Remove this condition when train backend supports validator
+    if (backend->config()->id() == "train")
+      continue;
+
+    validators.emplace(backend, backend->validator(graph));
+  }
+
+  graph.operations().iterate([&](const ir::OperationIndex &index, const ir::IOperation &op) {
+    if (!backend_resolver->hasBackend(index))
+    {
+      for (auto backend : backends)
+      {
+        // Use train backend if existed
+        // On training mode, we should use train backend only for all operations
+        // TODO: Remove this condition when train backend supports validator
+        if (backend->config()->id() == "train")
+        {
+          backend_resolver->setBackend(index, backend);
+          break;
+        }
+
+        auto &validator = *validators.at(backend).get();
+        op.accept(validator);
+        if (validator.supported())
+        {
+          backend_resolver->setBackend(index, backend);
+          break;
+        }
+      }
+      if (!backend_resolver->hasBackend(index))
+        throw std::runtime_error{"No backend found for operation @" +
+                                 std::to_string(index.value())};
+    }
+  });
 
   // Dump final assignment
   WHEN_LOG_ENABLED(backend_resolver->iterate(

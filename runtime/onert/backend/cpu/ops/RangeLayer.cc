@@ -20,6 +20,34 @@
 
 #include <cker/operation/Range.h>
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void KernelGenerator::visit(const ir::operation::Range &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto start_index{node.getInputs().at(ir::operation::Range::START)};
+  const auto limit_index{node.getInputs().at(ir::operation::Range::LIMIT)};
+  const auto delta_index{node.getInputs().at(ir::operation::Range::DELTA)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto start_tensor = _tensor_reg->getPortableTensor(start_index);
+  auto limit_tensor = _tensor_reg->getPortableTensor(limit_index);
+  auto delta_tensor = _tensor_reg->getPortableTensor(delta_index);
+
+  auto fn = std::make_unique<ops::RangeLayer>();
+
+  fn->configure(start_tensor, limit_tensor, delta_tensor, output_tensor);
+  _return_fn = std::move(fn);
+}
+
+void Validator::visit(const ir::operation::Range &) { _supported = true; }
+
+} // namespace onert::backend::cpu
+
 namespace onert::backend::cpu::ops
 {
 RangeLayer::RangeLayer() : _start(nullptr), _limit(nullptr), _delta(nullptr), _output(nullptr)
