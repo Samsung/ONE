@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc. All rights reserved.
+ * Copyright 2022 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,23 @@
  * limitations under the License.
  */
 
-#ifndef FLATBUFFERS_FLATC_PCH_H_
-#define FLATBUFFERS_FLATC_PCH_H_
+#ifndef FLATBUFFERS_FLEX_FLAT_UTIL_H_
+#define FLATBUFFERS_FLEX_FLAT_UTIL_H_
 
-// stl
-#include <cmath>
-#include <sstream>
-#include <cassert>
-#include <unordered_set>
-#include <unordered_map>
-#include <iostream>
-#include <functional>
-#include <set>
-#include <iterator>
-#include <tuple>
-
-// flatbuffers
-#include "flatbuffers/pch/pch.h"
-#include "flatbuffers/code_generators.h"
 #include "flatbuffers/flatbuffers.h"
 #include "flatbuffers/flexbuffers.h"
-#include "flatbuffers/idl.h"
 
-#endif // FLATBUFFERS_FLATC_PCH_H_
+namespace flexbuffers {
+
+// Verifies the `nested` flexbuffer within a flatbuffer vector is valid.
+inline bool VerifyNestedFlexBuffer(
+    const flatbuffers::Vector<uint8_t> *const nested,
+    flatbuffers::Verifier &verifier) {
+  if (!nested) return true;
+  return verifier.Check(flexbuffers::VerifyBuffer(
+      nested->data(), nested->size(), verifier.GetFlexReuseTracker()));
+}
+
+}  // namespace flexbuffers
+
+#endif  // FLATBUFFERS_FLEX_FLAT_UTIL_H_
