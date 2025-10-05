@@ -21,7 +21,7 @@ var dir_f17bc9d19916e855c93eb9bdb14afe95 =
     [ "Pipeline.h", "_pipeline_8h.html", "_pipeline_8h" ],
     [ "Session.cpp", "enco_2core_2src_2_session_8cpp.html", "enco_2core_2src_2_session_8cpp" ],
     [ "Session.h", "enco_2core_2src_2_session_8h.html", "enco_2core_2src_2_session_8h" ],
-    [ "String.h", "_string_8h.html", "_string_8h" ],
+    [ "String.h", "compiler_2enco_2core_2src_2_string_8h.html", "compiler_2enco_2core_2src_2_string_8h" ],
     [ "Usage.cpp", "_usage_8cpp.html", "_usage_8cpp" ],
     [ "Usage.h", "_usage_8h.html", "_usage_8h" ]
 ];

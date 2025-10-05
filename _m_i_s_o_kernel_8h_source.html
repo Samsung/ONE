@@ -139,11 +139,11 @@ $(document).ready(function(){initNavTree('_m_i_s_o_kernel_8h_source.html',''); i
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">output_index</a> = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">cur_op</a>-&gt;outputs()-&gt;operator[](0);</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input1_index</a> != -1);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input2_index</a> != -1);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input3_index</a> != -1);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input1_index</a> != -1);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input2_index</a> != -1);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input3_index</a> != -1);</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">output_index</a> != -1);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">output_index</a> != -1);</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    _input1_tensor = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a6226607d34657d1f7efbabb13c80ad39">getCircleTensorByIndex</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input1_index</a>);</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    _input2_tensor = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a6226607d34657d1f7efbabb13c80ad39">getCircleTensorByIndex</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input2_index</a>);</div>
@@ -156,10 +156,10 @@ $(document).ready(function(){initNavTree('_m_i_s_o_kernel_8h_source.html',''); i
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      _input4_tensor = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_input1_tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_input2_tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_input3_tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_output_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    assert(_input1_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    assert(_input2_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    assert(_input3_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    assert(_output_tensor != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  }</div>
 </div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
@@ -170,7 +170,7 @@ $(document).ready(function(){initNavTree('_m_i_s_o_kernel_8h_source.html',''); i
 <div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classluci__interpreter_1_1kernels_1_1_m_i_s_o_kernel.html#affb98eeabfb68a9429c6e84980e63bf7">   68</a></span>  <span class="keyword">const</span> circle::Tensor *<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_m_i_s_o_kernel.html#affb98eeabfb68a9429c6e84980e63bf7">input4</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">  </span>{</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_input4_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    assert(_input4_tensor != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">return</span> _input4_tensor;</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  }</div>
 </div>

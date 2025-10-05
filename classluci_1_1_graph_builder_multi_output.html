@@ -201,13 +201,13 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
 <div class="line"><span class="lineno">   27</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
 <div class="line"><span class="lineno">   28</span> </div>
-<div class="line"><span class="lineno">   29</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(context != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   29</span>  assert(context != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   30</span> </div>
 <div class="line"><span class="lineno">   31</span>  <span class="keyword">const</span> std::vector&lt;int32_t&gt; &amp;<a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a> = op.inputs;</div>
 <div class="line"><span class="lineno">   32</span>  <span class="keyword">const</span> std::vector&lt;int32_t&gt; &amp;outputs = op.outputs;</div>
 <div class="line"><span class="lineno">   33</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensors = context-&gt;reader()-&gt;tensors();</div>
 <div class="line"><span class="lineno">   34</span>  <span class="keyword">const</span> <span class="keyword">auto</span> opcodes = context-&gt;reader()-&gt;opcodes();</div>
-<div class="line"><span class="lineno">   35</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(!tensors.null());</div>
+<div class="line"><span class="lineno">   35</span>  assert(!tensors.null());</div>
 <div class="line"><span class="lineno">   36</span> </div>
 <div class="line"><span class="lineno">   37</span>  std::vector&lt;CircleNode *&gt; <a class="code hl_function" href="namespaceloco.html#a8cce79e9630e01c2bc5d128df05b5372">input_nodes</a>;</div>
 <div class="line"><span class="lineno">   38</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> int32_t <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input_tensor_index</a> : <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#abcab13752e1826b70991e56f8e9a834d">inputs</a>)</div>
@@ -236,12 +236,12 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   61</span>  {</div>
 <div class="line"><span class="lineno">   62</span>    <span class="comment">// Let&#39;s use attributes from output 0 for this node</span></div>
 <div class="line"><span class="lineno">   63</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = tensors[outputs[0]];</div>
-<div class="line"><span class="lineno">   64</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(output_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   64</span>    assert(output_tensor != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   65</span>    node-&gt;name(<a class="code hl_function" href="namespaceluci.html#a4438f6b29d02d97c6d8aef9a31481cb9">tensor_name</a>(output_tensor));</div>
 <div class="line"><span class="lineno">   66</span>    node-&gt;dtype(<a class="code hl_function" href="namespaceluci.html#a2e83620deea300e0affbd8c5878d0ff4">luci_datatype</a>(<a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a>-&gt;type()));</div>
 <div class="line"><span class="lineno">   67</span> </div>
 <div class="line"><span class="lineno">   68</span>    <span class="comment">// mark operator version</span></div>
-<div class="line"><span class="lineno">   69</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(opcodes[op.opcode_index] != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   69</span>    assert(opcodes[op.opcode_index] != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   70</span>    node-&gt;op_version(opcodes[op.opcode_index]-&gt;version());</div>
 <div class="line"><span class="lineno">   71</span> </div>
 <div class="line"><span class="lineno">   72</span>    <span class="comment">// NOTE We don&#39;t set quantization for multiple output nodes but to virtual outputs</span></div>
@@ -251,7 +251,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   76</span>  <span class="keywordflow">for</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">uint32_t</a> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">n</a> = 0; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">n</a> &lt; output_count; ++<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">n</a>)</div>
 <div class="line"><span class="lineno">   77</span>  {</div>
 <div class="line"><span class="lineno">   78</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a> = tensors[outputs[<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">n</a>]];</div>
-<div class="line"><span class="lineno">   79</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(output_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   79</span>    assert(output_tensor != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   80</span> </div>
 <div class="line"><span class="lineno">   81</span>    BuildOutArgs <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">boa</a>(node, <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">n</a>);</div>
 <div class="line"><span class="lineno">   82</span>    <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">nodeout</a> = build_out(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">boa</a>);</div>

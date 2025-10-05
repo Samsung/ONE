@@ -8,7 +8,6 @@ var dir_0c143f15589dae6124d7f55579f6d829 =
     [ "CLInstanceNormalizationLayerKernelEx.h", "_c_l_instance_normalization_layer_kernel_ex_8h.html", "_c_l_instance_normalization_layer_kernel_ex_8h" ],
     [ "CLMemsetKernel.h", "_c_l_memset_kernel_8h.html", "_c_l_memset_kernel_8h" ],
     [ "CLMultiplyScaleFactorKernel.h", "_c_l_multiply_scale_factor_kernel_8h.html", "_c_l_multiply_scale_factor_kernel_8h" ],
-    [ "CLNegKernel.h", "_c_l_neg_kernel_8h.html", "_c_l_neg_kernel_8h" ],
     [ "CLOneHotKernel.h", "_c_l_one_hot_kernel_8h.html", "_c_l_one_hot_kernel_8h" ],
     [ "CLPadLayerKernelEx.h", "_c_l_pad_layer_kernel_ex_8h.html", "_c_l_pad_layer_kernel_ex_8h" ],
     [ "CLQuantizationSymmetricKernel.h", "_c_l_quantization_symmetric_kernel_8h.html", "_c_l_quantization_symmetric_kernel_8h" ],

@@ -167,7 +167,7 @@ $(document).ready(function(){initNavTree('circle-resizer_2src_2_circle_model_8cp
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  BufferModelContract(<a class="code hl_class" href="classluci_1_1_module.html">luci::Module</a> *module)</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    : _module(<a class="code hl_variable" href="namespaceq__implant__qparam__test.html#a3cf5671ec6dbd34a67d0ea30316e2dc9">module</a>), _buffer{<a class="code hl_namespace" href="namespacestd.html">std</a>::make_unique&lt;<a class="code hl_namespace" href="namespacestd.html">std</a>::vector&lt;uint8_t&gt;&gt;()}</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_module); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    assert(_module); <span class="comment">// FIX_CALLER_UNLESS</span></div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  }</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <a class="code hl_class" href="classluci_1_1_module.html">luci::Module</a> *<a class="code hl_function" href="structluci_1_1_circle_exporter_1_1_contract.html#ae76dd8f0d4e97fb6a2536a235813b9c8">module</a>()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> _module; }</div>

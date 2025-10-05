@@ -321,7 +321,7 @@ Macros</h2></td></tr>
 <div class="line"><span class="lineno">  206</span><span class="keyword">private</span>:</div>
 <div class="line"><span class="lineno">  207</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">insert_scale_before</a>(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, <span class="keyword">const</span> std::vector&lt;float&gt; &amp;scale)</div>
 <div class="line"><span class="lineno">  208</span>  {</div>
-<div class="line"><span class="lineno">  209</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(node);</div>
+<div class="line"><span class="lineno">  209</span>    assert(node);</div>
 <div class="line"><span class="lineno">  210</span>    <span class="keyword">auto</span> previous_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(<a class="code hl_function" href="namespacefme__apply.html#a20774f91b4379cb7c75758ed9a5dc91f">get_input</a>(node));</div>
 <div class="line"><span class="lineno">  211</span> </div>
 <div class="line"><span class="lineno">  212</span>    <span class="comment">// Create const for scale</span></div>
@@ -412,7 +412,7 @@ Macros</h2></td></tr>
 <div class="line"><span class="lineno">  297</span><span class="keyword">private</span>:</div>
 <div class="line"><span class="lineno">  298</span>  <span class="keywordtype">void</span> insert(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node)</div>
 <div class="line"><span class="lineno">  299</span>  {</div>
-<div class="line"><span class="lineno">  300</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_pattern-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>.size() ==</div>
+<div class="line"><span class="lineno">  300</span>    assert(_pattern-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>.size() ==</div>
 <div class="line"><span class="lineno">  301</span>           0); <span class="comment">// scale for smooth qaunt is not calculated yet at this moment.</span></div>
 <div class="line"><span class="lineno">  302</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespacecwrap.html#afa0fb0fd415f44ef83e60757f2fd0580">valid</a> = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">::calculate_smooth_quant_scale</a>(node, _pattern);</div>
 <div class="line"><span class="lineno">  303</span>    <span class="keyword">auto</span> back_node = node;</div>

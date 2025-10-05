@@ -7,7 +7,7 @@ var searchData=
   ['datatypeimpl_4',['DataTypeImpl',['../namespaceluci__interpreter.html#aabbfe775c93e9ada62f74d376e55556b',1,'luci_interpreter']]],
   ['depset_5',['DepSet',['../namespacecoco.html#ab0605b49890de394682d0771fd481a8b',1,'coco']]],
   ['device_6',['Device',['../namespacennfw_1_1cker_1_1bias__op.html#afcd88901d47b48654a01da9985a7b762',1,'nnfw::cker::bias_op']]],
-  ['difference_5ftype_7',['difference_type',['../structnnfw_1_1cker_1_1_shape_iterator.html#a9254cb238a4f5c3989cdfb690e38da26',1,'nnfw::cker::ShapeIterator::difference_type'],['../structflatbuffers_1_1_vector_iterator.html#a02c756cdd5ec038a978066c5761dd429',1,'flatbuffers::VectorIterator::difference_type']]],
+  ['difference_5ftype_7',['difference_type',['../structnnfw_1_1cker_1_1_shape_iterator.html#a9254cb238a4f5c3989cdfb690e38da26',1,'nnfw::cker::ShapeIterator::difference_type'],['../structflatbuffers_1_1_vector_iterator.html#a47ba6bab75e83b1f5a61fca1af9f51d5',1,'flatbuffers::VectorIterator::difference_type']]],
   ['dimensiontype_8',['DimensionType',['../classonert_1_1loader_1_1_base_loader.html#aaa50097b9099f455cdbbc54bd022af98',1,'onert::loader::BaseLoader']]],
   ['dims_9',['dims',['../namespacemorph.html#a7e45f169b086c0fffd2fddb857256ee3',1,'morph::Dims'],['../namespacesouschef.html#af6901c7c7d76de2d622df38926a477da',1,'souschef::Dims']]],
   ['dimsi32_5ft_10',['DimsI32_t',['../namespacesouschef.html#ae159774c9caa78103e6a8ba05b45edb4',1,'souschef']]],

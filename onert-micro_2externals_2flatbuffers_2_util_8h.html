@@ -93,16 +93,20 @@ $(document).ready(function(){initNavTree('onert-micro_2externals_2flatbuffers_2_
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">util.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;errno.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;ctype.h&gt;</code><br />
+<code>#include &lt;errno.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="base_8h_source.html">flatbuffers/base.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="stl__emulation_8h_source.html">flatbuffers/stl_emulation.h</a>&quot;</code><br />
-<code>#include &lt;sstream&gt;</code><br />
 <code>#include &lt;iomanip&gt;</code><br />
+<code>#include &lt;sstream&gt;</code><br />
+<code>#include &lt;cmath&gt;</code><br />
+<code>#include &lt;limits&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 </div>
 <p><a href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html">Go to the source code of this file.</a></p>
@@ -129,6 +133,25 @@ Typedefs</h2></td></tr>
 <tr class="separator:ac8ac8ee194cdf7c1ad5052e4aaf7855b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fce567f84b76e6e1c3819c5df1de566" id="r_a3fce567f84b76e6e1c3819c5df1de566"><td class="memItemLeft" align="right" valign="top">typedef bool(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a3fce567f84b76e6e1c3819c5df1de566">flatbuffers::FileExistsFunction</a>) (const char *filename)</td></tr>
 <tr class="separator:a3fce567f84b76e6e1c3819c5df1de566"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a51f13331958603317b446d2ea6d46c55" id="r_a51f13331958603317b446d2ea6d46c55"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55">flatbuffers::Case</a> { <br />
+&#160;&#160;<a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55a25c2dc47991b3df171ed5192bcf70390">flatbuffers::kUnknown</a> = 0
+, <a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55a9f2f58218b575491fdfd8059304771b4">flatbuffers::kUpperCamel</a> = 1
+, <a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55a7e914b0f91be0644bfcdb1b41bea4276">flatbuffers::kLowerCamel</a> = 2
+, <a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55ace09f69cca13787871caca11f27b9738">flatbuffers::kSnake</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55a0b18c153eab45af9b74f271de1a78678">flatbuffers::kScreamingSnake</a> = 4
+, <a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55af4a517c4032759fa5bf634ed194191a9">flatbuffers::kAllUpper</a> = 5
+, <a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55a338832c98c52f2a6e2d4d1a859e65813">flatbuffers::kAllLower</a> = 6
+, <a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55a709d0f8df698591a7475d017ba410b02">flatbuffers::kDasher</a> = 7
+, <br />
+&#160;&#160;<a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55afae526507e17bfc6f0d14e125189063a">flatbuffers::kKeep</a> = 8
+, <a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55ae19a406f9861663bd70eef943d80c1e4">flatbuffers::kSnake2</a> = 9
+<br />
+ }</td></tr>
+<tr class="separator:a51f13331958603317b446d2ea6d46c55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -173,28 +196,28 @@ Functions</h2></td></tr>
 <tr class="separator:a6dcef4565da4a091953b09c5d96bae2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a1d66ec4ae994cbdd6a371026b01182" id="r_a4a1d66ec4ae994cbdd6a371026b01182"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a4a1d66ec4ae994cbdd6a371026b01182">flatbuffers::IntToStringHex</a> (int i, int xdigits)</td></tr>
 <tr class="separator:a4a1d66ec4ae994cbdd6a371026b01182"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8ca7c457a87af9b556c1c50fea9f439" id="r_ae8ca7c457a87af9b556c1c50fea9f439"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#ae8ca7c457a87af9b556c1c50fea9f439">flatbuffers::strtoval_impl</a> (int64_t *val, const char *<a class="el" href="namespaceflatbuffers.html#ae4fd80bdc2395657674d51b3ae770fbc">str</a>, char **<a class="el" href="namespaceflatbuffers.html#a0911be7416b704b6123ebd36362d8475">endptr</a>, int base)</td></tr>
+<tr class="memitem:ae8ca7c457a87af9b556c1c50fea9f439" id="r_ae8ca7c457a87af9b556c1c50fea9f439"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#ae8ca7c457a87af9b556c1c50fea9f439">flatbuffers::strtoval_impl</a> (int64_t *val, const char *str, char **endptr, int base)</td></tr>
 <tr class="separator:ae8ca7c457a87af9b556c1c50fea9f439"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e9f303f4b9a490a05bc83b7132ee6a2" id="r_a8e9f303f4b9a490a05bc83b7132ee6a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a8e9f303f4b9a490a05bc83b7132ee6a2">flatbuffers::strtoval_impl</a> (uint64_t *val, const char *<a class="el" href="namespaceflatbuffers.html#ae4fd80bdc2395657674d51b3ae770fbc">str</a>, char **<a class="el" href="namespaceflatbuffers.html#a0911be7416b704b6123ebd36362d8475">endptr</a>, int base)</td></tr>
+<tr class="memitem:a8e9f303f4b9a490a05bc83b7132ee6a2" id="r_a8e9f303f4b9a490a05bc83b7132ee6a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a8e9f303f4b9a490a05bc83b7132ee6a2">flatbuffers::strtoval_impl</a> (uint64_t *val, const char *str, char **endptr, int base)</td></tr>
 <tr class="separator:a8e9f303f4b9a490a05bc83b7132ee6a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af091a559a215b9483dac8bd4814df288" id="r_af091a559a215b9483dac8bd4814df288"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#af091a559a215b9483dac8bd4814df288">flatbuffers::strtoval_impl</a> (double *val, const char *<a class="el" href="namespaceflatbuffers.html#ae4fd80bdc2395657674d51b3ae770fbc">str</a>, char **<a class="el" href="namespaceflatbuffers.html#a0911be7416b704b6123ebd36362d8475">endptr</a>)</td></tr>
+<tr class="memitem:af091a559a215b9483dac8bd4814df288" id="r_af091a559a215b9483dac8bd4814df288"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#af091a559a215b9483dac8bd4814df288">flatbuffers::strtoval_impl</a> (double *val, const char *str, char **endptr)</td></tr>
 <tr class="separator:af091a559a215b9483dac8bd4814df288"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76e4bb913a67dab48790e7db3d79241d" id="r_a76e4bb913a67dab48790e7db3d79241d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a76e4bb913a67dab48790e7db3d79241d">flatbuffers::__supress_ubsan__</a> (&quot;float-cast-overflow&quot;) inline void <a class="el" href="namespaceflatbuffers.html#ae8ca7c457a87af9b556c1c50fea9f439">strtoval_impl</a>(float *val</td></tr>
-<tr class="separator:a76e4bb913a67dab48790e7db3d79241d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7af3456e699220a2a85291ad5161fd0c" id="r_a7af3456e699220a2a85291ad5161fd0c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a7af3456e699220a2a85291ad5161fd0c">flatbuffers::strtoval_impl</a> (float *val, const char *str, char **endptr)</td></tr>
+<tr class="separator:a7af3456e699220a2a85291ad5161fd0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a429f340f0aa01d2fd66afed67af73ab1" id="r_a429f340f0aa01d2fd66afed67af73ab1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a429f340f0aa01d2fd66afed67af73ab1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a429f340f0aa01d2fd66afed67af73ab1">flatbuffers::StringToIntegerImpl</a> (T *val, const char *const <a class="el" href="namespaceflatbuffers.html#ae4fd80bdc2395657674d51b3ae770fbc">str</a>, const int base=0, const bool check_errno=true)</td></tr>
+<tr class="memitem:a429f340f0aa01d2fd66afed67af73ab1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a429f340f0aa01d2fd66afed67af73ab1">flatbuffers::StringToIntegerImpl</a> (T *val, const char *const str, const int base=0, const bool check_errno=true)</td></tr>
 <tr class="separator:a429f340f0aa01d2fd66afed67af73ab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab036b6473ac5f6deaad92fb9ed85e3bd" id="r_ab036b6473ac5f6deaad92fb9ed85e3bd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ab036b6473ac5f6deaad92fb9ed85e3bd"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#ab036b6473ac5f6deaad92fb9ed85e3bd">flatbuffers::StringToFloatImpl</a> (T *val, const char *const <a class="el" href="namespaceflatbuffers.html#ae4fd80bdc2395657674d51b3ae770fbc">str</a>)</td></tr>
+<tr class="memitem:ab036b6473ac5f6deaad92fb9ed85e3bd"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#ab036b6473ac5f6deaad92fb9ed85e3bd">flatbuffers::StringToFloatImpl</a> (T *val, const char *const str)</td></tr>
 <tr class="separator:ab036b6473ac5f6deaad92fb9ed85e3bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1ddd4070b72ace12ef4b4e235986391" id="r_aa1ddd4070b72ace12ef4b4e235986391"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa1ddd4070b72ace12ef4b4e235986391"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#aa1ddd4070b72ace12ef4b4e235986391">flatbuffers::StringToNumber</a> (const char *s, T *val)</td></tr>
 <tr class="separator:aa1ddd4070b72ace12ef4b4e235986391"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0581a15ff13dd13dd249180233f7e093" id="r_a0581a15ff13dd13dd249180233f7e093"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a0581a15ff13dd13dd249180233f7e093"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a0581a15ff13dd13dd249180233f7e093">flatbuffers::StringToNumber&lt; int64_t &gt;</a> (const char *<a class="el" href="namespaceflatbuffers.html#ae4fd80bdc2395657674d51b3ae770fbc">str</a>, int64_t *val)</td></tr>
+<tr class="memitem:a0581a15ff13dd13dd249180233f7e093"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a0581a15ff13dd13dd249180233f7e093">flatbuffers::StringToNumber&lt; int64_t &gt;</a> (const char *str, int64_t *val)</td></tr>
 <tr class="separator:a0581a15ff13dd13dd249180233f7e093"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ff179c5549bef6d6f6a72fd0cba598b" id="r_a7ff179c5549bef6d6f6a72fd0cba598b"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a7ff179c5549bef6d6f6a72fd0cba598b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a7ff179c5549bef6d6f6a72fd0cba598b">flatbuffers::StringToNumber&lt; uint64_t &gt;</a> (const char *<a class="el" href="namespaceflatbuffers.html#ae4fd80bdc2395657674d51b3ae770fbc">str</a>, uint64_t *val)</td></tr>
+<tr class="memitem:a7ff179c5549bef6d6f6a72fd0cba598b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a7ff179c5549bef6d6f6a72fd0cba598b">flatbuffers::StringToNumber&lt; uint64_t &gt;</a> (const char *str, uint64_t *val)</td></tr>
 <tr class="separator:a7ff179c5549bef6d6f6a72fd0cba598b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ac480d66b24ac25688d037fbd903e0a" id="r_a0ac480d66b24ac25688d037fbd903e0a"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
 <tr class="memitem:a0ac480d66b24ac25688d037fbd903e0a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a0ac480d66b24ac25688d037fbd903e0a">flatbuffers::StringToNumber</a> (const char *s, float *val)</td></tr>
@@ -206,6 +229,12 @@ Functions</h2></td></tr>
 <tr class="separator:a4d5b601ad8f91307a947821726661583"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad86e0fd2693e425ef8fe9402265ef255" id="r_ad86e0fd2693e425ef8fe9402265ef255"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#ad86e0fd2693e425ef8fe9402265ef255">flatbuffers::StringToUInt</a> (const char *s, int base=10)</td></tr>
 <tr class="separator:ad86e0fd2693e425ef8fe9402265ef255"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6795230045be0bcb8f7ae60d5621c7cb" id="r_a6795230045be0bcb8f7ae60d5621c7cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a6795230045be0bcb8f7ae60d5621c7cb">flatbuffers::StringIsFlatbufferNan</a> (const std::string &amp;s)</td></tr>
+<tr class="separator:a6795230045be0bcb8f7ae60d5621c7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a891427cd463ee2da885d3972db9ae18c" id="r_a891427cd463ee2da885d3972db9ae18c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a891427cd463ee2da885d3972db9ae18c">flatbuffers::StringIsFlatbufferPositiveInfinity</a> (const std::string &amp;s)</td></tr>
+<tr class="separator:a891427cd463ee2da885d3972db9ae18c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a926fa1983c719fac1a1e58849e2e8fb1" id="r_a926fa1983c719fac1a1e58849e2e8fb1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a926fa1983c719fac1a1e58849e2e8fb1">flatbuffers::StringIsFlatbufferNegativeInfinity</a> (const std::string &amp;s)</td></tr>
+<tr class="separator:a926fa1983c719fac1a1e58849e2e8fb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a7f9224e47177d8cba2060586417fda" id="r_a0a7f9224e47177d8cba2060586417fda"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceflatbuffers.html#ac8ac8ee194cdf7c1ad5052e4aaf7855b">LoadFileFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a0a7f9224e47177d8cba2060586417fda">flatbuffers::SetLoadFileFunction</a> (<a class="el" href="namespaceflatbuffers.html#ac8ac8ee194cdf7c1ad5052e4aaf7855b">LoadFileFunction</a> load_file_function)</td></tr>
 <tr class="separator:a0a7f9224e47177d8cba2060586417fda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabcde67ff10ec0ad382d975acda3388a" id="r_aabcde67ff10ec0ad382d975acda3388a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceflatbuffers.html#a3fce567f84b76e6e1c3819c5df1de566">FileExistsFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#aabcde67ff10ec0ad382d975acda3388a">flatbuffers::SetFileExistsFunction</a> (<a class="el" href="namespaceflatbuffers.html#a3fce567f84b76e6e1c3819c5df1de566">FileExistsFunction</a> file_exists_function)</td></tr>
@@ -228,14 +257,20 @@ Functions</h2></td></tr>
 <tr class="separator:a3212db6c4a413235b28ce0750aa057fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09f281f8826c229afd784ac1f46350f7" id="r_a09f281f8826c229afd784ac1f46350f7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a09f281f8826c229afd784ac1f46350f7">flatbuffers::StripFileName</a> (const std::string &amp;filepath)</td></tr>
 <tr class="separator:a09f281f8826c229afd784ac1f46350f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8046b89ecdedcbe378a2cc69a4183ea5" id="r_a8046b89ecdedcbe378a2cc69a4183ea5"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a8046b89ecdedcbe378a2cc69a4183ea5">flatbuffers::StripPrefix</a> (const std::string &amp;filepath, const std::string &amp;prefix_to_remove)</td></tr>
+<tr class="separator:a8046b89ecdedcbe378a2cc69a4183ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81d3975f802226260741acd09ea84ad6" id="r_a81d3975f802226260741acd09ea84ad6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a81d3975f802226260741acd09ea84ad6">flatbuffers::ConCatPathFileName</a> (const std::string &amp;path, const std::string &amp;filename)</td></tr>
 <tr class="separator:a81d3975f802226260741acd09ea84ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3abb67cca51051b442417b9058aaeb5" id="r_ae3abb67cca51051b442417b9058aaeb5"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#ae3abb67cca51051b442417b9058aaeb5">flatbuffers::PosixPath</a> (const char *path)</td></tr>
 <tr class="separator:ae3abb67cca51051b442417b9058aaeb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15e350aebf9105619ce1907daba5d667" id="r_a15e350aebf9105619ce1907daba5d667"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a15e350aebf9105619ce1907daba5d667">flatbuffers::PosixPath</a> (const std::string &amp;path)</td></tr>
+<tr class="separator:a15e350aebf9105619ce1907daba5d667"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc2afc1bab7652f985672b6e57009c93" id="r_afc2afc1bab7652f985672b6e57009c93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#afc2afc1bab7652f985672b6e57009c93">flatbuffers::EnsureDirExists</a> (const std::string &amp;filepath)</td></tr>
 <tr class="separator:afc2afc1bab7652f985672b6e57009c93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52e690fc106d40e8ab685b18f54483f0" id="r_a52e690fc106d40e8ab685b18f54483f0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a52e690fc106d40e8ab685b18f54483f0">flatbuffers::AbsolutePath</a> (const std::string &amp;filepath)</td></tr>
 <tr class="separator:a52e690fc106d40e8ab685b18f54483f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90f6f33cad52b2ed3bae316eb76c77c6" id="r_a90f6f33cad52b2ed3bae316eb76c77c6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a90f6f33cad52b2ed3bae316eb76c77c6">flatbuffers::RelativeToRootPath</a> (const std::string &amp;project, const std::string &amp;filepath)</td></tr>
+<tr class="separator:a90f6f33cad52b2ed3bae316eb76c77c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15130f94df72f64209884eb969ac4277" id="r_a15130f94df72f64209884eb969ac4277"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a15130f94df72f64209884eb969ac4277">flatbuffers::ToUTF8</a> (uint32_t ucc, std::string *out)</td></tr>
 <tr class="separator:a15130f94df72f64209884eb969ac4277"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab009b4b2ffac16779320e9526f68bf10" id="r_ab009b4b2ffac16779320e9526f68bf10"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#ab009b4b2ffac16779320e9526f68bf10">flatbuffers::FromUTF8</a> (const char **in)</td></tr>
@@ -252,15 +287,11 @@ Functions</h2></td></tr>
 <tr class="separator:aff8fe745d1f4c0240891d1ff76e06a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdb814895dc0225e7585d2ba4d6ade16" id="r_afdb814895dc0225e7585d2ba4d6ade16"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#afdb814895dc0225e7585d2ba4d6ade16">flatbuffers::ReadEnvironmentVariable</a> (const char *var_name, std::string *_value=nullptr)</td></tr>
 <tr class="separator:afdb814895dc0225e7585d2ba4d6ade16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a405e4441eb1fd55cf62c8006660bba" id="r_a1a405e4441eb1fd55cf62c8006660bba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a1a405e4441eb1fd55cf62c8006660bba">flatbuffers::SetupDefaultCRTReportMode</a> ()</td></tr>
-<tr class="separator:a1a405e4441eb1fd55cf62c8006660bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d22ce6be342773407559f0c20ab68d1" id="r_a2d22ce6be342773407559f0c20ab68d1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a2d22ce6be342773407559f0c20ab68d1">flatbuffers::ConvertCase</a> (const std::string &amp;input, <a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55">Case</a> output_case, <a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55">Case</a> input_case=<a class="el" href="namespaceflatbuffers.html#a51f13331958603317b446d2ea6d46c55ace09f69cca13787871caca11f27b9738">Case::kSnake</a>)</td></tr>
+<tr class="separator:a2d22ce6be342773407559f0c20ab68d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ae4fd80bdc2395657674d51b3ae770fbc" id="r_ae4fd80bdc2395657674d51b3ae770fbc"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#ae4fd80bdc2395657674d51b3ae770fbc">flatbuffers::str</a></td></tr>
-<tr class="separator:ae4fd80bdc2395657674d51b3ae770fbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0911be7416b704b6123ebd36362d8475" id="r_a0911be7416b704b6123ebd36362d8475"><td class="memItemLeft" align="right" valign="top">const char char **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a0911be7416b704b6123ebd36362d8475">flatbuffers::endptr</a></td></tr>
-<tr class="separator:a0911be7416b704b6123ebd36362d8475"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bc4d5e6da57c98881fca7e817ad82e8" id="r_a1bc4d5e6da57c98881fca7e817ad82e8"><td class="memItemLeft" align="right" valign="top">FLATBUFFERS_CONSTEXPR char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflatbuffers.html#a1bc4d5e6da57c98881fca7e817ad82e8">flatbuffers::kPathSeparator</a> = '/'</td></tr>
 <tr class="separator:a1bc4d5e6da57c98881fca7e817ad82e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -291,7 +322,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html#l00263">263</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html">util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html#l00234">234</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html">util.h</a>.</p>
 
 </div>
 </div>
@@ -321,7 +352,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html#l00264">264</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html">util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html#l00235">235</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html">util.h</a>.</p>
 
 </div>
 </div>
@@ -357,7 +388,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html#l00270">270</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html">util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html#l00241">241</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html">util.h</a>.</p>
 
 </div>
 </div>
@@ -393,7 +424,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html#l00269">269</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html">util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html#l00240">240</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html">util.h</a>.</p>
 
 </div>
 </div>

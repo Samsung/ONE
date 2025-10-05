@@ -351,14 +351,12 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="lang_2src_2_nodes_2_circle_output_8cpp_source.html#l00031">31</a> of file <a class="el" href="lang_2src_2_nodes_2_circle_output_8cpp_source.html">CircleOutput.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_index &gt;= std::numeric_limits&lt;loco::GraphOutputIndex&gt;::min());</div>
-<div class="line"><span class="lineno">   34</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_index &lt;= std::numeric_limits&lt;loco::GraphOutputIndex&gt;::max());</div>
+<div class="line"><span class="lineno">   33</span>  assert(_index &gt;= std::numeric_limits&lt;loco::GraphOutputIndex&gt;::min());</div>
+<div class="line"><span class="lineno">   34</span>  assert(_index &lt;= std::numeric_limits&lt;loco::GraphOutputIndex&gt;::max());</div>
 <div class="line"><span class="lineno">   35</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_typedef" href="namespaceloco.html#a27932a2560d139db05c994be67d3af35">loco::GraphOutputIndex</a><span class="keyword">&gt;</span>(_index);</div>
 <div class="line"><span class="lineno">   36</span>}</div>
 <div class="ttc" id="anamespaceloco_html_a27932a2560d139db05c994be67d3af35"><div class="ttname"><a href="namespaceloco.html#a27932a2560d139db05c994be67d3af35">loco::GraphOutputIndex</a></div><div class="ttdeci">uint32_t GraphOutputIndex</div><div class="ttdef"><b>Definition</b> <a href="_graph_output_index_8h_source.html#l00025">GraphOutputIndex.h:25</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>.</p>
-
 <p class="reference">Referenced by <a class="el" href="dataloader_8py_source.html#l00200">package.experimental.train.dataloader.DataLoader::__next__()</a>, and <a class="el" href="lang_2src_2_nodes_2_circle_output_8cpp_source.html#l00025">index()</a>.</p>
 
 </div>

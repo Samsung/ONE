@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>      *activation_max = 6;</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported activation.&quot;</span>);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported activation.&quot;</span>);</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  }</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>}</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
@@ -268,7 +268,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>      *activation_max = std::min(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">qmax</a>, quantize(6.0f));</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>      <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported activation.&quot;</span>);</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported activation.&quot;</span>);</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  }</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>}</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
@@ -302,12 +302,12 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keywordflow">case</span> DataType::S16:</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>      <span class="comment">// For now, assume that signed int16 type implies signed symmetric quantization.</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>      <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(output_zero_point == 0);</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>      assert(output_zero_point == 0);</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>      <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">qmin</a> = -std::numeric_limits&lt;int16_t&gt;::max();</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>      <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">qmax</a> = std::numeric_limits&lt;int16_t&gt;::max();</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>      <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>  }</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>  calculateActivationRangeQuantizedImpl(activation, <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">qmin</a>, <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">qmax</a>, output_zero_point, output_scale,</div>
@@ -319,7 +319,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno"><a class="line" href="namespaceluci__interpreter_1_1kernels.html#a477eb643e22685b5fbaae14f1c981ddc">  207</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#a972dc14ee97042f40b0555b04b1d8815">calculateActivationRangeQuantized</a>(<a class="code hl_enumeration" href="namespaceluci.html#aadc51aac82492942392bd3e255b4c945">Activation</a> activation, <span class="keyword">const</span> circle::Tensor *output,</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>                                       int32_t *activation_min, int32_t *activation_max)</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>{</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(Tensor::zero_points(output).<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>() == 1);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  assert(Tensor::zero_points(output).<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>() == 1);</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>  <span class="keyword">const</span> <span class="keywordtype">float</span> scale = Tensor::scale(output);</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  <span class="keyword">const</span> int32_t zero_point = Tensor::zero_point(output);</div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>  <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#a972dc14ee97042f40b0555b04b1d8815">calculateActivationRangeQuantized</a>(activation, zero_point, scale, Tensor::element_type(output),</div>
@@ -344,7 +344,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">q_fixed</a> /= 2;</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    ++*shift;</div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>  }</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">q_fixed</a> &lt;= std::numeric_limits&lt;int32_t&gt;::max());</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>  assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">q_fixed</a> &lt;= std::numeric_limits&lt;int32_t&gt;::max());</div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  <span class="comment">// A shift amount smaller than -31 would cause all bits to be shifted out</span></div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  <span class="comment">// and thus all results would be zero. We implement that instead with</span></div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>  <span class="comment">// q_fixed==0, so as to avoid hitting issues with right-shift</span></div>
@@ -366,11 +366,11 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#a91a8777c4f1154f256a768b6bbf54477">quantizeMultiplierSmallerThanOneExp</a>(<span class="keywordtype">double</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">double_multiplier</a>, int32_t *<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">quantized_multiplier</a>,</div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                                         <span class="keywordtype">int</span> *left_shift)</div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>{</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">double_multiplier</a> &lt; 1.0);</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">double_multiplier</a> &gt; 0.0);</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">double_multiplier</a> &lt; 1.0);</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">double_multiplier</a> &gt; 0.0);</div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  <span class="keywordtype">int</span> <a class="code hl_function" href="namespacemir__interpreter.html#a13c4b27ccfa519a60f9852f5858e4c5d">shift</a>;</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#adcf639b916825841b3f99d5f4fccff22">quantizeMultiplier</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">double_multiplier</a>, <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">quantized_multiplier</a>, &amp;shift);</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(shift &lt;= 0);</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  assert(shift &lt;= 0);</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  *left_shift = <a class="code hl_function" href="namespacemir__interpreter.html#a13c4b27ccfa519a60f9852f5858e4c5d">shift</a>;</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>}</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="preprocessor">#endif</span></div>

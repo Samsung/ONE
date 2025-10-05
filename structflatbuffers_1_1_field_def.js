@@ -17,8 +17,10 @@ var structflatbuffers_1_1_field_def =
     [ "key", "structflatbuffers_1_1_field_def.html#a750d124fa27c891bbf906a67a308588a", null ],
     [ "native_inline", "structflatbuffers_1_1_field_def.html#a1cda6f6bb3190875f34b76eedaf9b421", null ],
     [ "nested_flatbuffer", "structflatbuffers_1_1_field_def.html#a32543cd934ae233906ca45df1e70302c", null ],
+    [ "offset64", "structflatbuffers_1_1_field_def.html#a18e4f617ceb7ab45046b0ea8cc8a9c0d", null ],
     [ "padding", "structflatbuffers_1_1_field_def.html#a94e744009a8b3e0ea248c7b72e762c14", null ],
     [ "presence", "structflatbuffers_1_1_field_def.html#a5c98fd069abca43651a32a0045c0311e", null ],
     [ "shared", "structflatbuffers_1_1_field_def.html#aa79e2a67a3b7a97d1ea350404f4fca4e", null ],
+    [ "sibling_union_field", "structflatbuffers_1_1_field_def.html#a7bb8f7089b1fd818dc0d139eefd359e0", null ],
     [ "value", "structflatbuffers_1_1_field_def.html#ab3b6d7aefda349d45e038de93c4c82b3", null ]
 ];

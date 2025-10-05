@@ -164,26 +164,26 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   37</span> </div>
 <div class="line"><span class="lineno">   38</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensors = <a class="code hl_variable" href="namespaceinfer.html#a30b5ffd23ed16bed88d525da72f2e73f">args</a>.reader.tensors();</div>
 <div class="line"><span class="lineno">   39</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">boxes_tensor</a> = tensors.at(inputs[0]);</div>
-<div class="line"><span class="lineno">   40</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">boxes_tensor</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   40</span>  assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">boxes_tensor</a> != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   41</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">boxes_tensor_shape</a> = <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">boxes_tensor</a>-&gt;shape());</div>
 <div class="line"><span class="lineno">   42</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">boxes_tensor_shape</a>.size() != 2)</div>
 <div class="line"><span class="lineno">   43</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   44</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">boxes_tensor_shape</a>.at(1) != 4)</div>
 <div class="line"><span class="lineno">   45</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   46</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(tensors.at(inputs[1]) != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   46</span>  assert(tensors.at(inputs[1]) != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   47</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">boxes_tensor_shape</a>.at(0) != <a class="code hl_function" href="namespaceluci.html#a727b91def9b4553b7e3aeb4a146b7f22">wrap</a>(tensors.at(inputs[1])-&gt;shape()).at(0))</div>
 <div class="line"><span class="lineno">   48</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   49</span> </div>
-<div class="line"><span class="lineno">   50</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(tensors.at(inputs[2]) != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   50</span>  assert(tensors.at(inputs[2]) != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   51</span>  <span class="keywordflow">if</span> (tensors.at(inputs[2])-&gt;type() != circle::TensorType_INT32)</div>
 <div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   53</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(tensors.at(inputs[3]) != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   53</span>  assert(tensors.at(inputs[3]) != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   54</span>  <span class="keywordflow">if</span> (tensors.at(inputs[3])-&gt;type() != circle::TensorType_FLOAT32)</div>
 <div class="line"><span class="lineno">   55</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   56</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(tensors.at(inputs[4]) != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   56</span>  assert(tensors.at(inputs[4]) != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   57</span>  <span class="keywordflow">if</span> (tensors.at(inputs[4])-&gt;type() != circle::TensorType_FLOAT32)</div>
 <div class="line"><span class="lineno">   58</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   59</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(tensors.at(inputs[5]) != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   59</span>  assert(tensors.at(inputs[5]) != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   60</span>  <span class="keywordflow">if</span> (tensors.at(inputs[5])-&gt;type() != circle::TensorType_FLOAT32)</div>
 <div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">   62</span> </div>

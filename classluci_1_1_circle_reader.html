@@ -219,13 +219,13 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00349">349</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  350</span>{</div>
-<div class="line"><span class="lineno">  351</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(op != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  351</span>  assert(op != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  352</span> </div>
 <div class="line"><span class="lineno">  353</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">op_codes</a> = <a class="code hl_function" href="classluci_1_1_circle_reader.html#a0b74a15b1e89b081d47fc391f140522c">opcodes</a>();</div>
 <div class="line"><span class="lineno">  354</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">uint32_t</a> <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = op-&gt;opcode_index();</div>
-<div class="line"><span class="lineno">  355</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(index &lt; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">op_codes</a>.size());</div>
+<div class="line"><span class="lineno">  355</span>  assert(index &lt; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">op_codes</a>.size());</div>
 <div class="line"><span class="lineno">  356</span>  <span class="keyword">const</span> <span class="keyword">auto</span> opcode = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">op_codes</a>[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
-<div class="line"><span class="lineno">  357</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(opcode != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  357</span>  assert(opcode != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  358</span> </div>
 <div class="line"><span class="lineno">  359</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacemio_1_1circle.html#ae833fa8c55869bac78dd55fab7d14415">mio::circle::builtin_code_neutral</a>(opcode);</div>
 <div class="line"><span class="lineno">  360</span>}</div>
@@ -258,8 +258,8 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00419">419</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  420</span>{</div>
-<div class="line"><span class="lineno">  421</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_file_data);</div>
-<div class="line"><span class="lineno">  422</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> &lt; _file_size);</div>
+<div class="line"><span class="lineno">  421</span>  assert(_file_data);</div>
+<div class="line"><span class="lineno">  422</span>  assert(<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> &lt; _file_size);</div>
 <div class="line"><span class="lineno">  423</span>  <span class="keywordflow">return</span> (_file_data == <span class="keyword">nullptr</span>) ? <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">nullptr</a> : _file_data + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>;</div>
 <div class="line"><span class="lineno">  424</span>}</div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
@@ -442,11 +442,11 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00362">362</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  363</span>{</div>
-<div class="line"><span class="lineno">  364</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(op != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  364</span>  assert(op != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  365</span> </div>
 <div class="line"><span class="lineno">  366</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">op_codes</a> = <a class="code hl_function" href="classluci_1_1_circle_reader.html#a0b74a15b1e89b081d47fc391f140522c">opcodes</a>();</div>
 <div class="line"><span class="lineno">  367</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">uint32_t</a> <a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a> = op-&gt;opcode_index();</div>
-<div class="line"><span class="lineno">  368</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(index &lt; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">op_codes</a>.size());</div>
+<div class="line"><span class="lineno">  368</span>  assert(index &lt; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">op_codes</a>.size());</div>
 <div class="line"><span class="lineno">  369</span>  <span class="keyword">const</span> <span class="keyword">auto</span> opcode = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">op_codes</a>[<a class="code hl_function" href="namespacemoco.html#a2a0fb57b3701512b54ae18c23908f047">index</a>];</div>
 <div class="line"><span class="lineno">  370</span> </div>
 <div class="line"><span class="lineno">  371</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacemio_1_1circle.html#a6bb8a9fd1ddde814312d5582f25b9260">mio::circle::opcode_name</a>(opcode);</div>
@@ -571,7 +571,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00374">374</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  375</span>{</div>
-<div class="line"><span class="lineno">  376</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(model != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  376</span>  assert(model != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  377</span> </div>
 <div class="line"><span class="lineno">  378</span>  <span class="comment">// for direct pointer access</span></div>
 <div class="line"><span class="lineno">  379</span>  _model = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>;</div>
@@ -580,8 +580,6 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  382</span>}</div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_ab0b89ce5ecc21d39e6665fcf96a623ca"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">GenH5RandomInputs.model</a></div><div class="ttdeci">model</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00038">GenH5RandomInputs.py:38</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>.</p>
-
 <p class="reference">Referenced by <a class="el" href="onert-micro_2luci-interpreter_2src_2loader_2_module_loader_8cpp_source.html#l00024">luci_interpreter::ModuleLoader::load()</a>, and <a class="el" href="_generate_kernels_list_helper_8cpp_source.html#l00198">run()</a>.</p>
 
 </div>
@@ -620,9 +618,9 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_circle_reader_8cpp_source.html#l00384">384</a> of file <a class="el" href="_circle_reader_8cpp_source.html">CircleReader.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  385</span>{</div>
-<div class="line"><span class="lineno">  386</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(model != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  387</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a> != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">  388</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> &gt; 0);</div>
+<div class="line"><span class="lineno">  386</span>  assert(model != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  387</span>  assert(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  388</span>  assert(<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a> &gt; 0);</div>
 <div class="line"><span class="lineno">  389</span> </div>
 <div class="line"><span class="lineno">  390</span>  <span class="comment">// for direct pointer access</span></div>
 <div class="line"><span class="lineno">  391</span>  _model = <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ab0b89ce5ecc21d39e6665fcf96a623ca">model</a>;</div>
@@ -632,10 +630,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  395</span> </div>
 <div class="line"><span class="lineno">  396</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  397</span>}</div>
-<div class="ttc" id="anamespaceflatbuffers_html_ae8b86e00c88ce4892cc7f5bfe7545e06"><div class="ttname"><a href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">flatbuffers::data</a></div><div class="ttdeci">const T * data(const std::vector&lt; T, Alloc &gt; &amp;v)</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l01145">flatbuffers.h:1145</a></div></div>
+<div class="ttc" id="anamespaceflatbuffers_html_ae8b86e00c88ce4892cc7f5bfe7545e06"><div class="ttname"><a href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">flatbuffers::data</a></div><div class="ttdeci">const T * data(const std::vector&lt; T, Alloc &gt; &amp;v)</div><div class="ttdef"><b>Definition</b> <a href="flatbuffer__builder_8h_source.html#l00052">flatbuffer_builder.h:52</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l01145">flatbuffers::data()</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+<p class="reference">References <a class="el" href="flatbuffer__builder_8h_source.html#l00052">flatbuffers::data()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 </div>
 </div>
@@ -659,16 +657,16 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  400</span>{</div>
 <div class="line"><span class="lineno">  401</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classluci_1_1_circle_reader.html#af4cff3b58ad7abdf3df5ca5f944c21ae">num_subgraph</a>() &lt;= <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">sgindex</a>)</div>
 <div class="line"><span class="lineno">  402</span>  {</div>
-<div class="line"><span class="lineno">  403</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span>);</div>
+<div class="line"><span class="lineno">  403</span>    assert(<span class="keyword">false</span>);</div>
 <div class="line"><span class="lineno">  404</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  405</span>  }</div>
 <div class="line"><span class="lineno">  406</span> </div>
 <div class="line"><span class="lineno">  407</span>  <span class="comment">// for direct pointer access</span></div>
 <div class="line"><span class="lineno">  408</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">subgraphs</a> = _model-&gt;subgraphs();</div>
-<div class="line"><span class="lineno">  409</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">subgraphs</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  409</span>  assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">subgraphs</a> != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  410</span> </div>
 <div class="line"><span class="lineno">  411</span>  _current_subgraph = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">subgraphs</a>-&gt;Get(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">sgindex</a>);</div>
-<div class="line"><span class="lineno">  412</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_current_subgraph != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">  412</span>  assert(_current_subgraph != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">  413</span> </div>
 <div class="line"><span class="lineno">  414</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  415</span>}</div>

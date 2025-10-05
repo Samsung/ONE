@@ -209,7 +209,7 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   36</span>{</div>
 <div class="line"><span class="lineno">   37</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">specific_execute_func</a> = get_kernel_execute_func(opcode);</div>
 <div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">specific_execute_func</a> == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   39</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported operator&quot;</span>);</div>
+<div class="line"><span class="lineno">   39</span>    assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported operator&quot;</span>);</div>
 <div class="line"><span class="lineno">   40</span> </div>
 <div class="line"><span class="lineno">   41</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">specific_execute_func</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">cur_op</a>, runtime_graph);</div>
 <div class="line"><span class="lineno">   42</span>}</div>

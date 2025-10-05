@@ -65,5 +65,6 @@ var classflexbuffers_1_1_reference =
     [ "MutateString", "classflexbuffers_1_1_reference.html#a186ce2db36ff13276b90e70bddf91894", null ],
     [ "MutateUInt", "classflexbuffers_1_1_reference.html#a84fe7eb3458c6eeb9db13d4fdc81142d", null ],
     [ "ToString", "classflexbuffers_1_1_reference.html#a256963057834c81f2fe8749925b9f63d", null ],
-    [ "ToString", "classflexbuffers_1_1_reference.html#a75eeb020eb8e3c788cf8b1b2523e7ccc", null ]
+    [ "ToString", "classflexbuffers_1_1_reference.html#a75eeb020eb8e3c788cf8b1b2523e7ccc", null ],
+    [ "Verifier", "classflexbuffers_1_1_reference.html#a871285414448937aa5f297649dc8242a", null ]
 ];

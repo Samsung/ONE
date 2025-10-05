@@ -1,13 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structlogo_1_1_phase_event_listener.html" title=" " alt="" coords="5,104,174,130"/>
-<area shape="rect" id="Node000001" href="$classexo_1_1_progress_reporter.html" title=" " alt="" coords="243,5,391,31"/>
-<area shape="poly" id="edge1148_Node000000_Node000001" title=" " alt="" coords="122,93,167,66,221,40,252,29,254,34,223,45,170,70,124,97"/>
-<area shape="rect" id="Node000002" href="$classfme__apply_1_1_progress_reporter.html" title=" " alt="" coords="223,55,411,80"/>
-<area shape="poly" id="edge1149_Node000000_Node000002" title=" " alt="" coords="167,97,254,78,255,84,168,103"/>
-<area shape="rect" id="Node000003" href="$classluci_1_1_module_progress_reporter.html" title=" " alt="" coords="222,104,412,130"/>
-<area shape="poly" id="edge1150_Node000000_Node000003" title=" " alt="" coords="189,114,221,114,221,120,189,120"/>
-<area shape="rect" id="Node000004" href="$classluci_1_1_progress_reporter.html" title=" " alt="" coords="243,153,391,179"/>
-<area shape="poly" id="edge1151_Node000000_Node000004" title=" " alt="" coords="168,131,255,150,254,155,167,136"/>
-<area shape="rect" id="Node000005" href="$classmoco_1_1tf_1_1_progress_reporter.html" title=" " alt="" coords="230,203,404,228"/>
-<area shape="poly" id="edge1152_Node000000_Node000005" title=" " alt="" coords="124,136,170,163,223,189,254,200,252,205,221,194,167,168,122,141"/>
+<area shape="rect" id="Node000000" href="$structlocop_1_1_spec_3_01_interface_1_1_formatted_01_4.html" title=" " alt="" coords="5,39,156,79"/>
+<area shape="rect" id="Node000001" href="$classlocop_1_1_formatted_tensor_shape_3_01_tensor_shape_format_1_1_bracket_01_4.html" title=" " alt="" coords="204,5,416,46"/>
+<area shape="poly" id="edge1142_Node000000_Node000001" title=" " alt="" coords="171,43,203,39,204,44,172,48"/>
+<area shape="rect" id="Node000002" href="$classlocop_1_1_formatted_tensor_shape_3_01_tensor_shape_format_1_1_plain_01_4.html" title=" " alt="" coords="212,71,408,111"/>
+<area shape="poly" id="edge1143_Node000000_Node000002" title=" " alt="" coords="172,69,211,75,211,80,171,74"/>
 </map>

@@ -1,17 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"_layer_info_map_8h.html#a22258d95f19cad911e52309c50613e07":[41,0,0,59,7,1,0,11,1],
-"_layer_info_map_8h.html#a37237b7e9b6c3618aac7e14c9c19687d":[41,0,0,59,7,1,0,11,0],
-"_layer_info_map_8h_source.html":[41,0,0,59,7,1,0,11],
-"_layer_scope_tensor_8h.html":[41,0,3,3,2,0,0,1,4],
-"_layer_scope_tensor_8h.html#a4ffbd043f15ff6299f6fe7adbe181ceb":[41,0,3,3,2,0,0,1,4,2],
-"_layer_scope_tensor_8h.html#a4ffbd043f15ff6299f6fe7adbe181ceba58dbd7bf727810eee9ea01d087dc1e9a":[41,0,3,3,2,0,0,1,4,2,1],
-"_layer_scope_tensor_8h.html#a4ffbd043f15ff6299f6fe7adbe181ceba6377b4908ae38f9a57fe9120cf179eb1":[41,0,3,3,2,0,0,1,4,2,0],
-"_layer_scope_tensor_8h.html#a86b587cd2ff7a8482786e96a0b0f5235":[41,0,3,3,2,0,0,1,4,1],
-"_layer_scope_tensor_8h_source.html":[41,0,3,3,2,0,0,1,4],
-"_layer_scope_tensor_index_8h.html":[41,0,3,3,1,6,11],
-"_layer_scope_tensor_index_8h.html#ae6fb39e2071d806ff8c84d4beda1bbf1":[41,0,3,3,1,6,11,1],
-"_layer_scope_tensor_index_8h_source.html":[41,0,3,3,1,6,11],
 "_layout_set_8cc.html":[41,0,3,3,2,1,5,6],
 "_layout_set_8cc_source.html":[41,0,3,3,2,1,5,6],
 "_layout_set_8h.html":[41,0,3,3,2,1,5,7],
@@ -249,5 +237,17 @@ var NAVTREEINDEX15 =
 "_matrix_8h.html#a7e031b2968cb6091e13cd885863be6df":[41,0,0,3,0,0,0,10,2],
 "_matrix_8h.html#a81bab765ccc60a9dd7f9de270c2de11c":[41,0,0,3,0,0,0,10,4],
 "_matrix_8h.html#abe0eed284671723a520a4e947b09b90d":[41,0,0,3,0,0,0,10,5],
-"_matrix_8h.html#acf95e4ff3b5c3b23c86cd9049a3e531f":[41,0,0,3,0,0,0,10,3]
+"_matrix_8h.html#acf95e4ff3b5c3b23c86cd9049a3e531f":[41,0,0,3,0,0,0,10,3],
+"_matrix_8h.html#adc3c90e1206207df34bc41c687e250f2":[41,0,0,3,0,0,0,10,1],
+"_matrix_8h_source.html":[41,0,0,3,0,0,0,10],
+"_matrix_axis_8cpp.html":[41,0,0,52,1,1,18],
+"_matrix_axis_8cpp_source.html":[41,0,0,52,1,1,18],
+"_matrix_axis_8h.html":[41,0,0,52,0,0,1,32],
+"_matrix_axis_8h.html#adeb1a0d0952a6bd7c327f99931e35320":[41,0,0,52,0,0,1,32,0],
+"_matrix_axis_8h.html#adeb1a0d0952a6bd7c327f99931e35320a32954654ac8fe66a1d09be19001de2d4":[41,0,0,52,0,0,1,32,0,1],
+"_matrix_axis_8h.html#adeb1a0d0952a6bd7c327f99931e35320aeec6c4bdbd339edf8cbea68becb85244":[41,0,0,52,0,0,1,32,0,0],
+"_matrix_axis_8h_source.html":[41,0,0,52,0,0,1,32],
+"_matrix_band_part_8cpp.html":[41,0,0,124,0,1,0,12],
+"_matrix_band_part_8cpp_source.html":[41,0,0,124,0,1,0,12],
+"_matrix_band_part_8h.html":[41,0,0,124,0,1,0,13]
 };

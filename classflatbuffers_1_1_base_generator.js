@@ -9,7 +9,7 @@ var classflatbuffers_1_1_base_generator =
     [ "GetNameSpace", "classflatbuffers_1_1_base_generator.html#a6b6bbd8e0606f051018d90994bb73e4c", null ],
     [ "NamespaceDir", "classflatbuffers_1_1_base_generator.html#a99f2098106976757252afd99c05bf0ff", null ],
     [ "operator=", "classflatbuffers_1_1_base_generator.html#a10696c81aa5d52cb15c4365238ba27ed", null ],
-    [ "WrapInNameSpace", "classflatbuffers_1_1_base_generator.html#abde629741e319ae61c669cf8870417d7", null ],
+    [ "WrapInNameSpace", "classflatbuffers_1_1_base_generator.html#a1a39f31f1d50c515c1943989765b2330", null ],
     [ "WrapInNameSpace", "classflatbuffers_1_1_base_generator.html#a4ceefb68a9f65fe861458e82b87c3944", null ],
     [ "default_extension_", "classflatbuffers_1_1_base_generator.html#a37d8a4da67a4e0272aed29f28f212762", null ],
     [ "file_name_", "classflatbuffers_1_1_base_generator.html#af25bcc46e0d71cfc0f23377c30f426c5", null ],

@@ -1,10 +1,20 @@
 var dir_ca73a48a22596b2beb3b5a874c57c142 =
 [
     [ "pch", "dir_4679fc946c53812b7d55cb102424e331.html", "dir_4679fc946c53812b7d55cb102424e331" ],
+    [ "allocator.h", "onert-micro_2externals_2flatbuffers_2_allocator_8h.html", "onert-micro_2externals_2flatbuffers_2_allocator_8h" ],
+    [ "array.h", "onert-micro_2externals_2flatbuffers_2_array_8h.html", "onert-micro_2externals_2flatbuffers_2_array_8h" ],
     [ "base.h", "base_8h.html", "base_8h" ],
+    [ "buffer.h", "onert-micro_2externals_2flatbuffers_2_buffer_8h.html", null ],
+    [ "buffer_ref.h", "buffer__ref_8h.html", "buffer__ref_8h" ],
+    [ "code_generator.h", "code__generator_8h.html", "code__generator_8h" ],
     [ "code_generators.h", "code__generators_8h.html", "code__generators_8h" ],
+    [ "default_allocator.h", "default__allocator_8h.html", "default__allocator_8h" ],
+    [ "detached_buffer.h", "detached__buffer_8h.html", "detached__buffer_8h" ],
+    [ "file_manager.h", "file__manager_8h.html", "file__manager_8h" ],
+    [ "flatbuffer_builder.h", "flatbuffer__builder_8h.html", "flatbuffer__builder_8h" ],
     [ "flatbuffers.h", "flatbuffers_8h.html", "flatbuffers_8h" ],
     [ "flatc.h", "flatc_8h.html", "flatc_8h" ],
+    [ "flex_flat_util.h", "flex__flat__util_8h.html", "flex__flat__util_8h" ],
     [ "flexbuffers.h", "flexbuffers_8h.html", "flexbuffers_8h" ],
     [ "grpc.h", "grpc_8h.html", "grpc_8h" ],
     [ "hash.h", "hash_8h.html", "hash_8h" ],
@@ -13,5 +23,11 @@ var dir_ca73a48a22596b2beb3b5a874c57c142 =
     [ "reflection.h", "reflection_8h.html", "reflection_8h" ],
     [ "registry.h", "onert-micro_2externals_2flatbuffers_2_registry_8h.html", "onert-micro_2externals_2flatbuffers_2_registry_8h" ],
     [ "stl_emulation.h", "stl__emulation_8h.html", "stl__emulation_8h" ],
-    [ "util.h", "onert-micro_2externals_2flatbuffers_2_util_8h.html", "onert-micro_2externals_2flatbuffers_2_util_8h" ]
+    [ "string.h", "onert-micro_2externals_2flatbuffers_2_string_8h.html", "onert-micro_2externals_2flatbuffers_2_string_8h" ],
+    [ "struct.h", "struct_8h.html", "struct_8h" ],
+    [ "table.h", "table_8h.html", "table_8h" ],
+    [ "util.h", "onert-micro_2externals_2flatbuffers_2_util_8h.html", "onert-micro_2externals_2flatbuffers_2_util_8h" ],
+    [ "vector.h", "vector_8h.html", "vector_8h" ],
+    [ "vector_downward.h", "vector__downward_8h.html", "vector__downward_8h" ],
+    [ "verifier.h", "onert-micro_2externals_2flatbuffers_2_verifier_8h.html", "onert-micro_2externals_2flatbuffers_2_verifier_8h" ]
 ];

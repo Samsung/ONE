@@ -217,7 +217,7 @@ $(document).ready(function(){initNavTree('_strided_slice_kernel_8h_source.html',
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      <span class="keywordflow">case</span> 0:</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel.html#a575e9f266658545e997725f9033ad0f7">_input_data</a>;</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Wrong input index&quot;</span>);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Wrong input index&quot;</span>);</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    }</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  }</div>
 </div>
@@ -225,7 +225,7 @@ $(document).ready(function(){initNavTree('_strided_slice_kernel_8h_source.html',
 <div class="foldopen" id="foldopen00115" data-start="{" data-end="}">
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel.html#a4fb64f55fea3fc65ecdee2f30e1d8948">  115</a></span>  <span class="keyword">const</span> std::vector&lt;T&gt; &amp;<a class="code hl_function" href="classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel.html#a4fb64f55fea3fc65ecdee2f30e1d8948">get_output_data_by_index</a>(<span class="keywordtype">int</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a>) <span class="keyword">override</span> <span class="keyword">final</span></div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  {</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> == 0);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> == 0);</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classluci__interpreter_1_1test__kernel_1_1_test_data_strided_slice_kernel.html#a48517ddac484c284cc2874d2d8b5fd90">_reference_output_data</a>;</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  }</div>
 </div>

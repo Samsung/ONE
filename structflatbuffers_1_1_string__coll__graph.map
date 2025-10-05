@@ -1,7 +1,7 @@
 <map id="flatbuffers::String" name="flatbuffers::String">
-<area shape="rect" id="Node000001" title=" " alt="" coords="22,184,140,210"/>
-<area shape="rect" id="Node000002" href="$classflatbuffers_1_1_vector.html" title=" " alt="" coords="20,94,142,135"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,150,84,184,78,184,78,150"/>
-<area shape="rect" id="Node000003" href="$classflatbuffers_1_1_vector.html" title=" " alt="" coords="5,5,157,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="84,46,84,93,78,93,78,46"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="7,199,125,225"/>
+<area shape="rect" id="Node000002" href="$classflatbuffers_1_1_vector.html" title=" " alt="" coords="5,109,127,150"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,165,69,199,63,199,63,165"/>
+<area shape="rect" id="Node000003" href="$classflatbuffers_1_1_vector.html" title=" " alt="" coords="5,5,127,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="69,62,69,109,63,109,63,62"/>
 </map>

@@ -111,7 +111,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af0438f37a02b711a70399aca4f848215"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f154d5b11c3413fb0e7bf4f9f15c23b" id="r_a8f154d5b11c3413fb0e7bf4f9f15c23b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtflite2circle_1_1_offset.html#a8f154d5b11c3413fb0e7bf4f9f15c23b">build</a> (const <a class="el" href="classflatbuffers_1_1_vector.html">TFLFlatBufVec</a> *tflite_flatbuffer_vec)</td></tr>
 <tr class="separator:a8f154d5b11c3413fb0e7bf4f9f15c23b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34816a60b9764837e7f8ac700f28c8cc" id="r_a34816a60b9764837e7f8ac700f28c8cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_offset.html">CIRFlatBufVecOffset</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtflite2circle_1_1_offset.html#a34816a60b9764837e7f8ac700f28c8cc">offset</a> (void) const</td></tr>
+<tr class="memitem:a34816a60b9764837e7f8ac700f28c8cc" id="r_a34816a60b9764837e7f8ac700f28c8cc"><td class="memItemLeft" align="right" valign="top">CIRFlatBufVecOffset&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtflite2circle_1_1_offset.html#a34816a60b9764837e7f8ac700f28c8cc">offset</a> (void) const</td></tr>
 <tr class="separator:a34816a60b9764837e7f8ac700f28c8cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad76e9d1b0fdbcee9589d9e8c73bbfdf4" id="r_ad76e9d1b0fdbcee9589d9e8c73bbfdf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtflite2circle_1_1_offset.html#ad76e9d1b0fdbcee9589d9e8c73bbfdf4">build</a> (const <a class="el" href="classflatbuffers_1_1_vector.html">TFLFlatBufVec</a> *tflite_flatbuffer_vec)</td></tr>
 <tr class="separator:ad76e9d1b0fdbcee9589d9e8c73bbfdf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -232,7 +232,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   36</span>  _circle_flatbuffer_vec_offset = _fb-&gt;CreateVector(metadata_buffer_vec);</div>
 <div class="line"><span class="lineno">   37</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l00315">flatbuffers::Vector&lt; T &gt;::begin()</a>, and <a class="el" href="flatbuffers_8h_source.html#l00318">flatbuffers::Vector&lt; T &gt;::end()</a>.</p>
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00205">flatbuffers::Vector&lt; T, SizeT &gt;::begin()</a>, and <a class="el" href="vector_8h_source.html#l00208">flatbuffers::Vector&lt; T, SizeT &gt;::end()</a>.</p>
 
 </div>
 </div>
@@ -258,7 +258,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   42</span> </div>
 <div class="line"><span class="lineno">   43</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it : *tflite_flatbuffer_vec)</div>
 <div class="line"><span class="lineno">   44</span>  {</div>
-<div class="line"><span class="lineno">   45</span>    <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::Vector&lt;uint8_t&gt;</a>&gt; buffer_data;</div>
+<div class="line"><span class="lineno">   45</span>    flatbuffers::Offset&lt;flatbuffers::Vector&lt;uint8_t&gt;&gt; buffer_data;</div>
 <div class="line"><span class="lineno">   46</span>    <span class="keyword">const</span> <span class="keyword">auto</span> *tflbuff_data = it-&gt;data();</div>
 <div class="line"><span class="lineno">   47</span>    <span class="keyword">const</span> <span class="keyword">auto</span> tflbuff_offset = it-&gt;offset();</div>
 <div class="line"><span class="lineno">   48</span>    <span class="keyword">const</span> <span class="keyword">auto</span> tflbuff_size = it-&gt;size();</div>
@@ -305,7 +305,6 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   89</span>  }</div>
 <div class="line"><span class="lineno">   90</span>  _circle_flatbuffer_vec_offset = _fb-&gt;CreateVector(buffers_vec);</div>
 <div class="line"><span class="lineno">   91</span>}</div>
-<div class="ttc" id="astructflatbuffers_1_1_offset_html"><div class="ttname"><a href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a></div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00069">flatbuffers.h:70</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -340,28 +339,28 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  105</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> it : *tflite_tensors)</div>
 <div class="line"><span class="lineno">  106</span>    {</div>
 <div class="line"><span class="lineno">  107</span>      <span class="comment">// shape</span></div>
-<div class="line"><span class="lineno">  108</span>      <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::Vector&lt;int32_t&gt;</a>&gt; shape;</div>
+<div class="line"><span class="lineno">  108</span>      flatbuffers::Offset&lt;flatbuffers::Vector&lt;int32_t&gt;&gt; shape;</div>
 <div class="line"><span class="lineno">  109</span>      <span class="keywordflow">if</span> (it-&gt;shape())</div>
 <div class="line"><span class="lineno">  110</span>      {</div>
 <div class="line"><span class="lineno">  111</span>        <span class="keyword">auto</span> shape_vec = std::vector&lt;int32_t&gt;({it-&gt;shape()-&gt;<a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#adaf1f5da3e0e0e62ea2ea6e1e4e5f49e">begin</a>(), it-&gt;shape()-&gt;end()});</div>
 <div class="line"><span class="lineno">  112</span>        shape = _fb-&gt;CreateVector(shape_vec);</div>
 <div class="line"><span class="lineno">  113</span>      }</div>
 <div class="line"><span class="lineno">  114</span>      <span class="comment">// name</span></div>
-<div class="line"><span class="lineno">  115</span>      <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::String&gt;</a> <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a>;</div>
+<div class="line"><span class="lineno">  115</span>      flatbuffers::Offset&lt;flatbuffers::String&gt; <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a>;</div>
 <div class="line"><span class="lineno">  116</span>      <span class="keywordflow">if</span> (it-&gt;name())</div>
 <div class="line"><span class="lineno">  117</span>        <a class="code hl_variable" href="namespacesetup.html#ab3a7a0638d76a01367c5bc3cc699447f">name</a> = _fb-&gt;CreateString(it-&gt;name()-&gt;str());</div>
 <div class="line"><span class="lineno">  118</span>      <span class="comment">// quantization</span></div>
-<div class="line"><span class="lineno">  119</span>      <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;circle::QuantizationParameters&gt;</a> quantization;</div>
+<div class="line"><span class="lineno">  119</span>      flatbuffers::Offset&lt;circle::QuantizationParameters&gt; quantization;</div>
 <div class="line"><span class="lineno">  120</span>      <span class="keywordflow">if</span> (it-&gt;quantization())</div>
 <div class="line"><span class="lineno">  121</span>      {</div>
 <div class="line"><span class="lineno">  122</span>        std::vector&lt;float&gt; tfmin;</div>
 <div class="line"><span class="lineno">  123</span>        std::vector&lt;float&gt; tfmax;</div>
 <div class="line"><span class="lineno">  124</span>        std::vector&lt;float&gt; tfscale;</div>
 <div class="line"><span class="lineno">  125</span>        std::vector&lt;int64_t&gt; tfzerop;</div>
-<div class="line"><span class="lineno">  126</span>        <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::Vector&lt;float&gt;</a>&gt; min;</div>
-<div class="line"><span class="lineno">  127</span>        <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::Vector&lt;float&gt;</a>&gt; max;</div>
-<div class="line"><span class="lineno">  128</span>        <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::Vector&lt;float&gt;</a>&gt; <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>;</div>
-<div class="line"><span class="lineno">  129</span>        <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::Vector&lt;int64_t&gt;</a>&gt; zero_point;</div>
+<div class="line"><span class="lineno">  126</span>        flatbuffers::Offset&lt;flatbuffers::Vector&lt;float&gt;&gt; min;</div>
+<div class="line"><span class="lineno">  127</span>        flatbuffers::Offset&lt;flatbuffers::Vector&lt;float&gt;&gt; max;</div>
+<div class="line"><span class="lineno">  128</span>        flatbuffers::Offset&lt;flatbuffers::Vector&lt;float&gt;&gt; <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a0cb47aeb6e5f9323f0969e628c4e59f5">scale</a>;</div>
+<div class="line"><span class="lineno">  129</span>        flatbuffers::Offset&lt;flatbuffers::Vector&lt;int64_t&gt;&gt; zero_point;</div>
 <div class="line"><span class="lineno">  130</span>        int32_t quantized_dimension = it-&gt;quantization()-&gt;quantized_dimension();</div>
 <div class="line"><span class="lineno">  131</span> </div>
 <div class="line"><span class="lineno">  132</span>        <span class="keywordflow">if</span> (it-&gt;quantization()-&gt;min() &amp;&amp; it-&gt;quantization()-&gt;max())</div>
@@ -391,13 +390,13 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  156</span>      <span class="comment">// is_variable</span></div>
 <div class="line"><span class="lineno">  157</span>      <span class="keywordtype">bool</span> is_variable = it-&gt;is_variable();</div>
 <div class="line"><span class="lineno">  158</span> </div>
-<div class="line"><span class="lineno">  159</span>      <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;circle::SparsityParameters&gt;</a> <a class="code hl_namespace" href="namespacesparsity.html">sparsity</a>;</div>
+<div class="line"><span class="lineno">  159</span>      flatbuffers::Offset&lt;circle::SparsityParameters&gt; <a class="code hl_namespace" href="namespacesparsity.html">sparsity</a>;</div>
 <div class="line"><span class="lineno">  160</span>      <span class="comment">// sparsity</span></div>
 <div class="line"><span class="lineno">  161</span>      <span class="keywordflow">if</span> (it-&gt;sparsity())</div>
 <div class="line"><span class="lineno">  162</span>      {</div>
-<div class="line"><span class="lineno">  163</span>        <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::Vector&lt;int32_t&gt;</a>&gt; traversal_order;</div>
-<div class="line"><span class="lineno">  164</span>        <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::Vector&lt;int32_t&gt;</a>&gt; block_map;</div>
-<div class="line"><span class="lineno">  165</span>        <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::Vector&lt;flatbuffers::Offset&lt;circle::DimensionMetadata&gt;</a>&gt;&gt;</div>
+<div class="line"><span class="lineno">  163</span>        flatbuffers::Offset&lt;flatbuffers::Vector&lt;int32_t&gt;&gt; traversal_order;</div>
+<div class="line"><span class="lineno">  164</span>        flatbuffers::Offset&lt;flatbuffers::Vector&lt;int32_t&gt;&gt; block_map;</div>
+<div class="line"><span class="lineno">  165</span>        flatbuffers::Offset&lt;flatbuffers::Vector&lt;flatbuffers::Offset&lt;circle::DimensionMetadata&gt;&gt;&gt;</div>
 <div class="line"><span class="lineno">  166</span>          dim_metadata;</div>
 <div class="line"><span class="lineno">  167</span> </div>
 <div class="line"><span class="lineno">  168</span>        <span class="comment">// traversal_order</span></div>
@@ -452,7 +451,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  217</span>      }</div>
 <div class="line"><span class="lineno">  218</span> </div>
 <div class="line"><span class="lineno">  219</span>      <span class="comment">// shape signature</span></div>
-<div class="line"><span class="lineno">  220</span>      <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::Vector&lt;int32_t&gt;</a>&gt; shape_signature;</div>
+<div class="line"><span class="lineno">  220</span>      flatbuffers::Offset&lt;flatbuffers::Vector&lt;int32_t&gt;&gt; shape_signature;</div>
 <div class="line"><span class="lineno">  221</span>      <span class="keywordflow">if</span> (it-&gt;shape_signature())</div>
 <div class="line"><span class="lineno">  222</span>      {</div>
 <div class="line"><span class="lineno">  223</span>        <span class="keyword">auto</span> shape_signature_vec =</div>
@@ -554,7 +553,7 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  319</span>        <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a08c9aa2161dd029a07f7ddc7c27d625e">circle_builtin_options</a> = <a class="code hl_function" href="namespacetflite2circle.html#ace02c716384a2beeb3bf1044682fd610">get_circle_builtin_options</a>(*_fb, it);</div>
 <div class="line"><span class="lineno">  320</span>        <span class="keyword">auto</span> circle_builtin_options_type = <a class="code hl_function" href="namespacetflite2circle.html#a8c7a0e3659a80c1ea3afcb13c2d24921">get_circle_builtin_options_type</a>(it);</div>
 <div class="line"><span class="lineno">  321</span>        <span class="comment">// custom options</span></div>
-<div class="line"><span class="lineno">  322</span>        <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::Vector&lt;uint8_t&gt;</a>&gt; <a class="code hl_function" href="namespaceluci.html#a1f8d6d558e2564aad695229f57f552dd">circle_custom_options</a>;</div>
+<div class="line"><span class="lineno">  322</span>        flatbuffers::Offset&lt;flatbuffers::Vector&lt;uint8_t&gt;&gt; <a class="code hl_function" href="namespaceluci.html#a1f8d6d558e2564aad695229f57f552dd">circle_custom_options</a>;</div>
 <div class="line"><span class="lineno">  323</span>        <span class="keywordflow">if</span> (it-&gt;custom_options())</div>
 <div class="line"><span class="lineno">  324</span>        {</div>
 <div class="line"><span class="lineno">  325</span>          std::vector&lt;uint8_t&gt; custom_options_vec{it-&gt;custom_options()-&gt;begin(),</div>
@@ -697,7 +696,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_offset.html">CIRFlatBufVecOffset</a> <a class="el" href="classtflite2circle_1_1_offset.html">tflite2circle::Offset</a>&lt; T &gt;::offset </td>
+          <td class="memname">CIRFlatBufVecOffset <a class="el" href="classtflite2circle_1_1_offset.html">tflite2circle::Offset</a>&lt; T &gt;::offset </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>

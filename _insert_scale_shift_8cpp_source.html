@@ -308,7 +308,7 @@ $(document).ready(function(){initNavTree('_insert_scale_shift_8cpp_source.html',
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">insert_scale_before</a>(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node, <span class="keyword">const</span> std::vector&lt;float&gt; &amp;scale)</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>  {</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(node);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    assert(node);</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="keyword">auto</span> previous_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(<a class="code hl_function" href="namespacefme__apply.html#a20774f91b4379cb7c75758ed9a5dc91f">get_input</a>(node));</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    <span class="comment">// Create const for scale</span></div>
@@ -399,7 +399,7 @@ $(document).ready(function(){initNavTree('_insert_scale_shift_8cpp_source.html',
 <div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>  <span class="keywordtype">void</span> insert(<a class="code hl_struct" href="structluci_1_1_circle_node.html">luci::CircleNode</a> *node)</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>  {</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_pattern-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>.size() ==</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    assert(_pattern-&gt;<a class="code hl_variable" href="structfme__apply_1_1_equalize_pattern.html#a39712f2bd2845c5aad882727cfab4b99">scale</a>.size() ==</div>
 <div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>           0); <span class="comment">// scale for smooth qaunt is not calculated yet at this moment.</span></div>
 <div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    <span class="keyword">auto</span> valid = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">::calculate_smooth_quant_scale</a>(node, _pattern);</div>
 <div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    <span class="keyword">auto</span> back_node = node;</div>

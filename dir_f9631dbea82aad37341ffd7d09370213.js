@@ -1,7 +1,7 @@
 var dir_f9631dbea82aad37341ffd7d09370213 =
 [
     [ "Accessor.h", "tensor_2_accessor_8h.html", "tensor_2_accessor_8h" ],
-    [ "Buffer.h", "tensor_2_buffer_8h.html", "tensor_2_buffer_8h" ],
+    [ "Buffer.h", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2tensor_2_buffer_8h.html", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2tensor_2_buffer_8h" ],
     [ "Index.h", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2tensor_2_index_8h.html", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2tensor_2_index_8h" ],
     [ "IndexEnumerator.h", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2tensor_2_index_enumerator_8h.html", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2tensor_2_index_enumerator_8h" ],
     [ "Layout.h", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2tensor_2_layout_8h.html", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2tensor_2_layout_8h" ],

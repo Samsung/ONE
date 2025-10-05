@@ -5,7 +5,6 @@ var dir_5ef36d6062e4a553334b9e2c845cd8cf =
     [ "CLHashtableLookupKernel.cpp", "_c_l_hashtable_lookup_kernel_8cpp.html", null ],
     [ "CLMemsetKernel.cpp", "_c_l_memset_kernel_8cpp.html", null ],
     [ "CLMultiplyScaleFactorKernel.cpp", "_c_l_multiply_scale_factor_kernel_8cpp.html", null ],
-    [ "CLNegKernel.cpp", "_c_l_neg_kernel_8cpp.html", null ],
     [ "CLOneHotKernel.cpp", "_c_l_one_hot_kernel_8cpp.html", null ],
     [ "CLPadLayerKernelEx.cpp", "_c_l_pad_layer_kernel_ex_8cpp.html", null ],
     [ "CLQuantizationSymmetricKernel.cpp", "_c_l_quantization_symmetric_kernel_8cpp.html", null ],

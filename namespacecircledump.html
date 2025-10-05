@@ -351,12 +351,12 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   82</span>  {</div>
 <div class="line"><span class="lineno">   83</span>    <span class="keywordflow">if</span> (q)</div>
 <div class="line"><span class="lineno">   84</span>      os &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
-<div class="line"><span class="lineno">   85</span>    os &lt;&lt; fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a0c322798bd0cebd2d20b0b0f92de2f9b">Get</a>(q);</div>
+<div class="line"><span class="lineno">   85</span>    os &lt;&lt; fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a8fc6efa0d6b5763d971fa9e6b8b4455d">Get</a>(q);</div>
 <div class="line"><span class="lineno">   86</span>  }</div>
 <div class="line"><span class="lineno">   87</span>}</div>
-<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a0c322798bd0cebd2d20b0b0f92de2f9b"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a0c322798bd0cebd2d20b0b0f92de2f9b">flatbuffers::Vector::Get</a></div><div class="ttdeci">return_type Get(uoffset_t i) const</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00286">flatbuffers.h:286</a></div></div>
+<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a8fc6efa0d6b5763d971fa9e6b8b4455d"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a8fc6efa0d6b5763d971fa9e6b8b4455d">flatbuffers::Vector::Get</a></div><div class="ttdeci">return_type Get(SizeT i) const</div><div class="ttdef"><b>Definition</b> <a href="vector_8h_source.html#l00175">vector.h:175</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l00286">flatbuffers::Vector&lt; T &gt;::Get()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00175">flatbuffers::Vector&lt; T, SizeT &gt;::Get()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00102">operator&lt;&lt;()</a>.</p>
 
@@ -403,11 +403,11 @@ template&lt;&gt; </div>
 <div class="line"><span class="lineno">   94</span>  {</div>
 <div class="line"><span class="lineno">   95</span>    <span class="keywordflow">if</span> (q)</div>
 <div class="line"><span class="lineno">   96</span>      os &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
-<div class="line"><span class="lineno">   97</span>    os &lt;&lt; static_cast&lt;uint32_t&gt;(fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a0c322798bd0cebd2d20b0b0f92de2f9b">Get</a>(q));</div>
+<div class="line"><span class="lineno">   97</span>    os &lt;&lt; static_cast&lt;uint32_t&gt;(fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a8fc6efa0d6b5763d971fa9e6b8b4455d">Get</a>(q));</div>
 <div class="line"><span class="lineno">   98</span>  }</div>
 <div class="line"><span class="lineno">   99</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l00286">flatbuffers::Vector&lt; T &gt;::Get()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00175">flatbuffers::Vector&lt; T, SizeT &gt;::Get()</a>, and <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
 </div>
 </div>
@@ -950,12 +950,12 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  104</span>  <span class="keywordflow">if</span> (fbvect == <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">  105</span>    <span class="keywordflow">return</span> os;</div>
 <div class="line"><span class="lineno">  106</span> </div>
-<div class="line"><span class="lineno">  107</span>  <span class="keywordtype">bool</span> ellipsis = (fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>() &gt; 4);</div>
-<div class="line"><span class="lineno">  108</span>  <span class="keyword">auto</span> limit_size = ellipsis ? 4 : fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>();</div>
+<div class="line"><span class="lineno">  107</span>  <span class="keywordtype">bool</span> ellipsis = (fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a70e1b54b9c82251be5496f1729d60e9a">size</a>() &gt; 4);</div>
+<div class="line"><span class="lineno">  108</span>  <span class="keyword">auto</span> limit_size = ellipsis ? 4 : fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a70e1b54b9c82251be5496f1729d60e9a">size</a>();</div>
 <div class="line"><span class="lineno">  109</span> </div>
 <div class="line"><span class="lineno">  110</span>  <span class="keywordflow">if</span> (ellipsis)</div>
 <div class="line"><span class="lineno">  111</span>  {</div>
-<div class="line"><span class="lineno">  112</span>    os &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><span class="lineno">  112</span>    os &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a70e1b54b9c82251be5496f1729d60e9a">size</a>() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><span class="lineno">  113</span>  }</div>
 <div class="line"><span class="lineno">  114</span> </div>
 <div class="line"><span class="lineno">  115</span>  dump_fbvect(os, fbvect, limit_size);</div>
@@ -967,9 +967,9 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">  121</span> </div>
 <div class="line"><span class="lineno">  122</span>  <span class="keywordflow">return</span> os;</div>
 <div class="line"><span class="lineno">  123</span>}</div>
-<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a602e093850b2984a95581edc0b47b2f3"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">flatbuffers::Vector::size</a></div><div class="ttdeci">uoffset_t size() const</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00276">flatbuffers.h:276</a></div></div>
+<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a70e1b54b9c82251be5496f1729d60e9a"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a70e1b54b9c82251be5496f1729d60e9a">flatbuffers::Vector::size</a></div><div class="ttdeci">SizeT size() const</div><div class="ttdef"><b>Definition</b> <a href="vector_8h_source.html#l00164">vector.h:164</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00079">dump_fbvect()</a>, and <a class="el" href="flatbuffers_8h_source.html#l00276">flatbuffers::Vector&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="circledump_2src_2_dump_8cpp_source.html#l00079">dump_fbvect()</a>, and <a class="el" href="vector_8h_source.html#l00164">flatbuffers::Vector&lt; T, SizeT &gt;::size()</a>.</p>
 
 </div>
 </div>

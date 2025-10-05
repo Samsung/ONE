@@ -11,5 +11,6 @@ var structflatbuffers_1_1_struct_def =
     [ "minalign", "structflatbuffers_1_1_struct_def.html#a0d1e04e70bb43f533d47255d601ac4b4", null ],
     [ "original_location", "structflatbuffers_1_1_struct_def.html#a1b767b06907b9b63a17eec25ce413c2f", null ],
     [ "predecl", "structflatbuffers_1_1_struct_def.html#a13a8ddf63500d7c510d3bb9e3690d985", null ],
+    [ "reserved_ids", "structflatbuffers_1_1_struct_def.html#a9cd7e630af65ee13fa5ee3a8ce01432b", null ],
     [ "sortbysize", "structflatbuffers_1_1_struct_def.html#a6a71e3e7ef4883963ac8268d0cab0f75", null ]
 ];

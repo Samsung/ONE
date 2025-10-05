@@ -380,7 +380,7 @@ $(document).ready(function(){initNavTree('_forward_reshape_to_unary_op_pass_8cpp
 <div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    <span class="keywordflow">if</span> (axis_value &lt; 0)</div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>      axis_value += <span class="keyword">static_cast&lt;</span>int32_t<span class="keyword">&gt;</span>(<a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a6772929049d1fe5ed11069fbdd554840">reshape</a>-&gt;rank());</div>
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(axis_value &gt;= 0);</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    assert(axis_value &gt;= 0);</div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>    <span class="keywordflow">if</span> (node-&gt;<a class="code hl_function" href="classluci_1_1_circle_mean.html#a1d51c00a06028fa41ef18e2399d28b95">keep_dims</a>() != <span class="keyword">true</span>)</div>
 <div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
@@ -391,7 +391,7 @@ $(document).ready(function(){initNavTree('_forward_reshape_to_unary_op_pass_8cpp
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>    <span class="keywordflow">if</span> (reshape_input-&gt;rank() != <a class="code hl_enumvalue" href="namespacemir__caffe2.html#ad673211adad8f4f6c0abf122bd4e54e8a6772929049d1fe5ed11069fbdd554840">reshape</a>-&gt;rank())</div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(reshape_input-&gt;rank() &gt; <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(axis_value));</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>    assert(reshape_input-&gt;rank() &gt; <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(axis_value));</div>
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    <span class="keywordflow">for</span> (int32_t i = 0; i &lt;= <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">axis_value</a>; ++<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a>)</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    {</div>

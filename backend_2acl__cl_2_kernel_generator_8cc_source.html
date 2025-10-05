@@ -824,8 +824,8 @@ $(document).ready(function(){initNavTree('backend_2acl__cl_2_kernel_generator_8c
 <div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>    }</div>
 <div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a5dd68b1a7db42a1cce4dce09dbaa179e">ir::operation::ElementwiseUnary::Type::NEG</a>:</div>
 <div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span>    {</div>
-<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>      fn = acl_common::generateLayer&lt;arm_compute::CLNeg&gt;(input_tensor-&gt;handle(),</div>
-<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>                                                         <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a>-&gt;handle());</div>
+<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>      fn = acl_common::generateLayer&lt;arm_compute::CLNegLayer&gt;(input_tensor-&gt;handle(),</div>
+<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>                                                              <a class="code hl_variable" href="namespacepart__eval__one.html#a187620ffdf72abdf0acf204385501746">output_tensor</a>-&gt;handle());</div>
 <div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>    }</div>
 <div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_elementwise_unary.html#a1eaca8ff38942ee2a72356ae14289a51a66bac724670f51e77f3688d33ca0d781">ir::operation::ElementwiseUnary::Type::RSQRT</a>:</div>
@@ -1487,145 +1487,145 @@ $(document).ready(function(){initNavTree('backend_2acl__cl_2_kernel_generator_8c
 <div class="line"><a id="l01384" name="l01384"></a><span class="lineno"> 1384</span>  <span class="keyword">const</span> <span class="keyword">auto</span> split_dim_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_split_v.html#aec156e497eaec7bd7874ecf307af40f3ad77c704ffc5f9bd455c27d85c33430a7">ir::operation::SplitV::Input::SPLIT_DIM</a>)};</div>
 <div class="line"><a id="l01385" name="l01385"></a><span class="lineno"> 1385</span> </div>
 <div class="line"><a id="l01386" name="l01386"></a><span class="lineno"> 1386</span>  assert(node.param().num_splits == <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(node.getOutputs().size()));</div>
-<div class="line"><a id="l01387" name="l01387"></a><span class="lineno"> 1387</span> </div>
-<div class="line"><a id="l01388" name="l01388"></a><span class="lineno"> 1388</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> ifm_rank = _ctx.at(ifm_index).shape().rank();</div>
-<div class="line"><a id="l01389" name="l01389"></a><span class="lineno"> 1389</span>  std::vector&lt;ir::OperandIndex&gt; output_indexes;</div>
-<div class="line"><a id="l01390" name="l01390"></a><span class="lineno"> 1390</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output : node.getOutputs())</div>
-<div class="line"><a id="l01391" name="l01391"></a><span class="lineno"> 1391</span>    output_indexes.emplace_back(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>);</div>
+<div class="line"><a id="l01387" name="l01387"></a><span class="lineno"> 1387</span>  <span class="keywordflow">if</span> (!_ctx.at(split_dim_index).isConstant() || !_ctx.at(size_split_index).isConstant())</div>
+<div class="line"><a id="l01388" name="l01388"></a><span class="lineno"> 1388</span>  {</div>
+<div class="line"><a id="l01389" name="l01389"></a><span class="lineno"> 1389</span>    <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><a id="l01390" name="l01390"></a><span class="lineno"> 1390</span>      <span class="stringliteral">&quot;Non-constant split_dim and size_split is not supported in acl_cl backend&quot;</span>);</div>
+<div class="line"><a id="l01391" name="l01391"></a><span class="lineno"> 1391</span>  }</div>
 <div class="line"><a id="l01392" name="l01392"></a><span class="lineno"> 1392</span> </div>
-<div class="line"><a id="l01393" name="l01393"></a><span class="lineno"> 1393</span>  <span class="keyword">auto</span> ifm_tensor = _tensor_reg-&gt;getAclTensor(ifm_index);</div>
-<div class="line"><a id="l01394" name="l01394"></a><span class="lineno"> 1394</span>  <span class="keyword">auto</span> size_split_tensor = _tensor_reg-&gt;getAclTensor(size_split_index);</div>
-<div class="line"><a id="l01395" name="l01395"></a><span class="lineno"> 1395</span> </div>
-<div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>  std::vector&lt;arm_compute::ICLTensor *&gt; output_tensors;</div>
-<div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ofm_ind : output_indexes)</div>
-<div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span>    output_tensors.emplace_back(_tensor_reg-&gt;getAclTensor(ofm_ind)-&gt;handle());</div>
+<div class="line"><a id="l01393" name="l01393"></a><span class="lineno"> 1393</span>  <span class="comment">// size_split is not used because acl_cl backend is not supporting dynamic shape</span></div>
+<div class="line"><a id="l01394" name="l01394"></a><span class="lineno"> 1394</span> </div>
+<div class="line"><a id="l01395" name="l01395"></a><span class="lineno"> 1395</span>  <span class="keyword">const</span> <span class="keywordtype">size_t</span> ifm_rank = _ctx.at(ifm_index).shape().rank();</div>
+<div class="line"><a id="l01396" name="l01396"></a><span class="lineno"> 1396</span>  std::vector&lt;ir::OperandIndex&gt; output_indexes;</div>
+<div class="line"><a id="l01397" name="l01397"></a><span class="lineno"> 1397</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output : node.getOutputs())</div>
+<div class="line"><a id="l01398" name="l01398"></a><span class="lineno"> 1398</span>    output_indexes.emplace_back(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>);</div>
 <div class="line"><a id="l01399" name="l01399"></a><span class="lineno"> 1399</span> </div>
-<div class="line"><a id="l01400" name="l01400"></a><span class="lineno"> 1400</span>  <span class="keyword">auto</span> fn = std::make_unique&lt;arm_compute::CLSplitVEx&gt;();</div>
-<div class="line"><a id="l01401" name="l01401"></a><span class="lineno"> 1401</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;split_dim_op = _ctx.at(split_dim_index);</div>
-<div class="line"><a id="l01402" name="l01402"></a><span class="lineno"> 1402</span>  <span class="keywordflow">if</span> (split_dim_op.isConstant())</div>
-<div class="line"><a id="l01403" name="l01403"></a><span class="lineno"> 1403</span>  {</div>
-<div class="line"><a id="l01404" name="l01404"></a><span class="lineno"> 1404</span>    int32_t split_dim = split_dim_op.asScalar&lt;int32_t&gt;();</div>
-<div class="line"><a id="l01405" name="l01405"></a><span class="lineno"> 1405</span>    uint32_t split_dim_revised = (split_dim &lt; 0) ? (split_dim + ifm_rank) : split_dim;</div>
-<div class="line"><a id="l01406" name="l01406"></a><span class="lineno"> 1406</span> </div>
-<div class="line"><a id="l01407" name="l01407"></a><span class="lineno"> 1407</span>    <span class="keywordflow">if</span> (ifm_tensor-&gt;num_dimensions() != ifm_tensor-&gt;info()-&gt;num_dimensions())</div>
-<div class="line"><a id="l01408" name="l01408"></a><span class="lineno"> 1408</span>    {</div>
-<div class="line"><a id="l01409" name="l01409"></a><span class="lineno"> 1409</span>      <span class="comment">// This means that high dimension&#39;s value is 1 and ifm tensor is applied dim_correction</span></div>
-<div class="line"><a id="l01410" name="l01410"></a><span class="lineno"> 1410</span>      <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#afa07a0978c17cee0f44ae9aa25fae385">acl_common::disableDimCorrection</a>(ifm_tensor);</div>
-<div class="line"><a id="l01411" name="l01411"></a><span class="lineno"> 1411</span>    }</div>
+<div class="line"><a id="l01400" name="l01400"></a><span class="lineno"> 1400</span>  <span class="keyword">auto</span> ifm_tensor = _tensor_reg-&gt;getAclTensor(ifm_index);</div>
+<div class="line"><a id="l01401" name="l01401"></a><span class="lineno"> 1401</span>  std::vector&lt;arm_compute::ICLTensor *&gt; output_tensors;</div>
+<div class="line"><a id="l01402" name="l01402"></a><span class="lineno"> 1402</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;ofm_ind : output_indexes)</div>
+<div class="line"><a id="l01403" name="l01403"></a><span class="lineno"> 1403</span>    output_tensors.emplace_back(_tensor_reg-&gt;getAclTensor(ofm_ind)-&gt;handle());</div>
+<div class="line"><a id="l01404" name="l01404"></a><span class="lineno"> 1404</span> </div>
+<div class="line"><a id="l01405" name="l01405"></a><span class="lineno"> 1405</span>  <span class="keyword">auto</span> axis = _ctx.at(split_dim_index).asScalar&lt;int32_t&gt;();</div>
+<div class="line"><a id="l01406" name="l01406"></a><span class="lineno"> 1406</span>  <span class="keywordflow">if</span> (axis &lt; 0)</div>
+<div class="line"><a id="l01407" name="l01407"></a><span class="lineno"> 1407</span>    axis += ifm_rank;</div>
+<div class="line"><a id="l01408" name="l01408"></a><span class="lineno"> 1408</span>  axis = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#a0ad1fcc178ce6740e0e67954eb025e92">acl_common::ToARMComputeAxis</a>(ifm_rank, axis).<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_a_r_m_compute_axis.html#a488cd0766d8855994c02925e3b78078a">value</a>();</div>
+<div class="line"><a id="l01409" name="l01409"></a><span class="lineno"> 1409</span> </div>
+<div class="line"><a id="l01410" name="l01410"></a><span class="lineno"> 1410</span>  <span class="keyword">auto</span> fn =</div>
+<div class="line"><a id="l01411" name="l01411"></a><span class="lineno"> 1411</span>    acl_common::generateLayer&lt;arm_compute::CLSplit&gt;(ifm_tensor-&gt;handle(), output_tensors, axis);</div>
 <div class="line"><a id="l01412" name="l01412"></a><span class="lineno"> 1412</span> </div>
-<div class="line"><a id="l01413" name="l01413"></a><span class="lineno"> 1413</span>    split_dim_revised = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#a0ad1fcc178ce6740e0e67954eb025e92">acl_common::ToARMComputeAxis</a>(ifm_rank, split_dim_revised).<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_a_r_m_compute_axis.html#a488cd0766d8855994c02925e3b78078a">value</a>();</div>
-<div class="line"><a id="l01414" name="l01414"></a><span class="lineno"> 1414</span>    fn-&gt;configure(ifm_tensor-&gt;handle(), size_split_tensor-&gt;handle(), split_dim_revised,</div>
-<div class="line"><a id="l01415" name="l01415"></a><span class="lineno"> 1415</span>                  output_tensors, node.param().num_splits);</div>
-<div class="line"><a id="l01416" name="l01416"></a><span class="lineno"> 1416</span> </div>
-<div class="line"><a id="l01417" name="l01417"></a><span class="lineno"> 1417</span>    <span class="keywordflow">if</span> (ifm_tensor-&gt;dimension(0) == 1)</div>
-<div class="line"><a id="l01418" name="l01418"></a><span class="lineno"> 1418</span>    {</div>
-<div class="line"><a id="l01419" name="l01419"></a><span class="lineno"> 1419</span>      <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#aaca940dbd0cd08c93b1d5894ac31f426">acl_common::enableDimCorrection</a>(ifm_tensor);</div>
-<div class="line"><a id="l01420" name="l01420"></a><span class="lineno"> 1420</span>    }</div>
-<div class="line"><a id="l01421" name="l01421"></a><span class="lineno"> 1421</span>  }</div>
-<div class="line"><a id="l01422" name="l01422"></a><span class="lineno"> 1422</span>  <span class="keywordflow">else</span></div>
-<div class="line"><a id="l01423" name="l01423"></a><span class="lineno"> 1423</span>  {</div>
-<div class="line"><a id="l01424" name="l01424"></a><span class="lineno"> 1424</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Non-constant split_dim NYI for acl_cl backend&quot;</span>);</div>
-<div class="line"><a id="l01425" name="l01425"></a><span class="lineno"> 1425</span>  }</div>
+<div class="line"><a id="l01413" name="l01413"></a><span class="lineno"> 1413</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#ad332f86012f1af93ea4b0d773112e41c">asAclFunction</a>(std::move(fn));</div>
+<div class="line"><a id="l01414" name="l01414"></a><span class="lineno"> 1414</span>}</div>
+<div class="line"><a id="l01415" name="l01415"></a><span class="lineno"> 1415</span> </div>
+<div class="line"><a id="l01416" name="l01416"></a><span class="lineno"> 1416</span><span class="keywordtype">void</span> KernelGenerator::visit(<span class="keyword">const</span> ir::operation::Unpack &amp;node)</div>
+<div class="line"><a id="l01417" name="l01417"></a><span class="lineno"> 1417</span>{</div>
+<div class="line"><a id="l01418" name="l01418"></a><span class="lineno"> 1418</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_unpack.html#a4a337cf463c670f3ab6d20a60b9ec44ba2fb7f7aa452c1371ff3aee30dd42a0ac">ir::operation::Unpack::Input::INPUT</a>)};</div>
+<div class="line"><a id="l01419" name="l01419"></a><span class="lineno"> 1419</span>  <span class="keyword">auto</span> axis{node.param().axis};</div>
+<div class="line"><a id="l01420" name="l01420"></a><span class="lineno"> 1420</span> </div>
+<div class="line"><a id="l01421" name="l01421"></a><span class="lineno"> 1421</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_rank = _ctx.at(input_index).shape().rank();</div>
+<div class="line"><a id="l01422" name="l01422"></a><span class="lineno"> 1422</span> </div>
+<div class="line"><a id="l01423" name="l01423"></a><span class="lineno"> 1423</span>  std::vector&lt;ir::OperandIndex&gt; output_indexes;</div>
+<div class="line"><a id="l01424" name="l01424"></a><span class="lineno"> 1424</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_index : node.getOutputs())</div>
+<div class="line"><a id="l01425" name="l01425"></a><span class="lineno"> 1425</span>    output_indexes.emplace_back(output_index);</div>
 <div class="line"><a id="l01426" name="l01426"></a><span class="lineno"> 1426</span> </div>
-<div class="line"><a id="l01427" name="l01427"></a><span class="lineno"> 1427</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#ad332f86012f1af93ea4b0d773112e41c">asAclFunction</a>(std::move(fn));</div>
-<div class="line"><a id="l01428" name="l01428"></a><span class="lineno"> 1428</span>}</div>
-<div class="line"><a id="l01429" name="l01429"></a><span class="lineno"> 1429</span> </div>
-<div class="line"><a id="l01430" name="l01430"></a><span class="lineno"> 1430</span><span class="keywordtype">void</span> KernelGenerator::visit(<span class="keyword">const</span> ir::operation::Unpack &amp;node)</div>
-<div class="line"><a id="l01431" name="l01431"></a><span class="lineno"> 1431</span>{</div>
-<div class="line"><a id="l01432" name="l01432"></a><span class="lineno"> 1432</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_unpack.html#a4a337cf463c670f3ab6d20a60b9ec44ba2fb7f7aa452c1371ff3aee30dd42a0ac">ir::operation::Unpack::Input::INPUT</a>)};</div>
-<div class="line"><a id="l01433" name="l01433"></a><span class="lineno"> 1433</span>  <span class="keyword">auto</span> axis{node.param().axis};</div>
-<div class="line"><a id="l01434" name="l01434"></a><span class="lineno"> 1434</span> </div>
-<div class="line"><a id="l01435" name="l01435"></a><span class="lineno"> 1435</span>  <span class="keyword">const</span> <span class="keyword">auto</span> input_rank = _ctx.at(input_index).shape().rank();</div>
-<div class="line"><a id="l01436" name="l01436"></a><span class="lineno"> 1436</span> </div>
-<div class="line"><a id="l01437" name="l01437"></a><span class="lineno"> 1437</span>  std::vector&lt;ir::OperandIndex&gt; output_indexes;</div>
-<div class="line"><a id="l01438" name="l01438"></a><span class="lineno"> 1438</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_index : node.getOutputs())</div>
-<div class="line"><a id="l01439" name="l01439"></a><span class="lineno"> 1439</span>    output_indexes.emplace_back(output_index);</div>
-<div class="line"><a id="l01440" name="l01440"></a><span class="lineno"> 1440</span> </div>
-<div class="line"><a id="l01441" name="l01441"></a><span class="lineno"> 1441</span>  <span class="keyword">auto</span> input_tensor = _tensor_reg-&gt;getAclTensor(input_index);</div>
-<div class="line"><a id="l01442" name="l01442"></a><span class="lineno"> 1442</span>  std::vector&lt;arm_compute::ICLTensor *&gt; outputs;</div>
-<div class="line"><a id="l01443" name="l01443"></a><span class="lineno"> 1443</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_index : output_indexes)</div>
-<div class="line"><a id="l01444" name="l01444"></a><span class="lineno"> 1444</span>    outputs.emplace_back(_tensor_reg-&gt;getAclTensor(output_index)-&gt;handle());</div>
+<div class="line"><a id="l01427" name="l01427"></a><span class="lineno"> 1427</span>  <span class="keyword">auto</span> input_tensor = _tensor_reg-&gt;getAclTensor(input_index);</div>
+<div class="line"><a id="l01428" name="l01428"></a><span class="lineno"> 1428</span>  std::vector&lt;arm_compute::ICLTensor *&gt; outputs;</div>
+<div class="line"><a id="l01429" name="l01429"></a><span class="lineno"> 1429</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;output_index : output_indexes)</div>
+<div class="line"><a id="l01430" name="l01430"></a><span class="lineno"> 1430</span>    outputs.emplace_back(_tensor_reg-&gt;getAclTensor(output_index)-&gt;handle());</div>
+<div class="line"><a id="l01431" name="l01431"></a><span class="lineno"> 1431</span> </div>
+<div class="line"><a id="l01432" name="l01432"></a><span class="lineno"> 1432</span>  <span class="keywordflow">if</span> (axis &lt; 0)</div>
+<div class="line"><a id="l01433" name="l01433"></a><span class="lineno"> 1433</span>    axis += input_rank;</div>
+<div class="line"><a id="l01434" name="l01434"></a><span class="lineno"> 1434</span>  axis = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#a0ad1fcc178ce6740e0e67954eb025e92">acl_common::ToARMComputeAxis</a>(input_rank, axis).<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_a_r_m_compute_axis.html#a488cd0766d8855994c02925e3b78078a">value</a>();</div>
+<div class="line"><a id="l01435" name="l01435"></a><span class="lineno"> 1435</span> </div>
+<div class="line"><a id="l01436" name="l01436"></a><span class="lineno"> 1436</span>  <span class="comment">// Disable applied dim_correction</span></div>
+<div class="line"><a id="l01437" name="l01437"></a><span class="lineno"> 1437</span>  <span class="keywordflow">if</span> (input_tensor-&gt;num_dimensions() != input_tensor-&gt;info()-&gt;num_dimensions())</div>
+<div class="line"><a id="l01438" name="l01438"></a><span class="lineno"> 1438</span>  {</div>
+<div class="line"><a id="l01439" name="l01439"></a><span class="lineno"> 1439</span>    <span class="comment">// This means that high dimension&#39;s value is 1 and input tensor is applied dim_correction</span></div>
+<div class="line"><a id="l01440" name="l01440"></a><span class="lineno"> 1440</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#afa07a0978c17cee0f44ae9aa25fae385">acl_common::disableDimCorrection</a>(input_tensor);</div>
+<div class="line"><a id="l01441" name="l01441"></a><span class="lineno"> 1441</span>  }</div>
+<div class="line"><a id="l01442" name="l01442"></a><span class="lineno"> 1442</span> </div>
+<div class="line"><a id="l01443" name="l01443"></a><span class="lineno"> 1443</span>  <span class="keyword">auto</span> fn =</div>
+<div class="line"><a id="l01444" name="l01444"></a><span class="lineno"> 1444</span>    acl_common::generateLayer&lt;arm_compute::CLUnstack&gt;(input_tensor-&gt;handle(), outputs, axis);</div>
 <div class="line"><a id="l01445" name="l01445"></a><span class="lineno"> 1445</span> </div>
-<div class="line"><a id="l01446" name="l01446"></a><span class="lineno"> 1446</span>  <span class="keywordflow">if</span> (axis &lt; 0)</div>
-<div class="line"><a id="l01447" name="l01447"></a><span class="lineno"> 1447</span>    axis += input_rank;</div>
-<div class="line"><a id="l01448" name="l01448"></a><span class="lineno"> 1448</span>  axis = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#a0ad1fcc178ce6740e0e67954eb025e92">acl_common::ToARMComputeAxis</a>(input_rank, axis).<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_a_r_m_compute_axis.html#a488cd0766d8855994c02925e3b78078a">value</a>();</div>
-<div class="line"><a id="l01449" name="l01449"></a><span class="lineno"> 1449</span> </div>
-<div class="line"><a id="l01450" name="l01450"></a><span class="lineno"> 1450</span>  <span class="comment">// Disable applied dim_correction</span></div>
-<div class="line"><a id="l01451" name="l01451"></a><span class="lineno"> 1451</span>  <span class="keywordflow">if</span> (input_tensor-&gt;num_dimensions() != input_tensor-&gt;info()-&gt;num_dimensions())</div>
-<div class="line"><a id="l01452" name="l01452"></a><span class="lineno"> 1452</span>  {</div>
-<div class="line"><a id="l01453" name="l01453"></a><span class="lineno"> 1453</span>    <span class="comment">// This means that high dimension&#39;s value is 1 and input tensor is applied dim_correction</span></div>
-<div class="line"><a id="l01454" name="l01454"></a><span class="lineno"> 1454</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#afa07a0978c17cee0f44ae9aa25fae385">acl_common::disableDimCorrection</a>(input_tensor);</div>
-<div class="line"><a id="l01455" name="l01455"></a><span class="lineno"> 1455</span>  }</div>
-<div class="line"><a id="l01456" name="l01456"></a><span class="lineno"> 1456</span> </div>
-<div class="line"><a id="l01457" name="l01457"></a><span class="lineno"> 1457</span>  <span class="keyword">auto</span> fn =</div>
-<div class="line"><a id="l01458" name="l01458"></a><span class="lineno"> 1458</span>    acl_common::generateLayer&lt;arm_compute::CLUnstack&gt;(input_tensor-&gt;handle(), outputs, axis);</div>
-<div class="line"><a id="l01459" name="l01459"></a><span class="lineno"> 1459</span> </div>
-<div class="line"><a id="l01460" name="l01460"></a><span class="lineno"> 1460</span>  <span class="comment">// Revert disabling applied dim_correction</span></div>
-<div class="line"><a id="l01461" name="l01461"></a><span class="lineno"> 1461</span>  <span class="keywordflow">if</span> (input_tensor-&gt;dimension(0) == 1)</div>
-<div class="line"><a id="l01462" name="l01462"></a><span class="lineno"> 1462</span>  {</div>
-<div class="line"><a id="l01463" name="l01463"></a><span class="lineno"> 1463</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#aaca940dbd0cd08c93b1d5894ac31f426">acl_common::enableDimCorrection</a>(input_tensor);</div>
-<div class="line"><a id="l01464" name="l01464"></a><span class="lineno"> 1464</span>  }</div>
-<div class="line"><a id="l01465" name="l01465"></a><span class="lineno"> 1465</span> </div>
-<div class="line"><a id="l01466" name="l01466"></a><span class="lineno"> 1466</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#ad332f86012f1af93ea4b0d773112e41c">asAclFunction</a>(std::move(fn));</div>
-<div class="line"><a id="l01467" name="l01467"></a><span class="lineno"> 1467</span>}</div>
-<div class="line"><a id="l01468" name="l01468"></a><span class="lineno"> 1468</span> </div>
-<div class="line"><a id="l01469" name="l01469"></a><span class="lineno"> 1469</span><span class="keywordtype">void</span> KernelGenerator::visit(<span class="keyword">const</span> ir::operation::Pad &amp;node)</div>
-<div class="line"><a id="l01470" name="l01470"></a><span class="lineno"> 1470</span>{</div>
-<div class="line"><a id="l01471" name="l01471"></a><span class="lineno"> 1471</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pad.html#acda0ae4bfca6d917f271cf4fda9f28bba3cdfc07deb2cd91625efcc29cdcac61b">ir::operation::Pad::Input::INPUT</a>)};</div>
-<div class="line"><a id="l01472" name="l01472"></a><span class="lineno"> 1472</span>  <span class="keyword">const</span> <span class="keyword">auto</span> pad_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pad.html#acda0ae4bfca6d917f271cf4fda9f28bba89a662bc02e3e0dbd1e36db5fda2ca14">ir::operation::Pad::Input::PAD</a>)};</div>
-<div class="line"><a id="l01473" name="l01473"></a><span class="lineno"> 1473</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
-<div class="line"><a id="l01474" name="l01474"></a><span class="lineno"> 1474</span>  assert(_ctx.at(pad_index).data());</div>
-<div class="line"><a id="l01475" name="l01475"></a><span class="lineno"> 1475</span> </div>
-<div class="line"><a id="l01476" name="l01476"></a><span class="lineno"> 1476</span>  <span class="keyword">auto</span> rank = _ctx.at(input_index).shape().rank();</div>
-<div class="line"><a id="l01477" name="l01477"></a><span class="lineno"> 1477</span>  <span class="keyword">auto</span> pad_base = _ctx.at(pad_index).data()-&gt;base();</div>
+<div class="line"><a id="l01446" name="l01446"></a><span class="lineno"> 1446</span>  <span class="comment">// Revert disabling applied dim_correction</span></div>
+<div class="line"><a id="l01447" name="l01447"></a><span class="lineno"> 1447</span>  <span class="keywordflow">if</span> (input_tensor-&gt;dimension(0) == 1)</div>
+<div class="line"><a id="l01448" name="l01448"></a><span class="lineno"> 1448</span>  {</div>
+<div class="line"><a id="l01449" name="l01449"></a><span class="lineno"> 1449</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#aaca940dbd0cd08c93b1d5894ac31f426">acl_common::enableDimCorrection</a>(input_tensor);</div>
+<div class="line"><a id="l01450" name="l01450"></a><span class="lineno"> 1450</span>  }</div>
+<div class="line"><a id="l01451" name="l01451"></a><span class="lineno"> 1451</span> </div>
+<div class="line"><a id="l01452" name="l01452"></a><span class="lineno"> 1452</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#ad332f86012f1af93ea4b0d773112e41c">asAclFunction</a>(std::move(fn));</div>
+<div class="line"><a id="l01453" name="l01453"></a><span class="lineno"> 1453</span>}</div>
+<div class="line"><a id="l01454" name="l01454"></a><span class="lineno"> 1454</span> </div>
+<div class="line"><a id="l01455" name="l01455"></a><span class="lineno"> 1455</span><span class="keywordtype">void</span> KernelGenerator::visit(<span class="keyword">const</span> ir::operation::Pad &amp;node)</div>
+<div class="line"><a id="l01456" name="l01456"></a><span class="lineno"> 1456</span>{</div>
+<div class="line"><a id="l01457" name="l01457"></a><span class="lineno"> 1457</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ae2b1c0809b846c696f9011ba5dc18e69">input_index</a>{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pad.html#acda0ae4bfca6d917f271cf4fda9f28bba3cdfc07deb2cd91625efcc29cdcac61b">ir::operation::Pad::Input::INPUT</a>)};</div>
+<div class="line"><a id="l01458" name="l01458"></a><span class="lineno"> 1458</span>  <span class="keyword">const</span> <span class="keyword">auto</span> pad_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_pad.html#acda0ae4bfca6d917f271cf4fda9f28bba89a662bc02e3e0dbd1e36db5fda2ca14">ir::operation::Pad::Input::PAD</a>)};</div>
+<div class="line"><a id="l01459" name="l01459"></a><span class="lineno"> 1459</span>  <span class="keyword">const</span> <span class="keyword">auto</span> output_index{node.getOutputs().at(0)};</div>
+<div class="line"><a id="l01460" name="l01460"></a><span class="lineno"> 1460</span>  assert(_ctx.at(pad_index).data());</div>
+<div class="line"><a id="l01461" name="l01461"></a><span class="lineno"> 1461</span> </div>
+<div class="line"><a id="l01462" name="l01462"></a><span class="lineno"> 1462</span>  <span class="keyword">auto</span> rank = _ctx.at(input_index).shape().rank();</div>
+<div class="line"><a id="l01463" name="l01463"></a><span class="lineno"> 1463</span>  <span class="keyword">auto</span> pad_base = _ctx.at(pad_index).data()-&gt;base();</div>
+<div class="line"><a id="l01464" name="l01464"></a><span class="lineno"> 1464</span> </div>
+<div class="line"><a id="l01465" name="l01465"></a><span class="lineno"> 1465</span>  <span class="keyword">auto</span> input_type = _ctx.at(input_index).typeInfo();</div>
+<div class="line"><a id="l01466" name="l01466"></a><span class="lineno"> 1466</span>  <span class="keyword">auto</span> data_type = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#ade4ddd07ee8a88fdff633341476cc689">acl_common::asDataType</a>(input_type.type());</div>
+<div class="line"><a id="l01467" name="l01467"></a><span class="lineno"> 1467</span>  <span class="keyword">auto</span> quant_info = ::arm_compute::QuantizationInfo(input_type.scale(), input_type.zero_point());</div>
+<div class="line"><a id="l01468" name="l01468"></a><span class="lineno"> 1468</span>  <span class="keyword">const</span> <span class="keyword">auto</span> pixel_value = ::arm_compute::PixelValue(0, data_type, quant_info);</div>
+<div class="line"><a id="l01469" name="l01469"></a><span class="lineno"> 1469</span> </div>
+<div class="line"><a id="l01470" name="l01470"></a><span class="lineno"> 1470</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_reg-&gt;getAclTensor(input_index)-&gt;handle();</div>
+<div class="line"><a id="l01471" name="l01471"></a><span class="lineno"> 1471</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_reg-&gt;getAclTensor(output_index)-&gt;handle();</div>
+<div class="line"><a id="l01472" name="l01472"></a><span class="lineno"> 1472</span> </div>
+<div class="line"><a id="l01473" name="l01473"></a><span class="lineno"> 1473</span>  ::arm_compute::PaddingList padding_list;</div>
+<div class="line"><a id="l01474" name="l01474"></a><span class="lineno"> 1474</span>  padding_list.resize(rank);</div>
+<div class="line"><a id="l01475" name="l01475"></a><span class="lineno"> 1475</span>  <span class="keywordflow">for</span> (int32_t n = 0; n &lt; rank; ++n)</div>
+<div class="line"><a id="l01476" name="l01476"></a><span class="lineno"> 1476</span>  {</div>
+<div class="line"><a id="l01477" name="l01477"></a><span class="lineno"> 1477</span>    <span class="keyword">const</span> int32_t *from = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(pad_base) + (n * 2);</div>
 <div class="line"><a id="l01478" name="l01478"></a><span class="lineno"> 1478</span> </div>
-<div class="line"><a id="l01479" name="l01479"></a><span class="lineno"> 1479</span>  <span class="keyword">auto</span> input_type = _ctx.at(input_index).typeInfo();</div>
-<div class="line"><a id="l01480" name="l01480"></a><span class="lineno"> 1480</span>  <span class="keyword">auto</span> data_type = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#ade4ddd07ee8a88fdff633341476cc689">acl_common::asDataType</a>(input_type.type());</div>
-<div class="line"><a id="l01481" name="l01481"></a><span class="lineno"> 1481</span>  <span class="keyword">auto</span> quant_info = ::arm_compute::QuantizationInfo(input_type.scale(), input_type.zero_point());</div>
-<div class="line"><a id="l01482" name="l01482"></a><span class="lineno"> 1482</span>  <span class="keyword">const</span> <span class="keyword">auto</span> pixel_value = ::arm_compute::PixelValue(0, data_type, quant_info);</div>
-<div class="line"><a id="l01483" name="l01483"></a><span class="lineno"> 1483</span> </div>
-<div class="line"><a id="l01484" name="l01484"></a><span class="lineno"> 1484</span>  <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a> = _tensor_reg-&gt;getAclTensor(input_index)-&gt;handle();</div>
-<div class="line"><a id="l01485" name="l01485"></a><span class="lineno"> 1485</span>  <span class="keyword">auto</span> <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a> = _tensor_reg-&gt;getAclTensor(output_index)-&gt;handle();</div>
-<div class="line"><a id="l01486" name="l01486"></a><span class="lineno"> 1486</span> </div>
-<div class="line"><a id="l01487" name="l01487"></a><span class="lineno"> 1487</span>  ::arm_compute::PaddingList padding_list;</div>
-<div class="line"><a id="l01488" name="l01488"></a><span class="lineno"> 1488</span>  padding_list.resize(rank);</div>
-<div class="line"><a id="l01489" name="l01489"></a><span class="lineno"> 1489</span>  <span class="keywordflow">for</span> (int32_t n = 0; n &lt; rank; ++n)</div>
-<div class="line"><a id="l01490" name="l01490"></a><span class="lineno"> 1490</span>  {</div>
-<div class="line"><a id="l01491" name="l01491"></a><span class="lineno"> 1491</span>    <span class="keyword">const</span> int32_t *from = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>int32_t *<span class="keyword">&gt;</span>(pad_base) + (n * 2);</div>
-<div class="line"><a id="l01492" name="l01492"></a><span class="lineno"> 1492</span> </div>
-<div class="line"><a id="l01493" name="l01493"></a><span class="lineno"> 1493</span>    <span class="keyword">const</span> <span class="keyword">auto</span> axis = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#a0ad1fcc178ce6740e0e67954eb025e92">acl_common::ToARMComputeAxis</a>(rank, n).<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_a_r_m_compute_axis.html#a488cd0766d8855994c02925e3b78078a">value</a>();</div>
-<div class="line"><a id="l01494" name="l01494"></a><span class="lineno"> 1494</span>    padding_list[axis] = ::arm_compute::PaddingInfo{from[0], from[1]};</div>
-<div class="line"><a id="l01495" name="l01495"></a><span class="lineno"> 1495</span>  }</div>
-<div class="line"><a id="l01496" name="l01496"></a><span class="lineno"> 1496</span> </div>
-<div class="line"><a id="l01497" name="l01497"></a><span class="lineno"> 1497</span>  <span class="comment">// Disable applied dim_correction</span></div>
-<div class="line"><a id="l01498" name="l01498"></a><span class="lineno"> 1498</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;input_tensor = _tensor_reg-&gt;getAclTensor(input_index);</div>
-<div class="line"><a id="l01499" name="l01499"></a><span class="lineno"> 1499</span>  <span class="keywordflow">if</span> (input_tensor-&gt;num_dimensions() != input_tensor-&gt;info()-&gt;num_dimensions())</div>
-<div class="line"><a id="l01500" name="l01500"></a><span class="lineno"> 1500</span>  {</div>
-<div class="line"><a id="l01501" name="l01501"></a><span class="lineno"> 1501</span>    <span class="comment">// This means that high dimension&#39;s value is 1 and input tensor is applied dim_correction</span></div>
-<div class="line"><a id="l01502" name="l01502"></a><span class="lineno"> 1502</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#afa07a0978c17cee0f44ae9aa25fae385">acl_common::disableDimCorrection</a>(input_tensor);</div>
+<div class="line"><a id="l01479" name="l01479"></a><span class="lineno"> 1479</span>    <span class="keyword">const</span> <span class="keyword">auto</span> axis = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#a0ad1fcc178ce6740e0e67954eb025e92">acl_common::ToARMComputeAxis</a>(rank, n).<a class="code hl_function" href="classonert_1_1backend_1_1acl__common_1_1_a_r_m_compute_axis.html#a488cd0766d8855994c02925e3b78078a">value</a>();</div>
+<div class="line"><a id="l01480" name="l01480"></a><span class="lineno"> 1480</span>    padding_list[axis] = ::arm_compute::PaddingInfo{from[0], from[1]};</div>
+<div class="line"><a id="l01481" name="l01481"></a><span class="lineno"> 1481</span>  }</div>
+<div class="line"><a id="l01482" name="l01482"></a><span class="lineno"> 1482</span> </div>
+<div class="line"><a id="l01483" name="l01483"></a><span class="lineno"> 1483</span>  <span class="comment">// Disable applied dim_correction</span></div>
+<div class="line"><a id="l01484" name="l01484"></a><span class="lineno"> 1484</span>  <span class="keyword">const</span> <span class="keyword">auto</span> &amp;input_tensor = _tensor_reg-&gt;getAclTensor(input_index);</div>
+<div class="line"><a id="l01485" name="l01485"></a><span class="lineno"> 1485</span>  <span class="keywordflow">if</span> (input_tensor-&gt;num_dimensions() != input_tensor-&gt;info()-&gt;num_dimensions())</div>
+<div class="line"><a id="l01486" name="l01486"></a><span class="lineno"> 1486</span>  {</div>
+<div class="line"><a id="l01487" name="l01487"></a><span class="lineno"> 1487</span>    <span class="comment">// This means that high dimension&#39;s value is 1 and input tensor is applied dim_correction</span></div>
+<div class="line"><a id="l01488" name="l01488"></a><span class="lineno"> 1488</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#afa07a0978c17cee0f44ae9aa25fae385">acl_common::disableDimCorrection</a>(input_tensor);</div>
+<div class="line"><a id="l01489" name="l01489"></a><span class="lineno"> 1489</span>  }</div>
+<div class="line"><a id="l01490" name="l01490"></a><span class="lineno"> 1490</span> </div>
+<div class="line"><a id="l01491" name="l01491"></a><span class="lineno"> 1491</span>  <span class="keyword">auto</span> fn =</div>
+<div class="line"><a id="l01492" name="l01492"></a><span class="lineno"> 1492</span>    acl_common::generateLayer&lt;arm_compute::CLPadLayerEx&gt;(input, output, padding_list, pixel_value);</div>
+<div class="line"><a id="l01493" name="l01493"></a><span class="lineno"> 1493</span> </div>
+<div class="line"><a id="l01494" name="l01494"></a><span class="lineno"> 1494</span>  <span class="comment">// NOTE Do not revert disabling applied dim_correction for 4D.</span></div>
+<div class="line"><a id="l01495" name="l01495"></a><span class="lineno"> 1495</span>  <span class="comment">// It would produce a mistach of result by incorrect offset_first_element in</span></div>
+<div class="line"><a id="l01496" name="l01496"></a><span class="lineno"> 1496</span>  <span class="comment">// ICLKernel::add_tensor_argument&lt;3&gt;().</span></div>
+<div class="line"><a id="l01497" name="l01497"></a><span class="lineno"> 1497</span>  <span class="comment">// We have to disable applied dim_correction and not to revert enabling for the kernel that slices</span></div>
+<div class="line"><a id="l01498" name="l01498"></a><span class="lineno"> 1498</span>  <span class="comment">// 4D to 3D because slicing arm_compute::Window can causes incorrect offset_first_element if the</span></div>
+<div class="line"><a id="l01499" name="l01499"></a><span class="lineno"> 1499</span>  <span class="comment">// used tensor is 4D and the tensor&#39;s high dimention is 1</span></div>
+<div class="line"><a id="l01500" name="l01500"></a><span class="lineno"> 1500</span>  <span class="keywordflow">if</span> (input_tensor-&gt;num_dimensions() &lt; 4 &amp;&amp; input_tensor-&gt;dimension(0) == 1)</div>
+<div class="line"><a id="l01501" name="l01501"></a><span class="lineno"> 1501</span>  {</div>
+<div class="line"><a id="l01502" name="l01502"></a><span class="lineno"> 1502</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#aaca940dbd0cd08c93b1d5894ac31f426">acl_common::enableDimCorrection</a>(input_tensor);</div>
 <div class="line"><a id="l01503" name="l01503"></a><span class="lineno"> 1503</span>  }</div>
 <div class="line"><a id="l01504" name="l01504"></a><span class="lineno"> 1504</span> </div>
-<div class="line"><a id="l01505" name="l01505"></a><span class="lineno"> 1505</span>  <span class="keyword">auto</span> fn =</div>
-<div class="line"><a id="l01506" name="l01506"></a><span class="lineno"> 1506</span>    acl_common::generateLayer&lt;arm_compute::CLPadLayerEx&gt;(input, output, padding_list, pixel_value);</div>
+<div class="line"><a id="l01505" name="l01505"></a><span class="lineno"> 1505</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#ad332f86012f1af93ea4b0d773112e41c">asAclFunction</a>(std::move(fn));</div>
+<div class="line"><a id="l01506" name="l01506"></a><span class="lineno"> 1506</span>}</div>
 <div class="line"><a id="l01507" name="l01507"></a><span class="lineno"> 1507</span> </div>
-<div class="line"><a id="l01508" name="l01508"></a><span class="lineno"> 1508</span>  <span class="comment">// NOTE Do not revert disabling applied dim_correction for 4D.</span></div>
-<div class="line"><a id="l01509" name="l01509"></a><span class="lineno"> 1509</span>  <span class="comment">// It would produce a mistach of result by incorrect offset_first_element in</span></div>
-<div class="line"><a id="l01510" name="l01510"></a><span class="lineno"> 1510</span>  <span class="comment">// ICLKernel::add_tensor_argument&lt;3&gt;().</span></div>
-<div class="line"><a id="l01511" name="l01511"></a><span class="lineno"> 1511</span>  <span class="comment">// We have to disable applied dim_correction and not to revert enabling for the kernel that slices</span></div>
-<div class="line"><a id="l01512" name="l01512"></a><span class="lineno"> 1512</span>  <span class="comment">// 4D to 3D because slicing arm_compute::Window can causes incorrect offset_first_element if the</span></div>
-<div class="line"><a id="l01513" name="l01513"></a><span class="lineno"> 1513</span>  <span class="comment">// used tensor is 4D and the tensor&#39;s high dimention is 1</span></div>
-<div class="line"><a id="l01514" name="l01514"></a><span class="lineno"> 1514</span>  <span class="keywordflow">if</span> (input_tensor-&gt;num_dimensions() &lt; 4 &amp;&amp; input_tensor-&gt;dimension(0) == 1)</div>
-<div class="line"><a id="l01515" name="l01515"></a><span class="lineno"> 1515</span>  {</div>
-<div class="line"><a id="l01516" name="l01516"></a><span class="lineno"> 1516</span>    <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#aaca940dbd0cd08c93b1d5894ac31f426">acl_common::enableDimCorrection</a>(input_tensor);</div>
-<div class="line"><a id="l01517" name="l01517"></a><span class="lineno"> 1517</span>  }</div>
+<div class="line"><a id="l01508" name="l01508"></a><span class="lineno"> 1508</span><span class="keywordtype">void</span> KernelGenerator::visit(<span class="keyword">const</span> ir::operation::ConvertFp32ToFp16 &amp;node)</div>
+<div class="line"><a id="l01509" name="l01509"></a><span class="lineno"> 1509</span>{</div>
+<div class="line"><a id="l01510" name="l01510"></a><span class="lineno"> 1510</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ofm_index{node.getOutputs().at(0)};</div>
+<div class="line"><a id="l01511" name="l01511"></a><span class="lineno"> 1511</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ifm_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_convert_fp32_to_fp16.html#a41ed8865dac819cbb0d6ccba23935cfbae997eff5c34e87c463fa4852b65e0a82">ir::operation::ConvertFp32ToFp16::Input::INPUT</a>)};</div>
+<div class="line"><a id="l01512" name="l01512"></a><span class="lineno"> 1512</span> </div>
+<div class="line"><a id="l01513" name="l01513"></a><span class="lineno"> 1513</span>  <span class="keyword">auto</span> ofm_tensor = _tensor_reg-&gt;getAclTensor(ofm_index);</div>
+<div class="line"><a id="l01514" name="l01514"></a><span class="lineno"> 1514</span>  <span class="keyword">auto</span> ifm_tensor = _tensor_reg-&gt;getAclTensor(ifm_index);</div>
+<div class="line"><a id="l01515" name="l01515"></a><span class="lineno"> 1515</span> </div>
+<div class="line"><a id="l01516" name="l01516"></a><span class="lineno"> 1516</span>  <span class="keyword">auto</span> fn = acl_common::generateLayer&lt;arm_compute::CLDepthConvertLayer&gt;(</div>
+<div class="line"><a id="l01517" name="l01517"></a><span class="lineno"> 1517</span>    ifm_tensor-&gt;handle(), ofm_tensor-&gt;handle(), ::arm_compute::ConvertPolicy::SATURATE, 0);</div>
 <div class="line"><a id="l01518" name="l01518"></a><span class="lineno"> 1518</span> </div>
 <div class="line"><a id="l01519" name="l01519"></a><span class="lineno"> 1519</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#ad332f86012f1af93ea4b0d773112e41c">asAclFunction</a>(std::move(fn));</div>
 <div class="line"><a id="l01520" name="l01520"></a><span class="lineno"> 1520</span>}</div>
 <div class="line"><a id="l01521" name="l01521"></a><span class="lineno"> 1521</span> </div>
-<div class="line"><a id="l01522" name="l01522"></a><span class="lineno"> 1522</span><span class="keywordtype">void</span> KernelGenerator::visit(<span class="keyword">const</span> ir::operation::ConvertFp32ToFp16 &amp;node)</div>
+<div class="line"><a id="l01522" name="l01522"></a><span class="lineno"> 1522</span><span class="keywordtype">void</span> KernelGenerator::visit(<span class="keyword">const</span> ir::operation::ConvertFp16ToFp32 &amp;node)</div>
 <div class="line"><a id="l01523" name="l01523"></a><span class="lineno"> 1523</span>{</div>
 <div class="line"><a id="l01524" name="l01524"></a><span class="lineno"> 1524</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ofm_index{node.getOutputs().at(0)};</div>
-<div class="line"><a id="l01525" name="l01525"></a><span class="lineno"> 1525</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ifm_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_convert_fp32_to_fp16.html#a41ed8865dac819cbb0d6ccba23935cfbae997eff5c34e87c463fa4852b65e0a82">ir::operation::ConvertFp32ToFp16::Input::INPUT</a>)};</div>
+<div class="line"><a id="l01525" name="l01525"></a><span class="lineno"> 1525</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ifm_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_convert_fp16_to_fp32.html#adb3ac578bdaa591aa24f2f9dc1c4f475a32790c23594a518c4756692f0cdd6d5a">ir::operation::ConvertFp16ToFp32::Input::INPUT</a>)};</div>
 <div class="line"><a id="l01526" name="l01526"></a><span class="lineno"> 1526</span> </div>
 <div class="line"><a id="l01527" name="l01527"></a><span class="lineno"> 1527</span>  <span class="keyword">auto</span> ofm_tensor = _tensor_reg-&gt;getAclTensor(ofm_index);</div>
 <div class="line"><a id="l01528" name="l01528"></a><span class="lineno"> 1528</span>  <span class="keyword">auto</span> ifm_tensor = _tensor_reg-&gt;getAclTensor(ifm_index);</div>
@@ -1636,45 +1636,31 @@ $(document).ready(function(){initNavTree('backend_2acl__cl_2_kernel_generator_8c
 <div class="line"><a id="l01533" name="l01533"></a><span class="lineno"> 1533</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#ad332f86012f1af93ea4b0d773112e41c">asAclFunction</a>(std::move(fn));</div>
 <div class="line"><a id="l01534" name="l01534"></a><span class="lineno"> 1534</span>}</div>
 <div class="line"><a id="l01535" name="l01535"></a><span class="lineno"> 1535</span> </div>
-<div class="line"><a id="l01536" name="l01536"></a><span class="lineno"> 1536</span><span class="keywordtype">void</span> KernelGenerator::visit(<span class="keyword">const</span> ir::operation::ConvertFp16ToFp32 &amp;node)</div>
+<div class="line"><a id="l01536" name="l01536"></a><span class="lineno"> 1536</span><span class="keywordtype">void</span> KernelGenerator::visit(<span class="keyword">const</span> ir::operation::Reverse &amp;node)</div>
 <div class="line"><a id="l01537" name="l01537"></a><span class="lineno"> 1537</span>{</div>
 <div class="line"><a id="l01538" name="l01538"></a><span class="lineno"> 1538</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ofm_index{node.getOutputs().at(0)};</div>
-<div class="line"><a id="l01539" name="l01539"></a><span class="lineno"> 1539</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ifm_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_convert_fp16_to_fp32.html#adb3ac578bdaa591aa24f2f9dc1c4f475a32790c23594a518c4756692f0cdd6d5a">ir::operation::ConvertFp16ToFp32::Input::INPUT</a>)};</div>
-<div class="line"><a id="l01540" name="l01540"></a><span class="lineno"> 1540</span> </div>
-<div class="line"><a id="l01541" name="l01541"></a><span class="lineno"> 1541</span>  <span class="keyword">auto</span> ofm_tensor = _tensor_reg-&gt;getAclTensor(ofm_index);</div>
-<div class="line"><a id="l01542" name="l01542"></a><span class="lineno"> 1542</span>  <span class="keyword">auto</span> ifm_tensor = _tensor_reg-&gt;getAclTensor(ifm_index);</div>
-<div class="line"><a id="l01543" name="l01543"></a><span class="lineno"> 1543</span> </div>
-<div class="line"><a id="l01544" name="l01544"></a><span class="lineno"> 1544</span>  <span class="keyword">auto</span> fn = acl_common::generateLayer&lt;arm_compute::CLDepthConvertLayer&gt;(</div>
-<div class="line"><a id="l01545" name="l01545"></a><span class="lineno"> 1545</span>    ifm_tensor-&gt;handle(), ofm_tensor-&gt;handle(), ::arm_compute::ConvertPolicy::SATURATE, 0);</div>
-<div class="line"><a id="l01546" name="l01546"></a><span class="lineno"> 1546</span> </div>
-<div class="line"><a id="l01547" name="l01547"></a><span class="lineno"> 1547</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#ad332f86012f1af93ea4b0d773112e41c">asAclFunction</a>(std::move(fn));</div>
-<div class="line"><a id="l01548" name="l01548"></a><span class="lineno"> 1548</span>}</div>
-<div class="line"><a id="l01549" name="l01549"></a><span class="lineno"> 1549</span> </div>
-<div class="line"><a id="l01550" name="l01550"></a><span class="lineno"> 1550</span><span class="keywordtype">void</span> KernelGenerator::visit(<span class="keyword">const</span> ir::operation::Reverse &amp;node)</div>
-<div class="line"><a id="l01551" name="l01551"></a><span class="lineno"> 1551</span>{</div>
-<div class="line"><a id="l01552" name="l01552"></a><span class="lineno"> 1552</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ofm_index{node.getOutputs().at(0)};</div>
-<div class="line"><a id="l01553" name="l01553"></a><span class="lineno"> 1553</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ifm_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reverse.html#a29727ea93f538c6dbd8a31185249d65dacb93ccbd295377a154c2b017b1ecec32">ir::operation::Reverse::Input::INPUT</a>)};</div>
-<div class="line"><a id="l01554" name="l01554"></a><span class="lineno"> 1554</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axis_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reverse.html#a29727ea93f538c6dbd8a31185249d65da7f0490406e83ecf800a496e9bd9053ea">ir::operation::Reverse::Input::AXIS</a>)};</div>
-<div class="line"><a id="l01555" name="l01555"></a><span class="lineno"> 1555</span> </div>
-<div class="line"><a id="l01556" name="l01556"></a><span class="lineno"> 1556</span>  <span class="keyword">auto</span> ofm_tensor = _tensor_reg-&gt;getAclTensor(ofm_index);</div>
-<div class="line"><a id="l01557" name="l01557"></a><span class="lineno"> 1557</span>  <span class="keyword">auto</span> ifm_tensor = _tensor_reg-&gt;getAclTensor(ifm_index);</div>
-<div class="line"><a id="l01558" name="l01558"></a><span class="lineno"> 1558</span>  <span class="keyword">auto</span> axis_tensor = _tensor_reg-&gt;getAclTensor(axis_index);</div>
+<div class="line"><a id="l01539" name="l01539"></a><span class="lineno"> 1539</span>  <span class="keyword">const</span> <span class="keyword">auto</span> ifm_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reverse.html#a29727ea93f538c6dbd8a31185249d65dacb93ccbd295377a154c2b017b1ecec32">ir::operation::Reverse::Input::INPUT</a>)};</div>
+<div class="line"><a id="l01540" name="l01540"></a><span class="lineno"> 1540</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axis_index{node.getInputs().at(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_reverse.html#a29727ea93f538c6dbd8a31185249d65da7f0490406e83ecf800a496e9bd9053ea">ir::operation::Reverse::Input::AXIS</a>)};</div>
+<div class="line"><a id="l01541" name="l01541"></a><span class="lineno"> 1541</span> </div>
+<div class="line"><a id="l01542" name="l01542"></a><span class="lineno"> 1542</span>  <span class="keyword">auto</span> ofm_tensor = _tensor_reg-&gt;getAclTensor(ofm_index);</div>
+<div class="line"><a id="l01543" name="l01543"></a><span class="lineno"> 1543</span>  <span class="keyword">auto</span> ifm_tensor = _tensor_reg-&gt;getAclTensor(ifm_index);</div>
+<div class="line"><a id="l01544" name="l01544"></a><span class="lineno"> 1544</span>  <span class="keyword">auto</span> axis_tensor = _tensor_reg-&gt;getAclTensor(axis_index);</div>
+<div class="line"><a id="l01545" name="l01545"></a><span class="lineno"> 1545</span> </div>
+<div class="line"><a id="l01546" name="l01546"></a><span class="lineno"> 1546</span>  <span class="comment">// WORKAROUND: acl-cl backend only allow U32 type for axis</span></div>
+<div class="line"><a id="l01547" name="l01547"></a><span class="lineno"> 1547</span>  <span class="comment">//             ConstantInitializer will resolve S32 type to U32 type</span></div>
+<div class="line"><a id="l01548" name="l01548"></a><span class="lineno"> 1548</span>  <span class="keywordflow">if</span> (_ctx.at(axis_index).isConstant() &amp;&amp;</div>
+<div class="line"><a id="l01549" name="l01549"></a><span class="lineno"> 1549</span>      (axis_tensor-&gt;handle()-&gt;info()-&gt;data_type() == arm_compute::DataType::S32))</div>
+<div class="line"><a id="l01550" name="l01550"></a><span class="lineno"> 1550</span>  {</div>
+<div class="line"><a id="l01551" name="l01551"></a><span class="lineno"> 1551</span>    axis_tensor-&gt;handle()-&gt;info()-&gt;set_data_type(arm_compute::DataType::U32);</div>
+<div class="line"><a id="l01552" name="l01552"></a><span class="lineno"> 1552</span>  }</div>
+<div class="line"><a id="l01553" name="l01553"></a><span class="lineno"> 1553</span> </div>
+<div class="line"><a id="l01554" name="l01554"></a><span class="lineno"> 1554</span>  <span class="keyword">auto</span> fn = acl_common::generateLayer&lt;arm_compute::CLReverse&gt;(</div>
+<div class="line"><a id="l01555" name="l01555"></a><span class="lineno"> 1555</span>    ifm_tensor-&gt;handle(), ofm_tensor-&gt;handle(), axis_tensor-&gt;handle(), <span class="keyword">false</span>);</div>
+<div class="line"><a id="l01556" name="l01556"></a><span class="lineno"> 1556</span> </div>
+<div class="line"><a id="l01557" name="l01557"></a><span class="lineno"> 1557</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#ad332f86012f1af93ea4b0d773112e41c">asAclFunction</a>(std::move(fn));</div>
+<div class="line"><a id="l01558" name="l01558"></a><span class="lineno"> 1558</span>}</div>
 <div class="line"><a id="l01559" name="l01559"></a><span class="lineno"> 1559</span> </div>
-<div class="line"><a id="l01560" name="l01560"></a><span class="lineno"> 1560</span>  <span class="comment">// WORKAROUND: acl-cl backend only allow U32 type for axis</span></div>
-<div class="line"><a id="l01561" name="l01561"></a><span class="lineno"> 1561</span>  <span class="comment">//             ConstantInitializer will resolve S32 type to U32 type</span></div>
-<div class="line"><a id="l01562" name="l01562"></a><span class="lineno"> 1562</span>  <span class="keywordflow">if</span> (_ctx.at(axis_index).isConstant() &amp;&amp;</div>
-<div class="line"><a id="l01563" name="l01563"></a><span class="lineno"> 1563</span>      (axis_tensor-&gt;handle()-&gt;info()-&gt;data_type() == arm_compute::DataType::S32))</div>
-<div class="line"><a id="l01564" name="l01564"></a><span class="lineno"> 1564</span>  {</div>
-<div class="line"><a id="l01565" name="l01565"></a><span class="lineno"> 1565</span>    axis_tensor-&gt;handle()-&gt;info()-&gt;set_data_type(arm_compute::DataType::U32);</div>
-<div class="line"><a id="l01566" name="l01566"></a><span class="lineno"> 1566</span>  }</div>
-<div class="line"><a id="l01567" name="l01567"></a><span class="lineno"> 1567</span> </div>
-<div class="line"><a id="l01568" name="l01568"></a><span class="lineno"> 1568</span>  <span class="keyword">auto</span> fn = acl_common::generateLayer&lt;arm_compute::CLReverse&gt;(</div>
-<div class="line"><a id="l01569" name="l01569"></a><span class="lineno"> 1569</span>    ifm_tensor-&gt;handle(), ofm_tensor-&gt;handle(), axis_tensor-&gt;handle(), <span class="keyword">false</span>);</div>
-<div class="line"><a id="l01570" name="l01570"></a><span class="lineno"> 1570</span> </div>
-<div class="line"><a id="l01571" name="l01571"></a><span class="lineno"> 1571</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1basic_1_1_kernel_generator_base.html#a0641657bea8e14881f1ed6e604ee7e19">_return_fn</a> = <a class="code hl_function" href="namespaceonert_1_1backend_1_1acl__common.html#ad332f86012f1af93ea4b0d773112e41c">asAclFunction</a>(std::move(fn));</div>
-<div class="line"><a id="l01572" name="l01572"></a><span class="lineno"> 1572</span>}</div>
-<div class="line"><a id="l01573" name="l01573"></a><span class="lineno"> 1573</span> </div>
-<div class="line"><a id="l01574" name="l01574"></a><span class="lineno"> 1574</span>} <span class="comment">// namespace onert::backend::acl_cl</span></div>
+<div class="line"><a id="l01560" name="l01560"></a><span class="lineno"> 1560</span>} <span class="comment">// namespace onert::backend::acl_cl</span></div>
 <div class="ttc" id="a_acl_activation_builder_8h_html"><div class="ttname"><a href="_acl_activation_builder_8h.html">AclActivationBuilder.h</a></div></div>
 <div class="ttc" id="a_acl_function_8h_html"><div class="ttname"><a href="_acl_function_8h.html">AclFunction.h</a></div></div>
 <div class="ttc" id="a_acl_kernel_gen_8h_html"><div class="ttname"><a href="_acl_kernel_gen_8h.html">AclKernelGen.h</a></div></div>

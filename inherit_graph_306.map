@@ -1,3 +1,19 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classkbenchmark_1_1_args.html" title=" " alt="" coords="5,5,131,31"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,227,86,252"/>
+<area shape="rect" id="Node000001" href="$classarm__compute_1_1_n_e_cast_bool_kernel.html" title="Class for the kernel converting boolean type." alt="" coords="153,5,368,31"/>
+<area shape="poly" id="edge285_Node000000_Node000001" title=" " alt="" coords="48,210,57,172,73,126,97,80,113,59,132,41,152,29,154,34,135,46,117,63,102,83,78,128,62,173,54,212"/>
+<area shape="rect" id="Node000002" href="$classarm__compute_1_1_n_e_embedding_lookup_kernel.html" title=" " alt="" coords="166,55,355,96"/>
+<area shape="poly" id="edge286_Node000000_Node000002" title=" " alt="" coords="56,211,85,158,106,130,132,107,165,90,167,94,135,111,110,134,89,161,60,213"/>
+<area shape="rect" id="Node000003" href="$classarm__compute_1_1_n_e_g_e_m_m_matrix_accumulate_biases_kernel.html" title=" " alt="" coords="161,121,360,161"/>
+<area shape="poly" id="edge287_Node000000_Node000003" title=" " alt="" coords="71,214,99,192,132,172,163,159,165,164,135,177,102,196,74,218"/>
+<area shape="rect" id="Node000004" href="$classarm__compute_1_1_n_e_hashtable_lookup_kernel.html" title=" " alt="" coords="169,186,352,227"/>
+<area shape="poly" id="edge288_Node000000_Node000004" title=" " alt="" coords="101,228,168,218,169,223,102,234"/>
+<area shape="rect" id="Node000005" href="$classarm__compute_1_1_n_e_instance_normalization_layer_kernel_ex.html" title=" " alt="" coords="134,251,387,292"/>
+<area shape="poly" id="edge289_Node000000_Node000005" title=" " alt="" coords="102,245,134,250,133,255,101,250"/>
+<area shape="rect" id="Node000006" href="$classarm__compute_1_1_n_e_multiply_scale_factor_kernel.html" title=" " alt="" coords="160,317,361,357"/>
+<area shape="poly" id="edge290_Node000000_Node000006" title=" " alt="" coords="74,260,102,282,135,301,166,313,164,318,132,306,99,286,71,265"/>
+<area shape="rect" id="Node000007" href="$classarm__compute_1_1_n_e_one_hot_kernel.html" title=" " alt="" coords="157,381,364,407"/>
+<area shape="poly" id="edge291_Node000000_Node000007" title=" " alt="" coords="60,265,89,318,110,345,135,367,158,378,156,383,132,371,106,348,84,321,55,268"/>
+<area shape="rect" id="Node000008" href="$classarm__compute_1_1_n_e_quantization_symmetric_kernel.html" title=" " alt="" coords="162,431,359,472"/>
+<area shape="poly" id="edge292_Node000000_Node000008" title=" " alt="" coords="55,267,65,302,81,343,104,383,135,417,163,434,160,438,132,422,100,386,76,345,60,304,50,268"/>
 </map>

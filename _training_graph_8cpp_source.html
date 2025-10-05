@@ -133,7 +133,7 @@ $(document).ready(function(){initNavTree('_training_graph_8cpp_source.html','');
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  Status status;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">graph_outputs</a> = reader-&gt;outputs();</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">graph_outputs</a>.size() == 1);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">graph_outputs</a>.size() == 1);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">graph_outputs</a>.size() != 1)</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">return</span> Error;</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('_training_graph_8cpp_source.html','');
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordflow">if</span> (status != Ok)</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">return</span> status;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(output_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  assert(output_data != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordflow">if</span> (output_data == <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">return</span> Error;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
@@ -166,7 +166,7 @@ $(document).ready(function(){initNavTree('_training_graph_8cpp_source.html','');
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordflow">default</span>:</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type&quot;</span>);</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>      <span class="keywordflow">return</span> Error;</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    }</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  }</div>
@@ -178,7 +178,7 @@ $(document).ready(function(){initNavTree('_training_graph_8cpp_source.html','');
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                                       <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">TrainableWeightStorage</a> *<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">storage</a>, CircleReader *reader,</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                                       <span class="keyword">const</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">uint8_t</a> *<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">label_train_data</a>)</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>{</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(settings.number_of_last_trainable_layers != 0);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  assert(settings.number_of_last_trainable_layers != 0);</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">last_op_pos</a> = reader-&gt;operators().size() - 1;</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">last_train_op_pos</a> = settings.number_of_last_trainable_layers &gt; 0</div>
@@ -224,7 +224,7 @@ $(document).ready(function(){initNavTree('_training_graph_8cpp_source.html','');
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    status = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">kernel_train</a>.train_kernel(op, opcode, reader, &amp;<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">_gradient_calculation_storage</a>, settings,</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                                       <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">storage</a>, <span class="keyword">false</span> <span class="comment">/* update weights mode */</span>);</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(status == Ok);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    assert(status == Ok);</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordflow">if</span> (status != Ok)</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    {</div>

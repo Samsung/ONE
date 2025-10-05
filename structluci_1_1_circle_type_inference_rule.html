@@ -172,13 +172,13 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="luci_2service_2src_2_circle_type_inference_rule_8cpp_source.html#l00718">718</a> of file <a class="el" href="luci_2service_2src_2_circle_type_inference_rule_8cpp_source.html">CircleTypeInferenceRule.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  719</span>{</div>
-<div class="line"><span class="lineno">  720</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(node-&gt;dialect() == <a class="code hl_function" href="classluci_1_1_circle_dialect.html#afb0f4a1160d1f4da59d7a65aee89986d">CircleDialect::get</a>());</div>
+<div class="line"><span class="lineno">  720</span>  assert(node-&gt;dialect() == <a class="code hl_function" href="classluci_1_1_circle_dialect.html#afb0f4a1160d1f4da59d7a65aee89986d">CircleDialect::get</a>());</div>
 <div class="line"><span class="lineno">  721</span> </div>
 <div class="line"><span class="lineno">  722</span>  TypeInferenceAlgorithm <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">alg</a>;</div>
 <div class="line"><span class="lineno">  723</span> </div>
 <div class="line"><span class="lineno">  724</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;const CircleNode *&gt;</a>(node);</div>
 <div class="line"><span class="lineno">  725</span>  <a class="code hl_variable" href="namespacecompare__tensors__all.html#aadd46f23b07171c5172769fa43fdae50">dtype</a> = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">circle_node</a>-&gt;accept(&amp;<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">alg</a>);</div>
-<div class="line"><span class="lineno">  726</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(dtype != loco::DataType::Unknown);</div>
+<div class="line"><span class="lineno">  726</span>  assert(dtype != loco::DataType::Unknown);</div>
 <div class="line"><span class="lineno">  727</span> </div>
 <div class="line"><span class="lineno">  728</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><span class="lineno">  729</span>}</div>

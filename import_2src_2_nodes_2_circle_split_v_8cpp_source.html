@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('import_2src_2_nodes_2_circle_split_v_8
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *options = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">bna</a>.op.builtin_options.AsSplitVOptions();</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  node-&gt;num_split(options-&gt;num_splits);</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(int32_t(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">bna</a>.op.outputs.size()) == options-&gt;num_splits);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  assert(int32_t(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">bna</a>.op.outputs.size()) == options-&gt;num_splits);</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordflow">return</span> node;</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>

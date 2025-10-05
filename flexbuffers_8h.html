@@ -99,7 +99,8 @@ $(document).ready(function(){initNavTree('flexbuffers_8h.html',''); initResizabl
   <div class="headertitle"><div class="title">flexbuffers.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;map&gt;</code><br />
+<div class="textblock"><code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;map&gt;</code><br />
 <code>#include &quot;<a class="el" href="base_8h_source.html">flatbuffers/base.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="onert-micro_2externals_2flatbuffers_2_util_8h_source.html">flatbuffers/util.h</a>&quot;</code><br />
 </div>
@@ -139,6 +140,8 @@ Namespaces</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:a83bf2dbac794a61b318aa08088dd998f" id="r_a83bf2dbac794a61b318aa08088dd998f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flexbuffers_8h.html#a83bf2dbac794a61b318aa08088dd998f">FLATBUFFERS_GET_FIELD_BIT_WIDTH</a>(value,  width)</td></tr>
 <tr class="separator:a83bf2dbac794a61b318aa08088dd998f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17780924bb2c841c6b27cca34a0950f9" id="r_a17780924bb2c841c6b27cca34a0950f9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="flexbuffers_8h.html#a17780924bb2c841c6b27cca34a0950f9">FLEX_CHECK_VERIFIED</a>(P,  PACKED_TYPE)</td></tr>
+<tr class="separator:a17780924bb2c841c6b27cca34a0950f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -189,7 +192,9 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ade7af31eb6e56bf008ba6aabc626351e">flexbuffers::FBT_VECTOR_FLOAT4</a> = 24
 , <a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a61d442f38cb775643f12e0924a9be803">flexbuffers::FBT_BLOB</a> = 25
 , <a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5">flexbuffers::FBT_BOOL</a> = 26
-, <a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05">flexbuffers::FBT_VECTOR_BOOL</a> = 36
+, <a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05">flexbuffers::FBT_VECTOR_BOOL</a>
+, <br />
+&#160;&#160;<a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ab2446b045d04489031d625625086a0cd">flexbuffers::FBT_MAX_TYPE</a> = 37
 <br />
  }</td></tr>
 <tr class="separator:aa0b4995478c086629fff32c3d10c3872"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -258,6 +263,8 @@ Functions</h2></td></tr>
 <tr class="separator:a1f08dbb0395262a8153e0791567b5f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab071dac32ac28ab1131d407871231358" id="r_ab071dac32ac28ab1131d407871231358"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classflexbuffers_1_1_reference.html">Reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflexbuffers.html#ab071dac32ac28ab1131d407871231358">flexbuffers::GetRoot</a> (const std::vector&lt; uint8_t &gt; &amp;buffer)</td></tr>
 <tr class="separator:ab071dac32ac28ab1131d407871231358"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01115a2166486217cea5d3bc0f05f448" id="r_a01115a2166486217cea5d3bc0f05f448"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflexbuffers.html#a01115a2166486217cea5d3bc0f05f448">flexbuffers::VerifyBuffer</a> (const uint8_t *buf, size_t buf_len, std::vector&lt; uint8_t &gt; *reuse_tracker=nullptr)</td></tr>
+<tr class="separator:a01115a2166486217cea5d3bc0f05f448"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a83bf2dbac794a61b318aa08088dd998f" name="a83bf2dbac794a61b318aa08088dd998f"></a>
@@ -285,10 +292,55 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  {                                                   \</div>
-<div class="line">    if (!((u) &amp; ~((1ULL &lt;&lt; (width)) - 1ULL)))         \</div>
-<div class="line">      <span class="keywordflow">return</span> BIT_WIDTH_##width;                       \</div>
+<b>Value:</b><div class="fragment"><div class="line">  {                                                                     \</div>
+<div class="line">    if (!((u) &amp; ~((1ULL &lt;&lt; (width)) - 1ULL))) return BIT_WIDTH_<span class="preprocessor">##width; \</span></div>
+<div class="line"><span class="preprocessor">  }</span></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a17780924bb2c841c6b27cca34a0950f9" name="a17780924bb2c841c6b27cca34a0950f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17780924bb2c841c6b27cca34a0950f9">&#9670;&#160;</a></span>FLEX_CHECK_VERIFIED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FLEX_CHECK_VERIFIED</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">P, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">PACKED_TYPE&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">if</span> (reuse_tracker_) {                                         \</div>
+<div class="line">    <span class="keyword">auto</span> packed_type = PACKED_TYPE;                             \</div>
+<div class="line">    <span class="keyword">auto</span> existing = (*reuse_tracker_)[P - buf_];                \</div>
+<div class="line">    if (existing == packed_type) <span class="keywordflow">return</span> <span class="keyword">true</span>;                   \</div>
+<div class="line">    <span class="comment">/* Fail verification if already set with different type! */</span> \</div>
+<div class="line">    if (!Check(existing == 0)) return false;                    \</div>
+<div class="line">    (*reuse_tracker_)[P - buf_] = packed_type;                  \</div>
 <div class="line">  }</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l01724">1724</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1725</span>                      {                                         \</div>
+<div class="line"><span class="lineno"> 1726</span>    <span class="keyword">auto</span> packed_type = PACKED_TYPE;                             \</div>
+<div class="line"><span class="lineno"> 1727</span>    <span class="keyword">auto</span> existing = (*reuse_tracker_)[P - buf_];                \</div>
+<div class="line"><span class="lineno"> 1728</span>    if (existing == packed_type) <span class="keywordflow">return</span> <span class="keyword">true</span>;                   \</div>
+<div class="line"><span class="lineno"> 1729</span>    <span class="comment">/* Fail verification if already set with different type! */</span> \</div>
+<div class="line"><span class="lineno"> 1730</span>    if (!Check(existing == 0)) return false;                    \</div>
+<div class="line"><span class="lineno"> 1731</span>    (*reuse_tracker_)[P - buf_] = packed_type;                  \</div>
+<div class="line"><span class="lineno"> 1732</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -376,7 +376,7 @@ $(document).ready(function(){initNavTree('circlechef_2core_2src_2_model_chef_8cp
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    assert(operand.has_type());</div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::Vector&lt;int32_t&gt;</a>&gt; shape;</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    flatbuffers::Offset&lt;flatbuffers::Vector&lt;int32_t&gt;&gt; shape;</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    std::vector&lt;int32_t&gt; <a class="code hl_function" href="namespacekbenchmark.html#a0f4026f3dfa7f3d4d876efc26dca96ea">dims</a>;</div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <span class="keywordflow">if</span> (operand.has_shape())</div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    {</div>
@@ -477,7 +477,7 @@ $(document).ready(function(){initNavTree('circlechef_2core_2src_2_model_chef_8cp
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>    }</div>
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    assert(buffer_index != 0);</div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span> </div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;circle::QuantizationParameters&gt;</a> quant_index;</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    flatbuffers::Offset&lt;circle::QuantizationParameters&gt; quant_index;</div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span> </div>
 <div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    <span class="comment">// Create QuantizationParameters if quant is specified</span></div>
 <div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>    <span class="keywordflow">if</span> (operand.has_quant())</div>
@@ -541,7 +541,7 @@ $(document).ready(function(){initNavTree('circlechef_2core_2src_2_model_chef_8cp
 <div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>      quant_index = quant_builder.Finish();</div>
 <div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>    }</div>
 <div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span> </div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>    <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset&lt;flatbuffers::Vector&lt;int32_t&gt;</a>&gt; shape_signature;</div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>    flatbuffers::Offset&lt;flatbuffers::Vector&lt;int32_t&gt;&gt; shape_signature;</div>
 <div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>    <span class="keywordflow">if</span> (operand.has_shape_signature())</div>
 <div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>    {</div>
 <div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>      <span class="keyword">auto</span> signature = <a class="code hl_function" href="namespacesouschef.html#a7518c620edf53d408d8a3d152b217974">as_dims</a>(operand.shape_signature());</div>
@@ -664,7 +664,7 @@ $(document).ready(function(){initNavTree('circlechef_2core_2src_2_model_chef_8cp
 <div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>  <span class="comment">// Create FlatBufferBuilder</span></div>
 <div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>  <span class="comment">//</span></div>
 <div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>  <span class="keyword">auto</span> flatbuffer_builder =</div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>    std::unique_ptr&lt;flatbuffers::FlatBufferBuilder&gt;(<span class="keyword">new</span> <a class="code hl_class" href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a>(1024));</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>    std::unique_ptr&lt;flatbuffers::FlatBufferBuilder&gt;(<span class="keyword">new</span> <a class="code hl_class" href="classflatbuffers_1_1_flat_buffer_builder_impl.html">flatbuffers::FlatBufferBuilder</a>(1024));</div>
 <div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span> </div>
 <div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>  <span class="comment">// Operand-related</span></div>
 <div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>  std::vector&lt;flatbuffers::Offset&lt;::circle::Buffer&gt;&gt; buffer_vec;</div>
@@ -777,7 +777,7 @@ $(document).ready(function(){initNavTree('circlechef_2core_2src_2_model_chef_8cp
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a5495ed6c3fae204a397f0edad87f820e"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a></div><div class="ttdeci">#define LOGGER(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00065">Log.h:65</a></div></div>
 <div class="ttc" id="acirclechef_2log_2include_2_log_8h_html_a7af9b9d1a859db99acb5e3447167b029"><div class="ttname"><a href="circlechef_2log_2include_2_log_8h.html#a7af9b9d1a859db99acb5e3447167b029">INFO</a></div><div class="ttdeci">#define INFO(name)</div><div class="ttdef"><b>Definition</b> <a href="circlechef_2log_2include_2_log_8h_source.html#l00068">Log.h:68</a></div></div>
 <div class="ttc" id="aclasscirclechef_1_1_generated_model_html"><div class="ttname"><a href="classcirclechef_1_1_generated_model.html">circlechef::GeneratedModel</a></div><div class="ttdef"><b>Definition</b> <a href="circlechef_2core_2include_2circlechef_2_model_chef_8h_source.html#l00027">ModelChef.h:28</a></div></div>
-<div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_html"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder.html">flatbuffers::FlatBufferBuilder</a></div><div class="ttdoc">Helper class to hold data needed in creation of a FlatBuffer. To serialize data, you typically call o...</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l01171">flatbuffers.h:1172</a></div></div>
+<div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_impl_html"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder_impl.html">flatbuffers::FlatBufferBuilderImpl&lt; false &gt;</a></div></div>
 <div class="ttc" id="aclasssouschef_1_1_registry_html"><div class="ttname"><a href="classsouschef_1_1_registry.html">souschef::Registry</a></div><div class="ttdef"><b>Definition</b> <a href="compiler_2souschef_2include_2souschef_2_registry_8h_source.html#l00027">Registry.h:28</a></div></div>
 <div class="ttc" id="acompiler_2souschef_2include_2souschef_2_registry_8h_html"><div class="ttname"><a href="compiler_2souschef_2include_2souschef_2_registry_8h.html">Registry.h</a></div></div>
 <div class="ttc" id="anamespace_gen_h5_random_inputs_html_a57e930c09fd3ed0664cc4dc6c4ab2c88"><div class="ttname"><a href="namespace_gen_h5_random_inputs.html#a57e930c09fd3ed0664cc4dc6c4ab2c88">GenH5RandomInputs.data</a></div><div class="ttdeci">data</div><div class="ttdef"><b>Definition</b> <a href="_gen_h5_random_inputs_8py_source.html#l00064">GenH5RandomInputs.py:64</a></div></div>
@@ -803,7 +803,6 @@ $(document).ready(function(){initNavTree('circlechef_2core_2src_2_model_chef_8cp
 <div class="ttc" id="astructcirclechef_1_1_generated_model_1_1_impl_html"><div class="ttname"><a href="structcirclechef_1_1_generated_model_1_1_impl.html">circlechef::GeneratedModel::Impl</a></div><div class="ttdef"><b>Definition</b> <a href="circlechef_2core_2include_2circlechef_2_model_chef_8h_source.html#l00030">ModelChef.h:31</a></div></div>
 <div class="ttc" id="astructcirclechef_1_1_generated_model_1_1_impl_html_ab889de0ad64c9a9a4d0e8534309e309d"><div class="ttname"><a href="structcirclechef_1_1_generated_model_1_1_impl.html#ab889de0ad64c9a9a4d0e8534309e309d">circlechef::GeneratedModel::Impl::base</a></div><div class="ttdeci">virtual const char * base(void) const =0</div></div>
 <div class="ttc" id="astructcirclechef_1_1_generated_model_1_1_impl_html_ae89a6ee24a39b20cab068db84661de57"><div class="ttname"><a href="structcirclechef_1_1_generated_model_1_1_impl.html#ae89a6ee24a39b20cab068db84661de57">circlechef::GeneratedModel::Impl::size</a></div><div class="ttdeci">virtual size_t size(void) const =0</div></div>
-<div class="ttc" id="astructflatbuffers_1_1_offset_html"><div class="ttname"><a href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a></div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00069">flatbuffers.h:70</a></div></div>
 <div class="ttc" id="atflchef_2core_2src_2_op_chef_8h_html"><div class="ttname"><a href="tflchef_2core_2src_2_op_chef_8h.html">OpChef.h</a></div></div>
 <div class="ttc" id="atflchef_2core_2src_2_op_chefs_8h_html"><div class="ttname"><a href="tflchef_2core_2src_2_op_chefs_8h.html">OpChefs.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

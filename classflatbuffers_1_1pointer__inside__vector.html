@@ -109,7 +109,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T, typename U&gt;<br />
 class flatbuffers::pointer_inside_vector&lt; T, U &gt;</div>
-<p class="definition">Definition at line <a class="el" href="reflection_8h_source.html#l00392">392</a> of file <a class="el" href="reflection_8h_source.html">reflection.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="reflection_8h_source.html#l00394">394</a> of file <a class="el" href="reflection_8h_source.html">reflection.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a74299be0e5fc2a1e440b9d6939dd10dd" name="a74299be0e5fc2a1e440b9d6939dd10dd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a74299be0e5fc2a1e440b9d6939dd10dd">&#9670;&#160;</a></span>pointer_inside_vector()</h2>
@@ -147,13 +147,10 @@ template&lt;typename T , typename U &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="reflection_8h_source.html#l00395">395</a> of file <a class="el" href="reflection_8h_source.html">reflection.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  396</span>    : offset_(<span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(ptr) -</div>
-<div class="line"><span class="lineno">  397</span>              <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_function" href="namespaceflatbuffers.html#acf61b81d6a0573a6f4bd9d1225f3f609">flatbuffers::vector_data</a>(vec))),</div>
-<div class="line"><span class="lineno">  398</span>      vec_(vec)</div>
-<div class="line"><span class="lineno">  399</span>  {</div>
-<div class="line"><span class="lineno">  400</span>  }</div>
-<div class="ttc" id="anamespaceflatbuffers_html_acf61b81d6a0573a6f4bd9d1225f3f609"><div class="ttname"><a href="namespaceflatbuffers.html#acf61b81d6a0573a6f4bd9d1225f3f609">flatbuffers::vector_data</a></div><div class="ttdeci">T * vector_data(std::vector&lt; T &gt; &amp;vector)</div><div class="ttdef"><b>Definition</b> <a href="stl__emulation_8h_source.html#l00082">stl_emulation.h:82</a></div></div>
+<p class="definition">Definition at line <a class="el" href="reflection_8h_source.html#l00396">396</a> of file <a class="el" href="reflection_8h_source.html">reflection.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  397</span>      : offset_(<span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(ptr) -</div>
+<div class="line"><span class="lineno">  398</span>                <span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(vec.data())),</div>
+<div class="line"><span class="lineno">  399</span>        vec_(vec) {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -183,15 +180,13 @@ template&lt;typename T , typename U &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="reflection_8h_source.html#l00402">402</a> of file <a class="el" href="reflection_8h_source.html">reflection.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  403</span>  {</div>
-<div class="line"><span class="lineno">  404</span>    <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(<span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(<a class="code hl_function" href="namespaceflatbuffers.html#acf61b81d6a0573a6f4bd9d1225f3f609">flatbuffers::vector_data</a>(vec_)) +</div>
-<div class="line"><span class="lineno">  405</span>                                 offset_);</div>
-<div class="line"><span class="lineno">  406</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="reflection_8h_source.html#l00401">401</a> of file <a class="el" href="reflection_8h_source.html">reflection.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  401</span>                       {</div>
+<div class="line"><span class="lineno">  402</span>    <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span>T *<span class="keyword">&gt;</span>(<span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(vec_.data()) +</div>
+<div class="line"><span class="lineno">  403</span>                                 offset_);</div>
+<div class="line"><span class="lineno">  404</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="stl__emulation_8h_source.html#l00082">flatbuffers::vector_data()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="reflection_8h_source.html#l00407">flatbuffers::pointer_inside_vector&lt; T, U &gt;::operator-&gt;()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="reflection_8h_source.html#l00405">flatbuffers::pointer_inside_vector&lt; T, U &gt;::operator-&gt;()</a>.</p>
 
 </div>
 </div>
@@ -220,11 +215,11 @@ template&lt;typename T , typename U &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="reflection_8h_source.html#l00407">407</a> of file <a class="el" href="reflection_8h_source.html">reflection.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  407</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classflatbuffers_1_1pointer__inside__vector.html#a99c995275e5aac6c6120ce9068c4a557">operator*</a>(); }</div>
-<div class="ttc" id="aclassflatbuffers_1_1pointer__inside__vector_html_a99c995275e5aac6c6120ce9068c4a557"><div class="ttname"><a href="classflatbuffers_1_1pointer__inside__vector.html#a99c995275e5aac6c6120ce9068c4a557">flatbuffers::pointer_inside_vector::operator*</a></div><div class="ttdeci">T * operator*() const</div><div class="ttdef"><b>Definition</b> <a href="reflection_8h_source.html#l00402">reflection.h:402</a></div></div>
+<p class="definition">Definition at line <a class="el" href="reflection_8h_source.html#l00405">405</a> of file <a class="el" href="reflection_8h_source.html">reflection.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  405</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classflatbuffers_1_1pointer__inside__vector.html#a99c995275e5aac6c6120ce9068c4a557">operator*</a>(); }</div>
+<div class="ttc" id="aclassflatbuffers_1_1pointer__inside__vector_html_a99c995275e5aac6c6120ce9068c4a557"><div class="ttname"><a href="classflatbuffers_1_1pointer__inside__vector.html#a99c995275e5aac6c6120ce9068c4a557">flatbuffers::pointer_inside_vector::operator*</a></div><div class="ttdeci">T * operator*() const</div><div class="ttdef"><b>Definition</b> <a href="reflection_8h_source.html#l00401">reflection.h:401</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="reflection_8h_source.html#l00402">flatbuffers::pointer_inside_vector&lt; T, U &gt;::operator*()</a>.</p>
+<p class="reference">References <a class="el" href="reflection_8h_source.html#l00401">flatbuffers::pointer_inside_vector&lt; T, U &gt;::operator*()</a>.</p>
 
 </div>
 </div>

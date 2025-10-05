@@ -1,7 +1,7 @@
 <map id="runtime/compute/ARMComputeEx/arm_compute/runtime/CL" name="runtime/compute/ARMComputeEx/arm_compute/runtime/CL">
 <area shape="rect" id="node2" href="dir_480c943a32bb1b01aa96dec3fb207202.html" title="functions" alt="" coords="38,137,112,162"/>
 <area shape="poly" id="edge1" href="dir_000117_000289.html" alt="" coords="77,88,77,121,72,121,72,88"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000117_000289.html" title="10" alt="" coords="76,111,90,126"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000117_000289.html" title="8" alt="" coords="80,111,87,126"/>
 <area shape="rect" id="node3" href="dir_19559239b2586911694208d2ac9cfeeb.html" title="core" alt="" coords="52,210,98,236"/>
 <area shape="poly" id="edge2" href="dir_000289_000176.html" alt="" coords="77,163,77,195,72,195,72,163"/>
 <area shape="rect" id="edge2-headlabel" href="dir_000289_000176.html" title="9" alt="" coords="80,184,87,199"/>

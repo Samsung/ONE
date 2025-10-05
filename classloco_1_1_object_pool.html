@@ -115,7 +115,7 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a61fe23ba67e8c0b82462edae25af58a9" id="r_a61fe23ba67e8c0b82462edae25af58a9"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">typename</a> <a class="el" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">U</a> &gt; </td></tr>
-<tr class="memitem:a61fe23ba67e8c0b82462edae25af58a9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">U</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classloco_1_1_object_pool.html#a61fe23ba67e8c0b82462edae25af58a9">take</a> (std::unique_ptr&lt; <a class="el" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">U</a> &gt; &amp;&amp;o)</td></tr>
+<tr class="memitem:a61fe23ba67e8c0b82462edae25af58a9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">U</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classloco_1_1_object_pool.html#a61fe23ba67e8c0b82462edae25af58a9">take</a> (std::unique_ptr&lt; <a class="el" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">U</a> &gt; &amp;&amp;<a class="el" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">o</a>)</td></tr>
 <tr class="memdesc:a61fe23ba67e8c0b82462edae25af58a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Take the ownership of a given object and returns its raw pointer.  <br /></td></tr>
 <tr class="separator:a61fe23ba67e8c0b82462edae25af58a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e8b9c3c85abc2b54c7c5c4df0f27d76" id="r_a7e8b9c3c85abc2b54c7c5c4df0f27d76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classloco_1_1_object_pool.html#a7e8b9c3c85abc2b54c7c5c4df0f27d76">erase</a> (T *ptr)</td></tr>
@@ -226,7 +226,7 @@ template&lt;<a class="el" href="namespaceloco.html#abd2600c38aee62d37bfcb0773372
 
 <p class="definition">Definition at line <a class="el" href="_object_pool_8h_source.html#l00058">58</a> of file <a class="el" href="_object_pool_8h_source.html">ObjectPool.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   59</span>  {</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">pred</a> = [ptr](<span class="keyword">const</span> std::unique_ptr&lt;T&gt; &amp;o) { <span class="keywordflow">return</span> o.get() == ptr; };</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">pred</a> = [ptr](<span class="keyword">const</span> std::unique_ptr&lt;T&gt; &amp;<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">o</a>) { <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">o</a>.get() == ptr; };</div>
 <div class="line"><span class="lineno">   61</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">it</a> = std::find_if(_pool.begin(), _pool.end(), <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">pred</a>);</div>
 <div class="line"><span class="lineno">   62</span> </div>
 <div class="line"><span class="lineno">   63</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">it</a> == _pool.end())</div>
@@ -309,8 +309,8 @@ template&lt;<a class="el" href="namespaceloco.html#abd2600c38aee62d37bfcb0773372
 
 <p class="definition">Definition at line <a class="el" href="_object_pool_8h_source.html#l00046">46</a> of file <a class="el" href="_object_pool_8h_source.html">ObjectPool.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   47</span>  {</div>
-<div class="line"><span class="lineno">   48</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">res</a> = o.get();</div>
-<div class="line"><span class="lineno">   49</span>    _pool.emplace_back(std::move(o));</div>
+<div class="line"><span class="lineno">   48</span>    <span class="keyword">auto</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">res</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">o</a>.get();</div>
+<div class="line"><span class="lineno">   49</span>    _pool.emplace_back(std::move(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">o</a>));</div>
 <div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">res</a>;</div>
 <div class="line"><span class="lineno">   51</span>  }</div>
 </div><!-- fragment -->

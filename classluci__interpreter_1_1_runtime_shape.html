@@ -231,8 +231,8 @@ Static Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00061">61</a> of file <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   61</span>                                              : _size(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">dimensions_count</a>)</div>
 <div class="line"><span class="lineno">   62</span>  {</div>
-<div class="line"><span class="lineno">   63</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">dimensions_count</a> &lt;= kMaxSmallSize);</div>
-<div class="line"><span class="lineno">   64</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">dimensions_count</a> &gt;= 0);</div>
+<div class="line"><span class="lineno">   63</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">dimensions_count</a> &lt;= kMaxSmallSize);</div>
+<div class="line"><span class="lineno">   64</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">dimensions_count</a> &gt;= 0);</div>
 <div class="line"><span class="lineno">   65</span>  }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>.</p>
@@ -449,8 +449,8 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00108">108</a> of file <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  109</span>  {</div>
-<div class="line"><span class="lineno">  110</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> &lt;= _size);</div>
-<div class="line"><span class="lineno">  111</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> &gt;= 0);</div>
+<div class="line"><span class="lineno">  110</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> &lt;= _size);</div>
+<div class="line"><span class="lineno">  111</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> &gt;= 0);</div>
 <div class="line"><span class="lineno">  112</span>    <span class="keywordflow">return</span> _dims[<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a>];</div>
 <div class="line"><span class="lineno">  113</span>  }</div>
 </div><!-- fragment -->
@@ -664,8 +664,8 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00121">121</a> of file <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  122</span>  {</div>
-<div class="line"><span class="lineno">  123</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">dimensions_count</a> &lt;= kMaxSmallSize);</div>
-<div class="line"><span class="lineno">  124</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">dimensions_count</a> &gt;= 0);</div>
+<div class="line"><span class="lineno">  123</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">dimensions_count</a> &lt;= kMaxSmallSize);</div>
+<div class="line"><span class="lineno">  124</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">dimensions_count</a> &gt;= 0);</div>
 <div class="line"><span class="lineno">  125</span>    _size = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">dimensions_count</a>;</div>
 <div class="line"><span class="lineno">  126</span>  }</div>
 </div><!-- fragment -->
@@ -711,8 +711,8 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html#l00114">114</a> of file <a class="el" href="onert-micro_2luci-interpreter_2include_2luci__interpreter_2core_2_tensor_8h_source.html">Tensor.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  115</span>  {</div>
-<div class="line"><span class="lineno">  116</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> &lt;= _size);</div>
-<div class="line"><span class="lineno">  117</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> &gt;= 0);</div>
+<div class="line"><span class="lineno">  116</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> &lt;= _size);</div>
+<div class="line"><span class="lineno">  117</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> &gt;= 0);</div>
 <div class="line"><span class="lineno">  118</span>    _dims[<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a>] = val;</div>
 <div class="line"><span class="lineno">  119</span>  }</div>
 </div><!-- fragment -->

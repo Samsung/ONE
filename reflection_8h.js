@@ -3,6 +3,7 @@ var reflection_8h =
     [ "flatbuffers::pointer_inside_vector< T, U >", "classflatbuffers_1_1pointer__inside__vector.html", "classflatbuffers_1_1pointer__inside__vector" ],
     [ "AddFlatBuffer", "reflection_8h.html#a06d4b97a3d782d99eef774f8b6f3286d", null ],
     [ "CopyTable", "reflection_8h.html#a8b53687caed8f8359d3462dbfe8b92b2", null ],
+    [ "ForAllFields", "reflection_8h.html#a7d6b1f479b75d650d67e7ef600f0614d", null ],
     [ "GetAnyFieldAddressOf", "reflection_8h.html#a6fc733c572ffd5459d3f999e55b54a8d", null ],
     [ "GetAnyFieldAddressOf", "reflection_8h.html#a12aa054d4100e560507505df9265526d", null ],
     [ "GetAnyFieldF", "reflection_8h.html#a1cc65e63734b49a08a2bd8e1114ac24b", null ],
@@ -11,8 +12,10 @@ var reflection_8h =
     [ "GetAnyFieldI", "reflection_8h.html#a6044308a7514018088da2e16ad5d77a2", null ],
     [ "GetAnyFieldS", "reflection_8h.html#ae0bab4a018e5b43a57709c0006e0c78f", null ],
     [ "GetAnyFieldS", "reflection_8h.html#ae51219843757e0b0590fdc8fad58dcf9", null ],
-    [ "GetAnyRoot", "reflection_8h.html#a4ed1fd1d6cc52b7687a542f734a63439", null ],
-    [ "GetAnyRoot", "reflection_8h.html#af180d6ac20afe534b819dc164bd4a24a", null ],
+    [ "GetAnyRoot", "reflection_8h.html#a27bfc69857649ce49c00cf504bdcc160", null ],
+    [ "GetAnyRoot", "reflection_8h.html#ab95bbd107555cbbc8d00d41a1b49c481", null ],
+    [ "GetAnySizePrefixedRoot", "reflection_8h.html#a1249994c80bb7d0ba770fb01cbb24678", null ],
+    [ "GetAnySizePrefixedRoot", "reflection_8h.html#aea7fd3ef2e5cc381c210eff142a9762e", null ],
     [ "GetAnyValueF", "reflection_8h.html#aad95da3b09cefc93204ce391eecc4e5e", null ],
     [ "GetAnyValueI", "reflection_8h.html#a1db6339cfb67d126328446110560ce6c", null ],
     [ "GetAnyValueS", "reflection_8h.html#a35d15ad002ee533c34c544e4d29efb83", null ],
@@ -57,5 +60,6 @@ var reflection_8h =
     [ "SetFieldT", "reflection_8h.html#a5cd8f927bf2f653a18d61da2decb14ea", null ],
     [ "SetString", "reflection_8h.html#a93006e6a81b482a2454a94c6b39c9d01", null ],
     [ "UnionTypeFieldSuffix", "reflection_8h.html#a40bfeb3c710226725b86e19910339b4e", null ],
-    [ "Verify", "reflection_8h.html#a4ef3e887c57753881c4042767bc9c35f", null ]
+    [ "Verify", "reflection_8h.html#a4ef3e887c57753881c4042767bc9c35f", null ],
+    [ "VerifySizePrefixed", "reflection_8h.html#a5f2567a88795386d6b6332e5e359ccb4", null ]
 ];

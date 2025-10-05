@@ -187,7 +187,7 @@ $(document).ready(function(){initNavTree('tfldump_2src_2_dump_8cpp_source.html',
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  {</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">if</span> (q)</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>      os &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    os &lt;&lt; fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a0c322798bd0cebd2d20b0b0f92de2f9b">Get</a>(q);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    os &lt;&lt; fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a8fc6efa0d6b5763d971fa9e6b8b4455d">Get</a>(q);</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  }</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>}</div>
 </div>
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('tfldump_2src_2_dump_8cpp_source.html',
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  {</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">if</span> (q)</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>      os &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    os &lt;&lt; static_cast&lt;uint32_t&gt;(fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a0c322798bd0cebd2d20b0b0f92de2f9b">Get</a>(q));</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    os &lt;&lt; static_cast&lt;uint32_t&gt;(fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a8fc6efa0d6b5763d971fa9e6b8b4455d">Get</a>(q));</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  }</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>}</div>
 </div>
@@ -213,12 +213,12 @@ $(document).ready(function(){initNavTree('tfldump_2src_2_dump_8cpp_source.html',
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keywordflow">if</span> (fbvect == <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">return</span> os;</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordtype">bool</span> ellipsis = (fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>() &gt; 8);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keyword">auto</span> limit_size = ellipsis ? 8 : fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>();</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keywordtype">bool</span> ellipsis = (fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a70e1b54b9c82251be5496f1729d60e9a">size</a>() &gt; 8);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keyword">auto</span> limit_size = ellipsis ? 8 : fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a70e1b54b9c82251be5496f1729d60e9a">size</a>();</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="keywordflow">if</span> (ellipsis)</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  {</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    os &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">size</a>() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    os &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; fbvect-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a70e1b54b9c82251be5496f1729d60e9a">size</a>() &lt;&lt; <span class="stringliteral">&quot;) &quot;</span>;</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  }</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <a class="code hl_function" href="namespacetfldump.html#a0a9aa01003a3a3f0597a36696dec258f">dump_fbvect</a>(os, fbvect, limit_size);</div>
@@ -577,9 +577,9 @@ $(document).ready(function(){initNavTree('tfldump_2src_2_dump_8cpp_source.html',
 <div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>}</div>
 </div>
 <div class="ttc" id="acircledump_2src_2_dump_8cpp_html_ad7f6ccb5952e4bebd73b5e5a8163d448"><div class="ttname"><a href="circledump_2src_2_dump_8cpp.html#ad7f6ccb5952e4bebd73b5e5a8163d448">operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;os, const circledump::ModelEx &amp;modelex)</div><div class="ttdef"><b>Definition</b> <a href="circledump_2src_2_dump_8cpp_source.html#l00477">Dump.cpp:477</a></div></div>
-<div class="ttc" id="aclassflatbuffers_1_1_vector_html"><div class="ttname"><a href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a></div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00268">flatbuffers.h:269</a></div></div>
-<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a0c322798bd0cebd2d20b0b0f92de2f9b"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a0c322798bd0cebd2d20b0b0f92de2f9b">flatbuffers::Vector::Get</a></div><div class="ttdeci">return_type Get(uoffset_t i) const</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00286">flatbuffers.h:286</a></div></div>
-<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a602e093850b2984a95581edc0b47b2f3"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a602e093850b2984a95581edc0b47b2f3">flatbuffers::Vector::size</a></div><div class="ttdeci">uoffset_t size() const</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00276">flatbuffers.h:276</a></div></div>
+<div class="ttc" id="aclassflatbuffers_1_1_vector_html"><div class="ttname"><a href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a></div><div class="ttdef"><b>Definition</b> <a href="vector_8h_source.html#l00148">vector.h:148</a></div></div>
+<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a70e1b54b9c82251be5496f1729d60e9a"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a70e1b54b9c82251be5496f1729d60e9a">flatbuffers::Vector::size</a></div><div class="ttdeci">SizeT size() const</div><div class="ttdef"><b>Definition</b> <a href="vector_8h_source.html#l00164">vector.h:164</a></div></div>
+<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a8fc6efa0d6b5763d971fa9e6b8b4455d"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a8fc6efa0d6b5763d971fa9e6b8b4455d">flatbuffers::Vector::Get</a></div><div class="ttdeci">return_type Get(SizeT i) const</div><div class="ttdef"><b>Definition</b> <a href="vector_8h_source.html#l00175">vector.h:175</a></div></div>
 <div class="ttc" id="aclasstfldump_1_1_op_printer_registry_html_a5b43bab5eb9616639401540b93c22e11"><div class="ttname"><a href="classtfldump_1_1_op_printer_registry.html#a5b43bab5eb9616639401540b93c22e11">tfldump::OpPrinterRegistry::get</a></div><div class="ttdeci">static OpPrinterRegistry &amp; get()</div><div class="ttdef"><b>Definition</b> <a href="tfldump_2src_2_op_printer_8h_source.html#l00049">OpPrinter.h:49</a></div></div>
 <div class="ttc" id="aclasstflread_1_1_reader_html"><div class="ttname"><a href="classtflread_1_1_reader.html">tflread::Reader</a></div><div class="ttdoc">Loads TF lite file and provides helpers to access attributes.</div><div class="ttdef"><b>Definition</b> <a href="tfldump_2src_2_read_8h_source.html#l00042">Read.h:43</a></div></div>
 <div class="ttc" id="aclasstflread_1_1_reader_html_a04fb79dc735c61dba9f7725b9d3b5e0a"><div class="ttname"><a href="classtflread_1_1_reader.html#a04fb79dc735c61dba9f7725b9d3b5e0a">tflread::Reader::num_subgraph</a></div><div class="ttdeci">uint32_t num_subgraph() const</div><div class="ttdef"><b>Definition</b> <a href="tfldump_2src_2_read_8h_source.html#l00070">Read.h:70</a></div></div>

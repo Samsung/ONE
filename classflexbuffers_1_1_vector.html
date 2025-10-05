@@ -149,7 +149,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00277">277</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00273">273</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7d51e1ee08e96e8270380d02b7d58a65" name="a7d51e1ee08e96e8270380d02b7d58a65"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7d51e1ee08e96e8270380d02b7d58a65">&#9670;&#160;</a></span>Vector()</h2>
@@ -185,9 +185,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00280">280</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  280</span>: <a class="code hl_function" href="classflexbuffers_1_1_sized.html#a0348b6de83e5ebcf2d8faea80b77f44d">Sized</a>(data, byte_width) {}</div>
-<div class="ttc" id="aclassflexbuffers_1_1_sized_html_a0348b6de83e5ebcf2d8faea80b77f44d"><div class="ttname"><a href="classflexbuffers_1_1_sized.html#a0348b6de83e5ebcf2d8faea80b77f44d">flexbuffers::Sized::Sized</a></div><div class="ttdeci">Sized(const uint8_t *data, uint8_t byte_width)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00229">flexbuffers.h:229</a></div></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00275">275</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  275</span>: <a class="code hl_function" href="classflexbuffers_1_1_sized.html#a0348b6de83e5ebcf2d8faea80b77f44d">Sized</a>(data, byte_width) {}</div>
+<div class="ttc" id="aclassflexbuffers_1_1_sized_html_a0348b6de83e5ebcf2d8faea80b77f44d"><div class="ttname"><a href="classflexbuffers_1_1_sized.html#a0348b6de83e5ebcf2d8faea80b77f44d">flexbuffers::Sized::Sized</a></div><div class="ttdeci">Sized(const uint8_t *data, uint8_t byte_width)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00226">flexbuffers.h:226</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -215,14 +215,14 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00284">284</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  285</span>  {</div>
-<div class="line"><span class="lineno">  286</span>    <span class="keyword">static</span> <span class="keyword">const</span> uint8_t empty_vector[] = {0 <span class="comment">/*len*/</span>};</div>
-<div class="line"><span class="lineno">  287</span>    <span class="keywordflow">return</span> <a class="code hl_struct" href="struct_vector.html">Vector</a>(empty_vector + 1, 1);</div>
-<div class="line"><span class="lineno">  288</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00279">279</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  279</span>                              {</div>
+<div class="line"><span class="lineno">  280</span>    <span class="keyword">static</span> <span class="keyword">const</span> uint8_t empty_vector[] = { 0 <span class="comment">/*len*/</span> };</div>
+<div class="line"><span class="lineno">  281</span>    <span class="keywordflow">return</span> <a class="code hl_struct" href="struct_vector.html">Vector</a>(empty_vector + 1, 1);</div>
+<div class="line"><span class="lineno">  282</span>  }</div>
 <div class="ttc" id="astruct_vector_html"><div class="ttname"><a href="struct_vector.html">Vector</a></div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00357">helpers.h:358</a></div></div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00289">IsTheEmptyVector()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00283">IsTheEmptyVector()</a>.</p>
 
 </div>
 </div>
@@ -249,12 +249,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00289">289</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  289</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classflexbuffers_1_1_object.html#a6720a3c4da34c8756254709cfd005fbf">data_</a> == <a class="code hl_function" href="classflexbuffers_1_1_vector.html#a37ce466c2ca6a65dd9ddaf2d394ecbf8">EmptyVector</a>().<a class="code hl_variable" href="classflexbuffers_1_1_object.html#a6720a3c4da34c8756254709cfd005fbf">data_</a>; }</div>
-<div class="ttc" id="aclassflexbuffers_1_1_object_html_a6720a3c4da34c8756254709cfd005fbf"><div class="ttname"><a href="classflexbuffers_1_1_object.html#a6720a3c4da34c8756254709cfd005fbf">flexbuffers::Object::data_</a></div><div class="ttdeci">const uint8_t * data_</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00220">flexbuffers.h:220</a></div></div>
-<div class="ttc" id="aclassflexbuffers_1_1_vector_html_a37ce466c2ca6a65dd9ddaf2d394ecbf8"><div class="ttname"><a href="classflexbuffers_1_1_vector.html#a37ce466c2ca6a65dd9ddaf2d394ecbf8">flexbuffers::Vector::EmptyVector</a></div><div class="ttdeci">static Vector EmptyVector()</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00284">flexbuffers.h:284</a></div></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00283">283</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  283</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="classflexbuffers_1_1_object.html#a6720a3c4da34c8756254709cfd005fbf">data_</a> == <a class="code hl_function" href="classflexbuffers_1_1_vector.html#a37ce466c2ca6a65dd9ddaf2d394ecbf8">EmptyVector</a>().<a class="code hl_variable" href="classflexbuffers_1_1_object.html#a6720a3c4da34c8756254709cfd005fbf">data_</a>; }</div>
+<div class="ttc" id="aclassflexbuffers_1_1_object_html_a6720a3c4da34c8756254709cfd005fbf"><div class="ttname"><a href="classflexbuffers_1_1_object.html#a6720a3c4da34c8756254709cfd005fbf">flexbuffers::Object::data_</a></div><div class="ttdeci">const uint8_t * data_</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00218">flexbuffers.h:218</a></div></div>
+<div class="ttc" id="aclassflexbuffers_1_1_vector_html_a37ce466c2ca6a65dd9ddaf2d394ecbf8"><div class="ttname"><a href="classflexbuffers_1_1_vector.html#a37ce466c2ca6a65dd9ddaf2d394ecbf8">flexbuffers::Vector::EmptyVector</a></div><div class="ttdeci">static Vector EmptyVector()</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00279">flexbuffers.h:279</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00220">flexbuffers::Object::data_</a>, and <a class="el" href="flexbuffers_8h_source.html#l00284">EmptyVector()</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00218">flexbuffers::Object::data_</a>, and <a class="el" href="flexbuffers_8h_source.html#l00279">EmptyVector()</a>.</p>
 
 </div>
 </div>
@@ -282,20 +282,19 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00942">942</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  943</span>{</div>
-<div class="line"><span class="lineno">  944</span>  <span class="keyword">auto</span> len = <a class="code hl_function" href="classflexbuffers_1_1_sized.html#a886c94ebc26b6e00a7223b180967e59d">size</a>();</div>
-<div class="line"><span class="lineno">  945</span>  <span class="keywordflow">if</span> (i &gt;= len)</div>
-<div class="line"><span class="lineno">  946</span>    <span class="keywordflow">return</span> Reference(<span class="keyword">nullptr</span>, 1, <a class="code hl_function" href="namespaceflexbuffers.html#a18bed26be195b406bd9932c0877546e0">NullPackedType</a>());</div>
-<div class="line"><span class="lineno">  947</span>  <span class="keyword">auto</span> packed_type = (<a class="code hl_variable" href="classflexbuffers_1_1_object.html#a6720a3c4da34c8756254709cfd005fbf">data_</a> + len * <a class="code hl_variable" href="classflexbuffers_1_1_object.html#aa73cf57f904fe4d10c5e4cfa6584e43a">byte_width_</a>)[i];</div>
-<div class="line"><span class="lineno">  948</span>  <span class="keyword">auto</span> elem = <a class="code hl_variable" href="classflexbuffers_1_1_object.html#a6720a3c4da34c8756254709cfd005fbf">data_</a> + i * <a class="code hl_variable" href="classflexbuffers_1_1_object.html#aa73cf57f904fe4d10c5e4cfa6584e43a">byte_width_</a>;</div>
-<div class="line"><span class="lineno">  949</span>  <span class="keywordflow">return</span> Reference(elem, <a class="code hl_variable" href="classflexbuffers_1_1_object.html#aa73cf57f904fe4d10c5e4cfa6584e43a">byte_width_</a>, packed_type);</div>
-<div class="line"><span class="lineno">  950</span>}</div>
-<div class="ttc" id="aclassflexbuffers_1_1_object_html_aa73cf57f904fe4d10c5e4cfa6584e43a"><div class="ttname"><a href="classflexbuffers_1_1_object.html#aa73cf57f904fe4d10c5e4cfa6584e43a">flexbuffers::Object::byte_width_</a></div><div class="ttdeci">uint8_t byte_width_</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00221">flexbuffers.h:221</a></div></div>
-<div class="ttc" id="aclassflexbuffers_1_1_sized_html_a886c94ebc26b6e00a7223b180967e59d"><div class="ttname"><a href="classflexbuffers_1_1_sized.html#a886c94ebc26b6e00a7223b180967e59d">flexbuffers::Sized::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00232">flexbuffers.h:232</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_a18bed26be195b406bd9932c0877546e0"><div class="ttname"><a href="namespaceflexbuffers.html#a18bed26be195b406bd9932c0877546e0">flexbuffers::NullPackedType</a></div><div class="ttdeci">uint8_t NullPackedType()</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00933">flexbuffers.h:933</a></div></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00835">835</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  835</span>                                                  {</div>
+<div class="line"><span class="lineno">  836</span>  <span class="keyword">auto</span> len = <a class="code hl_function" href="classflexbuffers_1_1_sized.html#a886c94ebc26b6e00a7223b180967e59d">size</a>();</div>
+<div class="line"><span class="lineno">  837</span>  <span class="keywordflow">if</span> (i &gt;= len) <span class="keywordflow">return</span> Reference(<span class="keyword">nullptr</span>, 1, <a class="code hl_function" href="namespaceflexbuffers.html#a18bed26be195b406bd9932c0877546e0">NullPackedType</a>());</div>
+<div class="line"><span class="lineno">  838</span>  <span class="keyword">auto</span> packed_type = (<a class="code hl_variable" href="classflexbuffers_1_1_object.html#a6720a3c4da34c8756254709cfd005fbf">data_</a> + len * <a class="code hl_variable" href="classflexbuffers_1_1_object.html#aa73cf57f904fe4d10c5e4cfa6584e43a">byte_width_</a>)[i];</div>
+<div class="line"><span class="lineno">  839</span>  <span class="keyword">auto</span> elem = <a class="code hl_variable" href="classflexbuffers_1_1_object.html#a6720a3c4da34c8756254709cfd005fbf">data_</a> + i * <a class="code hl_variable" href="classflexbuffers_1_1_object.html#aa73cf57f904fe4d10c5e4cfa6584e43a">byte_width_</a>;</div>
+<div class="line"><span class="lineno">  840</span>  <span class="keywordflow">return</span> Reference(elem, <a class="code hl_variable" href="classflexbuffers_1_1_object.html#aa73cf57f904fe4d10c5e4cfa6584e43a">byte_width_</a>, packed_type);</div>
+<div class="line"><span class="lineno">  841</span>}</div>
+<div class="ttc" id="aclassflexbuffers_1_1_object_html_aa73cf57f904fe4d10c5e4cfa6584e43a"><div class="ttname"><a href="classflexbuffers_1_1_object.html#aa73cf57f904fe4d10c5e4cfa6584e43a">flexbuffers::Object::byte_width_</a></div><div class="ttdeci">uint8_t byte_width_</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00219">flexbuffers.h:219</a></div></div>
+<div class="ttc" id="aclassflexbuffers_1_1_sized_html_a886c94ebc26b6e00a7223b180967e59d"><div class="ttname"><a href="classflexbuffers_1_1_sized.html#a886c94ebc26b6e00a7223b180967e59d">flexbuffers::Sized::size</a></div><div class="ttdeci">size_t size() const</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00231">flexbuffers.h:231</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_a18bed26be195b406bd9932c0877546e0"><div class="ttname"><a href="namespaceflexbuffers.html#a18bed26be195b406bd9932c0877546e0">flexbuffers::NullPackedType</a></div><div class="ttdeci">uint8_t NullPackedType()</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00826">flexbuffers.h:826</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00221">flexbuffers::Object::byte_width_</a>, <a class="el" href="flexbuffers_8h_source.html#l00220">flexbuffers::Object::data_</a>, <a class="el" href="flexbuffers_8h_source.html#l00933">flexbuffers::NullPackedType()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00232">flexbuffers::Sized::size()</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00219">flexbuffers::Object::byte_width_</a>, <a class="el" href="flexbuffers_8h_source.html#l00218">flexbuffers::Object::data_</a>, <a class="el" href="flexbuffers_8h_source.html#l00826">flexbuffers::NullPackedType()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00231">flexbuffers::Sized::size()</a>.</p>
 
 </div>
 </div>

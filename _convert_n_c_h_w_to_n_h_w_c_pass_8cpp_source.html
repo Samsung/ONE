@@ -1056,7 +1056,7 @@ $(document).ready(function(){initNavTree('_convert_n_c_h_w_to_n_h_w_c_pass_8cpp_
 <div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span> </div>
 <div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>    <span class="keyword">auto</span> new_axis = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">create_nhwc_axis</a>(axis);</div>
-<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(new_axis); <span class="comment">// FIX_ME_UNLESS</span></div>
+<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>    assert(new_axis); <span class="comment">// FIX_ME_UNLESS</span></div>
 <div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span> </div>
 <div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>    <span class="comment">// Insert pre-transpose</span></div>
 <div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span>    <span class="keyword">const</span> <span class="keyword">auto</span> pred_node = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(node-&gt;<a class="code hl_function" href="classluci_1_1_circle_split_v.html#ace0e159ddc822f67c9234e76da634aa1">input</a>());</div>

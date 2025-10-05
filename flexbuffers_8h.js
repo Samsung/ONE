@@ -12,6 +12,7 @@ var flexbuffers_8h =
     [ "flexbuffers::FLATBUFFERS_FINAL_CLASS", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s" ],
     [ "flexbuffers::FLATBUFFERS_FINAL_CLASS::Value", "structflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s_1_1_value.html", "structflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s_1_1_value" ],
     [ "FLATBUFFERS_GET_FIELD_BIT_WIDTH", "flexbuffers_8h.html#a83bf2dbac794a61b318aa08088dd998f", null ],
+    [ "FLEX_CHECK_VERIFIED", "flexbuffers_8h.html#a17780924bb2c841c6b27cca34a0950f9", null ],
     [ "half", "flexbuffers_8h.html#a3d6fa6c20c8061ff688afd47ab114c38", null ],
     [ "quarter", "flexbuffers_8h.html#a272b6b983cc717a37528babd793e04cb", null ],
     [ "BitWidth", "flexbuffers_8h.html#a76cc4a8eb404468982af5bd160912e8b", [
@@ -56,7 +57,8 @@ var flexbuffers_8h =
       [ "FBT_VECTOR_FLOAT4", "flexbuffers_8h.html#aa0b4995478c086629fff32c3d10c3872ade7af31eb6e56bf008ba6aabc626351e", null ],
       [ "FBT_BLOB", "flexbuffers_8h.html#aa0b4995478c086629fff32c3d10c3872a61d442f38cb775643f12e0924a9be803", null ],
       [ "FBT_BOOL", "flexbuffers_8h.html#aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5", null ],
-      [ "FBT_VECTOR_BOOL", "flexbuffers_8h.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05", null ]
+      [ "FBT_VECTOR_BOOL", "flexbuffers_8h.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05", null ],
+      [ "FBT_MAX_TYPE", "flexbuffers_8h.html#aa0b4995478c086629fff32c3d10c3872ab2446b045d04489031d625625086a0cd", null ]
     ] ],
     [ "AppendToString", "flexbuffers_8h.html#af7de9f41e3986d43c76c6d283b71b2a3", null ],
     [ "GetRoot", "flexbuffers_8h.html#ab071dac32ac28ab1131d407871231358", null ],
@@ -78,6 +80,7 @@ var flexbuffers_8h =
     [ "ToFixedTypedVectorElementType", "flexbuffers_8h.html#a6e6c489d7884670609fb8c423d1f7b76", null ],
     [ "ToTypedVector", "flexbuffers_8h.html#a52f924f091996491d562b398e8f880b5", null ],
     [ "ToTypedVectorElementType", "flexbuffers_8h.html#a70b57d31302be584191fbf4ee70daa44", null ],
+    [ "VerifyBuffer", "flexbuffers_8h.html#a01115a2166486217cea5d3bc0f05f448", null ],
     [ "WidthF", "flexbuffers_8h.html#a50919e1bf9664e027eac4c6342d3ff60", null ],
     [ "WidthI", "flexbuffers_8h.html#a1be50d5b811ad7380bd0629867245128", null ],
     [ "WidthU", "flexbuffers_8h.html#aff7bc29030435a3586a9cea1f617fda8", null ]

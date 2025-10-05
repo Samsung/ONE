@@ -160,11 +160,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   38</span> </div>
 <div class="line"><span class="lineno">   39</span>    <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">output_index</a> = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">cur_op</a>-&gt;outputs()-&gt;operator[](0);</div>
 <div class="line"><span class="lineno">   40</span> </div>
-<div class="line"><span class="lineno">   41</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input1_index</a> != -1);</div>
-<div class="line"><span class="lineno">   42</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input2_index</a> != -1);</div>
-<div class="line"><span class="lineno">   43</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input3_index</a> != -1);</div>
+<div class="line"><span class="lineno">   41</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input1_index</a> != -1);</div>
+<div class="line"><span class="lineno">   42</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input2_index</a> != -1);</div>
+<div class="line"><span class="lineno">   43</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input3_index</a> != -1);</div>
 <div class="line"><span class="lineno">   44</span> </div>
-<div class="line"><span class="lineno">   45</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">output_index</a> != -1);</div>
+<div class="line"><span class="lineno">   45</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">output_index</a> != -1);</div>
 <div class="line"><span class="lineno">   46</span> </div>
 <div class="line"><span class="lineno">   47</span>    _input1_tensor = runtime_graph-&gt;getCircleTensorByIndex(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input1_index</a>);</div>
 <div class="line"><span class="lineno">   48</span>    _input2_tensor = runtime_graph-&gt;getCircleTensorByIndex(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input2_index</a>);</div>
@@ -177,10 +177,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   55</span>    <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">   56</span>      _input4_tensor = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">   57</span> </div>
-<div class="line"><span class="lineno">   58</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_input1_tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   59</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_input2_tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   60</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_input3_tensor != <span class="keyword">nullptr</span>);</div>
-<div class="line"><span class="lineno">   61</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_output_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   58</span>    assert(_input1_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   59</span>    assert(_input2_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   60</span>    assert(_input3_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   61</span>    assert(_output_tensor != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   62</span>  }</div>
 <div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 </div><!-- fragment -->
@@ -304,12 +304,10 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_m_i_s_o_kernel_8h_source.html#l00068">68</a> of file <a class="el" href="_m_i_s_o_kernel_8h_source.html">MISOKernel.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   69</span>  {</div>
-<div class="line"><span class="lineno">   70</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_input4_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   70</span>    assert(_input4_tensor != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   71</span>    <span class="keywordflow">return</span> _input4_tensor;</div>
 <div class="line"><span class="lineno">   72</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>.</p>
-
 </div>
 </div>
 <a id="afa6be7effae83aa59e9873ec40192b38" name="afa6be7effae83aa59e9873ec40192b38"></a>

@@ -103,13 +103,9 @@ Collaboration diagram for luci::SerializedModelData:</div>
 <div class="dyncontent">
 <div class="center"><img src="structluci_1_1_serialized_model_data__coll__graph.png" border="0" usemap="#aluci_1_1_serialized_model_data_coll__map" alt="Collaboration graph"/></div>
 <map name="aluci_1_1_serialized_model_data_coll__map" id="aluci_1_1_serialized_model_data_coll__map">
-<area shape="rect" title=" " alt="" coords="108,198,273,223"/>
-<area shape="rect" href="structflatbuffers_1_1_offset.html" title=" " alt="" coords="20,94,139,135"/>
-<area shape="poly" title=" " alt="" coords="101,146,124,172,161,195,158,199,120,176,97,149"/>
-<area shape="rect" href="structflatbuffers_1_1_offset.html" title=" " alt="" coords="5,5,154,31"/>
-<area shape="poly" title=" " alt="" coords="82,46,82,93,77,93,77,46"/>
-<area shape="rect" href="classluci_1_1_circle_export_metadata.html" title=" " alt="" coords="162,102,333,127"/>
-<area shape="poly" title=" " alt="" coords="235,141,200,199,195,196,230,139"/>
+<area shape="rect" title=" " alt="" coords="8,94,173,120"/>
+<area shape="rect" href="classluci_1_1_circle_export_metadata.html" title=" " alt="" coords="5,5,176,31"/>
+<area shape="poly" title=" " alt="" coords="93,47,93,94,88,94,88,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -136,9 +132,9 @@ Public Member Functions</h2></td></tr>
 Data Fields</h2></td></tr>
 <tr class="memitem:a97f3747680438ab2be05dbab74abc651" id="r_a97f3747680438ab2be05dbab74abc651"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; <a class="el" href="structluci_1_1_op_code.html">OpCode</a>, <a class="el" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">uint32_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">_operator_codes</a></td></tr>
 <tr class="separator:a97f3747680438ab2be05dbab74abc651"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba32cff9bef7f670531f2516f57ddf83" id="r_aba32cff9bef7f670531f2516f57ddf83"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a>&lt; circle::Buffer &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#aba32cff9bef7f670531f2516f57ddf83">_buffers</a></td></tr>
+<tr class="memitem:aba32cff9bef7f670531f2516f57ddf83" id="r_aba32cff9bef7f670531f2516f57ddf83"><td class="memItemLeft" align="right" valign="top">std::vector&lt; flatbuffers::Offset&lt; circle::Buffer &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#aba32cff9bef7f670531f2516f57ddf83">_buffers</a></td></tr>
 <tr class="separator:aba32cff9bef7f670531f2516f57ddf83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80f8341eb5f6bd20916a48805b3fd4e6" id="r_a80f8341eb5f6bd20916a48805b3fd4e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a>&lt; circle::Buffer &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#a80f8341eb5f6bd20916a48805b3fd4e6">_empty_buffer</a></td></tr>
+<tr class="memitem:a80f8341eb5f6bd20916a48805b3fd4e6" id="r_a80f8341eb5f6bd20916a48805b3fd4e6"><td class="memItemLeft" align="right" valign="top">flatbuffers::Offset&lt; circle::Buffer &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#a80f8341eb5f6bd20916a48805b3fd4e6">_empty_buffer</a></td></tr>
 <tr class="separator:a80f8341eb5f6bd20916a48805b3fd4e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac76cc54955caa48a2890f5397910ea77" id="r_ac76cc54955caa48a2890f5397910ea77"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classluci_1_1_circle_export_metadata.html">CircleExportMetadata</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structluci_1_1_serialized_model_data.html#ac76cc54955caa48a2890f5397910ea77">_metadata</a></td></tr>
 <tr class="separator:ac76cc54955caa48a2890f5397910ea77"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -326,7 +322,7 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="luci_2export_2src_2_circle_exporter_utils_8cpp_source.html#l00233">233</a> of file <a class="el" href="luci_2export_2src_2_circle_exporter_utils_8cpp_source.html">CircleExporterUtils.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  236</span>{</div>
-<div class="line"><span class="lineno">  237</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(op_version &gt; 0);</div>
+<div class="line"><span class="lineno">  237</span>  assert(op_version &gt; 0);</div>
 <div class="line"><span class="lineno">  238</span> </div>
 <div class="line"><span class="lineno">  239</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">it</a> = <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">_operator_codes</a>.find(OpCode{builtin_code, custom_code, op_version});</div>
 <div class="line"><span class="lineno">  240</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">it</a> != <a class="code hl_variable" href="structluci_1_1_serialized_model_data.html#a97f3747680438ab2be05dbab74abc651">_operator_codes</a>.end())</div>
@@ -371,7 +367,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a>&lt;circle::Buffer&gt; &gt; luci::SerializedModelData::_buffers</td>
+          <td class="memname">std::vector&lt;flatbuffers::Offset&lt;circle::Buffer&gt; &gt; luci::SerializedModelData::_buffers</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -407,7 +403,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a>&lt;circle::Buffer&gt; luci::SerializedModelData::_empty_buffer</td>
+          <td class="memname">flatbuffers::Offset&lt;circle::Buffer&gt; luci::SerializedModelData::_empty_buffer</td>
         </tr>
       </table>
 </div><div class="memdoc">

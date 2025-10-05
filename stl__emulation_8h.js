@@ -15,15 +15,13 @@ var stl__emulation_8h =
     [ "flatbuffers::internal::nullopt_holder< class >", "structflatbuffers_1_1internal_1_1nullopt__holder.html", null ],
     [ "flatbuffers::FLATBUFFERS_FINAL_CLASS< T >", "classflatbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html", "classflatbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s" ],
     [ "FLATBUFFERS_SPAN_MINIMAL", "stl__emulation_8h.html#adea6e47f3d70e26a8e8bd54be3b5a53e", null ],
+    [ "FLATBUFFERS_USE_STD_OPTIONAL", "stl__emulation_8h.html#a76eace5efabd2dc20f34e458bf751377", null ],
+    [ "false_type", "stl__emulation_8h.html#a2aebfaf3654eae7e219452a01c4f27db", null ],
+    [ "true_type", "stl__emulation_8h.html#a3bfefd3cb51dc4bf36265d42d2286264", null ],
     [ "operator==", "stl__emulation_8h.html#ad1b658f23447e727200e08ac137284a7", null ],
     [ "operator==", "stl__emulation_8h.html#abe75ce3e63302304f52dbe897afe2f7e", null ],
     [ "operator==", "stl__emulation_8h.html#a1518908b6c54c8bd3258ba6373544401", null ],
     [ "operator==", "stl__emulation_8h.html#aee0245f352d29dc54e9541f658533472", null ],
     [ "operator==", "stl__emulation_8h.html#a3f75573e1f49c4ec2c56089d06bb7578", null ],
-    [ "string_back", "stl__emulation_8h.html#a0283275990c42c586f4503511770db5f", null ],
-    [ "string_back", "stl__emulation_8h.html#a08545af6f25e7c6809f04b319c6cc3a3", null ],
-    [ "vector_data", "stl__emulation_8h.html#a612a1db203739d5b5e26bc438f0be546", null ],
-    [ "vector_data", "stl__emulation_8h.html#acf61b81d6a0573a6f4bd9d1225f3f609", null ],
-    [ "vector_emplace_back", "stl__emulation_8h.html#a39d8eaff56f9214074f8a109ea382f10", null ],
     [ "dynamic_extent", "stl__emulation_8h.html#ad28522f35a1cff59322de20bcd3d03d2", null ]
 ];

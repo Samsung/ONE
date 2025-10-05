@@ -10,6 +10,6 @@ var classflatbuffers_1_1grpc_1_1_message_builder =
     [ "operator=", "classflatbuffers_1_1grpc_1_1_message_builder.html#a1826637a2c8071bcb3bac7740b29391c", null ],
     [ "operator=", "classflatbuffers_1_1grpc_1_1_message_builder.html#ad3bdada7441c36aa11e2959f5f0827b4", null ],
     [ "ReleaseMessage", "classflatbuffers_1_1grpc_1_1_message_builder.html#a78b308810de9dce8112a645b094f5030", null ],
-    [ "ReleaseRaw", "classflatbuffers_1_1grpc_1_1_message_builder.html#aabb9fe53234658ef189bebda37980c4e", null ],
+    [ "ReleaseRaw", "classflatbuffers_1_1grpc_1_1_message_builder.html#a5c85e2ba4c066b5cb4e15f2fdad54018", null ],
     [ "Swap", "classflatbuffers_1_1grpc_1_1_message_builder.html#a365d492302ba111ebea8be1eb8737554", null ]
 ];

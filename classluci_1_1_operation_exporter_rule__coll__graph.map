@@ -1,29 +1,27 @@
 <map id="luci::OperationExporterRule" name="luci::OperationExporterRule">
-<area shape="rect" id="Node000001" title=" " alt="" coords="1215,118,1391,144"/>
-<area shape="rect" id="Node000002" href="$structluci_1_1_circle_node_mutable_visitor.html" title=" " alt="" coords="945,63,1140,103"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1156,101,1230,115,1229,120,1155,106"/>
-<area shape="rect" id="Node000003" href="$structluci_1_1_circle_node_mutable_visitor_base.html" title=" " alt="" coords="639,5,833,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="849,44,945,62,944,67,848,49"/>
-<area shape="rect" id="Node000004" href="$structluci_1_1_circle_node_mutable_visitor.html" title=" " alt="" coords="624,70,848,96"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="864,80,945,80,945,86,864,86"/>
-<area shape="rect" id="Node000005" href="$structluci_1_1_circle_node_mutable_visitor_base.html" title=" " alt="" coords="298,51,492,91"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="508,72,624,76,623,82,507,78"/>
-<area shape="rect" id="Node000006" href="$structluci_1_1_export_context.html" title=" " alt="" coords="979,146,1106,172"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1121,148,1214,138,1215,143,1121,153"/>
-<area shape="rect" id="Node000007" href="$classflatbuffers_1_1_flat_buffer_builder.html" title="Helper class to hold data needed in creation of a FlatBuffer. To serialize data, you typically call o..." alt="" coords="647,132,826,157"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="841,147,979,153,978,159,841,152"/>
-<area shape="rect" id="Node000008" href="$classflatbuffers_1_1vector__downward.html" title=" " alt="" coords="335,116,455,157"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="470,135,646,140,646,145,470,141"/>
-<area shape="rect" id="Node000009" href="$structluci_1_1_serialized_model_data.html" title=" " alt="" coords="654,189,819,215"/>
-<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="834,185,978,165,979,170,835,191"/>
-<area shape="rect" id="Node000010" href="$structflatbuffers_1_1_offset.html" title=" " alt="" coords="336,181,454,222"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="469,199,653,199,653,204,469,204"/>
-<area shape="rect" id="Node000011" href="$structflatbuffers_1_1_offset.html" title=" " alt="" coords="5,189,154,215"/>
-<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="169,199,335,199,335,204,169,204"/>
-<area shape="rect" id="Node000012" href="$classluci_1_1_circle_export_metadata.html" title=" " alt="" coords="310,246,480,272"/>
-<area shape="poly" id="edge11_Node000009_Node000012" title=" " alt="" coords="490,240,655,212,656,218,491,246"/>
-<area shape="rect" id="Node000013" href="$structluci_1_1_serialized_graph_data.html" title=" " alt="" coords="654,266,819,292"/>
-<area shape="poly" id="edge12_Node000006_Node000013" title=" " alt="" coords="784,258,1006,170,1008,175,786,263"/>
-<area shape="rect" id="Node000014" href="$structluci_1_1_sub_graph_context.html" title="Record the information of T/F Lite SubGraph and its mapping to loco." alt="" coords="320,296,470,321"/>
-<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="485,298,653,283,654,289,485,303"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="1151,125,1327,151"/>
+<area shape="rect" id="Node000002" href="$structluci_1_1_circle_node_mutable_visitor.html" title=" " alt="" coords="881,63,1076,103"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1091,104,1175,122,1174,127,1090,109"/>
+<area shape="rect" id="Node000003" href="$structluci_1_1_circle_node_mutable_visitor_base.html" title=" " alt="" coords="575,5,769,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="785,44,881,62,880,67,784,49"/>
+<area shape="rect" id="Node000004" href="$structluci_1_1_circle_node_mutable_visitor.html" title=" " alt="" coords="560,70,784,96"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="800,80,881,80,881,86,800,86"/>
+<area shape="rect" id="Node000005" href="$structluci_1_1_circle_node_mutable_visitor_base.html" title=" " alt="" coords="254,59,448,99"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="464,78,560,79,560,84,464,83"/>
+<area shape="rect" id="Node000006" href="$structluci_1_1_export_context.html" title=" " alt="" coords="915,157,1042,183"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1057,157,1150,146,1151,151,1057,163"/>
+<area shape="rect" id="Node000007" href="$classflatbuffers_1_1_flat_buffer_builder_impl.html" title=" " alt="" coords="583,124,762,165"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="778,150,915,162,914,167,777,156"/>
+<area shape="rect" id="Node000008" href="$classflatbuffers_1_1vector__downward.html" title=" " alt="" coords="280,124,422,165"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="438,142,582,142,582,147,438,147"/>
+<area shape="rect" id="Node000009" href="$classflatbuffers_1_1vector__downward.html" title=" " alt="" coords="5,124,148,165"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="163,142,279,142,279,147,163,147"/>
+<area shape="rect" id="Node000010" href="$structluci_1_1_serialized_model_data.html" title=" " alt="" coords="590,189,755,215"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="770,189,914,174,915,179,771,194"/>
+<area shape="rect" id="Node000011" href="$classluci_1_1_circle_export_metadata.html" title=" " alt="" coords="266,189,436,215"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="452,199,589,199,589,204,452,204"/>
+<area shape="rect" id="Node000012" href="$structluci_1_1_serialized_graph_data.html" title=" " alt="" coords="590,238,755,264"/>
+<area shape="poly" id="edge11_Node000006_Node000012" title=" " alt="" coords="752,232,784,224,936,181,937,186,785,230,754,237"/>
+<area shape="rect" id="Node000013" href="$structluci_1_1_sub_graph_context.html" title="Record the information of T/F Lite SubGraph and its mapping to loco." alt="" coords="276,238,426,264"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="441,248,589,248,589,254,441,254"/>
 </map>

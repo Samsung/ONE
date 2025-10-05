@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ONE - On-device Neural Engine: flatbuffers::VectorIterator&lt; T, IT &gt; Struct Template Reference</title>
+<title>ONE - On-device Neural Engine: flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -91,184 +91,190 @@ $(document).ready(function(){initNavTree('structflatbuffers_1_1_vector_iterator.
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
-<a href="#pub-methods">Public Member Functions</a>  </div>
-  <div class="headertitle"><div class="title">flatbuffers::VectorIterator&lt; T, IT &gt; Struct Template Reference</div></div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a>  </div>
+  <div class="headertitle"><div class="title">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt; Struct Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="vector_8h_source.html">vector.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ac9e9c7cb6d2cc0a69c22b954bb73dc42" id="r_ac9e9c7cb6d2cc0a69c22b954bb73dc42"><td class="memItemLeft" align="right" valign="top">typedef std::random_access_iterator_tag&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#ac9e9c7cb6d2cc0a69c22b954bb73dc42">iterator_category</a></td></tr>
-<tr class="separator:ac9e9c7cb6d2cc0a69c22b954bb73dc42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf980961b89f2b647a07135246b75088" id="r_aaf980961b89f2b647a07135246b75088"><td class="memItemLeft" align="right" valign="top">typedef IT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#aaf980961b89f2b647a07135246b75088">value_type</a></td></tr>
-<tr class="separator:aaf980961b89f2b647a07135246b75088"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02c756cdd5ec038a978066c5761dd429" id="r_a02c756cdd5ec038a978066c5761dd429"><td class="memItemLeft" align="right" valign="top">typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a02c756cdd5ec038a978066c5761dd429">difference_type</a></td></tr>
-<tr class="separator:a02c756cdd5ec038a978066c5761dd429"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74d61458dfc1c25d94f80cae8cebaa2a" id="r_a74d61458dfc1c25d94f80cae8cebaa2a"><td class="memItemLeft" align="right" valign="top">typedef IT *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a74d61458dfc1c25d94f80cae8cebaa2a">pointer</a></td></tr>
-<tr class="separator:a74d61458dfc1c25d94f80cae8cebaa2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb8ab7ba9e8ce289a1c8234e872c708b" id="r_acb8ab7ba9e8ce289a1c8234e872c708b"><td class="memItemLeft" align="right" valign="top">typedef IT &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#acb8ab7ba9e8ce289a1c8234e872c708b">reference</a></td></tr>
-<tr class="separator:acb8ab7ba9e8ce289a1c8234e872c708b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a488ab10f934f8380509b40dccf0d45df" id="r_a488ab10f934f8380509b40dccf0d45df"><td class="memItemLeft" align="right" valign="top">typedef std::random_access_iterator_tag&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a488ab10f934f8380509b40dccf0d45df">iterator_category</a></td></tr>
+<tr class="separator:a488ab10f934f8380509b40dccf0d45df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb00553737ab8fceab0e76a64cef0b3e" id="r_abb00553737ab8fceab0e76a64cef0b3e"><td class="memItemLeft" align="right" valign="top">typedef IT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#abb00553737ab8fceab0e76a64cef0b3e">value_type</a></td></tr>
+<tr class="separator:abb00553737ab8fceab0e76a64cef0b3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47ba6bab75e83b1f5a61fca1af9f51d5" id="r_a47ba6bab75e83b1f5a61fca1af9f51d5"><td class="memItemLeft" align="right" valign="top">typedef ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a47ba6bab75e83b1f5a61fca1af9f51d5">difference_type</a></td></tr>
+<tr class="separator:a47ba6bab75e83b1f5a61fca1af9f51d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e338b82a3babbf39e4190ac5b977f99" id="r_a3e338b82a3babbf39e4190ac5b977f99"><td class="memItemLeft" align="right" valign="top">typedef IT *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a3e338b82a3babbf39e4190ac5b977f99">pointer</a></td></tr>
+<tr class="separator:a3e338b82a3babbf39e4190ac5b977f99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15fbff981e3d439995a45841d12c349b" id="r_a15fbff981e3d439995a45841d12c349b"><td class="memItemLeft" align="right" valign="top">typedef IT &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a15fbff981e3d439995a45841d12c349b">reference</a></td></tr>
+<tr class="separator:a15fbff981e3d439995a45841d12c349b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a415a449a3d8a04271260ecb380c3fa49" id="r_a415a449a3d8a04271260ecb380c3fa49"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a415a449a3d8a04271260ecb380c3fa49">VectorIterator</a> (const uint8_t *<a class="el" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, uoffset_t i)</td></tr>
-<tr class="separator:a415a449a3d8a04271260ecb380c3fa49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e10ae7b14f5f79bf0da6bbed7c17b5d" id="r_a7e10ae7b14f5f79bf0da6bbed7c17b5d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a7e10ae7b14f5f79bf0da6bbed7c17b5d">VectorIterator</a> (const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;other)</td></tr>
-<tr class="separator:a7e10ae7b14f5f79bf0da6bbed7c17b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a223f3bc61bdcff57f900ea8be7a66ca3" id="r_a223f3bc61bdcff57f900ea8be7a66ca3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a223f3bc61bdcff57f900ea8be7a66ca3">VectorIterator</a> ()</td></tr>
-<tr class="separator:a223f3bc61bdcff57f900ea8be7a66ca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9331dad4f6c59c90a4f76b2b58cef41a" id="r_a9331dad4f6c59c90a4f76b2b58cef41a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a9331dad4f6c59c90a4f76b2b58cef41a">operator=</a> (const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;other)</td></tr>
-<tr class="separator:a9331dad4f6c59c90a4f76b2b58cef41a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af405c717b176d1888379510a8e410c4f" id="r_af405c717b176d1888379510a8e410c4f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#af405c717b176d1888379510a8e410c4f">operator=</a> (<a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&amp;other)</td></tr>
-<tr class="separator:af405c717b176d1888379510a8e410c4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8f96b2057c464d22dd03286ee8af5c0" id="r_ab8f96b2057c464d22dd03286ee8af5c0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#ab8f96b2057c464d22dd03286ee8af5c0">operator==</a> (const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;other) const</td></tr>
-<tr class="separator:ab8f96b2057c464d22dd03286ee8af5c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f537a771b03e39218f7c77df9a243c8" id="r_a3f537a771b03e39218f7c77df9a243c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a3f537a771b03e39218f7c77df9a243c8">operator&lt;</a> (const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;other) const</td></tr>
-<tr class="separator:a3f537a771b03e39218f7c77df9a243c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b6a5544a9c48f2409690de7bfff6a63" id="r_a0b6a5544a9c48f2409690de7bfff6a63"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a0b6a5544a9c48f2409690de7bfff6a63">operator!=</a> (const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;other) const</td></tr>
-<tr class="separator:a0b6a5544a9c48f2409690de7bfff6a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85a3748c7f97adba199d7421d9962941" id="r_a85a3748c7f97adba199d7421d9962941"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a02c756cdd5ec038a978066c5761dd429">difference_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a85a3748c7f97adba199d7421d9962941">operator-</a> (const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;other) const</td></tr>
-<tr class="separator:a85a3748c7f97adba199d7421d9962941"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19fde04fa43b5967564883517ed10a82" id="r_a19fde04fa43b5967564883517ed10a82"><td class="memItemLeft" align="right" valign="top">IT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a19fde04fa43b5967564883517ed10a82">operator*</a> () const</td></tr>
-<tr class="separator:a19fde04fa43b5967564883517ed10a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78eb60f8754af75c1b2b5e0d8710ae6c" id="r_a78eb60f8754af75c1b2b5e0d8710ae6c"><td class="memItemLeft" align="right" valign="top">IT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a78eb60f8754af75c1b2b5e0d8710ae6c">operator-&gt;</a> () const</td></tr>
-<tr class="separator:a78eb60f8754af75c1b2b5e0d8710ae6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74e108c5ba136caa7e3403eaf041fa85" id="r_a74e108c5ba136caa7e3403eaf041fa85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a74e108c5ba136caa7e3403eaf041fa85">operator++</a> ()</td></tr>
-<tr class="separator:a74e108c5ba136caa7e3403eaf041fa85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a428a3df67f852563e25a040e41f3aef9" id="r_a428a3df67f852563e25a040e41f3aef9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a428a3df67f852563e25a040e41f3aef9">operator++</a> (int)</td></tr>
-<tr class="separator:a428a3df67f852563e25a040e41f3aef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff7a7187d818290ee71274335f079191" id="r_aff7a7187d818290ee71274335f079191"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#aff7a7187d818290ee71274335f079191">operator+</a> (const uoffset_t &amp;<a class="el" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>) const</td></tr>
-<tr class="separator:aff7a7187d818290ee71274335f079191"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71dfca68d39c37ddb71275dea729da68" id="r_a71dfca68d39c37ddb71275dea729da68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a71dfca68d39c37ddb71275dea729da68">operator+=</a> (const uoffset_t &amp;<a class="el" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>)</td></tr>
-<tr class="separator:a71dfca68d39c37ddb71275dea729da68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25853a8a3636006bb30c7938295bc013" id="r_a25853a8a3636006bb30c7938295bc013"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a25853a8a3636006bb30c7938295bc013">operator--</a> ()</td></tr>
-<tr class="separator:a25853a8a3636006bb30c7938295bc013"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a105a4e408b45c324f2ad445f5145bf51" id="r_a105a4e408b45c324f2ad445f5145bf51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a105a4e408b45c324f2ad445f5145bf51">operator--</a> (int)</td></tr>
-<tr class="separator:a105a4e408b45c324f2ad445f5145bf51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa286857279ca9662fed989c0c3efe0d3" id="r_aa286857279ca9662fed989c0c3efe0d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#aa286857279ca9662fed989c0c3efe0d3">operator-</a> (const uoffset_t &amp;<a class="el" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>) const</td></tr>
-<tr class="separator:aa286857279ca9662fed989c0c3efe0d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f9afb31ce4c1cef9de33d471d055eb4" id="r_a1f9afb31ce4c1cef9de33d471d055eb4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a1f9afb31ce4c1cef9de33d471d055eb4">operator-=</a> (const uoffset_t &amp;<a class="el" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>)</td></tr>
-<tr class="separator:a1f9afb31ce4c1cef9de33d471d055eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8206aed5365f74cb2da59fa0e99f947" id="r_aa8206aed5365f74cb2da59fa0e99f947"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#aa8206aed5365f74cb2da59fa0e99f947">VectorIterator</a> (Data <a class="el" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a>, SizeT i)</td></tr>
+<tr class="separator:aa8206aed5365f74cb2da59fa0e99f947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af687daa501a7f4630ee5a0b90aa950b4" id="r_af687daa501a7f4630ee5a0b90aa950b4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#af687daa501a7f4630ee5a0b90aa950b4">VectorIterator</a> (const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;other)</td></tr>
+<tr class="separator:af687daa501a7f4630ee5a0b90aa950b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a904e3d8e723216103022caaf27881e7d" id="r_a904e3d8e723216103022caaf27881e7d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a904e3d8e723216103022caaf27881e7d">VectorIterator</a> ()</td></tr>
+<tr class="separator:a904e3d8e723216103022caaf27881e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6d927db213bc315e79b81d494a800f4" id="r_af6d927db213bc315e79b81d494a800f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#af6d927db213bc315e79b81d494a800f4">operator=</a> (const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;other)</td></tr>
+<tr class="separator:af6d927db213bc315e79b81d494a800f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb0f07a9b9f690d2626ea33e07ab6d98" id="r_aeb0f07a9b9f690d2626ea33e07ab6d98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#aeb0f07a9b9f690d2626ea33e07ab6d98">operator=</a> (<a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&amp;other)</td></tr>
+<tr class="separator:aeb0f07a9b9f690d2626ea33e07ab6d98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab52e99da5af3ec95f49a94fc7de4a7e4" id="r_ab52e99da5af3ec95f49a94fc7de4a7e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#ab52e99da5af3ec95f49a94fc7de4a7e4">operator==</a> (const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;other) const</td></tr>
+<tr class="separator:ab52e99da5af3ec95f49a94fc7de4a7e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f311d0e8c0119fe2d24b3b82510e1f2" id="r_a0f311d0e8c0119fe2d24b3b82510e1f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a0f311d0e8c0119fe2d24b3b82510e1f2">operator&lt;</a> (const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;other) const</td></tr>
+<tr class="separator:a0f311d0e8c0119fe2d24b3b82510e1f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefcc65c60abed31c90e7522bdddadde8" id="r_aefcc65c60abed31c90e7522bdddadde8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#aefcc65c60abed31c90e7522bdddadde8">operator!=</a> (const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;other) const</td></tr>
+<tr class="separator:aefcc65c60abed31c90e7522bdddadde8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab14d855abeae019591307002f5be2bd9" id="r_ab14d855abeae019591307002f5be2bd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a47ba6bab75e83b1f5a61fca1af9f51d5">difference_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#ab14d855abeae019591307002f5be2bd9">operator-</a> (const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;other) const</td></tr>
+<tr class="separator:ab14d855abeae019591307002f5be2bd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a275df23cc6f44f353f057a58b748ea29" id="r_a275df23cc6f44f353f057a58b748ea29"><td class="memItemLeft" align="right" valign="top">IT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a275df23cc6f44f353f057a58b748ea29">operator*</a> () const</td></tr>
+<tr class="separator:a275df23cc6f44f353f057a58b748ea29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91f407578fa4bec30465796a399c3fcf" id="r_a91f407578fa4bec30465796a399c3fcf"><td class="memItemLeft" align="right" valign="top">IT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a91f407578fa4bec30465796a399c3fcf">operator-&gt;</a> () const</td></tr>
+<tr class="separator:a91f407578fa4bec30465796a399c3fcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7369b31f4682fa1cac37d94afb04ff7b" id="r_a7369b31f4682fa1cac37d94afb04ff7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a7369b31f4682fa1cac37d94afb04ff7b">operator++</a> ()</td></tr>
+<tr class="separator:a7369b31f4682fa1cac37d94afb04ff7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1019a53e6999cf14e9de5099082106fb" id="r_a1019a53e6999cf14e9de5099082106fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a1019a53e6999cf14e9de5099082106fb">operator++</a> (int)</td></tr>
+<tr class="separator:a1019a53e6999cf14e9de5099082106fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa64b15eead27876c02a8bca16ea91ef6" id="r_aa64b15eead27876c02a8bca16ea91ef6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#aa64b15eead27876c02a8bca16ea91ef6">operator+</a> (const SizeT &amp;<a class="el" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>) const</td></tr>
+<tr class="separator:aa64b15eead27876c02a8bca16ea91ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7e523aeb7668605d4a3c57686eecff1" id="r_aa7e523aeb7668605d4a3c57686eecff1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#aa7e523aeb7668605d4a3c57686eecff1">operator+=</a> (const SizeT &amp;<a class="el" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>)</td></tr>
+<tr class="separator:aa7e523aeb7668605d4a3c57686eecff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a801547b21903472e4372e5cb884506c1" id="r_a801547b21903472e4372e5cb884506c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a801547b21903472e4372e5cb884506c1">operator--</a> ()</td></tr>
+<tr class="separator:a801547b21903472e4372e5cb884506c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95c129583c1d1c0fc734337b9c7aea3e" id="r_a95c129583c1d1c0fc734337b9c7aea3e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a95c129583c1d1c0fc734337b9c7aea3e">operator--</a> (int)</td></tr>
+<tr class="separator:a95c129583c1d1c0fc734337b9c7aea3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9122c73f1a56762ed8dcdf8b3732dbe0" id="r_a9122c73f1a56762ed8dcdf8b3732dbe0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a9122c73f1a56762ed8dcdf8b3732dbe0">operator-</a> (const SizeT &amp;<a class="el" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>) const</td></tr>
+<tr class="separator:a9122c73f1a56762ed8dcdf8b3732dbe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f5a42a98619a248926e56db3962fcfd" id="r_a3f5a42a98619a248926e56db3962fcfd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a3f5a42a98619a248926e56db3962fcfd">operator-=</a> (const SizeT &amp;<a class="el" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>)</td></tr>
+<tr class="separator:a3f5a42a98619a248926e56db3962fcfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:accecdf4f3977e5fe8d16d6cdfb16dc2b" id="r_accecdf4f3977e5fe8d16d6cdfb16dc2b"><td class="memItemLeft" align="right" valign="top">static const SizeT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#accecdf4f3977e5fe8d16d6cdfb16dc2b">element_stride</a> = IndirectHelper&lt;T&gt;::element_stride</td></tr>
+<tr class="separator:accecdf4f3977e5fe8d16d6cdfb16dc2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;typename T, typename IT&gt;<br />
-struct flatbuffers::VectorIterator&lt; T, IT &gt;</div>
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00142">142</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename T, typename IT, typename Data = uint8_t *, typename SizeT = uoffset_t&gt;<br />
+struct flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00032">32</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a02c756cdd5ec038a978066c5761dd429" name="a02c756cdd5ec038a978066c5761dd429"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a02c756cdd5ec038a978066c5761dd429">&#9670;&#160;</a></span>difference_type</h2>
+<a id="a47ba6bab75e83b1f5a61fca1af9f51d5" name="a47ba6bab75e83b1f5a61fca1af9f51d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47ba6bab75e83b1f5a61fca1af9f51d5">&#9670;&#160;</a></span>difference_type</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef ptrdiff_t <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::difference_type</td>
+          <td class="memname">typedef ptrdiff_t <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::difference_type</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00146">146</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00035">35</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
-<a id="ac9e9c7cb6d2cc0a69c22b954bb73dc42" name="ac9e9c7cb6d2cc0a69c22b954bb73dc42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9e9c7cb6d2cc0a69c22b954bb73dc42">&#9670;&#160;</a></span>iterator_category</h2>
+<a id="a488ab10f934f8380509b40dccf0d45df" name="a488ab10f934f8380509b40dccf0d45df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a488ab10f934f8380509b40dccf0d45df">&#9670;&#160;</a></span>iterator_category</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::random_access_iterator_tag <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::iterator_category</td>
+          <td class="memname">typedef std::random_access_iterator_tag <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::iterator_category</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00144">144</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00033">33</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
-<a id="a74d61458dfc1c25d94f80cae8cebaa2a" name="a74d61458dfc1c25d94f80cae8cebaa2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74d61458dfc1c25d94f80cae8cebaa2a">&#9670;&#160;</a></span>pointer</h2>
+<a id="a3e338b82a3babbf39e4190ac5b977f99" name="a3e338b82a3babbf39e4190ac5b977f99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e338b82a3babbf39e4190ac5b977f99">&#9670;&#160;</a></span>pointer</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef IT* <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::pointer</td>
+          <td class="memname">typedef IT* <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::pointer</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00147">147</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00036">36</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
-<a id="acb8ab7ba9e8ce289a1c8234e872c708b" name="acb8ab7ba9e8ce289a1c8234e872c708b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb8ab7ba9e8ce289a1c8234e872c708b">&#9670;&#160;</a></span>reference</h2>
+<a id="a15fbff981e3d439995a45841d12c349b" name="a15fbff981e3d439995a45841d12c349b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15fbff981e3d439995a45841d12c349b">&#9670;&#160;</a></span>reference</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef IT&amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::reference</td>
+          <td class="memname">typedef IT&amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::reference</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00148">148</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00037">37</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
-<a id="aaf980961b89f2b647a07135246b75088" name="aaf980961b89f2b647a07135246b75088"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf980961b89f2b647a07135246b75088">&#9670;&#160;</a></span>value_type</h2>
+<a id="abb00553737ab8fceab0e76a64cef0b3e" name="abb00553737ab8fceab0e76a64cef0b3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb00553737ab8fceab0e76a64cef0b3e">&#9670;&#160;</a></span>value_type</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef IT <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::value_type</td>
+          <td class="memname">typedef IT <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::value_type</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00145">145</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00034">34</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a415a449a3d8a04271260ecb380c3fa49" name="a415a449a3d8a04271260ecb380c3fa49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a415a449a3d8a04271260ecb380c3fa49">&#9670;&#160;</a></span>VectorIterator() <span class="overload">[1/3]</span></h2>
+<a id="aa8206aed5365f74cb2da59fa0e99f947" name="aa8206aed5365f74cb2da59fa0e99f947"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8206aed5365f74cb2da59fa0e99f947">&#9670;&#160;</a></span>VectorIterator() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::VectorIterator </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::VectorIterator </td>
           <td>(</td>
-          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramtype">Data&#160;</td>
           <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uoffset_t&#160;</td>
+          <td class="paramtype">SizeT&#160;</td>
           <td class="paramname"><em>i</em>&#160;</td>
         </tr>
         <tr>
@@ -284,30 +290,28 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00150">150</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  151</span>    : data_(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a> + <a class="code hl_variable" href="structflatbuffers_1_1_indirect_helper.html#a1361c89f203e090c49ece38ad98b9f3a">IndirectHelper&lt;T&gt;::element_stride</a> * i)</div>
-<div class="line"><span class="lineno">  152</span>  {</div>
-<div class="line"><span class="lineno">  153</span>  }</div>
-<div class="ttc" id="anamespaceflatbuffers_html_ae8b86e00c88ce4892cc7f5bfe7545e06"><div class="ttname"><a href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">flatbuffers::data</a></div><div class="ttdeci">const T * data(const std::vector&lt; T, Alloc &gt; &amp;v)</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l01145">flatbuffers.h:1145</a></div></div>
-<div class="ttc" id="astructflatbuffers_1_1_indirect_helper_html_a1361c89f203e090c49ece38ad98b9f3a"><div class="ttname"><a href="structflatbuffers_1_1_indirect_helper.html#a1361c89f203e090c49ece38ad98b9f3a">flatbuffers::IndirectHelper::element_stride</a></div><div class="ttdeci">static const size_t element_stride</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00112">flatbuffers.h:112</a></div></div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00041">41</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>: data_(<a class="code hl_function" href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">data</a> + <a class="code hl_variable" href="structflatbuffers_1_1_vector_iterator.html#accecdf4f3977e5fe8d16d6cdfb16dc2b">element_stride</a> * i) {}</div>
+<div class="ttc" id="anamespaceflatbuffers_html_ae8b86e00c88ce4892cc7f5bfe7545e06"><div class="ttname"><a href="namespaceflatbuffers.html#ae8b86e00c88ce4892cc7f5bfe7545e06">flatbuffers::data</a></div><div class="ttdeci">const T * data(const std::vector&lt; T, Alloc &gt; &amp;v)</div><div class="ttdef"><b>Definition</b> <a href="flatbuffer__builder_8h_source.html#l00052">flatbuffer_builder.h:52</a></div></div>
+<div class="ttc" id="astructflatbuffers_1_1_vector_iterator_html_accecdf4f3977e5fe8d16d6cdfb16dc2b"><div class="ttname"><a href="structflatbuffers_1_1_vector_iterator.html#accecdf4f3977e5fe8d16d6cdfb16dc2b">flatbuffers::VectorIterator::element_stride</a></div><div class="ttdeci">static const SizeT element_stride</div><div class="ttdef"><b>Definition</b> <a href="vector_8h_source.html#l00039">vector.h:39</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a7e10ae7b14f5f79bf0da6bbed7c17b5d" name="a7e10ae7b14f5f79bf0da6bbed7c17b5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e10ae7b14f5f79bf0da6bbed7c17b5d">&#9670;&#160;</a></span>VectorIterator() <span class="overload">[2/3]</span></h2>
+<a id="af687daa501a7f4630ee5a0b90aa950b4" name="af687daa501a7f4630ee5a0b90aa950b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af687daa501a7f4630ee5a0b90aa950b4">&#9670;&#160;</a></span>VectorIterator() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::VectorIterator </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::VectorIterator </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT, Data, SizeT &gt; &amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
@@ -319,24 +323,24 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00154">154</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  154</span>: data_(other.data_) {}</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00042">42</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   42</span>: data_(other.data_) {}</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a223f3bc61bdcff57f900ea8be7a66ca3" name="a223f3bc61bdcff57f900ea8be7a66ca3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a223f3bc61bdcff57f900ea8be7a66ca3">&#9670;&#160;</a></span>VectorIterator() <span class="overload">[3/3]</span></h2>
+<a id="a904e3d8e723216103022caaf27881e7d" name="a904e3d8e723216103022caaf27881e7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a904e3d8e723216103022caaf27881e7d">&#9670;&#160;</a></span>VectorIterator() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::VectorIterator </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::VectorIterator </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -349,29 +353,29 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00155">155</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  155</span>: data_(<span class="keyword">nullptr</span>) {}</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00043">43</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>: data_(<span class="keyword">nullptr</span>) {}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="flatbuffers_8h_source.html#l00204">flatbuffers::VectorIterator&lt; T, IT &gt;::operator+()</a>, and <a class="el" href="flatbuffers_8h_source.html#l00228">flatbuffers::VectorIterator&lt; T, IT &gt;::operator-()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="vector_8h_source.html#l00090">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::operator+()</a>, and <a class="el" href="vector_8h_source.html#l00110">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::operator-()</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0b6a5544a9c48f2409690de7bfff6a63" name="a0b6a5544a9c48f2409690de7bfff6a63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b6a5544a9c48f2409690de7bfff6a63">&#9670;&#160;</a></span>operator!=()</h2>
+<a id="aefcc65c60abed31c90e7522bdddadde8" name="aefcc65c60abed31c90e7522bdddadde8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefcc65c60abed31c90e7522bdddadde8">&#9670;&#160;</a></span>operator!=()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator!= </td>
+          <td class="memname">bool <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator!= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT, Data, SizeT &gt; &amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -383,24 +387,26 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00176">176</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  176</span>{ <span class="keywordflow">return</span> data_ != other.data_; }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00063">63</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   63</span>                                                     {</div>
+<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">return</span> data_ != other.data_;</div>
+<div class="line"><span class="lineno">   65</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a19fde04fa43b5967564883517ed10a82" name="a19fde04fa43b5967564883517ed10a82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19fde04fa43b5967564883517ed10a82">&#9670;&#160;</a></span>operator*()</h2>
+<a id="a275df23cc6f44f353f057a58b748ea29" name="a275df23cc6f44f353f057a58b748ea29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a275df23cc6f44f353f057a58b748ea29">&#9670;&#160;</a></span>operator*()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">IT <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator* </td>
+          <td class="memname">IT <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator* </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -413,29 +419,26 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00185">185</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  185</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="structflatbuffers_1_1_indirect_helper.html#af64c70657c1e44cb522c2fd02ec26f7d">IndirectHelper&lt;T&gt;::Read</a>(data_, 0); }</div>
-<div class="ttc" id="astructflatbuffers_1_1_indirect_helper_html_af64c70657c1e44cb522c2fd02ec26f7d"><div class="ttname"><a href="structflatbuffers_1_1_indirect_helper.html#af64c70657c1e44cb522c2fd02ec26f7d">flatbuffers::IndirectHelper::Read</a></div><div class="ttdeci">static return_type Read(const uint8_t *p, uoffset_t i)</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00113">flatbuffers.h:113</a></div></div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00073">73</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>{ <span class="keywordflow">return</span> IndirectHelper&lt;T&gt;::Read(data_, 0); }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l00113">flatbuffers::IndirectHelper&lt; T &gt;::Read()</a>.</p>
-
 </div>
 </div>
-<a id="aff7a7187d818290ee71274335f079191" name="aff7a7187d818290ee71274335f079191"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff7a7187d818290ee71274335f079191">&#9670;&#160;</a></span>operator+()</h2>
+<a id="aa64b15eead27876c02a8bca16ea91ef6" name="aa64b15eead27876c02a8bca16ea91ef6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa64b15eead27876c02a8bca16ea91ef6">&#9670;&#160;</a></span>operator+()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator+ </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator+ </td>
           <td>(</td>
-          <td class="paramtype">const uoffset_t &amp;&#160;</td>
+          <td class="paramtype">const SizeT &amp;&#160;</td>
           <td class="paramname"><em>offset</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -447,30 +450,30 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00204">204</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  205</span>  {</div>
-<div class="line"><span class="lineno">  206</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="structflatbuffers_1_1_vector_iterator.html#a223f3bc61bdcff57f900ea8be7a66ca3">VectorIterator</a>(data_ + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> * <a class="code hl_variable" href="structflatbuffers_1_1_indirect_helper.html#a1361c89f203e090c49ece38ad98b9f3a">IndirectHelper&lt;T&gt;::element_stride</a>, 0);</div>
-<div class="line"><span class="lineno">  207</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00090">90</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   90</span>                                                      {</div>
+<div class="line"><span class="lineno">   91</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="structflatbuffers_1_1_vector_iterator.html#a904e3d8e723216103022caaf27881e7d">VectorIterator</a>(data_ + <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> * <a class="code hl_variable" href="structflatbuffers_1_1_vector_iterator.html#accecdf4f3977e5fe8d16d6cdfb16dc2b">element_stride</a>, 0);</div>
+<div class="line"><span class="lineno">   92</span>  }</div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
-<div class="ttc" id="astructflatbuffers_1_1_vector_iterator_html_a223f3bc61bdcff57f900ea8be7a66ca3"><div class="ttname"><a href="structflatbuffers_1_1_vector_iterator.html#a223f3bc61bdcff57f900ea8be7a66ca3">flatbuffers::VectorIterator::VectorIterator</a></div><div class="ttdeci">VectorIterator()</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00155">flatbuffers.h:155</a></div></div>
+<div class="ttc" id="astructflatbuffers_1_1_vector_iterator_html_a904e3d8e723216103022caaf27881e7d"><div class="ttname"><a href="structflatbuffers_1_1_vector_iterator.html#a904e3d8e723216103022caaf27881e7d">flatbuffers::VectorIterator::VectorIterator</a></div><div class="ttdeci">VectorIterator()</div><div class="ttdef"><b>Definition</b> <a href="vector_8h_source.html#l00043">vector.h:43</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="flatbuffers_8h_source.html#l00155">flatbuffers::VectorIterator&lt; T, IT &gt;::VectorIterator()</a>.</p>
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00039">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::element_stride</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="vector_8h_source.html#l00043">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::VectorIterator()</a>.</p>
 
 </div>
 </div>
-<a id="a74e108c5ba136caa7e3403eaf041fa85" name="a74e108c5ba136caa7e3403eaf041fa85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74e108c5ba136caa7e3403eaf041fa85">&#9670;&#160;</a></span>operator++() <span class="overload">[1/2]</span></h2>
+<a id="a7369b31f4682fa1cac37d94afb04ff7b" name="a7369b31f4682fa1cac37d94afb04ff7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7369b31f4682fa1cac37d94afb04ff7b">&#9670;&#160;</a></span>operator++() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator++ </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator++ </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -483,27 +486,29 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00191">191</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  192</span>  {</div>
-<div class="line"><span class="lineno">  193</span>    data_ += <a class="code hl_variable" href="structflatbuffers_1_1_indirect_helper.html#a1361c89f203e090c49ece38ad98b9f3a">IndirectHelper&lt;T&gt;::element_stride</a>;</div>
-<div class="line"><span class="lineno">  194</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  195</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00079">79</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   79</span>                               {</div>
+<div class="line"><span class="lineno">   80</span>    data_ += <a class="code hl_variable" href="structflatbuffers_1_1_vector_iterator.html#accecdf4f3977e5fe8d16d6cdfb16dc2b">element_stride</a>;</div>
+<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">   82</span>  }</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00039">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::element_stride</a>.</p>
+
 </div>
 </div>
-<a id="a428a3df67f852563e25a040e41f3aef9" name="a428a3df67f852563e25a040e41f3aef9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a428a3df67f852563e25a040e41f3aef9">&#9670;&#160;</a></span>operator++() <span class="overload">[2/2]</span></h2>
+<a id="a1019a53e6999cf14e9de5099082106fb" name="a1019a53e6999cf14e9de5099082106fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1019a53e6999cf14e9de5099082106fb">&#9670;&#160;</a></span>operator++() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator++ </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator++ </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -517,30 +522,32 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00197">197</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  198</span>  {</div>
-<div class="line"><span class="lineno">  199</span>    <a class="code hl_function" href="structflatbuffers_1_1_vector_iterator.html#a223f3bc61bdcff57f900ea8be7a66ca3">VectorIterator</a> temp(data_, 0);</div>
-<div class="line"><span class="lineno">  200</span>    data_ += <a class="code hl_variable" href="structflatbuffers_1_1_indirect_helper.html#a1361c89f203e090c49ece38ad98b9f3a">IndirectHelper&lt;T&gt;::element_stride</a>;</div>
-<div class="line"><span class="lineno">  201</span>    <span class="keywordflow">return</span> temp;</div>
-<div class="line"><span class="lineno">  202</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00084">84</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   84</span>                                 {</div>
+<div class="line"><span class="lineno">   85</span>    <a class="code hl_function" href="structflatbuffers_1_1_vector_iterator.html#a904e3d8e723216103022caaf27881e7d">VectorIterator</a> temp(data_, 0);</div>
+<div class="line"><span class="lineno">   86</span>    data_ += <a class="code hl_variable" href="structflatbuffers_1_1_vector_iterator.html#accecdf4f3977e5fe8d16d6cdfb16dc2b">element_stride</a>;</div>
+<div class="line"><span class="lineno">   87</span>    <span class="keywordflow">return</span> temp;</div>
+<div class="line"><span class="lineno">   88</span>  }</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00039">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::element_stride</a>.</p>
+
 </div>
 </div>
-<a id="a71dfca68d39c37ddb71275dea729da68" name="a71dfca68d39c37ddb71275dea729da68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71dfca68d39c37ddb71275dea729da68">&#9670;&#160;</a></span>operator+=()</h2>
+<a id="aa7e523aeb7668605d4a3c57686eecff1" name="aa7e523aeb7668605d4a3c57686eecff1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7e523aeb7668605d4a3c57686eecff1">&#9670;&#160;</a></span>operator+=()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator+= </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator+= </td>
           <td>(</td>
-          <td class="paramtype">const uoffset_t &amp;&#160;</td>
+          <td class="paramtype">const SizeT &amp;&#160;</td>
           <td class="paramname"><em>offset</em></td><td>)</td>
           <td></td>
         </tr>
@@ -552,31 +559,31 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00209">209</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  210</span>  {</div>
-<div class="line"><span class="lineno">  211</span>    data_ += <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> * <a class="code hl_variable" href="structflatbuffers_1_1_indirect_helper.html#a1361c89f203e090c49ece38ad98b9f3a">IndirectHelper&lt;T&gt;::element_stride</a>;</div>
-<div class="line"><span class="lineno">  212</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  213</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00094">94</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   94</span>                                                  {</div>
+<div class="line"><span class="lineno">   95</span>    data_ += <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> * <a class="code hl_variable" href="structflatbuffers_1_1_vector_iterator.html#accecdf4f3977e5fe8d16d6cdfb16dc2b">element_stride</a>;</div>
+<div class="line"><span class="lineno">   96</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">   97</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00039">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::element_stride</a>, and <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>
 
 </div>
 </div>
-<a id="aa286857279ca9662fed989c0c3efe0d3" name="aa286857279ca9662fed989c0c3efe0d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa286857279ca9662fed989c0c3efe0d3">&#9670;&#160;</a></span>operator-() <span class="overload">[1/2]</span></h2>
+<a id="a9122c73f1a56762ed8dcdf8b3732dbe0" name="a9122c73f1a56762ed8dcdf8b3732dbe0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9122c73f1a56762ed8dcdf8b3732dbe0">&#9670;&#160;</a></span>operator-() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator- </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator- </td>
           <td>(</td>
-          <td class="paramtype">const uoffset_t &amp;&#160;</td>
+          <td class="paramtype">const SizeT &amp;&#160;</td>
           <td class="paramname"><em>offset</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -588,30 +595,30 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00228">228</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  229</span>  {</div>
-<div class="line"><span class="lineno">  230</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="structflatbuffers_1_1_vector_iterator.html#a223f3bc61bdcff57f900ea8be7a66ca3">VectorIterator</a>(data_ - <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> * <a class="code hl_variable" href="structflatbuffers_1_1_indirect_helper.html#a1361c89f203e090c49ece38ad98b9f3a">IndirectHelper&lt;T&gt;::element_stride</a>, 0);</div>
-<div class="line"><span class="lineno">  231</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00110">110</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  110</span>                                                      {</div>
+<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="structflatbuffers_1_1_vector_iterator.html#a904e3d8e723216103022caaf27881e7d">VectorIterator</a>(data_ - <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> * <a class="code hl_variable" href="structflatbuffers_1_1_vector_iterator.html#accecdf4f3977e5fe8d16d6cdfb16dc2b">element_stride</a>, 0);</div>
+<div class="line"><span class="lineno">  112</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="flatbuffers_8h_source.html#l00155">flatbuffers::VectorIterator&lt; T, IT &gt;::VectorIterator()</a>.</p>
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00039">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::element_stride</a>, <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="vector_8h_source.html#l00043">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::VectorIterator()</a>.</p>
 
 </div>
 </div>
-<a id="a85a3748c7f97adba199d7421d9962941" name="a85a3748c7f97adba199d7421d9962941"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85a3748c7f97adba199d7421d9962941">&#9670;&#160;</a></span>operator-() <span class="overload">[2/2]</span></h2>
+<a id="ab14d855abeae019591307002f5be2bd9" name="ab14d855abeae019591307002f5be2bd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab14d855abeae019591307002f5be2bd9">&#9670;&#160;</a></span>operator-() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a02c756cdd5ec038a978066c5761dd429">difference_type</a> <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator- </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html#a47ba6bab75e83b1f5a61fca1af9f51d5">difference_type</a> <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator- </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT, Data, SizeT &gt; &amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -623,26 +630,28 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00178">178</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  179</span>  {</div>
-<div class="line"><span class="lineno">  180</span>    <span class="keywordflow">return</span> (data_ - other.data_) / <a class="code hl_variable" href="structflatbuffers_1_1_indirect_helper.html#a1361c89f203e090c49ece38ad98b9f3a">IndirectHelper&lt;T&gt;::element_stride</a>;</div>
-<div class="line"><span class="lineno">  181</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00067">67</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   67</span>                                                               {</div>
+<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">return</span> (data_ - other.data_) / <a class="code hl_variable" href="structflatbuffers_1_1_vector_iterator.html#accecdf4f3977e5fe8d16d6cdfb16dc2b">element_stride</a>;</div>
+<div class="line"><span class="lineno">   69</span>  }</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00039">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::element_stride</a>.</p>
+
 </div>
 </div>
-<a id="a25853a8a3636006bb30c7938295bc013" name="a25853a8a3636006bb30c7938295bc013"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25853a8a3636006bb30c7938295bc013">&#9670;&#160;</a></span>operator--() <span class="overload">[1/2]</span></h2>
+<a id="a801547b21903472e4372e5cb884506c1" name="a801547b21903472e4372e5cb884506c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a801547b21903472e4372e5cb884506c1">&#9670;&#160;</a></span>operator--() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator-- </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator-- </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -655,27 +664,29 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00215">215</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  216</span>  {</div>
-<div class="line"><span class="lineno">  217</span>    data_ -= <a class="code hl_variable" href="structflatbuffers_1_1_indirect_helper.html#a1361c89f203e090c49ece38ad98b9f3a">IndirectHelper&lt;T&gt;::element_stride</a>;</div>
-<div class="line"><span class="lineno">  218</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  219</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00099">99</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   99</span>                               {</div>
+<div class="line"><span class="lineno">  100</span>    data_ -= <a class="code hl_variable" href="structflatbuffers_1_1_vector_iterator.html#accecdf4f3977e5fe8d16d6cdfb16dc2b">element_stride</a>;</div>
+<div class="line"><span class="lineno">  101</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">  102</span>  }</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00039">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::element_stride</a>.</p>
+
 </div>
 </div>
-<a id="a105a4e408b45c324f2ad445f5145bf51" name="a105a4e408b45c324f2ad445f5145bf51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a105a4e408b45c324f2ad445f5145bf51">&#9670;&#160;</a></span>operator--() <span class="overload">[2/2]</span></h2>
+<a id="a95c129583c1d1c0fc734337b9c7aea3e" name="a95c129583c1d1c0fc734337b9c7aea3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95c129583c1d1c0fc734337b9c7aea3e">&#9670;&#160;</a></span>operator--() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator-- </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator-- </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -689,30 +700,32 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00221">221</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  222</span>  {</div>
-<div class="line"><span class="lineno">  223</span>    <a class="code hl_function" href="structflatbuffers_1_1_vector_iterator.html#a223f3bc61bdcff57f900ea8be7a66ca3">VectorIterator</a> temp(data_, 0);</div>
-<div class="line"><span class="lineno">  224</span>    data_ -= <a class="code hl_variable" href="structflatbuffers_1_1_indirect_helper.html#a1361c89f203e090c49ece38ad98b9f3a">IndirectHelper&lt;T&gt;::element_stride</a>;</div>
-<div class="line"><span class="lineno">  225</span>    <span class="keywordflow">return</span> temp;</div>
-<div class="line"><span class="lineno">  226</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00104">104</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span>                                 {</div>
+<div class="line"><span class="lineno">  105</span>    <a class="code hl_function" href="structflatbuffers_1_1_vector_iterator.html#a904e3d8e723216103022caaf27881e7d">VectorIterator</a> temp(data_, 0);</div>
+<div class="line"><span class="lineno">  106</span>    data_ -= <a class="code hl_variable" href="structflatbuffers_1_1_vector_iterator.html#accecdf4f3977e5fe8d16d6cdfb16dc2b">element_stride</a>;</div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">return</span> temp;</div>
+<div class="line"><span class="lineno">  108</span>  }</div>
 </div><!-- fragment -->
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00039">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::element_stride</a>.</p>
+
 </div>
 </div>
-<a id="a1f9afb31ce4c1cef9de33d471d055eb4" name="a1f9afb31ce4c1cef9de33d471d055eb4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f9afb31ce4c1cef9de33d471d055eb4">&#9670;&#160;</a></span>operator-=()</h2>
+<a id="a3f5a42a98619a248926e56db3962fcfd" name="a3f5a42a98619a248926e56db3962fcfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f5a42a98619a248926e56db3962fcfd">&#9670;&#160;</a></span>operator-=()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator-= </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator-= </td>
           <td>(</td>
-          <td class="paramtype">const uoffset_t &amp;&#160;</td>
+          <td class="paramtype">const SizeT &amp;&#160;</td>
           <td class="paramname"><em>offset</em></td><td>)</td>
           <td></td>
         </tr>
@@ -724,29 +737,29 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00233">233</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  234</span>  {</div>
-<div class="line"><span class="lineno">  235</span>    data_ -= <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> * <a class="code hl_variable" href="structflatbuffers_1_1_indirect_helper.html#a1361c89f203e090c49ece38ad98b9f3a">IndirectHelper&lt;T&gt;::element_stride</a>;</div>
-<div class="line"><span class="lineno">  236</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  237</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00114">114</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  114</span>                                                  {</div>
+<div class="line"><span class="lineno">  115</span>    data_ -= <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> * <a class="code hl_variable" href="structflatbuffers_1_1_vector_iterator.html#accecdf4f3977e5fe8d16d6cdfb16dc2b">element_stride</a>;</div>
+<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">  117</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00039">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::element_stride</a>, and <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>
 
 </div>
 </div>
-<a id="a78eb60f8754af75c1b2b5e0d8710ae6c" name="a78eb60f8754af75c1b2b5e0d8710ae6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78eb60f8754af75c1b2b5e0d8710ae6c">&#9670;&#160;</a></span>operator-&gt;()</h2>
+<a id="a91f407578fa4bec30465796a399c3fcf" name="a91f407578fa4bec30465796a399c3fcf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91f407578fa4bec30465796a399c3fcf">&#9670;&#160;</a></span>operator-&gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">IT <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator-&gt; </td>
+          <td class="memname">IT <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator-&gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -759,28 +772,26 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00189">189</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  189</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="structflatbuffers_1_1_indirect_helper.html#af64c70657c1e44cb522c2fd02ec26f7d">IndirectHelper&lt;T&gt;::Read</a>(data_, 0); }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00077">77</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   77</span>{ <span class="keywordflow">return</span> IndirectHelper&lt;T&gt;::Read(data_, 0); }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l00113">flatbuffers::IndirectHelper&lt; T &gt;::Read()</a>.</p>
-
 </div>
 </div>
-<a id="a3f537a771b03e39218f7c77df9a243c8" name="a3f537a771b03e39218f7c77df9a243c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f537a771b03e39218f7c77df9a243c8">&#9670;&#160;</a></span>operator&lt;()</h2>
+<a id="a0f311d0e8c0119fe2d24b3b82510e1f2" name="a0f311d0e8c0119fe2d24b3b82510e1f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f311d0e8c0119fe2d24b3b82510e1f2">&#9670;&#160;</a></span>operator&lt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator&lt; </td>
+          <td class="memname">bool <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator&lt; </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT, Data, SizeT &gt; &amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -792,26 +803,28 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00174">174</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  174</span>{ <span class="keywordflow">return</span> data_ &lt; other.data_; }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00059">59</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>                                                    {</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> data_ &lt; other.data_;</div>
+<div class="line"><span class="lineno">   61</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a9331dad4f6c59c90a4f76b2b58cef41a" name="a9331dad4f6c59c90a4f76b2b58cef41a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9331dad4f6c59c90a4f76b2b58cef41a">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+<a id="af6d927db213bc315e79b81d494a800f4" name="af6d927db213bc315e79b81d494a800f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6d927db213bc315e79b81d494a800f4">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator= </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT, Data, SizeT &gt; &amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
@@ -823,29 +836,29 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00157">157</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  158</span>  {</div>
-<div class="line"><span class="lineno">  159</span>    data_ = other.data_;</div>
-<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  161</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00045">45</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>                                                         {</div>
+<div class="line"><span class="lineno">   46</span>    data_ = other.data_;</div>
+<div class="line"><span class="lineno">   47</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">   48</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="af405c717b176d1888379510a8e410c4f" name="af405c717b176d1888379510a8e410c4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af405c717b176d1888379510a8e410c4f">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+<a id="aeb0f07a9b9f690d2626ea33e07ab6d98" name="aeb0f07a9b9f690d2626ea33e07ab6d98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb0f07a9b9f690d2626ea33e07ab6d98">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator= </td>
+          <td class="memname"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a> &amp; <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator= </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT, Data, SizeT &gt; &amp;&amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
           <td></td>
         </tr>
@@ -857,29 +870,29 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00164">164</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  165</span>  {</div>
-<div class="line"><span class="lineno">  166</span>    data_ = other.data_;</div>
-<div class="line"><span class="lineno">  167</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><span class="lineno">  168</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00050">50</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   50</span>                                                    {</div>
+<div class="line"><span class="lineno">   51</span>    data_ = other.data_;</div>
+<div class="line"><span class="lineno">   52</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><span class="lineno">   53</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="ab8f96b2057c464d22dd03286ee8af5c0" name="ab8f96b2057c464d22dd03286ee8af5c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8f96b2057c464d22dd03286ee8af5c0">&#9670;&#160;</a></span>operator==()</h2>
+<a id="ab52e99da5af3ec95f49a94fc7de4a7e4" name="ab52e99da5af3ec95f49a94fc7de4a7e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab52e99da5af3ec95f49a94fc7de4a7e4">&#9670;&#160;</a></span>operator==()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename IT &gt; </div>
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT &gt;::operator== </td>
+          <td class="memname">bool <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::operator== </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT &gt; &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structflatbuffers_1_1_vector_iterator.html">VectorIterator</a>&lt; T, IT, Data, SizeT &gt; &amp;&#160;</td>
           <td class="paramname"><em>other</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -891,13 +904,44 @@ template&lt;typename T , typename IT &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00172">172</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  172</span>{ <span class="keywordflow">return</span> data_ == other.data_; }</div>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00055">55</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   55</span>                                                     {</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">return</span> data_ == other.data_;</div>
+<div class="line"><span class="lineno">   57</span>  }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<h2 class="groupheader">Field Documentation</h2>
+<a id="accecdf4f3977e5fe8d16d6cdfb16dc2b" name="accecdf4f3977e5fe8d16d6cdfb16dc2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accecdf4f3977e5fe8d16d6cdfb16dc2b">&#9670;&#160;</a></span>element_stride</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename IT , typename Data  = uint8_t *, typename SizeT  = uoffset_t&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const SizeT <a class="el" href="structflatbuffers_1_1_vector_iterator.html">flatbuffers::VectorIterator</a>&lt; T, IT, Data, SizeT &gt;::element_stride = IndirectHelper&lt;T&gt;::element_stride</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00039">39</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="vector_8h_source.html#l00090">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::operator+()</a>, <a class="el" href="vector_8h_source.html#l00079">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::operator++()</a>, <a class="el" href="vector_8h_source.html#l00084">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::operator++()</a>, <a class="el" href="vector_8h_source.html#l00094">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::operator+=()</a>, <a class="el" href="vector_8h_source.html#l00110">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::operator-()</a>, <a class="el" href="vector_8h_source.html#l00067">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::operator-()</a>, <a class="el" href="vector_8h_source.html#l00099">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::operator--()</a>, <a class="el" href="vector_8h_source.html#l00104">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::operator--()</a>, and <a class="el" href="vector_8h_source.html#l00114">flatbuffers::VectorIterator&lt; T, IT, Data, SizeT &gt;::operator-=()</a>.</p>
+
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>onert-micro/externals/flatbuffers/<a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a></li>
+<li>onert-micro/externals/flatbuffers/<a class="el" href="vector_8h_source.html">vector.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

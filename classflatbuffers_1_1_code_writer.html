@@ -120,7 +120,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00042">42</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00040">40</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0bc0cdcb1970edf9cf2b84e18a088651" name="a0bc0cdcb1970edf9cf2b84e18a088651"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0bc0cdcb1970edf9cf2b84e18a088651">&#9670;&#160;</a></span>CodeWriter()</h2>
@@ -146,10 +146,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00045">45</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>                                          : pad_(pad), cur_ident_lvl_(0), ignore_ident_(<span class="keyword">false</span>)</div>
-<div class="line"><span class="lineno">   46</span>  {</div>
-<div class="line"><span class="lineno">   47</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00042">42</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>      : pad_(pad), cur_ident_lvl_(0), ignore_ident_(<span class="keyword">false</span>) {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -177,11 +175,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00050">50</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   51</span>  {</div>
-<div class="line"><span class="lineno">   52</span>    stream_.str(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><span class="lineno">   53</span>    stream_.clear();</div>
-<div class="line"><span class="lineno">   54</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00046">46</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   46</span>               {</div>
+<div class="line"><span class="lineno">   47</span>    stream_.str(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><span class="lineno">   48</span>    stream_.clear();</div>
+<div class="line"><span class="lineno">   49</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -208,11 +206,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00079">79</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   80</span>  {</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">if</span> (cur_ident_lvl_)</div>
-<div class="line"><span class="lineno">   82</span>      cur_ident_lvl_--;</div>
-<div class="line"><span class="lineno">   83</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00075">75</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   75</span>                             {</div>
+<div class="line"><span class="lineno">   76</span>    <span class="keywordflow">if</span> (cur_ident_lvl_) cur_ident_lvl_--;</div>
+<div class="line"><span class="lineno">   77</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -240,11 +237,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00061">61</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   62</span>  {</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keyword">const</span> <span class="keyword">auto</span> it = value_map_.find(key);</div>
-<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">return</span> it == value_map_.end() ? <span class="stringliteral">&quot;&quot;</span> : it-&gt;second;</div>
-<div class="line"><span class="lineno">   65</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00058">58</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   58</span>                                                 {</div>
+<div class="line"><span class="lineno">   59</span>    <span class="keyword">const</span> <span class="keyword">auto</span> it = value_map_.find(key);</div>
+<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">return</span> it == value_map_.end() ? <span class="stringliteral">&quot;&quot;</span> : it-&gt;second;</div>
+<div class="line"><span class="lineno">   61</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -271,8 +268,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00077">77</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   77</span>{ cur_ident_lvl_++; }</div>
+<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00073">73</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   73</span>{ cur_ident_lvl_++; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -318,8 +315,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00085">85</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>{ pad_ = padding; }</div>
+<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00079">79</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   79</span>{ pad_ = padding; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -357,8 +354,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00059">59</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{ value_map_[key] = value; }</div>
+<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00054">54</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   54</span>                                                              {</div>
+<div class="line"><span class="lineno">   55</span>    value_map_[key] = value;</div>
+<div class="line"><span class="lineno">   56</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -385,8 +384,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00074">74</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   74</span>{ <span class="keywordflow">return</span> stream_.str(); }</div>
+<p class="definition">Definition at line <a class="el" href="code__generators_8h_source.html#l00070">70</a> of file <a class="el" href="code__generators_8h_source.html">code_generators.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>{ <span class="keywordflow">return</span> stream_.str(); }</div>
 </div><!-- fragment -->
 </div>
 </div>

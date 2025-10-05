@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('classflatbuffers_1_1_allocator.html','
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html">allocator.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -116,7 +116,7 @@ Protected Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00677">677</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html#l00026">26</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html">allocator.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a96abc6f31fe94e932d7f4daac10388b9" name="a96abc6f31fe94e932d7f4daac10388b9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a96abc6f31fe94e932d7f4daac10388b9">&#9670;&#160;</a></span>~Allocator()</h2>
@@ -141,8 +141,8 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00680">680</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  680</span>{}</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html#l00028">28</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html">allocator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   28</span>{}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -173,7 +173,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classflatbuffers_1_1_default_allocator.html#aeba7d4a7c546d7725b707ecbeaf68ebf">flatbuffers::DefaultAllocator</a>, and <a class="el" href="classflatbuffers_1_1grpc_1_1_slice_allocator.html#a9119d6a21da5128ffd7408ce0caa1d46">flatbuffers::grpc::SliceAllocator</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flatbuffers_8h_source.html#l00693">reallocate_downward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html#l00041">reallocate_downward()</a>.</p>
 
 </div>
 </div>
@@ -213,7 +213,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classflatbuffers_1_1grpc_1_1_slice_allocator.html#a3958ea07b2293894ff62439aadbf42d8">flatbuffers::grpc::SliceAllocator</a>, and <a class="el" href="classflatbuffers_1_1_default_allocator.html#acfc866696fe9db8e74d9529d8fc70aac">flatbuffers::DefaultAllocator</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flatbuffers_8h_source.html#l00693">reallocate_downward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html#l00041">reallocate_downward()</a>.</p>
 
 </div>
 </div>
@@ -275,13 +275,14 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00708">708</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  710</span>  {</div>
-<div class="line"><span class="lineno">  711</span>    memcpy(new_p + new_size - in_use_back, old_p + old_size - in_use_back, in_use_back);</div>
-<div class="line"><span class="lineno">  712</span>    memcpy(new_p, old_p, in_use_front);</div>
-<div class="line"><span class="lineno">  713</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html#l00057">57</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html">allocator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   59</span>                                            {</div>
+<div class="line"><span class="lineno">   60</span>    memcpy(new_p + new_size - in_use_back, old_p + old_size - in_use_back,</div>
+<div class="line"><span class="lineno">   61</span>           in_use_back);</div>
+<div class="line"><span class="lineno">   62</span>    memcpy(new_p, old_p, in_use_front);</div>
+<div class="line"><span class="lineno">   63</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="flatbuffers_8h_source.html#l00693">reallocate_downward()</a>, and <a class="el" href="grpc_8h_source.html#l00132">flatbuffers::grpc::SliceAllocator::reallocate_downward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html#l00041">reallocate_downward()</a>, and <a class="el" href="grpc_8h_source.html#l00112">flatbuffers::grpc::SliceAllocator::reallocate_downward()</a>.</p>
 
 </div>
 </div>
@@ -339,27 +340,28 @@ Protected Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classflatbuffers_1_1grpc_1_1_slice_allocator.html#abe806248ee5639e54f0fff5dcd73df45">flatbuffers::grpc::SliceAllocator</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="flatbuffers_8h_source.html#l00693">693</a> of file <a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  695</span>  {</div>
-<div class="line"><span class="lineno">  696</span>    <a class="code hl_define" href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a>(new_size &gt; old_size); <span class="comment">// vector_downward only grows</span></div>
-<div class="line"><span class="lineno">  697</span>    uint8_t *new_p = <a class="code hl_function" href="classflatbuffers_1_1_allocator.html#a8fde2800ed6bfcc35472c1219862573e">allocate</a>(new_size);</div>
-<div class="line"><span class="lineno">  698</span>    <a class="code hl_function" href="classflatbuffers_1_1_allocator.html#afa22a0382f1886795440785d7e3bb478">memcpy_downward</a>(old_p, old_size, new_p, new_size, in_use_back, in_use_front);</div>
-<div class="line"><span class="lineno">  699</span>    <a class="code hl_function" href="classflatbuffers_1_1_allocator.html#ab72efb51f31b9238373f5922ac282a89">deallocate</a>(old_p, old_size);</div>
-<div class="line"><span class="lineno">  700</span>    <span class="keywordflow">return</span> new_p;</div>
-<div class="line"><span class="lineno">  701</span>  }</div>
-<div class="ttc" id="abase_8h_html_ab2116a3957cb3c19761609ea7fd796fe"><div class="ttname"><a href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a></div><div class="ttdeci">#define FLATBUFFERS_ASSERT</div><div class="ttdef"><b>Definition</b> <a href="base_8h_source.html#l00037">base.h:37</a></div></div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html#l00041">41</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html">allocator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>                                                            {</div>
+<div class="line"><span class="lineno">   44</span>    <a class="code hl_define" href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a>(new_size &gt; old_size);  <span class="comment">// vector_downward only grows</span></div>
+<div class="line"><span class="lineno">   45</span>    uint8_t *new_p = <a class="code hl_function" href="classflatbuffers_1_1_allocator.html#a8fde2800ed6bfcc35472c1219862573e">allocate</a>(new_size);</div>
+<div class="line"><span class="lineno">   46</span>    <a class="code hl_function" href="classflatbuffers_1_1_allocator.html#afa22a0382f1886795440785d7e3bb478">memcpy_downward</a>(old_p, old_size, new_p, new_size, in_use_back,</div>
+<div class="line"><span class="lineno">   47</span>                    in_use_front);</div>
+<div class="line"><span class="lineno">   48</span>    <a class="code hl_function" href="classflatbuffers_1_1_allocator.html#ab72efb51f31b9238373f5922ac282a89">deallocate</a>(old_p, old_size);</div>
+<div class="line"><span class="lineno">   49</span>    <span class="keywordflow">return</span> new_p;</div>
+<div class="line"><span class="lineno">   50</span>  }</div>
+<div class="ttc" id="abase_8h_html_ab2116a3957cb3c19761609ea7fd796fe"><div class="ttname"><a href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a></div><div class="ttdeci">#define FLATBUFFERS_ASSERT</div><div class="ttdef"><b>Definition</b> <a href="base_8h_source.html#l00021">base.h:21</a></div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_allocator_html_a8fde2800ed6bfcc35472c1219862573e"><div class="ttname"><a href="classflatbuffers_1_1_allocator.html#a8fde2800ed6bfcc35472c1219862573e">flatbuffers::Allocator::allocate</a></div><div class="ttdeci">virtual uint8_t * allocate(size_t size)=0</div></div>
 <div class="ttc" id="aclassflatbuffers_1_1_allocator_html_ab72efb51f31b9238373f5922ac282a89"><div class="ttname"><a href="classflatbuffers_1_1_allocator.html#ab72efb51f31b9238373f5922ac282a89">flatbuffers::Allocator::deallocate</a></div><div class="ttdeci">virtual void deallocate(uint8_t *p, size_t size)=0</div></div>
-<div class="ttc" id="aclassflatbuffers_1_1_allocator_html_afa22a0382f1886795440785d7e3bb478"><div class="ttname"><a href="classflatbuffers_1_1_allocator.html#afa22a0382f1886795440785d7e3bb478">flatbuffers::Allocator::memcpy_downward</a></div><div class="ttdeci">void memcpy_downward(uint8_t *old_p, size_t old_size, uint8_t *new_p, size_t new_size, size_t in_use_back, size_t in_use_front)</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00708">flatbuffers.h:708</a></div></div>
+<div class="ttc" id="aclassflatbuffers_1_1_allocator_html_afa22a0382f1886795440785d7e3bb478"><div class="ttname"><a href="classflatbuffers_1_1_allocator.html#afa22a0382f1886795440785d7e3bb478">flatbuffers::Allocator::memcpy_downward</a></div><div class="ttdeci">void memcpy_downward(uint8_t *old_p, size_t old_size, uint8_t *new_p, size_t new_size, size_t in_use_back, size_t in_use_front)</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html#l00057">allocator.h:57</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="classflatbuffers_1_1_allocator.html#a8fde2800ed6bfcc35472c1219862573e">allocate()</a>, <a class="el" href="classflatbuffers_1_1_allocator.html#ab72efb51f31b9238373f5922ac282a89">deallocate()</a>, <a class="el" href="base_8h_source.html#l00037">FLATBUFFERS_ASSERT</a>, and <a class="el" href="flatbuffers_8h_source.html#l00708">memcpy_downward()</a>.</p>
+<p class="reference">References <a class="el" href="classflatbuffers_1_1_allocator.html#a8fde2800ed6bfcc35472c1219862573e">allocate()</a>, <a class="el" href="classflatbuffers_1_1_allocator.html#ab72efb51f31b9238373f5922ac282a89">deallocate()</a>, <a class="el" href="base_8h_source.html#l00021">FLATBUFFERS_ASSERT</a>, and <a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html#l00057">memcpy_downward()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flatbuffers_8h_source.html#l00744">flatbuffers::ReallocateDownward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="default__allocator_8h_source.html#l00053">flatbuffers::ReallocateDownward()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>onert-micro/externals/flatbuffers/<a class="el" href="flatbuffers_8h_source.html">flatbuffers.h</a></li>
+<li>onert-micro/externals/flatbuffers/<a class="el" href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html">allocator.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -226,7 +226,7 @@ var searchData=
   ['strideinfo_223',['StrideInfo',['../classnnop_1_1_stride_info.html',1,'nnop']]],
   ['strides_224',['Strides',['../structndarray_1_1_strides.html',1,'ndarray']]],
   ['string_225',['string',['../structflatbuffers_1_1_string.html',1,'flatbuffers::String'],['../classflexbuffers_1_1_string.html',1,'flexbuffers::String']]],
-  ['stringoffsetcompare_226',['StringOffsetCompare',['../structflatbuffers_1_1_flat_buffer_builder_1_1_string_offset_compare.html',1,'flatbuffers::FlatBufferBuilder']]],
+  ['stringoffsetcompare_226',['StringOffsetCompare',['../structflatbuffers_1_1_flat_buffer_builder_impl_1_1_string_offset_compare.html',1,'flatbuffers::FlatBufferBuilderImpl']]],
   ['structdef_227',['StructDef',['../structflatbuffers_1_1_struct_def.html',1,'flatbuffers']]],
   ['sub_228',['sub',['../classcoco_1_1_sub.html',1,'coco::Sub'],['../classluci__interpreter_1_1kernels_1_1_sub.html',1,'luci_interpreter::kernels::Sub']]],
   ['subcanonicalizer_229',['SubCanonicalizer',['../classmoco_1_1tf_1_1_sub_canonicalizer.html',1,'moco::tf']]],

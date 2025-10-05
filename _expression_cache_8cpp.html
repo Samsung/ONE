@@ -313,7 +313,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  200</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">not</a> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">same_common_attributes</a>(x.op, y.op))</div>
 <div class="line"><span class="lineno">  201</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><span class="lineno">  202</span> </div>
-<div class="line"><span class="lineno">  203</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(x.op-&gt;opcode() == y.op-&gt;opcode()); <span class="comment">// FIX_ME_UNLESS</span></div>
+<div class="line"><span class="lineno">  203</span>  assert(x.op-&gt;opcode() == y.op-&gt;opcode()); <span class="comment">// FIX_ME_UNLESS</span></div>
 <div class="line"><span class="lineno">  204</span> </div>
 <div class="line"><span class="lineno">  205</span>  <span class="comment">// Check op-specific attributes</span></div>
 <div class="line"><span class="lineno">  206</span>  <span class="keywordflow">switch</span> (x.op-&gt;opcode())</div>

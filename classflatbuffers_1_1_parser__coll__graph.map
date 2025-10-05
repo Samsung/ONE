@@ -1,47 +1,52 @@
 <map id="flatbuffers::Parser" name="flatbuffers::Parser">
-<area shape="rect" id="Node000001" title=" " alt="" coords="1428,252,1550,278"/>
-<area shape="rect" id="Node000002" href="$structflatbuffers_1_1_parser_state.html" title=" " alt="" coords="1118,5,1270,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1286,11,1348,21,1379,32,1406,49,1428,72,1447,98,1471,156,1484,211,1490,251,1484,252,1479,212,1466,158,1442,101,1424,75,1403,54,1376,37,1347,26,1285,16"/>
-<area shape="rect" id="Node000003" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="916,50,1075,91"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1090,67,1176,70,1268,77,1349,90,1382,99,1406,111,1424,125,1439,143,1463,182,1479,221,1487,251,1482,252,1474,222,1458,184,1435,146,1420,129,1403,115,1380,104,1348,95,1267,82,1176,75,1090,73"/>
-<area shape="rect" id="Node000004" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="5,196,194,222"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="127,184,168,156,217,133,311,105,409,85,508,71,605,63,781,58,916,62,916,67,781,63,605,68,508,77,410,90,312,111,219,138,170,161,130,188"/>
-<area shape="rect" id="Node000005" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="566,111,726,152"/>
-<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="157,189,217,174,310,159,404,147,565,133,566,139,405,153,311,164,218,179,158,194"/>
-<area shape="rect" id="Node000006" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="567,162,725,203"/>
-<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="209,201,566,183,567,189,209,206"/>
-<area shape="rect" id="Node000007" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="911,214,1080,255"/>
-<area shape="poly" id="edge9_Node000007_Node000004" title=" " alt="" coords="210,209,911,229,910,234,210,215"/>
-<area shape="rect" id="Node000014" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="384,337,542,377"/>
-<area shape="poly" id="edge17_Node000014_Node000004" title=" " alt="" coords="139,227,219,265,313,303,399,333,397,338,311,308,217,270,137,232"/>
-<area shape="rect" id="Node000015" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="567,407,725,448"/>
-<area shape="poly" id="edge20_Node000015_Node000004" title=" " alt="" coords="119,233,160,288,188,316,219,340,261,363,306,382,399,407,489,421,567,426,566,431,489,426,398,412,304,387,259,368,216,345,184,320,156,291,115,237"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="742,138,987,162,1284,194,1345,198,1372,201,1405,210,1442,229,1472,249,1469,254,1440,233,1403,215,1371,206,1345,203,1283,199,987,167,742,143"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="741,183,987,197,1284,220,1345,225,1405,236,1451,249,1450,254,1404,241,1344,230,1283,225,986,202,741,189"/>
-<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="1096,238,1428,258,1428,264,1095,243"/>
-<area shape="rect" id="Node000008" href="$structflatbuffers_1_1_namespace.html" title=" " alt="" coords="386,284,540,310"/>
-<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="555,296,793,298,1080,294,1271,282,1428,268,1428,273,1271,287,1080,299,793,304,555,302"/>
-<area shape="rect" id="Node000013" href="$structflatbuffers_1_1_definition.html" title=" " alt="" coords="750,392,887,418"/>
-<area shape="poly" id="edge18_Node000013_Node000008" title=" " alt="" coords="528,312,567,321,612,328,649,330,685,336,728,353,740,365,752,377,775,389,773,394,749,382,737,369,725,358,683,341,648,336,612,334,565,326,526,317"/>
-<area shape="rect" id="Node000009" href="$classflatbuffers_1_1_flat_buffer_builder.html" title="Helper class to hold data needed in creation of a FlatBuffer. To serialize data, you typically call o..." alt="" coords="1104,333,1283,359"/>
-<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="1298,347,1352,341,1403,327,1444,303,1474,276,1477,280,1447,307,1405,332,1353,346,1299,352"/>
-<area shape="rect" id="Node000010" href="$classflatbuffers_1_1vector__downward.html" title=" " alt="" coords="759,327,878,368"/>
-<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="894,345,1104,344,1104,349,894,350"/>
-<area shape="rect" id="Node000011" href="$classflexbuffers_1_1_reference.html" title=" " alt="" coords="1122,383,1266,408"/>
-<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="1281,396,1343,389,1374,380,1403,367,1429,347,1451,323,1479,277,1484,280,1455,326,1433,351,1406,371,1376,385,1344,394,1281,402"/>
-<area shape="rect" id="Node000012" href="$structflatbuffers_1_1_struct_def.html" title=" " alt="" coords="1125,432,1263,458"/>
-<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="1278,448,1343,440,1374,430,1403,415,1435,384,1458,345,1473,307,1482,277,1487,279,1479,309,1463,347,1439,387,1406,419,1376,435,1344,446,1279,453"/>
-<area shape="poly" id="edge15_Node000012_Node000013" title=" " alt="" coords="903,411,1124,435,1124,440,902,416"/>
-<area shape="poly" id="edge16_Node000013_Node000014" title=" " alt="" coords="558,367,750,393,749,398,557,372"/>
-<area shape="poly" id="edge19_Node000012_Node000015" title=" " alt="" coords="741,442,751,443,852,448,954,450,1124,446,1124,451,954,455,852,454,750,448,741,447"/>
-<area shape="rect" id="Node000016" href="$classflatbuffers_1_1unique__ptr.html" title=" " alt="" coords="758,505,879,545"/>
-<area shape="poly" id="edge21_Node000012_Node000016" title=" " alt="" coords="895,524,985,515,1033,505,1079,488,1090,478,1103,467,1128,456,1130,461,1105,471,1094,482,1081,493,1035,510,986,521,895,529"/>
-<area shape="rect" id="Node000017" title=" " alt="" coords="396,470,530,511"/>
-<area shape="poly" id="edge22_Node000016_Node000017" title=" " alt="" coords="546,494,727,510,758,514,757,519,726,515,545,499"/>
-<area shape="rect" id="Node000018" href="$classflatbuffers_1_1unique__ptr.html" title=" " alt="" coords="402,535,524,576"/>
-<area shape="poly" id="edge23_Node000016_Node000018" title=" " alt="" coords="539,546,757,527,758,533,539,552"/>
-<area shape="rect" id="Node000019" title=" " alt="" coords="32,543,167,568"/>
-<area shape="poly" id="edge24_Node000018_Node000019" title=" " alt="" coords="183,553,402,553,402,558,183,558"/>
-<area shape="rect" id="Node000020" href="$structflatbuffers_1_1_i_d_l_options.html" title=" " alt="" coords="1119,481,1268,507"/>
-<area shape="poly" id="edge25_Node000001_Node000020" title=" " alt="" coords="1284,500,1346,492,1376,482,1403,466,1424,446,1441,422,1465,368,1479,316,1484,278,1489,278,1484,317,1470,369,1446,424,1428,449,1406,470,1378,486,1347,497,1284,505"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="1471,245,1593,271"/>
+<area shape="rect" id="Node000002" href="$structflatbuffers_1_1_parser_state.html" title=" " alt="" coords="1161,5,1313,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1329,10,1391,20,1422,31,1449,48,1471,70,1489,95,1514,152,1527,205,1532,244,1527,245,1522,206,1509,153,1484,98,1467,73,1446,52,1419,36,1390,25,1328,15"/>
+<area shape="rect" id="Node000003" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="959,163,1118,204"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1133,184,1282,196,1366,207,1448,224,1502,242,1500,247,1447,229,1365,212,1282,201,1133,189"/>
+<area shape="rect" id="Node000004" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="5,201,194,227"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="209,208,959,183,959,189,209,213"/>
+<area shape="rect" id="Node000005" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="566,470,726,511"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="119,239,161,298,189,330,219,359,261,391,296,413,334,429,384,446,478,469,566,482,565,487,477,475,383,451,332,434,294,417,258,396,216,363,185,334,157,301,115,242"/>
+<area shape="rect" id="Node000006" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="567,49,725,89"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="117,187,158,140,186,118,217,100,261,83,307,71,401,57,491,54,567,57,566,62,491,59,402,62,308,76,262,88,219,105,189,122,162,144,121,190"/>
+<area shape="rect" id="Node000007" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="954,101,1123,141"/>
+<area shape="poly" id="edge9_Node000007_Node000004" title=" " alt="" coords="174,195,217,188,424,162,630,143,953,122,954,127,630,148,425,167,218,193,175,200"/>
+<area shape="rect" id="Node000016" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="384,282,542,323"/>
+<area shape="poly" id="edge20_Node000016_Node000004" title=" " alt="" coords="172,229,384,280,383,286,170,234"/>
+<area shape="rect" id="Node000017" href="$classflatbuffers_1_1_symbol_table.html" title=" " alt="" coords="567,345,725,385"/>
+<area shape="poly" id="edge23_Node000017_Node000004" title=" " alt="" coords="128,235,169,266,219,295,309,326,402,346,491,357,567,362,566,367,491,362,401,351,307,331,217,300,166,271,125,239"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="741,479,919,457,1022,439,1122,417,1216,392,1287,368,1446,300,1506,269,1509,274,1448,305,1289,373,1217,397,1124,422,1023,445,920,462,742,485"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="741,60,860,58,1007,61,1168,75,1249,88,1327,105,1392,126,1449,163,1493,205,1524,244,1520,247,1489,208,1446,167,1389,131,1326,110,1248,93,1167,80,1007,66,860,63,741,66"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="1139,124,1209,132,1288,146,1370,167,1448,197,1487,220,1517,243,1514,247,1484,224,1446,202,1368,172,1287,151,1208,137,1138,129"/>
+<area shape="rect" id="Node000008" href="$structflatbuffers_1_1_namespace.html" title=" " alt="" coords="386,232,540,258"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="555,243,1471,255,1471,260,555,249"/>
+<area shape="rect" id="Node000015" href="$structflatbuffers_1_1_definition.html" title=" " alt="" coords="772,272,908,298"/>
+<area shape="poly" id="edge21_Node000015_Node000008" title=" " alt="" coords="532,259,566,265,674,276,772,281,772,286,674,282,566,270,531,264"/>
+<area shape="rect" id="Node000009" href="$classflatbuffers_1_1_flat_buffer_builder_impl.html" title=" " alt="" coords="1147,539,1326,580"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="1341,568,1397,559,1423,549,1446,534,1473,505,1493,470,1508,433,1519,394,1528,322,1529,271,1534,271,1533,322,1524,395,1513,434,1498,473,1477,508,1449,538,1425,554,1398,564,1342,573"/>
+<area shape="rect" id="Node000010" href="$classflatbuffers_1_1vector__downward.html" title=" " alt="" coords="392,582,534,623"/>
+<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="549,583,566,581,722,564,844,556,1123,556,1146,556,1146,561,1123,561,844,562,722,569,566,586,550,588"/>
+<area shape="rect" id="Node000012" href="$classflatbuffers_1_1_flat_buffer_builder_impl.html" title=" " alt="" coords="750,587,930,628"/>
+<area shape="poly" id="edge15_Node000012_Node000010" title=" " alt="" coords="550,601,750,604,750,609,550,606"/>
+<area shape="rect" id="Node000011" href="$classflatbuffers_1_1vector__downward.html" title=" " alt="" coords="28,582,171,623"/>
+<area shape="poly" id="edge13_Node000010_Node000011" title=" " alt="" coords="186,600,391,600,391,605,186,605"/>
+<area shape="poly" id="edge14_Node000009_Node000012" title=" " alt="" coords="945,592,1146,568,1147,573,946,597"/>
+<area shape="rect" id="Node000013" href="$classflexbuffers_1_1_reference.html" title=" " alt="" coords="1165,489,1309,515"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="1324,513,1356,512,1388,508,1418,499,1446,483,1469,460,1488,433,1502,403,1512,372,1524,313,1528,271,1533,271,1529,314,1517,374,1507,405,1492,436,1473,464,1449,487,1420,504,1389,513,1356,518,1324,518"/>
+<area shape="rect" id="Node000014" href="$structflatbuffers_1_1_struct_def.html" title=" " alt="" coords="1168,304,1306,330"/>
+<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="1320,300,1447,276,1477,269,1478,274,1448,281,1321,305"/>
+<area shape="poly" id="edge18_Node000014_Node000015" title=" " alt="" coords="924,289,1167,309,1167,314,923,294"/>
+<area shape="poly" id="edge19_Node000015_Node000016" title=" " alt="" coords="558,311,640,315,726,311,795,296,796,301,727,316,640,320,557,316"/>
+<area shape="poly" id="edge22_Node000014_Node000017" title=" " alt="" coords="740,355,1167,320,1167,325,741,360"/>
+<area shape="rect" id="Node000018" href="$classflatbuffers_1_1unique__ptr.html" title=" " alt="" coords="779,385,901,425"/>
+<area shape="poly" id="edge24_Node000014_Node000018" title=" " alt="" coords="916,400,1015,390,1069,381,1122,368,1171,349,1212,328,1214,333,1173,354,1124,373,1071,386,1016,395,917,405"/>
+<area shape="rect" id="Node000019" title=" " alt="" coords="396,397,530,437"/>
+<area shape="poly" id="edge25_Node000018_Node000019" title=" " alt="" coords="545,412,779,404,779,409,545,417"/>
+<area shape="rect" id="Node000020" href="$classflatbuffers_1_1unique__ptr.html" title=" " alt="" coords="402,511,524,552"/>
+<area shape="poly" id="edge26_Node000018_Node000020" title=" " alt="" coords="503,500,533,482,565,466,609,452,644,445,726,432,778,419,779,424,727,437,645,450,610,457,567,471,535,487,506,505"/>
+<area shape="rect" id="Node000021" title=" " alt="" coords="32,519,167,544"/>
+<area shape="poly" id="edge27_Node000020_Node000021" title=" " alt="" coords="183,529,402,529,402,534,183,534"/>
+<area shape="rect" id="Node000022" href="$structflatbuffers_1_1_i_d_l_options.html" title=" " alt="" coords="1162,604,1311,630"/>
+<area shape="poly" id="edge28_Node000001_Node000022" title=" " alt="" coords="1327,624,1358,622,1390,616,1419,605,1445,587,1462,564,1478,528,1502,434,1518,338,1527,271,1532,272,1523,339,1507,435,1483,530,1467,567,1449,591,1422,609,1391,621,1359,627,1327,629"/>
 </map>

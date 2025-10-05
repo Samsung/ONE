@@ -10,5 +10,6 @@ var structflatbuffers_1_1_parser_state =
     [ "doc_comment_", "structflatbuffers_1_1_parser_state.html#a4bdf0d8002a05194d6455f39eafe0ad1", null ],
     [ "line_", "structflatbuffers_1_1_parser_state.html#a7a334f20ad4b79fb45b039c5072f9f1e", null ],
     [ "line_start_", "structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db", null ],
+    [ "prev_cursor_", "structflatbuffers_1_1_parser_state.html#a3c29e3f981415be5b3c7013c0e5ba812", null ],
     [ "token_", "structflatbuffers_1_1_parser_state.html#a4685ed383fee52714cf0b560169ce010", null ]
 ];

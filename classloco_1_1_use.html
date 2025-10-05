@@ -269,12 +269,12 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
 <div class="line"><span class="lineno">   27</span>  <span class="keywordflow">if</span> (_node != <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   28</span>  {</div>
-<div class="line"><span class="lineno">   29</span>    <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(_node-&gt;_uses.find(<span class="keyword">this</span>) != _node-&gt;_uses.end());</div>
+<div class="line"><span class="lineno">   29</span>    assert(_node-&gt;_uses.find(<span class="keyword">this</span>) != _node-&gt;_uses.end());</div>
 <div class="line"><span class="lineno">   30</span>    _node-&gt;_uses.erase(<span class="keyword">this</span>);</div>
 <div class="line"><span class="lineno">   31</span>    _node = <span class="keyword">nullptr</span>;</div>
 <div class="line"><span class="lineno">   32</span>  }</div>
 <div class="line"><span class="lineno">   33</span> </div>
-<div class="line"><span class="lineno">   34</span>  <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(_node == <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   34</span>  assert(_node == <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   35</span> </div>
 <div class="line"><span class="lineno">   36</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="classloco_1_1_use.html#a53502d2c51b0bc94df5884ddbab79843">node</a> != <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   37</span>  {</div>
@@ -282,11 +282,10 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   39</span>    _node-&gt;_uses.insert(<span class="keyword">this</span>);</div>
 <div class="line"><span class="lineno">   40</span>  }</div>
 <div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>  <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(_node == <a class="code hl_function" href="classloco_1_1_use.html#a53502d2c51b0bc94df5884ddbab79843">node</a>);</div>
+<div class="line"><span class="lineno">   42</span>  assert(_node == <a class="code hl_function" href="classloco_1_1_use.html#a53502d2c51b0bc94df5884ddbab79843">node</a>);</div>
 <div class="line"><span class="lineno">   43</span>}</div>
-<div class="ttc" id="anamespaceloco_html_abd2600c38aee62d37bfcb077337262ad"><div class="ttname"><a href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast</a></div><div class="ttdeci">T must_cast(FeatureEncoder *node)</div><div class="ttdoc">A helper dynamic_cast that throws when failed.</div><div class="ttdef"><b>Definition</b> <a href="_feature_codec_8h_source.html#l00080">FeatureCodec.h:80</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_feature_codec_8h_source.html#l00080">loco::must_cast()</a>, and <a class="el" href="loco_2include_2loco_2_i_r_2_use_8h_source.html#l00058">node()</a>.</p>
+<p class="reference">References <a class="el" href="loco_2include_2loco_2_i_r_2_use_8h_source.html#l00058">node()</a>.</p>
 
 </div>
 </div>

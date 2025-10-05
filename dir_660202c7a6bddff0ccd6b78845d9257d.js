@@ -1,7 +1,7 @@
 var dir_660202c7a6bddff0ccd6b78845d9257d =
 [
     [ "Accessor.h", "kernel_2_accessor_8h.html", "kernel_2_accessor_8h" ],
-    [ "Buffer.h", "kernel_2_buffer_8h.html", "kernel_2_buffer_8h" ],
+    [ "Buffer.h", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2kernel_2_buffer_8h.html", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2kernel_2_buffer_8h" ],
     [ "IndexEnumerator.h", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2kernel_2_index_enumerator_8h.html", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2kernel_2_index_enumerator_8h" ],
     [ "Layout.h", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2kernel_2_layout_8h.html", "compiler_2angkor_2include_2nncc_2core_2_a_d_t_2kernel_2_layout_8h" ],
     [ "NCHWLayout.h", "_n_c_h_w_layout_8h.html", "_n_c_h_w_layout_8h" ],

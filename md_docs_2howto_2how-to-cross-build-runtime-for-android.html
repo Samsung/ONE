@@ -93,13 +93,20 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-cross-build-run
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><b>Note: To set up a basic build environment on your development PC, please read the <a class="el" href="md_docs_2howto_2how-to-build-runtime.html">how-to-build-runtime.md</a> document first. The cross build covered in this document assumes that you have an environment in which the native build operates normally without problems.</b></p>
-<p>Supported Architecture : AARCH64 only (ARM32 is not supported yet)</p>
+<p>Supported Architecture : AARCH64 only</p>
 <h1>Prepare Android NDK</h1>
 <p>There are two ways to get Android NDK: install Android NDK on your PC or use docker image which already has Android NDK installed.</p>
 <h2>Install Android NDK</h2>
-<p>Use <code>tools/cross/install_android_ndk.sh</code> script to prepare Android NDK. This is recommended way to build Android NDK.</p>
-<p>Or you can use <code>tools/cross/install_android_sdk.sh</code> script to prepare Android SDK including NDK. You can find NDK in <code>{android-sdk-dir}/ndk/{ndk-version}</code> directory.</p>
-<p>CMake 3.6.0 or later is required for Android NDK r26d CMake support.</p>
+<p>You can use <code>tools/cross/install_android_sdk.sh</code> script to prepare Android SDK including NDK.</p>
+<div class="fragment"><div class="line">$ tools/cross/install_android_sdk.sh --install-dir /path/to/android-sdk</div>
+</div><!-- fragment --><p>If <code>--install-dir</code> is not specified, Android SDK will be installed in <code>tools/cross/android_sdk</code>.</p>
+<p>You can find NDK in <code>{android-sdk-dir}/ndk/{ndk-version}</code> directory.</p>
+<p>You can check default install NDK version by running <code>tools/cross/install_android_sdk.sh -h</code> command.</p>
+<p>Installed NDK version can be changed by specifying <code>--ndk-version</code> option like below:</p>
+<div class="fragment"><div class="line">$ tools/cross/install_android_sdk.sh --ndk-version {ndk-version} --install-dir /path/to/android-sdk</div>
+</div><!-- fragment --><p>If you want to install NDK version in existing android sdk directory, you can use <code>--update</code> option like below:</p>
+<div class="fragment"><div class="line">$ tools/cross/install_android_sdk.sh --update --install-dir /path/to/android-sdk</div>
+</div><!-- fragment --><p>CMake 3.6.0 or later is required for Android NDK r27d CMake support.</p>
 <h2>Host Environment Requirements</h2>
 <p>If you want to use docker image, please use <code>infra/docker/android-sdk/Dockerfile</code> of our repository or pull the image <code>nnfw/one-devtools:android-sdk</code> from <code>DockerHub</code>. It includes Android SDK and NDK.</p>
 <p>You can build the docker image with following command: </p><div class="fragment"><div class="line">$ docker build -t nnfw/one-devtools:android-sdk -f infra/docker/android-sdk/Dockerfile .</div>

@@ -4,6 +4,7 @@ var structflatbuffers_1_1_definition =
     [ "DeserializeAttributes", "structflatbuffers_1_1_definition.html#a8afde69564c8f2ea5c98ec2f539b44ed", null ],
     [ "SerializeAttributes", "structflatbuffers_1_1_definition.html#a9b20c2ab44f0863559248617c75ddaa1", null ],
     [ "attributes", "structflatbuffers_1_1_definition.html#a2c6f4161077a904725041c3d874efef2", null ],
+    [ "declaration_file", "structflatbuffers_1_1_definition.html#a6fd02f96000214d9f7f9304b7bb09393", null ],
     [ "defined_namespace", "structflatbuffers_1_1_definition.html#af8f075b5e5c3b1b1c38dae30331c4f2d", null ],
     [ "doc_comment", "structflatbuffers_1_1_definition.html#a7a00be4e1d3bab9ca4c7db2013f599a7", null ],
     [ "file", "structflatbuffers_1_1_definition.html#a9a87130ef6c6e72eaf31d4367aefedb0", null ],

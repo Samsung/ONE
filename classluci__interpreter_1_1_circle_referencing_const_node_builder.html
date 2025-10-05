@@ -169,13 +169,13 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_circle_referencing_const_8cpp_source.html#l00037">37</a> of file <a class="el" href="_circle_referencing_const_8cpp_source.html">CircleReferencingConst.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
-<div class="line"><span class="lineno">   40</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_index</a> &gt;= 0);</div>
+<div class="line"><span class="lineno">   40</span>  assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_index</a> &gt;= 0);</div>
 <div class="line"><span class="lineno">   41</span> </div>
 <div class="line"><span class="lineno">   42</span>  <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="namespace_gen_h5_random_inputs.html#ac7f0f74f10011f31ef450dc70f8918af">graph</a> = context-&gt;graph();</div>
 <div class="line"><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keyword">auto</span> reader = context-&gt;reader();</div>
 <div class="line"><span class="lineno">   44</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensors = reader-&gt;tensors();</div>
 <div class="line"><span class="lineno">   45</span>  <span class="keyword">auto</span> <span class="keyword">const</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const_tensor</a> = tensors[<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">tensor_index</a>];</div>
-<div class="line"><span class="lineno">   46</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const_tensor</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><span class="lineno">   46</span>  assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const_tensor</a> != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   47</span>  <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">const_tensor</a>-&gt;is_variable())</div>
 <div class="line"><span class="lineno">   48</span>  {</div>
 <div class="line"><span class="lineno">   49</span>    <span class="comment">// Create CircleVariable for variable</span></div>

@@ -54,7 +54,8 @@ var namespaceflexbuffers =
       [ "FBT_VECTOR_FLOAT4", "namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ade7af31eb6e56bf008ba6aabc626351e", null ],
       [ "FBT_BLOB", "namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a61d442f38cb775643f12e0924a9be803", null ],
       [ "FBT_BOOL", "namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5", null ],
-      [ "FBT_VECTOR_BOOL", "namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05", null ]
+      [ "FBT_VECTOR_BOOL", "namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05", null ],
+      [ "FBT_MAX_TYPE", "namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ab2446b045d04489031d625625086a0cd", null ]
     ] ],
     [ "AppendToString", "namespaceflexbuffers.html#af7de9f41e3986d43c76c6d283b71b2a3", null ],
     [ "GetRoot", "namespaceflexbuffers.html#ab071dac32ac28ab1131d407871231358", null ],
@@ -76,6 +77,8 @@ var namespaceflexbuffers =
     [ "ToFixedTypedVectorElementType", "namespaceflexbuffers.html#a6e6c489d7884670609fb8c423d1f7b76", null ],
     [ "ToTypedVector", "namespaceflexbuffers.html#a52f924f091996491d562b398e8f880b5", null ],
     [ "ToTypedVectorElementType", "namespaceflexbuffers.html#a70b57d31302be584191fbf4ee70daa44", null ],
+    [ "VerifyBuffer", "namespaceflexbuffers.html#a01115a2166486217cea5d3bc0f05f448", null ],
+    [ "VerifyNestedFlexBuffer", "namespaceflexbuffers.html#a04da2411b07b54a64720e22f35286aaa", null ],
     [ "WidthF", "namespaceflexbuffers.html#a50919e1bf9664e027eac4c6342d3ff60", null ],
     [ "WidthI", "namespaceflexbuffers.html#a1be50d5b811ad7380bd0629867245128", null ],
     [ "WidthU", "namespaceflexbuffers.html#aff7bc29030435a3586a9cea1f617fda8", null ]

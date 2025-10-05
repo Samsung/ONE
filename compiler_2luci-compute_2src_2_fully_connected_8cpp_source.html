@@ -177,10 +177,10 @@ $(document).ready(function(){initNavTree('compiler_2luci-compute_2src_2_fully_co
 <div class="foldopen" id="foldopen00076" data-start="{" data-end="}">
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="classluci_1_1compute_1_1_fully_connected.html#a20a0ef98dd02fc68e703516e19f0a106">   76</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classluci_1_1compute_1_1_fully_connected.html#a20a0ef98dd02fc68e703516e19f0a106">FullyConnected::compute</a>(<span class="keywordtype">void</span>)</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>{</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_input_data != <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_weights_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  assert(_input_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  assert(_weights_data != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="comment">// NOTE _bias_shape can be nullptr</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_output_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  assert(_output_data != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="comment">// NOTE if this fails, structure may have changed</span></div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(<a class="code hl_struct" href="structluci_1_1compute_1_1_fully_connected_params.html">compute::FullyConnectedParams</a>) == <span class="keyword">sizeof</span>(tflite::FullyConnectedParams));</div>

@@ -266,12 +266,12 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   28</span> </div>
 <div class="line"><span class="lineno">   29</span>  CircleReader &amp;reader = runtime_module-&gt;getCircleReader();</div>
 <div class="line"><span class="lineno">   30</span>  <span class="keywordflow">if</span> (!reader.parse(model))</div>
-<div class="line"><span class="lineno">   31</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Error during parse&quot;</span>);</div>
+<div class="line"><span class="lineno">   31</span>    assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Error during parse&quot;</span>);</div>
 <div class="line"><span class="lineno">   32</span> </div>
 <div class="line"><span class="lineno">   33</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> = 0; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a> &lt; reader.num_subgraph(); ++<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a>)</div>
 <div class="line"><span class="lineno">   34</span>  {</div>
 <div class="line"><span class="lineno">   35</span>    <span class="keywordflow">if</span> (!reader.select_subgraph(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">i</a>))</div>
-<div class="line"><span class="lineno">   36</span>      <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Error during select subgraph&quot;</span>);</div>
+<div class="line"><span class="lineno">   36</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Error during select subgraph&quot;</span>);</div>
 <div class="line"><span class="lineno">   37</span>    runtime_module-&gt;addGraph(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">memory_manager</a>);</div>
 <div class="line"><span class="lineno">   38</span> </div>
 <div class="line"><span class="lineno">   39</span><span class="preprocessor">#ifndef USE_STATIC_ALLOC</span></div>

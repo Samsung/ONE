@@ -135,7 +135,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keyword">const</span> circle::Tensor *input = kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html#ae2e43f46d2886060e7ff274734cf4e59">input</a>();</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keyword">const</span> circle::Tensor *output = kernel.<a class="code hl_function" href="classluci__interpreter_1_1kernels_1_1_s_i_s_o_kernel.html#aa16682d15c89c41c26b5a371117bf41e">output</a>();</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(Tensor::element_type(output) == DataType::S32);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  assert(Tensor::element_type(output) == DataType::S32);</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  int32_t *output_data = kernels::getTensorData&lt;int32_t&gt;(runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#accb86df90f75104c60f190a5201ec11f">getDataByTensor</a>(output));</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keyword">const</span> <span class="keywordtype">int</span> rank = Tensor::num_dims(input);</div>

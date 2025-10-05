@@ -1,15 +1,17 @@
 <map id="luci::BuiltinOptionsExtractor" name="luci::BuiltinOptionsExtractor">
-<area shape="rect" id="Node000001" title=" " alt="" coords="923,100,1102,125"/>
-<area shape="rect" id="Node000002" href="$structluci_1_1_circle_node_mutable_visitor.html" title=" " alt="" coords="632,63,827,103"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="843,92,923,100,922,106,842,97"/>
-<area shape="rect" id="Node000003" href="$structluci_1_1_circle_node_mutable_visitor_base.html" title=" " alt="" coords="264,5,458,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="474,28,541,34,609,44,668,59,667,65,608,50,540,39,474,33"/>
-<area shape="rect" id="Node000004" href="$structluci_1_1_circle_node_mutable_visitor.html" title=" " alt="" coords="249,70,473,96"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="489,80,632,80,632,86,489,86"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="979,104,1159,129"/>
+<area shape="rect" id="Node000002" href="$structluci_1_1_circle_node_mutable_visitor.html" title=" " alt="" coords="689,63,883,103"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="899,94,979,103,979,108,899,99"/>
+<area shape="rect" id="Node000003" href="$structluci_1_1_circle_node_mutable_visitor_base.html" title=" " alt="" coords="321,5,515,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="531,28,598,34,666,44,725,59,723,65,664,50,597,39,531,33"/>
+<area shape="rect" id="Node000004" href="$structluci_1_1_circle_node_mutable_visitor.html" title=" " alt="" coords="306,70,530,96"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="545,80,688,80,688,86,545,86"/>
 <area shape="rect" id="Node000005" href="$structluci_1_1_circle_node_mutable_visitor_base.html" title=" " alt="" coords="5,63,200,103"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="216,80,248,80,248,86,216,86"/>
-<area shape="rect" id="Node000006" href="$classflatbuffers_1_1_flat_buffer_builder.html" title="Helper class to hold data needed in creation of a FlatBuffer. To serialize data, you typically call o..." alt="" coords="640,128,819,153"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="834,127,922,119,923,124,835,133"/>
-<area shape="rect" id="Node000007" href="$classflatbuffers_1_1vector__downward.html" title=" " alt="" coords="302,120,421,161"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="436,138,639,138,639,143,436,143"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="215,80,305,80,305,86,215,86"/>
+<area shape="rect" id="Node000006" href="$classflatbuffers_1_1_flat_buffer_builder_impl.html" title=" " alt="" coords="697,128,876,169"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="891,134,979,124,979,129,891,139"/>
+<area shape="rect" id="Node000007" href="$classflatbuffers_1_1vector__downward.html" title=" " alt="" coords="347,128,489,169"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="505,146,696,146,696,151,505,151"/>
+<area shape="rect" id="Node000008" href="$classflatbuffers_1_1vector__downward.html" title=" " alt="" coords="31,128,174,169"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="189,146,346,146,346,151,189,151"/>
 </map>

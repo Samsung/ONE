@@ -204,15 +204,14 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_quantize_activation_8cpp_source.html#l00158">158</a> of file <a class="el" href="_quantize_activation_8cpp_source.html">QuantizeActivation.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  159</span>{</div>
-<div class="line"><span class="lineno">  160</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a3a93288835d5987bf66c18340aa2498d">activation_qtype</a>(node) == <a class="code hl_enumvalue" href="namespaceluci.html#a251ef4594e9c96e8de04315def5fc28ea156289764a2c7e19b193db60a772ebea">luci::ActivationQType::IntScale</a>);</div>
+<div class="line"><span class="lineno">  160</span>  assert(<a class="code hl_function" href="namespaceluci.html#a3a93288835d5987bf66c18340aa2498d">activation_qtype</a>(node) == <a class="code hl_enumvalue" href="namespaceluci.html#a251ef4594e9c96e8de04315def5fc28ea156289764a2c7e19b193db60a772ebea">luci::ActivationQType::IntScale</a>);</div>
 <div class="line"><span class="lineno">  161</span>  <a class="code hl_function" href="namespaceluci.html#a778ba1acea30cadd3985b4023df5b2f2">set_int_scale</a>(node);</div>
 <div class="line"><span class="lineno">  162</span>}</div>
 <div class="ttc" id="anamespaceluci_html_a251ef4594e9c96e8de04315def5fc28ea156289764a2c7e19b193db60a772ebea"><div class="ttname"><a href="namespaceluci.html#a251ef4594e9c96e8de04315def5fc28ea156289764a2c7e19b193db60a772ebea">luci::IntScale</a></div><div class="ttdeci">@ IntScale</div><div class="ttdef"><b>Definition</b> <a href="_quantization_utils_8h_source.html#l00080">QuantizationUtils.h:80</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a3a93288835d5987bf66c18340aa2498d"><div class="ttname"><a href="namespaceluci.html#a3a93288835d5987bf66c18340aa2498d">luci::activation_qtype</a></div><div class="ttdeci">ActivationQType activation_qtype(const CircleNode *node)</div><div class="ttdef"><b>Definition</b> <a href="_quantization_utils_8cpp_source.html#l00300">QuantizationUtils.cpp:300</a></div></div>
-<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a778ba1acea30cadd3985b4023df5b2f2"><div class="ttname"><a href="namespaceluci.html#a778ba1acea30cadd3985b4023df5b2f2">luci::set_int_scale</a></div><div class="ttdeci">void set_int_scale(luci::CircleNode *node)</div><div class="ttdef"><b>Definition</b> <a href="_quantization_utils_8cpp_source.html#l00406">QuantizationUtils.cpp:406</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_quantization_utils_8cpp_source.html#l00300">luci::activation_qtype()</a>, <a class="el" href="_quantization_utils_8h_source.html#l00080">luci::IntScale</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>, and <a class="el" href="_quantization_utils_8cpp_source.html#l00406">luci::set_int_scale()</a>.</p>
+<p class="reference">References <a class="el" href="_quantization_utils_8cpp_source.html#l00300">luci::activation_qtype()</a>, <a class="el" href="_quantization_utils_8h_source.html#l00080">luci::IntScale</a>, and <a class="el" href="_quantization_utils_8cpp_source.html#l00406">luci::set_int_scale()</a>.</p>
 
 </div>
 </div>
@@ -234,11 +233,11 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_quantize_activation_8cpp_source.html#l00140">140</a> of file <a class="el" href="_quantize_activation_8cpp_source.html">QuantizeActivation.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  141</span>{</div>
-<div class="line"><span class="lineno">  142</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a3a93288835d5987bf66c18340aa2498d">activation_qtype</a>(node) == <a class="code hl_enumvalue" href="namespaceluci.html#a251ef4594e9c96e8de04315def5fc28ea156289764a2c7e19b193db60a772ebea">luci::ActivationQType::IntScale</a>);</div>
+<div class="line"><span class="lineno">  142</span>  assert(<a class="code hl_function" href="namespaceluci.html#a3a93288835d5987bf66c18340aa2498d">activation_qtype</a>(node) == <a class="code hl_enumvalue" href="namespaceluci.html#a251ef4594e9c96e8de04315def5fc28ea156289764a2c7e19b193db60a772ebea">luci::ActivationQType::IntScale</a>);</div>
 <div class="line"><span class="lineno">  143</span>  <a class="code hl_function" href="namespaceluci.html#a778ba1acea30cadd3985b4023df5b2f2">set_int_scale</a>(node);</div>
 <div class="line"><span class="lineno">  144</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_quantization_utils_8cpp_source.html#l00300">luci::activation_qtype()</a>, <a class="el" href="_quantization_utils_8h_source.html#l00080">luci::IntScale</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>, and <a class="el" href="_quantization_utils_8cpp_source.html#l00406">luci::set_int_scale()</a>.</p>
+<p class="reference">References <a class="el" href="_quantization_utils_8cpp_source.html#l00300">luci::activation_qtype()</a>, <a class="el" href="_quantization_utils_8h_source.html#l00080">luci::IntScale</a>, and <a class="el" href="_quantization_utils_8cpp_source.html#l00406">luci::set_int_scale()</a>.</p>
 
 </div>
 </div>
@@ -260,11 +259,11 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_quantize_activation_8cpp_source.html#l00146">146</a> of file <a class="el" href="_quantize_activation_8cpp_source.html">QuantizeActivation.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  147</span>{</div>
-<div class="line"><span class="lineno">  148</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a3a93288835d5987bf66c18340aa2498d">activation_qtype</a>(node) == <a class="code hl_enumvalue" href="namespaceluci.html#a251ef4594e9c96e8de04315def5fc28ea156289764a2c7e19b193db60a772ebea">luci::ActivationQType::IntScale</a>);</div>
+<div class="line"><span class="lineno">  148</span>  assert(<a class="code hl_function" href="namespaceluci.html#a3a93288835d5987bf66c18340aa2498d">activation_qtype</a>(node) == <a class="code hl_enumvalue" href="namespaceluci.html#a251ef4594e9c96e8de04315def5fc28ea156289764a2c7e19b193db60a772ebea">luci::ActivationQType::IntScale</a>);</div>
 <div class="line"><span class="lineno">  149</span>  <a class="code hl_function" href="namespaceluci.html#a778ba1acea30cadd3985b4023df5b2f2">set_int_scale</a>(node);</div>
 <div class="line"><span class="lineno">  150</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_quantization_utils_8cpp_source.html#l00300">luci::activation_qtype()</a>, <a class="el" href="_quantization_utils_8h_source.html#l00080">luci::IntScale</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>, and <a class="el" href="_quantization_utils_8cpp_source.html#l00406">luci::set_int_scale()</a>.</p>
+<p class="reference">References <a class="el" href="_quantization_utils_8cpp_source.html#l00300">luci::activation_qtype()</a>, <a class="el" href="_quantization_utils_8h_source.html#l00080">luci::IntScale</a>, and <a class="el" href="_quantization_utils_8cpp_source.html#l00406">luci::set_int_scale()</a>.</p>
 
 </div>
 </div>
@@ -286,11 +285,11 @@ Data Fields</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="_quantize_activation_8cpp_source.html#l00152">152</a> of file <a class="el" href="_quantize_activation_8cpp_source.html">QuantizeActivation.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  153</span>{</div>
-<div class="line"><span class="lineno">  154</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a3a93288835d5987bf66c18340aa2498d">activation_qtype</a>(node) == <a class="code hl_enumvalue" href="namespaceluci.html#a251ef4594e9c96e8de04315def5fc28ea156289764a2c7e19b193db60a772ebea">luci::ActivationQType::IntScale</a>);</div>
+<div class="line"><span class="lineno">  154</span>  assert(<a class="code hl_function" href="namespaceluci.html#a3a93288835d5987bf66c18340aa2498d">activation_qtype</a>(node) == <a class="code hl_enumvalue" href="namespaceluci.html#a251ef4594e9c96e8de04315def5fc28ea156289764a2c7e19b193db60a772ebea">luci::ActivationQType::IntScale</a>);</div>
 <div class="line"><span class="lineno">  155</span>  <a class="code hl_function" href="namespaceluci.html#a778ba1acea30cadd3985b4023df5b2f2">set_int_scale</a>(node);</div>
 <div class="line"><span class="lineno">  156</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_quantization_utils_8cpp_source.html#l00300">luci::activation_qtype()</a>, <a class="el" href="_quantization_utils_8h_source.html#l00080">luci::IntScale</a>, <a class="el" href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">luci::must_cast()</a>, and <a class="el" href="_quantization_utils_8cpp_source.html#l00406">luci::set_int_scale()</a>.</p>
+<p class="reference">References <a class="el" href="_quantization_utils_8cpp_source.html#l00300">luci::activation_qtype()</a>, <a class="el" href="_quantization_utils_8h_source.html#l00080">luci::IntScale</a>, and <a class="el" href="_quantization_utils_8cpp_source.html#l00406">luci::set_int_scale()</a>.</p>
 
 </div>
 </div>
@@ -317,6 +316,7 @@ Data Fields</h2></td></tr>
 <div class="line"><span class="lineno">  123</span>  node-&gt;<a class="code hl_function" href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">quantparam</a>(std::move(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">qparam</a>));</div>
 <div class="line"><span class="lineno">  124</span>}</div>
 <div class="ttc" id="anamespaceluci_html_a251ef4594e9c96e8de04315def5fc28ea516ab7fb3e844b3223a06ccb657f1c59"><div class="ttname"><a href="namespaceluci.html#a251ef4594e9c96e8de04315def5fc28ea516ab7fb3e844b3223a06ccb657f1c59">luci::PreDefinedLogistic</a></div><div class="ttdeci">@ PreDefinedLogistic</div><div class="ttdef"><b>Definition</b> <a href="_quantization_utils_8h_source.html#l00077">QuantizationUtils.h:77</a></div></div>
+<div class="ttc" id="anamespaceluci_html_a533fbf700681e332995bef90b35849c7"><div class="ttname"><a href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">luci::must_cast</a></div><div class="ttdeci">T must_cast(loco::Node *node)</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00095">CircleNodeDecl.h:95</a></div></div>
 <div class="ttc" id="anamespaceluci_html_a7f4594820696716f29dade1d31a7bb93"><div class="ttname"><a href="namespaceluci.html#a7f4594820696716f29dade1d31a7bb93">luci::make_predefined_qparam</a></div><div class="ttdeci">std::unique_ptr&lt; CircleQuantParam &gt; make_predefined_qparam(ActivationQType qtype, loco::DataType dtype, CircleQuantParam *old_quant_param)</div><div class="ttdef"><b>Definition</b> <a href="_quantization_utils_8cpp_source.html#l00357">QuantizationUtils.cpp:357</a></div></div>
 <div class="ttc" id="astructluci_1_1_circle_node_html_a0a3c6486c3eb1a728d5dc2b1b57f3b8b"><div class="ttname"><a href="structluci_1_1_circle_node.html#a0a3c6486c3eb1a728d5dc2b1b57f3b8b">luci::CircleNode::quantparam</a></div><div class="ttdeci">CircleQuantParam * quantparam(void) const</div><div class="ttdef"><b>Definition</b> <a href="luci_2lang_2include_2luci_2_i_r_2_circle_node_decl_8h_source.html#l00054">CircleNodeDecl.h:54</a></div></div>
 </div><!-- fragment -->

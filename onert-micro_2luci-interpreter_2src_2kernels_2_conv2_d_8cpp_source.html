@@ -244,13 +244,13 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  <span class="comment">// Type U8</span></div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *<a class="code hl_variable" href="namespaceinfer.html#a48a40d2cc016f1f0d2fd9a8e04098678">input_data</a> = kernels::getTensorData&lt;uint8_t&gt;(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">raw_input_data</a>);</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(input_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>  assert(input_data != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">filter_data</a> = kernels::getTensorData&lt;uint8_t&gt;(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">raw_filter_data</a>);</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">filter_data</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">filter_data</a> != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">bias_data</a> = kernels::getTensorData&lt;int32_t&gt;(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">raw_bias_data</a>);</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">bias_data</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">bias_data</a> != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="keyword">auto</span> *<a class="code hl_variable" href="namespacepart__eval__one.html#aa659ec13c0dc14d487081c1a59b9ae70">output_data</a> = kernels::getTensorData&lt;uint8_t&gt;(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">raw_output_data</a>);</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(output_data != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>  assert(output_data != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>  <span class="keyword">const</span> std::vector&lt;kernels::ChannelQuantMultipliers&gt; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">multipliers_raw</a> =</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <a class="code hl_function" href="namespaceluci__interpreter_1_1kernels.html#a6b5c2c2a3d5a2ae6d365369c7053b948">kernels::quantizeMultipliers</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">effective_output_scale</a>);</div>
@@ -321,7 +321,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  <span class="keyword">auto</span> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">filter_data</a> = runtime_graph-&gt;<a class="code hl_function" href="classluci__interpreter_1_1_runtime_graph.html#a3cdd30622ecbc87c714790f93336e199">getConstDataByTensor</a>(filter);</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">filter_data</a> != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">filter_data</a> != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  <span class="keyword">const</span> <span class="keyword">auto</span> *options = <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">cur_op</a>-&gt;builtin_options_as_Conv2DOptions();</div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
@@ -356,7 +356,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>  {</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  }</div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::element_type(output) == Tensor::element_type(input));</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  <a class="code hl_define" href="compiler_2luci-interpreter_2src_2kernels_2_utils_8h.html#a231f5fa1ff2a3f19222b42cc9bbd1f2d">LUCI_INTERPRETER_CHECK</a>(Tensor::num_dims(input) == 4 &amp;&amp; Tensor::num_dims(filter) == 4);</div>
@@ -375,7 +375,7 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    <span class="keywordflow">case</span> circle::ActivationFunctionType_RELU_N1_TO_1:</div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>      <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported fused activation&quot;</span>);</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported fused activation&quot;</span>);</div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  }</div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>}</div>
 </div>
@@ -419,12 +419,12 @@ $(document).ready(function(){initNavTree('onert-micro_2luci-interpreter_2src_2ke
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>      }</div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>      <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>      {</div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>        <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported yet.&quot;</span>);</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>        assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported yet.&quot;</span>);</div>
 <div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>      }</div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>      <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="preprocessor">#endif </span><span class="comment">// DIS_QUANT</span></div>
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>      <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>      assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Unsupported type.&quot;</span>);</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  }</div>
 <div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>}</div>
 </div>

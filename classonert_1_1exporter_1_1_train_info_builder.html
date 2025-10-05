@@ -142,18 +142,18 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   34</span> </div>
 <div class="line"><span class="lineno">   35</span>    ::circle::Optimizer optimizer;</div>
 <div class="line"><span class="lineno">   36</span>    ::circle::OptimizerOptions optimizer_opt_type;</div>
-<div class="line"><span class="lineno">   37</span>    <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">::flatbuffers::Offset&lt;void&gt;</a> optimizer_opt;</div>
+<div class="line"><span class="lineno">   37</span>    ::flatbuffers::Offset&lt;void&gt; optimizer_opt;</div>
 <div class="line"><span class="lineno">   38</span>    <span class="keywordflow">switch</span> (optimizerInfo.optim_code)</div>
 <div class="line"><span class="lineno">   39</span>    {</div>
 <div class="line"><span class="lineno">   40</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2">ir::train::OptimizerCode::SGD</a>:</div>
 <div class="line"><span class="lineno">   41</span>        optimizer = ::circle::Optimizer_SGD;</div>
 <div class="line"><span class="lineno">   42</span>        optimizer_opt_type = ::circle::OptimizerOptions_SGDOptions;</div>
-<div class="line"><span class="lineno">   43</span>        optimizer_opt = ::circle::CreateSGDOptions(_builder, optimizerInfo.learning_rate).<a class="code hl_function" href="structflatbuffers_1_1_offset.html#ac33c7bf2f65b532640b9000806aeb02e">Union</a>();</div>
+<div class="line"><span class="lineno">   43</span>        optimizer_opt = ::circle::CreateSGDOptions(_builder, optimizerInfo.learning_rate).Union();</div>
 <div class="line"><span class="lineno">   44</span>        <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   45</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a7efd721c8bfff2937c66235f2d0dbac1">ir::train::OptimizerCode::Adam</a>:</div>
 <div class="line"><span class="lineno">   46</span>        optimizer = ::circle::Optimizer_ADAM;</div>
 <div class="line"><span class="lineno">   47</span>        optimizer_opt_type = ::circle::OptimizerOptions_AdamOptions;</div>
-<div class="line"><span class="lineno">   48</span>        optimizer_opt = ::circle::CreateAdamOptions(_builder, optimizerInfo.learning_rate).<a class="code hl_function" href="structflatbuffers_1_1_offset.html#ac33c7bf2f65b532640b9000806aeb02e">Union</a>();</div>
+<div class="line"><span class="lineno">   48</span>        optimizer_opt = ::circle::CreateAdamOptions(_builder, optimizerInfo.learning_rate).Union();</div>
 <div class="line"><span class="lineno">   49</span>        <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   50</span>      <span class="keywordflow">default</span>:</div>
 <div class="line"><span class="lineno">   51</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Not supported optimizer code&quot;</span>);</div>
@@ -161,18 +161,18 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   53</span> </div>
 <div class="line"><span class="lineno">   54</span>    ::circle::LossFn lossfn;</div>
 <div class="line"><span class="lineno">   55</span>    ::circle::LossFnOptions lossfn_opt_type;</div>
-<div class="line"><span class="lineno">   56</span>    <a class="code hl_struct" href="structflatbuffers_1_1_offset.html">::flatbuffers::Offset&lt;void&gt;</a> lossfn_opt;</div>
+<div class="line"><span class="lineno">   56</span>    ::flatbuffers::Offset&lt;void&gt; lossfn_opt;</div>
 <div class="line"><span class="lineno">   57</span>    <span class="keywordflow">switch</span> (lossInfo.loss_code)</div>
 <div class="line"><span class="lineno">   58</span>    {</div>
 <div class="line"><span class="lineno">   59</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb">ir::train::LossCode::MeanSquaredError</a>:</div>
 <div class="line"><span class="lineno">   60</span>        lossfn = ::circle::LossFn_MEAN_SQUARED_ERROR;</div>
 <div class="line"><span class="lineno">   61</span>        lossfn_opt_type = ::circle::LossFnOptions_MeanSquaredErrorOptions;</div>
-<div class="line"><span class="lineno">   62</span>        lossfn_opt = ::circle::CreateMeanSquaredErrorOptions(_builder).<a class="code hl_function" href="structflatbuffers_1_1_offset.html#ac33c7bf2f65b532640b9000806aeb02e">Union</a>();</div>
+<div class="line"><span class="lineno">   62</span>        lossfn_opt = ::circle::CreateMeanSquaredErrorOptions(_builder).Union();</div>
 <div class="line"><span class="lineno">   63</span>        <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   64</span>      <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44">ir::train::LossCode::CategoricalCrossentropy</a>:</div>
 <div class="line"><span class="lineno">   65</span>        lossfn = ::circle::LossFn_CATEGORICAL_CROSSENTROPY;</div>
 <div class="line"><span class="lineno">   66</span>        lossfn_opt_type = ::circle::LossFnOptions_CategoricalCrossentropyOptions;</div>
-<div class="line"><span class="lineno">   67</span>        lossfn_opt = ::circle::CreateCategoricalCrossentropyOptions(_builder).<a class="code hl_function" href="structflatbuffers_1_1_offset.html#ac33c7bf2f65b532640b9000806aeb02e">Union</a>();</div>
+<div class="line"><span class="lineno">   67</span>        lossfn_opt = ::circle::CreateCategoricalCrossentropyOptions(_builder).Union();</div>
 <div class="line"><span class="lineno">   68</span>        <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   69</span>      <span class="keywordflow">default</span>:</div>
 <div class="line"><span class="lineno">   70</span>        <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Not supported loss code&quot;</span>);</div>
@@ -201,16 +201,16 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   93</span>      _builder, training_info-&gt;version(), optimizer, optimizer_opt_type, optimizer_opt, lossfn,</div>
 <div class="line"><span class="lineno">   94</span>      lossfn_opt_type, lossfn_opt, 0, training_info-&gt;batchSize(), loss_reduction_type,</div>
 <div class="line"><span class="lineno">   95</span>      &amp;trainable_ops);</div>
-<div class="line"><span class="lineno">   96</span>    _builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#a0c9e507b373d598b51052fab4fa34912">Finish</a>(end, ::circle::ModelTrainingIdentifier());</div>
+<div class="line"><span class="lineno">   96</span>    _builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder_impl.html#a813b376143a53bd2828d9684713fe03c">Finish</a>(end, ::circle::ModelTrainingIdentifier());</div>
 <div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>    ::flatbuffers::Verifier v(_builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#a79ced315a0621131b8d301f36fe76800">GetBufferPointer</a>(), _builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#a66c8fd33ab9b3b237954c9ea38648f7f">GetSize</a>());</div>
+<div class="line"><span class="lineno">   98</span>    ::flatbuffers::Verifier v(_builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder_impl.html#af9648566859d51578dfc9bb3f9462f07">GetBufferPointer</a>(), _builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder_impl.html#a8a256e49d00ffc1f1a34b07feae14db3">GetSize</a>());</div>
 <div class="line"><span class="lineno">   99</span>    <span class="keywordtype">bool</span> verified = ::circle::VerifyModelTrainingBuffer(v);</div>
 <div class="line"><span class="lineno">  100</span>    <span class="keywordflow">if</span> (not verified)</div>
 <div class="line"><span class="lineno">  101</span>      <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;TrainingInfo buffer is not accessible&quot;</span>};</div>
 <div class="line"><span class="lineno">  102</span>  }</div>
-<div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_html_a0c9e507b373d598b51052fab4fa34912"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder.html#a0c9e507b373d598b51052fab4fa34912">flatbuffers::FlatBufferBuilder::Finish</a></div><div class="ttdeci">void Finish(Offset&lt; T &gt; root, const char *file_identifier=nullptr)</div><div class="ttdoc">Finish serializing a buffer by writing the root offset.</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l02196">flatbuffers.h:2196</a></div></div>
-<div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_html_a66c8fd33ab9b3b237954c9ea38648f7f"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder.html#a66c8fd33ab9b3b237954c9ea38648f7f">flatbuffers::FlatBufferBuilder::GetSize</a></div><div class="ttdeci">uoffset_t GetSize() const</div><div class="ttdoc">The current size of the serialized buffer, counting from the end.</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l01265">flatbuffers.h:1265</a></div></div>
-<div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_html_a79ced315a0621131b8d301f36fe76800"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder.html#a79ced315a0621131b8d301f36fe76800">flatbuffers::FlatBufferBuilder::GetBufferPointer</a></div><div class="ttdeci">uint8_t * GetBufferPointer() const</div><div class="ttdoc">Get the serialized buffer (after you call Finish()).</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l01270">flatbuffers.h:1270</a></div></div>
+<div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_impl_html_a813b376143a53bd2828d9684713fe03c"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder_impl.html#a813b376143a53bd2828d9684713fe03c">flatbuffers::FlatBufferBuilderImpl::Finish</a></div><div class="ttdeci">void Finish(Offset&lt; T &gt; root, const char *file_identifier=nullptr)</div><div class="ttdoc">Finish serializing a buffer by writing the root offset.</div><div class="ttdef"><b>Definition</b> <a href="flatbuffer__builder_8h_source.html#l01216">flatbuffer_builder.h:1216</a></div></div>
+<div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_impl_html_a8a256e49d00ffc1f1a34b07feae14db3"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder_impl.html#a8a256e49d00ffc1f1a34b07feae14db3">flatbuffers::FlatBufferBuilderImpl::GetSize</a></div><div class="ttdeci">SizeT GetSize() const</div><div class="ttdoc">The current size of the serialized buffer, counting from the end.</div><div class="ttdef"><b>Definition</b> <a href="flatbuffer__builder_8h_source.html#l00178">flatbuffer_builder.h:178</a></div></div>
+<div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_impl_html_af9648566859d51578dfc9bb3f9462f07"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder_impl.html#af9648566859d51578dfc9bb3f9462f07">flatbuffers::FlatBufferBuilderImpl::GetBufferPointer</a></div><div class="ttdeci">uint8_t * GetBufferPointer() const</div><div class="ttdoc">Get the serialized buffer (after you call Finish()).</div><div class="ttdef"><b>Definition</b> <a href="flatbuffer__builder_8h_source.html#l00206">flatbuffer_builder.h:206</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a5a23adf0690140cdfe1dc79640a31047"><div class="ttname"><a href="namespacennfw_1_1cker.html#a5a23adf0690140cdfe1dc79640a31047">nnfw::cker::end</a></div><div class="ttdeci">ShapeIterator end(const Shape &amp;s)</div><div class="ttdef"><b>Definition</b> <a href="_shape_iterator_8h_source.html#l00089">ShapeIterator.h:89</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb">onert::ir::train::LossCode::MeanSquaredError</a></div><div class="ttdeci">@ MeanSquaredError</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44">onert::ir::train::LossCode::CategoricalCrossentropy</a></div><div class="ttdeci">@ CategoricalCrossentropy</div></div>
@@ -218,10 +218,8 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a3a291a79d5fd8c967c49fab6af712bb2a7efd721c8bfff2937c66235f2d0dbac1"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a7efd721c8bfff2937c66235f2d0dbac1">onert::ir::train::OptimizerCode::Adam</a></div><div class="ttdeci">@ Adam</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc">onert::ir::train::LossReductionType::SumOverBatchSize</a></div><div class="ttdeci">@ SumOverBatchSize</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_1_1train_html_a6f49cb07ede6d9ac557f51419c43226daa0ec87054b5e5b7847d0d8780a01a3d5"><div class="ttname"><a href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226daa0ec87054b5e5b7847d0d8780a01a3d5">onert::ir::train::LossReductionType::Sum</a></div><div class="ttdeci">@ Sum</div></div>
-<div class="ttc" id="astructflatbuffers_1_1_offset_html"><div class="ttname"><a href="structflatbuffers_1_1_offset.html">flatbuffers::Offset</a></div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00069">flatbuffers.h:70</a></div></div>
-<div class="ttc" id="astructflatbuffers_1_1_offset_html_ac33c7bf2f65b532640b9000806aeb02e"><div class="ttname"><a href="structflatbuffers_1_1_offset.html#ac33c7bf2f65b532640b9000806aeb02e">flatbuffers::Offset::Union</a></div><div class="ttdeci">Offset&lt; void &gt; Union() const</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l00074">flatbuffers.h:74</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a7efd721c8bfff2937c66235f2d0dbac1">onert::ir::train::Adam</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44">onert::ir::train::CategoricalCrossentropy</a>, <a class="el" href="flatbuffers_8h_source.html#l02196">flatbuffers::FlatBufferBuilder::Finish()</a>, <a class="el" href="flatbuffers_8h_source.html#l01270">flatbuffers::FlatBufferBuilder::GetBufferPointer()</a>, <a class="el" href="flatbuffers_8h_source.html#l01265">flatbuffers::FlatBufferBuilder::GetSize()</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb">onert::ir::train::MeanSquaredError</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2">onert::ir::train::SGD</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226daa0ec87054b5e5b7847d0d8780a01a3d5">onert::ir::train::Sum</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc">onert::ir::train::SumOverBatchSize</a>, and <a class="el" href="flatbuffers_8h_source.html#l00074">flatbuffers::Offset&lt; T &gt;::Union()</a>.</p>
+<p class="reference">References <a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a7efd721c8bfff2937c66235f2d0dbac1">onert::ir::train::Adam</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52acc5af9d845d3fb5644ea6c729dd25d44">onert::ir::train::CategoricalCrossentropy</a>, <a class="el" href="flatbuffer__builder_8h_source.html#l01216">flatbuffers::FlatBufferBuilderImpl&lt; Is64Aware &gt;::Finish()</a>, <a class="el" href="flatbuffer__builder_8h_source.html#l00206">flatbuffers::FlatBufferBuilderImpl&lt; Is64Aware &gt;::GetBufferPointer()</a>, <a class="el" href="flatbuffer__builder_8h_source.html#l00178">flatbuffers::FlatBufferBuilderImpl&lt; Is64Aware &gt;::GetSize()</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a2cdc7e5960a14869ceeefc3320b35e52ac9485718dbb9bad98903eed8bee75deb">onert::ir::train::MeanSquaredError</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a3a291a79d5fd8c967c49fab6af712bb2a50ecf75f1077e1d250a781764b89cbc2">onert::ir::train::SGD</a>, <a class="el" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226daa0ec87054b5e5b7847d0d8780a01a3d5">onert::ir::train::Sum</a>, and <a class="el" href="namespaceonert_1_1ir_1_1train.html#a6f49cb07ede6d9ac557f51419c43226da92ef614c82507294071fcf3d9c77b8fc">onert::ir::train::SumOverBatchSize</a>.</p>
 
 </div>
 </div>
@@ -250,9 +248,9 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_train_info_builder_8h_source.html#l00104">104</a> of file <a class="el" href="_train_info_builder_8h_source.html">TrainInfoBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span>{ <span class="keywordflow">return</span> _builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#a79ced315a0621131b8d301f36fe76800">GetBufferPointer</a>(); }</div>
+<div class="fragment"><div class="line"><span class="lineno">  104</span>{ <span class="keywordflow">return</span> _builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder_impl.html#af9648566859d51578dfc9bb3f9462f07">GetBufferPointer</a>(); }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l01270">flatbuffers::FlatBufferBuilder::GetBufferPointer()</a>.</p>
+<p class="reference">References <a class="el" href="flatbuffer__builder_8h_source.html#l00206">flatbuffers::FlatBufferBuilderImpl&lt; Is64Aware &gt;::GetBufferPointer()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_circle_exporter_8cc_source.html#l00098">onert::exporter::CircleExporter::updateMetadata()</a>.</p>
 
@@ -282,9 +280,9 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_train_info_builder_8h_source.html#l00105">105</a> of file <a class="el" href="_train_info_builder_8h_source.html">TrainInfoBuilder.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  105</span>{ <span class="keywordflow">return</span> _builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder.html#a66c8fd33ab9b3b237954c9ea38648f7f">GetSize</a>(); }</div>
+<div class="fragment"><div class="line"><span class="lineno">  105</span>{ <span class="keywordflow">return</span> _builder.<a class="code hl_function" href="classflatbuffers_1_1_flat_buffer_builder_impl.html#a8a256e49d00ffc1f1a34b07feae14db3">GetSize</a>(); }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flatbuffers_8h_source.html#l01265">flatbuffers::FlatBufferBuilder::GetSize()</a>.</p>
+<p class="reference">References <a class="el" href="flatbuffer__builder_8h_source.html#l00178">flatbuffers::FlatBufferBuilderImpl&lt; Is64Aware &gt;::GetSize()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_circle_exporter_8cc_source.html#l00098">onert::exporter::CircleExporter::updateMetadata()</a>.</p>
 

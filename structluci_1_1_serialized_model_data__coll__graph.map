@@ -1,9 +1,5 @@
 <map id="luci::SerializedModelData" name="luci::SerializedModelData">
-<area shape="rect" id="Node000001" title=" " alt="" coords="108,198,273,223"/>
-<area shape="rect" id="Node000002" href="$structflatbuffers_1_1_offset.html" title=" " alt="" coords="20,94,139,135"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,146,124,172,161,195,158,199,120,176,97,149"/>
-<area shape="rect" id="Node000003" href="$structflatbuffers_1_1_offset.html" title=" " alt="" coords="5,5,154,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="82,46,82,93,77,93,77,46"/>
-<area shape="rect" id="Node000004" href="$classluci_1_1_circle_export_metadata.html" title=" " alt="" coords="162,102,333,127"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="235,141,200,199,195,196,230,139"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="8,94,173,120"/>
+<area shape="rect" id="Node000002" href="$classluci_1_1_circle_export_metadata.html" title=" " alt="" coords="5,5,176,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,47,93,94,88,94,88,47"/>
 </map>

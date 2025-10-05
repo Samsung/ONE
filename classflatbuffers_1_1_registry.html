@@ -115,7 +115,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00030">30</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00029">29</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab198f5ae2674e497b14a57383a4ee515" name="ab198f5ae2674e497b14a57383a4ee515"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab198f5ae2674e497b14a57383a4ee515">&#9670;&#160;</a></span>AddIncludeDirectory()</h2>
@@ -141,8 +141,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00092">92</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>{ include_paths_.push_back(path); }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00086">86</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   86</span>{ include_paths_.push_back(path); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -186,34 +186,33 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00044">44</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>  {</div>
-<div class="line"><span class="lineno">   46</span>    <span class="comment">// Get the identifier out of the buffer.</span></div>
-<div class="line"><span class="lineno">   47</span>    <span class="comment">// If the buffer is truncated, exit.</span></div>
-<div class="line"><span class="lineno">   48</span>    <span class="keywordflow">if</span> (len &lt; <span class="keyword">sizeof</span>(uoffset_t) + <a class="code hl_variable" href="classflatbuffers_1_1_flat_buffer_builder.html#af8c7583c92e1d1d6f438977da5158d19">FlatBufferBuilder::kFileIdentifierLength</a>)</div>
-<div class="line"><span class="lineno">   49</span>    {</div>
-<div class="line"><span class="lineno">   50</span>      lasterror_ = <span class="stringliteral">&quot;buffer truncated&quot;</span>;</div>
-<div class="line"><span class="lineno">   51</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   52</span>    }</div>
-<div class="line"><span class="lineno">   53</span>    std::string ident(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(flatbuf) + <span class="keyword">sizeof</span>(uoffset_t),</div>
-<div class="line"><span class="lineno">   54</span>                      <a class="code hl_variable" href="classflatbuffers_1_1_flat_buffer_builder.html#af8c7583c92e1d1d6f438977da5158d19">FlatBufferBuilder::kFileIdentifierLength</a>);</div>
-<div class="line"><span class="lineno">   55</span>    <span class="comment">// Load and parse the schema.</span></div>
-<div class="line"><span class="lineno">   56</span>    Parser <a class="code hl_variable" href="namespaceinfer.html#a51f1628f392aed9f82a1ff0798a4214e">parser</a>;</div>
-<div class="line"><span class="lineno">   57</span>    <span class="keywordflow">if</span> (!LoadSchema(ident, &amp;parser))</div>
-<div class="line"><span class="lineno">   58</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   59</span>    <span class="comment">// Now we&#39;re ready to generate text.</span></div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespaceflatbuffers.html#ab36752687089d18c9f332cde12981e3f">GenerateText</a>(parser, flatbuf, dest))</div>
-<div class="line"><span class="lineno">   61</span>    {</div>
-<div class="line"><span class="lineno">   62</span>      lasterror_ = <span class="stringliteral">&quot;unable to generate text for FlatBuffer binary&quot;</span>;</div>
-<div class="line"><span class="lineno">   63</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">   64</span>    }</div>
-<div class="line"><span class="lineno">   65</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">   66</span>  }</div>
-<div class="ttc" id="aclassflatbuffers_1_1_flat_buffer_builder_html_af8c7583c92e1d1d6f438977da5158d19"><div class="ttname"><a href="classflatbuffers_1_1_flat_buffer_builder.html#af8c7583c92e1d1d6f438977da5158d19">flatbuffers::FlatBufferBuilder::kFileIdentifierLength</a></div><div class="ttdeci">static const size_t kFileIdentifierLength</div><div class="ttdoc">The length of a FlatBuffer file header.</div><div class="ttdef"><b>Definition</b> <a href="flatbuffers_8h_source.html#l02191">flatbuffers.h:2191</a></div></div>
-<div class="ttc" id="anamespaceflatbuffers_html_ab36752687089d18c9f332cde12981e3f"><div class="ttname"><a href="namespaceflatbuffers.html#ab36752687089d18c9f332cde12981e3f">flatbuffers::GenerateText</a></div><div class="ttdeci">bool GenerateText(const Parser &amp;parser, const void *flatbuffer, std::string *text)</div></div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00041">41</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   41</span>                                                                             {</div>
+<div class="line"><span class="lineno">   42</span>    <span class="comment">// Get the identifier out of the buffer.</span></div>
+<div class="line"><span class="lineno">   43</span>    <span class="comment">// If the buffer is truncated, exit.</span></div>
+<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">if</span> (len &lt; <span class="keyword">sizeof</span>(uoffset_t) + kFileIdentifierLength) {</div>
+<div class="line"><span class="lineno">   45</span>      lasterror_ = <span class="stringliteral">&quot;buffer truncated&quot;</span>;</div>
+<div class="line"><span class="lineno">   46</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   47</span>    }</div>
+<div class="line"><span class="lineno">   48</span>    std::string ident(</div>
+<div class="line"><span class="lineno">   49</span>        <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(flatbuf) + <span class="keyword">sizeof</span>(uoffset_t),</div>
+<div class="line"><span class="lineno">   50</span>        kFileIdentifierLength);</div>
+<div class="line"><span class="lineno">   51</span>    <span class="comment">// Load and parse the schema.</span></div>
+<div class="line"><span class="lineno">   52</span>    Parser <a class="code hl_variable" href="namespaceinfer.html#a51f1628f392aed9f82a1ff0798a4214e">parser</a>;</div>
+<div class="line"><span class="lineno">   53</span>    <span class="keywordflow">if</span> (!LoadSchema(ident, &amp;parser)) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   54</span>    <span class="comment">// Now we&#39;re ready to generate text.</span></div>
+<div class="line"><span class="lineno">   55</span>    <span class="keyword">auto</span> err = <a class="code hl_function" href="namespaceflatbuffers.html#a3958f96ffa5821ab7c093f84faf101ab">GenText</a>(parser, flatbuf, dest);</div>
+<div class="line"><span class="lineno">   56</span>    <span class="keywordflow">if</span> (err) {</div>
+<div class="line"><span class="lineno">   57</span>      lasterror_ =</div>
+<div class="line"><span class="lineno">   58</span>          <span class="stringliteral">&quot;unable to generate text for FlatBuffer binary: &quot;</span> + std::string(err);</div>
+<div class="line"><span class="lineno">   59</span>      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">   60</span>    }</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   62</span>  }</div>
+<div class="ttc" id="anamespaceflatbuffers_html_a3958f96ffa5821ab7c093f84faf101ab"><div class="ttname"><a href="namespaceflatbuffers.html#a3958f96ffa5821ab7c093f84faf101ab">flatbuffers::GenText</a></div><div class="ttdeci">const char * GenText(const Parser &amp;parser, const void *flatbuffer, std::string *text)</div></div>
 <div class="ttc" id="anamespaceinfer_html_a51f1628f392aed9f82a1ff0798a4214e"><div class="ttname"><a href="namespaceinfer.html#a51f1628f392aed9f82a1ff0798a4214e">infer.parser</a></div><div class="ttdeci">parser</div><div class="ttdef"><b>Definition</b> <a href="infer_8py_source.html#l00017">infer.py:17</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="namespaceflatbuffers.html#ab36752687089d18c9f332cde12981e3f">flatbuffers::GenerateText()</a>, and <a class="el" href="flatbuffers_8h_source.html#l02191">flatbuffers::FlatBufferBuilder::kFileIdentifierLength</a>.</p>
+<p class="reference">References <a class="el" href="namespaceflatbuffers.html#a3958f96ffa5821ab7c093f84faf101ab">flatbuffers::GenText()</a>.</p>
 
 </div>
 </div>
@@ -240,8 +239,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00095">95</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   95</span>{ <span class="keywordflow">return</span> lasterror_; }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00089">89</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   89</span>{ <span class="keywordflow">return</span> lasterror_; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -279,12 +278,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00035">35</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   36</span>  {</div>
-<div class="line"><span class="lineno">   37</span>    Schema schema;</div>
-<div class="line"><span class="lineno">   38</span>    schema.path_ = schema_path;</div>
-<div class="line"><span class="lineno">   39</span>    schemas_[file_identifier] = schema;</div>
-<div class="line"><span class="lineno">   40</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00033">33</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>                                                                      {</div>
+<div class="line"><span class="lineno">   34</span>    Schema schema;</div>
+<div class="line"><span class="lineno">   35</span>    schema.path_ = schema_path;</div>
+<div class="line"><span class="lineno">   36</span>    schemas_[file_identifier] = schema;</div>
+<div class="line"><span class="lineno">   37</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -312,8 +311,8 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00088">88</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   88</span>{ opts_ = opts; }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00082">82</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   82</span>{ opts_ = opts; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -351,21 +350,19 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00071">71</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   72</span>  {</div>
-<div class="line"><span class="lineno">   73</span>    <span class="comment">// Load and parse the schema.</span></div>
-<div class="line"><span class="lineno">   74</span>    Parser <a class="code hl_variable" href="namespaceinfer.html#a51f1628f392aed9f82a1ff0798a4214e">parser</a>;</div>
-<div class="line"><span class="lineno">   75</span>    <span class="keywordflow">if</span> (!LoadSchema(file_identifier, &amp;parser))</div>
-<div class="line"><span class="lineno">   76</span>      <span class="keywordflow">return</span> DetachedBuffer();</div>
-<div class="line"><span class="lineno">   77</span>    <span class="comment">// Parse the text.</span></div>
-<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespaceinfer.html#a51f1628f392aed9f82a1ff0798a4214e">parser</a>.Parse(text))</div>
-<div class="line"><span class="lineno">   79</span>    {</div>
-<div class="line"><span class="lineno">   80</span>      lasterror_ = <a class="code hl_variable" href="namespaceinfer.html#a51f1628f392aed9f82a1ff0798a4214e">parser</a>.error_;</div>
-<div class="line"><span class="lineno">   81</span>      <span class="keywordflow">return</span> DetachedBuffer();</div>
-<div class="line"><span class="lineno">   82</span>    }</div>
-<div class="line"><span class="lineno">   83</span>    <span class="comment">// We have a valid FlatBuffer. Detach it from the builder and return.</span></div>
-<div class="line"><span class="lineno">   84</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceinfer.html#a51f1628f392aed9f82a1ff0798a4214e">parser</a>.builder_.Release();</div>
-<div class="line"><span class="lineno">   85</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html#l00067">67</a> of file <a class="el" href="onert-micro_2externals_2flatbuffers_2_registry_8h_source.html">registry.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>                                                               {</div>
+<div class="line"><span class="lineno">   69</span>    <span class="comment">// Load and parse the schema.</span></div>
+<div class="line"><span class="lineno">   70</span>    Parser <a class="code hl_variable" href="namespaceinfer.html#a51f1628f392aed9f82a1ff0798a4214e">parser</a>;</div>
+<div class="line"><span class="lineno">   71</span>    <span class="keywordflow">if</span> (!LoadSchema(file_identifier, &amp;parser)) <span class="keywordflow">return</span> DetachedBuffer();</div>
+<div class="line"><span class="lineno">   72</span>    <span class="comment">// Parse the text.</span></div>
+<div class="line"><span class="lineno">   73</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespaceinfer.html#a51f1628f392aed9f82a1ff0798a4214e">parser</a>.Parse(text)) {</div>
+<div class="line"><span class="lineno">   74</span>      lasterror_ = <a class="code hl_variable" href="namespaceinfer.html#a51f1628f392aed9f82a1ff0798a4214e">parser</a>.error_;</div>
+<div class="line"><span class="lineno">   75</span>      <span class="keywordflow">return</span> DetachedBuffer();</div>
+<div class="line"><span class="lineno">   76</span>    }</div>
+<div class="line"><span class="lineno">   77</span>    <span class="comment">// We have a valid FlatBuffer. Detach it from the builder and return.</span></div>
+<div class="line"><span class="lineno">   78</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="namespaceinfer.html#a51f1628f392aed9f82a1ff0798a4214e">parser</a>.builder_.Release();</div>
+<div class="line"><span class="lineno">   79</span>  }</div>
 </div><!-- fragment -->
 </div>
 </div>

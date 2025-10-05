@@ -126,13 +126,13 @@ $(document).ready(function(){initNavTree('_graph_builder_multi_output_8cpp_sourc
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <a class="code hl_define" href="circlechef_2log_2include_2_log_8h.html#a5495ed6c3fae204a397f0edad87f820e">LOGGER</a>(l);</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(context != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  assert(context != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">const</span> std::vector&lt;int32_t&gt; &amp;inputs = op.inputs;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">const</span> std::vector&lt;int32_t&gt; &amp;outputs = op.outputs;</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keyword">const</span> <span class="keyword">auto</span> tensors = context-&gt;<a class="code hl_function" href="classluci_1_1_graph_builder_context.html#ad52e04ea00a9df66c846b9cb4834b043">reader</a>()-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a29042e0a86379708d34163b4d4c9f3b4">tensors</a>();</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keyword">const</span> <span class="keyword">auto</span> opcodes = context-&gt;<a class="code hl_function" href="classluci_1_1_graph_builder_context.html#ad52e04ea00a9df66c846b9cb4834b043">reader</a>()-&gt;<a class="code hl_function" href="classluci_1_1_circle_reader.html#a0b74a15b1e89b081d47fc391f140522c">opcodes</a>();</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(!tensors.null());</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  assert(!tensors.null());</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  std::vector&lt;CircleNode *&gt; input_nodes;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> int32_t <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">input_tensor_index</a> : inputs)</div>
@@ -161,12 +161,12 @@ $(document).ready(function(){initNavTree('_graph_builder_multi_output_8cpp_sourc
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  {</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">// Let&#39;s use attributes from output 0 for this node</span></div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keyword">const</span> <span class="keyword">auto</span> output_tensor = tensors[outputs[0]];</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(output_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    assert(output_tensor != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    node-&gt;name(<a class="code hl_function" href="namespaceluci.html#a4438f6b29d02d97c6d8aef9a31481cb9">tensor_name</a>(output_tensor));</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    node-&gt;dtype(<a class="code hl_function" href="namespaceluci.html#a2e83620deea300e0affbd8c5878d0ff4">luci_datatype</a>(output_tensor-&gt;type()));</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="comment">// mark operator version</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(opcodes[op.opcode_index] != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    assert(opcodes[op.opcode_index] != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    node-&gt;op_version(opcodes[op.opcode_index]-&gt;version());</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="comment">// NOTE We don&#39;t set quantization for multiple output nodes but to virtual outputs</span></div>
@@ -176,7 +176,7 @@ $(document).ready(function(){initNavTree('_graph_builder_multi_output_8cpp_sourc
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordflow">for</span> (<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">uint32_t</a> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">n</a> = 0; <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">n</a> &lt; output_count; ++<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">n</a>)</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  {</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keyword">const</span> <span class="keyword">auto</span> output_tensor = tensors[outputs[<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">n</a>]];</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(output_tensor != <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    assert(output_tensor != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <a class="code hl_struct" href="structluci_1_1_graph_builder_multi_output_1_1_build_out_args.html">BuildOutArgs</a> <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">boa</a>(node, <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">n</a>);</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">nodeout</a> = build_out(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">boa</a>);</div>

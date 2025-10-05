@@ -140,8 +140,8 @@ $(document).ready(function(){initNavTree('_quantize_onnx_fake_quant_model_pass_8
 <div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classluci_1_1_quantize_onnx_fake_quant_model_pass.html#af2837f46c680fd9c3e35d5672b1214c4">   41</a></span>  <a class="code hl_function" href="classluci_1_1_quantize_onnx_fake_quant_model_pass.html#af2837f46c680fd9c3e35d5672b1214c4">QuantizeOnnxFakeQuantModelPass</a>(std::unique_ptr&lt;Context&gt; &amp;&amp;ctx) : _ctx{<a class="code hl_namespace" href="namespacestd.html">std</a>::<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">move</a>(ctx)}</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_ctx);                           <span class="comment">// FIX_CALLER_UNLESS</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(_ctx-&gt;default_activation_dtype); <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    assert(_ctx);                           <span class="comment">// FIX_CALLER_UNLESS</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    assert(_ctx-&gt;default_activation_dtype); <span class="comment">// FIX_CALLER_UNLESS</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  }</div>
 </div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>

@@ -221,9 +221,9 @@ Data Fields</h2></td></tr>
 <div class="line"><span class="lineno">   60</span>  {</div>
 <div class="line"><span class="lineno">   61</span>    <span class="comment">// Quantize using recorded min/max</span></div>
 <div class="line"><span class="lineno">   62</span>    <span class="keyword">auto</span> quantparam = node-&gt;quantparam();</div>
-<div class="line"><span class="lineno">   63</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(quantparam);</div>
-<div class="line"><span class="lineno">   64</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(quantparam-&gt;min.size() == 1); <span class="comment">// only support layer-wise quant</span></div>
-<div class="line"><span class="lineno">   65</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(quantparam-&gt;max.size() == 1); <span class="comment">// only support layer-wise quant</span></div>
+<div class="line"><span class="lineno">   63</span>    assert(quantparam);</div>
+<div class="line"><span class="lineno">   64</span>    assert(quantparam-&gt;min.size() == 1); <span class="comment">// only support layer-wise quant</span></div>
+<div class="line"><span class="lineno">   65</span>    assert(quantparam-&gt;max.size() == 1); <span class="comment">// only support layer-wise quant</span></div>
 <div class="line"><span class="lineno">   66</span>    <span class="keyword">auto</span> min = quantparam-&gt;min[0];</div>
 <div class="line"><span class="lineno">   67</span>    <span class="keyword">auto</span> max = quantparam-&gt;max[0];</div>
 <div class="line"><span class="lineno">   68</span> </div>
@@ -253,7 +253,7 @@ Data Fields</h2></td></tr>
 <div class="line"><span class="lineno">   92</span>    <span class="keyword">auto</span> *<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">cast_input</a> = <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">loco::must_cast&lt;luci::CircleNode *&gt;</a>(<a class="code hl_function" href="namespacecoco.html#a91cfe033b63f8fcb48d4f579121f22b0">cast</a>-&gt;x());</div>
 <div class="line"><span class="lineno">   93</span> </div>
 <div class="line"><span class="lineno">   94</span>    <span class="comment">// make sure that cast_input is already quantized</span></div>
-<div class="line"><span class="lineno">   95</span>    <a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">assert</a>(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">cast_input</a>-&gt;dtype() != loco::DataType::FLOAT32);</div>
+<div class="line"><span class="lineno">   95</span>    assert(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">cast_input</a>-&gt;dtype() != loco::DataType::FLOAT32);</div>
 <div class="line"><span class="lineno">   96</span>    <a class="code hl_function" href="namespacecoco.html#a91cfe033b63f8fcb48d4f579121f22b0">cast</a>-&gt;in_data_type(<a class="code hl_function" href="namespaceluci.html#a533fbf700681e332995bef90b35849c7">cast_input</a>-&gt;dtype());</div>
 <div class="line"><span class="lineno">   97</span>    <a class="code hl_function" href="namespacecoco.html#a91cfe033b63f8fcb48d4f579121f22b0">cast</a>-&gt;out_data_type(<a class="code hl_function" href="namespacecoco.html#a91cfe033b63f8fcb48d4f579121f22b0">cast</a>-&gt;dtype());</div>
 <div class="line"><span class="lineno">   98</span>  }</div>

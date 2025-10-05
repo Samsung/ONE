@@ -1,17 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"_fold_cast_pass_8cpp.html":[41,0,0,59,7,1,18],
-"_fold_cast_pass_8cpp_source.html":[41,0,0,59,7,1,18],
-"_fold_cast_pass_8h.html":[41,0,0,59,7,0,0,0,12],
-"_fold_cast_pass_8h_source.html":[41,0,0,59,7,0,0,0,12],
-"_fold_densify_pass_8cpp.html":[41,0,0,59,7,1,19],
-"_fold_densify_pass_8cpp_source.html":[41,0,0,59,7,1,19],
-"_fold_densify_pass_8h.html":[41,0,0,59,7,0,0,0,13],
-"_fold_densify_pass_8h_source.html":[41,0,0,59,7,0,0,0,13],
-"_fold_depthwise_conv2_d_pass_8cpp.html":[41,0,0,59,7,1,20],
-"_fold_depthwise_conv2_d_pass_8cpp_source.html":[41,0,0,59,7,1,20],
-"_fold_depthwise_conv2_d_pass_8h.html":[41,0,0,59,7,0,0,0,14],
-"_fold_depthwise_conv2_d_pass_8h_source.html":[41,0,0,59,7,0,0,0,14],
 "_fold_dequantize_pass_8cpp.html":[41,0,0,59,7,1,21],
 "_fold_dequantize_pass_8cpp_source.html":[41,0,0,59,7,1,21],
 "_fold_dequantize_pass_8h.html":[41,0,0,59,7,0,0,0,15],
@@ -249,5 +237,17 @@ var NAVTREEINDEX11 =
 "_fuse_relu_pass_8cpp_source.html":[41,0,0,41,1,3,8],
 "_fuse_relu_pass_8h.html":[41,0,0,41,1,3,9],
 "_fuse_relu_pass_8h_source.html":[41,0,0,41,1,3,9],
-"_fuse_rms_norm_pass_8cpp.html":[41,0,0,59,7,1,54]
+"_fuse_rms_norm_pass_8cpp.html":[41,0,0,59,7,1,54],
+"_fuse_rms_norm_pass_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51":[41,0,0,59,7,1,54,0],
+"_fuse_rms_norm_pass_8cpp_source.html":[41,0,0,59,7,1,54],
+"_fuse_rms_norm_pass_8h.html":[41,0,0,59,7,0,0,0,46],
+"_fuse_rms_norm_pass_8h_source.html":[41,0,0,59,7,0,0,0,46],
+"_fuse_ro_p_e_pass_8cpp.html":[41,0,0,59,7,1,55],
+"_fuse_ro_p_e_pass_8cpp.html#afb821ee62cded6ec74a36455b3cfcf51":[41,0,0,59,7,1,55,0],
+"_fuse_ro_p_e_pass_8cpp_source.html":[41,0,0,59,7,1,55],
+"_fuse_ro_p_e_pass_8h.html":[41,0,0,59,7,0,0,0,47],
+"_fuse_ro_p_e_pass_8h_source.html":[41,0,0,59,7,0,0,0,47],
+"_fuse_slice_with_t_conv_pass_8cpp.html":[41,0,0,59,7,1,57],
+"_fuse_slice_with_t_conv_pass_8cpp.html#afeefeb03342f01cad24a8985936fc3ff":[41,0,0,59,7,1,57,0],
+"_fuse_slice_with_t_conv_pass_8cpp_source.html":[41,0,0,59,7,1,57]
 };

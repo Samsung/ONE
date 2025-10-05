@@ -1,9 +1,9 @@
 var searchData=
 [
   ['edge_0',['Edge',['../class_event_collector.html#a7229bac4472246ae5b79ec900601e3aa',1,'EventCollector']]],
-  ['elementwiseactivationtype_1',['elementwiseactivationtype',['../namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868',1,'onert::backend::cpu::ops::ElementwiseActivationType'],['../namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25',1,'onert::backend::train::ops::ElementwiseActivationType']]],
-  ['elementwisebinarytype_2',['elementwisebinarytype',['../classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783',1,'onert::ir::operation::ElementwiseBinary::ElementwiseBinaryType'],['../namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7',1,'onert::backend::cpu::ops::ElementwiseBinaryType']]],
-  ['elementwiseunaryex_3',['ElementWiseUnaryEx',['../namespacearm__compute.html#a61e4792e7691a069c74b3011c2d53444',1,'arm_compute']]],
+  ['elementarytype_1',['ElementaryType',['../namespaceflatbuffers.html#a1b3764da68a20489eb19e59529a07554',1,'flatbuffers']]],
+  ['elementwiseactivationtype_2',['elementwiseactivationtype',['../namespaceonert_1_1backend_1_1cpu_1_1ops.html#ac523e16af89605fa6093f05412171868',1,'onert::backend::cpu::ops::ElementwiseActivationType'],['../namespaceonert_1_1backend_1_1train_1_1ops.html#a2b4ca8f37a19ce798245da4a157d6d25',1,'onert::backend::train::ops::ElementwiseActivationType']]],
+  ['elementwisebinarytype_3',['elementwisebinarytype',['../classonert_1_1ir_1_1operation_1_1_elementwise_binary.html#a7041ec8a195e8ffbde1e007b8cb49783',1,'onert::ir::operation::ElementwiseBinary::ElementwiseBinaryType'],['../namespaceonert_1_1backend_1_1cpu_1_1ops.html#a76beaf5f1eaf7a6eccfd2c624a8143f7',1,'onert::backend::cpu::ops::ElementwiseBinaryType']]],
   ['elementwiseunarytype_4',['ElementwiseUnaryType',['../namespaceonert_1_1backend_1_1cpu_1_1ops.html#af8c9bd4e9cf277a0b838202e05713ec4',1,'onert::backend::cpu::ops']]],
   ['envformat_5',['EnvFormat',['../namespacehermes.html#ae313b95ee3f303ed1cce6dd873d209e5',1,'hermes']]],
   ['errorcategory_6',['ErrorCategory',['../namespaceloco.html#a3fb7bff7a6fa3cc8f131d85333b1b631',1,'loco']]],

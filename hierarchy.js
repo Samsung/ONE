@@ -1234,7 +1234,7 @@ var hierarchy =
     [ "ndarray::Array< T >", "classndarray_1_1_array.html", null ],
     [ "nnfw::cker::random::Array< T, ElementCount >", "classnnfw_1_1cker_1_1random_1_1_array.html", null ],
     [ "luci::Array4DIndex", "classluci_1_1_array4_d_index.html", null ],
-    [ "flatbuffers::Array< Offset< T >, length >", "classflatbuffers_1_1_array_3_01_offset_3_01_t_01_4_00_01length_01_4.html", null ],
+    [ "flatbuffers::Array< OffsetT< T >, length >", "classflatbuffers_1_1_array_3_01_offset_t_3_01_t_01_4_00_01length_01_4.html", null ],
     [ "nnfw::cker::random::Array< uint32_t, 2 >", "classnnfw_1_1cker_1_1random_1_1_array.html", null ],
     [ "nnfw::cker::random::Array< uint32_t, 4 >", "classnnfw_1_1cker_1_1random_1_1_array.html", null ],
     [ "arser::Arser", "classarser_1_1_arser.html", null ],
@@ -1364,6 +1364,9 @@ var hierarchy =
     [ "moco::tf::BroadcastFunctor", "classmoco_1_1tf_1_1_broadcast_functor.html", null ],
     [ "nnfw::cker::functor::BroadcastTo< Device, T >", "structnnfw_1_1cker_1_1functor_1_1_broadcast_to.html", null ],
     [ "tflite2circle::BufferLink", "structtflite2circle_1_1_buffer_link.html", null ],
+    [ "flatbuffers::BufferRefBase", "structflatbuffers_1_1_buffer_ref_base.html", [
+      [ "flatbuffers::BufferRef< T >", "structflatbuffers_1_1_buffer_ref.html", null ]
+    ] ],
     [ "luci::GraphBuilderMultiOutput::BuildNodeArgs", "structluci_1_1_graph_builder_multi_output_1_1_build_node_args.html", null ],
     [ "luci::GraphBuilderMultiOutput::BuildOutArgs", "structluci_1_1_graph_builder_multi_output_1_1_build_out_args.html", null ],
     [ "enco::Bundle", "classenco_1_1_bundle.html", null ],
@@ -1546,8 +1549,10 @@ var hierarchy =
     ] ],
     [ "enco::Code", "structenco_1_1_code.html", null ],
     [ "onert::compiler::CodeAndInfo", "structonert_1_1compiler_1_1_code_and_info.html", null ],
+    [ "flatbuffers::CodeGenerator", "classflatbuffers_1_1_code_generator.html", null ],
     [ "onert::odc::CodegenLoader", "classonert_1_1odc_1_1_codegen_loader.html", null ],
     [ "onert::odc::CodegenManager", "classonert_1_1odc_1_1_codegen_manager.html", null ],
+    [ "flatbuffers::CodeGenOptions", "structflatbuffers_1_1_code_gen_options.html", null ],
     [ "CodeIndex", "class_code_index.html", null ],
     [ "flatbuffers::CodeWriter", "classflatbuffers_1_1_code_writer.html", null ],
     [ "cli::Command", "structcli_1_1_command.html", [
@@ -1847,6 +1852,7 @@ var hierarchy =
     [ "onert::odc::Embedder", "classonert_1_1odc_1_1_embedder.html", null ],
     [ "minmax_embedder::EmbedderOptions", "structminmax__embedder_1_1_embedder_options.html", null ],
     [ "onert::odc::EmbedderOptions", "structonert_1_1odc_1_1_embedder_options.html", null ],
+    [ "flatbuffers::EmptyOffset< T >", "structflatbuffers_1_1_empty_offset.html", null ],
     [ "coco::Entity", "classcoco_1_1_entity.html", [
       [ "coco::Bag", "classcoco_1_1_bag.html", null ],
       [ "coco::Block", "classcoco_1_1_block.html", null ],
@@ -1983,9 +1989,10 @@ var hierarchy =
     [ "loco::FeatureShape", "classloco_1_1_feature_shape.html", null ],
     [ "onert::ir::FeatureShape", "structonert_1_1ir_1_1_feature_shape.html", null ],
     [ "moco::FeatureShapeUpdater", "classmoco_1_1_feature_shape_updater.html", null ],
-    [ "flatbuffers::FlatBufferBuilder::FieldLoc", "structflatbuffers_1_1_flat_buffer_builder_1_1_field_loc.html", null ],
+    [ "flatbuffers::FlatBufferBuilderImpl< Is64Aware >::FieldLoc", "structflatbuffers_1_1_flat_buffer_builder_impl_1_1_field_loc.html", null ],
     [ "cwrap::Fildes", "classcwrap_1_1_fildes.html", null ],
     [ "foder::FileLoader", "classfoder_1_1_file_loader.html", null ],
+    [ "flatbuffers::FileManager", "classflatbuffers_1_1_file_manager.html", null ],
     [ "nnfw::cker::functor::FillFunctor< Device, T >", "structnnfw_1_1cker_1_1functor_1_1_fill_functor.html", null ],
     [ "nnfw::cker::functor::FillFunctor< Eigen::ThreadPoolDevice, T >", "structnnfw_1_1cker_1_1functor_1_1_fill_functor_3_01_eigen_1_1_thread_pool_device_00_01_t_01_4.html", null ],
     [ "mir_interpreter::FillImpl< T >", "structmir__interpreter_1_1_fill_impl.html", null ],
@@ -2008,12 +2015,16 @@ var hierarchy =
     [ "loco::FilterShape", "classloco_1_1_filter_shape.html", null ],
     [ "loco::FixedArity< N >", "structloco_1_1_fixed_arity.html", null ],
     [ "FixedReshapeLayer", "struct_fixed_reshape_layer.html", null ],
-    [ "flatbuffers::FlatBufferBuilder", "classflatbuffers_1_1_flat_buffer_builder.html", [
+    [ "FlatBufferBuilder", "class_flat_buffer_builder.html", null ],
+    [ "flatbuffers::FlatBufferBuilderImpl< Is64Aware >", "classflatbuffers_1_1_flat_buffer_builder_impl.html", null ],
+    [ "flatbuffers::FlatBufferBuilderImpl< false >", "classflatbuffers_1_1_flat_buffer_builder_impl.html", [
       [ "flatbuffers::grpc::MessageBuilder", "classflatbuffers_1_1grpc_1_1_message_builder.html", null ]
     ] ],
     [ "flatbuffers::FLATBUFFERS_FINAL_CLASS< T >", "classflatbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html", null ],
     [ "flexbuffers::FLATBUFFERS_FINAL_CLASS", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html", null ],
     [ "flatbuffers::FlatCompiler", "classflatbuffers_1_1_flat_compiler.html", null ],
+    [ "flatbuffers::FlatCOption", "structflatbuffers_1_1_flat_c_option.html", null ],
+    [ "flatbuffers::FlatCOptions", "structflatbuffers_1_1_flat_c_options.html", null ],
     [ "flatbuffers::FloatConstantGenerator", "classflatbuffers_1_1_float_constant_generator.html", [
       [ "flatbuffers::SimpleFloatConstantGenerator", "classflatbuffers_1_1_simple_float_constant_generator.html", null ],
       [ "flatbuffers::TypedFloatConstantGenerator", "classflatbuffers_1_1_typed_float_constant_generator.html", null ]
@@ -2074,7 +2085,6 @@ var hierarchy =
     [ "nnfw::ruy::GemmParams< AccumScalar, DstScalar, quantization_flavor >", "structnnfw_1_1ruy_1_1_gemm_params.html", null ],
     [ "circlechef::GeneratedModel", "classcirclechef_1_1_generated_model.html", null ],
     [ "tflchef::GeneratedModel", "classtflchef_1_1_generated_model.html", null ],
-    [ "flatbuffers::FlatCompiler::Generator", "structflatbuffers_1_1_flat_compiler_1_1_generator.html", null ],
     [ "enco::GlobalData", "structenco_1_1_global_data.html", null ],
     [ "mir::Graph", "classmir_1_1_graph.html", null ],
     [ "caffeimport::GraphBuilder", "classcaffeimport_1_1_graph_builder.html", [
@@ -2329,7 +2339,6 @@ var hierarchy =
       [ "arm_compute::CLInstanceNormalizationLayerKernelEx", "classarm__compute_1_1_c_l_instance_normalization_layer_kernel_ex.html", null ],
       [ "arm_compute::CLMemsetKernel", "classarm__compute_1_1_c_l_memset_kernel.html", null ],
       [ "arm_compute::CLMultiplyScaleFactorKernel", "classarm__compute_1_1_c_l_multiply_scale_factor_kernel.html", null ],
-      [ "arm_compute::CLNegKernel", "classarm__compute_1_1_c_l_neg_kernel.html", null ],
       [ "arm_compute::CLOneHotKernel", "classarm__compute_1_1_c_l_one_hot_kernel.html", null ],
       [ "arm_compute::CLPadLayerKernelEx", "classarm__compute_1_1_c_l_pad_layer_kernel_ex.html", null ],
       [ "arm_compute::CLQuantizationSymmetricKernel", "classarm__compute_1_1_c_l_quantization_symmetric_kernel.html", null ],
@@ -2341,8 +2350,7 @@ var hierarchy =
     ] ],
     [ "ICLSimpleFunction", null, [
       [ "arm_compute::CLCastBool", "classarm__compute_1_1_c_l_cast_bool.html", null ],
-      [ "arm_compute::CLHashtableLookup", "classarm__compute_1_1_c_l_hashtable_lookup.html", null ],
-      [ "arm_compute::CLNeg", "classarm__compute_1_1_c_l_neg.html", null ]
+      [ "arm_compute::CLHashtableLookup", "classarm__compute_1_1_c_l_hashtable_lookup.html", null ]
     ] ],
     [ "onert::odc::ICodegen", "classonert_1_1odc_1_1_i_codegen.html", null ],
     [ "onert::compiler::ICompiler", "classonert_1_1compiler_1_1_i_compiler.html", [
@@ -2396,7 +2404,6 @@ var hierarchy =
       [ "arm_compute::CLOneHot", "classarm__compute_1_1_c_l_one_hot.html", null ],
       [ "arm_compute::CLPadLayerEx", "classarm__compute_1_1_c_l_pad_layer_ex.html", null ],
       [ "arm_compute::CLReduceOperation", "classarm__compute_1_1_c_l_reduce_operation.html", null ],
-      [ "arm_compute::CLSplitVEx", "classarm__compute_1_1_c_l_split_v_ex.html", null ],
       [ "arm_compute::CLTopKV2", "classarm__compute_1_1_c_l_top_k_v2.html", null ],
       [ "arm_compute::CLTransposeConvLayer", "classarm__compute_1_1_c_l_transpose_conv_layer.html", null ],
       [ "arm_compute::NEFullyConnectedHybridLayer", "classarm__compute_1_1_n_e_fully_connected_hybrid_layer.html", null ],
@@ -2548,6 +2555,7 @@ var hierarchy =
     [ "coco::Op::IMutator", "structcoco_1_1_op_1_1_i_mutator.html", [
       [ "coco::Op::Mutator", "structcoco_1_1_op_1_1_mutator.html", null ]
     ] ],
+    [ "flatbuffers::IncludedFile", "structflatbuffers_1_1_included_file.html", null ],
     [ "pp::IndentedStringBuilder", "classpp_1_1_indented_string_builder.html", null ],
     [ "mir::Index", "classmir_1_1_index.html", null ],
     [ "nncc::core::ADT::tensor::Index", "classnncc_1_1core_1_1_a_d_t_1_1tensor_1_1_index.html", null ],
@@ -2566,9 +2574,6 @@ var hierarchy =
     [ "onert::exec::feature::IndexIterator", "classonert_1_1exec_1_1feature_1_1_index_iterator.html", null ],
     [ "luci::IndexNodeFinder", "classluci_1_1_index_node_finder.html", null ],
     [ "luci::IndexTensorOutputs", "classluci_1_1_index_tensor_outputs.html", null ],
-    [ "flatbuffers::IndirectHelper< T >", "structflatbuffers_1_1_indirect_helper.html", null ],
-    [ "flatbuffers::IndirectHelper< const T * >", "structflatbuffers_1_1_indirect_helper_3_01const_01_t_01_5_01_4.html", null ],
-    [ "flatbuffers::IndirectHelper< Offset< T > >", "structflatbuffers_1_1_indirect_helper_3_01_offset_3_01_t_01_4_01_4.html", null ],
     [ "INEKernel", null, [
       [ "arm_compute::NECastBoolKernel", "classarm__compute_1_1_n_e_cast_bool_kernel.html", null ],
       [ "arm_compute::NEEmbeddingLookupKernel", "classarm__compute_1_1_n_e_embedding_lookup_kernel.html", null ],
@@ -2581,7 +2586,6 @@ var hierarchy =
     ] ],
     [ "INESimpleFunctionNoBorder", null, [
       [ "arm_compute::NECastBool", "classarm__compute_1_1_n_e_cast_bool.html", null ],
-      [ "arm_compute::NEGatherEx", "classarm__compute_1_1_n_e_gather_ex.html", null ],
       [ "arm_compute::NEHashtableLookup", "classarm__compute_1_1_n_e_hashtable_lookup.html", null ],
       [ "arm_compute::NEOneHot", "classarm__compute_1_1_n_e_one_hot.html", null ]
     ] ],
@@ -3376,6 +3380,7 @@ var hierarchy =
     ] ],
     [ "flatbuffers::NamedHashFunction< T >", "structflatbuffers_1_1_named_hash_function.html", null ],
     [ "flatbuffers::Namespace", "structflatbuffers_1_1_namespace.html", null ],
+    [ "flatbuffers::NativeTable", "structflatbuffers_1_1_native_table.html", null ],
     [ "luci_interpreter_pal::NdArrayDesc< N >", "structluci__interpreter__pal_1_1_nd_array_desc.html", null ],
     [ "NdArrayDesc< N >", "struct_nd_array_desc.html", null ],
     [ "nnfw::cker::NdArrayDesc< N >", "structnnfw_1_1cker_1_1_nd_array_desc.html", null ],
@@ -3742,12 +3747,7 @@ var hierarchy =
       [ "loco::NodePool", "classloco_1_1_node_pool.html", null ]
     ] ],
     [ "nnfw::misc::tensor::Comparator::Observer", "structnnfw_1_1misc_1_1tensor_1_1_comparator_1_1_observer.html", null ],
-    [ "flatbuffers::Offset< T >", "structflatbuffers_1_1_offset.html", null ],
     [ "tflite2circle::Offset< T >", "classtflite2circle_1_1_offset.html", null ],
-    [ "flatbuffers::Offset< circle::Buffer >", "structflatbuffers_1_1_offset.html", null ],
-    [ "flatbuffers::Offset< flatbuffers::String >", "structflatbuffers_1_1_offset.html", null ],
-    [ "flatbuffers::Offset< flatbuffers::Vector< typename T::CIR > >", "structflatbuffers_1_1_offset.html", null ],
-    [ "flatbuffers::Offset< void >", "structflatbuffers_1_1_offset.html", null ],
     [ "onert_micro::core::OMAxisContextMixin< IntType, AxisTensorIdx >", "classonert__micro_1_1core_1_1_o_m_axis_context_mixin.html", null ],
     [ "onert_micro::train::OMBackpropExecute", "structonert__micro_1_1train_1_1_o_m_backprop_execute.html", null ],
     [ "onert_micro::train::OMBackpropExecuteArgs", "structonert__micro_1_1train_1_1_o_m_backprop_execute_args.html", null ],
@@ -4301,6 +4301,7 @@ var hierarchy =
       [ "argumentparse.Positional", "classargumentparse_1_1_positional.html", null ]
     ] ],
     [ "OptionBuilder.OptionBuilder", "class_option_builder_1_1_option_builder.html", null ],
+    [ "flatbuffers::FLATBUFFERS_FINAL_CLASS< T >::Options", "structflatbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s_1_1_options.html", null ],
     [ "luci::CircleOptimizer::Options", "structluci_1_1_circle_optimizer_1_1_options.html", null ],
     [ "luci::CircleQuantizer::Options", "structluci_1_1_circle_quantizer_1_1_options.html", null ],
     [ "nnc::cli::OptionType< T, isClass >", "classnnc_1_1cli_1_1_option_type.html", null ],
@@ -5052,7 +5053,7 @@ var hierarchy =
     [ "onert_micro::core::StridedSliceParams", "structonert__micro_1_1core_1_1_strided_slice_params.html", null ],
     [ "nnop::StrideInfo", "classnnop_1_1_stride_info.html", null ],
     [ "ndarray::Strides", "structndarray_1_1_strides.html", null ],
-    [ "flatbuffers::FlatBufferBuilder::StringOffsetCompare", "structflatbuffers_1_1_flat_buffer_builder_1_1_string_offset_compare.html", null ],
+    [ "flatbuffers::FlatBufferBuilderImpl< Is64Aware >::StringOffsetCompare", "structflatbuffers_1_1_flat_buffer_builder_impl_1_1_string_offset_compare.html", null ],
     [ "luci_interpreter_pal::SubFn< T >", "structluci__interpreter__pal_1_1_sub_fn.html", null ],
     [ "onert_micro::execute::pal::SubFn< T >", "structonert__micro_1_1execute_1_1pal_1_1_sub_fn.html", null ],
     [ "exo::circle_detail::SubGraphContext", "structexo_1_1circle__detail_1_1_sub_graph_context.html", [
@@ -5094,6 +5095,7 @@ var hierarchy =
     [ "T", null, [
       [ "nnc::cli::OptionType< T, true >", "classnnc_1_1cli_1_1_option_type_3_01_t_00_01true_01_4.html", null ]
     ] ],
+    [ "flatbuffers::Table", "classflatbuffers_1_1_table.html", null ],
     [ "onert_micro::execute::pal::TanhFunctor< T, >", "structonert__micro_1_1execute_1_1pal_1_1_tanh_functor.html", null ],
     [ "mir_interpreter::TanhImpl< T >", "structmir__interpreter_1_1_tanh_impl.html", null ],
     [ "mir_interpreter::TanhImpl< uint8_t >", "structmir__interpreter_1_1_tanh_impl_3_01uint8__t_01_4.html", null ],
@@ -6197,6 +6199,7 @@ var hierarchy =
     [ "nnfw::cker::random::TruncatedNormalDistribution< SingleSampleGenerator, float >", "classnnfw_1_1cker_1_1random_1_1_truncated_normal_distribution_3_01_single_sample_generator_00_01float_01_4.html", null ],
     [ "nnfw::cker::TTypes< T, NDIMS, IndexType >", "structnnfw_1_1cker_1_1_t_types.html", null ],
     [ "flatbuffers::Type", "structflatbuffers_1_1_type.html", null ],
+    [ "flatbuffers::TypeCode", "structflatbuffers_1_1_type_code.html", null ],
     [ "exo::circle_detail::TypeInference", "structexo_1_1circle__detail_1_1_type_inference.html", null ],
     [ "exo::TypeInference", "structexo_1_1_type_inference.html", null ],
     [ "loco::TypeInference", "structloco_1_1_type_inference.html", null ],
@@ -6233,6 +6236,7 @@ var hierarchy =
     [ "arser::TypeName< std::vector< int > >", "structarser_1_1_type_name_3_01std_1_1vector_3_01int_01_4_01_4.html", null ],
     [ "arser::TypeName< std::vector< std::string > >", "structarser_1_1_type_name_3_01std_1_1vector_3_01std_1_1string_01_4_01_4.html", null ],
     [ "exo::test::TypeShapeReadyPhase", "classexo_1_1test_1_1_type_shape_ready_phase.html", null ],
+    [ "flatbuffers::TypeTable", "structflatbuffers_1_1_type_table.html", null ],
     [ "UI", "class_u_i.html", null ],
     [ "locomotiv::UnaryFunc", "structlocomotiv_1_1_unary_func.html", null ],
     [ "luci_interpreter::UnidirectionalSequenceLSTMParams", "structluci__interpreter_1_1_unidirectional_sequence_l_s_t_m_params.html", null ],
@@ -6282,13 +6286,14 @@ var hierarchy =
     [ "nest::Var", "classnest_1_1_var.html", null ],
     [ "nest::VarContext", "classnest_1_1_var_context.html", null ],
     [ "nest::VarID", "classnest_1_1_var_i_d.html", null ],
-    [ "flatbuffers::Vector< T >", "classflatbuffers_1_1_vector.html", null ],
+    [ "flatbuffers::Vector< T, SizeT >", "classflatbuffers_1_1_vector.html", null ],
     [ "Vector", "struct_vector.html", null ],
     [ "flatbuffers::Vector< char >", "classflatbuffers_1_1_vector.html", [
       [ "flatbuffers::String", "structflatbuffers_1_1_string.html", null ]
     ] ],
-    [ "flatbuffers::vector_downward", "classflatbuffers_1_1vector__downward.html", null ],
-    [ "flatbuffers::VectorIterator< T, IT >", "structflatbuffers_1_1_vector_iterator.html", null ],
+    [ "flatbuffers::vector_downward< SizeT >", "classflatbuffers_1_1vector__downward.html", null ],
+    [ "flatbuffers::vector_downward< SizeT >", "classflatbuffers_1_1vector__downward.html", null ],
+    [ "flatbuffers::VectorIterator< T, IT, Data, SizeT >", "structflatbuffers_1_1_vector_iterator.html", null ],
     [ "flatbuffers::VectorOfAny", "classflatbuffers_1_1_vector_of_any.html", null ],
     [ "luci_interpreter::kernels::VectorOfTensors< T, is_const >", "classluci__interpreter_1_1kernels_1_1_vector_of_tensors.html", null ],
     [ "luci_interpreter::kernels::VectorOfTensors< uint8_t, is_const >", "classluci__interpreter_1_1kernels_1_1_vector_of_tensors.html", [

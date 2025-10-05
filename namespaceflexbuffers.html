@@ -170,7 +170,9 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ade7af31eb6e56bf008ba6aabc626351e">FBT_VECTOR_FLOAT4</a> = 24
 , <a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a61d442f38cb775643f12e0924a9be803">FBT_BLOB</a> = 25
 , <a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5">FBT_BOOL</a> = 26
-, <a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05">FBT_VECTOR_BOOL</a> = 36
+, <a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05">FBT_VECTOR_BOOL</a>
+, <br />
+&#160;&#160;<a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ab2446b045d04489031d625625086a0cd">FBT_MAX_TYPE</a> = 37
 <br />
  }</td></tr>
 <tr class="separator:aa0b4995478c086629fff32c3d10c3872"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,6 +190,8 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a04da2411b07b54a64720e22f35286aaa" id="r_a04da2411b07b54a64720e22f35286aaa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflexbuffers.html#a04da2411b07b54a64720e22f35286aaa">VerifyNestedFlexBuffer</a> (const <a class="el" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a>&lt; uint8_t &gt; *const nested, flatbuffers::Verifier &amp;verifier)</td></tr>
+<tr class="separator:a04da2411b07b54a64720e22f35286aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac01d64cc50810a1624ef5b931663f302" id="r_ac01d64cc50810a1624ef5b931663f302"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflexbuffers.html#ac01d64cc50810a1624ef5b931663f302">IsInline</a> (<a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a> t)</td></tr>
 <tr class="separator:ac01d64cc50810a1624ef5b931663f302"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ff1d990cb63b0edaa0d841c77933889" id="r_a5ff1d990cb63b0edaa0d841c77933889"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflexbuffers.html#a5ff1d990cb63b0edaa0d841c77933889">IsTypedVectorElementType</a> (<a class="el" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a> t)</td></tr>
@@ -239,6 +243,8 @@ Functions</h2></td></tr>
 <tr class="separator:a1f08dbb0395262a8153e0791567b5f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab071dac32ac28ab1131d407871231358" id="r_ab071dac32ac28ab1131d407871231358"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classflexbuffers_1_1_reference.html">Reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflexbuffers.html#ab071dac32ac28ab1131d407871231358">GetRoot</a> (const std::vector&lt; uint8_t &gt; &amp;buffer)</td></tr>
 <tr class="separator:ab071dac32ac28ab1131d407871231358"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01115a2166486217cea5d3bc0f05f448" id="r_a01115a2166486217cea5d3bc0f05f448"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceflexbuffers.html#a01115a2166486217cea5d3bc0f05f448">VerifyBuffer</a> (const uint8_t *buf, size_t buf_len, std::vector&lt; uint8_t &gt; *reuse_tracker=nullptr)</td></tr>
+<tr class="separator:a01115a2166486217cea5d3bc0f05f448"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a3d6fa6c20c8061ff688afd47ab114c38" name="a3d6fa6c20c8061ff688afd47ab114c38"></a>
@@ -253,7 +259,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00138">138</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00130">130</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
 
 </div>
 </div>
@@ -269,7 +275,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00139">139</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00131">131</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
 
 </div>
 </div>
@@ -292,17 +298,17 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a76cc4a8eb404468982af5bd160912e8ba12e4a741fb6a9cbec606f7a5c5b9d729" name="a76cc4a8eb404468982af5bd160912e8ba12e4a741fb6a9cbec606f7a5c5b9d729"></a>BIT_WIDTH_64&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00044">44</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   45</span>{</div>
-<div class="line"><span class="lineno">   46</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8bade28525748185d07d8ad6b3ff6bb7a71">BIT_WIDTH_8</a> = 0,</div>
-<div class="line"><span class="lineno">   47</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8bad12e079be4e66fe464df86b2a8a7416b">BIT_WIDTH_16</a> = 1,</div>
-<div class="line"><span class="lineno">   48</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba2201ddae8d75cdbc09b9b61a6cdfbed1">BIT_WIDTH_32</a> = 2,</div>
-<div class="line"><span class="lineno">   49</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba12e4a741fb6a9cbec606f7a5c5b9d729">BIT_WIDTH_64</a> = 3,</div>
-<div class="line"><span class="lineno">   50</span>};</div>
-<div class="ttc" id="anamespaceflexbuffers_html_a76cc4a8eb404468982af5bd160912e8ba12e4a741fb6a9cbec606f7a5c5b9d729"><div class="ttname"><a href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba12e4a741fb6a9cbec606f7a5c5b9d729">flexbuffers::BIT_WIDTH_64</a></div><div class="ttdeci">@ BIT_WIDTH_64</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00049">flexbuffers.h:49</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_a76cc4a8eb404468982af5bd160912e8ba2201ddae8d75cdbc09b9b61a6cdfbed1"><div class="ttname"><a href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba2201ddae8d75cdbc09b9b61a6cdfbed1">flexbuffers::BIT_WIDTH_32</a></div><div class="ttdeci">@ BIT_WIDTH_32</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00048">flexbuffers.h:48</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_a76cc4a8eb404468982af5bd160912e8bad12e079be4e66fe464df86b2a8a7416b"><div class="ttname"><a href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8bad12e079be4e66fe464df86b2a8a7416b">flexbuffers::BIT_WIDTH_16</a></div><div class="ttdeci">@ BIT_WIDTH_16</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00047">flexbuffers.h:47</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_a76cc4a8eb404468982af5bd160912e8bade28525748185d07d8ad6b3ff6bb7a71"><div class="ttname"><a href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8bade28525748185d07d8ad6b3ff6bb7a71">flexbuffers::BIT_WIDTH_8</a></div><div class="ttdeci">@ BIT_WIDTH_8</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00046">flexbuffers.h:46</a></div></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00043">43</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   43</span>              {</div>
+<div class="line"><span class="lineno">   44</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8bade28525748185d07d8ad6b3ff6bb7a71">BIT_WIDTH_8</a> = 0,</div>
+<div class="line"><span class="lineno">   45</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8bad12e079be4e66fe464df86b2a8a7416b">BIT_WIDTH_16</a> = 1,</div>
+<div class="line"><span class="lineno">   46</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba2201ddae8d75cdbc09b9b61a6cdfbed1">BIT_WIDTH_32</a> = 2,</div>
+<div class="line"><span class="lineno">   47</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba12e4a741fb6a9cbec606f7a5c5b9d729">BIT_WIDTH_64</a> = 3,</div>
+<div class="line"><span class="lineno">   48</span>};</div>
+<div class="ttc" id="anamespaceflexbuffers_html_a76cc4a8eb404468982af5bd160912e8ba12e4a741fb6a9cbec606f7a5c5b9d729"><div class="ttname"><a href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba12e4a741fb6a9cbec606f7a5c5b9d729">flexbuffers::BIT_WIDTH_64</a></div><div class="ttdeci">@ BIT_WIDTH_64</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00047">flexbuffers.h:47</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_a76cc4a8eb404468982af5bd160912e8ba2201ddae8d75cdbc09b9b61a6cdfbed1"><div class="ttname"><a href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba2201ddae8d75cdbc09b9b61a6cdfbed1">flexbuffers::BIT_WIDTH_32</a></div><div class="ttdeci">@ BIT_WIDTH_32</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00046">flexbuffers.h:46</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_a76cc4a8eb404468982af5bd160912e8bad12e079be4e66fe464df86b2a8a7416b"><div class="ttname"><a href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8bad12e079be4e66fe464df86b2a8a7416b">flexbuffers::BIT_WIDTH_16</a></div><div class="ttdeci">@ BIT_WIDTH_16</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00045">flexbuffers.h:45</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_a76cc4a8eb404468982af5bd160912e8bade28525748185d07d8ad6b3ff6bb7a71"><div class="ttname"><a href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8bade28525748185d07d8ad6b3ff6bb7a71">flexbuffers::BIT_WIDTH_8</a></div><div class="ttdeci">@ BIT_WIDTH_8</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00044">flexbuffers.h:44</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -326,21 +332,21 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a1d799e72faa9a9fe98270bb33a6864afaa5582b6efe81a0c84e995a494aeed94b" name="a1d799e72faa9a9fe98270bb33a6864afaa5582b6efe81a0c84e995a494aeed94b"></a>BUILDER_FLAG_SHARE_ALL&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l01033">1033</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1034</span>{</div>
-<div class="line"><span class="lineno"> 1035</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa05f284a8bb600a4264b0d7212ba4b731">BUILDER_FLAG_NONE</a> = 0,</div>
-<div class="line"><span class="lineno"> 1036</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa70f65074918dfb3b4d122f7faee872e1">BUILDER_FLAG_SHARE_KEYS</a> = 1,</div>
-<div class="line"><span class="lineno"> 1037</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afaa988c5ca51fdfe7f9d904f340f5fec5d">BUILDER_FLAG_SHARE_STRINGS</a> = 2,</div>
-<div class="line"><span class="lineno"> 1038</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa5f4b507d3589953446076d0548139c93">BUILDER_FLAG_SHARE_KEYS_AND_STRINGS</a> = 3,</div>
-<div class="line"><span class="lineno"> 1039</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa35702f2c9dc90b3a8797b26a08fd2a4f">BUILDER_FLAG_SHARE_KEY_VECTORS</a> = 4,</div>
-<div class="line"><span class="lineno"> 1040</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afaa5582b6efe81a0c84e995a494aeed94b">BUILDER_FLAG_SHARE_ALL</a> = 7,</div>
-<div class="line"><span class="lineno"> 1041</span>};</div>
-<div class="ttc" id="anamespaceflexbuffers_html_a1d799e72faa9a9fe98270bb33a6864afa05f284a8bb600a4264b0d7212ba4b731"><div class="ttname"><a href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa05f284a8bb600a4264b0d7212ba4b731">flexbuffers::BUILDER_FLAG_NONE</a></div><div class="ttdeci">@ BUILDER_FLAG_NONE</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l01035">flexbuffers.h:1035</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_a1d799e72faa9a9fe98270bb33a6864afa35702f2c9dc90b3a8797b26a08fd2a4f"><div class="ttname"><a href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa35702f2c9dc90b3a8797b26a08fd2a4f">flexbuffers::BUILDER_FLAG_SHARE_KEY_VECTORS</a></div><div class="ttdeci">@ BUILDER_FLAG_SHARE_KEY_VECTORS</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l01039">flexbuffers.h:1039</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_a1d799e72faa9a9fe98270bb33a6864afa5f4b507d3589953446076d0548139c93"><div class="ttname"><a href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa5f4b507d3589953446076d0548139c93">flexbuffers::BUILDER_FLAG_SHARE_KEYS_AND_STRINGS</a></div><div class="ttdeci">@ BUILDER_FLAG_SHARE_KEYS_AND_STRINGS</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l01038">flexbuffers.h:1038</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_a1d799e72faa9a9fe98270bb33a6864afa70f65074918dfb3b4d122f7faee872e1"><div class="ttname"><a href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa70f65074918dfb3b4d122f7faee872e1">flexbuffers::BUILDER_FLAG_SHARE_KEYS</a></div><div class="ttdeci">@ BUILDER_FLAG_SHARE_KEYS</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l01036">flexbuffers.h:1036</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_a1d799e72faa9a9fe98270bb33a6864afaa5582b6efe81a0c84e995a494aeed94b"><div class="ttname"><a href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afaa5582b6efe81a0c84e995a494aeed94b">flexbuffers::BUILDER_FLAG_SHARE_ALL</a></div><div class="ttdeci">@ BUILDER_FLAG_SHARE_ALL</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l01040">flexbuffers.h:1040</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_a1d799e72faa9a9fe98270bb33a6864afaa988c5ca51fdfe7f9d904f340f5fec5d"><div class="ttname"><a href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afaa988c5ca51fdfe7f9d904f340f5fec5d">flexbuffers::BUILDER_FLAG_SHARE_STRINGS</a></div><div class="ttdeci">@ BUILDER_FLAG_SHARE_STRINGS</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l01037">flexbuffers.h:1037</a></div></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00909">909</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  909</span>                 {</div>
+<div class="line"><span class="lineno">  910</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa05f284a8bb600a4264b0d7212ba4b731">BUILDER_FLAG_NONE</a> = 0,</div>
+<div class="line"><span class="lineno">  911</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa70f65074918dfb3b4d122f7faee872e1">BUILDER_FLAG_SHARE_KEYS</a> = 1,</div>
+<div class="line"><span class="lineno">  912</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afaa988c5ca51fdfe7f9d904f340f5fec5d">BUILDER_FLAG_SHARE_STRINGS</a> = 2,</div>
+<div class="line"><span class="lineno">  913</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa5f4b507d3589953446076d0548139c93">BUILDER_FLAG_SHARE_KEYS_AND_STRINGS</a> = 3,</div>
+<div class="line"><span class="lineno">  914</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa35702f2c9dc90b3a8797b26a08fd2a4f">BUILDER_FLAG_SHARE_KEY_VECTORS</a> = 4,</div>
+<div class="line"><span class="lineno">  915</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afaa5582b6efe81a0c84e995a494aeed94b">BUILDER_FLAG_SHARE_ALL</a> = 7,</div>
+<div class="line"><span class="lineno">  916</span>};</div>
+<div class="ttc" id="anamespaceflexbuffers_html_a1d799e72faa9a9fe98270bb33a6864afa05f284a8bb600a4264b0d7212ba4b731"><div class="ttname"><a href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa05f284a8bb600a4264b0d7212ba4b731">flexbuffers::BUILDER_FLAG_NONE</a></div><div class="ttdeci">@ BUILDER_FLAG_NONE</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00910">flexbuffers.h:910</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_a1d799e72faa9a9fe98270bb33a6864afa35702f2c9dc90b3a8797b26a08fd2a4f"><div class="ttname"><a href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa35702f2c9dc90b3a8797b26a08fd2a4f">flexbuffers::BUILDER_FLAG_SHARE_KEY_VECTORS</a></div><div class="ttdeci">@ BUILDER_FLAG_SHARE_KEY_VECTORS</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00914">flexbuffers.h:914</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_a1d799e72faa9a9fe98270bb33a6864afa5f4b507d3589953446076d0548139c93"><div class="ttname"><a href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa5f4b507d3589953446076d0548139c93">flexbuffers::BUILDER_FLAG_SHARE_KEYS_AND_STRINGS</a></div><div class="ttdeci">@ BUILDER_FLAG_SHARE_KEYS_AND_STRINGS</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00913">flexbuffers.h:913</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_a1d799e72faa9a9fe98270bb33a6864afa70f65074918dfb3b4d122f7faee872e1"><div class="ttname"><a href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afa70f65074918dfb3b4d122f7faee872e1">flexbuffers::BUILDER_FLAG_SHARE_KEYS</a></div><div class="ttdeci">@ BUILDER_FLAG_SHARE_KEYS</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00911">flexbuffers.h:911</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_a1d799e72faa9a9fe98270bb33a6864afaa5582b6efe81a0c84e995a494aeed94b"><div class="ttname"><a href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afaa5582b6efe81a0c84e995a494aeed94b">flexbuffers::BUILDER_FLAG_SHARE_ALL</a></div><div class="ttdeci">@ BUILDER_FLAG_SHARE_ALL</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00915">flexbuffers.h:915</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_a1d799e72faa9a9fe98270bb33a6864afaa988c5ca51fdfe7f9d904f340f5fec5d"><div class="ttname"><a href="namespaceflexbuffers.html#a1d799e72faa9a9fe98270bb33a6864afaa988c5ca51fdfe7f9d904f340f5fec5d">flexbuffers::BUILDER_FLAG_SHARE_STRINGS</a></div><div class="ttdeci">@ BUILDER_FLAG_SHARE_STRINGS</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00912">flexbuffers.h:912</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -384,70 +390,75 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="aa0b4995478c086629fff32c3d10c3872a61d442f38cb775643f12e0924a9be803" name="aa0b4995478c086629fff32c3d10c3872a61d442f38cb775643f12e0924a9be803"></a>FBT_BLOB&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5" name="aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5"></a>FBT_BOOL&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05" name="aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05"></a>FBT_VECTOR_BOOL&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aa0b4995478c086629fff32c3d10c3872ab2446b045d04489031d625625086a0cd" name="aa0b4995478c086629fff32c3d10c3872ab2446b045d04489031d625625086a0cd"></a>FBT_MAX_TYPE&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00054">54</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   55</span>{</div>
-<div class="line"><span class="lineno">   56</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a9bac55eee9a20ce095257cde7908aa93">FBT_NULL</a> = 0,</div>
-<div class="line"><span class="lineno">   57</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a> = 1,</div>
-<div class="line"><span class="lineno">   58</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a67a610c00b02bd42cd175be6ac0fc1b3">FBT_UINT</a> = 2,</div>
-<div class="line"><span class="lineno">   59</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ad01de95b3c532cfe9e8194029052ef24">FBT_FLOAT</a> = 3,</div>
-<div class="line"><span class="lineno">   60</span>  <span class="comment">// Types above stored inline, types below store an offset.</span></div>
-<div class="line"><span class="lineno">   61</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac2469bbf89701c2dc7e3b844aa46c425">FBT_KEY</a> = 4,</div>
-<div class="line"><span class="lineno">   62</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a9ba45c56db68b462cd279ad0c9f25d4e">FBT_STRING</a> = 5,</div>
-<div class="line"><span class="lineno">   63</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a81f7c7c62e9de6d60401f627d6d69fba">FBT_INDIRECT_INT</a> = 6,</div>
-<div class="line"><span class="lineno">   64</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872adcc73a2c491afce39e4416901f2da7a3">FBT_INDIRECT_UINT</a> = 7,</div>
-<div class="line"><span class="lineno">   65</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a711b74a1c9499e12f2547d8471c9f47a">FBT_INDIRECT_FLOAT</a> = 8,</div>
-<div class="line"><span class="lineno">   66</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a2b27ed89a27dce656eb0371eb9801f6a">FBT_MAP</a> = 9,</div>
-<div class="line"><span class="lineno">   67</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872af433e3f5456b915cc7814070c27a45c0">FBT_VECTOR</a> = 10,     <span class="comment">// Untyped.</span></div>
-<div class="line"><span class="lineno">   68</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a7a1fa825a2e2b3bdea0a9a78f0da2eed">FBT_VECTOR_INT</a> = 11, <span class="comment">// Typed any size (stores no type table).</span></div>
-<div class="line"><span class="lineno">   69</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a89fd338fc72652cfe0506bd6551fe80c">FBT_VECTOR_UINT</a> = 12,</div>
-<div class="line"><span class="lineno">   70</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a4514ae16e1e118996f98a68ff8a9eeba">FBT_VECTOR_FLOAT</a> = 13,</div>
-<div class="line"><span class="lineno">   71</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a0637bed2800e0fc9250986c99b05334a">FBT_VECTOR_KEY</a> = 14,</div>
-<div class="line"><span class="lineno">   72</span>  <span class="comment">// DEPRECATED, use FBT_VECTOR or FBT_VECTOR_KEY instead.</span></div>
-<div class="line"><span class="lineno">   73</span>  <span class="comment">// Read test.cpp/FlexBuffersDeprecatedTest() for details on why.</span></div>
-<div class="line"><span class="lineno">   74</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ab9ee896762e6c7cd74b0e133eed085d0">FBT_VECTOR_STRING_DEPRECATED</a> = 15,</div>
-<div class="line"><span class="lineno">   75</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872abd4a72791196667824395f0e26b59385">FBT_VECTOR_INT2</a> = 16, <span class="comment">// Typed tuple (no type table, no size field).</span></div>
-<div class="line"><span class="lineno">   76</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac257bb0d93f5e7ec8175b54972ba6210">FBT_VECTOR_UINT2</a> = 17,</div>
-<div class="line"><span class="lineno">   77</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a473f7cd58c07cffaf27091c8af7a9c59">FBT_VECTOR_FLOAT2</a> = 18,</div>
-<div class="line"><span class="lineno">   78</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac609eb18ad2c35135f72084698693473">FBT_VECTOR_INT3</a> = 19, <span class="comment">// Typed triple (no type table, no size field).</span></div>
-<div class="line"><span class="lineno">   79</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872afba8e85ae7fc2c8f02aadcd4c917272d">FBT_VECTOR_UINT3</a> = 20,</div>
-<div class="line"><span class="lineno">   80</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a39056ac6cba1491c8ccc36fae628309c">FBT_VECTOR_FLOAT3</a> = 21,</div>
-<div class="line"><span class="lineno">   81</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf1d3474024083b8e774f3950029a01e">FBT_VECTOR_INT4</a> = 22, <span class="comment">// Typed quad (no type table, no size field).</span></div>
-<div class="line"><span class="lineno">   82</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a87fe8930f233a8ed943efe9a9a80b499">FBT_VECTOR_UINT4</a> = 23,</div>
-<div class="line"><span class="lineno">   83</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ade7af31eb6e56bf008ba6aabc626351e">FBT_VECTOR_FLOAT4</a> = 24,</div>
-<div class="line"><span class="lineno">   84</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a61d442f38cb775643f12e0924a9be803">FBT_BLOB</a> = 25,</div>
-<div class="line"><span class="lineno">   85</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5">FBT_BOOL</a> = 26,</div>
-<div class="line"><span class="lineno">   86</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05">FBT_VECTOR_BOOL</a> = 36, <span class="comment">// To Allow the same type of conversion of type to vector type</span></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00052">52</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   52</span>          {</div>
+<div class="line"><span class="lineno">   53</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a9bac55eee9a20ce095257cde7908aa93">FBT_NULL</a> = 0,</div>
+<div class="line"><span class="lineno">   54</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a> = 1,</div>
+<div class="line"><span class="lineno">   55</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a67a610c00b02bd42cd175be6ac0fc1b3">FBT_UINT</a> = 2,</div>
+<div class="line"><span class="lineno">   56</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ad01de95b3c532cfe9e8194029052ef24">FBT_FLOAT</a> = 3,</div>
+<div class="line"><span class="lineno">   57</span>  <span class="comment">// Types above stored inline, types below (except FBT_BOOL) store an offset.</span></div>
+<div class="line"><span class="lineno">   58</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac2469bbf89701c2dc7e3b844aa46c425">FBT_KEY</a> = 4,</div>
+<div class="line"><span class="lineno">   59</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a9ba45c56db68b462cd279ad0c9f25d4e">FBT_STRING</a> = 5,</div>
+<div class="line"><span class="lineno">   60</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a81f7c7c62e9de6d60401f627d6d69fba">FBT_INDIRECT_INT</a> = 6,</div>
+<div class="line"><span class="lineno">   61</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872adcc73a2c491afce39e4416901f2da7a3">FBT_INDIRECT_UINT</a> = 7,</div>
+<div class="line"><span class="lineno">   62</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a711b74a1c9499e12f2547d8471c9f47a">FBT_INDIRECT_FLOAT</a> = 8,</div>
+<div class="line"><span class="lineno">   63</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a2b27ed89a27dce656eb0371eb9801f6a">FBT_MAP</a> = 9,</div>
+<div class="line"><span class="lineno">   64</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872af433e3f5456b915cc7814070c27a45c0">FBT_VECTOR</a> = 10,      <span class="comment">// Untyped.</span></div>
+<div class="line"><span class="lineno">   65</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a7a1fa825a2e2b3bdea0a9a78f0da2eed">FBT_VECTOR_INT</a> = 11,  <span class="comment">// Typed any size (stores no type table).</span></div>
+<div class="line"><span class="lineno">   66</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a89fd338fc72652cfe0506bd6551fe80c">FBT_VECTOR_UINT</a> = 12,</div>
+<div class="line"><span class="lineno">   67</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a4514ae16e1e118996f98a68ff8a9eeba">FBT_VECTOR_FLOAT</a> = 13,</div>
+<div class="line"><span class="lineno">   68</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a0637bed2800e0fc9250986c99b05334a">FBT_VECTOR_KEY</a> = 14,</div>
+<div class="line"><span class="lineno">   69</span>  <span class="comment">// DEPRECATED, use FBT_VECTOR or FBT_VECTOR_KEY instead.</span></div>
+<div class="line"><span class="lineno">   70</span>  <span class="comment">// Read test.cpp/FlexBuffersDeprecatedTest() for details on why.</span></div>
+<div class="line"><span class="lineno">   71</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ab9ee896762e6c7cd74b0e133eed085d0">FBT_VECTOR_STRING_DEPRECATED</a> = 15,</div>
+<div class="line"><span class="lineno">   72</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872abd4a72791196667824395f0e26b59385">FBT_VECTOR_INT2</a> = 16,  <span class="comment">// Typed tuple (no type table, no size field).</span></div>
+<div class="line"><span class="lineno">   73</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac257bb0d93f5e7ec8175b54972ba6210">FBT_VECTOR_UINT2</a> = 17,</div>
+<div class="line"><span class="lineno">   74</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a473f7cd58c07cffaf27091c8af7a9c59">FBT_VECTOR_FLOAT2</a> = 18,</div>
+<div class="line"><span class="lineno">   75</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac609eb18ad2c35135f72084698693473">FBT_VECTOR_INT3</a> = 19,  <span class="comment">// Typed triple (no type table, no size field).</span></div>
+<div class="line"><span class="lineno">   76</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872afba8e85ae7fc2c8f02aadcd4c917272d">FBT_VECTOR_UINT3</a> = 20,</div>
+<div class="line"><span class="lineno">   77</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a39056ac6cba1491c8ccc36fae628309c">FBT_VECTOR_FLOAT3</a> = 21,</div>
+<div class="line"><span class="lineno">   78</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf1d3474024083b8e774f3950029a01e">FBT_VECTOR_INT4</a> = 22,  <span class="comment">// Typed quad (no type table, no size field).</span></div>
+<div class="line"><span class="lineno">   79</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a87fe8930f233a8ed943efe9a9a80b499">FBT_VECTOR_UINT4</a> = 23,</div>
+<div class="line"><span class="lineno">   80</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ade7af31eb6e56bf008ba6aabc626351e">FBT_VECTOR_FLOAT4</a> = 24,</div>
+<div class="line"><span class="lineno">   81</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a61d442f38cb775643f12e0924a9be803">FBT_BLOB</a> = 25,</div>
+<div class="line"><span class="lineno">   82</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5">FBT_BOOL</a> = 26,</div>
+<div class="line"><span class="lineno">   83</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05">FBT_VECTOR_BOOL</a> =</div>
+<div class="line"><span class="lineno">   84</span>      36,  <span class="comment">// To Allow the same type of conversion of type to vector type</span></div>
+<div class="line"><span class="lineno">   85</span> </div>
+<div class="line"><span class="lineno">   86</span>  <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ab2446b045d04489031d625625086a0cd">FBT_MAX_TYPE</a> = 37</div>
 <div class="line"><span class="lineno">   87</span>};</div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a0637bed2800e0fc9250986c99b05334a"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a0637bed2800e0fc9250986c99b05334a">flexbuffers::FBT_VECTOR_KEY</a></div><div class="ttdeci">@ FBT_VECTOR_KEY</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00071">flexbuffers.h:71</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a2b27ed89a27dce656eb0371eb9801f6a"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a2b27ed89a27dce656eb0371eb9801f6a">flexbuffers::FBT_MAP</a></div><div class="ttdeci">@ FBT_MAP</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00066">flexbuffers.h:66</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a39056ac6cba1491c8ccc36fae628309c"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a39056ac6cba1491c8ccc36fae628309c">flexbuffers::FBT_VECTOR_FLOAT3</a></div><div class="ttdeci">@ FBT_VECTOR_FLOAT3</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00080">flexbuffers.h:80</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a4514ae16e1e118996f98a68ff8a9eeba"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a4514ae16e1e118996f98a68ff8a9eeba">flexbuffers::FBT_VECTOR_FLOAT</a></div><div class="ttdeci">@ FBT_VECTOR_FLOAT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00070">flexbuffers.h:70</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a473f7cd58c07cffaf27091c8af7a9c59"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a473f7cd58c07cffaf27091c8af7a9c59">flexbuffers::FBT_VECTOR_FLOAT2</a></div><div class="ttdeci">@ FBT_VECTOR_FLOAT2</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00077">flexbuffers.h:77</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a61d442f38cb775643f12e0924a9be803"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a61d442f38cb775643f12e0924a9be803">flexbuffers::FBT_BLOB</a></div><div class="ttdeci">@ FBT_BLOB</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00084">flexbuffers.h:84</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a67a610c00b02bd42cd175be6ac0fc1b3"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a67a610c00b02bd42cd175be6ac0fc1b3">flexbuffers::FBT_UINT</a></div><div class="ttdeci">@ FBT_UINT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00058">flexbuffers.h:58</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a711b74a1c9499e12f2547d8471c9f47a"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a711b74a1c9499e12f2547d8471c9f47a">flexbuffers::FBT_INDIRECT_FLOAT</a></div><div class="ttdeci">@ FBT_INDIRECT_FLOAT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00065">flexbuffers.h:65</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a7a1fa825a2e2b3bdea0a9a78f0da2eed"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a7a1fa825a2e2b3bdea0a9a78f0da2eed">flexbuffers::FBT_VECTOR_INT</a></div><div class="ttdeci">@ FBT_VECTOR_INT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00068">flexbuffers.h:68</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a81f7c7c62e9de6d60401f627d6d69fba"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a81f7c7c62e9de6d60401f627d6d69fba">flexbuffers::FBT_INDIRECT_INT</a></div><div class="ttdeci">@ FBT_INDIRECT_INT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00063">flexbuffers.h:63</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a87fe8930f233a8ed943efe9a9a80b499"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a87fe8930f233a8ed943efe9a9a80b499">flexbuffers::FBT_VECTOR_UINT4</a></div><div class="ttdeci">@ FBT_VECTOR_UINT4</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00082">flexbuffers.h:82</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">flexbuffers::FBT_INT</a></div><div class="ttdeci">@ FBT_INT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00057">flexbuffers.h:57</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a89fd338fc72652cfe0506bd6551fe80c"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a89fd338fc72652cfe0506bd6551fe80c">flexbuffers::FBT_VECTOR_UINT</a></div><div class="ttdeci">@ FBT_VECTOR_UINT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00069">flexbuffers.h:69</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a9ba45c56db68b462cd279ad0c9f25d4e"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a9ba45c56db68b462cd279ad0c9f25d4e">flexbuffers::FBT_STRING</a></div><div class="ttdeci">@ FBT_STRING</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00062">flexbuffers.h:62</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a9bac55eee9a20ce095257cde7908aa93"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a9bac55eee9a20ce095257cde7908aa93">flexbuffers::FBT_NULL</a></div><div class="ttdeci">@ FBT_NULL</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00056">flexbuffers.h:56</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ab9ee896762e6c7cd74b0e133eed085d0"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ab9ee896762e6c7cd74b0e133eed085d0">flexbuffers::FBT_VECTOR_STRING_DEPRECATED</a></div><div class="ttdeci">@ FBT_VECTOR_STRING_DEPRECATED</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00074">flexbuffers.h:74</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872abd4a72791196667824395f0e26b59385"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872abd4a72791196667824395f0e26b59385">flexbuffers::FBT_VECTOR_INT2</a></div><div class="ttdeci">@ FBT_VECTOR_INT2</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00075">flexbuffers.h:75</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ac2469bbf89701c2dc7e3b844aa46c425"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac2469bbf89701c2dc7e3b844aa46c425">flexbuffers::FBT_KEY</a></div><div class="ttdeci">@ FBT_KEY</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00061">flexbuffers.h:61</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ac257bb0d93f5e7ec8175b54972ba6210"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac257bb0d93f5e7ec8175b54972ba6210">flexbuffers::FBT_VECTOR_UINT2</a></div><div class="ttdeci">@ FBT_VECTOR_UINT2</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00076">flexbuffers.h:76</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ac609eb18ad2c35135f72084698693473"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac609eb18ad2c35135f72084698693473">flexbuffers::FBT_VECTOR_INT3</a></div><div class="ttdeci">@ FBT_VECTOR_INT3</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00078">flexbuffers.h:78</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872acf1d3474024083b8e774f3950029a01e"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf1d3474024083b8e774f3950029a01e">flexbuffers::FBT_VECTOR_INT4</a></div><div class="ttdeci">@ FBT_VECTOR_INT4</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00081">flexbuffers.h:81</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05">flexbuffers::FBT_VECTOR_BOOL</a></div><div class="ttdeci">@ FBT_VECTOR_BOOL</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00086">flexbuffers.h:86</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ad01de95b3c532cfe9e8194029052ef24"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ad01de95b3c532cfe9e8194029052ef24">flexbuffers::FBT_FLOAT</a></div><div class="ttdeci">@ FBT_FLOAT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00059">flexbuffers.h:59</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872adcc73a2c491afce39e4416901f2da7a3"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872adcc73a2c491afce39e4416901f2da7a3">flexbuffers::FBT_INDIRECT_UINT</a></div><div class="ttdeci">@ FBT_INDIRECT_UINT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00064">flexbuffers.h:64</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ade7af31eb6e56bf008ba6aabc626351e"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ade7af31eb6e56bf008ba6aabc626351e">flexbuffers::FBT_VECTOR_FLOAT4</a></div><div class="ttdeci">@ FBT_VECTOR_FLOAT4</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00083">flexbuffers.h:83</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5">flexbuffers::FBT_BOOL</a></div><div class="ttdeci">@ FBT_BOOL</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00085">flexbuffers.h:85</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872af433e3f5456b915cc7814070c27a45c0"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872af433e3f5456b915cc7814070c27a45c0">flexbuffers::FBT_VECTOR</a></div><div class="ttdeci">@ FBT_VECTOR</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00067">flexbuffers.h:67</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872afba8e85ae7fc2c8f02aadcd4c917272d"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872afba8e85ae7fc2c8f02aadcd4c917272d">flexbuffers::FBT_VECTOR_UINT3</a></div><div class="ttdeci">@ FBT_VECTOR_UINT3</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00079">flexbuffers.h:79</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a0637bed2800e0fc9250986c99b05334a"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a0637bed2800e0fc9250986c99b05334a">flexbuffers::FBT_VECTOR_KEY</a></div><div class="ttdeci">@ FBT_VECTOR_KEY</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00068">flexbuffers.h:68</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a2b27ed89a27dce656eb0371eb9801f6a"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a2b27ed89a27dce656eb0371eb9801f6a">flexbuffers::FBT_MAP</a></div><div class="ttdeci">@ FBT_MAP</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00063">flexbuffers.h:63</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a39056ac6cba1491c8ccc36fae628309c"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a39056ac6cba1491c8ccc36fae628309c">flexbuffers::FBT_VECTOR_FLOAT3</a></div><div class="ttdeci">@ FBT_VECTOR_FLOAT3</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00077">flexbuffers.h:77</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a4514ae16e1e118996f98a68ff8a9eeba"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a4514ae16e1e118996f98a68ff8a9eeba">flexbuffers::FBT_VECTOR_FLOAT</a></div><div class="ttdeci">@ FBT_VECTOR_FLOAT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00067">flexbuffers.h:67</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a473f7cd58c07cffaf27091c8af7a9c59"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a473f7cd58c07cffaf27091c8af7a9c59">flexbuffers::FBT_VECTOR_FLOAT2</a></div><div class="ttdeci">@ FBT_VECTOR_FLOAT2</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00074">flexbuffers.h:74</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a61d442f38cb775643f12e0924a9be803"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a61d442f38cb775643f12e0924a9be803">flexbuffers::FBT_BLOB</a></div><div class="ttdeci">@ FBT_BLOB</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00081">flexbuffers.h:81</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a67a610c00b02bd42cd175be6ac0fc1b3"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a67a610c00b02bd42cd175be6ac0fc1b3">flexbuffers::FBT_UINT</a></div><div class="ttdeci">@ FBT_UINT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00055">flexbuffers.h:55</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a711b74a1c9499e12f2547d8471c9f47a"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a711b74a1c9499e12f2547d8471c9f47a">flexbuffers::FBT_INDIRECT_FLOAT</a></div><div class="ttdeci">@ FBT_INDIRECT_FLOAT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00062">flexbuffers.h:62</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a7a1fa825a2e2b3bdea0a9a78f0da2eed"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a7a1fa825a2e2b3bdea0a9a78f0da2eed">flexbuffers::FBT_VECTOR_INT</a></div><div class="ttdeci">@ FBT_VECTOR_INT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00065">flexbuffers.h:65</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a81f7c7c62e9de6d60401f627d6d69fba"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a81f7c7c62e9de6d60401f627d6d69fba">flexbuffers::FBT_INDIRECT_INT</a></div><div class="ttdeci">@ FBT_INDIRECT_INT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00060">flexbuffers.h:60</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a87fe8930f233a8ed943efe9a9a80b499"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a87fe8930f233a8ed943efe9a9a80b499">flexbuffers::FBT_VECTOR_UINT4</a></div><div class="ttdeci">@ FBT_VECTOR_UINT4</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00079">flexbuffers.h:79</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">flexbuffers::FBT_INT</a></div><div class="ttdeci">@ FBT_INT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00054">flexbuffers.h:54</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a89fd338fc72652cfe0506bd6551fe80c"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a89fd338fc72652cfe0506bd6551fe80c">flexbuffers::FBT_VECTOR_UINT</a></div><div class="ttdeci">@ FBT_VECTOR_UINT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00066">flexbuffers.h:66</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a9ba45c56db68b462cd279ad0c9f25d4e"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a9ba45c56db68b462cd279ad0c9f25d4e">flexbuffers::FBT_STRING</a></div><div class="ttdeci">@ FBT_STRING</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00059">flexbuffers.h:59</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872a9bac55eee9a20ce095257cde7908aa93"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a9bac55eee9a20ce095257cde7908aa93">flexbuffers::FBT_NULL</a></div><div class="ttdeci">@ FBT_NULL</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00053">flexbuffers.h:53</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ab2446b045d04489031d625625086a0cd"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ab2446b045d04489031d625625086a0cd">flexbuffers::FBT_MAX_TYPE</a></div><div class="ttdeci">@ FBT_MAX_TYPE</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00087">flexbuffers.h:86</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ab9ee896762e6c7cd74b0e133eed085d0"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ab9ee896762e6c7cd74b0e133eed085d0">flexbuffers::FBT_VECTOR_STRING_DEPRECATED</a></div><div class="ttdeci">@ FBT_VECTOR_STRING_DEPRECATED</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00071">flexbuffers.h:71</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872abd4a72791196667824395f0e26b59385"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872abd4a72791196667824395f0e26b59385">flexbuffers::FBT_VECTOR_INT2</a></div><div class="ttdeci">@ FBT_VECTOR_INT2</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00072">flexbuffers.h:72</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ac2469bbf89701c2dc7e3b844aa46c425"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac2469bbf89701c2dc7e3b844aa46c425">flexbuffers::FBT_KEY</a></div><div class="ttdeci">@ FBT_KEY</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00058">flexbuffers.h:58</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ac257bb0d93f5e7ec8175b54972ba6210"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac257bb0d93f5e7ec8175b54972ba6210">flexbuffers::FBT_VECTOR_UINT2</a></div><div class="ttdeci">@ FBT_VECTOR_UINT2</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00073">flexbuffers.h:73</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ac609eb18ad2c35135f72084698693473"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac609eb18ad2c35135f72084698693473">flexbuffers::FBT_VECTOR_INT3</a></div><div class="ttdeci">@ FBT_VECTOR_INT3</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00075">flexbuffers.h:75</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872acf1d3474024083b8e774f3950029a01e"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf1d3474024083b8e774f3950029a01e">flexbuffers::FBT_VECTOR_INT4</a></div><div class="ttdeci">@ FBT_VECTOR_INT4</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00078">flexbuffers.h:78</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05">flexbuffers::FBT_VECTOR_BOOL</a></div><div class="ttdeci">@ FBT_VECTOR_BOOL</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00084">flexbuffers.h:83</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ad01de95b3c532cfe9e8194029052ef24"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ad01de95b3c532cfe9e8194029052ef24">flexbuffers::FBT_FLOAT</a></div><div class="ttdeci">@ FBT_FLOAT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00056">flexbuffers.h:56</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872adcc73a2c491afce39e4416901f2da7a3"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872adcc73a2c491afce39e4416901f2da7a3">flexbuffers::FBT_INDIRECT_UINT</a></div><div class="ttdeci">@ FBT_INDIRECT_UINT</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00061">flexbuffers.h:61</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ade7af31eb6e56bf008ba6aabc626351e"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ade7af31eb6e56bf008ba6aabc626351e">flexbuffers::FBT_VECTOR_FLOAT4</a></div><div class="ttdeci">@ FBT_VECTOR_FLOAT4</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00080">flexbuffers.h:80</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5">flexbuffers::FBT_BOOL</a></div><div class="ttdeci">@ FBT_BOOL</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00082">flexbuffers.h:82</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872af433e3f5456b915cc7814070c27a45c0"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872af433e3f5456b915cc7814070c27a45c0">flexbuffers::FBT_VECTOR</a></div><div class="ttdeci">@ FBT_VECTOR</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00064">flexbuffers.h:64</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872afba8e85ae7fc2c8f02aadcd4c917272d"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872afba8e85ae7fc2c8f02aadcd4c917272d">flexbuffers::FBT_VECTOR_UINT3</a></div><div class="ttdeci">@ FBT_VECTOR_UINT3</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00076">flexbuffers.h:76</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -486,17 +497,15 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00377">377</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  378</span>{</div>
-<div class="line"><span class="lineno">  379</span>  s += <span class="stringliteral">&quot;[ &quot;</span>;</div>
-<div class="line"><span class="lineno">  380</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; v.size(); i++)</div>
-<div class="line"><span class="lineno">  381</span>  {</div>
-<div class="line"><span class="lineno">  382</span>    <span class="keywordflow">if</span> (i)</div>
-<div class="line"><span class="lineno">  383</span>      s += <span class="stringliteral">&quot;, &quot;</span>;</div>
-<div class="line"><span class="lineno">  384</span>    v[i].ToString(<span class="keyword">true</span>, keys_quoted, s);</div>
-<div class="line"><span class="lineno">  385</span>  }</div>
-<div class="line"><span class="lineno">  386</span>  s += <span class="stringliteral">&quot; ]&quot;</span>;</div>
-<div class="line"><span class="lineno">  387</span>}</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00364">364</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  364</span>                                                           {</div>
+<div class="line"><span class="lineno">  365</span>  s += <span class="stringliteral">&quot;[ &quot;</span>;</div>
+<div class="line"><span class="lineno">  366</span>  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; v.size(); i++) {</div>
+<div class="line"><span class="lineno">  367</span>    <span class="keywordflow">if</span> (i) s += <span class="stringliteral">&quot;, &quot;</span>;</div>
+<div class="line"><span class="lineno">  368</span>    v[i].ToString(<span class="keyword">true</span>, keys_quoted, s);</div>
+<div class="line"><span class="lineno">  369</span>  }</div>
+<div class="line"><span class="lineno">  370</span>  s += <span class="stringliteral">&quot; ]&quot;</span>;</div>
+<div class="line"><span class="lineno">  371</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -524,14 +533,13 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l01018">1018</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1019</span>{</div>
-<div class="line"><span class="lineno"> 1020</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceflexbuffers.html#a1f08dbb0395262a8153e0791567b5f38">GetRoot</a>(<a class="code hl_function" href="namespaceflatbuffers.html#acf61b81d6a0573a6f4bd9d1225f3f609">flatbuffers::vector_data</a>(buffer), buffer.size());</div>
-<div class="line"><span class="lineno"> 1021</span>}</div>
-<div class="ttc" id="anamespaceflatbuffers_html_acf61b81d6a0573a6f4bd9d1225f3f609"><div class="ttname"><a href="namespaceflatbuffers.html#acf61b81d6a0573a6f4bd9d1225f3f609">flatbuffers::vector_data</a></div><div class="ttdeci">T * vector_data(std::vector&lt; T &gt; &amp;vector)</div><div class="ttdef"><b>Definition</b> <a href="stl__emulation_8h_source.html#l00082">stl_emulation.h:82</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_a1f08dbb0395262a8153e0791567b5f38"><div class="ttname"><a href="namespaceflexbuffers.html#a1f08dbb0395262a8153e0791567b5f38">flexbuffers::GetRoot</a></div><div class="ttdeci">Reference GetRoot(const uint8_t *buffer, size_t size)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l01007">flexbuffers.h:1007</a></div></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00895">895</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  895</span>                                                           {</div>
+<div class="line"><span class="lineno">  896</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceflexbuffers.html#a1f08dbb0395262a8153e0791567b5f38">GetRoot</a>(buffer.data(), buffer.size());</div>
+<div class="line"><span class="lineno">  897</span>}</div>
+<div class="ttc" id="anamespaceflexbuffers_html_a1f08dbb0395262a8153e0791567b5f38"><div class="ttname"><a href="namespaceflexbuffers.html#a1f08dbb0395262a8153e0791567b5f38">flexbuffers::GetRoot</a></div><div class="ttdeci">Reference GetRoot(const uint8_t *buffer, size_t size)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00885">flexbuffers.h:885</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l01007">GetRoot()</a>, and <a class="el" href="stl__emulation_8h_source.html#l00082">flatbuffers::vector_data()</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00885">GetRoot()</a>.</p>
 
 </div>
 </div>
@@ -569,22 +577,22 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l01007">1007</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1008</span>{</div>
-<div class="line"><span class="lineno"> 1009</span>  <span class="comment">// See Finish() below for the serialization counterpart of this.</span></div>
-<div class="line"><span class="lineno"> 1010</span>  <span class="comment">// The root starts at the end of the buffer, so we parse backwards from there.</span></div>
-<div class="line"><span class="lineno"> 1011</span>  <span class="keyword">auto</span> end = buffer + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
-<div class="line"><span class="lineno"> 1012</span>  <span class="keyword">auto</span> byte_width = *--end;</div>
-<div class="line"><span class="lineno"> 1013</span>  <span class="keyword">auto</span> packed_type = *--end;</div>
-<div class="line"><span class="lineno"> 1014</span>  end -= byte_width; <span class="comment">// The root data item.</span></div>
-<div class="line"><span class="lineno"> 1015</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classflexbuffers_1_1_reference.html">Reference</a>(end, byte_width, packed_type);</div>
-<div class="line"><span class="lineno"> 1016</span>}</div>
-<div class="ttc" id="aclassflexbuffers_1_1_reference_html"><div class="ttname"><a href="classflexbuffers_1_1_reference.html">flexbuffers::Reference</a></div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00389">flexbuffers.h:390</a></div></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00885">885</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  885</span>                                                             {</div>
+<div class="line"><span class="lineno">  886</span>  <span class="comment">// See Finish() below for the serialization counterpart of this.</span></div>
+<div class="line"><span class="lineno">  887</span>  <span class="comment">// The root starts at the end of the buffer, so we parse backwards from there.</span></div>
+<div class="line"><span class="lineno">  888</span>  <span class="keyword">auto</span> end = buffer + <a class="code hl_variable" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a>;</div>
+<div class="line"><span class="lineno">  889</span>  <span class="keyword">auto</span> byte_width = *--end;</div>
+<div class="line"><span class="lineno">  890</span>  <span class="keyword">auto</span> packed_type = *--end;</div>
+<div class="line"><span class="lineno">  891</span>  end -= byte_width;  <span class="comment">// The root data item.</span></div>
+<div class="line"><span class="lineno">  892</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classflexbuffers_1_1_reference.html">Reference</a>(end, byte_width, packed_type);</div>
+<div class="line"><span class="lineno">  893</span>}</div>
+<div class="ttc" id="aclassflexbuffers_1_1_reference_html"><div class="ttname"><a href="classflexbuffers_1_1_reference.html">flexbuffers::Reference</a></div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00373">flexbuffers.h:373</a></div></div>
 <div class="ttc" id="aonert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_html_a10d56296440a32555b0b81a24936255c"><div class="ttname"><a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp.html#a10d56296440a32555b0b81a24936255c">size</a></div><div class="ttdeci">int32_t size[5]</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">Slice.cpp:35</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="onert-micro_2luci-interpreter_2src_2kernels_2_slice_8cpp_source.html#l00035">size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l01018">GetRoot()</a>, <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00726">circledump::CustomOpPrinter::options()</a>, and <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00704">tfldump::CustomOpPrinter::options()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00895">GetRoot()</a>, <a class="el" href="circledump_2src_2_op_printer_8cpp_source.html#l00726">circledump::CustomOpPrinter::options()</a>, and <a class="el" href="tfldump_2src_2_op_printer_8cpp_source.html#l00704">tfldump::CustomOpPrinter::options()</a>.</p>
 
 </div>
 </div>
@@ -606,10 +614,10 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00182">182</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  183</span>{</div>
-<div class="line"><span class="lineno">  184</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> - flatbuffers::ReadScalar&lt;T&gt;(<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
-<div class="line"><span class="lineno">  185</span>}</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00184">184</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  184</span>                                                                    {</div>
+<div class="line"><span class="lineno">  185</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> - flatbuffers::ReadScalar&lt;T&gt;(<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>);</div>
+<div class="line"><span class="lineno">  186</span>}</div>
 <div class="ttc" id="ahelpers_8h_html_a4feba60a9e39bac7e69e89159514c9e6"><div class="ttname"><a href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a></div><div class="ttdeci">__global uchar * offset(const Image *img, int x, int y)</div><div class="ttdef"><b>Definition</b> <a href="helpers_8h_source.html#l00540">helpers.h:540</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>.</p>
@@ -650,15 +658,15 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00177">177</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  178</span>{</div>
-<div class="line"><span class="lineno">  179</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> - <a class="code hl_function" href="namespaceflexbuffers.html#a7e2fe5b607a41dadaf1fb9b05b6ca2c6">ReadUInt64</a>(<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>, byte_width);</div>
-<div class="line"><span class="lineno">  180</span>}</div>
-<div class="ttc" id="anamespaceflexbuffers_html_a7e2fe5b607a41dadaf1fb9b05b6ca2c6"><div class="ttname"><a href="namespaceflexbuffers.html#a7e2fe5b607a41dadaf1fb9b05b6ca2c6">flexbuffers::ReadUInt64</a></div><div class="ttdeci">uint64_t ReadUInt64(const uint8_t *data, uint8_t byte_width)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00160">flexbuffers.h:160</a></div></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00180">180</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  180</span>                                                                          {</div>
+<div class="line"><span class="lineno">  181</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a> - <a class="code hl_function" href="namespaceflexbuffers.html#a7e2fe5b607a41dadaf1fb9b05b6ca2c6">ReadUInt64</a>(<a class="code hl_function" href="helpers_8h.html#a4feba60a9e39bac7e69e89159514c9e6">offset</a>, byte_width);</div>
+<div class="line"><span class="lineno">  182</span>}</div>
+<div class="ttc" id="anamespaceflexbuffers_html_a7e2fe5b607a41dadaf1fb9b05b6ca2c6"><div class="ttname"><a href="namespaceflexbuffers.html#a7e2fe5b607a41dadaf1fb9b05b6ca2c6">flexbuffers::ReadUInt64</a></div><div class="ttdeci">uint64_t ReadUInt64(const uint8_t *data, uint8_t byte_width)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00154">flexbuffers.h:154</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00160">ReadUInt64()</a>.</p>
+<p class="reference">References <a class="el" href="helpers_8h_source.html#l00540">offset()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00154">ReadUInt64()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00357">flexbuffers::Map::Keys()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00344">flexbuffers::Map::Keys()</a>.</p>
 
 </div>
 </div>
@@ -686,12 +694,14 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00101">101</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  101</span>{ <span class="keywordflow">return</span> t &gt;= <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872abd4a72791196667824395f0e26b59385">FBT_VECTOR_INT2</a> &amp;&amp; t &lt;= <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ade7af31eb6e56bf008ba6aabc626351e">FBT_VECTOR_FLOAT4</a>; }</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00100">100</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  100</span>                                       {</div>
+<div class="line"><span class="lineno">  101</span>  <span class="keywordflow">return</span> t &gt;= <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872abd4a72791196667824395f0e26b59385">FBT_VECTOR_INT2</a> &amp;&amp; t &lt;= <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ade7af31eb6e56bf008ba6aabc626351e">FBT_VECTOR_FLOAT4</a>;</div>
+<div class="line"><span class="lineno">  102</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00083">FBT_VECTOR_FLOAT4</a>, and <a class="el" href="flexbuffers_8h_source.html#l00075">FBT_VECTOR_INT2</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00080">FBT_VECTOR_FLOAT4</a>, and <a class="el" href="flexbuffers_8h_source.html#l00072">FBT_VECTOR_INT2</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00420">flexbuffers::Reference::IsFixedTypedVector()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00128">ToFixedTypedVectorElementType()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00409">flexbuffers::Reference::IsFixedTypedVector()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00120">ToFixedTypedVectorElementType()</a>.</p>
 
 </div>
 </div>
@@ -722,9 +732,9 @@ template&lt;typename T &gt; </div>
 <p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00089">89</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   89</span>{ <span class="keywordflow">return</span> t &lt;= <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ad01de95b3c532cfe9e8194029052ef24">FBT_FLOAT</a> || t == <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5">FBT_BOOL</a>; }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00085">FBT_BOOL</a>, and <a class="el" href="flexbuffers_8h_source.html#l00059">FBT_FLOAT</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00082">FBT_BOOL</a>, and <a class="el" href="flexbuffers_8h_source.html#l00056">FBT_FLOAT</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l01635">flexbuffers::FLATBUFFERS_FINAL_CLASS::Value::ElemWidth()</a>, and <a class="el" href="flexbuffers_8h_source.html#l01666">flexbuffers::FLATBUFFERS_FINAL_CLASS::Value::StoredWidth()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l01469">flexbuffers::FLATBUFFERS_FINAL_CLASS::Value::ElemWidth()</a>, and <a class="el" href="flexbuffers_8h_source.html#l01498">flexbuffers::FLATBUFFERS_FINAL_CLASS::Value::StoredWidth()</a>.</p>
 
 </div>
 </div>
@@ -752,14 +762,15 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00096">96</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   97</span>{</div>
-<div class="line"><span class="lineno">   98</span>  <span class="keywordflow">return</span> (t &gt;= FBT_VECTOR_INT &amp;&amp; t &lt;= FBT_VECTOR_STRING_DEPRECATED) || t == <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05">FBT_VECTOR_BOOL</a>;</div>
-<div class="line"><span class="lineno">   99</span>}</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00095">95</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>                                  {</div>
+<div class="line"><span class="lineno">   96</span>  <span class="keywordflow">return</span> (t &gt;= FBT_VECTOR_INT &amp;&amp; t &lt;= FBT_VECTOR_STRING_DEPRECATED) ||</div>
+<div class="line"><span class="lineno">   97</span>         t == <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf6c49c2abd3f2b2508c9b4fe48fec05">FBT_VECTOR_BOOL</a>;</div>
+<div class="line"><span class="lineno">   98</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00086">FBT_VECTOR_BOOL</a>, <a class="el" href="flexbuffers_8h_source.html#l00068">FBT_VECTOR_INT</a>, and <a class="el" href="flexbuffers_8h_source.html#l00074">FBT_VECTOR_STRING_DEPRECATED</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00083">FBT_VECTOR_BOOL</a>, <a class="el" href="flexbuffers_8h_source.html#l00065">FBT_VECTOR_INT</a>, and <a class="el" href="flexbuffers_8h_source.html#l00071">FBT_VECTOR_STRING_DEPRECATED</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00419">flexbuffers::Reference::IsTypedVector()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00122">ToTypedVectorElementType()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00408">flexbuffers::Reference::IsTypedVector()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00115">ToTypedVectorElementType()</a>.</p>
 
 </div>
 </div>
@@ -788,13 +799,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00091">91</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>{</div>
-<div class="line"><span class="lineno">   93</span>  <span class="keywordflow">return</span> (t &gt;= FBT_INT &amp;&amp; t &lt;= FBT_STRING) || t == <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5">FBT_BOOL</a>;</div>
-<div class="line"><span class="lineno">   94</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   91</span>                                             {</div>
+<div class="line"><span class="lineno">   92</span>  <span class="keywordflow">return</span> (t &gt;= FBT_INT &amp;&amp; t &lt;= FBT_STRING) || t == <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ae04a92faea341843a14cda9a5a600af5">FBT_BOOL</a>;</div>
+<div class="line"><span class="lineno">   93</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00085">FBT_BOOL</a>, <a class="el" href="flexbuffers_8h_source.html#l00057">FBT_INT</a>, and <a class="el" href="flexbuffers_8h_source.html#l00062">FBT_STRING</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00082">FBT_BOOL</a>, <a class="el" href="flexbuffers_8h_source.html#l00054">FBT_INT</a>, and <a class="el" href="flexbuffers_8h_source.html#l00059">FBT_STRING</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00103">ToTypedVector()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00104">ToTypedVector()</a>.</p>
 
 </div>
 </div>
@@ -826,13 +837,13 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00969">969</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  970</span>{</div>
-<div class="line"><span class="lineno">  971</span>  <span class="keyword">auto</span> str_elem =</div>
-<div class="line"><span class="lineno">  972</span>    <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(Indirect&lt;T&gt;(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(elem)));</div>
-<div class="line"><span class="lineno">  973</span>  <span class="keyword">auto</span> skey = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(key);</div>
-<div class="line"><span class="lineno">  974</span>  <span class="keywordflow">return</span> strcmp(skey, str_elem);</div>
-<div class="line"><span class="lineno">  975</span>}</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00856">856</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  856</span>                                                                       {</div>
+<div class="line"><span class="lineno">  857</span>  <span class="keyword">auto</span> str_elem = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(</div>
+<div class="line"><span class="lineno">  858</span>      Indirect&lt;T&gt;(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(elem)));</div>
+<div class="line"><span class="lineno">  859</span>  <span class="keyword">auto</span> skey = <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span><span class="keywordtype">char</span> *<span class="keyword">&gt;</span>(key);</div>
+<div class="line"><span class="lineno">  860</span>  <span class="keywordflow">return</span> strcmp(skey, str_elem);</div>
+<div class="line"><span class="lineno">  861</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -859,13 +870,13 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00933">933</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  933</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceflexbuffers.html#af841495d819152416a8fa139acf3f119">PackedType</a>(BIT_WIDTH_8, FBT_NULL); }</div>
-<div class="ttc" id="anamespaceflexbuffers_html_af841495d819152416a8fa139acf3f119"><div class="ttname"><a href="namespaceflexbuffers.html#af841495d819152416a8fa139acf3f119">flexbuffers::PackedType</a></div><div class="ttdeci">uint8_t PackedType(BitWidth bit_width, Type type)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00928">flexbuffers.h:928</a></div></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00826">826</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  826</span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceflexbuffers.html#af841495d819152416a8fa139acf3f119">PackedType</a>(BIT_WIDTH_8, FBT_NULL); }</div>
+<div class="ttc" id="anamespaceflexbuffers_html_af841495d819152416a8fa139acf3f119"><div class="ttname"><a href="namespaceflexbuffers.html#af841495d819152416a8fa139acf3f119">flexbuffers::PackedType</a></div><div class="ttdeci">uint8_t PackedType(BitWidth bit_width, Type type)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00822">flexbuffers.h:822</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00046">BIT_WIDTH_8</a>, <a class="el" href="flexbuffers_8h_source.html#l00056">FBT_NULL</a>, and <a class="el" href="flexbuffers_8h_source.html#l00928">PackedType()</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00044">BIT_WIDTH_8</a>, <a class="el" href="flexbuffers_8h_source.html#l00053">FBT_NULL</a>, and <a class="el" href="flexbuffers_8h_source.html#l00822">PackedType()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00977">flexbuffers::Map::operator[]()</a>, <a class="el" href="flexbuffers_8h_source.html#l00942">flexbuffers::Vector::operator[]()</a>, <a class="el" href="flexbuffers_8h_source.html#l00952">flexbuffers::TypedVector::operator[]()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00961">flexbuffers::FixedTypedVector::operator[]()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00863">flexbuffers::Map::operator[]()</a>, <a class="el" href="flexbuffers_8h_source.html#l00835">flexbuffers::Vector::operator[]()</a>, <a class="el" href="flexbuffers_8h_source.html#l00843">flexbuffers::TypedVector::operator[]()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00850">flexbuffers::FixedTypedVector::operator[]()</a>.</p>
 
 </div>
 </div>
@@ -903,12 +914,12 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00928">928</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  929</span>{</div>
-<div class="line"><span class="lineno">  930</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(bit_width | (type &lt;&lt; 2));</div>
-<div class="line"><span class="lineno">  931</span>}</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00822">822</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  822</span>                                                         {</div>
+<div class="line"><span class="lineno">  823</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(bit_width | (type &lt;&lt; 2));</div>
+<div class="line"><span class="lineno">  824</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00933">NullPackedType()</a>, and <a class="el" href="flexbuffers_8h_source.html#l01630">flexbuffers::FLATBUFFERS_FINAL_CLASS::Value::StoredPackedType()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00826">NullPackedType()</a>, <a class="el" href="flexbuffers_8h_source.html#l01465">flexbuffers::FLATBUFFERS_FINAL_CLASS::Value::StoredPackedType()</a>, and <a class="el" href="flexbuffers_8h_source.html#l01657">flexbuffers::FLATBUFFERS_FINAL_CLASS::Verifier()</a>.</p>
 
 </div>
 </div>
@@ -946,12 +957,13 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00172">172</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  173</span>{</div>
-<div class="line"><span class="lineno">  174</span>  <span class="keywordflow">return</span> ReadSizedScalar&lt;double, quarter, half, float, double&gt;(data, byte_width);</div>
-<div class="line"><span class="lineno">  175</span>}</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00175">175</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  175</span>                                                                  {</div>
+<div class="line"><span class="lineno">  176</span>  <span class="keywordflow">return</span> ReadSizedScalar&lt;double, quarter, half, float, double&gt;(data,</div>
+<div class="line"><span class="lineno">  177</span>                                                               byte_width);</div>
+<div class="line"><span class="lineno">  178</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00510">flexbuffers::Reference::AsDouble()</a>, <a class="el" href="flexbuffers_8h_source.html#l00432">flexbuffers::Reference::AsInt64()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00472">flexbuffers::Reference::AsUInt64()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00481">flexbuffers::Reference::AsDouble()</a>, <a class="el" href="flexbuffers_8h_source.html#l00425">flexbuffers::Reference::AsInt64()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00454">flexbuffers::Reference::AsUInt64()</a>.</p>
 
 </div>
 </div>
@@ -989,12 +1001,13 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00155">155</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  156</span>{</div>
-<div class="line"><span class="lineno">  157</span>  <span class="keywordflow">return</span> ReadSizedScalar&lt;int64_t, int8_t, int16_t, int32_t, int64_t&gt;(data, byte_width);</div>
-<div class="line"><span class="lineno">  158</span>}</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00149">149</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  149</span>                                                                  {</div>
+<div class="line"><span class="lineno">  150</span>  <span class="keywordflow">return</span> ReadSizedScalar&lt;int64_t, int8_t, int16_t, int32_t, int64_t&gt;(</div>
+<div class="line"><span class="lineno">  151</span>      data, byte_width);</div>
+<div class="line"><span class="lineno">  152</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00510">flexbuffers::Reference::AsDouble()</a>, <a class="el" href="flexbuffers_8h_source.html#l00432">flexbuffers::Reference::AsInt64()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00472">flexbuffers::Reference::AsUInt64()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00481">flexbuffers::Reference::AsDouble()</a>, <a class="el" href="flexbuffers_8h_source.html#l00425">flexbuffers::Reference::AsInt64()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00454">flexbuffers::Reference::AsUInt64()</a>.</p>
 
 </div>
 </div>
@@ -1026,14 +1039,17 @@ template&lt;typename R , typename T1 , typename T2 , typename T4 , typename T8 &
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00147">147</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  148</span>{</div>
-<div class="line"><span class="lineno">  149</span>  <span class="keywordflow">return</span> byte_width &lt; 4 ? (byte_width &lt; 2 ? static_cast&lt;R&gt;(flatbuffers::ReadScalar&lt;T1&gt;(data))</div>
-<div class="line"><span class="lineno">  150</span>                                          : static_cast&lt;R&gt;(<a class="code hl_namespace" href="namespaceflatbuffers.html">flatbuffers</a>::ReadScalar&lt;T2&gt;(data)))</div>
-<div class="line"><span class="lineno">  151</span>                        : (byte_width &lt; 8 ? static_cast&lt;R&gt;(<a class="code hl_namespace" href="namespaceflatbuffers.html">flatbuffers</a>::ReadScalar&lt;T4&gt;(data))</div>
-<div class="line"><span class="lineno">  152</span>                                          : static_cast&lt;R&gt;(<a class="code hl_namespace" href="namespaceflatbuffers.html">flatbuffers</a>::ReadScalar&lt;T8&gt;(data)));</div>
-<div class="line"><span class="lineno">  153</span>}</div>
-<div class="ttc" id="anamespaceflatbuffers_html"><div class="ttname"><a href="namespaceflatbuffers.html">flatbuffers</a></div><div class="ttdef"><b>Definition</b> <a href="code__generators_8h_source.html#l00026">code_generators.h:27</a></div></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00139">139</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  139</span>                                                           {</div>
+<div class="line"><span class="lineno">  140</span>  <span class="keywordflow">return</span> byte_width &lt; 4</div>
+<div class="line"><span class="lineno">  141</span>             ? (byte_width &lt; 2</div>
+<div class="line"><span class="lineno">  142</span>                    ? <span class="keyword">static_cast&lt;</span>R<span class="keyword">&gt;</span>(flatbuffers::ReadScalar&lt;T1&gt;(data))</div>
+<div class="line"><span class="lineno">  143</span>                    : static_cast&lt;R&gt;(<a class="code hl_namespace" href="namespaceflatbuffers.html">flatbuffers</a>::ReadScalar&lt;T2&gt;(data)))</div>
+<div class="line"><span class="lineno">  144</span>             : (byte_width &lt; 8</div>
+<div class="line"><span class="lineno">  145</span>                    ? static_cast&lt;R&gt;(<a class="code hl_namespace" href="namespaceflatbuffers.html">flatbuffers</a>::ReadScalar&lt;T4&gt;(data))</div>
+<div class="line"><span class="lineno">  146</span>                    : static_cast&lt;R&gt;(<a class="code hl_namespace" href="namespaceflatbuffers.html">flatbuffers</a>::ReadScalar&lt;T8&gt;(data)));</div>
+<div class="line"><span class="lineno">  147</span>}</div>
+<div class="ttc" id="anamespaceflatbuffers_html"><div class="ttname"><a href="namespaceflatbuffers.html">flatbuffers</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2externals_2flatbuffers_2_allocator_8h_source.html#l00022">allocator.h:22</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1071,19 +1087,29 @@ template&lt;typename R , typename T1 , typename T2 , typename T4 , typename T8 &
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00160">160</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  161</span>{</div>
-<div class="line"><span class="lineno">  162</span><span class="preprocessor">#if defined(_MSC_VER) &amp;&amp; ((defined(_M_X64) &amp;&amp; !defined(_M_ARM64EC)) || defined _M_IX86)</span></div>
-<div class="line"><span class="lineno">  163</span>  uint64_t u = 0;</div>
-<div class="line"><span class="lineno">  164</span>  __movsb(<span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(&amp;u), <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(data), byte_width);</div>
-<div class="line"><span class="lineno">  165</span>  <span class="keywordflow">return</span> flatbuffers::EndianScalar(u);</div>
-<div class="line"><span class="lineno">  166</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">  167</span>  <span class="keywordflow">return</span> ReadSizedScalar&lt;uint64_t, uint8_t, uint16_t, uint32_t, uint64_t&gt;(data, byte_width);</div>
-<div class="line"><span class="lineno">  168</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">  169</span>  <span class="comment">// clang-format on</span></div>
-<div class="line"><span class="lineno">  170</span>}</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00154">154</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  154</span>                                                                    {</div>
+<div class="line"><span class="lineno">  155</span>  <span class="comment">// This is the &quot;hottest&quot; function (all offset lookups use this), so worth</span></div>
+<div class="line"><span class="lineno">  156</span>  <span class="comment">// optimizing if possible.</span></div>
+<div class="line"><span class="lineno">  157</span>  <span class="comment">// TODO: GCC apparently replaces memcpy by a rep movsb, but only if count is a</span></div>
+<div class="line"><span class="lineno">  158</span>  <span class="comment">// constant, which here it isn&#39;t. Test if memcpy is still faster than</span></div>
+<div class="line"><span class="lineno">  159</span>  <span class="comment">// the conditionals in ReadSizedScalar. Can also use inline asm.</span></div>
+<div class="line"><span class="lineno">  160</span> </div>
+<div class="line"><span class="lineno">  161</span>  <span class="comment">// clang-format off</span></div>
+<div class="line"><span class="lineno">  162</span><span class="preprocessor">  #if defined(_MSC_VER) &amp;&amp; defined(_M_X64) &amp;&amp; !defined(_M_ARM64EC)</span></div>
+<div class="line"><span class="lineno">  163</span>  <span class="comment">// This is 64-bit Windows only, __movsb does not work on 32-bit Windows.</span></div>
+<div class="line"><span class="lineno">  164</span>    uint64_t u = 0;</div>
+<div class="line"><span class="lineno">  165</span>    __movsb(<span class="keyword">reinterpret_cast&lt;</span>uint8_t *<span class="keyword">&gt;</span>(&amp;u),</div>
+<div class="line"><span class="lineno">  166</span>            <span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(data), byte_width);</div>
+<div class="line"><span class="lineno">  167</span>    <span class="keywordflow">return</span> flatbuffers::EndianScalar(u);</div>
+<div class="line"><span class="lineno">  168</span><span class="preprocessor">  #else</span></div>
+<div class="line"><span class="lineno">  169</span>    <span class="keywordflow">return</span> ReadSizedScalar&lt;uint64_t, uint8_t, uint16_t, uint32_t, uint64_t&gt;(</div>
+<div class="line"><span class="lineno">  170</span>             data, byte_width);</div>
+<div class="line"><span class="lineno">  171</span><span class="preprocessor">  #endif</span></div>
+<div class="line"><span class="lineno">  172</span>  <span class="comment">// clang-format on</span></div>
+<div class="line"><span class="lineno">  173</span>}</div>
 </div><!-- fragment -->
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00424">flexbuffers::Reference::AsBool()</a>, <a class="el" href="flexbuffers_8h_source.html#l00510">flexbuffers::Reference::AsDouble()</a>, <a class="el" href="flexbuffers_8h_source.html#l00432">flexbuffers::Reference::AsInt64()</a>, <a class="el" href="flexbuffers_8h_source.html#l00472">flexbuffers::Reference::AsUInt64()</a>, <a class="el" href="flexbuffers_8h_source.html#l00177">Indirect()</a>, <a class="el" href="flexbuffers_8h_source.html#l00357">flexbuffers::Map::Keys()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00234">flexbuffers::Sized::read_size()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00417">flexbuffers::Reference::AsBool()</a>, <a class="el" href="flexbuffers_8h_source.html#l00481">flexbuffers::Reference::AsDouble()</a>, <a class="el" href="flexbuffers_8h_source.html#l00425">flexbuffers::Reference::AsInt64()</a>, <a class="el" href="flexbuffers_8h_source.html#l00454">flexbuffers::Reference::AsUInt64()</a>, <a class="el" href="flexbuffers_8h_source.html#l00180">Indirect()</a>, <a class="el" href="flexbuffers_8h_source.html#l00344">flexbuffers::Map::Keys()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00233">flexbuffers::Sized::read_size()</a>.</p>
 
 </div>
 </div>
@@ -1112,8 +1138,10 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00917">917</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  917</span>{ <span class="keywordflow">return</span> AsString().str(); }</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00808">808</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  808</span>                                                           {</div>
+<div class="line"><span class="lineno">  809</span>  <span class="keywordflow">return</span> AsString().str();</div>
+<div class="line"><span class="lineno">  810</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -1151,20 +1179,21 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00128">128</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  129</span>{</div>
-<div class="line"><span class="lineno">  130</span>  <a class="code hl_define" href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a>(<a class="code hl_function" href="namespaceflexbuffers.html#ae9e961022beed24c2de986d04f5886df">IsFixedTypedVector</a>(t));</div>
-<div class="line"><span class="lineno">  131</span>  <span class="keyword">auto</span> fixed_type = t - <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872abd4a72791196667824395f0e26b59385">FBT_VECTOR_INT2</a>;</div>
-<div class="line"><span class="lineno">  132</span>  *len = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(fixed_type / 3 + 2); <span class="comment">// 3 types each, starting from length 2.</span></div>
-<div class="line"><span class="lineno">  133</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a><span class="keyword">&gt;</span>(fixed_type % 3 + <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a>);</div>
-<div class="line"><span class="lineno">  134</span>}</div>
-<div class="ttc" id="abase_8h_html_ab2116a3957cb3c19761609ea7fd796fe"><div class="ttname"><a href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a></div><div class="ttdeci">#define FLATBUFFERS_ASSERT</div><div class="ttdef"><b>Definition</b> <a href="base_8h_source.html#l00037">base.h:37</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">flexbuffers::Type</a></div><div class="ttdeci">Type</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00054">flexbuffers.h:55</a></div></div>
-<div class="ttc" id="anamespaceflexbuffers_html_ae9e961022beed24c2de986d04f5886df"><div class="ttname"><a href="namespaceflexbuffers.html#ae9e961022beed24c2de986d04f5886df">flexbuffers::IsFixedTypedVector</a></div><div class="ttdeci">bool IsFixedTypedVector(Type t)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00101">flexbuffers.h:101</a></div></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00120">120</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  120</span>                                                                {</div>
+<div class="line"><span class="lineno">  121</span>  <a class="code hl_define" href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a>(<a class="code hl_function" href="namespaceflexbuffers.html#ae9e961022beed24c2de986d04f5886df">IsFixedTypedVector</a>(t));</div>
+<div class="line"><span class="lineno">  122</span>  <span class="keyword">auto</span> fixed_type = t - <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872abd4a72791196667824395f0e26b59385">FBT_VECTOR_INT2</a>;</div>
+<div class="line"><span class="lineno">  123</span>  *len = <span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(fixed_type / 3 +</div>
+<div class="line"><span class="lineno">  124</span>                              2);  <span class="comment">// 3 types each, starting from length 2.</span></div>
+<div class="line"><span class="lineno">  125</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a><span class="keyword">&gt;</span>(fixed_type % 3 + <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a>);</div>
+<div class="line"><span class="lineno">  126</span>}</div>
+<div class="ttc" id="abase_8h_html_ab2116a3957cb3c19761609ea7fd796fe"><div class="ttname"><a href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a></div><div class="ttdeci">#define FLATBUFFERS_ASSERT</div><div class="ttdef"><b>Definition</b> <a href="base_8h_source.html#l00021">base.h:21</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_aa0b4995478c086629fff32c3d10c3872"><div class="ttname"><a href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">flexbuffers::Type</a></div><div class="ttdeci">Type</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00052">flexbuffers.h:52</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_ae9e961022beed24c2de986d04f5886df"><div class="ttname"><a href="namespaceflexbuffers.html#ae9e961022beed24c2de986d04f5886df">flexbuffers::IsFixedTypedVector</a></div><div class="ttdeci">bool IsFixedTypedVector(Type t)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00100">flexbuffers.h:100</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00057">FBT_INT</a>, <a class="el" href="flexbuffers_8h_source.html#l00075">FBT_VECTOR_INT2</a>, <a class="el" href="base_8h_source.html#l00037">FLATBUFFERS_ASSERT</a>, and <a class="el" href="flexbuffers_8h_source.html#l00101">IsFixedTypedVector()</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00054">FBT_INT</a>, <a class="el" href="flexbuffers_8h_source.html#l00072">FBT_VECTOR_INT2</a>, <a class="el" href="base_8h_source.html#l00021">FLATBUFFERS_ASSERT</a>, and <a class="el" href="flexbuffers_8h_source.html#l00100">IsFixedTypedVector()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00730">flexbuffers::Reference::AsFixedTypedVector()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00653">flexbuffers::Reference::AsFixedTypedVector()</a>.</p>
 
 </div>
 </div>
@@ -1202,27 +1231,20 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00103">103</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  104</span>{</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00104">104</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  104</span>                                                        {</div>
 <div class="line"><span class="lineno">  105</span>  <a class="code hl_define" href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a>(<a class="code hl_function" href="namespaceflexbuffers.html#a5ff1d990cb63b0edaa0d841c77933889">IsTypedVectorElementType</a>(t));</div>
-<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">switch</span> (fixed_len)</div>
-<div class="line"><span class="lineno">  107</span>  {</div>
-<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">case</span> 0:</div>
-<div class="line"><span class="lineno">  109</span>      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a><span class="keyword">&gt;</span>(t - <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a> + <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a7a1fa825a2e2b3bdea0a9a78f0da2eed">FBT_VECTOR_INT</a>);</div>
-<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">case</span> 2:</div>
-<div class="line"><span class="lineno">  111</span>      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a><span class="keyword">&gt;</span>(t - <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a> + <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872abd4a72791196667824395f0e26b59385">FBT_VECTOR_INT2</a>);</div>
-<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">case</span> 3:</div>
-<div class="line"><span class="lineno">  113</span>      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a><span class="keyword">&gt;</span>(t - <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a> + <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac609eb18ad2c35135f72084698693473">FBT_VECTOR_INT3</a>);</div>
-<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">case</span> 4:</div>
-<div class="line"><span class="lineno">  115</span>      <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a><span class="keyword">&gt;</span>(t - <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a> + <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf1d3474024083b8e774f3950029a01e">FBT_VECTOR_INT4</a>);</div>
-<div class="line"><span class="lineno">  116</span>    <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  117</span>      <a class="code hl_define" href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a>(0);</div>
-<div class="line"><span class="lineno">  118</span>      <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a9bac55eee9a20ce095257cde7908aa93">FBT_NULL</a>;</div>
-<div class="line"><span class="lineno">  119</span>  }</div>
-<div class="line"><span class="lineno">  120</span>}</div>
+<div class="line"><span class="lineno">  106</span>  <span class="keywordflow">switch</span> (fixed_len) {</div>
+<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">case</span> 0: <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a><span class="keyword">&gt;</span>(t - <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a> + <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a7a1fa825a2e2b3bdea0a9a78f0da2eed">FBT_VECTOR_INT</a>);</div>
+<div class="line"><span class="lineno">  108</span>    <span class="keywordflow">case</span> 2: <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a><span class="keyword">&gt;</span>(t - <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a> + <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872abd4a72791196667824395f0e26b59385">FBT_VECTOR_INT2</a>);</div>
+<div class="line"><span class="lineno">  109</span>    <span class="keywordflow">case</span> 3: <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a><span class="keyword">&gt;</span>(t - <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a> + <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872ac609eb18ad2c35135f72084698693473">FBT_VECTOR_INT3</a>);</div>
+<div class="line"><span class="lineno">  110</span>    <span class="keywordflow">case</span> 4: <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a><span class="keyword">&gt;</span>(t - <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a> + <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872acf1d3474024083b8e774f3950029a01e">FBT_VECTOR_INT4</a>);</div>
+<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">default</span>: <a class="code hl_define" href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a>(0); <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a9bac55eee9a20ce095257cde7908aa93">FBT_NULL</a>;</div>
+<div class="line"><span class="lineno">  112</span>  }</div>
+<div class="line"><span class="lineno">  113</span>}</div>
 <div class="ttc" id="anamespaceflexbuffers_html_a5ff1d990cb63b0edaa0d841c77933889"><div class="ttname"><a href="namespaceflexbuffers.html#a5ff1d990cb63b0edaa0d841c77933889">flexbuffers::IsTypedVectorElementType</a></div><div class="ttdeci">bool IsTypedVectorElementType(Type t)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00091">flexbuffers.h:91</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00057">FBT_INT</a>, <a class="el" href="flexbuffers_8h_source.html#l00056">FBT_NULL</a>, <a class="el" href="flexbuffers_8h_source.html#l00068">FBT_VECTOR_INT</a>, <a class="el" href="flexbuffers_8h_source.html#l00075">FBT_VECTOR_INT2</a>, <a class="el" href="flexbuffers_8h_source.html#l00078">FBT_VECTOR_INT3</a>, <a class="el" href="flexbuffers_8h_source.html#l00081">FBT_VECTOR_INT4</a>, <a class="el" href="base_8h_source.html#l00037">FLATBUFFERS_ASSERT</a>, and <a class="el" href="flexbuffers_8h_source.html#l00091">IsTypedVectorElementType()</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00054">FBT_INT</a>, <a class="el" href="flexbuffers_8h_source.html#l00053">FBT_NULL</a>, <a class="el" href="flexbuffers_8h_source.html#l00065">FBT_VECTOR_INT</a>, <a class="el" href="flexbuffers_8h_source.html#l00072">FBT_VECTOR_INT2</a>, <a class="el" href="flexbuffers_8h_source.html#l00075">FBT_VECTOR_INT3</a>, <a class="el" href="flexbuffers_8h_source.html#l00078">FBT_VECTOR_INT4</a>, <a class="el" href="base_8h_source.html#l00021">FLATBUFFERS_ASSERT</a>, and <a class="el" href="flexbuffers_8h_source.html#l00091">IsTypedVectorElementType()</a>.</p>
 
 </div>
 </div>
@@ -1250,16 +1272,114 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00122">122</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  123</span>{</div>
-<div class="line"><span class="lineno">  124</span>  <a class="code hl_define" href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a>(<a class="code hl_function" href="namespaceflexbuffers.html#a8b57cb0d573b98c4e32a0c464af4e3dc">IsTypedVector</a>(t));</div>
-<div class="line"><span class="lineno">  125</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a><span class="keyword">&gt;</span>(t - <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a7a1fa825a2e2b3bdea0a9a78f0da2eed">FBT_VECTOR_INT</a> + <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a>);</div>
-<div class="line"><span class="lineno">  126</span>}</div>
-<div class="ttc" id="anamespaceflexbuffers_html_a8b57cb0d573b98c4e32a0c464af4e3dc"><div class="ttname"><a href="namespaceflexbuffers.html#a8b57cb0d573b98c4e32a0c464af4e3dc">flexbuffers::IsTypedVector</a></div><div class="ttdeci">bool IsTypedVector(Type t)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00096">flexbuffers.h:96</a></div></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00115">115</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  115</span>                                             {</div>
+<div class="line"><span class="lineno">  116</span>  <a class="code hl_define" href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a>(<a class="code hl_function" href="namespaceflexbuffers.html#a8b57cb0d573b98c4e32a0c464af4e3dc">IsTypedVector</a>(t));</div>
+<div class="line"><span class="lineno">  117</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><a class="code hl_enumeration" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872">Type</a><span class="keyword">&gt;</span>(t - <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a7a1fa825a2e2b3bdea0a9a78f0da2eed">FBT_VECTOR_INT</a> + <a class="code hl_enumvalue" href="namespaceflexbuffers.html#aa0b4995478c086629fff32c3d10c3872a88fb1a1b1d949c0e8438bfcc1d296cda">FBT_INT</a>);</div>
+<div class="line"><span class="lineno">  118</span>}</div>
+<div class="ttc" id="anamespaceflexbuffers_html_a8b57cb0d573b98c4e32a0c464af4e3dc"><div class="ttname"><a href="namespaceflexbuffers.html#a8b57cb0d573b98c4e32a0c464af4e3dc">flexbuffers::IsTypedVector</a></div><div class="ttdeci">bool IsTypedVector(Type t)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00095">flexbuffers.h:95</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00057">FBT_INT</a>, <a class="el" href="flexbuffers_8h_source.html#l00068">FBT_VECTOR_INT</a>, <a class="el" href="base_8h_source.html#l00037">FLATBUFFERS_ASSERT</a>, and <a class="el" href="flexbuffers_8h_source.html#l00096">IsTypedVector()</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00054">FBT_INT</a>, <a class="el" href="flexbuffers_8h_source.html#l00065">FBT_VECTOR_INT</a>, <a class="el" href="base_8h_source.html#l00021">FLATBUFFERS_ASSERT</a>, and <a class="el" href="flexbuffers_8h_source.html#l00095">IsTypedVector()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00707">flexbuffers::Reference::AsTypedVector()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00634">flexbuffers::Reference::AsTypedVector()</a>.</p>
+
+</div>
+</div>
+<a id="a01115a2166486217cea5d3bc0f05f448" name="a01115a2166486217cea5d3bc0f05f448"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01115a2166486217cea5d3bc0f05f448">&#9670;&#160;</a></span>VerifyBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool flexbuffers::VerifyBuffer </td>
+          <td>(</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>buf_len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; uint8_t &gt; *&#160;</td>
+          <td class="paramname"><em>reuse_tracker</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l01875">1875</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1876</span>                                                                      {</div>
+<div class="line"><span class="lineno"> 1877</span>  Verifier verifier(buf, buf_len, reuse_tracker);</div>
+<div class="line"><span class="lineno"> 1878</span>  <span class="keywordflow">return</span> verifier.VerifyBuffer();</div>
+<div class="line"><span class="lineno"> 1879</span>}</div>
+</div><!-- fragment -->
+<p class="reference">Referenced by <a class="el" href="flex__flat__util_8h_source.html#l00026">VerifyNestedFlexBuffer()</a>.</p>
+
+</div>
+</div>
+<a id="a04da2411b07b54a64720e22f35286aaa" name="a04da2411b07b54a64720e22f35286aaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04da2411b07b54a64720e22f35286aaa">&#9670;&#160;</a></span>VerifyNestedFlexBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool flexbuffers::VerifyNestedFlexBuffer </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classflatbuffers_1_1_vector.html">flatbuffers::Vector</a>&lt; uint8_t &gt; *const&#160;</td>
+          <td class="paramname"><em>nested</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">flatbuffers::Verifier &amp;&#160;</td>
+          <td class="paramname"><em>verifier</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="flex__flat__util_8h_source.html#l00026">26</a> of file <a class="el" href="flex__flat__util_8h_source.html">flex_flat_util.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   28</span>                                   {</div>
+<div class="line"><span class="lineno">   29</span>  <span class="keywordflow">if</span> (!nested) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">   30</span>  <span class="keywordflow">return</span> verifier.Check(<a class="code hl_function" href="namespaceflexbuffers.html#a01115a2166486217cea5d3bc0f05f448">flexbuffers::VerifyBuffer</a>(</div>
+<div class="line"><span class="lineno">   31</span>      nested-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a138405be6fda9f3af1a54ee8725af080">data</a>(), nested-&gt;<a class="code hl_function" href="classflatbuffers_1_1_vector.html#a70e1b54b9c82251be5496f1729d60e9a">size</a>(), verifier.GetFlexReuseTracker()));</div>
+<div class="line"><span class="lineno">   32</span>}</div>
+<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a138405be6fda9f3af1a54ee8725af080"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a138405be6fda9f3af1a54ee8725af080">flatbuffers::Vector::data</a></div><div class="ttdeci">const T * data() const</div><div class="ttdef"><b>Definition</b> <a href="vector_8h_source.html#l00260">vector.h:260</a></div></div>
+<div class="ttc" id="aclassflatbuffers_1_1_vector_html_a70e1b54b9c82251be5496f1729d60e9a"><div class="ttname"><a href="classflatbuffers_1_1_vector.html#a70e1b54b9c82251be5496f1729d60e9a">flatbuffers::Vector::size</a></div><div class="ttdeci">SizeT size() const</div><div class="ttdef"><b>Definition</b> <a href="vector_8h_source.html#l00164">vector.h:164</a></div></div>
+<div class="ttc" id="anamespaceflexbuffers_html_a01115a2166486217cea5d3bc0f05f448"><div class="ttname"><a href="namespaceflexbuffers.html#a01115a2166486217cea5d3bc0f05f448">flexbuffers::VerifyBuffer</a></div><div class="ttdeci">bool VerifyBuffer(const uint8_t *buf, size_t buf_len, std::vector&lt; uint8_t &gt; *reuse_tracker=nullptr)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l01875">flexbuffers.h:1875</a></div></div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00260">flatbuffers::Vector&lt; T, SizeT &gt;::data()</a>, <a class="el" href="vector_8h_source.html#l00164">flatbuffers::Vector&lt; T, SizeT &gt;::size()</a>, and <a class="el" href="flexbuffers_8h_source.html#l01875">VerifyBuffer()</a>.</p>
 
 </div>
 </div>
@@ -1287,14 +1407,15 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00207">207</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  208</span>{</div>
-<div class="line"><span class="lineno">  209</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(f)) == f ? <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba2201ddae8d75cdbc09b9b61a6cdfbed1">BIT_WIDTH_32</a> : <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba12e4a741fb6a9cbec606f7a5c5b9d729">BIT_WIDTH_64</a>;</div>
-<div class="line"><span class="lineno">  210</span>}</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00205">205</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  205</span>                                 {</div>
+<div class="line"><span class="lineno">  206</span>  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(f)) == f ? <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba2201ddae8d75cdbc09b9b61a6cdfbed1">BIT_WIDTH_32</a></div>
+<div class="line"><span class="lineno">  207</span>                                                         : <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba12e4a741fb6a9cbec606f7a5c5b9d729">BIT_WIDTH_64</a>;</div>
+<div class="line"><span class="lineno">  208</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00048">BIT_WIDTH_32</a>, and <a class="el" href="flexbuffers_8h_source.html#l00049">BIT_WIDTH_64</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00046">BIT_WIDTH_32</a>, and <a class="el" href="flexbuffers_8h_source.html#l00047">BIT_WIDTH_64</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l01149">flexbuffers::FLATBUFFERS_FINAL_CLASS::IndirectDouble()</a>, <a class="el" href="flexbuffers_8h_source.html#l00837">flexbuffers::Reference::MutateFloat()</a>, and <a class="el" href="flexbuffers_8h_source.html#l01628">flexbuffers::FLATBUFFERS_FINAL_CLASS::Value::Value()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l01020">flexbuffers::FLATBUFFERS_FINAL_CLASS::IndirectDouble()</a>, <a class="el" href="flexbuffers_8h_source.html#l00725">flexbuffers::Reference::MutateFloat()</a>, and <a class="el" href="flexbuffers_8h_source.html#l01463">flexbuffers::FLATBUFFERS_FINAL_CLASS::Value::Value()</a>.</p>
 
 </div>
 </div>
@@ -1322,16 +1443,16 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00201">201</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  202</span>{</div>
-<div class="line"><span class="lineno">  203</span>  <span class="keyword">auto</span> u = <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(i) &lt;&lt; 1;</div>
-<div class="line"><span class="lineno">  204</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceflexbuffers.html#aff7bc29030435a3586a9cea1f617fda8">WidthU</a>(i &gt;= 0 ? u : ~u);</div>
-<div class="line"><span class="lineno">  205</span>}</div>
-<div class="ttc" id="anamespaceflexbuffers_html_aff7bc29030435a3586a9cea1f617fda8"><div class="ttname"><a href="namespaceflexbuffers.html#aff7bc29030435a3586a9cea1f617fda8">flexbuffers::WidthU</a></div><div class="ttdeci">BitWidth WidthU(uint64_t u)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00187">flexbuffers.h:187</a></div></div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00200">200</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  200</span>                                  {</div>
+<div class="line"><span class="lineno">  201</span>  <span class="keyword">auto</span> u = <span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(i) &lt;&lt; 1;</div>
+<div class="line"><span class="lineno">  202</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceflexbuffers.html#aff7bc29030435a3586a9cea1f617fda8">WidthU</a>(i &gt;= 0 ? u : ~u);</div>
+<div class="line"><span class="lineno">  203</span>}</div>
+<div class="ttc" id="anamespaceflexbuffers_html_aff7bc29030435a3586a9cea1f617fda8"><div class="ttname"><a href="namespaceflexbuffers.html#aff7bc29030435a3586a9cea1f617fda8">flexbuffers::WidthU</a></div><div class="ttdeci">BitWidth WidthU(uint64_t u)</div><div class="ttdef"><b>Definition</b> <a href="flexbuffers_8h_source.html#l00188">flexbuffers.h:188</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00187">WidthU()</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00188">WidthU()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l01128">flexbuffers::FLATBUFFERS_FINAL_CLASS::IndirectInt()</a>, <a class="el" href="flexbuffers_8h_source.html#l01093">flexbuffers::FLATBUFFERS_FINAL_CLASS::Int()</a>, <a class="el" href="flexbuffers_8h_source.html#l00764">flexbuffers::Reference::MutateInt()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00795">flexbuffers::Reference::MutateUInt()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l00998">flexbuffers::FLATBUFFERS_FINAL_CLASS::IndirectInt()</a>, <a class="el" href="flexbuffers_8h_source.html#l00968">flexbuffers::FLATBUFFERS_FINAL_CLASS::Int()</a>, <a class="el" href="flexbuffers_8h_source.html#l00679">flexbuffers::Reference::MutateInt()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00699">flexbuffers::Reference::MutateUInt()</a>.</p>
 
 </div>
 </div>
@@ -1359,24 +1480,23 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00187">187</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  188</span>{</div>
-<div class="line"><span class="lineno">  189</span><span class="preprocessor">#define FLATBUFFERS_GET_FIELD_BIT_WIDTH(value, width) \</span></div>
-<div class="line"><span class="lineno">  190</span><span class="preprocessor">  {                                                   \</span></div>
-<div class="line"><span class="lineno">  191</span><span class="preprocessor">    if (!((u) &amp; ~((1ULL &lt;&lt; (width)) - 1ULL)))         \</span></div>
-<div class="line"><span class="lineno">  192</span><span class="preprocessor">      return BIT_WIDTH_##width;                       \</span></div>
-<div class="line"><span class="lineno">  193</span><span class="preprocessor">  }</span></div>
-<div class="line"><span class="lineno">  194</span>  <a class="code hl_define" href="flexbuffers_8h.html#a83bf2dbac794a61b318aa08088dd998f">FLATBUFFERS_GET_FIELD_BIT_WIDTH</a>(u, 8);</div>
-<div class="line"><span class="lineno">  195</span>  <a class="code hl_define" href="flexbuffers_8h.html#a83bf2dbac794a61b318aa08088dd998f">FLATBUFFERS_GET_FIELD_BIT_WIDTH</a>(u, 16);</div>
-<div class="line"><span class="lineno">  196</span>  <a class="code hl_define" href="flexbuffers_8h.html#a83bf2dbac794a61b318aa08088dd998f">FLATBUFFERS_GET_FIELD_BIT_WIDTH</a>(u, 32);</div>
-<div class="line"><span class="lineno">  197</span><span class="preprocessor">#undef FLATBUFFERS_GET_FIELD_BIT_WIDTH</span></div>
-<div class="line"><span class="lineno">  198</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba12e4a741fb6a9cbec606f7a5c5b9d729">BIT_WIDTH_64</a>;</div>
-<div class="line"><span class="lineno">  199</span>}</div>
+<p class="definition">Definition at line <a class="el" href="flexbuffers_8h_source.html#l00188">188</a> of file <a class="el" href="flexbuffers_8h_source.html">flexbuffers.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  188</span>                                   {</div>
+<div class="line"><span class="lineno">  189</span><span class="preprocessor">#define FLATBUFFERS_GET_FIELD_BIT_WIDTH(value, width)                   \</span></div>
+<div class="line"><span class="lineno">  190</span><span class="preprocessor">  {                                                                     \</span></div>
+<div class="line"><span class="lineno">  191</span><span class="preprocessor">    if (!((u) &amp; ~((1ULL &lt;&lt; (width)) - 1ULL))) return BIT_WIDTH_##width; \</span></div>
+<div class="line"><span class="lineno">  192</span><span class="preprocessor">  }</span></div>
+<div class="line"><span class="lineno">  193</span>  <a class="code hl_define" href="flexbuffers_8h.html#a83bf2dbac794a61b318aa08088dd998f">FLATBUFFERS_GET_FIELD_BIT_WIDTH</a>(u, 8);</div>
+<div class="line"><span class="lineno">  194</span>  <a class="code hl_define" href="flexbuffers_8h.html#a83bf2dbac794a61b318aa08088dd998f">FLATBUFFERS_GET_FIELD_BIT_WIDTH</a>(u, 16);</div>
+<div class="line"><span class="lineno">  195</span>  <a class="code hl_define" href="flexbuffers_8h.html#a83bf2dbac794a61b318aa08088dd998f">FLATBUFFERS_GET_FIELD_BIT_WIDTH</a>(u, 32);</div>
+<div class="line"><span class="lineno">  196</span><span class="preprocessor">#undef FLATBUFFERS_GET_FIELD_BIT_WIDTH</span></div>
+<div class="line"><span class="lineno">  197</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceflexbuffers.html#a76cc4a8eb404468982af5bd160912e8ba12e4a741fb6a9cbec606f7a5c5b9d729">BIT_WIDTH_64</a>;</div>
+<div class="line"><span class="lineno">  198</span>}</div>
 <div class="ttc" id="aflexbuffers_8h_html_a83bf2dbac794a61b318aa08088dd998f"><div class="ttname"><a href="flexbuffers_8h.html#a83bf2dbac794a61b318aa08088dd998f">FLATBUFFERS_GET_FIELD_BIT_WIDTH</a></div><div class="ttdeci">#define FLATBUFFERS_GET_FIELD_BIT_WIDTH(value, width)</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00049">BIT_WIDTH_64</a>, and <a class="el" href="flexbuffers_8h.html#a83bf2dbac794a61b318aa08088dd998f">FLATBUFFERS_GET_FIELD_BIT_WIDTH</a>.</p>
+<p class="reference">References <a class="el" href="flexbuffers_8h_source.html#l00047">BIT_WIDTH_64</a>, and <a class="el" href="flexbuffers_8h.html#a83bf2dbac794a61b318aa08088dd998f">FLATBUFFERS_GET_FIELD_BIT_WIDTH</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l01635">flexbuffers::FLATBUFFERS_FINAL_CLASS::Value::ElemWidth()</a>, <a class="el" href="flexbuffers_8h_source.html#l01135">flexbuffers::FLATBUFFERS_FINAL_CLASS::IndirectUInt()</a>, <a class="el" href="flexbuffers_8h_source.html#l00764">flexbuffers::Reference::MutateInt()</a>, <a class="el" href="flexbuffers_8h_source.html#l00795">flexbuffers::Reference::MutateUInt()</a>, <a class="el" href="flexbuffers_8h_source.html#l01100">flexbuffers::FLATBUFFERS_FINAL_CLASS::UInt()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00201">WidthI()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="flexbuffers_8h_source.html#l01469">flexbuffers::FLATBUFFERS_FINAL_CLASS::Value::ElemWidth()</a>, <a class="el" href="flexbuffers_8h_source.html#l01004">flexbuffers::FLATBUFFERS_FINAL_CLASS::IndirectUInt()</a>, <a class="el" href="flexbuffers_8h_source.html#l00679">flexbuffers::Reference::MutateInt()</a>, <a class="el" href="flexbuffers_8h_source.html#l00699">flexbuffers::Reference::MutateUInt()</a>, <a class="el" href="flexbuffers_8h_source.html#l00974">flexbuffers::FLATBUFFERS_FINAL_CLASS::UInt()</a>, and <a class="el" href="flexbuffers_8h_source.html#l00200">WidthI()</a>.</p>
 
 </div>
 </div>

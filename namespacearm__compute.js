@@ -17,8 +17,6 @@ var namespacearm__compute =
     [ "CLKernelLibraryEx", "classarm__compute_1_1_c_l_kernel_library_ex.html", "classarm__compute_1_1_c_l_kernel_library_ex" ],
     [ "CLMemsetKernel", "classarm__compute_1_1_c_l_memset_kernel.html", "classarm__compute_1_1_c_l_memset_kernel" ],
     [ "CLMultiplyScaleFactorKernel", "classarm__compute_1_1_c_l_multiply_scale_factor_kernel.html", "classarm__compute_1_1_c_l_multiply_scale_factor_kernel" ],
-    [ "CLNeg", "classarm__compute_1_1_c_l_neg.html", "classarm__compute_1_1_c_l_neg" ],
-    [ "CLNegKernel", "classarm__compute_1_1_c_l_neg_kernel.html", "classarm__compute_1_1_c_l_neg_kernel" ],
     [ "CLOneHot", "classarm__compute_1_1_c_l_one_hot.html", "classarm__compute_1_1_c_l_one_hot" ],
     [ "CLOneHotKernel", "classarm__compute_1_1_c_l_one_hot_kernel.html", "classarm__compute_1_1_c_l_one_hot_kernel" ],
     [ "CLPadLayerEx", "classarm__compute_1_1_c_l_pad_layer_ex.html", "classarm__compute_1_1_c_l_pad_layer_ex" ],
@@ -27,7 +25,6 @@ var namespacearm__compute =
     [ "CLReduceOperation", "classarm__compute_1_1_c_l_reduce_operation.html", "classarm__compute_1_1_c_l_reduce_operation" ],
     [ "CLReduceOperationKernel", "classarm__compute_1_1_c_l_reduce_operation_kernel.html", "classarm__compute_1_1_c_l_reduce_operation_kernel" ],
     [ "CLScaleFactorSymm8Kernel", "classarm__compute_1_1_c_l_scale_factor_symm8_kernel.html", "classarm__compute_1_1_c_l_scale_factor_symm8_kernel" ],
-    [ "CLSplitVEx", "classarm__compute_1_1_c_l_split_v_ex.html", "classarm__compute_1_1_c_l_split_v_ex" ],
     [ "CLTopKV2", "classarm__compute_1_1_c_l_top_k_v2.html", "classarm__compute_1_1_c_l_top_k_v2" ],
     [ "CLTransposeConvLayer", "classarm__compute_1_1_c_l_transpose_conv_layer.html", "classarm__compute_1_1_c_l_transpose_conv_layer" ],
     [ "NECastBool", "classarm__compute_1_1_n_e_cast_bool.html", "classarm__compute_1_1_n_e_cast_bool" ],
@@ -36,7 +33,6 @@ var namespacearm__compute =
     [ "NEFullyConnectedHybridLayer", "classarm__compute_1_1_n_e_fully_connected_hybrid_layer.html", "classarm__compute_1_1_n_e_fully_connected_hybrid_layer" ],
     [ "NEFullyConnectedLayerEx", "classarm__compute_1_1_n_e_fully_connected_layer_ex.html", "classarm__compute_1_1_n_e_fully_connected_layer_ex" ],
     [ "NEFullyConnectedReshapingLayer", "classarm__compute_1_1_n_e_fully_connected_reshaping_layer.html", "classarm__compute_1_1_n_e_fully_connected_reshaping_layer" ],
-    [ "NEGatherEx", "classarm__compute_1_1_n_e_gather_ex.html", "classarm__compute_1_1_n_e_gather_ex" ],
     [ "NEGEMMMatrixAccumulateBiasesKernel", "classarm__compute_1_1_n_e_g_e_m_m_matrix_accumulate_biases_kernel.html", "classarm__compute_1_1_n_e_g_e_m_m_matrix_accumulate_biases_kernel" ],
     [ "NEHashtableLookup", "classarm__compute_1_1_n_e_hashtable_lookup.html", "classarm__compute_1_1_n_e_hashtable_lookup" ],
     [ "NEHashtableLookupKernel", "classarm__compute_1_1_n_e_hashtable_lookup_kernel.html", "classarm__compute_1_1_n_e_hashtable_lookup_kernel" ],
@@ -47,20 +43,5 @@ var namespacearm__compute =
     [ "NEQuantizationSymmetricKernel", "classarm__compute_1_1_n_e_quantization_symmetric_kernel.html", "classarm__compute_1_1_n_e_quantization_symmetric_kernel" ],
     [ "NEReduceOperation", "classarm__compute_1_1_n_e_reduce_operation.html", "classarm__compute_1_1_n_e_reduce_operation" ],
     [ "NEReduceSum", "classarm__compute_1_1_n_e_reduce_sum.html", "classarm__compute_1_1_n_e_reduce_sum" ],
-    [ "ArgOperation", "namespacearm__compute.html#a02982cbe2213549832c79a81acb63a99", [
-      [ "MAX", "namespacearm__compute.html#a02982cbe2213549832c79a81acb63a99a26a4b44a837bf97b972628509912b4a5", null ],
-      [ "MIN", "namespacearm__compute.html#a02982cbe2213549832c79a81acb63a99ace31e2a082d17e038fcc6e3006166653", null ]
-    ] ],
-    [ "ComparisonOperationEx", "namespacearm__compute.html#aa98b7f35f1cc6c32c83f5449508ee527", [
-      [ "EQUAL", "namespacearm__compute.html#aa98b7f35f1cc6c32c83f5449508ee527a969f331a87d8c958473c32b4d0e61a44", null ],
-      [ "NOT_EQUAL", "namespacearm__compute.html#aa98b7f35f1cc6c32c83f5449508ee527a4ea2d378cdec20f59330f113297bc1ce", null ]
-    ] ],
-    [ "ElementWiseUnaryEx", "namespacearm__compute.html#a61e4792e7691a069c74b3011c2d53444", [
-      [ "NEG", "namespacearm__compute.html#a61e4792e7691a069c74b3011c2d53444a5dd68b1a7db42a1cce4dce09dbaa179e", null ]
-    ] ],
-    [ "SubDataType", "namespacearm__compute.html#aab54f1a8a8f027a9fbe26873be292eec", [
-      [ "NONE", "namespacearm__compute.html#aab54f1a8a8f027a9fbe26873be292eecab50339a10e1de285ac99d4c3990b8693", null ],
-      [ "BOOL", "namespacearm__compute.html#aab54f1a8a8f027a9fbe26873be292eecaa97b2c144243b2b9d2c593ec268b62f5", null ]
-    ] ],
     [ "transposeconv_output_dimensions", "namespacearm__compute.html#a386704431e8e28600e5b069d1275d0ea", null ]
 ];

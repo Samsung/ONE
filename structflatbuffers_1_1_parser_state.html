@@ -115,6 +115,8 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:a3c29e3f981415be5b3c7013c0e5ba812" id="r_a3c29e3f981415be5b3c7013c0e5ba812"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_parser_state.html#a3c29e3f981415be5b3c7013c0e5ba812">prev_cursor_</a></td></tr>
+<tr class="separator:a3c29e3f981415be5b3c7013c0e5ba812"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0828518357470cf3ffcb21fc19e9d22b" id="r_a0828518357470cf3ffcb21fc19e9d22b"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">cursor_</a></td></tr>
 <tr class="separator:a0828518357470cf3ffcb21fc19e9d22b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5418fac6b4d8c53ab355e58bc52484db" id="r_a5418fac6b4d8c53ab355e58bc52484db"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db">line_start_</a></td></tr>
@@ -132,7 +134,7 @@ Protected Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00660">660</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00828">828</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac5a453731974cae289dcd9bb1a0c8dd4" name="ac5a453731974cae289dcd9bb1a0c8dd4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac5a453731974cae289dcd9bb1a0c8dd4">&#9670;&#160;</a></span>ParserState()</h2>
@@ -157,16 +159,19 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00662">662</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  663</span>    : <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">cursor_</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db">line_start_</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a7a334f20ad4b79fb45b039c5072f9f1e">line_</a>(0), <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a4685ed383fee52714cf0b560169ce010">token_</a>(-1),</div>
-<div class="line"><span class="lineno">  664</span>      <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#ad26de6568ef43b22e6b690d10fc2bb52">attr_is_trivial_ascii_string_</a>(<span class="keyword">true</span>)</div>
-<div class="line"><span class="lineno">  665</span>  {</div>
-<div class="line"><span class="lineno">  666</span>  }</div>
-<div class="ttc" id="astructflatbuffers_1_1_parser_state_html_a0828518357470cf3ffcb21fc19e9d22b"><div class="ttname"><a href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">flatbuffers::ParserState::cursor_</a></div><div class="ttdeci">const char * cursor_</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00688">idl.h:688</a></div></div>
-<div class="ttc" id="astructflatbuffers_1_1_parser_state_html_a4685ed383fee52714cf0b560169ce010"><div class="ttname"><a href="structflatbuffers_1_1_parser_state.html#a4685ed383fee52714cf0b560169ce010">flatbuffers::ParserState::token_</a></div><div class="ttdeci">int token_</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00691">idl.h:691</a></div></div>
-<div class="ttc" id="astructflatbuffers_1_1_parser_state_html_a5418fac6b4d8c53ab355e58bc52484db"><div class="ttname"><a href="structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db">flatbuffers::ParserState::line_start_</a></div><div class="ttdeci">const char * line_start_</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00689">idl.h:689</a></div></div>
-<div class="ttc" id="astructflatbuffers_1_1_parser_state_html_a7a334f20ad4b79fb45b039c5072f9f1e"><div class="ttname"><a href="structflatbuffers_1_1_parser_state.html#a7a334f20ad4b79fb45b039c5072f9f1e">flatbuffers::ParserState::line_</a></div><div class="ttdeci">int line_</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00690">idl.h:690</a></div></div>
-<div class="ttc" id="astructflatbuffers_1_1_parser_state_html_ad26de6568ef43b22e6b690d10fc2bb52"><div class="ttname"><a href="structflatbuffers_1_1_parser_state.html#ad26de6568ef43b22e6b690d10fc2bb52">flatbuffers::ParserState::attr_is_trivial_ascii_string_</a></div><div class="ttdeci">bool attr_is_trivial_ascii_string_</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00696">idl.h:696</a></div></div>
+<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00829">829</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  830</span>      : <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a3c29e3f981415be5b3c7013c0e5ba812">prev_cursor_</a>(<span class="keyword">nullptr</span>),</div>
+<div class="line"><span class="lineno">  831</span>        <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">cursor_</a>(<span class="keyword">nullptr</span>),</div>
+<div class="line"><span class="lineno">  832</span>        <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db">line_start_</a>(<span class="keyword">nullptr</span>),</div>
+<div class="line"><span class="lineno">  833</span>        <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a7a334f20ad4b79fb45b039c5072f9f1e">line_</a>(0),</div>
+<div class="line"><span class="lineno">  834</span>        <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a4685ed383fee52714cf0b560169ce010">token_</a>(-1),</div>
+<div class="line"><span class="lineno">  835</span>        <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#ad26de6568ef43b22e6b690d10fc2bb52">attr_is_trivial_ascii_string_</a>(<span class="keyword">true</span>) {}</div>
+<div class="ttc" id="astructflatbuffers_1_1_parser_state_html_a0828518357470cf3ffcb21fc19e9d22b"><div class="ttname"><a href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">flatbuffers::ParserState::cursor_</a></div><div class="ttdeci">const char * cursor_</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00856">idl.h:856</a></div></div>
+<div class="ttc" id="astructflatbuffers_1_1_parser_state_html_a3c29e3f981415be5b3c7013c0e5ba812"><div class="ttname"><a href="structflatbuffers_1_1_parser_state.html#a3c29e3f981415be5b3c7013c0e5ba812">flatbuffers::ParserState::prev_cursor_</a></div><div class="ttdeci">const char * prev_cursor_</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00855">idl.h:855</a></div></div>
+<div class="ttc" id="astructflatbuffers_1_1_parser_state_html_a4685ed383fee52714cf0b560169ce010"><div class="ttname"><a href="structflatbuffers_1_1_parser_state.html#a4685ed383fee52714cf0b560169ce010">flatbuffers::ParserState::token_</a></div><div class="ttdeci">int token_</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00859">idl.h:859</a></div></div>
+<div class="ttc" id="astructflatbuffers_1_1_parser_state_html_a5418fac6b4d8c53ab355e58bc52484db"><div class="ttname"><a href="structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db">flatbuffers::ParserState::line_start_</a></div><div class="ttdeci">const char * line_start_</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00857">idl.h:857</a></div></div>
+<div class="ttc" id="astructflatbuffers_1_1_parser_state_html_a7a334f20ad4b79fb45b039c5072f9f1e"><div class="ttname"><a href="structflatbuffers_1_1_parser_state.html#a7a334f20ad4b79fb45b039c5072f9f1e">flatbuffers::ParserState::line_</a></div><div class="ttdeci">int line_</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00858">idl.h:858</a></div></div>
+<div class="ttc" id="astructflatbuffers_1_1_parser_state_html_ad26de6568ef43b22e6b690d10fc2bb52"><div class="ttname"><a href="structflatbuffers_1_1_parser_state.html#ad26de6568ef43b22e6b690d10fc2bb52">flatbuffers::ParserState::attr_is_trivial_ascii_string_</a></div><div class="ttdeci">bool attr_is_trivial_ascii_string_</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00864">idl.h:864</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -194,14 +199,14 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00682">682</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  683</span>  {</div>
-<div class="line"><span class="lineno">  684</span>    <a class="code hl_define" href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a>(<a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">cursor_</a> &amp;&amp; <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db">line_start_</a> &amp;&amp; <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">cursor_</a> &gt;= <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db">line_start_</a>);</div>
-<div class="line"><span class="lineno">  685</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">cursor_</a> - <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db">line_start_</a>);</div>
-<div class="line"><span class="lineno">  686</span>  }</div>
-<div class="ttc" id="abase_8h_html_ab2116a3957cb3c19761609ea7fd796fe"><div class="ttname"><a href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a></div><div class="ttdeci">#define FLATBUFFERS_ASSERT</div><div class="ttdef"><b>Definition</b> <a href="base_8h_source.html#l00037">base.h:37</a></div></div>
+<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00850">850</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  850</span>                                 {</div>
+<div class="line"><span class="lineno">  851</span>    <a class="code hl_define" href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a>(<a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">cursor_</a> &amp;&amp; <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db">line_start_</a> &amp;&amp; <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">cursor_</a> &gt;= <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db">line_start_</a>);</div>
+<div class="line"><span class="lineno">  852</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">cursor_</a> - <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db">line_start_</a>);</div>
+<div class="line"><span class="lineno">  853</span>  }</div>
+<div class="ttc" id="abase_8h_html_ab2116a3957cb3c19761609ea7fd796fe"><div class="ttname"><a href="base_8h.html#ab2116a3957cb3c19761609ea7fd796fe">FLATBUFFERS_ASSERT</a></div><div class="ttdeci">#define FLATBUFFERS_ASSERT</div><div class="ttdef"><b>Definition</b> <a href="base_8h_source.html#l00021">base.h:21</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="idl_8h_source.html#l00688">cursor_</a>, <a class="el" href="base_8h_source.html#l00037">FLATBUFFERS_ASSERT</a>, and <a class="el" href="idl_8h_source.html#l00689">line_start_</a>.</p>
+<p class="reference">References <a class="el" href="idl_8h_source.html#l00856">cursor_</a>, <a class="el" href="base_8h_source.html#l00021">FLATBUFFERS_ASSERT</a>, and <a class="el" href="idl_8h_source.html#l00857">line_start_</a>.</p>
 
 </div>
 </div>
@@ -228,15 +233,15 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00676">676</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  677</span>  {</div>
-<div class="line"><span class="lineno">  678</span>    <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db">line_start_</a> = <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">cursor_</a>;</div>
-<div class="line"><span class="lineno">  679</span>    <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a7a334f20ad4b79fb45b039c5072f9f1e">line_</a> += 1;</div>
-<div class="line"><span class="lineno">  680</span>  }</div>
+<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00845">845</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  845</span>                     {</div>
+<div class="line"><span class="lineno">  846</span>    <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a5418fac6b4d8c53ab355e58bc52484db">line_start_</a> = <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">cursor_</a>;</div>
+<div class="line"><span class="lineno">  847</span>    <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a7a334f20ad4b79fb45b039c5072f9f1e">line_</a> += 1;</div>
+<div class="line"><span class="lineno">  848</span>  }</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="idl_8h_source.html#l00688">cursor_</a>, <a class="el" href="idl_8h_source.html#l00690">line_</a>, and <a class="el" href="idl_8h_source.html#l00689">line_start_</a>.</p>
+<p class="reference">References <a class="el" href="idl_8h_source.html#l00856">cursor_</a>, <a class="el" href="idl_8h_source.html#l00858">line_</a>, and <a class="el" href="idl_8h_source.html#l00857">line_start_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="idl_8h_source.html#l00669">ResetState()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="idl_8h_source.html#l00838">ResetState()</a>.</p>
 
 </div>
 </div>
@@ -264,15 +269,16 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00669">669</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  670</span>  {</div>
-<div class="line"><span class="lineno">  671</span>    <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">cursor_</a> = source;</div>
-<div class="line"><span class="lineno">  672</span>    <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a7a334f20ad4b79fb45b039c5072f9f1e">line_</a> = 0;</div>
-<div class="line"><span class="lineno">  673</span>    <a class="code hl_function" href="structflatbuffers_1_1_parser_state.html#a58c217a07ef007aa0f33d4ed3ec15d5d">MarkNewLine</a>();</div>
-<div class="line"><span class="lineno">  674</span>  }</div>
-<div class="ttc" id="astructflatbuffers_1_1_parser_state_html_a58c217a07ef007aa0f33d4ed3ec15d5d"><div class="ttname"><a href="structflatbuffers_1_1_parser_state.html#a58c217a07ef007aa0f33d4ed3ec15d5d">flatbuffers::ParserState::MarkNewLine</a></div><div class="ttdeci">void MarkNewLine()</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00676">idl.h:676</a></div></div>
+<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00838">838</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  838</span>                                      {</div>
+<div class="line"><span class="lineno">  839</span>    <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a3c29e3f981415be5b3c7013c0e5ba812">prev_cursor_</a> = source;</div>
+<div class="line"><span class="lineno">  840</span>    <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a0828518357470cf3ffcb21fc19e9d22b">cursor_</a> = source;</div>
+<div class="line"><span class="lineno">  841</span>    <a class="code hl_variable" href="structflatbuffers_1_1_parser_state.html#a7a334f20ad4b79fb45b039c5072f9f1e">line_</a> = 0;</div>
+<div class="line"><span class="lineno">  842</span>    <a class="code hl_function" href="structflatbuffers_1_1_parser_state.html#a58c217a07ef007aa0f33d4ed3ec15d5d">MarkNewLine</a>();</div>
+<div class="line"><span class="lineno">  843</span>  }</div>
+<div class="ttc" id="astructflatbuffers_1_1_parser_state_html_a58c217a07ef007aa0f33d4ed3ec15d5d"><div class="ttname"><a href="structflatbuffers_1_1_parser_state.html#a58c217a07ef007aa0f33d4ed3ec15d5d">flatbuffers::ParserState::MarkNewLine</a></div><div class="ttdeci">void MarkNewLine()</div><div class="ttdef"><b>Definition</b> <a href="idl_8h_source.html#l00845">idl.h:845</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="idl_8h_source.html#l00688">cursor_</a>, <a class="el" href="idl_8h_source.html#l00690">line_</a>, and <a class="el" href="idl_8h_source.html#l00676">MarkNewLine()</a>.</p>
+<p class="reference">References <a class="el" href="idl_8h_source.html#l00856">cursor_</a>, <a class="el" href="idl_8h_source.html#l00858">line_</a>, <a class="el" href="idl_8h_source.html#l00845">MarkNewLine()</a>, and <a class="el" href="idl_8h_source.html#l00855">prev_cursor_</a>.</p>
 
 </div>
 </div>
@@ -297,7 +303,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00696">696</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00864">864</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
 
 </div>
 </div>
@@ -321,7 +327,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00697">697</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00865">865</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
 
 </div>
 </div>
@@ -345,9 +351,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00688">688</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00856">856</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="idl_8h_source.html#l00682">CursorPosition()</a>, <a class="el" href="idl_8h_source.html#l00676">MarkNewLine()</a>, and <a class="el" href="idl_8h_source.html#l00669">ResetState()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="idl_8h_source.html#l00850">CursorPosition()</a>, <a class="el" href="idl_8h_source.html#l00845">MarkNewLine()</a>, and <a class="el" href="idl_8h_source.html#l00838">ResetState()</a>.</p>
 
 </div>
 </div>
@@ -371,7 +377,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00698">698</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00866">866</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
 
 </div>
 </div>
@@ -395,9 +401,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00690">690</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00858">858</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="idl_8h_source.html#l00676">MarkNewLine()</a>, and <a class="el" href="idl_8h_source.html#l00669">ResetState()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="idl_8h_source.html#l00845">MarkNewLine()</a>, and <a class="el" href="idl_8h_source.html#l00838">ResetState()</a>.</p>
 
 </div>
 </div>
@@ -421,9 +427,35 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00689">689</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00857">857</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="idl_8h_source.html#l00682">CursorPosition()</a>, and <a class="el" href="idl_8h_source.html#l00676">MarkNewLine()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="idl_8h_source.html#l00850">CursorPosition()</a>, and <a class="el" href="idl_8h_source.html#l00845">MarkNewLine()</a>.</p>
+
+</div>
+</div>
+<a id="a3c29e3f981415be5b3c7013c0e5ba812" name="a3c29e3f981415be5b3c7013c0e5ba812"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c29e3f981415be5b3c7013c0e5ba812">&#9670;&#160;</a></span>prev_cursor_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* flatbuffers::ParserState::prev_cursor_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00855">855</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="idl_8h_source.html#l00838">ResetState()</a>.</p>
 
 </div>
 </div>
@@ -447,7 +479,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00691">691</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="idl_8h_source.html#l00859">859</a> of file <a class="el" href="idl_8h_source.html">idl.h</a>.</p>
 
 </div>
 </div>

@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('_algorithm_8cpp_source.html',''); init
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="comment">// type.</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">roots</a>)</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  {</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>((node != <span class="keyword">nullptr</span>) &amp;&amp; <span class="stringliteral">&quot;root is invalid&quot;</span>);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    assert((node != <span class="keyword">nullptr</span>) &amp;&amp; <span class="stringliteral">&quot;root is invalid&quot;</span>);</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">frames</a>.push(Frame{node});</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  }</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
@@ -185,7 +185,7 @@ $(document).ready(function(){initNavTree('_algorithm_8cpp_source.html',''); init
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">top_frame</a>.advance();</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">assert</a>(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">top_frame</a>.pos() &gt;= 0);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    assert(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">top_frame</a>.pos() &gt;= 0);</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">top_frame</a>.pos() &lt; <span class="keyword">static_cast&lt;</span><a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">int64_t</a><span class="keyword">&gt;</span>(<a class="code hl_function" href="namespaceloco.html#abd2600c38aee62d37bfcb077337262ad">top_frame</a>.node().arity()))</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    {</div>

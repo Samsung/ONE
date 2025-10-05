@@ -18,6 +18,8 @@ var classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s =
     [ "Add", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#a96e9df657b775009a15dfe95011c2a31", null ],
     [ "Add", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#a7d8c952d1642a5effeb3b507f4572946", null ],
     [ "Add", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#ace9786d16678995eb55f7ec68fcca20d", null ],
+    [ "Blob", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#a56cd0548dbc314d40e67a275b23d9e66", null ],
+    [ "Blob", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#a47422a91ca5ab39b080f777f316b5ad3", null ],
     [ "Blob", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#adc8efacf5e0ab9b0725caa6f1fd464c9", null ],
     [ "Blob", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#ae79f47b7c70944ccad2955683647f150", null ],
     [ "Bool", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#a4d4980e975c30610c0c46cf06cc36de3", null ],
@@ -84,5 +86,8 @@ var classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s =
     [ "Vector", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#a1f5138fc5656f4c0af7d9c93769cdbb4", null ],
     [ "Vector", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#a8458d7a7750238dbac737f7aa07fa9c3", null ],
     [ "Vector", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#ab5c3509750afeb9a62e02cafb968579c", null ],
-    [ "Vector", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#ac2673629226d2bb0de74786a53a09994", null ]
+    [ "Vector", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#ac2673629226d2bb0de74786a53a09994", null ],
+    [ "Verifier", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#a9551a63a8fb74fcd4c2faf5466186f9f", null ],
+    [ "VerifyBuffer", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#a8c18f1f3f42ce9d6105b2e2e4840a5fc", null ],
+    [ "Verifier", "classflexbuffers_1_1_f_l_a_t_b_u_f_f_e_r_s___f_i_n_a_l___c_l_a_s_s.html#a871285414448937aa5f297649dc8242a", null ]
 ];
