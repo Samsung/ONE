@@ -1,7 +1,7 @@
 from typing import List
 import numpy as np
 
-from ..native.libnnfw_api_pybind import infer, tensorinfo
+from ..native.libnnfw_api_pybind import tensorinfo
 from ..native.libnnfw_api_pybind.exception import OnertError
 
 
@@ -176,18 +176,3 @@ class BaseSession:
                 raise OnertError(f"Failed to get output #{i}: {e}") from e
 
             self.outputs.append(output_array)
-
-
-def tensorinfo():
-    """
-    Shortcut to create a fresh tensorinfo instance.
-    Raises:
-        OnertError: If the C-API call fails.
-    """
-
-    try:
-        return infer.nnfw_tensorinfo()
-    except OnertError:
-        raise
-    except Exception as e:
-        raise OnertError(f"Failed to create tensorinfo: {e}") from e

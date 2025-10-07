@@ -3,9 +3,7 @@ import numpy as np
 import psutil
 import os
 from typing import List
-from onert import infer
-# TODO: Import tensorinfo from onert
-from onert.native.libnnfw_api_pybind import tensorinfo
+from onert import infer, tensorinfo
 
 
 def get_memory_usage_mb() -> float:
