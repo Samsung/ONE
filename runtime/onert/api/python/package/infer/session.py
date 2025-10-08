@@ -68,27 +68,26 @@ class session(BaseSession):
                     fixed_infos = []
                     for idx, info in enumerate(original_infos):
                         input_shape = inputs_array[idx].shape
-                        new_dims = []
+                        new_shape = []
                         static_dim_changed = False
                         # only the first `info.rank` entries matter
-                        for j, d in enumerate(info.dims[:info.rank]):
+                        for j, d in enumerate(info.shape):
                             if d == -1:
                                 # replace dynamic dim with actual incoming shape
-                                new_dims.append(input_shape[j])
+                                new_shape.append(input_shape[j])
                             elif d == input_shape[j]:
                                 # static dim must match the provided array
-                                new_dims.append(d)
+                                new_shape.append(d)
                             else:
                                 static_dim_changed = True
 
                         if static_dim_changed:
                             warnings.warn(
                                 f"infer() called with input {idx}'s shape={input_shape}, "
-                                f"which differs from model's expected shape={tuple(info.dims)}. "
+                                f"which differs from model's expected shape={info.shape}. "
                                 "Ensure this is intended.", UserWarning)
 
-                        info.dims = new_dims
-                        fixed_infos.append(info)
+                        fixed_infos.append(tensorinfo(info.dtype, new_shape))
 
                     # Update tensorinfo to optimize using it
                     self._update_inputs_tensorinfo(fixed_infos)
@@ -151,10 +150,10 @@ class session(BaseSession):
 
         for i, info in enumerate(new_infos):
             # Check for any negative dimension in the specified rank
-            if any(d < 0 for d in info.dims[:info.rank]):
+            if any(d < 0 for d in info.shape):
                 raise ValueError(
                     f"Input tensorinfo at index {i} contains negative dimension(s): "
-                    f"{info.dims[:info.rank]}")
+                    f"{info.shape}")
             try:
                 self.session.set_input_tensorinfo(i, info)
             except ValueError:

@@ -15,12 +15,9 @@ def main(nnpackage_path, backends="cpu"):
     for i in range(10):
         dummy_inputs = []
         for info in input_infos:
-            # Retrieve the dimensions list from tensorinfo property.
-            dims = list(info.dims)
             # Replace -1 with a random value between 1 and 10
-            dims = [random.randint(1, 10) if d == -1 else d for d in dims]
-            # Build the shape tuple from tensorinfo dimensions.
-            shape = tuple(dims[:info.rank])
+            shape = [random.randint(1, 10) if d == -
+                     1 else d for d in info.shape]
             # Create a dummy numpy array filled with uniform random values in [0,1).
             dummy_inputs.append(
                 np.random.uniform(low=0.0, high=1.0, size=shape).astype(info.dtype))

@@ -17,6 +17,10 @@
 #ifndef __ONERT_API_PYTHON_NNFW_API_WRAPPER_H__
 #define __ONERT_API_PYTHON_NNFW_API_WRAPPER_H__
 
+#include <stdexcept>
+#include <string>
+#include <vector>
+
 #include "nnfw.h"
 #include "nnfw_experimental.h"
 #include "nnfw_internal.h"
@@ -34,28 +38,58 @@ namespace python
 namespace py = pybind11;
 
 /**
- *  @brief  tensor info describes the type and shape of tensors
+ * @brief Data type used by OneRT API.
+ *
+ * This structure maps NNFW_TYPE and numpy dtype.
+ */
+struct dtype
+{
+  NNFW_TYPE type;
+  py::dtype dtype;
+  // The name of the dtype, e.g., "float32", "int32", etc.
+  // This is mainly for __repr__ implementation.
+  const char *name;
+};
+
+/**
+ *  @brief This class describes the type and shape of tensors.
  *
  * This structure is used to describe input and output tensors.
  * Application can get input and output tensor type and shape described in model by using
  * {@link input_tensorinfo} and {@link output_tensorinfo}
  *
- * Maximum rank is 6 (NNFW_MAX_RANK).
- * And tensor's dimension value is filled in 'dims' field from index 0.
- * For example, if tensor's rank is 4,
- * application can get dimension value from dims[0], dims[1], dims[2], and dims[3]
+ * Tensor's dimension values are stored in the `_shape` vector. The size of the
+ * vector determines the rank of the tensor. The maximum rank is 6 (NNFW_MAX_RANK).
+ *
+ * This class is immutable. To change the tensorinfo, create a new instance
+ * and use {@link set_input_tensorinfo} to set it.
  */
-struct tensorinfo
+class tensorinfo
 {
-  /** The data type */
-  const char *dtype;
-  /** The number of dimensions (rank) */
-  int32_t rank;
+public:
+  using SHAPE = std::vector<int32_t>;
+
+private:
+  /** The data type. */
+  dtype _dtype;
   /**
-   * The dimension of tensor.
-   * Maximum rank is 6 (NNFW_MAX_RANK).
+   * Shape of the tensor.
+   * The maximum allowed rank is 6 (NNFW_MAX_RANK).
    */
-  int32_t dims[NNFW_MAX_RANK];
+  SHAPE _shape;
+
+public:
+  tensorinfo(dtype dt, SHAPE shape) : _dtype(dt)
+  {
+    if (shape.size() > NNFW_MAX_RANK)
+      throw std::invalid_argument(std::string("Rank of tensor must be less than or equal to ") +
+                                  std::to_string(NNFW_MAX_RANK));
+    _shape = std::move(shape);
+  }
+
+  const auto &get_dtype() const { return _dtype; }
+  const auto &get_shape() const { return _shape; }
+  size_t get_rank() const { return _shape.size(); }
 };
 
 /**
@@ -76,20 +110,12 @@ void ensure_status(NNFW_STATUS status);
 NNFW_LAYOUT getLayout(const char *layout = "");
 
 /**
- * Convert the type with string to NNFW_TYPE
+ * Convert the NNFW_TYPE type to the dtype type.
  *
- * @param[in] type type to be converted
- * @return proper type if exists
+ * @param[in] type The type to be converted.
+ * @return Corresponding dtype type.
  */
-NNFW_TYPE getType(const char *type = "");
-
-/**
- * Convert the type with NNFW_TYPE to string
- *
- * @param[in] type type to be converted
- * @return proper type
- */
-const char *getStringType(NNFW_TYPE type);
+dtype get_dtype(NNFW_TYPE type);
 
 /**
  * @brief     Get the total number of elements in nnfw_tensorinfo->dims.
@@ -100,26 +126,6 @@ const char *getStringType(NNFW_TYPE type);
  * @return total number of elements
  */
 uint64_t num_elems(const nnfw_tensorinfo *tensor_info);
-
-/**
- * @brief     Get nnfw_tensorinfo->dims.
- *
- * This function is called to get dimension array of tensorinfo.
- *
- * @param[in] tensor_info Tensor info (shape, type, etc)
- * @return python list of dims
- */
-py::list get_dims(const tensorinfo &tensor_info);
-
-/**
- * @brief     Set nnfw_tensorinfo->dims.
- *
- * This function is called to set dimension array of tensorinfo.
- *
- * @param[in] tensor_info Tensor info (shape, type, etc)
- * @param[in] array       array to set dimension
- */
-void set_dims(tensorinfo &tensor_info, const py::list &array);
 
 class NNFW_SESSION
 {
