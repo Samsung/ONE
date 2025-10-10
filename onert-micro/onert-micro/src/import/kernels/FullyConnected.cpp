@@ -161,18 +161,18 @@ OMStatus configure_kernel_CircleFullyConnected(const OMConfigureArgs &config_arg
     return NoQuantization;
 
   if (output->quantization()->scale() == nullptr or output->quantization()->scale()->size() != 1)
-    return UnsupportedQuantizationType;
+    OM_LOG_AND_RETURN(UnsupportedQuantizationType, "Unsupported quantization type encountered");
 
   if (output->quantization()->zero_point() == nullptr or
       output->quantization()->zero_point()->size() != 1)
-    return UnsupportedQuantizationType;
+    OM_LOG_AND_RETURN(UnsupportedQuantizationType, "Unsupported quantization type encountered");
 
   if (weight->quantization()->scale() == nullptr or weight->quantization()->scale()->size() != 1)
-    return UnsupportedQuantizationType;
+    OM_LOG_AND_RETURN(UnsupportedQuantizationType, "Unsupported quantization type encountered");
 
   if (weight->quantization()->zero_point() == nullptr or
       weight->quantization()->zero_point()->size() != 1)
-    return UnsupportedQuantizationType;
+    OM_LOG_AND_RETURN(UnsupportedQuantizationType, "Unsupported quantization type encountered");
 
 #endif // DIS_QUANT
 

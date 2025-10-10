@@ -52,7 +52,7 @@ OMStatus OMRuntimeModule::importModel(const char *model_ptr, const OMConfig &con
 {
   assert(model_ptr != nullptr && "Model ptr shouldn't be nullptr");
   if (model_ptr == nullptr)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   // 1 - parse reader
   // 2 - load default graph
@@ -74,7 +74,7 @@ OMStatus OMRuntimeModule::importModel(const char *model_ptr, const OMConfig &con
 
   assert(num_subgraph >= 1);
   if (num_subgraph == 0)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   _graphs.resize(num_subgraph);
 
@@ -189,7 +189,7 @@ OMStatus OMRuntimeModule::reset()
 OMStatus OMRuntimeModule::getRuntimeGraphAt(uint32_t pos, OMRuntimeGraph **runtime_graph)
 {
   if (pos >= _graphs.size())
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   *runtime_graph = &_graphs.at(pos);
 

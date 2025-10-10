@@ -63,7 +63,7 @@ OMStatus configure_kernel_CircleGather(const OMConfigureArgs &config_args)
   const auto *options = runtime_kernel.first_operator->builtin_options_as_GatherOptions();
 
   if (options == nullptr)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   status = utils::checkCondition(positions->type() == circle::TensorType_INT32);
   if (status != Ok)

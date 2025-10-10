@@ -140,7 +140,7 @@ OMStatus execute_kernel_CircleGRU(const OMExecuteArgs &execute_args)
   const int32_t size_of_intermediate_tensors = core::OMRuntimeShape(output).flatSize();
   assert(size_of_intermediate_tensors > 0);
   if (size_of_intermediate_tensors == 0)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   const int32_t input_size = core::OMRuntimeShape(input).flatSize();
   const int32_t output_size = size_of_intermediate_tensors;

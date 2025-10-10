@@ -29,13 +29,13 @@ OMStatus onert_micro::execute::OMRuntimeKernel::readKernel(uint16_t op_index,
   assert(inputs_num <= maxInputSize);
 
   if (inputs_num > maxInputSize)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   outputs_num = last_operator->outputs()->size();
   assert(outputs_num <= maxOutputSize);
 
   if (outputs_num > maxOutputSize)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   assert(inputs_num > 0 and outputs_num > 0);
 
@@ -100,7 +100,7 @@ OMStatus onert_micro::execute::OMRuntimeKernel::getDataFromStorage(uint16_t op_i
     {
       assert(i < non_const_input_indxs.size());
       if (i >= non_const_input_indxs.size())
-        return UnknownError;
+        OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
       outputs_data[i] = inputs_data[non_const_input_indxs[i]];
       status = storage.removeTensorFromTensorIndexToData(inputs_index[non_const_input_indxs[i]]);

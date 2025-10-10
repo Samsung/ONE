@@ -76,7 +76,7 @@ OMStatus AveragePool(const core::Pool2DParams &params, const core::OMRuntimeShap
             }
           }
           if (filter_count == 0)
-            return UnknownError;
+            OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
           // Round to the closest integer value.
           acc = acc > 0 ? (acc + filter_count / 2) / filter_count
                         : (acc - filter_count / 2) / filter_count;

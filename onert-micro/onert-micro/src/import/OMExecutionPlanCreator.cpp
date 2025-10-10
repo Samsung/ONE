@@ -88,7 +88,7 @@ OMStatus OMExecutionPlanCreator::createExecutionPlan(core::OMRuntimeStorage &run
   // Check is non trainable mode
   assert(configs.train_mode != true);
   if (configs.train_mode == true)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   bool keep_input = configs.keep_input;
 
@@ -186,7 +186,7 @@ OMStatus OMExecutionPlanCreator::createForwardExecutionPlan(
   // Check is trainable mode
   assert(configs.train_mode == true);
   if (configs.train_mode != true)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   bool keep_input = configs.keep_input;
   std::vector<std::vector<uint16_t>> &alloc_plan = allocator.getAllocPlan();
@@ -341,7 +341,7 @@ OMStatus OMExecutionPlanCreator::createBackwardExecutionPlan(
   bool train_mode = configs.train_mode;
   assert(train_mode);
   if (train_mode == false)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   std::vector<std::vector<uint16_t>> &alloc_plan = allocator.getAllocPlan();
   std::vector<std::vector<uint16_t>> &dealloc_plan = allocator.getDeallocPlan();

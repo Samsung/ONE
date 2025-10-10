@@ -18,6 +18,7 @@
 #define ONERT_MICRO_CORE_MEMORY_MEMORY_MANAGER_H
 
 #include "OMStatus.h"
+#include "OMLog.h"
 
 #include <cstdint>
 #include <stdlib.h>

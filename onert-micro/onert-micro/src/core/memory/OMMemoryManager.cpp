@@ -31,7 +31,7 @@ size_t OMMemoryManager::cur_memory_allocated = 0;
 OMStatus OMMemoryManager::allocateMemory(uint32_t size, uint8_t **data)
 {
   if (size == 0)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
   auto data_tmp = new uint8_t[size];
 
 #ifdef OM_MEMORY_ESTIMATE

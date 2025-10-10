@@ -163,7 +163,7 @@ OMStatus checkInplaceOp(core::OMRuntimeContext &context, const circle::Operator 
 
     assert(dist < op_outputs->size());
     if (dist >= op_outputs->size())
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
     const auto output_index = op_outputs->operator[](dist);
     if (not isSingleUsageOfTensor(context, output_index))

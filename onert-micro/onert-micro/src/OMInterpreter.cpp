@@ -22,7 +22,7 @@ OMStatus OMInterpreter::importModel(const char *model_ptr, const OMConfig &confi
 {
   assert(model_ptr != nullptr && "Model ptr shouldn't be nullptr");
   if (model_ptr == nullptr)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   return _runtime_module.importModel(model_ptr, config);
 }

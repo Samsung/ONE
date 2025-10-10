@@ -95,7 +95,7 @@ OMStatus onert_micro::train::train_kernel_CircleSoftmax(const OMBackpropExecuteA
   assert(output_shape.dimensionsCount() == 2);
   assert(output_shape.dims(0) == 1);
   if (output_shape.dimensionsCount() != 2 or output_shape.dims(0) != 1)
-    return UnsupportedType;
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
 
   // Allocate temporary buffer to save Jacobian row
   uint8_t *jacobian_row_data = nullptr;

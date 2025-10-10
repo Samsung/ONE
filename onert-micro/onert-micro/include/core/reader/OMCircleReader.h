@@ -18,6 +18,7 @@
 #define ONERT_MICRO_CORE_READER_CIRCLE_READER_H
 
 #include "OMStatus.h"
+#include "OMLog.h"
 
 #include <circle-generated/circle/schema_generated.h>
 

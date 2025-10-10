@@ -69,7 +69,7 @@ OMStatus configure_kernel_CircleConv2D(const OMConfigureArgs &config_args)
       (input->type() == circle::TensorType_INT8 && weight->type() != circle::TensorType_INT8) or
       (input->type() == circle::TensorType_INT16 && weight->type() != circle::TensorType_INT16))
   {
-    return UnsupportedType;
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
   }
 
   core::OMRuntimeShape input_shape(input);
@@ -79,15 +79,24 @@ OMStatus configure_kernel_CircleConv2D(const OMConfigureArgs &config_args)
 
   status = utils::checkCondition(input_shape.dimensionsCount() == 4);
   if (status != Ok)
+  {
+    OM_LOG_ERROR("Status not OK");
     return status;
+  }
 
   status = utils::checkCondition(input_shape.dimensionsCount() == output_shape.dimensionsCount());
   if (status != Ok)
+  {
+    OM_LOG_ERROR("Status not OK");
     return status;
+  }
 
   status = utils::checkCondition(input_shape.dimensionsCount() == weight_shape.dimensionsCount());
   if (status != Ok)
+  {
+    OM_LOG_ERROR("Status not OK");
     return status;
+  }
 
   status = utils::checkCondition(bias == nullptr or weight_shape.dims(0) == bias_shape.flatSize());
 
@@ -101,7 +110,10 @@ OMStatus configure_kernel_CircleConv2D(const OMConfigureArgs &config_args)
   status = utils::checkCondition(input_quant != nullptr and filter_quant != nullptr and
                                  output_quant != nullptr);
   if (status != Ok)
+  {
+    OM_LOG_ERROR("Status not OK");
     return status;
+  }
 
   auto input_scales = input_quant->scale();
   auto filter_scales = filter_quant->scale();
@@ -110,12 +122,18 @@ OMStatus configure_kernel_CircleConv2D(const OMConfigureArgs &config_args)
   status = utils::checkCondition(input_scales != nullptr and filter_scales != nullptr and
                                  output_scales != nullptr);
   if (status != Ok)
+  {
+    OM_LOG_ERROR("Status not OK");
     return status;
+  }
 
   // Support only per channel
   status = utils::checkCondition(filter_scales->size() > 1);
   if (status != Ok)
+  {
+    OM_LOG_ERROR("Status not OK");
     return status;
+  }
 
   return status;
 }

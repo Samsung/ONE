@@ -34,7 +34,7 @@ inline OMStatus Fill(const T *input_data, const core::OMRuntimeShape &output_sha
   const uint32_t flat_size = output_shape.flatSize();
 
   if (flat_size == -1)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   assert(input_data != nullptr);
   assert(output_data != nullptr);

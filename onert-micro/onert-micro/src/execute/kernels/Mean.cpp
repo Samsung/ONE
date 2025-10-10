@@ -39,7 +39,7 @@ template <typename T> OMStatus CircleMean(OMRuntimeKernel &rt_kernel)
   bool is_ok = reducer.Mean();
   if (!is_ok)
   {
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
   }
 
   return Ok;
@@ -87,7 +87,7 @@ OMStatus execute_kernel_CircleMean(const OMExecuteArgs &execute_args)
     case circle::TensorType_INT64:
     default:
       assert(false && "Unsupported type");
-      return UnsupportedType;
+      OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
   }
 }
 
