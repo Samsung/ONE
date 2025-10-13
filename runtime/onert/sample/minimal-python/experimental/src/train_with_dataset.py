@@ -76,8 +76,8 @@ def train(args):
     sess = session(args.nnpkg, args.backends)
 
     # Load data
-    input_shape = sess.input_tensorinfo(0).dims
-    label_shape = sess.output_tensorinfo(0).dims
+    input_shape = list(sess.input_tensorinfo(0).shape)
+    label_shape = list(sess.output_tensorinfo(0).shape)
 
     input_shape[0] = args.data_length
     label_shape[0] = args.data_length

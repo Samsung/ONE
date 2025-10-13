@@ -2,10 +2,8 @@ import argparse
 import numpy as np
 import psutil
 import os
-from typing import List
-from onert import infer
-# TODO: Import tensorinfo from onert
-from onert.native.libnnfw_api_pybind import tensorinfo
+from typing import List, Optional
+from onert import infer, tensorinfo
 
 
 def get_memory_usage_mb() -> float:
@@ -40,14 +38,12 @@ def get_validated_input_tensorinfos(sess: infer.session,
             raise ValueError(
                 f"Rank mismatch for input {i}: expected rank {info.rank}, got {len(shape)}"
             )
-        info.dims = shape
-        info.rank = len(shape)
-        updated_infos.append(info)
+        updated_infos.append(tensorinfo(info.dtype, shape))
 
     return updated_infos
 
 
-def benchmark_inference(nnpackage_path: str, backends: str, input_shapes: List[List[int]],
+def benchmark_inference(nnpackage_path: str, backends: str, input_shapes: Optional[List[List[int]]],
                         repeat: int):
     mem_before_kb = get_memory_usage_mb() * 1024
 
@@ -60,8 +56,7 @@ def benchmark_inference(nnpackage_path: str, backends: str, input_shapes: List[L
     # Create dummy input arrays
     dummy_inputs = []
     for info in input_infos:
-        shape = tuple(info.dims[:info.rank])
-        dummy_inputs.append(np.random.rand(*shape).astype(info.dtype))
+        dummy_inputs.append(np.random.rand(*info.shape).astype(info.dtype))
 
     prepare = total_input = total_output = total_run = 0.0
 

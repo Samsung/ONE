@@ -12,12 +12,8 @@ def main(nnpackage_path, backends="cpu"):
     input_infos = session.get_inputs_tensorinfo()
     dummy_inputs = []
     for info in input_infos:
-        # Retrieve the dimensions list from tensorinfo property.
-        dims = list(info.dims)
-        # Build the shape tuple from tensorinfo dimensions.
-        shape = tuple(dims[:info.rank])
         # Create a dummy numpy array filled with zeros.
-        dummy_inputs.append(np.zeros(shape, dtype=info.dtype))
+        dummy_inputs.append(np.zeros(info.shape, dtype=info.dtype))
 
     outputs = session.infer(dummy_inputs)
 

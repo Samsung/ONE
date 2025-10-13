@@ -1,15 +1,15 @@
 from typing import List
 import numpy as np
 
-from ..native.libnnfw_api_pybind import infer, tensorinfo
+from ..native.libnnfw_api_pybind import tensorinfo
 from ..native.libnnfw_api_pybind.exception import OnertError
 
 
 def num_elems(tensor_info):
-    """Get the total number of elements in nnfw_tensorinfo.dims."""
+    """Get the total number of elements in tensorinfo.shape."""
     n = 1
-    for x in range(tensor_info.rank):
-        n *= tensor_info.dims[x]
+    for x in tensor_info.shape:
+        n *= x
     return n
 
 
@@ -131,13 +131,12 @@ class BaseSession:
                 input_array = np.zeros((num_elems(input_tensorinfo)),
                                        dtype=input_tensorinfo.dtype)
 
-            # Check if the shape of input_array matches the dims of input_tensorinfo
-            if input_array.shape != tuple(input_tensorinfo.dims):
+            # Check if the shape of input_array matches the input_tensorinfo
+            if input_array.shape != input_tensorinfo.shape:
                 # If not, set the input tensor info to match the input_array shape
                 try:
-                    input_tensorinfo.rank = len(input_array)
-                    input_tensorinfo.dims = list(input_array.shape)
-                    self.session.set_input_tensorinfo(i, input_tensorinfo)
+                    info = tensorinfo(input_tensorinfo.dtype, input_array)
+                    self.session.set_input_tensorinfo(i, info)
                 except Exception as e:
                     raise OnertError(f"Failed to set input tensor info #{i}: {e}") from e
 
@@ -176,18 +175,3 @@ class BaseSession:
                 raise OnertError(f"Failed to get output #{i}: {e}") from e
 
             self.outputs.append(output_array)
-
-
-def tensorinfo():
-    """
-    Shortcut to create a fresh tensorinfo instance.
-    Raises:
-        OnertError: If the C-API call fails.
-    """
-
-    try:
-        return infer.nnfw_tensorinfo()
-    except OnertError:
-        raise
-    except Exception as e:
-        raise OnertError(f"Failed to create tensorinfo: {e}") from e
