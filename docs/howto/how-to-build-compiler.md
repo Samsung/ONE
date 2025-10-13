@@ -1,8 +1,7 @@
 # How to Build Compiler
 
-This document is based on the system where Ubuntu Desktop Linux 20.04 LTS is installed with default
+This document is based on the system where Ubuntu Desktop Linux 22.04 LTS is installed with default
 settings, and can be applied in other environments without much difference.
-For example, Ubuntu Desktop Linux 18.04 LTS environment is also supported but some additional steps may be required.
 
 ## Build Requires
 
@@ -49,29 +48,18 @@ $ pip install numpy flatbuffers
 ```
 
 Supported platforms:
-- Ubuntu 20.04
 - Ubuntu 22.04
 - Ubuntu 24.04 (experimental)
 
 Supported Python versions:
-- Python 3.10 for Ubuntu 20.04 and 22.04
+- Python 3.10 for Ubuntu 22.04
 - Python 3.12 for Ubuntu 24.04
 
-Note: Python 3.10 needs to be installed manually on Ubuntu 20.04.
-```
-sudo apt-get install software-properties-common
-sudo -E add-apt-repository ppa:deadsnakes/ppa -y
-sudo apt-get -y install python3.10 python3.10-venv python3.10-dev
-python3.10 -m ensurepip
-```
-
-Additional install libtsan_preinit.o manually if you are using Ubuntu 20.04 and gcc-9 (refer https://github.com/Samsung/ONE/issues/11202)
-```
-$ apt-get download libgcc-10-dev
-$ dpkg -x libgcc-10-dev_*_amd64.deb libgcc/
-$ sudo cp -f libgcc/usr/lib/gcc/x86_64-linux-gnu/10/libtsan_preinit.o /usr/lib/gcc/x86_64-linux-gnu/9/
-$ rm -rf libgcc-10-dev_*_amd64.deb libgcc/
-```
+> [!NOTE]
+> Ubuntu 20.04 support is unavailable as ppa:deadsnake has ended providing
+> Python3.10 as Ubuntu 20.04 is now end-of-life.
+> We are seeking alternate solution for this issue and when available,
+> this document will be updated with the information.
 
 ## Build for Ubuntu
 
