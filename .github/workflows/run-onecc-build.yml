@@ -50,6 +50,8 @@ jobs:
         id: set-matrix
         env:
           EVENT_NAME: ${{ github.event_name }}
+        # TODO enable focal when possible
+        #      refer https://github.com/Samsung/ONE/issues/16196
         run: |
           JSON='{'
           if [[ "$EVENT_NAME" == "push" ]]; then
@@ -57,7 +59,7 @@ jobs:
             JSON+='"ubuntu_code": ["jammy"]'
           elif [[ "$EVENT_NAME" == "pull_request" ]]; then
             JSON+='"type": ["Debug", "Release"],'
-            JSON+='"ubuntu_code": ["focal", "jammy", "noble"],'
+            JSON+='"ubuntu_code": ["jammy", "noble"],'
             JSON+='"exclude": [{"ubuntu_code": "focal", "type": "Debug"},'
             JSON+='{"ubuntu_code": "noble", "type": "Debug"}]'
           else
