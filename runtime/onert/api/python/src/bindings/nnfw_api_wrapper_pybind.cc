@@ -51,14 +51,9 @@ PYBIND11_MODULE(libnnfw_api_pybind, m)
   // Bind enums
   bind_nnfw_enums(m);
 
-  m.doc() = "NNFW Python Bindings for Training";
-
-  // Bind training enums
-  bind_nnfw_train_enums(m);
-
-  // Bind training nnfw_loss_info
-  bind_nnfw_loss_info(m);
-
-  // Bind_train_info
-  bind_nnfw_train_info(m);
+  // Keep training related bindings in a dedicated submodule
+  auto train = m.def_submodule("train", "NNFW Python Bindings for Training");
+  bind_nnfw_train_enums(train);
+  bind_nnfw_loss_info(train);
+  bind_nnfw_train_info(train);
 }

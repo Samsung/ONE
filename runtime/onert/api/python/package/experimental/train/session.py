@@ -3,7 +3,7 @@ import numpy as np
 from typing import Any, List, Tuple, Dict, Union, Optional
 
 from onert.native import libnnfw_api_pybind
-from onert.native.libnnfw_api_pybind import traininfo
+from onert.native.libnnfw_api_pybind.train import traininfo
 from onert.common.basesession import BaseSession
 from .dataloader import DataLoader
 from .losses.loss import LossFunction
