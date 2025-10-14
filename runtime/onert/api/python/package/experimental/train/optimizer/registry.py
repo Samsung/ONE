@@ -2,7 +2,7 @@ from typing import Type, Dict
 from .optimizer import Optimizer
 from .adam import Adam
 from .sgd import SGD
-from onert.native.libnnfw_api_pybind import optimizer as optimizer_type
+from onert.native.libnnfw_api_pybind.train import optimizer as optimizer_type
 
 
 class OptimizerRegistry:

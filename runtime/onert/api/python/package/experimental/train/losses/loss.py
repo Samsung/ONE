@@ -1,5 +1,5 @@
 from typing import Literal, Dict
-from onert.native.libnnfw_api_pybind import loss_reduction
+from onert.native.libnnfw_api_pybind.train import loss_reduction
 
 
 class LossFunction:
