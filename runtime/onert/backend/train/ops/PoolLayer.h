@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_POOLLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_POOLLAYER_H__
 
-#include <ops/PoolLayer.h>
+#include <ops/Pool2DLayer.h>
 
 #include <exec/train/ITrainableFunction.h>
 

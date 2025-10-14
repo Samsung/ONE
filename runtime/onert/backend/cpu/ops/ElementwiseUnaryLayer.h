@@ -65,6 +65,25 @@ private:
   std::function<void(const IPortableTensor *, IPortableTensor *)> _kernel;
 };
 
+class QuantizeLayer : public ::onert::exec::IFunction
+{
+public:
+  QuantizeLayer() : _input(nullptr), _output(nullptr), _output_multiplier(0), _output_shift(0)
+  {
+    // DO NOTHING
+  }
+
+public:
+  void configure(const IPortableTensor *input, IPortableTensor *output);
+  void run() override;
+
+private:
+  const IPortableTensor *_input;
+  IPortableTensor *_output;
+  int32_t _output_multiplier;
+  int _output_shift;
+};
+
 } // namespace onert::backend::cpu::ops
 
 #endif // __ONERT_BACKEND_CPU_OPS_ELEMENTWISEUNARYLAYER_H__

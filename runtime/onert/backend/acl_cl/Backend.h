@@ -26,6 +26,7 @@
 #include "KernelGenerator.h"
 #include "TensorManager.h"
 #include "Optimizer.h"
+#include "Validator.h"
 #include "AclTensorRegistry.h"
 
 namespace onert::backend::acl_cl
@@ -54,6 +55,11 @@ public:
     context->kernel_gen = std::make_shared<KernelGenerator>(graph, tb, tr);
     context->optimizer = std::make_shared<Optimizer>(context.get());
     return context;
+  }
+
+  std::unique_ptr<ValidatorBase> validator(const ir::Graph &graph) const override
+  {
+    return std::make_unique<Validator>(graph);
   }
 
 private:

@@ -14,12 +14,37 @@
  * limitations under the License.
  */
 
-#include "L2NormLayer.h"
+#include "L2NormalizationLayer.h"
 
 #include "OperationUtils.h"
 
 #include <cker/operation/L2Normalize.h>
 #include <cker/Types.h>
+
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void KernelGenerator::visit(const ir::operation::L2Normalization &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(0)};
+
+  auto output_alloc = _tensor_reg->getPortableTensor(output_index);
+  auto input_alloc = _tensor_reg->getPortableTensor(input_index);
+
+  auto fn = std::make_unique<ops::L2NormLayer>();
+
+  fn->configure(input_alloc, output_alloc);
+
+  _return_fn = std::move(fn);
+}
+
+void Validator::visit(const ir::operation::L2Normalization &) { _supported = true; }
+
+} // namespace onert::backend::cpu
 
 namespace onert::backend::cpu::ops
 {

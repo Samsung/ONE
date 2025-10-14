@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_DEPTHWISECONVOLUTIONLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_DEPTHWISECONVOLUTIONLAYER_H__
 
-#include <ops/DepthwiseConvolutionLayer.h>
+#include <ops/DepthwiseConv2DLayer.h>
 #include <backend/basic/Allocator.h>
 
 #include "../Tensor.h"

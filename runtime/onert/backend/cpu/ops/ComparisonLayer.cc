@@ -13,13 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "CompareLayer.h"
+#include "ComparisonLayer.h"
 
 #include "OperationUtils.h"
 
 #include <assert.h>
 #include <cker/operation/Comparison.h>
 using namespace nnfw::cker;
+
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void KernelGenerator::visit(const ir::operation::Comparison &node)
+{
+  const auto ofm_index{node.getOutputs().at(0)};
+  const auto lhs_index{node.getInputs().at(ir::operation::Comparison::Input::INPUT0)};
+  const auto rhs_index{node.getInputs().at(ir::operation::Comparison::Input::INPUT1)};
+
+  auto ofm_tensor = _tensor_reg->getPortableTensor(ofm_index);
+  auto lhs_tensor = _tensor_reg->getPortableTensor(lhs_index);
+  auto rhs_tensor = _tensor_reg->getPortableTensor(rhs_index);
+
+  auto comparison_type = node.param().comparison_type;
+
+  auto fn = std::make_unique<ops::CompareLayer>();
+
+  fn->configure(lhs_tensor, rhs_tensor, comparison_type, ofm_tensor);
+
+  _return_fn = std::move(fn);
+}
+
+void Validator::visit(const ir::operation::Comparison &) { _supported = true; }
+
+} // namespace onert::backend::cpu
+
 namespace onert::backend::cpu::ops
 {
 

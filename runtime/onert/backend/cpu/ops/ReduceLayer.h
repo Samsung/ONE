@@ -18,6 +18,7 @@
 #define __ONERT_BACKEND_CPU_OPS_REDUCESUMLAYER_H__
 
 #include "cker/neon/neon_check.h"
+#include "cker/operation/ReduceMean.h"
 
 #include <backend/IPortableTensor.h>
 
@@ -66,6 +67,28 @@ private:
     _kernel;
 
   ReduceType _reduceType;
+};
+
+class MeanLayer : public ::onert::exec::IFunction
+{
+public:
+  MeanLayer();
+
+public:
+  void MeanFloat32();
+
+  void MeanQuant8();
+
+  void configure(const IPortableTensor *input, const IPortableTensor *axes, IPortableTensor *output,
+                 bool keep_dims);
+
+  void run() override;
+
+protected:
+  const IPortableTensor *_input;
+  const IPortableTensor *_axes;
+  IPortableTensor *_output;
+  bool _keep_dims;
 };
 
 } // namespace onert::backend::cpu::ops

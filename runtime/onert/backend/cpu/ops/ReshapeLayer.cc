@@ -16,6 +16,39 @@
 
 #include "ReshapeLayer.h"
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void KernelGenerator::visit(const ir::operation::Reshape &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::Reshape::Input::INPUT)};
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  // optional 2nd input
+  IPortableTensor *shape_tensor = nullptr;
+
+  if (node.getInputs().size() == 2)
+  {
+    const auto shape_index{node.getInputs().at(ir::operation::Reshape::Input::SHAPE)};
+    shape_tensor = _tensor_reg->getPortableTensor(shape_index);
+  }
+
+  auto fn = std::make_unique<ops::ReshapeLayer>();
+
+  fn->configure(input_tensor, shape_tensor, output_tensor);
+  _return_fn = std::move(fn);
+}
+
+void Validator::visit(const ir::operation::Reshape &) { _supported = true; }
+
+} // namespace onert::backend::cpu
+
 namespace onert::backend::cpu::ops
 {
 

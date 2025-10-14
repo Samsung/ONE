@@ -131,19 +131,25 @@ std::unique_ptr<CompilerArtifact> Compiler::compile(void)
   {
     auto model_index = ir::ModelIndex{i};
     model_options[model_index] = optionForSingleModel(model_index);
-    _nnpkg->model(ir::ModelIndex{i})->iterate([&](const ir::SubgraphIndex &, ir::IGraph &graph) {
-      auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
+    _nnpkg->model(ir::ModelIndex{i})
+      ->iterate([&](const ir::SubgraphIndex &subg_index, ir::IGraph &graph) {
+        auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
 
-      // Mandatory passes
-      pass::PassRunner{}
-        .append(std::make_unique<pass::ConstantOutputPass>(subg))
-        .append(std::make_unique<pass::OddOutputPass>(subg))
-        .append(std::make_unique<pass::PermutationIOPass>(subg, model_options[model_index]))
-        .run();
+        ir::OperationDumper dumper("Mandatory passes for subgraph " +
+                                   std::to_string(subg_index.value()));
+        subg.operations().iterate(
+          [&](const ir::OperationIndex &, const ir::IOperation &op) { op.accept(dumper); });
 
-      // Optimizations
-      pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
-    });
+        // Mandatory passes
+        pass::PassRunner{}
+          .append(std::make_unique<pass::ConstantOutputPass>(subg))
+          .append(std::make_unique<pass::OddOutputPass>(subg))
+          .append(std::make_unique<pass::PermutationIOPass>(subg, model_options[model_index]))
+          .run();
+
+        // Optimizations
+        pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
+      });
   }
 
   /***************************************************

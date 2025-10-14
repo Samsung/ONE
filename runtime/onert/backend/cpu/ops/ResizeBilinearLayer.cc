@@ -18,6 +18,56 @@
 #include "cker/operation/ResizeBilinear.h"
 #include <cker/Types.h>
 
+#include "../KernelGenerator.h"
+#include "../Validator.h"
+
+namespace onert::backend::cpu
+{
+
+void KernelGenerator::visit(const ir::operation::ResizeBilinear &node)
+{
+  const auto output_index{node.getOutputs().at(0)};
+  const auto input_index{node.getInputs().at(ir::operation::ResizeBilinear::INPUT)};
+
+  auto align_corners = node.param().align_corners;
+  auto half_pixel_centers = node.param().half_pixel_centers;
+
+  auto output_tensor = _tensor_reg->getPortableTensor(output_index);
+  auto input_tensor = _tensor_reg->getPortableTensor(input_index);
+
+  auto fn = std::make_unique<ops::ResizeBilinearLayer>();
+
+  if (node.getInputs().size() == 1)
+  {
+    fn->configure(input_tensor, output_tensor, node.param().height_out, node.param().width_out,
+                  align_corners, half_pixel_centers);
+  }
+  else
+  {
+    assert(node.getInputs().size() == 2);
+    const auto size_index{node.getInputs().at(ir::operation::ResizeBilinear::SIZE)};
+    auto size_tensor = _tensor_reg->getPortableTensor(size_index);
+    if (size_tensor->is_constant())
+    {
+      auto size_vec = _ctx.at(size_index).asVector<int32_t>();
+      const auto height_out = size_vec[0];
+      const auto width_out = size_vec[1];
+      fn->configure(input_tensor, output_tensor, height_out, width_out, align_corners,
+                    half_pixel_centers);
+    }
+    else
+    {
+      fn->configure(input_tensor, output_tensor, size_tensor, align_corners, half_pixel_centers);
+    }
+  }
+
+  _return_fn = std::move(fn);
+}
+
+void Validator::visit(const ir::operation::ResizeBilinear &) { _supported = true; }
+
+} // namespace onert::backend::cpu
+
 namespace onert::backend::cpu::ops
 {
 
