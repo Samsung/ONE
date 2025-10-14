@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_CONVOLUTIONLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_CONVOLUTIONLAYER_H__
 
-#include <ops/ConvolutionLayer.h>
+#include <ops/Conv2DLayer.h>
 
 #include "../Tensor.h"
 #include <exec/train/ITrainableFunction.h>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "L2NormLayer.h"
+#include "L2NormalizationLayer.h"
 
 #include "OperationUtils.h"
 

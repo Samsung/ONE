@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "SquaredDiffLayer.h"
+#include "SquaredDifferenceLayer.h"
 
 #include "OperationUtils.h"
 

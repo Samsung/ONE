@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "DepthwiseConvolutionLayer.h"
+#include "DepthwiseConv2DLayer.h"
 
 #include "cker/PortableTensorUtils.h"
 #include <cker/operation/DepthwiseConv.h>

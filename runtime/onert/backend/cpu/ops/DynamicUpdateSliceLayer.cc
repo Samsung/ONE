@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "DynamicUpdateSlice.h"
+#include "DynamicUpdateSliceLayer.h"
 #include "OperationUtils.h"
 
 #include <cker/operation/DynamicUpdateSlice.h>
