@@ -56,7 +56,7 @@ public:
   std::unique_ptr<CompilerArtifact> compile(void);
 
 private:
-  CompilerOptions optionForSingleModel(const ir::ModelIndex &model_index);
+  void updateOptionForMultiModel();
 
 private:
   std::unique_ptr<ir::NNPkg> _nnpkg;

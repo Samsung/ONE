@@ -43,8 +43,9 @@ class PermutationIOPass : public Pass
 {
 
 public:
-  PermutationIOPass(ir::Graph &graph, const CompilerOptions &options)
-    : Pass(graph), _options(options)
+  PermutationIOPass(ir::Graph &graph, const CompilerOptions &options,
+                    const ir::ModelIndex &model_index, const ir::SubgraphIndex &subg_index)
+    : Pass(graph), _options(options), _model_index(model_index), _subg_index(subg_index)
   {
   }
 
@@ -60,6 +61,8 @@ private:
 
 private:
   const compiler::CompilerOptions &_options;
+  const ir::ModelIndex _model_index;
+  const ir::SubgraphIndex _subg_index;
 };
 
 } // namespace pass

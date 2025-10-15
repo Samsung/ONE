@@ -18,7 +18,7 @@
 #define __ONERT_COMPILER_COMPILER_OPTIONS_H_
 
 #include "ir/OpCode.h"
-#include "ir/Index.h"
+#include "ir/NNPkg.h"
 #include "ir/Layout.h"
 #include "ir/TypeInfo.h"
 
@@ -65,10 +65,10 @@ struct CompilerOptions
 
   // GENERAL OPTIONS
   std::vector<std::string> backend_list;
-  std::unordered_map<ir::IOIndex, ir::Layout> input_layout;
-  std::unordered_map<ir::IOIndex, ir::Layout> output_layout;
-  std::unordered_map<ir::IOIndex, ir::TypeInfo> input_type;
-  std::unordered_map<ir::IOIndex, ir::TypeInfo> output_type;
+  std::unordered_map<ir::IODesc, ir::Layout> input_layout;
+  std::unordered_map<ir::IODesc, ir::Layout> output_layout;
+  std::unordered_map<ir::IODesc, ir::TypeInfo> input_type;
+  std::unordered_map<ir::IODesc, ir::TypeInfo> output_type;
 
   // OPTIONS ONLY FOR DEBUGGING/PROFILING
   int graph_dump_level; //< Graph dump level, values between 0 and 2 are valid

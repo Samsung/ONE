@@ -290,9 +290,12 @@ public:
     auto model = std::make_shared<onert::ir::Model>();
     model->push(onert::ir::SubgraphIndex{0}, graph);
     coptions = onert::compiler::CompilerOptions::fromGlobalConfig();
-    coptions->input_type.insert_or_assign(IOIndex{0}, TypeInfo(DataType::FLOAT32));
-    coptions->input_type.insert_or_assign(IOIndex{1}, TypeInfo(DataType::FLOAT32));
-    coptions->output_type.insert_or_assign(IOIndex{0}, TypeInfo(DataType::FLOAT32));
+    coptions->input_type.insert_or_assign(IODesc{ModelIndex{0}, SubgraphIndex{0}, IOIndex{0}},
+                                          TypeInfo(DataType::FLOAT32));
+    coptions->input_type.insert_or_assign(IODesc{ModelIndex{0}, SubgraphIndex{0}, IOIndex{1}},
+                                          TypeInfo(DataType::FLOAT32));
+    coptions->output_type.insert_or_assign(IODesc{ModelIndex{0}, SubgraphIndex{0}, IOIndex{0}},
+                                           TypeInfo(DataType::FLOAT32));
     auto compiler = onert::compiler::CompilerFactory::get().create(std::make_unique<NNPkg>(model),
                                                                    coptions.get());
     artifact = compiler->compile();
@@ -892,11 +895,11 @@ TEST(ExecInstance, multi_model_dequant_input_quant_output)
   int32_t zero_point = 128;
 
   mockup.coptions->input_type.insert_or_assign(
-    input1, TypeInfo(DataType::QUANT_UINT8_ASYMM, scale, zero_point));
+    mockup.nnpkg->input(input1), TypeInfo(DataType::QUANT_UINT8_ASYMM, scale, zero_point));
   mockup.coptions->input_type.insert_or_assign(
-    input2, TypeInfo(DataType::QUANT_UINT8_ASYMM, scale, zero_point));
+    mockup.nnpkg->input(input2), TypeInfo(DataType::QUANT_UINT8_ASYMM, scale, zero_point));
   mockup.coptions->output_type.insert_or_assign(
-    output, TypeInfo(DataType::QUANT_UINT8_ASYMM, scale, zero_point));
+    mockup.nnpkg->output(output), TypeInfo(DataType::QUANT_UINT8_ASYMM, scale, zero_point));
   mockup.compile();
   auto executors = mockup.artifact->_executors;
 
