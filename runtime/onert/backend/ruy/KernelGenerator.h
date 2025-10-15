@@ -39,8 +39,9 @@ public:
   std::unique_ptr<exec::FunctionSequence> generate(ir::OperationIndex ind) override;
 
 private:
-  void visit(const ir::operation::Conv2D &) override;
-  void visit(const ir::operation::FullyConnected &) override;
+#define OP(InternalName) void visit(const ir::operation::InternalName &) override;
+#include "Operation.lst"
+#undef OP
 
 private:
   const ir::Operands &_ctx;
