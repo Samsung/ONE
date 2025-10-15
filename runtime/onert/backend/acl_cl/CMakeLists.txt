@@ -6,7 +6,14 @@ endif(NOT ARMCompute_FOUND)
 
 set(LIB_ONERT_BACKEND_ACL_CL onert_backend_acl_cl)
 
-file(GLOB_RECURSE SOURCES "*.cc")
+file(GLOB SOURCES "*.cc")
+file(GLOB OPERAND_SOURCES "operand/*.cc")
+list(APPEND SOURCES ${OPERAND_SOURCES})
+macro(OP NAME)
+  # ACL_CL backend doesn't have separate operation files,
+  # but we include the macro for consistency with other backend pattern
+endmacro(OP)
+include(Operation.lst)
 
 add_library(${LIB_ONERT_BACKEND_ACL_CL} SHARED ${SOURCES})
 
