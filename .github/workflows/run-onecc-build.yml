@@ -59,7 +59,7 @@ jobs:
             JSON+='"ubuntu_code": ["jammy"]'
           elif [[ "$EVENT_NAME" == "pull_request" ]]; then
             JSON+='"type": ["Debug", "Release"],'
-            JSON+='"ubuntu_code": ["jammy", "noble"],'
+            JSON+='"ubuntu_code": ["focal", "jammy", "noble"],'
             JSON+='"exclude": [{"ubuntu_code": "focal", "type": "Debug"},'
             JSON+='{"ubuntu_code": "noble", "type": "Debug"}]'
           else
@@ -94,10 +94,10 @@ jobs:
 
       - name: Install python3.10 for focal
         if: matrix.ubuntu_code == 'focal'
-        run: |
-          add-apt-repository ppa:deadsnakes/ppa
-          apt-get -qqy install python3.10 python3.10-dev python3.10-venv
-          python3.10 -m ensurepip --upgrade
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.10"
+          activate-environment: true
 
       - name: Caching externals
         uses: actions/cache@v4
