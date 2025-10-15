@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_OPS_POOLLAYER_H__
-#define __ONERT_BACKEND_CPU_OPS_POOLLAYER_H__
+#ifndef __ONERT_BACKEND_CPU_OPS_POOL2D_LAYER_H__
+#define __ONERT_BACKEND_CPU_OPS_POOL2D_LAYER_H__
 
 #include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
@@ -57,4 +57,4 @@ private:
 
 } // namespace onert::backend::cpu::ops
 
-#endif // __ONERT_BACKEND_CPU_OPS_POOLLAYER_H__
+#endif // __ONERT_BACKEND_CPU_OPS_POOL2D_LAYER_H__

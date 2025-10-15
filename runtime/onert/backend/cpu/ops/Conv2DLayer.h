@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_OPS_CONVOLUTIONLAYER_H__
-#define __ONERT_BACKEND_CPU_OPS_CONVOLUTIONLAYER_H__
+#ifndef __ONERT_BACKEND_CPU_OPS_CONV2DLAYER_H__
+#define __ONERT_BACKEND_CPU_OPS_CONV2DLAYER_H__
 
 #include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
@@ -87,4 +87,4 @@ protected:
 
 } // namespace onert::backend::cpu::ops
 
-#endif // __ONERT_BACKEND_CPU_OPS_CONVOLUTIONLAYER_H__
+#endif // __ONERT_BACKEND_CPU_OPS_CONV2DLAYER_H__

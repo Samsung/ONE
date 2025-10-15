@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "PoolLayer.h"
+#include "Pool2DLayer.h"
 
 #include <cker/operation/AveragePool.h>
 #include <cker/operation/MaxPool.h>

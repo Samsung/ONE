@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __ONERT_KERNEL_CPU_DEPTHWISECONVOLUTIONLAYER_H__
-#define __ONERT_KERNEL_CPU_DEPTHWISECONVOLUTIONLAYER_H__
+#ifndef __ONERT_KERNEL_CPU_DEPTHWISE_CONV2D_LAYER_H__
+#define __ONERT_KERNEL_CPU_DEPTHWISE_CONV2D_LAYER_H__
 
 #include <backend/IPortableTensor.h>
 #include "OperationUtils.h"
@@ -95,4 +95,4 @@ private:
 
 } // namespace onert::backend::cpu::ops
 
-#endif // __ONERT_KERNEL_CPU_DEPTHWISECONVOLUTIONLAYER_H__
+#endif // __ONERT_KERNEL_CPU_DEPTHWISE_CONV2D_LAYER_H__

@@ -7,45 +7,42 @@
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in riting, software
+ * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 
-#ifndef __ONERT_BACKEND_CPU_OPS_MEANLAYER_H__
-#define __ONERT_BACKEND_CPU_OPS_MEANLAYER_H__
+#ifndef __ONERT_BACKEND_CPU_OPS_COMPARISONLAYER_H__
+#define __ONERT_BACKEND_CPU_OPS_COMPARISONLAYER_H__
 
 #include <backend/IPortableTensor.h>
 
 #include <exec/IFunction.h>
+#include <ir/operation/Comparison.h>
 
 namespace onert::backend::cpu::ops
 {
 
-class MeanLayer : public ::onert::exec::IFunction
+class CompareLayer : public ::onert::exec::IFunction
 {
 public:
-  MeanLayer();
+  CompareLayer();
 
 public:
-  void MeanFloat32();
-
-  void MeanQuant8();
-
-  void configure(const IPortableTensor *input, const IPortableTensor *axes, IPortableTensor *output,
-                 bool keep_dims);
+  void configure(const IPortableTensor *lhs, const IPortableTensor *rhs,
+                 const ir::operation::Comparison::ComparisonType op_type, IPortableTensor *output);
 
   void run() override;
 
-protected:
-  const IPortableTensor *_input;
-  const IPortableTensor *_axes;
+private:
+  const IPortableTensor *_lhs;
+  const IPortableTensor *_rhs;
   IPortableTensor *_output;
-  bool _keep_dims;
+  ir::operation::Comparison::ComparisonType _op_type;
 };
 
 } // namespace onert::backend::cpu::ops
 
-#endif // __ONERT_BACKEND_CPU_OPS_MEANLAYER_H__
+#endif // __ONERT_BACKEND_CPU_OPS_COMPARISONLAYER_H__

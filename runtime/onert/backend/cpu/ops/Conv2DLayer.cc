@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "ConvolutionLayer.h"
+#include "Conv2DLayer.h"
 #include "OperationUtils.h"
 #include "cker/PortableTensorUtils.h"
 

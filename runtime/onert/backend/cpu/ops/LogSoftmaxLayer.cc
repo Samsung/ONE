@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "LogSoftMaxLayer.h"
+#include "LogSoftmaxLayer.h"
 
 #include "OperationUtils.h"
 

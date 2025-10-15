@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "SoftMaxLayer.h"
+#include "SoftmaxLayer.h"
 
 #include "OperationUtils.h"
 

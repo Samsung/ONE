@@ -17,7 +17,7 @@
 #ifndef __ONERT_BACKEND_TRAIN_OPS_SOFTMAXLAYER_H__
 #define __ONERT_BACKEND_TRAIN_OPS_SOFTMAXLAYER_H__
 
-#include <ops/SoftMaxLayer.h>
+#include <ops/SoftmaxLayer.h>
 #include <backend/IPortableTensor.h>
 
 #include <exec/train/ITrainableFunction.h>
