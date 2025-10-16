@@ -103,7 +103,7 @@ OMStatus execute_kernel_CirclePad(const OMExecuteArgs &execute_args)
   assert(num_input_dimensions <= 5);
 
   if (num_input_dimensions > 5)
-    return UnsupportedType;
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
 
   pad_params.left_padding_count = num_input_dimensions;
   pad_params.right_padding_count = num_input_dimensions;

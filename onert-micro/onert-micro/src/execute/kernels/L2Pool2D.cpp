@@ -37,13 +37,15 @@ OMStatus execute_kernel_CircleL2Pool2D(const OMExecuteArgs &execute_args)
 #ifndef DIS_QUANT
   auto l2_pool_int8_lambda = [](const core::Pool2DParams &params,
                                 const core::OMRuntimeShape &input_shape, const int8_t *input_data,
-                                const core::OMRuntimeShape &output_shape,
-                                int8_t *output_data) { return UnsupportedType; };
+                                const core::OMRuntimeShape &output_shape, int8_t *output_data) {
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
+  };
 #else
   auto l2_pool_int8_lambda = [](const core::Pool2DParams &params,
                                 const core::OMRuntimeShape &input_shape, const int8_t *input_data,
-                                const core::OMRuntimeShape &output_shape,
-                                int8_t *output_data) { return UnsupportedType; };
+                                const core::OMRuntimeShape &output_shape, int8_t *output_data) {
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
+  };
 #endif // DIS_QUANT
 
   return execute_pooling_common(execute_args, l2_pool_float_lambda, l2_pool_int8_lambda);

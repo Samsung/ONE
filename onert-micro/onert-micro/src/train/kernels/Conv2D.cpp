@@ -134,7 +134,7 @@ OMStatus onert_micro::train::train_kernel_CircleConv2D(const OMBackpropExecuteAr
     default:
     {
       assert(false && "Unsupported activation type");
-      return UnsupportedType;
+      OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
     }
   }
 
@@ -176,7 +176,7 @@ OMStatus onert_micro::train::train_kernel_CircleConv2D(const OMBackpropExecuteAr
     {
       assert(bias_data != nullptr);
       if (bias_data == nullptr)
-        return UnknownError;
+        OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
       pal::Conv2DBiasGrad(output_shape, utils::castInputData<float>(dloss_doutput_data),
                           utils::castOutputData<float>(dloss_dbias_data));

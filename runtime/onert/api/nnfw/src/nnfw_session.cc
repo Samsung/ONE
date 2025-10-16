@@ -647,8 +647,15 @@ NNFW_STATUS nnfw_session::set_input_layout(uint32_t index, NNFW_LAYOUT layout)
       return NNFW_STATUS_ERROR;
     }
 
+    const auto io_index = onert::ir::IOIndex{index};
+    // Signature is supported on single model only
+    assert(!_selected_signature.valid() || _nnpkg->model_count() != 1);
+    const auto io_desc =
+      _selected_signature.valid()
+        ? onert::ir::IODesc{onert::ir::ModelIndex{0}, _selected_signature, io_index}
+        : _nnpkg->input(io_index);
     // Insert if not exists, otherwise update the value
-    _coptions->input_layout[onert::ir::IOIndex{index}] = convertLayout(layout);
+    _coptions->input_layout[io_desc] = convertLayout(layout);
   }
   catch (const std::exception &e)
   {
@@ -685,8 +692,16 @@ NNFW_STATUS nnfw_session::set_output_layout(uint32_t index, NNFW_LAYOUT layout)
       return NNFW_STATUS_ERROR;
     }
 
+    const auto io_index = onert::ir::IOIndex{index};
+    // Signature is supported on single model only
+    assert(!_selected_signature.valid() || _nnpkg->model_count() != 1);
+    const auto io_desc =
+      _selected_signature.valid()
+        ? onert::ir::IODesc{onert::ir::ModelIndex{0}, _selected_signature, io_index}
+        : _nnpkg->output(io_index);
+
     // Insert if not exists, otherwise update the value
-    _coptions->output_layout[onert::ir::IOIndex{index}] = convertLayout(layout);
+    _coptions->output_layout[io_desc] = convertLayout(layout);
   }
   catch (const std::exception &e)
   {
@@ -721,7 +736,15 @@ NNFW_STATUS nnfw_session::set_input_type(uint32_t index, NNFW_TYPE type)
       return NNFW_STATUS_ERROR;
     }
 
-    _coptions->input_type.insert_or_assign(onert::ir::IOIndex{index},
+    const auto io_index = onert::ir::IOIndex{index};
+    // Signature is supported on single model only
+    assert(!_selected_signature.valid() || _nnpkg->model_count() != 1);
+    const auto io_desc =
+      _selected_signature.valid()
+        ? onert::ir::IODesc{onert::ir::ModelIndex{0}, _selected_signature, io_index}
+        : _nnpkg->input(io_index);
+    // Insert if not exists, otherwise update the value
+    _coptions->input_type.insert_or_assign(io_desc,
                                            onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
   }
   catch (const std::exception &e)
@@ -758,7 +781,15 @@ NNFW_STATUS nnfw_session::set_output_type(uint32_t index, NNFW_TYPE type)
       return NNFW_STATUS_ERROR;
     }
 
-    _coptions->output_type.insert_or_assign(onert::ir::IOIndex{index},
+    const auto io_index = onert::ir::IOIndex{index};
+    // Signature is supported on single model only
+    assert(!_selected_signature.valid() || _nnpkg->model_count() != 1);
+    const auto io_desc =
+      _selected_signature.valid()
+        ? onert::ir::IODesc{onert::ir::ModelIndex{0}, _selected_signature, io_index}
+        : _nnpkg->output(io_index);
+    // Insert if not exists, otherwise update the value
+    _coptions->output_type.insert_or_assign(io_desc,
                                             onert::ir::TypeInfo(onert::ir::DataType::FLOAT32));
   }
   catch (const std::exception &e)
@@ -2380,11 +2411,13 @@ NNFW_STATUS nnfw_session::run_with_auto_compilation(const char *target, NNFW_COD
 
       // Set compile option to use float type
       for (auto input_index = IOIndex{0}; input_index < IOIndex{input_size}; input_index++)
-        _coptions->input_type.insert_or_assign(input_index, TypeInfo(DataType::FLOAT32));
+        _coptions->input_type.insert_or_assign(IODesc{ModelIndex{0}, SubgraphIndex{0}, input_index},
+                                               TypeInfo(DataType::FLOAT32));
 
       // Save Outputs buffers
       for (auto output_index = IOIndex{0}; output_index < IOIndex{output_size}; output_index++)
-        _coptions->output_type.insert_or_assign(output_index, TypeInfo(DataType::FLOAT32));
+        _coptions->output_type.insert_or_assign(
+          IODesc{ModelIndex{0}, SubgraphIndex{0}, output_index}, TypeInfo(DataType::FLOAT32));
 
       // if there is compiled model - try to load it
       if (file_compiled_model.good())

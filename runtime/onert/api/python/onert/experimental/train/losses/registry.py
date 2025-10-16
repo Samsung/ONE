@@ -2,7 +2,7 @@ from typing import Type, Dict
 from .loss import LossFunction
 from .cce import CategoricalCrossentropy
 from .mse import MeanSquaredError
-from onert.native.libnnfw_api_pybind import loss as loss_type
+from onert.native.libnnfw_api_pybind.train import loss as loss_type
 
 
 class LossRegistry:

@@ -44,34 +44,8 @@ Compiler::Compiler(std::unique_ptr<ir::NNPkg> nnpkg, CompilerOptions *copts)
   // DO NOTHING
 }
 
-CompilerOptions Compiler::optionForSingleModel(const ir::ModelIndex &model_index)
+void Compiler::updateOptionForMultiModel()
 {
-  CompilerOptions model_opts = CompilerOptions(*_options); // Copy options
-  model_opts.input_layout.clear();
-  model_opts.output_layout.clear();
-  model_opts.input_type.clear();
-  model_opts.output_type.clear();
-
-  // Set option for selected model
-  auto option_for_model = [](const auto &src_opt, auto &dst_opt, const ir::ModelIndex &model_index,
-                             auto io_desc_getter) {
-    for (const auto &[index, val] : src_opt)
-    {
-      const auto &io_desc = io_desc_getter(index);
-      if (std::get<ir::ModelIndex>(io_desc) == model_index)
-        dst_opt.insert_or_assign(std::get<ir::IOIndex>(io_desc), val);
-    }
-  };
-
-  option_for_model(_options->input_layout, model_opts.input_layout, model_index,
-                   [this](const ir::IOIndex &idx) { return _nnpkg->input(idx); });
-  option_for_model(_options->output_layout, model_opts.output_layout, model_index,
-                   [this](const ir::IOIndex &idx) { return _nnpkg->output(idx); });
-  option_for_model(_options->input_type, model_opts.input_type, model_index,
-                   [this](const ir::IOIndex &idx) { return _nnpkg->input(idx); });
-  option_for_model(_options->output_type, model_opts.output_type, model_index,
-                   [this](const ir::IOIndex &idx) { return _nnpkg->output(idx); });
-
   // Pass input type info for edges because edge's from_tensor info can be different
   // with its to_tensor info.
   // Permutation node will be inserted on PermutationIOPass.
@@ -81,17 +55,12 @@ CompilerOptions Compiler::optionForSingleModel(const ir::ModelIndex &model_index
   for (const auto &[from, to] : _nnpkg->model_edges().edges)
   {
     const auto &[from_model, from_subg, from_io] = from;
-    const auto &[to_model, to_subg, to_io] = to;
-    if (to_model == model_index)
     {
-      const auto from_index =
-        _nnpkg->model(from_model)->primary_subgraph()->getOutputs().at(from_io);
-      model_opts.input_type.insert_or_assign(
-        to_io, _nnpkg->model(from_model)->primary_subgraph()->operands().at(from_index).typeInfo());
+      const auto from_index = _nnpkg->model(from_model)->at(from_subg)->getOutputs().at(from_io);
+      _options->input_type.insert_or_assign(
+        to, _nnpkg->model(from_model)->primary_subgraph()->operands().at(from_index).typeInfo());
     }
   }
-
-  return model_opts;
 }
 
 std::unique_ptr<CompilerArtifact> Compiler::compile(void)
@@ -126,24 +95,27 @@ std::unique_ptr<CompilerArtifact> Compiler::compile(void)
       throw std::runtime_error("Compiler can only compile models for inference.");
   }
 
-  std::unordered_map<ir::ModelIndex, CompilerOptions> model_options;
+  if (model_count > 1)
+    updateOptionForMultiModel();
+
   for (uint16_t i = 0; i < model_count; i++)
   {
     auto model_index = ir::ModelIndex{i};
-    model_options[model_index] = optionForSingleModel(model_index);
-    _nnpkg->model(ir::ModelIndex{i})->iterate([&](const ir::SubgraphIndex &, ir::IGraph &graph) {
-      auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
+    _nnpkg->model(ir::ModelIndex{i})
+      ->iterate([&](const ir::SubgraphIndex &subg_index, ir::IGraph &graph) {
+        auto &subg = nnfw::misc::polymorphic_downcast<ir::Graph &>(graph);
 
-      // Mandatory passes
-      pass::PassRunner{}
-        .append(std::make_unique<pass::ConstantOutputPass>(subg))
-        .append(std::make_unique<pass::OddOutputPass>(subg))
-        .append(std::make_unique<pass::PermutationIOPass>(subg, model_options[model_index]))
-        .run();
+        // Mandatory passes
+        pass::PassRunner{}
+          .append(std::make_unique<pass::ConstantOutputPass>(subg))
+          .append(std::make_unique<pass::OddOutputPass>(subg))
+          .append(
+            std::make_unique<pass::PermutationIOPass>(subg, *_options, model_index, subg_index))
+          .run();
 
-      // Optimizations
-      pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
-    });
+        // Optimizations
+        pass::PassRunner{}.append(std::make_unique<pass::UnusedOperandEliminationPass>(subg)).run();
+      });
   }
 
   /***************************************************
@@ -185,7 +157,7 @@ std::unique_ptr<CompilerArtifact> Compiler::compile(void)
                       nnfw::misc::str("before_lower_model-", i, "-subg-", subg_index.value()));
       // Lower: Assign backend
       lowered_subgs[model_index][subg_index] =
-        std::make_unique<compiler::LoweredGraph>(subg, model_options[model_index]);
+        std::make_unique<compiler::LoweredGraph>(subg, *_options);
       // Set tracing_ctx for copied graph
       tracing_ctx->setSubgraphIndex(&(lowered_subgs[model_index][subg_index]->graph()),
                                     {model_index, subg_index});
@@ -268,7 +240,7 @@ std::unique_ptr<CompilerArtifact> Compiler::compile(void)
 
       ExecutorFactoryArgs args;
       args.tracing_ctx = tracing_ctx.get();
-      args.options = &model_options[model_index];
+      args.options = _options;
       args.model_index = model_index;
       args.custom_kernel_builder = custom_kernel_builders[model_index];
       if (_options->internal_output_alloc)

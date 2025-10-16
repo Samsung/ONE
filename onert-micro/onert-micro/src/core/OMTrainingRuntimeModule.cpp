@@ -211,7 +211,7 @@ OMStatus OMTrainingRuntimeModule::evaluateMetric(const OMConfig &config, OMMetri
 
   assert(test_size > 0);
   if (test_size == 0)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   uint32_t input_nums = forward_main_graph.getNumberOfInputs();
   for (uint32_t b = 0; b < test_size; ++b)
@@ -295,7 +295,7 @@ OMStatus OMTrainingRuntimeModule::createCheckpointFile(const OMConfig &config,
 {
   // Model wasn't imported
   if (_backward_graphs.size() == 0 or _graphs.size() == 0)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   OMRuntimeContext &context = _backward_graphs.at(0).getRuntimeContext();
   train::OMTrainingStorage &train_storage = _training_handler.getTrainingStorage();
@@ -313,7 +313,7 @@ OMStatus OMTrainingRuntimeModule::loadCheckpointData(OMConfig &config, const cha
 {
   // Model wasn't imported
   if (_backward_graphs.size() == 0 or _graphs.size() == 0)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   OMRuntimeContext &context = _backward_graphs.at(0).getRuntimeContext();
   train::OMTrainingStorage &train_storage = _training_handler.getTrainingStorage();

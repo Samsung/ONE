@@ -125,7 +125,7 @@ OMStatus onert_micro::train::train_kernel_CircleGRU(const OMBackpropExecuteArgs 
 
   // Currently support only float training
   if (input->type() != circle::TensorType_FLOAT32)
-    return UnsupportedType;
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
 
   status =
     pal::GRUWeightGrads(core::utils::castInputData<float>(output_grad_data),

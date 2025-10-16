@@ -55,7 +55,7 @@ OMStatus OMRuntimeContext::getConstDataByTensorIndex(uint8_t **data, uint16_t te
   auto *tensor = getTensorByIndex(tensor_index);
 
   if (tensor == nullptr)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   // To handle with separated weights:
   // 1) first we try to get weigths from wof file (using wof_reader)

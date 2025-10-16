@@ -22,6 +22,7 @@
 #include "core/OMRuntimeStorage.h"
 #include "core/OMRuntimeContext.h"
 #include "core/memory/OMRuntimeAllocator.h"
+#include "OMLog.h"
 
 namespace onert_micro
 {

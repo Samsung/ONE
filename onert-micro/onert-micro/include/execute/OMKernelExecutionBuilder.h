@@ -22,6 +22,7 @@
 #include "core/OMRuntimeStorage.h"
 #include "core/OMRuntimeContext.h"
 #include "execute/OMExecuteArgs.h"
+#include "OMLog.h"
 
 namespace onert_micro
 {
@@ -62,7 +63,7 @@ public:
     if (builder_id_opcode >= size_t(core::OMBuilderID::BuiltinOperatorsSize))
     {
       *execute_func = nullptr;
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
     }
     *execute_func = _operator_execute[builder_id_opcode];
     return Ok;
@@ -99,7 +100,7 @@ public:
     if (builder_id_opcode >= size_t(core::OMBuilderID::Size))
     {
       *execute_func = nullptr;
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
     }
     const auto builder_id_offset = size_t(core::OMBuilderID::BuiltinOperatorsSize);
     builder_id_opcode -= builder_id_offset - 1;

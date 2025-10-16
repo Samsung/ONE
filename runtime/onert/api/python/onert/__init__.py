@@ -5,7 +5,7 @@ __all__ = ["infer", "tensorinfo", "experimental"]
 from . import infer
 
 # Import and expose tensorinfo
-from .common import tensorinfo as tensorinfo
+from .common import tensorinfo
 
 # Import and expose the experimental module's functionalities
 from . import experimental

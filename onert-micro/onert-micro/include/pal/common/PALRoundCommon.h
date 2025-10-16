@@ -41,7 +41,7 @@ inline OMStatus Round<float>(const core::OMRuntimeShape &input_shape, const floa
   const uint32_t flat_size = input_shape.flatSize();
 
   if (flat_size == -1)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   assert(input_data != nullptr);
   assert(output_data != nullptr);

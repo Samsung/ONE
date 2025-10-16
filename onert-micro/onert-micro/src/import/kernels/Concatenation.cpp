@@ -49,7 +49,7 @@ OMStatus configure_kernel_CircleConcatenation(const OMConfigureArgs &config_args
 
   // TODO: Support concat with fused activation function
   if (params->fused_activation_function() != circle::ActivationFunctionType_NONE)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   OMRuntimeShape input_shape(t0);
   int axis = params->axis();

@@ -20,6 +20,7 @@
 #include "core/reader/OMCircleReader.h"
 #include "core/OMRuntimeContext.h"
 #include "core/OMRuntimeStorage.h"
+#include "OMLog.h"
 
 #include <cstdint>
 

@@ -253,7 +253,7 @@ OMStatus Adam::handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeC
       OMStatus status = core::memory::OMMemoryManager::allocateMemory(tensor_size, &exponent_data);
       assert(status == Ok);
       if (status != Ok)
-        return UnknownError;
+        OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
       // Set to zeros
       std::memset(exponent_data, 0, tensor_size);
       _tensor_to_exponent_avg[tensor_to_data.first] = exponent_data;
@@ -263,7 +263,7 @@ OMStatus Adam::handle(core::OMRuntimeStorage &backward_storage, core::OMRuntimeC
       status = core::memory::OMMemoryManager::allocateMemory(tensor_size, &exponent_square_data);
       assert(status == Ok);
       if (status != Ok)
-        return UnknownError;
+        OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
       // Set to zeros
       std::memset(exponent_square_data, 0, tensor_size);
       _tensor_to_exponent_avg_squares[tensor_to_data.first] = exponent_square_data;
@@ -335,11 +335,11 @@ OMStatus Adam::updateWeights(
   {
     auto exponent_squares_it = _tensor_to_exponent_avg_squares.find(tensor_to_data.first);
     if (exponent_squares_it == _tensor_to_exponent_avg_squares.end())
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
     auto exponent_it = _tensor_to_exponent_avg.find(tensor_to_data.first);
     if (exponent_it == _tensor_to_exponent_avg.end())
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
     auto tensor = context.getTensorByIndex(tensor_to_data.first);
     core::OMRuntimeShape shape(tensor);
@@ -370,11 +370,11 @@ OMStatus Adam::updateWeights(
 
     uint8_t *weight_data = nullptr;
     if (context.getConstDataByTensorIndex(&weight_data, tensor_to_data.first) != Ok)
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
     assert(weight_data != nullptr);
     if (weight_data == nullptr)
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
     auto *f_weight_data = reinterpret_cast<float *>(weight_data);
     float lambda = training_config.learning_rate;

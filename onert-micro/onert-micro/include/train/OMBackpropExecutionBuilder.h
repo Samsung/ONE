@@ -22,6 +22,7 @@
 #include "core/OMRuntimeStorage.h"
 #include "core/OMRuntimeContext.h"
 #include "train/OMBackpropExecuteArgs.h"
+#include "OMLog.h"
 
 namespace onert_micro
 {
@@ -61,7 +62,7 @@ public:
     if (builder_id_opcode >= size_t(core::OMBuilderID::BuiltinOperatorsSize))
     {
       *train_func = nullptr;
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
     }
     *train_func = _operator_train[builder_id_opcode];
     return Ok;

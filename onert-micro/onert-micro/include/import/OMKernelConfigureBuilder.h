@@ -17,6 +17,7 @@
 #ifndef ONERT_MICRO_IMPORT_KERNEL_CONFIGURE_BUILDER_H
 #define ONERT_MICRO_IMPORT_KERNEL_CONFIGURE_BUILDER_H
 
+#include "OMLog.h"
 #include <iostream>
 #include "core/reader/OMCircleReader.h"
 #include "core/OMKernelType.h"
@@ -65,9 +66,9 @@ public:
     assert(builder_id_opcode < size_t(core::OMBuilderID::BuiltinOperatorsSize));
     if (builder_id_opcode >= size_t(core::OMBuilderID::BuiltinOperatorsSize))
     {
-      std::cerr << "Error: Unknown builtin operator ID " << builder_id_opcode << std::endl;
       *configure_func = nullptr;
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnsupportedOp,
+                        "Unsupprted Operation ID " + std::to_string(builder_id_opcode));
     }
     *configure_func = _operator_configure[builder_id_opcode];
     return Ok;
@@ -106,7 +107,7 @@ public:
     {
       std::cerr << "Error: Unknown custom operator ID " << builder_id_opcode << std::endl;
       *configure_func = nullptr;
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
     }
     const auto builder_id_offset = size_t(core::OMBuilderID::BuiltinOperatorsSize);
     builder_id_opcode -= builder_id_offset - 1;

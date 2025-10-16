@@ -69,7 +69,7 @@ onert_micro::import::helpers::configure_floor_kernel_common(const OMConfigureArg
   if (input1->quantization()->scale()->size() != 1 or
       input2->quantization()->scale()->size() != 1 or output->quantization()->scale()->size() != 1)
   {
-    return UnsupportedType;
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
   }
 
   return status;

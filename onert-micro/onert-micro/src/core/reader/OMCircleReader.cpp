@@ -58,7 +58,7 @@ OMStatus OMCircleReader::parse(const char *model_ptr)
   assert(model_ptr != nullptr && "Model pointer cannot be null");
   if (model_ptr == nullptr or _model != nullptr)
   {
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
   }
 
   _model = circle::GetModel(model_ptr);
@@ -69,15 +69,15 @@ OMStatus OMCircleReader::parse(const char *model_ptr)
 OMStatus OMCircleReader::select_subgraph(uint32_t sgindex)
 {
   if (num_subgraph() <= sgindex)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   auto subgraphs = _model->subgraphs();
   if (subgraphs == nullptr)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   _current_subgraph = subgraphs->Get(sgindex);
   if (_current_subgraph == nullptr)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   _current_subgraph_index = sgindex;
 

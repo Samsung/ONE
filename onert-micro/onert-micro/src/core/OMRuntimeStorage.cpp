@@ -32,7 +32,7 @@ OMStatus OMRuntimeStorage::removeTensorFromTensorIndexToData(uint16_t tensor_ind
   assert(tensor_to_data_it != _tensor_index_to_data.end() && "No data");
 
   if (tensor_to_data_it == _tensor_index_to_data.end())
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   _tensor_index_to_data.erase(tensor_to_data_it);
 

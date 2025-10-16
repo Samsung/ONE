@@ -133,7 +133,7 @@ OMStatus onert_micro::execute::calculateActivationRangeQuantized(
       break;
     default:
       assert(false && "Unsupported type.");
-      return UnsupportedType;
+      OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
   }
 
   return calculateActivationRangeQuantizedImpl(activation, qmin, qmax, output_zero_point,

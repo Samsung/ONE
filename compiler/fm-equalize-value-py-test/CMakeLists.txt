@@ -48,7 +48,7 @@ macro(eval RECIPE)
                                        --fme_detect ${FME_DETECT_BIN} --dalgona ${DALGONA_BIN}
                                        --fme_apply ${FME_APPLY_BIN}
     DEPENDS ${FM_EQUALIZE_BIN} ${OPT_CIRCLE_OUTPUT_PATH} ${FME_APPLY_BIN} ${FME_DETECT_BIN} ${DALGONA_BIN}
-    COMMENT "Apply fm-equalize to ${OPT_CIRCLE_OUTPUT_PATH}"
+    COMMENT "Apply fm-equalize to ${OPT_CIRCLE_OUTPUT_PATH} on ${PYTHON_SITE_PACKAGES}"
   )
 
   # depends
