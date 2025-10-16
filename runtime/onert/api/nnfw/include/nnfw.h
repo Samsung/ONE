@@ -449,11 +449,11 @@ NNFW_STATUS nnfw_input_tensorinfo(nnfw_session *session, uint32_t index,
  * <p>Between {@link nnfw_prepare} and {@link nnfw_run}, this function returns updated tensor info
  * if tensor info is updated by {@link nnfw_set_input_tensorinfo} before {@link nnfw_prepare} is
  * invoked. But it does not reflect the tensor information set via
- * {@link nnfw_set_output_tensorinfo} after {@link nnfw_prepare} is invoked.</p>
+ * {@link nnfw_set_input_tensorinfo} after {@link nnfw_prepare} is invoked.</p>
  *
  * <p>After {@link nnfw_run} is invoked(at least once), it returns the updated tensor info during
  * the latest execution. But it does not reflect the tensor information set via
- * {@link nnfw_set_output_tensorinfo} after the last {@link nnfw_run} is invoked.</p>
+ * {@link nnfw_set_input_tensorinfo} after the last {@link nnfw_run} is invoked.</p>
  *
  * @param[in]   session     Session from output information is to be extracted
  * @param[in]   index       Index of output
