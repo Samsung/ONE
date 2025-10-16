@@ -48,6 +48,7 @@ public:
   void visit(const ir::operation::BatchToSpaceND &node) override;
   void visit(const ir::operation::BCQFullyConnected &node) override;
   void visit(const ir::operation::BCQGather &node) override;
+  void visit(const ir::operation::BCQUnembedding &node) override;
   void visit(const ir::operation::BroadcastTo &node) override;
   void visit(const ir::operation::Comparison &node) override;
   void visit(const ir::operation::Conv2D &node) override;

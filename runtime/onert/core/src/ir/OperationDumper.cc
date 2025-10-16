@@ -91,6 +91,18 @@ void OperationDumper::visit(const BCQFullyConnected &node)
   VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
 }
 
+void OperationDumper::visit(const BCQUnembedding &node)
+{
+  VERBOSE(LIR) << "* " << node.name() << std::endl;
+  VERBOSE(LIR) << "  - Inputs : IFM(" << node.getInputs().at(BCQUnembedding::Input::INPUT)
+               << ") WeightsBinary(" << node.getInputs().at(BCQUnembedding::Input::WEIGHTS_BINARY)
+               << ") WeightsScales(" << node.getInputs().at(BCQUnembedding::Input::WEIGHTS_SCALES)
+               << ") WeightsClusters("
+               << node.getInputs().at(BCQUnembedding::Input::WEIGHTS_CLUSTERS) << ") Bias("
+               << node.getInputs().at(BCQUnembedding::Input::BIAS) << ")" << std::endl;
+  VERBOSE(LIR) << "  - Output : OFM(" << node.getOutputs().at(0) << ")" << std::endl;
+}
+
 void OperationDumper::visit(const BinaryArithmetic &node) { dumpOpGeneric(node); }
 
 void OperationDumper::visit(const operation::BroadcastTo &node) { dumpOpGeneric(node); }
