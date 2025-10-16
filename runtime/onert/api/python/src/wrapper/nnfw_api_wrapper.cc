@@ -58,41 +58,41 @@ NNFW_LAYOUT getLayout(const char *layout)
   throw NnfwError(std::string("Unknown layout type: '") + layout + "'");
 }
 
-datatype::datatype(NNFW_TYPE type) : nnfw_type(type)
+datatype::datatype(NNFW_TYPE type) : _nnfw_type(type)
 {
   switch (type)
   {
     case NNFW_TYPE::NNFW_TYPE_TENSOR_FLOAT32:
-      py_dtype = py::dtype("float32");
-      name = "float32";
+      _py_dtype = py::dtype("float32");
+      _name = "float32";
       return;
     case NNFW_TYPE::NNFW_TYPE_TENSOR_INT32:
-      py_dtype = py::dtype("int32");
-      name = "int32";
+      _py_dtype = py::dtype("int32");
+      _name = "int32";
       return;
     case NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM:
-      py_dtype = py::dtype("uint8");
-      name = "quint8";
+      _py_dtype = py::dtype("uint8");
+      _name = "quint8";
       return;
     case NNFW_TYPE::NNFW_TYPE_TENSOR_UINT8:
-      py_dtype = py::dtype("uint8");
-      name = "uint8";
+      _py_dtype = py::dtype("uint8");
+      _name = "uint8";
       return;
     case NNFW_TYPE::NNFW_TYPE_TENSOR_BOOL:
-      py_dtype = py::dtype("bool");
-      name = "bool";
+      _py_dtype = py::dtype("bool");
+      _name = "bool";
       return;
     case NNFW_TYPE::NNFW_TYPE_TENSOR_INT64:
-      py_dtype = py::dtype("int64");
-      name = "int64";
+      _py_dtype = py::dtype("int64");
+      _name = "int64";
       return;
     case NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT8_ASYMM_SIGNED:
-      py_dtype = py::dtype("int8");
-      name = "qint8";
+      _py_dtype = py::dtype("int8");
+      _name = "qint8";
       return;
     case NNFW_TYPE::NNFW_TYPE_TENSOR_QUANT16_SYMM_SIGNED:
-      py_dtype = py::dtype("int16");
-      name = "qint16sym";
+      _py_dtype = py::dtype("int16");
+      _name = "qint16sym";
       return;
   }
   // This code should not be reached because compiler will generate a warning
@@ -154,7 +154,7 @@ void NNFW_SESSION::close_session()
 void NNFW_SESSION::set_input_tensorinfo(uint32_t index, const tensorinfo *tensor_info)
 {
   nnfw_tensorinfo ti;
-  ti.dtype = tensor_info->dtype.nnfw_type;
+  ti.dtype = tensor_info->dtype.nnfw_type();
   ti.rank = tensor_info->rank;
   for (int i = 0; i < NNFW_MAX_RANK; i++)
   {
@@ -236,8 +236,8 @@ py::array NNFW_SESSION::get_output(uint32_t index)
 
   const auto dtype = datatype(out_info.dtype);
   // Wrap the raw buffer in a numpy array;
-  py::array arr(dtype.py_dtype, shape);
-  std::memcpy(arr.mutable_data(), out_buffer, num_elements * dtype.py_dtype.itemsize());
+  py::array arr(dtype.py_dtype(), shape);
+  std::memcpy(arr.mutable_data(), out_buffer, num_elements * dtype.itemsize());
   arr.attr("flags").attr("writeable") = false;
 
   return arr;

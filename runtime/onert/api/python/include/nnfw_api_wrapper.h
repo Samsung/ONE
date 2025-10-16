@@ -40,17 +40,24 @@ namespace py = pybind11;
  */
 struct datatype
 {
-  NNFW_TYPE nnfw_type;
-  py::dtype py_dtype;
+private:
+  NNFW_TYPE _nnfw_type;
+  py::dtype _py_dtype;
   // The name of the dtype, e.g., "float32", "int32", etc.
   // This is mainly for the __repr__ implementation.
-  const char *name;
+  const char *_name;
 
-  datatype() = default;
+public:
+  datatype() : datatype(NNFW_TYPE::NNFW_TYPE_TENSOR_FLOAT32) {}
   explicit datatype(NNFW_TYPE type);
 
-  bool operator==(const datatype &other) const { return nnfw_type == other.nnfw_type; }
-  bool operator!=(const datatype &other) const { return nnfw_type != other.nnfw_type; }
+  const char *name() const { return _name; }
+  ssize_t itemsize() const { return _py_dtype.itemsize(); }
+  NNFW_TYPE nnfw_type() const { return _nnfw_type; }
+  py::dtype py_dtype() const { return _py_dtype; }
+
+  bool operator==(const datatype &other) const { return _nnfw_type == other._nnfw_type; }
+  bool operator!=(const datatype &other) const { return _nnfw_type != other._nnfw_type; }
 };
 
 /**

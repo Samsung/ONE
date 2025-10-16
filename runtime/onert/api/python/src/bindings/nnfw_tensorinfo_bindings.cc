@@ -46,17 +46,19 @@ void bind_tensorinfo(py::module_ &m)
   py::class_<datatype>(m, "dtype", "Defines the type of the OneRT tensor.", py::module_local())
     .def(py::self == py::self)
     .def(py::self != py::self)
-    .def("__repr__", [](const datatype &dt) { return std::string("onert.") + dt.name; })
-    .def_readonly("name", &datatype::name, "The name of the data type.")
-    .def_readonly("dtype", &datatype::py_dtype, "A corresponding numpy data type.")
+    .def("__repr__", [](const datatype &dt) { return std::string("onert.") + dt.name(); })
     .def_property_readonly(
-      "itemsize", [](const datatype &dt) { return dt.py_dtype.itemsize(); },
+      "name", [](const datatype &dt) { return dt.name(); }, "The name of the data type.")
+    .def_property_readonly(
+      "dtype", [](const datatype &dt) { return dt.py_dtype(); }, "A corresponding numpy data type.")
+    .def_property_readonly(
+      "itemsize", [](const datatype &dt) { return dt.itemsize(); },
       "The element size of this data-type object.");
 
   // Export OneRT dtypes in a submodule, so we can batch import them
   auto m_dtypes = m.def_submodule("dtypes", "OneRT tensor data types");
   for (const auto &dt : dtypes)
-    m_dtypes.attr(dt.name) = dt;
+    m_dtypes.attr(dt.name()) = dt;
 
   py::class_<tensorinfo>(m, "tensorinfo", "tensorinfo describes the type and shape of tensors",
                          py::module_local())
