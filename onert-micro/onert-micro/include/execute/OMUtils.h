@@ -25,6 +25,7 @@
 
 #include "execute/OMKernelExecutionBuilder.h"
 #include "execute/OMRuntimeKernel.h"
+#include "OMLog.h"
 
 namespace onert_micro
 {

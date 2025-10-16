@@ -149,14 +149,14 @@ OMStatus GRUWeightGrads(
   core::OMRuntimeShape two_dim_input_shape(2);
   auto dim_count = input_shape.dimensionsCount();
   if (dim_count < 2)
-    return UnsupportedType;
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
   two_dim_input_shape.setDim(0, input_shape.dims(dim_count - 2));
   two_dim_input_shape.setDim(1, input_shape.dims(dim_count - 1));
 
   core::OMRuntimeShape two_dim_output_shape(2);
   dim_count = output_shape.dimensionsCount();
   if (dim_count < 2)
-    return UnsupportedType;
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
   two_dim_output_shape.setDim(0, output_shape.dims(dim_count - 2));
   two_dim_output_shape.setDim(1, output_shape.dims(dim_count - 1));
 

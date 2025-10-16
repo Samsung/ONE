@@ -59,7 +59,7 @@ OMStatus OMRuntimeAllocator::allocate(size_t kernel_index, OMRuntimeContext *con
 {
   assert(kernel_index < _alloc_plan.size() && "Wrong kernel index");
   if (kernel_index >= _alloc_plan.size())
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   const std::vector<uint16_t> &current_allocate_plan = _alloc_plan[kernel_index];
 
@@ -78,7 +78,7 @@ OMStatus OMRuntimeAllocator::allocate(size_t kernel_index, OMRuntimeContext *con
 
     assert(num_elements >= 0 && "Num elements should be greater zero");
     if (num_elements < 0)
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
     const auto casted_num_elements = static_cast<uint32_t>(num_elements);
     const auto type_size =
       static_cast<uint32_t>(getOMDataTypeSize(onertMicroDatatype(tensor->type())));
@@ -107,7 +107,7 @@ OMStatus OMRuntimeAllocator::deallocate(size_t kernel_index, OMRuntimeStorage *s
 {
   assert(kernel_index < _alloc_plan.size() && "Wrong kernel index");
   if (kernel_index >= _alloc_plan.size())
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   const std::vector<uint16_t> &current_deallocate_plan = _dealloc_plan[kernel_index];
 
@@ -149,7 +149,7 @@ OMStatus OMRuntimeAllocator::deallocate(size_t kernel_index, OMRuntimeStorage *s
 {
   assert(kernel_index < _alloc_plan.size() && "Wrong kernel index");
   if (kernel_index >= _alloc_plan.size())
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   const std::vector<uint16_t> &current_deallocate_plan = _dealloc_plan[kernel_index];
 
@@ -189,7 +189,7 @@ OMStatus OMRuntimeAllocator::allocateGraphInputs(OMRuntimeContext *context,
     int32_t num_elements = tensor_shape.flatSize();
     assert(num_elements >= 0 && "Num elements should be positive");
     if (num_elements < 0)
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
     const auto casted_num_elements = static_cast<uint32_t>(num_elements);
     const auto type_size =
       static_cast<uint32_t>(getOMDataTypeSize(onertMicroDatatype(tensor->type())));

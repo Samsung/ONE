@@ -128,7 +128,7 @@ OMStatus execute_kernel_CircleSoftmax(const OMExecuteArgs &execute_args)
     {
       assert(output->type() == circle::TensorType_INT8);
       if (output->type() != circle::TensorType_INT8)
-        return UnsupportedType;
+        OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
 
       assert(input->quantization() != nullptr and output->quantization() != nullptr);
       assert(input->quantization()->scale() != nullptr and

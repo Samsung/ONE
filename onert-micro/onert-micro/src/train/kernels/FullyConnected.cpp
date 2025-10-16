@@ -134,7 +134,7 @@ OMStatus onert_micro::train::train_kernel_CircleFullyConnected(const OMBackpropE
     default:
     {
       assert(false && "Unsupported activation type");
-      return UnsupportedType;
+      OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
     }
   }
 
@@ -170,7 +170,7 @@ OMStatus onert_micro::train::train_kernel_CircleFullyConnected(const OMBackpropE
     {
       assert(bias_data != nullptr);
       if (bias_data == nullptr)
-        return UnknownError;
+        OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
       std::memcpy(dloss_dbias_data, dloss_doutput_data,
                   sizeof(OMDataType(output->type())) *

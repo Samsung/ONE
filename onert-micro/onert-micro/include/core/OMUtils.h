@@ -17,6 +17,7 @@
 #ifndef ONERT_MICRO_CORE_UTILS_H
 #define ONERT_MICRO_CORE_UTILS_H
 
+#include "OMLog.h"
 #include "OMStatus.h"
 #include "core/reader/OMCircleReader.h"
 #include "core/OMRuntimeShape.h"

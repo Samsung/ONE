@@ -61,11 +61,11 @@ OMStatus onert_micro::import::helpers::configure_SISO_kernel(const OMConfigureAr
     return NoQuantization;
 
   if (output->quantization()->scale() == nullptr or output->quantization()->scale()->size() != 1)
-    return UnsupportedQuantizationType;
+    OM_LOG_AND_RETURN(UnsupportedQuantizationType, "Unsupported quantization type encountered");
 
   if (input->quantization()->zero_point() == nullptr or
       input->quantization()->zero_point()->size() != 1)
-    return UnsupportedQuantizationType;
+    OM_LOG_AND_RETURN(UnsupportedQuantizationType, "Unsupported quantization type encountered");
 
   return status;
 }

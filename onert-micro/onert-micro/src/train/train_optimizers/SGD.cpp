@@ -151,7 +151,7 @@ OMStatus SGD::updateWeights(
 {
   assert(!_tensor_index_to_gradient.empty());
   if (_tensor_index_to_gradient.empty())
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   for (auto &tensor_to_data : _tensor_index_to_gradient)
   {
@@ -170,11 +170,11 @@ OMStatus SGD::updateWeights(
     auto *grad_data = reinterpret_cast<float *>(tensor_to_data.second);
     uint8_t *weight_data = nullptr;
     if (context.getConstDataByTensorIndex(&weight_data, tensor_to_data.first) != Ok)
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
     assert(weight_data != nullptr);
     if (weight_data == nullptr)
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
     auto *f_weight_data = reinterpret_cast<float *>(weight_data);
     float lambda = training_config.learning_rate;

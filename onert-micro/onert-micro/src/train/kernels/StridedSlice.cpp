@@ -65,7 +65,7 @@ OMStatus onert_micro::train::train_kernel_CircleStridedSlice(const OMBackpropExe
   const core::OMRuntimeShape output_shape(input);
   assert(shape.flatSize() == output_shape.flatSize());
   if (runtime_kernel.outputs_num > 1 or shape.flatSize() != output_shape.flatSize())
-    return UnsupportedType;
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
 
   OMStatus status = Ok;
 

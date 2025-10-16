@@ -22,6 +22,7 @@
 #include "core/OMRuntimeStorage.h"
 #include "core/OMRuntimeContext.h"
 #include "optimize/OMGraphStatus.h"
+#include "OMLog.h"
 
 namespace onert_micro
 {
@@ -64,7 +65,7 @@ public:
     if (idx >= size_t(optimize::OMPassBuilderID::Size))
     {
       *optimize_func = nullptr;
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
     }
     *optimize_func = _optimize_passes[idx];
     return Ok;

@@ -20,6 +20,7 @@
 #include "OMRuntimeShape.h"
 #include "OMStatus.h"
 #include "OMKernelType.h"
+#include "OMLog.h"
 
 #include <vector>
 #include <unordered_map>

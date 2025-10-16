@@ -113,7 +113,7 @@ OMStatus Softmax<float, float>(const core::SoftmaxParams &params, const float *i
     assert(sum != 0);
 
     if (sum == 0)
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
     // Compute result.
     for (int c = 0; c < depth; ++c)

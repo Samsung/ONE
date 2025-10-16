@@ -33,7 +33,7 @@ OMStatus SVDF(const core::SVDFQuantParams &, const int8_t *, const int8_t *, con
               const core::OMRuntimeShape &, const core::OMRuntimeShape &)
 {
   // TODO: support it
-  return UnsupportedType;
+  OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
 }
 
 } // namespace pal

@@ -17,6 +17,7 @@
 #ifndef ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_POOLING_KERNEL_COMMON_H
 #define ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_POOLING_KERNEL_COMMON_H
 
+#include "OMLog.h"
 #include "import/OMKernelConfigureBuilder.h"
 #include "core/OMUtils.h"
 #include "OMStatus.h"

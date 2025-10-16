@@ -26,7 +26,7 @@ OMStatus OMTrainingInterpreter::importTrainModel(char *model_ptr, const OMConfig
 {
   assert(model_ptr != nullptr && "Model ptr shouldn't be nullptr");
   if (model_ptr == nullptr)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   return _training_runtime_module.importTrainModel(model_ptr, config);
 }
@@ -51,14 +51,14 @@ uint32_t OMTrainingInterpreter::getOutputSizeAt(uint32_t position)
 OMStatus OMTrainingInterpreter::saveModel(const OMConfig &config, const char *save_path)
 {
   if (save_path == nullptr or config.model_size == 0 or config.model_ptr == nullptr)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
 #ifndef DIS_STREAM
   // Open or create file
   // Note: if the file existed, it will be overwritten
   std::ofstream out_file(save_path, std::ios::binary | std::ios::trunc);
   if (not out_file.is_open())
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   // Write data
   out_file.write(config.model_ptr, config.model_size);
@@ -67,7 +67,7 @@ OMStatus OMTrainingInterpreter::saveModel(const OMConfig &config, const char *sa
   out_file.close();
 #else
   assert(false && "Not supported");
-  return UnknownError;
+  OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 #endif // DIS_STREAM
 
   // Saving done
@@ -78,7 +78,7 @@ OMStatus OMTrainingInterpreter::loadCheckpoint(OMConfig &config, const char *loa
 {
   // Not imported or path is empty
   if (load_path == nullptr or config.model_ptr == nullptr or config.model_size == 0)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   // Get DataBuffer (vector of chars) of checkpoints
   std::vector<char> checkpoint_data;
@@ -89,7 +89,7 @@ OMStatus OMTrainingInterpreter::loadCheckpoint(OMConfig &config, const char *loa
   if (!file.good())
   {
     assert(false && "Fail to open");
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
   }
 
   file.seekg(0, std::ios::end);
@@ -104,11 +104,11 @@ OMStatus OMTrainingInterpreter::loadCheckpoint(OMConfig &config, const char *loa
   if (file.fail())
   {
     assert(false && "Fail to read");
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
   }
 #else
   assert(false && "Not supported");
-  return UnknownError;
+  OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 #endif // DIS_STREAM
 
   // Load data
@@ -121,7 +121,7 @@ OMStatus OMTrainingInterpreter::saveCheckpoint(const OMConfig &config, const cha
 {
   // Not imported or path is empty
   if (save_path == nullptr or config.model_ptr == nullptr or config.model_size == 0)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   // Get DataBuffer (vector of chars) of checkpoints
   std::vector<char> checkpoint_data;
@@ -138,7 +138,7 @@ OMStatus OMTrainingInterpreter::saveCheckpoint(const OMConfig &config, const cha
   // Note: if the file existed, it will be overwritten
   std::ofstream out_file(save_path, std::ios::binary | std::ios::trunc);
   if (not out_file.is_open())
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   // Write data
   out_file.write(checkpoint_data.data(), checkpoint_data.size());
@@ -147,7 +147,7 @@ OMStatus OMTrainingInterpreter::saveCheckpoint(const OMConfig &config, const cha
   out_file.close();
 #else
   assert(false && "Not supported");
-  return UnknownError;
+  OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 #endif // DIS_STREAM
 
   return Ok;

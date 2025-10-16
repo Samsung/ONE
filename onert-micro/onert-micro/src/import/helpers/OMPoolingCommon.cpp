@@ -61,7 +61,7 @@ onert_micro::import::helpers::configure_pooling_kernel_common(const OMConfigureA
   auto option = runtime_kernel.first_operator->builtin_options_as_Pool2DOptions();
 
   if (option == nullptr)
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
   assert(option != nullptr);
 
@@ -76,7 +76,7 @@ onert_micro::import::helpers::configure_pooling_kernel_common(const OMConfigureA
 
   if (input->quantization()->scale()->size() != 1)
   {
-    return UnsupportedType;
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
   }
 
   // Check quantization params
@@ -87,7 +87,7 @@ onert_micro::import::helpers::configure_pooling_kernel_common(const OMConfigureA
 
   if (output->quantization()->scale()->size() != 1)
   {
-    return UnsupportedType;
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
   }
 
   return status;

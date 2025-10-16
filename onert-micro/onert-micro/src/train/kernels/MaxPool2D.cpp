@@ -95,7 +95,7 @@ OMStatus onert_micro::train::train_kernel_CircleMaxPool2D(const OMBackpropExecut
 
   assert(options->fused_activation_function() == circle::ActivationFunctionType_NONE);
   if (options->fused_activation_function() != circle::ActivationFunctionType_NONE)
-    return UnsupportedType;
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
 
   OMRuntimeShape input_shape(input);
   OMRuntimeShape output_shape(output);

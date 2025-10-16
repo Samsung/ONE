@@ -17,6 +17,7 @@
 #ifndef ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_TISO_KERNEL_H
 #define ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_TISO_KERNEL_H
 
+#include "OMLog.h"
 #include "import/OMKernelConfigureBuilder.h"
 #include "core/OMUtils.h"
 #include "OMStatus.h"

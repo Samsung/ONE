@@ -51,7 +51,7 @@ OMStatus OMTrainingHandler::handleError(const OMConfig &config, OMRuntimeStorage
     // Check type
     assert(forward_output_tensor->type() == circle::TensorType_FLOAT32 && "Unsupported type");
     if (forward_output_tensor->type() != circle::TensorType_FLOAT32)
-      return UnsupportedType;
+      OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
 
     // Get calculated data
     uint8_t *calculated_data = nullptr;
@@ -104,7 +104,7 @@ OMStatus OMTrainingHandler::handleError(const OMConfig &config, OMRuntimeStorage
       default:
       {
         assert(false && "Unsupported loss type");
-        return UnsupportedType;
+        OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
       }
     }
   }
@@ -128,7 +128,7 @@ OMStatus OMTrainingHandler::updateWeights(const OMConfig &config, OMRuntimeConte
       auto *sgd_optimizer = _training_storage.getSGD();
       assert(sgd_optimizer != nullptr);
       if (sgd_optimizer == nullptr)
-        return UnknownError;
+        OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
       status = sgd_optimizer->updateWeights(config.training_context, context, storage,
                                             _training_storage.getTensorIndexToRankTypeTable());
@@ -146,7 +146,7 @@ OMStatus OMTrainingHandler::updateWeights(const OMConfig &config, OMRuntimeConte
       auto *adam_optimizer = _training_storage.getAdam();
       assert(adam_optimizer != nullptr);
       if (adam_optimizer == nullptr)
-        return UnknownError;
+        OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
       status = adam_optimizer->updateWeights(config.training_context, context, storage,
                                              _training_storage.getTensorIndexToRankTypeTable());
       assert(status == Ok);
@@ -161,7 +161,7 @@ OMStatus OMTrainingHandler::updateWeights(const OMConfig &config, OMRuntimeConte
     default:
     {
       assert(false && "Unsupported type");
-      return UnsupportedType;
+      OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
     }
   }
 
@@ -187,7 +187,7 @@ OMStatus OMTrainingHandler::updateOptimizerState(const OMConfig &config,
       auto *sgd_optimizer = _training_storage.getSGD();
       assert(sgd_optimizer != nullptr);
       if (sgd_optimizer == nullptr)
-        return UnknownError;
+        OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
       sgd_optimizer->handle(backward_storage, context, backward_storage);
       break;
@@ -197,7 +197,7 @@ OMStatus OMTrainingHandler::updateOptimizerState(const OMConfig &config,
       auto *adam_optimizer = _training_storage.getAdam();
       assert(adam_optimizer != nullptr);
       if (adam_optimizer == nullptr)
-        return UnknownError;
+        OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
 
       adam_optimizer->handle(backward_storage, context, backward_storage);
       break;
@@ -205,7 +205,7 @@ OMStatus OMTrainingHandler::updateOptimizerState(const OMConfig &config,
     default:
     {
       assert(false && "Unsupported type");
-      return UnsupportedType;
+      OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
     }
   }
 
@@ -247,7 +247,7 @@ OMStatus OMTrainingHandler::evaluateMetric(OMMetrics metric, void *metric_val,
     // Check type
     assert(forward_output_tensor->type() == circle::TensorType_FLOAT32 && "Unsupported type");
     if (forward_output_tensor->type() != circle::TensorType_FLOAT32)
-      return UnsupportedType;
+      OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
 
     // Get calculated data
     uint8_t *calculated_data = nullptr;
@@ -311,7 +311,7 @@ OMStatus OMTrainingHandler::evaluateMetric(OMMetrics metric, void *metric_val,
       default:
       {
         assert(false && "Unsupported loss type");
-        return UnsupportedType;
+        OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
       }
     }
   }

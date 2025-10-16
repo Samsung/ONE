@@ -43,8 +43,9 @@ OMStatus execute_kernel_CircleMaxPool2D(const OMExecuteArgs &execute_args)
 #else
   auto max_pool_int8_lambda = [](const core::Pool2DParams &params,
                                  const core::OMRuntimeShape &input_shape, const int8_t *input_data,
-                                 const core::OMRuntimeShape &output_shape,
-                                 int8_t *output_data) { return UnsupportedType; };
+                                 const core::OMRuntimeShape &output_shape, int8_t *output_data) {
+    OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
+  };
 #endif // DIS_QUANT
 
   return execute_pooling_common(execute_args, max_pool_float_lambda, max_pool_int8_lambda);

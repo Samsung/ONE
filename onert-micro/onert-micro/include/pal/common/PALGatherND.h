@@ -77,7 +77,7 @@ inline OMStatus GatherND(core::OMRuntimeShape params_shape, const ParamsT *param
     if (from_pos < 0 || from_pos + slice_size > params_flat_size)
     {
       assert(false && "GatherND error");
-      return UnknownError;
+      OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
     }
     std::memcpy(output_data + i * slice_size, param_data + from_pos, sizeof(ParamsT) * slice_size);
   }

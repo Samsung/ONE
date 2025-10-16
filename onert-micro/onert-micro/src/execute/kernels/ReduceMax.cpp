@@ -39,7 +39,7 @@ template <typename T> OMStatus CircleReduceMax(OMRuntimeKernel &rt_kernel)
   bool is_ok = reducer.Reduce();
   if (!is_ok)
   {
-    return UnknownError;
+    OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
   }
 
   return Ok;
@@ -89,7 +89,7 @@ OMStatus execute_kernel_CircleReduceMax(const OMExecuteArgs &execute_args)
 
     default:
       assert(false && "Unsupported type");
-      return UnsupportedType;
+      OM_LOG_AND_RETURN(UnsupportedType, "Unsupported type encountered");
   }
 
   return Ok;

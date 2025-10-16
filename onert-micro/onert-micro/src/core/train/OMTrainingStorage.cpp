@@ -30,7 +30,7 @@ OMStatus OMTrainingStorage::setOptimizer(const OMConfig &config)
     {
       if (_sgd_optimizer != nullptr)
       {
-        return UnknownError;
+        OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
       }
       _sgd_optimizer = std::make_unique<optimizers::SGD>();
       break;
@@ -39,7 +39,7 @@ OMStatus OMTrainingStorage::setOptimizer(const OMConfig &config)
     {
       if (_adam_optimizer != nullptr)
       {
-        return UnknownError;
+        OM_LOG_AND_RETURN(UnknownError, "Unknown error encountered");
       }
       _adam_optimizer = std::make_unique<optimizers::Adam>();
       break;
