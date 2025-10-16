@@ -123,6 +123,7 @@ void CompilerOptions::forceInternalOptions()
   // FIXME This is a workaround for bcq operations, should remove it
   manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQFullyConnected] = "bcq";
   manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQGather] = "bcq";
+  manual_scheduler_options.opcode_to_backend[ir::OpCode::BCQUnembedding] = "bcq";
 
   // FIXME This is a workaround for bulk operations, should remove it
   manual_scheduler_options.opcode_to_backend[ir::OpCode::Bulk] = "trix";
