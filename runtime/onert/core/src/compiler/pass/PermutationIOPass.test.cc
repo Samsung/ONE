@@ -41,9 +41,11 @@ TEST(PermutationIOPass, type)
 
   // Set input/output type to float32
   CompilerOptions options;
-  options.input_type.insert_or_assign(IOIndex{0}, actual_type);
-  options.output_type.insert_or_assign(IOIndex{0}, actual_type);
-  PermutationIOPass{graph, options}.run();
+  options.input_type.insert_or_assign(IODesc{ModelIndex{0}, SubgraphIndex{0}, IOIndex{0}},
+                                      actual_type);
+  options.output_type.insert_or_assign(IODesc{ModelIndex{0}, SubgraphIndex{0}, IOIndex{0}},
+                                       actual_type);
+  PermutationIOPass{graph, options, ModelIndex{0}, SubgraphIndex{0}}.run();
 
   // Check input/output type is changed to float32
   ASSERT_TRUE(graph.getInputs().at(0) != in);
@@ -84,9 +86,11 @@ TEST(PermutationIOPass, neg_type_skip)
 
   // Set input/output type but same
   CompilerOptions options;
-  options.input_type.insert_or_assign(IOIndex{0}, actual_type);
-  options.output_type.insert_or_assign(IOIndex{0}, actual_type);
-  PermutationIOPass{graph, options}.run();
+  options.input_type.insert_or_assign(IODesc{ModelIndex{0}, SubgraphIndex{0}, IOIndex{0}},
+                                      actual_type);
+  options.output_type.insert_or_assign(IODesc{ModelIndex{0}, SubgraphIndex{0}, IOIndex{0}},
+                                       actual_type);
+  PermutationIOPass{graph, options, ModelIndex{0}, SubgraphIndex{0}}.run();
 
   // Check input/output is same
   ASSERT_TRUE(graph.getInputs().at(0) == in);
@@ -117,9 +121,11 @@ TEST(PermutationIOPass, layout)
   // Set input/output layout to NCHW
   CompilerOptions options;
   Layout actual_type = Layout::NCHW;
-  options.input_layout.insert_or_assign(IOIndex{0}, actual_type);
-  options.output_layout.insert_or_assign(IOIndex{0}, actual_type);
-  PermutationIOPass{graph, options}.run();
+  options.input_layout.insert_or_assign(IODesc{ModelIndex{0}, SubgraphIndex{0}, IOIndex{0}},
+                                        actual_type);
+  options.output_layout.insert_or_assign(IODesc{ModelIndex{0}, SubgraphIndex{0}, IOIndex{0}},
+                                         actual_type);
+  PermutationIOPass{graph, options, ModelIndex{0}, SubgraphIndex{0}}.run();
 
   // Check input/output shape is changed to NCHW
   Shape actual_shape{1, 1, 2, 2};
@@ -161,9 +167,11 @@ TEST(PermutationIOPass, neg_layout_skip)
   // Set input/output layout to NHWC (same)
   CompilerOptions options;
   Layout actual_type = Layout::NHWC;
-  options.input_layout.insert_or_assign(IOIndex{0}, actual_type);
-  options.output_layout.insert_or_assign(IOIndex{0}, actual_type);
-  PermutationIOPass{graph, options}.run();
+  options.input_layout.insert_or_assign(IODesc{ModelIndex{0}, SubgraphIndex{0}, IOIndex{0}},
+                                        actual_type);
+  options.output_layout.insert_or_assign(IODesc{ModelIndex{0}, SubgraphIndex{0}, IOIndex{0}},
+                                         actual_type);
+  PermutationIOPass{graph, options, ModelIndex{0}, SubgraphIndex{0}}.run();
 
   // Check input/output shape is changed to NCHW
   Shape actual_shape{1, 2, 2, 1};

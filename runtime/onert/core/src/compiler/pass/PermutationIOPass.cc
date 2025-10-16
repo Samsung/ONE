@@ -34,28 +34,32 @@ void PermutationIOPass::run()
 
   for (auto i = ir::IOIndex{0}; i < ir::IOIndex{_graph.getInputs().size()}; i++)
   {
-    if (_options.input_layout.count(i) == 0 && _options.input_type.count(i) == 0)
+    const auto &iodesc = ir::IODesc{_model_index, _subg_index, i};
+    if (_options.input_layout.count(iodesc) == 0 && _options.input_type.count(iodesc) == 0)
       continue;
 
     const auto index = _graph.getInputs().at(i);
-    const auto &type = _options.input_type.count(i) > 0 ? _options.input_type.at(i)
-                                                        : _graph.operands().at(index).typeInfo();
+    const auto &type = _options.input_type.count(iodesc) > 0
+                         ? _options.input_type.at(iodesc)
+                         : _graph.operands().at(index).typeInfo();
     const auto layout =
-      _options.input_layout.count(i) > 0 ? _options.input_layout.at(i) : ir::Layout::NHWC;
+      _options.input_layout.count(iodesc) > 0 ? _options.input_layout.at(iodesc) : ir::Layout::NHWC;
 
     insertInputPermute(index, type, layout);
   }
 
   for (auto i = ir::IOIndex{0}; i < ir::IOIndex{_graph.getOutputs().size()}; i++)
   {
-    if (_options.output_layout.count(i) == 0 && _options.output_type.count(i) == 0)
+    const auto &iodesc = ir::IODesc{_model_index, _subg_index, i};
+    if (_options.output_layout.count(iodesc) == 0 && _options.output_type.count(iodesc) == 0)
       continue;
 
     const auto index = _graph.getOutputs().at(i);
-    const auto &type = _options.output_type.count(i) > 0 ? _options.output_type.at(i)
-                                                         : _graph.operands().at(index).typeInfo();
-    const auto layout =
-      _options.output_layout.count(i) > 0 ? _options.output_layout.at(i) : ir::Layout::NHWC;
+    const auto &type = _options.output_type.count(iodesc) > 0
+                         ? _options.output_type.at(iodesc)
+                         : _graph.operands().at(index).typeInfo();
+    const auto layout = _options.output_layout.count(iodesc) > 0 ? _options.output_layout.at(iodesc)
+                                                                 : ir::Layout::NHWC;
 
     insertOutputPermute(index, type, layout);
   }
