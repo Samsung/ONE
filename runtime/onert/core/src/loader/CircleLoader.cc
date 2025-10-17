@@ -86,6 +86,7 @@ public:
     {
       case BuiltinOperator::BuiltinOperator_FULLY_CONNECTED:
       case BuiltinOperator::BuiltinOperator_BCQ_FULLY_CONNECTED:
+      case BuiltinOperator::BuiltinOperator_CUSTOM:
       case BuiltinOperator::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM:
         return true;
       default:

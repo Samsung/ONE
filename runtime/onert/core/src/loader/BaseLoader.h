@@ -135,6 +135,7 @@ private:
   const OpIR *loadOperationTo(const Operator *op, ir::Graph &subg, Args &&...args);
 
   void loadArgMinMax(const Operator *op, ir::Graph &subg, bool is_argmax);
+  void loadBCQUnembedding(const Operator *op, ir::Graph &subg);
   void loadBinaryArithmetic(const Operator *op, ir::Graph &subg,
                             ir::operation::BinaryArithmetic::ArithmeticType op_type);
   void loadComparison(const Operator *op, ir::Graph &subg);
@@ -1066,7 +1067,8 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
     FusedBatchNorm,
     StatelessRandomUniform,
     Erf,
-    DetectionPostProcess
+    DetectionPostProcess,
+    BCQUnembedding,
   };
 
   // Mapping from custom op name string to BuiltinOP enum
@@ -1075,6 +1077,7 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
     {"StatelessRandomUniform", BuiltinOP::StatelessRandomUniform},
     {"Erf", BuiltinOP::Erf},
     {"TFLite_Detection_PostProcess", BuiltinOP::DetectionPostProcess},
+    {"BCQUnembedding", BuiltinOP::BCQUnembedding},
   };
 
   try
@@ -1094,6 +1097,9 @@ void BaseLoader<LoaderDomain>::loadCustom(const Operator *op, ir::Graph &subg)
         break;
       case BuiltinOP::DetectionPostProcess:
         loadDetectionPostProcess(op, subg);
+        break;
+      case BuiltinOP::BCQUnembedding:
+        loadBCQUnembedding(op, subg);
         break;
       default:
         throw std::runtime_error{
@@ -1267,6 +1273,35 @@ void BaseLoader<LoaderDomain>::loadFusedBatchNorm(const Operator *op, ir::Graph 
   if (fbn->getInputs().size() != 5)
   {
     throw std::runtime_error{"FusedBatchNorm: NYI input - only support five inputs"};
+  }
+}
+
+template <typename LoaderDomain>
+void BaseLoader<LoaderDomain>::loadBCQUnembedding(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::BCQUnembedding::Param param;
+  if (op->custom_options() == nullptr)
+  {
+    throw std::runtime_error{"BCQUnembedding: empty option"};
+  }
+  else
+  {
+    const auto attr_map = getCustomOpAttrMap(op);
+    param.weights_hidden_size = attr_map["weights_hidden_size"].AsUInt32();
+    param.lsh_type = attr_map["lsh_type"].AsString().str();
+    param.lsh_choices = attr_map["lsh_choices"].AsInt32();
+  }
+
+  const auto fbn = loadOperationTo<ir::operation::BCQUnembedding>(op, subg, param);
+
+  if (fbn->getInputs().size() != 5)
+  {
+    throw std::runtime_error{"BCQUnembedding: NYI input - only support five inputs"};
   }
 }
 
