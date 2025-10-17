@@ -6,12 +6,14 @@ import shutil
 
 from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 
+
 class SDistBuildHook(BuildHookInterface):
     def initialize(self, version, build_data):
         super().initialize(version, build_data)
 
         THIS_FILE_DIR = os.path.dirname(os.path.abspath(__file__))
-        self.DEFAULT_PRODUCT_DIR = os.path.normpath(os.path.join(THIS_FILE_DIR, "../../../../Product"))
+        self.DEFAULT_PRODUCT_DIR = os.path.normpath(
+            os.path.join(THIS_FILE_DIR, "../../../../Product"))
         self.product_dir = os.environ.get("PRODUCT_DIR", self.DEFAULT_PRODUCT_DIR)
         self.platform = "x86_64"
 
@@ -21,14 +23,14 @@ class SDistBuildHook(BuildHookInterface):
         # a temporary build dir used by the wheel build system
         tmp_build_dir = "_build_"
         self.recreate_dir(tmp_build_dir)
-        
+
         # this is the path where the native libraries are expected to land in the wheel
         # the files copied to this location will eventually be added to the wheel by the build system
         self.whl_binaries_target_dir = os.path.join(tmp_build_dir, 'native')
 
         # gather the required binaries in the temporary build directory
         self.prepare_binaries()
-        
+
         # include all contents of the build directory in the 'onert' subdirectory in the wheel
         # at this point the build directory should be populated with the required files
         build_data["force_include"][tmp_build_dir] = "onert"
@@ -44,9 +46,10 @@ class SDistBuildHook(BuildHookInterface):
 
         self.copy_libraries(src_libs_base_dir, self.whl_binaries_target_dir)
         self.copy_libraries(src_libs_base_dir, self.whl_binaries_target_dir, "nnfw")
-        self.copy_libraries(src_libs_base_dir, self.whl_binaries_target_dir, "nnfw/backend")
+        self.copy_libraries(src_libs_base_dir, self.whl_binaries_target_dir,
+                            "nnfw/backend")
         self.copy_libraries(src_libs_base_dir, self.whl_binaries_target_dir, "nnfw/odc")
-        
+
     def get_libs_dir(self):
         runtime_build_dir = self.get_runtime_build_dir()
         print(f" |> runtime_build_dir={runtime_build_dir}")
@@ -58,7 +61,7 @@ class SDistBuildHook(BuildHookInterface):
                 return libs_dir_path
 
         raise FileNotFoundError(f"No lib directory found in {runtime_build_dir}")
-    
+
     def get_runtime_build_dir(self):
         # top-level directory containing the build of the runtime
         # this can be overridden by setting the PRODUCT_DIR environment variable
@@ -67,8 +70,8 @@ class SDistBuildHook(BuildHookInterface):
         else:
             # TODO - add the debug build support (via env variables)
             return os.path.join(self.product_dir, f"{self.platform}-linux.release/out")
-        
-    def copy_libraries(self, src_dir, target_dir, subdir = None):
+
+    def copy_libraries(self, src_dir, target_dir, subdir=None):
         if subdir != None:
             src_dir = os.path.join(src_dir, subdir)
             target_dir = os.path.join(target_dir, subdir)
@@ -80,7 +83,7 @@ class SDistBuildHook(BuildHookInterface):
             tgt_path = os.path.join(target_dir, file)
             shutil.copy(src_path, tgt_path)
             print(f" |> Copied {src_path} to {tgt_path}")
-    
+
     def recreate_dir(self, dir_path):
         if os.path.exists(dir_path):
             print(f" |> Deleting existing directory '{dir_path}'...")
