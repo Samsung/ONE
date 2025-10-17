@@ -416,6 +416,21 @@ void StaticShapeInferer::visit(const ir::operation::BCQGather &op)
   output.info().shape(new_shape);
 }
 
+void StaticShapeInferer::visit(const ir::operation::BCQUnembedding &op)
+{
+  auto &operands = _lowered_subg->graph().operands();
+
+  const auto input_idx{op.getInputs().at(ir::operation::BCQUnembedding::Input::INPUT)};
+  const auto &input = operands.at(input_idx);
+
+  const auto output_idx = op.getOutputs().at(0);
+  ir::Operand &output = operands.at(output_idx);
+
+  // re-sizing output shape
+  ir::Shape new_shape = shape_inference::inferBCQUnembeddingShape(input.info().shape());
+  output.info().shape(new_shape);
+}
+
 void StaticShapeInferer::visit(const ir::operation::BinaryArithmetic &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS),

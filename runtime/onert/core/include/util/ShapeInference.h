@@ -50,6 +50,8 @@ ir::Shape inferBCQGatherShape(const ir::Shape &indices_shape, const ir::Shape &c
                               const int32_t *cluster_buf, int rank,
                               const ir::operation::BCQGather::Param &param);
 
+ir::Shape inferBCQUnembeddingShape(const ir::Shape &in_shape);
+
 ir::Shape inferBroadcastToShape(const ir::Shape shp_shape, const int32_t *shp_buf);
 
 ir::Shape inferConcatShape(const Shapes &in_shapes, const ir::operation::Concat::Param &param);

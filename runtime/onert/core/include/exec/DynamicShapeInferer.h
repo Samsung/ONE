@@ -47,6 +47,7 @@ public:
   void visit(const ir::operation::BatchMatMul &op) override;
   void visit(const ir::operation::BCQFullyConnected &op) override;
   void visit(const ir::operation::BCQGather &op) override;
+  void visit(const ir::operation::BCQUnembedding &op) override;
   void visit(const ir::operation::BinaryArithmetic &op) override;
   void visit(const ir::operation::BroadcastTo &op) override;
   void visit(const ir::operation::Comparison &op) override;

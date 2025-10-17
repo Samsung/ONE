@@ -22,6 +22,7 @@
 #include "ir/operation/BatchToSpaceND.h"
 #include "ir/operation/BCQFullyConnected.h"
 #include "ir/operation/BCQGather.h"
+#include "ir/operation/BCQUnembedding.h"
 #include "ir/operation/BinaryArithmetic.h"
 #include "ir/operation/BroadcastTo.h"
 #include "ir/operation/Bulk.h"
