@@ -34,6 +34,31 @@ namespace python
 namespace py = pybind11;
 
 /**
+ * @brief Data type mapping between NNFW_TYPE and numpy dtype.
+ */
+struct dtype
+{
+private:
+  NNFW_TYPE _nnfw_type;
+  py::dtype _py_dtype;
+  // The name of the dtype, e.g., "float32", "int32", etc.
+  // This is mainly for the __repr__ implementation.
+  const char *_name;
+
+public:
+  dtype() : dtype(NNFW_TYPE::NNFW_TYPE_TENSOR_FLOAT32) {}
+  explicit dtype(NNFW_TYPE type);
+
+  auto name() const { return _name; }
+  auto itemsize() const { return _py_dtype.itemsize(); }
+  auto nnfw_type() const { return _nnfw_type; }
+  auto py_dtype() const { return _py_dtype; }
+
+  bool operator==(const struct dtype &other) const { return _nnfw_type == other._nnfw_type; }
+  bool operator!=(const struct dtype &other) const { return _nnfw_type != other._nnfw_type; }
+};
+
+/**
  *  @brief  tensor info describes the type and shape of tensors
  *
  * This structure is used to describe input and output tensors.
@@ -48,7 +73,7 @@ namespace py = pybind11;
 struct tensorinfo
 {
   /** The data type */
-  const char *dtype;
+  struct dtype dtype;
   /** The number of dimensions (rank) */
   int32_t rank;
   /**
@@ -74,22 +99,6 @@ void ensure_status(NNFW_STATUS status);
  * @return proper layout if exists
  */
 NNFW_LAYOUT getLayout(const char *layout = "");
-
-/**
- * Convert the type with string to NNFW_TYPE
- *
- * @param[in] type type to be converted
- * @return proper type if exists
- */
-NNFW_TYPE getType(const char *type = "");
-
-/**
- * Convert the type with NNFW_TYPE to string
- *
- * @param[in] type type to be converted
- * @return proper type
- */
-const char *getStringType(NNFW_TYPE type);
 
 /**
  * @brief     Get the total number of elements in nnfw_tensorinfo->dims.
