@@ -16,7 +16,7 @@
 
 #include "KernelGenerator.h"
 
-#include "ops/ConvolutionLayer.h"
+#include "ops/Conv2DLayer.h"
 #include "ops/FullyConnectedLayer.h"
 
 #include <backend/Backend.h>

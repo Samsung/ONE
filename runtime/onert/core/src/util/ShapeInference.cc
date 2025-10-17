@@ -460,6 +460,11 @@ ir::Shape inferBCQGatherShape(const ir::Shape &indices_shape, const ir::Shape &c
   return out_shape;
 }
 
+ir::Shape inferBCQUnembeddingShape(const ir::Shape &in_shape)
+{
+  return {ir::Shape({1, in_shape.dim(1)})};
+}
+
 ir::Shape inferGatherShape(const ir::Shape &input_shape, const ir::Shape &indices_shape, int axis,
                            int rank)
 {

@@ -197,6 +197,30 @@ void DynamicShapeInferer::visit(const ir::operation::BCQGather &op)
   assert(output->buffer() != nullptr);
 }
 
+void DynamicShapeInferer::visit(const ir::operation::BCQUnembedding &op)
+{
+  const auto input_idx{op.getInputs().at(ir::operation::BCQUnembedding::Input::INPUT)};
+  const auto &input = _tensor_registry->getITensor(input_idx);
+
+  const auto cluster_idx{op.getInputs().at(ir::operation::BCQUnembedding::Input::WEIGHTS_CLUSTERS)};
+  const auto &cluster = _tensor_registry->getITensor(cluster_idx);
+  assert(cluster->is_constant());
+
+  if (!input->is_dynamic())
+    return;
+
+  auto input_shape = input->getShape();
+  auto cluster_shape = cluster->getShape();
+
+  ir::Shape new_shape = shape_inference::inferBCQUnembeddingShape(input_shape);
+
+  auto output_ind = op.getOutputs().at(0);
+  auto output = _tensor_registry->getITensor(output_ind);
+
+  output->applyShape(new_shape);
+  assert(output->buffer() != nullptr);
+}
+
 void DynamicShapeInferer::visit(const ir::operation::BinaryArithmetic &op)
 {
   handleBinaryArithmeticOp(op, op.getInputs().at(ir::operation::BinaryArithmetic::Input::LHS),

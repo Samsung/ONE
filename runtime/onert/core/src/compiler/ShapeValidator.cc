@@ -159,6 +159,38 @@ void ShapeValidator::visit(const ir::operation::BCQGather &node)
   // more shape validation will be done inside kernel.
 }
 
+void ShapeValidator::visit(const ir::operation::BCQUnembedding &node)
+{
+  const auto &operands = _graph.operands();
+  const auto ofm_index{node.getOutputs().at(0)};
+  if (operands.at(ofm_index).info().isDynamic())
+    return;
+
+  const auto ifm_index{node.getInputs().at(ir::operation::BCQUnembedding::Input::INPUT)};
+  const auto weight_scales_index{
+    node.getInputs().at(ir::operation::BCQUnembedding::Input::WEIGHTS_SCALES)};
+  const auto weight_binary_index{
+    node.getInputs().at(ir::operation::BCQUnembedding::Input::WEIGHTS_BINARY)};
+  const auto weight_cluster_index{
+    node.getInputs().at(ir::operation::BCQUnembedding::Input::WEIGHTS_CLUSTERS)};
+  const auto bias_index{node.getInputs().at(ir::operation::BCQUnembedding::Input::BIAS)};
+
+  OP_REQUIRES(operands.at(ifm_index).shape().rank() == 2);
+  OP_REQUIRES(operands.at(ofm_index).shape().rank() == 2);
+  OP_REQUIRES(operands.at(weight_scales_index).shape().rank() == 1);
+  OP_REQUIRES(operands.at(weight_binary_index).shape().rank() == 2);
+  OP_REQUIRES(operands.at(weight_cluster_index).shape().rank() == 2);
+
+  OP_REQUIRES(operands.at(ifm_index).shape().dim(1) == operands.at(ofm_index).shape().dim(1));
+
+  OP_REQUIRES(operands.at(weight_cluster_index).shape().dim(0) > 0);
+  OP_REQUIRES(operands.at(weight_cluster_index).shape().dim(1) == 2);
+
+  // more shape validation will be done inside kernel.
+
+  OP_REQUIRES(!operands.exist(bias_index) || operands.at(bias_index).shape().rank() == 1);
+}
+
 void ShapeValidator::visit(const ir::operation::BroadcastTo &node)
 {
   const auto &operands = _graph.operands();
