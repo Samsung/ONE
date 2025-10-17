@@ -2,7 +2,12 @@ set(LIB_ONERT_BACKEND_RUY onert_backend_ruy)
 
 nnfw_find_package(Ruy REQUIRED)
 
-file(GLOB_RECURSE SOURCES "*.cc")
+file(GLOB SOURCES "*.cc")
+list(APPEND SOURCES ops/OperationUtils.cc)
+macro(OP NAME)
+  list(APPEND SOURCES ops/${NAME}Layer.cc)
+endmacro(OP)
+include(Operation.lst)
 
 add_library(${LIB_ONERT_BACKEND_RUY} SHARED ${SOURCES})
 

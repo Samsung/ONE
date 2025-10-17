@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "ConvolutionLayer.h"
+#include "Conv2DLayer.h"
 
 #include "../Tensor.h"
 #include "ir/Padding.h"
