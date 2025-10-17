@@ -101,6 +101,8 @@ protected:
   void loadSparsity(const Tensor *tensor, ir::TypeInfo &typeInfo);
   void loadOperationIO(const Operator *op, ir::OperandIndexSequence &inputs,
                        ir::OperandIndexSequence &outputs);
+  template <typename OpIR, typename... Args>
+  const OpIR *loadOperationTo(const Operator *op, ir::Graph &subg, Args &&...args);
   // Create operations from Operator
   void loadOperation(const Operator *op, ir::Graph &subg);
   // Load Strides and Paddings from options to param
@@ -131,8 +133,6 @@ private:
   std::unique_ptr<ir::Data> loadMetadata(const uint32_t buffer_idx);
   virtual std::unique_ptr<ir::Graph> loadSubgraph(const SubGraph *subg) = 0;
   // Operations
-  template <typename OpIR, typename... Args>
-  const OpIR *loadOperationTo(const Operator *op, ir::Graph &subg, Args &&...args);
 
   void loadArgMinMax(const Operator *op, ir::Graph &subg, bool is_argmax);
   void loadBinaryArithmetic(const Operator *op, ir::Graph &subg,
