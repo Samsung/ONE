@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1train_1_1ops_
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="train_2ops_2_pool_layer_8h_source.html">PoolLayer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_pool_layer_8h_source.html">PoolLayer.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for onert::backend::train::ops::PoolLayer:</div>
 <div class="dyncontent">
@@ -155,7 +155,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_pool_layer_8h_source.html#l00045">45</a> of file <a class="el" href="train_2ops_2_pool_layer_8h_source.html">PoolLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_pool_layer_8h_source.html#l00045">45</a> of file <a class="el" href="_pool_layer_8h_source.html">PoolLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a60a4bfe9bb73d3fe6cb8727d3b9b96bc" name="a60a4bfe9bb73d3fe6cb8727d3b9b96bc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a60a4bfe9bb73d3fe6cb8727d3b9b96bc">&#9670;&#160;</a></span>PoolLayer()</h2>
@@ -172,7 +172,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_pool_layer_8cc_source.html#l00182">182</a> of file <a class="el" href="train_2ops_2_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_pool_layer_8cc_source.html#l00182">182</a> of file <a class="el" href="_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  183</span>  : cpu::ops::PoolLayer(), _back_prop_input(<span class="keyword">nullptr</span>), _back_prop_output(<span class="keyword">nullptr</span>), _kernel(<span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">  184</span>{</div>
 <div class="line"><span class="lineno">  185</span>  <span class="comment">// DO NOTHING</span></div>
@@ -206,7 +206,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_pool_layer_8cc_source.html#l00234">234</a> of file <a class="el" href="train_2ops_2_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_pool_layer_8cc_source.html#l00234">234</a> of file <a class="el" href="_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  234</span>{ _kernel-&gt;backward(_back_prop_output, _back_prop_input); }</div>
 </div><!-- fragment -->
 </div>
@@ -303,7 +303,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_pool_layer_8cc_source.html#l00188">188</a> of file <a class="el" href="train_2ops_2_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_pool_layer_8cc_source.html#l00188">188</a> of file <a class="el" href="_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  195</span>{</div>
 <div class="line"><span class="lineno">  196</span>  _back_prop_output = back_prop_output;</div>
 <div class="line"><span class="lineno">  197</span>  _back_prop_input = back_prop_input;</div>
@@ -364,7 +364,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_pool_layer_8cc_source.html#l00222">222</a> of file <a class="el" href="train_2ops_2_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_pool_layer_8cc_source.html#l00222">222</a> of file <a class="el" href="_pool_layer_8cc_source.html">PoolLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  223</span>{</div>
 <div class="line"><span class="lineno">  224</span>  <span class="keywordflow">if</span> (training)</div>
 <div class="line"><span class="lineno">  225</span>  {</div>
@@ -375,17 +375,17 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  230</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#ab54d3f9c4780d28738969235b79bed8a">cpu::ops::PoolLayer::run</a>();</div>
 <div class="line"><span class="lineno">  231</span>  }</div>
 <div class="line"><span class="lineno">  232</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer_html_a48eb69faf21b4ddf81a1840f71dca7bb"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#a48eb69faf21b4ddf81a1840f71dca7bb">onert::backend::cpu::ops::PoolLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_pool_layer_8h_source.html#l00051">PoolLayer.h:51</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer_html_aa09219fd6e3f5b13ba468792a309405d"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#aa09219fd6e3f5b13ba468792a309405d">onert::backend::cpu::ops::PoolLayer::_output</a></div><div class="ttdeci">IPortableTensor * _output</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_pool_layer_8h_source.html#l00052">PoolLayer.h:52</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer_html_ab54d3f9c4780d28738969235b79bed8a"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#ab54d3f9c4780d28738969235b79bed8a">onert::backend::cpu::ops::PoolLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_pool_layer_8cc_source.html#l00136">PoolLayer.cc:136</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer_html_a48eb69faf21b4ddf81a1840f71dca7bb"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#a48eb69faf21b4ddf81a1840f71dca7bb">onert::backend::cpu::ops::PoolLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="_pool2_d_layer_8h_source.html#l00051">Pool2DLayer.h:51</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer_html_aa09219fd6e3f5b13ba468792a309405d"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#aa09219fd6e3f5b13ba468792a309405d">onert::backend::cpu::ops::PoolLayer::_output</a></div><div class="ttdeci">IPortableTensor * _output</div><div class="ttdef"><b>Definition</b> <a href="_pool2_d_layer_8h_source.html#l00052">Pool2DLayer.h:52</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer_html_ab54d3f9c4780d28738969235b79bed8a"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_pool_layer.html#ab54d3f9c4780d28738969235b79bed8a">onert::backend::cpu::ops::PoolLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="_pool2_d_layer_8cc_source.html#l00136">Pool2DLayer.cc:136</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_pool_layer_8h_source.html#l00051">onert::backend::cpu::ops::PoolLayer::_input</a>, <a class="el" href="cpu_2ops_2_pool_layer_8h_source.html#l00052">onert::backend::cpu::ops::PoolLayer::_output</a>, and <a class="el" href="cpu_2ops_2_pool_layer_8cc_source.html#l00136">onert::backend::cpu::ops::PoolLayer::run()</a>.</p>
+<p class="reference">References <a class="el" href="_pool2_d_layer_8h_source.html#l00051">onert::backend::cpu::ops::PoolLayer::_input</a>, <a class="el" href="_pool2_d_layer_8h_source.html#l00052">onert::backend::cpu::ops::PoolLayer::_output</a>, and <a class="el" href="_pool2_d_layer_8cc_source.html#l00136">onert::backend::cpu::ops::PoolLayer::run()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/backend/train/ops/<a class="el" href="train_2ops_2_pool_layer_8h_source.html">PoolLayer.h</a></li>
-<li>runtime/onert/backend/train/ops/<a class="el" href="train_2ops_2_pool_layer_8cc_source.html">PoolLayer.cc</a></li>
+<li>runtime/onert/backend/train/ops/<a class="el" href="_pool_layer_8h_source.html">PoolLayer.h</a></li>
+<li>runtime/onert/backend/train/ops/<a class="el" href="_pool_layer_8cc_source.html">PoolLayer.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

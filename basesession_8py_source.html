@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('basesession_8py_source.html',''); init
 <a href="basesession_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacepackage_1_1common_1_1basesession.html">    1</a></span><span class="keyword">from</span> typing <span class="keyword">import</span> List</div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> ..native.libnnfw_api_pybind <span class="keyword">import</span> infer, tensorinfo</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">from</span> ..native.libnnfw_api_pybind <span class="keyword">import</span> tensorinfo</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">from</span> ..native.libnnfw_api_pybind.exception <span class="keyword">import</span> OnertError</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
@@ -291,24 +291,7 @@ $(document).ready(function(){initNavTree('basesession_8py_source.html',''); init
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                <span class="keywordflow">raise</span> OnertError(f<span class="stringliteral">&quot;Failed to get output #{i}: {e}&quot;</span>) <span class="keyword">from</span> e</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>            self.<a class="code hl_variable" href="classpackage_1_1common_1_1basesession_1_1_base_session.html#aff0fd86e3fc4f95f781ee615af87d934">outputs</a>.append(output_array)</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
 </div>
-</div>
-<div class="foldopen" id="foldopen00181" data-start="" data-end="">
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno"><a class="line" href="namespacepackage_1_1common_1_1basesession.html#ab9c0c8c88a9c77697dc456df6403f5ee">  181</a></span><span class="keyword">def </span>tensorinfo():</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="stringliteral">    Shortcut to create a fresh tensorinfo instance.</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="stringliteral">    Raises:</span></div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="stringliteral">        OnertError: If the C-API call fails.</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        <span class="keywordflow">return</span> infer.nnfw_tensorinfo()</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="keywordflow">except</span> OnertError:</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        <span class="keywordflow">raise</span></div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>        <span class="keywordflow">raise</span> OnertError(f<span class="stringliteral">&quot;Failed to create tensorinfo: {e}&quot;</span>) <span class="keyword">from</span> e</div>
 </div>
 <div class="ttc" id="aclasspackage_1_1common_1_1basesession_1_1_base_session_html"><div class="ttname"><a href="classpackage_1_1common_1_1basesession_1_1_base_session.html">package.common.basesession.BaseSession</a></div><div class="ttdef"><b>Definition</b> <a href="basesession_8py_source.html#l00016">basesession.py:16</a></div></div>
 <div class="ttc" id="aclasspackage_1_1common_1_1basesession_1_1_base_session_html_a02142f2ab0332b3df4dc6eaf9471b17c"><div class="ttname"><a href="classpackage_1_1common_1_1basesession_1_1_base_session.html#a02142f2ab0332b3df4dc6eaf9471b17c">package.common.basesession.BaseSession.set_inputs</a></div><div class="ttdeci">set_inputs(self, size, inputs_array=[])</div><div class="ttdef"><b>Definition</b> <a href="basesession_8py_source.html#l00099">basesession.py:99</a></div></div>

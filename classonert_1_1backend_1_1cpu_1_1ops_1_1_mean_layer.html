@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1cpu_1_1ops_1_
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="cpu_2ops_2_mean_layer_8h_source.html">MeanLayer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_reduce_layer_8h_source.html">ReduceLayer.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for onert::backend::cpu::ops::MeanLayer:</div>
 <div class="dyncontent">
@@ -145,7 +145,7 @@ Protected Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00027">27</a> of file <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html">MeanLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_reduce_layer_8h_source.html#l00071">71</a> of file <a class="el" href="_reduce_layer_8h_source.html">ReduceLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2a239166839d052e4a909668f8deccc8" name="a2a239166839d052e4a909668f8deccc8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2a239166839d052e4a909668f8deccc8">&#9670;&#160;</a></span>MeanLayer()</h2>
@@ -162,15 +162,15 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00026">26</a> of file <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html">MeanLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   26</span>                     : <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#afabcb067e45b9701d55e7a429edc3370">_axes</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#aa27aed3ed8c035fab918134561c256d0">_keep_dims</a>(<span class="keyword">false</span>)</div>
-<div class="line"><span class="lineno">   27</span>{</div>
-<div class="line"><span class="lineno">   28</span>  <span class="comment">// DO NOTHING</span></div>
-<div class="line"><span class="lineno">   29</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer_html_a77b22185ceceb8b89c2ff755405a9706"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">onert::backend::cpu::ops::MeanLayer::_output</a></div><div class="ttdeci">IPortableTensor * _output</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_mean_layer_8h_source.html#l00045">MeanLayer.h:45</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer_html_aa27aed3ed8c035fab918134561c256d0"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#aa27aed3ed8c035fab918134561c256d0">onert::backend::cpu::ops::MeanLayer::_keep_dims</a></div><div class="ttdeci">bool _keep_dims</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_mean_layer_8h_source.html#l00046">MeanLayer.h:46</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer_html_ab78bfda2036164f3bfb2535bc5eca79e"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">onert::backend::cpu::ops::MeanLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_mean_layer_8h_source.html#l00043">MeanLayer.h:43</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer_html_afabcb067e45b9701d55e7a429edc3370"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#afabcb067e45b9701d55e7a429edc3370">onert::backend::cpu::ops::MeanLayer::_axes</a></div><div class="ttdeci">const IPortableTensor * _axes</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_mean_layer_8h_source.html#l00044">MeanLayer.h:44</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_reduce_layer_8cc_source.html#l00219">219</a> of file <a class="el" href="_reduce_layer_8cc_source.html">ReduceLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  219</span>                     : <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#afabcb067e45b9701d55e7a429edc3370">_axes</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#aa27aed3ed8c035fab918134561c256d0">_keep_dims</a>(<span class="keyword">false</span>)</div>
+<div class="line"><span class="lineno">  220</span>{</div>
+<div class="line"><span class="lineno">  221</span>  <span class="comment">// DO NOTHING</span></div>
+<div class="line"><span class="lineno">  222</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer_html_a77b22185ceceb8b89c2ff755405a9706"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">onert::backend::cpu::ops::MeanLayer::_output</a></div><div class="ttdeci">IPortableTensor * _output</div><div class="ttdef"><b>Definition</b> <a href="_reduce_layer_8h_source.html#l00089">ReduceLayer.h:89</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer_html_aa27aed3ed8c035fab918134561c256d0"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#aa27aed3ed8c035fab918134561c256d0">onert::backend::cpu::ops::MeanLayer::_keep_dims</a></div><div class="ttdeci">bool _keep_dims</div><div class="ttdef"><b>Definition</b> <a href="_reduce_layer_8h_source.html#l00090">ReduceLayer.h:90</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer_html_ab78bfda2036164f3bfb2535bc5eca79e"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">onert::backend::cpu::ops::MeanLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="_reduce_layer_8h_source.html#l00087">ReduceLayer.h:87</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer_html_afabcb067e45b9701d55e7a429edc3370"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#afabcb067e45b9701d55e7a429edc3370">onert::backend::cpu::ops::MeanLayer::_axes</a></div><div class="ttdeci">const IPortableTensor * _axes</div><div class="ttdef"><b>Definition</b> <a href="_reduce_layer_8h_source.html#l00088">ReduceLayer.h:88</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -213,22 +213,22 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00058">58</a> of file <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html">MeanLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
-<div class="line"><span class="lineno">   61</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a> = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
-<div class="line"><span class="lineno">   62</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#afabcb067e45b9701d55e7a429edc3370">_axes</a> = axes;</div>
-<div class="line"><span class="lineno">   63</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a> = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
-<div class="line"><span class="lineno">   64</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#aa27aed3ed8c035fab918134561c256d0">_keep_dims</a> = keep_dims;</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() != OperandType::FLOAT32 &amp;&amp;</div>
-<div class="line"><span class="lineno">   67</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() != OperandType::QUANT_UINT8_ASYMM)</div>
-<div class="line"><span class="lineno">   68</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Mean: unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">   69</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_reduce_layer_8cc_source.html#l00251">251</a> of file <a class="el" href="_reduce_layer_8cc_source.html">ReduceLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  253</span>{</div>
+<div class="line"><span class="lineno">  254</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a> = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
+<div class="line"><span class="lineno">  255</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#afabcb067e45b9701d55e7a429edc3370">_axes</a> = axes;</div>
+<div class="line"><span class="lineno">  256</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a> = <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">output</a>;</div>
+<div class="line"><span class="lineno">  257</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#aa27aed3ed8c035fab918134561c256d0">_keep_dims</a> = keep_dims;</div>
+<div class="line"><span class="lineno">  258</span> </div>
+<div class="line"><span class="lineno">  259</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() != OperandType::FLOAT32 &amp;&amp;</div>
+<div class="line"><span class="lineno">  260</span>      <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() != OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">  261</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Mean: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">  262</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_a16463a18a337afa452ad5ea77ff25c71"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#a16463a18a337afa452ad5ea77ff25c71">gen_h5_explicit_inputs_all.output</a></div><div class="ttdeci">output</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00096">gen_h5_explicit_inputs_all.py:96</a></div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00044">_axes</a>, <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00043">_input</a>, <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00046">_keep_dims</a>, <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00045">_output</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
+<p class="reference">References <a class="el" href="_reduce_layer_8h_source.html#l00088">_axes</a>, <a class="el" href="_reduce_layer_8h_source.html#l00087">_input</a>, <a class="el" href="_reduce_layer_8h_source.html#l00090">_keep_dims</a>, <a class="el" href="_reduce_layer_8h_source.html#l00089">_output</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
 
 </div>
 </div>
@@ -247,33 +247,33 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00031">31</a> of file <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html">MeanLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>{</div>
-<div class="line"><span class="lineno">   33</span>  <span class="keyword">const</span> <span class="keyword">auto</span> inputShape = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>);</div>
-<div class="line"><span class="lineno">   34</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axisVec = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a7e7833cbf36fc30162efb338e65922e8">getReducerAxes</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#afabcb067e45b9701d55e7a429edc3370">_axes</a>);</div>
-<div class="line"><span class="lineno">   35</span>  <span class="keywordtype">bool</span> axis_is_1_and_2 =</div>
-<div class="line"><span class="lineno">   36</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#aa27aed3ed8c035fab918134561c256d0">_keep_dims</a> &amp;&amp; inputShape.DimensionsCount() == 4 &amp;&amp; axisVec.size() == 2 &amp;&amp;</div>
-<div class="line"><span class="lineno">   37</span>    ((axisVec[0] == 1 &amp;&amp; axisVec[1] == 2) || (axisVec[0] == 2 &amp;&amp; axisVec[1] == 1));</div>
-<div class="line"><span class="lineno">   38</span> </div>
-<div class="line"><span class="lineno">   39</span>  <span class="keywordflow">if</span> (axis_is_1_and_2)</div>
-<div class="line"><span class="lineno">   40</span>  {</div>
-<div class="line"><span class="lineno">   41</span>    <a class="code hl_function" href="namespacennfw_1_1cker.html#ad8d5c70addd0f57d962c59bb5efbb5b7">nnfw::cker::MeanAxis1And2</a>(inputShape, getBuffer&lt;float&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>),</div>
-<div class="line"><span class="lineno">   42</span>                              getBuffer&lt;float&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>));</div>
-<div class="line"><span class="lineno">   43</span>  }</div>
-<div class="line"><span class="lineno">   44</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   45</span>  {</div>
-<div class="line"><span class="lineno">   46</span>    <a class="code hl_function" href="namespacennfw_1_1cker.html#af49e093b5d248581ea77a0b4b6ed19b1">nnfw::cker::Mean</a>(inputShape, getBuffer&lt;float&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>),</div>
-<div class="line"><span class="lineno">   47</span>                     getBuffer&lt;float&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>), axisVec);</div>
-<div class="line"><span class="lineno">   48</span>  }</div>
-<div class="line"><span class="lineno">   49</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_reduce_layer_8cc_source.html#l00224">224</a> of file <a class="el" href="_reduce_layer_8cc_source.html">ReduceLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  225</span>{</div>
+<div class="line"><span class="lineno">  226</span>  <span class="keyword">const</span> <span class="keyword">auto</span> inputShape = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>);</div>
+<div class="line"><span class="lineno">  227</span>  <span class="keyword">const</span> <span class="keyword">auto</span> axisVec = <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a7e7833cbf36fc30162efb338e65922e8">getReducerAxes</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#afabcb067e45b9701d55e7a429edc3370">_axes</a>);</div>
+<div class="line"><span class="lineno">  228</span>  <span class="keywordtype">bool</span> axis_is_1_and_2 =</div>
+<div class="line"><span class="lineno">  229</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#aa27aed3ed8c035fab918134561c256d0">_keep_dims</a> &amp;&amp; inputShape.DimensionsCount() == 4 &amp;&amp; axisVec.size() == 2 &amp;&amp;</div>
+<div class="line"><span class="lineno">  230</span>    ((axisVec[0] == 1 &amp;&amp; axisVec[1] == 2) || (axisVec[0] == 2 &amp;&amp; axisVec[1] == 1));</div>
+<div class="line"><span class="lineno">  231</span> </div>
+<div class="line"><span class="lineno">  232</span>  <span class="keywordflow">if</span> (axis_is_1_and_2)</div>
+<div class="line"><span class="lineno">  233</span>  {</div>
+<div class="line"><span class="lineno">  234</span>    <a class="code hl_function" href="namespacennfw_1_1cker.html#ad8d5c70addd0f57d962c59bb5efbb5b7">nnfw::cker::MeanAxis1And2</a>(inputShape, getBuffer&lt;float&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>),</div>
+<div class="line"><span class="lineno">  235</span>                              getBuffer&lt;float&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>));</div>
+<div class="line"><span class="lineno">  236</span>  }</div>
+<div class="line"><span class="lineno">  237</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  238</span>  {</div>
+<div class="line"><span class="lineno">  239</span>    <a class="code hl_function" href="namespacennfw_1_1cker.html#af49e093b5d248581ea77a0b4b6ed19b1">nnfw::cker::Mean</a>(inputShape, getBuffer&lt;float&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>),</div>
+<div class="line"><span class="lineno">  240</span>                     getBuffer&lt;float&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>), axisVec);</div>
+<div class="line"><span class="lineno">  241</span>  }</div>
+<div class="line"><span class="lineno">  242</span>}</div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_ad8d5c70addd0f57d962c59bb5efbb5b7"><div class="ttname"><a href="namespacennfw_1_1cker.html#ad8d5c70addd0f57d962c59bb5efbb5b7">nnfw::cker::MeanAxis1And2</a></div><div class="ttdeci">void MeanAxis1And2(const Shape &amp;input_shape, const In *input_data, const Shape &amp;output_shape, Out *output_data)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00233">ReduceMean.h:233</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_af49e093b5d248581ea77a0b4b6ed19b1"><div class="ttname"><a href="namespacennfw_1_1cker.html#af49e093b5d248581ea77a0b4b6ed19b1">nnfw::cker::Mean</a></div><div class="ttdeci">void Mean(const Shape &amp;input_shape, const In *input_data, const Shape &amp;output_shape, Out *output_data, const std::vector&lt; int &gt; &amp;axes)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00211">ReduceMean.h:211</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00089">OperationUtils.h:89</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a7e7833cbf36fc30162efb338e65922e8"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a7e7833cbf36fc30162efb338e65922e8">onert::backend::cpu::ops::getReducerAxes</a></div><div class="ttdeci">std::vector&lt; int32_t &gt; getReducerAxes(const IPortableTensor *axes)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8cc_source.html#l00278">OperationUtils.cc:278</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00044">_axes</a>, <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00043">_input</a>, <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00046">_keep_dims</a>, <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00045">_output</a>, <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00278">onert::backend::cpu::ops::getReducerAxes()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00089">onert::backend::cpu::ops::getShape()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00211">nnfw::cker::Mean()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00233">nnfw::cker::MeanAxis1And2()</a>.</p>
+<p class="reference">References <a class="el" href="_reduce_layer_8h_source.html#l00088">_axes</a>, <a class="el" href="_reduce_layer_8h_source.html#l00087">_input</a>, <a class="el" href="_reduce_layer_8h_source.html#l00090">_keep_dims</a>, <a class="el" href="_reduce_layer_8h_source.html#l00089">_output</a>, <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00278">onert::backend::cpu::ops::getReducerAxes()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00089">onert::backend::cpu::ops::getShape()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00211">nnfw::cker::Mean()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00233">nnfw::cker::MeanAxis1And2()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00071">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_reduce_layer_8cc_source.html#l00264">run()</a>.</p>
 
 </div>
 </div>
@@ -292,19 +292,19 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00051">51</a> of file <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html">MeanLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
-<div class="line"><span class="lineno">   53</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#a68fdec18907512780dfcdcc349bfe15b">nnfw::cker::MeanQ8Asymm</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>), getBuffer&lt;uint8_t&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(),</div>
-<div class="line"><span class="lineno">   54</span>                          <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>(), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>), getBuffer&lt;uint8_t&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>),</div>
-<div class="line"><span class="lineno">   55</span>                          <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>(), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a7e7833cbf36fc30162efb338e65922e8">getReducerAxes</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#afabcb067e45b9701d55e7a429edc3370">_axes</a>));</div>
-<div class="line"><span class="lineno">   56</span>}</div>
+<p class="definition">Definition at line <a class="el" href="_reduce_layer_8cc_source.html#l00244">244</a> of file <a class="el" href="_reduce_layer_8cc_source.html">ReduceLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  245</span>{</div>
+<div class="line"><span class="lineno">  246</span>  <a class="code hl_function" href="namespacennfw_1_1cker.html#a68fdec18907512780dfcdcc349bfe15b">nnfw::cker::MeanQ8Asymm</a>(<a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>), getBuffer&lt;uint8_t&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(),</div>
+<div class="line"><span class="lineno">  247</span>                          <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>(), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">getShape</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>), getBuffer&lt;uint8_t&gt;(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>),</div>
+<div class="line"><span class="lineno">  248</span>                          <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">data_scale</a>(), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a77b22185ceceb8b89c2ff755405a9706">_output</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">data_zero_point</a>(), <a class="code hl_function" href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a7e7833cbf36fc30162efb338e65922e8">getReducerAxes</a>(<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#afabcb067e45b9701d55e7a429edc3370">_axes</a>));</div>
+<div class="line"><span class="lineno">  249</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a56b8936eb8f5a8cbcf5cbe9d6c080ef9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">onert::backend::IPortableTensor::data_scale</a></div><div class="ttdeci">float data_scale() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00055">IPortableTensor.h:55</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a5baa2b3c848503091f9f61d0045cf648"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a5baa2b3c848503091f9f61d0045cf648">onert::backend::IPortableTensor::data_zero_point</a></div><div class="ttdeci">int32_t data_zero_point() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00056">IPortableTensor.h:56</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_html_a68fdec18907512780dfcdcc349bfe15b"><div class="ttname"><a href="namespacennfw_1_1cker.html#a68fdec18907512780dfcdcc349bfe15b">nnfw::cker::MeanQ8Asymm</a></div><div class="ttdeci">void MeanQ8Asymm(const Shape &amp;input_shape, const In *input_data, float input_scale, int32_t input_offset, const Shape &amp;output_shape, Out *output_data, float output_scale, int32_t output_offset, const std::vector&lt; int &gt; &amp;axes)</div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00221">ReduceMean.h:221</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00044">_axes</a>, <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00043">_input</a>, <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00045">_output</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00055">onert::backend::IPortableTensor::data_scale()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00056">onert::backend::IPortableTensor::data_zero_point()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00278">onert::backend::cpu::ops::getReducerAxes()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00089">onert::backend::cpu::ops::getShape()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00221">nnfw::cker::MeanQ8Asymm()</a>.</p>
+<p class="reference">References <a class="el" href="_reduce_layer_8h_source.html#l00088">_axes</a>, <a class="el" href="_reduce_layer_8h_source.html#l00087">_input</a>, <a class="el" href="_reduce_layer_8h_source.html#l00089">_output</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00055">onert::backend::IPortableTensor::data_scale()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00056">onert::backend::IPortableTensor::data_zero_point()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00278">onert::backend::cpu::ops::getReducerAxes()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00089">onert::backend::cpu::ops::getShape()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_reduce_mean_8h_source.html#l00221">nnfw::cker::MeanQ8Asymm()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00071">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_reduce_layer_8cc_source.html#l00264">run()</a>.</p>
 
 </div>
 </div>
@@ -333,27 +333,27 @@ Protected Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00071">71</a> of file <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html">MeanLayer.cc</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   72</span>{</div>
-<div class="line"><span class="lineno">   73</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
-<div class="line"><span class="lineno">   74</span>  {</div>
-<div class="line"><span class="lineno">   75</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a2083c619867d56253b8bcdb143f34638">MeanFloat32</a>();</div>
-<div class="line"><span class="lineno">   76</span>  }</div>
-<div class="line"><span class="lineno">   77</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
-<div class="line"><span class="lineno">   78</span>  {</div>
-<div class="line"><span class="lineno">   79</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a30eb4d6bd8874241c16e00465f7bc2a3">MeanQuant8</a>();</div>
-<div class="line"><span class="lineno">   80</span>  }</div>
-<div class="line"><span class="lineno">   81</span>  <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">   82</span>  {</div>
-<div class="line"><span class="lineno">   83</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Mean: unsupported data type&quot;</span>};</div>
-<div class="line"><span class="lineno">   84</span>  }</div>
-<div class="line"><span class="lineno">   85</span>}</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer_html_a2083c619867d56253b8bcdb143f34638"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a2083c619867d56253b8bcdb143f34638">onert::backend::cpu::ops::MeanLayer::MeanFloat32</a></div><div class="ttdeci">void MeanFloat32()</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_mean_layer_8cc_source.html#l00031">MeanLayer.cc:31</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer_html_a30eb4d6bd8874241c16e00465f7bc2a3"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a30eb4d6bd8874241c16e00465f7bc2a3">onert::backend::cpu::ops::MeanLayer::MeanQuant8</a></div><div class="ttdeci">void MeanQuant8()</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_mean_layer_8cc_source.html#l00051">MeanLayer.cc:51</a></div></div>
+<p class="definition">Definition at line <a class="el" href="_reduce_layer_8cc_source.html#l00264">264</a> of file <a class="el" href="_reduce_layer_8cc_source.html">ReduceLayer.cc</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  265</span>{</div>
+<div class="line"><span class="lineno">  266</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
+<div class="line"><span class="lineno">  267</span>  {</div>
+<div class="line"><span class="lineno">  268</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a2083c619867d56253b8bcdb143f34638">MeanFloat32</a>();</div>
+<div class="line"><span class="lineno">  269</span>  }</div>
+<div class="line"><span class="lineno">  270</span>  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#ab78bfda2036164f3bfb2535bc5eca79e">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::QUANT_UINT8_ASYMM)</div>
+<div class="line"><span class="lineno">  271</span>  {</div>
+<div class="line"><span class="lineno">  272</span>    <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a30eb4d6bd8874241c16e00465f7bc2a3">MeanQuant8</a>();</div>
+<div class="line"><span class="lineno">  273</span>  }</div>
+<div class="line"><span class="lineno">  274</span>  <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  275</span>  {</div>
+<div class="line"><span class="lineno">  276</span>    <span class="keywordflow">throw</span> std::runtime_error{<span class="stringliteral">&quot;Mean: unsupported data type&quot;</span>};</div>
+<div class="line"><span class="lineno">  277</span>  }</div>
+<div class="line"><span class="lineno">  278</span>}</div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer_html_a2083c619867d56253b8bcdb143f34638"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a2083c619867d56253b8bcdb143f34638">onert::backend::cpu::ops::MeanLayer::MeanFloat32</a></div><div class="ttdeci">void MeanFloat32()</div><div class="ttdef"><b>Definition</b> <a href="_reduce_layer_8cc_source.html#l00224">ReduceLayer.cc:224</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer_html_a30eb4d6bd8874241c16e00465f7bc2a3"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html#a30eb4d6bd8874241c16e00465f7bc2a3">onert::backend::cpu::ops::MeanLayer::MeanQuant8</a></div><div class="ttdeci">void MeanQuant8()</div><div class="ttdef"><b>Definition</b> <a href="_reduce_layer_8cc_source.html#l00244">ReduceLayer.cc:244</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00043">_input</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00031">MeanFloat32()</a>, and <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00051">MeanQuant8()</a>.</p>
+<p class="reference">References <a class="el" href="_reduce_layer_8h_source.html#l00087">_input</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00224">MeanFloat32()</a>, and <a class="el" href="_reduce_layer_8cc_source.html#l00244">MeanQuant8()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2ops_2_mean_layer_8cc_source.html#l00041">onert::backend::train::ops::MeanLayer::forward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_mean_layer_8cc_source.html#l00041">onert::backend::train::ops::MeanLayer::forward()</a>.</p>
 
 </div>
 </div>
@@ -378,9 +378,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00044">44</a> of file <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html">MeanLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_reduce_layer_8h_source.html#l00088">88</a> of file <a class="el" href="_reduce_layer_8h_source.html">ReduceLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2ops_2_mean_layer_8cc_source.html#l00043">onert::backend::train::ops::MeanLayer::backward()</a>, <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00058">configure()</a>, <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00031">MeanFloat32()</a>, and <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00051">MeanQuant8()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_mean_layer_8cc_source.html#l00043">onert::backend::train::ops::MeanLayer::backward()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00251">configure()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00224">MeanFloat32()</a>, and <a class="el" href="_reduce_layer_8cc_source.html#l00244">MeanQuant8()</a>.</p>
 
 </div>
 </div>
@@ -404,9 +404,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00043">43</a> of file <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html">MeanLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_reduce_layer_8h_source.html#l00087">87</a> of file <a class="el" href="_reduce_layer_8h_source.html">ReduceLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2ops_2_mean_layer_8cc_source.html#l00043">onert::backend::train::ops::MeanLayer::backward()</a>, <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00058">configure()</a>, <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00031">MeanFloat32()</a>, <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00051">MeanQuant8()</a>, and <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00071">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_mean_layer_8cc_source.html#l00043">onert::backend::train::ops::MeanLayer::backward()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00251">configure()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00224">MeanFloat32()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00244">MeanQuant8()</a>, and <a class="el" href="_reduce_layer_8cc_source.html#l00264">run()</a>.</p>
 
 </div>
 </div>
@@ -430,9 +430,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00046">46</a> of file <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html">MeanLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_reduce_layer_8h_source.html#l00090">90</a> of file <a class="el" href="_reduce_layer_8h_source.html">ReduceLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2ops_2_mean_layer_8cc_source.html#l00043">onert::backend::train::ops::MeanLayer::backward()</a>, <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00058">configure()</a>, and <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00031">MeanFloat32()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_mean_layer_8cc_source.html#l00043">onert::backend::train::ops::MeanLayer::backward()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00251">configure()</a>, and <a class="el" href="_reduce_layer_8cc_source.html#l00224">MeanFloat32()</a>.</p>
 
 </div>
 </div>
@@ -456,15 +456,15 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html#l00045">45</a> of file <a class="el" href="cpu_2ops_2_mean_layer_8h_source.html">MeanLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_reduce_layer_8h_source.html#l00089">89</a> of file <a class="el" href="_reduce_layer_8h_source.html">ReduceLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00058">configure()</a>, <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00031">MeanFloat32()</a>, and <a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html#l00051">MeanQuant8()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_reduce_layer_8cc_source.html#l00251">configure()</a>, <a class="el" href="_reduce_layer_8cc_source.html#l00224">MeanFloat32()</a>, and <a class="el" href="_reduce_layer_8cc_source.html#l00244">MeanQuant8()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/backend/cpu/ops/<a class="el" href="cpu_2ops_2_mean_layer_8h_source.html">MeanLayer.h</a></li>
-<li>runtime/onert/backend/cpu/ops/<a class="el" href="cpu_2ops_2_mean_layer_8cc_source.html">MeanLayer.cc</a></li>
+<li>runtime/onert/backend/cpu/ops/<a class="el" href="_reduce_layer_8h_source.html">ReduceLayer.h</a></li>
+<li>runtime/onert/backend/cpu/ops/<a class="el" href="_reduce_layer_8cc_source.html">ReduceLayer.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

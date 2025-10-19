@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1cpu_1_1ops_1_
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for onert::backend::cpu::ops::ConvolutionLayer:</div>
 <div class="dyncontent">
@@ -173,7 +173,7 @@ Protected Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00037">37</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00037">37</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6e0f2ff38038b0f40d21e1158ad11256" name="a6e0f2ff38038b0f40d21e1158ad11256"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6e0f2ff38038b0f40d21e1158ad11256">&#9670;&#160;</a></span>ConvolutionLayer()</h2>
@@ -190,7 +190,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00027">27</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00027">27</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   28</span>  : <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6b76b1e97f4e4d0b19568656e27a1296">_bias</a>(<span class="keyword">nullptr</span>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">_output</a>(<span class="keyword">nullptr</span>),</div>
 <div class="line"><span class="lineno">   29</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ab935c461cbe4c2e457bca9c30ce1fed5">_paddingType</a>(<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3">ir::PaddingType::EXPLICIT</a>), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9d0e6f8e6cf93f82a4ddf9c955ab2a00">_paddingLeft</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a67e6141a55ba70ea64f82ae010a0dc9f">_paddingTop</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ae548509f7078df8b958034f7ae3a921c">_paddingRight</a>(0),</div>
 <div class="line"><span class="lineno">   30</span>    <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a227a9ce44adadd992da651d8a45bb2ef">_paddingBottom</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ad5b5f1a6a93fd9df743561a2dcc47e98">_strideWidth</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6011c088503e03446e75c435a9624294">_strideHeight</a>(0), <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">_dilationWidthFactor</a>(1),</div>
@@ -201,24 +201,24 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   35</span>  <span class="comment">// DO NOTHING</span></div>
 <div class="line"><span class="lineno">   36</span>}</div>
 <div class="ttc" id="aclassnnfw_1_1cker_1_1_conv_html"><div class="ttname"><a href="classnnfw_1_1cker_1_1_conv.html">nnfw::cker::Conv</a></div><div class="ttdef"><b>Definition</b> <a href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00055">Conv.h:56</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a0831a8cef7c51fb4e72a7287c15fa598"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a0831a8cef7c51fb4e72a7287c15fa598">onert::backend::cpu::ops::ConvolutionLayer::_prepare</a></div><div class="ttdeci">bool _prepare</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00083">ConvolutionLayer.h:83</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a227a9ce44adadd992da651d8a45bb2ef"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a227a9ce44adadd992da651d8a45bb2ef">onert::backend::cpu::ops::ConvolutionLayer::_paddingBottom</a></div><div class="ttdeci">uint32_t _paddingBottom</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00071">ConvolutionLayer.h:71</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a28d9925d2fa0ae1ae5408b0961633907"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a28d9925d2fa0ae1ae5408b0961633907">onert::backend::cpu::ops::ConvolutionLayer::_conv_kernel</a></div><div class="ttdeci">std::unique_ptr&lt; nnfw::cker::Conv &gt; _conv_kernel</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00080">ConvolutionLayer.h:80</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a2cdb4275e1e44b9b86104e66e77126e9"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2cdb4275e1e44b9b86104e66e77126e9">onert::backend::cpu::ops::ConvolutionLayer::_is_cachable_weights</a></div><div class="ttdeci">bool _is_cachable_weights</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00084">ConvolutionLayer.h:84</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a599733f29cddee04ce3784334f143c63"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a599733f29cddee04ce3784334f143c63">onert::backend::cpu::ops::ConvolutionLayer::_is_hybrid</a></div><div class="ttdeci">bool _is_hybrid</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00085">ConvolutionLayer.h:85</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a6011c088503e03446e75c435a9624294"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6011c088503e03446e75c435a9624294">onert::backend::cpu::ops::ConvolutionLayer::_strideHeight</a></div><div class="ttdeci">uint32_t _strideHeight</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00074">ConvolutionLayer.h:74</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a639190666edb90a1e58de10cb73b8f4a"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a639190666edb90a1e58de10cb73b8f4a">onert::backend::cpu::ops::ConvolutionLayer::_activation</a></div><div class="ttdeci">ir::Activation _activation</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00078">ConvolutionLayer.h:78</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a67e6141a55ba70ea64f82ae010a0dc9f"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a67e6141a55ba70ea64f82ae010a0dc9f">onert::backend::cpu::ops::ConvolutionLayer::_paddingTop</a></div><div class="ttdeci">uint32_t _paddingTop</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00069">ConvolutionLayer.h:69</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a6b76b1e97f4e4d0b19568656e27a1296"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6b76b1e97f4e4d0b19568656e27a1296">onert::backend::cpu::ops::ConvolutionLayer::_bias</a></div><div class="ttdeci">const IPortableTensor * _bias</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00064">ConvolutionLayer.h:64</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a843e2febd54421859f80b6401294a924"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">onert::backend::cpu::ops::ConvolutionLayer::_kernel</a></div><div class="ttdeci">const IPortableTensor * _kernel</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00063">ConvolutionLayer.h:63</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a93aa077293fcd6a20709e0eaa36b0d2a"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">onert::backend::cpu::ops::ConvolutionLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00062">ConvolutionLayer.h:62</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a9d0e6f8e6cf93f82a4ddf9c955ab2a00"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9d0e6f8e6cf93f82a4ddf9c955ab2a00">onert::backend::cpu::ops::ConvolutionLayer::_paddingLeft</a></div><div class="ttdeci">uint32_t _paddingLeft</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00068">ConvolutionLayer.h:68</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a9ff9c6e3f04abb66c2430dcc31889353"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">onert::backend::cpu::ops::ConvolutionLayer::_dilationWidthFactor</a></div><div class="ttdeci">uint32_t _dilationWidthFactor</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00075">ConvolutionLayer.h:75</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_aaa162c7b8f9a062a7d2fae5106e32176"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">onert::backend::cpu::ops::ConvolutionLayer::_output</a></div><div class="ttdeci">IPortableTensor * _output</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00065">ConvolutionLayer.h:65</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_ab935c461cbe4c2e457bca9c30ce1fed5"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ab935c461cbe4c2e457bca9c30ce1fed5">onert::backend::cpu::ops::ConvolutionLayer::_paddingType</a></div><div class="ttdeci">ir::PaddingType _paddingType</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00067">ConvolutionLayer.h:67</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_ac2e0903949bb566a8ac9d0d91bcd65f5"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">onert::backend::cpu::ops::ConvolutionLayer::_dilationHeightFactor</a></div><div class="ttdeci">uint32_t _dilationHeightFactor</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00076">ConvolutionLayer.h:76</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_ad5b5f1a6a93fd9df743561a2dcc47e98"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ad5b5f1a6a93fd9df743561a2dcc47e98">onert::backend::cpu::ops::ConvolutionLayer::_strideWidth</a></div><div class="ttdeci">uint32_t _strideWidth</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00073">ConvolutionLayer.h:73</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_ae548509f7078df8b958034f7ae3a921c"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ae548509f7078df8b958034f7ae3a921c">onert::backend::cpu::ops::ConvolutionLayer::_paddingRight</a></div><div class="ttdeci">uint32_t _paddingRight</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00070">ConvolutionLayer.h:70</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a0831a8cef7c51fb4e72a7287c15fa598"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a0831a8cef7c51fb4e72a7287c15fa598">onert::backend::cpu::ops::ConvolutionLayer::_prepare</a></div><div class="ttdeci">bool _prepare</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00083">Conv2DLayer.h:83</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a227a9ce44adadd992da651d8a45bb2ef"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a227a9ce44adadd992da651d8a45bb2ef">onert::backend::cpu::ops::ConvolutionLayer::_paddingBottom</a></div><div class="ttdeci">uint32_t _paddingBottom</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00071">Conv2DLayer.h:71</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a28d9925d2fa0ae1ae5408b0961633907"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a28d9925d2fa0ae1ae5408b0961633907">onert::backend::cpu::ops::ConvolutionLayer::_conv_kernel</a></div><div class="ttdeci">std::unique_ptr&lt; nnfw::cker::Conv &gt; _conv_kernel</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00080">Conv2DLayer.h:80</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a2cdb4275e1e44b9b86104e66e77126e9"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a2cdb4275e1e44b9b86104e66e77126e9">onert::backend::cpu::ops::ConvolutionLayer::_is_cachable_weights</a></div><div class="ttdeci">bool _is_cachable_weights</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00084">Conv2DLayer.h:84</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a599733f29cddee04ce3784334f143c63"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a599733f29cddee04ce3784334f143c63">onert::backend::cpu::ops::ConvolutionLayer::_is_hybrid</a></div><div class="ttdeci">bool _is_hybrid</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00085">Conv2DLayer.h:85</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a6011c088503e03446e75c435a9624294"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6011c088503e03446e75c435a9624294">onert::backend::cpu::ops::ConvolutionLayer::_strideHeight</a></div><div class="ttdeci">uint32_t _strideHeight</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00074">Conv2DLayer.h:74</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a639190666edb90a1e58de10cb73b8f4a"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a639190666edb90a1e58de10cb73b8f4a">onert::backend::cpu::ops::ConvolutionLayer::_activation</a></div><div class="ttdeci">ir::Activation _activation</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00078">Conv2DLayer.h:78</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a67e6141a55ba70ea64f82ae010a0dc9f"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a67e6141a55ba70ea64f82ae010a0dc9f">onert::backend::cpu::ops::ConvolutionLayer::_paddingTop</a></div><div class="ttdeci">uint32_t _paddingTop</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00069">Conv2DLayer.h:69</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a6b76b1e97f4e4d0b19568656e27a1296"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a6b76b1e97f4e4d0b19568656e27a1296">onert::backend::cpu::ops::ConvolutionLayer::_bias</a></div><div class="ttdeci">const IPortableTensor * _bias</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00064">Conv2DLayer.h:64</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a843e2febd54421859f80b6401294a924"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">onert::backend::cpu::ops::ConvolutionLayer::_kernel</a></div><div class="ttdeci">const IPortableTensor * _kernel</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00063">Conv2DLayer.h:63</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a93aa077293fcd6a20709e0eaa36b0d2a"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">onert::backend::cpu::ops::ConvolutionLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00062">Conv2DLayer.h:62</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a9d0e6f8e6cf93f82a4ddf9c955ab2a00"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9d0e6f8e6cf93f82a4ddf9c955ab2a00">onert::backend::cpu::ops::ConvolutionLayer::_paddingLeft</a></div><div class="ttdeci">uint32_t _paddingLeft</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00068">Conv2DLayer.h:68</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a9ff9c6e3f04abb66c2430dcc31889353"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">onert::backend::cpu::ops::ConvolutionLayer::_dilationWidthFactor</a></div><div class="ttdeci">uint32_t _dilationWidthFactor</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00075">Conv2DLayer.h:75</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_aaa162c7b8f9a062a7d2fae5106e32176"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#aaa162c7b8f9a062a7d2fae5106e32176">onert::backend::cpu::ops::ConvolutionLayer::_output</a></div><div class="ttdeci">IPortableTensor * _output</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00065">Conv2DLayer.h:65</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_ab935c461cbe4c2e457bca9c30ce1fed5"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ab935c461cbe4c2e457bca9c30ce1fed5">onert::backend::cpu::ops::ConvolutionLayer::_paddingType</a></div><div class="ttdeci">ir::PaddingType _paddingType</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00067">Conv2DLayer.h:67</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_ac2e0903949bb566a8ac9d0d91bcd65f5"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">onert::backend::cpu::ops::ConvolutionLayer::_dilationHeightFactor</a></div><div class="ttdeci">uint32_t _dilationHeightFactor</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00076">Conv2DLayer.h:76</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_ad5b5f1a6a93fd9df743561a2dcc47e98"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ad5b5f1a6a93fd9df743561a2dcc47e98">onert::backend::cpu::ops::ConvolutionLayer::_strideWidth</a></div><div class="ttdeci">uint32_t _strideWidth</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00073">Conv2DLayer.h:73</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_ae548509f7078df8b958034f7ae3a921c"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ae548509f7078df8b958034f7ae3a921c">onert::backend::cpu::ops::ConvolutionLayer::_paddingRight</a></div><div class="ttdeci">uint32_t _paddingRight</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00070">Conv2DLayer.h:70</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::Activation::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3"><div class="ttname"><a href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3">onert::ir::PaddingType::EXPLICIT</a></div><div class="ttdeci">@ EXPLICIT</div></div>
 </div><!-- fragment -->
@@ -354,7 +354,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">191</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">191</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  200</span>{</div>
 <div class="line"><span class="lineno">  201</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a> = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
 <div class="line"><span class="lineno">  202</span>  <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a> = kernel;</div>
@@ -379,7 +379,7 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8a1603f79f250bd05d84dcb190bee408bc">mir_caffe::CaffeOpType::bias</a></div><div class="ttdeci">@ bias</div></div>
 <div class="ttc" id="anamespacemir__caffe_html_a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967"><div class="ttname"><a href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">mir_caffe::CaffeOpType::input</a></div><div class="ttdeci">@ input</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00078">_activation</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00064">_bias</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00076">_dilationHeightFactor</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00075">_dilationWidthFactor</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00062">_input</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00084">_is_cachable_weights</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00085">_is_hybrid</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00063">_kernel</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00065">_output</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00071">_paddingBottom</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00068">_paddingLeft</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00070">_paddingRight</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00069">_paddingTop</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00067">_paddingType</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00074">_strideHeight</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00073">_strideWidth</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00078">_activation</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00064">_bias</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00076">_dilationHeightFactor</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00075">_dilationWidthFactor</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00062">_input</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00084">_is_cachable_weights</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00085">_is_hybrid</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00063">_kernel</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00065">_output</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00071">_paddingBottom</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00068">_paddingLeft</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00070">_paddingRight</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00069">_paddingTop</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00067">_paddingType</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00074">_strideHeight</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00073">_strideWidth</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
 
 </div>
 </div>
@@ -408,7 +408,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1exec_1_1_i_function.html#a901ae0973ef08a6ca59f6a00bd3bac4c">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">278</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">278</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  279</span>{</div>
 <div class="line"><span class="lineno">  280</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a0831a8cef7c51fb4e72a7287c15fa598">_prepare</a>)</div>
 <div class="line"><span class="lineno">  281</span>    <span class="keywordflow">return</span>;</div>
@@ -493,15 +493,15 @@ Protected Attributes</h2></td></tr>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a4347b0f51edc8533a73cd7458f46f7b0"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a4347b0f51edc8533a73cd7458f46f7b0">onert::backend::IPortableTensor::data_scales</a></div><div class="ttdeci">const std::vector&lt; float &gt; &amp; data_scales() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00057">IPortableTensor.h:57</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a56b8936eb8f5a8cbcf5cbe9d6c080ef9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a56b8936eb8f5a8cbcf5cbe9d6c080ef9">onert::backend::IPortableTensor::data_scale</a></div><div class="ttdeci">float data_scale() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00055">IPortableTensor.h:55</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_ae85cf7ba798b307fd40e09b736caf5c9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">onert::backend::IPortableTensor::is_dynamic</a></div><div class="ttdeci">bool is_dynamic() const override final</div><div class="ttdoc">Return true if the tensor needs dynamic allocation, meaning that during compile-time the outpus shape...</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00063">IPortableTensor.h:63</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_abb26b2d9360ca82f970de1cb153302ab"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#abb26b2d9360ca82f970de1cb153302ab">onert::backend::cpu::ops::ConvolutionLayer::_hybrid_arena</a></div><div class="ttdeci">std::unique_ptr&lt; nnfw::cker::ConvHybridTempArena &gt; _hybrid_arena</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00081">ConvolutionLayer.h:81</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_abb26b2d9360ca82f970de1cb153302ab"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#abb26b2d9360ca82f970de1cb153302ab">onert::backend::cpu::ops::ConvolutionLayer::_hybrid_arena</a></div><div class="ttdeci">std::unique_ptr&lt; nnfw::cker::ConvHybridTempArena &gt; _hybrid_arena</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00081">Conv2DLayer.h:81</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a1cfb53087f7fc161b9162d65aa5520d9"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a1cfb53087f7fc161b9162d65aa5520d9">onert::backend::cpu::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8h_source.html#l00089">OperationUtils.h:89</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a27643fcea52ce22ee60ec37eea3f423f"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a27643fcea52ce22ee60ec37eea3f423f">onert::backend::cpu::ops::GetQuantizedConvolutionMultipliersAndShifts</a></div><div class="ttdeci">void GetQuantizedConvolutionMultipliersAndShifts(float input_scale, float output_scale, const float *filter_scales, size_t filter_scales_size, int num_channels, std::vector&lt; int32_t &gt; &amp;per_channel_output_multiplier, std::vector&lt; int &gt; &amp;per_channel_output_shift)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8cc_source.html#l00093">OperationUtils.cc:93</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1cpu_1_1ops_html_a5650844753363f826ab47f2e9a947983"><div class="ttname"><a href="namespaceonert_1_1backend_1_1cpu_1_1ops.html#a5650844753363f826ab47f2e9a947983">onert::backend::cpu::ops::getPaddingType</a></div><div class="ttdeci">nnfw::cker::PaddingType getPaddingType(ir::PaddingType ir_padding_type)</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_operation_utils_8cc_source.html#l00262">OperationUtils.cc:262</a></div></div>
 <div class="ttc" id="astruct_dims_html"><div class="ttname"><a href="struct_dims.html">Dims</a></div><div class="ttdef"><b>Definition</b> <a href="ann-ref_2src_2ops_2internal_2_dims_8h_source.html#l00025">Dims.h:26</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00080">_conv_kernel</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00076">_dilationHeightFactor</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00075">_dilationWidthFactor</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00081">_hybrid_arena</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00062">_input</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00084">_is_cachable_weights</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00085">_is_hybrid</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00063">_kernel</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00065">_output</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00067">_paddingType</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00083">_prepare</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00074">_strideHeight</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00073">_strideWidth</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00055">onert::backend::IPortableTensor::data_scale()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00057">onert::backend::IPortableTensor::data_scales()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00106">nnfw::cker::Shape::Dims()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00262">onert::backend::cpu::ops::getPaddingType()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00093">onert::backend::cpu::ops::GetQuantizedConvolutionMultipliersAndShifts()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00089">onert::backend::cpu::ops::getShape()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00063">onert::backend::IPortableTensor::is_dynamic()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00150">nnfw::cker::Conv::per_channel_output_multiplier()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00151">nnfw::cker::Conv::per_channel_output_shift()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00060">nnfw::cker::Conv::prepareF32()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00074">nnfw::cker::Conv::prepareQ8uPerTensor()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00080">_conv_kernel</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00076">_dilationHeightFactor</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00075">_dilationWidthFactor</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00081">_hybrid_arena</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00062">_input</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00084">_is_cachable_weights</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00085">_is_hybrid</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00063">_kernel</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00065">_output</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00067">_paddingType</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00083">_prepare</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00074">_strideHeight</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00073">_strideWidth</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00055">onert::backend::IPortableTensor::data_scale()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00057">onert::backend::IPortableTensor::data_scales()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2_shape_8h_source.html#l00106">nnfw::cker::Shape::Dims()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00262">onert::backend::cpu::ops::getPaddingType()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8cc_source.html#l00093">onert::backend::cpu::ops::GetQuantizedConvolutionMultipliersAndShifts()</a>, <a class="el" href="cpu_2ops_2_operation_utils_8h_source.html#l00089">onert::backend::cpu::ops::getShape()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00063">onert::backend::IPortableTensor::is_dynamic()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00150">nnfw::cker::Conv::per_channel_output_multiplier()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00151">nnfw::cker::Conv::per_channel_output_shift()</a>, <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00060">nnfw::cker::Conv::prepareF32()</a>, and <a class="el" href="runtime_2compute_2cker_2include_2cker_2operation_2_conv_8h_source.html#l00074">nnfw::cker::Conv::prepareQ8uPerTensor()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
 
 </div>
 </div>
@@ -530,7 +530,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">220</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">220</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  221</span>{</div>
 <div class="line"><span class="lineno">  222</span>  <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a94c8dc4a85a3a2d405a9728bdbaa5107">prepare</a>();</div>
 <div class="line"><span class="lineno">  223</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>() || <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a843e2febd54421859f80b6401294a924">_kernel</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">is_dynamic</a>())</div>
@@ -588,12 +588,12 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  275</span>  }</div>
 <div class="line"><span class="lineno">  276</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_ad010d0f248f6e0e400485d81410ac158"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">onert::backend::IPortableTensor::getShape</a></div><div class="ttdeci">ir::Shape getShape() const override final</div><div class="ttdoc">Get ir::Shape of tensor.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00064">IPortableTensor.h:64</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a94c8dc4a85a3a2d405a9728bdbaa5107"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a94c8dc4a85a3a2d405a9728bdbaa5107">onert::backend::cpu::ops::ConvolutionLayer::prepare</a></div><div class="ttdeci">void prepare() override</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">ConvolutionLayer.cc:278</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a94c8dc4a85a3a2d405a9728bdbaa5107"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a94c8dc4a85a3a2d405a9728bdbaa5107">onert::backend::cpu::ops::ConvolutionLayer::prepare</a></div><div class="ttdeci">void prepare() override</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">Conv2DLayer.cc:278</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a2ab58c9ae156f4ab01ecbe99b004ff85"><div class="ttname"><a href="namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85">onert::ir::calculatePadding</a></div><div class="ttdeci">const ExplicitPadding calculatePadding(const Padding &amp;padding, const FeatureShape &amp;ifm_shape, const FeatureShape &amp;ofm_shape, const Stride &amp;stride, uint32_t kw, uint32_t kh, uint32_t dwf=1, uint32_t dhf=1)</div><div class="ttdef"><b>Definition</b> <a href="_padding_8cc_source.html#l00131">Padding.cc:131</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00076">_dilationHeightFactor</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00075">_dilationWidthFactor</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00062">_input</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00085">_is_hybrid</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00063">_kernel</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00065">_output</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00071">_paddingBottom</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00068">_paddingLeft</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00070">_paddingRight</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00069">_paddingTop</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00067">_paddingType</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00073">_strideWidth</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00048">onert::ir::ExplicitPadding::bottom</a>, <a class="el" href="_padding_8cc_source.html#l00131">onert::ir::calculatePadding()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00057">onert::backend::IPortableTensor::data_scales()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00064">onert::backend::IPortableTensor::getShape()</a>, <a class="el" href="_internal_type_8h_source.html#l00038">onert::ir::Stride::horizontal</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00063">onert::backend::IPortableTensor::is_dynamic()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00045">onert::ir::ExplicitPadding::left</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00060">onert::ir::Padding::param</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00046">onert::ir::ExplicitPadding::right</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00047">onert::ir::ExplicitPadding::top</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00059">onert::ir::Padding::type</a>, and <a class="el" href="_internal_type_8h_source.html#l00037">onert::ir::Stride::vertical</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00076">_dilationHeightFactor</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00075">_dilationWidthFactor</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00062">_input</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00085">_is_hybrid</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00063">_kernel</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00065">_output</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00071">_paddingBottom</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00068">_paddingLeft</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00070">_paddingRight</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00069">_paddingTop</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00067">_paddingType</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00073">_strideWidth</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00048">onert::ir::ExplicitPadding::bottom</a>, <a class="el" href="_padding_8cc_source.html#l00131">onert::ir::calculatePadding()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00057">onert::backend::IPortableTensor::data_scales()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00064">onert::backend::IPortableTensor::getShape()</a>, <a class="el" href="_internal_type_8h_source.html#l00038">onert::ir::Stride::horizontal</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00063">onert::backend::IPortableTensor::is_dynamic()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00045">onert::ir::ExplicitPadding::left</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00060">onert::ir::Padding::param</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00046">onert::ir::ExplicitPadding::right</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00047">onert::ir::ExplicitPadding::top</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00059">onert::ir::Padding::type</a>, and <a class="el" href="_internal_type_8h_source.html#l00037">onert::ir::Stride::vertical</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00097">onert::backend::train::ops::ConvolutionLayer::forward()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_convolution_layer_8cc_source.html#l00097">onert::backend::train::ops::ConvolutionLayer::forward()</a>.</p>
 
 </div>
 </div>
@@ -618,9 +618,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00078">78</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00078">78</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>.</p>
 
 </div>
 </div>
@@ -644,9 +644,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00064">64</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00064">64</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>.</p>
 
 </div>
 </div>
@@ -670,9 +670,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00080">80</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00080">80</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>.</p>
 
 </div>
 </div>
@@ -696,9 +696,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00076">76</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00076">76</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00062">onert::backend::train::ops::ConvolutionLayer::configureBackward()</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="_convolution_layer_8cc_source.html#l00062">onert::backend::train::ops::ConvolutionLayer::configureBackward()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
 
 </div>
 </div>
@@ -722,9 +722,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00075">75</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00075">75</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00062">onert::backend::train::ops::ConvolutionLayer::configureBackward()</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="_convolution_layer_8cc_source.html#l00062">onert::backend::train::ops::ConvolutionLayer::configureBackward()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
 
 </div>
 </div>
@@ -748,9 +748,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00081">81</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00081">81</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>.</p>
 
 </div>
 </div>
@@ -774,9 +774,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00062">62</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00062">62</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00098">onert::backend::train::ops::ConvolutionLayer::backward()</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="_convolution_layer_8cc_source.html#l00098">onert::backend::train::ops::ConvolutionLayer::backward()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
 
 </div>
 </div>
@@ -800,9 +800,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00084">84</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00084">84</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>.</p>
 
 </div>
 </div>
@@ -826,9 +826,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00085">85</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00085">85</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
 
 </div>
 </div>
@@ -852,9 +852,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00063">63</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00063">63</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
 
 </div>
 </div>
@@ -878,9 +878,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00065">65</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00065">65</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
 
 </div>
 </div>
@@ -904,9 +904,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00071">71</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00071">71</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
 
 </div>
 </div>
@@ -930,9 +930,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00068">68</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00068">68</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
 
 </div>
 </div>
@@ -956,9 +956,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00070">70</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00070">70</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
 
 </div>
 </div>
@@ -982,9 +982,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00069">69</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00069">69</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
 
 </div>
 </div>
@@ -1008,9 +1008,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00067">67</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00067">67</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
 
 </div>
 </div>
@@ -1034,9 +1034,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00083">83</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00083">83</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>.</p>
 
 </div>
 </div>
@@ -1060,9 +1060,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00074">74</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00074">74</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>.</p>
 
 </div>
 </div>
@@ -1086,15 +1086,15 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00073">73</a> of file <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00073">73</a> of file <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00191">configure()</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00278">prepare()</a>, and <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">run()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/backend/cpu/ops/<a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a></li>
-<li>runtime/onert/backend/cpu/ops/<a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a></li>
+<li>runtime/onert/backend/cpu/ops/<a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a></li>
+<li>runtime/onert/backend/cpu/ops/<a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

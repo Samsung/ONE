@@ -590,7 +590,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   30</span>    {</div>
 <div class="line"><span class="lineno">   31</span>      <span class="keywordflow">if</span> (_sgd_optimizer != <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   32</span>      {</div>
-<div class="line"><span class="lineno">   33</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   33</span>        <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">   34</span>      }</div>
 <div class="line"><span class="lineno">   35</span>      _sgd_optimizer = std::make_unique&lt;optimizers::SGD&gt;();</div>
 <div class="line"><span class="lineno">   36</span>      <span class="keywordflow">break</span>;</div>
@@ -599,7 +599,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   39</span>    {</div>
 <div class="line"><span class="lineno">   40</span>      <span class="keywordflow">if</span> (_adam_optimizer != <span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   41</span>      {</div>
-<div class="line"><span class="lineno">   42</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   42</span>        <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">   43</span>      }</div>
 <div class="line"><span class="lineno">   44</span>      _adam_optimizer = std::make_unique&lt;optimizers::Adam&gt;();</div>
 <div class="line"><span class="lineno">   45</span>      <span class="keywordflow">break</span>;</div>
@@ -609,13 +609,14 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   49</span>  }</div>
 <div class="line"><span class="lineno">   50</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">   51</span>}</div>
+<div class="ttc" id="a_o_m_log_8h_html_aaf6a128cb753b6f04742f105ab8c8d8d"><div class="ttname"><a href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a></div><div class="ttdeci">#define OM_LOG_AND_RETURN(err, msg)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_log_8h_source.html#l00031">OMLog.h:31</a></div></div>
 <div class="ttc" id="anamespacegen__h5__explicit__inputs__all_html_ad2e650e5f9a54072f7e063a353ef6489"><div class="ttname"><a href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">gen_h5_explicit_inputs_all.config</a></div><div class="ttdeci">config</div><div class="ttdef"><b>Definition</b> <a href="gen__h5__explicit__inputs__all_8py_source.html#l00068">gen_h5_explicit_inputs_all.py:68</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7"><div class="ttname"><a href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad132dcb3610a80bb6769be94395003c7">onert_micro::ADAM</a></div><div class="ttdeci">@ ADAM</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00032">OMConfig.h:32</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9"><div class="ttname"><a href="namespaceonert__micro.html#a766b22baf7176111a6e866ad8d03685cad43ebb08843a45a032ab5be21fc635b9">onert_micro::SGD</a></div><div class="ttdeci">@ SGD</div><div class="ttdef"><b>Definition</b> <a href="_o_m_config_8h_source.html#l00031">OMConfig.h:31</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">onert_micro::UnknownError</a></div><div class="ttdeci">@ UnknownError</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00030">OMStatus.h:30</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">onert_micro::Ok</a></div><div class="ttdeci">@ Ok</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00025">OMStatus.h:25</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_config_8h_source.html#l00032">onert_micro::ADAM</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_config_8h_source.html#l00031">onert_micro::SGD</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_config_8h_source.html#l00032">onert_micro::ADAM</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_log_8h_source.html#l00031">OM_LOG_AND_RETURN</a>, <a class="el" href="_o_m_config_8h_source.html#l00031">onert_micro::SGD</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_o_m_training_handler_8h_source.html#l00092">onert_micro::core::train::OMTrainingHandler::setOptimizer()</a>.</p>
 

@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1cpu_1_1ops_1_
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_compare_layer_8h_source.html">CompareLayer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_comparison_layer_8h_source.html">ComparisonLayer.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for onert::backend::cpu::ops::CompareLayer:</div>
 <div class="dyncontent">
@@ -123,7 +123,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_compare_layer_8h_source.html#l00028">28</a> of file <a class="el" href="_compare_layer_8h_source.html">CompareLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_comparison_layer_8h_source.html#l00028">28</a> of file <a class="el" href="_comparison_layer_8h_source.html">ComparisonLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a849421a27169133d27b39906cd3d38f3" name="a849421a27169133d27b39906cd3d38f3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a849421a27169133d27b39906cd3d38f3">&#9670;&#160;</a></span>CompareLayer()</h2>
@@ -140,7 +140,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_compare_layer_8cc_source.html#l00119">119</a> of file <a class="el" href="_compare_layer_8cc_source.html">CompareLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_comparison_layer_8cc_source.html#l00119">119</a> of file <a class="el" href="_comparison_layer_8cc_source.html">ComparisonLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  120</span>  : _lhs(<span class="keyword">nullptr</span>), _rhs(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>),</div>
 <div class="line"><span class="lineno">  121</span>    _op_type(<a class="code hl_enumvalue" href="classonert_1_1ir_1_1operation_1_1_comparison.html#aa5054ea86b5d5f56dece84d43c7567e8af5f286e73bda105e538310b3190f75c5">ir::operation::Comparison::ComparisonType::Equal</a>)</div>
 <div class="line"><span class="lineno">  122</span>{</div>
@@ -189,7 +189,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_compare_layer_8cc_source.html#l00126">126</a> of file <a class="el" href="_compare_layer_8cc_source.html">CompareLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_comparison_layer_8cc_source.html#l00126">126</a> of file <a class="el" href="_comparison_layer_8cc_source.html">ComparisonLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  128</span>{</div>
 <div class="line"><span class="lineno">  129</span>  _lhs = lhs;</div>
 <div class="line"><span class="lineno">  130</span>  _rhs = rhs;</div>
@@ -225,7 +225,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_compare_layer_8cc_source.html#l00135">135</a> of file <a class="el" href="_compare_layer_8cc_source.html">CompareLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_comparison_layer_8cc_source.html#l00135">135</a> of file <a class="el" href="_comparison_layer_8cc_source.html">ComparisonLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  136</span>{</div>
 <div class="line"><span class="lineno">  137</span>  <span class="keywordflow">if</span> (_lhs-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>() == OperandType::FLOAT32)</div>
 <div class="line"><span class="lineno">  138</span>  {</div>
@@ -259,8 +259,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/backend/cpu/ops/<a class="el" href="_compare_layer_8h_source.html">CompareLayer.h</a></li>
-<li>runtime/onert/backend/cpu/ops/<a class="el" href="_compare_layer_8cc_source.html">CompareLayer.cc</a></li>
+<li>runtime/onert/backend/cpu/ops/<a class="el" href="_comparison_layer_8h_source.html">ComparisonLayer.h</a></li>
+<li>runtime/onert/backend/cpu/ops/<a class="el" href="_comparison_layer_8cc_source.html">ComparisonLayer.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -97,38 +97,37 @@ $(document).ready(function(){initNavTree('adam_8py_source.html',''); initResizab
   <div class="headertitle"><div class="title">adam.py</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="adam_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacepackage_1_1experimental_1_1train_1_1optimizer_1_1adam.html">    1</a></span><span class="keyword">from</span> typing <span class="keyword">import</span> Literal</div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="keyword">from</span> .optimizer <span class="keyword">import</span> Optimizer</div>
+<a href="adam_8py.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacepackage_1_1experimental_1_1train_1_1optimizer_1_1adam.html">    1</a></span><span class="keyword">from</span> .optimizer <span class="keyword">import</span> Optimizer</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="foldopen" id="foldopen00005" data-start="" data-end="">
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html">    5</a></span><span class="keyword">class </span><a class="code hl_class" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html">Adam</a>(<a class="code hl_class" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html">Optimizer</a>):</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="stringliteral">    Adam optimizer.</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="foldopen" id="foldopen00009" data-start="" data-end="">
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html#aa790ef1dc7ce4c04c80df1a645e2b21d">    9</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html#aa790ef1dc7ce4c04c80df1a645e2b21d">__init__</a>(self,</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>                 learning_rate: float = 0.001,</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>                 beta1: float = 0.9,</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>                 beta2: float = 0.999,</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                 epsilon: float = 1e-7) -&gt; <span class="keywordtype">None</span>:</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="stringliteral">        Initialize the Adam optimizer.</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="stringliteral"></span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="stringliteral">        Args:</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="stringliteral">            learning_rate (float): The learning rate for optimization.</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="stringliteral">            beta1 (float): Exponential decay rate for the first moment estimates.</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="stringliteral">            beta2 (float): Exponential decay rate for the second moment estimates.</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="stringliteral">            epsilon (float): Small constant to prevent division by zero.</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        super().<a class="code hl_function" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html#aa790ef1dc7ce4c04c80df1a645e2b21d">__init__</a>(learning_rate)</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        self.beta1: float = beta1</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        self.beta2: float = beta2</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        self.epsilon: float = epsilon</div>
+<div class="foldopen" id="foldopen00004" data-start="" data-end="">
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html">    4</a></span><span class="keyword">class </span><a class="code hl_class" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html">Adam</a>(<a class="code hl_class" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html">Optimizer</a>):</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="stringliteral">    Adam optimizer.</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
+<div class="foldopen" id="foldopen00008" data-start="" data-end="">
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html#aa790ef1dc7ce4c04c80df1a645e2b21d">    8</a></span>    <span class="keyword">def </span><a class="code hl_function" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html#aa790ef1dc7ce4c04c80df1a645e2b21d">__init__</a>(self,</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>                 learning_rate: float = 0.001,</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>                 beta1: float = 0.9,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>                 beta2: float = 0.999,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>                 epsilon: float = 1e-7) -&gt; <span class="keywordtype">None</span>:</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        <span class="stringliteral">&quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="stringliteral">        Initialize the Adam optimizer.</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="stringliteral"></span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="stringliteral">        Args:</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="stringliteral">            learning_rate (float): The learning rate for optimization.</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="stringliteral">            beta1 (float): Exponential decay rate for the first moment estimates.</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="stringliteral">            beta2 (float): Exponential decay rate for the second moment estimates.</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="stringliteral">            epsilon (float): Small constant to prevent division by zero.</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="stringliteral">        &quot;&quot;&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        super().<a class="code hl_function" href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html#aa790ef1dc7ce4c04c80df1a645e2b21d">__init__</a>(learning_rate)</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        self.beta1: float = beta1</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        self.beta2: float = beta2</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        self.epsilon: float = epsilon</div>
 </div>
 </div>
-<div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam_html"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html">package.experimental.train.optimizer.adam.Adam</a></div><div class="ttdef"><b>Definition</b> <a href="adam_8py_source.html#l00005">adam.py:5</a></div></div>
-<div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam_html_aa790ef1dc7ce4c04c80df1a645e2b21d"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html#aa790ef1dc7ce4c04c80df1a645e2b21d">package.experimental.train.optimizer.adam.Adam.__init__</a></div><div class="ttdeci">None __init__(self, float learning_rate=0.001, float beta1=0.9, float beta2=0.999, float epsilon=1e-7)</div><div class="ttdef"><b>Definition</b> <a href="adam_8py_source.html#l00009">adam.py:13</a></div></div>
+<div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam_html"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html">package.experimental.train.optimizer.adam.Adam</a></div><div class="ttdef"><b>Definition</b> <a href="adam_8py_source.html#l00004">adam.py:4</a></div></div>
+<div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam_html_aa790ef1dc7ce4c04c80df1a645e2b21d"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1adam_1_1_adam.html#aa790ef1dc7ce4c04c80df1a645e2b21d">package.experimental.train.optimizer.adam.Adam.__init__</a></div><div class="ttdeci">None __init__(self, float learning_rate=0.001, float beta1=0.9, float beta2=0.999, float epsilon=1e-7)</div><div class="ttdef"><b>Definition</b> <a href="adam_8py_source.html#l00008">adam.py:12</a></div></div>
 <div class="ttc" id="aclasspackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer_html"><div class="ttname"><a href="classpackage_1_1experimental_1_1train_1_1optimizer_1_1optimizer_1_1_optimizer.html">package.experimental.train.optimizer.optimizer.Optimizer</a></div><div class="ttdef"><b>Definition</b> <a href="optimizer_8py_source.html#l00004">optimizer.py:4</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

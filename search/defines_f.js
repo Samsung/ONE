@@ -5,7 +5,7 @@ var searchData=
   ['philox_5fdevice_5ffunc_2',['PHILOX_DEVICE_FUNC',['../_philox_random_8h.html#a4d8d80b49f38196912eb8b785e8c4d32',1,'PhiloxRandom.h']]],
   ['philox_5fdevice_5finline_3',['PHILOX_DEVICE_INLINE',['../_philox_random_8h.html#a0c98b51ecf1821478d3d4927f8b3caac',1,'PhiloxRandom.h']]],
   ['philox_5finline_4',['PHILOX_INLINE',['../_philox_random_8h.html#a640c06abed8a6894c7842a3ca78122f0',1,'PhiloxRandom.h']]],
-  ['pooling_5fparameters_5',['POOLING_PARAMETERS',['../cpu_2ops_2_pool_layer_8cc.html#af81c104fb20f3f55d17078d7f8a98fd2',1,'PoolLayer.cc']]],
+  ['pooling_5fparameters_5',['POOLING_PARAMETERS',['../_pool2_d_layer_8cc.html#af81c104fb20f3f55d17078d7f8a98fd2',1,'Pool2DLayer.cc']]],
   ['post_5foperator_5fhook_5fprologue_6',['POST_OPERATOR_HOOK_PROLOGUE',['../_post_operator_hook_8h.html#ab407d20f0083f71e177b635488f54cd5',1,'PostOperatorHook.h']]],
   ['post_5foperator_5fhook_5fprologue_5fmulti_5fouts_7',['POST_OPERATOR_HOOK_PROLOGUE_MULTI_OUTS',['../_post_operator_hook_8h.html#a9c5698e46b02b428a0b5ec4749aeae3c',1,'PostOperatorHook.h']]],
   ['ppp_5fdebug_8',['PPP_DEBUG',['../mbed__config_8h.html#a171a601fe1dedb676b3e7b11fb05ec72',1,'mbed_config.h']]],

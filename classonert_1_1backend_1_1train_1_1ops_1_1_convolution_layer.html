@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1train_1_1ops_
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="train_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_convolution_layer_8h_source.html">ConvolutionLayer.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for onert::backend::train::ops::ConvolutionLayer:</div>
 <div class="dyncontent">
@@ -193,7 +193,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8h_source.html#l00028">28</a> of file <a class="el" href="train_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_convolution_layer_8h_source.html#l00028">28</a> of file <a class="el" href="_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a493e5473e5ba18c43b12e0c40d1c286d" name="a493e5473e5ba18c43b12e0c40d1c286d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a493e5473e5ba18c43b12e0c40d1c286d">&#9670;&#160;</a></span>ConvolutionLayer()</h2>
@@ -210,7 +210,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00053">53</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_convolution_layer_8cc_source.html#l00053">53</a> of file <a class="el" href="_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   54</span>  : cpu::ops::ConvolutionLayer(), _grad_weights{<span class="keyword">nullptr</span>}, _grad_bias{<span class="keyword">nullptr</span>},</div>
 <div class="line"><span class="lineno">   55</span>    _back_prop_input{<span class="keyword">nullptr</span>}, _back_prop_output{<span class="keyword">nullptr</span>}, _transposed_weights{<span class="keyword">nullptr</span>}</div>
 <div class="line"><span class="lineno">   56</span>{</div>
@@ -270,7 +270,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00098">98</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_convolution_layer_8cc_source.html#l00098">98</a> of file <a class="el" href="_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   99</span>{</div>
 <div class="line"><span class="lineno">  100</span>  <span class="keyword">const</span> <span class="keyword">auto</span> data_type = _back_prop_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>();</div>
 <div class="line"><span class="lineno">  101</span>  assert(data_type == <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>());</div>
@@ -287,9 +287,9 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  112</span>  }</div>
 <div class="line"><span class="lineno">  113</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a93aa077293fcd6a20709e0eaa36b0d2a"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">onert::backend::cpu::ops::ConvolutionLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00062">ConvolutionLayer.h:62</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a93aa077293fcd6a20709e0eaa36b0d2a"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a93aa077293fcd6a20709e0eaa36b0d2a">onert::backend::cpu::ops::ConvolutionLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00062">Conv2DLayer.h:62</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00062">onert::backend::cpu::ops::ConvolutionLayer::_input</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00062">onert::backend::cpu::ops::ConvolutionLayer::_input</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
 
 </div>
 </div>
@@ -343,7 +343,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00062">62</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_convolution_layer_8cc_source.html#l00062">62</a> of file <a class="el" href="_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   67</span>{</div>
 <div class="line"><span class="lineno">   68</span>  _back_prop_input = back_prop_input;</div>
 <div class="line"><span class="lineno">   69</span>  _grad_weights = grad_weights;</div>
@@ -374,11 +374,11 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   94</span>  }</div>
 <div class="line"><span class="lineno">   95</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a5aa2cfeb527066e9bee0316f67f67b1d"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a5aa2cfeb527066e9bee0316f67f67b1d">onert::backend::IPortableTensor::get_info</a></div><div class="ttdeci">const ir::OperandInfo &amp; get_info() const</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00048">IPortableTensor.h:48</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a9ff9c6e3f04abb66c2430dcc31889353"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">onert::backend::cpu::ops::ConvolutionLayer::_dilationWidthFactor</a></div><div class="ttdeci">uint32_t _dilationWidthFactor</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00075">ConvolutionLayer.h:75</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_ac2e0903949bb566a8ac9d0d91bcd65f5"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">onert::backend::cpu::ops::ConvolutionLayer::_dilationHeightFactor</a></div><div class="ttdeci">uint32_t _dilationHeightFactor</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8h_source.html#l00076">ConvolutionLayer.h:76</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a9ff9c6e3f04abb66c2430dcc31889353"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a9ff9c6e3f04abb66c2430dcc31889353">onert::backend::cpu::ops::ConvolutionLayer::_dilationWidthFactor</a></div><div class="ttdeci">uint32_t _dilationWidthFactor</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00075">Conv2DLayer.h:75</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_ac2e0903949bb566a8ac9d0d91bcd65f5"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#ac2e0903949bb566a8ac9d0d91bcd65f5">onert::backend::cpu::ops::ConvolutionLayer::_dilationHeightFactor</a></div><div class="ttdeci">uint32_t _dilationHeightFactor</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00076">Conv2DLayer.h:76</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::Activation::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00076">onert::backend::cpu::ops::ConvolutionLayer::_dilationHeightFactor</a>, <a class="el" href="cpu_2ops_2_convolution_layer_8h_source.html#l00075">onert::backend::cpu::ops::ConvolutionLayer::_dilationWidthFactor</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00048">onert::backend::IPortableTensor::get_info()</a>, and <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00076">onert::backend::cpu::ops::ConvolutionLayer::_dilationHeightFactor</a>, <a class="el" href="cpu_2ops_2_conv2_d_layer_8h_source.html#l00075">onert::backend::cpu::ops::ConvolutionLayer::_dilationWidthFactor</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00048">onert::backend::IPortableTensor::get_info()</a>, and <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>.</p>
 
 </div>
 </div>
@@ -408,17 +408,17 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html#l00097">97</a> of file <a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_convolution_layer_8cc_source.html#l00097">97</a> of file <a class="el" href="_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   97</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a580c96aa5b1f21c67b46291cb20a6d02">cpu::ops::ConvolutionLayer::run</a>(); }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a580c96aa5b1f21c67b46291cb20a6d02"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a580c96aa5b1f21c67b46291cb20a6d02">onert::backend::cpu::ops::ConvolutionLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">ConvolutionLayer.cc:220</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer_html_a580c96aa5b1f21c67b46291cb20a6d02"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_convolution_layer.html#a580c96aa5b1f21c67b46291cb20a6d02">onert::backend::cpu::ops::ConvolutionLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">Conv2DLayer.cc:220</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_convolution_layer_8cc_source.html#l00220">onert::backend::cpu::ops::ConvolutionLayer::run()</a>.</p>
+<p class="reference">References <a class="el" href="cpu_2ops_2_conv2_d_layer_8cc_source.html#l00220">onert::backend::cpu::ops::ConvolutionLayer::run()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/backend/train/ops/<a class="el" href="train_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a></li>
-<li>runtime/onert/backend/train/ops/<a class="el" href="train_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a></li>
+<li>runtime/onert/backend/train/ops/<a class="el" href="_convolution_layer_8h_source.html">ConvolutionLayer.h</a></li>
+<li>runtime/onert/backend/train/ops/<a class="el" href="_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,6 +1,7 @@
 var _reduce_layer_8h =
 [
     [ "onert::backend::cpu::ops::ReduceLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_reduce_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_reduce_layer" ],
+    [ "onert::backend::cpu::ops::MeanLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_mean_layer" ],
     [ "ReduceType", "_reduce_layer_8h.html#a5f443fc989245643bdd21c1c2289085a", [
       [ "kSum", "_reduce_layer_8h.html#a5f443fc989245643bdd21c1c2289085aaa1dc5fbfa16754d1e628d66381725617", null ],
       [ "kProd", "_reduce_layer_8h.html#a5f443fc989245643bdd21c1c2289085aa4eef5c699751ff1b31a7fcc194b28a88", null ],

@@ -116,30 +116,32 @@ $(document).ready(function(){initNavTree('_o_m_configure_t_i_s_o_kernel_8h_sourc
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#ifndef ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_TISO_KERNEL_H</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#define ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_TISO_KERNEL_H</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_kernel_configure_builder_8h.html">import/OMKernelConfigureBuilder.h</a>&quot;</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="core_2_o_m_utils_8h.html">core/OMUtils.h</a>&quot;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_status_8h.html">OMStatus.h</a>&quot;</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_runtime_kernel_8h.html">execute/OMRuntimeKernel.h</a>&quot;</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert__micro.html">onert_micro</a></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>{</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">namespace </span>import</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span>helpers</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> <a class="code hl_function" href="namespaceonert__micro_1_1import_1_1helpers.html#a3bd703f62c8cae3357868df2c9d76da1">configure_TISO_kernel</a>(<span class="keyword">const</span> OMConfigureArgs &amp;config_args);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>} <span class="comment">// namespace helpers</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// namespace import</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>} <span class="comment">// namespace onert_micro</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_TISO_KERNEL_H</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_log_8h.html">OMLog.h</a>&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_kernel_configure_builder_8h.html">import/OMKernelConfigureBuilder.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="core_2_o_m_utils_8h.html">core/OMUtils.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_status_8h.html">OMStatus.h</a>&quot;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="_o_m_runtime_kernel_8h.html">execute/OMRuntimeKernel.h</a>&quot;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceonert__micro.html">onert_micro</a></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">namespace </span>import</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">namespace </span>helpers</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><a class="code hl_enumeration" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">OMStatus</a> <a class="code hl_function" href="namespaceonert__micro_1_1import_1_1helpers.html#a3bd703f62c8cae3357868df2c9d76da1">configure_TISO_kernel</a>(<span class="keyword">const</span> OMConfigureArgs &amp;config_args);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// namespace helpers</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>} <span class="comment">// namespace import</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>} <span class="comment">// namespace onert_micro</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#endif </span><span class="comment">// ONERT_MICRO_IMPORT_HELPERS_CONFIGURE_TISO_KERNEL_H</span></div>
 <div class="ttc" id="a_o_m_kernel_configure_builder_8h_html"><div class="ttname"><a href="_o_m_kernel_configure_builder_8h.html">OMKernelConfigureBuilder.h</a></div></div>
+<div class="ttc" id="a_o_m_log_8h_html"><div class="ttname"><a href="_o_m_log_8h.html">OMLog.h</a></div></div>
 <div class="ttc" id="a_o_m_runtime_kernel_8h_html"><div class="ttname"><a href="_o_m_runtime_kernel_8h.html">OMRuntimeKernel.h</a></div></div>
 <div class="ttc" id="a_o_m_status_8h_html"><div class="ttname"><a href="_o_m_status_8h.html">OMStatus.h</a></div></div>
 <div class="ttc" id="acore_2_o_m_utils_8h_html"><div class="ttname"><a href="core_2_o_m_utils_8h.html">OMUtils.h</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_1_1import_1_1helpers_html_a3bd703f62c8cae3357868df2c9d76da1"><div class="ttname"><a href="namespaceonert__micro_1_1import_1_1helpers.html#a3bd703f62c8cae3357868df2c9d76da1">onert_micro::import::helpers::configure_TISO_kernel</a></div><div class="ttdeci">OMStatus configure_TISO_kernel(const OMConfigureArgs &amp;config_args)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_configure_t_i_s_o_kernel_8cpp_source.html#l00032">OMConfigureTISOKernel.cpp:32</a></div></div>
-<div class="ttc" id="anamespaceonert__micro_html"><div class="ttname"><a href="namespaceonert__micro.html">onert_micro</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8h_source.html#l00025">OMMemoryManager.h:26</a></div></div>
+<div class="ttc" id="anamespaceonert__micro_html"><div class="ttname"><a href="namespaceonert__micro.html">onert_micro</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_memory_manager_8h_source.html#l00026">OMMemoryManager.h:27</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cb"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">onert_micro::OMStatus</a></div><div class="ttdeci">OMStatus</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00023">OMStatus.h:24</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

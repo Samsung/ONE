@@ -512,14 +512,15 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   26</span>{</div>
 <div class="line"><span class="lineno">   27</span>  assert(model_ptr != <span class="keyword">nullptr</span> &amp;&amp; <span class="stringliteral">&quot;Model ptr shouldn&#39;t be nullptr&quot;</span>);</div>
 <div class="line"><span class="lineno">   28</span>  <span class="keywordflow">if</span> (model_ptr == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   29</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   29</span>    <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">   30</span> </div>
 <div class="line"><span class="lineno">   31</span>  <span class="keywordflow">return</span> _training_runtime_module.<a class="code hl_function" href="classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#abbb893018e867a16a88e897b96016f49">importTrainModel</a>(model_ptr, config);</div>
 <div class="line"><span class="lineno">   32</span>}</div>
+<div class="ttc" id="a_o_m_log_8h_html_aaf6a128cb753b6f04742f105ab8c8d8d"><div class="ttname"><a href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a></div><div class="ttdeci">#define OM_LOG_AND_RETURN(err, msg)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_log_8h_source.html#l00031">OMLog.h:31</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_training_runtime_module_html_abbb893018e867a16a88e897b96016f49"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#abbb893018e867a16a88e897b96016f49">onert_micro::core::OMTrainingRuntimeModule::importTrainModel</a></div><div class="ttdeci">OMStatus importTrainModel(char *model_ptr, const OMConfig &amp;config)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_runtime_module_8cpp_source.html#l00034">OMTrainingRuntimeModule.cpp:34</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">onert_micro::UnknownError</a></div><div class="ttdeci">@ UnknownError</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00030">OMStatus.h:30</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00034">onert_micro::core::OMTrainingRuntimeModule::importTrainModel()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00034">onert_micro::core::OMTrainingRuntimeModule::importTrainModel()</a>, <a class="el" href="_o_m_log_8h_source.html#l00031">OM_LOG_AND_RETURN</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_training_driver_8cpp_source.html#l00109">entry()</a>, <a class="el" href="onert-micro_8cpp_source.html#l00272">nnfw_session::load_model_from_file()</a>, and <a class="el" href="_training_driver_handler_8cpp_source.html#l00040">training_configure_tool::runTrainProcessWithCurConfig()</a>.</p>
 
@@ -555,7 +556,7 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">   78</span>{</div>
 <div class="line"><span class="lineno">   79</span>  <span class="comment">// Not imported or path is empty</span></div>
 <div class="line"><span class="lineno">   80</span>  <span class="keywordflow">if</span> (load_path == <span class="keyword">nullptr</span> or <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.model_ptr == <span class="keyword">nullptr</span> or <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.model_size == 0)</div>
-<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   81</span>    <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">   82</span> </div>
 <div class="line"><span class="lineno">   83</span>  <span class="comment">// Get DataBuffer (vector of chars) of checkpoints</span></div>
 <div class="line"><span class="lineno">   84</span>  std::vector&lt;char&gt; checkpoint_data;</div>
@@ -566,7 +567,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   89</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.good())</div>
 <div class="line"><span class="lineno">   90</span>  {</div>
 <div class="line"><span class="lineno">   91</span>    assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Fail to open&quot;</span>);</div>
-<div class="line"><span class="lineno">   92</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   92</span>    <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">   93</span>  }</div>
 <div class="line"><span class="lineno">   94</span> </div>
 <div class="line"><span class="lineno">   95</span>  <a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.seekg(0, std::ios::end);</div>
@@ -581,11 +582,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  104</span>  <span class="keywordflow">if</span> (<a class="code hl_variable" href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">file</a>.fail())</div>
 <div class="line"><span class="lineno">  105</span>  {</div>
 <div class="line"><span class="lineno">  106</span>    assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Fail to read&quot;</span>);</div>
-<div class="line"><span class="lineno">  107</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">  107</span>    <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">  108</span>  }</div>
 <div class="line"><span class="lineno">  109</span><span class="preprocessor">#else</span></div>
 <div class="line"><span class="lineno">  110</span>  assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Not supported&quot;</span>);</div>
-<div class="line"><span class="lineno">  111</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">  111</span>  <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">  112</span><span class="preprocessor">#endif </span><span class="comment">// DIS_STREAM</span></div>
 <div class="line"><span class="lineno">  113</span> </div>
 <div class="line"><span class="lineno">  114</span>  <span class="comment">// Load data</span></div>
@@ -598,7 +599,7 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cb"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cb">onert_micro::OMStatus</a></div><div class="ttdeci">OMStatus</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00023">OMStatus.h:24</a></div></div>
 <div class="ttc" id="anamespacetf2tflite_v2_html_abe660e9c50ccb26ca3f53160f59fabb7"><div class="ttname"><a href="namespacetf2tflite_v2.html#abe660e9c50ccb26ca3f53160f59fabb7">tf2tfliteV2.file</a></div><div class="ttdeci">file</div><div class="ttdef"><b>Definition</b> <a href="tf2tflite_v2_8py_source.html#l00247">tf2tfliteV2.py:247</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00312">onert_micro::core::OMTrainingRuntimeModule::loadCheckpointData()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00312">onert_micro::core::OMTrainingRuntimeModule::loadCheckpointData()</a>, <a class="el" href="_o_m_log_8h_source.html#l00031">OM_LOG_AND_RETURN</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_training_driver_8cpp_source.html#l00109">entry()</a>, and <a class="el" href="onert-micro_8cpp_source.html#l00330">nnfw_session::train_import_checkpoint()</a>.</p>
 
@@ -745,7 +746,7 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  121</span>{</div>
 <div class="line"><span class="lineno">  122</span>  <span class="comment">// Not imported or path is empty</span></div>
 <div class="line"><span class="lineno">  123</span>  <span class="keywordflow">if</span> (save_path == <span class="keyword">nullptr</span> or <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.model_ptr == <span class="keyword">nullptr</span> or <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.model_size == 0)</div>
-<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">  124</span>    <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">  125</span> </div>
 <div class="line"><span class="lineno">  126</span>  <span class="comment">// Get DataBuffer (vector of chars) of checkpoints</span></div>
 <div class="line"><span class="lineno">  127</span>  std::vector&lt;char&gt; checkpoint_data;</div>
@@ -762,7 +763,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  138</span>  <span class="comment">// Note: if the file existed, it will be overwritten</span></div>
 <div class="line"><span class="lineno">  139</span>  std::ofstream out_file(save_path, std::ios::binary | std::ios::trunc);</div>
 <div class="line"><span class="lineno">  140</span>  <span class="keywordflow">if</span> (not out_file.is_open())</div>
-<div class="line"><span class="lineno">  141</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">  141</span>    <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">  142</span> </div>
 <div class="line"><span class="lineno">  143</span>  <span class="comment">// Write data</span></div>
 <div class="line"><span class="lineno">  144</span>  out_file.write(checkpoint_data.data(), checkpoint_data.size());</div>
@@ -771,7 +772,7 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  147</span>  out_file.close();</div>
 <div class="line"><span class="lineno">  148</span><span class="preprocessor">#else</span></div>
 <div class="line"><span class="lineno">  149</span>  assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Not supported&quot;</span>);</div>
-<div class="line"><span class="lineno">  150</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">  150</span>  <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">  151</span><span class="preprocessor">#endif </span><span class="comment">// DIS_STREAM</span></div>
 <div class="line"><span class="lineno">  152</span> </div>
 <div class="line"><span class="lineno">  153</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
@@ -779,7 +780,7 @@ Public Member Functions</h2></td></tr>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_training_runtime_module_html_a729b81574c30a40aaac2a657ac8248b5"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_training_runtime_module.html#a729b81574c30a40aaac2a657ac8248b5">onert_micro::core::OMTrainingRuntimeModule::createCheckpointFile</a></div><div class="ttdeci">OMStatus createCheckpointFile(const OMConfig &amp;config, std::vector&lt; char &gt; &amp;data_buffer)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_training_runtime_module_8cpp_source.html#l00293">OMTrainingRuntimeModule.cpp:293</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">onert_micro::Ok</a></div><div class="ttdeci">@ Ok</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00025">OMStatus.h:25</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00293">onert_micro::core::OMTrainingRuntimeModule::createCheckpointFile()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_training_runtime_module_8cpp_source.html#l00293">onert_micro::core::OMTrainingRuntimeModule::createCheckpointFile()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_log_8h_source.html#l00031">OM_LOG_AND_RETURN</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_training_driver_8cpp_source.html#l00109">entry()</a>, and <a class="el" href="onert-micro_8cpp_source.html#l00324">nnfw_session::train_export_checkpoint()</a>.</p>
 
@@ -814,14 +815,14 @@ Public Member Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="_o_m_training_interpreter_8cpp_source.html#l00051">51</a> of file <a class="el" href="_o_m_training_interpreter_8cpp_source.html">OMTrainingInterpreter.cpp</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   52</span>{</div>
 <div class="line"><span class="lineno">   53</span>  <span class="keywordflow">if</span> (save_path == <span class="keyword">nullptr</span> or <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.model_size == 0 or <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.model_ptr == <span class="keyword">nullptr</span>)</div>
-<div class="line"><span class="lineno">   54</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   54</span>    <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">   55</span> </div>
 <div class="line"><span class="lineno">   56</span><span class="preprocessor">#ifndef DIS_STREAM</span></div>
 <div class="line"><span class="lineno">   57</span>  <span class="comment">// Open or create file</span></div>
 <div class="line"><span class="lineno">   58</span>  <span class="comment">// Note: if the file existed, it will be overwritten</span></div>
 <div class="line"><span class="lineno">   59</span>  std::ofstream out_file(save_path, std::ios::binary | std::ios::trunc);</div>
 <div class="line"><span class="lineno">   60</span>  <span class="keywordflow">if</span> (not out_file.is_open())</div>
-<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   61</span>    <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">   62</span> </div>
 <div class="line"><span class="lineno">   63</span>  <span class="comment">// Write data</span></div>
 <div class="line"><span class="lineno">   64</span>  out_file.write(<a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.model_ptr, <a class="code hl_variable" href="namespacegen__h5__explicit__inputs__all.html#ad2e650e5f9a54072f7e063a353ef6489">config</a>.model_size);</div>
@@ -830,14 +831,14 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">   67</span>  out_file.close();</div>
 <div class="line"><span class="lineno">   68</span><span class="preprocessor">#else</span></div>
 <div class="line"><span class="lineno">   69</span>  assert(<span class="keyword">false</span> &amp;&amp; <span class="stringliteral">&quot;Not supported&quot;</span>);</div>
-<div class="line"><span class="lineno">   70</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   70</span>  <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">   71</span><span class="preprocessor">#endif </span><span class="comment">// DIS_STREAM</span></div>
 <div class="line"><span class="lineno">   72</span> </div>
 <div class="line"><span class="lineno">   73</span>  <span class="comment">// Saving done</span></div>
 <div class="line"><span class="lineno">   74</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">   75</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_log_8h_source.html#l00031">OM_LOG_AND_RETURN</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="_training_driver_8cpp_source.html#l00109">entry()</a>, and <a class="el" href="onert-micro_8cpp_source.html#l00318">nnfw_session::train_export_circle()</a>.</p>
 

@@ -139,17 +139,18 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   39</span>  <span class="keywordtype">bool</span> is_ok = reducer.Mean();</div>
 <div class="line"><span class="lineno">   40</span>  <span class="keywordflow">if</span> (!is_ok)</div>
 <div class="line"><span class="lineno">   41</span>  {</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   42</span>    <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">   43</span>  }</div>
 <div class="line"><span class="lineno">   44</span> </div>
 <div class="line"><span class="lineno">   45</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">   46</span>}</div>
+<div class="ttc" id="a_o_m_log_8h_html_aaf6a128cb753b6f04742f105ab8c8d8d"><div class="ttname"><a href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a></div><div class="ttdeci">#define OM_LOG_AND_RETURN(err, msg)</div><div class="ttdef"><b>Definition</b> <a href="_o_m_log_8h_source.html#l00031">OMLog.h:31</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1core_1_1_o_m_reduce_data_context_html"><div class="ttname"><a href="classonert__micro_1_1core_1_1_o_m_reduce_data_context.html">onert_micro::core::OMReduceDataContext</a></div><div class="ttdef"><b>Definition</b> <a href="_o_m_custom_runtime_data_8h_source.html#l00031">OMCustomRuntimeData.h:32</a></div></div>
 <div class="ttc" id="aclassonert__micro_1_1execute_1_1pal_1_1_reducer_html"><div class="ttname"><a href="classonert__micro_1_1execute_1_1pal_1_1_reducer.html">onert_micro::execute::pal::Reducer</a></div><div class="ttdef"><b>Definition</b> <a href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00076">PALReduceCommon.h:77</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">onert_micro::UnknownError</a></div><div class="ttdeci">@ UnknownError</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00030">OMStatus.h:30</a></div></div>
 <div class="ttc" id="anamespaceonert__micro_html_ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8"><div class="ttname"><a href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">onert_micro::Ok</a></div><div class="ttdeci">@ Ok</div><div class="ttdef"><b>Definition</b> <a href="_o_m_status_8h_source.html#l00025">OMStatus.h:25</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00101">onert_micro::execute::pal::Reducer&lt; T, ReduceFn &gt;::Mean()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+<p class="reference">References <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00101">onert_micro::execute::pal::Reducer&lt; T, ReduceFn &gt;::Mean()</a>, <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_log_8h_source.html#l00031">OM_LOG_AND_RETURN</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
 </div>
 </div>
@@ -181,13 +182,13 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   39</span>  <span class="keywordtype">bool</span> is_ok = reducer.Reduce();</div>
 <div class="line"><span class="lineno">   40</span>  <span class="keywordflow">if</span> (!is_ok)</div>
 <div class="line"><span class="lineno">   41</span>  {</div>
-<div class="line"><span class="lineno">   42</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   42</span>    <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">   43</span>  }</div>
 <div class="line"><span class="lineno">   44</span> </div>
 <div class="line"><span class="lineno">   45</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">   46</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00109">onert_micro::execute::pal::Reducer&lt; T, ReduceFn &gt;::Reduce()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_log_8h_source.html#l00031">OM_LOG_AND_RETURN</a>, <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00109">onert_micro::execute::pal::Reducer&lt; T, ReduceFn &gt;::Reduce()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
 </div>
 </div>
@@ -219,13 +220,13 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   41</span>  <span class="keywordtype">bool</span> is_ok = reducer.Reduce();</div>
 <div class="line"><span class="lineno">   42</span>  <span class="keywordflow">if</span> (!is_ok)</div>
 <div class="line"><span class="lineno">   43</span>  {</div>
-<div class="line"><span class="lineno">   44</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   44</span>    <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">   45</span>  }</div>
 <div class="line"><span class="lineno">   46</span> </div>
 <div class="line"><span class="lineno">   47</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">   48</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00109">onert_micro::execute::pal::Reducer&lt; T, ReduceFn &gt;::Reduce()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_log_8h_source.html#l00031">OM_LOG_AND_RETURN</a>, <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00109">onert_micro::execute::pal::Reducer&lt; T, ReduceFn &gt;::Reduce()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
 </div>
 </div>
@@ -257,13 +258,13 @@ template&lt;typename T &gt; </div>
 <div class="line"><span class="lineno">   37</span>  <span class="keywordtype">bool</span> is_ok = reducer.Reduce();</div>
 <div class="line"><span class="lineno">   38</span>  <span class="keywordflow">if</span> (!is_ok)</div>
 <div class="line"><span class="lineno">   39</span>  {</div>
-<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>;</div>
+<div class="line"><span class="lineno">   40</span>    <a class="code hl_define" href="_o_m_log_8h.html#aaf6a128cb753b6f04742f105ab8c8d8d">OM_LOG_AND_RETURN</a>(<a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba25c5cbb5f50c9c8ad4930ec74eaaf67d">UnknownError</a>, <span class="stringliteral">&quot;Unknown error encountered&quot;</span>);</div>
 <div class="line"><span class="lineno">   41</span>  }</div>
 <div class="line"><span class="lineno">   42</span> </div>
 <div class="line"><span class="lineno">   43</span>  <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespaceonert__micro.html#ac5cb1f87e294d806ce8b550b56b239cba27c8121dc673c0cc50c991150f2328e8">Ok</a>;</div>
 <div class="line"><span class="lineno">   44</span>}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00109">onert_micro::execute::pal::Reducer&lt; T, ReduceFn &gt;::Reduce()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
+<p class="reference">References <a class="el" href="_o_m_status_8h_source.html#l00025">onert_micro::Ok</a>, <a class="el" href="_o_m_log_8h_source.html#l00031">OM_LOG_AND_RETURN</a>, <a class="el" href="onert-micro_2include_2pal_2mcu_2_p_a_l_reduce_common_8h_source.html#l00109">onert_micro::execute::pal::Reducer&lt; T, ReduceFn &gt;::Reduce()</a>, and <a class="el" href="_o_m_status_8h_source.html#l00030">onert_micro::UnknownError</a>.</p>
 
 </div>
 </div>

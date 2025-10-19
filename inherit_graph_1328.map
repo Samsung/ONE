@@ -1,7 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classonert__micro_1_1core_1_1_o_m_tensor_data.html" title=" " alt="" coords="5,31,165,87"/>
-<area shape="rect" id="Node000001" href="$classonert__micro_1_1core_1_1_o_m_axis_data.html" title=" " alt="" coords="213,5,375,46"/>
-<area shape="poly" id="edge2675_Node000000_Node000001" title=" " alt="" coords="180,41,212,36,213,41,180,47"/>
-<area shape="rect" id="Node000002" href="$classonert__micro_1_1core_1_1_o_m_axis_data.html" title=" " alt="" coords="214,71,374,111"/>
-<area shape="poly" id="edge2676_Node000000_Node000002" title=" " alt="" coords="180,71,214,76,213,81,180,76"/>
+<area shape="rect" id="Node000000" href="$classonert__micro_1_1core_1_1_o_m_tensor_data.html" title=" " alt="" coords="5,5,145,46"/>
+<area shape="rect" id="Node000001" href="$classonert__micro_1_1core_1_1_i_o_tensor_data.html" title=" " alt="" coords="193,5,325,46"/>
+<area shape="poly" id="edge2675_Node000000_Node000001" title=" " alt="" coords="160,23,193,23,193,28,160,28"/>
 </map>

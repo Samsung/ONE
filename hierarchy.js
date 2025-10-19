@@ -2626,6 +2626,7 @@ var hierarchy =
         [ "onert::ir::operation::ArgMinMax", "classonert_1_1ir_1_1operation_1_1_arg_min_max.html", null ],
         [ "onert::ir::operation::BCQFullyConnected", "classonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected.html", null ],
         [ "onert::ir::operation::BCQGather", "classonert_1_1ir_1_1operation_1_1_b_c_q_gather.html", null ],
+        [ "onert::ir::operation::BCQUnembedding", "classonert_1_1ir_1_1operation_1_1_b_c_q_unembedding.html", null ],
         [ "onert::ir::operation::BatchMatMul", "classonert_1_1ir_1_1operation_1_1_batch_mat_mul.html", null ],
         [ "onert::ir::operation::BatchToSpaceND", "classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html", null ],
         [ "onert::ir::operation::BinaryArithmetic", "classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html", [
@@ -4350,6 +4351,7 @@ var hierarchy =
     [ "onert::ir::operation::BatchMatMul::Param", "structonert_1_1ir_1_1operation_1_1_batch_mat_mul_1_1_param.html", null ],
     [ "onert::ir::operation::BCQFullyConnected::Param", "structonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected_1_1_param.html", null ],
     [ "onert::ir::operation::BCQGather::Param", "structonert_1_1ir_1_1operation_1_1_b_c_q_gather_1_1_param.html", null ],
+    [ "onert::ir::operation::BCQUnembedding::Param", "structonert_1_1ir_1_1operation_1_1_b_c_q_unembedding_1_1_param.html", null ],
     [ "onert::ir::operation::BinaryArithmetic::Param", "structonert_1_1ir_1_1operation_1_1_binary_arithmetic_1_1_param.html", null ],
     [ "onert::ir::operation::Bulk::Param", "structonert_1_1ir_1_1operation_1_1_bulk_1_1_param.html", null ],
     [ "onert::ir::operation::Call::Param", "structonert_1_1ir_1_1operation_1_1_call_1_1_param.html", null ],

@@ -380,7 +380,7 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  191</span>{</div>
 <div class="line"><span class="lineno">  192</span>  <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> tensor_info = <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a>();</div>
 <div class="line"><span class="lineno">  193</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="nnfw_8h.html#a47e2fc9e970a568c2cd147022e885119">nnfw_input_tensorinfo</a>(session, index, &amp;tensor_info));</div>
-<div class="line"><span class="lineno">  194</span>  <a class="code hl_function" href="namespacepackage_1_1common_1_1basesession.html#ab9c0c8c88a9c77697dc456df6403f5ee">tensorinfo</a> ti;</div>
+<div class="line"><span class="lineno">  194</span>  tensorinfo ti;</div>
 <div class="line"><span class="lineno">  195</span>  ti.dtype = <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a0975b728740c47252340213ce2c6b56c">getStringType</a>(tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a2ab71fcd11fac2161eb2e704b3cd9292">dtype</a>);</div>
 <div class="line"><span class="lineno">  196</span>  ti.rank = tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a>;</div>
 <div class="line"><span class="lineno">  197</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_define" href="onert-micro_8h.html#ae4a6c20a576dbf5f53f34aa891089a25">NNFW_MAX_RANK</a>; i++)</div>
@@ -389,7 +389,6 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  200</span>  }</div>
 <div class="line"><span class="lineno">  201</span>  <span class="keywordflow">return</span> ti;</div>
 <div class="line"><span class="lineno">  202</span>}</div>
-<div class="ttc" id="anamespacepackage_1_1common_1_1basesession_html_ab9c0c8c88a9c77697dc456df6403f5ee"><div class="ttname"><a href="namespacepackage_1_1common_1_1basesession.html#ab9c0c8c88a9c77697dc456df6403f5ee">package.common.basesession.tensorinfo</a></div><div class="ttdeci">tensorinfo()</div><div class="ttdef"><b>Definition</b> <a href="basesession_8py_source.html#l00181">basesession.py:181</a></div></div>
 <div class="ttc" id="annfw_8h_html_a47e2fc9e970a568c2cd147022e885119"><div class="ttname"><a href="nnfw_8h.html#a47e2fc9e970a568c2cd147022e885119">nnfw_input_tensorinfo</a></div><div class="ttdeci">NNFW_STATUS nnfw_input_tensorinfo(nnfw_session *session, uint32_t index, nnfw_tensorinfo *tensor_info)</div><div class="ttdoc">Get i-th input tensor info.</div><div class="ttdef"><b>Definition</b> <a href="nnfw__api_8cc_source.html#l00146">nnfw_api.cc:146</a></div></div>
 <div class="ttc" id="aonert-micro_8h_html_ae4a6c20a576dbf5f53f34aa891089a25"><div class="ttname"><a href="onert-micro_8h.html#ae4a6c20a576dbf5f53f34aa891089a25">NNFW_MAX_RANK</a></div><div class="ttdeci">#define NNFW_MAX_RANK</div><div class="ttdoc">Maximum rank expressible with nnfw.</div><div class="ttdef"><b>Definition</b> <a href="onert-micro_8h_source.html#l00109">onert-micro.h:109</a></div></div>
 </div><!-- fragment -->
@@ -449,7 +448,7 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  204</span>{</div>
 <div class="line"><span class="lineno">  205</span>  <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a> tensor_info = <a class="code hl_struct" href="structnnfw__tensorinfo.html">nnfw_tensorinfo</a>();</div>
 <div class="line"><span class="lineno">  206</span>  <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a504089b19ce87b6b825e9fad01ce28de">ensure_status</a>(<a class="code hl_function" href="nnfw_8h.html#a3e9e6779bb5ad5f1d5efa0549754db61">nnfw_output_tensorinfo</a>(session, index, &amp;tensor_info));</div>
-<div class="line"><span class="lineno">  207</span>  <a class="code hl_function" href="namespacepackage_1_1common_1_1basesession.html#ab9c0c8c88a9c77697dc456df6403f5ee">tensorinfo</a> ti;</div>
+<div class="line"><span class="lineno">  207</span>  tensorinfo ti;</div>
 <div class="line"><span class="lineno">  208</span>  ti.dtype = <a class="code hl_function" href="namespaceonert_1_1api_1_1python.html#a0975b728740c47252340213ce2c6b56c">getStringType</a>(tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a2ab71fcd11fac2161eb2e704b3cd9292">dtype</a>);</div>
 <div class="line"><span class="lineno">  209</span>  ti.rank = tensor_info.<a class="code hl_variable" href="structnnfw__tensorinfo.html#a87b52cdfd8e93c94e21e7cba235fedab">rank</a>;</div>
 <div class="line"><span class="lineno">  210</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_define" href="onert-micro_8h.html#ae4a6c20a576dbf5f53f34aa891089a25">NNFW_MAX_RANK</a>; i++)</div>

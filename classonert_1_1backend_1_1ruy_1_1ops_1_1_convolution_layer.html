@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1ruy_1_1ops_1_
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="ruy_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="ruy_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for onert::backend::ruy::ops::ConvolutionLayer:</div>
 <div class="dyncontent">
@@ -127,7 +127,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_convolution_layer_8h_source.html#l00032">32</a> of file <a class="el" href="ruy_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8h_source.html#l00032">32</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a77f73f7a96a54c8d8289d81dda867a75" name="a77f73f7a96a54c8d8289d81dda867a75"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a77f73f7a96a54c8d8289d81dda867a75">&#9670;&#160;</a></span>ConvolutionLayer()</h2>
@@ -144,7 +144,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00024">24</a> of file <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00024">24</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   25</span>  : _input(<span class="keyword">nullptr</span>), _kernel(<span class="keyword">nullptr</span>), _bias(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>),</div>
 <div class="line"><span class="lineno">   26</span>    _paddingType(<a class="code hl_enumvalue" href="namespaceonert_1_1ir.html#acc4661130ea3f46e70a67cbf429c8693a440806ada035e97a59ec9d2ca6796cb3">ir::PaddingType::EXPLICIT</a>), _paddingLeft(0), _paddingTop(0), _paddingRight(0),</div>
 <div class="line"><span class="lineno">   27</span>    _paddingBottom(0), _strideWidth(0), _strideHeight(0), _dilationWidthFactor(1),</div>
@@ -289,7 +289,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00060">60</a> of file <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00060">60</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   69</span>{</div>
 <div class="line"><span class="lineno">   70</span>  _input = <a class="code hl_enumvalue" href="namespacemir__caffe.html#a80d91a921af9e0cb352bf83b19ed18c8aa43c1b0aa53a0c908810c06ab1ff3967">input</a>;</div>
 <div class="line"><span class="lineno">   71</span>  _kernel = kernel;</div>
@@ -328,7 +328,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00036">36</a> of file <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00036">36</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
 <div class="line"><span class="lineno">   38</span>  <span class="keywordtype">float</span> output_activation_min = 0, output_activation_max = 0;</div>
 <div class="line"><span class="lineno">   39</span>  <a class="code hl_function" href="namespaceonert_1_1util.html#a9aac61f35b6d507552fea7bd8ac070ab">CalculateActivationRange</a>(_activation, &amp;output_activation_min, &amp;output_activation_max);</div>
@@ -369,7 +369,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="classonert_1_1backend_1_1_i_tensor.html#ac42a9739e80a0e11be18c0e0a61ccf85">onert::backend::ITensor::buffer()</a>, <a class="el" href="_calculate_activation_range_8h_source.html#l00028">onert::util::CalculateActivationRange()</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00064">nnfw::ruy::ConvParams::dilation_height_factor</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00063">nnfw::ruy::ConvParams::dilation_width_factor</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00077">nnfw::ruy::ConvParams::float_activation_max</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00076">nnfw::ruy::ConvParams::float_activation_min</a>, <a class="el" href="ruy_2ops_2_operation_utils_8h_source.html#l00036">onert::backend::ruy::ops::getTensorShape()</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00053">nnfw::ruy::PaddingValues::height</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00058">nnfw::ruy::ConvParams::padding_type</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00059">nnfw::ruy::ConvParams::padding_values</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00062">nnfw::ruy::ConvParams::stride_height</a>, <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00061">nnfw::ruy::ConvParams::stride_width</a>, and <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2_types_8h_source.html#l00052">nnfw::ruy::PaddingValues::width</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00087">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00087">run()</a>.</p>
 
 </div>
 </div>
@@ -398,7 +398,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classonert_1_1exec_1_1_i_function.html#a901ae0973ef08a6ca59f6a00bd3bac4c">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00130">130</a> of file <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00130">130</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  131</span>{</div>
 <div class="line"><span class="lineno">  132</span>  <span class="keywordflow">if</span> (_prepare)</div>
 <div class="line"><span class="lineno">  133</span>    <span class="keywordflow">return</span>;</div>
@@ -417,7 +417,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="ruy_2ops_2_operation_utils_8h_source.html#l00036">onert::backend::ruy::ops::getTensorShape()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00062">onert::backend::IPortableTensor::is_constant()</a>, and <a class="el" href="runtime_2compute_2ruy_2include_2ruy_2operation_2_conv_8h_source.html#l00041">nnfw::ruy::Conv::prepare()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00087">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00087">run()</a>.</p>
 
 </div>
 </div>
@@ -446,7 +446,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00087">87</a> of file <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00087">87</a> of file <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   88</span>{</div>
 <div class="line"><span class="lineno">   89</span>  <a class="code hl_function" href="classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html#ab7814b75b12ace33db80110274a0ab75">prepare</a>();</div>
 <div class="line"><span class="lineno">   90</span> </div>
@@ -490,17 +490,17 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="lineno">  128</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_ad010d0f248f6e0e400485d81410ac158"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#ad010d0f248f6e0e400485d81410ac158">onert::backend::IPortableTensor::getShape</a></div><div class="ttdeci">ir::Shape getShape() const override final</div><div class="ttdoc">Get ir::Shape of tensor.</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00064">IPortableTensor.h:64</a></div></div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_ae85cf7ba798b307fd40e09b736caf5c9"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#ae85cf7ba798b307fd40e09b736caf5c9">onert::backend::IPortableTensor::is_dynamic</a></div><div class="ttdeci">bool is_dynamic() const override final</div><div class="ttdoc">Return true if the tensor needs dynamic allocation, meaning that during compile-time the outpus shape...</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00063">IPortableTensor.h:63</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer_html_ab7814b75b12ace33db80110274a0ab75"><div class="ttname"><a href="classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html#ab7814b75b12ace33db80110274a0ab75">onert::backend::ruy::ops::ConvolutionLayer::prepare</a></div><div class="ttdeci">void prepare() override</div><div class="ttdef"><b>Definition</b> <a href="ruy_2ops_2_convolution_layer_8cc_source.html#l00130">ConvolutionLayer.cc:130</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer_html_af556257bbf60f1ac469eccfc32f8d03b"><div class="ttname"><a href="classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html#af556257bbf60f1ac469eccfc32f8d03b">onert::backend::ruy::ops::ConvolutionLayer::convFloat32</a></div><div class="ttdeci">void convFloat32()</div><div class="ttdef"><b>Definition</b> <a href="ruy_2ops_2_convolution_layer_8cc_source.html#l00036">ConvolutionLayer.cc:36</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer_html_ab7814b75b12ace33db80110274a0ab75"><div class="ttname"><a href="classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html#ab7814b75b12ace33db80110274a0ab75">onert::backend::ruy::ops::ConvolutionLayer::prepare</a></div><div class="ttdeci">void prepare() override</div><div class="ttdef"><b>Definition</b> <a href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00130">Conv2DLayer.cc:130</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer_html_af556257bbf60f1ac469eccfc32f8d03b"><div class="ttname"><a href="classonert_1_1backend_1_1ruy_1_1ops_1_1_convolution_layer.html#af556257bbf60f1ac469eccfc32f8d03b">onert::backend::ruy::ops::ConvolutionLayer::convFloat32</a></div><div class="ttdeci">void convFloat32()</div><div class="ttdef"><b>Definition</b> <a href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00036">Conv2DLayer.cc:36</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a2ab58c9ae156f4ab01ecbe99b004ff85"><div class="ttname"><a href="namespaceonert_1_1ir.html#a2ab58c9ae156f4ab01ecbe99b004ff85">onert::ir::calculatePadding</a></div><div class="ttdeci">const ExplicitPadding calculatePadding(const Padding &amp;padding, const FeatureShape &amp;ifm_shape, const FeatureShape &amp;ofm_shape, const Stride &amp;stride, uint32_t kw, uint32_t kh, uint32_t dwf=1, uint32_t dhf=1)</div><div class="ttdef"><b>Definition</b> <a href="_padding_8cc_source.html#l00131">Padding.cc:131</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00048">onert::ir::ExplicitPadding::bottom</a>, <a class="el" href="_padding_8cc_source.html#l00131">onert::ir::calculatePadding()</a>, <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00036">convFloat32()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00064">onert::backend::IPortableTensor::getShape()</a>, <a class="el" href="_internal_type_8h_source.html#l00038">onert::ir::Stride::horizontal</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00063">onert::backend::IPortableTensor::is_dynamic()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00045">onert::ir::ExplicitPadding::left</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00060">onert::ir::Padding::param</a>, <a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html#l00130">prepare()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00046">onert::ir::ExplicitPadding::right</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00047">onert::ir::ExplicitPadding::top</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00059">onert::ir::Padding::type</a>, and <a class="el" href="_internal_type_8h_source.html#l00037">onert::ir::Stride::vertical</a>.</p>
+<p class="reference">References <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00048">onert::ir::ExplicitPadding::bottom</a>, <a class="el" href="_padding_8cc_source.html#l00131">onert::ir::calculatePadding()</a>, <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00036">convFloat32()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00064">onert::backend::IPortableTensor::getShape()</a>, <a class="el" href="_internal_type_8h_source.html#l00038">onert::ir::Stride::horizontal</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00063">onert::backend::IPortableTensor::is_dynamic()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00045">onert::ir::ExplicitPadding::left</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00060">onert::ir::Padding::param</a>, <a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html#l00130">prepare()</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00046">onert::ir::ExplicitPadding::right</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00047">onert::ir::ExplicitPadding::top</a>, <a class="el" href="runtime_2onert_2core_2include_2ir_2_padding_8h_source.html#l00059">onert::ir::Padding::type</a>, and <a class="el" href="_internal_type_8h_source.html#l00037">onert::ir::Stride::vertical</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/backend/ruy/ops/<a class="el" href="ruy_2ops_2_convolution_layer_8h_source.html">ConvolutionLayer.h</a></li>
-<li>runtime/onert/backend/ruy/ops/<a class="el" href="ruy_2ops_2_convolution_layer_8cc_source.html">ConvolutionLayer.cc</a></li>
+<li>runtime/onert/backend/ruy/ops/<a class="el" href="ruy_2ops_2_conv2_d_layer_8h_source.html">Conv2DLayer.h</a></li>
+<li>runtime/onert/backend/ruy/ops/<a class="el" href="ruy_2ops_2_conv2_d_layer_8cc_source.html">Conv2DLayer.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

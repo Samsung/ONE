@@ -1,6 +1,7 @@
 var _elementwise_unary_layer_8h =
 [
     [ "onert::backend::cpu::ops::ElementwiseUnaryLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_unary_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_elementwise_unary_layer" ],
+    [ "onert::backend::cpu::ops::QuantizeLayer", "classonert_1_1backend_1_1cpu_1_1ops_1_1_quantize_layer.html", "classonert_1_1backend_1_1cpu_1_1ops_1_1_quantize_layer" ],
     [ "ElementwiseUnaryType", "_elementwise_unary_layer_8h.html#af8c9bd4e9cf277a0b838202e05713ec4", [
       [ "kAbs", "_elementwise_unary_layer_8h.html#af8c9bd4e9cf277a0b838202e05713ec4aa7752f6ba33f219c729f0a2c17cd02c5", null ],
       [ "kCast", "_elementwise_unary_layer_8h.html#af8c9bd4e9cf277a0b838202e05713ec4a720f63dfecf9a5cd01f7c1c3bc29cc03", null ],

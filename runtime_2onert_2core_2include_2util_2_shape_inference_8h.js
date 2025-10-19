@@ -7,6 +7,7 @@ var runtime_2onert_2core_2include_2util_2_shape_inference_8h =
     [ "inferBatchMatMulShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#adc2d975b105929881bafff90fef477bf", null ],
     [ "inferBCQFullyConnectedShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#aef3d1762a92b8fa3d998fa47224a1592", null ],
     [ "inferBCQGatherShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#a3e9d03be97f56005997ab7324866cc25", null ],
+    [ "inferBCQUnembeddingShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#a1d4826a811f48ac49c218cf38044e071", null ],
     [ "inferBroadcastToShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#abdc0e09bb83c15c5bdffda420fd637f1", null ],
     [ "inferConcatShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#a82ec85e7c31358cd319a0b1981202549", null ],
     [ "inferConv2DShape", "runtime_2onert_2core_2include_2util_2_shape_inference_8h.html#af718e31f7d218d3b0e29303f79f9959c", null ],

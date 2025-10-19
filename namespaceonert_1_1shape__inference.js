@@ -13,6 +13,7 @@ var namespaceonert_1_1shape__inference =
     [ "inferBatchMatMulShape", "namespaceonert_1_1shape__inference.html#adc2d975b105929881bafff90fef477bf", null ],
     [ "inferBCQFullyConnectedShape", "namespaceonert_1_1shape__inference.html#aef3d1762a92b8fa3d998fa47224a1592", null ],
     [ "inferBCQGatherShape", "namespaceonert_1_1shape__inference.html#a3e9d03be97f56005997ab7324866cc25", null ],
+    [ "inferBCQUnembeddingShape", "namespaceonert_1_1shape__inference.html#a1d4826a811f48ac49c218cf38044e071", null ],
     [ "inferBroadcastToShape", "namespaceonert_1_1shape__inference.html#abdc0e09bb83c15c5bdffda420fd637f1", null ],
     [ "inferConcatShape", "namespaceonert_1_1shape__inference.html#a82ec85e7c31358cd319a0b1981202549", null ],
     [ "inferConv2DShape", "namespaceonert_1_1shape__inference.html#af718e31f7d218d3b0e29303f79f9959c", null ],

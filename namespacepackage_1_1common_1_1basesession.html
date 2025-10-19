@@ -105,8 +105,6 @@ Data Structures</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a6d0ca4234e76b834bffb1a3aa4bbd2fa" id="r_a6d0ca4234e76b834bffb1a3aa4bbd2fa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepackage_1_1common_1_1basesession.html#a6d0ca4234e76b834bffb1a3aa4bbd2fa">num_elems</a> (tensor_info)</td></tr>
 <tr class="separator:a6d0ca4234e76b834bffb1a3aa4bbd2fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9c0c8c88a9c77697dc456df6403f5ee" id="r_ab9c0c8c88a9c77697dc456df6403f5ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepackage_1_1common_1_1basesession.html#ab9c0c8c88a9c77697dc456df6403f5ee">tensorinfo</a> ()</td></tr>
-<tr class="separator:ab9c0c8c88a9c77697dc456df6403f5ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a6d0ca4234e76b834bffb1a3aa4bbd2fa" name="a6d0ca4234e76b834bffb1a3aa4bbd2fa"></a>
@@ -138,41 +136,6 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p class="reference">Referenced by <a class="el" href="basesession_8py_source.html#l00099">package.common.basesession.BaseSession.set_inputs()</a>.</p>
 
-</div>
-</div>
-<a id="ab9c0c8c88a9c77697dc456df6403f5ee" name="ab9c0c8c88a9c77697dc456df6403f5ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9c0c8c88a9c77697dc456df6403f5ee">&#9670;&#160;</a></span>tensorinfo()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">package.common.basesession.tensorinfo </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<pre class="fragment">Shortcut to create a fresh tensorinfo instance.
-Raises:
-    OnertError: If the C-API call fails.
-</pre> 
-<p class="definition">Definition at line <a class="el" href="basesession_8py_source.html#l00181">181</a> of file <a class="el" href="basesession_8py_source.html">basesession.py</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  181</span><span class="keyword">def </span>tensorinfo():</div>
-<div class="line"><span class="lineno">  182</span>    <span class="stringliteral">&quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  183</span><span class="stringliteral">    Shortcut to create a fresh tensorinfo instance.</span></div>
-<div class="line"><span class="lineno">  184</span><span class="stringliteral">    Raises:</span></div>
-<div class="line"><span class="lineno">  185</span><span class="stringliteral">        OnertError: If the C-API call fails.</span></div>
-<div class="line"><span class="lineno">  186</span><span class="stringliteral">    &quot;&quot;&quot;</span></div>
-<div class="line"><span class="lineno">  187</span> </div>
-<div class="line"><span class="lineno">  188</span>    <span class="keywordflow">try</span>:</div>
-<div class="line"><span class="lineno">  189</span>        <span class="keywordflow">return</span> infer.nnfw_tensorinfo()</div>
-<div class="line"><span class="lineno">  190</span>    <span class="keywordflow">except</span> OnertError:</div>
-<div class="line"><span class="lineno">  191</span>        <span class="keywordflow">raise</span></div>
-<div class="line"><span class="lineno">  192</span>    <span class="keywordflow">except</span> Exception <span class="keyword">as</span> e:</div>
-<div class="line"><span class="lineno">  193</span>        <span class="keywordflow">raise</span> OnertError(f<span class="stringliteral">&quot;Failed to create tensorinfo: {e}&quot;</span>) <span class="keyword">from</span> e</div>
-</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

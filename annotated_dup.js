@@ -3185,6 +3185,7 @@ var annotated_dup =
           [ "BatchToSpaceND", "classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d.html", "classonert_1_1ir_1_1operation_1_1_batch_to_space_n_d" ],
           [ "BCQFullyConnected", "classonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected.html", "classonert_1_1ir_1_1operation_1_1_b_c_q_fully_connected" ],
           [ "BCQGather", "classonert_1_1ir_1_1operation_1_1_b_c_q_gather.html", "classonert_1_1ir_1_1operation_1_1_b_c_q_gather" ],
+          [ "BCQUnembedding", "classonert_1_1ir_1_1operation_1_1_b_c_q_unembedding.html", "classonert_1_1ir_1_1operation_1_1_b_c_q_unembedding" ],
           [ "BinaryArithmetic", "classonert_1_1ir_1_1operation_1_1_binary_arithmetic.html", "classonert_1_1ir_1_1operation_1_1_binary_arithmetic" ],
           [ "BroadcastTo", "classonert_1_1ir_1_1operation_1_1_broadcast_to.html", "classonert_1_1ir_1_1operation_1_1_broadcast_to" ],
           [ "Bulk", "classonert_1_1ir_1_1operation_1_1_bulk.html", "classonert_1_1ir_1_1operation_1_1_bulk" ],

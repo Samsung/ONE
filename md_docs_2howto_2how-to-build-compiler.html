@@ -92,7 +92,7 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-build-compiler.
   <div class="headertitle"><div class="title">How to Build Compiler</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This document is based on the system where Ubuntu Desktop Linux 20.04 LTS is installed with default settings, and can be applied in other environments without much difference. For example, Ubuntu Desktop Linux 18.04 LTS environment is also supported but some additional steps may be required.</p>
+<div class="textblock"><p>This document is based on the system where Ubuntu Desktop Linux 22.04 LTS is installed with default settings, and can be applied in other environments without much difference.</p>
 <h1>Build Requires</h1>
 <p>If you are going to build this project, the following modules must be installed on your system:</p>
 <ul>
@@ -125,23 +125,17 @@ $(document).ready(function(){initNavTree('md_docs_2howto_2how-to-build-compiler.
 <div class="line">curl</div>
 <div class="line">$ pip install numpy flatbuffers</div>
 </div><!-- fragment --><p>Supported platforms:</p><ul>
-<li>Ubuntu 20.04</li>
 <li>Ubuntu 22.04</li>
 <li>Ubuntu 24.04 (experimental)</li>
 </ul>
 <p>Supported Python versions:</p><ul>
-<li>Python 3.10 for Ubuntu 20.04 and 22.04</li>
+<li>Python 3.10 for Ubuntu 22.04</li>
 <li>Python 3.12 for Ubuntu 24.04</li>
 </ul>
-<p>Note: Python 3.10 needs to be installed manually on Ubuntu 20.04. </p><div class="fragment"><div class="line">sudo apt-get install software-properties-common</div>
-<div class="line">sudo -E add-apt-repository ppa:deadsnakes/ppa -y</div>
-<div class="line">sudo apt-get -y install python3.10 python3.10-venv python3.10-dev</div>
-<div class="line">python3.10 -m ensurepip</div>
-</div><!-- fragment --><p>Additional install libtsan_preinit.o manually if you are using Ubuntu 20.04 and gcc-9 (refer <a href="https://github.com/Samsung/ONE/issues/11202">https://github.com/Samsung/ONE/issues/11202</a>) </p><div class="fragment"><div class="line">$ apt-get download libgcc-10-dev</div>
-<div class="line">$ dpkg -x libgcc-10-dev_*_amd64.deb libgcc/</div>
-<div class="line">$ sudo cp -f libgcc/usr/lib/gcc/x86_64-linux-gnu/10/libtsan_preinit.o /usr/lib/gcc/x86_64-linux-gnu/9/</div>
-<div class="line">$ rm -rf libgcc-10-dev_*_amd64.deb libgcc/</div>
-</div><!-- fragment --><h1>Build for Ubuntu</h1>
+<blockquote class="doxtable">
+<p>&zwj;[!NOTE] Ubuntu 20.04 support is unavailable as ppa:deadsnake has ended providing Python3.10 as Ubuntu 20.04 is now end-of-life. We are seeking alternate solution for this issue and when available, this document will be updated with the information. </p>
+</blockquote>
+<h1>Build for Ubuntu</h1>
 <p>In a typical linux development environment, including Ubuntu, you can build the compiler with a simple command like this:</p>
 <div class="fragment"><div class="line">$ git clone https://github.com/Samsung/ONE.git one</div>
 <div class="line">$ cd one</div>

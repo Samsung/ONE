@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1cpu_1_1ops_1_
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="_l2_norm_layer_8h_source.html">L2NormLayer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_l2_normalization_layer_8h_source.html">L2NormalizationLayer.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for onert::backend::cpu::ops::L2NormLayer:</div>
 <div class="dyncontent">
@@ -123,7 +123,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_l2_norm_layer_8h_source.html#l00026">26</a> of file <a class="el" href="_l2_norm_layer_8h_source.html">L2NormLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_l2_normalization_layer_8h_source.html#l00026">26</a> of file <a class="el" href="_l2_normalization_layer_8h_source.html">L2NormalizationLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5138b9282c72247764f384a567f5be0d" name="a5138b9282c72247764f384a567f5be0d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5138b9282c72247764f384a567f5be0d">&#9670;&#160;</a></span>L2NormLayer()</h2>
@@ -148,7 +148,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_l2_norm_layer_8h_source.html#l00029">29</a> of file <a class="el" href="_l2_norm_layer_8h_source.html">L2NormLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_l2_normalization_layer_8h_source.html#l00029">29</a> of file <a class="el" href="_l2_normalization_layer_8h_source.html">L2NormalizationLayer.h</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   29</span>                : _input(<span class="keyword">nullptr</span>), _output(<span class="keyword">nullptr</span>)</div>
 <div class="line"><span class="lineno">   30</span>  {</div>
 <div class="line"><span class="lineno">   31</span>    <span class="comment">// Nothing</span></div>
@@ -183,7 +183,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_l2_norm_layer_8cc_source.html#l00027">27</a> of file <a class="el" href="_l2_norm_layer_8cc_source.html">L2NormLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_l2_normalization_layer_8cc_source.html#l00027">27</a> of file <a class="el" href="_l2_normalization_layer_8cc_source.html">L2NormalizationLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   28</span>{</div>
 <div class="line"><span class="lineno">   29</span>  assert(input != <span class="keyword">nullptr</span>);</div>
 <div class="line"><span class="lineno">   30</span>  assert(output != <span class="keyword">nullptr</span>);</div>
@@ -221,7 +221,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1_i_function.html#aedd6f5e12852d808abb97327b9d229e2">onert::exec::IFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_l2_norm_layer_8cc_source.html#l00036">36</a> of file <a class="el" href="_l2_norm_layer_8cc_source.html">L2NormLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_l2_normalization_layer_8cc_source.html#l00036">36</a> of file <a class="el" href="_l2_normalization_layer_8cc_source.html">L2NormalizationLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   37</span>{</div>
 <div class="line"><span class="lineno">   38</span>  <span class="keywordflow">switch</span> (_input-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>())</div>
 <div class="line"><span class="lineno">   39</span>  {</div>
@@ -257,8 +257,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/backend/cpu/ops/<a class="el" href="_l2_norm_layer_8h_source.html">L2NormLayer.h</a></li>
-<li>runtime/onert/backend/cpu/ops/<a class="el" href="_l2_norm_layer_8cc_source.html">L2NormLayer.cc</a></li>
+<li>runtime/onert/backend/cpu/ops/<a class="el" href="_l2_normalization_layer_8h_source.html">L2NormalizationLayer.h</a></li>
+<li>runtime/onert/backend/cpu/ops/<a class="el" href="_l2_normalization_layer_8cc_source.html">L2NormalizationLayer.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

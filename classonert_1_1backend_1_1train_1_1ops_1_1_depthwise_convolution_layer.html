@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('classonert_1_1backend_1_1train_1_1ops_
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="train_2ops_2_depthwise_convolution_layer_8h_source.html">DepthwiseConvolutionLayer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_depthwise_convolution_layer_8h_source.html">DepthwiseConvolutionLayer.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for onert::backend::train::ops::DepthwiseConvolutionLayer:</div>
 <div class="dyncontent">
@@ -189,7 +189,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_depthwise_convolution_layer_8h_source.html#l00030">30</a> of file <a class="el" href="train_2ops_2_depthwise_convolution_layer_8h_source.html">DepthwiseConvolutionLayer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_depthwise_convolution_layer_8h_source.html#l00030">30</a> of file <a class="el" href="_depthwise_convolution_layer_8h_source.html">DepthwiseConvolutionLayer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ada3734f6ee99e028837a718a11f1efd8" name="ada3734f6ee99e028837a718a11f1efd8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ada3734f6ee99e028837a718a11f1efd8">&#9670;&#160;</a></span>DepthwiseConvolutionLayer()</h2>
@@ -206,7 +206,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_depthwise_convolution_layer_8cc_source.html#l00028">28</a> of file <a class="el" href="train_2ops_2_depthwise_convolution_layer_8cc_source.html">DepthwiseConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_depthwise_convolution_layer_8cc_source.html#l00028">28</a> of file <a class="el" href="_depthwise_convolution_layer_8cc_source.html">DepthwiseConvolutionLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   29</span>  : cpu::ops::DepthwiseConvolutionLayer(), _grad_weights{<span class="keyword">nullptr</span>}, _grad_bias{<span class="keyword">nullptr</span>},</div>
 <div class="line"><span class="lineno">   30</span>    _back_prop_input{<span class="keyword">nullptr</span>}, _back_prop_output{<span class="keyword">nullptr</span>}, _act_back_prop_output{<span class="keyword">nullptr</span>},</div>
 <div class="line"><span class="lineno">   31</span>    _use_padded_filter{<span class="keyword">false</span>}, _padded_filter{<span class="keyword">nullptr</span>}, _filter_buffers{<span class="keyword">nullptr</span>},</div>
@@ -243,7 +243,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#ac2d337b03208fe6ecc83d6278e74ad24">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_depthwise_convolution_layer_8cc_source.html#l00111">111</a> of file <a class="el" href="train_2ops_2_depthwise_convolution_layer_8cc_source.html">DepthwiseConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_depthwise_convolution_layer_8cc_source.html#l00111">111</a> of file <a class="el" href="_depthwise_convolution_layer_8cc_source.html">DepthwiseConvolutionLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  112</span>{</div>
 <div class="line"><span class="lineno">  113</span>  <span class="keyword">const</span> <span class="keyword">auto</span> data_type = _back_prop_output-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>();</div>
 <div class="line"><span class="lineno">  114</span>  assert(data_type == <a class="code hl_variable" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a30a149604bc335bbae48b8fe053f8579">_input</a>-&gt;<a class="code hl_function" href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">data_type</a>());</div>
@@ -260,9 +260,9 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  125</span>  }</div>
 <div class="line"><span class="lineno">  126</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_aae73f75c41fa15f5ae2c391918fa09c5"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#aae73f75c41fa15f5ae2c391918fa09c5">onert::backend::IPortableTensor::data_type</a></div><div class="ttdeci">ir::DataType data_type() const override final</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00054">IPortableTensor.h:54</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer_html_a30a149604bc335bbae48b8fe053f8579"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a30a149604bc335bbae48b8fe053f8579">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_depthwise_convolution_layer_8h_source.html#l00060">DepthwiseConvolutionLayer.h:60</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer_html_a30a149604bc335bbae48b8fe053f8579"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a30a149604bc335bbae48b8fe053f8579">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_input</a></div><div class="ttdeci">const IPortableTensor * _input</div><div class="ttdef"><b>Definition</b> <a href="_depthwise_conv2_d_layer_8h_source.html#l00060">DepthwiseConv2DLayer.h:60</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8h_source.html#l00060">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_input</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
+<p class="reference">References <a class="el" href="_depthwise_conv2_d_layer_8h_source.html#l00060">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_input</a>, and <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>.</p>
 
 </div>
 </div>
@@ -310,7 +310,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_depthwise_convolution_layer_8cc_source.html#l00037">37</a> of file <a class="el" href="train_2ops_2_depthwise_convolution_layer_8cc_source.html">DepthwiseConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_depthwise_convolution_layer_8cc_source.html#l00037">37</a> of file <a class="el" href="_depthwise_convolution_layer_8cc_source.html">DepthwiseConvolutionLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   42</span>{</div>
 <div class="line"><span class="lineno">   43</span>  _back_prop_input = back_prop_input;</div>
 <div class="line"><span class="lineno">   44</span>  _back_prop_output = back_prop_output;</div>
@@ -378,14 +378,14 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  106</span>  _filter_buffers-&gt;setBuffer(std::make_shared&lt;basic::Allocator&gt;(_filter_buffers-&gt;total_size()));</div>
 <div class="line"><span class="lineno">  107</span>}</div>
 <div class="ttc" id="aclassonert_1_1backend_1_1_i_portable_tensor_html_a5aa2cfeb527066e9bee0316f67f67b1d"><div class="ttname"><a href="classonert_1_1backend_1_1_i_portable_tensor.html#a5aa2cfeb527066e9bee0316f67f67b1d">onert::backend::IPortableTensor::get_info</a></div><div class="ttdeci">const ir::OperandInfo &amp; get_info() const</div><div class="ttdef"><b>Definition</b> <a href="_i_portable_tensor_8h_source.html#l00048">IPortableTensor.h:48</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer_html_a110ee63767218d761691ef8326e33e8b"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a110ee63767218d761691ef8326e33e8b">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_dilationHeight</a></div><div class="ttdeci">uint32_t _dilationHeight</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_depthwise_convolution_layer_8h_source.html#l00076">DepthwiseConvolutionLayer.h:76</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer_html_a8222552687bea72ea7228551fd2d1c82"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a8222552687bea72ea7228551fd2d1c82">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_kernel</a></div><div class="ttdeci">const IPortableTensor * _kernel</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_depthwise_convolution_layer_8h_source.html#l00061">DepthwiseConvolutionLayer.h:61</a></div></div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer_html_a96e18a6dde0d969e37ed1f2eab8a42c3"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a96e18a6dde0d969e37ed1f2eab8a42c3">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_dilationWidth</a></div><div class="ttdeci">uint32_t _dilationWidth</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_depthwise_convolution_layer_8h_source.html#l00075">DepthwiseConvolutionLayer.h:75</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer_html_a110ee63767218d761691ef8326e33e8b"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a110ee63767218d761691ef8326e33e8b">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_dilationHeight</a></div><div class="ttdeci">uint32_t _dilationHeight</div><div class="ttdef"><b>Definition</b> <a href="_depthwise_conv2_d_layer_8h_source.html#l00076">DepthwiseConv2DLayer.h:76</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer_html_a8222552687bea72ea7228551fd2d1c82"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a8222552687bea72ea7228551fd2d1c82">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_kernel</a></div><div class="ttdeci">const IPortableTensor * _kernel</div><div class="ttdef"><b>Definition</b> <a href="_depthwise_conv2_d_layer_8h_source.html#l00061">DepthwiseConv2DLayer.h:61</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer_html_a96e18a6dde0d969e37ed1f2eab8a42c3"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#a96e18a6dde0d969e37ed1f2eab8a42c3">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_dilationWidth</a></div><div class="ttdeci">uint32_t _dilationWidth</div><div class="ttdef"><b>Definition</b> <a href="_depthwise_conv2_d_layer_8h_source.html#l00075">DepthwiseConv2DLayer.h:75</a></div></div>
 <div class="ttc" id="anamespacennfw_1_1cker_1_1eigen__support_html_a0c7e4debfde16ff74547b11134db9d35"><div class="ttname"><a href="namespacennfw_1_1cker_1_1eigen__support.html#a0c7e4debfde16ff74547b11134db9d35">nnfw::cker::eigen_support::getThreadCount</a></div><div class="ttdeci">int getThreadCount()</div><div class="ttdef"><b>Definition</b> <a href="_eigen_support_8h_source.html#l00122">EigenSupport.h:122</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1backend_1_1train_1_1ops_html_a9a41239d90a397bd0f075ddedfa72322"><div class="ttname"><a href="namespaceonert_1_1backend_1_1train_1_1ops.html#a9a41239d90a397bd0f075ddedfa72322">onert::backend::train::ops::getShape</a></div><div class="ttdeci">nnfw::cker::Shape getShape(const IPortableTensor *tensor)</div><div class="ttdoc">Get shape of tensor.</div><div class="ttdef"><b>Definition</b> <a href="train_2ops_2_operation_utils_8cc_source.html#l00026">OperationUtils.cc:26</a></div></div>
 <div class="ttc" id="anamespaceonert_1_1ir_html_a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::Activation::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8h_source.html#l00076">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_dilationHeight</a>, <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8h_source.html#l00075">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_dilationWidth</a>, <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8h_source.html#l00061">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_kernel</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00048">onert::backend::IPortableTensor::get_info()</a>, <a class="el" href="train_2ops_2_operation_utils_8cc_source.html#l00026">onert::backend::train::ops::getShape()</a>, <a class="el" href="_eigen_support_8h_source.html#l00122">nnfw::cker::eigen_support::getThreadCount()</a>, and <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>.</p>
+<p class="reference">References <a class="el" href="_depthwise_conv2_d_layer_8h_source.html#l00076">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_dilationHeight</a>, <a class="el" href="_depthwise_conv2_d_layer_8h_source.html#l00075">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_dilationWidth</a>, <a class="el" href="_depthwise_conv2_d_layer_8h_source.html#l00061">onert::backend::cpu::ops::DepthwiseConvolutionLayer::_kernel</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00054">onert::backend::IPortableTensor::data_type()</a>, <a class="el" href="_i_portable_tensor_8h_source.html#l00048">onert::backend::IPortableTensor::get_info()</a>, <a class="el" href="train_2ops_2_operation_utils_8cc_source.html#l00026">onert::backend::train::ops::getShape()</a>, <a class="el" href="_eigen_support_8h_source.html#l00122">nnfw::cker::eigen_support::getThreadCount()</a>, and <a class="el" href="namespaceonert_1_1ir.html#a8ce6c92ea138aca1332e4be9531bd5d4ab50339a10e1de285ac99d4c3990b8693">onert::ir::NONE</a>.</p>
 
 </div>
 </div>
@@ -415,17 +415,17 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classonert_1_1exec_1_1train_1_1_i_trainable_function.html#a1902f86c136b2f95027a29ba9909d94d">onert::exec::train::ITrainableFunction</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="train_2ops_2_depthwise_convolution_layer_8cc_source.html#l00109">109</a> of file <a class="el" href="train_2ops_2_depthwise_convolution_layer_8cc_source.html">DepthwiseConvolutionLayer.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_depthwise_convolution_layer_8cc_source.html#l00109">109</a> of file <a class="el" href="_depthwise_convolution_layer_8cc_source.html">DepthwiseConvolutionLayer.cc</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  109</span>{ <a class="code hl_function" href="classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#abc8a0d3a4dc04ecbaac4f917d94332ae">cpu::ops::DepthwiseConvolutionLayer::run</a>(); }</div>
-<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer_html_abc8a0d3a4dc04ecbaac4f917d94332ae"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#abc8a0d3a4dc04ecbaac4f917d94332ae">onert::backend::cpu::ops::DepthwiseConvolutionLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00296">DepthwiseConvolutionLayer.cc:296</a></div></div>
+<div class="ttc" id="aclassonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer_html_abc8a0d3a4dc04ecbaac4f917d94332ae"><div class="ttname"><a href="classonert_1_1backend_1_1cpu_1_1ops_1_1_depthwise_convolution_layer.html#abc8a0d3a4dc04ecbaac4f917d94332ae">onert::backend::cpu::ops::DepthwiseConvolutionLayer::run</a></div><div class="ttdeci">void run() override</div><div class="ttdef"><b>Definition</b> <a href="_depthwise_conv2_d_layer_8cc_source.html#l00296">DepthwiseConv2DLayer.cc:296</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="cpu_2ops_2_depthwise_convolution_layer_8cc_source.html#l00296">onert::backend::cpu::ops::DepthwiseConvolutionLayer::run()</a>.</p>
+<p class="reference">References <a class="el" href="_depthwise_conv2_d_layer_8cc_source.html#l00296">onert::backend::cpu::ops::DepthwiseConvolutionLayer::run()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>runtime/onert/backend/train/ops/<a class="el" href="train_2ops_2_depthwise_convolution_layer_8h_source.html">DepthwiseConvolutionLayer.h</a></li>
-<li>runtime/onert/backend/train/ops/<a class="el" href="train_2ops_2_depthwise_convolution_layer_8cc_source.html">DepthwiseConvolutionLayer.cc</a></li>
+<li>runtime/onert/backend/train/ops/<a class="el" href="_depthwise_convolution_layer_8h_source.html">DepthwiseConvolutionLayer.h</a></li>
+<li>runtime/onert/backend/train/ops/<a class="el" href="_depthwise_convolution_layer_8cc_source.html">DepthwiseConvolutionLayer.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
