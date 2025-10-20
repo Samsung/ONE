@@ -39,6 +39,11 @@ public:
     _gen_map[index] = backend;
   }
 
+  bool hasBackend(const ir::OperationIndex &index) const
+  {
+    return _gen_map.find(index) != _gen_map.end();
+  }
+
   void
   iterate(const std::function<void(const ir::OperationIndex &, const backend::Backend &)> &fn) const
   {
