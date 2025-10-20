@@ -36,7 +36,7 @@
 // Version 0.9: GGML_Q{X}_{Y} types are added. Weight compression option is added.
 //              ROPE op is added. MXFP4, MXINT8 types are added.
 //              MXQuantization is added.
-// Version 0.10: RUN_MODEL op is added.
+// Version 0.10: Base up to TensorFlow Lite v2.20.0 schema. RUN_MODEL op is added.
 
 namespace circle;
 
@@ -71,6 +71,7 @@ enum TensorType : byte {
   UINT32 = 15,
   UINT16 = 16,
   INT4 = 17,
+  BFLOAT16 = 18,
 
   // Belows are using negative value to represent not existing TensorType on TensorFlow Lite schema
 
@@ -105,6 +106,19 @@ table MXQuantization {
 union QuantizationDetails {
   CustomQuantization,
   MXQuantization,
+  BlockwiseQuantization,
+}
+
+// Parameters for blockwise quantization.
+table BlockwiseQuantization {
+  // index to the scale tensor, the tensor can be found in tensors array in
+  // subgraph.
+  scales: int;
+  // index to the zero point tensor. If zero_points is -1, the zero point is
+  // assumed to be 0, following the convention of optional tensors in tflite.
+  zero_points: int;
+  // The block size of the tensor.
+  block_size: int;
 }
 
 // Parameters for converting a quantized tensor back to float.
@@ -523,7 +537,11 @@ enum BuiltinOperator : int32 {
   STABLEHLO_TRANSPOSE = 202, // WARNING: No runtime support
   DILATE = 203,
   STABLEHLO_RNG_BIT_GENERATOR = 204,
-  REDUCE_WINDOW = 205,
+  REDUCE_WINDOW = 205 (deprecated),
+  STABLEHLO_COMPOSITE = 206, // WARNING: No runtime support
+  STABLEHLO_SHIFT_LEFT = 207,
+  STABLEHLO_CBRT = 208, // WARNING: No runtime support
+  STABLEHLO_CASE = 209,
 }
 // LINT.ThenChange(nnapi_linter/linter.proto)
 
@@ -684,7 +702,10 @@ union BuiltinOptions2{
   StablehloTransposeOptions,
   DilateOptions,
   StablehloRngBitGeneratorOptions,
-  ReduceWindowOptions,
+  ReduceWindowOptions (deprecated),
+  StableHLOCompositeOptions,
+  StablehloShiftLeftOptions,
+  StablehloCaseOptions,
 }
 
 table StablehloGatherOptions{
@@ -827,6 +848,10 @@ table StablehloScatterOptions {
   index_vector_dim: long;
   unique_indices: bool;
   update_computation_subgraph_index: int;
+}
+
+table StablehloCaseOptions{
+  branch_subgraph_indices : [int];
 }
 
 enum RngAlgorithm : byte {
@@ -1517,7 +1542,7 @@ enum ReduceWindowFunction : int {
   ANY,
 }
 
-table ReduceWindowOptions{
+table ReduceWindowOptions (deprecated) {
   reduce_function: ReduceWindowFunction;
 }
 
@@ -1596,6 +1621,17 @@ enum DataFormat : byte {
   CHANNELS_FIRST = 1,
 }
 
+table StableHLOCompositeOptions {
+  name:string;
+  decomposition_subgraph_index:int32;
+  composite_attributes:[ubyte];
+  composite_attributes_format:CustomOptionsFormat;
+  version:int32;
+}
+
+table StablehloShiftLeftOptions {
+}
+
 // An operator takes tensors as inputs and outputs. The type of operation being
 // performed is determined by an index into the list of valid OperatorCodes,
 // while the specifics of each operations is configured using builtin_options
@@ -1643,6 +1679,9 @@ table Operator {
   // union is added, in the case of where BuitlinOptions2 runs out, a third
   // one can be added
   builtin_options_2 : BuiltinOptions2;
+
+  // Index into operators_debug_metadata list.
+  debug_metadata_index: int = -1;
 }
 
 // The root type, defining a subgraph, which typically represents an entire
@@ -1668,6 +1707,9 @@ table SubGraph {
 
   // Data format for input/output of SubGraph, deprecated
   deprecated_data_format: DataFormat (deprecated);
+
+  // Index into subgraphs_debug_metadata list.
+  debug_metadata_index: int = -1;
 }
 
 // Table of raw data buffers (used for constant tensors). Referenced by tensors
