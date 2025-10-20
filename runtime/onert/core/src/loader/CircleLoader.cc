@@ -404,7 +404,13 @@ void CircleLoader::loadCustom(const Operator *op, ir::Graph &subg)
     {"BCQUnembedding", BuiltinOP::BCQUnembedding},
   };
 
-  // Throw out_of_range if it is unknown custom op
+  // If unknown circle custom op, pass to BaseLoader
+  if (builtin_map.find(custom_op_name) == builtin_map.end())
+  {
+    BaseLoader::loadOperation(op, subg);
+    return;
+  }
+
   auto custom_op_id = builtin_map.at(custom_op_name);
   switch (custom_op_id)
   {
@@ -412,8 +418,8 @@ void CircleLoader::loadCustom(const Operator *op, ir::Graph &subg)
       loadBCQUnembedding(op, subg);
       break;
     default:
-      BaseLoader::loadOperation(op, subg);
-      return;
+      throw std::runtime_error{"CircleLoader: Circle Custom OP map is defined but operation loader "
+                               "function is not defined"};
   }
 
   return;
