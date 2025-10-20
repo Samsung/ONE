@@ -22,6 +22,7 @@
 #include "ir/Graph.h"
 #include "backend/IConfig.h"
 #include "backend/BackendContext.h"
+#include "backend/ValidatorBase.h"
 
 namespace onert::backend
 {
@@ -30,29 +31,6 @@ namespace custom
 {
 class IKernelBuilder;
 }
-
-class ValidatorBase : public ir::OperationVisitor
-{
-public:
-  virtual ~ValidatorBase() = default;
-  ValidatorBase() = delete;
-  ValidatorBase(const ir::Graph &graph) : _graph(graph), _supported(false) {}
-
-public:
-  bool supported() const { return _supported; }
-
-protected:
-  using OperationVisitor::visit;
-
-#define OP(InternalName) \
-  void visit(const ir::operation::InternalName &) override { _supported = false; }
-#include "ir/Operations.lst"
-#undef OP
-
-protected:
-  const ir::Graph &_graph;
-  bool _supported;
-};
 
 class Backend
 {

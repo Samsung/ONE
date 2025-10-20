@@ -120,9 +120,7 @@ std::unique_ptr<BackendResolver> ManualScheduler::schedule(const ir::Graph &grap
           break;
         }
 
-        auto &validator = *validators.at(backend).get();
-        op.accept(validator);
-        if (validator.supported())
+        if (validators[backend]->supported(op))
         {
           backend_resolver->setBackend(index, backend);
           break;
