@@ -75,6 +75,7 @@ protected:
   void loadRoPE(const Operator *op, ir::Graph &subg);
   void loadCall(const Operator *op, ir::Graph &subg);
   void loadRunModel(const Operator *op, ir::Graph &subg);
+  void loadBCQUnembedding(const Operator *op, ir::Graph &subg);
   void loadCustom(const Operator *op, ir::Graph &subg);
 
 public:
@@ -86,6 +87,7 @@ public:
     {
       case BuiltinOperator::BuiltinOperator_FULLY_CONNECTED:
       case BuiltinOperator::BuiltinOperator_BCQ_FULLY_CONNECTED:
+      case BuiltinOperator::BuiltinOperator_CUSTOM:
       case BuiltinOperator::BuiltinOperator_UNIDIRECTIONAL_SEQUENCE_LSTM:
         return true;
       default:
@@ -181,6 +183,9 @@ private:
         return;
       case circle::BuiltinOperator::BuiltinOperator_RUN_MODEL:
         loadRunModel(op, subg);
+        return;
+      case circle::BuiltinOperator::BuiltinOperator_CUSTOM:
+        loadCustom(op, subg);
         return;
       default:
         BaseLoader::loadOperation(op, subg);
@@ -348,6 +353,76 @@ void CircleLoader::loadRunModel(const Operator *op, ir::Graph &subg)
 
   std::unique_ptr<ir::Operation> new_op(new ir::operation::Bulk(inputs, outputs, bulk_op->param()));
   subg.addOperation(std::move(new_op));
+}
+
+void CircleLoader::loadBCQUnembedding(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  ir::operation::BCQUnembedding::Param param;
+  if (op->custom_options() == nullptr)
+  {
+    throw std::runtime_error{"BCQUnembedding: empty option"};
+  }
+  else
+  {
+    const auto attr_map = getCustomOpAttrMap(op);
+    param.weights_hidden_size = attr_map["weights_hidden_size"].AsUInt32();
+    param.lsh_type = attr_map["lsh_type"].AsString().str();
+    param.lsh_choices = attr_map["lsh_choices"].AsInt32();
+  }
+
+  const auto fbn = loadOperationTo<ir::operation::BCQUnembedding>(op, subg, param);
+
+  if (fbn->getInputs().size() != 5)
+  {
+    throw std::runtime_error{"BCQUnembedding: NYI input - only support five inputs"};
+  }
+}
+
+void CircleLoader::loadCustom(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  assert(op->custom_options_format() == CustomOptionsFormat::CustomOptionsFormat_FLEXBUFFERS &&
+         "Unsupported custom operation options format");
+
+  auto *op_code = _domain_model->operator_codes()->Get(op->opcode_index());
+  auto custom_op_name = op_code->custom_code()->str();
+
+  enum class BuiltinOP
+  {
+    BCQUnembedding,
+  };
+
+  // Mapping from custom op name string to BuiltinOP enum
+  std::map<std::string, BuiltinOP> builtin_map = {
+    {"BCQUnembedding", BuiltinOP::BCQUnembedding},
+  };
+
+  // If unknown circle custom op, pass to BaseLoader
+  if (builtin_map.find(custom_op_name) == builtin_map.end())
+  {
+    BaseLoader::loadOperation(op, subg);
+    return;
+  }
+
+  auto custom_op_id = builtin_map.at(custom_op_name);
+  switch (custom_op_id)
+  {
+    case BuiltinOP::BCQUnembedding:
+      loadBCQUnembedding(op, subg);
+      break;
+    default:
+      throw std::runtime_error{"CircleLoader: Circle Custom OP map is defined but operation loader "
+                               "function is not defined"};
+  }
+
+  return;
 }
 
 } // namespace
