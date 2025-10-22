@@ -13,6 +13,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/options/options_${TARGET_PLATFORM}.cmake" OPT
 option(ENABLE_STRICT_BUILD "Treat warning as error" ON)
 option(ENABLE_COVERAGE "Build for coverage test" OFF)
 option(ASAN_BUILD "Address Sanitizer build" OFF)
+option(ENABLE_CCACHE "Enable ccache for faster compilation" ON)
 
 #
 # Default build configuration for runtime
