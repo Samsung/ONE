@@ -39,6 +39,8 @@ import onelib.utils as oneutils
 # TODO Find better way to suppress trackback on error
 sys.tracebacklimit = 0
 
+_verbose = False
+
 
 def get_driver_cfg_section():
     return "one-import-onnx"
@@ -139,8 +141,12 @@ def _apply_verbosity(verbosity):
     #   1 : WARNING + ERROR + FATAL
     #   2 : ERROR + FATAL
     #   3 : FATAL
+    global _verbose
     if verbosity:
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'
+        # set to default value 1000
+        sys.tracebacklimit = 1000
+        _verbose = True
     else:
         os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
@@ -184,6 +190,7 @@ def _check_onnx2circle():
 
 
 def _convert(args):
+    global _verbose
     _apply_verbosity(args.verbose)
 
     # get file path to log
@@ -192,6 +199,8 @@ def _convert(args):
 
     # get default converter
     onnx2circle_path = _check_onnx2circle()
+    if _verbose:
+        print("import-onnx: onnx2circle_path", onnx2circle_path, flush=True)
 
     # get import onnx extension path
     ext_path = _check_ext()
@@ -204,6 +213,8 @@ def _convert(args):
         # save intermediate
         if oneutils.is_valid_attr(args, 'save_intermediate'):
             tmpdir = os.path.dirname(logfile_path)
+        if _verbose:
+            print("import-onnx: intermediate at", tmpdir, flush=True)
 
         onnx_model = onnx.load(onnx_to_convert_path)
         if _onnx_legalizer_enabled:
@@ -213,6 +224,8 @@ def _convert(args):
             if options.unroll_rnn or options.unroll_lstm:
                 onnx_legalizer.legalize(onnx_model, options)
                 model_updated = True
+            if _verbose:
+                print("import-onnx: legalize done", flush=True)
 
         run_default_import = True
         if ext_path:
@@ -223,6 +236,9 @@ def _convert(args):
             fixed_path = os.path.join(tmpdir, os.path.splitext(basename)[0] + '~.onnx')
             onnx.save(onnx_model, fixed_path)
             onnx_to_convert_path = fixed_path
+
+        if _verbose:
+            print("import-onnx: import", onnx_to_convert_path, flush=True)
 
         res_conv = -1
         if run_default_import:
@@ -239,9 +255,14 @@ def _convert(args):
                     o2c_cmd.append('--dynamic_batch_to_single_batch')
                 o2c_cmd.append(onnx_to_convert_path)
                 o2c_cmd.append(getattr(args, 'output_path'))
+                if _verbose:
+                    print("import-onnx: cmd ", o2c_cmd, flush=True)
                 res_conv = oneutils.run_ret(o2c_cmd, logfile=f)
             except:
                 res_conv = -1
+
+            if _verbose:
+                print("import-onnx: default called", flush=True)
 
         # if default conversion fails, try with one-import-onnx-ext if available
         if ext_path and not _disable_ext(args):
@@ -266,7 +287,12 @@ def _convert(args):
                     ext_cmd.append('--keep_io_order')
                 ext_cmd.append(onnx_to_convert_path)
                 ext_cmd.append(getattr(args, 'output_path'))
+                if _verbose:
+                    print("import-onnx: ext cmd", ext_cmd, flush=True)
                 res_conv = oneutils.run_ret(ext_cmd, logfile=f)
+
+        if _verbose:
+            print("import-onnx: done", flush=True)
 
         sys.exit(res_conv)
 
