@@ -77,6 +77,7 @@ protected:
   void loadRunModel(const Operator *op, ir::Graph &subg);
   void loadBCQUnembedding(const Operator *op, ir::Graph &subg);
   void loadCustom(const Operator *op, ir::Graph &subg);
+  void loadAttention(const Operator *op, ir::Graph &subg);
 
 public:
   using BaseLoader::BaseLoader;
@@ -186,6 +187,9 @@ private:
         return;
       case circle::BuiltinOperator::BuiltinOperator_CUSTOM:
         loadCustom(op, subg);
+        return;
+      case circle::BuiltinOperator::BuiltinOperator_ATTENTION:
+        loadAttention(op, subg);
         return;
       default:
         BaseLoader::loadOperation(op, subg);
@@ -423,6 +427,17 @@ void CircleLoader::loadCustom(const Operator *op, ir::Graph &subg)
   }
 
   return;
+}
+
+void CircleLoader::loadAttention(const Operator *op, ir::Graph &subg)
+{
+  ir::OperandIndexSequence inputs;
+  ir::OperandIndexSequence outputs;
+
+  loadOperationIO(op, inputs, outputs);
+
+  std::unique_ptr<ir::Operation> new_op(new ir::operation::Attention(inputs, outputs, {}));
+  subg.addOperation(std::move(new_op));
 }
 
 } // namespace

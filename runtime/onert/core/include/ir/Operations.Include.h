@@ -18,6 +18,7 @@
 
 #include "ir/operation/AddN.h"
 #include "ir/operation/ArgMinMax.h"
+#include "ir/operation/Attention.h"
 #include "ir/operation/BatchMatMul.h"
 #include "ir/operation/BatchToSpaceND.h"
 #include "ir/operation/BCQFullyConnected.h"
