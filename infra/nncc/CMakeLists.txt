@@ -90,6 +90,13 @@ nnas_include(IdentifyPlatform)
 # Configuration flags
 include("cmake/CfgOptionFlags.cmake")
 
+# CCache support
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM AND ENABLE_CCACHE)
+  set(CMAKE_C_COMPILER_LAUNCHER ${CCACHE_PROGRAM})
+  set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE_PROGRAM})
+endif(CCACHE_PROGRAM AND ENABLE_CCACHE)
+
 nnas_find_package(GTest QUIET)
 
 option(ENABLE_TEST "Build Tests using Google Test" ${GTest_FOUND})
