@@ -8,7 +8,7 @@
 # test.config : set ${RECORD_MINMAX_PATH}
 # work_dir : build directory of record-minmax-thread-safety-test (ex: build/compiler/record-minmax-thread-safety-test)
 
-GEN_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+GEN_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 GEN_SCRIPT_PATH="${GEN_SOURCE_PATH}/gen_h5_random_inputs.py"
 CONFIG_PATH="$1"; shift
 BIN_PATH=$(dirname "$CONFIG_PATH")

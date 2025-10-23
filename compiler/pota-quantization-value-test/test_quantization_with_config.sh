@@ -8,7 +8,7 @@
 # test.config : set ${RECORD_MINMAX_PATH} and ${CIRCLE_QUANTIZER_PATH}
 # work_dir : build directory of quantization-value-test (ex: build/compiler/quantization-value-test)
 
-SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 COMPARE_SCRIPT_PATH="${SOURCE_PATH}/compare_tensors_all.py"
 CONFIG_PATH="$1"; shift
 BIN_PATH=$(dirname "${CONFIG_PATH}")
@@ -44,7 +44,7 @@ if [[ $? -ne 0 ]]; then
 fi
 
 pushd "${WORKDIR}"
-while [ "$1" != "" ]; do  
+while [ "$1" != "" ]; do
   MODELNAME=$1; shift
   GRANULARITY=$1; shift
   DTYPE=$1; shift
@@ -68,14 +68,14 @@ while [ "$1" != "" ]; do
     "${RECORD_MINMAX_PATH}" \
       --input_model "${TEST_RESULT_FILE}.fake_quantized.mixed.circle" \
       --input_data "${TEST_RESULT_FILE}.mixed.input.h5" \
-      --output_model "${TEST_RESULT_FILE}.minmax_recorded.mixed.circle" 
+      --output_model "${TEST_RESULT_FILE}.minmax_recorded.mixed.circle"
 
     # Run circle-quantizer with --quantize_with_minmax
     "${CIRCLE_QUANTIZER_PATH}" \
       --quantize_with_minmax float32 "${DTYPE}" "${GRANULARITY}" \
       --config "${SOURCE_PATH}/config_files/${MODELNAME}/${GRANULARITY}/${DTYPE}/qconf.json" \
       "${TEST_RESULT_FILE}.minmax_recorded.mixed.circle" \
-      "${TEST_RESULT_FILE}.quantized.mixed.circle" 
+      "${TEST_RESULT_FILE}.quantized.mixed.circle"
 
     # Dump scale, zp, weights values (circle-tensordump)
     "${CIRCLE_TENSORDUMP_PATH}" \

@@ -5,7 +5,7 @@
 # HOW TO USE
 #
 # ./writeverify.sh <path/to/luci_writetester> <TEST 1> <TEST 2> ...
-VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 
 WORKDIR="$1"; shift
 VERIFY_BINARY_PATH="$1"; shift

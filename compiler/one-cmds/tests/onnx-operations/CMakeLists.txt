@@ -39,7 +39,7 @@ endforeach(TEST_ITEM)
 set(DRIVER_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/runtestall.sh")
 
 file(WRITE  "${DRIVER_SCRIPT}" "#!/bin/bash\n\n")
-file(APPEND "${DRIVER_SCRIPT}" "SCRIPT_PATH=$(cd $(dirname \${BASH_SOURCE[0]}) && pwd)\n")
+file(APPEND "${DRIVER_SCRIPT}" "SCRIPT_PATH=$(cd $(dirname \${BASH_SOURCE[0]}) >/dev/null && pwd)\n")
 file(APPEND "${DRIVER_SCRIPT}" "pushd $SCRIPT_PATH > /dev/null\n")
 file(APPEND "${DRIVER_SCRIPT}" "rm -rf runtestall.log\n")
 file(APPEND "${DRIVER_SCRIPT}" "export PATH=$SCRIPT_PATH/../bin:$PATH\n")

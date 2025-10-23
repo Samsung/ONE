@@ -8,7 +8,7 @@
 # test.config : set ${RECORD_MINMAX_PATH} and ${CIRCLE2CIRCLE_PATH}
 # work_dir : build directory of quantization-value-test (ex: build/compiler/quantization-value-test)
 
-SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 COMPARE_SCRIPT_PATH="${SOURCE_PATH}/compare_tensors_all.py"
 CONFIG_PATH="$1"; shift
 BIN_PATH=$(dirname "${CONFIG_PATH}")
@@ -42,7 +42,7 @@ if [[ $? -ne 0 ]]; then
 fi
 
 pushd "${WORKDIR}"
-while [ "$1" != "" ]; do  
+while [ "$1" != "" ]; do
   MODELNAME=$1; shift
   GRANULARITY=$1; shift
   DTYPE=$1; shift
@@ -64,7 +64,7 @@ while [ "$1" != "" ]; do
     "${RECORD_MINMAX_PATH}" \
       --input_model "${TEST_RESULT_FILE}.fake_quantized.circle" \
       --input_data "${TEST_RESULT_FILE}.input.h5" \
-      --output_model "${TEST_RESULT_FILE}.minmax_recorded.circle" 
+      --output_model "${TEST_RESULT_FILE}.minmax_recorded.circle"
 
     # Dump min/max values (circle-tensordump)
     "${CIRCLE_TENSORDUMP_PATH}" \

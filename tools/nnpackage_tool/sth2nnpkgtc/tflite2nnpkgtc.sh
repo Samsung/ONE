@@ -3,8 +3,8 @@
 set -u
 
 progname=$(basename "${BASH_SOURCE[0]}")
-script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-nnfw_root="$( cd "${script_dir%*/*/*/*}" && pwd )"
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+nnfw_root="$( cd "${script_dir%*/*/*/*}" >/dev/null && pwd )"
 outdir="."
 
 usage() {

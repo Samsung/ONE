@@ -2,7 +2,7 @@
 
 set -eo pipefail
 
-MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+MY_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 source $MY_PATH/common.sh
 
 BACKEND_CNT=3

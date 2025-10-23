@@ -13,7 +13,7 @@ if [[ $# -lt 2 ]]; then
   exit 255
 fi
 
-BINDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BINDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 CONFIG_PATH="$1"; shift
 WORKDIR="$1"; shift
 

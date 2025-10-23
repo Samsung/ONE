@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)" # '''
-''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                       # '''
-''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                     # '''
-''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command." # '''
-''''exit 255                                                                            # '''
+''''export SCRIPT_PATH="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" >/dev/null && pwd)" # '''
+''''export PY_PATH=${SCRIPT_PATH}/venv/bin/python                                                  # '''
+''''test -f ${PY_PATH} && exec ${PY_PATH} "$0" "$@"                                                # '''
+''''echo "Error: Virtual environment not found. Please run 'one-prepare-venv' command."            # '''
+''''exit 255                                                                                       # '''
 
 # Copyright (c) 2021 Samsung Electronics Co., Ltd. All Rights Reserved
 #
@@ -214,10 +214,10 @@ def main():
     [5] one-profile -b ${backend} ${command}
     [6] one-profile -b ${backend} -- ${command}
     [7] one-profile -b ${backend} -C {cfg} (backend, command key in cfg)
-    [8] one-profile -b ${backend} -C {cfg} (backends key in cfg) (Only 'backend' is invoked, 
+    [8] one-profile -b ${backend} -C {cfg} (backends key in cfg) (Only 'backend' is invoked,
          even though cfg file has multiple backends)
-    [9] one-profile -b ${backend} -C ${cfg} -- ${command} (backend, command key in cfg) 
-    [10] one-profile -b ${backend} -C ${cfg} -- ${command} (backends key in cfg) (Only 'backend' is invoked, 
+    [9] one-profile -b ${backend} -C ${cfg} -- ${command} (backend, command key in cfg)
+    [10] one-profile -b ${backend} -C ${cfg} -- ${command} (backends key in cfg) (Only 'backend' is invoked,
          even though cfg file has multiple backends)
     [11] one-profile -C {cfg} (w/ target, w/ command schema)
     [12] one-profile -C {cfg} (w/ target, w/o command schema)
