@@ -23,6 +23,7 @@
 #include <cker/operation/BinaryArithmeticOps.h>
 #include <cker/train/operation/BinaryArithmetic.h>
 #include <cker/train/operation/ReLU.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::train::ops
 {
@@ -60,7 +61,7 @@ void BinaryArithmeticLayer::backward()
 {
   // Calculate gradient for activation
   if (_back_prop_output->data_type() != OperandType::FLOAT32)
-    throw std::runtime_error{"Unsupported Data Type"};
+    throw UnsupportedDataTypeException{"train BinaryArithmetic", _back_prop_output->data_type()};
 
   const IPortableTensor *backprop_act;
   try

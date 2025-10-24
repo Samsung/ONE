@@ -18,6 +18,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/DynamicUpdateSlice.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -80,7 +81,7 @@ void DynamicUpdateSliceLayer::run()
                                        getBuffer<int8_t>(_output));
       break;
     default:
-      throw std::runtime_error{"DynamicUpdateSlice: NYI - unsupported data type"};
+      throw UnsupportedDataTypeException{"DynamicUpdateSlice", _operand->data_type()};
       break;
   }
 }

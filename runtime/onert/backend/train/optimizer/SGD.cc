@@ -19,6 +19,7 @@
 #include "../ops/OperationUtils.h"
 
 #include <cker/train/optimizer/SGD.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::train::optimizer
 {
@@ -48,7 +49,7 @@ void SGD::applyGradient(const UpdateFactors &factors) const
         ops::getShape(&grad_tensor), ops::getBuffer<float>(&grad_tensor), lr);
       break;
     default:
-      throw std::runtime_error("SGD: Not supported data type");
+      throw UnsupportedDataTypeException{"SGD", grad_tensor.data_type()};
   }
 }
 

@@ -25,6 +25,7 @@
 #include <cker/operation/ReLU6.h>
 #include <cker/operation/Tanh.h>
 #include <cker/operation/GELU.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -98,7 +99,7 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       }
       else
       {
-        throw std::runtime_error{"ElementwiseActivationLayer(Elu): unsupported data type"};
+        throw UnsupportedDataTypeException{"ElementwiseActivation(Elu)", input->data_type()};
       }
       break;
     case ElementwiseActivationType::kLogistic:
@@ -117,7 +118,7 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       }
       else
       {
-        throw std::runtime_error{"ElementwiseActivationLayer(Logistic): unsupported data type"};
+        throw UnsupportedDataTypeException{"ElementwiseActivation(Logistic)", input->data_type()};
       }
       break;
     case ElementwiseActivationType::kReLU:
@@ -145,7 +146,7 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       }
       else
       {
-        throw std::runtime_error{"ElementwiseActivationLayer(ReLU): unsupported data type"};
+        throw UnsupportedDataTypeException{"ElementwiseActivation(ReLU)", input->data_type()};
       }
       break;
     case ElementwiseActivationType::kTanh:
@@ -164,7 +165,7 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       }
       else
       {
-        throw std::runtime_error{"ElementwiseActivationLayer(Tanh): unsupported data type"};
+        throw UnsupportedDataTypeException{"ElementwiseActivation(Tanh)", input->data_type()};
       }
       break;
     case ElementwiseActivationType::kLeakyReLU:
@@ -178,7 +179,7 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       }
       else
       {
-        throw std::runtime_error{"ElementwiseActivationLayer(LeakyReLU): unsupported data type"};
+        throw UnsupportedDataTypeException{"ElementwiseActivation(LeakyReLU)", input->data_type()};
       }
       break;
     case ElementwiseActivationType::kGELU:
@@ -191,7 +192,7 @@ void ElementwiseActivationLayer::configure(const IPortableTensor *input, IPortab
       }
       else
       {
-        throw std::runtime_error{"ElementwiseActivationLayer(GELU): unsupported data type"};
+        throw UnsupportedDataTypeException{"ElementwiseActivation(GELU)", input->data_type()};
       }
       break;
     default:

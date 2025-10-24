@@ -19,6 +19,7 @@
 #include "util/logging.h"
 
 #include <misc/polymorphic_downcast.h>
+#include <util/Exceptions.h>
 
 #include <sstream>
 #include <stdexcept>
@@ -980,21 +981,17 @@ void StaticShapeInferer::visit(const ir::operation::Reduce &op)
   std::vector<int32_t> axes_vec;
   for (size_t i = 0; i < axes.shape().num_elements(); ++i)
   {
-    switch (axes.typeInfo().type())
+    const auto type = axes.typeInfo().type();
+    switch (type)
     {
       case ir::DataType::INT32:
-      {
         axes_vec.emplace_back(reinterpret_cast<const int32_t *>(axes.data()->base())[i]);
         break;
-      }
       case ir::DataType::INT64:
-      {
         axes_vec.emplace_back(reinterpret_cast<const int64_t *>(axes.data()->base())[i]);
         break;
-      }
       default:
-        throw std::runtime_error("StaticShapeInferer " + op.name() + ": Not supported data type");
-        break;
+        throw UnsupportedDataTypeException{"StaticShapeInferer " + op.name(), type};
     }
   }
   const auto keep_dims = op.param().keep_dims;

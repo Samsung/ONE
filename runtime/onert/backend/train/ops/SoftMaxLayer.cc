@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/train/operation/SoftMax.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::train::ops
 {
@@ -52,7 +53,7 @@ void SoftMaxLayer::backward()
       break;
     }
     default:
-      throw std::runtime_error("train SoftMaxLayer: unsupported data type");
+      throw UnsupportedDataTypeException{"train SoftMax", _back_prop_output->data_type()};
   }
 }
 

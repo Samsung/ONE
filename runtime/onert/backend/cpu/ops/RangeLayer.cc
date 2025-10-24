@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Range.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -49,7 +50,7 @@ void RangeLayer::run()
                                  getBuffer<int32_t>(_delta), getBuffer<int32_t>(_output));
       break;
     default:
-      throw std::runtime_error{"Range: unsupported data type"};
+      throw UnsupportedDataTypeException{"Range", _output->data_type()};
       break;
   }
 }

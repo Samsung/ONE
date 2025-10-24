@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/LogSoftMax.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -85,7 +86,7 @@ void LogSoftMaxLayer::run()
   }
   else
   {
-    throw std::runtime_error{"LogSoftmax : unsupported data type"};
+    throw UnsupportedDataTypeException{"LogSoftmax", _input->data_type()};
   }
 }
 

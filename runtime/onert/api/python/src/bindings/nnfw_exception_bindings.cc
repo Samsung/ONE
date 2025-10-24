@@ -41,6 +41,8 @@ void bind_nnfw_exceptions(py::module_ &m)
                                                       m.attr("OnertError").cast<py::object>());
   py::register_exception<NnfwDeprecatedApiError>(m, "OnertDeprecatedApiError",
                                                  m.attr("OnertError").cast<py::object>());
+  py::register_exception<NnfwUnsupportedDataTypeError>(m, "OnertUnsupportedDataTypeError",
+                                                       m.attr("OnertError").cast<py::object>());
 }
 
 } // namespace onert::api::python

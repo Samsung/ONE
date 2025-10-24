@@ -22,6 +22,7 @@
 #include <cker/operation/Transpose.h>
 #include <cker/train/operation/FullyConnected.h>
 #include <cker/train/operation/ReLU.h>
+#include <util/Exceptions.h>
 
 namespace
 {
@@ -113,7 +114,7 @@ void FullyConnectedLayer::backward()
       break;
     }
     default:
-      throw std::runtime_error{"train FullyConnectedLayer: unsupported data type"};
+      throw UnsupportedDataTypeException{"train FullyConnected", data_type};
   }
 }
 

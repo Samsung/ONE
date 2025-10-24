@@ -20,6 +20,7 @@
 
 #include <cker/train/operation/ReLU.h>
 #include <cker/train/operation/ReLU6.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::train::ops
 {
@@ -75,7 +76,7 @@ void ElementwiseActivationLayer::configureBackward(const IPortableTensor *input,
       }
       else
       {
-        throw std::runtime_error("train ElementwiseActivationLayer: Unsupported datatype");
+        throw UnsupportedDataTypeException{"train ElementwiseActivation", input->data_type()};
       }
       break;
     default:

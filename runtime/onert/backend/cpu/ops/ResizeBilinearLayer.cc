@@ -17,6 +17,7 @@
 #include "ResizeBilinearLayer.h"
 #include "cker/operation/ResizeBilinear.h"
 #include <cker/Types.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -106,7 +107,7 @@ void ResizeBilinearLayer::run()
       std::runtime_error("ResizeBilinear NYI");
       break;
     default:
-      std::runtime_error("ResizeBilinear unsupported data type");
+      UnsupportedDataTypeException{"ResizeBilinear", _input->data_type()};
   }
 }
 

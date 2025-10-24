@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Tile.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -60,7 +61,7 @@ void TileLayer::run()
   }
   else
   {
-    throw std::runtime_error{"Tile: unsupported data type"};
+    throw UnsupportedDataTypeException{"Tile", _input->data_type()};
   }
 }
 

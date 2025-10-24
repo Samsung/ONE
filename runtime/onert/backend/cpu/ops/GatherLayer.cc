@@ -20,6 +20,7 @@
 #include "GGMLHelper.h"
 
 #include <cker/operation/Gather.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -64,7 +65,7 @@ template <typename InputType> void GatherLayer::runByInputType()
       break;
     }
     default:
-      throw std::runtime_error("Gather: unsupported indices data type");
+      throw UnsupportedDataTypeException{"Gather", _indices->data_type()};
   }
 }
 
@@ -82,15 +83,15 @@ void GatherLayer::runByGGMLQuantInputType()
     throw std::runtime_error("Gather: invalid indices tensor shape");
 
   if (_indices->data_type() != ir::DataType::INT32)
-    throw std::runtime_error("Gather: indices tensor must be int32 type");
+    throw UnsupportedDataTypeException{"Gather", _indices->data_type()};
 
   if (_axis != 0)
     throw std::runtime_error("Gather: axis must be 0");
 
   // convert tensor
-  auto input = getGGMLTensor(_input);
-  auto indices = getGGMLTensor(_indices);
-  auto output = getGGMLTensor(_output);
+  auto input = getGGMLTensor("FullyConnected", _input);
+  auto indices = getGGMLTensor("FullyConnected", _indices);
+  auto output = getGGMLTensor("FullyConnected", _output);
   {
     output.op = GGML_OP_GET_ROWS;
     output.src[0] = &input;
@@ -135,7 +136,7 @@ void GatherLayer::run()
       runByInputType<bool>();
       break;
     default:
-      throw std::runtime_error("Gather: unsupported input data type");
+      throw UnsupportedDataTypeException{"Gather", _input->data_type()};
   }
 }
 

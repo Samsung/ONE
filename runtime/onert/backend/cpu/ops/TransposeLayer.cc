@@ -19,6 +19,7 @@
 #include "OperationUtils.h"
 
 #include <cker/operation/Transpose.h>
+#include <util/Exceptions.h>
 #include <numeric>
 
 namespace onert::backend::cpu::ops
@@ -95,7 +96,7 @@ void TransposeLayer::run()
   }
   else
   {
-    throw std::runtime_error{"Transpose: unsupported data type"};
+    throw UnsupportedDataTypeException{"Transpose", _input->data_type()};
   }
 }
 

@@ -16,6 +16,8 @@
 
 #include "OperationUtils.h"
 
+#include <util/Exceptions.h>
+
 #include <algorithm>
 #include <cassert>
 #include <cmath>
@@ -246,8 +248,7 @@ uint32_t sizeOfData(OperandType type, const std::vector<int32_t> &dimensions)
       size = 8;
       break;
     default:
-      throw std::runtime_error("Not supported operand type.");
-      break;
+      throw UnsupportedDataTypeException{type};
   }
 
   for (auto &&d : dimensions)
@@ -275,7 +276,7 @@ nnfw::cker::PaddingType getPaddingType(ir::PaddingType ir_padding_type)
   }
 }
 
-std::vector<int32_t> getReducerAxes(const IPortableTensor *axes)
+std::vector<int32_t> getReducerAxes(std::string op, const IPortableTensor *axes)
 {
   std::vector<int32_t> ret;
 
@@ -296,7 +297,7 @@ std::vector<int32_t> getReducerAxes(const IPortableTensor *axes)
       break;
     }
     default:
-      throw std::runtime_error("getReducerAxes: Not supported data type");
+      throw UnsupportedDataTypeException{std::move(op), axes->data_type()};
       break;
   }
   return ret;

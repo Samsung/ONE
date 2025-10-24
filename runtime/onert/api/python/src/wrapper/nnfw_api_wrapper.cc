@@ -31,20 +31,21 @@ void ensure_status(NNFW_STATUS status)
     case NNFW_STATUS::NNFW_STATUS_NO_ERROR:
       return;
     case NNFW_STATUS::NNFW_STATUS_ERROR:
-      throw NnfwError("NNFW_STATUS_ERROR");
+      throw NnfwError("Error");
     case NNFW_STATUS::NNFW_STATUS_UNEXPECTED_NULL:
-      throw NnfwUnexpectedNullError("NNFW_STATUS_UNEXPECTED_NULL");
+      throw NnfwUnexpectedNullError("Unexpected NULL");
     case NNFW_STATUS::NNFW_STATUS_INVALID_STATE:
-      throw NnfwInvalidStateError("NNFW_STATUS_INVALID_STATE");
+      throw NnfwInvalidStateError("Invalid state");
     case NNFW_STATUS::NNFW_STATUS_OUT_OF_MEMORY:
-      throw NnfwOutOfMemoryError("NNFW_STATUS_OUT_OF_MEMORY");
+      throw NnfwOutOfMemoryError("Out of memory");
     case NNFW_STATUS::NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE:
-      throw NnfwInsufficientOutputError("NNFW_STATUS_INSUFFICIENT_OUTPUT_SIZE");
+      throw NnfwInsufficientOutputError("Insufficient output size");
     case NNFW_STATUS::NNFW_STATUS_DEPRECATED_API:
-      throw NnfwDeprecatedApiError("NNFW_STATUS_DEPRECATED_API");
-    default:
-      throw NnfwError("NNFW_UNKNOWN_ERROR");
+      throw NnfwDeprecatedApiError("Deprecated API");
+    case NNFW_STATUS::NNFW_STATUS_UNSUPPORTED_DATA_TYPE:
+      throw NnfwUnsupportedDataTypeError("Unsupported data type");
   }
+  throw NnfwError("Unknown error");
 }
 
 NNFW_LAYOUT getLayout(const char *layout)

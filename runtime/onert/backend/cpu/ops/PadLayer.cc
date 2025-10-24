@@ -17,6 +17,7 @@
 #include "PadLayer.h"
 
 #include <cker/operation/Pad.h>
+#include <util/Exceptions.h>
 
 namespace onert::backend::cpu::ops
 {
@@ -82,7 +83,7 @@ void PadLayer::run()
       }
       break;
     default:
-      throw std::runtime_error{"Pad: unsupported data type"};
+      throw UnsupportedDataTypeException{"Pad", _input->data_type()};
   }
 }
 
