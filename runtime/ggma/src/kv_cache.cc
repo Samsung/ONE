@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "ggma_kv_cache.h"
-#include "ggma_config.h"
+#include "config.h"
+#include "kv_cache.h"
 
 #include <cstring>
 #include <stdexcept>

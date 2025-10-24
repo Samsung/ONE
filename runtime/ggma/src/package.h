@@ -17,20 +17,28 @@
 #ifndef __API_GGMA_PKG_H__
 #define __API_GGMA_PKG_H__
 
-#include "ggma_config.h"
-
+#include "config.h"
+#include <memory>
 #include <string>
 
-struct ggma_pkg
+namespace ggma
+{
+class GGMATokenizer; // Forward declaration
+
+class package
 {
 public:
-  ggma_pkg(const char *path);
-  ~ggma_pkg() = default;
+  package(const char *path);
+  ~package() = default;
   std::string path() const { return _path; }
+  const ggma::GGMATokenizer *get_tokenizer() const;
   ggma::GGMAConfig load_config() const;
 
 private:
   std::string _path;
+  mutable std::unique_ptr<ggma::GGMATokenizer> _tokenizer;
 };
+
+} // namespace ggma
 
 #endif // __API_GGMA_PKG_H__

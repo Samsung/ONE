@@ -4,7 +4,8 @@ set(GGMA_DEV ggma-dev)
 add_library(${GGMA_DEV} SHARED ${API_SRC})
 
 # Public headers to publish
-set(GGMA_API_HEADERS include/ggma.h include/ggma_macro.h)
+set(GGMA_API_HEADERS include/ggma_api.h include/ggma_macro.h include/ggma_types.h include/ggma_tokenize.h
+                     include/ggma_package.h include/ggma_context.h include/ggma_generate.h)
 
 target_link_libraries(${GGMA_DEV} PRIVATE jsoncpp ${LIB_PTHREAD})
 target_link_libraries(${GGMA_DEV} PRIVATE nnfw-dev)

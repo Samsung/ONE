@@ -15,7 +15,7 @@
  */
 
 #include "args.h"
-#include "ggma.h"
+#include "ggma_api.h"
 #include "ggma_macro.h"
 
 #include <cstdlib>
@@ -30,7 +30,7 @@ int main(const int argc, char **argv)
   {
     Args args(argc, argv);
 
-    ggma_pkg *pkg = nullptr;
+    ggma_package *pkg = nullptr;
     GGMA_ENSURE(ggma_create_package(&pkg, args.packagePath().c_str()));
 
     std::string prompt = "Lily picked up a flower.";

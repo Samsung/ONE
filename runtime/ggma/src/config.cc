@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-#include "ggma_config.h"
+#include "config.h"
 
-#include <algorithm>
 #include <fstream>
 #include <json/json.h>
 #include <sstream>

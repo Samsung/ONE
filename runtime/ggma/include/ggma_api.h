@@ -14,22 +14,27 @@
  * limitations under the License.
  */
 
-#include "ggma_pkg.h"
+/**
+ * @file  ggma_api.h
+ * @brief This file defines the Generative Model API (GGMA) - main include header.
+ */
+#ifndef __GGMA_H__
+#define __GGMA_H__
 
-#include <filesystem>
-#include <string>
+#include "ggma_types.h"
 
-ggma_pkg::ggma_pkg(const char *path) : _path(path) {}
+/* Include all GGMA API headers */
+#include "ggma_package.h"
+#include "ggma_tokenize.h"
+#include "ggma_context.h"
+#include "ggma_generate.h"
 
-ggma::GGMAConfig ggma_pkg::load_config() const
-{
-  ggma::GGMAConfig config;
-  std::filesystem::path pkg_path(_path);
-  std::filesystem::path model_config_file = pkg_path / "config.json";
-  std::filesystem::path ggma_config_file = pkg_path / "ggma.config.json";
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-  // TODO: Load ggma_config from ggma_config_file if necessary
-  // For now, we only load model_config as per the original logic.
-  config.model.load_from_file(model_config_file);
-  return config;
+#ifdef __cplusplus
 }
+#endif
+
+#endif

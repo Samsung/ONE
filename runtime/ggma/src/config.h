@@ -17,7 +17,7 @@
 #ifndef __API_GGMA_CONFIG_H__
 #define __API_GGMA_CONFIG_H__
 
-#include "ggma_kv_cache.h"
+#include "kv_cache.h"
 
 #include <optional>
 #include <string>

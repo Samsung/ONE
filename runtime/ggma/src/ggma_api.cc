@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-#include "ggma.h"
-#include "ggma_context.h"
-#include "ggma_pkg.h"
+#include "ggma_api.h"
+#include "context.h"
+#include "package.h"
+#include "tokenize.h"
 
 #include <cstring>
 #include <iostream>
@@ -30,12 +31,12 @@
       return GGMA_STATUS_UNEXPECTED_NULL; \
   } while (0)
 
-GGMA_STATUS ggma_create_package(ggma_pkg **pkg, const char *path)
+GGMA_STATUS ggma_create_package(ggma_package **pkg, const char *path)
 {
   GGMA_RETURN_ERROR_IF_NULL(pkg);
   try
   {
-    *pkg = new ggma_pkg(path);
+    *pkg = reinterpret_cast<ggma_package *>(new ggma::package(path));
   }
   catch (const std::bad_alloc &e)
   {
@@ -52,33 +53,39 @@ GGMA_STATUS ggma_create_package(ggma_pkg **pkg, const char *path)
   return GGMA_STATUS_NO_ERROR;
 }
 
-GGMA_STATUS ggma_free_package(ggma_pkg *pkg)
+GGMA_STATUS ggma_free_package(ggma_package *pkg)
 {
-  delete pkg;
+  delete reinterpret_cast<ggma::package *>(pkg);
   return GGMA_STATUS_NO_ERROR;
 }
 
-GGMA_STATUS ggma_tokenize(const struct ggma_pkg *, const char *, size_t, ggma_token *tokens,
-                          size_t n_tokens_max, size_t *n_tokens)
+GGMA_STATUS ggma_tokenize(const struct ggma_package *pkg, const char *text, size_t text_len,
+                          ggma_token *tokens, size_t n_tokens_max, size_t *n_tokens)
 {
-  // [G] TODO: it always returns tokens for "Lily picked up a flower."
-  ggma_token tokenized[32] = {
-    1, 21075, 7727, 550, 260, 12584, 31843,
-  };
-  *n_tokens = 7;
-  memcpy(tokens, tokenized, sizeof(tokenized));
-  return GGMA_STATUS_NO_ERROR;
+  if (!pkg || !text || !tokens || !n_tokens)
+  {
+    return GGMA_STATUS_UNEXPECTED_NULL;
+  }
+
+  const auto *tokenizer = reinterpret_cast<const ggma::package *>(pkg)->get_tokenizer();
+  if (!tokenizer)
+  {
+    return GGMA_STATUS_ERROR;
+  }
+
+  size_t result = tokenizer->tokenize(text, text_len, tokens, n_tokens_max, n_tokens);
+  return (result > 0) ? GGMA_STATUS_NO_ERROR : GGMA_STATUS_ERROR;
 }
 
-GGMA_STATUS ggma_create_context(ggma_context **context, ggma_pkg *pkg)
+GGMA_STATUS ggma_create_context(ggma_context **context, ggma_package *pkg)
 {
   GGMA_RETURN_ERROR_IF_NULL(context);
-  return ggma_context::from_package(reinterpret_cast<ggma_context **>(context), pkg);
+  return ggma::context::from_package(context, pkg);
 }
 
 GGMA_STATUS ggma_free_context(ggma_context *context)
 {
-  delete reinterpret_cast<ggma_context *>(context);
+  delete reinterpret_cast<ggma::context *>(context);
   return GGMA_STATUS_NO_ERROR;
 }
 
@@ -86,6 +93,6 @@ GGMA_STATUS ggma_generate(ggma_context *context, ggma_token *tokens, size_t n_to
                           size_t n_tokens_max, size_t *n_tokens_out)
 {
   GGMA_RETURN_ERROR_IF_NULL(context);
-  return reinterpret_cast<ggma_context *>(context)->generate(tokens, n_tokens, n_tokens_max,
-                                                             n_tokens_out);
+  return reinterpret_cast<ggma::context *>(context)->generate(tokens, n_tokens, n_tokens_max,
+                                                              n_tokens_out);
 }

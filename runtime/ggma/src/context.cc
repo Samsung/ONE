@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-#include "ggma_config.h"
-#include "ggma_context.h"
-#include "ggma_kv_cache.h"
+#include "config.h"
+#include "context.h"
+#include "kv_cache.h"
+#include "tokenize.h"
 
 #include <algorithm>
 #include <cassert>
@@ -27,6 +28,9 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+
+namespace ggma
+{
 
 // NNFW_ENSURE_STATUS macro
 #define NNFW_ENSURE_STATUS(a)                            \
@@ -72,20 +76,20 @@ uint64_t bufsize_for(const nnfw_tensorinfo *ti)
   return elmsize[ti->dtype] * num_elems(ti);
 }
 
-ggma_context::ggma_context(ggma_pkg *pkg) : _pkg(pkg)
+ggma::context::context(ggma_package *pkg) : _pkg(reinterpret_cast<ggma::package *>(pkg))
 {
   _cfg = _pkg->load_config();
   _cache.init(_cfg, _cfg.cache_size);
 }
 
-GGMA_STATUS ggma_context::from_package(ggma_context **session, ggma_pkg *pkg)
+GGMA_STATUS context::from_package(ggma_context **session, ggma_package *pkg)
 {
   if (session == nullptr)
     return GGMA_STATUS_UNEXPECTED_NULL;
   try
   {
-    auto new_session = std::unique_ptr<ggma_context>(new ggma_context(pkg));
-    *session = new_session.release();
+    auto new_session = std::unique_ptr<context>(new context(pkg));
+    *session = reinterpret_cast<ggma_context *>(new_session.release());
   }
   catch (const std::bad_alloc &e)
   {
@@ -102,7 +106,7 @@ GGMA_STATUS ggma_context::from_package(ggma_context **session, ggma_pkg *pkg)
   return GGMA_STATUS_NO_ERROR;
 }
 
-void ggma_context::prefill(ggma_token *tokens, size_t n_tokens, std::vector<uint8_t> &hidden_state)
+void context::prefill(ggma_token *tokens, size_t n_tokens, std::vector<uint8_t> &hidden_state)
 {
   std::filesystem::path nnpkg_path = std::filesystem::path(_pkg->path()) / "prefill";
   nnfw_session *session = create_and_prepare_session(nnpkg_path.string());
@@ -168,8 +172,7 @@ void ggma_context::prefill(ggma_token *tokens, size_t n_tokens, std::vector<uint
   nnfw_close_session(session);
 }
 
-void ggma_context::unemb(std::vector<uint8_t> &hidden_state, size_t n_tokens,
-                         std::vector<float> &logits)
+void context::unemb(std::vector<uint8_t> &hidden_state, size_t n_tokens, std::vector<float> &logits)
 {
   std::filesystem::path nnpkg_path = std::filesystem::path(_pkg->path()) / "unemb";
   nnfw_session *session = create_and_prepare_session(nnpkg_path.string());
@@ -215,7 +218,7 @@ void ggma_context::unemb(std::vector<uint8_t> &hidden_state, size_t n_tokens,
 
 // Template implementation to eliminate code duplication
 template <bool ReturnLogits, typename OutputType>
-void ggma_context::decode_impl(ggma_token token_id, OutputType &output)
+void context::decode_impl(ggma_token token_id, OutputType &output)
 {
   std::filesystem::path nnpkg_path = std::filesystem::path(_pkg->path()) / "decode";
   nnfw_session *session = create_and_prepare_session(nnpkg_path.string());
@@ -284,25 +287,25 @@ void ggma_context::decode_impl(ggma_token token_id, OutputType &output)
 }
 
 // Public interface functions - delegate to template implementation
-void ggma_context::decode(ggma_token token_id, std::vector<uint8_t> &hidden_state)
+void context::decode(ggma_token token_id, std::vector<uint8_t> &hidden_state)
 {
   decode_impl<false, std::vector<uint8_t>>(token_id, hidden_state);
 }
 
-void ggma_context::decode(ggma_token token_id, std::vector<float> &logits)
+void context::decode(ggma_token token_id, std::vector<float> &logits)
 {
   decode_impl<true, std::vector<float>>(token_id, logits);
 }
 
 // Template instantiation (required for template implementation in .cpp file)
-template void ggma_context::decode_impl<false, std::vector<uint8_t>>(ggma_token token_id,
-                                                                     std::vector<uint8_t> &output);
-template void ggma_context::decode_impl<true, std::vector<float>>(ggma_token token_id,
-                                                                  std::vector<float> &output);
+template void context::decode_impl<false, std::vector<uint8_t>>(ggma_token token_id,
+                                                                std::vector<uint8_t> &output);
+template void context::decode_impl<true, std::vector<float>>(ggma_token token_id,
+                                                             std::vector<float> &output);
 
 // Sample token from logits using greedy sampling
 // Input shape: [n_seq, vocab_size], sample from last token
-ggma_token ggma_context::sample(const std::vector<float> &logits)
+ggma_token context::sample(const std::vector<float> &logits)
 {
   if (logits.empty())
     throw std::runtime_error("Empty logits tensor");
@@ -321,64 +324,4 @@ ggma_token ggma_context::sample(const std::vector<float> &logits)
   return std::distance(last_logits, max_elem_iter);
 }
 
-// Generate tokens using autoregressive decoding with optimized memory management
-//
-// Parameters:
-// - tokens: Input/output token array (contains input tokens, stores generated tokens)
-// - n_tokens: Number of input tokens (read-only)
-// - n_tokens_max: Total capacity of tokens array (max writable space)
-// - n_predict: In/out parameter for number of tokens to predict/actually predicted
-//   - Input: Maximum number of tokens to generate
-//   - Output: Actual number of tokens generated
-//
-// The function ensures no buffer overflow by checking against n_tokens_max
-// and stops generation when either the requested number is reached or the array is full.
-GGMA_STATUS ggma_context::generate(ggma_token *tokens, size_t n_tokens, size_t n_tokens_max,
-                                   size_t *n_predict)
-{
-  try
-  {
-    _cache.reset_pos();
-
-    std::vector<uint8_t> hidden;
-    std::vector<float> logits;
-    ggma_token new_token;
-
-    prefill(tokens, n_tokens, hidden); // hidden = prefill(tokens)
-    _cache.set_pos(n_tokens);
-    _cache.transpose(true /* k */, "0213", _cfg.model.num_attention_heads, _cfg.cache_size,
-                     _cfg.model.hidden_size / _cfg.model.num_attention_heads);
-    _cache.transpose(false /* v */, "0213", _cfg.model.num_attention_heads, _cfg.cache_size,
-                     _cfg.model.hidden_size / _cfg.model.num_attention_heads);
-    unemb(hidden, n_tokens, logits); // logits = unemb(hidden)
-
-    size_t n_possible = n_tokens_max - n_tokens;
-    if (*n_predict > n_possible)
-      *n_predict = n_possible;
-
-    auto is_end_token = [this](ggma_token token) {
-      return token == _cfg.model.eos_token_id.value_or(-1) || token == 0;
-    };
-
-    while ((_cache.pos() - n_tokens) < *n_predict)
-    {
-      new_token = sample(logits);
-      tokens[n_tokens + (_cache.pos() - n_tokens)] = new_token;
-      if (is_end_token(new_token))
-        break;
-      decode(new_token, hidden); // hidden = decode(new_token)
-      unemb(hidden, 1, logits);  // logits = unemb(hidden)
-      *n_predict = _cache.pos() - n_tokens;
-    }
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error in generate: " << e.what() << std::endl;
-    return GGMA_STATUS_ERROR;
-  }
-  // expected
-  //    prompt:     1, 21075,  7727,   550,   260, 12584, 31843,
-  // generated : 1100, 7899, 289, 826, 351, 600, 2439, 288, 266, 3653, 31843, 1100, 7899, 289, 1261,
-  // 291, 5869, 291, 1261, 31843
-  return GGMA_STATUS_NO_ERROR;
-}
+} // namespace ggma

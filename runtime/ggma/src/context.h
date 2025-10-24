@@ -17,17 +17,20 @@
 #ifndef __API_GGMA_SESSION_H__
 #define __API_GGMA_SESSION_H__
 
-#include "ggma.h"
-#include "ggma_config.h"
-#include "ggma_kv_cache.h"
-#include "ggma_pkg.h"
+#include "config.h"
+#include "ggma_api.h"
+#include "kv_cache.h"
 #include "nnfw.h"
+#include "package.h"
 
-#include <memory>
 #include <cstdint>
+#include <memory>
 #include <vector>
 
-struct ggma_context
+namespace ggma
+{
+
+class context
 {
 public:
   /**
@@ -35,10 +38,10 @@ public:
    *
    * @note  Use factory instead of constructor to get status
    */
-  static GGMA_STATUS from_package(ggma_context **session, ggma_pkg *pkg);
+  static GGMA_STATUS from_package(ggma_context **session, ggma_package *pkg);
 
 private:
-  ggma_context(ggma_pkg *pkg);
+  context(ggma_package *pkg);
 
   void prefill(ggma_token *tokens, size_t n_tokens, std::vector<uint8_t> &hidden_state);
   void unemb(std::vector<uint8_t> &hidden_state, size_t n_tokens, std::vector<float> &logits);
@@ -53,14 +56,16 @@ private:
   void init_kv_cache();
 
 public:
-  ~ggma_context() = default;
+  ~context() = default;
 
   GGMA_STATUS generate(ggma_token *tokens, size_t n_tokens, size_t n_tokens_max, size_t *n_predict);
 
 private:
-  std::unique_ptr<ggma_pkg> _pkg;
+  std::unique_ptr<ggma::package> _pkg;
   ggma::GGMAConfig _cfg;
   ggma::KVCache _cache;
 };
+
+} // namespace ggma
 
 #endif // __API_GGMA_SESSION_H__
