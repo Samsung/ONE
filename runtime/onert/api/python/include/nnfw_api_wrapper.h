@@ -17,6 +17,8 @@
 #ifndef __ONERT_API_PYTHON_NNFW_API_WRAPPER_H__
 #define __ONERT_API_PYTHON_NNFW_API_WRAPPER_H__
 
+#include <string>
+
 #include "nnfw.h"
 #include "nnfw_experimental.h"
 #include "nnfw_internal.h"
@@ -48,7 +50,7 @@ namespace py = pybind11;
 struct tensorinfo
 {
   /** The data type */
-  const char *dtype;
+  std::string dtype;
   /** The number of dimensions (rank) */
   int32_t rank;
   /**

@@ -156,7 +156,7 @@ void NNFW_SESSION::close_session()
 void NNFW_SESSION::set_input_tensorinfo(uint32_t index, const tensorinfo *tensor_info)
 {
   nnfw_tensorinfo ti;
-  ti.dtype = getType(tensor_info->dtype);
+  ti.dtype = getType(tensor_info->dtype.c_str());
   ti.rank = tensor_info->rank;
   for (int i = 0; i < NNFW_MAX_RANK; i++)
   {
