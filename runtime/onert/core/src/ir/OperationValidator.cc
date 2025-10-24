@@ -110,6 +110,41 @@ void OperationValidator::visit(const operation::ArgMinMax &node)
   OP_REQUIRES(isValidType(output_index, output_type));
 }
 
+void OperationValidator::visit(const operation::Attention &node)
+{
+  const auto input_idx = node.getInputs().at(operation::Attention::Input::INPUT);
+  const auto &input_shape = _operands.at(input_idx).shape();
+
+  // Check if input's seq_len is 1
+  // Assuming input shape is [batch_size, seq_len, embedding_dim]
+  OP_REQUIRES(input_shape.rank() == 3);
+  OP_REQUIRES(input_shape.dim(1) == 1);
+
+  const auto cos_idx = node.getInputs().at(operation::Attention::Input::COS);
+  const auto sin_idx = node.getInputs().at(operation::Attention::Input::SIN);
+  const auto &cos_shape = _operands.at(cos_idx).shape();
+  const auto &sin_shape = _operands.at(sin_idx).shape();
+
+  // Check _cos and _sin shapes
+  // Assuming shape is [batch_size, seq_len, d_head]
+  // batch_size = 1, seq_len = 1
+  OP_REQUIRES(cos_shape.rank() == 3);
+  OP_REQUIRES(cos_shape.dim(0) == 1); // batch_size
+  OP_REQUIRES(cos_shape.dim(1) == 1); // seq_len
+
+  OP_REQUIRES(sin_shape.rank() == 3);
+  OP_REQUIRES(sin_shape.dim(0) == 1); // batch_size
+  OP_REQUIRES(sin_shape.dim(1) == 1); // seq_len
+
+  const auto pos_idx = node.getInputs().at(operation::Attention::Input::POS);
+  const auto &pos_shape = _operands.at(pos_idx).shape();
+
+  // Check pos tensor type and shape
+  OP_REQUIRES(isValidType(pos_idx, DataType::INT64));
+  OP_REQUIRES(pos_shape.rank() == 1);
+  OP_REQUIRES(pos_shape.dim(0) == 1);
+}
+
 void OperationValidator::visit(const operation::BatchMatMul &node)
 {
   const auto lhs_index(node.getInputs().at(operation::BatchMatMul::Input::LHS));
