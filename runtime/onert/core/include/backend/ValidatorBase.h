@@ -40,10 +40,8 @@ public:
 protected:
   using OperationVisitor::visit;
 
-  // TODO: Fix to return false on ValidatorBase when all backends are ready
-  //       Derived classes should override only supported operations, and return true
 #define OP(InternalName) \
-  void visit(const ir::operation::InternalName &) override { _supported = true; }
+  void visit(const ir::operation::InternalName &) override { _supported = false; }
 #include "ir/Operations.lst"
 #undef OP
 
