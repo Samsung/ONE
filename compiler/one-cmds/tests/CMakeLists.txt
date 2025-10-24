@@ -13,7 +13,7 @@ file(GLOB TARGETCONFITEMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "./*.ini")
 set(DRIVER_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/runtestall.sh")
 
 file(WRITE  "${DRIVER_SCRIPT}" "#!/bin/bash\n\n")
-file(APPEND "${DRIVER_SCRIPT}" "SCRIPT_PATH=$(cd $(dirname $\{BASH_SOURCE\[0\]\}) && pwd)\n")
+file(APPEND "${DRIVER_SCRIPT}" "SCRIPT_PATH=$(cd $(dirname $\{BASH_SOURCE\[0\]\}) >/dev/null && pwd)\n")
 file(APPEND "${DRIVER_SCRIPT}" "pushd $SCRIPT_PATH > /dev/null\n")
 file(APPEND "${DRIVER_SCRIPT}" "rm -rf runtestall.log\n")
 file(APPEND "${DRIVER_SCRIPT}" "export PATH=$SCRIPT_PATH/../bin:$PATH\n")
@@ -109,7 +109,7 @@ install(FILES ${PREPROCESS_IMAGES_NUMPY_PY}
                     GROUP_READ
                     WORLD_READ
         DESTINATION test)
-        
+
 install(FILES ${ONNX_LEGALIZE_RUN_COMPARE}
         PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
         GROUP_READ GROUP_EXECUTE

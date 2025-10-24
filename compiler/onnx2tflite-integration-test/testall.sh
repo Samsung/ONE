@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WORKDIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+WORKDIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)
 
 if [[ $# -lt 1 ]]; then
   echo "USAGE: $0 ..."

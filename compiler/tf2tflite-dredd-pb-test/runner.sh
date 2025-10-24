@@ -5,7 +5,7 @@
 # exit if unknown var is used
 set -u
 
-WORKDIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+WORKDIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)
 
 # Need at least toolchain.config
 if [[ $# -lt 1 ]]; then

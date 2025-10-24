@@ -10,7 +10,7 @@
 # work_dir : artifacts directoy where test materials exist
 # venv_dir : python virtual environment home directory
 
-VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 VERIFY_SCRIPT_PATH="${VERIFY_SOURCE_PATH}/luci_eval_verifier.py"
 BINDIR="$1"; shift
 WORKDIR="$1"; shift

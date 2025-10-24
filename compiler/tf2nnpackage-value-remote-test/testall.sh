@@ -20,7 +20,7 @@ WORKDIR="$1"; shift
 REMOTE_IP="$1"; shift
 REMOTE_USER="$1"; shift
 
-BINDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BINDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 CURRENT_DATETIME=$(date +'%Y%m%d_%H%M%S')
 REMOTE_WORKDIR=${REMOTE_WORKDIR:-"CVT_${CURRENT_DATETIME}"}
 RESULT_CSV="${BINDIR}/Result_${CURRENT_DATETIME}.csv"

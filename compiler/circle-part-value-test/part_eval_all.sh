@@ -10,7 +10,7 @@
 #    work_dir : artifacts directoy where test materials exist
 #    venv_dir : python virtual environment home directory
 
-VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 VERIFY_SCRIPT_PATH="${VERIFY_SOURCE_PATH}/part_eval_one.py"
 WORKDIR="$1"; shift
 VIRTUALENV="$1"; shift
@@ -25,7 +25,7 @@ for TESTCASE in "$@"; do
 
   # for simplicity, folder uses same ${TESTCASE}
   TESTCASE_FOLDER="${WORKDIR}/${TESTCASE}"
-  
+
   PASSED_TAG="${TESTCASE_FOLDER}.passed"
   rm -f "${PASSED_TAG}"
 

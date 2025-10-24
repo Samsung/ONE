@@ -5,7 +5,7 @@
 # HOW TO USE
 #
 # ./readverify.sh <path/to/luci_readtester> <TEST 1> <TEST 2> ...
-VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 
 # set LOG enable to execute/test luci/logex codes
 export LUCI_LOG=100

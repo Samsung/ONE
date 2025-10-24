@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TESTCASE_REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TESTCASE_REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 
 ### Parse Command-line Arguments
 SHOW_PATH=0

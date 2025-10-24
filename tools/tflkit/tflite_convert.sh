@@ -7,7 +7,7 @@ usage()
   echo "       [ --tensorflow_path=<path> --tensorflow_version=<version> ] (If omitted, the module installed in system will be used by default.)"
 }
 
-SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 
 for i in "$@"
 do

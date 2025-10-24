@@ -26,7 +26,7 @@
 # 4. Result trace.json
 #  - trace.json is the result file
 
-SCRIPT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 ## If no optional argument is passed, set for android
 TEST_ROOT=/data/local/tmp/

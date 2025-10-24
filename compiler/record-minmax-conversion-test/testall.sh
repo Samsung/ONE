@@ -8,7 +8,7 @@
 # test.config : set ${RECORD_MINMAX_PATH}
 # work_dir : build directory of record-minmax-conversion-test (ex: build/compiler/record-minmax-conversion-test)
 
-GEN_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+GEN_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 GEN_SCRIPT_PATH="${GEN_SOURCE_PATH}/gen_h5_random_inputs_all.py"
 CONFIG_PATH="$1"; shift
 BIN_PATH=$(dirname "$CONFIG_PATH")

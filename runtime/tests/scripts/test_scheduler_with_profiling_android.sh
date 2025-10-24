@@ -40,7 +40,7 @@
 #    sh /data/local/tmp/tests/scripts/test_scheduler_with_profiling_android.sh
 #
 
-MY_PATH="$( cd "$( dirname "$0" )" && pwd )"
+MY_PATH="$( cd "$( dirname "$0" )" >/dev/null && pwd )"
 
 SHELL_CMD=/system/bin/sh
 
@@ -50,7 +50,7 @@ BACKEND_CNT=3
 # Run profiler BACKEND_CNT+1 times: on each run of the first BACKEND_CNT runs it will
 #     collect metrics for one unmeasured backend. On the last run metrics for data transfer
 PROFILING_RUN_CNT=$((BACKEND_CNT+1))
-TEST_DRIVER_DIR="$( cd "$( dirname "$0" )" && pwd )"
+TEST_DRIVER_DIR="$( cd "$( dirname "$0" )" >/dev/null && pwd )"
 
 ARTIFACT_PATH="$TEST_DRIVER_DIR/../.."
 BENCHMARK_DRIVER_BIN=$ARTIFACT_PATH/Product/out/bin/tflite_run

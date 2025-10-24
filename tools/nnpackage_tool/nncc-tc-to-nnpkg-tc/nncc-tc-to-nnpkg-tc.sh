@@ -3,7 +3,7 @@
 set -eu
 
 progname=$(basename "${BASH_SOURCE[0]}")
-script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 model2nnpkg=${model2nnpkg:-"$script_dir"/../model2nnpkg/model2nnpkg.py}
 # Need to install nncc package & set path to tf2nnpkg
 tf2nnpkg=$(which tf2nnpkg)
@@ -91,4 +91,3 @@ mkdir -p "$destdir"
 for ext in $extensions; do
   cp "$indir/$tcname.$ext" "$destdir/$ext"
 done;
-

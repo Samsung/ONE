@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-MY_PATH="$( cd "$( dirname "$0" )" && pwd )"
+MY_PATH="$( cd "$( dirname "$0" )" >/dev/null && pwd )"
 NNFW_HOME="$(dirname $(dirname $(dirname ${MY_PATH})))"
 
 CACHE_ROOT_PATH=$MY_PATH/"cache"

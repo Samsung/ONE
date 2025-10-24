@@ -20,7 +20,7 @@
 # DRIVER_PATH: test driver and related resources forder
 # INSTALL_PATH: test package installed folder
 # CACHE_PATH: cache folder for test resource download
-DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DRIVER_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 INSTALL_PATH="$(dirname $DRIVER_PATH)"
 CACHE_PATH=$DRIVER_PATH/cache
 

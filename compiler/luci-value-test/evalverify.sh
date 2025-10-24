@@ -11,7 +11,7 @@
 # venv_dir : python virtual environment home directory
 # eval_driver : luci_eval_driver path for evaluation
 
-VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VERIFY_SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 VERIFY_SCRIPT_PATH="${VERIFY_SOURCE_PATH}/luci_eval_verifier.py"
 BINDIR="$1"; shift
 WORKDIR="$1"; shift

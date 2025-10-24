@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # Setup Android Cross-Build Environment (ANDROID SDK)
-SCRIPT_HOME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd ) # absolute path to directory where script is
+SCRIPT_HOME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd ) # absolute path to directory where script is
 INSTALL_PATH=$SCRIPT_HOME/android_sdk # path to directory where android sdk will be installed
 PLATFORMS_PACKAGE_VERSION="29" # version of platfroms package which will be installed
 BUILD_TOOLS_PACKAGE_VERSION="29.0.3" # version of build-tools package which will be installed

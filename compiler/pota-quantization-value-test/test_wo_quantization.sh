@@ -8,7 +8,7 @@
 # test.config : set ${CIRCLE_QUANTIZER_PATH} and ${CIRCLE_TENSORDUMP_PATH}"
 # work_dir : build directory of quantization-value-test (ex: build/compiler/quantization-value-test)
 
-SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SOURCE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 COMPARE_SCRIPT_PATH="${SOURCE_PATH}/compare_tensors_all.py"
 CONFIG_PATH="$1"; shift
 BIN_PATH=$(dirname "${CONFIG_PATH}")

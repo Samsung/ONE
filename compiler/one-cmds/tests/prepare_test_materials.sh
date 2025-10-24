@@ -16,7 +16,7 @@
 
 # See https://github.com/Samsung/ONE/issues/4155 for information
 
-SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 pushd $SCRIPT_PATH > /dev/null
 
 if [[ ! -s "inception_v3.pb" ]]; then
