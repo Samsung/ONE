@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SCRIPT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 HOST_HOME=$SCRIPT_ROOT/../..
 if [ -z "$TEST_ROOT" ]; then
     TEST_ROOT=/opt/usr/nnfw-test
@@ -127,7 +127,7 @@ SDB_CMD="sdb -s $SERIAL "
 $SDB_CMD root on
 $SDB_CMD shell mount -o rw,remount /
 
-SCRIPT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 ROOT=$SCRIPT_ROOT/../
 
 if [ -z "$RPM_DIR" ] && [ -z "$TEST_SUITE_PATH" ]; then
