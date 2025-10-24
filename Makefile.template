@@ -100,12 +100,11 @@ export NNCC_WORKSPACE=$(NNCC_FOLDER)
 ###
 ### Default target
 ###
-all: prepare-buildtool prepare-nncc configure build install
+all: prepare-nncc configure build install
 
 ###
 ### Command (build step)
 ###
-prepare-buildtool: prepare_buildtool_internal
 
 prepare-nncc: prepare_nncc_internal
 
@@ -119,7 +118,7 @@ install: install_all_internal
 ### Command (public)
 ###
 # Don't install arm compute
-create-package: prepare-buildtool prepare-nncc configure build install_except_acl runtime_tar_internal
+create-package: prepare-nncc configure build install_except_acl runtime_tar_internal
 
 create-aclpack: configure acl_tar_internal
 
@@ -138,13 +137,9 @@ distclean:
 ###
 ### Command (internal)
 ###
-prepare_buildtool_internal:
-	cmake -S runtime/infra/buildtool -B $(BUILDTOOL_WORKSPACE)/obj -DBUILDTOOL_PATH=$(BUILDTOOL_PATH)
-	cmake --build $(BUILDTOOL_WORKSPACE)/obj/ -j$(NPROCS)
-
 prepare_nncc_internal:
 ifeq (,$(findstring android,$(TARGET_OS)))
-	EXTERNAL_FLATC=$(BUILDTOOL_PATH)/bin/flatc ./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=$(NPROCS) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
+	./nncc configure -DBUILD_GTEST=OFF -DENABLE_TEST=OFF -DEXTERNALS_BUILD_THREADS=$(NPROCS) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
 		-DCMAKE_INSTALL_PREFIX=$(OVERLAY_FOLDER) \
 		-DBUILD_WHITELIST="luci;foder;pepper-csv2vec;loco;locop;logo;logo-core;mio-circle;luci-compute;oops;hermes;hermes-std;angkor;pp;pepper-strcast;pepper-str" \
 		$(OPTIONS_NNCC)
