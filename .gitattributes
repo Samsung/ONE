@@ -16,3 +16,4 @@ res/** linguist-detectable=false
 *.png binary
 *.tar.gz binary
 *.tflite binary
+*.svg binary
